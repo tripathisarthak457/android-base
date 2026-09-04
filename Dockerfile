@@ -7,9 +7,10 @@
 # has no Python in it, and reimplementing the generator in Go to avoid the dependency is how the
 # terminal and the website start producing different projects.
 #
-# The build context is the repository root, because `template/` and `generator/` live outside
-# `web/api/`. `.dockerignore` keeps the 2.7GB of Gradle build output out of it; what actually goes
-# in is about 1.5MB.
+# It lives at the repository root rather than beside the Go code because the build context is the
+# directory the Dockerfile is in, and `generator/` and `template/` are what the image is mostly
+# made of — hence the `web/api/` prefixes on the COPY lines below. `.dockerignore` keeps the 2.7GB
+# of Gradle build output out of the context; what actually goes in is about 1.5MB.
 
 FROM golang:1.25-alpine AS build
 WORKDIR /src

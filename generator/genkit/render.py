@@ -465,13 +465,13 @@ def apply_app_name(destination: Path, spec: ProjectSpec) -> None:
         if spec.has("deeplink"):
             text = re.sub(
                 r'(<string name="deeplink_scheme" translatable="false">).*?(</string>)',
-                rf"\g<1>{spec.deeplink_scheme}\g<2>",
+                rf"\g<1>{spec.effective_deeplink_scheme}\g<2>",
                 text,
                 count=1,
             )
             text = re.sub(
                 r'(<string name="deeplink_host" translatable="false">).*?(</string>)',
-                rf"\g<1>{spec.deeplink_host}\g<2>",
+                rf"\g<1>{spec.effective_deeplink_host}\g<2>",
                 text,
                 count=1,
             )

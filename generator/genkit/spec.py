@@ -535,6 +535,23 @@ class ProjectSpec:
         return self.pascal_name.lower()
 
     @property
+    def effective_deeplink_scheme(self) -> str:
+        """
+        The custom scheme to write into `strings.xml`, never empty.
+
+        `android:scheme` cannot be blank — Android lint fails the build with AppLinkUrlError, so a
+        project generated with deep links on and no scheme supplied would not compile. The wizard
+        offers this same value as its default; this is what makes it the default everywhere else
+        too, including a request that arrives from the website without one.
+        """
+        return self.deeplink_scheme or self.lower_name or "app"
+
+    @property
+    def effective_deeplink_host(self) -> str:
+        """The App Links host, never empty, for the same reason as the scheme."""
+        return self.deeplink_host or "example.com"
+
+    @property
     def snake_name(self) -> str:
         """`My Great App` → `my_great_app`. Resource names and notification channel ids."""
         return re.sub(r"(?<!^)(?=[A-Z])", "_", self.pascal_name).lower()
