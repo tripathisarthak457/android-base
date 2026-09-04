@@ -17,9 +17,10 @@ keys/
 *.jks
 *.keystore
 
-# Firebase configuration carries project ids and API keys tied to an account. The template's
-# placeholder is committed deliberately so the first build works; a real one must not be.
-!template/app/google-services.json
+# The template's placeholder google-services.json is tracked deliberately — without it the
+# generated project cannot run the Firebase plugin and the first build fails. It cannot be
+# un-ignored from here: template/.gitignore ignores it and the nearer file wins, so it is
+# force-added instead. Once tracked, git follows its changes regardless.
 
 # Python
 __pycache__/
@@ -35,6 +36,10 @@ out/
 .vercel
 .env
 .env*.local
+# Anything ending in .env too. The deploy script writes /etc/android-base.env on the server with
+# the database password, the admin token and the IP salt in it, and sooner or later somebody
+# copies one here to edit it.
+*.env
 *.tsbuildinfo
 next-env.d.ts
 

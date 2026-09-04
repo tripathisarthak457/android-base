@@ -5,7 +5,9 @@ import com.base.app.core.common.network.NetworkMonitor
 import com.base.app.core.common.util.AppLogger
 import com.base.app.core.coroutines.IoDispatcher
 import com.base.app.core.network.di.AuthenticatedClient
+// <opt:room>
 import com.base.app.core.network.model.CachePolicy
+// </opt:room>
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.MultipartPart
 import com.base.app.core.network.model.NetworkException
@@ -132,6 +134,7 @@ class KtorNetworkClient @Inject constructor(
      * The request did not produce a response, either because the device is offline or because the
      * server could not be reached. [deviceIsOffline] decides which of those the user is told.
      */
+    // <opt:!room>    @Suppress("UnusedParameter") // `request` is only read by the cache and queue.
     private suspend fun unreachable(
         request: NetworkRequest,
         deviceIsOffline: Boolean,

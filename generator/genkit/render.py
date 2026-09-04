@@ -142,12 +142,18 @@ def collapse_blank_runs(text: str) -> str:
     off would otherwise be full of six-line gaps, which reads as carelessness in the first file
     anyone opens.
 
-    A blank line immediately before a closing brace is removed outright. That one is not cosmetic
-    — ktlint's `NoBlankLineBeforeRbrace` fails the build on it, so a block stripped from the end
-    of a function turns a generated project red before its author has written anything.
+    A blank line against either side of a brace is removed outright. Those two are not cosmetic:
+    ktlint fails the build on both `NoBlankLineBeforeRbrace` and `NoEmptyFirstLineInMethodBlock`,
+    so a block stripped from the start or the end of a function turns a generated project red
+    before its author has written anything.
+
+    Only a brace, deliberately. A blank line after an opening *parenthesis* is legal and is
+    sometimes how a long argument list is laid out, and collapsing it would be the generator
+    reformatting code it was not asked to touch.
     """
     text = re.sub(r"\n{3,}", "\n\n", text)
-    return re.sub(r"\n[ \t]*\n([ \t]*\})", r"\n\1", text)
+    text = re.sub(r"\n[ \t]*\n([ \t]*\})", r"\n\1", text)
+    return re.sub(r"(\{[ \t]*)\n[ \t]*\n", r"\1\n", text)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -470,21 +476,6 @@ def apply_app_name(destination: Path, spec: ProjectSpec) -> None:
                 count=1,
             )
         path.write_text(text, encoding="utf-8")
-
-
-def write_google_services_placeholder(destination: Path, spec: ProjectSpec) -> None:
-    """
-    Rewrites the placeholder `google-services.json` to carry this project's application ids.
-
-    The plugin matches `package_name` against the applicationId and fails the build when none
-    matches — so a placeholder still carrying `com.base.app` would break the very first build of
-    every generated project that enabled Firebase.
-    """
-    path = destination / "app/google-services.json"
-    if not path.exists():
-        return
-    text = path.read_text(encoding="utf-8")
-    path.write_text(text, encoding="utf-8")
 
 
 def write_keystore_properties(destination: Path, keystores: list[KeystoreSpec]) -> None:

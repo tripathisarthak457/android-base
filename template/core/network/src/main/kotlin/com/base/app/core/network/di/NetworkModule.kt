@@ -1,6 +1,8 @@
 package com.base.app.core.network.di
 
+// <opt:room>
 import android.content.Context
+// </opt:room>
 import com.base.app.core.network.KtorNetworkClient
 import com.base.app.core.network.auth.KtorTokenRefresher
 import com.base.app.core.network.auth.TokenRefresher
@@ -25,9 +27,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+// <opt:room>
 import dagger.hilt.android.qualifiers.ApplicationContext
+// </opt:room>
 import dagger.hilt.components.SingletonComponent
+// <opt:room>
 import dagger.multibindings.IntoSet
+// </opt:room>
 import javax.inject.Qualifier
 import javax.inject.Singleton
 

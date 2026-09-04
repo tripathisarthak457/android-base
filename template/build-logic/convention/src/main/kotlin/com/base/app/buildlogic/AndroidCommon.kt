@@ -5,7 +5,9 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
  * The Android and Kotlin configuration every module shares, applied once by
@@ -71,6 +73,16 @@ private fun Project.configureKotlinCompiler() {
             // and warns on every one until told explicitly. `param-property` is the behaviour the
             // annotations in this project (@Inject, @SerialName, @Json*) already assume.
             freeCompilerArgs.add("-Xannotation-default-target=param-property")
+        }
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        // `runTest`, `TestScope` and the test dispatchers are all still marked experimental, and
+        // every test that touches a coroutine warns until it opts in. Granting it once here beats
+        // an @OptIn line at the top of every test file anyone ever writes — and it is scoped to
+        // test compilation, so nothing in main quietly gains the same licence.
+        if (name.endsWith("UnitTestKotlin") || name.endsWith("AndroidTestKotlin")) {
+            compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
         }
     }
 }

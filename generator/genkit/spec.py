@@ -152,6 +152,9 @@ FEATURES: tuple[Feature, ...] = (
         title="Firebase",
         description="The google-services plugin and the Firebase BOM.",
         default=False,
+        # The placeholder json is renamed by the ordinary text pass, like any other file. It has
+        # to be: the plugin matches the applicationId against a client entry and fails the build
+        # when none matches, so a copy still saying `com.base.app` breaks the very first build.
         files=("app/google-services.json",),
     ),
     Feature(

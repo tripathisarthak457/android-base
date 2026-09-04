@@ -181,6 +181,19 @@ class BlankRunTest(unittest.TestCase):
             collapse_blank_runs("class A {\n    fun b() {\n        c()\n\n    }\n}\n"),
         )
 
+    def test_a_blank_line_after_an_opening_brace_is_removed(self):
+        # The mirror case, and ktlint's NoEmptyFirstLineInMethodBlock fails on it just as hard.
+        self.assertEqual(
+            "fun x() {\n    a()\n}\n",
+            collapse_blank_runs("fun x() {\n\n    a()\n}\n"),
+        )
+
+    def test_a_blank_line_after_an_opening_parenthesis_is_left_alone(self):
+        # Legal Kotlin, and sometimes how a long argument list is laid out. Collapsing it would
+        # be the generator reformatting code nobody asked it to touch.
+        argument_list = "val m = mapOf(\n\n    1 to 2,\n)\n"
+        self.assertEqual(argument_list, collapse_blank_runs(argument_list))
+
     def test_a_single_blank_line_is_left_alone(self):
         self.assertEqual("a\n\nb\n", collapse_blank_runs("a\n\nb\n"))
 
