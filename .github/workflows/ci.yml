@@ -1,0 +1,102 @@
+# What runs on every push.
+#
+# Three jobs, because the three parts of this repository fail independently and a single job would
+# hide two failures behind the first one. The Android job is the slow one and is the reason this
+# exists: the whole claim of the project is that a generated build is green, and a claim nobody
+# checks stops being true.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  generator:
+    name: Generator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        working-directory: generator
+        run: python -m unittest discover -s tests -t .
+      - name: The catalogue is valid JSON
+        working-directory: generator
+        run: python -m genkit.catalogue | python -m json.tool > /dev/null
+
+  api:
+    name: API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache-dependency-path: web/api/go.sum
+      - working-directory: web/api
+        run: |
+          test -z "$(gofmt -l .)" || { echo "gofmt would change these:"; gofmt -l .; exit 1; }
+          go vet ./...
+          go build ./...
+
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/frontend/package-lock.json
+      - working-directory: web/frontend
+        run: |
+          npm ci
+          npx tsc --noEmit
+          npx next build
+
+  android:
+    name: Generated project builds
+    runs-on: ubuntu-latest
+    # The slowest job by a wide margin. Worth every minute: it is the only thing standing between
+    # a marker left unbalanced in one file and a broken zip going out to somebody.
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        preset: [lean, everything]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate
+        run: |
+          cd generator
+          python - <<'PY'
+          import json, pathlib, sys
+          sys.path.insert(0, ".")
+          from genkit.spec import preset_features
+          spec = {
+              "app_name": "Ci Check",
+              "package_name": "com.example.cicheck",
+              "features": sorted(preset_features("${{ matrix.preset }}")),
+              "feature_modules": ["orders"],
+          }
+          pathlib.Path("ci-spec.json").write_text(json.dumps(spec))
+          PY
+          python create_project.py --spec ci-spec.json --out "$GITHUB_WORKSPACE/out" --no-zip
+
+      - name: Build it
+        working-directory: out
+        run: ./gradlew build --no-daemon --stacktrace
