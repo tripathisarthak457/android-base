@@ -1,0 +1,184 @@
+# The website
+
+Three pieces:
+
+```
+frontend/   Next.js. Static — no server code, no API routes. Goes on Vercel.
+api/        Go. Runs the Python generator and records what happened. Goes on your own box.
+deploy/     Caddyfile and an install script for that box.
+```
+
+The split is not arbitrary. The site is static and belongs on a CDN; the generator needs a Python
+interpreter, a writable temp directory and several seconds of CPU per request, which is a fit for
+a small VPS and a poor one for a serverless function with a ten-second ceiling.
+
+---
+
+## Why the API shells out to Python
+
+The generator is not reimplemented in Go. `internal/generate` writes a JSON spec to
+`generate_headless.py` on stdin and reads a JSON result back, so there is exactly one definition
+of what a generated project is.
+
+A Go port would be faster by a second or two and would be wrong within a month: the two would
+drift, and the drift would surface as a project from the website that does not match the one from
+the terminal — which is precisely the bug nobody thinks to look for.
+
+---
+
+## Running it locally
+
+Two terminals.
+
+```bash
+# 1. The API. Without DATABASE_URL it records nothing and the admin routes are not registered.
+cd web/api
+GENERATOR_DIR=../../generator ALLOWED_ORIGINS=http://localhost:3000 go run ./cmd/server
+```
+
+```bash
+# 2. The site.
+cd web/frontend
+npm install
+echo 'NEXT_PUBLIC_API_BASE=http://127.0.0.1:8080' > .env.local
+npm run dev
+```
+
+Open http://localhost:3000. The wizard's options are fetched from the API, so if the feature list
+looks empty the API is not running.
+
+### With the admin portal
+
+```bash
+createdb androidgen
+cd web/api
+DATABASE_URL='postgres://localhost/androidgen?sslmode=disable' \
+ADMIN_TOKEN="$(openssl rand -hex 32)" \
+IP_SALT="$(openssl rand -hex 32)" \
+GENERATOR_DIR=../../generator \
+ALLOWED_ORIGINS=http://localhost:3000 \
+go run ./cmd/server
+```
+
+Migrations run at boot. Open http://localhost:3000/admin and paste the token.
+
+---
+
+## Deploying
+
+### The API, on a VPS
+
+One command on a fresh Ubuntu 24.04 box:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/tripathisarthak457/android-base/main/web/deploy/install.sh \
+  | sudo bash -s -- api.yourapp.duckdns.org
+```
+
+It installs Go, Python, Postgres and Caddy, builds the binary, generates the secrets, writes a
+systemd unit and gets a TLS certificate. It prints the admin token once — save it.
+
+Running it again is how you deploy an update: it pulls, rebuilds, restarts, and leaves the
+database and the generated `/etc/android-base.env` alone.
+
+**You need a hostname**, not just an IP — Let's Encrypt will not issue for a bare address. A free
+DuckDNS subdomain works exactly as well as a bought domain: create one, point it at the box, and
+use it above.
+
+### The site, on Vercel
+
+```bash
+cd web/frontend
+vercel --prod
+```
+
+Or import the repository at vercel.com/new and set the root directory to `web/frontend`.
+
+Either way, one environment variable:
+
+```
+NEXT_PUBLIC_API_BASE = https://api.yourapp.duckdns.org
+```
+
+Then add the Vercel URL to `ALLOWED_ORIGINS` in `/etc/android-base.env` on the box and
+`systemctl restart androidgen-api`. The API's CORS list is exact-match with no wildcard, because
+`/api/generate` is a POST that returns a file and there is no reason for any origin but the site
+to call it.
+
+---
+
+## Configuration
+
+Everything is an environment variable, and the two with no sensible default fail at boot rather
+than at the first request that needs them.
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `ADDR` | `127.0.0.1:8080` | Loopback, because Caddy is in front |
+| `DATABASE_URL` | — | Empty disables recording and the admin routes entirely |
+| `ADMIN_TOKEN` | — | Required with `DATABASE_URL`; at least 24 characters |
+| `IP_SALT` | — | Required with `DATABASE_URL`; rotating it forgets who visited |
+| `GENERATOR_DIR` | `../../generator` | Must contain `generate_headless.py` |
+| `PYTHON_BIN` | `python3` | `py` on Windows |
+| `ALLOWED_ORIGINS` | `http://localhost:3000` | Comma-separated, exact match |
+| `GENERATE_TIMEOUT` | `90s` | A full-feature project takes about 3s |
+| `MAX_CONCURRENT_GENERATIONS` | `4` | Each is one Python process |
+| `RATE_LIMIT_PER_HOUR` | `30` | Per client IP |
+
+---
+
+## The API
+
+| | | |
+| --- | --- | --- |
+| `GET` | `/api/health` | Uptime, and whether recording is on |
+| `GET` | `/api/options` | The generator's own catalogue. Cached at boot |
+| `POST` | `/api/generate` | Spec in, zip out. Rate limited |
+| `POST` | `/api/track` | One funnel step |
+| `GET` | `/admin/overview` | Headline numbers and the funnel |
+| `GET` | `/admin/daily?days=30` | Generations, failures and visitors per day |
+| `GET` | `/admin/features` | Which options actually get picked |
+| `GET` | `/admin/errors?resolved=false` | Grouped by fingerprint |
+| `GET` | `/admin/generations?limit=50` | The most recent projects |
+| `GET` | `/admin/health` | Per-route latency and 5xx rate |
+| `POST` | `/admin/errors/resolve` | Tick one off |
+
+Admin routes take `Authorization: Bearer <ADMIN_TOKEN>`, compared in constant time. A shared token
+rather than accounts, because there is one administrator and a login system for one person is a
+login system whose password reset flow nobody ever tests.
+
+```bash
+curl -X POST https://api.yourapp.duckdns.org/api/generate \
+  -H 'Content-Type: application/json' \
+  -d '{"app_name":"My App","package_name":"com.acme.myapp","features":["network","catalog"]}' \
+  -o MyApp.zip
+```
+
+---
+
+## What is recorded, and what is not
+
+Recorded: the app name, package, feature set, SDK levels and timings of each generation; which
+funnel step each visitor reached, once per day; the duration and status of every request; and any
+error the generator produced, grouped so one bug is one row.
+
+Not recorded: IP addresses. Visitor counts use a salted hash truncated to sixteen bytes, and
+rotating `IP_SALT` forgets who visited without losing the numbers. No cookies, no third-party
+analytics, and the generated project is written to a temporary directory that is deleted as the
+download finishes.
+
+A rejection caused by what somebody typed — a bad package name, an unknown feature — is recorded
+as a failed generation but deliberately **not** as an error. The error list is for bugs, and
+filling it with typos would make it useless within a day.
+
+---
+
+## Signing keys are not generated here
+
+The CLI generates all four with `keytool`, on your machine. The website generates none, whatever
+the request asks for — `generate_headless.py` clears them before rendering.
+
+A production upload key created on a server you do not control and sent back over the wire is a
+key whose custody you cannot claim, and losing control of a Play upload key is the one Android
+mistake that cannot be undone. The zip ships `keystore.properties.template` and the README has the
+four commands.
