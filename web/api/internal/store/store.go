@@ -121,7 +121,7 @@ func (s *Store) RecordGeneration(ctx context.Context, g Generation) {
 		) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`
 
 	_, err := s.pool.Exec(ctx, query,
-		g.VisitorHash, g.AppName, g.PackageName, nullable(g.Preset), g.Features, g.FeatureModules,
+		g.VisitorHash, g.AppName, g.PackageName, nullable(g.Preset), list(g.Features), list(g.FeatureModules),
 		nullableInt(g.MinSDK), nullableInt(g.TargetSDK), nullable(g.MotionStyle),
 		nullable(g.FontName), nullable(g.AccentColour),
 		g.Succeeded, nullableInt64(g.ZipBytes), g.Duration.Milliseconds(),
@@ -456,6 +456,19 @@ func (s *Store) Health(ctx context.Context) ([]RouteHealth, error) {
 	return health, rows.Err()
 }
 
+// list keeps a nil slice out of a NOT NULL text[] column.
+//
+// Go marshals a nil slice to SQL NULL, not to an empty array, so a request that simply omitted
+// `features` — legal, and what the minimal body from a script looks like — failed the insert with
+// a not-null violation. Recorded generations then silently disappeared while every other table
+// kept filling up, which is a bad way to find out.
+func list(values []string) []string {
+	if values == nil {
+		return []string{}
+	}
+	return values
+}
+
 func nullable(s string) any {
 	if s == "" {
 		return nil
@@ -538,7 +551,7 @@ func (s *Store) SaveFeedback(ctx context.Context, f Feedback) (int64, error) {
 		truncate(f.Title, 200), truncate(f.Body, 8000),
 		nullable(truncate(f.Steps, 4000)), nullable(truncate(f.Expected, 2000)),
 		nullable(truncate(f.Actual, 2000)),
-		nullable(f.AppName), nullable(f.PackageName), f.Features, nullable(f.Preset),
+		nullable(f.AppName), nullable(f.PackageName), list(f.Features), nullable(f.Preset),
 		nullableInt(f.MinSDK), nullable(f.MotionStyle), nullable(f.FontName),
 		nullable(f.AccentColour), nullable(truncate(f.Contact, 200)),
 		nullable(truncate(f.UserAgent, 500)), nullable(truncate(f.PageURL, 500)),
