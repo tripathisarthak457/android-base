@@ -50,7 +50,8 @@ type Config struct {
 	// slows down.
 	MaxConcurrentGenerations int
 
-	// RateLimitPerHour is per client IP.
+	// RateLimitPerHour is per client IP, counted in one process. See the note on `limiter`:
+	// across several instances the real ceiling is this times the instance count.
 	RateLimitPerHour int
 
 	// IPSalt is mixed into the hash used for unique-visitor counts. Rotating it forgets who

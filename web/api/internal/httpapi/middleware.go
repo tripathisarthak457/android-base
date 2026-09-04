@@ -110,6 +110,11 @@ func (s *Server) requireAdmin(next http.HandlerFunc) http.HandlerFunc {
 // public endpoint that costs a CPU-second. A sliding window would be more accurate at the
 // boundary and would need a dependency; the failure mode here is that somebody gets 2n requests
 // across a window edge, which does not matter.
+// ponytail: one process-wide window, reset wholesale rather than per key. Fine for a single
+// instance; on a platform that scales horizontally the effective limit is RATE_LIMIT_PER_HOUR
+// times the number of instances, and a client that hops instances is not tracked across them.
+// It is a courtesy brake on a free service, not a security control — the real bound is
+// MAX_CONCURRENT_GENERATIONS. Move it to Redis or Postgres if it ever needs to be exact.
 type limiter struct {
 	mu       sync.Mutex
 	perHour  int
