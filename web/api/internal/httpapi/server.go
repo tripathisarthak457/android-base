@@ -83,16 +83,19 @@ func (s *Server) Routes() http.Handler {
 	post("/api/track", "track", s.handleTrack)
 	post("/api/feedback", "feedback", s.rateLimit(s.handleFeedback))
 
+	// Everything the service owns lives under /api, including the admin routes. That is not
+	// cosmetic: the site and this server share one origin and one route table, and the site
+	// already owns the /admin page that calls these. One prefix, one owner, no collision.
 	if s.store != nil {
-		get("/admin/overview", "admin.overview", s.requireAdmin(s.handleOverview))
-		get("/admin/daily", "admin.daily", s.requireAdmin(s.handleDaily))
-		get("/admin/features", "admin.features", s.requireAdmin(s.handleFeatures))
-		get("/admin/errors", "admin.errors", s.requireAdmin(s.handleErrors))
-		get("/admin/generations", "admin.generations", s.requireAdmin(s.handleRecent))
-		get("/admin/health", "admin.health", s.requireAdmin(s.handleRouteHealth))
-		get("/admin/feedback", "admin.feedback", s.requireAdmin(s.handleFeedbackList))
-		post("/admin/errors/resolve", "admin.resolve", s.requireAdmin(s.handleResolveError))
-		post("/admin/feedback/update", "admin.feedbackUpdate", s.requireAdmin(s.handleFeedbackUpdate))
+		get("/api/admin/overview", "admin.overview", s.requireAdmin(s.handleOverview))
+		get("/api/admin/daily", "admin.daily", s.requireAdmin(s.handleDaily))
+		get("/api/admin/features", "admin.features", s.requireAdmin(s.handleFeatures))
+		get("/api/admin/errors", "admin.errors", s.requireAdmin(s.handleErrors))
+		get("/api/admin/generations", "admin.generations", s.requireAdmin(s.handleRecent))
+		get("/api/admin/health", "admin.health", s.requireAdmin(s.handleRouteHealth))
+		get("/api/admin/feedback", "admin.feedback", s.requireAdmin(s.handleFeedbackList))
+		post("/api/admin/errors/resolve", "admin.resolve", s.requireAdmin(s.handleResolveError))
+		post("/api/admin/feedback/update", "admin.feedbackUpdate", s.requireAdmin(s.handleFeedbackUpdate))
 	}
 
 	return mux

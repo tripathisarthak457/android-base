@@ -1,7 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "buildCommand": "next build",
+  "services": {
+    "site": {
+      "root": "web/frontend/",
+      "framework": "nextjs",
+      "buildCommand": "next build"
+    },
+    "api": {
+      "runtime": "container",
+      "entrypoint": "Dockerfile.api"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "api" } },
+    { "source": "/(.*)", "destination": { "service": "site" } }
+  ],
   "headers": [
     {
       "source": "/(.*)",

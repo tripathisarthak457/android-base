@@ -94,13 +94,13 @@ export default function Admin() {
 
       try {
         const paths = [
-          "/admin/overview",
-          "/admin/daily?days=30",
-          "/admin/features",
-          `/admin/errors?resolved=${includeResolved}`,
-          "/admin/generations?limit=40",
-          "/admin/health",
-          "/admin/feedback?limit=100",
+          "/api/admin/overview",
+          "/api/admin/daily?days=30",
+          "/api/admin/features",
+          `/api/admin/errors?resolved=${includeResolved}`,
+          "/api/admin/generations?limit=40",
+          "/api/admin/health",
+          "/api/admin/feedback?limit=100",
         ];
         const responses = await Promise.all(
           paths.map((path) => fetch(`${API_BASE}${path}`, { headers })),
@@ -229,7 +229,7 @@ export default function Admin() {
         items={feedback}
         counts={feedbackCounts}
         onUpdate={async (id, status, notes) => {
-          await fetch(`${API_BASE}/admin/feedback/update`, {
+          await fetch(`${API_BASE}/api/admin/feedback/update`, {
             method: "POST",
             headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
             body: JSON.stringify({ id, status, notes }),
@@ -246,7 +246,7 @@ export default function Admin() {
           void load(token, next);
         }}
         onResolve={async (id, resolved) => {
-          await fetch(`${API_BASE}/admin/errors/resolve`, {
+          await fetch(`${API_BASE}/api/admin/errors/resolve`, {
             method: "POST",
             headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
             body: JSON.stringify({ id, resolved }),

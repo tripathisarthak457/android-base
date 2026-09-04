@@ -56,3 +56,4 @@ Thumbs.db
 # Anything generated while testing the generator
 /out/
 *.zip
+.env*

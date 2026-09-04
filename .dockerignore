@@ -1,0 +1,28 @@
+# The build context is the repository root, and most of the repository has no business in the
+# image. `template/` alone carries 2.7GB of Gradle output on a machine that has ever built it;
+# what the generator actually needs from it is about 1.5MB.
+
+**/build/
+**/.gradle/
+**/.kotlin/
+**/.idea/
+**/__pycache__/
+**/node_modules/
+**/.next/
+**/.vercel/
+**/*.tsbuildinfo
+
+.git/
+.github/
+web/frontend/
+web/deploy/
+
+# Never, under any circumstances, in an image that gets pushed somewhere.
+**/local.properties
+**/keystore.properties
+**/keys/
+**/*.jks
+**/*.keystore
+**/.env
+**/.env.*
+**/*.env

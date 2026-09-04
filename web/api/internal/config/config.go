@@ -17,7 +17,8 @@ import (
 )
 
 type Config struct {
-	// Addr is the listen address. Behind Caddy this stays on loopback.
+	// Addr is the listen address. Behind Caddy on a VPS this stays on loopback; in a container
+	// it has to be reachable from outside the container, which is what defaultAddr works out.
 	Addr string
 
 	// DatabaseURL is a libpq connection string. Empty disables persistence entirely: the API
@@ -59,7 +60,7 @@ type Config struct {
 
 func Load() (Config, error) {
 	cfg := Config{
-		Addr:                     env("ADDR", "127.0.0.1:8080"),
+		Addr:                     env("ADDR", defaultAddr()),
 		DatabaseURL:              os.Getenv("DATABASE_URL"),
 		GeneratorDir:             env("GENERATOR_DIR", "../../generator"),
 		PythonBin:                env("PYTHON_BIN", defaultPython()),
@@ -93,6 +94,19 @@ func Load() (Config, error) {
 // Persistent reports whether anything is being recorded. The admin endpoints are not registered
 // at all when it is false, rather than registered and returning empty results.
 func (c Config) Persistent() bool { return c.DatabaseURL != "" }
+
+// defaultAddr picks a listen address from the environment the process finds itself in.
+//
+// A container platform hands the port over in PORT and expects the server on every interface —
+// loopback there means the health check never connects and the deployment is rolled back with no
+// useful error. Everywhere else loopback is the safe default: on the VPS, Caddy is the only thing
+// that should be able to reach this port. ADDR still overrides both.
+func defaultAddr() string {
+	if port := strings.TrimSpace(os.Getenv("PORT")); port != "" {
+		return "0.0.0.0:" + port
+	}
+	return "127.0.0.1:8080"
+}
 
 func env(key, fallback string) string {
 	if value := strings.TrimSpace(os.Getenv(key)); value != "" {

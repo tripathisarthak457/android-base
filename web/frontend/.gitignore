@@ -1,7 +1,13 @@
 node_modules/
 .next/
 out/
-.vercel
-.env*.local
 *.tsbuildinfo
 next-env.d.ts
+
+# Vercel writes .vercel/ (the project link) and .env.local (a short-lived OIDC token) on `link`.
+# Neither is shareable.
+.vercel
+.env*
+
+# The one that is: it names the variable and explains it, and carries no value worth having.
+!.env.example

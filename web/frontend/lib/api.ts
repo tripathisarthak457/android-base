@@ -7,8 +7,20 @@
  * the feature list, the presets and the defaults all come down the wire.
  */
 
+/**
+ * Where the Go API lives.
+ *
+ * Empty in production, and that is the correct value rather than a missing one: the deployment
+ * runs the site and the API as two services behind one domain, so `/api/options` is same-origin
+ * and a relative URL is what should be fetched. It also means no CORS, and no way for the site to
+ * end up pointed at a stale hostname.
+ *
+ * In development the two are separate processes on separate ports, so the fallback names the Go
+ * server directly. NEXT_PUBLIC_API_BASE overrides both, for a split deployment.
+ */
 export const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") ?? "http://127.0.0.1:8080";
+  process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") ??
+  (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8080" : "");
 
 export type Feature = {
   key: string;

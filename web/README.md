@@ -3,14 +3,18 @@
 Three pieces:
 
 ```
-frontend/   Next.js. Static — no server code, no API routes. Goes on Vercel.
-api/        Go. Runs the Python generator and records what happened. Goes on your own box.
-deploy/     Caddyfile and an install script for that box.
+frontend/   Next.js. Static — no server code, no API routes.
+api/        Go. Runs the Python generator and records what happened.
+deploy/     Caddyfile and an install script, for running the API on your own VPS instead.
 ```
 
-The split is not arbitrary. The site is static and belongs on a CDN; the generator needs a Python
-interpreter, a writable temp directory and several seconds of CPU per request, which is a fit for
-a small VPS and a poor one for a serverless function with a ten-second ceiling.
+Both halves deploy to one Vercel project as two [services](https://vercel.com/docs/services): the
+site at `/`, and the API as a container at `/api`. They share a domain, which is why the browser
+never needs a second origin and CORS never enters into it.
+
+The API is a container rather than a plain Go build for one reason: it shells out to
+`generate_headless.py`, and Vercel's Go runtime image has no Python in it. `Dockerfile.api` at the
+repository root puts the Go binary, the interpreter, `generator/` and `template/` in one image.
 
 ---
 
@@ -85,25 +89,24 @@ database and the generated `/etc/android-base.env` alone.
 DuckDNS subdomain works exactly as well as a bought domain: create one, point it at the box, and
 use it above.
 
-### The site, on Vercel
+### Both, on Vercel
+
+From the repository root — not from `web/frontend`, because the container's build context is the
+whole repository:
 
 ```bash
-cd web/frontend
 vercel --prod
 ```
 
-Or import the repository at vercel.com/new and set the root directory to `web/frontend`.
+`vercel.json` declares the two services and the routing between them. No `NEXT_PUBLIC_API_BASE` is
+needed: same domain, so the site fetches `/api/options` relatively. Set it only if you split the
+two across origins, in which case the API's `ALLOWED_ORIGINS` has to name the site — the CORS list
+is exact-match with no wildcard, because `/api/generate` is a POST that returns a file and there
+is no reason for any origin but the site to call it.
 
-Either way, one environment variable:
-
-```
-NEXT_PUBLIC_API_BASE = https://api.yourapp.duckdns.org
-```
-
-Then add the Vercel URL to `ALLOWED_ORIGINS` in `/etc/android-base.env` on the box and
-`systemctl restart androidgen-api`. The API's CORS list is exact-match with no wildcard, because
-`/api/generate` is a POST that returns a file and there is no reason for any origin but the site
-to call it.
+For the admin portal, attach a Postgres database and set `DATABASE_URL`, `ADMIN_TOKEN` and
+`IP_SALT` in the project's environment variables. Without them the API still generates projects;
+it just records nothing and does not register `/api/admin/*` at all.
 
 ---
 
@@ -114,7 +117,7 @@ than at the first request that needs them.
 
 | Variable | Default | Notes |
 | --- | --- | --- |
-| `ADDR` | `127.0.0.1:8080` | Loopback, because Caddy is in front |
+| `ADDR` | `127.0.0.1:8080`, or `0.0.0.0:$PORT` | Loopback behind Caddy; every interface in a container, where `PORT` is injected |
 | `DATABASE_URL` | — | Empty disables recording and the admin routes entirely |
 | `ADMIN_TOKEN` | — | Required with `DATABASE_URL`; at least 24 characters |
 | `IP_SALT` | — | Required with `DATABASE_URL`; rotating it forgets who visited |
@@ -136,17 +139,18 @@ than at the first request that needs them.
 | `POST` | `/api/generate` | Spec in, zip out. Rate limited |
 | `POST` | `/api/track` | One funnel step |
 | `POST` | `/api/feedback` | A bug report or suggestion. Rate limited |
-| `GET` | `/admin/overview` | Headline numbers and the funnel |
-| `GET` | `/admin/daily?days=30` | Generations, failures and visitors per day |
-| `GET` | `/admin/features` | Which options actually get picked |
-| `GET` | `/admin/errors?resolved=false` | Grouped by fingerprint |
-| `GET` | `/admin/generations?limit=50` | The most recent projects |
-| `GET` | `/admin/health` | Per-route latency and 5xx rate |
-| `GET` | `/admin/feedback?status=new` | Reports from people, newest first, blocking bugs pinned |
-| `POST` | `/admin/errors/resolve` | Tick one off |
-| `POST` | `/admin/feedback/update` | Set a status or add a triage note |
+| `GET` | `/api/admin/overview` | Headline numbers and the funnel |
+| `GET` | `/api/admin/daily?days=30` | Generations, failures and visitors per day |
+| `GET` | `/api/admin/features` | Which options actually get picked |
+| `GET` | `/api/admin/errors?resolved=false` | Grouped by fingerprint |
+| `GET` | `/api/admin/generations?limit=50` | The most recent projects |
+| `GET` | `/api/admin/health` | Per-route latency and 5xx rate |
+| `GET` | `/api/admin/feedback?status=new` | Reports from people, newest first, blocking bugs pinned |
+| `POST` | `/api/admin/errors/resolve` | Tick one off |
+| `POST` | `/api/admin/feedback/update` | Set a status or add a triage note |
 
-Admin routes take `Authorization: Bearer <ADMIN_TOKEN>`, compared in constant time. A shared token
+Admin routes live under `/api` like everything else the service owns — the site keeps the
+`/admin` page that calls them. They take `Authorization: Bearer <ADMIN_TOKEN>`, compared in constant time. A shared token
 rather than accounts, because there is one administrator and a login system for one person is a
 login system whose password reset flow nobody ever tests.
 

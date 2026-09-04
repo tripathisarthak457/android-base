@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Configurator } from "../components/configurator";
+import { Creator } from "../components/creator";
 import { BetaBadge, FeedbackButton, type ReportContext } from "../components/feedback";
 import { Hero } from "../components/hero";
 import { Included } from "../components/included";
@@ -74,6 +75,7 @@ export default function Home() {
       </div>
 
       <Faq />
+      <Creator />
       <Footer />
       <FeedbackButton context={reportContext} />
     </main>
@@ -194,6 +196,14 @@ function Footer() {
           MIT licensed. Built because setting this up by hand every month stopped being funny.
         </p>
         <div className="flex gap-5 text-sm">
+          <a
+            href="https://github.com/tripathisarthak457"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-ink-300 transition-colors hover:text-ink-100"
+          >
+            @tripathisarthak457
+          </a>
           <a
             href={REPO}
             target="_blank"
