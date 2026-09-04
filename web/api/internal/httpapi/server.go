@@ -371,6 +371,12 @@ func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) handleFeedbackList(w http.ResponseWriter, r *http.Request) {
 	status := r.URL.Query().Get("status")
+	// "all" is the word the portal's own filter uses for "no filter", so it is accepted here
+	// rather than answered with "Unknown status." by an endpoint that already means that when
+	// the parameter is absent.
+	if status == "all" {
+		status = ""
+	}
 	if status != "" && status != "new" && status != "triaged" && status != "fixed" && status != "wontfix" {
 		writeError(w, http.StatusBadRequest, "Unknown status.")
 		return
