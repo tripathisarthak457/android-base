@@ -9,6 +9,7 @@ import {
   generateProject,
   track,
 } from "../lib/api";
+import type { ReportContext } from "./feedback";
 import { Badge, Button, Card, Field, Spinner, TextInput, Toggle, press } from "./primitives";
 
 type Step = "identity" | "features" | "look" | "build" | "review";
@@ -78,7 +79,13 @@ function pascal(appName: string): string {
     .join("");
 }
 
-export function Configurator({ catalogue }: { catalogue: Catalogue }) {
+export function Configurator({
+  catalogue,
+  onContextChange,
+}: {
+  catalogue: Catalogue;
+  onContextChange?: (context: ReportContext) => void;
+}) {
   const [step, setStep] = useState<Step>("identity");
   const [appName, setAppName] = useState("My App");
   const [packageName, setPackageName] = useState("com.example.myapp");
@@ -158,6 +165,22 @@ export function Configurator({ catalogue }: { catalogue: Catalogue }) {
     setPreset(key);
     setFeatures(new Set(chosen.features));
   }
+
+  // Published upward so a bug report can attach it without the reporter retyping any of it.
+  useEffect(() => {
+    onContextChange?.({
+      appName,
+      packageName,
+      features: [...features],
+      preset,
+      minSdk,
+      motionStyle,
+      fontName,
+      accentColour: accent,
+    });
+  }, [
+    onContextChange, appName, packageName, features, preset, minSdk, motionStyle, fontName, accent,
+  ]);
 
   const hasNetwork = features.has("network");
   const hasDeeplink = features.has("deeplink");

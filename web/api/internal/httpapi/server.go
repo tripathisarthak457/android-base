@@ -81,6 +81,7 @@ func (s *Server) Routes() http.Handler {
 	get("/api/options", "options", s.handleOptions)
 	post("/api/generate", "generate", s.rateLimit(s.handleGenerate))
 	post("/api/track", "track", s.handleTrack)
+	post("/api/feedback", "feedback", s.rateLimit(s.handleFeedback))
 
 	if s.store != nil {
 		get("/admin/overview", "admin.overview", s.requireAdmin(s.handleOverview))
@@ -89,7 +90,9 @@ func (s *Server) Routes() http.Handler {
 		get("/admin/errors", "admin.errors", s.requireAdmin(s.handleErrors))
 		get("/admin/generations", "admin.generations", s.requireAdmin(s.handleRecent))
 		get("/admin/health", "admin.health", s.requireAdmin(s.handleRouteHealth))
+		get("/admin/feedback", "admin.feedback", s.requireAdmin(s.handleFeedbackList))
 		post("/admin/errors/resolve", "admin.resolve", s.requireAdmin(s.handleResolveError))
+		post("/admin/feedback/update", "admin.feedbackUpdate", s.requireAdmin(s.handleFeedbackUpdate))
 	}
 
 	return mux
@@ -264,7 +267,117 @@ func (s *Server) record(
 	})
 }
 
+// A closed set, checked here rather than trusted: these values are rendered into the admin
+// portal and grouped in SQL, and a free-text `kind` would turn both into a mess within a week.
+var (
+	feedbackKinds      = map[string]bool{"bug": true, "idea": true, "praise": true, "question": true}
+	feedbackSeverities = map[string]bool{"blocks": true, "annoying": true, "cosmetic": true, "": true}
+	feedbackAreas      = map[string]bool{
+		"website": true, "generated-project": true, "cli": true, "docs": true, "": true,
+	}
+)
+
+// handleFeedback takes a bug report or a suggestion.
+//
+// Rate-limited on the same counter as generation, because it is the other public write path.
+// Nothing here is optional to validate: it is stored, rendered in the portal, and read by a
+// person, and every one of those is a place unchecked input causes a problem.
+func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
+	if s.store == nil {
+		// Honest rather than a silent 204: somebody took the trouble to write this, and telling
+		// them it was received when there is nowhere to put it is worse than saying so.
+		writeError(w, http.StatusServiceUnavailable,
+			"Reports are not being recorded on this deployment. Please open an issue on GitHub instead.")
+		return
+	}
+
+	body, err := io.ReadAll(http.MaxBytesReader(w, r.Body, 64<<10))
+	if err != nil {
+		writeError(w, http.StatusRequestEntityTooLarge, "That report was too long.")
+		return
+	}
+
+	var payload store.Feedback
+	if err := json.Unmarshal(body, &payload); err != nil {
+		writeError(w, http.StatusBadRequest, "That request was not valid JSON.")
+		return
+	}
+
+	payload.Title = strings.TrimSpace(payload.Title)
+	payload.Body = strings.TrimSpace(payload.Body)
+
+	switch {
+	case !feedbackKinds[payload.Kind]:
+		writeError(w, http.StatusBadRequest, "Pick what kind of report this is.")
+		return
+	case !feedbackSeverities[payload.Severity]:
+		writeError(w, http.StatusBadRequest, "That is not a severity.")
+		return
+	case !feedbackAreas[payload.Area]:
+		writeError(w, http.StatusBadRequest, "That is not an area.")
+		return
+	case len(payload.Title) < 4:
+		writeError(w, http.StatusBadRequest, "The summary needs to be a few words longer.")
+		return
+	case len(payload.Body) < 10:
+		writeError(w, http.StatusBadRequest, "Please say a little more about what happened.")
+		return
+	}
+
+	payload.VisitorHash = s.store.VisitorHash(clientIP(r))
+	payload.UserAgent = r.UserAgent()
+
+	id, err := s.store.SaveFeedback(r.Context(), payload)
+	if err != nil {
+		s.log.Error("saving feedback", "error", err)
+		go s.store.RecordError(s.background, "api", err.Error(), "", "/api/feedback")
+		writeError(w, http.StatusInternalServerError,
+			"That could not be saved. Please open an issue on GitHub instead — the report is worth "+
+				"keeping and this is not the place it is going to survive.")
+		return
+	}
+
+	writeJSON(w, http.StatusCreated, map[string]any{"id": id, "ok": true})
+}
+
 // ── Admin ────────────────────────────────────────────────────────────────────
+
+func (s *Server) handleFeedbackList(w http.ResponseWriter, r *http.Request) {
+	status := r.URL.Query().Get("status")
+	if status != "" && status != "new" && status != "triaged" && status != "fixed" && status != "wontfix" {
+		writeError(w, http.StatusBadRequest, "Unknown status.")
+		return
+	}
+
+	list, err := s.store.FeedbackList(r.Context(), status, intParam(r, "limit", 100, 1, 500))
+	if err != nil {
+		s.fail(w, err)
+		return
+	}
+	counts, err := s.store.FeedbackCounts(r.Context())
+	if err != nil {
+		s.fail(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"items": list, "counts": counts})
+}
+
+func (s *Server) handleFeedbackUpdate(w http.ResponseWriter, r *http.Request) {
+	var payload struct {
+		ID     int64  `json:"id"`
+		Status string `json:"status"`
+		Notes  string `json:"notes"`
+	}
+	if err := json.NewDecoder(io.LimitReader(r.Body, 8<<10)).Decode(&payload); err != nil {
+		writeError(w, http.StatusBadRequest, "That request was not valid JSON.")
+		return
+	}
+	if err := s.store.UpdateFeedback(r.Context(), payload.ID, payload.Status, payload.Notes); err != nil {
+		writeError(w, http.StatusNotFound, err.Error())
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
+}
 
 func (s *Server) handleOverview(w http.ResponseWriter, r *http.Request) {
 	overview, err := s.store.Overview(r.Context())

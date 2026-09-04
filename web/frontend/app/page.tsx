@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Configurator } from "../components/configurator";
+import { BetaBadge, FeedbackButton, type ReportContext } from "../components/feedback";
 import { Hero } from "../components/hero";
 import { Included } from "../components/included";
 import { Button, Card, Spinner } from "../components/primitives";
@@ -12,7 +13,11 @@ const REPO = "https://github.com/tripathisarthak457/android-base";
 export default function Home() {
   const [catalogue, setCatalogue] = useState<Catalogue | null>(null);
   const [failure, setFailure] = useState<string | null>(null);
+  const [reportContext, setReportContext] = useState<ReportContext>({});
   const configureRef = useRef<HTMLDivElement>(null);
+
+  // Stable, so publishing it from the configurator's effect does not loop.
+  const onContextChange = useCallback((next: ReportContext) => setReportContext(next), []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -43,7 +48,7 @@ export default function Home() {
 
       <div ref={configureRef}>
         {catalogue ? (
-          <Configurator catalogue={catalogue} />
+          <Configurator catalogue={catalogue} onContextChange={onContextChange} />
         ) : (
           <section className="mx-auto max-w-6xl px-6 py-20">
             <Card className="p-10 text-center">
@@ -70,6 +75,7 @@ export default function Home() {
 
       <Faq />
       <Footer />
+      <FeedbackButton context={reportContext} />
     </main>
   );
 }
@@ -83,6 +89,7 @@ function Nav() {
             A
           </span>
           <span className="font-semibold text-ink-100">Android base</span>
+          <BetaBadge />
         </a>
         <div className="flex items-center gap-1">
           <a

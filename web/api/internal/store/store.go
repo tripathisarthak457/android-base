@@ -483,3 +483,149 @@ func truncate(s string, limit int) string {
 	}
 	return s[:limit] + "…"
 }
+
+// ── Feedback ─────────────────────────────────────────────────────────────────
+
+// Feedback is a bug report or a suggestion from a person, as opposed to `errors`, which is what
+// the software noticed about itself. The two are kept apart because they are triaged differently:
+// an error has a fingerprint and an occurrence count, a report has a description and a reply
+// address.
+type Feedback struct {
+	ID           int64     `json:"id"`
+	CreatedAt    time.Time `json:"createdAt"`
+	Kind         string    `json:"kind"`
+	Severity     string    `json:"severity"`
+	Area         string    `json:"area"`
+	Title        string    `json:"title"`
+	Body         string    `json:"body"`
+	Steps        string    `json:"steps"`
+	Expected     string    `json:"expected"`
+	Actual       string    `json:"actual"`
+	AppName      string    `json:"appName"`
+	PackageName  string    `json:"packageName"`
+	Features     []string  `json:"features"`
+	Preset       string    `json:"preset"`
+	MinSDK       int       `json:"minSdk"`
+	MotionStyle  string    `json:"motionStyle"`
+	FontName     string    `json:"fontName"`
+	AccentColour string    `json:"accentColour"`
+	Contact      string    `json:"contact"`
+	UserAgent    string    `json:"userAgent"`
+	PageURL      string    `json:"pageUrl"`
+	AppVersion   string    `json:"appVersion"`
+	Status       string    `json:"status"`
+	Notes        string    `json:"notes"`
+	VisitorHash  string    `json:"-"`
+}
+
+// SaveFeedback returns an error rather than swallowing it, unlike the other writes here.
+//
+// The rest are telemetry: losing one costs a row in a chart. This is somebody taking the trouble
+// to report a bug, and telling them it was received when it was not is worse than telling them it
+// failed.
+func (s *Store) SaveFeedback(ctx context.Context, f Feedback) (int64, error) {
+	const query = `
+		INSERT INTO feedback (
+			visitor_hash, kind, severity, area, title, body, steps, expected, actual,
+			app_name, package_name, features, preset, min_sdk, motion_style, font_name,
+			accent_colour, contact, user_agent, page_url, app_version
+		) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
+		RETURNING id`
+
+	var id int64
+	err := s.pool.QueryRow(ctx, query,
+		f.VisitorHash, f.Kind, nullable(f.Severity), nullable(f.Area),
+		truncate(f.Title, 200), truncate(f.Body, 8000),
+		nullable(truncate(f.Steps, 4000)), nullable(truncate(f.Expected, 2000)),
+		nullable(truncate(f.Actual, 2000)),
+		nullable(f.AppName), nullable(f.PackageName), f.Features, nullable(f.Preset),
+		nullableInt(f.MinSDK), nullable(f.MotionStyle), nullable(f.FontName),
+		nullable(f.AccentColour), nullable(truncate(f.Contact, 200)),
+		nullable(truncate(f.UserAgent, 500)), nullable(truncate(f.PageURL, 500)),
+		nullable(f.AppVersion),
+	).Scan(&id)
+	if err != nil {
+		return 0, fmt.Errorf("saving feedback: %w", err)
+	}
+	return id, nil
+}
+
+func (s *Store) FeedbackList(ctx context.Context, status string, limit int) ([]Feedback, error) {
+	const query = `
+		SELECT id, created_at, kind, COALESCE(severity,''), COALESCE(area,''), title, body,
+		       COALESCE(steps,''), COALESCE(expected,''), COALESCE(actual,''),
+		       COALESCE(app_name,''), COALESCE(package_name,''), features, COALESCE(preset,''),
+		       COALESCE(min_sdk,0), COALESCE(motion_style,''), COALESCE(font_name,''),
+		       COALESCE(accent_colour,''), COALESCE(contact,''), COALESCE(user_agent,''),
+		       COALESCE(page_url,''), COALESCE(app_version,''), status, COALESCE(notes,'')
+		FROM feedback
+		WHERE ($1 = '' OR status = $1)
+		ORDER BY
+			-- Blocking bugs first however old, then everything else newest first. Sorting purely
+			-- by date buries the one report that matters under a week of suggestions.
+			CASE WHEN status = 'new' AND severity = 'blocks' THEN 0 ELSE 1 END,
+			created_at DESC
+		LIMIT $2`
+
+	rows, err := s.pool.Query(ctx, query, status, limit)
+	if err != nil {
+		return nil, fmt.Errorf("reading feedback: %w", err)
+	}
+	defer rows.Close()
+
+	var all []Feedback
+	for rows.Next() {
+		var f Feedback
+		if err := rows.Scan(
+			&f.ID, &f.CreatedAt, &f.Kind, &f.Severity, &f.Area, &f.Title, &f.Body,
+			&f.Steps, &f.Expected, &f.Actual, &f.AppName, &f.PackageName, &f.Features, &f.Preset,
+			&f.MinSDK, &f.MotionStyle, &f.FontName, &f.AccentColour, &f.Contact, &f.UserAgent,
+			&f.PageURL, &f.AppVersion, &f.Status, &f.Notes,
+		); err != nil {
+			return nil, err
+		}
+		all = append(all, f)
+	}
+	return all, rows.Err()
+}
+
+type FeedbackCounts struct {
+	New       int64 `json:"new"`
+	Blocking  int64 `json:"blocking"`
+	Total     int64 `json:"total"`
+	Last7Days int64 `json:"last7Days"`
+}
+
+func (s *Store) FeedbackCounts(ctx context.Context) (FeedbackCounts, error) {
+	const query = `
+		SELECT
+			count(*) FILTER (WHERE status = 'new'),
+			count(*) FILTER (WHERE status = 'new' AND severity = 'blocks'),
+			count(*),
+			count(*) FILTER (WHERE created_at >= now() - interval '7 days')
+		FROM feedback`
+
+	var c FeedbackCounts
+	if err := s.pool.QueryRow(ctx, query).Scan(&c.New, &c.Blocking, &c.Total, &c.Last7Days); err != nil {
+		return c, fmt.Errorf("counting feedback: %w", err)
+	}
+	return c, nil
+}
+
+func (s *Store) UpdateFeedback(ctx context.Context, id int64, status, notes string) error {
+	const query = `
+		UPDATE feedback
+		SET status = COALESCE(NULLIF($2,''), status),
+		    notes  = COALESCE(NULLIF($3,''), notes),
+		    updated_at = now()
+		WHERE id = $1`
+
+	tag, err := s.pool.Exec(ctx, query, id, status, truncate(notes, 4000))
+	if err != nil {
+		return fmt.Errorf("updating feedback: %w", err)
+	}
+	if tag.RowsAffected() == 0 {
+		return errors.New("no feedback with that id")
+	}
+	return nil
+}

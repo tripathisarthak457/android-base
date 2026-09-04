@@ -135,13 +135,16 @@ than at the first request that needs them.
 | `GET` | `/api/options` | The generator's own catalogue. Cached at boot |
 | `POST` | `/api/generate` | Spec in, zip out. Rate limited |
 | `POST` | `/api/track` | One funnel step |
+| `POST` | `/api/feedback` | A bug report or suggestion. Rate limited |
 | `GET` | `/admin/overview` | Headline numbers and the funnel |
 | `GET` | `/admin/daily?days=30` | Generations, failures and visitors per day |
 | `GET` | `/admin/features` | Which options actually get picked |
 | `GET` | `/admin/errors?resolved=false` | Grouped by fingerprint |
 | `GET` | `/admin/generations?limit=50` | The most recent projects |
 | `GET` | `/admin/health` | Per-route latency and 5xx rate |
+| `GET` | `/admin/feedback?status=new` | Reports from people, newest first, blocking bugs pinned |
 | `POST` | `/admin/errors/resolve` | Tick one off |
+| `POST` | `/admin/feedback/update` | Set a status or add a triage note |
 
 Admin routes take `Authorization: Bearer <ADMIN_TOKEN>`, compared in constant time. A shared token
 rather than accounts, because there is one administrator and a login system for one person is a
@@ -159,8 +162,13 @@ curl -X POST https://api.yourapp.duckdns.org/api/generate \
 ## What is recorded, and what is not
 
 Recorded: the app name, package, feature set, SDK levels and timings of each generation; which
-funnel step each visitor reached, once per day; the duration and status of every request; and any
-error the generator produced, grouped so one bug is one row.
+funnel step each visitor reached, once per day; the duration and status of every request; any
+error the generator produced, grouped so one bug is one row; and any bug report somebody sends,
+along with the configuration they had on screen and their browser.
+
+A report attaches that configuration only when the reporter leaves the switch on — the form shows
+exactly what is going, field by field, before it is sent. Nothing in it identifies them, and the
+email address is optional and used for one thing: asking a follow-up question.
 
 Not recorded: IP addresses. Visitor counts use a salted hash truncated to sixteen bytes, and
 rotating `IP_SALT` forgets who visited without losing the numbers. No cookies, no third-party

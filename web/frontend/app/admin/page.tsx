@@ -14,6 +14,11 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
+import {
+  FeedbackPanel,
+  type Feedback,
+  type FeedbackCounts,
+} from "../../components/feedback-panel";
 import { Badge, Button, Card, Field, Spinner, TextInput } from "../../components/primitives";
 import { API_BASE } from "../../lib/api";
 
@@ -77,6 +82,8 @@ export default function Admin() {
   const [errors, setErrors] = useState<ErrorGroup[]>([]);
   const [recent, setRecent] = useState<Recent[]>([]);
   const [health, setHealth] = useState<RouteHealth[]>([]);
+  const [feedback, setFeedback] = useState<Feedback[]>([]);
+  const [feedbackCounts, setFeedbackCounts] = useState<FeedbackCounts | null>(null);
   const [showResolved, setShowResolved] = useState(false);
 
   const load = useCallback(
@@ -93,6 +100,7 @@ export default function Admin() {
           `/admin/errors?resolved=${includeResolved}`,
           "/admin/generations?limit=40",
           "/admin/health",
+          "/admin/feedback?limit=100",
         ];
         const responses = await Promise.all(
           paths.map((path) => fetch(`${API_BASE}${path}`, { headers })),
@@ -104,13 +112,17 @@ export default function Admin() {
         const bad = responses.find((response) => !response.ok);
         if (bad) throw new Error(`The API returned ${bad.status}.`);
 
-        const [o, d, f, e, r, h] = await Promise.all(responses.map((response) => response.json()));
+        const [o, d, f, e, r, h, fb] = await Promise.all(
+          responses.map((response) => response.json()),
+        );
         setOverview(o);
         setDaily(d ?? []);
         setFeatures(f ?? []);
         setErrors(e ?? []);
         setRecent(r ?? []);
         setHealth(h ?? []);
+        setFeedback(fb?.items ?? []);
+        setFeedbackCounts(fb?.counts ?? null);
         setAuthed(true);
         sessionStorage.setItem(TOKEN_KEY, bearer);
       } catch (error) {
@@ -203,7 +215,7 @@ export default function Admin() {
         </div>
       </header>
 
-      {overview && <Headline overview={overview} />}
+      {overview && <Headline overview={overview} counts={feedbackCounts} />}
       {overview && <Funnel funnel={overview.funnel} />}
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
@@ -212,6 +224,19 @@ export default function Admin() {
         </div>
         <FeatureBars features={features} />
       </div>
+
+      <FeedbackPanel
+        items={feedback}
+        counts={feedbackCounts}
+        onUpdate={async (id, status, notes) => {
+          await fetch(`${API_BASE}/admin/feedback/update`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ id, status, notes }),
+          });
+          void load(token, showResolved);
+        }}
+      />
 
       <Errors
         errors={errors}
@@ -238,7 +263,13 @@ export default function Admin() {
   );
 }
 
-function Headline({ overview }: { overview: Overview }) {
+function Headline({
+  overview,
+  counts,
+}: {
+  overview: Overview;
+  counts: FeedbackCounts | null;
+}) {
   const cards = [
     { label: "Projects generated", value: overview.generationsTotal.toLocaleString(), sub: `${overview.generationsToday} today` },
     { label: "Unique visitors", value: overview.uniqueVisitors30Days.toLocaleString(), sub: `${overview.uniqueVisitorsToday} today` },
@@ -255,6 +286,12 @@ function Headline({ overview }: { overview: Overview }) {
       value: overview.openErrors.toString(),
       sub: overview.openErrors === 0 ? "nothing broken" : "needs a look",
       tone: overview.openErrors > 0 ? ("bad" as const) : ("good" as const),
+    },
+    {
+      label: "New reports",
+      value: (counts?.new ?? 0).toString(),
+      sub: counts?.blocking ? `${counts.blocking} blocking` : `${counts?.total ?? 0} all time`,
+      tone: counts?.blocking ? ("bad" as const) : undefined,
     },
   ];
 

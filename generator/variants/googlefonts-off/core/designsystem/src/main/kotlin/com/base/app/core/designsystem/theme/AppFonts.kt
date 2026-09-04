@@ -46,6 +46,14 @@ object AppFontNames {
 /** The platform families. */
 val PlatformFonts = AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
 
+/**
+ * The signature the theme calls, kept identical to the downloadable-fonts build.
+ *
+ * The names are ignored here because there is no provider to ask. Keeping the parameters rather
+ * than removing them means `AppTheme` is the same file in both builds and switching a project
+ * from platform fonts to downloaded ones is adding a dependency, not editing call sites.
+ */
+@Suppress("UnusedParameter")
 @Composable
 fun rememberAppFonts(
     fontName: String = AppFontNames.Sans,

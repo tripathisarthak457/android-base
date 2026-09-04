@@ -24,7 +24,10 @@ export function Hero({ onStart }: { onStart: () => void }) {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-3xl"
         >
-          <Badge tone="accent">Open source · MIT</Badge>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge tone="amber">Beta</Badge>
+            <Badge tone="accent">Open source · MIT</Badge>
+          </div>
 
           <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-ink-100 md:text-6xl">
             A new Android project,
@@ -67,6 +70,23 @@ export function Hero({ onStart }: { onStart: () => void }) {
             No sign-up, nothing stored, no email. The zip is built when you click and streamed
             straight back.
           </p>
+
+          {/*
+            Stated plainly rather than buried. Everything here is tested — the repository builds
+            both extremes of the generator on every push — but "tested" and "used by a lot of
+            people" are different things, and only the second one finds the last few bugs.
+          */}
+          <div className="mt-6 flex max-w-2xl items-start gap-3 rounded-lg border border-amber/25 bg-amber/[0.06] p-4">
+            <span className="mt-0.5 text-amber" aria-hidden>
+              ⚠
+            </span>
+            <p className="text-sm leading-relaxed text-ink-300">
+              <span className="font-medium text-ink-100">This is beta.</span> Every combination is
+              compiled, tested and linted in CI before it ships, but not many people have used it
+              yet. If something breaks, the button in the corner sends a report straight to whoever
+              can fix it — and it attaches what you configured, so you do not have to describe it.
+            </p>
+          </div>
         </motion.div>
 
         <motion.div
