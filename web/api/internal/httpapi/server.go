@@ -39,6 +39,22 @@ type Server struct {
 	background context.Context
 }
 
+// recordingContext bounds one analytics write.
+//
+// Detached from the request, because by the time a download has finished streaming the request's
+// own context is already cancelled and losing the timing of exactly the slow requests would be the
+// opposite of useful. Bounded, because an analytics insert must never be the reason a handler
+// hangs — five seconds is a hundred times what one of these takes.
+//
+// Called synchronously rather than in a goroutine, which it used to be. A serverless instance is
+// frozen the moment the response completes, so a detached goroutine is simply never scheduled and
+// the row is silently lost — which is exactly what happened: requests arrived, generations did
+// not. The insert is a single statement on an already-open pool; waiting for it costs a few
+// milliseconds after the last byte is already on the wire.
+func (s *Server) recordingContext() (context.Context, context.CancelFunc) {
+	return context.WithTimeout(s.background, 5*time.Second)
+}
+
 func New(
 	ctx context.Context,
 	cfg config.Config,
@@ -170,7 +186,9 @@ func (s *Server) handleGenerate(w http.ResponseWriter, r *http.Request) {
 		s.log.Error("generation failed", "error", err, "package", request.PackageName)
 		s.record(request, visitor, r, false, 0, elapsed, err.Error())
 		if s.store != nil {
-			go s.store.RecordError(s.background, "generation", err.Error(), "", "/api/generate")
+			ctx, cancel := s.recordingContext()
+			s.store.RecordError(ctx, "generation", err.Error(), "", "/api/generate")
+			cancel()
 		}
 		writeError(w, http.StatusInternalServerError,
 			"The generator failed. This has been logged; the CLI in the repository does the same "+
@@ -205,7 +223,9 @@ func (s *Server) handleGenerate(w http.ResponseWriter, r *http.Request) {
 
 	s.record(request, visitor, r, true, result.ZipBytes, elapsed, "")
 	if s.store != nil {
-		go s.store.RecordVisit(s.background, visitor, "generated")
+		ctx, cancel := s.recordingContext()
+		s.store.RecordVisit(ctx, visitor, "generated")
+		cancel()
 	}
 }
 
@@ -250,7 +270,9 @@ func (s *Server) record(
 	if s.store == nil {
 		return
 	}
-	go s.store.RecordGeneration(s.background, store.Generation{
+	ctx, cancel := s.recordingContext()
+	defer cancel()
+	s.store.RecordGeneration(ctx, store.Generation{
 		VisitorHash:    visitor,
 		AppName:        request.AppName,
 		PackageName:    request.PackageName,
@@ -333,7 +355,9 @@ func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
 	id, err := s.store.SaveFeedback(r.Context(), payload)
 	if err != nil {
 		s.log.Error("saving feedback", "error", err)
-		go s.store.RecordError(s.background, "api", err.Error(), "", "/api/feedback")
+		ctx, cancel := s.recordingContext()
+		s.store.RecordError(ctx, "api", err.Error(), "", "/api/feedback")
+		cancel()
 		writeError(w, http.StatusInternalServerError,
 			"That could not be saved. Please open an issue on GitHub instead — the report is worth "+
 				"keeping and this is not the place it is going to survive.")
@@ -456,7 +480,9 @@ func (s *Server) handleResolveError(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) fail(w http.ResponseWriter, err error) {
 	s.log.Error("admin query failed", "error", err)
-	go s.store.RecordError(s.background, "api", err.Error(), "", "/admin")
+	ctx, cancel := s.recordingContext()
+	s.store.RecordError(ctx, "api", err.Error(), "", "/admin")
+	cancel()
 	writeError(w, http.StatusInternalServerError, "Could not read the data.")
 }
 

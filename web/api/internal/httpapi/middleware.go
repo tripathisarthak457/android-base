@@ -56,10 +56,9 @@ func (s *Server) observe(route string, next http.HandlerFunc) http.HandlerFunc {
 			"ms", duration.Milliseconds(), "bytes", rec.bytes,
 		)
 		if s.store != nil {
-			// Detached context: the request's is already cancelled by the time a download
-			// finishes streaming, and losing the timing of exactly the slow requests would be
-			// the opposite of useful.
-			go s.store.RecordRequest(s.background, route, r.Method, rec.status, duration, rec.bytes)
+			ctx, cancel := s.recordingContext()
+			s.store.RecordRequest(ctx, route, r.Method, rec.status, duration, rec.bytes)
+			cancel()
 		}
 	}
 }
