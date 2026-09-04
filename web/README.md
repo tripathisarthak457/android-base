@@ -155,7 +155,7 @@ rather than accounts, because there is one administrator and a login system for 
 login system whose password reset flow nobody ever tests.
 
 ```bash
-curl -X POST https://api.yourapp.duckdns.org/api/generate \
+curl -X POST https://android-base.vercel.app/api/generate \
   -H 'Content-Type: application/json' \
   -d '{"app_name":"My App","package_name":"com.acme.myapp","features":["network","catalog"]}' \
   -o MyApp.zip
