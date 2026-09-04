@@ -48,9 +48,11 @@ web/api/androidgen-api
 web/api/server
 *.exe
 
-# Agent tooling that installs itself into the working directory. Nothing to do with the project.
+# Agent tooling that installs itself into the working directory. The Vercel marketplace drops
+# vendor documentation here when an integration is added; none of it is part of this project.
 skills-lock.json
-.claude/skills/
+.claude/
+.agents/
 
 # Editors and OS
 .vscode/
