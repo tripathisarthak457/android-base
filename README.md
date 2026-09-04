@@ -1,5 +1,11 @@
 # Android project generator
 
+> **Beta.** Every feature combination is compiled, tested and linted in CI before it ships, and
+> the checks below are the ones I run myself — but not many people have used this yet, and that is
+> the part that finds the last few bugs.
+> [Open an issue](https://github.com/tripathisarthak457/android-base/issues) if something breaks;
+> the browser version has a report button that attaches your configuration for you.
+
 This repository is two things.
 
 `template/` is a working Android app: multi-module, Jetpack Compose, MVI, Hilt, Ktor, four build

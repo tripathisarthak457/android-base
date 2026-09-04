@@ -15,7 +15,13 @@ from .spec import ProjectSpec
 
 _TEMPLATE = """# __APP_NAME__
 
-Generated from the Android base template.
+Generated from the [Android base template](https://github.com/tripathisarthak457/android-base).
+
+> **The generator is in beta.** This project compiles, tests and lints clean — every feature
+> combination is built in CI before it ships — but not many people have used it yet. If you hit
+> something, a report at
+> [the issue tracker](https://github.com/tripathisarthak457/android-base/issues) is genuinely
+> useful, and the generator's own README explains what to include.
 
 ## Run it
 
