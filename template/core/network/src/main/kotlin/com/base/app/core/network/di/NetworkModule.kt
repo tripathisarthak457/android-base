@@ -1,21 +1,26 @@
 package com.base.app.core.network.di
 
 import android.content.Context
-import androidx.room.Room
-import com.base.app.core.common.session.SessionScopedStore
-import com.base.app.core.network.CachedResponseDao
 import com.base.app.core.network.KtorNetworkClient
 import com.base.app.core.network.auth.KtorTokenRefresher
 import com.base.app.core.network.auth.TokenRefresher
 import com.base.app.core.network.NetworkClient
-import com.base.app.core.network.NetworkDatabase
 import com.base.app.core.network.PassthroughUnwrapper
+import com.base.app.core.network.ResponseUnwrapper
+// <opt:room>
+// Every one of these lives in ResponseCache.kt, which the room feature owns and which is deleted
+// with it. Left outside the marker they are unresolved references in a project that asked for
+// networking without offline support.
+import androidx.room.Room
+import com.base.app.core.common.session.SessionScopedStore
+import com.base.app.core.network.CachedResponseDao
+import com.base.app.core.network.NetworkDatabase
 import com.base.app.core.network.QueuedRequestDao
 import com.base.app.core.network.RequestQueue
 import com.base.app.core.network.ResponseCache
-import com.base.app.core.network.ResponseUnwrapper
 import com.base.app.core.network.RoomRequestQueue
 import com.base.app.core.network.RoomResponseCache
+// </opt:room>
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

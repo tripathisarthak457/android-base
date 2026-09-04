@@ -49,6 +49,17 @@ subprojects {
         source.setFrom("src/main/kotlin", "src/test/kotlin", "src/androidTest/kotlin")
     }
 
+    // Stated rather than inherited. The daemon runs on 17 (see gradle-daemon-jvm.properties), so
+    // this agrees with it — but detekt takes its target from the running JVM by default, and a
+    // developer who overrides the daemon JVM would otherwise get a detekt failure about a
+    // --jvm-target they never chose.
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+    tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
     dependencies {
         add("detektPlugins", rootProject.libs.detekt.formatting)
     }
