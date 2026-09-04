@@ -70,7 +70,14 @@ def main(argv: list[str]) -> int:
         "font_name", "mono_font_name", "accent_colour", "motion_style", "haptics_enabled",
     }
     unknown = sorted(set(payload) - allowed)
-    fields = {key: value for key, value in payload.items() if key in allowed}
+
+    # `null` is dropped along with the unknown keys, so that omitting an optional field and
+    # sending it as null behave the same. They do not otherwise: a JSON encoder that does not
+    # skip empty values — Go's, without `omitempty` — turns an unset list into `null`, and the
+    # dataclass would take it happily and fail several frames later on "NoneType is not iterable".
+    fields = {
+        key: value for key, value in payload.items() if key in allowed and value is not None
+    }
 
     for key in ("features", "feature_modules"):
         if key in fields and isinstance(fields[key], list):
