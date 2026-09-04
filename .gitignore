@@ -48,6 +48,10 @@ web/api/androidgen-api
 web/api/server
 *.exe
 
+# Agent tooling that installs itself into the working directory. Nothing to do with the project.
+skills-lock.json
+.claude/skills/
+
 # Editors and OS
 .vscode/
 .DS_Store
