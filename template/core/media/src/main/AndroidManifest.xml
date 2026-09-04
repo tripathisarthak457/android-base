@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      Declared in this module rather than in the app's manifest, so a project that enables media
+      gets the provider automatically and one that does not has no unused provider at all.
+
+      The authority is derived from the application id, which is what keeps dev, staging and prod
+      installable side by side: two apps declaring the same provider authority cannot both be
+      installed, and the second install fails with INSTALL_FAILED_CONFLICTING_PROVIDER.
+    -->
+    <application>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/media_file_paths" />
+        </provider>
+    </application>
+
+</manifest>

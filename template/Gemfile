@@ -1,0 +1,13 @@
+# Fastlane, pinned through Bundler.
+#
+# `bundle exec fastlane` rather than `fastlane`: an unpinned global install means the version that
+# ran in CI last week is not the version on your laptop today, and the difference surfaces as a
+# release lane behaving differently on the one day it matters.
+#
+#     gem install bundler
+#     bundle install
+#     bundle exec fastlane android check
+
+source "https://rubygems.org"
+
+gem "fastlane", "~> 2.228"

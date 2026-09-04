@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The launcher icon below API 26, where adaptive icons do not exist.
+
+  Without it the app has no icon at all on Android 7.x — mipmap-anydpi-v26 matches nothing there,
+  and the failure is invisible on any modern device, so it ships. A layer-list over the same
+  vector keeps it to two small files rather than ten PNGs.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/launcher_background" />
+    <item android:drawable="@drawable/ic_catalog_foreground" />
+</layer-list>

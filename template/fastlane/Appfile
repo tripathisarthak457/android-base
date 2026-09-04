@@ -1,0 +1,15 @@
+# The Play Store identity these lanes act on.
+#
+# `json_key_file` is deliberately not set to a path. A service-account key that uploads to the
+# wrong application is the one mistake in this file that cannot be undone from a terminal, so it
+# has to be pointed at explicitly:
+#
+#     export SUPPLY_JSON_KEY=/absolute/path/play-service-account.json
+#     bundle exec fastlane internal
+#
+# Create the key in Play Console → Setup → API access, grant it Release manager on this app only,
+# and keep it out of the repository — .gitignore already excludes *.json at the root.
+
+package_name("com.base.app")
+
+json_key_file(ENV["SUPPLY_JSON_KEY"]) if ENV["SUPPLY_JSON_KEY"]

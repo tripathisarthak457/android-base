@@ -1,0 +1,57 @@
+name: Pull request
+
+# Everything a review should not have to check by hand. Nothing here needs a secret, so it also
+# runs on pull requests from forks — a workflow that silently skips those is a workflow that
+# stops catching anything the moment an outside contributor appears.
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  # A new push supersedes the run in progress. Without this, force-pushing to a busy branch
+  # queues five runs of which four are already answering a stale question.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          # Only the default branch writes the cache. A pull request that happens to run first
+          # would otherwise poison it for everyone else with its own dependency set.
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Static analysis
+        run: ./gradlew detekt --no-daemon
+
+      - name: Unit tests
+        run: ./gradlew testDevDebugUnitTest --no-daemon
+
+      - name: Assemble
+        run: ./gradlew :app:assembleDevDebug --no-daemon
+
+      - name: Upload test reports
+        # `always()`, because the reports are worth most precisely when the step above failed.
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            **/build/reports/tests/
+            **/build/reports/detekt/
+          retention-days: 7

@@ -1,0 +1,31 @@
+{
+  "app_name": "Acme Field",
+  "package_name": "com.acme.field",
+  "min_sdk": 26,
+  "target_sdk": 37,
+  "compile_sdk": 37,
+  "version_name": "1.0.0",
+  "version_code": 1,
+  "features": [
+    "network", "websocket", "room", "coil", "workmanager", "analytics",
+    "firebase", "analytics-firebase", "crashlytics", "push", "deeplink",
+    "catalog", "sample", "googlefonts", "staticanalysis", "leakcanary",
+    "baselineprofile", "ci"
+  ],
+  "feature_modules": ["orders", "profile"],
+  "keystores": [],
+  "api_base_urls": {
+    "dev": "https://jsonplaceholder.typicode.com/",
+    "staging": "https://staging.acme.example.com/api/",
+    "prod": "https://api.acme.example.com/api/",
+    "playstore": "https://api.acme.example.com/api/"
+  },
+  "web_socket_urls": {
+    "dev": "wss://dev.acme.example.com/ws",
+    "staging": "wss://staging.acme.example.com/ws",
+    "prod": "wss://api.acme.example.com/ws",
+    "playstore": "wss://api.acme.example.com/ws"
+  },
+  "deeplink_scheme": "acmefield",
+  "deeplink_host": "acmefield.example.com"
+}

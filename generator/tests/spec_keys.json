@@ -1,0 +1,26 @@
+{
+  "app_name": "Keyed App",
+  "package_name": "com.keyed.app",
+  "min_sdk": 26,
+  "target_sdk": 37,
+  "compile_sdk": 37,
+  "version_name": "1.0.0",
+  "version_code": 1,
+  "features": ["network", "room", "coil", "analytics", "deeplink", "catalog", "sample", "googlefonts", "staticanalysis", "leakcanary", "ci"],
+  "feature_modules": [],
+  "keystores": [
+    {"name": "dev", "alias": "keyed-dev", "store_password": "devpass123", "key_password": "devpass123", "common_name": "Keyed App (dev)", "organisation": "Acme", "country": "IN"},
+    {"name": "staging", "alias": "keyed-dev", "store_password": "devpass123", "key_password": "devpass123", "common_name": "Keyed App (dev)", "organisation": "Acme", "country": "IN"},
+    {"name": "prod", "alias": "keyed-prod", "store_password": "prodpass123", "key_password": "prodpass123", "common_name": "Keyed App (prod)", "organisation": "Acme", "country": "IN"},
+    {"name": "playstore", "alias": "keyed-upload", "store_password": "uploadpass123", "key_password": "uploadpass123", "common_name": "Keyed App (playstore)", "organisation": "Acme", "country": "IN"}
+  ],
+  "api_base_urls": {
+    "dev": "https://jsonplaceholder.typicode.com/",
+    "staging": "https://staging.keyed.example.com/api/",
+    "prod": "https://api.keyed.example.com/api/",
+    "playstore": "https://api.keyed.example.com/api/"
+  },
+  "web_socket_urls": {},
+  "deeplink_scheme": "keyedapp",
+  "deeplink_host": "keyed.example.com"
+}

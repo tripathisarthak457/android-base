@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Matches AppColors.LightColors.background. Shown during launch, before Compose draws. -->
+    <color name="window_background">#FFF7F8FA</color>
+    <color name="launcher_background">#FF2C6BED</color>
+</resources>

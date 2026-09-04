@@ -1,0 +1,110 @@
+# Detekt, tuned for a Compose + MVI codebase.
+#
+# Only the rules that disagree with how this project is deliberately written are touched;
+# everything else stays on the shipped defaults. A config that silences half the rule set is a
+# config that has stopped being a signal, so every exclusion below states its reason.
+#
+# `detekt-formatting` is ktlint running inside detekt — one tool, one report, one version.
+
+build:
+  maxIssues: 0
+
+complexity:
+  LongParameterList:
+    # A composable's parameter list is its API. Hoisting state and callbacks is the correct shape,
+    # not a smell: a component with colours, sizes, an icon slot and four callbacks is doing
+    # exactly what it should.
+    functionThreshold: 10
+    constructorThreshold: 10
+    ignoreAnnotated: ['Composable']
+  LongMethod:
+    threshold: 80
+    ignoreAnnotated: ['Composable', 'Preview']
+  CyclomaticComplexMethod:
+    # A component that renders label, placeholder, helper, error, counter and two icon slots has
+    # a branch per optional slot. That is the component doing its job in one place rather than
+    # pushing the branching out to every call site.
+    ignoreAnnotated: ['Composable']
+  TooManyFunctions:
+    thresholdInFiles: 30
+    thresholdInClasses: 25
+    # A namespace object collecting related builders — Validators, and whatever the project adds
+    # next to it — is the one shape where a long list of functions is the point rather than a
+    # symptom, and splitting it in two only moves the count.
+    thresholdInObjects: 20
+    ignoreAnnotatedFunctions: ['Composable']
+
+naming:
+  FunctionNaming:
+    # Composables are PascalCase by convention and by tooling expectation.
+    ignoreAnnotated: ['Composable']
+  MatchingDeclarationName:
+    # A file holding one screen's contract — State, Event and Effect — has no single top-level
+    # declaration to be named after, and splitting it into three files makes the contract harder
+    # to read rather than easier.
+    # A design-system component file holds the component and the small data types that only exist
+    # to configure it — BottomNavItem beside AppBottomBar. Splitting those into their own files
+    # scatters one component across three.
+    excludes: ['**/*Contract.kt', '**/Catalog*.kt', '**/designsystem/component/**']
+
+style:
+  MagicNumber:
+    # Design-system dimensions and animation constants are literals by nature; extracting 0.92f
+    # into a named constant used once makes the call site harder to read, not easier.
+    ignoreAnnotated: ['Composable', 'Preview']
+    # Rotations in degrees, a percentage, and a kilobyte. Naming these does not tell a reader
+    # anything the literal did not — `postRotate(QUARTER_TURN)` is strictly worse than
+    # `postRotate(90f)` — and every one of them is fixed by the unit, not by a policy.
+    ignoreNumbers: ['-1', '0', '1', '2', '90', '100', '180', '270', '1024']
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    excludes: ['**/designsystem/**', '**/catalog/**', '**/test/**', '**/androidTest/**']
+  MaxLineLength:
+    maxLineLength: 120
+    excludes: ['**/icon/AppIcons.kt']
+  ReturnCount:
+    max: 4
+  UnusedPrivateMember:
+    ignoreAnnotated: ['Preview']
+  ForbiddenComment:
+    active: true
+    comments:
+      - reason: 'Track it in the issue tracker, not in a comment nobody will find.'
+        value: 'FIXME:'
+      - reason: 'Leaving a stub in place is how a half-finished feature ships.'
+        value: 'STOPSHIP:'
+
+performance:
+  SpreadOperator:
+    # `context.getString(id, *args)` has no non-spread form. One array copy per string
+    # resolution is not worth restructuring the API for.
+    excludes: ['**/UiText.kt']
+
+exceptions:
+  TooGenericExceptionCaught:
+    # Three places catch broadly on purpose, and each says why in a comment: the repository
+    # boundary converting a throwable into AppResult.Failure, and the MVI event loop, which must
+    # not let one failed handler kill the loop and freeze the screen. CancellationException is
+    # re-thrown in every one of them.
+    excludes: ['**/data/**', '**/network/**', '**/AppResult.kt', '**/MviViewModel.kt']
+  SwallowedException:
+    active: true
+    excludes: ['**/data/**', '**/network/**', '**/AppResult.kt', '**/MviViewModel.kt']
+
+formatting:
+  ImportOrdering:
+    # Optional features are delimited by marker comments that sit among the imports, and ktlint
+    # cannot order an import list containing comments — it reports the file and offers no
+    # autocorrection. Off globally rather than suppressed on roughly every entry point.
+    active: false
+  ArgumentListWrapping:
+    # Icon path data is one argument per coordinate. Wrapping it one per line turns a 400-line
+    # file into several thousand and makes the shapes impossible to read.
+    excludes: ['**/icon/AppIcons.kt']
+  MaximumLineLength:
+    excludes: ['**/icon/AppIcons.kt']
+  Wrapping:
+    # Icon path data puts a whole sub-path on one line, separated by semicolons. That is what
+    # makes the shape readable; one statement per line turns a legible outline into 40 lines of
+    # coordinates.
+    excludes: ['**/icon/AppIcons.kt']

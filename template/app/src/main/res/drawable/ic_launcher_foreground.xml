@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A placeholder mark: the app's initial inside the adaptive-icon safe zone.
+
+  Drawn as a vector rather than shipped as five PNG densities, so the generated project has a
+  usable icon on day one and replacing it is a single file. Adaptive icons are 108x108 with only
+  the middle 72x72 guaranteed visible — every OEM crops the rest to its own shape — so nothing
+  meaningful goes outside roughly 24..84.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M39,34h9.6l9.9,26.4h0.4L68.4,34H78L62.4,74h-8.8L39,34z" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M40,82h28" />
+</vector>

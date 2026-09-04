@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/*
+ * The site's own palette, which is deliberately not the Android template's.
+ *
+ * A generator whose website looks exactly like the thing it generates makes it impossible to tell
+ * a screenshot of the product from a screenshot of the marketing. This is darker, higher
+ * contrast, and uses the accent only where something is interactive.
+ */
+@theme {
+  --color-ink-950: #070a10;
+  --color-ink-900: #0b0f17;
+  --color-ink-850: #10151f;
+  --color-ink-800: #151b27;
+  --color-ink-700: #1d2531;
+  --color-ink-600: #2a3441;
+  --color-ink-500: #3d4959;
+  --color-ink-400: #5d6b7d;
+  --color-ink-300: #8b98aa;
+  --color-ink-200: #b9c3d1;
+  --color-ink-100: #e6ebf2;
+
+  --color-accent: #5b8def;
+  --color-accent-bright: #7ba5f5;
+  --color-accent-dim: #1e2c4a;
+
+  --color-mint: #3dd4a0;
+  --color-amber: #e9a23b;
+  --color-rose: #f0666d;
+
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-ink-100);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The focus ring is the accent everywhere, so keyboard navigation reads as one system. */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/*
+ * Honour the OS setting. Every animation on this site is decoration; none of it carries meaning
+ * that is lost when it stops, which is the test for whether it is safe to turn off wholesale.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* A quieter scrollbar than the platform default, which on Windows is a bright grey slab. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink-900);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-600);
+  border-radius: 6px;
+  border: 2px solid var(--color-ink-900);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-500);
+}
+
+/* The grid behind the hero. One gradient and one repeating pattern rather than an image. */
+.grid-backdrop {
+  background-image:
+    linear-gradient(to right, rgba(91, 141, 239, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(91, 141, 239, 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 55% at 50% 0%, #000 55%, transparent 100%);
+}

@@ -1,0 +1,40 @@
+*.iml
+.gradle/
+.kotlin/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+.externalNativeBuild
+.cxx
+*.hprof
+
+# Signing material. Never commit either of these — keystore.properties.template documents the
+# shape, and the keys themselves belong in a password manager or a CI secret store.
+keystore.properties
+keys/
+*.jks
+*.keystore
+
+# Firebase configuration carries project ids and API keys tied to your account.
+google-services.json
+!app/src/*/google-services.json.template
+
+# Generated
+*.apk
+*.aab
+*.log
+
+# Fastlane.
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+*.gem
+.bundle/
+vendor/bundle/
+
+# Play Console service-account keys. Never commit one: it can publish to your listing.
+/*.json
+!/*.template.json

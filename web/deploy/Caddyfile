@@ -1,0 +1,43 @@
+# Caddy in front of the Go API.
+#
+# Caddy rather than nginx for one reason: it gets and renews the TLS certificate itself, with no
+# certbot cron job and no renewal that silently stops working in ninety days. Point the domain at
+# this box, start Caddy, and HTTPS is done.
+#
+# Replace the hostname below with yours. A free DuckDNS subdomain works exactly as well as a
+# bought domain here — Let's Encrypt issues for both.
+
+api.yourapp.duckdns.org {
+	# The API listens on loopback only, so the box has exactly one port open to the internet and
+	# it is this one.
+	reverse_proxy 127.0.0.1:8080 {
+		# The Go service reads this to rate-limit and to hash visitors. Without it every request
+		# looks like it came from Caddy, and the limit becomes global.
+		header_up X-Forwarded-For {remote_host}
+	}
+
+	encode zstd gzip
+
+	header {
+		# The zips are streamed, not embedded, so the API has no reason to be framed or sniffed.
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+
+	# A generation takes a few seconds and the download follows it on the same connection, so the
+	# default 30s would cut off a slow client mid-zip.
+	request_body {
+		max_size 1MB
+	}
+
+	log {
+		output file /var/log/caddy/api.log {
+			roll_size 20MB
+			roll_keep 5
+		}
+		format json
+	}
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BaseApp</string>
+
+    <!-- <opt:deeplink> -->
+    <!--
+      Kept as resources rather than hardcoded in the manifest so a flavour can override them:
+      dropping a strings.xml into src/dev/res gives the dev build its own host without a second
+      intent filter.
+    -->
+    <string name="deeplink_scheme" translatable="false">baseapp</string>
+    <string name="deeplink_host" translatable="false">baseapp.example.com</string>
+    <!-- </opt:deeplink> -->
+</resources>

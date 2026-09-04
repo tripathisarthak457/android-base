@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- INTERNET comes from :core:network and ACCESS_NETWORK_STATE from :core:common, each
+         declared by the module whose code needs it. Manifest merging brings them here. -->
+    <application
+        android:name=".BaseAppApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BaseApp">
+
+        <!-- <opt:workmanager> -->
+        <!--
+          WorkManager must not self-initialise.
+
+          Its App Startup entry runs from a ContentProvider, before Application.onCreate, and
+          calls WorkManager.initialize with a plain default Configuration — it never consults
+          Configuration.Provider. Leaving it in place means the HiltWorkerFactory is never
+          installed, WorkManager constructs workers reflectively, and every @HiltWorker fails with
+          NoSuchMethodException on its <init>(Context, WorkerParameters).
+
+          Removing only this one meta-data entry, with tools:node="merge" on the provider itself,
+          leaves App Startup working for every other library that uses it.
+        -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+        <!-- </opt:workmanager> -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.BaseApp.Starting"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- <opt:deeplink> -->
+            <!--
+              Custom scheme. Always works, never verified, and any app can claim the same scheme —
+              so it is the fallback, not the primary route in.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/deeplink_scheme" />
+            </intent-filter>
+
+            <!--
+              App Links. `autoVerify` makes Android check /.well-known/assetlinks.json on the host
+              at install time; when it matches, these URLs open the app directly with no chooser.
+              Without a correctly served assetlinks.json the filter still works, but the user gets
+              a disambiguation dialog every time — which most of them will answer with "browser".
+            -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="@string/deeplink_host"
+                    android:scheme="https" />
+            </intent-filter>
+            <!-- </opt:deeplink> -->
+        </activity>
+
+        <!-- <opt:push> -->
+        <service
+            android:name=".push.AppMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!--
+          Used for `notification` payloads delivered while the app is backgrounded, which the FCM
+          SDK posts itself without ever reaching AppMessagingService. Same channel and same icon,
+          so a push looks identical whether the app was open or not.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="base_app_default" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <!-- </opt:push> -->
+    </application>
+
+</manifest>

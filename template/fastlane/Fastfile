@@ -1,0 +1,141 @@
+# Release automation.
+#
+# Every lane here is something that is otherwise done by hand and got wrong once: bumping two
+# numbers in one file, remembering which variant the Play Store wants, writing release notes from
+# memory a week after the commits.
+#
+# Nothing here signs anything itself. Signing is configured in Gradle from keystore.properties,
+# so a release built by `fastlane` and one built by `./gradlew` are the same artifact — which is
+# the only way a local reproduction of a CI build is worth anything.
+
+default_platform(:android)
+
+APP_CONFIG = "build-logic/convention/src/main/kotlin/com/base/app/buildlogic/AppConfig.kt"
+
+platform :android do
+  desc "Unit tests and static analysis. What CI runs on every pull request."
+  lane :check do
+    gradle(task: "detekt")
+    gradle(task: "testDevDebugUnitTest")
+  end
+
+  desc "Install the dev debug build on a connected device."
+  lane :dev do
+    gradle(task: "installDevDebug")
+  end
+
+  desc "Bump the version. `type:major|minor|patch`, or `name:1.4.0`. Always bumps versionCode."
+  lane :bump do |options|
+    current_name = read_version_name
+    current_code = read_version_code
+
+    new_name = options[:name] || next_version_name(current_name, options[:type] || "patch")
+    new_code = current_code + 1
+
+    write_version(new_name, new_code)
+    UI.success("#{current_name} (#{current_code})  ->  #{new_name} (#{new_code})")
+  end
+
+  desc "Release notes from the commits since the last tag, prepended to CHANGELOG.md."
+  lane :changelog do
+    version = read_version_name
+    range = last_tag.nil? ? "" : "#{last_tag}..HEAD"
+
+    entries = `git log #{range} --no-merges --pretty=format:"- %s"`.strip
+    if entries.empty?
+      UI.important("No commits since #{last_tag}. Nothing to write.")
+      next
+    end
+
+    section = "## #{version} - #{Time.now.strftime('%Y-%m-%d')}\n\n#{entries}\n\n"
+    existing = File.exist?("../CHANGELOG.md") ? File.read("../CHANGELOG.md") : "# Changelog\n\n"
+    header, body = existing.split("\n\n", 2)
+
+    File.write("../CHANGELOG.md", "#{header}\n\n#{section}#{body}")
+    UI.success("Wrote #{entries.lines.count} entries to CHANGELOG.md.")
+  end
+
+  desc "Signed APKs and a bundle for the given flavour. `flavour:prod` by default."
+  lane :release do |options|
+    flavour = options[:flavour] || "prod"
+    variant = "#{flavour.capitalize}Release"
+
+    # Two invocations, not one: AGP refuses to build ABI splits and a bundle in the same run,
+    # because a bundle is already per-ABI and the shrunk resources would collide.
+    gradle(task: "dist#{variant}")
+    gradle(task: "dist#{variant}Bundle")
+
+    UI.success("Artifacts are in build/distribution/#{flavour}Release.")
+  end
+
+  desc "Tag the current version and push it. CI builds the release from the tag."
+  lane :tag do
+    version = read_version_name
+    code = read_version_code
+    tag_name = "v#{version}+#{code}"
+
+    UI.user_error!("#{tag_name} already exists.") if git_tag_exists(tag: tag_name)
+
+    add_git_tag(tag: tag_name)
+    push_git_tags(tag: tag_name)
+    UI.success("Pushed #{tag_name}.")
+  end
+
+  desc "Upload the playstore bundle to the internal testing track."
+  lane :internal do
+    gradle(task: "distPlaystoreReleaseBundle")
+
+    # Needs a service-account JSON: see fastlane/README.md. Deliberately not committed, and
+    # deliberately not defaulted to a path — a wrong default here uploads to somebody else's app.
+    upload_to_play_store(
+      track: "internal",
+      aab: Dir["../build/distribution/playstoreRelease/*.aab"].first,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+end
+
+# ── Version helpers ──────────────────────────────────────────────────────────
+#
+# The version lives in AppConfig.kt, which is the single place Gradle reads it from. Editing it
+# textually is less elegant than a properties file and is the reason there is exactly one
+# definition rather than two that drift.
+
+def config_path
+  File.expand_path("../#{APP_CONFIG}", __dir__)
+end
+
+def read_version_name
+  File.read(config_path)[/VERSION_NAME\s*=\s*"([^"]+)"/, 1] or
+    UI.user_error!("Could not find VERSION_NAME in #{APP_CONFIG}.")
+end
+
+def read_version_code
+  (File.read(config_path)[/VERSION_CODE\s*=\s*(\d+)/, 1] or
+    UI.user_error!("Could not find VERSION_CODE in #{APP_CONFIG}.")).to_i
+end
+
+def write_version(name, code)
+  contents = File.read(config_path)
+  contents = contents.sub(/(VERSION_NAME\s*=\s*")[^"]+(")/, "\\1#{name}\\2")
+  contents = contents.sub(/(VERSION_CODE\s*=\s*)\d+/, "\\1#{code}")
+  File.write(config_path, contents)
+end
+
+def next_version_name(current, type)
+  major, minor, patch = current.split(".").map(&:to_i)
+
+  case type
+  when "major" then "#{major + 1}.0.0"
+  when "minor" then "#{major}.#{minor + 1}.0"
+  when "patch" then "#{major}.#{minor}.#{patch + 1}"
+  else UI.user_error!("type must be major, minor or patch — got '#{type}'.")
+  end
+end
+
+def last_tag
+  tag = `git describe --tags --abbrev=0 2>/dev/null`.strip
+  tag.empty? ? nil : tag
+end

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Declared here rather than in :app, because NetworkMonitor in this module is what calls
+  ConnectivityManager — and a permission declared away from the code that needs it is one that
+  survives being deleted from the app manifest by somebody who could not see what used it.
+  Manifest merging carries it up into every application that depends on this module.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+</manifest>

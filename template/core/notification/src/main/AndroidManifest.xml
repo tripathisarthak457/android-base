@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Declared by the module that posts notifications rather than by :app, so a project generated
+  without push never asks for it — and so the declaration cannot be deleted by somebody who
+  cannot see what needed it.
+
+  Runtime-requested from API 33. AppNotifications checks before every post: without the grant,
+  notify() succeeds and shows nothing, which is the worst of the three possible behaviours.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+</manifest>

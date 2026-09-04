@@ -1,0 +1,53 @@
+# Gradle and Android
+build/
+.gradle/
+.kotlin/
+local.properties
+.idea/
+*.iml
+captures/
+.externalNativeBuild
+.cxx
+*.hprof
+
+# Signing material. The generator writes these; none of them belong in a repository, and the
+# `keys/` directory in particular would be an upload key in public.
+keystore.properties
+keys/
+*.jks
+*.keystore
+
+# Firebase configuration carries project ids and API keys tied to an account. The template's
+# placeholder is committed deliberately so the first build works; a real one must not be.
+!template/app/google-services.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Node and Next
+node_modules/
+.next/
+out/
+.vercel
+.env
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+
+# Go
+web/api/androidgen-api
+web/api/server
+*.exe
+
+# Editors and OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Anything generated while testing the generator
+/out/
+*.zip

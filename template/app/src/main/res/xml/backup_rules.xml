@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Auto Backup is disabled at the manifest level (allowBackup="false"), and this file documents
+  what would be excluded if it is ever turned on. The session DataStore holds Keystore-encrypted
+  tokens whose key is device-bound and therefore cannot be restored onto another device: backing
+  them up produces ciphertext nothing can read, and an install that looks signed in but fails
+  every request.
+-->
+<full-backup-content>
+    <exclude domain="file" path="datastore/session.preferences_pb" />
+    <exclude domain="database" path="network" />
+</full-backup-content>
