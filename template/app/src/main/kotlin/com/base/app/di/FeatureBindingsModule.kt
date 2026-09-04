@@ -1,3 +1,4 @@
+// <opt:settings|onboarding|auth>
 package com.base.app.di
 
 import dagger.Module
@@ -57,3 +58,4 @@ object FeatureBindingsModule {
     )
     // </opt:auth>
 }
+// </opt:settings|onboarding|auth>

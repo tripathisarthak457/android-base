@@ -19,7 +19,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from genkit.render import collapse_blank_runs, rename, strip_markers  # noqa: E402
+from genkit.render import (  # noqa: E402
+    _is_hollow_kotlin,
+    collapse_blank_runs,
+    rename,
+    strip_markers,
+)
 from genkit.scaffold import generated_blocks, pascal, title  # noqa: E402
 from genkit.spec import (  # noqa: E402
     MOTION_STYLE_NAMES,
@@ -178,6 +183,29 @@ class BlankRunTest(unittest.TestCase):
 
     def test_a_single_blank_line_is_left_alone(self):
         self.assertEqual("a\n\nb\n", collapse_blank_runs("a\n\nb\n"))
+
+
+class HollowFileTest(unittest.TestCase):
+
+    def test_a_file_left_with_only_a_package_and_imports_is_hollow(self):
+        # The app module's FeatureBindingsModule when none of settings, auth or onboarding is
+        # on: an empty Hilt module and three unused imports, which detekt fails the build over.
+        source = "\n".join(["package a.b", "", "import c.D", "import c.E", ""])
+
+        self.assertTrue(_is_hollow_kotlin(source))
+
+    def test_comments_alone_do_not_save_a_file(self):
+        source = "\n".join(["package a.b", "", "/**", " * Why this existed.", " */", ""])
+
+        self.assertTrue(_is_hollow_kotlin(source))
+
+    def test_one_surviving_declaration_keeps_it(self):
+        source = "\n".join(["package a.b", "", "import c.D", "", "object X", ""])
+
+        self.assertFalse(_is_hollow_kotlin(source))
+
+    def test_an_empty_file_is_hollow(self):
+        self.assertTrue(_is_hollow_kotlin(""))
 
 
 class FeatureResolutionTest(unittest.TestCase):

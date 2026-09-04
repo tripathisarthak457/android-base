@@ -261,7 +261,7 @@ def overlay_variants(variants_root: Path, destination: Path, spec: ProjectSpec) 
 
 
 def rewrite_all(destination: Path, spec: ProjectSpec, generated: dict[str, list[str]]) -> None:
-    """The text pass: markers out, names in."""
+    """The text pass: markers out, names in, and anything left hollow deleted."""
     enabled = set(spec.features)
     for path in sorted(destination.rglob("*")):
         if path.is_dir() or path.suffix.lower() in _BINARY_SUFFIXES:
@@ -270,9 +270,54 @@ def rewrite_all(destination: Path, spec: ProjectSpec, generated: dict[str, list[
             original = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
+
         rewritten = collapse_blank_runs(rename(strip_markers(original, enabled, generated), spec))
+
+        if path.suffix == ".kt" and _is_hollow_kotlin(rewritten):
+            path.unlink()
+            continue
+
         if rewritten != original:
             path.write_text(rewritten, encoding="utf-8")
+
+    _prune_empty_directories(destination)
+
+
+def _is_hollow_kotlin(text: str) -> bool:
+    """
+    True when a Kotlin file has a package line and imports and nothing else.
+
+    Stripping every optional block out of a file can leave a shell: the app module's
+    `FeatureBindingsModule` exists to supply things to the settings, auth and onboarding features,
+    and a project with none of them gets an empty Hilt module and three unused imports — which
+    detekt fails on, so the project arrives red. A file with nothing in it is not a file the
+    project needs.
+
+    Deliberately conservative: a single declaration of any kind keeps the file. It is looking for
+    "nothing survived", not "not much survived".
+    """
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith(("package ", "import ", "//", "/*", "*", "*/")):
+            continue
+        return False
+    return True
+
+
+def _prune_empty_directories(destination: Path) -> None:
+    """
+    Removes directories left with nothing in them.
+
+    Deleting the last file in a package leaves the package directory behind, and an empty source
+    directory in a fresh project is a small mystery for whoever opens it — deep enough, Android
+    Studio shows it as a package that exists for no reason. Deepest first, so a directory whose
+    only content was another empty directory goes too.
+    """
+    for path in sorted(destination.rglob("*"), key=lambda p: len(p.parts), reverse=True):
+        if path.is_dir() and not any(path.iterdir()):
+            path.rmdir()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
