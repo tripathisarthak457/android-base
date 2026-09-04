@@ -97,6 +97,12 @@ jobs:
           PY
           python create_project.py --spec ci-spec.json --out "$GITHUB_WORKSPACE/out" --no-zip
 
+      - name: The wrapper is executable
+        # Exit 126 here means the generator lost the bit. It is the first command the README
+        # tells anyone to run, so it is checked rather than assumed.
+        working-directory: out
+        run: test -x ./gradlew
+
       - name: Build it
         working-directory: out
         run: ./gradlew build --no-daemon --stacktrace

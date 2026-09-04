@@ -215,7 +215,26 @@ def copy_template(template: Path, destination: Path, spec: ProjectSpec) -> list[
                     warnings.append(f"{relative} is not UTF-8; copied without rewriting.")
                     shutil.copy2(source, target)
 
+            _make_executable_if_needed(target)
+
     return warnings
+
+
+#: Files that have to be executable in the generated project. `write_text` creates a 0644 file, so
+#: without this the very first command in the README — `./gradlew` — exits 126 with "permission
+#: denied" on macOS and Linux. The zip path sets the bit itself; a directory copy has to do it
+#: here. Named rather than mode-copied from the source, because a Windows checkout has no bit to
+#: copy: git stores the mode, the filesystem does not.
+_EXECUTABLE_NAMES = {"gradlew"}
+_EXECUTABLE_SUFFIXES = {".sh"}
+
+
+def _make_executable_if_needed(path: Path) -> None:
+    if path.name not in _EXECUTABLE_NAMES and path.suffix.lower() not in _EXECUTABLE_SUFFIXES:
+        return
+    mode = path.stat().st_mode
+    # Whoever can read it can run it, which is the mode git records for an executable file.
+    path.chmod(mode | ((mode & 0o444) >> 2))
 
 
 def overlay_variants(variants_root: Path, destination: Path, spec: ProjectSpec) -> None:
