@@ -107,3 +107,39 @@ jobs:
       - name: Build it
         working-directory: out
         run: ./gradlew build --no-daemon --stacktrace
+
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    # The gate. Vercel is not connected to this repository on purpose: a git-connected deploy
+    # fires seconds after the push, and the Android job takes nine minutes, so an Ignored Build
+    # Step would only ever see a run still in progress. Making the deploy a job that `needs` the
+    # others is the only version of "ship it if the tests pass" that is actually true.
+    needs: [generator, api, frontend, android]
+    # `needs` orders the jobs; it does not stop a pull request reaching production. Both
+    # conditions are load-bearing.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://android-base.vercel.app
+    env:
+      # Identifiers, not credentials — Vercel documents them as safe to expose, and they are
+      # what `.vercel/project.json` holds locally. Only the token below is a secret.
+      VERCEL_ORG_ID: team_2Uj4Ymm0UpNmpWtnZkY7dJY1
+      VERCEL_PROJECT_ID: prj_6FBU7Q25qafPqU0w4v4Ogf1yp2XA
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        # Skips rather than fails when the token is missing, so adding this job does not turn
+        # every push red for anyone who has not set the secret yet. The deploy starts happening
+        # the moment it is set, with no further change here.
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::notice::VERCEL_TOKEN is not set, so nothing was deployed. Add it in Settings -> Secrets to turn this job on."
+            exit 0
+          fi
+          npx vercel@59 deploy --prod --yes --token="$VERCEL_TOKEN"
+
