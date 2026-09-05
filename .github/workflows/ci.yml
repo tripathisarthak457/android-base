@@ -6,9 +6,13 @@
 # and a claim nobody checks stops being true.
 #
 # `deploy` is last and depends on all of them, so production cannot be reached by a commit that
-# failed anything. It is also the only path to production — Vercel is deliberately not connected
-# to this repository, because a git-connected deploy starts seconds after the push and would ship
-# long before the Android job had an opinion.
+# failed anything.
+#
+# Vercel IS connected to this repository, for pull-request previews — but `git.deploymentEnabled`
+# in vercel.json switches off automatic deployment of `main`, so this job is the only path to
+# production. Without that setting Vercel deploys within seconds of a push, nine minutes before
+# the Android job has an opinion, and the gate below is decorative. Do not remove one without
+# removing the other.
 
 name: CI
 
