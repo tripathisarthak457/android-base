@@ -6,6 +6,7 @@ import {
   ApiError,
   type Catalogue,
   type GenerateRequest,
+  type Keystore,
   generateProject,
   track,
 } from "../lib/api";
@@ -57,17 +58,62 @@ function appNameError(value: string): string | undefined {
   return undefined;
 }
 
-function moduleError(names: string[]): string | undefined {
+/**
+ * The reserved list is not written out here.
+ *
+ * It comes down in the catalogue, because it is longer than the obvious directories: naming a
+ * module `auth` scaffolds a generic repository over the curated `:data:auth`, and the project
+ * that comes out does not compile. A second copy of that list on the site would be right until
+ * the day the template gained a module, and then it would be a broken zip rather than a message.
+ */
+function moduleError(names: string[], reserved: string[]): string | undefined {
   for (const name of names) {
     if (!/^[a-z][a-z0-9_]*$/.test(name)) {
       return `"${name}" must be lower_snake_case.`;
     }
-    if (["app", "core", "data", "feature", "build", "catalog", "benchmark"].includes(name)) {
-      return `"${name}" is already a directory in the project.`;
+    if (reserved.includes(name)) {
+      return `"${name}" is taken — the template already ships a module or directory called that.`;
     }
   }
   if (new Set(names).size !== names.length) return "Module names must be unique.";
   return undefined;
+}
+
+/** Characters that would split one field of the certificate's subject into two. */
+const DNAME_SPECIALS = /[,=+<>#;\\"]/;
+
+function signingError(
+  enabled: boolean,
+  organisation: string,
+  country: string,
+  passwords: Record<string, string>,
+  names: string[],
+  minimum: number,
+): string | undefined {
+  if (!enabled) return undefined;
+  if (!organisation.trim()) return "The organisation goes in the certificate; it cannot be empty.";
+  if (DNAME_SPECIALS.test(organisation)) {
+    return "The organisation cannot contain , = + < > # ; \ or a quote.";
+  }
+  if (!/^[A-Za-z]{2}$/.test(country.trim())) return "The country is a two-letter code, like US.";
+  for (const name of names) {
+    if ((passwords[name] ?? "").length < minimum) {
+      return `The ${name} password needs at least ${minimum} characters — keytool refuses shorter.`;
+    }
+  }
+  return undefined;
+}
+
+/**
+ * A password strong enough that accepting the default is the right move.
+ *
+ * Generated in the browser rather than on the server: the server never needs to invent a secret,
+ * and a visitor who wants their own can type over it.
+ */
+function randomPassword(): string {
+  const alphabet = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = crypto.getRandomValues(new Uint32Array(20));
+  return [...bytes].map((value) => alphabet[value % alphabet.length]).join("");
 }
 
 /** `My Great App` → `MyGreatApp`, matching the generator's own derivation. */
@@ -105,11 +151,21 @@ export function Configurator({
   const [devUrl, setDevUrl] = useState("https://dev.example.com/api/");
   const [prodUrl, setProdUrl] = useState("https://api.example.com/api/");
 
+  // Off unless the visitor turns it on, and the passwords are only invented once they do — a
+  // page that quietly holds four secrets nobody asked for is a page with four secrets to leak.
+  const [signing, setSigning] = useState(false);
+  const [organisation, setOrganisation] = useState("");
+  const [country, setCountry] = useState("US");
+  const [keyPasswords, setKeyPasswords] = useState<Record<string, string>>({});
+
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
-  const [done, setDone] = useState<{ filename: string; elapsedMs: number; bytes: number } | null>(
-    null,
-  );
+  const [done, setDone] = useState<{
+    filename: string;
+    elapsedMs: number;
+    bytes: number;
+    keystoresSkipped: string[];
+  } | null>(null);
 
   const featureByKey = useMemo(
     () => new Map(catalogue.features.map((feature) => [feature.key, feature])),
@@ -132,7 +188,15 @@ export function Configurator({
   const errors = {
     appName: appNameError(appName),
     packageName: packageError(packageName),
-    modules: moduleError(moduleNames),
+    modules: moduleError(moduleNames, catalogue.reservedModuleNames),
+    signing: signingError(
+      signing,
+      organisation,
+      country,
+      keyPasswords,
+      catalogue.keystoreNames,
+      catalogue.minKeystorePassword,
+    ),
   };
   const identityValid = !errors.appName && !errors.packageName;
 
@@ -185,6 +249,36 @@ export function Configurator({
   const hasNetwork = features.has("network");
   const hasDeeplink = features.has("deeplink");
 
+  /**
+   * Turning signing on invents one password per key, so the visitor can accept four strong ones
+   * rather than typing four weak ones — and, because prod and playstore must not share with
+   * anything, four *different* ones. Turning it off drops them.
+   */
+  function toggleSigning(next: boolean) {
+    setSigning(next);
+    setKeyPasswords(
+      next
+        ? Object.fromEntries(catalogue.keystoreNames.map((name) => [name, randomPassword()]))
+        : {},
+    );
+    if (next && !organisation) setOrganisation(appName.trim());
+  }
+
+  function keystoresFor(): Keystore[] {
+    const alias = pascal(appName).toLowerCase() || "app";
+    return catalogue.keystoreNames.map((name) => ({
+      name,
+      alias: `${alias}-${name}`,
+      // The store and the key share a password on purpose: Gradle needs both, they live in the
+      // same file, and two secrets kept in one place are one secret written down twice.
+      store_password: keyPasswords[name],
+      key_password: keyPasswords[name],
+      common_name: `${appName.trim()} (${name})`,
+      organisation: organisation.trim(),
+      country: country.trim().toUpperCase(),
+    }));
+  }
+
   async function generate() {
     setBusy(true);
     setFailure(null);
@@ -222,10 +316,11 @@ export function Configurator({
             deeplink_host: "example.com",
           }
         : {}),
+      ...(signing ? { keystores: keystoresFor() } : {}),
     };
 
     try {
-      const { blob, filename, elapsedMs } = await generateProject(request);
+      const { blob, filename, elapsedMs, keystoresSkipped } = await generateProject(request);
 
       // Anchor-and-click rather than location.assign, so the filename from Content-Disposition is
       // used and the page is not navigated away from — the summary has to survive the download.
@@ -238,7 +333,7 @@ export function Configurator({
       anchor.remove();
       setTimeout(() => URL.revokeObjectURL(url), 10_000);
 
-      setDone({ filename, elapsedMs, bytes: blob.size });
+      setDone({ filename, elapsedMs, bytes: blob.size, keystoresSkipped });
       track("downloaded");
     } catch (error) {
       setFailure(
@@ -334,6 +429,15 @@ export function Configurator({
                 setDevUrl={setDevUrl}
                 prodUrl={prodUrl}
                 setProdUrl={setProdUrl}
+                signing={signing}
+                onSigning={toggleSigning}
+                organisation={organisation}
+                setOrganisation={setOrganisation}
+                country={country}
+                setCountry={setCountry}
+                keyPasswords={keyPasswords}
+                setKeyPasswords={setKeyPasswords}
+                signingError={errors.signing}
               />
             )}
             {step === "review" && (
@@ -350,6 +454,7 @@ export function Configurator({
                 minSdk={minSdk}
                 targetSdk={targetSdk}
                 versionName={versionName}
+                signing={signing}
                 busy={busy}
                 failure={failure}
                 done={done}
@@ -859,6 +964,15 @@ function BuildStep({
   setDevUrl,
   prodUrl,
   setProdUrl,
+  signing,
+  onSigning,
+  organisation,
+  setOrganisation,
+  country,
+  setCountry,
+  keyPasswords,
+  setKeyPasswords,
+  signingError,
 }: {
   catalogue: Catalogue;
   minSdk: number;
@@ -872,6 +986,15 @@ function BuildStep({
   setDevUrl: (v: string) => void;
   prodUrl: string;
   setProdUrl: (v: string) => void;
+  signing: boolean;
+  onSigning: (next: boolean) => void;
+  organisation: string;
+  setOrganisation: (v: string) => void;
+  country: string;
+  setCountry: (v: string) => void;
+  keyPasswords: Record<string, string>;
+  setKeyPasswords: (next: Record<string, string>) => void;
+  signingError?: string;
 }) {
   const chosen = catalogue.apiLevels.find((level) => level.level === minSdk);
 
@@ -954,6 +1077,150 @@ function BuildStep({
           </p>
         )}
       </div>
+
+      <div className="md:col-span-2">
+        <SigningPanel
+          catalogue={catalogue}
+          signing={signing}
+          onSigning={onSigning}
+          organisation={organisation}
+          setOrganisation={setOrganisation}
+          country={country}
+          setCountry={setCountry}
+          keyPasswords={keyPasswords}
+          setKeyPasswords={setKeyPasswords}
+          error={signingError}
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Signing keys, off by default.
+ *
+ * The warning is not a formality. A key generated here was created on a machine the visitor does
+ * not control and travelled back over the wire, so its custody cannot be claimed — and a Play
+ * upload key whose custody is in doubt is the one Android mistake that cannot be undone. That is
+ * an argument for saying so plainly and letting people decide, not for refusing: most projects
+ * are not on Play yet, and four `keytool` invocations are exactly the friction that leaves a team
+ * building release variants with the debug key for a year.
+ */
+function SigningPanel({
+  catalogue,
+  signing,
+  onSigning,
+  organisation,
+  setOrganisation,
+  country,
+  setCountry,
+  keyPasswords,
+  setKeyPasswords,
+  error,
+}: {
+  catalogue: Catalogue;
+  signing: boolean;
+  onSigning: (next: boolean) => void;
+  organisation: string;
+  setOrganisation: (v: string) => void;
+  country: string;
+  setCountry: (v: string) => void;
+  keyPasswords: Record<string, string>;
+  setKeyPasswords: (next: Record<string, string>) => void;
+  error?: string;
+}) {
+  if (!catalogue.keystoresAvailable) {
+    return (
+      <div className="rounded-xl border border-ink-700 bg-ink-900 p-5">
+        <p className="text-sm font-semibold text-ink-100">Signing keys are not available here</p>
+        <p className="mt-2 text-xs leading-relaxed text-ink-400">
+          This server has no JDK, so it cannot run <code className="text-ink-300">keytool</code>.
+          The zip ships <code className="text-ink-300">keystore.properties.template</code> and the
+          README has the four commands.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-xl border border-ink-700 bg-ink-900 p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-sm font-semibold text-ink-100">Generate signing keys</p>
+          <p className="mt-1 text-xs text-ink-400">
+            All four: dev, staging, prod and playstore. Off by default.
+          </p>
+        </div>
+        <Toggle checked={signing} onChange={onSigning} label="Generate signing keys" />
+      </div>
+
+      <p className="mt-4 rounded-lg border border-amber/30 bg-amber/10 p-3 text-xs leading-relaxed text-amber">
+        <span className="font-semibold">Read this before turning it on.</span> These keys are
+        created on this server and sent to you over the wire, so you cannot claim sole custody of
+        them. That is fine for dev and staging. For <span className="font-semibold">prod</span> and{" "}
+        <span className="font-semibold">playstore</span> it is a real trade: the Play upload key is
+        the one credential whose loss — or whose leak — cannot be undone, and Google will not
+        reissue it for you. If this app is going to the Play Store, generate those two yourself
+        with the <code>keytool</code> commands in the README, or with the CLI in the repository,
+        which runs entirely on your machine.
+      </p>
+
+      {signing && (
+        <div className="mt-4 space-y-4">
+          <div className="grid grid-cols-3 gap-3">
+            <div className="col-span-2">
+              <Field label="Organisation">
+                <TextInput
+                  value={organisation}
+                  onChange={(event) => setOrganisation(event.target.value)}
+                  placeholder="Acme Ltd"
+                />
+              </Field>
+            </div>
+            <Field label="Country">
+              <TextInput
+                value={country}
+                maxLength={2}
+                onChange={(event) => setCountry(event.target.value.toUpperCase())}
+                className="font-mono"
+              />
+            </Field>
+          </div>
+
+          <div className="space-y-2">
+            {catalogue.keystoreNames.map((name) => (
+              <div key={name} className="flex items-center gap-3">
+                <span className="w-20 shrink-0 font-mono text-xs text-ink-400">{name}</span>
+                {/*
+                  Deliberately not a password input. The value is written into
+                  keystore.properties in plain text inside the same zip moments later, so masking
+                  it would imply a secrecy the storage does not provide — and it has to be read
+                  and saved somewhere before the tab closes.
+                */}
+                <TextInput
+                  value={keyPasswords[name] ?? ""}
+                  onChange={(event) =>
+                    setKeyPasswords({ ...keyPasswords, [name]: event.target.value })
+                  }
+                  className="h-9 font-mono text-xs"
+                  spellCheck={false}
+                  autoComplete="off"
+                />
+              </div>
+            ))}
+          </div>
+
+          {error ? (
+            <p className="text-xs text-rose">{error}</p>
+          ) : (
+            <p className="text-xs leading-relaxed text-ink-400">
+              Copy these into your password manager before you close the tab. They are in{" "}
+              <code className="text-ink-300">keystore.properties</code> in the zip, which is
+              git-ignored — so nothing else will remember them for you.
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -971,6 +1238,7 @@ function ReviewStep({
   minSdk,
   targetSdk,
   versionName,
+  signing,
   busy,
   failure,
   done,
@@ -989,13 +1257,21 @@ function ReviewStep({
   minSdk: number;
   targetSdk: number;
   versionName: string;
+  signing: boolean;
   busy: boolean;
   failure: string | null;
-  done: { filename: string; elapsedMs: number; bytes: number } | null;
-  errors: { appName?: string; packageName?: string; modules?: string };
+  done: {
+    filename: string;
+    elapsedMs: number;
+    bytes: number;
+    keystoresSkipped: string[];
+  } | null;
+  errors: { appName?: string; packageName?: string; modules?: string; signing?: string };
   onGenerate: () => void;
 }) {
-  const blocked = Boolean(errors.appName || errors.packageName || errors.modules);
+  const blocked = Boolean(
+    errors.appName || errors.packageName || errors.modules || errors.signing,
+  );
   const chosen = catalogue.features.filter((feature) => features.has(feature.key));
 
   return (
@@ -1010,6 +1286,7 @@ function ReviewStep({
             ["Typeface", fontName],
             ["Motion", `${motionStyle}, haptics ${haptics ? "on" : "off"}`],
             ["Modules", modules.length ? modules.join(", ") : "none"],
+            ["Signing keys", signing ? catalogue.keystoreNames.join(", ") : "debug key only"],
           ].map(([label, value]) => (
             <div key={label} className="rounded-lg border border-ink-700 bg-ink-900 px-4 py-3">
               <dt className="text-xs text-ink-400">{label}</dt>
@@ -1048,15 +1325,31 @@ function ReviewStep({
 
       <div className="md:col-span-2">
         <div className="rounded-xl border border-ink-700 bg-ink-900 p-5">
-          <p className="text-sm font-semibold text-ink-100">Signing keys are not included</p>
-          <p className="mt-2 text-xs leading-relaxed text-ink-400">
-            The zip ships <code className="text-ink-300">keystore.properties.template</code> and the
-            README has the four <code className="text-ink-300">keytool</code> commands. A production
-            upload key generated on someone else&apos;s server and sent back over the wire is a key
-            whose custody you cannot claim — and losing control of a Play upload key is the one
-            Android mistake that cannot be undone. The CLI in the repository does generate them,
-            locally.
-          </p>
+          {signing ? (
+            <>
+              <p className="text-sm font-semibold text-amber">
+                Four signing keys are in this zip
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-ink-400">
+                Including <code className="text-ink-300">prod</code> and{" "}
+                <code className="text-ink-300">playstore</code>, with their passwords in{" "}
+                <code className="text-ink-300">keystore.properties</code>. They were made on this
+                server, so their custody is not solely yours — save them somewhere durable, keep
+                them out of version control, and replace the Play upload key with one you generate
+                yourself before you publish anything you cannot re-sign.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-sm font-semibold text-ink-100">Signing keys are not included</p>
+              <p className="mt-2 text-xs leading-relaxed text-ink-400">
+                The zip ships <code className="text-ink-300">keystore.properties.template</code>{" "}
+                and the README has the four <code className="text-ink-300">keytool</code> commands.
+                Turn on <span className="text-ink-200">Generate signing keys</span> in step 4 if
+                you would rather they were made for you — the trade is spelled out there.
+              </p>
+            </>
+          )}
         </div>
 
         <AnimatePresence>
@@ -1073,6 +1366,13 @@ function ReviewStep({
               <p className="mt-1 text-xs text-ink-400">
                 {(done.bytes / 1024).toFixed(0)} KB, built in {(done.elapsedMs / 1000).toFixed(1)}s
               </p>
+              {done.keystoresSkipped.length > 0 && (
+                <p className="mt-3 rounded-lg border border-amber/30 bg-amber/10 p-3 text-xs leading-relaxed text-amber">
+                  These keys could not be created: {done.keystoresSkipped.join(", ")}. The project
+                  still builds — those variants fall back to the debug key and the build says so
+                  on each run — but you will need to make them yourself before a release.
+                </p>
+              )}
               <ol className="mt-4 space-y-1.5 text-xs text-ink-300">
                 <li>1. Unzip and open the folder in Android Studio.</li>
                 <li>
@@ -1116,7 +1416,7 @@ function ReviewStep({
 
         {blocked && (
           <p className="mt-2 text-center text-xs text-rose">
-            Fix the app or package name in step 1 first.
+            {errors.signing ?? "Fix the app or package name in step 1 first."}
           </p>
         )}
       </div>

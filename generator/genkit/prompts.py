@@ -27,6 +27,9 @@ from .spec import (
     SpecError,
     describe_api_level,
     preset_features,
+    validate_country,
+    validate_dname_part,
+    validate_keystore,
     validate_module_name,
     validate_package_name,
 )
@@ -384,8 +387,18 @@ def ask_keystores(app_name: str, package_name: str) -> tuple[KeystoreSpec, ...]:
         return ()
 
     default_alias = re.sub(r"[^a-z0-9]", "", app_name.lower()) or "app"
-    organisation = ask("  Organisation (for the certificate)", "Unknown")
-    country = ask("  Country code (two letters)", "US")
+
+    # Checked here rather than at the end of the wizard: these two go into the certificate's
+    # subject, and a comma in the organisation silently splits one field into two.
+    while True:
+        organisation = ask("  Organisation (for the certificate)", "Unknown")
+        country = ask("  Country code (two letters)", "US").upper()[:2]
+        try:
+            validate_dname_part("organisation", organisation)
+            validate_country(country)
+            break
+        except SpecError as error:
+            print(red(f"  {error}"))
 
     keystores: list[KeystoreSpec] = []
     shared: KeystoreSpec | None = None
@@ -399,31 +412,38 @@ def ask_keystores(app_name: str, package_name: str) -> tuple[KeystoreSpec, ...]:
                 keystores.append(replace(shared, name="staging"))
                 continue
 
-        if ask_yes_no("    Use an existing .jks instead of generating one?", False):
-            path = ask("    Path to .jks")
-            alias = ask("    Key alias", f"{default_alias}-{name}")
-            store_password = ask_password("    Keystore password")
-            key_password = ask_password("    Key password")
-            keystore = KeystoreSpec(
-                name=name,
-                alias=alias,
-                store_password=store_password,
-                key_password=key_password,
-                existing_path=path,
-            )
-        else:
-            alias = ask("    Key alias", f"{default_alias}-{name}")
-            store_password = ask_password("    Keystore password")
-            key_password = ask("    Key password", store_password)
-            keystore = KeystoreSpec(
-                name=name,
-                alias=alias,
-                store_password=store_password,
-                key_password=key_password,
-                common_name=f"{app_name} ({name})",
-                organisation=organisation,
-                country=country.upper()[:2],
-            )
+        while True:
+            if ask_yes_no("    Use an existing .jks instead of generating one?", False):
+                path = ask("    Path to .jks")
+                alias = ask("    Key alias", f"{default_alias}-{name}")
+                store_password = ask_password("    Keystore password")
+                key_password = ask_password("    Key password")
+                keystore = KeystoreSpec(
+                    name=name,
+                    alias=alias,
+                    store_password=store_password,
+                    key_password=key_password,
+                    existing_path=path,
+                )
+            else:
+                alias = ask("    Key alias", f"{default_alias}-{name}")
+                store_password = ask_password("    Keystore password")
+                key_password = ask("    Key password", store_password)
+                keystore = KeystoreSpec(
+                    name=name,
+                    alias=alias,
+                    store_password=store_password,
+                    key_password=key_password,
+                    common_name=f"{app_name} ({name})",
+                    organisation=organisation,
+                    country=country,
+                )
+
+            try:
+                validate_keystore(keystore)
+                break
+            except SpecError as error:
+                print(red(f"    {error}"))
 
         keystores.append(keystore)
         if name == "dev":

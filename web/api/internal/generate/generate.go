@@ -39,6 +39,27 @@ type Request struct {
 	AccentColour   string            `json:"accent_colour,omitempty"`
 	MotionStyle    string            `json:"motion_style,omitempty"`
 	HapticsEnabled *bool             `json:"haptics_enabled,omitempty"`
+	Keystores      []Keystore        `json:"keystores,omitempty"`
+}
+
+// Keystore asks the generator to create one signing key.
+//
+// These fields carry passwords. They go to the subprocess's stdin and nowhere else: never to the
+// analytics store, never to a log line, and never back in the response — the only place they end
+// up is inside the zip the visitor downloads, in `keystore.properties`, which is what makes the
+// generated project buildable. Anything added here that widens that path is a credential leak.
+//
+// There is deliberately no field for an existing .jks path. The generator would read that file
+// off this server's disk and put it in the zip.
+type Keystore struct {
+	Name          string `json:"name"`
+	Alias         string `json:"alias"`
+	StorePassword string `json:"store_password"`
+	KeyPassword   string `json:"key_password"`
+	CommonName    string `json:"common_name,omitempty"`
+	Organisation  string `json:"organisation,omitempty"`
+	Country       string `json:"country,omitempty"`
+	ValidityDays  int    `json:"validity_days,omitempty"`
 }
 
 // Result is what the generator reports on success.
@@ -47,11 +68,15 @@ type Result struct {
 	PackageName    string   `json:"packageName"`
 	Features       []string `json:"features"`
 	FeatureModules []string `json:"featureModules"`
-	ZipPath        string   `json:"zipPath"`
-	ZipBytes       int64    `json:"zipBytes"`
-	ElapsedMillis  int      `json:"elapsedMillis"`
-	Warnings       []string `json:"warnings"`
-	IgnoredFields  []string `json:"ignoredFields"`
+	// Which keys keytool actually produced. A name in Skipped means the project is complete but
+	// that variant falls back to debug signing, which the visitor has to be told.
+	KeystoresGenerated []string `json:"keystoresGenerated"`
+	KeystoresSkipped   []string `json:"keystoresSkipped"`
+	ZipPath            string   `json:"zipPath"`
+	ZipBytes           int64    `json:"zipBytes"`
+	ElapsedMillis      int      `json:"elapsedMillis"`
+	Warnings           []string `json:"warnings"`
+	IgnoredFields      []string `json:"ignoredFields"`
 }
 
 // InvalidRequestError is a rejection by the generator's own validation — a bad package name, an

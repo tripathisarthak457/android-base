@@ -213,7 +213,14 @@ func (s *Server) handleGenerate(w http.ResponseWriter, r *http.Request) {
 	// So the browser can show the summary without a second request.
 	w.Header().Set("X-Project-Name", result.ProjectName)
 	w.Header().Set("X-Generation-Ms", strconv.Itoa(result.ElapsedMillis))
-	w.Header().Set("Access-Control-Expose-Headers", "X-Project-Name, X-Generation-Ms, Content-Disposition")
+	// A key that was asked for and not produced — no JDK on this host, or keytool refused it. The
+	// zip is still complete, but a visitor who was told they were getting keys has to hear that
+	// they did not, rather than discovering it the first time they cut a release.
+	if len(result.KeystoresSkipped) > 0 {
+		w.Header().Set("X-Keystores-Skipped", strings.Join(result.KeystoresSkipped, ","))
+	}
+	w.Header().Set("Access-Control-Expose-Headers",
+		"X-Project-Name, X-Generation-Ms, X-Keystores-Skipped, Content-Disposition")
 	w.WriteHeader(http.StatusOK)
 
 	if _, err := io.Copy(w, file); err != nil {

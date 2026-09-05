@@ -8,18 +8,21 @@ Generate a project from a JSON spec on stdin, writing a zip to a path given on t
 This is what the web API invokes. It exists rather than the API shelling out to
 `create_project.py --spec` for three reasons:
 
-* **stdin, not a file.** The API never has to write the user's answers — which include nothing
-  secret today, but would the moment keystores were added — to a path that something else could
-  read.
+* **stdin, not a file.** The API never has to write the user's answers — which now include
+  keystore passwords — to a path that something else could read.
 * **JSON out, not prose.** The result is a machine-readable summary on stdout: warnings, the
   resolved feature set, timings. `create_project.py` prints a box-drawn report for a human.
 * **One failure shape.** Anything that goes wrong exits non-zero with `{"error": "…"}` on stdout,
   so the API has exactly one thing to parse rather than a mix of tracebacks and exit codes.
 
-Keystores are deliberately not generated here even when the spec asks for them. A production
-upload key that was created on a server and sent back over the wire is a key whose custody cannot
-be claimed, and losing control of a Play upload key is the one Android mistake that cannot be
-undone. The zip ships `keystore.properties.template` and the README explains the four commands.
+Keystores are generated only when the spec explicitly asks for them, and the caller is expected
+to have said out loud what that means: a key created on a server and sent back over the wire is a
+key whose custody cannot be claimed, and losing control of a Play upload key is the one Android
+mistake that cannot be undone. Ask for none and the zip ships `keystore.properties.template` and
+a README with the four `keytool` commands, exactly as before.
+
+`existing_path` is dropped from every entry rather than honoured. It makes the generator copy a
+file from the machine it runs on into the zip, which over HTTP is an arbitrary file read.
 """
 
 from __future__ import annotations
@@ -30,7 +33,6 @@ import sys
 import tempfile
 import time
 import traceback
-from dataclasses import replace
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -41,7 +43,24 @@ sys.path.insert(0, str(HERE))
 
 from genkit import render, scaffold  # noqa: E402
 from genkit.readme import write_readme  # noqa: E402
-from genkit.spec import ProjectSpec, SpecError  # noqa: E402
+from genkit.spec import KeystoreSpec, ProjectSpec, SpecError  # noqa: E402
+
+
+#: What a keystore entry may set. `existing_path` is absent on purpose — see the module docstring.
+KEYSTORE_FIELDS = frozenset({
+    "name", "alias", "store_password", "key_password",
+    "common_name", "organisation", "country", "validity_days",
+})
+
+
+def keystore(entry: object) -> KeystoreSpec:
+    """One keystore from the request. Raises TypeError for anything the dataclass will not take."""
+    if not isinstance(entry, dict):
+        raise TypeError("each keystore must be an object")
+    return KeystoreSpec(
+        **{key: value for key, value in entry.items()
+           if key in KEYSTORE_FIELDS and value is not None}
+    )
 
 
 def fail(message: str, detail: str | None = None) -> int:
@@ -68,6 +87,7 @@ def main(argv: list[str]) -> int:
         "version_name", "version_code", "features", "feature_modules",
         "api_base_urls", "web_socket_urls", "deeplink_scheme", "deeplink_host",
         "font_name", "mono_font_name", "accent_colour", "motion_style", "haptics_enabled",
+        "keystores",
     }
     unknown = sorted(set(payload) - allowed)
 
@@ -83,15 +103,18 @@ def main(argv: list[str]) -> int:
         if key in fields and isinstance(fields[key], list):
             fields[key] = frozenset(fields[key]) if key == "features" else tuple(fields[key])
 
+    if "keystores" in fields:
+        try:
+            fields["keystores"] = tuple(keystore(entry) for entry in fields["keystores"])
+        except TypeError as error:
+            return fail("A keystore entry had the wrong shape.", str(error))
+
     try:
         spec = ProjectSpec(**fields).validated()
     except SpecError as error:
         return fail(str(error))
     except TypeError as error:
         return fail("The request body had the wrong shape.", str(error))
-
-    # Never, whatever was asked for. See the module docstring.
-    spec = replace(spec, keystores=())
 
     started = time.perf_counter()
     try:
@@ -107,7 +130,14 @@ def main(argv: list[str]) -> int:
             render.apply_fonts(project, spec)
             render.apply_accent(project, spec)
             render.apply_feel(project, spec)
-            render.write_keystore_properties(project, [])
+            keystores = list(spec.keystores)
+            generated, skipped, key_warnings = render.generate_keystores(project, keystores)
+            # Only the keys that exist get a stanza: a properties file naming a .jks that is not
+            # in the zip is a build failure rather than the fallback to debug signing.
+            render.write_keystore_properties(
+                project, [k for k in keystores if k.name in generated],
+            )
+            warnings.extend(key_warnings)
             write_readme(project, spec)
 
             output.parent.mkdir(parents=True, exist_ok=True)
@@ -126,6 +156,8 @@ def main(argv: list[str]) -> int:
             "packageName": spec.package_name,
             "features": sorted(spec.features),
             "featureModules": list(spec.feature_modules),
+            "keystoresGenerated": generated,
+            "keystoresSkipped": skipped,
             "zipPath": str(output),
             "zipBytes": output.stat().st_size,
             "elapsedMillis": round((time.perf_counter() - started) * 1000),

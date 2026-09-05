@@ -72,8 +72,30 @@ export type Catalogue = {
     preset: string;
   };
   keystoreNames: string[];
+  /** Whether the server that answered has a JDK, and so can run `keytool` at all. */
   keystoresAvailable: boolean;
+  minKeystorePassword: number;
+  /** Module names the template already occupies. Checked in the form, so a taken name is caught
+   *  before the round trip and the site never keeps its own copy of the list. */
+  reservedModuleNames: string[];
   fontSuggestions: string[];
+};
+
+/**
+ * One signing key to create.
+ *
+ * These carry passwords, which is why they are assembled at submit time and never put in
+ * `localStorage`, in a URL, or in the funnel event the page sends alongside. The only place they
+ * come to rest is `keystore.properties` inside the zip the visitor downloads.
+ */
+export type Keystore = {
+  name: string;
+  alias: string;
+  store_password: string;
+  key_password: string;
+  common_name: string;
+  organisation: string;
+  country: string;
 };
 
 export type GenerateRequest = {
@@ -96,6 +118,7 @@ export type GenerateRequest = {
   motion_style: string;
   haptics_enabled: boolean;
   preset?: string;
+  keystores?: Keystore[];
 };
 
 export class ApiError extends Error {
@@ -126,7 +149,7 @@ export async function fetchCatalogue(signal?: AbortSignal): Promise<Catalogue> {
 export async function generateProject(
   request: GenerateRequest,
   signal?: AbortSignal,
-): Promise<{ blob: Blob; filename: string; elapsedMs: number }> {
+): Promise<{ blob: Blob; filename: string; elapsedMs: number; keystoresSkipped: string[] }> {
   const response = await fetch(`${API_BASE}/api/generate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -153,6 +176,10 @@ export async function generateProject(
     blob: await response.blob(),
     filename: match?.[1] ?? "project.zip",
     elapsedMs: Number(response.headers.get("X-Generation-Ms") ?? 0),
+    // Keys that were asked for and not produced. Empty on every request that asked for none.
+    keystoresSkipped: (response.headers.get("X-Keystores-Skipped") ?? "")
+      .split(",")
+      .filter(Boolean),
   };
 }
 

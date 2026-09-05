@@ -17,9 +17,10 @@ strips out the parts you said you didn't want, generates your signing keys, and 
 The point is that the first day of a new project stops being a day.
 
 If you would rather not clone anything, **[android-base.vercel.app](https://android-base.vercel.app)**
-runs the same script against the same template and hands back the same zip. The one thing it will
-not do is generate signing keys — those are made on your machine, by the CLI, and the site says
-why.
+runs the same script against the same template and hands back the same zip. It will generate
+signing keys too, including prod and playstore, but only if you ask — it is off by default, and
+the site spells out the trade before you turn it on. Keys made on someone else's server are keys
+whose custody is not solely yours.
 
 ---
 

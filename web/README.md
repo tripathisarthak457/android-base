@@ -185,12 +185,31 @@ filling it with typos would make it useless within a day.
 
 ---
 
-## Signing keys are not generated here
+## Signing keys
 
-The CLI generates all four with `keytool`, on your machine. The website generates none, whatever
-the request asks for — `generate_headless.py` clears them before rendering.
+Off by default. Ask for them and the API generates all four — dev, staging, prod and playstore —
+with `keytool`, exactly as the CLI does, and the zip comes back with `keys/*.jks` and a filled-in
+`keystore.properties`. Ask for none and it ships `keystore.properties.template` and a README with
+the four commands, which is what every request did before.
 
-A production upload key created on a server you do not control and sent back over the wire is a
-key whose custody you cannot claim, and losing control of a Play upload key is the one Android
-mistake that cannot be undone. The zip ships `keystore.properties.template` and the README has the
-four commands.
+The warning on the form is the point of the feature, not decoration. A key created on a server the
+visitor does not control and sent back over the wire is a key whose custody they cannot claim, and
+losing control of a Play upload key is the one Android mistake that cannot be undone. That is a
+decision to put in front of somebody, not one to make for them: most projects are not on Play yet,
+and four `keytool` invocations are exactly the friction that leaves a team shipping release
+variants signed with the debug key.
+
+What the passwords touch, and nothing else:
+
+* stdin of the `generate_headless.py` subprocess, and
+* `keystore.properties` inside the zip that is streamed back.
+
+They are not written to disk by the API, not recorded in `generations`, and not logged. Adding a
+field to `generate.Keystore` that widens that path is a credential leak; `existing_path` is absent
+from it for the same reason — the generator would read that file off this server and put it in the
+zip.
+
+`keystoresAvailable` in `/api/options` reports whether this host actually has a JDK. Without one
+the site hides the offer rather than taking passwords and returning a zip with no keys in it, and
+a key that `keytool` refuses individually comes back in the `X-Keystores-Skipped` header so the
+visitor is told rather than finding out at release time.

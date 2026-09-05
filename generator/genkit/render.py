@@ -497,6 +497,29 @@ def write_keystore_properties(destination: Path, keystores: list[KeystoreSpec]) 
     (destination / "keystore.properties").write_text("\n".join(lines), encoding="utf-8")
 
 
+def find_keytool() -> str | None:
+    """
+    Where `keytool` is, or None.
+
+    Checked under JAVA_HOME as well as on PATH because a JDK installed by Android Studio or by a
+    Docker base image very often is not on PATH, and "no keystores were created" is a confusing
+    thing to be told on a machine that plainly has a JDK.
+    """
+    found = shutil.which("keytool")
+    if found is not None:
+        return found
+
+    java_home = os.environ.get("JAVA_HOME")
+    if not java_home:
+        return None
+    candidate = Path(java_home) / "bin" / "keytool"
+    if candidate.with_suffix(".exe").exists():
+        return str(candidate.with_suffix(".exe"))
+    if candidate.exists():
+        return str(candidate)
+    return None
+
+
 def generate_keystores(
     destination: Path,
     keystores: list[KeystoreSpec],
@@ -515,15 +538,7 @@ def generate_keystores(
     keys_dir = destination / "keys"
     keys_dir.mkdir(parents=True, exist_ok=True)
 
-    keytool = shutil.which("keytool")
-    if keytool is None:
-        java_home = os.environ.get("JAVA_HOME")
-        candidate = Path(java_home) / "bin" / "keytool" if java_home else None
-        if candidate and candidate.with_suffix(".exe").exists():
-            keytool = str(candidate.with_suffix(".exe"))
-        elif candidate and candidate.exists():
-            keytool = str(candidate)
-
+    keytool = find_keytool()
     if keytool is None:
         return [], [k.name for k in keystores], [
             "keytool was not found on PATH or under JAVA_HOME, so no keystores were created. "

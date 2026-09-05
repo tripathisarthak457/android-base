@@ -17,6 +17,7 @@ import json
 import sys
 from typing import Any
 
+from .render import find_keytool
 from .spec import (
     API_LEVELS,
     DEFAULT_COMPILE_SDK,
@@ -25,8 +26,10 @@ from .spec import (
     DESUGARING_THRESHOLD,
     FEATURES,
     KEYSTORE_NAMES,
+    MIN_KEYSTORE_PASSWORD,
     MOTION_STYLES,
     PRESETS,
+    RESERVED_MODULE_NAMES,
     describe_api_level,
     resolve_features,
 )
@@ -157,9 +160,14 @@ def catalogue() -> dict[str, Any]:
             "preset": "standard",
         },
         "keystoreNames": list(KEYSTORE_NAMES),
-        # Stated rather than implied, so the site can say so plainly instead of the user finding
-        # out from a zip with no keys in it.
-        "keystoresAvailable": False,
+        # Whether *this* server can create keys, not whether it should. A deployment with no JDK
+        # on the image answers False and the site hides the offer, rather than taking passwords
+        # and returning a zip with no keys in it.
+        "keystoresAvailable": find_keytool() is not None,
+        "minKeystorePassword": MIN_KEYSTORE_PASSWORD,
+        # So the site rejects a taken module name in the form rather than after the round trip,
+        # and cannot drift from the generator's own list.
+        "reservedModuleNames": sorted(RESERVED_MODULE_NAMES),
         "fontSuggestions": [
             "DM Sans",
             "Inter",

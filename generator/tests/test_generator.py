@@ -28,11 +28,20 @@ from genkit.render import (  # noqa: E402
 from genkit.scaffold import generated_blocks, pascal, title  # noqa: E402
 from genkit.spec import (  # noqa: E402
     MOTION_STYLE_NAMES,
+    KeystoreSpec,
     ProjectSpec,
     SpecError,
     preset_features,
     resolve_features,
 )
+
+
+def keystore(**overrides) -> KeystoreSpec:
+    base = dict(
+        name="prod", alias="upload", store_password="hunter22", key_password="hunter22",
+    )
+    base.update(overrides)
+    return KeystoreSpec(**base)
 
 
 def spec(**overrides) -> ProjectSpec:
@@ -267,6 +276,13 @@ class ValidationTest(unittest.TestCase):
         with self.assertRaises(SpecError):
             spec(feature_modules=("core",)).validated()
 
+    def test_a_module_named_after_one_the_template_ships_is_rejected(self):
+        # The scaffold would write a generic repository over the curated one and leave the rest
+        # of :feature:auth calling methods that no longer exist.
+        for name in ("auth", "settings", "onboarding", "sample"):
+            with self.subTest(name=name), self.assertRaises(SpecError):
+                spec(feature_modules=(name,)).validated()
+
     def test_duplicate_module_names_are_rejected(self):
         with self.assertRaises(SpecError):
             spec(feature_modules=("home", "home")).validated()
@@ -388,6 +404,33 @@ class ScaffoldTest(unittest.TestCase):
         blocks = generated_blocks(spec())
 
         self.assertIn("error(", blocks["start-destination"][0])
+
+
+
+class KeystoreValidationTest(unittest.TestCase):
+
+    def test_a_well_formed_key_validates(self):
+        self.assertEqual(1, len(spec(keystores=(keystore(),)).validated().keystores))
+
+    def test_an_unknown_key_name_is_rejected(self):
+        with self.assertRaises(SpecError):
+            spec(keystores=(keystore(name="release"),)).validated()
+
+    def test_a_password_keytool_would_refuse_is_rejected(self):
+        with self.assertRaises(SpecError):
+            spec(keystores=(keystore(key_password="short"),)).validated()
+
+    def test_a_distinguished_name_that_would_split_into_two_fields_is_rejected(self):
+        with self.assertRaises(SpecError):
+            spec(keystores=(keystore(common_name="Acme, O=Somebody Else"),)).validated()
+
+    def test_an_alias_that_would_read_as_a_keytool_flag_is_rejected(self):
+        with self.assertRaises(SpecError):
+            spec(keystores=(keystore(alias="-storetype"),)).validated()
+
+    def test_the_same_key_cannot_be_described_twice(self):
+        with self.assertRaises(SpecError):
+            spec(keystores=(keystore(), keystore())).validated()
 
 
 if __name__ == "__main__":

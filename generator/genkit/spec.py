@@ -485,6 +485,18 @@ class KeystoreSpec:
 # The spec
 # ─────────────────────────────────────────────────────────────────────────────
 
+#: Names a scaffolded feature module may not take.
+#:
+#: The structural directories are the obvious half. The rest are the modules the template itself
+#: ships: scaffolding one of those writes a generic `items()` repository and list screen straight
+#: over the curated module of the same name, and the files that survive still call the API that
+#: was overwritten. The result is a project that does not compile, reported as a dozen unresolved
+#: references in files the user never named. Cheaper to refuse the name.
+RESERVED_MODULE_NAMES: frozenset[str] = frozenset({
+    "app", "core", "data", "feature", "build", "catalog", "benchmark",
+    "auth", "onboarding", "sample", "settings",
+})
+
 _PACKAGE_SEGMENT = re.compile(r"^[a-z][a-z0-9_]*$")
 _HEX_COLOUR = re.compile(r"^#?[0-9A-Fa-f]{6}$")
 
@@ -605,6 +617,12 @@ class ProjectSpec:
         if len(set(self.feature_modules)) != len(self.feature_modules):
             raise SpecError("Feature module names must be unique.")
 
+        for keystore in self.keystores:
+            validate_keystore(keystore)
+        names = [keystore.name for keystore in self.keystores]
+        if len(set(names)) != len(names):
+            raise SpecError("Each signing key can only be described once.")
+
         unknown = set(self.features) - set(FEATURES_BY_KEY)
         if unknown:
             raise SpecError(f"Unknown feature(s): {', '.join(sorted(unknown))}.")
@@ -647,8 +665,72 @@ def validate_module_name(name: str) -> None:
             f"Module name '{name}' is invalid: lowercase letters, digits and underscores only. "
             "It becomes both a Gradle path and a Kotlin package segment."
         )
-    if name in {"sample", "app", "core", "data", "feature", "catalog", "benchmark"}:
-        raise SpecError(f"Module name '{name}' is reserved by the project structure.")
+    if name in RESERVED_MODULE_NAMES:
+        raise SpecError(
+            f"Module name '{name}' is taken: the template already ships a module or directory "
+            "called that. Pick another name."
+        )
+
+
+#: keytool's own floor for a PKCS12 store. Shorter is rejected several frames later, by a
+#: subprocess whose stderr the user never sees.
+MIN_KEYSTORE_PASSWORD = 6
+
+#: The maximum `-validity`. Roughly a century, which is already past the point of meaning.
+MAX_VALIDITY_DAYS = 36_500
+
+_ALIAS = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
+_COUNTRY = re.compile(r"^[A-Za-z]{2}$")
+
+#: Characters with a meaning inside an X.500 distinguished name. Left in, they do not escape a
+#: shell — `keytool` is run from a list, never a string — but they do split one DN field into two
+#: and produce a certificate whose subject is not what was asked for.
+_DNAME_SPECIALS = set(',=+<>#;\\"')
+
+
+def validate_keystore(keystore: KeystoreSpec) -> None:
+    """
+    Checks one signing key, before `keytool` sees any of it.
+
+    Called from [ProjectSpec.validated], so the wizard and the HTTP entry point enforce the same
+    rules — and so a value that arrived over the network is checked at the boundary rather than
+    trusted because the terminal wizard would never have produced it.
+    """
+    if keystore.name not in KEYSTORE_NAMES:
+        raise SpecError(
+            f"Unknown signing key '{keystore.name}'. "
+            f"The build has four: {', '.join(KEYSTORE_NAMES)}."
+        )
+    if not _ALIAS.match(keystore.alias):
+        raise SpecError(
+            f"The {keystore.name} key alias must be letters, digits, dots, hyphens or "
+            "underscores, and start with a letter or digit."
+        )
+
+    # An existing key is copied rather than created, so its passwords are the file's, not ours.
+    if keystore.existing_path is None:
+        for label, password in (
+            ("store", keystore.store_password),
+            ("key", keystore.key_password),
+        ):
+            if len(password) < MIN_KEYSTORE_PASSWORD:
+                raise SpecError(
+                    f"The {keystore.name} {label} password must be at least "
+                    f"{MIN_KEYSTORE_PASSWORD} characters — keytool rejects anything shorter."
+                )
+            if not password.isprintable():
+                raise SpecError(
+                    f"The {keystore.name} {label} password cannot contain control characters."
+                )
+
+    validate_dname_part(f"{keystore.name} common name", keystore.common_name)
+    validate_dname_part(f"{keystore.name} organisation", keystore.organisation)
+    validate_country(keystore.country)
+
+    if not 1 <= keystore.validity_days <= MAX_VALIDITY_DAYS:
+        raise SpecError(
+            f"The {keystore.name} validity must be between 1 and {MAX_VALIDITY_DAYS} days."
+        )
 
 
 _JAVA_KEYWORDS = {
@@ -659,3 +741,24 @@ _JAVA_KEYWORDS = {
     "strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient", "try",
     "void", "volatile", "while", "val", "var", "fun", "object", "in", "is", "when",
 }
+
+
+def validate_dname_part(label: str, value: str) -> None:
+    """
+    One component of a certificate's subject.
+
+    Its own function so the wizard can check an answer as it is typed rather than at the end of
+    the run, when rejecting it would mean losing everything else the user has entered.
+    """
+    if not value.strip():
+        raise SpecError(f"The {label} cannot be empty.")
+    if not value.isprintable() or any(character in _DNAME_SPECIALS for character in value):
+        raise SpecError(
+            f"The {label} cannot contain any of {''.join(sorted(_DNAME_SPECIALS))} — they "
+            "separate the fields of the certificate's subject."
+        )
+
+
+def validate_country(value: str) -> None:
+    if not _COUNTRY.match(value):
+        raise SpecError("The country must be a two-letter code, like US or IN.")
