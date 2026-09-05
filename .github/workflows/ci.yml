@@ -1,9 +1,14 @@
-# What runs on every push.
+# What runs on every push, and what ships.
 #
-# Three jobs, because the three parts of this repository fail independently and a single job would
-# hide two failures behind the first one. The Android job is the slow one and is the reason this
-# exists: the whole claim of the project is that a generated build is green, and a claim nobody
-# checks stops being true.
+# The checks are separate jobs because the parts of this repository fail independently and a
+# single job would hide three failures behind the first one. The Android job is the slow one and
+# is the reason this exists: the whole claim of the project is that a generated build is green,
+# and a claim nobody checks stops being true.
+#
+# `deploy` is last and depends on all of them, so production cannot be reached by a commit that
+# failed anything. It is also the only path to production — Vercel is deliberately not connected
+# to this repository, because a git-connected deploy starts seconds after the push and would ship
+# long before the Android job had an opinion.
 
 name: CI
 
