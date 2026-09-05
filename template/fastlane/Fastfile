@@ -65,7 +65,7 @@ platform :android do
     gradle(task: "dist#{variant}")
     gradle(task: "dist#{variant}Bundle")
 
-    UI.success("Artifacts are in build/distribution/#{flavour}Release.")
+    UI.success("Artifacts are in app/build/outputs/dist/#{flavour}Release.")
   end
 
   desc "Tag the current version and push it. CI builds the release from the tag."
@@ -85,11 +85,16 @@ platform :android do
   lane :internal do
     gradle(task: "distPlaystoreReleaseBundle")
 
+    # `registerDistributionTasks` writes into the :app module's build directory, so the glob is
+    # relative to fastlane/ via the project root: app/build/outputs/dist/<variant>/.
+    bundle = Dir["../app/build/outputs/dist/playstoreRelease/*.aab"].first
+    UI.user_error!("No .aab in app/build/outputs/dist/playstoreRelease. Did the dist task run?") if bundle.nil?
+
     # Needs a service-account JSON: see fastlane/README.md. Deliberately not committed, and
     # deliberately not defaulted to a path — a wrong default here uploads to somebody else's app.
     upload_to_play_store(
       track: "internal",
-      aab: Dir["../build/distribution/playstoreRelease/*.aab"].first,
+      aab: bundle,
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
