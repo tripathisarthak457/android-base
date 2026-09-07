@@ -49,3 +49,10 @@
 -dontwarn org.conscrypt.**
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
+
+# <opt:playstore>
+# Play's review-ktx references an annotation that ships in no artifact it depends on, so R8 stops
+# on a missing class rather than a missing rule. Debug builds do not minify, so the first place
+# this appears is a release build — which is to say, the day of a release.
+-dontwarn com.google.android.gms.common.annotation.NoNullnessRewrite
+# </opt:playstore>
