@@ -70,6 +70,9 @@ include(":core:analytics")
 // <opt:media>
 include(":core:media")
 // </opt:media>
+// <opt:flags>
+include(":core:flags")
+// </opt:flags>
 
 // ── data ─────────────────────────────────────────────────────────────────────
 // <opt:auth>

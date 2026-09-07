@@ -321,6 +321,26 @@ FEATURES: tuple[Feature, ...] = (
         files=("fastlane", "Gemfile"),
     ),
     Feature(
+        key="flags",
+        title="Feature flag seam",
+        description=(
+            "Typed flags declared in one file with their defaults beside them, read through "
+            "an interface that resolves locally until a vendor is bound. Lets both sides of "
+            "a flag be written before anybody has chosen one."
+        ),
+        default=True,
+        files=("core/flags",),
+    ),
+    Feature(
+        key="flags-remote",
+        title="Firebase Remote Config",
+        description="Binds the flag seam to Remote Config, seeded from the declared defaults.",
+        default=False,
+        requires=("firebase", "flags"),
+        files=("core/flags/src/main/kotlin/{pkg_path}/core/flags/RemoteConfigFeatureFlags.kt",),
+        variant_dir="flags-remote-off",
+    ),
+    Feature(
         key="applock",
         title="Biometric app lock",
         description=(
@@ -414,6 +434,7 @@ _STANDARD = _LEAN + (
     "ci",
     "fastlane",
     "screenshottests",
+    "flags",
 )
 
 PRESETS: tuple[Preset, ...] = (

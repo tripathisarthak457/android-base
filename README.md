@@ -264,6 +264,8 @@ dead code behind.
 | LeakCanary | on | Debug builds only |
 | Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |
 | Fastlane | off | Version bump, changelog from git history, tag, signed artifacts, Play internal-track upload |
+| Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
+| Firebase Remote Config | off | Binds the flag seam to Remote Config, seeded from the declared defaults so a first launch with no network still agrees |
 | Biometric app lock | off | A fingerprint, face or screen-lock prompt when the app returns from the background, a settings toggle, and the app kept out of the task switcher's thumbnail |
 | Play in-app update and review | off | A flexible update downloaded in the background with a restart prompt, and a rating request on a schedule Play will honour rather than silently drop |
 | Screenshot tests | on | Every catalog page rendered to a PNG in both themes on every build and compared against the recorded one. Runs on the JVM through Robolectric — no emulator |
