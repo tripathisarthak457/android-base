@@ -321,6 +321,22 @@ FEATURES: tuple[Feature, ...] = (
         files=("fastlane", "Gemfile"),
     ),
     Feature(
+        key="licenses",
+        title="Open source licences screen",
+        description=(
+            "The real dependency list, generated from the resolved classpath at build time "
+            "and rendered by the design system. The build also fails on a licence the "
+            "project has not allowed."
+        ),
+        default=False,
+        requires=("settings",),
+        files=(
+            "feature/settings/src/main/kotlin/{pkg_path}/feature/settings/Licenses.kt",
+            "build-logic/convention/src/main/kotlin/AndroidLicensesConventionPlugin.kt",
+            "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/BundleLicensesTask.kt",
+        ),
+    ),
+    Feature(
         key="flags",
         title="Feature flag seam",
         description=(

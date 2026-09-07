@@ -69,11 +69,17 @@ sealed interface SettingsEvent : UiEvent {
     data class AppLockToggled(val enabled: Boolean) : SettingsEvent
     // </opt:applock>
     data object SignOutConfirmed : SettingsEvent
+    // <opt:licenses>
+    data object LicensesClicked : SettingsEvent
+    // </opt:licenses>
     data object BackClicked : SettingsEvent
 }
 
 sealed interface SettingsEffect : UiEffect {
     data object NavigateBack : SettingsEffect
+    // <opt:licenses>
+    data object OpenLicenses : SettingsEffect
+    // </opt:licenses>
 }
 
 /**
@@ -123,6 +129,10 @@ class SettingsViewModel @Inject constructor(
 
             SettingsEvent.SignOutConfirmed -> sessionController.signOut()
 
+            // <opt:licenses>
+            SettingsEvent.LicensesClicked -> emitEffect(SettingsEffect.OpenLicenses)
+            // </opt:licenses>
+
             SettingsEvent.BackClicked -> emitEffect(SettingsEffect.NavigateBack)
         }
     }
@@ -149,6 +159,9 @@ fun SettingsRoute(
         onEffect = { effect ->
             when (effect) {
                 SettingsEffect.NavigateBack -> navigator.navigateUp()
+                // <opt:licenses>
+                SettingsEffect.OpenLicenses -> navigator.navigate(LicensesKey)
+                // </opt:licenses>
             }
         },
     ) { state, onEvent ->
@@ -277,6 +290,25 @@ fun SettingsScreen(
                     },
                 )
             }
+
+            // <opt:licenses>
+            AppSectionHeader(title = "About")
+
+            AppCard(contentPadding = PaddingValues(0.dp)) {
+                AppListItem(
+                    title = "Open source licences",
+                    supporting = "The libraries this app is built on, and their terms.",
+                    onClick = { onEvent(SettingsEvent.LicensesClicked) },
+                    leading = {
+                        AppIcon(
+                            AppIcons.File,
+                            contentDescription = null,
+                            tint = AppTheme.colors.contentTertiary,
+                        )
+                    },
+                )
+            }
+            // </opt:licenses>
 
             AppDivider(modifier = Modifier.padding(vertical = AppTheme.spacing.md))
 

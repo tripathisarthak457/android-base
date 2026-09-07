@@ -78,6 +78,12 @@ gradlePlugin {
             implementationClass = "AndroidFirebaseConventionPlugin"
         }
         // </opt:firebase>
+        // <opt:licenses>
+        register("androidLicenses") {
+            id = "com.base.app.android.licenses"
+            implementationClass = "AndroidLicensesConventionPlugin"
+        }
+        // </opt:licenses>
         // <opt:room>
         register("androidRoom") {
             id = "com.base.app.android.room"

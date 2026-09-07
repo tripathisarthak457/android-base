@@ -19,6 +19,11 @@ import kotlinx.serialization.modules.SerializersModule
 @Serializable
 data object SettingsKey : AppNavKey
 
+// <opt:licenses>
+@Serializable
+data object LicensesKey : AppNavKey
+// </opt:licenses>
+
 /**
  * The version string is supplied by whoever registers this graph.
  *
@@ -38,12 +43,20 @@ object SettingsNavModule {
         entry<SettingsKey> {
             SettingsRoute(navigator = navigator, appVersion = appInfo.versionName)
         }
+        // <opt:licenses>
+        entry<LicensesKey> {
+            LicensesRoute(navigator = navigator)
+        }
+        // </opt:licenses>
     }
 
     @Provides
     @IntoSet
     fun settingsNavKeys(): SerializersModule = navKeys {
         subclass(SettingsKey::class, SettingsKey.serializer())
+        // <opt:licenses>
+        subclass(LicensesKey::class, LicensesKey.serializer())
+        // </opt:licenses>
     }
 }
 

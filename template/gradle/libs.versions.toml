@@ -53,6 +53,7 @@ espresso = "3.7.0"
 turbine = "1.2.1"
 mockk = "1.14.7"
 detekt = "1.23.8"
+licensee = "1.14.1"
 roborazzi = "1.73.0"
 robolectric = "4.16.1"
 benchmark = "1.5.0-rc02"
@@ -190,5 +191,6 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticsPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+licensee = { id = "app.cash.licensee", version.ref = "licensee" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineProfilePlugin" }

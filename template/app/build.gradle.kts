@@ -10,6 +10,10 @@ plugins {
     // <opt:baselineprofile>
     alias(libs.plugins.baselineprofile)
     // </opt:baselineprofile>
+    // <opt:licenses>
+    alias(libs.plugins.licensee)
+    id("com.base.app.android.licenses")
+    // </opt:licenses>
 }
 
 android {
@@ -107,3 +111,35 @@ dependencies {
 
     testImplementation(project(":core:testing"))
 }
+
+// <opt:licenses>
+/*
+ * What this app is allowed to ship.
+ *
+ * Licensee fails the build on anything not listed, which turns "we shipped a copyleft dependency"
+ * from a discovery into a build error at the moment the dependency is added. The list below is
+ * the permissive set; adding to it should be a decision somebody makes deliberately, which is
+ * exactly why it is here and not hidden in a plugin default.
+ */
+licensee {
+    allow("Apache-2.0")
+    allow("MIT")
+    allow("BSD-2-Clause")
+    allow("BSD-3-Clause")
+    allow("EPL-1.0")
+    allow("CC0-1.0")
+
+    // Three real dependencies state their terms as a URL rather than as an SPDX identifier,
+    // so each one has to be allowed by hand. That is the plugin working: an unrecognised
+    // licence stops the build until somebody has actually looked at it.
+    allowUrl("https://developer.android.com/studio/terms.html") {
+        because("The Android Software Development Kit License, on Google's own artifacts.")
+    }
+    allowUrl("https://developer.android.com/guide/playcore/license") {
+        because("The Play Core Software Development Kit Terms of Service.")
+    }
+    allowUrl("https://opensource.org/license/mit") {
+        because("MIT, stated as a URL rather than as an identifier — slf4j-api does this.")
+    }
+}
+// </opt:licenses>
