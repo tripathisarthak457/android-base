@@ -86,7 +86,8 @@ def main(argv: list[str]) -> int:
         "app_name", "package_name", "min_sdk", "target_sdk", "compile_sdk",
         "version_name", "version_code", "features", "feature_modules",
         "api_base_urls", "web_socket_urls", "deeplink_scheme", "deeplink_host",
-        "font_name", "mono_font_name", "accent_colour", "motion_style", "haptics_enabled",
+        "font_name", "mono_font_name", "accent_colour", "secondary_colour", "tertiary_colour",
+        "motion_style", "haptics_enabled",
         "keystores",
     }
     unknown = sorted(set(payload) - allowed)

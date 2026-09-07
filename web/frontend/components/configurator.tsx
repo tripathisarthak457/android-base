@@ -143,6 +143,10 @@ export function Configurator({
   const [modules, setModules] = useState("");
   const [fontName, setFontName] = useState(catalogue.defaults.fontName);
   const [accent, setAccent] = useState(catalogue.defaults.accentColour);
+  // Empty means "derive it from the primary", which is the same contract the generator has:
+  // a blank supporting colour is worked out server-side rather than left at the template's.
+  const [secondary, setSecondary] = useState("");
+  const [tertiary, setTertiary] = useState("");
   const [motionStyle, setMotionStyle] = useState(catalogue.defaults.motionStyle);
   const [haptics, setHaptics] = useState(catalogue.defaults.hapticsEnabled);
   const [minSdk, setMinSdk] = useState(catalogue.defaults.minSdk);
@@ -297,6 +301,8 @@ export function Configurator({
       font_name: fontName,
       mono_font_name: catalogue.defaults.monoFontName,
       accent_colour: accent,
+      secondary_colour: secondary,
+      tertiary_colour: tertiary,
       motion_style: motionStyle,
       haptics_enabled: haptics,
       preset,
@@ -409,6 +415,10 @@ export function Configurator({
                 setFontName={setFontName}
                 accent={accent}
                 setAccent={setAccent}
+                secondary={secondary}
+                setSecondary={setSecondary}
+                tertiary={tertiary}
+                setTertiary={setTertiary}
                 motionStyle={motionStyle}
                 setMotionStyle={setMotionStyle}
                 haptics={haptics}
@@ -449,6 +459,8 @@ export function Configurator({
                 modules={moduleNames}
                 fontName={fontName}
                 accent={accent}
+                secondary={secondary || deriveSecondary(accent)}
+                tertiary={tertiary || deriveTertiary(accent)}
                 motionStyle={motionStyle}
                 haptics={haptics}
                 minSdk={minSdk}
@@ -762,6 +774,10 @@ function LookStep({
   setFontName,
   accent,
   setAccent,
+  secondary,
+  setSecondary,
+  tertiary,
+  setTertiary,
   motionStyle,
   setMotionStyle,
   haptics,
@@ -772,6 +788,10 @@ function LookStep({
   setFontName: (v: string) => void;
   accent: string;
   setAccent: (v: string) => void;
+  secondary: string;
+  setSecondary: (v: string) => void;
+  tertiary: string;
+  setTertiary: (v: string) => void;
   motionStyle: string;
   setMotionStyle: (v: string) => void;
   haptics: boolean;
@@ -806,21 +826,29 @@ function LookStep({
         </div>
 
         <Field
-          label="Accent colour"
-          hint="The whole ramp is derived from this one hex: the pressed state, the subtle fill, both dark-theme variants, the launcher background, and whether text on it is black or white."
+          label="Brand colours"
+          hint="Each ramp is derived from one hex: the pressed state, the subtle fill, both dark-theme variants, and whether text on it is black or white. The primary is also the launcher background, and the only one the design system spends on its own — buttons, focus rings, selection. The other two are yours to reach for."
         >
-          <div className="flex items-center gap-3">
-            <input
-              type="color"
+          <div className="space-y-2.5">
+            <BrandColourRow
+              label="Primary"
               value={accent}
-              onChange={(event) => setAccent(event.target.value)}
-              className="h-11 w-14 cursor-pointer rounded-lg border border-ink-600 bg-ink-900 p-1"
-              aria-label="Accent colour"
+              resolved={accent}
+              onChange={setAccent}
             />
-            <TextInput
-              value={accent}
-              onChange={(event) => setAccent(event.target.value)}
-              className="font-mono text-sm uppercase"
+            <BrandColourRow
+              label="Secondary"
+              value={secondary}
+              resolved={secondary || deriveSecondary(accent)}
+              onChange={setSecondary}
+              onDerive={() => setSecondary("")}
+            />
+            <BrandColourRow
+              label="Tertiary"
+              value={tertiary}
+              resolved={tertiary || deriveTertiary(accent)}
+              onChange={setTertiary}
+              onDerive={() => setTertiary("")}
             />
           </div>
         </Field>
@@ -936,6 +964,119 @@ function Preview({ accent, fontName }: { accent: string; fontName: string }) {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * One brand colour: a swatch, the hex, and — for the two supporting colours — a way back to
+ * having it worked out from the primary.
+ *
+ * `value` is what gets sent (empty means derive); `resolved` is what gets shown. Keeping them
+ * apart is what lets the primary carry the other two along until somebody deliberately pins one.
+ */
+function BrandColourRow({
+  label,
+  value,
+  resolved,
+  onChange,
+  onDerive,
+}: {
+  label: string;
+  value: string;
+  resolved: string;
+  onChange: (v: string) => void;
+  onDerive?: () => void;
+}) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <span className="w-[70px] shrink-0 text-sm text-ink-300">{label}</span>
+      <input
+        type="color"
+        value={resolved}
+        onChange={(event) => onChange(event.target.value)}
+        className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-ink-600 bg-ink-900 p-1"
+        aria-label={`${label} colour`}
+      />
+      <TextInput
+        value={resolved}
+        onChange={(event) => onChange(event.target.value)}
+        className="font-mono text-sm uppercase"
+      />
+      {onDerive ? (
+        <button
+          type="button"
+          onClick={onDerive}
+          disabled={!value}
+          className="shrink-0 rounded-md border border-ink-600 px-2 py-1.5 text-xs text-ink-400 transition-colors hover:border-ink-500 hover:text-ink-200 disabled:cursor-default disabled:border-ink-700 disabled:text-ink-600"
+          title="Work this colour out from the primary again"
+        >
+          {value ? "Derive" : "Derived"}
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+/*
+ * The same rule the generator applies to a supporting colour that was left blank — Material's:
+ * the secondary is the primary with the chroma taken out, the tertiary is a sixth of a turn
+ * around the wheel. Repeated here so the swatch shows what the server is going to produce rather
+ * than nothing at all. Only the display depends on it: an empty field is sent as empty, and the
+ * generator, not this, decides what the project gets.
+ */
+function deriveSecondary(hex: string): string {
+  const [h, s, l] = toHsl(hex);
+  return toHex(h, s * 0.45, l);
+}
+
+function deriveTertiary(hex: string): string {
+  const [h, s, l] = toHsl(hex);
+  return toHex((h + 60) % 360, s, l);
+}
+
+function toHsl(hex: string): [number, number, number] {
+  const clean = hex.replace("#", "");
+  if (clean.length !== 6) return [0, 0, 0.5];
+  const [r, g, b] = [0, 2, 4].map((offset) => parseInt(clean.slice(offset, offset + 2), 16) / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const lightness = (max + min) / 2;
+  if (max === min) return [0, 0, lightness];
+  const delta = max - min;
+  const saturation = delta / (lightness > 0.5 ? 2 - max - min : max + min);
+  const hue =
+    max === r
+      ? ((g - b) / delta + (g < b ? 6 : 0)) * 60
+      : max === g
+        ? ((b - r) / delta + 2) * 60
+        : ((r - g) / delta + 4) * 60;
+  return [hue, saturation, lightness];
+}
+
+function toHex(hue: number, saturation: number, lightness: number): string {
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const second = chroma * (1 - Math.abs(((hue / 60) % 2) - 1));
+  const match = lightness - chroma / 2;
+  const sextant = Math.floor(hue / 60) % 6;
+  const [r, g, b] = (
+    [
+      [chroma, second, 0],
+      [second, chroma, 0],
+      [0, chroma, second],
+      [0, second, chroma],
+      [second, 0, chroma],
+      [chroma, 0, second],
+    ] as const
+  )[sextant];
+  return (
+    "#" +
+    [r, g, b]
+      .map((channel) =>
+        Math.round((channel + match) * 255)
+          .toString(16)
+          .padStart(2, "0"),
+      )
+      .join("")
   );
 }
 
@@ -1233,6 +1374,8 @@ function ReviewStep({
   modules,
   fontName,
   accent,
+  secondary,
+  tertiary,
   motionStyle,
   haptics,
   minSdk,
@@ -1252,6 +1395,8 @@ function ReviewStep({
   modules: string[];
   fontName: string;
   accent: string;
+  secondary: string;
+  tertiary: string;
   motionStyle: string;
   haptics: boolean;
   minSdk: number;
@@ -1294,12 +1439,16 @@ function ReviewStep({
             </div>
           ))}
           <div className="rounded-lg border border-ink-700 bg-ink-900 px-4 py-3">
-            <dt className="text-xs text-ink-400">Accent</dt>
+            <dt className="text-xs text-ink-400">Brand colours</dt>
             <dd className="mt-1 flex items-center gap-2">
-              <span
-                className="h-4 w-4 rounded border border-ink-600"
-                style={{ background: accent }}
-              />
+              {[accent, secondary, tertiary].map((colour, index) => (
+                <span
+                  key={index}
+                  title={colour.toUpperCase()}
+                  className="h-4 w-4 rounded border border-ink-600"
+                  style={{ background: colour }}
+                />
+              ))}
               <span className="font-mono text-sm text-ink-100">{accent.toUpperCase()}</span>
             </dd>
           </div>

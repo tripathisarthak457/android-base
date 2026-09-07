@@ -34,6 +34,24 @@ data class AppColors(
     val accentSubtle: Color,
     val onAccent: Color,
 
+    /**
+     * Two supporting brand colours, each with the same three roles as the accent.
+     *
+     * Nothing in the design system reads them: every component draws with [accent], which is
+     * what keeps one action per screen looking like the action. They are here so that a screen
+     * that genuinely needs a second colour — a chart with two series, a promotion beside a
+     * primary button — has one that the theme derived rather than one somebody typed inline.
+     */
+    val secondary: Color,
+    val secondaryPressed: Color,
+    val secondarySubtle: Color,
+    val onSecondary: Color,
+
+    val tertiary: Color,
+    val tertiaryPressed: Color,
+    val tertiarySubtle: Color,
+    val onTertiary: Color,
+
     val border: Color,
     val borderStrong: Color,
     val divider: Color,
@@ -83,6 +101,16 @@ val LightColors = AppColors(
     accentSubtle = AccentSubtleLight,
     onAccent = White,
 
+    secondary = Secondary,
+    secondaryPressed = SecondaryPressed,
+    secondarySubtle = SecondarySubtleLight,
+    onSecondary = Ink900,
+
+    tertiary = Tertiary,
+    tertiaryPressed = TertiaryPressed,
+    tertiarySubtle = TertiarySubtleLight,
+    onTertiary = White,
+
     border = Grey200,
     borderStrong = Grey300,
     divider = Grey150,
@@ -118,6 +146,16 @@ val DarkColors = AppColors(
     // Near-black rather than white: at this lightness the accent needs dark text on it to stay
     // legible, and white-on-light-blue is the single most common contrast failure in dark themes.
     onAccent = Color(0xFF06101F),
+
+    secondary = SecondaryDark,
+    secondaryPressed = SecondaryDarkPressed,
+    secondarySubtle = SecondarySubtleDark,
+    onSecondary = Color(0xFF06101F),
+
+    tertiary = TertiaryDark,
+    tertiaryPressed = TertiaryDarkPressed,
+    tertiarySubtle = TertiarySubtleDark,
+    onTertiary = Color(0xFF06101F),
 
     border = Ink600,
     borderStrong = Ink500,

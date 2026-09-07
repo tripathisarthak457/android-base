@@ -23,7 +23,8 @@ const ALWAYS = [
     title: "One place for the look",
     body:
       "Colour, type, spacing, shape, elevation, motion and haptics are composition locals read " +
-      "through AppTheme. Changing the font is one string, the accent is one hex, and how every " +
+      "through AppTheme. Changing the font is one string, a brand colour is one hex and the ramp " +
+      "around it follows, and how every " +
       "control answers a finger is one enum.",
     detail: "AppTheme",
   },

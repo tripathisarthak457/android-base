@@ -311,22 +311,35 @@ def ask_fonts(features: set[str]) -> tuple[str, str]:
     return font_name, mono_font_name
 
 
-def ask_look_and_feel(features: set[str]) -> tuple[str, str, bool]:
+def ask_look_and_feel(features: set[str]) -> tuple[str, str, str, str, bool]:
     """
     The three decisions that change how the app looks and feels everywhere.
 
-    Each is one value in one file: a hex that the whole accent ramp is derived from, an enum the
+    Each is one value in one file: three hexes the whole palette is derived from, an enum the
     press feedback reads, and a boolean the haptics read. Asking here rather than leaving them at
     a default is the difference between a generated project that looks generated and one that
     looks like the product it is going to be.
     """
     heading("Look and feel")
 
-    print(dim("  The accent colour. Every shade of it — pressed, subtle, and the dark-theme"))
-    print(dim("  versions — is derived from this one hex, along with the launcher icon's"))
-    print(dim("  background and whether text on it is black or white."))
+    print(dim("  The brand colours. Every shade of each — pressed, subtle, and the dark-theme"))
+    print(dim("  versions — is derived from these, along with the launcher icon's background"))
+    print(dim("  and whether text on each is black or white."))
     print()
-    accent = ask("Accent hex", "#2C6BED", allow_empty=True).strip()
+    print(dim("  The primary is the one the design system uses on its own: buttons, focus"))
+    print(dim("  rings, selection. The other two are yours to reach for — a chart series, a"))
+    print(dim("  second call to action, a highlight that must not be the primary."))
+    print()
+    accent = ask("Primary hex", "#2C6BED", allow_empty=True).strip()
+
+    print()
+    print(dim("  Leave either blank and it is worked out from the primary: the same hue with"))
+    print(dim("  the chroma taken out for the secondary, a sixth of a turn around the wheel"))
+    print(dim("  for the tertiary. Harmonious by construction, but a starting point rather"))
+    print(dim("  than a brand decision."))
+    print()
+    secondary = ask("Secondary hex", "", allow_empty=True).strip()
+    tertiary = ask("Tertiary hex", "", allow_empty=True).strip()
 
     print()
     print(dim("  How controls respond to a finger."))
@@ -345,7 +358,7 @@ def ask_look_and_feel(features: set[str]) -> tuple[str, str, bool]:
     print(dim("  turned them off."))
     haptics = ask_yes_no("  Haptics on by default?", True)
 
-    return accent, motion, haptics
+    return accent, secondary, tertiary, motion, haptics
 
 
 def ask_feature_modules() -> tuple[str, ...]:
@@ -465,7 +478,13 @@ def run_wizard(select_all: bool = False, preset: str | None = None) -> ProjectSp
     api_urls, socket_urls = ask_environments(features)
     scheme, host = ask_deeplinks(features, app_name)
     font_name, mono_font_name = ask_fonts(features)
-    accent_colour, motion_style, haptics_enabled = ask_look_and_feel(features)
+    (
+        accent_colour,
+        secondary_colour,
+        tertiary_colour,
+        motion_style,
+        haptics_enabled,
+    ) = ask_look_and_feel(features)
     feature_modules = ask_feature_modules()
     keystores = ask_keystores(app_name, package_name)
 
@@ -487,6 +506,8 @@ def run_wizard(select_all: bool = False, preset: str | None = None) -> ProjectSp
         font_name=font_name,
         mono_font_name=mono_font_name,
         accent_colour=accent_colour,
+        secondary_colour=secondary_colour,
+        tertiary_colour=tertiary_colour,
         motion_style=motion_style,
         haptics_enabled=haptics_enabled,
     )
@@ -505,7 +526,7 @@ def summarise(spec: ProjectSpec) -> None:
         ("Features", ", ".join(sorted(spec.features)) or "none"),
         ("Modules", ", ".join(spec.feature_modules) or "none"),
         ("Typeface", f"{spec.font_name}  ·  {spec.mono_font_name}"),
-        ("Accent", spec.accent_colour or "the template's blue"),
+        ("Colours", describe_brand_colours(spec)),
         ("Motion", f"{spec.motion_style}, haptics {'on' if spec.haptics_enabled else 'off'}"),
         ("Keys", ", ".join(k.name for k in spec.keystores) or "debug key only"),
     ]
@@ -514,6 +535,32 @@ def summarise(spec: ProjectSpec) -> None:
         for index, line in enumerate(wrap(value, 60)):
             prefix = f"  {label.rjust(width)}  " if index == 0 else "  " + " " * width + "  "
             print(prefix + line)
+
+
+def describe_brand_colours(spec: ProjectSpec) -> str:
+    """
+    The three brand colours for the confirmation summary, derived ones marked as such.
+
+    Shows the resolved hex rather than the word "derived" alone: the point of the summary is that
+    someone can catch a wrong answer before two minutes of generation, and "worked out from the
+    primary" is not something anyone can look at and recognise as wrong.
+    """
+    from .render import brand_colours, _to_argb
+
+    resolved = brand_colours(spec)
+    given = {
+        "Accent": spec.accent_colour,
+        "Secondary": spec.secondary_colour,
+        "Tertiary": spec.tertiary_colour,
+    }
+    parts = []
+    for role, rgb in resolved.items():
+        swatch = "#" + _to_argb(rgb)[4:]
+        if given[role]:
+            parts.append(swatch)
+        else:
+            parts.append(f"{swatch} ({'template' if role == 'Accent' else 'derived'})")
+    return "  ·  ".join(parts)
 
 
 def wrap(text: str, width: int) -> list[str]:

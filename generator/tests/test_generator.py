@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from genkit.render import (  # noqa: E402
     _is_hollow_kotlin,
+    brand_colours,
     collapse_blank_runs,
     rename,
     strip_markers,
@@ -318,6 +319,39 @@ class LookAndFeelTest(unittest.TestCase):
 
     def test_no_accent_means_keep_the_template_palette(self):
         self.assertEqual("", spec().validated().accent_colour)
+
+    def test_a_supporting_colour_must_also_be_a_six_digit_hex(self):
+        for field in ("secondary_colour", "tertiary_colour"):
+            with self.assertRaises(SpecError, msg=field):
+                spec(**{field: "#12345"}).validated()
+
+    def test_a_blank_supporting_colour_is_derived_from_the_primary(self):
+        colours = brand_colours(spec(accent_colour="#16A34A").validated())
+
+        # Material's rule: the chroma taken out for the secondary, a sixth of a turn for the
+        # tertiary. Both must land somewhere other than on the primary, or the palette has one
+        # colour in it wearing three names.
+        self.assertNotEqual(colours["Accent"], colours["Secondary"])
+        self.assertNotEqual(colours["Accent"], colours["Tertiary"])
+        self.assertNotEqual(colours["Secondary"], colours["Tertiary"])
+
+    def test_a_supplied_supporting_colour_is_used_as_given(self):
+        colours = brand_colours(
+            spec(accent_colour="#16A34A", secondary_colour="#FF00FF").validated()
+        )
+
+        self.assertEqual((1.0, 0.0, 1.0), colours["Secondary"])
+
+    def test_the_derived_secondary_is_the_primary_with_the_chroma_taken_out(self):
+        import colorsys
+
+        colours = brand_colours(spec(accent_colour="#16A34A").validated())
+        primary_hue, _, primary_saturation = colorsys.rgb_to_hls(*colours["Accent"])
+        derived_hue, _, derived_saturation = colorsys.rgb_to_hls(*colours["Secondary"])
+
+        self.assertAlmostEqual(primary_hue, derived_hue, places=5)
+        self.assertLess(derived_saturation, primary_saturation)
+
 
 
 class PresetTest(unittest.TestCase):

@@ -115,6 +115,9 @@ export type GenerateRequest = {
   font_name: string;
   mono_font_name: string;
   accent_colour: string;
+  /** Empty means the server derives it from the primary. */
+  secondary_colour?: string;
+  tertiary_colour?: string;
   motion_style: string;
   haptics_enabled: boolean;
   preset?: string;

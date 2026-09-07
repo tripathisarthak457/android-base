@@ -37,9 +37,13 @@ type Request struct {
 	FontName       string            `json:"font_name,omitempty"`
 	MonoFontName   string            `json:"mono_font_name,omitempty"`
 	AccentColour   string            `json:"accent_colour,omitempty"`
-	MotionStyle    string            `json:"motion_style,omitempty"`
-	HapticsEnabled *bool             `json:"haptics_enabled,omitempty"`
-	Keystores      []Keystore        `json:"keystores,omitempty"`
+	// Blank is meaningful: the generator works a supporting colour out from the primary rather
+	// than leaving the template's. omitempty is what sends it as blank rather than as null.
+	SecondaryColour string     `json:"secondary_colour,omitempty"`
+	TertiaryColour  string     `json:"tertiary_colour,omitempty"`
+	MotionStyle     string     `json:"motion_style,omitempty"`
+	HapticsEnabled  *bool      `json:"haptics_enabled,omitempty"`
+	Keystores       []Keystore `json:"keystores,omitempty"`
 }
 
 // Keystore asks the generator to create one signing key.

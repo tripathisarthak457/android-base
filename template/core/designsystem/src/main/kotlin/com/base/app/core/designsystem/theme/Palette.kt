@@ -47,6 +47,28 @@ internal val AccentDark = Color(0xFF5B8DEF)
 internal val AccentDarkPressed = Color(0xFF7BA5F5)
 internal val AccentSubtleDark = Color(0xFF16233B)
 
+// ── Secondary and tertiary ──────────────────────────────────────────────────────
+// Two more brand colours, for the app to spend where the accent would be wrong: a second
+// call to action, a chart series, a highlight that must not read as the primary action. The
+// design system itself uses none of them — it draws with the accent alone, so adding these
+// changes nothing until a screen asks for one.
+//
+// The shipped pair is what the generator derives from the accent when only one hex is given:
+// the same hue with the chroma taken out, and a sixth of a turn around the wheel.
+internal val Secondary = Color(0xFF617DB8)
+internal val SecondaryPressed = Color(0xFF445F97)
+internal val SecondarySubtleLight = Color(0xFFEFF2F8)
+internal val SecondaryDark = Color(0xFF879BC5)
+internal val SecondaryDarkPressed = Color(0xFFA4B3D0)
+internal val SecondarySubtleDark = Color(0xFF171F31)
+
+internal val Tertiary = Color(0xFFAE2CED)
+internal val TertiaryPressed = Color(0xFF8E11CA)
+internal val TertiarySubtleLight = Color(0xFFF7EAFD)
+internal val TertiaryDark = Color(0xFFBE60EB)
+internal val TertiaryDarkPressed = Color(0xFFCB89EC)
+internal val TertiarySubtleDark = Color(0xFF221438)
+
 // ── Status · light ──────────────────────────────────────────────────────────────
 internal val SuccessLight = Color(0xFF12805C)
 internal val SuccessSubtleLight = Color(0xFFE4F5EE)

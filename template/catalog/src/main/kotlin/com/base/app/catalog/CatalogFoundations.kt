@@ -41,7 +41,22 @@ fun FoundationsSection() {
         ColorRow("contentSecondary", AppTheme.colors.contentSecondary)
         ColorRow("contentTertiary", AppTheme.colors.contentTertiary)
         ColorRow("border", AppTheme.colors.border)
+    }
+
+    CatalogGroup(
+        title = "Brand",
+        caption = "Every component here draws with the accent. The other two are for a " +
+            "screen that needs a second colour.",
+    ) {
         ColorRow("accent", AppTheme.colors.accent)
+        ColorRow("accentPressed", AppTheme.colors.accentPressed)
+        ColorRow("accentSubtle", AppTheme.colors.accentSubtle)
+        ColorRow("secondary", AppTheme.colors.secondary)
+        ColorRow("secondaryPressed", AppTheme.colors.secondaryPressed)
+        ColorRow("secondarySubtle", AppTheme.colors.secondarySubtle)
+        ColorRow("tertiary", AppTheme.colors.tertiary)
+        ColorRow("tertiaryPressed", AppTheme.colors.tertiaryPressed)
+        ColorRow("tertiarySubtle", AppTheme.colors.tertiarySubtle)
     }
 
     CatalogGroup(
