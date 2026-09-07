@@ -1,0 +1,55 @@
+{
+  // Dependency updates, as pull requests.
+  //
+  // The whole value of this repository is that a project generated from it is current on the day
+  // it is generated. A template nobody upgrades is a template that quietly ships last year's AGP
+  // to everyone who uses it, and the failure is invisible: everything still builds.
+  //
+  // Every one of these pull requests goes through the same CI as any other commit — including the
+  // job that generates a project and builds it — so an upgrade that breaks the template is caught
+  // before it is merged rather than after somebody downloads a zip.
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    // A dependency version that has been out for less than three days is one nobody has found the
+    // problem in yet. Waiting costs nothing here; being the person who finds it costs a day.
+    "config:best-practices",
+  ],
+  timezone: "Asia/Kolkata",
+  schedule: ["before 6am on monday"],
+  // Enough to keep moving, few enough to read.
+  prConcurrentLimit: 5,
+  labels: ["dependencies"],
+  packageRules: [
+    {
+      // The compiler and the symbol processor are one thing wearing two version numbers: KSP
+      // publishes a build per Kotlin release and refuses to run against any other. Grouped, or a
+      // Kotlin bump lands on its own and every module using Hilt or Room stops compiling.
+      groupName: "Kotlin and KSP",
+      matchPackageNames: [
+        "org.jetbrains.kotlin:{/,}**",
+        "org.jetbrains.kotlin.**",
+        "com.google.devtools.ksp{/,}**",
+      ],
+    },
+    {
+      // The BOM decides every Compose artifact's version, so the only thing to update is the BOM.
+      groupName: "Compose BOM",
+      matchPackageNames: ["androidx.compose:compose-bom"],
+    },
+    {
+      // AGP and the Gradle wrapper are checked against each other by Gradle itself, and an AGP
+      // that wants a newer Gradle fails at configuration time with a message about neither.
+      groupName: "Android Gradle plugin",
+      matchPackageNames: ["com.android.tools.build:gradle", "com.android.**"],
+      matchManagers: ["gradle", "gradle-wrapper"],
+    },
+    {
+      // Alpha and beta versions are a deliberate choice here — the benchmark plugin is on one
+      // because there is no stable release — not something to be moved onto automatically.
+      matchUpdateTypes: ["major"],
+      matchCurrentVersion: "/-(alpha|beta|rc|dev|M)/",
+      enabled: false,
+    },
+  ],
+}

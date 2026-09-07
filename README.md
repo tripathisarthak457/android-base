@@ -96,8 +96,8 @@ The three presets:
 | Preset | Feature count | What's in it |
 |---|---|---|
 | `lean` | 5 | Ktor, the design system, the catalog app, one reference feature, detekt, LeakCanary. |
-| `standard` | 16 | The lean set plus Room caching, Coil, forms, auth, settings, onboarding, media, deep links, GitHub Actions and Fastlane. |
-| `everything` | 24 | The standard set plus Firebase with Crashlytics, FCM push, analytics, WorkManager, WebSocket and baseline profiles. |
+| `standard` | 17 | The lean set plus Room caching, Coil, forms, auth, settings, onboarding, media, deep links, screenshot tests, GitHub Actions and Fastlane. |
+| `everything` | 25 | The standard set plus Firebase with Crashlytics, FCM push, analytics, WorkManager, WebSocket and baseline profiles. |
 
 ---
 
@@ -211,10 +211,18 @@ in `AppConfig.kt`, which is the only place the build reads them from.
 one constant that all seventeen text styles read from, so changing the app's font later is editing
 one string.
 
-**Look and feel.** One brand hex — the whole accent ramp is derived from it, including the pressed
-state, the subtle fill, the dark-theme variants, the launcher icon background and whether text on
-the accent is black or white. Then a motion style (Standard, Bouncy, Calm, Snappy) and whether
-haptics start on.
+**Look and feel.** Three brand hexes. Each one becomes a full ramp — the pressed state, the
+subtle fill, both dark-theme variants and whether text on it is black or white — and the primary
+also becomes the launcher icon background. Leave the second and third blank and they are worked
+out from the primary: the same hue with the chroma taken out, and a sixth of a turn around the
+wheel. Harmonious by construction, and a starting point rather than a brand decision.
+
+The design system itself draws with the primary alone, which is what keeps one action per screen
+looking like the action. The other two are there for the screen that genuinely needs a second
+colour — a chart with two series, a promotion beside a primary button — so that it reaches for
+`AppTheme.colors.secondary` rather than for a hex somebody typed inline.
+
+Then a motion style (Standard, Bouncy, Calm, Snappy) and whether haptics start on.
 
 **Feature modules.** Comma-separated names, or blank. Each one produces a matching `:data:x` and
 `:feature:x` pair with a repository, an MVI contract, a ViewModel, a screen, a nav key and tests.
@@ -256,6 +264,8 @@ dead code behind.
 | LeakCanary | on | Debug builds only |
 | Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |
 | Fastlane | off | Version bump, changelog from git history, tag, signed artifacts, Play internal-track upload |
+| Play in-app update and review | off | A flexible update downloaded in the background with a restart prompt, and a rating request on a schedule Play will honour rather than silently drop |
+| Screenshot tests | on | Every catalog page rendered to a PNG in both themes on every build and compared against the recorded one. Runs on the JVM through Robolectric — no emulator |
 | GitHub Actions | on | Pull requests build devDebug, run detekt and the tests. Tags produce signed release artifacts |
 
 ---
@@ -271,8 +281,9 @@ date and time pickers, bottom sheet, charts and a hand-drawn icon set. An
 catches a `@Composable` in a module that forgot the Compose compiler plugin.
 
 **One place for the look.** Colours, type, spacing, shapes, elevation, motion and haptics are
-composition locals read through `AppTheme.`. Changing the font is one string; changing the accent
-is one hex; changing how every control responds to a finger is one enum.
+composition locals read through `AppTheme.`. Changing the font is one string; changing a brand
+colour is one hex, and the ramp around it follows; changing how every control responds to a
+finger is one enum.
 
 **Decentralised navigation.** A feature registers its own screens through Hilt multibinding.
 Adding a screen touches no file outside its own module — there is no central sealed `Route` class
@@ -352,6 +363,29 @@ would have: a library module calling `ConnectivityManager` without declaring the
 `Bitmap.CompressFormat.WEBP_LOSSY` used below the API level that has it, a locale read that never
 recomposed when the user changed language.
 
+### The screenshots
+
+`./gradlew build` also re-renders every catalog page and compares it against the PNG committed in
+`template/catalog/src/test/screenshots`. That is the check for the changes nobody can review by
+reading a diff: an accent that lost its contrast in dark mode, a text style two pixels taller, a
+shape radius applied to one component and not its neighbour.
+
+```bash
+./gradlew :catalog:verifyRoborazziDebug   # fail on any difference, and write a diff image
+./gradlew :catalog:recordRoborazziDebug   # accept the current rendering as the new truth
+```
+
+When the change was the point, run `record`, look at what moved, and commit the images with it —
+the pull request then shows the visual change as a picture rather than as a hex value.
+
+It renders through Robolectric on the JVM, so there is no emulator and the whole suite is about
+forty-five seconds. Two pages are deliberately absent: Animation and Motion & haptics exist to be
+watched moving, and a still first frame of either asserts nothing that the other twelve do not.
+
+These images are the template's own. A generated project starts without them, because they are
+recorded against a palette and a typeface and every project picks its own — the suite ships, the
+baseline is one `record` away, and until it exists `check` leaves it alone rather than failing.
+
 The template carries `// <opt:feature>` marker comments that the generator strips. They are chosen
 so the template still compiles with *every* feature on, which is what lets this repository's own
 build prove the template works. The marker grammar is three forms:
@@ -376,7 +410,8 @@ cd generator
 py -m unittest discover -s tests -t .
 ```
 
-51 tests over the marker grammar, the rename, feature resolution, the validation rules and the
+68 tests over the marker grammar, the rename, feature resolution, the brand-colour derivation,
+the validation rules and the
 scaffolder. They run in milliseconds and use only the standard library.
 
 They are not sufficient on their own. The real test is generating both extremes and building

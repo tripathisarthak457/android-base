@@ -154,7 +154,7 @@ function Terminal() {
 }
 
 const STATS = [
-  { value: "24", label: "features you can switch off", detail: "Each removes a module, not just code" },
+  { value: "26", label: "features you can switch off", detail: "Each removes a module, not just code" },
   { value: "80+", label: "components, zero Material", detail: "An androidx.compose.material import fails the build" },
   { value: "7", label: "build variants", detail: "dev / staging / prod / playstore × debug / release" },
   { value: "0", label: "setup steps after unzip", detail: "Open it and press run" },
