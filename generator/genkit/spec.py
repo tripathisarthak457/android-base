@@ -321,6 +321,20 @@ FEATURES: tuple[Feature, ...] = (
         files=("fastlane", "Gemfile"),
     ),
     Feature(
+        key="applock",
+        title="Biometric app lock",
+        description=(
+            "A fingerprint, face or screen-lock prompt when the app comes back from the "
+            "background, a setting to turn it on, and the app kept out of the task "
+            "switcher's thumbnail."
+        ),
+        default=False,
+        # The toggle lives on the settings screen, and the unlock screen reads the stored
+        # theme so it does not flash the wrong one on the way in.
+        requires=("settings",),
+        files=("app/src/main/kotlin/{pkg_path}/lock",),
+    ),
+    Feature(
         key="playstore",
         title="Play in-app update and review prompts",
         description=(

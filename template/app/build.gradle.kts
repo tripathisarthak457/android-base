@@ -88,6 +88,10 @@ dependencies {
     baselineProfile(project(":benchmark"))
     // </opt:baselineprofile>
 
+    // <opt:applock>
+    implementation(libs.androidx.biometric)
+    // </opt:applock>
+
     // <opt:playstore>
     implementation(libs.play.app.update)
     implementation(libs.play.app.review)

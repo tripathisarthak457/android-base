@@ -25,6 +25,9 @@ data class AppSettings(
     val onboardingCompleted: Boolean = false,
     val analyticsEnabled: Boolean = true,
     val hapticsEnabled: Boolean = true,
+    // <opt:applock>
+    val appLockEnabled: Boolean = false,
+    // </opt:applock>
 ) {
     companion object {
         const val THEME_SYSTEM = "system"
@@ -45,6 +48,9 @@ class AppSettingsStore @Inject constructor(
                 onboardingCompleted = preferences[ONBOARDING_DONE] ?: false,
                 analyticsEnabled = preferences[ANALYTICS_ENABLED] ?: true,
                 hapticsEnabled = preferences[HAPTICS_ENABLED] ?: true,
+                // <opt:applock>
+                appLockEnabled = preferences[APP_LOCK_ENABLED] ?: false,
+                // </opt:applock>
             )
         }
         .distinctUntilChanged()
@@ -59,6 +65,10 @@ class AppSettingsStore @Inject constructor(
 
     suspend fun setHapticsEnabled(enabled: Boolean) = put(HAPTICS_ENABLED, enabled)
 
+    // <opt:applock>
+    suspend fun setAppLockEnabled(enabled: Boolean) = put(APP_LOCK_ENABLED, enabled)
+    // </opt:applock>
+
     private suspend fun <T> put(key: Preferences.Key<T>, value: T) {
         dataStore.edit { it[key] = value }
     }
@@ -69,5 +79,8 @@ class AppSettingsStore @Inject constructor(
         val ONBOARDING_DONE = booleanPreferencesKey("onboarding_completed")
         val ANALYTICS_ENABLED = booleanPreferencesKey("analytics_enabled")
         val HAPTICS_ENABLED = booleanPreferencesKey("haptics_enabled")
+        // <opt:applock>
+        val APP_LOCK_ENABLED = booleanPreferencesKey("app_lock_enabled")
+        // </opt:applock>
     }
 }

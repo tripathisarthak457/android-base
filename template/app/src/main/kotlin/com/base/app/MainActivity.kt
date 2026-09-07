@@ -25,12 +25,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 // <opt:deeplink>
-import android.content.Intent
 import com.base.app.deeplink.DeepLinkResolver
 // </opt:deeplink>
 // <opt:onboarding>
 import com.base.app.feature.onboarding.OnboardingKey
 // </opt:onboarding>
+// <opt:applock>
+import android.view.WindowManager
+import com.base.app.lock.AppLock
+import com.base.app.lock.LockActivity
+// </opt:applock>
+// <opt:applock|deeplink>
+import android.content.Intent
+// </opt:applock|deeplink>
 // <opt:playstore>
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -87,6 +94,11 @@ class MainActivity : ComponentActivity() {
     lateinit var deepLinkResolver: DeepLinkResolver
     // </opt:deeplink>
 
+    // <opt:applock>
+    @Inject
+    lateinit var appLock: AppLock
+    // </opt:applock>
+
     // <opt:playstore>
     @Inject
     lateinit var appUpdates: AppUpdates
@@ -103,6 +115,14 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // <opt:applock>
+        // Keeps the app's content out of the task switcher's thumbnail, and out of
+        // screenshots. A lock that leaves the last screen legible in the recents list is a
+        // lock in name only. It also blocks the user's own screenshots, which is the trade
+        // every app with a lock makes — delete this line if it is the wrong one for yours.
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
+        // </opt:applock>
 
         lifecycleScope.launch {
             combine(
@@ -161,6 +181,32 @@ class MainActivity : ComponentActivity() {
         }
     }
     // </opt:playstore>
+
+
+    // <opt:applock>
+    /**
+     * The lock is decided in `onStart`, before the window is drawn, so the app's own content is
+     * never on screen — even for a frame — while it is meant to be covered.
+     *
+     * The check is asynchronous because the preference lives in a DataStore, and a blocking read
+     * on the main thread during startup is the thing the splash screen API exists to avoid. That
+     * leaves a window of one or two frames; FLAG_SECURE below is what covers it, by keeping this
+     * Activity out of the task switcher's screenshot whether it is locked or not.
+     */
+    override fun onStart() {
+        super.onStart()
+        lifecycleScope.launch {
+            if (appLock.shouldLock()) {
+                startActivity(Intent(this@MainActivity, LockActivity::class.java))
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        appLock.onHidden()
+    }
+    // </opt:applock>
 
     // <opt:deeplink>
     override fun onNewIntent(intent: Intent) {

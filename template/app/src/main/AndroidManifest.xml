@@ -101,6 +101,21 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
         <!-- </opt:push> -->
+
+        <!-- <opt:applock> -->
+        <!--
+          excludeFromRecents and noHistory keep the unlock screen out of the task switcher and
+          off the back stack: it is not somewhere to return to. singleTask stops a second copy
+          stacking up when the app is resumed twice in quick succession.
+        -->
+        <activity
+            android:name=".lock.LockActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/Theme.BaseApp" />
+        <!-- </opt:applock> -->
     </application>
 
 </manifest>

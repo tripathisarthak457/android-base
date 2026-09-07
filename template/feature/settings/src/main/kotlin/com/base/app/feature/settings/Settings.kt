@@ -65,6 +65,9 @@ sealed interface SettingsEvent : UiEvent {
     data class ThemeSelected(val index: Int) : SettingsEvent
     data class AnalyticsToggled(val enabled: Boolean) : SettingsEvent
     data class HapticsToggled(val enabled: Boolean) : SettingsEvent
+    // <opt:applock>
+    data class AppLockToggled(val enabled: Boolean) : SettingsEvent
+    // </opt:applock>
     data object SignOutConfirmed : SettingsEvent
     data object BackClicked : SettingsEvent
 }
@@ -113,6 +116,10 @@ class SettingsViewModel @Inject constructor(
             is SettingsEvent.AnalyticsToggled -> settingsStore.setAnalyticsEnabled(event.enabled)
 
             is SettingsEvent.HapticsToggled -> settingsStore.setHapticsEnabled(event.enabled)
+
+            // <opt:applock>
+            is SettingsEvent.AppLockToggled -> settingsStore.setAppLockEnabled(event.enabled)
+            // </opt:applock>
 
             SettingsEvent.SignOutConfirmed -> sessionController.signOut()
 
@@ -208,6 +215,30 @@ fun SettingsScreen(
                     },
                 )
             }
+
+
+            // <opt:applock>
+            AppCard(contentPadding = PaddingValues(0.dp)) {
+                AppListItem(
+                    title = "Require unlock",
+                    supporting = "Ask for your fingerprint, face or screen lock when the app has " +
+                        "been in the background.",
+                    leading = {
+                        AppIcon(
+                            AppIcons.Lock,
+                            contentDescription = null,
+                            tint = AppTheme.colors.contentTertiary,
+                        )
+                    },
+                    trailing = {
+                        AppSwitch(
+                            checked = state.settings.appLockEnabled,
+                            onCheckedChange = { onEvent(SettingsEvent.AppLockToggled(it)) },
+                        )
+                    },
+                )
+            }
+            // </opt:applock>
 
             AppSectionHeader(title = "Privacy")
 

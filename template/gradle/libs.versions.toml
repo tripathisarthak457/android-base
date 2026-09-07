@@ -24,6 +24,7 @@ composeBom = "2026.08.00"
 navigation3 = "1.1.7"
 hiltNavigationCompose = "1.4.0"
 splashscreen = "1.2.0"
+biometric = "1.1.0"
 
 hilt = "2.60.1"
 coroutines = "1.11.0"
@@ -63,6 +64,7 @@ uiautomator = "2.4.0"
 
 # ── AndroidX platform ────────────────────────────────────────────────────────
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }

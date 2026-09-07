@@ -57,11 +57,7 @@ fun AppRoot(
     signInKey: AppNavKey = startKey,
     onExitRequested: () -> Unit = {},
 ) {
-    val themeMode = when (settings.themeMode) {
-        AppSettings.THEME_LIGHT -> ThemeMode.Light
-        AppSettings.THEME_DARK -> ThemeMode.Dark
-        else -> ThemeMode.System
-    }
+    val themeMode = settings.themeMode()
 
     AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -102,4 +98,17 @@ fun AppRoot(
             }
         }
     }
+}
+
+/**
+ * The stored preference as the design system's own type.
+ *
+ * A function rather than four lines inlined at the call site because the lock screen renders
+ * outside this composable and has to reach the same answer — two copies of this `when` is how one
+ * of them ends up a theme behind.
+ */
+fun AppSettings.themeMode(): ThemeMode = when (themeMode) {
+    AppSettings.THEME_LIGHT -> ThemeMode.Light
+    AppSettings.THEME_DARK -> ThemeMode.Dark
+    else -> ThemeMode.System
 }
