@@ -70,7 +70,10 @@ internal val TertiaryDarkPressed = Color(0xFFCB89EC)
 internal val TertiarySubtleDark = Color(0xFF221438)
 
 // ── Status · light ──────────────────────────────────────────────────────────────
-internal val SuccessLight = Color(0xFF12805C)
+// Three percent darker than it looks like it wants to be: at 0xFF12805C this sits at 4.36
+// against SuccessSubtleLight, and the pill it fills carries body-sized text. See
+// PaletteContrastTest, which is what found it.
+internal val SuccessLight = Color(0xFF117C59)
 internal val SuccessSubtleLight = Color(0xFFE4F5EE)
 internal val SuccessBorderLight = Color(0xFFB7E2D2)
 

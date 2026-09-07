@@ -270,7 +270,7 @@ dead code behind.
 | Firebase Remote Config | off | Binds the flag seam to Remote Config, seeded from the declared defaults so a first launch with no network still agrees |
 | Biometric app lock | off | A fingerprint, face or screen-lock prompt when the app returns from the background, a settings toggle, and the app kept out of the task switcher's thumbnail |
 | Play in-app update and review | off | A flexible update downloaded in the background with a restart prompt, and a rating request on a schedule Play will honour rather than silently drop |
-| Screenshot tests | on | Every catalog page rendered to a PNG in both themes on every build and compared against the recorded one. Runs on the JVM through Robolectric — no emulator |
+| Screenshot tests | on | Every catalog page rendered to a PNG in both themes and again at the largest font setting, compared on every build. Runs on the JVM through Robolectric — no emulator. A contrast test over the palette runs beside it |
 | GitHub Actions | on | Pull requests build devDebug, run detekt and the tests. Tags produce signed release artifacts |
 
 ---
@@ -383,9 +383,21 @@ shape radius applied to one component and not its neighbour.
 When the change was the point, run `record`, look at what moved, and commit the images with it —
 the pull request then shows the visual change as a picture rather than as a hex value.
 
+Every page is captured three times: light, dark, and light again at a font scale of 2.0 — the
+largest step Android's own display settings offer. Text that clips, wraps into a scrollbar or
+pushes a button off its row does it there and nowhere else, and the people who run their phone
+that way are the ones who cannot work around it.
+
 It renders through Robolectric on the JVM, so there is no emulator and the whole suite is about
-forty-five seconds. Two pages are deliberately absent: Animation and Motion & haptics exist to be
+ninety seconds. Two pages are deliberately absent: Animation and Motion & haptics exist to be
 watched moving, and a still first frame of either asserts nothing that the other twelve do not.
+
+Beside it, `PaletteContrastTest` checks every text-on-background pair in both palettes against
+WCAG AA. Contrast is the one design property that is objectively right or wrong, invisible to
+whoever changed it, and decisive for whoever cannot read the result — a reviewer looking at
+`Grey500 → Grey550` in a diff has no way to evaluate it. It found the success pill at 4.36:1 on
+the palette as it stood, which is why the green in this repository is three percent darker than
+it was.
 
 These images are the template's own. A generated project starts without them, because they are
 recorded against a palette and a typeface and every project picks its own — the suite ships, the

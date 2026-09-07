@@ -1,0 +1,100 @@
+package com.base.app.core.designsystem.theme
+
+import androidx.compose.ui.graphics.Color
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+/**
+ * Every text-on-background pair in both palettes, against WCAG AA.
+ *
+ * ## Why this is a test and not a review note
+ *
+ * Contrast is the one design property that is objectively wrong or right, invisible to the person
+ * changing it, and catastrophic to the person who cannot read the result. A reviewer looking at
+ * `Grey500 -> Grey550` in a diff cannot evaluate it; a bright monitor at midday hides the failure
+ * from everyone who might notice. This ran on the palette as it stood and found the success pill
+ * at 4.36 — legible to us, under the line for somebody who needs it not to be.
+ *
+ * ## What is exempt, and why
+ *
+ * Disabled text only. WCAG 1.4.3 exempts inactive controls, and a disabled label that meets AA is
+ * a disabled label that does not read as disabled — which is a worse outcome for the same person.
+ *
+ * The generator rewrites the accent ramp per project, so what this pins is the template's own
+ * palette and the neutrals every project keeps. A project with its own brand colour should keep
+ * this test and re-run it; the on-accent decision is made by contrast in the generator, and this
+ * is what checks the answer.
+ */
+class PaletteContrastTest {
+
+    @Test
+    fun `the light palette meets AA everywhere text sits on a background`() {
+        LightColors.assertReadable()
+    }
+
+    @Test
+    fun `the dark palette meets AA everywhere text sits on a background`() {
+        DarkColors.assertReadable()
+    }
+
+    private fun AppColors.assertReadable() {
+        val theme = if (isLight) "light" else "dark"
+
+        assertContrast("contentPrimary on background", contentPrimary, background)
+        assertContrast("contentPrimary on surface", contentPrimary, surface)
+        assertContrast("contentSecondary on surface", contentSecondary, surface)
+        assertContrast("contentTertiary on surface", contentTertiary, surface)
+
+        assertContrast("onAccent on accent", onAccent, accent)
+        assertContrast("onSecondary on secondary", onSecondary, secondary)
+        assertContrast("onTertiary on tertiary", onTertiary, tertiary)
+
+        listOf(
+            "success" to success,
+            "warning" to warning,
+            "danger" to danger,
+            "info" to info,
+            "neutral" to neutral,
+        ).forEach { (name, status) ->
+            assertContrast("$name content on its subtle fill ($theme)", status.content, status.subtle)
+        }
+    }
+
+    private fun assertContrast(what: String, foreground: Color, background: Color) {
+        val ratio = contrastRatio(foreground, background)
+        assertTrue(
+            "$what is ${"%.2f".format(ratio)}:1, below the $MINIMUM_RATIO:1 that AA asks for. " +
+                "Darken the foreground or lighten the fill — do not lower this threshold.",
+            ratio >= MINIMUM_RATIO,
+        )
+    }
+
+    private fun contrastRatio(a: Color, b: Color): Double {
+        val first = relativeLuminance(a)
+        val second = relativeLuminance(b)
+        return (maxOf(first, second) + OFFSET) / (minOf(first, second) + OFFSET)
+    }
+
+    /** WCAG's own definition, which is not the same as perceptual lightness. */
+    private fun relativeLuminance(color: Color): Double {
+        fun channel(value: Float): Double {
+            val v = value.toDouble()
+            return if (v <= LINEAR_LIMIT) v / LINEAR_DIVISOR else ((v + 0.055) / 1.055).pow(2.4)
+        }
+        return RED_WEIGHT * channel(color.red) +
+            GREEN_WEIGHT * channel(color.green) +
+            BLUE_WEIGHT * channel(color.blue)
+    }
+
+    private fun Double.pow(exponent: Double): Double = Math.pow(this, exponent)
+
+    private companion object {
+        const val MINIMUM_RATIO = 4.5
+        const val OFFSET = 0.05
+        const val LINEAR_LIMIT = 0.03928
+        const val LINEAR_DIVISOR = 12.92
+        const val RED_WEIGHT = 0.2126
+        const val GREEN_WEIGHT = 0.7152
+        const val BLUE_WEIGHT = 0.0722
+    }
+}

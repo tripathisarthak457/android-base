@@ -3,8 +3,11 @@ package com.base.app.catalog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.test.onRoot
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
@@ -41,6 +44,7 @@ import org.robolectric.annotation.GraphicsMode
 class CatalogScreenshotTest(
     private val section: CatalogSection,
     private val mode: ThemeMode,
+    private val fontScale: Float,
 ) {
 
     @get:Rule
@@ -55,17 +59,27 @@ class CatalogScreenshotTest(
         compose.mainClock.autoAdvance = false
 
         compose.setContent {
-            AppTheme(mode = mode) {
-                Box(
-                    modifier = Modifier
-                        .background(AppTheme.colors.background)
-                        .padding(AppTheme.spacing.lg),
-                ) {
-                    section.Content()
+            // The largest step Android's own font-size setting offers. Text that clips, wraps
+            // into a scrollbar or pushes a button off its row does it here and nowhere else,
+            // and the people who run their phone this way are the ones who cannot work around
+            // it. Density is left alone: this is a type-size setting, not a zoom.
+            val density = LocalDensity.current
+            CompositionLocalProvider(
+                LocalDensity provides Density(density.density, fontScale),
+            ) {
+                AppTheme(mode = mode) {
+                    Box(
+                        modifier = Modifier
+                            .background(AppTheme.colors.background)
+                            .padding(AppTheme.spacing.lg),
+                    ) {
+                        section.Content()
+                    }
                 }
             }
         }
 
+        val suffix = if (fontScale > NORMAL_FONT_SCALE) "${mode.name}-large" else mode.name
         val root = compose.onRoot()
         // The capture is clipped to the window, silently. A page that outgrows it would lose
         // whatever fell off the bottom and the image would still look plausible, so the height
@@ -77,22 +91,32 @@ class CatalogScreenshotTest(
                 "${SCREENSHOT_HEIGHT_DP}px, so the bottom of it would not be captured. " +
                 "Raise SCREENSHOT_HEIGHT_DP and the height in SCREENSHOT_DEVICE together."
         }
-        root.captureRoboImage("src/test/screenshots/${section.name}-${mode.name}.png")
+        root.captureRoboImage("src/test/screenshots/${section.name}-$suffix.png")
     }
 
     companion object {
         @JvmStatic
-        @ParameterizedRobolectricTestRunner.Parameters(name = "{0}-{1}")
+        @ParameterizedRobolectricTestRunner.Parameters(name = "{0}-{1}-{2}")
         fun pages(): List<Array<Any>> =
             CatalogSection.entries
                 .filterNot { it in SKIPPED }
                 .flatMap { section ->
-                    listOf(ThemeMode.Light, ThemeMode.Dark).map { arrayOf<Any>(section, it) }
+                    // Both themes at the normal size, and light again at the largest font
+                    // setting. Doing large in both themes would double the images to catch
+                    // the same clipping twice — layout does not depend on the palette.
+                    listOf(
+                        arrayOf<Any>(section, ThemeMode.Light, NORMAL_FONT_SCALE),
+                        arrayOf<Any>(section, ThemeMode.Dark, NORMAL_FONT_SCALE),
+                        arrayOf<Any>(section, ThemeMode.Light, LARGEST_FONT_SCALE),
+                    )
                 }
 
         // Both pages exist to be watched moving. A still first frame of either asserts nothing the
         // pages below do not already cover.
         private val SKIPPED = setOf(CatalogSection.Motion, CatalogSection.Feel)
+
+        const val NORMAL_FONT_SCALE = 1.0f
+        const val LARGEST_FONT_SCALE = 2.0f
     }
 }
 
