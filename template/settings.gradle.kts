@@ -76,6 +76,9 @@ include(":core:flags")
 // <opt:devtools>
 include(":core:devtools")
 // </opt:devtools>
+// <opt:database>
+include(":core:database")
+// </opt:database>
 
 // ── data ─────────────────────────────────────────────────────────────────────
 // <opt:auth>

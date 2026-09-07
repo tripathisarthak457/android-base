@@ -321,6 +321,18 @@ FEATURES: tuple[Feature, ...] = (
         files=("fastlane", "Gemfile"),
     ),
     Feature(
+        key="database",
+        title="App database (Room)",
+        description=(
+            "A database for the app's own data, separate from the network cache: an entity, "
+            "a DAO returning flows, a hand-written migration and a test that replays it "
+            "against a database that really was at the older version."
+        ),
+        default=False,
+        requires=("room",),
+        files=("core/database",),
+    ),
+    Feature(
         key="devtools",
         title="On-device inspector",
         description=(

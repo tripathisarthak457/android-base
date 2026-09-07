@@ -79,6 +79,7 @@ class AppSettingsStore @Inject constructor(
         val ONBOARDING_DONE = booleanPreferencesKey("onboarding_completed")
         val ANALYTICS_ENABLED = booleanPreferencesKey("analytics_enabled")
         val HAPTICS_ENABLED = booleanPreferencesKey("haptics_enabled")
+
         // <opt:applock>
         val APP_LOCK_ENABLED = booleanPreferencesKey("app_lock_enabled")
         // </opt:applock>

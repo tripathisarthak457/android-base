@@ -100,6 +100,10 @@ dependencies {
     implementation(project(":core:devtools"))
     // </opt:devtools>
 
+    // <opt:database>
+    implementation(project(":core:database"))
+    // </opt:database>
+
     // <opt:applock>
     implementation(libs.androidx.biometric)
     // </opt:applock>
