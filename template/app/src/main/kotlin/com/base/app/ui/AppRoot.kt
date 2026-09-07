@@ -6,6 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.base.app.core.datastore.AppSettings
+// <opt:devtools>
+import com.base.app.core.devtools.DevEnvironment
+import com.base.app.core.devtools.DevToolsOverlay
+import com.base.app.core.devtools.DevToolsLog
+// </opt:devtools>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import com.base.app.core.navigation.AppNavKey
@@ -56,6 +61,10 @@ fun AppRoot(
     tabs: List<ShellTab> = emptyList(),
     signInKey: AppNavKey = startKey,
     onExitRequested: () -> Unit = {},
+    // <opt:devtools>
+    devEnvironment: DevEnvironment,
+    devToolsLog: DevToolsLog,
+    // </opt:devtools>
 ) {
     val themeMode = settings.themeMode()
 
@@ -96,6 +105,13 @@ fun AppRoot(
                     onExitRequested = onExitRequested,
                 )
             }
+
+            // <opt:devtools>
+            // Last child of the root Box, so the badge floats over whichever screen is
+            // showing, and inside the theme so the panel it opens is themed. A no-op in a
+            // production build.
+            DevToolsOverlay(environment = devEnvironment, log = devToolsLog)
+            // </opt:devtools>
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.base.app.di
 
 import com.base.app.BuildConfig
+// <opt:devtools>
+import com.base.app.core.devtools.DevEnvironment
+// </opt:devtools>
 import com.base.app.core.network.NetworkConfig
 import dagger.Module
 import dagger.Provides
@@ -31,5 +34,32 @@ object AppModule {
         // not issue refresh tokens — the alternative is every expiry hitting an endpoint that
         // does not exist.
         refreshTokenPath = "",
+        // <opt:devtools>
+        // Same rule as the badge: debug builds, and dev and staging releases. Never
+        // production, where the recorder is not installed and no body is ever held.
+        recordExchanges = devEnvironment().visible,
+        // </opt:devtools>
     )
+
+    // <opt:devtools>
+    /**
+     * What this build is, for the inspector.
+     *
+     * Read from `BuildConfig` here rather than in `:core:devtools`, for the same reason
+     * `NetworkConfig` is: a library module reading its own `BuildConfig` reports whichever
+     * variant compiled it, not the app.
+     */
+    @Provides
+    @Singleton
+    fun provideDevEnvironment(): DevEnvironment = devEnvironment()
+
+    private fun devEnvironment() = DevEnvironment(
+        name = BuildConfig.ENVIRONMENT,
+        versionName = BuildConfig.VERSION_NAME,
+        applicationId = BuildConfig.APPLICATION_ID,
+        apiBaseUrl = BuildConfig.API_BASE_URL,
+        isDebugBuild = BuildConfig.DEBUG,
+        isShippable = BuildConfig.IS_SHIPPABLE,
+    )
+    // </opt:devtools>
 }

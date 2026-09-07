@@ -321,6 +321,20 @@ FEATURES: tuple[Feature, ...] = (
         files=("fastlane", "Gemfile"),
     ),
     Feature(
+        key="devtools",
+        title="On-device inspector",
+        description=(
+            "A draggable badge naming the environment on every build except production, and "
+            "a panel behind it holding the last 200 requests with their full bodies, timing "
+            "and failure rate. Absent from a production build rather than hidden in one."
+        ),
+        default=True,
+        files=(
+            "core/devtools",
+            "core/network/src/main/kotlin/{pkg_path}/core/network/NetworkRecording.kt",
+        ),
+    ),
+    Feature(
         key="licenses",
         title="Open source licences screen",
         description=(
@@ -451,6 +465,7 @@ _STANDARD = _LEAN + (
     "fastlane",
     "screenshottests",
     "flags",
+    "devtools",
 )
 
 PRESETS: tuple[Preset, ...] = (

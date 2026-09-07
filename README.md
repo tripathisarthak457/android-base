@@ -264,6 +264,7 @@ dead code behind.
 | LeakCanary | on | Debug builds only |
 | Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |
 | Fastlane | off | Version bump, changelog from git history, tag, signed artifacts, Play internal-track upload |
+| On-device inspector | on | A draggable badge naming the environment on every build except production, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
 | Open source licences screen | off | The real dependency list, generated from the resolved classpath at build time and rendered by the design system. The build also fails on a licence the project has not allowed |
 | Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
 | Firebase Remote Config | off | Binds the flag seam to Remote Config, seeded from the declared defaults so a first launch with no network still agrees |

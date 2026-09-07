@@ -23,6 +23,16 @@ data class NetworkConfig(
      * does not exist and turns every expiry into a hang.
      */
     val refreshTokenPath: String = "",
+    // <opt:devtools>
+    /**
+     * Whether every request and response is kept for the on-device inspector.
+     *
+     * False in production, where the recorder is not installed at all — see installRecording.
+     * Supplied by the application module rather than derived from [isDebug], because a
+     * staging *release* build is not debuggable and still wants the inspector.
+     */
+    val recordExchanges: Boolean = false,
+    // </opt:devtools>
 ) {
     /**
      * [baseUrl] with a guaranteed trailing slash.

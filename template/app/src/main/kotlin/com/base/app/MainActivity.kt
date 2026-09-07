@@ -30,6 +30,10 @@ import com.base.app.deeplink.DeepLinkResolver
 // <opt:onboarding>
 import com.base.app.feature.onboarding.OnboardingKey
 // </opt:onboarding>
+// <opt:devtools>
+import com.base.app.core.devtools.DevEnvironment
+import com.base.app.core.devtools.DevToolsLog
+// </opt:devtools>
 // <opt:applock>
 import android.view.WindowManager
 import com.base.app.lock.AppLock
@@ -99,6 +103,14 @@ class MainActivity : ComponentActivity() {
     lateinit var appLock: AppLock
     // </opt:applock>
 
+    // <opt:devtools>
+    @Inject
+    lateinit var devEnvironment: DevEnvironment
+
+    @Inject
+    lateinit var devToolsLog: DevToolsLog
+    // </opt:devtools>
+
     // <opt:playstore>
     @Inject
     lateinit var appUpdates: AppUpdates
@@ -147,6 +159,10 @@ class MainActivity : ComponentActivity() {
                 settings = resolved.settings,
                 signInKey = AppDestinations.signIn,
                 onExitRequested = { finish() },
+                // <opt:devtools>
+                devEnvironment = devEnvironment,
+                devToolsLog = devToolsLog,
+                // </opt:devtools>
             )
         }
 
@@ -181,7 +197,6 @@ class MainActivity : ComponentActivity() {
         }
     }
     // </opt:playstore>
-
 
     // <opt:applock>
     /**

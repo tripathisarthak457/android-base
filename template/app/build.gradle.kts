@@ -96,6 +96,10 @@ dependencies {
     implementation(project(":core:flags"))
     // </opt:flags>
 
+    // <opt:devtools>
+    implementation(project(":core:devtools"))
+    // </opt:devtools>
+
     // <opt:applock>
     implementation(libs.androidx.biometric)
     // </opt:applock>

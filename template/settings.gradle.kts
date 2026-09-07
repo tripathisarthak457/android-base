@@ -73,6 +73,9 @@ include(":core:media")
 // <opt:flags>
 include(":core:flags")
 // </opt:flags>
+// <opt:devtools>
+include(":core:devtools")
+// </opt:devtools>
 
 // ── data ─────────────────────────────────────────────────────────────────────
 // <opt:auth>

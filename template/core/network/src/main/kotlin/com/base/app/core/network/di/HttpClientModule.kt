@@ -2,6 +2,10 @@ package com.base.app.core.network.di
 
 import android.util.Log
 import com.base.app.core.datastore.AuthTokenStore
+// <opt:devtools>
+import com.base.app.core.devtools.DevToolsLog
+import com.base.app.core.network.installRecording
+// </opt:devtools>
 import com.base.app.core.network.NetworkConfig
 import com.base.app.core.network.NetworkJson
 import com.base.app.core.network.SkipAuthAttribute
@@ -33,9 +37,17 @@ object HttpClientModule {
     @Provides
     @Singleton
     @PlainClient
-    fun providePlainClient(config: NetworkConfig): HttpClient = HttpClient(OkHttp) {
+    fun providePlainClient(
+        config: NetworkConfig,
+        // <opt:devtools>
+        devToolsLog: DevToolsLog,
+        // </opt:devtools>
+    ): HttpClient = HttpClient(OkHttp) {
         expectSuccess = false
         installCommon(config)
+        // <opt:devtools>
+        installRecording(config, devToolsLog)
+        // </opt:devtools>
     }
 
     /**
@@ -63,9 +75,15 @@ object HttpClientModule {
         tokenStore: AuthTokenStore,
         tokenRefresher: TokenRefresher,
         sessionEvents: SessionEvents,
+        // <opt:devtools>
+        devToolsLog: DevToolsLog,
+        // </opt:devtools>
     ): HttpClient = HttpClient(OkHttp) {
         expectSuccess = false
         installCommon(config)
+        // <opt:devtools>
+        installRecording(config, devToolsLog)
+        // </opt:devtools>
 
         if (config.refreshTokenPath.isNotBlank()) {
             install(Auth) {
