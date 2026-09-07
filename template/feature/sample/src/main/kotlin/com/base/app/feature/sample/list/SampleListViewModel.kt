@@ -5,12 +5,19 @@ import com.base.app.core.common.mvi.LoadState
 import com.base.app.core.common.mvi.MessageKind
 import com.base.app.core.common.mvi.MviViewModel
 import com.base.app.core.common.util.asUiText
+import androidx.lifecycle.SavedStateHandle
 import com.base.app.data.sample.SampleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
  * The reference ViewModel. Every feature in this project is shaped like this one.
+ *
+ * ## What comes back after process death, and what does not
+ *
+ * The query is persisted and the list is not. Restoring the list would show rows fetched
+ * before the app was killed as though they were current; re-running the load is both simpler
+ * and honest. See `MviViewModel.persistState`.
  *
  * ## The initial load runs from `init`
  *
@@ -28,9 +35,17 @@ import javax.inject.Inject
 @HiltViewModel
 class SampleListViewModel @Inject constructor(
     private val repository: SampleRepository,
+    savedStateHandle: SavedStateHandle,
 ) : MviViewModel<SampleListState, SampleListEvent, SampleListEffect>(SampleListState()) {
 
     init {
+        // What the user typed survives the process being killed; the list itself does not,
+        // because it is a request away and a restored one would be an hour stale.
+        persistState(
+            handle = savedStateHandle,
+            save = { mapOf("query" to it.query) },
+            restore = { copy(query = it["query"] as? String ?: query) },
+        )
         onEvent(SampleListEvent.Load)
     }
 

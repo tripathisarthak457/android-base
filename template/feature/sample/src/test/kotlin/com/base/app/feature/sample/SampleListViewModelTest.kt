@@ -1,6 +1,7 @@
 package com.base.app.feature.sample
 
 import app.cash.turbine.test
+import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.common.AppResult
 import com.base.app.core.common.mvi.LoadState
 import com.base.app.core.testing.MainDispatcherRule
@@ -35,7 +36,7 @@ class SampleListViewModelTest {
 
     @Test
     fun `loads on creation and lands in Success`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)))
+        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
 
         advanceUntilIdle()
 
@@ -45,7 +46,7 @@ class SampleListViewModelTest {
 
     @Test
     fun `an empty response is Empty, not Success with no rows`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(emptyList())))
+        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(emptyList())), SavedStateHandle())
 
         advanceUntilIdle()
 
@@ -57,7 +58,7 @@ class SampleListViewModelTest {
         val repository = FakeSampleRepository(
             AppResult.Failure(message = "Nope", isOffline = true),
         )
-        val viewModel = SampleListViewModel(repository)
+        val viewModel = SampleListViewModel(repository, SavedStateHandle())
 
         advanceUntilIdle()
 
@@ -69,7 +70,7 @@ class SampleListViewModelTest {
     @Test
     fun `a failed refresh keeps the content already on screen`() = runTest {
         val repository = FakeSampleRepository(AppResult.Success(items))
-        val viewModel = SampleListViewModel(repository)
+        val viewModel = SampleListViewModel(repository, SavedStateHandle())
         advanceUntilIdle()
 
         repository.result = AppResult.Failure(message = "Flaky")
@@ -82,7 +83,7 @@ class SampleListViewModelTest {
 
     @Test
     fun `the query filters without touching the loaded list`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)))
+        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
         advanceUntilIdle()
 
         viewModel.onEvent(SampleListEvent.QueryChanged("alp"))
@@ -94,7 +95,7 @@ class SampleListViewModelTest {
 
     @Test
     fun `tapping a row emits a navigation effect`() = runTest {
-        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)))
+        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
         advanceUntilIdle()
 
         viewModel.effects.test {
