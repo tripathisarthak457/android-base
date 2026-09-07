@@ -321,6 +321,33 @@ FEATURES: tuple[Feature, ...] = (
         files=("fastlane", "Gemfile"),
     ),
     Feature(
+        key="playstore",
+        title="Play in-app update and review prompts",
+        description=(
+            "A flexible update offered in the background when a newer build is live, and a "
+            "rating prompt on a schedule Play will actually honour rather than silently drop."
+        ),
+        default=False,
+        files=("app/src/main/kotlin/{pkg_path}/playstore",),
+    ),
+    Feature(
+        key="screenshottests",
+        title="Screenshot tests for the design system",
+        description=(
+            "Every catalog page rendered to a PNG in both themes on every build and compared "
+            "against the one committed beside it. The only check that can fail on a colour "
+            "that lost its contrast or a text style that grew two pixels."
+        ),
+        default=True,
+        # The suite renders the catalog's own pages rather than keeping a second list of
+        # components, so it cannot exist without it.
+        requires=("catalog",),
+        files=(
+            "catalog/src/test/kotlin/{pkg_path}/catalog/CatalogScreenshotTest.kt",
+            "catalog/src/test/screenshots",
+        ),
+    ),
+    Feature(
         key="ci",
         title="GitHub Actions",
         description=(
@@ -372,6 +399,7 @@ _STANDARD = _LEAN + (
     "deeplink",
     "ci",
     "fastlane",
+    "screenshottests",
 )
 
 PRESETS: tuple[Preset, ...] = (
@@ -526,8 +554,13 @@ class ProjectSpec:
     #: A Google Fonts family name. Written into AppFontNames, which every text style reads from.
     font_name: str = "DM Sans"
     mono_font_name: str = "JetBrains Mono"
-    #: One brand hex. The whole accent ramp — pressed, subtle, dark-theme — is derived from it.
+    #: The primary brand hex. The whole accent ramp — pressed, subtle, dark-theme — is derived
+    #: from it, along with the launcher background and whether text on it is black or white.
     accent_colour: str = ""
+    #: The supporting brand hexes. Blank means "work one out from the primary" rather than
+    #: "leave the template's" — see render.brand_ramps for the rule and why it is that rule.
+    secondary_colour: str = ""
+    tertiary_colour: str = ""
     #: An AppMotionStyle name: how every control responds to a finger.
     motion_style: str = "Standard"
     #: Whether haptics are on by default. The user's own device setting still applies on top.
@@ -633,8 +666,15 @@ class ProjectSpec:
                 f"Choose one of: {', '.join(MOTION_STYLE_NAMES)}."
             )
 
-        if self.accent_colour and not _HEX_COLOUR.match(self.accent_colour.strip()):
-            raise SpecError("The accent colour must be a six-digit hex, e.g. #2C6BED.")
+        for label, value in (
+            ("accent", self.accent_colour),
+            ("secondary", self.secondary_colour),
+            ("tertiary", self.tertiary_colour),
+        ):
+            if value and not _HEX_COLOUR.match(value.strip()):
+                raise SpecError(
+                    f"The {label} colour must be a six-digit hex, e.g. #2C6BED."
+                )
 
         return replace(self, features=frozenset(resolve_features(set(self.features))))
 

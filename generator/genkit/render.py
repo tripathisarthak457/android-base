@@ -54,6 +54,15 @@ _BINARY_SUFFIXES = {".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".
 _SKIP_DIRS = {"build", ".gradle", ".kotlin", ".idea", ".git", "keys", ".cxx"}
 _SKIP_FILES = {"local.properties", "keystore.properties", ".DS_Store"}
 
+#: Paths that belong to this repository rather than to any project generated from it.
+#:
+#: The reference screenshots are recorded against the template's own palette and typeface. A
+#: project that chose its own brand renders differently on the very first run, so shipping
+#: them would hand somebody a suite that fails before they have written a line. The tests go
+#: out; the images they compare against are the project's own to record, once, with
+#: `./gradlew :catalog:recordRoborazziDebug`.
+_TEMPLATE_ONLY = {"catalog/src/test/screenshots"}
+
 
 class RenderError(RuntimeError):
     """Something went wrong producing the project. The message is meant for the user."""
@@ -187,7 +196,7 @@ def copy_template(template: Path, destination: Path, spec: ProjectSpec) -> list[
     gets a say. On this machine that was the difference between sixteen seconds and one.
     """
     warnings: list[str] = []
-    owned = _owned_paths(spec)
+    owned = _owned_paths(spec) | _TEMPLATE_ONLY
 
     for directory, subdirectories, filenames in os.walk(template):
         subdirectories[:] = sorted(d for d in subdirectories if d not in _SKIP_DIRS)
@@ -711,36 +720,134 @@ def _relative_luminance(rgb: tuple[float, float, float]) -> float:
     return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
 
 
+def _rotate_hue(rgb: tuple[float, float, float], degrees: float):
+    """Moves a colour around the wheel, keeping how light and how saturated it is."""
+    import colorsys
+
+    hue, lightness, saturation = colorsys.rgb_to_hls(*rgb)
+    return colorsys.hls_to_rgb((hue + degrees / 360.0) % 1.0, lightness, saturation)
+
+
+#: The template's own primary, and what a supporting colour falls back to being derived from.
+TEMPLATE_ACCENT = "#2C6BED"
+
+#: How a supporting colour is worked out when only the primary was given.
+#:
+#: Material's rule, because the obvious alternatives are worse. A complement — the colour opposite
+#: on the wheel — is what a naive derivation picks, and it produces the orange-beside-blue pairing
+#: nobody would have chosen deliberately. Analogous hues sit too close to tell apart. Taking the
+#: chroma out of the primary gives a secondary that supports it and can never clash, and a sixth
+#: of a turn gives a tertiary far enough to read as its own colour.
+_SECONDARY_SATURATION = 0.45
+_TERTIARY_HUE_SHIFT = 60
+
+
+def brand_colours(spec: ProjectSpec) -> dict[str, tuple[float, float, float]]:
+    """
+    The three brand colours as RGB, with anything the user left blank worked out from the primary.
+
+    Blank means derived rather than left alone. A project that took a custom primary and kept the
+    template's supporting colours would ship a palette whose three members were chosen by two
+    different people with no knowledge of each other, which is how a brand ends up with a blue
+    button beside a teal chip.
+    """
+    primary = _hex_to_rgb(spec.accent_colour or TEMPLATE_ACCENT)
+    return {
+        "Accent": primary,
+        "Secondary": (
+            _hex_to_rgb(spec.secondary_colour)
+            if spec.secondary_colour
+            else _shift(primary, 1.0, _SECONDARY_SATURATION)
+        ),
+        "Tertiary": (
+            _hex_to_rgb(spec.tertiary_colour)
+            if spec.tertiary_colour
+            else _rotate_hue(primary, _TERTIARY_HUE_SHIFT)
+        ),
+    }
+
+
+def _rotate_hue(rgb: tuple[float, float, float], degrees: float):
+    """Moves a colour around the wheel, keeping how light and how saturated it is."""
+    import colorsys
+
+    hue, lightness, saturation = colorsys.rgb_to_hls(*rgb)
+    return colorsys.hls_to_rgb((hue + degrees / 360.0) % 1.0, lightness, saturation)
+
+
+#: The template's own primary, and what a supporting colour falls back to being derived from.
+TEMPLATE_ACCENT = "#2C6BED"
+
+#: How a supporting colour is worked out when only the primary was given.
+#:
+#: Material's rule, because the obvious alternatives are worse. A complement — the colour opposite
+#: on the wheel — is what a naive derivation reaches for, and it produces the orange-beside-blue
+#: pairing nobody would have chosen deliberately. Analogous hues sit too close together to tell
+#: apart. Taking the chroma out of the primary gives a secondary that supports it and cannot
+#: clash with it, and a sixth of a turn gives a tertiary far enough away to read as its own
+#: colour. Both are a starting point rather than a brand decision; the wizard asks for all three.
+_SECONDARY_SATURATION = 0.45
+_TERTIARY_HUE_SHIFT = 60
+
+
+def brand_colours(spec: ProjectSpec) -> dict[str, tuple[float, float, float]]:
+    """
+    The three brand colours as RGB, with anything left blank worked out from the primary.
+
+    Blank means derived, not left alone. A project that took a custom primary and kept the
+    template's supporting colours would ship a palette whose three members were picked by two
+    people who had never met, which is how an app ends up with a blue button beside a teal chip.
+    """
+    primary = _hex_to_rgb(spec.accent_colour or TEMPLATE_ACCENT)
+    return {
+        "Accent": primary,
+        "Secondary": (
+            _hex_to_rgb(spec.secondary_colour)
+            if spec.secondary_colour
+            else _shift(primary, 1.0, _SECONDARY_SATURATION)
+        ),
+        "Tertiary": (
+            _hex_to_rgb(spec.tertiary_colour)
+            if spec.tertiary_colour
+            else _rotate_hue(primary, _TERTIARY_HUE_SHIFT)
+        ),
+    }
+
+
 def apply_accent(destination: Path, spec: ProjectSpec) -> None:
     """
-    Derives the whole accent ramp from one brand colour.
+    Derives three full colour ramps from the brand colours.
 
-    Six values, not one: the resting accent, its pressed state, a tint for subtle fills, and the
-    same three again for the dark palette — plus the launcher background. Asking for six hex codes
-    would get six that do not agree with each other, and asking for one and using it everywhere
-    gives a pressed state that is invisible and a "subtle" fill that is not subtle.
+    Six values per ramp, not one: the resting colour, its pressed state, a tint for subtle fills,
+    and the same three again for the dark palette — plus the launcher background and the
+    black-or-white decision for text on top. Asking for eighteen hex codes would get eighteen that
+    do not agree with each other, and using one colour everywhere gives a pressed state that is
+    invisible and a "subtle" fill that is not subtle.
 
     Everything is moved along the colour's own hue rather than towards black or white, so a brand
     orange darkens to a deeper orange instead of to brown.
     """
-    if not spec.accent_colour:
+    if not (spec.accent_colour or spec.secondary_colour or spec.tertiary_colour):
         return
 
-    base = _hex_to_rgb(spec.accent_colour)
     white = (1.0, 1.0, 1.0)
     ink = (0.043, 0.063, 0.106)
 
-    replacements = {
-        "Accent": _to_argb(base),
-        "AccentPressed": _to_argb(_shift(base, 0.78)),
-        "AccentSubtleLight": _to_argb(_mix(base, white, 0.90)),
-        # The dark palette needs a lighter, slightly desaturated version: the same hex that reads
-        # as confident on white reads as muddy on near-black, and a fully saturated accent on a
-        # dark surface vibrates.
-        "AccentDark": _to_argb(_shift(_mix(base, white, 0.22), 1.0, 0.92)),
-        "AccentDarkPressed": _to_argb(_shift(_mix(base, white, 0.40), 1.0, 0.85)),
-        "AccentSubtleDark": _to_argb(_mix(ink, base, 0.14)),
-    }
+    replacements: dict[str, str] = {}
+    for prefix, base in brand_colours(spec).items():
+        replacements.update(
+            {
+                prefix: _to_argb(base),
+                f"{prefix}Pressed": _to_argb(_shift(base, 0.78)),
+                f"{prefix}SubtleLight": _to_argb(_mix(base, white, 0.90)),
+                # The dark palette needs a lighter, slightly desaturated version: the same hex
+                # that reads as confident on white reads as muddy on near-black, and a fully
+                # saturated colour on a dark surface vibrates.
+                f"{prefix}Dark": _to_argb(_shift(_mix(base, white, 0.22), 1.0, 0.92)),
+                f"{prefix}DarkPressed": _to_argb(_shift(_mix(base, white, 0.40), 1.0, 0.85)),
+                f"{prefix}SubtleDark": _to_argb(_mix(ink, base, 0.14)),
+            }
+        )
 
     palette = (
         destination
@@ -759,10 +866,10 @@ def apply_accent(destination: Path, spec: ProjectSpec) -> None:
             )
         palette.write_text(text, encoding="utf-8")
 
-    _apply_on_accent(destination, spec, base)
+    _apply_on_brand(destination, spec)
 
     # The adaptive icon's background, so the launcher matches the app it opens.
-    launcher = f"#{replacements['Accent'][2:]}"
+    launcher = replacements["Accent"][4:]
     for relative in (
         "app/src/main/res/values/colors.xml",
         "catalog/src/main/res/values/colors.xml",
@@ -773,26 +880,22 @@ def apply_accent(destination: Path, spec: ProjectSpec) -> None:
         text = path.read_text(encoding="utf-8")
         text = re.sub(
             r'(<color name="launcher_background">)#[0-9A-Fa-f]{6,8}(</color>)',
-            rf"\g<1>#FF{launcher[3:] if len(launcher) > 7 else launcher[1:]}\g<2>",
+            rf"\g<1>#FF{launcher}\g<2>",
             text,
             count=1,
         )
         path.write_text(text, encoding="utf-8")
 
 
-def _apply_on_accent(destination: Path, spec: ProjectSpec, base: tuple[float, float, float]) -> None:
+def _apply_on_brand(destination: Path, spec: ProjectSpec) -> None:
     """
-    Picks black or white for text sitting on the accent.
+    Picks black or white for text sitting on each brand colour.
 
     A brand yellow with white text on it is the most common way a themed design system produces
     something unreadable, and it is entirely mechanical to avoid: compare the contrast both ways
-    and take the better one.
+    and take the better one. Done per ramp, because the three are chosen independently and a
+    primary dark enough for white text says nothing about the tertiary.
     """
-    luminance = _relative_luminance(base)
-    on_white = (1.05) / (luminance + 0.05)
-    on_black = (luminance + 0.05) / 0.05
-    light_on_accent = "White" if on_white >= on_black else "Ink900"
-
     colors = (
         destination
         / "core/designsystem/src/main/kotlin"
@@ -803,10 +906,17 @@ def _apply_on_accent(destination: Path, spec: ProjectSpec, base: tuple[float, fl
         return
 
     text = colors.read_text(encoding="utf-8")
-    text = re.sub(
-        r"(accentSubtle = AccentSubtleLight,\s*\n\s*onAccent = )\w+",
-        rf"\g<1>{light_on_accent}",
-        text,
-        count=1,
-    )
+    for prefix, base in brand_colours(spec).items():
+        luminance = _relative_luminance(base)
+        on_white = 1.05 / (luminance + 0.05)
+        on_black = (luminance + 0.05) / 0.05
+        readable = "White" if on_white >= on_black else "Ink900"
+
+        role = prefix[0].lower() + prefix[1:]
+        text = re.sub(
+            rf"({role}Subtle = {prefix}SubtleLight,\s*\n\s*on{prefix} = )\w+",
+            rf"\g<1>{readable}",
+            text,
+            count=1,
+        )
     colors.write_text(text, encoding="utf-8")

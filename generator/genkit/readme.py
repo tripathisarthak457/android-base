@@ -29,6 +29,7 @@ Generated from the [Android base template](https://github.com/tripathisarthak457
 ./gradlew :app:installDevDebug
 ```
 __CATALOG__
+__SCREENSHOTS__
 ## Variants
 
 Four environments — `dev`, `staging`, `prod`, `playstore` — times debug and release, minus
@@ -147,6 +148,25 @@ depends on `:core:designsystem` alone, so working on a component rebuilds two mo
 the whole graph.
 """
 
+_SCREENSHOT_NOTE = '''
+### Screenshot tests
+
+```bash
+./gradlew :catalog:recordRoborazziDebug
+```
+
+Renders every catalog page to a PNG under `catalog/src/test/screenshots`. Run it once and commit
+what it produces: that is this project's baseline. There is none to start with, because the images
+the template ships were recorded against the template's own blue and typeface, and this project
+chose its own.
+
+From then on `./gradlew build` re-renders and compares, and fails on any difference — including
+the ones nobody can describe in a review, like an accent that lost its contrast in dark mode or a
+text style that grew two pixels. When the change to a component was the point, look at the diff
+images under `catalog/build/outputs/roborazzi`, run `record` again, and commit the new images
+alongside it.
+'''
+
 _FASTLANE_NOTE = """
 ## Releasing
 
@@ -197,6 +217,10 @@ def write_readme(project_dir: Path, spec: ProjectSpec) -> None:
         .replace("__MODULES__", modules)
         .replace("__SIGNING__", signing)
         .replace("__CATALOG__", _CATALOG_NOTE if spec.has("catalog") else "")
+        .replace(
+            "__SCREENSHOTS__",
+            _SCREENSHOT_NOTE if spec.has("screenshottests") else "",
+        )
         .replace(
             "__FIREBASE__",
             _FIREBASE_NOTE.replace("__PACKAGE__", spec.package_name) if spec.has("firebase") else "",

@@ -117,6 +117,33 @@ jobs:
         working-directory: out
         run: ./gradlew build --no-daemon --stacktrace
 
+  screenshots:
+    name: Design system screenshots
+    runs-on: ubuntu-latest
+    # The generated project cannot carry this: reference images are recorded against a palette and
+    # a typeface, and every generated project picks its own. So the template's own images are the
+    # ones under test, and they are checked here against the template itself.
+    #
+    # Renders through Robolectric on the JVM — no emulator, no device — which is what keeps this to
+    # a couple of minutes rather than the twenty an instrumented run would cost.
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v5
+      - name: Every component still renders the way it was recorded
+        working-directory: template
+        run: ./gradlew :catalog:verifyRoborazziDebug --no-daemon --stacktrace
+      - name: What actually differed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diffs
+          path: template/catalog/build/outputs/roborazzi
+          if-no-files-found: ignore
+
   deploy:
     name: Deploy to production
     runs-on: ubuntu-latest
@@ -124,7 +151,7 @@ jobs:
     # fires seconds after the push, and the Android job takes nine minutes, so an Ignored Build
     # Step would only ever see a run still in progress. Making the deploy a job that `needs` the
     # others is the only version of "ship it if the tests pass" that is actually true.
-    needs: [generator, api, frontend, android]
+    needs: [generator, api, frontend, android, screenshots]
     # `needs` orders the jobs; it does not stop a pull request reaching production. Both
     # conditions are load-bearing.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
