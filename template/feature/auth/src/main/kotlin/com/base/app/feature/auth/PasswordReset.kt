@@ -146,13 +146,13 @@ fun PasswordResetScreen(
         ) {
             if (state.sent) {
                 AppBanner(
-                    text = stringResource(R.string.auth_if_that_address_has_an_account),
+                    text = stringResource(R.string.auth_reset_sent),
                     tone = AppTone.Success,
                 )
             }
 
             AppText(
-                text = stringResource(R.string.auth_enter_the_email_you_signed_up),
+                text = stringResource(R.string.auth_reset_explanation),
                 style = AppTheme.typography.bodyMedium,
                 color = AppTheme.colors.contentSecondary,
             )
@@ -166,7 +166,7 @@ fun PasswordResetScreen(
                 onValueChange = email::onChange,
                 modifier = Modifier.touchOnFocusLost(email),
                 label = stringResource(R.string.auth_email),
-                placeholder = stringResource(R.string.auth_you_example_com),
+                placeholder = stringResource(R.string.auth_email_placeholder),
                 error = email.error?.asString(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,

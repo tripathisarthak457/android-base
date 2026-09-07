@@ -152,7 +152,7 @@ fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Unit) {
         if (state.loadState == LoadState.Empty) {
             AppEmptyState(
                 title = stringResource(R.string.settings_no_licences_recorded),
-                message = stringResource(R.string.settings_this_build_did_not_generate_a),
+                message = stringResource(R.string.settings_no_licences_explanation),
             )
             return@AppScaffold
         }

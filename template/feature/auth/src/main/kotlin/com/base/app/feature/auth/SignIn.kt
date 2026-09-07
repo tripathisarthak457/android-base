@@ -186,7 +186,7 @@ fun SignInScreen(
                     onValueChange = email::onChange,
                     modifier = Modifier.touchOnFocusLost(email),
                     label = stringResource(R.string.auth_email),
-                    placeholder = stringResource(R.string.auth_you_example_com),
+                    placeholder = stringResource(R.string.auth_email_placeholder),
                     error = email.error?.asString(),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,

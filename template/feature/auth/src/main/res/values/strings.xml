@@ -7,18 +7,18 @@
   beside this file; nothing in the Kotlin changes.
 -->
 <resources>
-    <string name="auth_at_least_eight_characters_with_a">At least eight characters, with a letter and a number.</string>
+    <string name="auth_password_rules">At least eight characters, with a letter and a number.</string>
     <string name="auth_confirm_password">Confirm password</string>
     <string name="auth_create_account">Create account</string>
     <string name="auth_email">Email</string>
-    <string name="auth_enter_the_email_you_signed_up">Enter the email you signed up with and we will send you a link.</string>
+    <string name="auth_reset_explanation">Enter the email you signed up with and we will send you a link.</string>
     <string name="auth_forgot_password">Forgot password</string>
-    <string name="auth_if_that_address_has_an_account">If that address has an account, a reset link is on its way.</string>
+    <string name="auth_reset_sent">If that address has an account, a reset link is on its way.</string>
     <string name="auth_name">Name</string>
     <string name="auth_password">Password</string>
     <string name="auth_reset_password">Reset password</string>
     <string name="auth_send_reset_link">Send reset link</string>
     <string name="auth_sign_in">Sign in</string>
     <string name="auth_welcome_back">Welcome back</string>
-    <string name="auth_you_example_com">you@example.com</string>
+    <string name="auth_email_placeholder">you@example.com</string>
 </resources>

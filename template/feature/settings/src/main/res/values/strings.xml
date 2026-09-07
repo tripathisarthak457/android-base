@@ -7,25 +7,25 @@
   beside this file; nothing in the Kotlin changes.
 -->
 <resources>
-    <string name="settings_a_small_vibration_when_a_control">A small vibration when a control responds.</string>
+    <string name="settings_haptics_explanation">A small vibration when a control responds.</string>
     <string name="settings_about">About</string>
     <string name="settings_account">Account</string>
     <string name="settings_appearance">Appearance</string>
-    <string name="settings_ask_for_your_fingerprint_face_or">Ask for your fingerprint, face or screen lock when the app has </string>
+    <string name="settings_app_lock_explanation">Ask for your fingerprint, face or screen lock when the app has been in the background.</string>
     <string name="settings_haptic_feedback">Haptic feedback</string>
-    <string name="settings_helps_us_find_crashes_and_slow">Helps us find crashes and slow screens. Never includes your content.</string>
+    <string name="settings_analytics_explanation">Helps us find crashes and slow screens. Never includes your content.</string>
     <string name="settings_no_licences_recorded">No licences recorded</string>
     <string name="settings_open_source_licences">Open source licences</string>
     <string name="settings_privacy">Privacy</string>
     <string name="settings_require_unlock">Require unlock</string>
-    <string name="settings_settings">Settings</string>
+    <string name="settings_title">Settings</string>
     <string name="settings_share_usage_data">Share usage data</string>
     <string name="settings_sign_out">Sign out</string>
-    <string name="settings_sign_out_2">Sign out?</string>
-    <string name="settings_system_follows_your_device_setting">System follows your device setting.</string>
-    <string name="settings_the_libraries_this_app_is_built">The libraries this app is built on, and their terms.</string>
+    <string name="settings_sign_out_confirm">Sign out?</string>
+    <string name="settings_theme_explanation">System follows your device setting.</string>
+    <string name="settings_licences_explanation">The libraries this app is built on, and their terms.</string>
     <string name="settings_theme">Theme</string>
-    <string name="settings_this_build_did_not_generate_a">This build did not generate a licence list.</string>
-    <string name="settings_you_will_need_to_sign_in">You will need to sign in again to use the app.</string>
+    <string name="settings_no_licences_explanation">This build did not generate a licence list.</string>
+    <string name="settings_sign_out_explanation">You will need to sign in again to use the app.</string>
     <string name="settings_version">Version %1$s</string>
 </resources>

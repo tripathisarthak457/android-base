@@ -196,7 +196,7 @@ fun SignUpScreen(
                     onValueChange = email::onChange,
                     modifier = Modifier.touchOnFocusLost(email),
                     label = stringResource(R.string.auth_email),
-                    placeholder = stringResource(R.string.auth_you_example_com),
+                    placeholder = stringResource(R.string.auth_email_placeholder),
                     error = email.error?.asString(),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -208,7 +208,7 @@ fun SignUpScreen(
                     onValueChange = password::onChange,
                     modifier = Modifier.touchOnFocusLost(password),
                     label = stringResource(R.string.auth_password),
-                    helper = stringResource(R.string.auth_at_least_eight_characters_with_a),
+                    helper = stringResource(R.string.auth_password_rules),
                     error = password.error?.asString(),
                     imeAction = ImeAction.Next,
                 )

@@ -297,6 +297,19 @@ class {class_name}ViewModel @Inject constructor(
 }}
 """)
 
+    # Copy in resources rather than in the Kotlin, because the feature convention plugin fails
+    # the build on a literal in a composable — a scaffolded module that could not compile would
+    # be a poor advertisement for the scaffolder.
+    _write(root / "src/main/res/values/strings.xml", f"""<?xml version="1.0" encoding="utf-8"?>
+<!-- Every piece of copy this feature renders. Translating means adding values-<code> beside it. -->
+<resources>
+    <string name="{name}_title">{screen_title}</string>
+    <string name="{name}_empty_title">Nothing here yet</string>
+    <string name="{name}_empty_message">When there is something to show, it appears on this screen.</string>
+    <string name="{name}_reload">Reload</string>
+</resources>
+""")
+
     _write(source / f"{class_name}Screen.kt", f"""package {pkg}.feature.{name}
 
 import androidx.compose.foundation.layout.Arrangement
@@ -307,6 +320,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import {pkg}.core.common.mvi.LoadState
 import {pkg}.core.designsystem.component.container.AppCard
@@ -332,7 +346,7 @@ fun {class_name}Screen(
 ) {{
     AppScaffold(
         modifier = modifier,
-        topBar = {{ AppLargeTitle(title = "{screen_title}") }},
+        topBar = {{ AppLargeTitle(title = stringResource(R.string.{name}_title)) }},
     ) {{
         when (val loadState = state.loadState) {{
             is LoadState.Error -> AppErrorState(
@@ -342,9 +356,9 @@ fun {class_name}Screen(
             )
 
             LoadState.Empty -> AppEmptyState(
-                title = "Nothing here yet",
-                message = "When there is something to show, it appears on this screen.",
-                actionLabel = "Reload",
+                title = stringResource(R.string.{name}_empty_title),
+                message = stringResource(R.string.{name}_empty_message),
+                actionLabel = stringResource(R.string.{name}_reload),
                 onAction = {{ onEvent({class_name}Event.Retry) }},
             )
 

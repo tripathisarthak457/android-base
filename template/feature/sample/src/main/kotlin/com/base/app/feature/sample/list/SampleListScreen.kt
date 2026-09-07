@@ -51,7 +51,7 @@ fun SampleListScreen(
         topBar = {
             Column {
                 AppLargeTitle(
-                    title = stringResource(R.string.sample_samples),
+                    title = stringResource(R.string.sample_title),
                     subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
                 )
                 AppSearchField(
@@ -77,7 +77,7 @@ fun SampleListScreen(
 
             state.loadState is LoadState.Empty -> AppEmptyState(
                 title = stringResource(R.string.sample_nothing_here_yet),
-                message = stringResource(R.string.sample_when_there_is_something_to_show),
+                message = stringResource(R.string.sample_empty_explanation),
                 icon = AppIcons.ListView,
                 actionLabel = stringResource(R.string.sample_reload),
                 onAction = { onEvent(SampleListEvent.Retry) },
@@ -101,7 +101,7 @@ private fun Content(
         Column(modifier = Modifier.fillMaxSize()) {
             if (state.isFromCache) {
                 AppBanner(
-                    text = stringResource(R.string.sample_showing_saved_data_pull_down_to),
+                    text = stringResource(R.string.sample_showing_cached),
                     tone = AppTone.Info,
                     icon = AppIcons.WifiOff,
                 )
@@ -111,7 +111,7 @@ private fun Content(
             if (visible.isEmpty()) {
                 AppEmptyState(
                     title = stringResource(R.string.sample_no_matches),
-                    message = stringResource(R.string.sample_nothing_here_matches, state.query),
+                    message = stringResource(R.string.sample_no_matches_for_query, state.query),
                     icon = AppIcons.Search,
                 )
                 return@Column

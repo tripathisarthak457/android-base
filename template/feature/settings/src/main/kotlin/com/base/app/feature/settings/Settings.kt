@@ -185,7 +185,7 @@ fun SettingsScreen(
 
     AppScaffold(
         modifier = modifier,
-        topBar = { AppLargeTitle(title = stringResource(R.string.settings_settings)) },
+        topBar = { AppLargeTitle(title = stringResource(R.string.settings_title)) },
     ) {
         Column(
             modifier = Modifier
@@ -203,7 +203,7 @@ fun SettingsScreen(
                     color = AppTheme.colors.contentPrimary,
                 )
                 AppText(
-                    text = stringResource(R.string.settings_system_follows_your_device_setting),
+                    text = stringResource(R.string.settings_theme_explanation),
                     modifier = Modifier.padding(bottom = AppTheme.spacing.md),
                     style = AppTheme.typography.caption,
                     color = AppTheme.colors.contentTertiary,
@@ -218,7 +218,7 @@ fun SettingsScreen(
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
                     title = stringResource(R.string.settings_haptic_feedback),
-                    supporting = stringResource(R.string.settings_a_small_vibration_when_a_control),
+                    supporting = stringResource(R.string.settings_haptics_explanation),
                     leading = {
                         AppIcon(
                             AppIcons.Bell,
@@ -239,8 +239,7 @@ fun SettingsScreen(
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
                     title = stringResource(R.string.settings_require_unlock),
-                    supporting = stringResource(R.string.settings_ask_for_your_fingerprint_face_or) +
-                        "been in the background.",
+                    supporting = stringResource(R.string.settings_app_lock_explanation),
                     leading = {
                         AppIcon(
                             AppIcons.Lock,
@@ -263,7 +262,7 @@ fun SettingsScreen(
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
                     title = stringResource(R.string.settings_share_usage_data),
-                    supporting = stringResource(R.string.settings_helps_us_find_crashes_and_slow),
+                    supporting = stringResource(R.string.settings_analytics_explanation),
                     leading = {
                         AppIcon(
                             AppIcons.Info,
@@ -302,7 +301,7 @@ fun SettingsScreen(
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
                     title = stringResource(R.string.settings_open_source_licences),
-                    supporting = stringResource(R.string.settings_the_libraries_this_app_is_built),
+                    supporting = stringResource(R.string.settings_licences_explanation),
                     onClick = { onEvent(SettingsEvent.LicensesClicked) },
                     leading = {
                         AppIcon(
@@ -327,8 +326,8 @@ fun SettingsScreen(
 
     if (confirmSignOut) {
         AppAlertDialog(
-            title = stringResource(R.string.settings_sign_out_2),
-            message = stringResource(R.string.settings_you_will_need_to_sign_in),
+            title = stringResource(R.string.settings_sign_out_confirm),
+            message = stringResource(R.string.settings_sign_out_explanation),
             onDismissRequest = { confirmSignOut = false },
             confirmLabel = "Sign out",
             onConfirm = { onEvent(SettingsEvent.SignOutConfirmed) },
