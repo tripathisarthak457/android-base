@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.AppResult
 import com.base.app.core.common.mvi.MviViewModel
@@ -166,7 +167,7 @@ fun SignInScreen(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
         ) {
             AppText(
-                text = "Welcome back",
+                text = stringResource(R.string.auth_welcome_back),
                 modifier = Modifier.padding(top = AppTheme.spacing.xxl),
                 style = AppTheme.typography.displaySmall,
                 color = AppTheme.colors.contentPrimary,
@@ -184,8 +185,8 @@ fun SignInScreen(
                     value = email.value,
                     onValueChange = email::onChange,
                     modifier = Modifier.touchOnFocusLost(email),
-                    label = "Email",
-                    placeholder = "you@example.com",
+                    label = stringResource(R.string.auth_email),
+                    placeholder = stringResource(R.string.auth_you_example_com),
                     error = email.error?.asString(),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -196,14 +197,14 @@ fun SignInScreen(
                     value = password.value,
                     onValueChange = password::onChange,
                     modifier = Modifier.touchOnFocusLost(password),
-                    label = "Password",
+                    label = stringResource(R.string.auth_password),
                     error = password.error?.asString(),
                     keyboardActions = KeyboardActions(onDone = { onEvent(SignInEvent.Submit) }),
                 )
             }
 
             AppButton(
-                text = "Sign in",
+                text = stringResource(R.string.auth_sign_in),
                 onClick = { onEvent(SignInEvent.Submit) },
                 loading = form.isSubmitting,
                 fillWidth = true,
@@ -215,12 +216,12 @@ fun SignInScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AppButton(
-                    text = "Create account",
+                    text = stringResource(R.string.auth_create_account),
                     onClick = { onEvent(SignInEvent.CreateAccountClicked) },
                     variant = ButtonVariant.Ghost,
                 )
                 AppButton(
-                    text = "Forgot password",
+                    text = stringResource(R.string.auth_forgot_password),
                     onClick = { onEvent(SignInEvent.ForgotPasswordClicked) },
                     variant = ButtonVariant.Ghost,
                 )

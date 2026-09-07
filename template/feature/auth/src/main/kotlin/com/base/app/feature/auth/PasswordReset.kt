@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.AppResult
 import com.base.app.core.common.mvi.MviViewModel
@@ -131,7 +132,7 @@ fun PasswordResetScreen(
         modifier = modifier,
         topBar = {
             AppBackTopBar(
-                title = "Reset password",
+                title = stringResource(R.string.auth_reset_password),
                 onBack = { onEvent(PasswordResetEvent.BackClicked) },
             )
         },
@@ -145,13 +146,13 @@ fun PasswordResetScreen(
         ) {
             if (state.sent) {
                 AppBanner(
-                    text = "If that address has an account, a reset link is on its way.",
+                    text = stringResource(R.string.auth_if_that_address_has_an_account),
                     tone = AppTone.Success,
                 )
             }
 
             AppText(
-                text = "Enter the email you signed up with and we will send you a link.",
+                text = stringResource(R.string.auth_enter_the_email_you_signed_up),
                 style = AppTheme.typography.bodyMedium,
                 color = AppTheme.colors.contentSecondary,
             )
@@ -164,8 +165,8 @@ fun PasswordResetScreen(
                 value = email.value,
                 onValueChange = email::onChange,
                 modifier = Modifier.touchOnFocusLost(email),
-                label = "Email",
-                placeholder = "you@example.com",
+                label = stringResource(R.string.auth_email),
+                placeholder = stringResource(R.string.auth_you_example_com),
                 error = email.error?.asString(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
@@ -177,7 +178,7 @@ fun PasswordResetScreen(
             )
 
             AppButton(
-                text = "Send reset link",
+                text = stringResource(R.string.auth_send_reset_link),
                 onClick = { onEvent(PasswordResetEvent.Submit) },
                 loading = form.isSubmitting,
                 fillWidth = true,

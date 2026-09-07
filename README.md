@@ -96,8 +96,8 @@ The three presets:
 | Preset | Feature count | What's in it |
 |---|---|---|
 | `lean` | 5 | Ktor, the design system, the catalog app, one reference feature, detekt, LeakCanary. |
-| `standard` | 17 | The lean set plus Room caching, Coil, forms, auth, settings, onboarding, media, deep links, screenshot tests, GitHub Actions and Fastlane. |
-| `everything` | 25 | The standard set plus Firebase with Crashlytics, FCM push, analytics, WorkManager, WebSocket and baseline profiles. |
+| `standard` | 19 | The lean set plus Room caching, Coil, forms, auth, settings, onboarding, media, deep links, screenshot tests, the inspector, feature flags, GitHub Actions and Fastlane. |
+| `everything` | 27 | The standard set plus Firebase with Crashlytics, FCM push, analytics, WorkManager, WebSocket and baseline profiles. |
 
 ---
 
@@ -264,6 +264,7 @@ dead code behind.
 | LeakCanary | on | Debug builds only |
 | Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |
 | Fastlane | off | Version bump, changelog from git history, tag, signed artifacts, Play internal-track upload |
+| App database (Room) | off | The app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration, and a test that replays it against a database that really was at the older version |
 | On-device inspector | on | A draggable badge naming the environment on every build except production, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
 | Open source licences screen | off | The real dependency list, generated from the resolved classpath at build time and rendered by the design system. The build also fails on a licence the project has not allowed |
 | Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
@@ -304,6 +305,14 @@ switching environment rebuilds nothing in `core`, `data` or `feature`.
 
 **Enforced layering.** `feature → feature` and `data → data` fail the build rather than a code
 review. See the `verifyModuleDependencies` task.
+
+**Copy that can be translated.** Every string a feature renders lives in that feature's own
+`strings.xml`, and a literal typed into a composable fails the build — see the third check in
+`verifyComposeUsage`. The rule is narrow on purpose: only the parameters that carry visible
+copy, only when the literal reads like prose, and never inside a `@Preview`. Adding a
+`stringResource` is easy and remembering to is not, so it is checked rather than asked for.
+For a string a ViewModel produces, `UiText.of(R.string.x)` resolves at render time — so it
+follows a locale change without the ViewModel knowing there was one.
 
 `template/docs/ARCHITECTURE.md` explains the reasoning behind each of these.
 

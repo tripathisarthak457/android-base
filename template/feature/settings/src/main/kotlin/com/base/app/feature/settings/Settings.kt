@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.mvi.MviViewModel
 import com.base.app.core.common.mvi.UiEffect
@@ -65,18 +66,23 @@ sealed interface SettingsEvent : UiEvent {
     data class ThemeSelected(val index: Int) : SettingsEvent
     data class AnalyticsToggled(val enabled: Boolean) : SettingsEvent
     data class HapticsToggled(val enabled: Boolean) : SettingsEvent
+
     // <opt:applock>
     data class AppLockToggled(val enabled: Boolean) : SettingsEvent
     // </opt:applock>
+
     data object SignOutConfirmed : SettingsEvent
+
     // <opt:licenses>
     data object LicensesClicked : SettingsEvent
     // </opt:licenses>
+
     data object BackClicked : SettingsEvent
 }
 
 sealed interface SettingsEffect : UiEffect {
     data object NavigateBack : SettingsEffect
+
     // <opt:licenses>
     data object OpenLicenses : SettingsEffect
     // </opt:licenses>
@@ -179,7 +185,7 @@ fun SettingsScreen(
 
     AppScaffold(
         modifier = modifier,
-        topBar = { AppLargeTitle(title = "Settings") },
+        topBar = { AppLargeTitle(title = stringResource(R.string.settings_settings)) },
     ) {
         Column(
             modifier = Modifier
@@ -188,16 +194,16 @@ fun SettingsScreen(
                 .padding(horizontal = AppTheme.spacing.gutter),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
-            AppSectionHeader(title = "Appearance")
+            AppSectionHeader(title = stringResource(R.string.settings_appearance))
 
             AppCard {
                 AppText(
-                    text = "Theme",
+                    text = stringResource(R.string.settings_theme),
                     style = AppTheme.typography.titleMedium,
                     color = AppTheme.colors.contentPrimary,
                 )
                 AppText(
-                    text = "System follows your device setting.",
+                    text = stringResource(R.string.settings_system_follows_your_device_setting),
                     modifier = Modifier.padding(bottom = AppTheme.spacing.md),
                     style = AppTheme.typography.caption,
                     color = AppTheme.colors.contentTertiary,
@@ -211,8 +217,8 @@ fun SettingsScreen(
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
-                    title = "Haptic feedback",
-                    supporting = "A small vibration when a control responds.",
+                    title = stringResource(R.string.settings_haptic_feedback),
+                    supporting = stringResource(R.string.settings_a_small_vibration_when_a_control),
                     leading = {
                         AppIcon(
                             AppIcons.Bell,
@@ -229,12 +235,11 @@ fun SettingsScreen(
                 )
             }
 
-
             // <opt:applock>
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
-                    title = "Require unlock",
-                    supporting = "Ask for your fingerprint, face or screen lock when the app has " +
+                    title = stringResource(R.string.settings_require_unlock),
+                    supporting = stringResource(R.string.settings_ask_for_your_fingerprint_face_or) +
                         "been in the background.",
                     leading = {
                         AppIcon(
@@ -253,12 +258,12 @@ fun SettingsScreen(
             }
             // </opt:applock>
 
-            AppSectionHeader(title = "Privacy")
+            AppSectionHeader(title = stringResource(R.string.settings_privacy))
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
-                    title = "Share usage data",
-                    supporting = "Helps us find crashes and slow screens. Never includes your content.",
+                    title = stringResource(R.string.settings_share_usage_data),
+                    supporting = stringResource(R.string.settings_helps_us_find_crashes_and_slow),
                     leading = {
                         AppIcon(
                             AppIcons.Info,
@@ -275,11 +280,11 @@ fun SettingsScreen(
                 )
             }
 
-            AppSectionHeader(title = "Account")
+            AppSectionHeader(title = stringResource(R.string.settings_account))
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
-                    title = "Sign out",
+                    title = stringResource(R.string.settings_sign_out),
                     onClick = { confirmSignOut = true },
                     leading = {
                         AppIcon(
@@ -292,12 +297,12 @@ fun SettingsScreen(
             }
 
             // <opt:licenses>
-            AppSectionHeader(title = "About")
+            AppSectionHeader(title = stringResource(R.string.settings_about))
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
-                    title = "Open source licences",
-                    supporting = "The libraries this app is built on, and their terms.",
+                    title = stringResource(R.string.settings_open_source_licences),
+                    supporting = stringResource(R.string.settings_the_libraries_this_app_is_built),
                     onClick = { onEvent(SettingsEvent.LicensesClicked) },
                     leading = {
                         AppIcon(
@@ -313,7 +318,7 @@ fun SettingsScreen(
             AppDivider(modifier = Modifier.padding(vertical = AppTheme.spacing.md))
 
             AppMonoText(
-                text = "Version ${state.appVersion}",
+                text = stringResource(R.string.settings_version, state.appVersion),
                 modifier = Modifier.padding(bottom = AppTheme.spacing.xxl),
                 color = AppTheme.colors.contentTertiary,
             )
@@ -322,8 +327,8 @@ fun SettingsScreen(
 
     if (confirmSignOut) {
         AppAlertDialog(
-            title = "Sign out?",
-            message = "You will need to sign in again to use the app.",
+            title = stringResource(R.string.settings_sign_out_2),
+            message = stringResource(R.string.settings_you_will_need_to_sign_in),
             onDismissRequest = { confirmSignOut = false },
             confirmLabel = "Sign out",
             onConfirm = { onEvent(SettingsEvent.SignOutConfirmed) },

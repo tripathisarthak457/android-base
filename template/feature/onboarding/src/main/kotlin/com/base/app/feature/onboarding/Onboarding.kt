@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.annotation.StringRes
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.mvi.MviViewModel
 import com.base.app.core.common.mvi.UiEffect
@@ -42,9 +44,14 @@ import javax.inject.Inject
 
 /** One onboarding page. Replace the placeholder copy and icons with your own. */
 @Immutable
+/**
+ * Resource ids rather than strings, because the list of pages is a top-level `val` and a
+ * composable cannot be called from one. Holding the id defers the lookup to the screen, which
+ * is also what makes the copy follow a locale change without the list being rebuilt.
+ */
 data class OnboardingPage(
-    val title: String,
-    val body: String,
+    @param:StringRes val title: Int,
+    @param:StringRes val body: Int,
     val icon: ImageVector,
 )
 
@@ -129,7 +136,7 @@ fun OnboardingScreen(
                 horizontalArrangement = Arrangement.End,
             ) {
                 AppButton(
-                    text = "Skip",
+                    text = stringResource(R.string.onboarding_skip),
                     onClick = { onEvent(OnboardingEvent.Skipped) },
                     variant = ButtonVariant.Ghost,
                 )
@@ -167,13 +174,13 @@ fun OnboardingScreen(
                         }
                     }
                     AppText(
-                        text = page.title,
+                        text = stringResource(page.title),
                         style = AppTheme.typography.displaySmall,
                         color = AppTheme.colors.contentPrimary,
                         textAlign = TextAlign.Center,
                     )
                     AppText(
-                        text = page.body,
+                        text = stringResource(page.body),
                         style = AppTheme.typography.bodyLarge,
                         color = AppTheme.colors.contentTertiary,
                         textAlign = TextAlign.Center,
@@ -200,18 +207,18 @@ fun OnboardingScreen(
 /** Placeholder copy. Replace it; the structure is the part worth keeping. */
 private val DefaultPages = listOf(
     OnboardingPage(
-        title = "Welcome",
-        body = "A short sentence about what this app does for the person reading it.",
+        title = R.string.onboarding_welcome,
+        body = R.string.onboarding_body_what_it_does,
         icon = AppIcons.Home,
     ),
     OnboardingPage(
-        title = "Stay in the loop",
-        body = "What they will get out of it, phrased as a benefit rather than a feature.",
+        title = R.string.onboarding_stay_in_the_loop,
+        body = R.string.onboarding_body_benefit,
         icon = AppIcons.Bell,
     ),
     OnboardingPage(
-        title = "Your data is yours",
-        body = "The reassurance that removes whatever hesitation they have about signing up.",
+        title = R.string.onboarding_your_data_is_yours,
+        body = R.string.onboarding_body_reassurance,
         icon = AppIcons.Lock,
     ),
 )

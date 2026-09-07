@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.AppResult
 import com.base.app.core.common.mvi.MviViewModel
@@ -160,7 +161,10 @@ fun SignUpScreen(
     AppScaffold(
         modifier = modifier,
         topBar = {
-            AppBackTopBar(title = "Create account", onBack = { onEvent(SignUpEvent.BackClicked) })
+            AppBackTopBar(
+                title = stringResource(R.string.auth_create_account),
+                onBack = { onEvent(SignUpEvent.BackClicked) },
+            )
         },
     ) {
         Column(
@@ -183,7 +187,7 @@ fun SignUpScreen(
                     value = name.value,
                     onValueChange = name::onChange,
                     modifier = Modifier.touchOnFocusLost(name),
-                    label = "Name",
+                    label = stringResource(R.string.auth_name),
                     error = name.error?.asString(),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 )
@@ -191,8 +195,8 @@ fun SignUpScreen(
                     value = email.value,
                     onValueChange = email::onChange,
                     modifier = Modifier.touchOnFocusLost(email),
-                    label = "Email",
-                    placeholder = "you@example.com",
+                    label = stringResource(R.string.auth_email),
+                    placeholder = stringResource(R.string.auth_you_example_com),
                     error = email.error?.asString(),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -203,8 +207,8 @@ fun SignUpScreen(
                     value = password.value,
                     onValueChange = password::onChange,
                     modifier = Modifier.touchOnFocusLost(password),
-                    label = "Password",
-                    helper = "At least eight characters, with a letter and a number.",
+                    label = stringResource(R.string.auth_password),
+                    helper = stringResource(R.string.auth_at_least_eight_characters_with_a),
                     error = password.error?.asString(),
                     imeAction = ImeAction.Next,
                 )
@@ -212,14 +216,14 @@ fun SignUpScreen(
                     value = confirm.value,
                     onValueChange = confirm::onChange,
                     modifier = Modifier.touchOnFocusLost(confirm),
-                    label = "Confirm password",
+                    label = stringResource(R.string.auth_confirm_password),
                     error = confirm.error?.asString(),
                     keyboardActions = KeyboardActions(onDone = { onEvent(SignUpEvent.Submit) }),
                 )
             }
 
             AppButton(
-                text = "Create account",
+                text = stringResource(R.string.auth_create_account),
                 onClick = { onEvent(SignUpEvent.Submit) },
                 loading = form.isSubmitting,
                 fillWidth = true,

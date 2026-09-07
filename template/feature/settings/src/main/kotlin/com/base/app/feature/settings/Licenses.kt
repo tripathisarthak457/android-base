@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.base.app.core.common.mvi.LoadState
 import com.base.app.core.common.mvi.MviViewModel
@@ -143,15 +144,15 @@ fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Unit) {
     AppScaffold(
         topBar = {
             AppBackTopBar(
-                title = "Open source licences",
+                title = stringResource(R.string.settings_open_source_licences),
                 onBack = { onEvent(LicensesEvent.BackClicked) },
             )
         },
     ) {
         if (state.loadState == LoadState.Empty) {
             AppEmptyState(
-                title = "No licences recorded",
-                message = "This build did not generate a licence list.",
+                title = stringResource(R.string.settings_no_licences_recorded),
+                message = stringResource(R.string.settings_this_build_did_not_generate_a),
             )
             return@AppScaffold
         }

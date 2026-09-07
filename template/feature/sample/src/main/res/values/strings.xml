@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Every piece of copy this feature renders.
+
+  Here rather than in the app module because a feature that carries its own strings is a
+  feature that can be deleted in one directory. Translating means adding values-<code>
+  beside this file; nothing in the Kotlin changes.
+-->
+<resources>
+    <string name="sample_no_matches">No matches</string>
+    <string name="sample_nothing_here_matches">Nothing here matches “%1$s”.</string>
+    <string name="sample_nothing_here_yet">Nothing here yet</string>
+    <string name="sample_pulled_from_a_live_api">Pulled from a live API</string>
+    <string name="sample_reload">Reload</string>
+    <string name="sample_samples">Samples</string>
+    <string name="sample_search_titles">Search titles</string>
+    <string name="sample_showing_saved_data_pull_down_to">Showing saved data. Pull down to refresh.</string>
+    <string name="sample_when_there_is_something_to_show">When there is something to show, it will appear on this screen.</string>
+</resources>

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import com.base.app.core.common.mvi.LoadState
 import com.base.app.core.common.mvi.hasContent
 import com.base.app.core.common.mvi.isRefreshing
@@ -30,6 +31,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.asString
 import com.base.app.data.sample.SampleItem
+import com.base.app.feature.sample.R
 
 /**
  * The list screen.
@@ -48,11 +50,14 @@ fun SampleListScreen(
         modifier = modifier,
         topBar = {
             Column {
-                AppLargeTitle(title = "Samples", subtitle = "Pulled from a live API")
+                AppLargeTitle(
+                    title = stringResource(R.string.sample_samples),
+                    subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
+                )
                 AppSearchField(
                     value = state.query,
                     onValueChange = { onEvent(SampleListEvent.QueryChanged(it)) },
-                    placeholder = "Search titles",
+                    placeholder = stringResource(R.string.sample_search_titles),
                     modifier = Modifier.padding(
                         horizontal = AppTheme.spacing.gutter,
                         vertical = AppTheme.spacing.sm,
@@ -71,10 +76,10 @@ fun SampleListScreen(
             )
 
             state.loadState is LoadState.Empty -> AppEmptyState(
-                title = "Nothing here yet",
-                message = "When there is something to show, it will appear on this screen.",
+                title = stringResource(R.string.sample_nothing_here_yet),
+                message = stringResource(R.string.sample_when_there_is_something_to_show),
                 icon = AppIcons.ListView,
-                actionLabel = "Reload",
+                actionLabel = stringResource(R.string.sample_reload),
                 onAction = { onEvent(SampleListEvent.Retry) },
             )
 
@@ -96,7 +101,7 @@ private fun Content(
         Column(modifier = Modifier.fillMaxSize()) {
             if (state.isFromCache) {
                 AppBanner(
-                    text = "Showing saved data. Pull down to refresh.",
+                    text = stringResource(R.string.sample_showing_saved_data_pull_down_to),
                     tone = AppTone.Info,
                     icon = AppIcons.WifiOff,
                 )
@@ -105,8 +110,8 @@ private fun Content(
             val visible = state.visibleItems
             if (visible.isEmpty()) {
                 AppEmptyState(
-                    title = "No matches",
-                    message = "Nothing here matches \"${state.query}\".",
+                    title = stringResource(R.string.sample_no_matches),
+                    message = stringResource(R.string.sample_nothing_here_matches, state.query),
                     icon = AppIcons.Search,
                 )
                 return@Column

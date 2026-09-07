@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Every piece of copy this feature renders.
+
+  Here rather than in the app module because a feature that carries its own strings is a
+  feature that can be deleted in one directory. Translating means adding values-<code>
+  beside this file; nothing in the Kotlin changes.
+-->
+<resources>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_stay_in_the_loop">Stay in the loop</string>
+    <string name="onboarding_welcome">Welcome</string>
+    <string name="onboarding_your_data_is_yours">Your data is yours</string>
+    <string name="onboarding_body_benefit">What they will get out of it, phrased as a benefit rather than a feature.</string>
+    <string name="onboarding_body_reassurance">The reassurance that removes whatever hesitation they have about signing up.</string>
+    <string name="onboarding_body_what_it_does">A short sentence about what this app does for the person reading it.</string>
+</resources>
