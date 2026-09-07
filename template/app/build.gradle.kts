@@ -88,6 +88,11 @@ dependencies {
     baselineProfile(project(":benchmark"))
     // </opt:baselineprofile>
 
+    // <opt:playstore>
+    implementation(libs.play.app.update)
+    implementation(libs.play.app.review)
+    // </opt:playstore>
+
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)
     // </opt:leakcanary>

@@ -31,6 +31,13 @@ import com.base.app.deeplink.DeepLinkResolver
 // <opt:onboarding>
 import com.base.app.feature.onboarding.OnboardingKey
 // </opt:onboarding>
+// <opt:playstore>
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import com.base.app.playstore.AppUpdates
+import com.base.app.playstore.ReviewPrompt
+import com.google.android.play.core.ktx.AppUpdateResult
+// </opt:playstore>
 
 /**
  * The only Activity.
@@ -80,6 +87,14 @@ class MainActivity : ComponentActivity() {
     lateinit var deepLinkResolver: DeepLinkResolver
     // </opt:deeplink>
 
+    // <opt:playstore>
+    @Inject
+    lateinit var appUpdates: AppUpdates
+
+    @Inject
+    lateinit var reviewPrompt: ReviewPrompt
+    // </opt:playstore>
+
     private val startup = MutableStateFlow<Startup?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,6 +130,18 @@ class MainActivity : ComponentActivity() {
             )
         }
 
+        // <opt:playstore>
+        // Both are tied to the Activity being resumed rather than to onCreate: the update check
+        // is worth repeating when somebody comes back after a week, and a review sheet launched
+        // against a stopped Activity is dropped by Play without a word.
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                launch { appUpdates.updates().collect(::onUpdate) }
+                launch { reviewPrompt.onLaunch(this@MainActivity) }
+            }
+        }
+        // </opt:playstore>
+
         // <opt:deeplink>
         // The launch intent is consumed once the host exists, so the deep link lands on top of
         // the start destination rather than replacing it — pressing Back from a link then goes
@@ -122,6 +149,18 @@ class MainActivity : ComponentActivity() {
         handleDeepLink(intent)
         // </opt:deeplink>
     }
+
+    // <opt:playstore>
+    private suspend fun onUpdate(result: AppUpdateResult) {
+        when (result) {
+            is AppUpdateResult.Available -> appUpdates.start(result, this)
+            // Downloaded and waiting for a restart. Asking rather than restarting under the
+            // user: an app that relaunches itself mid-sentence loses whatever they were doing.
+            is AppUpdateResult.Downloaded -> appUpdates.install(result)
+            is AppUpdateResult.InProgress, AppUpdateResult.NotAvailable -> Unit
+        }
+    }
+    // </opt:playstore>
 
     // <opt:deeplink>
     override fun onNewIntent(intent: Intent) {
