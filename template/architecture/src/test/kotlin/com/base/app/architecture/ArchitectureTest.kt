@@ -1,9 +1,12 @@
 package com.base.app.architecture
 
 import com.lemonappdev.konsist.api.Konsist
+import com.lemonappdev.konsist.api.declaration.KoFileDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.verify.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.io.File
 
 /**
  * The conventions this project holds, checked rather than remembered.
@@ -106,10 +109,38 @@ class ArchitectureTest {
     fun `a data module never imports Compose`() {
         Konsist.scopeFromProduction()
             .files
-            .filter { it.path.contains("/data/") }
+            .filter(::inDataModule)
             .assertTrue(additionalMessage = COMPOSE_IN_DATA) { file ->
                 file.imports.none { it.name.startsWith("androidx.compose") }
             }
+    }
+
+    /**
+     * The one rule here that narrows before it asserts, checked against a second opinion.
+     *
+     * A rule that filters can pass by selecting nothing, and that is indistinguishable from
+     * passing honestly — which is exactly what happened: the first version of the rule above
+     * matched on a path separator, so on Windows it read no files and went green, and only CI on
+     * Linux disagreed. Asking the same question a different way is what makes that visible.
+     *
+     * The package is an independent answer to "is this a data module": Konsist reads it from the
+     * `package` line rather than from the filesystem, so a separator cannot affect it. The two
+     * need not agree on a count — they will not — but if one finds files and the other finds none,
+     * one of them is broken.
+     */
+    @Test
+    fun `the data module rule is reading the data modules`() {
+        val files = Konsist.scopeFromProduction().files
+        val byPackage = files.count { it.packagee?.name?.contains(".data.") == true }
+        val bySelector = files.count(::inDataModule)
+
+        assertEquals(
+            "The data-module rule selected $bySelector files and the package says there are " +
+                "$byPackage. When one of those is zero and the other is not, the rule above is " +
+                "passing without reading anything.",
+            byPackage == 0,
+            bySelector == 0,
+        )
     }
 
     /**
@@ -147,8 +178,37 @@ class ArchitectureTest {
             }
     }
 
+    /**
+     * Whether a file belongs to the `:data:` tier.
+     *
+     * `moduleName` is the module's own path — `data/sample`, `core/designsystem` — so its first
+     * segment is the layer. Normalised because Konsist reports it in the platform's separator,
+     * and a rule that answers differently on a laptop than on CI is worse than no rule: it is
+     * the laptop that people believe.
+     */
+    private fun inDataModule(file: KoFileDeclaration): Boolean =
+        file.moduleName.replace(File.separatorChar, '/').startsWith(DATA_MODULES)
+
     private companion object {
         const val MVI_BASE = "MviViewModel"
+
+        /**
+         * The `:data:` tier, as a module path rather than a substring of a file path.
+         *
+         * The first version of this rule asked whether a file's path contained "/data/", and got
+         * two things wrong at once. It matched
+         * `core/designsystem/component/data/AppDataDisplay.kt`, a design-system component that
+         * imports Compose because that is what it is for. And Konsist reports paths in the
+         * operating system's own separator, so on Windows the filter matched nothing at all, the
+         * rule examined no files, and it passed — which looks exactly like passing honestly. It
+         * failed the moment CI ran it on Linux.
+         *
+         * `moduleName` is the module's own path (`data/sample`, `core/designsystem`), so matching
+         * its first segment asks the question the layering is actually about. The separator is
+         * still the platform's, hence the replace: a rule that answers differently on a laptop
+         * than on CI is worse than no rule, because it is the laptop that people believe.
+         */
+        const val DATA_MODULES = "data/"
 
         val BANNED_IN_VIEW_MODELS = setOf(
             "android.app.Activity",
