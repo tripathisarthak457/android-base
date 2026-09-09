@@ -424,6 +424,52 @@ FEATURES: tuple[Feature, ...] = (
         ),
     ),
     Feature(
+        key="architecturetests",
+        title="Architecture tests",
+        description=(
+            "The conventions this project holds — ViewModels extend the MVI base and never "
+            "hold an Activity, repositories are interfaces, data modules never see Compose, "
+            "runBlocking never ships — as JUnit tests over the source itself."
+        ),
+        default=True,
+        files=("architecture",),
+    ),
+    Feature(
+        key="coverage",
+        title="Coverage floor (Kover)",
+        description=(
+            "One merged coverage number for the whole project with a floor the build enforces, "
+            "generated code excluded so the report is about code somebody wrote."
+        ),
+        default=False,
+    ),
+    Feature(
+        key="depsanalysis",
+        title="Dependency health report",
+        description=(
+            "Names every module declaring a dependency it never uses, or using one it only "
+            "gets transitively — the second being the failure that surfaces months later as an "
+            "unrelated module breaking. Printed on every pull request; a report rather than a "
+            "gate, because two of this template's own decisions produce advice it is right to "
+            "ignore."
+        ),
+        default=False,
+    ),
+    Feature(
+        key="composemetrics",
+        title="Compose stability check",
+        description=(
+            "Reads the Compose compiler's own report and fails on a design-system composable "
+            "that restarts without being able to skip. A baseline holds what is already there, "
+            "so it starts green and cannot get worse."
+        ),
+        default=False,
+        files=(
+            "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/ComposeStability.kt",
+            "config/compose-stability-baseline.txt",
+        ),
+    ),
+    Feature(
         key="ci",
         title="GitHub Actions",
         description=(
@@ -478,6 +524,7 @@ _STANDARD = _LEAN + (
     "screenshottests",
     "flags",
     "devtools",
+    "architecturetests",
 )
 
 PRESETS: tuple[Preset, ...] = (

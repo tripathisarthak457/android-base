@@ -15,19 +15,16 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import sys
-import tempfile
 from dataclasses import asdict
 from pathlib import Path
 
-from genkit import icons, prompts, render, scaffold
-from genkit.readme import write_readme
-from genkit.spec import PRESETS, KeystoreSpec, ProjectSpec, SpecError
+from genkit import build as builder
+from genkit import catalogue, prompts, render
+from genkit.spec import FEATURES, FEATURES_BY_KEY, PRESETS, KeystoreSpec, ProjectSpec, SpecError
 
 HERE = Path(__file__).resolve().parent
 TEMPLATE_DIR = HERE.parent / "template"
-VARIANTS_DIR = HERE / "variants"
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -55,11 +52,37 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, help="Write here instead of opening a save dialog.")
     parser.add_argument("--no-zip", action="store_true", help="Leave a directory rather than a .zip.")
     parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Overwrite the destination if it already has something in it.",
+    )
+    parser.add_argument(
         "--save-spec",
         type=Path,
         help="Write the answers to JSON, so the same project can be regenerated.",
     )
+    parser.add_argument(
+        "--list-features",
+        action="store_true",
+        help="Print every feature, its group and what it drags in, then exit.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Resolve the answers and print what would be written, without writing it.",
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Machine-readable output. Applies to --list-features, --dry-run and the result.",
+    )
     args = parser.parse_args(argv)
+
+    # Answers nothing about a project, so it runs before the template is even looked for — it is
+    # the thing to reach for when deciding whether this generator does what you need at all.
+    if args.list_features:
+        list_features(as_json=args.json)
+        return 0
 
     if not TEMPLATE_DIR.is_dir():
         print(prompts.red(f"Template not found at {TEMPLATE_DIR}"))
@@ -77,6 +100,10 @@ def main(argv: list[str] | None = None) -> int:
         print("\nCancelled.")
         return 130
 
+    if args.dry_run:
+        describe_plan(spec, as_json=args.json)
+        return 0
+
     prompts.summarise(spec)
 
     if not args.spec and not prompts.ask_yes_no("\nGenerate?", True):
@@ -92,8 +119,11 @@ def main(argv: list[str] | None = None) -> int:
         print("Cancelled.")
         return 0
 
+    if not confirm_overwrite(destination, force=args.force, unattended=bool(args.spec)):
+        return 1
+
     try:
-        result = generate(
+        result = builder.build(
             spec,
             destination,
             zip_output=not args.no_zip,
@@ -104,71 +134,120 @@ def main(argv: list[str] | None = None) -> int:
         print(prompts.red(f"\n{error}"))
         return 1
 
-    report(spec, result, destination, zip_output=not args.no_zip)
+    if args.json:
+        json.dump(
+            {
+                "ok": True,
+                "projectName": spec.pascal_name,
+                "packageName": spec.package_name,
+                "features": sorted(spec.features),
+                "featureModules": list(spec.feature_modules),
+                "keystoresGenerated": result.keystores_generated,
+                "keystoresSkipped": result.keystores_skipped,
+                "path": str(destination),
+                "warnings": result.warnings,
+            },
+            sys.stdout,
+            indent=2,
+        )
+        sys.stdout.write("\n")
+    else:
+        report(spec, result, destination, zip_output=not args.no_zip)
     return 0
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Generation
+# Answering without generating
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def generate(
-    spec: ProjectSpec,
-    destination: Path,
-    zip_output: bool,
-    icon_source: Path | None = None,
-    git_init: bool = False,
-) -> render.RenderResult:
+def list_features(as_json: bool) -> None:
     """
-    Builds the project in a temporary directory, then moves it into place.
+    Every feature, grouped as the website groups them.
 
-    A failure halfway through then leaves nothing behind, rather than a half-written project the
-    user has to recognise as broken and delete.
+    Read from the same catalogue the site renders, rather than from `FEATURES` directly, so the
+    terminal cannot describe a different set of options from the one the site offers — and so a
+    feature added without a group or a headline fails here too, rather than only on the web.
     """
-    with tempfile.TemporaryDirectory(prefix="androidgen-") as staging:
-        project_dir = Path(staging) / spec.pascal_name
+    data = catalogue.catalogue()
+    if as_json:
+        json.dump(data["features"], sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        return
 
-        warnings = render.copy_template(TEMPLATE_DIR, project_dir, spec)
-        render.overlay_variants(VARIANTS_DIR, project_dir, spec)
-        scaffold.write_feature_modules(project_dir, spec)
-        render.rewrite_all(project_dir, spec, scaffold.generated_blocks(spec))
-        render.apply_build_settings(project_dir, spec)
-        render.apply_app_name(project_dir, spec)
-        render.apply_fonts(project_dir, spec)
-        render.apply_accent(project_dir, spec)
-        render.apply_feel(project_dir, spec)
+    by_group: dict[str, list[dict]] = {}
+    for feature in data["features"]:
+        by_group.setdefault(feature["group"], []).append(feature)
 
-        keystores = list(spec.keystores)
-        generated, skipped, key_warnings = render.generate_keystores(project_dir, keystores)
-        render.write_keystore_properties(project_dir, [k for k in keystores if k.name in generated])
-        write_readme(project_dir, spec)
+    for group in data["groups"]:
+        entries = by_group.get(group["name"], [])
+        if not entries:
+            continue
+        prompts.heading(group["name"])
+        if group["caption"]:
+            print(prompts.dim(f"  {group['caption']}"))
+            print()
+        for feature in entries:
+            mark = prompts.green("on ") if feature["default"] else prompts.dim("off")
+            print(f"  {mark} {prompts.bold(feature['key'].ljust(28))} {feature['headline']}")
+            if feature["implies"]:
+                print(prompts.dim(f"      brings in {', '.join(feature['implies'])}"))
 
-        warnings.extend(key_warnings)
+    print()
+    print(prompts.dim(f"  {len(data['features'])} features. "
+                      f"Presets: {', '.join(p['key'] for p in data['presets'])}."))
+    print()
 
-        if icon_source is not None:
-            warnings.extend(icons.generate(icon_source, project_dir, spec))
 
-        # After everything is written, so the first commit is the project as it ships. A repo
-        # whose initial commit is half the files is worse than no repo at all — the first `git
-        # status` in a new project should be clean.
-        if git_init:
-            warnings.extend(render.git_init(project_dir, spec))
+def describe_plan(spec: ProjectSpec, as_json: bool) -> None:
+    """
+    What generating would produce, without producing it.
 
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        if zip_output:
-            render.zip_project(project_dir, destination)
-        else:
-            if destination.exists():
-                shutil.rmtree(destination)
-            shutil.move(str(project_dir), str(destination))
+    The two things worth knowing before waiting for a build: which features were turned on that
+    nobody asked for — Crashlytics quietly brings Firebase and the analytics seam with it — and
+    what is being left out.
+    """
+    result = builder.plan(spec)
+    if as_json:
+        json.dump({"projectName": spec.pascal_name, **result}, sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        return
 
-        return render.RenderResult(
-            project_dir=destination,
-            keystores_generated=generated,
-            keystores_skipped=skipped,
-            warnings=warnings,
-        )
+    prompts.summarise(spec)
+
+    implied = sorted(spec.features - _requested(spec))
+    prompts.heading("Dry run")
+    print(f"  Project:  {spec.pascal_name}")
+    print(f"  Enabled:  {len(result['enabled'])} of {len(FEATURES)} features")
+    if implied:
+        print(prompts.dim(f"  Implied:  {', '.join(implied)} — required by something you chose"))
+    if result["modules"]:
+        print(f"  Modules:  {', '.join(result['modules'])}")
+    print(f"  Omitted:  {len(result['removed'])} paths a disabled feature owns")
+    print()
+    print(prompts.dim("  Nothing was written. Drop --dry-run to generate."))
+    print()
+
+
+def _requested(spec: ProjectSpec) -> set[str]:
+    """
+    The features that would have been asked for, given the resolved set.
+
+    Every feature in the set that nothing else in the set requires. Not perfect — a feature both
+    chosen *and* implied reads as implied — but it is the distinction that matters here, which is
+    "you did not tick this and you have it".
+    """
+    required = {
+        needed
+        for key in spec.features
+        for needed in FEATURES_BY_KEY[key].requires
+    }
+    return set(spec.features) - required
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Destination
+# ─────────────────────────────────────────────────────────────────────────────
 
 
 def resolve_destination(spec: ProjectSpec, args: argparse.Namespace) -> Path | None:
@@ -181,6 +260,38 @@ def resolve_destination(spec: ProjectSpec, args: argparse.Namespace) -> Path | N
         return out / default_name
 
     return ask_save_location(default_name, zip_output=not args.no_zip)
+
+
+def confirm_overwrite(destination: Path, force: bool, unattended: bool) -> bool:
+    """
+    Guards the one path that destroys work: regenerating over a directory that already exists.
+
+    `--spec` plus `--out` is how a project is regenerated after editing its saved answers, and the
+    generator replaces the destination wholesale — which is right, and is also indistinguishable
+    from pointing it at the checkout somebody has been working in for a month. A save dialog asks
+    this question itself; a command line has to be asked here.
+
+    Unattended runs are refused rather than prompted, because there is nobody to answer: CI would
+    hang on the input, and defaulting to yes would make the destructive case the silent one.
+    """
+    if force or not destination.exists():
+        return True
+    if destination.is_dir() and not any(destination.iterdir()):
+        return True
+
+    what = "directory" if destination.is_dir() else "file"
+    print()
+    print(prompts.yellow(f"  {destination} already exists and is not empty."))
+    print(prompts.dim(f"  Generating replaces that {what} entirely."))
+
+    if unattended:
+        print(prompts.red("  Refusing to overwrite it unattended. Pass --force if that is what you want."))
+        return False
+
+    if prompts.ask_yes_no("  Replace it?", False):
+        return True
+    print("Cancelled.")
+    return False
 
 
 def ask_save_location(default_name: str, zip_output: bool) -> Path | None:

@@ -1,0 +1,6 @@
+# Composables paying for a recomposition they did not need, accepted for now.
+#
+# Written by :recordComposeStability. Deleting a line is how a fix is
+# recorded — the check fails again if it comes back.
+AppSwipeToAction
+MviScreen

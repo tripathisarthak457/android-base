@@ -734,53 +734,6 @@ TEMPLATE_ACCENT = "#2C6BED"
 #: How a supporting colour is worked out when only the primary was given.
 #:
 #: Material's rule, because the obvious alternatives are worse. A complement — the colour opposite
-#: on the wheel — is what a naive derivation picks, and it produces the orange-beside-blue pairing
-#: nobody would have chosen deliberately. Analogous hues sit too close to tell apart. Taking the
-#: chroma out of the primary gives a secondary that supports it and can never clash, and a sixth
-#: of a turn gives a tertiary far enough to read as its own colour.
-_SECONDARY_SATURATION = 0.45
-_TERTIARY_HUE_SHIFT = 60
-
-
-def brand_colours(spec: ProjectSpec) -> dict[str, tuple[float, float, float]]:
-    """
-    The three brand colours as RGB, with anything the user left blank worked out from the primary.
-
-    Blank means derived rather than left alone. A project that took a custom primary and kept the
-    template's supporting colours would ship a palette whose three members were chosen by two
-    different people with no knowledge of each other, which is how a brand ends up with a blue
-    button beside a teal chip.
-    """
-    primary = _hex_to_rgb(spec.accent_colour or TEMPLATE_ACCENT)
-    return {
-        "Accent": primary,
-        "Secondary": (
-            _hex_to_rgb(spec.secondary_colour)
-            if spec.secondary_colour
-            else _shift(primary, 1.0, _SECONDARY_SATURATION)
-        ),
-        "Tertiary": (
-            _hex_to_rgb(spec.tertiary_colour)
-            if spec.tertiary_colour
-            else _rotate_hue(primary, _TERTIARY_HUE_SHIFT)
-        ),
-    }
-
-
-def _rotate_hue(rgb: tuple[float, float, float], degrees: float):
-    """Moves a colour around the wheel, keeping how light and how saturated it is."""
-    import colorsys
-
-    hue, lightness, saturation = colorsys.rgb_to_hls(*rgb)
-    return colorsys.hls_to_rgb((hue + degrees / 360.0) % 1.0, lightness, saturation)
-
-
-#: The template's own primary, and what a supporting colour falls back to being derived from.
-TEMPLATE_ACCENT = "#2C6BED"
-
-#: How a supporting colour is worked out when only the primary was given.
-#:
-#: Material's rule, because the obvious alternatives are worse. A complement — the colour opposite
 #: on the wheel — is what a naive derivation reaches for, and it produces the orange-beside-blue
 #: pairing nobody would have chosen deliberately. Analogous hues sit too close together to tell
 #: apart. Taking the chroma out of the primary gives a secondary that supports it and cannot

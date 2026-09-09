@@ -47,6 +47,13 @@ internal fun Project.configureCompose(extension: CommonExtension) {
         }
     }
 
+    // <opt:composemetrics>
+    // Turns the metrics report on for the two modules whose components every screen calls, and
+    // registers the task that reads it. Everything it needs is in ComposeStability.kt, including
+    // the decision about which modules those are.
+    configureComposeStability()
+    // </opt:composemetrics>
+
     extensions.configure<KotlinAndroidProjectExtension> {
         compilerOptions {
             optIn.addAll(

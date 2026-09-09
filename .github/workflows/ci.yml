@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     # The slowest job by a wide margin. Worth every minute: it is the only thing standing between
     # a marker left unbalanced in one file and a broken zip going out to somebody.
-    timeout-minutes: 45
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       # `all` is not a preset — it is every feature at once, the combination the presets never
@@ -124,8 +124,24 @@ jobs:
         run: test -x ./gradlew
 
       - name: Build it
+        # `build` covers the architecture tests and the Compose stability check: the first is a
+        # plain JVM module whose `test` task `build` depends on, and the second is hooked onto
+        # `check`. The two below are not part of `build` by design and have to be asked for.
         working-directory: out
         run: ./gradlew build --no-daemon --stacktrace
+
+      - name: The coverage floor holds
+        # Only on `all`: it is the only generated project that has Kover, because the presets
+        # leave it off. Running a task the project does not have would be a red build about
+        # nothing.
+        #
+        # `buildHealth` is deliberately not here. It takes fourteen minutes on a project this
+        # size and, being a report rather than a gate, cannot fail — so it would buy nothing but
+        # a real chance of hitting this job's timeout. It runs in the pull-request workflow the
+        # generated project ships with, which is where somebody would act on its output.
+        if: matrix.preset == 'all'
+        working-directory: out
+        run: ./gradlew koverVerify --no-daemon --stacktrace
 
   screenshots:
     name: Design system screenshots

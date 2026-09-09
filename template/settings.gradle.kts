@@ -105,6 +105,9 @@ include(":feature:onboarding")
 // <generated:feature-modules>
 
 // ── tooling ──────────────────────────────────────────────────────────────────
+// <opt:architecturetests>
+include(":architecture")
+// </opt:architecturetests>
 // <opt:baselineprofile>
 include(":benchmark")
 // </opt:baselineprofile>

@@ -42,6 +42,30 @@ jobs:
       - name: Unit tests
         run: ./gradlew testDevDebugUnitTest --no-daemon
 
+      # <opt:architecturetests>
+      # Its own step, and its own task. :architecture is a plain JVM module, so its tests are
+      # `test` rather than `testDevDebugUnitTest` and the step above does not reach them.
+      - name: Architecture
+        run: ./gradlew :architecture:test --no-daemon
+      # </opt:architecturetests>
+
+      # <opt:composemetrics>
+      - name: Compose stability
+        run: ./gradlew checkComposeStability --no-daemon
+      # </opt:composemetrics>
+
+      # <opt:coverage>
+      - name: Coverage
+        run: ./gradlew koverXmlReport koverVerify --no-daemon
+      # </opt:coverage>
+
+      # <opt:depsanalysis>
+      # Last of the checks, because its advice is the least urgent and the most verbose — a
+      # failure here should not be the first thing hiding a failing test.
+      - name: Dependency health
+        run: ./gradlew buildHealth --no-daemon
+      # </opt:depsanalysis>
+
       - name: Assemble
         run: ./gradlew :app:assembleDevDebug --no-daemon
 
@@ -54,4 +78,10 @@ jobs:
           path: |
             **/build/reports/tests/
             **/build/reports/detekt/
+            # <opt:coverage>
+            **/build/reports/kover/
+            # </opt:coverage>
+            # <opt:depsanalysis>
+            build/reports/dependency-analysis/
+            # </opt:depsanalysis>
           retention-days: 7

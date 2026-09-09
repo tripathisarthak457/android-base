@@ -35,11 +35,12 @@ from .spec import (
 )
 
 #: Which part of the wizard a feature belongs to. Purely presentational — the generator does not
-#: care — but a flat list of twenty-four checkboxes is a list nobody reads to the end of.
+#: care — but a flat list of three dozen checkboxes is a list nobody reads to the end of.
 GROUPS: dict[str, tuple[str, str]] = {
     "network": ("Data", "How the app talks to your backend and what it does when that fails."),
     "websocket": ("Data", ""),
     "room": ("Data", ""),
+    "database": ("Data", ""),
     "coil": ("Data", ""),
     "workmanager": ("Data", ""),
     "auth": ("Screens", "Whole flows, wired end to end. Delete any of them in one commit."),
@@ -49,15 +50,26 @@ GROUPS: dict[str, tuple[str, str]] = {
     "forms": ("Screens", ""),
     "media": ("Screens", ""),
     "deeplink": ("Screens", ""),
+    "applock": ("Screens", ""),
+    "licenses": ("Screens", ""),
     "firebase": ("Google", "Nothing here is on by default. Each needs a Firebase project."),
     "analytics-firebase": ("Google", ""),
     "crashlytics": ("Google", ""),
     "push": ("Google", ""),
     "analytics": ("Google", ""),
+    "flags": ("Google", ""),
+    "flags-remote": ("Google", ""),
+    "playstore": ("Google", ""),
     "googlefonts": ("Design", "The look, and the app that shows it to you."),
     "catalog": ("Design", ""),
+    "screenshottests": ("Design", ""),
+    "composemetrics": ("Design", ""),
     "staticanalysis": ("Tooling", "The parts that keep it healthy after the first week."),
+    "architecturetests": ("Tooling", ""),
     "leakcanary": ("Tooling", ""),
+    "devtools": ("Tooling", ""),
+    "coverage": ("Tooling", ""),
+    "depsanalysis": ("Tooling", ""),
     "baselineprofile": ("Tooling", ""),
     "ci": ("Tooling", ""),
     "fastlane": ("Tooling", ""),
@@ -92,7 +104,40 @@ HEADLINES: dict[str, str] = {
     "baselineprofile": "Cut cold-start time",
     "ci": "Build and test every pull request",
     "fastlane": "Ship releases with one command",
+    "database": "Store your own data, not just a cache",
+    "devtools": "See every request the app made",
+    "licenses": "Show the licences you have to show",
+    "flags": "Turn a feature on without shipping",
+    "flags-remote": "Flip a flag from the Firebase console",
+    "applock": "Ask for a fingerprint on resume",
+    "playstore": "Offer updates and ask for ratings",
+    "screenshottests": "Catch a visual change in a diff",
+    "architecturetests": "Keep the layering from eroding",
+    "coverage": "Fail a build that drops coverage",
+    "depsanalysis": "See which dependencies nobody uses",
+    "composemetrics": "Catch a component that cannot skip",
 }
+
+
+def describe(feature_key: str) -> tuple[str, str]:
+    """
+    The group and headline for one feature, or [KeyError] naming what is missing.
+
+    Loudly rather than quietly. Both tables used to answer a missing key with a default — group
+    "Tooling", headline the feature's own title — which meant the eight features added after they
+    were last touched appeared on the website filed under the wrong heading with a headline that
+    repeated the title back. Nothing failed, nothing looked broken, and it stayed that way for
+    four releases. A KeyError here is caught by the catalogue's own test and by CI, before it is
+    a checkbox in the wrong section that nobody can see is wrong.
+    """
+    missing = [name for name, table in (("GROUPS", GROUPS), ("HEADLINES", HEADLINES))
+               if feature_key not in table]
+    if missing:
+        raise KeyError(
+            f"Feature '{feature_key}' is missing from {' and '.join(missing)} in catalogue.py. "
+            "Every feature needs a group to be filed under and a headline saying what it buys."
+        )
+    return GROUPS[feature_key][0], HEADLINES[feature_key]
 
 
 def catalogue() -> dict[str, Any]:
@@ -102,14 +147,14 @@ def catalogue() -> dict[str, Any]:
             {
                 "key": feature.key,
                 "title": feature.title,
-                "headline": HEADLINES.get(feature.key, feature.title),
+                "headline": describe(feature.key)[1],
                 "description": feature.description,
                 "default": feature.default,
                 "requires": list(feature.requires),
                 # The full set this feature drags in, so the UI can tick them without knowing the
                 # dependency graph.
                 "implies": sorted(resolve_features({feature.key}) - {feature.key}),
-                "group": GROUPS.get(feature.key, ("Tooling", ""))[0],
+                "group": describe(feature.key)[0],
             }
             for feature in FEATURES
             if not feature.implied_only

@@ -32,10 +32,11 @@ whose custody is not solely yours.
 4. [What the wizard asks](#what-the-wizard-asks)
 5. [Optional features](#optional-features)
 6. [What you get either way](#what-you-get-either-way)
-7. [Non-interactive use](#non-interactive-use)
-8. [Adding a feature module later](#adding-a-feature-module-later)
-9. [Working on the template itself](#working-on-the-template-itself)
-10. [When something goes wrong](#when-something-goes-wrong)
+7. [What the build refuses to let through](#what-the-build-refuses-to-let-through)
+8. [Non-interactive use](#non-interactive-use)
+9. [Adding a feature module later](#adding-a-feature-module-later)
+10. [Working on the template itself](#working-on-the-template-itself)
+11. [When something goes wrong](#when-something-goes-wrong)
 
 ---
 
@@ -272,6 +273,10 @@ dead code behind.
 | Biometric app lock | off | A fingerprint, face or screen-lock prompt when the app returns from the background, a settings toggle, and the app kept out of the task switcher's thumbnail |
 | Play in-app update and review | off | A flexible update downloaded in the background with a restart prompt, and a rating request on a schedule Play will honour rather than silently drop |
 | Screenshot tests | on | Every catalog page rendered to a PNG in both themes and again at the largest font setting, compared on every build. Runs on the JVM through Robolectric — no emulator. A contrast test over the palette runs beside it |
+| Architecture tests | on | The conventions, as JUnit: a ViewModel never holds an Activity and always extends the MVI base, a repository is an interface with a `Default` implementation, a data module never imports Compose, `runBlocking` never ships, a screen composable takes state rather than a ViewModel |
+| Compose stability check | off | Reads the Compose compiler's own report and fails on a design-system composable that restarts without skipping, or takes a parameter it cannot prove immutable. A baseline holds what is already there, so it starts green and can only improve |
+| Coverage floor (Kover) | off | One merged number for the whole project with a floor `koverVerify` enforces, generated code excluded so the report is about code somebody wrote |
+| Dependency health report | off | Every module declaring a dependency it never uses, or using one it only gets transitively. Printed on each pull request rather than failing the build — see the note in the root `build.gradle.kts` for why, and what it would take to make it a gate |
 | GitHub Actions | on | Pull requests build devDebug, run detekt and the tests. Tags produce signed release artifacts |
 
 ---
@@ -318,6 +323,25 @@ follows a locale change without the ViewModel knowing there was one.
 
 ---
 
+## What the build refuses to let through
+
+Four guards, none of which a reviewer could reliably catch by reading a diff. Each is a build
+failure rather than a warning, because a warning in a build log is a thing nobody has read since
+the second week.
+
+| Guard | Where it lives | What it catches |
+|---|---|---|
+| `verifyModuleDependencies` | every module | An edge the layering forbids — `:feature:cart` depending on `:feature:catalog`, `:core:*` reaching up into `:data:*`. Reads only that module's own dependencies, so it stays compatible with configuration caching |
+| `verifyComposeUsage` | every module | An `androidx.compose.material` import, a `@Composable` in a module without the compiler plugin, and copy typed into a feature's Kotlin instead of its `strings.xml` |
+| `:architecture:test` | one JVM module | What the two above cannot see, which is anything inside a class: a ViewModel holding an Activity, a repository with no interface, `runBlocking` in production source |
+| `checkComposeStability` | `:core:designsystem`, `:core:ui` | A component that recomposes when nothing it draws has changed |
+
+The first two are Gradle tasks in `build-logic`; the third is ordinary JUnit, so a new rule is a
+test somebody writes rather than a build plugin somebody edits. They do not overlap: module edges,
+file contents, and class shape are three different questions.
+
+---
+
 ## Non-interactive use
 
 The wizard produces a `ProjectSpec`; the renderer consumes one. Nothing in between needs a
@@ -334,6 +358,29 @@ py create_project.py --spec myapp.json --out ../MyApp --no-zip
 The spec is plain JSON. Editing it by hand is a supported way to work — the same validation runs
 either way, so a typo in the package name is rejected with the same message the wizard would give
 you.
+
+Regenerating over a directory that already exists replaces it wholesale, so it asks first — and
+refuses outright when there is nobody to ask, which is what `--spec` means. Pass `--force` when
+replacing it is genuinely the intent.
+
+Three flags answer questions without generating anything:
+
+```bash
+# Every feature, grouped as the website groups them, and what each one drags in.
+py create_project.py --list-features
+
+# Resolve the answers and say what would be written. Nothing is.
+py create_project.py --spec myapp.json --dry-run
+
+# The same three, for a program rather than a person.
+py create_project.py --list-features --json
+py create_project.py --spec myapp.json --dry-run --json
+py create_project.py --spec myapp.json --out ../MyApp --no-zip --json
+```
+
+`--dry-run` is worth the two seconds before a long build: it names the features that were turned
+on which nobody ticked. Asking for Crashlytics quietly brings Firebase and the analytics seam,
+which is correct and is also the kind of thing better learned before the build than during it.
 
 ---
 
@@ -358,6 +405,19 @@ Multiple at once:
 ```bash
 py add_feature.py orders profile settings --project ../MyApp
 ```
+
+And the inverse, which undoes the same three edits:
+
+```bash
+py remove_feature.py orders --project ../MyApp --dry-run   # say what would go
+py remove_feature.py orders --project ../MyApp             # ask, then do it
+```
+
+It deletes `:data:orders` and `:feature:orders` and takes their lines back out of all three
+files. The one people forget by hand is the Gradle include, which fails the next sync with an
+error about a missing project rather than about the directory they deleted. It refuses a module
+the template itself ships: those are removed by generating without them, not by deleting a
+directory that half the app still references.
 
 ---
 
@@ -457,8 +517,12 @@ template/                the Android project. Open this in Android Studio.
 generator/
   create_project.py      the wizard and the entry point
   add_feature.py         the scaffolder, for a project that already exists
+  remove_feature.py      its inverse: delete a module and the three lines naming it
+  generate_headless.py   JSON on stdin, a zip out. What the web API runs
   genkit/
     spec.py              what a project is, the feature catalogue, the presets, the rules
+    build.py             the one description of what generating consists of, and in what order
+    catalogue.py         the options as JSON, for the website and --list-features
     prompts.py           the wizard. I/O only, no logic
     render.py            copy, strip markers, rename, apply settings, keystores, zip
     scaffold.py          the :data: + :feature: module pair

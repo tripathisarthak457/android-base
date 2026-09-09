@@ -12,7 +12,20 @@ const REPO = "https://github.com/tripathisarthak457/android-base";
  * going to work. So: a sentence, a terminal showing the thing actually being run, and the counts
  * that make the claim checkable.
  */
-export function Hero({ onStart }: { onStart: () => void }) {
+export function Hero({
+  onStart,
+  featureCount,
+}: {
+  onStart: () => void;
+  /**
+   * How many features there are, from the generator itself.
+   *
+   * Typed into this file as a literal until it said 26 and the answer was 32 — for four releases,
+   * on the one number the page uses to make its claim checkable. Undefined while the catalogue is
+   * still loading, which is the only reason there is still a number in the source at all.
+   */
+  featureCount?: number;
+}) {
   return (
     <section className="relative overflow-hidden">
       <div className="grid-backdrop pointer-events-none absolute inset-0" aria-hidden />
@@ -96,7 +109,7 @@ export function Hero({ onStart }: { onStart: () => void }) {
           className="mt-14 grid gap-4 md:grid-cols-5"
         >
           <Terminal />
-          <Stats />
+          <Stats featureCount={featureCount} />
         </motion.div>
       </div>
     </section>
@@ -154,16 +167,23 @@ function Terminal() {
 }
 
 const STATS = [
-  { value: "26", label: "features you can switch off", detail: "Each removes a module, not just code" },
+  { value: null, label: "features you can switch off", detail: "Each removes a module, not just code" },
   { value: "80+", label: "components, zero Material", detail: "An androidx.compose.material import fails the build" },
   { value: "7", label: "build variants", detail: "dev / staging / prod / playstore × debug / release" },
   { value: "0", label: "setup steps after unzip", detail: "Open it and press run" },
 ];
 
-function Stats() {
+function Stats({ featureCount }: { featureCount?: number }) {
+  // A null `value` is the one the generator answers. Shown as a dash until it arrives rather than
+  // as a guess that could be wrong — a placeholder number is how the old one survived so long.
+  const stats = STATS.map((stat) => ({
+    ...stat,
+    value: stat.value ?? (featureCount === undefined ? "—" : String(featureCount)),
+  }));
+
   return (
     <div className="md:col-span-2 grid gap-3">
-      {STATS.map((stat, index) => (
+      {stats.map((stat, index) => (
         <motion.div
           key={stat.label}
           initial={{ opacity: 0, x: 14 }}

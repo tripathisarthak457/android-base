@@ -58,6 +58,9 @@ roborazzi = "1.73.0"
 robolectric = "4.16.1"
 benchmark = "1.5.0-rc02"
 baselineProfilePlugin = "1.5.0-rc02"
+konsist = "0.17.3"
+kover = "0.9.9"
+dependencyAnalysis = "3.19.1"
 profileinstaller = "1.4.1"
 uiautomator = "2.4.0"
 
@@ -159,6 +162,11 @@ roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", versi
 roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+# <opt:architecturetests>
+# Reads the project's own Kotlin source as a JUnit test, so a rule about how code is written
+# fails in the same run as a rule about what it returns. Test-only: nothing here reaches an APK.
+konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist" }
+# </opt:architecturetests>
 
 # ── Static analysis ──────────────────────────────────────────────────────────
 # detekt's formatting ruleset wraps ktlint, so one plugin covers both style rules and
@@ -195,3 +203,9 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 licensee = { id = "app.cash.licensee", version.ref = "licensee" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineProfilePlugin" }
+# <opt:coverage>
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+# </opt:coverage>
+# <opt:depsanalysis>
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
+# </opt:depsanalysis>

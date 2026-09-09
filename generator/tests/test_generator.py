@@ -13,12 +13,16 @@ the same reason the generator itself is dependency-free.
 
 from __future__ import annotations
 
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from genkit.build import plan  # noqa: E402
+from genkit.catalogue import GROUPS, HEADLINES, catalogue, describe  # noqa: E402
 from genkit.render import (  # noqa: E402
     _is_hollow_kotlin,
     brand_colours,
@@ -28,6 +32,7 @@ from genkit.render import (  # noqa: E402
 )
 from genkit.scaffold import generated_blocks, pascal, title  # noqa: E402
 from genkit.spec import (  # noqa: E402
+    FEATURES,
     MOTION_STYLE_NAMES,
     KeystoreSpec,
     ProjectSpec,
@@ -465,6 +470,194 @@ class KeystoreValidationTest(unittest.TestCase):
     def test_the_same_key_cannot_be_described_twice(self):
         with self.assertRaises(SpecError):
             spec(keystores=(keystore(), keystore())).validated()
+
+
+class CatalogueTest(unittest.TestCase):
+    """
+    The tables the website renders from, checked against the features that actually exist.
+
+    This class is here because it did not exist and the thing it checks had already gone wrong:
+    eight features were added and neither table was touched, so all eight rendered on the site
+    filed under "Tooling" with a headline that repeated the title back. Nothing failed, which is
+    why it survived four releases. The point of this class is that the ninth cannot.
+    """
+
+    def test_every_feature_has_a_group_and_a_headline(self):
+        for feature in FEATURES:
+            if feature.implied_only:
+                continue
+            with self.subTest(feature=feature.key):
+                self.assertIn(feature.key, GROUPS)
+                self.assertIn(feature.key, HEADLINES)
+
+    def test_a_feature_missing_from_the_tables_raises_rather_than_defaulting(self):
+        with self.assertRaises(KeyError):
+            describe("a-feature-nobody-has-written")
+
+    def test_every_group_a_feature_names_is_one_the_site_will_render(self):
+        rendered = {group["name"] for group in catalogue()["groups"]}
+
+        for entry in catalogue()["features"]:
+            with self.subTest(feature=entry["key"]):
+                self.assertIn(entry["group"], rendered)
+
+    def test_a_headline_says_something_the_title_does_not(self):
+        # A headline that repeats the title tells a visitor nothing, and repeating it is exactly
+        # what the missing entries used to produce.
+        for feature in FEATURES:
+            if feature.implied_only:
+                continue
+            with self.subTest(feature=feature.key):
+                self.assertNotEqual(feature.title, HEADLINES[feature.key])
+
+
+class PlanTest(unittest.TestCase):
+    """What --dry-run promises, which has to be what a real run would then do."""
+
+    def test_an_implied_feature_shows_as_enabled(self):
+        resolved = spec(features=frozenset({"crashlytics"})).validated()
+
+        self.assertIn("firebase", plan(resolved)["enabled"])
+
+    def test_a_disabled_feature_contributes_the_paths_it_owns(self):
+        resolved = spec(features=frozenset()).validated()
+
+        self.assertIn("core/analytics", plan(resolved)["removed"])
+
+    def test_a_package_placeholder_in_a_path_is_resolved_against_the_spec(self):
+        resolved = spec(features=frozenset()).validated()
+
+        self.assertIn(
+            "core/ui/src/main/kotlin/com/acme/field/core/ui/AppNetworkImage.kt",
+            plan(resolved)["removed"],
+        )
+
+    def test_an_enabled_feature_keeps_its_paths(self):
+        resolved = spec(features=frozenset({"analytics"})).validated()
+
+        self.assertNotIn("core/analytics", plan(resolved)["removed"])
+
+    def test_each_named_module_is_planned_as_a_data_and_feature_pair(self):
+        resolved = spec(feature_modules=("orders",)).validated()
+
+        self.assertEqual([":data:orders", ":feature:orders"], plan(resolved)["modules"])
+
+
+class SpecRoundTripTest(unittest.TestCase):
+    """
+    --save-spec then --spec has to produce the same project.
+
+    It is the only way to regenerate one after changing a single answer, and a field that does not
+    survive the round trip is a silent difference between two projects meant to be identical.
+    """
+
+    def test_every_answer_survives_being_written_and_read_back(self):
+        from create_project import load_spec, save_spec
+
+        original = spec(
+            features=frozenset({"network", "room"}),
+            feature_modules=("orders",),
+            keystores=(keystore(),),
+            accent_colour="#112233",
+            motion_style="Calm",
+            haptics_enabled=False,
+            api_base_urls={"dev": "https://dev.example.com/"},
+        ).validated()
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "spec.json"
+            save_spec(original, path)
+            # Parsed as JSON as well, so a field that serialised to something unreadable fails
+            # here rather than when somebody opens the file to hand-edit one answer.
+            json.loads(path.read_text(encoding="utf-8"))
+
+            self.assertEqual(original, load_spec(path))
+
+
+class RemoveFeatureTest(unittest.TestCase):
+    """
+    The inverse of add_feature, which is the half that has to leave nothing behind.
+
+    A leftover `include(":feature:orders")` fails the next Gradle sync with an error about a
+    missing project rather than about the directory somebody deleted — the least useful version
+    of that message.
+    """
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.project = Path(temp.name)
+
+    def _write(self, relative, text):
+        path = self.project / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+        return path
+
+    def test_the_gradle_includes_go_and_the_others_stay(self):
+        from remove_feature import unregister_modules
+
+        path = self._write(
+            "settings.gradle.kts",
+            'include(":data:orders")\ninclude(":data:sample")\n'
+            'include(":feature:orders")\ninclude(":feature:sample")\n',
+        )
+
+        unregister_modules(self.project, ("orders",))
+
+        self.assertEqual(
+            'include(":data:sample")\ninclude(":feature:sample")\n',
+            path.read_text(encoding="utf-8"),
+        )
+
+    def test_the_app_dependency_goes(self):
+        from remove_feature import unregister_dependencies
+
+        path = self._write(
+            "app/build.gradle.kts",
+            "dependencies {\n"
+            '    implementation(project(":feature:orders"))\n'
+            '    implementation(project(":feature:sample"))\n'
+            "}\n",
+        )
+
+        unregister_dependencies(self.project, ("orders",))
+
+        remaining = path.read_text(encoding="utf-8")
+        self.assertNotIn("orders", remaining)
+        self.assertIn("sample", remaining)
+
+    def test_the_tab_goes_even_when_its_label_has_been_edited(self):
+        from remove_feature import unregister_tabs
+
+        path = self._write(
+            "app/src/main/kotlin/com/acme/field/ui/AppDestinations.kt",
+            "import com.acme.field.feature.orders.OrdersListKey\n"
+            "import com.acme.field.feature.sample.SampleListKey\n"
+            "    val tabs: List<ShellTab> = listOf(\n"
+            '        ShellTab(key = OrdersListKey, label = "Purchase orders", icon = AppIcons.Cart),\n'
+            '        ShellTab(key = SampleListKey, label = "Sample", icon = AppIcons.Grid),\n'
+            "    )\n",
+        )
+
+        unregister_tabs(self.project, "com.acme.field", ("orders",))
+
+        remaining = path.read_text(encoding="utf-8")
+        self.assertNotIn("Orders", remaining)
+        self.assertIn("SampleListKey", remaining)
+
+    def test_a_module_the_template_ships_is_refused(self):
+        from remove_feature import normalise
+
+        with self.assertRaises(SpecError):
+            normalise("settings")
+
+    def test_a_file_that_is_not_there_is_not_an_error(self):
+        # A project whose AppDestinations has been renamed still has to get its Gradle edits,
+        # rather than failing halfway with two of the three done.
+        from remove_feature import unregister_tabs
+
+        unregister_tabs(self.project, "com.acme.field", ("orders",))
 
 
 if __name__ == "__main__":

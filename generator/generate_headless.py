@@ -28,21 +28,17 @@ file from the machine it runs on into the zip, which over HTTP is an arbitrary f
 from __future__ import annotations
 
 import json
-import shutil
 import sys
-import tempfile
 import time
 import traceback
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-TEMPLATE_DIR = HERE.parent / "template"
-VARIANTS_DIR = HERE / "variants"
 
 sys.path.insert(0, str(HERE))
 
-from genkit import render, scaffold  # noqa: E402
-from genkit.readme import write_readme  # noqa: E402
+from genkit import build as builder  # noqa: E402
+from genkit import render  # noqa: E402
 from genkit.spec import KeystoreSpec, ProjectSpec, SpecError  # noqa: E402
 
 
@@ -119,30 +115,10 @@ def main(argv: list[str]) -> int:
 
     started = time.perf_counter()
     try:
-        with tempfile.TemporaryDirectory(prefix="androidgen-") as staging:
-            project = Path(staging) / spec.pascal_name
-
-            warnings = render.copy_template(TEMPLATE_DIR, project, spec)
-            render.overlay_variants(VARIANTS_DIR, project, spec)
-            scaffold.write_feature_modules(project, spec)
-            render.rewrite_all(project, spec, scaffold.generated_blocks(spec))
-            render.apply_build_settings(project, spec)
-            render.apply_app_name(project, spec)
-            render.apply_fonts(project, spec)
-            render.apply_accent(project, spec)
-            render.apply_feel(project, spec)
-            keystores = list(spec.keystores)
-            generated, skipped, key_warnings = render.generate_keystores(project, keystores)
-            # Only the keys that exist get a stanza: a properties file naming a .jks that is not
-            # in the zip is a build failure rather than the fallback to debug signing.
-            render.write_keystore_properties(
-                project, [k for k in keystores if k.name in generated],
-            )
-            warnings.extend(key_warnings)
-            write_readme(project, spec)
-
-            output.parent.mkdir(parents=True, exist_ok=True)
-            render.zip_project(project, output)
+        # The same nine render steps the wizard runs, in the same order, because they are the
+        # same code. Keystores are generated only when the spec asked for them — see the module
+        # docstring for why that is the caller's decision to have made out loud.
+        result = builder.build(spec, output, zip_output=True)
     except render.RenderError as error:
         return fail(str(error))
     except OSError as error:
@@ -157,12 +133,12 @@ def main(argv: list[str]) -> int:
             "packageName": spec.package_name,
             "features": sorted(spec.features),
             "featureModules": list(spec.feature_modules),
-            "keystoresGenerated": generated,
-            "keystoresSkipped": skipped,
+            "keystoresGenerated": result.keystores_generated,
+            "keystoresSkipped": result.keystores_skipped,
             "zipPath": str(output),
             "zipBytes": output.stat().st_size,
             "elapsedMillis": round((time.perf_counter() - started) * 1000),
-            "warnings": warnings,
+            "warnings": result.warnings,
             "ignoredFields": unknown,
         },
         sys.stdout,

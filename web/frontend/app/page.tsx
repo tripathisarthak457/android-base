@@ -44,7 +44,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Nav />
-      <Hero onStart={scrollToConfigure} />
+      <Hero onStart={scrollToConfigure} featureCount={catalogue?.features.length} />
       <Included />
 
       <div ref={configureRef}>
@@ -138,7 +138,8 @@ const QUESTIONS = [
       "Turning one off deletes its module rather than commenting it out, so adding it back means " +
       "generating again or copying the module from the repository. Feature modules are different " +
       "— add_feature.py scaffolds a new :data: and :feature: pair into a project that already " +
-      "exists, and makes the three edits people forget.",
+      "exists and makes the three edits people forget, and remove_feature.py takes one back out " +
+      "again, including those same three edits.",
   },
   {
     q: "Why don't I get signing keys?",

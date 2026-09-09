@@ -30,6 +30,7 @@ Generated from the [Android base template](https://github.com/tripathisarthak457
 ```
 __CATALOG__
 __SCREENSHOTS__
+__CHECKS__
 ## Variants
 
 Four environments — `dev`, `staging`, `prod`, `playstore` — times debug and release, minus
@@ -113,6 +114,12 @@ tests:
 py add_feature.py orders --project . --tab
 ```
 
+And to take one back out again, including the three registrations it added:
+
+```bash
+py remove_feature.py orders --project .
+```
+
 ## Signing
 
 __SIGNING__
@@ -167,6 +174,84 @@ images under `catalog/build/outputs/roborazzi`, run `record` again, and commit t
 alongside it.
 '''
 
+
+_ARCHITECTURE_NOTE = """
+### Architecture tests
+
+```bash
+./gradlew :architecture:test
+```
+
+Six rules about how code in this project is written, as ordinary JUnit over the source itself: a
+ViewModel never holds an Activity and always extends `MviViewModel`, a repository is an interface
+with a `Default` implementation behind it, a data module never imports Compose, `runBlocking` never
+reaches production source, and a screen composable takes state rather than a ViewModel.
+
+They run as part of `./gradlew build`, and they are deliberately separate from the two guards in
+`build-logic`: `verifyModuleDependencies` polices the edges of the module graph and
+`verifyComposeUsage` polices Material imports and untranslated copy. Neither can see inside a
+class, which is where every rule here lives.
+
+Adding a rule is adding a test. That is the reason they are here rather than in a Gradle plugin.
+"""
+
+_STABILITY_NOTE = """
+### Compose stability
+
+```bash
+./gradlew checkComposeStability
+```
+
+Reads the Compose compiler's own report for `:core:designsystem` and `:core:ui` and fails on a
+composable that restarts without being able to skip, or that takes a parameter the compiler cannot
+prove immutable. Either one costs a frame every time the parent recomposes — in a list, once per
+row per frame — and neither is visible in a diff.
+
+`config/compose-stability-baseline.txt` holds what was already there when the check was turned on.
+Deleting a line is how a fix is recorded; the check fails again if it comes back. When the cause is
+a type from a library this project cannot change, declare it immutable in
+`config/compose-stability.conf` rather than accepting it into the baseline.
+
+To accept a new one deliberately: `./gradlew :core:designsystem:recordComposeStability`, in a
+commit that says why.
+"""
+
+_COVERAGE_NOTE = """
+### Coverage
+
+```bash
+./gradlew koverHtmlReport      # read it
+./gradlew koverVerify          # the floor the build enforces
+```
+
+One merged number for the whole project, with generated code excluded — Hilt's factories, Room's
+DAO implementations, the singletons the Compose compiler emits — so that what is left is code
+somebody wrote and could have tested.
+
+The floor is `coverageMinimum` in `gradle.properties`. It is a ratchet: raise it when a release
+comfortably clears it. Lowering it to turn a red build green is the edit that makes the whole
+thing decorative, so do that in a commit that says so out loud.
+"""
+
+_DEPS_NOTE = """
+### Dependency health
+
+```bash
+./gradlew buildHealth
+```
+
+Names every module declaring a dependency it never uses, and every module using one it only gets
+transitively. The second is the one worth having: that module compiles only because something else
+put the library on its classpath, and it breaks the day that something else drops it — for a
+reason unrelated to the commit that broke it.
+
+It prints rather than fails. Two of this template's own decisions produce advice the plugin is
+right to give and this project is right to ignore: `:core:designsystem` exposes Compose as `api`
+on purpose, and the Compose convention plugin gives every module the same dependency set. Making
+it a gate means working through the report first and then setting `severity("fail")` in the root
+`build.gradle.kts` — worth doing, and only in that order.
+"""
+
 _FASTLANE_NOTE = """
 ## Releasing
 
@@ -210,11 +295,26 @@ def write_readme(project_dir: Path, spec: ProjectSpec) -> None:
             "`keystore.properties` and fill it in before cutting a release."
         )
 
+    # Each check documents itself only when the project actually has it. A README describing a
+    # task that does not exist is worse than one that says nothing: the first command somebody
+    # runs out of it fails, and they stop trusting the rest of the file.
+    checks = "".join(
+        note
+        for feature, note in (
+            ("architecturetests", _ARCHITECTURE_NOTE),
+            ("composemetrics", _STABILITY_NOTE),
+            ("coverage", _COVERAGE_NOTE),
+            ("depsanalysis", _DEPS_NOTE),
+        )
+        if spec.has(feature)
+    )
+
     body = (
         _TEMPLATE
         .replace("__APP_NAME__", spec.app_name)
         .replace("__VERSION__", spec.version_name)
         .replace("__MODULES__", modules)
+        .replace("__CHECKS__", checks)
         .replace("__SIGNING__", signing)
         .replace("__CATALOG__", _CATALOG_NOTE if spec.has("catalog") else "")
         .replace(
