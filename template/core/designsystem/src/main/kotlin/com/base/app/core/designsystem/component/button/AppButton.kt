@@ -1,6 +1,7 @@
 package com.base.app.core.designsystem.component.button
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -25,12 +27,15 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import com.base.app.core.designsystem.component.feedback.AppCircularProgress
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.AppClickableSurface
 import com.base.app.core.designsystem.foundation.ProvideContentColor
+import com.base.app.core.designsystem.foundation.offsetShadow
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -83,12 +88,24 @@ fun AppButton(
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
     fillWidth: Boolean = false,
-    shape: Shape = AppTheme.shapes.sm,
+    shape: Shape = AppTheme.style.buttonShape,
 ) {
     val style = variant.style()
     val metrics = size.metrics()
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
+
+    // The Playful style's press: the button sinks into its own shadow instead of shrinking.
+    // Only filled variants have a shadow; a text button with one would look like a sticker.
+    val shadow = AppTheme.style.offsetShadow.takeIf {
+        it > 0.dp && (style.border != null || style.container != Color.Transparent)
+    }
+    val sink by animateFloatAsState(
+        targetValue = if (pressed && enabled && !loading) 1f else 0f,
+        animationSpec = AppTheme.motion.press(),
+        label = "buttonSink",
+    )
+    val label = if (AppTheme.style.uppercaseLabels) text.uppercase() else text
 
     val container by animateColorAsState(
         targetValue = if (pressed) style.containerPressed else style.container,
@@ -100,14 +117,28 @@ fun AppButton(
         onClick = onClick,
         modifier = modifier
             .then(if (fillWidth) Modifier.fillMaxWidth() else Modifier)
+            .then(
+                if (shadow != null) {
+                    Modifier
+                        .offset { IntOffset((shadow * sink).roundToPx(), (shadow * sink).roundToPx()) }
+                        .offsetShadow(shape, shadow * (1f - sink), AppTheme.colors.contentPrimary)
+                } else {
+                    Modifier
+                },
+            )
             .defaultMinSize(minHeight = metrics.height),
         enabled = enabled && !loading,
         shape = shape,
         color = container,
         contentColor = style.content,
-        border = style.border,
+        border = if (shadow != null) {
+            BorderStroke(AppTheme.sizes.borderWidth, AppTheme.colors.contentPrimary)
+        } else {
+            style.border
+        },
         interactionSource = interactionSource,
         role = Role.Button,
+        scaleOnPress = shadow == null,
         // The surface is at least `metrics.height` tall and, when filled, the whole width — both
         // larger than the label. Without this the label is laid out in the top-left corner of its
         // own button, which is the single most visible way a hand-built button gives itself away.
@@ -123,8 +154,12 @@ fun AppButton(
             ) {
                 leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
                 AppText(
-                    text = text,
-                    style = metrics.textStyle,
+                    text = label,
+                    style = if (AppTheme.style.uppercaseLabels) {
+                        metrics.textStyle.copy(letterSpacing = UppercaseTracking)
+                    } else {
+                        metrics.textStyle
+                    },
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -155,7 +190,7 @@ fun AppIconButton(
     variant: ButtonVariant = ButtonVariant.Ghost,
     size: ButtonSize = ButtonSize.Medium,
     enabled: Boolean = true,
-    shape: Shape = AppTheme.shapes.sm,
+    shape: Shape = AppTheme.style.buttonShape,
 ) {
     val style = variant.style()
     val metrics = size.metrics()
@@ -174,6 +209,9 @@ fun AppIconButton(
         AppIcon(icon, contentDescription = contentDescription, size = metrics.iconSize)
     }
 }
+
+/** Uppercase labels need air between the letters, or they read as a single block. */
+private val UppercaseTracking = 0.08.em
 
 @Immutable
 private data class ButtonStyle(

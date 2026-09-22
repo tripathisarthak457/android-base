@@ -122,7 +122,7 @@ fun appTypography(fonts: AppFonts): AppTypography {
  * The scale set in the platform's own typefaces.
  *
  * The value the composition local falls back to outside an [AppTheme] — a preview that forgot the
- * wrapper, a screenshot test — and the one a downloaded family replaces once it resolves.
+ * wrapper, a unit test — and the one a downloaded family replaces once it resolves.
  */
 val DefaultTypography: AppTypography = appTypography(PlatformFonts)
 

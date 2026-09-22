@@ -1,7 +1,13 @@
 package com.base.app.core.navigation
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,10 +19,13 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.base.app.core.designsystem.component.navigation.AppBottomBar
+import com.base.app.core.designsystem.component.navigation.AppBottomBarDefaults
 import com.base.app.core.designsystem.component.navigation.BottomNavItem
+import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -179,19 +188,24 @@ private fun shellSaver(
 }
 
 /**
- * The tabbed shell: a persistent bar, and the current tab's stack above it.
+ * The tabbed shell: a persistent bar, and the current tab's stack behind it.
  *
  * ## The bar is hosted above the display, not inside a screen
  *
  * A bar that is part of each tab's screen is torn down and rebuilt on every switch, which makes
  * the badge flicker and lets the bar animate in with the content behind it. Here it is a sibling
- * of the display and is simply never recomposed by a tab change.
+ * of the display and is never recomposed by a tab change.
  *
- * ## It hides itself off a tab root
+ * ## It slides away off a tab root
  *
  * A detail screen pushed from a tab is not a tab, and leaving the bar up invites the user to
- * switch away mid-task with no way back to where they were. [alwaysShowBar] exists for the
- * designs that disagree.
+ * switch away mid-task. The bar slides out rather than vanishing, over content whose size does
+ * not change — see [TabbedNavHost]. [alwaysShowBar] exists for the designs that disagree.
+ *
+ * ## Back at a tab root goes to the first tab
+ *
+ * The display only handles Back when it has something to pop, so this is the shell's handler,
+ * enabled only in the one position where the display's is not.
  */
 @Composable
 fun AppShell(
@@ -205,27 +219,37 @@ fun AppShell(
 ) {
     require(tabs.isNotEmpty()) { "AppShell needs at least one tab." }
 
-    val backStack = state.current
-
     // Commands are applied to whichever tab is in front. A ViewModel inside a tab has no idea it
     // is in one, which is what keeps features unaware of the shell entirely.
-    LaunchedEffect(navigator, state.selectedIndex) {
+    LaunchedEffect(navigator, state) {
         navigator.commands.collect { command -> state.current.apply(command) }
     }
 
-    val onRoot = backStack.size == 1
+    val onRoot = state.current.size == 1
     val showBar = alwaysShowBar || onRoot
+    val motion = AppTheme.motion
 
-    Column(modifier = modifier.fillMaxSize()) {
-        Box(modifier = Modifier.weight(1f)) {
-            AppNavHost(
-                backStack = backStack,
-                registry = registry,
-                onBack = { state.handleBack(onExitRequested) },
-            )
-        }
+    BackHandler(enabled = onRoot && state.selectedIndex != 0) {
+        state.handleBack(onExitRequested)
+    }
 
-        if (showBar) {
+    Box(modifier = modifier.fillMaxSize()) {
+        TabbedNavHost(
+            state = state,
+            registry = registry,
+            rootBottomInset = AppBottomBarDefaults.occupiedHeight(),
+            insetEveryEntry = alwaysShowBar,
+            onBack = { state.handleBack(onExitRequested) },
+            modifier = Modifier.fillMaxSize(),
+        )
+
+        AnimatedVisibility(
+            visible = showBar,
+            modifier = Modifier.align(Alignment.BottomCenter),
+            enter = slideInVertically(motion.sheet()) { it } + fadeIn(tween(motion.quick)),
+            exit = slideOutVertically(tween(motion.medium, easing = motion.exit)) { it } +
+                fadeOut(tween(motion.medium, easing = motion.exit)),
+        ) {
             AppBottomBar(
                 items = tabs.map { tab ->
                     BottomNavItem(

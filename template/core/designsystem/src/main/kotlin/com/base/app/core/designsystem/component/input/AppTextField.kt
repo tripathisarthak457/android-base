@@ -27,16 +27,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.FieldTreatment
 
 /**
  * A text field.
@@ -87,11 +92,14 @@ fun AppTextField(
     val spacing = AppTheme.spacing
     val focused by interactionSource.collectIsFocusedAsState()
     val hasError = error != null
+    val treatment = AppTheme.style.field
 
     val borderColor by animateColorAsState(
         targetValue = when {
             hasError -> colors.danger.content
             focused -> colors.accent
+            treatment == FieldTreatment.Filled -> Color.Transparent
+            treatment == FieldTreatment.Underlined -> colors.borderStrong
             else -> colors.border
         },
         animationSpec = tween(AppTheme.motion.quick),
@@ -119,12 +127,7 @@ fun AppTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .disabledAlpha(enabled)
-                .background(
-                    color = if (enabled) colors.surface else colors.surfaceVariant,
-                    shape = AppTheme.shapes.sm,
-                )
-                .border(borderWidth, borderColor, AppTheme.shapes.sm)
-                .padding(horizontal = spacing.md)
+                .fieldContainer(treatment, enabled, borderWidth, borderColor)
                 .defaultMinSize(minHeight = AppTheme.sizes.fieldHeight),
             horizontalArrangement = Arrangement.spacedBy(spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
@@ -210,5 +213,32 @@ private fun SupportingRow(
                 )
             }
         }
+    }
+}
+
+/** The box around the value, per [FieldTreatment]. The label and supporting row never change. */
+@Composable
+private fun Modifier.fieldContainer(
+    treatment: FieldTreatment,
+    enabled: Boolean,
+    borderWidth: Dp,
+    borderColor: Color,
+): Modifier {
+    val colors = AppTheme.colors
+    val shape = AppTheme.shapes.sm
+    return when (treatment) {
+        FieldTreatment.Outlined -> background(if (enabled) colors.surface else colors.surfaceVariant, shape)
+            .border(borderWidth, borderColor, shape)
+            .padding(horizontal = AppTheme.spacing.md)
+
+        FieldTreatment.Filled -> background(colors.surfaceVariant, shape)
+            .border(borderWidth, borderColor, shape)
+            .padding(horizontal = AppTheme.spacing.md)
+
+        FieldTreatment.Underlined -> drawBehind {
+            val stroke = borderWidth.toPx()
+            val y = size.height - stroke / 2
+            drawLine(borderColor, Offset(0f, y), Offset(size.width, y), stroke)
+        }.padding(horizontal = AppTheme.spacing.xxs)
     }
 }

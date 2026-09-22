@@ -85,9 +85,9 @@ def strip_markers(text: str, enabled: set[str], generated: dict[str, list[str]])
     """
     Resolves every marker in one pass.
 
-    Nested blocks are supported and are common: an `<opt:crashlytics>` import inside an
-    `<opt:firebase>` region. A disabled outer block suppresses everything inside it regardless of
-    the inner state, which is what "Crashlytics needs Firebase" means at the file level.
+    Nested blocks are supported and are common: an `<opt:coil>` image inside an `<opt:media>`
+    region. A disabled outer block suppresses everything inside it regardless of the inner
+    state, which is what "this needs that" means at the file level.
     """
     output: list[str] = []
     #: Stack of (feature, keeping). `keeping` is false for the whole nested region once any
@@ -151,10 +151,9 @@ def collapse_blank_runs(text: str) -> str:
     off would otherwise be full of six-line gaps, which reads as carelessness in the first file
     anyone opens.
 
-    A blank line against either side of a brace is removed outright. Those two are not cosmetic:
-    ktlint fails the build on both `NoBlankLineBeforeRbrace` and `NoEmptyFirstLineInMethodBlock`,
-    so a block stripped from the start or the end of a function turns a generated project red
-    before its author has written anything.
+    A blank line against either side of a brace is removed outright: a block stripped from the
+    start or the end of a function would otherwise leave the kind of gap that Android Studio's
+    formatter and every Kotlin style guide remove, in code the author has not touched yet.
 
     Only a brace, deliberately. A blank line after an opening *parenthesis* is legal and is
     sometimes how a long argument list is laid out, and collapsing it would be the generator
@@ -259,6 +258,7 @@ def overlay_variants(variants_root: Path, destination: Path, spec: ProjectSpec) 
     Runs after the main copy so it overwrites, and before the rewrite pass so its files are
     renamed and marker-stripped like everything else.
     """
+    owned = _owned_paths(spec)
     for feature in FEATURES_BY_KEY.values():
         if feature.variant_dir is None or feature.key in spec.features:
             continue
@@ -270,6 +270,10 @@ def overlay_variants(variants_root: Path, destination: Path, spec: ProjectSpec) 
             if source.is_dir():
                 continue
             relative = source.relative_to(source_root)
+            # One variant can cover several modules — Firebase's reaches into both analytics and
+            # flags — and a module that is itself switched off must not get a stray file back.
+            if _is_owned(relative, owned):
+                continue
             target = destination / Path(rename(relative.as_posix(), spec))
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
@@ -304,9 +308,8 @@ def _is_hollow_kotlin(text: str) -> bool:
 
     Stripping every optional block out of a file can leave a shell: the app module's
     `FeatureBindingsModule` exists to supply things to the settings, auth and onboarding features,
-    and a project with none of them gets an empty Hilt module and three unused imports — which
-    detekt fails on, so the project arrives red. A file with nothing in it is not a file the
-    project needs.
+    and a project with none of them gets an empty Hilt module and three unused imports. A file with
+    nothing in it is not a file the project needs.
 
     Deliberately conservative: a single declaration of any kind keeps the file. It is looking for
     "nothing survived", not "not much survived".
@@ -401,7 +404,8 @@ def apply_fonts(destination: Path, spec: ProjectSpec) -> None:
 
 def apply_feel(destination: Path, spec: ProjectSpec) -> None:
     """
-    Writes the motion style and the haptics default into the one place that reads them.
+    Writes the motion style, the design style and the haptics default into the one place that
+    reads them.
 
     Both are arguments to the single `AppTheme` call in `AppRoot`, so a project can still change
     either at runtime — the generator only decides where it starts.
@@ -421,6 +425,7 @@ def apply_feel(destination: Path, spec: ProjectSpec) -> None:
         "AppTheme(",
         "        mode = themeMode,",
         f"        motionStyle = AppMotionStyle.{spec.motion_style},",
+        f"        designStyle = AppDesignStyle.{spec.design_style},",
         f"        hapticsEnabled = {haptics},",
         "    ) {",
     ])
@@ -431,10 +436,10 @@ def apply_feel(destination: Path, spec: ProjectSpec) -> None:
     )
 
     theme_import = f"import {spec.package_name}.core.designsystem.theme.AppTheme\n"
-    style_import = f"import {spec.package_name}.core.designsystem.theme.AppMotionStyle\n"
-    if style_import not in text:
-        text = text.replace(theme_import, style_import + theme_import, 1)
-
+    for name in ("AppDesignStyle", "AppMotionStyle"):
+        style_import = f"import {spec.package_name}.core.designsystem.theme.{name}\n"
+        if style_import not in text:
+            text = text.replace(theme_import, style_import + theme_import, 1)
 
     root.write_text(text, encoding="utf-8")
 

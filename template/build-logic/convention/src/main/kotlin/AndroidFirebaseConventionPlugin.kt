@@ -14,24 +14,15 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidFirebaseConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.google.gms.google-services")
-        // <opt:crashlytics>
         pluginManager.apply("com.google.firebase.crashlytics")
-        // </opt:crashlytics>
 
         dependencies {
             add("implementation", platform(libs.library("firebase-bom")))
-            // <opt:analytics-firebase>
             add("implementation", libs.library("firebase-analytics"))
-            // </opt:analytics-firebase>
-            // <opt:crashlytics>
             add("implementation", libs.library("firebase-crashlytics"))
-            // </opt:crashlytics>
             // <opt:push>
             add("implementation", libs.library("firebase-messaging"))
             // </opt:push>
-            // <opt:remoteconfig>
-            add("implementation", libs.library("firebase-config"))
-            // </opt:remoteconfig>
         }
     }
 }

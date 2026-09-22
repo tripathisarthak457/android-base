@@ -47,11 +47,24 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+// <opt:language>
+import androidx.compose.ui.platform.LocalContext
+import com.base.app.core.designsystem.component.overlay.AppActionSheet
+import com.base.app.core.designsystem.component.overlay.SheetAction
+import com.base.app.core.ui.locale.AppLocales
+// </opt:language>
+// <opt:browser>
+import com.base.app.core.ui.browser.rememberInAppBrowser
+// </opt:browser>
 
 @Immutable
 data class SettingsState(
     val settings: AppSettings = AppSettings(),
     val appVersion: String = "",
+    // <opt:language>
+    /** Null while the app follows the phone's language. */
+    val languageTag: String? = null,
+    // </opt:language>
 ) : UiState {
 
     val themeIndex: Int
@@ -73,6 +86,10 @@ sealed interface SettingsEvent : UiEvent {
 
     data object SignOutConfirmed : SettingsEvent
 
+    // <opt:language>
+    data class LanguagePicked(val tag: String?) : SettingsEvent
+    // </opt:language>
+
     // <opt:licenses>
     data object LicensesClicked : SettingsEvent
     // </opt:licenses>
@@ -82,6 +99,10 @@ sealed interface SettingsEvent : UiEvent {
 
 sealed interface SettingsEffect : UiEffect {
     data object NavigateBack : SettingsEffect
+
+    // <opt:language>
+    data class ApplyLanguage(val tag: String?) : SettingsEffect
+    // </opt:language>
 
     // <opt:licenses>
     data object OpenLicenses : SettingsEffect
@@ -135,6 +156,13 @@ class SettingsViewModel @Inject constructor(
 
             SettingsEvent.SignOutConfirmed -> sessionController.signOut()
 
+            // <opt:language>
+            is SettingsEvent.LanguagePicked -> {
+                updateState { copy(languageTag = event.tag) }
+                emitEffect(SettingsEffect.ApplyLanguage(event.tag))
+            }
+            // </opt:language>
+
             // <opt:licenses>
             SettingsEvent.LicensesClicked -> emitEffect(SettingsEffect.OpenLicenses)
             // </opt:licenses>
@@ -146,6 +174,13 @@ class SettingsViewModel @Inject constructor(
     fun setAppVersion(version: String) {
         updateState { copy(appVersion = version) }
     }
+    // <opt:language>
+
+    /** The language lives in the platform rather than the store, so the route reads it. */
+    fun setLanguage(tag: String?) {
+        updateState { copy(languageTag = tag) }
+    }
+    // </opt:language>
 
     private companion object {
         const val SUBSCRIBE_TIMEOUT_MILLIS = 5_000L
@@ -159,12 +194,19 @@ fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(appVersion) { viewModel.setAppVersion(appVersion) }
+    // <opt:language>
+    val context = LocalContext.current
+    LaunchedEffect(Unit) { viewModel.setLanguage(AppLocales.current(context)) }
+    // </opt:language>
 
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
                 SettingsEffect.NavigateBack -> navigator.navigateUp()
+                // <opt:language>
+                is SettingsEffect.ApplyLanguage -> AppLocales.set(context, effect.tag)
+                // </opt:language>
                 // <opt:licenses>
                 SettingsEffect.OpenLicenses -> navigator.navigate(LicensesKey)
                 // </opt:licenses>
@@ -182,6 +224,12 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
 ) {
     var confirmSignOut by remember { mutableStateOf(false) }
+    // <opt:language>
+    var pickLanguage by remember { mutableStateOf(false) }
+    // </opt:language>
+    // <opt:browser>
+    val openInApp = rememberInAppBrowser()
+    // </opt:browser>
 
     AppScaffold(
         modifier = modifier,
@@ -234,6 +282,24 @@ fun SettingsScreen(
                     },
                 )
             }
+
+            // <opt:language>
+            AppCard(contentPadding = PaddingValues(0.dp)) {
+                AppListItem(
+                    title = stringResource(R.string.settings_language),
+                    supporting = state.languageTag?.let(AppLocales::displayName)
+                        ?: stringResource(R.string.settings_language_system),
+                    onClick = { pickLanguage = true },
+                    leading = {
+                        AppIcon(
+                            AppIcons.Globe,
+                            contentDescription = null,
+                            tint = AppTheme.colors.contentTertiary,
+                        )
+                    },
+                )
+            }
+            // </opt:language>
 
             // <opt:applock>
             AppCard(contentPadding = PaddingValues(0.dp)) {
@@ -314,6 +380,35 @@ fun SettingsScreen(
             }
             // </opt:licenses>
 
+            // <opt:browser>
+            AppSectionHeader(title = stringResource(R.string.settings_legal))
+
+            AppCard(contentPadding = PaddingValues(0.dp)) {
+                val privacyUrl = stringResource(R.string.settings_privacy_url)
+                val termsUrl = stringResource(R.string.settings_terms_url)
+                AppListItem(
+                    title = stringResource(R.string.settings_privacy_policy),
+                    onClick = { openInApp(privacyUrl) },
+                    leading = {
+                        AppIcon(AppIcons.Lock, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                    },
+                    trailing = {
+                        AppIcon(AppIcons.ExternalLink, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                    },
+                )
+                AppListItem(
+                    title = stringResource(R.string.settings_terms),
+                    onClick = { openInApp(termsUrl) },
+                    leading = {
+                        AppIcon(AppIcons.File, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                    },
+                    trailing = {
+                        AppIcon(AppIcons.ExternalLink, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                    },
+                )
+            }
+            // </opt:browser>
+
             AppDivider(modifier = Modifier.padding(vertical = AppTheme.spacing.md))
 
             AppMonoText(
@@ -323,6 +418,26 @@ fun SettingsScreen(
             )
         }
     }
+
+    // <opt:language>
+    if (pickLanguage) {
+        val systemLabel = stringResource(R.string.settings_language_system)
+        AppActionSheet(
+            title = stringResource(R.string.settings_language),
+            actions = listOf(
+                SheetAction(label = systemLabel, onClick = { onEvent(SettingsEvent.LanguagePicked(null)) }),
+            ) +
+                AppLocales.supported.map { tag ->
+                    SheetAction(
+                        label = AppLocales.displayName(tag),
+                        onClick = { onEvent(SettingsEvent.LanguagePicked(tag)) },
+                    )
+                },
+            onDismissRequest = { pickLanguage = false },
+            cancelLabel = stringResource(R.string.settings_cancel),
+        )
+    }
+    // </opt:language>
 
     if (confirmSignOut) {
         AppAlertDialog(

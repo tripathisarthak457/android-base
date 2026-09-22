@@ -44,6 +44,8 @@ export type Preset = {
 
 export type MotionStyle = { key: string; description: string };
 
+export type DesignStyle = { key: string; description: string };
+
 export type ApiLevel = {
   level: number;
   label: string;
@@ -57,6 +59,7 @@ export type Catalogue = {
   groups: Group[];
   presets: Preset[];
   motionStyles: MotionStyle[];
+  designStyles: DesignStyle[];
   apiLevels: ApiLevel[];
   defaults: {
     minSdk: number;
@@ -68,6 +71,7 @@ export type Catalogue = {
     monoFontName: string;
     accentColour: string;
     motionStyle: string;
+    designStyle: string;
     hapticsEnabled: boolean;
     preset: string;
   };
@@ -119,6 +123,7 @@ export type GenerateRequest = {
   secondary_colour?: string;
   tertiary_colour?: string;
   motion_style: string;
+  design_style: string;
   haptics_enabled: boolean;
   preset?: string;
   keystores?: Keystore[];

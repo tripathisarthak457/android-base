@@ -20,6 +20,7 @@ from .spec import (
     DEFAULT_TARGET_SDK,
     FEATURES,
     KEYSTORE_NAMES,
+    DESIGN_STYLES,
     MOTION_STYLES,
     PRESETS,
     KeystoreSpec,
@@ -311,7 +312,7 @@ def ask_fonts(features: set[str]) -> tuple[str, str]:
     return font_name, mono_font_name
 
 
-def ask_look_and_feel(features: set[str]) -> tuple[str, str, str, str, bool]:
+def ask_look_and_feel(features: set[str]) -> tuple[str, str, str, str, str, bool]:
     """
     The three decisions that change how the app looks and feels everywhere.
 
@@ -353,12 +354,24 @@ def ask_look_and_feel(features: set[str]) -> tuple[str, str, str, str, bool]:
     motion = MOTION_STYLES[min(choice, len(MOTION_STYLES)) - 1][0]
 
     print()
+    print(dim("  What the components look like. Changes corners, borders, fields and the tab"))
+    print(dim("  bar together; every component still takes its own shape if one screen needs it."))
+    print()
+    for index, (name, description) in enumerate(DESIGN_STYLES, start=1):
+        print(f"  {bold(str(index))}. {bold(name)}")
+        for line in wrap(description, 70):
+            print(dim(f"     {line}"))
+    print()
+    design_choice = ask_int("  Which", 1, minimum=1)
+    design = DESIGN_STYLES[min(design_choice, len(DESIGN_STYLES)) - 1][0]
+
+    print()
     print(dim("  Haptics are a light vibration when a control responds. The device's own"))
     print(dim("  setting always applies on top, so this cannot override someone who has"))
     print(dim("  turned them off."))
     haptics = ask_yes_no("  Haptics on by default?", True)
 
-    return accent, secondary, tertiary, motion, haptics
+    return accent, secondary, tertiary, motion, design, haptics
 
 
 def ask_feature_modules() -> tuple[str, ...]:
@@ -483,6 +496,7 @@ def run_wizard(select_all: bool = False, preset: str | None = None) -> ProjectSp
         secondary_colour,
         tertiary_colour,
         motion_style,
+        design_style,
         haptics_enabled,
     ) = ask_look_and_feel(features)
     feature_modules = ask_feature_modules()
@@ -509,6 +523,7 @@ def run_wizard(select_all: bool = False, preset: str | None = None) -> ProjectSp
         secondary_colour=secondary_colour,
         tertiary_colour=tertiary_colour,
         motion_style=motion_style,
+        design_style=design_style,
         haptics_enabled=haptics_enabled,
     )
     return spec.validated()
@@ -527,6 +542,7 @@ def summarise(spec: ProjectSpec) -> None:
         ("Modules", ", ".join(spec.feature_modules) or "none"),
         ("Typeface", f"{spec.font_name}  ·  {spec.mono_font_name}"),
         ("Colours", describe_brand_colours(spec)),
+        ("Style", spec.design_style),
         ("Motion", f"{spec.motion_style}, haptics {'on' if spec.haptics_enabled else 'off'}"),
         ("Keys", ", ".join(k.name for k in spec.keystores) or "debug key only"),
     ]

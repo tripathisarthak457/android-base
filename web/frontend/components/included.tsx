@@ -24,8 +24,7 @@ const ALWAYS = [
     body:
       "Colour, type, spacing, shape, elevation, motion and haptics are composition locals read " +
       "through AppTheme. Changing the font is one string, a brand colour is one hex and the ramp " +
-      "around it follows, and how every " +
-      "control answers a finger is one enum.",
+      "around it follows, and how every control answers a finger is one enum.",
     detail: "AppTheme",
   },
   {
@@ -37,11 +36,28 @@ const ALWAYS = [
     detail: "Navigation 3",
   },
   {
-    title: "Per-tab back stacks",
+    title: "Tabs that feel like tabs",
     body:
-      "Switching tabs and coming back returns the user where they were. Re-tapping the active tab " +
-      "pops it to its root — the gesture everyone uses and nobody is told about.",
+      "Each tab keeps its own back stack, scroll position and ViewModels, and switching crossfades " +
+      "rather than sliding like a push. The bar slides away over content that never changes size. " +
+      "Re-tapping the active tab pops it to its root, and Back at a tab root goes to the first tab.",
     detail: "AppShell",
+  },
+  {
+    title: "A look you pick, then own",
+    body:
+      "Four design styles change corners, borders, fields and the tab bar together, and four motion " +
+      "styles change how everything moves. Both are one argument to AppTheme. The components are " +
+      "plain Compose in your own module, there to be reshaped.",
+    detail: "AppDesignStyle",
+  },
+  {
+    title: "Instructions for your AI agent",
+    body:
+      "AGENTS.md, with CLAUDE.md pointing at it, tells an agent how the project is laid out, what " +
+      "the build refuses, how a feature is shaped, and to comment like the person who owns the code " +
+      "rather than narrating every line.",
+    detail: "AGENTS.md",
   },
   {
     title: "Seven build variants",
@@ -81,7 +97,7 @@ export function Included() {
     <section className="border-y border-ink-800 bg-ink-900/40">
       <div className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight text-ink-100">
+          <h2 className="font-display text-4xl font-bold text-ink-100">
             This part is not optional
           </h2>
           <p className="mt-3 text-ink-300">

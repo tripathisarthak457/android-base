@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,8 +26,10 @@ import com.base.app.core.designsystem.component.container.AppListItem
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
+import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.theme.AppDesignStyle
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 
@@ -44,8 +47,9 @@ import com.base.app.core.designsystem.theme.ThemeMode
 fun CatalogApp() {
     var themeMode by rememberSaveable { mutableStateOf(ThemeMode.System) }
     var section by rememberSaveable { mutableStateOf<CatalogSection?>(null) }
+    var designStyle by rememberSaveable { mutableStateOf(AppDesignStyle.Utility) }
 
-    AppTheme(mode = themeMode) {
+    AppTheme(mode = themeMode, designStyle = designStyle) {
         BackHandler(enabled = section != null) { section = null }
 
         // Captured out of the transitionSpec: it is not a composable scope, so the theme's
@@ -63,6 +67,8 @@ fun CatalogApp() {
             if (current == null) {
                 SectionIndex(
                     themeMode = themeMode,
+                    designStyle = designStyle,
+                    onDesignStyle = { designStyle = it },
                     onToggleTheme = { themeMode = themeMode.next() },
                     onSelect = { section = it },
                 )
@@ -93,6 +99,8 @@ fun CatalogApp() {
 @Composable
 private fun SectionIndex(
     themeMode: ThemeMode,
+    designStyle: AppDesignStyle,
+    onDesignStyle: (AppDesignStyle) -> Unit,
     onToggleTheme: () -> Unit,
     onSelect: (CatalogSection) -> Unit,
 ) {
@@ -100,7 +108,7 @@ private fun SectionIndex(
         topBar = {
             AppLargeTitle(
                 title = "Catalog",
-                subtitle = "Every component, in both themes",
+                subtitle = "Every component, in both themes and all four styles",
                 actions = {
                     AppIconButton(
                         icon = when (themeMode) {
@@ -119,6 +127,26 @@ private fun SectionIndex(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = AppTheme.spacing.xxl),
         ) {
+            // The style is chosen here rather than per page, so every page below is seen in the
+            // same one and a mismatch between two components shows up as you browse.
+            item {
+                FlowRow(
+                    modifier = Modifier.padding(
+                        horizontal = AppTheme.spacing.gutter,
+                        vertical = AppTheme.spacing.sm,
+                    ),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+                ) {
+                    AppDesignStyle.entries.forEach { option ->
+                        AppChip(
+                            label = option.name,
+                            selected = option == designStyle,
+                            onClick = { onDesignStyle(option) },
+                        )
+                    }
+                }
+            }
             items(CatalogSection.entries.size) { index ->
                 val entry = CatalogSection.entries[index]
                 AppListItem(

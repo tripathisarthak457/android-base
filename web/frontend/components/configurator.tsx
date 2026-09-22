@@ -10,15 +10,24 @@ import {
   generateProject,
   track,
 } from "../lib/api";
+import {
+  type DesignStyleKey,
+  type MotionStyleKey,
+  deriveSecondary,
+  deriveTertiary,
+} from "../lib/app-theme";
+import type { PreviewConfig } from "./app-preview";
 import type { ReportContext } from "./feedback";
+import { LookStep, MotionStep, ScaledPreview } from "./look-step";
 import { Badge, Button, Card, Field, Spinner, TextInput, Toggle, press } from "./primitives";
 
-type Step = "identity" | "features" | "look" | "build" | "review";
+type Step = "identity" | "features" | "look" | "motion" | "build" | "review";
 
 const STEPS: { id: Step; label: string; blurb: string }[] = [
   { id: "identity", label: "Project", blurb: "What it is called and what it is called in code" },
   { id: "features", label: "Features", blurb: "What comes in the box" },
-  { id: "look", label: "Look and feel", blurb: "Typeface, colour, how it moves" },
+  { id: "look", label: "Look", blurb: "Design style, colours, typeface" },
+  { id: "motion", label: "Motion", blurb: "How it moves under a finger" },
   { id: "build", label: "Build", blurb: "SDK levels, version, backend URLs" },
   { id: "review", label: "Review", blurb: "Check it, then download" },
 ];
@@ -147,7 +156,9 @@ export function Configurator({
   // a blank supporting colour is worked out server-side rather than left at the template's.
   const [secondary, setSecondary] = useState("");
   const [tertiary, setTertiary] = useState("");
-  const [motionStyle, setMotionStyle] = useState(catalogue.defaults.motionStyle);
+  const [motionStyle, setMotionStyle] = useState(catalogue.defaults.motionStyle as MotionStyleKey);
+  const [designStyle, setDesignStyle] = useState(catalogue.defaults.designStyle as DesignStyleKey);
+  const [previewDark, setPreviewDark] = useState(false);
   const [haptics, setHaptics] = useState(catalogue.defaults.hapticsEnabled);
   const [minSdk, setMinSdk] = useState(catalogue.defaults.minSdk);
   const [targetSdk, setTargetSdk] = useState(catalogue.defaults.targetSdk);
@@ -243,12 +254,25 @@ export function Configurator({
       preset,
       minSdk,
       motionStyle,
+      designStyle,
       fontName,
       accentColour: accent,
     });
   }, [
-    onContextChange, appName, packageName, features, preset, minSdk, motionStyle, fontName, accent,
+    onContextChange, appName, packageName, features, preset, minSdk, motionStyle, designStyle,
+    fontName, accent,
   ]);
+
+  const previewConfig: PreviewConfig = {
+    designStyle,
+    motionStyle,
+    accent,
+    secondary,
+    tertiary,
+    fontName,
+    dark: previewDark,
+    features,
+  };
 
   const hasNetwork = features.has("network");
   const hasDeeplink = features.has("deeplink");
@@ -304,6 +328,7 @@ export function Configurator({
       secondary_colour: secondary,
       tertiary_colour: tertiary,
       motion_style: motionStyle,
+      design_style: designStyle,
       haptics_enabled: haptics,
       preset,
       ...(hasNetwork
@@ -358,9 +383,9 @@ export function Configurator({
   return (
     <section id="configure" className="mx-auto max-w-6xl scroll-mt-8 px-6 py-20">
       <div className="max-w-2xl">
-        <h2 className="text-3xl font-bold tracking-tight text-ink-100">Configure your project</h2>
+        <h2 className="font-display text-4xl font-bold text-ink-100">Configure your project</h2>
         <p className="mt-3 text-ink-300">
-          Five short steps. Everything has a working default, so you can jump to Review and
+          Six short steps. Everything has a working default, so you can jump to Review and
           download something sensible right now.
         </p>
       </div>
@@ -411,6 +436,8 @@ export function Configurator({
             {step === "look" && (
               <LookStep
                 catalogue={catalogue}
+                config={previewConfig}
+                setDesignStyle={setDesignStyle}
                 fontName={fontName}
                 setFontName={setFontName}
                 accent={accent}
@@ -419,10 +446,18 @@ export function Configurator({
                 setSecondary={setSecondary}
                 tertiary={tertiary}
                 setTertiary={setTertiary}
+                onDark={setPreviewDark}
+              />
+            )}
+            {step === "motion" && (
+              <MotionStep
+                catalogue={catalogue}
+                config={previewConfig}
                 motionStyle={motionStyle}
                 setMotionStyle={setMotionStyle}
                 haptics={haptics}
                 setHaptics={setHaptics}
+                onDark={setPreviewDark}
               />
             )}
             {step === "build" && (
@@ -462,6 +497,8 @@ export function Configurator({
                 secondary={secondary || deriveSecondary(accent)}
                 tertiary={tertiary || deriveTertiary(accent)}
                 motionStyle={motionStyle}
+                designStyle={designStyle}
+                previewConfig={previewConfig}
                 haptics={haptics}
                 minSdk={minSdk}
                 targetSdk={targetSdk}
@@ -543,7 +580,7 @@ function StepBar({
                   position < index
                     ? "bg-mint/20 text-mint"
                     : active
-                      ? "bg-accent text-ink-950"
+                      ? "bg-accent text-on-accent"
                       : "bg-ink-700 text-ink-400"
                 }`}
               >
@@ -732,7 +769,7 @@ function FeaturesStep({
                         <span
                           className={`mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded border text-[10px] ${
                             on
-                              ? "border-accent bg-accent text-ink-950"
+                              ? "border-accent bg-accent text-on-accent"
                               : "border-ink-500 text-transparent"
                           }`}
                           style={{ width: 18, height: 18 }}
@@ -766,330 +803,6 @@ function FeaturesStep({
       </div>
     </div>
   );
-}
-
-function LookStep({
-  catalogue,
-  fontName,
-  setFontName,
-  accent,
-  setAccent,
-  secondary,
-  setSecondary,
-  tertiary,
-  setTertiary,
-  motionStyle,
-  setMotionStyle,
-  haptics,
-  setHaptics,
-}: {
-  catalogue: Catalogue;
-  fontName: string;
-  setFontName: (v: string) => void;
-  accent: string;
-  setAccent: (v: string) => void;
-  secondary: string;
-  setSecondary: (v: string) => void;
-  tertiary: string;
-  setTertiary: (v: string) => void;
-  motionStyle: string;
-  setMotionStyle: (v: string) => void;
-  haptics: boolean;
-  setHaptics: (v: boolean) => void;
-}) {
-  return (
-    <div className="grid gap-8 md:grid-cols-2">
-      <div className="space-y-6">
-        <div>
-          <Field
-            label="Typeface"
-            hint="Any family from fonts.google.com, spelled as it is on the family's page. It is written into one constant that all seventeen text styles read from."
-          >
-            <TextInput value={fontName} onChange={(event) => setFontName(event.target.value)} />
-          </Field>
-          <div className="mt-2.5 flex flex-wrap gap-1.5">
-            {catalogue.fontSuggestions.map((suggestion) => (
-              <button
-                key={suggestion}
-                type="button"
-                onClick={() => setFontName(suggestion)}
-                className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
-                  fontName === suggestion
-                    ? "border-accent bg-accent-dim text-accent-bright"
-                    : "border-ink-600 text-ink-400 hover:border-ink-500 hover:text-ink-200"
-                }`}
-              >
-                {suggestion}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <Field
-          label="Brand colours"
-          hint="Each ramp is derived from one hex: the pressed state, the subtle fill, both dark-theme variants, and whether text on it is black or white. The primary is also the launcher background, and the only one the design system spends on its own — buttons, focus rings, selection. The other two are yours to reach for."
-        >
-          <div className="space-y-2.5">
-            <BrandColourRow
-              label="Primary"
-              value={accent}
-              resolved={accent}
-              onChange={setAccent}
-            />
-            <BrandColourRow
-              label="Secondary"
-              value={secondary}
-              resolved={secondary || deriveSecondary(accent)}
-              onChange={setSecondary}
-              onDerive={() => setSecondary("")}
-            />
-            <BrandColourRow
-              label="Tertiary"
-              value={tertiary}
-              resolved={tertiary || deriveTertiary(accent)}
-              onChange={setTertiary}
-              onDerive={() => setTertiary("")}
-            />
-          </div>
-        </Field>
-
-        <div>
-          <p className="mb-2 text-sm font-medium text-ink-200">How it moves</p>
-          <div className="grid gap-2">
-            {catalogue.motionStyles.map((style) => (
-              <motion.button
-                key={style.key}
-                {...press}
-                type="button"
-                onClick={() => setMotionStyle(style.key)}
-                className={`rounded-lg border p-3 text-left transition-colors ${
-                  motionStyle === style.key
-                    ? "border-accent/45 bg-accent-dim/45"
-                    : "border-ink-700 bg-ink-900 hover:border-ink-600"
-                }`}
-              >
-                <span className="text-sm font-semibold text-ink-100">{style.key}</span>
-                <p className="mt-0.5 text-xs text-ink-400">{style.description}</p>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex items-start gap-3 rounded-lg border border-ink-700 bg-ink-900 p-4">
-          <Toggle checked={haptics} onChange={setHaptics} label="Haptics" />
-          <div>
-            <p className="text-sm font-medium text-ink-100">Haptics on by default</p>
-            <p className="mt-0.5 text-xs leading-relaxed text-ink-400">
-              A light vibration when a control answers. Routed through the platform, so the
-              device&apos;s own setting still applies on top and this cannot make a phone buzz that
-              its owner has asked to stay quiet. One boolean in AppTheme silences the app.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <Preview accent={accent} fontName={fontName} />
-    </div>
-  );
-}
-
-/**
- * A phone-shaped preview of the choices above.
- *
- * Rendered in the browser with the same accent maths the generator uses, so what is on screen is
- * what the APK will look like rather than a mock somebody has to remember to update.
- */
-function Preview({ accent, fontName }: { accent: string; fontName: string }) {
-  const onAccent = readableOn(accent);
-
-  return (
-    <div className="flex items-start justify-center">
-      <div
-        className="w-full max-w-[280px] overflow-hidden rounded-[28px] border-4 border-ink-700 bg-ink-950 shadow-2xl"
-        style={{ fontFamily: `"${fontName}", var(--font-sans)` }}
-      >
-        <div className="flex items-center justify-between px-5 pt-3 font-mono text-[10px] text-ink-400">
-          <span>9:41</span>
-          <span>▮▮▮</span>
-        </div>
-
-        <div className="px-5 pb-6 pt-5">
-          <p className="text-[22px] font-bold leading-tight text-ink-100">Welcome back</p>
-
-          <div className="mt-5 space-y-3">
-            <div>
-              <p className="mb-1 text-[11px] font-medium text-ink-300">Email</p>
-              <div className="h-9 rounded-lg border border-ink-600 bg-ink-900 px-3 pt-2 text-[11px] text-ink-500">
-                you@example.com
-              </div>
-            </div>
-            <div>
-              <p className="mb-1 text-[11px] font-medium text-ink-300">Password</p>
-              <div
-                className="h-9 rounded-lg border bg-ink-900"
-                style={{ borderColor: accent }}
-                aria-hidden
-              />
-            </div>
-          </div>
-
-          <motion.div
-            key={accent}
-            initial={{ scale: 0.96 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 420, damping: 18 }}
-            className="mt-5 flex h-10 items-center justify-center rounded-lg text-[13px] font-bold"
-            style={{ background: accent, color: onAccent }}
-          >
-            Sign in
-          </motion.div>
-
-          <div className="mt-4 flex justify-between text-[11px] font-medium text-ink-400">
-            <span>Create account</span>
-            <span>Forgot password</span>
-          </div>
-
-          <div className="mt-6 flex gap-1.5">
-            {[0, 1, 2].map((index) => (
-              <div
-                key={index}
-                className="h-1 rounded-full"
-                style={{
-                  width: index === 0 ? 18 : 6,
-                  background: index === 0 ? accent : "var(--color-ink-600)",
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * One brand colour: a swatch, the hex, and — for the two supporting colours — a way back to
- * having it worked out from the primary.
- *
- * `value` is what gets sent (empty means derive); `resolved` is what gets shown. Keeping them
- * apart is what lets the primary carry the other two along until somebody deliberately pins one.
- */
-function BrandColourRow({
-  label,
-  value,
-  resolved,
-  onChange,
-  onDerive,
-}: {
-  label: string;
-  value: string;
-  resolved: string;
-  onChange: (v: string) => void;
-  onDerive?: () => void;
-}) {
-  return (
-    <div className="flex items-center gap-2.5">
-      <span className="w-[70px] shrink-0 text-sm text-ink-300">{label}</span>
-      <input
-        type="color"
-        value={resolved}
-        onChange={(event) => onChange(event.target.value)}
-        className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-ink-600 bg-ink-900 p-1"
-        aria-label={`${label} colour`}
-      />
-      <TextInput
-        value={resolved}
-        onChange={(event) => onChange(event.target.value)}
-        className="font-mono text-sm uppercase"
-      />
-      {onDerive ? (
-        <button
-          type="button"
-          onClick={onDerive}
-          disabled={!value}
-          className="shrink-0 rounded-md border border-ink-600 px-2 py-1.5 text-xs text-ink-400 transition-colors hover:border-ink-500 hover:text-ink-200 disabled:cursor-default disabled:border-ink-700 disabled:text-ink-600"
-          title="Work this colour out from the primary again"
-        >
-          {value ? "Derive" : "Derived"}
-        </button>
-      ) : null}
-    </div>
-  );
-}
-
-/*
- * The same rule the generator applies to a supporting colour that was left blank — Material's:
- * the secondary is the primary with the chroma taken out, the tertiary is a sixth of a turn
- * around the wheel. Repeated here so the swatch shows what the server is going to produce rather
- * than nothing at all. Only the display depends on it: an empty field is sent as empty, and the
- * generator, not this, decides what the project gets.
- */
-function deriveSecondary(hex: string): string {
-  const [h, s, l] = toHsl(hex);
-  return toHex(h, s * 0.45, l);
-}
-
-function deriveTertiary(hex: string): string {
-  const [h, s, l] = toHsl(hex);
-  return toHex((h + 60) % 360, s, l);
-}
-
-function toHsl(hex: string): [number, number, number] {
-  const clean = hex.replace("#", "");
-  if (clean.length !== 6) return [0, 0, 0.5];
-  const [r, g, b] = [0, 2, 4].map((offset) => parseInt(clean.slice(offset, offset + 2), 16) / 255);
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const lightness = (max + min) / 2;
-  if (max === min) return [0, 0, lightness];
-  const delta = max - min;
-  const saturation = delta / (lightness > 0.5 ? 2 - max - min : max + min);
-  const hue =
-    max === r
-      ? ((g - b) / delta + (g < b ? 6 : 0)) * 60
-      : max === g
-        ? ((b - r) / delta + 2) * 60
-        : ((r - g) / delta + 4) * 60;
-  return [hue, saturation, lightness];
-}
-
-function toHex(hue: number, saturation: number, lightness: number): string {
-  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
-  const second = chroma * (1 - Math.abs(((hue / 60) % 2) - 1));
-  const match = lightness - chroma / 2;
-  const sextant = Math.floor(hue / 60) % 6;
-  const [r, g, b] = (
-    [
-      [chroma, second, 0],
-      [second, chroma, 0],
-      [0, chroma, second],
-      [0, second, chroma],
-      [second, 0, chroma],
-      [chroma, 0, second],
-    ] as const
-  )[sextant];
-  return (
-    "#" +
-    [r, g, b]
-      .map((channel) =>
-        Math.round((channel + match) * 255)
-          .toString(16)
-          .padStart(2, "0"),
-      )
-      .join("")
-  );
-}
-
-/** WCAG relative luminance, the same test the generator uses to pick onAccent. */
-function readableOn(hex: string): string {
-  const clean = hex.replace("#", "");
-  if (clean.length !== 6) return "#ffffff";
-  const channels = [0, 2, 4].map((offset) => {
-    const value = parseInt(clean.slice(offset, offset + 2), 16) / 255;
-    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
-  });
-  const luminance = 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
-  return 1.05 / (luminance + 0.05) >= (luminance + 0.05) / 0.05 ? "#ffffff" : "#0b0e14";
 }
 
 function BuildStep({
@@ -1366,6 +1079,13 @@ function SigningPanel({
   );
 }
 
+function reviewScreen(features: Set<string>) {
+  if (features.has("sample")) return "home" as const;
+  if (features.has("paging")) return "feed" as const;
+  if (features.has("auth")) return "signin" as const;
+  return "settings" as const;
+}
+
 function ReviewStep({
   catalogue,
   appName,
@@ -1377,6 +1097,8 @@ function ReviewStep({
   secondary,
   tertiary,
   motionStyle,
+  designStyle,
+  previewConfig,
   haptics,
   minSdk,
   targetSdk,
@@ -1398,6 +1120,8 @@ function ReviewStep({
   secondary: string;
   tertiary: string;
   motionStyle: string;
+  designStyle: string;
+  previewConfig: PreviewConfig;
   haptics: boolean;
   minSdk: number;
   targetSdk: number;
@@ -1429,6 +1153,7 @@ function ReviewStep({
             ["Min / target SDK", `${minSdk} / ${targetSdk}`],
             ["Version", versionName],
             ["Typeface", fontName],
+            ["Design style", designStyle],
             ["Motion", `${motionStyle}, haptics ${haptics ? "on" : "off"}`],
             ["Modules", modules.length ? modules.join(", ") : "none"],
             ["Signing keys", signing ? catalogue.keystoreNames.join(", ") : "debug key only"],
@@ -1473,6 +1198,9 @@ function ReviewStep({
       </div>
 
       <div className="md:col-span-2">
+        <div className="mb-4 flex justify-center gap-3">
+          <ScaledPreview config={previewConfig} screen={reviewScreen(features)} scale={0.62} />
+        </div>
         <div className="rounded-xl border border-ink-700 bg-ink-900 p-5">
           {signing ? (
             <>
@@ -1494,7 +1222,7 @@ function ReviewStep({
               <p className="mt-2 text-xs leading-relaxed text-ink-400">
                 The zip ships <code className="text-ink-300">keystore.properties.template</code>{" "}
                 and the README has the four <code className="text-ink-300">keytool</code> commands.
-                Turn on <span className="text-ink-200">Generate signing keys</span> in step 4 if
+                Turn on <span className="text-ink-200">Generate signing keys</span> in the Build step if
                 you would rather they were made for you — the trade is spelled out there.
               </p>
             </>
@@ -1529,7 +1257,11 @@ function ReviewStep({
                 </li>
                 <li>
                   3. <code className="text-ink-200">./gradlew build</code> to check everything —
-                  compile, tests, detekt and lint.
+                  compile, tests and lint.
+                </li>
+                <li>
+                  4. Using an AI agent? Point it at <code className="text-ink-200">AGENTS.md</code>{" "}
+                  first.
                 </li>
               </ol>
             </motion.div>

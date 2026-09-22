@@ -1,8 +1,8 @@
 # Android project generator
 
-> **Beta.** Every feature combination is compiled, tested and linted in CI before it ships, and
-> the checks below are the ones I run myself — but not many people have used this yet, and that is
-> the part that finds the last few bugs.
+> **Beta.** The presets and the every-feature combination are compiled, tested and linted in CI
+> before a change ships, and the checks below are the ones I run myself — but not many people have
+> used this yet, and that is the part that finds the last few bugs.
 > [Open an issue](https://github.com/tripathisarthak457/android-base/issues) if something breaks;
 > the browser version has a report button that attaches your configuration for you.
 
@@ -15,6 +15,9 @@ environments, signed release output. You can open it in Android Studio right now
 strips out the parts you said you didn't want, generates your signing keys, and hands you a zip.
 
 The point is that the first day of a new project stops being a day.
+
+**Using an AI coding agent?** Point it at [`AGENTS.md`](AGENTS.md) to generate a project, and every
+generated project ships its own `AGENTS.md` for the work after that.
 
 If you would rather not clone anything, **[android-base.vercel.app](https://android-base.vercel.app)**
 runs the same script against the same template and hands back the same zip. It will generate
@@ -45,7 +48,7 @@ whose custody is not solely yours.
 | | | |
 |---|---|---|
 | **Python** | 3.10 or newer | Runs the generator. No packages needed. |
-| **JDK** | 17 or newer | Runs Gradle. `java -version` should say 17+. |
+| **JDK** | 17 or newer | Runs Gradle. Android Studio's bundled JDK (JBR 21 or 25) is enough — nothing downloads a second one. |
 | **Android SDK** | with API 37 installed | Android Studio installs this. |
 | **keytool** | on `PATH`, or under `JAVA_HOME` | Only if you want generated keystores. Ships with the JDK. |
 | **git** | on `PATH` | Only for `--git`. |
@@ -96,9 +99,9 @@ The three presets:
 
 | Preset | Feature count | What's in it |
 |---|---|---|
-| `lean` | 5 | Ktor, the design system, the catalog app, one reference feature, detekt, LeakCanary. |
-| `standard` | 19 | The lean set plus Room caching, Coil, forms, auth, settings, onboarding, media, deep links, screenshot tests, the inspector, feature flags, GitHub Actions and Fastlane. |
-| `everything` | 27 | The standard set plus Firebase with Crashlytics, FCM push, analytics, WorkManager, WebSocket and baseline profiles. |
+| `lean` | 4 | Ktor, the design system, the catalog app, one reference feature, LeakCanary. |
+| `standard` | 18 | The lean set plus Room caching, Coil, forms, auth, settings with a language picker, onboarding, a profile tab, media, deep links, the in-app browser, the inspector and feature flags. |
+| `everything` | 28 | The standard set plus Firebase, FCM push, Google sign-in, a paged feed, search, a home-screen widget, WorkManager, WebSocket and baseline profiles. |
 
 ---
 
@@ -141,8 +144,9 @@ Install the catalog beside it and every component is on a page you can scroll:
 ./gradlew build
 ```
 
-This is the check that matters. It compiles all seven variants, runs the unit tests, runs detekt
-over every module and runs Android lint over every module. A generated project should be green on
+This is the check that matters. It compiles all seven variants, runs the unit tests, runs Android
+lint over every module and runs the project's own guards (see
+[What the build refuses to let through](#what-the-build-refuses-to-let-through)). A generated project should be green on
 the first run, before you have written a line.
 
 ### 4. A release is actually signed
@@ -200,7 +204,7 @@ desugaring automatically so `java.time` keeps working.
 so on; prod and playstore releases stay a bare `1.0.0`, because that string ends up on a store
 listing.
 
-**Features.** A preset, or twenty-four yes/no questions. Dependencies resolve themselves: ask for
+**Features.** A preset, or a yes/no question per feature. Dependencies resolve themselves: ask for
 push notifications and Firebase comes with it.
 
 **Backend URLs.** One per environment, for REST and — if you enabled it — WebSocket. These end up
@@ -223,7 +227,21 @@ looking like the action. The other two are there for the screen that genuinely n
 colour — a chart with two series, a promotion beside a primary button — so that it reaches for
 `AppTheme.colors.secondary` rather than for a hex somebody typed inline.
 
-Then a motion style (Standard, Bouncy, Calm, Snappy) and whether haptics start on.
+Then a design style, a motion style and whether haptics start on.
+
+The design style decides what the components look like, all together: corner radii, the button
+shape, how cards and text fields are drawn, the tab bar, and border weight.
+
+| Style | Looks like | Suits |
+|---|---|---|
+| Utility | Hairline outlines, modest corners, a docked tab bar | Tools, finance, admin |
+| Social | Pill buttons, soft raised cards, filled fields, a floating tab bar with a sliding pill | Feeds, chat, communities |
+| Editorial | Near-square corners, underlined fields, uppercase labels, a minimal tab bar | Reading, news, portfolios |
+| Playful | Thick outlines and solid offset shadows; buttons sink into their shadow when pressed | Games, kids, anything toy-like |
+
+The motion style (Standard, Bouncy, Calm, Snappy) decides how controls and screens move. Both are
+one argument to `AppTheme`, so changing your mind later is one line, and the catalog app switches
+between all four design styles live.
 
 **Feature modules.** Comma-separated names, or blank. Each one produces a matching `:data:x` and
 `:feature:x` pair with a repository, an MVI contract, a ViewModel, a screen, a nav key and tests.
@@ -245,39 +263,38 @@ dead code behind.
 | REST networking (Ktor) | on | Typed client, bearer auth with transparent 401 refresh, classified failures, pluggable response-envelope unwrapper |
 | WebSocket | off | One long-lived socket, exponential backoff with jitter, a connection state a UI can render |
 | Offline cache + queue (Room) | on | Per-call-site response caching with stale-on-failure, and failed mutations replayed when connectivity returns |
-| Image loading (Coil) | on | Remote images with a skeleton placeholder and a failure glyph |
-| WorkManager | off | Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory |
-| Analytics seam | on | Vendor-agnostic `AnalyticsTracker` and `CrashReporter` with no-op defaults |
-| Firebase | off | google-services plugin and the BOM |
-| Firebase Analytics | off | Binds the analytics seam to Firebase |
-| Crashlytics | off | Binds the crash seam, and routes every logged error through it as a breadcrumb |
-| Push notifications (FCM) | off | Channels, the runtime permission check, a messaging service, token re-registration |
-| Deep linking | on | Custom scheme plus verified App Links, resolved through one function, with the `onNewIntent` handling that is usually missing |
-| Component catalog app | on | A second installable app showing every component in both themes |
-| Reference feature | on | A list + detail feature against a live public API, with its tests. Delete it once yours exists |
-| Media picker and compression | on | Modern photo/video/document/camera pickers, a permission state that distinguishes "denied" from "denied for good", tunable image and video compression |
-| Forms and validation | on | Composable validators, per-field touched/error state, server-side errors mapped back onto the fields that caused them |
-| Auth | on | Sign in, sign up and password reset against your endpoints, writing the encrypted token store |
-| Settings screen | on | Theme, haptics, analytics opt-out, sign-out, build version |
-| Onboarding | on | A paged walkthrough shown once. Skipping counts as finishing |
-| Downloadable Google Font | on | Real files per weight through the Play Services provider |
-| Detekt | on | Style and formatting in one tool |
-| LeakCanary | on | Debug builds only |
-| Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |
-| Fastlane | off | Version bump, changelog from git history, tag, signed artifacts, Play internal-track upload |
 | App database (Room) | off | The app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration, and a test that replays it against a database that really was at the older version |
-| On-device inspector | on | A draggable badge naming the environment on every build except production, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
-| Open source licences screen | off | The real dependency list, generated from the resolved classpath at build time and rendered by the design system. The build also fails on a licence the project has not allowed |
-| Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
-| Firebase Remote Config | off | Binds the flag seam to Remote Config, seeded from the declared defaults so a first launch with no network still agrees |
+| Image loading (Coil) | on | Remote images with a skeleton placeholder and a failure glyph |
+| Paged feed | off | A Feed tab on Paging 3. A failed page keeps what is loaded and offers a retry; pull to refresh reloads from where you are. The list component is in `:core:ui` for your own feeds |
+| WorkManager | off | Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory |
+| Auth | on | Sign in, sign up and password reset against your endpoints, writing the encrypted token store |
+| Sign in with Google | off | A Continue with Google button through Credential Manager; the ID token goes to your backend like any other sign-in |
+| Onboarding | on | A paged walkthrough shown once. Skipping counts as finishing |
+| Profile screen | off | A Profile tab with avatar, name and bio, kept per user and cleared on sign-out. With the media picker, the avatar can be a photo |
+| Search screen | off | A Search tab: debounced search as you type, recent searches per user, empty, no-results and error states |
+| Settings screen | on | Theme, haptics, analytics opt-out, sign-out, build version |
+| In-app language picker | off | A Language row in settings. The system per-app language on Android 13+, applied by hand below it |
+| Reference feature | on | A list + detail feature against a live public API, with its tests. Delete it once yours exists |
+| Forms and validation | on | Composable validators, per-field touched/error state, server-side errors mapped back onto the fields that caused them |
+| Media picker and compression | on | Modern photo/video/document/camera pickers, a permission state that distinguishes "denied" from "denied for good", tunable image and video compression |
 | Biometric app lock | off | A fingerprint, face or screen-lock prompt when the app returns from the background, a settings toggle, and the app kept out of the task switcher's thumbnail |
+| Open source licences screen | off | The real dependency list, generated from the resolved classpath at build time and rendered by the design system. The build also fails on a licence the project has not allowed |
+| Deep linking | on | Custom scheme plus verified App Links, resolved through one function, with the `onNewIntent` handling that is usually missing |
+| In-app browser | off | Links open in a Custom Tab coloured like the app. Adds privacy and terms rows to settings |
+| Home-screen widget | off | A Glance widget in the launcher's colours with the app's name and a line the app keeps current |
 | Play in-app update and review | off | A flexible update downloaded in the background with a restart prompt, and a rating request on a schedule Play will honour rather than silently drop |
-| Screenshot tests | on | Every catalog page rendered to a PNG in both themes and again at the largest font setting, compared on every build. Runs on the JVM through Robolectric — no emulator. A contrast test over the palette runs beside it |
-| Architecture tests | on | The conventions, as JUnit: a ViewModel never holds an Activity and always extends the MVI base, a repository is an interface with a `Default` implementation, a data module never imports Compose, `runBlocking` never ships, a screen composable takes state rather than a ViewModel |
+| Analytics seam | on | Vendor-agnostic `AnalyticsTracker` and `CrashReporter` with no-op defaults |
+| Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
+| Firebase | off | One switch for Analytics, Crashlytics and Remote Config: the analytics seam, crash breadcrumbs and the flag seam all bound to Firebase |
+| Push notifications (FCM) | off | Channels, the runtime permission check, a messaging service, token re-registration |
+| Downloadable Google Font | on | Real files per weight through the Play Services provider |
+| Component catalog app | on | A second installable app showing every component in both themes and all four design styles |
 | Compose stability check | off | Reads the Compose compiler's own report and fails on a design-system composable that restarts without skipping, or takes a parameter it cannot prove immutable. A baseline holds what is already there, so it starts green and can only improve |
+| LeakCanary | on | Debug builds only |
+| On-device inspector | on | A draggable badge naming the environment on every build except production, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
 | Coverage floor (Kover) | off | One merged number for the whole project with a floor `koverVerify` enforces, generated code excluded so the report is about code somebody wrote |
-| Dependency health report | off | Every module declaring a dependency it never uses, or using one it only gets transitively. Printed on each pull request rather than failing the build — see the note in the root `build.gradle.kts` for why, and what it would take to make it a gate |
-| GitHub Actions | on | Pull requests build devDebug, run detekt and the tests. Tags produce signed release artifacts |
+| Dependency health report | off | Every module declaring a dependency it never uses, or using one it only gets transitively. A report rather than a gate — see the note in the root `build.gradle.kts` for why, and what it would take to make it a gate |
+| Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |
 
 ---
 
@@ -301,8 +318,17 @@ Adding a screen touches no file outside its own module — there is no central s
 to extend and no `when` in `:app` to add a branch to. Navigation 3 is named in exactly one file,
 so replacing it is a change to that file and its transitions.
 
-**Per-tab back stacks.** Switching tabs and coming back returns the user where they were.
-Re-tapping the active tab pops it to its root.
+**Per-tab back stacks.** Switching tabs and coming back returns the user where they were, scroll
+position and loaded data included. Tabs crossfade rather than slide, because they are peers, not
+forward navigation. Re-tapping the active tab pops it to its root, and Back at a tab root returns
+to the first tab.
+
+**A ViewModel per screen.** Every destination gets its own ViewModel store, cleared when the
+screen is popped, so two detail screens never share state.
+
+**An AI agent guide.** `AGENTS.md` (with `CLAUDE.md` pointing at it) tells an agent how the
+project is laid out, that the base components are there to be reshaped, and how to write code and
+comments the way the rest of the project does.
 
 **Seven build variants.** dev / staging / prod / playstore × debug / release, minus
 `playstoreDebug`, which does not exist. Only the two application modules carry flavours, so
@@ -325,7 +351,7 @@ follows a locale change without the ViewModel knowing there was one.
 
 ## What the build refuses to let through
 
-Four guards, none of which a reviewer could reliably catch by reading a diff. Each is a build
+Three guards, none of which a reviewer could reliably catch by reading a diff. Each is a build
 failure rather than a warning, because a warning in a build log is a thing nobody has read since
 the second week.
 
@@ -333,12 +359,10 @@ the second week.
 |---|---|---|
 | `verifyModuleDependencies` | every module | An edge the layering forbids — `:feature:cart` depending on `:feature:catalog`, `:core:*` reaching up into `:data:*`. Reads only that module's own dependencies, so it stays compatible with configuration caching |
 | `verifyComposeUsage` | every module | An `androidx.compose.material` import, a `@Composable` in a module without the compiler plugin, and copy typed into a feature's Kotlin instead of its `strings.xml` |
-| `:architecture:test` | one JVM module | What the two above cannot see, which is anything inside a class: a ViewModel holding an Activity, a repository with no interface, `runBlocking` in production source |
 | `checkComposeStability` | `:core:designsystem`, `:core:ui` | A component that recomposes when nothing it draws has changed |
 
-The first two are Gradle tasks in `build-logic`; the third is ordinary JUnit, so a new rule is a
-test somebody writes rather than a build plugin somebody edits. They do not overlap: module edges,
-file contents, and class shape are three different questions.
+All three are Gradle tasks in `build-logic`. The first two run on every build; the stability check
+only exists when that feature is on.
 
 ---
 
@@ -379,8 +403,9 @@ py create_project.py --spec myapp.json --out ../MyApp --no-zip --json
 ```
 
 `--dry-run` is worth the two seconds before a long build: it names the features that were turned
-on which nobody ticked. Asking for Crashlytics quietly brings Firebase and the analytics seam,
-which is correct and is also the kind of thing better learned before the build than during it.
+on which nobody ticked. Asking for push notifications quietly brings Firebase and both seams it
+binds, which is correct and is also the kind of thing better learned before the build than during
+it.
 
 ---
 
@@ -427,7 +452,7 @@ directory that half the app still references.
 
 ```bash
 cd template
-./gradlew build                    # compile, test, detekt and lint everything
+./gradlew build                    # compile, test and lint everything
 ./gradlew :app:installDevDebug
 ./gradlew :catalog:installDebug
 ```
@@ -437,40 +462,16 @@ would have: a library module calling `ConnectivityManager` without declaring the
 `Bitmap.CompressFormat.WEBP_LOSSY` used below the API level that has it, a locale read that never
 recomposed when the user changed language.
 
-### The screenshots
+### Contrast
 
-`./gradlew build` also re-renders every catalog page and compares it against the PNG committed in
-`template/catalog/src/test/screenshots`. That is the check for the changes nobody can review by
-reading a diff: an accent that lost its contrast in dark mode, a text style two pixels taller, a
-shape radius applied to one component and not its neighbour.
-
-```bash
-./gradlew :catalog:verifyRoborazziDebug   # fail on any difference, and write a diff image
-./gradlew :catalog:recordRoborazziDebug   # accept the current rendering as the new truth
-```
-
-When the change was the point, run `record`, look at what moved, and commit the images with it —
-the pull request then shows the visual change as a picture rather than as a hex value.
-
-Every page is captured three times: light, dark, and light again at a font scale of 2.0 — the
-largest step Android's own display settings offer. Text that clips, wraps into a scrollbar or
-pushes a button off its row does it there and nowhere else, and the people who run their phone
-that way are the ones who cannot work around it.
-
-It renders through Robolectric on the JVM, so there is no emulator and the whole suite is about
-ninety seconds. Two pages are deliberately absent: Animation and Motion & haptics exist to be
-watched moving, and a still first frame of either asserts nothing that the other twelve do not.
-
-Beside it, `PaletteContrastTest` checks every text-on-background pair in both palettes against
-WCAG AA. Contrast is the one design property that is objectively right or wrong, invisible to
-whoever changed it, and decisive for whoever cannot read the result — a reviewer looking at
+`PaletteContrastTest` checks every text-on-background pair in both palettes against WCAG AA.
+Contrast is the one design property that is objectively right or wrong, invisible to whoever
+changed it, and decisive for whoever cannot read the result — a reviewer looking at
 `Grey500 → Grey550` in a diff has no way to evaluate it. It found the success pill at 4.36:1 on
 the palette as it stood, which is why the green in this repository is three percent darker than
 it was.
 
-These images are the template's own. A generated project starts without them, because they are
-recorded against a palette and a typeface and every project picks its own — the suite ships, the
-baseline is one `record` away, and until it exists `check` leaves it alone rather than failing.
+### Markers
 
 The template carries `// <opt:feature>` marker comments that the generator strips. They are chosen
 so the template still compiles with *every* feature on, which is what lets this repository's own
@@ -486,8 +487,13 @@ build prove the template works. The marker grammar is three forms:
 The third form has to live inside a comment, because two live declarations of the same class —
 one per branch — would break the template's own build. The second exists for the lines that
 several optional blocks share and none of them owns: the `javax.inject.Inject` import in the
-application class is needed by analytics, push and WorkManager, and is an unused import — which
-detekt fails on — the moment all three are off.
+application class is needed by analytics, push and WorkManager, and is an unused import the
+moment all three are off.
+
+In XML the markers are comments on their own line between elements. A comment inside a tag is not
+valid XML, so an optional attribute has to come from somewhere else — the language picker's
+`android:localeConfig`, for instance, is generated by AGP from a Gradle setting that is itself
+behind a marker.
 
 ### The generator's tests
 
@@ -496,16 +502,15 @@ cd generator
 py -m unittest discover -s tests -t .
 ```
 
-68 tests over the marker grammar, the rename, feature resolution, the brand-colour derivation,
-the validation rules and the
-scaffolder. They run in milliseconds and use only the standard library.
+88 tests over the marker grammar, the rename, feature resolution, the design and brand-colour
+settings, the validation rules and the scaffolder. They run in milliseconds and use only the standard library.
 
 They are not sufficient on their own. The real test is generating both extremes and building
 them, because that is what catches a marker left unbalanced in a file nobody thought about:
 
 ```bash
-py create_project.py --spec tests/spec_full.json    --out ../out/Full --no-zip
-py create_project.py --spec tests/spec_minimal.json --out ../out/Bare --no-zip
+py create_project.py --spec tests/spec_full.json    --out ../out/Full --no-zip --force
+py create_project.py --spec tests/spec_minimal.json --out ../out/Bare --no-zip --force
 (cd ../out/Full && ./gradlew build)
 (cd ../out/Bare && ./gradlew build)
 ```

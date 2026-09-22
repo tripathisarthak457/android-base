@@ -150,33 +150,23 @@ FEATURES: tuple[Feature, ...] = (
     Feature(
         key="firebase",
         title="Firebase",
-        description="The google-services plugin and the Firebase BOM.",
-        default=False,
-        # The placeholder json is renamed by the ordinary text pass, like any other file. It has
-        # to be: the plugin matches the applicationId against a client entry and fails the build
-        # when none matches, so a copy still saying `com.base.app` breaks the very first build.
-        files=("app/google-services.json",),
-    ),
-    Feature(
-        key="analytics-firebase",
-        title="Firebase Analytics",
-        description="Binds the analytics seam to Firebase.",
-        default=False,
-        requires=("firebase", "analytics"),
-        files=("core/analytics/src/main/kotlin/{pkg_path}/core/analytics/FirebaseAnalyticsTracker.kt",),
-        variant_dir="analytics-firebase-off",
-    ),
-    Feature(
-        key="crashlytics",
-        title="Crashlytics",
         description=(
-            "Binds the crash seam to Crashlytics, and routes every logged error through it as a "
-            "breadcrumb."
+            "Analytics, Crashlytics and Remote Config in one switch: the analytics seam sends to "
+            "Firebase, every logged error becomes a Crashlytics breadcrumb, and feature flags "
+            "resolve from Remote Config seeded with their declared defaults."
         ),
         default=False,
-        requires=("firebase", "analytics"),
-        files=("core/analytics/src/main/kotlin/{pkg_path}/core/analytics/CrashlyticsReporter.kt",),
-        variant_dir="crashlytics-off",
+        requires=("analytics", "flags"),
+        files=(
+            # The placeholder json is renamed by the ordinary text pass, like any other file. It
+            # has to be: the plugin matches the applicationId against a client entry and fails the
+            # build when none matches, so a copy still saying `com.base.app` breaks the first build.
+            "app/google-services.json",
+            "core/analytics/src/main/kotlin/{pkg_path}/core/analytics/FirebaseAnalyticsTracker.kt",
+            "core/analytics/src/main/kotlin/{pkg_path}/core/analytics/CrashlyticsReporter.kt",
+            "core/flags/src/main/kotlin/{pkg_path}/core/flags/RemoteConfigFeatureFlags.kt",
+        ),
+        variant_dir="firebase-off",
     ),
     Feature(
         key="push",
@@ -288,13 +278,6 @@ FEATURES: tuple[Feature, ...] = (
         variant_dir="googlefonts-off",
     ),
     Feature(
-        key="staticanalysis",
-        title="Detekt (with ktlint rules)",
-        description="One static-analysis tool covering both style and formatting.",
-        default=True,
-        files=("config/detekt.yml",),
-    ),
-    Feature(
         key="leakcanary",
         title="LeakCanary (debug only)",
         description="Memory-leak detection in debug builds.",
@@ -309,16 +292,6 @@ FEATURES: tuple[Feature, ...] = (
         ),
         default=False,
         files=("benchmark",),
-    ),
-    Feature(
-        key="fastlane",
-        title="Fastlane release lanes",
-        description=(
-            "Version bump, changelog from git history, tag, signed artifacts, and a Play Store "
-            "internal-track upload — each one lane."
-        ),
-        default=False,
-        files=("fastlane", "Gemfile"),
     ),
     Feature(
         key="database",
@@ -374,15 +347,6 @@ FEATURES: tuple[Feature, ...] = (
         files=("core/flags",),
     ),
     Feature(
-        key="flags-remote",
-        title="Firebase Remote Config",
-        description="Binds the flag seam to Remote Config, seeded from the declared defaults.",
-        default=False,
-        requires=("firebase", "flags"),
-        files=("core/flags/src/main/kotlin/{pkg_path}/core/flags/RemoteConfigFeatureFlags.kt",),
-        variant_dir="flags-remote-off",
-    ),
-    Feature(
         key="applock",
         title="Biometric app lock",
         description=(
@@ -405,34 +369,6 @@ FEATURES: tuple[Feature, ...] = (
         ),
         default=False,
         files=("app/src/main/kotlin/{pkg_path}/playstore",),
-    ),
-    Feature(
-        key="screenshottests",
-        title="Screenshot tests for the design system",
-        description=(
-            "Every catalog page rendered to a PNG in both themes on every build and compared "
-            "against the one committed beside it. The only check that can fail on a colour "
-            "that lost its contrast or a text style that grew two pixels."
-        ),
-        default=True,
-        # The suite renders the catalog's own pages rather than keeping a second list of
-        # components, so it cannot exist without it.
-        requires=("catalog",),
-        files=(
-            "catalog/src/test/kotlin/{pkg_path}/catalog/CatalogScreenshotTest.kt",
-            "catalog/src/test/screenshots",
-        ),
-    ),
-    Feature(
-        key="architecturetests",
-        title="Architecture tests",
-        description=(
-            "The conventions this project holds — ViewModels extend the MVI base and never "
-            "hold an Activity, repositories are interfaces, data modules never see Compose, "
-            "runBlocking never ships — as JUnit tests over the source itself."
-        ),
-        default=True,
-        files=("architecture",),
     ),
     Feature(
         key="coverage",
@@ -470,14 +406,89 @@ FEATURES: tuple[Feature, ...] = (
         ),
     ),
     Feature(
-        key="ci",
-        title="GitHub Actions",
+        key="googlesignin",
+        title="Sign in with Google",
         description=(
-            "Pull requests build devDebug, run detekt and the unit tests. Tags produce signed "
-            "release artifacts."
+            "A Continue with Google button on the sign-in screen through Credential Manager. The "
+            "ID token goes to your backend, which answers with its own tokens like any sign-in."
         ),
-        default=True,
-        files=(".github",),
+        default=False,
+        requires=("auth",),
+        files=("feature/auth/src/main/kotlin/{pkg_path}/feature/auth/GoogleSignIn.kt",),
+    ),
+    Feature(
+        key="paging",
+        title="Paged feed",
+        description=(
+            "A Feed tab on Paging 3: pages load as you scroll, a failed page keeps what is already "
+            "loaded and offers a retry, and pull to refresh reloads from where you are. The list "
+            "component lives in core/ui for your own feeds."
+        ),
+        default=False,
+        requires=("network",),
+        files=(
+            "data/feed",
+            "feature/feed",
+            "core/ui/src/main/kotlin/{pkg_path}/core/ui/paging",
+        ),
+    ),
+    Feature(
+        key="search",
+        title="Search screen",
+        description=(
+            "A Search tab: results as you type with a debounce, recent searches kept per user, "
+            "and the empty, no-results and error states already drawn."
+        ),
+        default=False,
+        requires=("network",),
+        files=("data/search", "feature/search"),
+    ),
+    Feature(
+        key="profile",
+        title="Profile screen",
+        description=(
+            "A Profile tab with an avatar, name and bio, saved on the device per user. With the "
+            "media picker on, the avatar can be a photo."
+        ),
+        default=False,
+        files=("data/profile", "feature/profile"),
+    ),
+    Feature(
+        key="language",
+        title="In-app language picker",
+        description=(
+            "A Language row in settings. Uses the system's per-app language on Android 13+ so it "
+            "also appears in the phone's settings, and applies it by hand on older releases."
+        ),
+        default=False,
+        requires=("settings",),
+        files=(
+            "core/ui/src/main/kotlin/{pkg_path}/core/ui/locale",
+            "app/src/main/res/resources.properties",
+        ),
+    ),
+    Feature(
+        key="browser",
+        title="In-app browser",
+        description=(
+            "Web pages open in a Custom Tab coloured like the app rather than in the browser. "
+            "Adds privacy and terms links to settings when settings is on."
+        ),
+        default=False,
+        files=("core/ui/src/main/kotlin/{pkg_path}/core/ui/browser",),
+    ),
+    Feature(
+        key="widget",
+        title="Home-screen widget",
+        description=(
+            "A Glance widget in the launcher's colours showing the app's name and a line the app "
+            "keeps current. Tapping it opens the app."
+        ),
+        default=False,
+        files=(
+            "app/src/main/kotlin/{pkg_path}/widget",
+            "app/src/main/res/xml/app_widget_info.xml",
+        ),
     ),
 )
 
@@ -503,7 +514,6 @@ class Preset:
 #: The features every preset includes, and the smallest project worth generating.
 _LEAN = (
     "network",
-    "staticanalysis",
     "leakcanary",
     "sample",
     "catalog",
@@ -519,12 +529,11 @@ _STANDARD = _LEAN + (
     "onboarding",
     "media",
     "deeplink",
-    "ci",
-    "fastlane",
-    "screenshottests",
     "flags",
     "devtools",
-    "architecturetests",
+    "profile",
+    "browser",
+    "language",
 )
 
 PRESETS: tuple[Preset, ...] = (
@@ -538,8 +547,8 @@ PRESETS: tuple[Preset, ...] = (
         key="standard",
         title="Standard",
         description=(
-            "The lean set plus offline cache, images, forms, auth, settings, onboarding, media "
-            "and CI. What most projects want on day one."
+            "The lean set plus offline cache, images, auth, onboarding, settings with a language "
+            "picker, a profile tab and media. What most projects want on day one."
         ),
         features=_STANDARD,
     ),
@@ -547,16 +556,18 @@ PRESETS: tuple[Preset, ...] = (
         key="everything",
         title="Everything",
         description=(
-            "The standard set plus Firebase with Crashlytics, push, analytics, WorkManager, "
-            "WebSocket and baseline profiles."
+            "The standard set plus Firebase, push, Google sign-in, a paged feed, search, a "
+            "home-screen widget, WorkManager, WebSocket and baseline profiles."
         ),
         features=_STANDARD
         + (
             "firebase",
-            "crashlytics",
             "analytics",
-            "analytics-firebase",
             "push",
+            "googlesignin",
+            "paging",
+            "search",
+            "widget",
             "workmanager",
             "websocket",
             "baselineprofile",
@@ -610,6 +621,16 @@ MOTION_STYLES: tuple[tuple[str, str], ...] = (
 
 MOTION_STYLE_NAMES: tuple[str, ...] = tuple(name for name, _ in MOTION_STYLES)
 
+#: The component looks, matching AppDesignStyle in the design system. The default first.
+DESIGN_STYLES: tuple[tuple[str, str], ...] = (
+    ("Utility", "Hairline outlines, modest corners, a docked tab bar. Tools, finance, admin."),
+    ("Social", "Pill buttons, soft raised cards, filled fields, a floating tab bar. Feeds and chat."),
+    ("Editorial", "Near-square corners, underlined fields, uppercase labels. Reading and news."),
+    ("Playful", "Thick outlines and solid offset shadows. Games, kids, anything toy-like."),
+)
+
+DESIGN_STYLE_NAMES: tuple[str, ...] = tuple(name for name, _ in DESIGN_STYLES)
+
 #: The four keys, in the order the wizard asks for them. dev and staging may legitimately share;
 #: prod and playstore must not share with anything.
 KEYSTORE_NAMES: tuple[str, ...] = ("dev", "staging", "prod", "playstore")
@@ -647,7 +668,7 @@ class KeystoreSpec:
 #: references in files the user never named. Cheaper to refuse the name.
 RESERVED_MODULE_NAMES: frozenset[str] = frozenset({
     "app", "core", "data", "feature", "build", "catalog", "benchmark",
-    "auth", "onboarding", "sample", "settings",
+    "auth", "onboarding", "sample", "settings", "feed", "search", "profile",
 })
 
 _PACKAGE_SEGMENT = re.compile(r"^[a-z][a-z0-9_]*$")
@@ -688,6 +709,8 @@ class ProjectSpec:
     tertiary_colour: str = ""
     #: An AppMotionStyle name: how every control responds to a finger.
     motion_style: str = "Standard"
+    #: An AppDesignStyle name: corners, borders, fields and the tab bar, chosen together.
+    design_style: str = "Utility"
     #: Whether haptics are on by default. The user's own device setting still applies on top.
     haptics_enabled: bool = True
 
@@ -784,6 +807,12 @@ class ProjectSpec:
         unknown = set(self.features) - set(FEATURES_BY_KEY)
         if unknown:
             raise SpecError(f"Unknown feature(s): {', '.join(sorted(unknown))}.")
+
+        if self.design_style not in DESIGN_STYLE_NAMES:
+            raise SpecError(
+                f"Unknown design style '{self.design_style}'. "
+                f"Choose one of: {', '.join(DESIGN_STYLE_NAMES)}."
+            )
 
         if self.motion_style not in MOTION_STYLE_NAMES:
             raise SpecError(

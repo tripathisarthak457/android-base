@@ -55,7 +55,8 @@ enum class AppMotionStyle {
             pressDamping = 0.42f,
             pressStiffness = 900f,
             sheetDamping = 0.68f,
-            navigationDamping = 0.82f,
+            navigationDamping = 0.86f,
+            navigationStiffness = 420f,
         )
 
         Standard -> AppMotion()
@@ -71,6 +72,7 @@ enum class AppMotionStyle {
             pressStiffness = 1200f,
             sheetDamping = 1f,
             navigationDamping = 1f,
+            navigationStiffness = 300f,
         )
 
         Snappy -> AppMotion(
@@ -84,6 +86,7 @@ enum class AppMotionStyle {
             pressStiffness = 2000f,
             sheetDamping = 0.95f,
             navigationDamping = 1f,
+            navigationStiffness = 700f,
         )
     }
 }
@@ -145,6 +148,12 @@ data class AppMotion(
 
     /** Screen-to-screen. A long travel with any bounce in it reads as unstable. */
     val navigationDamping: Float = 1f,
+
+    /**
+     * How quickly a screen travels. Low enough that a full-width slide reads as weighted rather
+     * than thrown, high enough that the settle does not trail on after the eye has moved on.
+     */
+    val navigationStiffness: Float = 400f,
 ) {
     /** Press down, and the settle back afterwards. */
     fun press(): FiniteAnimationSpec<Float> =
@@ -156,7 +165,7 @@ data class AppMotion(
 
     /** Screen-to-screen. Low stiffness so a long travel still feels weighted rather than snappy. */
     fun <T> navigation(): FiniteAnimationSpec<T> =
-        spring(dampingRatio = navigationDamping, stiffness = 380f)
+        spring(dampingRatio = navigationDamping, stiffness = navigationStiffness)
 
     /** Sheets and drawers. */
     fun <T> sheet(): FiniteAnimationSpec<T> =

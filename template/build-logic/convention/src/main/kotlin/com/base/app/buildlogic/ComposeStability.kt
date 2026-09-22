@@ -51,8 +51,7 @@ import java.io.File
  *
  * ## Why there is a baseline
  *
- * The same reason detekt has one and roborazzi records before it verifies: a check retrofitted
- * onto existing code either starts green with the current state written down, or starts red and
+ * A check retrofitted onto existing code either starts green with the current state written down, or starts red and
  * is switched off within a week. [RecordComposeStabilityTask] writes the file;
  * [CheckComposeStabilityTask] fails on anything not in it. Deleting a line is how a fix is
  * recorded.

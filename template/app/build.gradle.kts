@@ -23,6 +23,14 @@ android {
         applicationId = "com.base.app"
     }
 
+    // <opt:language>
+    // Writes the android:localeConfig the phone's per-app language setting reads, from the
+    // values-xx directories that actually exist. The default language is in resources.properties.
+    androidResources {
+        generateLocaleConfig = true
+    }
+    // </opt:language>
+
     buildTypes {
         release {
             // `getDefaultProguardFile` is only reachable from a build script, which is why this
@@ -66,6 +74,15 @@ dependencies {
     // <opt:onboarding>
     implementation(project(":feature:onboarding"))
     // </opt:onboarding>
+    // <opt:paging>
+    implementation(project(":feature:feed"))
+    // </opt:paging>
+    // <opt:search>
+    implementation(project(":feature:search"))
+    // </opt:search>
+    // <opt:profile>
+    implementation(project(":feature:profile"))
+    // </opt:profile>
     // <generated:app-feature-dependencies>
 
     implementation(libs.androidx.activity.compose)
@@ -112,6 +129,10 @@ dependencies {
     implementation(libs.play.app.update)
     implementation(libs.play.app.review)
     // </opt:playstore>
+
+    // <opt:widget>
+    implementation(libs.androidx.glance.appwidget)
+    // </opt:widget>
 
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)

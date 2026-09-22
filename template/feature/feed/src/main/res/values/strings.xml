@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feed_title">Feed</string>
+    <string name="feed_subtitle">Loads ten at a time as you scroll</string>
+    <string name="feed_author">Author %1$d</string>
+    <string name="feed_empty_title">Nothing to show</string>
+    <string name="feed_empty_message">When there is something new it will appear here.</string>
+    <string name="feed_load_failed">Could not load the feed.</string>
+    <string name="feed_load_more_failed">Could not load more.</string>
+    <string name="feed_retry">Retry</string>
+    <string name="feed_show_more">Show more</string>
+    <string name="feed_show_less">Show less</string>
+</resources>

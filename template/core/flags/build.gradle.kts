@@ -10,10 +10,10 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    // <opt:flags-remote>
+    // <opt:firebase>
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
-    // </opt:flags-remote>
+    // </opt:firebase>
 
     testImplementation(project(":core:testing"))
 }

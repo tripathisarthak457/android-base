@@ -9,6 +9,9 @@ import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.post
 import com.base.app.data.auth.remote.EmailRequestDto
+// <opt:googlesignin>
+import com.base.app.data.auth.remote.GoogleSignInRequestDto
+// </opt:googlesignin>
 import com.base.app.data.auth.remote.SignInRequestDto
 import com.base.app.data.auth.remote.SignUpRequestDto
 import com.base.app.data.auth.remote.TokenResponseDto
@@ -41,6 +44,11 @@ interface AuthRepository {
     suspend fun signUp(details: SignUpDetails): AppResult<Unit>
 
     suspend fun requestPasswordReset(email: String): AppResult<Unit>
+    // <opt:googlesignin>
+
+    /** Trades an ID token from Google for this app's own tokens. */
+    suspend fun signInWithGoogle(idToken: String): AppResult<Unit>
+    // </opt:googlesignin>
 }
 
 /**
@@ -98,6 +106,20 @@ class DefaultAuthRepository @Inject constructor(
             ),
         ).map { }
 
+    // <opt:googlesignin>
+    /**
+     * The backend verifies the ID token with Google and answers with tokens of its own, exactly
+     * as a password sign-in does. The app never treats Google's token as a session: it expires in
+     * an hour and says nothing about what this backend allows.
+     */
+    override suspend fun signInWithGoogle(idToken: String): AppResult<Unit> =
+        networkClient.post<GoogleSignInRequestDto, TokenResponseDto>(
+            path = GOOGLE_SIGN_IN_PATH,
+            body = GoogleSignInRequestDto(idToken = idToken),
+            requiresAuth = false,
+        ).persist()
+
+    // </opt:googlesignin>
     /**
      * Writes the tokens before returning success.
      *
@@ -136,6 +158,9 @@ class DefaultAuthRepository @Inject constructor(
         const val SIGN_IN_PATH = "auth/login"
         const val SIGN_UP_PATH = "auth/register"
         const val PASSWORD_RESET_PATH = "auth/password/forgot"
+        // <opt:googlesignin>
+        const val GOOGLE_SIGN_IN_PATH = "auth/google"
+        // </opt:googlesignin>
         const val MILLIS_PER_SECOND = 1_000L
         const val HTTP_UNAUTHORIZED = 401
         const val HTTP_TOO_MANY_REQUESTS = 429

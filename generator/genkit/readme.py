@@ -17,19 +17,41 @@ _TEMPLATE = """# __APP_NAME__
 
 Generated from the [Android base template](https://github.com/tripathisarthak457/android-base).
 
-> **The generator is in beta.** This project compiles, tests and lints clean — every feature
-> combination is built in CI before it ships — but not many people have used it yet. If you hit
-> something, a report at
+> **The generator is in beta.** This project compiles, tests and lints clean, but not many
+> people have used the generator yet. If you hit something, a report at
 > [the issue tracker](https://github.com/tripathisarthak457/android-base/issues) is genuinely
-> useful, and the generator's own README explains what to include.
+> useful.
+
+> **Working with an AI coding agent?** Point it at [`AGENTS.md`](AGENTS.md) first. It explains
+> how this project is laid out, what the base components are for, and how code here is written.
 
 ## Run it
+
+Open the project in Android Studio and run the `app` configuration, or:
 
 ```bash
 ./gradlew :app:installDevDebug
 ```
+
+Gradle runs on whichever JDK Android Studio ships (its bundled JetBrains Runtime) or any JDK 17
+or newer on your `PATH`. Nothing downloads a second JDK. The code is compiled for Java 17.
+
+## The look
+
+This project was generated with the **__DESIGN_STYLE__** design style and the **__MOTION_STYLE__**
+motion style. Both are one argument to the single `AppTheme` call in `app/.../ui/AppRoot.kt`:
+
+```kotlin
+AppTheme(
+    motionStyle = AppMotionStyle.__MOTION_STYLE__,
+    designStyle = AppDesignStyle.__DESIGN_STYLE__,
+)
+```
+
+Change either and every screen follows. The components in `:core:designsystem` are a starting
+point, not a finished brand. Change their shapes, spacing and colours until the app looks like
+yours rather than like the template.
 __CATALOG__
-__SCREENSHOTS__
 __CHECKS__
 ## Variants
 
@@ -124,7 +146,6 @@ py remove_feature.py orders --project .
 
 __SIGNING__
 __FIREBASE__
-__FASTLANE__
 ## Enabled features
 
 __FEATURES__
@@ -155,45 +176,8 @@ depends on `:core:designsystem` alone, so working on a component rebuilds two mo
 the whole graph.
 """
 
-_SCREENSHOT_NOTE = '''
-### Screenshot tests
-
-```bash
-./gradlew :catalog:recordRoborazziDebug
-```
-
-Renders every catalog page to a PNG under `catalog/src/test/screenshots`. Run it once and commit
-what it produces: that is this project's baseline. There is none to start with, because the images
-the template ships were recorded against the template's own blue and typeface, and this project
-chose its own.
-
-From then on `./gradlew build` re-renders and compares, and fails on any difference — including
-the ones nobody can describe in a review, like an accent that lost its contrast in dark mode or a
-text style that grew two pixels. When the change to a component was the point, look at the diff
-images under `catalog/build/outputs/roborazzi`, run `record` again, and commit the new images
-alongside it.
-'''
 
 
-_ARCHITECTURE_NOTE = """
-### Architecture tests
-
-```bash
-./gradlew :architecture:test
-```
-
-Six rules about how code in this project is written, as ordinary JUnit over the source itself: a
-ViewModel never holds an Activity and always extends `MviViewModel`, a repository is an interface
-with a `Default` implementation behind it, a data module never imports Compose, `runBlocking` never
-reaches production source, and a screen composable takes state rather than a ViewModel.
-
-They run as part of `./gradlew build`, and they are deliberately separate from the two guards in
-`build-logic`: `verifyModuleDependencies` polices the edges of the module graph and
-`verifyComposeUsage` polices Material imports and untranslated copy. Neither can see inside a
-class, which is where every rule here lives.
-
-Adding a rule is adding a test. That is the reason they are here rather than in a Gradle plugin.
-"""
 
 _STABILITY_NOTE = """
 ### Compose stability
@@ -252,21 +236,6 @@ it a gate means working through the report first and then setting `severity("fai
 `build.gradle.kts` — worth doing, and only in that order.
 """
 
-_FASTLANE_NOTE = """
-## Releasing
-
-```bash
-bundle install
-bundle exec fastlane android bump type:minor
-bundle exec fastlane android changelog
-bundle exec fastlane android tag
-bundle exec fastlane android release flavour:prod
-```
-
-`fastlane/README.md` has the full list. Nothing there signs anything itself — signing is Gradle's,
-from `keystore.properties` — so a release built by Fastlane and one built by `./gradlew` are the
-same artifact.
-"""
 
 _FIREBASE_NOTE = """
 ### Firebase
@@ -289,10 +258,21 @@ def write_readme(project_dir: Path, spec: ProjectSpec) -> None:
             "credential whose loss cannot be undone."
         )
     else:
+        alias = spec.lower_name or "app"
+        commands = "\n".join(
+            f"keytool -genkeypair -keystore keys/{name}.jks -alias {alias}-{name} "
+            f"-keyalg RSA -keysize 2048 -validity 10000 -storetype PKCS12"
+            for name in ("dev", "staging", "prod", "playstore")
+        )
         signing = (
             "No signing keys were set up, so every variant falls back to the debug key and the "
-            "build says so on each run. Copy `keystore.properties.template` to "
-            "`keystore.properties` and fill it in before cutting a release."
+            "build says so on each run. To make your own, run these from the project root — each "
+            "asks for a password and the certificate's details:\n\n"
+            f"```bash\nmkdir -p keys\n{commands}\n```\n\n"
+            "Then copy `keystore.properties.template` to `keystore.properties` and fill in each "
+            "block with the alias and password you chose. dev and staging may share one key; prod "
+            "and playstore must not share with anything, because the Play upload key is the one "
+            "credential whose loss cannot be undone."
         )
 
     # Each check documents itself only when the project actually has it. A README describing a
@@ -301,7 +281,6 @@ def write_readme(project_dir: Path, spec: ProjectSpec) -> None:
     checks = "".join(
         note
         for feature, note in (
-            ("architecturetests", _ARCHITECTURE_NOTE),
             ("composemetrics", _STABILITY_NOTE),
             ("coverage", _COVERAGE_NOTE),
             ("depsanalysis", _DEPS_NOTE),
@@ -312,20 +291,17 @@ def write_readme(project_dir: Path, spec: ProjectSpec) -> None:
     body = (
         _TEMPLATE
         .replace("__APP_NAME__", spec.app_name)
+        .replace("__DESIGN_STYLE__", spec.design_style)
+        .replace("__MOTION_STYLE__", spec.motion_style)
         .replace("__VERSION__", spec.version_name)
         .replace("__MODULES__", modules)
         .replace("__CHECKS__", checks)
         .replace("__SIGNING__", signing)
         .replace("__CATALOG__", _CATALOG_NOTE if spec.has("catalog") else "")
         .replace(
-            "__SCREENSHOTS__",
-            _SCREENSHOT_NOTE if spec.has("screenshottests") else "",
-        )
-        .replace(
             "__FIREBASE__",
             _FIREBASE_NOTE.replace("__PACKAGE__", spec.package_name) if spec.has("firebase") else "",
         )
-        .replace("__FASTLANE__", _FASTLANE_NOTE if spec.has("fastlane") else "")
         .replace("__FEATURES__", features)
     )
 

@@ -12,11 +12,15 @@
 import { motion, type HTMLMotionProps } from "framer-motion";
 import type { ReactNode } from "react";
 
-/** The press feel, matching the `Bouncy` motion style the generated app ships with. */
+/**
+ * The press feel: the app's Standard motion style, 0.96 at a stiffness of 1400 and a damping ratio
+ * of 0.6, converted for framer-motion. Hover barely lifts, so a page of cards does not swim under
+ * the cursor.
+ */
 export const press = {
-  whileHover: { scale: 1.02 },
+  whileHover: { scale: 1.01 },
   whileTap: { scale: 0.97 },
-  transition: { type: "spring" as const, stiffness: 520, damping: 22 },
+  transition: { type: "spring" as const, stiffness: 1400, damping: 45 },
 };
 
 export function Button({
@@ -32,7 +36,7 @@ export function Button({
 } & HTMLMotionProps<"button">) {
   const variants = {
     primary:
-      "bg-accent text-ink-950 font-bold hover:bg-accent-bright disabled:bg-ink-700 disabled:text-ink-400",
+      "bg-accent text-on-accent font-bold hover:bg-accent-bright disabled:bg-ink-700 disabled:text-ink-400",
     secondary:
       "bg-ink-800 text-ink-100 border border-ink-600 hover:border-ink-500 hover:bg-ink-700",
     ghost: "text-ink-300 hover:text-ink-100 hover:bg-ink-800",
@@ -121,7 +125,7 @@ export function Toggle({
       <motion.span
         layout
         transition={{ type: "spring", stiffness: 620, damping: 32 }}
-        className="absolute top-0.5 h-5 w-5 rounded-full bg-ink-950 shadow"
+        className="absolute top-0.5 h-5 w-5 rounded-full bg-ink-850 shadow"
         style={{ left: checked ? 22 : 2 }}
       />
     </button>
@@ -132,10 +136,13 @@ export function Segmented<T extends string>({
   options,
   value,
   onChange,
+  layoutId = "segment-pill",
 }: {
   options: { value: T; label: string }[];
   value: T;
   onChange: (next: T) => void;
+  /** Distinct per control on the page, or two pills animate towards each other. */
+  layoutId?: string;
 }) {
   return (
     <div className="inline-flex rounded-lg border border-ink-600 bg-ink-900 p-1">
@@ -152,7 +159,7 @@ export function Segmented<T extends string>({
           */}
           {value === option.value && (
             <motion.span
-              layoutId="segment-pill"
+              layoutId={layoutId}
               className="absolute inset-0 rounded-md bg-ink-700"
               transition={{ type: "spring", stiffness: 500, damping: 34 }}
             />

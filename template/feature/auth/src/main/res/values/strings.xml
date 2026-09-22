@@ -21,4 +21,12 @@
     <string name="auth_sign_in">Sign in</string>
     <string name="auth_welcome_back">Welcome back</string>
     <string name="auth_email_placeholder">you@example.com</string>
+    <!-- <opt:googlesignin> -->
+    <string name="auth_continue_with_google">Continue with Google</string>
+    <string name="auth_or">or</string>
+    <string name="auth_google_not_configured">Google sign-in is not set up yet. Add the web client id to auth_google_server_client_id.</string>
+    <string name="auth_google_failed">Google sign-in did not finish. Try again, or use your email.</string>
+    <!-- The OAuth *web* client id from the Google Cloud console, not the Android one. -->
+    <string name="auth_google_server_client_id" translatable="false"></string>
+    <!-- </opt:googlesignin> -->
 </resources>

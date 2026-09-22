@@ -17,16 +17,11 @@ plugins {
     alias(libs.plugins.hilt) apply false
     // <opt:firebase>
     alias(libs.plugins.google.services) apply false
-    // </opt:firebase>
-    // <opt:crashlytics>
     alias(libs.plugins.firebase.crashlytics) apply false
-    // </opt:crashlytics>
+    // </opt:firebase>
     // <opt:baselineprofile>
     alias(libs.plugins.baselineprofile) apply false
     // </opt:baselineprofile>
-    // <opt:staticanalysis>
-    alias(libs.plugins.detekt) apply false
-    // </opt:staticanalysis>
     // <opt:coverage>
     // Applied here rather than `apply false`: the root project is where the merged report is
     // assembled, so it needs the plugin itself and not just the version.
@@ -36,43 +31,6 @@ plugins {
     alias(libs.plugins.dependency.analysis)
     // </opt:depsanalysis>
 }
-
-// <opt:staticanalysis>
-/*
- * Static analysis is applied from the root rather than from a convention plugin, so that the
- * container projects (:core, :data, :feature) and any module added later are covered without
- * anyone remembering to opt in. Every module is configured identically — a module with its own
- * rules is a module whose warnings nobody trusts.
- *
- * `detekt-formatting` is ktlint's rule set running inside detekt. One tool, one report, one
- * version to keep aligned, instead of two that disagree about the same line.
- */
-subprojects {
-    apply(plugin = "io.gitlab.arturbosch.detekt")
-
-    extensions.configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
-        parallel = true
-        buildUponDefaultConfig = true
-        config.setFrom(rootProject.files("config/detekt.yml"))
-        source.setFrom("src/main/kotlin", "src/test/kotlin", "src/androidTest/kotlin")
-    }
-
-    // Stated rather than inherited. The daemon runs on 17 (see gradle-daemon-jvm.properties), so
-    // this agrees with it — but detekt takes its target from the running JVM by default, and a
-    // developer who overrides the daemon JVM would otherwise get a detekt failure about a
-    // --jvm-target they never chose.
-    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-    tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
-    dependencies {
-        add("detektPlugins", rootProject.libs.detekt.formatting)
-    }
-}
-// </opt:staticanalysis>
 
 // <opt:coverage>
 /*
@@ -122,9 +80,15 @@ kover {
                     "dagger.hilt.*",
                     "hilt_aggregated_deps.*",
                 )
-                // A preview is sample data for the IDE. Requiring it to be covered would mean
-                // writing a test that renders fake rows to satisfy a number.
-                annotatedBy("androidx.compose.ui.tooling.preview.Preview")
+                // Composables are checked by eye, in previews and the catalog, not by unit tests —
+                // counting them made the number mostly a measure of how much UI there is. What is
+                // left is the logic a unit test can reach: ViewModels, repositories, mappers, the
+                // navigation rules. The catalog is an app for looking at, and goes with them.
+                annotatedBy(
+                    "androidx.compose.ui.tooling.preview.Preview",
+                    "androidx.compose.runtime.Composable",
+                )
+                packages("*.catalog")
             }
         }
 

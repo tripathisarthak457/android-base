@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Search</string>
+    <string name="search_placeholder">Search posts</string>
+    <string name="search_recent">Recent</string>
+    <string name="search_clear_recent">Clear</string>
+    <string name="search_start_title">Find anything</string>
+    <string name="search_start_message">Results appear as you type. Searches you make are kept here.</string>
+    <string name="search_no_results_title">No results</string>
+    <string name="search_no_results_message">Nothing matches “%1$s”. Try fewer or different words.</string>
+    <string name="search_retry">Try again</string>
+    <string name="search_remove_recent">Remove %1$s</string>
+</resources>

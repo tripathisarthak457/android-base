@@ -162,6 +162,17 @@ Back do here" for every position in the list, and gets it subtly wrong somewhere
 make the answer structural — Back inside a tab pops that tab, Back at a tab root is the shell's
 decision.
 
+Each stack is also decorated on its own — saved state and a ViewModel store per entry — and every
+tab stays decorated while another is showing. Navigation 3 treats an entry that leaves the list it
+was handed as popped and discards its state, so feeding one display a different tab's list on
+every switch reset the tab being left: its scroll position, its query, its loaded data. With each
+tab kept, leaving one is only hiding it.
+
+A tab switch crossfades rather than slides. A slide between peers reads as forward navigation,
+and Back then not undoing it is a small lie every time. The bar slides away over a tab's root
+rather than disappearing out of the layout, because the root reserves the bar's height and pushed
+screens are full height — nothing changes size halfway through a transition.
+
 Re-tapping the active tab pops it to its root. That is a gesture people use constantly and
 almost never discover by being told about; a tab that ignores its own re-tap feels broken to
 anyone who has the habit.
@@ -186,6 +197,18 @@ Spacer(Modifier.height(AppTheme.spacing.lg))
 Nothing outside `Palette.kt` names a colour by its hue. That indirection is what makes rebranding
 one file, and what makes a dark theme one more instance of `AppColors` rather than a search
 through every feature.
+
+### Design styles
+
+`AppDesignStyle` bundles the decisions that have to agree with each other — corner radii, the
+button and chip shapes, how cards and fields are drawn, the tab bar, border weight and label
+casing — into four named sets, read through `AppTheme.style`. Components take their defaults from
+it rather than from a constant, so `AppTheme(designStyle = AppDesignStyle.Social)` restyles every
+screen and a single component can still be given its own `shape`.
+
+They are a starting point. A project is expected to move its tokens and components well away from
+whichever style it began with; the value of the enum is that the first version already agrees
+with itself.
 
 ## Build
 

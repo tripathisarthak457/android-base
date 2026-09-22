@@ -562,15 +562,9 @@ fun OverlaysSection() {
 
 @Composable
 fun DateTimeSection() {
-    // A fixed date, for the same reason the time beside it is fixed: this page is screenshotted
-    // and compared against an image on disk, and `LocalDate.now()` made those images expire.
-    // They were recorded on one day and the next push on a different one failed three of them,
-    // having changed nothing.
-    //
-    // A date in the past rather than any fixed date. `AppDatePicker` takes its visible month from
-    // the selection and draws a ring on whichever cell is today, so a past month is one that can
-    // never contain today — which is what makes the render the same on every future day, not just
-    // on days that are not the recording day.
+    // A fixed date in the past, so the page is the same on every day it is opened. `AppDatePicker`
+    // takes its visible month from the selection and rings whichever cell is today, and a past
+    // month can never contain today.
     var date by remember { mutableStateOf<LocalDate?>(LocalDate.of(2026, 3, 14)) }
     var time by remember { mutableStateOf(LocalTime.of(9, 30)) }
     var wheel by remember { mutableIntStateOf(2) }

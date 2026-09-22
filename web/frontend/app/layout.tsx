@@ -5,37 +5,47 @@ export const metadata: Metadata = {
   title: "Android base — a project generator",
   description:
     "A multi-module Jetpack Compose starter with no Material dependency, generated with your " +
-    "package name, your accent colour and only the features you ticked. Downloads as a zip that " +
-    "compiles.",
+    "package name, your colours, one of four design styles and only the features you ticked. " +
+    "Downloads as a zip that compiles.",
   metadataBase: new URL("https://android-base.vercel.app"),
   openGraph: {
     title: "Android base — a project generator",
     description:
-      "Multi-module Compose, MVI, Hilt, Ktor. Pick your features, get a zip that builds.",
+      "Multi-module Compose, MVI, Hilt, Ktor. Pick your features and a look, get a zip that builds.",
     type: "website",
   },
   robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070a10",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f2ece2" },
+    { media: "(prefers-color-scheme: dark)", color: "#141311" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
 
+/*
+ * Runs before the first paint, so a visitor who chose dark does not see a flash of paper first.
+ * Storage can be unavailable (private windows, blocked site data); the page then follows the OS.
+ */
+const THEME_BOOTSTRAP = `
+try {
+  var saved = localStorage.getItem("theme");
+  if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+} catch (e) {}
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        {/*
-          The two families the site is set in, loaded from Google Fonts the same way the generated
-          app loads its own. `preconnect` because the render is blocked on them, and `display=swap`
-          so the first paint is not a blank page on a slow connection.
-        */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
       </head>

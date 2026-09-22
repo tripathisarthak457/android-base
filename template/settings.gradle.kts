@@ -30,10 +30,6 @@ pluginManagement {
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
-
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -87,6 +83,15 @@ include(":data:auth")
 // <opt:sample>
 include(":data:sample")
 // </opt:sample>
+// <opt:paging>
+include(":data:feed")
+// </opt:paging>
+// <opt:search>
+include(":data:search")
+// </opt:search>
+// <opt:profile>
+include(":data:profile")
+// </opt:profile>
 // <generated:data-modules>
 
 // ── feature ──────────────────────────────────────────────────────────────────
@@ -96,6 +101,15 @@ include(":feature:auth")
 // <opt:sample>
 include(":feature:sample")
 // </opt:sample>
+// <opt:paging>
+include(":feature:feed")
+// </opt:paging>
+// <opt:search>
+include(":feature:search")
+// </opt:search>
+// <opt:profile>
+include(":feature:profile")
+// </opt:profile>
 // <opt:settings>
 include(":feature:settings")
 // </opt:settings>
@@ -105,9 +119,6 @@ include(":feature:onboarding")
 // <generated:feature-modules>
 
 // ── tooling ──────────────────────────────────────────────────────────────────
-// <opt:architecturetests>
-include(":architecture")
-// </opt:architecturetests>
 // <opt:baselineprofile>
 include(":benchmark")
 // </opt:baselineprofile>

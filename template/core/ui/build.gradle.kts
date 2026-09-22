@@ -18,4 +18,10 @@ dependencies {
     // <opt:coil>
     implementation(libs.coil.compose)
     // </opt:coil>
+    // <opt:browser>
+    implementation(libs.androidx.browser)
+    // </opt:browser>
+    // <opt:paging>
+    api(libs.androidx.paging.compose)
+    // </opt:paging>
 }

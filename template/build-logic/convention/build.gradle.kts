@@ -32,10 +32,8 @@ dependencies {
     compileOnly(libs.hilt.gradlePlugin)
     // <opt:firebase>
     compileOnly(libs.google.services.gradlePlugin)
-    // </opt:firebase>
-    // <opt:crashlytics>
     compileOnly(libs.firebase.crashlytics.gradlePlugin)
-    // </opt:crashlytics>
+    // </opt:firebase>
 }
 
 gradlePlugin {

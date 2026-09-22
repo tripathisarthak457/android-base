@@ -28,7 +28,7 @@ export function Hero({
 }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="grid-backdrop pointer-events-none absolute inset-0" aria-hidden />
+      <div className="paper-backdrop pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-20 md:pt-28">
         <motion.div
@@ -42,16 +42,27 @@ export function Hero({
             <Badge tone="accent">Open source · MIT</Badge>
           </div>
 
-          <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-ink-100 md:text-6xl">
+          <h1 className="font-display mt-5 text-5xl font-extrabold leading-[1.02] text-ink-100 md:text-7xl">
             A new Android project,
             <br />
-            <span className="text-accent">already wired up.</span>
+            <span className="relative inline-block text-accent">
+              already wired up.
+              <svg
+                className="absolute -bottom-2 left-0 w-full"
+                height="10"
+                viewBox="0 0 300 10"
+                preserveAspectRatio="none"
+                aria-hidden
+              >
+                <path d="M2 7c60-5 130-6 296-2" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
+              </svg>
+            </span>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-300">
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-300">
             Multi-module Compose with MVI, Hilt and Ktor. Four build environments, signed release
-            output, a design system with no Material dependency, and a catalog app that shows every
-            component. Pick what you want, get a zip that compiles.
+            output, a design system with no Material dependency in one of four styles, and a
+            catalog app that shows every component. Pick what you want, get a zip that compiles.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -85,18 +96,18 @@ export function Hero({
           </p>
 
           {/*
-            Stated plainly rather than buried. Everything here is tested — the repository builds
-            both extremes of the generator on every push — but "tested" and "used by a lot of
-            people" are different things, and only the second one finds the last few bugs.
+            Stated plainly rather than buried. The repository builds both extremes of the generator
+            on every push, but "tested" and "used by a lot of people" are different things, and only
+            the second one finds the last few bugs.
           */}
-          <div className="mt-6 flex max-w-2xl items-start gap-3 rounded-lg border border-amber/25 bg-amber/[0.06] p-4">
+          <div className="mt-6 flex max-w-2xl items-start gap-3 rounded-lg border border-amber/30 bg-amber/[0.07] p-4">
             <span className="mt-0.5 text-amber" aria-hidden>
               ⚠
             </span>
             <p className="text-sm leading-relaxed text-ink-300">
-              <span className="font-medium text-ink-100">This is beta.</span> Every combination is
-              compiled, tested and linted in CI before it ships, but not many people have used it
-              yet. If something breaks, the button in the corner sends a report straight to whoever
+              <span className="font-medium text-ink-100">This is beta.</span> Every feature on, every
+              feature off and both big presets are compiled, tested and linted in CI before a change
+              ships, but not many people have used it yet. If something breaks, the button in the corner sends a report straight to whoever
               can fix it — and it attaches what you configured, so you do not have to describe it.
             </p>
           </div>
@@ -106,7 +117,7 @@ export function Hero({
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-14 grid gap-4 md:grid-cols-5"
+          className="mt-14 grid items-start gap-4 md:grid-cols-5"
         >
           <Terminal />
           <Stats featureCount={featureCount} />
@@ -119,18 +130,18 @@ export function Hero({
 /**
  * The same commands the README tells you to run, with their real output.
  *
- * Not a marketing screenshot: `7m 14s` is what `./gradlew build` actually takes on the template,
- * and quoting a real number is the difference between "this works" and "somebody typed that it
- * works".
+ * Not a marketing screenshot: `6m 3s` is what `./gradlew build` took on a freshly generated lean
+ * project on a laptop, and quoting a real number is the difference between "this works" and
+ * "somebody typed that it works".
  */
 function Terminal() {
   const lines: { text: string; tone?: "prompt" | "dim" | "ok" }[] = [
     { text: "$ ./gradlew :app:assembleDevDebug", tone: "prompt" },
-    { text: "BUILD SUCCESSFUL in 1m 4s", tone: "ok" },
+    { text: "BUILD SUCCESSFUL", tone: "ok" },
     { text: "" },
     { text: "$ ./gradlew build", tone: "prompt" },
-    { text: "compiles 7 variants · unit tests · detekt · android lint", tone: "dim" },
-    { text: "BUILD SUCCESSFUL in 7m 14s", tone: "ok" },
+    { text: "compiles 7 variants · unit tests · android lint", tone: "dim" },
+    { text: "BUILD SUCCESSFUL in 6m 3s", tone: "ok" },
     { text: "" },
     { text: "$ ./gradlew :app:distDevRelease", tone: "prompt" },
     { text: "MyApp-devRelease-arm64-v8a-1.0.0-1-20260904-1048.apk", tone: "dim" },
@@ -139,12 +150,13 @@ function Terminal() {
   ];
 
   return (
-    <div className="md:col-span-3 overflow-hidden rounded-xl border border-ink-700 bg-ink-900">
-      <div className="flex items-center gap-2 border-b border-ink-700 bg-ink-850 px-4 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-ink-600" />
-        <span className="h-2.5 w-2.5 rounded-full bg-ink-600" />
-        <span className="h-2.5 w-2.5 rounded-full bg-ink-600" />
-        <span className="ml-2 font-mono text-xs text-ink-400">MyApp — zsh</span>
+    // A terminal is dark in both site themes, the way a terminal on the visitor's own machine is.
+    <div className="md:col-span-3 overflow-hidden rounded-xl border border-[#2c2924] bg-[#1c1a17] shadow-[0_20px_50px_-24px_rgba(40,30,15,0.5)]">
+      <div className="flex items-center gap-2 border-b border-[#2c2924] bg-[#23211d] px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#e2614a]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#e6b34e]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#62c98f]" />
+        <span className="ml-2 font-mono text-xs text-[#999080]">MyApp — zsh</span>
       </div>
       <pre className="overflow-x-auto p-4 font-mono text-[12.5px] leading-[1.75]">
         {lines.map((line, index) => (
@@ -152,10 +164,10 @@ function Terminal() {
             key={index}
             className={
               line.tone === "ok"
-                ? "text-mint"
+                ? "text-[#62c98f]"
                 : line.tone === "prompt"
-                  ? "text-ink-100"
-                  : "text-ink-400"
+                  ? "text-[#f5efe4]"
+                  : "text-[#999080]"
             }
           >
             {line.text || " "}
@@ -169,8 +181,9 @@ function Terminal() {
 const STATS = [
   { value: null, label: "features you can switch off", detail: "Each removes a module, not just code" },
   { value: "80+", label: "components, zero Material", detail: "An androidx.compose.material import fails the build" },
+  { value: "4", label: "design styles", detail: "Utility, Social, Editorial, Playful — one enum" },
   { value: "7", label: "build variants", detail: "dev / staging / prod / playstore × debug / release" },
-  { value: "0", label: "setup steps after unzip", detail: "Open it and press run" },
+  { value: "0", label: "extra JDKs", detail: "Builds on Android Studio's bundled JBR" },
 ];
 
 function Stats({ featureCount }: { featureCount?: number }) {
@@ -192,7 +205,7 @@ function Stats({ featureCount }: { featureCount?: number }) {
           className="rounded-xl border border-ink-700 bg-ink-850 px-4 py-3"
         >
           <div className="flex items-baseline gap-2.5">
-            <span className="font-mono text-2xl font-bold text-accent">{stat.value}</span>
+            <span className="font-display text-2xl font-extrabold text-accent">{stat.value}</span>
             <span className="text-sm font-medium text-ink-200">{stat.label}</span>
           </div>
           <p className="mt-0.5 text-xs text-ink-400">{stat.detail}</p>

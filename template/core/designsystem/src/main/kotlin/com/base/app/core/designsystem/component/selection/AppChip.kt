@@ -61,7 +61,7 @@ fun AppChip(
         onClick = onClick,
         modifier = modifier.defaultMinSize(minHeight = 34.dp),
         enabled = enabled,
-        shape = AppTheme.shapes.pill,
+        shape = AppTheme.style.chipShape,
         color = container,
         contentColor = content,
         border = BorderStroke(AppTheme.sizes.borderWidth, outline),

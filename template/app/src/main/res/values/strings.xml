@@ -17,4 +17,9 @@
     <string name="app_lock_subtitle">Use your fingerprint, face or screen lock.</string>
     <string name="app_lock_action">Unlock</string>
     <!-- </opt:applock> -->
+
+    <!-- <opt:widget> -->
+    <string name="widget_default_headline">Tap to open</string>
+    <string name="widget_description">Your app at a glance</string>
+    <!-- </opt:widget> -->
 </resources>

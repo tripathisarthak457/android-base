@@ -32,6 +32,8 @@ import com.base.app.core.designsystem.theme.AppMotion
  */
 internal object NavTransitions {
 
+    private const val TAB_ENTER_SCALE = 0.985f
+
     fun push(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
         slideIntoContainer(
             towards = AnimatedContentTransitionScope.SlideDirection.Start,
@@ -114,6 +116,25 @@ internal object NavTransitions {
                 initialOffsetY = { fullHeight -> fullHeight / 44 },
             )
             ) togetherWith fadeOut(tween(motion.quick))
+    }
+
+    /**
+     * Tab to tab: the outgoing tab fades quickly, the incoming one fades in and settles from a
+     * hair below full size.
+     *
+     * No travel at all, because tabs are peers — anything that slides reads as going forward.
+     * The two fades barely overlap, so there is never a frame with both tabs legible on top of
+     * each other, and the incoming scale is small enough to register as "arriving" rather than
+     * as zoom. Starts after the outgoing fade is mostly done, which is what keeps it calm.
+     */
+    fun tabSwitch(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
+        (
+            fadeIn(tween(motion.medium, delayMillis = motion.instant, easing = motion.enter)) +
+                scaleIn(
+                    animationSpec = tween(motion.medium, delayMillis = motion.instant, easing = motion.enter),
+                    initialScale = TAB_ENTER_SCALE,
+                )
+            ) togetherWith fadeOut(tween(motion.instant + motion.instant / 2, easing = motion.exit))
     }
 
     fun none(): AnimatedContentTransitionScope<*>.() -> ContentTransform = {

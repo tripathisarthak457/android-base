@@ -56,10 +56,17 @@ def generated_blocks(spec: ProjectSpec) -> dict[str, list[str]]:
     # `start` is `tabs.firstOrNull()?.key`, which is nullable however many tabs there are — so the
     # elvis is not a fallback for an empty list, it is what gives the property its type. The
     # template carries one behind an `<opt:sample>` block; this replaces it when that goes.
+    # The fallback names the first tab that exists, in the same order AppDestinations lists them.
     start_destination: list[str] = []
     if not spec.has("sample"):
-        if spec.feature_modules:
+        if spec.has("paging"):
+            fallback = "FeedKey"
+        elif spec.has("search"):
+            fallback = "SearchKey"
+        elif spec.feature_modules:
             fallback = f"{pascal(spec.feature_modules[0])}ListKey"
+        elif spec.has("profile"):
+            fallback = "ProfileKey"
         elif spec.has("settings"):
             fallback = "SettingsKey"
         else:

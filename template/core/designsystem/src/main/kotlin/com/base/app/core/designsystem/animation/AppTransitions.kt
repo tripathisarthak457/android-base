@@ -1,9 +1,12 @@
 package com.base.app.core.designsystem.animation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.Easing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -15,6 +18,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
@@ -22,10 +26,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.theme.AppMotion
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
@@ -169,11 +177,14 @@ fun rememberAppTransitions(): AppTransitions {
 }
 
 /**
- * Fades and lifts its content in once, shortly after it first composes.
+ * Fades and lifts its content in once, the first time it is shown.
  *
- * For a screen's content arriving after a load. A plain `AnimatedVisibility(visible = true)` does
- * nothing — the content is already visible on the first frame, so there is no transition to run;
- * flipping a flag in a `LaunchedEffect` is what gives it something to animate *from*.
+ * For a screen's content arriving after a load.
+ *
+ * Drawn, not laid out: the content occupies its full size from the first frame and only its
+ * alpha and offset animate, so nothing around it moves while it arrives. And it happens once —
+ * the flag is saved, so returning to a tab or rotating the phone shows the content where it is
+ * rather than playing the entrance again.
  */
 @Composable
 fun AppAppear(
@@ -181,25 +192,17 @@ fun AppAppear(
     delayMillis: Long = 0,
     content: @Composable () -> Unit,
 ) {
-    val transitions = rememberAppTransitions()
-    var visible by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        if (delayMillis > 0) delay(delayMillis)
-        visible = true
-    }
-
-    AnimatedVisibility(
-        visible = visible,
-        modifier = modifier,
-        enter = transitions.fadeIn + slideInVertically { APPEAR_OFFSET_PX },
-        exit = transitions.fadeOut,
-    ) {
+    val progress = rememberAppearProgress(delayMillis)
+    val lift = with(LocalDensity.current) { APPEAR_OFFSET.toPx() }
+    Box(modifier = modifier.graphicsLayer {
+        alpha = progress.value
+        translationY = (1f - progress.value) * lift
+    }) {
         content()
     }
 }
 
-private const val APPEAR_OFFSET_PX = 20
+private val APPEAR_OFFSET = 12.dp
 
 /**
  * Animates a row into place when the list is reordered, filtered or inserted into.
@@ -228,6 +231,9 @@ fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
  * For a fixed set of rows — a settings group, a dashboard's cards. A `LazyColumn` should use
  * [appAnimateItem] instead: staggering rows the user scrolls to would re-animate them every time
  * they come back on screen.
+ *
+ * Like [AppAppear], every row is laid out at full size immediately and only drawn in, so the
+ * column never grows row by row, and the entrance runs once rather than on every return.
  */
 @Composable
 fun AppStaggeredColumn(
@@ -235,21 +241,54 @@ fun AppStaggeredColumn(
     modifier: Modifier = Modifier,
     content: @Composable (index: Int) -> Unit,
 ) {
-    val transitions = rememberAppTransitions()
-    var visible by remember { mutableStateOf(false) }
-    LaunchedEffect(itemCount) { visible = true }
+    val motion = AppTheme.motion
+    // Linear overall, eased per row: each row eases over its own slice of the timeline, which a
+    // value that was already eased would distort.
+    val progress = rememberAppearProgress(
+        delayMillis = 0,
+        durationMillis = motion.medium + AppTransitions.STAGGER_MILLIS * AppTransitions.MAX_STAGGERED_ROWS,
+        easing = LinearEasing,
+    )
+    val lift = with(LocalDensity.current) { APPEAR_OFFSET.toPx() }
+    val total = (motion.medium + AppTransitions.STAGGER_MILLIS * AppTransitions.MAX_STAGGERED_ROWS).toFloat()
 
     Column(modifier = modifier) {
         repeat(itemCount) { index ->
-            AnimatedVisibility(
-                visible = visible,
-                enter = transitions.staggeredIn(index),
-                exit = transitions.fadeOut,
-            ) {
+            val start = index.coerceAtMost(AppTransitions.MAX_STAGGERED_ROWS) * AppTransitions.STAGGER_MILLIS / total
+            val span = motion.medium / total
+            Box(modifier = Modifier.graphicsLayer {
+                val local = ((progress.value - start) / span).coerceIn(0f, 1f)
+                val eased = motion.enter.transform(local)
+                alpha = eased
+                translationY = (1f - eased) * lift
+            }) {
                 content(index)
             }
         }
     }
+}
+
+/**
+ * 0 to 1, once per saved-state lifetime. Starts at 1 under reduce motion, so nothing animates.
+ */
+@Composable
+private fun rememberAppearProgress(
+    delayMillis: Long,
+    durationMillis: Int = AppTheme.motion.medium,
+    easing: Easing = AppTheme.motion.enter,
+): Animatable<Float, AnimationVector1D> {
+    val reduceMotion = rememberReduceMotion()
+    var shown by rememberSaveable { mutableStateOf(false) }
+    val progress = remember { Animatable(if (shown || reduceMotion) 1f else 0f) }
+
+    LaunchedEffect(Unit) {
+        if (progress.value < 1f) {
+            if (delayMillis > 0) delay(delayMillis)
+            progress.animateTo(1f, tween(durationMillis, easing = easing))
+        }
+        shown = true
+    }
+    return progress
 }
 
 /**

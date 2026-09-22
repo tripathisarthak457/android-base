@@ -37,3 +37,10 @@ data class SignUpRequestDto(
 data class EmailRequestDto(
     val email: String,
 )
+// <opt:googlesignin>
+
+@Serializable
+data class GoogleSignInRequestDto(
+    @SerialName("id_token") val idToken: String,
+)
+// </opt:googlesignin>

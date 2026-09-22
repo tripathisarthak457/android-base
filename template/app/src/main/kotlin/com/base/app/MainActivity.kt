@@ -42,6 +42,10 @@ import com.base.app.lock.LockActivity
 // <opt:applock|deeplink>
 import android.content.Intent
 // </opt:applock|deeplink>
+// <opt:language>
+import android.content.Context
+import com.base.app.core.ui.locale.AppLocales
+// </opt:language>
 // <opt:playstore>
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -120,6 +124,13 @@ class MainActivity : ComponentActivity() {
     // </opt:playstore>
 
     private val startup = MutableStateFlow<Startup?>(null)
+
+    // <opt:language>
+    // Below Android 13 the app's own language is applied here, before any resource is read.
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLocales.wrap(newBase))
+    }
+    // </opt:language>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()

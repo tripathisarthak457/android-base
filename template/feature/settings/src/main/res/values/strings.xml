@@ -28,4 +28,16 @@
     <string name="settings_no_licences_explanation">This build did not generate a licence list.</string>
     <string name="settings_sign_out_explanation">You will need to sign in again to use the app.</string>
     <string name="settings_version">Version %1$s</string>
+    <!-- <opt:language> -->
+    <string name="settings_cancel">Cancel</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_system">Same as your phone</string>
+    <!-- </opt:language> -->
+    <!-- <opt:browser> -->
+    <string name="settings_legal">Legal</string>
+    <string name="settings_privacy_policy">Privacy policy</string>
+    <string name="settings_terms">Terms of service</string>
+    <string name="settings_privacy_url" translatable="false">https://example.com/privacy</string>
+    <string name="settings_terms_url" translatable="false">https://example.com/terms</string>
+    <!-- </opt:browser> -->
 </resources>

@@ -10,14 +10,11 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    // <opt:analytics-firebase>
+    // <opt:firebase>
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
-    // </opt:analytics-firebase>
-    // <opt:crashlytics>
-    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
-    // </opt:crashlytics>
+    // </opt:firebase>
 
     testImplementation(project(":core:testing"))
 }

@@ -42,6 +42,7 @@ type Request struct {
 	SecondaryColour string     `json:"secondary_colour,omitempty"`
 	TertiaryColour  string     `json:"tertiary_colour,omitempty"`
 	MotionStyle     string     `json:"motion_style,omitempty"`
+	DesignStyle     string     `json:"design_style,omitempty"`
 	HapticsEnabled  *bool      `json:"haptics_enabled,omitempty"`
 	Keystores       []Keystore `json:"keystores,omitempty"`
 }

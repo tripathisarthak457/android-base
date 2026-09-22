@@ -24,6 +24,8 @@ export type ReportContext = {
   preset?: string;
   minSdk?: number;
   motionStyle?: string;
+  /** Held for the configurator's own use; the feedback endpoint does not record it yet. */
+  designStyle?: string;
   fontName?: string;
   accentColour?: string;
 };

@@ -25,6 +25,7 @@ from genkit.build import plan  # noqa: E402
 from genkit.catalogue import GROUPS, HEADLINES, catalogue, describe  # noqa: E402
 from genkit.render import (  # noqa: E402
     _is_hollow_kotlin,
+    apply_feel,
     brand_colours,
     collapse_blank_runs,
     rename,
@@ -33,7 +34,9 @@ from genkit.render import (  # noqa: E402
 from genkit.scaffold import generated_blocks, pascal, title  # noqa: E402
 from genkit.spec import (  # noqa: E402
     FEATURES,
+    DESIGN_STYLE_NAMES,
     MOTION_STYLE_NAMES,
+    RESERVED_MODULE_NAMES,
     KeystoreSpec,
     ProjectSpec,
     SpecError,
@@ -239,13 +242,13 @@ class HollowFileTest(unittest.TestCase):
 class FeatureResolutionTest(unittest.TestCase):
 
     def test_requirements_are_pulled_in_transitively(self):
-        # push → firebase, and nothing else has to be known by the person who ticked push.
-        self.assertEqual({"push", "firebase"}, resolve_features({"push"}))
+        # push → firebase → the two seams it binds, and nobody who ticked push has to know that.
+        self.assertEqual({"push", "firebase", "analytics", "flags"}, resolve_features({"push"}))
 
     def test_a_two_step_chain_resolves(self):
         self.assertEqual(
-            {"crashlytics", "firebase", "analytics"},
-            resolve_features({"crashlytics"}),
+            {"googlesignin", "auth", "network", "forms"},
+            resolve_features({"googlesignin"}),
         )
 
     def test_an_empty_selection_stays_empty(self):
@@ -313,6 +316,30 @@ class LookAndFeelTest(unittest.TestCase):
         for name in MOTION_STYLE_NAMES:
             self.assertEqual(name, spec(motion_style=name).validated().motion_style)
 
+    def test_an_unknown_design_style_is_rejected(self):
+        with self.assertRaises(SpecError):
+            spec(design_style="Brutal").validated()
+
+    def test_every_design_style_validates(self):
+        for name in DESIGN_STYLE_NAMES:
+            self.assertEqual(name, spec(design_style=name).validated().design_style)
+
+    def test_the_styles_are_written_into_the_one_theme_call(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "app/src/main/kotlin/com/acme/field/ui/AppRoot.kt"
+            root.parent.mkdir(parents=True)
+            root.write_text(
+                "import com.acme.field.core.designsystem.theme.AppTheme\n"
+                "    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {\n",
+                encoding="utf-8",
+            )
+            apply_feel(Path(directory), spec(design_style="Playful", motion_style="Bouncy"))
+            text = root.read_text(encoding="utf-8")
+
+        self.assertIn("designStyle = AppDesignStyle.Playful", text)
+        self.assertIn("motionStyle = AppMotionStyle.Bouncy", text)
+        self.assertIn("import com.acme.field.core.designsystem.theme.AppDesignStyle", text)
+
     def test_the_accent_must_be_a_six_digit_hex(self):
         for bad in ("blue", "#12345", "#GGGGGG", "2C6BED88"):
             with self.assertRaises(SpecError, msg=bad):
@@ -373,6 +400,15 @@ class PresetTest(unittest.TestCase):
         self.assertIn("standard", str(caught.exception))
 
 
+class ReservedNameTest(unittest.TestCase):
+
+    def test_the_modules_new_features_ship_are_reserved(self):
+        for name in ("feed", "search", "profile"):
+            self.assertIn(name, RESERVED_MODULE_NAMES)
+            with self.assertRaises(SpecError):
+                spec(feature_modules=(name,)).validated()
+
+
 class DerivedNameTest(unittest.TestCase):
 
     def test_spaces_and_punctuation_become_a_pascal_name(self):
@@ -396,15 +432,15 @@ class ScaffoldTest(unittest.TestCase):
         self.assertEqual("Order history", title("order_history"))
 
     def test_each_module_contributes_an_include_and_an_app_dependency(self):
-        blocks = generated_blocks(spec(feature_modules=("orders", "profile")))
+        blocks = generated_blocks(spec(feature_modules=("orders", "wallet")))
 
         self.assertEqual(
-            ['include(":data:orders")\n', 'include(":data:profile")\n'],
+            ['include(":data:orders")\n', 'include(":data:wallet")\n'],
             blocks["data-modules"],
         )
         self.assertEqual(
             ['    implementation(project(":feature:orders"))\n',
-             '    implementation(project(":feature:profile"))\n'],
+             '    implementation(project(":feature:wallet"))\n'],
             blocks["app-feature-dependencies"],
         )
 
@@ -416,13 +452,13 @@ class ScaffoldTest(unittest.TestCase):
         self.assertEqual([], blocks["start-destination"])
 
     def test_without_the_reference_feature_the_first_module_becomes_the_start_destination(self):
-        blocks = generated_blocks(spec(feature_modules=("orders", "profile")))
+        blocks = generated_blocks(spec(feature_modules=("orders", "wallet")))
 
         self.assertEqual(["        ?: OrdersListKey\n"], blocks["start-destination"])
         self.assertEqual(
             [
                 "import com.acme.field.feature.orders.OrdersListKey\n",
-                "import com.acme.field.feature.profile.ProfileListKey\n",
+                "import com.acme.field.feature.wallet.WalletListKey\n",
             ],
             blocks["start-destination-import"],
         )
@@ -511,11 +547,28 @@ class CatalogueTest(unittest.TestCase):
                 self.assertNotEqual(feature.title, HEADLINES[feature.key])
 
 
+class VariantOverlayTest(unittest.TestCase):
+    """A variant for a feature that is off must not recreate a module that is also off."""
+
+    def test_a_variant_file_under_a_removed_module_is_skipped(self):
+        from genkit.render import overlay_variants
+        from genkit.build import VARIANTS_DIR
+
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            # Firebase off, and flags off too: the firebase-off variant carries a FlagsModule
+            # that must not appear in a project with no :core:flags.
+            overlay_variants(VARIANTS_DIR, project, spec(features=frozenset({"analytics"})).validated())
+
+            self.assertTrue(any(project.rglob("AnalyticsModule.kt")))
+            self.assertFalse(any(project.rglob("FlagsModule.kt")))
+
+
 class PlanTest(unittest.TestCase):
     """What --dry-run promises, which has to be what a real run would then do."""
 
     def test_an_implied_feature_shows_as_enabled(self):
-        resolved = spec(features=frozenset({"crashlytics"})).validated()
+        resolved = spec(features=frozenset({"push"})).validated()
 
         self.assertIn("firebase", plan(resolved)["enabled"])
 
@@ -560,6 +613,7 @@ class SpecRoundTripTest(unittest.TestCase):
             keystores=(keystore(),),
             accent_colour="#112233",
             motion_style="Calm",
+            design_style="Editorial",
             haptics_enabled=False,
             api_base_urls={"dev": "https://dev.example.com/"},
         ).validated()

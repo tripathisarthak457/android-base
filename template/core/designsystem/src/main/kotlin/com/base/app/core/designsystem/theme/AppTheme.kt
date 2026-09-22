@@ -55,6 +55,11 @@ enum class ThemeMode {
  * `AppTheme(motionStyle = AppMotionStyle.Bouncy)` changes how every control in the app responds
  * to a finger. See [AppMotionStyle].
  *
+ * ## The look is one enum too
+ *
+ * `AppTheme(designStyle = AppDesignStyle.Social)` changes corners, borders, fields and the tab
+ * bar together. See [AppDesignStyle].
+ *
  * ## The typeface is one string
  *
  * `AppTheme(fontName = "Manrope")` restyles every screen in the app. The name is a Google Fonts
@@ -68,6 +73,7 @@ fun AppTheme(
     monoFontName: String = AppFontNames.Mono,
     fonts: AppFonts? = null,
     motionStyle: AppMotionStyle = AppMotionStyle.Standard,
+    designStyle: AppDesignStyle = AppDesignStyle.Utility,
     hapticsEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
@@ -75,6 +81,10 @@ fun AppTheme(
     val resolvedFonts = fonts ?: rememberAppFonts(fontName, monoFontName)
     val typography = remember(resolvedFonts) { appTypography(resolvedFonts) }
     val motion = remember(motionStyle) { motionStyle.motion() }
+    val style = remember(designStyle) { designStyle.style() }
+    val sizes = remember(style) {
+        AppSizes(borderWidth = style.borderWidth, borderWidthStrong = style.borderWidthStrong)
+    }
 
     val selectionColors = remember(resolved) {
         TextSelectionColors(
@@ -92,9 +102,10 @@ fun AppTheme(
         LocalAppColors provides resolved,
         LocalAppTypography provides typography,
         LocalAppSpacing provides AppSpacing(),
-        LocalAppShapes provides AppShapes(),
+        LocalAppShapes provides style.shapes,
         LocalAppElevation provides AppElevation(),
-        LocalAppSizes provides AppSizes(),
+        LocalAppSizes provides sizes,
+        LocalAppStyle provides style,
         LocalAppMotion provides motion,
         LocalContentColor provides resolved.contentPrimary,
         LocalTextStyle provides typography.bodyMedium,
@@ -148,4 +159,9 @@ object AppTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalAppMotion.current
+
+    val style: AppStyle
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppStyle.current
 }

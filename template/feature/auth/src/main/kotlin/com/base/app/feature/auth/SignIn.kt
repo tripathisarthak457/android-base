@@ -33,6 +33,9 @@ import com.base.app.core.designsystem.animation.busyOverlay
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppScaffold
+// <opt:googlesignin>
+import com.base.app.core.designsystem.component.container.AppDivider
+// </opt:googlesignin>
 import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.input.AppPasswordField
@@ -59,6 +62,10 @@ sealed interface SignInEvent : UiEvent {
     data object Submit : SignInEvent
     data object CreateAccountClicked : SignInEvent
     data object ForgotPasswordClicked : SignInEvent
+    // <opt:googlesignin>
+    data class GoogleIdTokenReceived(val idToken: String) : SignInEvent
+    data class GoogleFailed(val message: String) : SignInEvent
+    // </opt:googlesignin>
 }
 
 sealed interface SignInEffect : UiEffect {
@@ -97,8 +104,24 @@ class SignInViewModel @Inject constructor(
             SignInEvent.Submit -> submit()
             SignInEvent.CreateAccountClicked -> emitEffect(SignInEffect.OpenSignUp)
             SignInEvent.ForgotPasswordClicked -> emitEffect(SignInEffect.OpenPasswordReset)
+            // <opt:googlesignin>
+            is SignInEvent.GoogleIdTokenReceived -> signInWithGoogle(event.idToken)
+            is SignInEvent.GoogleFailed -> updateState { copy(error = UiText.Dynamic(event.message)) }
+            // </opt:googlesignin>
         }
     }
+    // <opt:googlesignin>
+
+    private suspend fun signInWithGoogle(idToken: String) {
+        updateState { copy(error = null) }
+        when (val result = authRepository.signInWithGoogle(idToken)) {
+            is AppResult.Success -> emitEffect(SignInEffect.SignedIn)
+            is AppResult.Failure -> updateState {
+                copy(error = UiText.Dynamic(result.message ?: "Could not sign you in with Google."))
+            }
+        }
+    }
+    // </opt:googlesignin>
 
     private suspend fun submit() {
         updateState { copy(error = null) }
@@ -209,6 +232,15 @@ fun SignInScreen(
                 loading = form.isSubmitting,
                 fillWidth = true,
             )
+            // <opt:googlesignin>
+
+            OrDivider()
+            GoogleSignInButton(
+                onIdToken = { onEvent(SignInEvent.GoogleIdTokenReceived(it)) },
+                onFailure = { onEvent(SignInEvent.GoogleFailed(it)) },
+                enabled = !form.isSubmitting,
+            )
+            // </opt:googlesignin>
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -230,6 +262,25 @@ fun SignInScreen(
     }
 }
 
+// <opt:googlesignin>
+@Composable
+private fun OrDivider() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        AppDivider(modifier = Modifier.weight(1f))
+        AppText(
+            text = stringResource(R.string.auth_or),
+            style = AppTheme.typography.caption,
+            color = AppTheme.colors.contentTertiary,
+        )
+        AppDivider(modifier = Modifier.weight(1f))
+    }
+}
+
+// </opt:googlesignin>
 @Preview(showBackground = true)
 @Composable
 private fun SignInPreview() {
