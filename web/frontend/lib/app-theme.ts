@@ -128,9 +128,50 @@ export type Palette = {
   avatars: string[];
 };
 
+export type SurfaceTone = "cool" | "brandTint" | "paper" | "cream";
+
+type Neutrals = Pick<
+  Palette,
+  | "background" | "surface" | "surfaceVariant" | "contentPrimary" | "contentSecondary"
+  | "contentTertiary" | "border" | "borderStrong" | "divider" | "skeleton"
+>;
+
+/** StyleTones.kt, value for value. */
+const TONES: Record<"paper" | "cream", { light: Neutrals; dark: Neutrals }> = {
+  paper: {
+    light: {
+      background: "#f7f4ee", surface: "#fffdf9", surfaceVariant: "#efeae1", contentPrimary: "#15130f",
+      contentSecondary: "#3f3931", contentTertiary: "#6a6256", border: "#e2dbcf", borderStrong: "#ccc2b1",
+      divider: "#eae4da", skeleton: "#eae4da",
+    },
+    dark: {
+      background: "#12110f", surface: "#1b1916", surfaceVariant: "#25221e", contentPrimary: "#f4efe6",
+      contentSecondary: "#cbc2b4", contentTertiary: "#999080", border: "#34302a", borderStrong: "#4a443b",
+      divider: "#27241f", skeleton: "#27241f",
+    },
+  },
+  cream: {
+    light: {
+      background: "#fff7ea", surface: "#ffffff", surfaceVariant: "#ffefd6", contentPrimary: "#1a1206",
+      contentSecondary: "#45392a", contentTertiary: "#6f6048", border: "#f0dfc2", borderStrong: "#ddc59d",
+      divider: "#f6e8d0", skeleton: "#f6e8d0",
+    },
+    dark: {
+      background: "#15120d", surface: "#1f1a13", surfaceVariant: "#2a2419", contentPrimary: "#fbf3e4",
+      contentSecondary: "#d6c8b0", contentTertiary: "#a3947b", border: "#3a3224", borderStrong: "#514634",
+      divider: "#2b2519", skeleton: "#2b2519",
+    },
+  },
+};
+
+function tint(base: string, accent: string, amount: number): string {
+  return rgbToHex(mix(hexToRgb(base), hexToRgb(accent), amount));
+}
+
 export function palette(
   colours: { accent: string; secondary?: string; tertiary?: string },
   dark: boolean,
+  surfaces: SurfaceTone = "cool",
 ): Palette {
   const secondary = colours.secondary || deriveSecondary(colours.accent);
   const tertiary = colours.tertiary || deriveTertiary(colours.accent);
@@ -163,10 +204,25 @@ export function palette(
         skeleton: "#e9ecf1",
         avatars: ["#e8effd", "#e4f5ee", "#fdf1e0", "#f7eafd", "#fce9e9"],
       };
+  const accent = ramp(colours.accent, dark);
+  let toned: typeof neutrals = neutrals;
+  if (surfaces === "paper" || surfaces === "cream") {
+    toned = { ...neutrals, ...TONES[surfaces][dark ? "dark" : "light"] };
+  } else if (surfaces === "brandTint") {
+    toned = {
+      ...neutrals,
+      background: tint(neutrals.background, accent.base, dark ? 0.05 : 0.045),
+      surfaceVariant: tint(neutrals.surfaceVariant, accent.base, 0.07),
+      surface: dark ? tint(neutrals.surface, accent.base, 0.05) : neutrals.surface,
+      border: tint(neutrals.border, accent.base, 0.1),
+      divider: tint(neutrals.divider, accent.base, 0.08),
+      skeleton: tint(neutrals.skeleton, accent.base, 0.08),
+    };
+  }
   return {
     dark,
-    ...neutrals,
-    accent: ramp(colours.accent, dark),
+    ...toned,
+    accent,
     secondary: ramp(secondary, dark),
     tertiary: ramp(tertiary, dark),
   };
@@ -187,6 +243,8 @@ export type DesignTokens = {
   borderStrong: number;
   uppercase: boolean;
   offsetShadow: number;
+  surfaces: SurfaceTone;
+  voice: "neutral" | "bold" | "editorial" | "rounded";
 };
 
 const PILL = 999;
@@ -203,6 +261,8 @@ export const DESIGN_TOKENS: Record<DesignStyleKey, DesignTokens> = {
     borderStrong: 1.5,
     uppercase: false,
     offsetShadow: 0,
+    surfaces: "cool",
+    voice: "neutral",
   },
   Social: {
     radius: { xs: 10, sm: 14, md: 20, lg: 26, xl: 32 },
@@ -215,6 +275,8 @@ export const DESIGN_TOKENS: Record<DesignStyleKey, DesignTokens> = {
     borderStrong: 1.5,
     uppercase: false,
     offsetShadow: 0,
+    surfaces: "brandTint",
+    voice: "bold",
   },
   Editorial: {
     radius: { xs: 2, sm: 3, md: 4, lg: 6, xl: 8 },
@@ -227,6 +289,8 @@ export const DESIGN_TOKENS: Record<DesignStyleKey, DesignTokens> = {
     borderStrong: 1.5,
     uppercase: true,
     offsetShadow: 0,
+    surfaces: "paper",
+    voice: "editorial",
   },
   Playful: {
     radius: { xs: 8, sm: 12, md: 16, lg: 22, xl: 28 },
@@ -239,15 +303,17 @@ export const DESIGN_TOKENS: Record<DesignStyleKey, DesignTokens> = {
     borderStrong: 2.5,
     uppercase: false,
     offsetShadow: 4,
+    surfaces: "cream",
+    voice: "rounded",
   },
 };
 
 /** What each style changes, in the words the picker shows under its name. */
 export const DESIGN_TRAITS: Record<DesignStyleKey, string[]> = {
-  Utility: ["Hairline outlined cards", "10dp buttons", "Outlined fields", "Docked tab bar"],
-  Social: ["Pill buttons", "Soft raised cards", "Filled fields", "Floating tab bar, sliding pill"],
-  Editorial: ["Near-square corners", "Uppercase labels", "Underlined fields", "Minimal tab bar"],
-  Playful: ["2dp ink outlines", "Solid offset shadows", "Buttons sink when pressed", "Chunky tab bar"],
+  Utility: ["Cool neutral surfaces", "Hairline outlined cards", "Outlined fields", "Docked tab bar"],
+  Social: ["Surfaces tinted with your brand", "Pill buttons, heavier headlines", "Soft raised cards, filled fields", "Floating tab bar, sliding pill"],
+  Editorial: ["Warm paper and ink", "Large, tight display type", "Underlined fields, uppercase labels", "Minimal tab bar"],
+  Playful: ["Cream surfaces, extra-bold type", "2dp ink outlines", "Solid offset shadows", "Chunky tab bar"],
 };
 
 // ── Motion styles · AppMotion.kt ────────────────────────────────────────────────

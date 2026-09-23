@@ -88,6 +88,25 @@ function moduleError(names: string[], reserved: string[]): string | undefined {
   return undefined;
 }
 
+/**
+ * Mirrors the generator's URL rule. The value is written into a Kotlin string that Gradle
+ * compiles, so a quote, a backslash or a `$` is refused rather than escaped.
+ */
+function urlError(url: string): string | undefined {
+  if (!/^https?:\/\/[A-Za-z0-9._~:/?#[\]@!&'()*+,;=%-]+$/.test(url.trim())) {
+    return "Needs to look like https://api.example.com/ — no spaces, quotes, backslashes or $.";
+  }
+  return undefined;
+}
+
+/** Mirrors the generator's font rule: a family name as fonts.google.com spells it. */
+function fontError(name: string): string | undefined {
+  if (!/^[A-Za-z0-9][A-Za-z0-9 -]{0,59}$/.test(name.trim())) {
+    return "The typeface must be a Google Fonts family name: letters, digits, spaces and hyphens.";
+  }
+  return undefined;
+}
+
 /** Characters that would split one field of the certificate's subject into two. */
 const DNAME_SPECIALS = /[,=+<>#;\\"]/;
 
@@ -204,6 +223,9 @@ export function Configurator({
     appName: appNameError(appName),
     packageName: packageError(packageName),
     modules: moduleError(moduleNames, catalogue.reservedModuleNames),
+    font: fontError(fontName),
+    devUrl: features.has("network") ? urlError(devUrl) : undefined,
+    prodUrl: features.has("network") ? urlError(prodUrl) : undefined,
     signing: signingError(
       signing,
       organisation,
@@ -483,6 +505,8 @@ export function Configurator({
                 keyPasswords={keyPasswords}
                 setKeyPasswords={setKeyPasswords}
                 signingError={errors.signing}
+                devUrlError={errors.devUrl}
+                prodUrlError={errors.prodUrl}
               />
             )}
             {step === "review" && (
@@ -827,6 +851,8 @@ function BuildStep({
   keyPasswords,
   setKeyPasswords,
   signingError,
+  devUrlError,
+  prodUrlError,
 }: {
   catalogue: Catalogue;
   minSdk: number;
@@ -849,6 +875,8 @@ function BuildStep({
   keyPasswords: Record<string, string>;
   setKeyPasswords: (next: Record<string, string>) => void;
   signingError?: string;
+  devUrlError?: string;
+  prodUrlError?: string;
 }) {
   const chosen = catalogue.apiLevels.find((level) => level.level === minSdk);
 
@@ -904,16 +932,18 @@ function BuildStep({
       <div className="space-y-5">
         {hasNetwork ? (
           <>
-            <Field label="Dev base URL" hint="Used by the dev and staging flavours.">
+            <Field label="Dev base URL" hint="Used by the dev and staging flavours." error={devUrlError}>
               <TextInput
                 value={devUrl}
+                invalid={Boolean(devUrlError)}
                 onChange={(event) => setDevUrl(event.target.value)}
                 className="font-mono text-sm"
               />
             </Field>
-            <Field label="Production base URL" hint="Used by prod and playstore.">
+            <Field label="Production base URL" hint="Used by prod and playstore." error={prodUrlError}>
               <TextInput
                 value={prodUrl}
+                invalid={Boolean(prodUrlError)}
                 onChange={(event) => setProdUrl(event.target.value)}
                 className="font-mono text-sm"
               />
@@ -1135,12 +1165,26 @@ function ReviewStep({
     bytes: number;
     keystoresSkipped: string[];
   } | null;
-  errors: { appName?: string; packageName?: string; modules?: string; signing?: string };
+  errors: {
+    appName?: string;
+    packageName?: string;
+    modules?: string;
+    font?: string;
+    devUrl?: string;
+    prodUrl?: string;
+    signing?: string;
+  };
   onGenerate: () => void;
 }) {
-  const blocked = Boolean(
-    errors.appName || errors.packageName || errors.modules || errors.signing,
-  );
+  const problem =
+    errors.appName || errors.packageName || errors.modules
+      ? "Fix the app name, package or modules in the Project step first."
+      : errors.font
+        ? errors.font
+        : errors.devUrl || errors.prodUrl
+          ? "Fix the backend URLs in the Build step first."
+          : errors.signing;
+  const blocked = Boolean(problem);
   const chosen = catalogue.features.filter((feature) => features.has(feature.key));
 
   return (
@@ -1297,7 +1341,7 @@ function ReviewStep({
 
         {blocked && (
           <p className="mt-2 text-center text-xs text-rose">
-            {errors.signing ?? "Fix the app or package name in step 1 first."}
+            {problem}
           </p>
         )}
       </div>

@@ -46,7 +46,8 @@ const ALWAYS = [
   {
     title: "A look you pick, then own",
     body:
-      "Four design styles change corners, borders, fields and the tab bar together, and four motion " +
+      "Four design styles change corners, borders, fields, the tab bar, surface tone and type " +
+      "weight together, each checked against WCAG AA in both themes, and four motion " +
       "styles change how everything moves. Both are one argument to AppTheme. The components are " +
       "plain Compose in your own module, there to be reshaped.",
     detail: "AppDesignStyle",

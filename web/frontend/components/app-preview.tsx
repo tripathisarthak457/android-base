@@ -35,7 +35,7 @@ export type PreviewConfig = {
   features: Set<string>;
 };
 
-type Ctx = { p: Palette; t: DesignTokens; font: string; features: Set<string> };
+type Ctx = { p: Palette; t: DesignTokens; ty: TypeScale; font: string; features: Set<string> };
 
 /** Scale from dp to preview pixels: a 360dp phone drawn 280px wide. */
 const DP = 0.78;
@@ -71,7 +71,7 @@ export function PhoneFrame({
 }) {
   return (
     <div
-      className="relative shrink-0 overflow-hidden rounded-[34px] border-[5px] shadow-[0_24px_60px_-20px_rgba(40,30,15,0.45)]"
+      className="relative shrink-0 overflow-hidden rounded-[34px] border-[5px] shadow-[0_24px_60px_-20px_rgba(40,30,15,0.45)] ring-1 ring-ink-600"
       style={{
         width,
         height: width * 2.05,
@@ -95,12 +95,13 @@ export function AppPreview({
   onScreen?: (screen: Screen) => void;
   width?: number;
 }) {
+  const t = DESIGN_TOKENS[config.designStyle];
   const p = buildPalette(
     { accent: config.accent, secondary: config.secondary, tertiary: config.tertiary },
     config.dark,
+    t.surfaces,
   );
-  const t = DESIGN_TOKENS[config.designStyle];
-  const ctx: Ctx = { p, t, font: config.fontName, features: config.features };
+  const ctx: Ctx = { p, t, ty: typeFor(t.voice), font: config.fontName, features: config.features };
   const tabs = tabsFor(config.features);
   const motionTokens = MOTION_TOKENS[config.motionStyle];
   const showBar = screen !== "signin" && tabs.length > 0;
@@ -189,7 +190,7 @@ function ScreenBody({ ctx, screen }: { ctx: Ctx; screen: Screen }) {
 
 // ── Pieces, one per design-system component ─────────────────────────────────────
 
-const type = {
+const baseType = {
   display: { fontSize: dp(24), lineHeight: `${dp(30)}px`, fontWeight: 700, letterSpacing: "-0.02em" },
   heading: { fontSize: dp(17), lineHeight: `${dp(23)}px`, fontWeight: 700 },
   title: { fontSize: dp(16), lineHeight: `${dp(22)}px`, fontWeight: 600 },
@@ -201,12 +202,47 @@ const type = {
   label: { fontSize: dp(11), lineHeight: `${dp(14)}px`, fontWeight: 600, letterSpacing: "0.03em" },
 } satisfies Record<string, CSSProperties>;
 
+type TypeScale = Record<keyof typeof baseType, CSSProperties>;
+
+/** `withVoice` in StyleTones.kt: the same sizes, with the weights and tracking each voice moves. */
+function typeFor(voice: DesignTokens["voice"]): TypeScale {
+  switch (voice) {
+    case "neutral":
+      return baseType;
+    case "bold":
+      return {
+        ...baseType,
+        display: { ...baseType.display, fontWeight: 800 },
+        heading: { ...baseType.heading, fontWeight: 800 },
+        title: { ...baseType.title, fontWeight: 700 },
+        button: { ...baseType.button, fontWeight: 800 },
+      };
+    case "editorial":
+      return {
+        ...baseType,
+        display: { fontSize: dp(28), lineHeight: `${dp(34)}px`, fontWeight: 700, letterSpacing: "-0.03em" },
+        heading: { ...baseType.heading, fontSize: dp(18), lineHeight: `${dp(24)}px`, letterSpacing: "-0.015em" },
+        label: { ...baseType.label, letterSpacing: "0.14em" },
+      };
+    case "rounded":
+      return {
+        ...baseType,
+        display: { ...baseType.display, fontWeight: 900 },
+        heading: { ...baseType.heading, fontWeight: 800 },
+        title: { ...baseType.title, fontWeight: 800 },
+        titleSmall: { ...baseType.titleSmall, fontWeight: 700 },
+        body: { ...baseType.body, lineHeight: `${dp(23)}px` },
+        button: { ...baseType.button, fontWeight: 800 },
+      };
+  }
+}
+
 function LargeTitle({ ctx, title, subtitle }: { ctx: Ctx; title: string; subtitle?: string }) {
   return (
     <div style={{ padding: `${dp(12)}px ${dp(16)}px ${dp(8)}px` }}>
-      <div style={{ ...type.display, color: ctx.p.contentPrimary }}>{title}</div>
+      <div style={{ ...ctx.ty.display, color: ctx.p.contentPrimary }}>{title}</div>
       {subtitle && (
-        <div style={{ ...type.bodySmall, color: ctx.p.contentTertiary, marginTop: dp(2) }}>
+        <div style={{ ...ctx.ty.bodySmall, color: ctx.p.contentTertiary, marginTop: dp(2) }}>
           {subtitle}
         </div>
       )}
@@ -260,7 +296,7 @@ function Button({
   return (
     <div
       style={{
-        ...(size === "small" ? type.titleSmall : type.button),
+        ...(size === "small" ? ctx.ty.titleSmall : ctx.ty.button),
         ...palette[variant],
         ...(offset
           ? {
@@ -318,7 +354,7 @@ function Field({
   return (
     <div>
       {label && (
-        <div style={{ ...type.titleSmall, color: p.contentSecondary, marginBottom: dp(8) }}>{label}</div>
+        <div style={{ ...ctx.ty.titleSmall, color: p.contentSecondary, marginBottom: dp(8) }}>{label}</div>
       )}
       <div
         style={{
@@ -331,7 +367,7 @@ function Field({
         }}
       >
         {icon && <Icon name={icon} size={dp(18)} colour={p.contentTertiary} />}
-        <span style={{ ...type.body, color: value ? p.contentPrimary : p.contentTertiary }}>
+        <span style={{ ...ctx.ty.body, color: value ? p.contentPrimary : p.contentTertiary }}>
           {value ?? placeholder}
         </span>
       </div>
@@ -344,7 +380,7 @@ function Chip({ ctx, label, icon }: { ctx: Ctx; label: string; icon?: IconName }
   return (
     <span
       style={{
-        ...type.titleSmall,
+        ...ctx.ty.titleSmall,
         display: "inline-flex",
         alignItems: "center",
         gap: dp(6),
@@ -373,7 +409,7 @@ function Avatar({ ctx, name, size = 40 }: { ctx: Ctx; name: string; size?: numbe
   return (
     <span
       style={{
-        ...type.titleSmall,
+        ...ctx.ty.titleSmall,
         width: dp(size),
         height: dp(size),
         fontSize: dp(size * 0.34),
@@ -411,8 +447,8 @@ function ListRow({
     <div style={{ display: "flex", alignItems: "center", gap: dp(12), padding: `${dp(12)}px ${dp(16)}px` }}>
       <Icon name={icon} size={dp(20)} colour={danger ? p.danger : p.contentTertiary} />
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ ...type.title, fontSize: dp(15), color: danger ? p.danger : p.contentPrimary }}>{title}</div>
-        {supporting && <div style={{ ...type.bodySmall, color: p.contentTertiary }}>{supporting}</div>}
+        <div style={{ ...ctx.ty.title, fontSize: dp(15), color: danger ? p.danger : p.contentPrimary }}>{title}</div>
+        {supporting && <div style={{ ...ctx.ty.bodySmall, color: p.contentTertiary }}>{supporting}</div>}
       </div>
       {trailing}
     </div>
@@ -451,7 +487,7 @@ function SectionHeader({ ctx, title }: { ctx: Ctx; title: string }) {
   return (
     <div
       style={{
-        ...type.label,
+        ...ctx.ty.label,
         color: ctx.p.contentTertiary,
         textTransform: "uppercase",
         padding: `${dp(10)}px ${dp(2)}px ${dp(2)}px`,
@@ -483,7 +519,7 @@ function SignInScreen({ ctx }: { ctx: Ctx }) {
   const google = ctx.features.has("googlesignin");
   return (
     <div style={{ padding: `${dp(40)}px ${dp(16)}px 0`, display: "flex", flexDirection: "column", gap: dp(16) }}>
-      <div style={{ ...type.display, color: ctx.p.contentPrimary }}>Welcome back</div>
+      <div style={{ ...ctx.ty.display, color: ctx.p.contentPrimary }}>Welcome back</div>
       <Field ctx={ctx} label="Email" placeholder="you@example.com" />
       <Field ctx={ctx} label="Password" value="••••••••" focused />
       <Button ctx={ctx} label="Sign in" full />
@@ -491,7 +527,7 @@ function SignInScreen({ ctx }: { ctx: Ctx }) {
         <>
           <div style={{ display: "flex", alignItems: "center", gap: dp(12) }}>
             <span style={{ flex: 1, height: 1, background: ctx.p.divider }} />
-            <span style={{ ...type.caption, color: ctx.p.contentTertiary }}>or</span>
+            <span style={{ ...ctx.ty.caption, color: ctx.p.contentTertiary }}>or</span>
             <span style={{ flex: 1, height: 1, background: ctx.p.divider }} />
           </div>
           <Button ctx={ctx} label="Continue with Google" variant="secondary" full />
@@ -515,8 +551,8 @@ function HomeScreen({ ctx }: { ctx: Ctx }) {
       <Column>
         {POSTS.map((post) => (
           <Card key={post.title} ctx={ctx}>
-            <div style={{ ...type.title, color: ctx.p.contentPrimary }}>{post.title}</div>
-            <div style={{ ...type.bodySmall, color: ctx.p.contentTertiary, marginTop: dp(4) }}>{post.body}</div>
+            <div style={{ ...ctx.ty.title, color: ctx.p.contentPrimary }}>{post.title}</div>
+            <div style={{ ...ctx.ty.bodySmall, color: ctx.p.contentTertiary, marginTop: dp(4) }}>{post.body}</div>
           </Card>
         ))}
       </Column>
@@ -533,10 +569,10 @@ function FeedScreen({ ctx }: { ctx: Ctx }) {
           <Card key={post.title} ctx={ctx}>
             <div style={{ display: "flex", alignItems: "center", gap: dp(8), marginBottom: dp(8) }}>
               <Avatar ctx={ctx} name={`Author ${index + 1}`} />
-              <span style={{ ...type.titleSmall, color: ctx.p.contentSecondary }}>Author {index + 1}</span>
+              <span style={{ ...ctx.ty.titleSmall, color: ctx.p.contentSecondary }}>Author {index + 1}</span>
             </div>
-            <div style={{ ...type.title, color: ctx.p.contentPrimary }}>{post.title}</div>
-            <div style={{ ...type.body, color: ctx.p.contentSecondary, marginTop: dp(6) }}>{post.body}</div>
+            <div style={{ ...ctx.ty.title, color: ctx.p.contentPrimary }}>{post.title}</div>
+            <div style={{ ...ctx.ty.body, color: ctx.p.contentSecondary, marginTop: dp(6) }}>{post.body}</div>
             <div style={{ marginTop: dp(4), marginLeft: -dp(12) }}>
               <Button ctx={ctx} label="Show more" variant="tertiary" size="small" />
             </div>
@@ -556,7 +592,7 @@ function SearchScreen({ ctx }: { ctx: Ctx }) {
       </div>
       <Column gap={8}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: dp(4) }}>
-          <span style={{ ...type.titleSmall, color: ctx.p.contentSecondary }}>Recent</span>
+          <span style={{ ...ctx.ty.titleSmall, color: ctx.p.contentSecondary }}>Recent</span>
           <Button ctx={ctx} label="Clear" variant="ghost" size="small" />
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: dp(8) }}>
@@ -576,7 +612,7 @@ function ProfileScreen({ ctx }: { ctx: Ctx }) {
       <Column gap={14}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: dp(8) }}>
           <Avatar ctx={ctx} name="Ada Lovelace" size={88} />
-          <div style={{ ...type.heading, fontSize: dp(15), color: ctx.p.contentPrimary }}>Ada Lovelace</div>
+          <div style={{ ...ctx.ty.heading, fontSize: dp(15), color: ctx.p.contentPrimary }}>Ada Lovelace</div>
           {ctx.features.has("media") && (
             <Button ctx={ctx} label="Change photo" variant="secondary" size="small" />
           )}
@@ -597,8 +633,8 @@ function SettingsScreen({ ctx }: { ctx: Ctx }) {
       <Column gap={10}>
         <SectionHeader ctx={ctx} title="Appearance" />
         <Card ctx={ctx}>
-          <div style={{ ...type.title, fontSize: dp(15), color: p.contentPrimary }}>Theme</div>
-          <div style={{ ...type.caption, color: p.contentTertiary, marginBottom: dp(10) }}>
+          <div style={{ ...ctx.ty.title, fontSize: dp(15), color: p.contentPrimary }}>Theme</div>
+          <div style={{ ...ctx.ty.caption, color: p.contentTertiary, marginBottom: dp(10) }}>
             System follows your device setting.
           </div>
           <div
@@ -613,7 +649,7 @@ function SettingsScreen({ ctx }: { ctx: Ctx }) {
               <span
                 key={option}
                 style={{
-                  ...type.titleSmall,
+                  ...ctx.ty.titleSmall,
                   flex: 1,
                   textAlign: "center",
                   padding: `${dp(6)}px 0`,
@@ -678,7 +714,7 @@ function BottomBar({
       <Item
         key={tab.screen}
         {...(onSelect ? { type: "button" as const, onClick: () => onSelect(index), "aria-label": tab.label } : {})}
-        className="relative z-10 flex flex-1 flex-col items-center justify-center"
+        className="relative z-10 flex min-w-0 flex-1 flex-col items-center justify-center"
         style={{ gap: dp(3), height: "100%" }}
       >
         <span
@@ -694,12 +730,19 @@ function BottomBar({
         </span>
         <span
           style={{
-            ...type.label,
+            ...ctx.ty.label,
             fontSize: dp(10.5),
             color: labelTint,
             textTransform: t.uppercase ? "uppercase" : undefined,
             letterSpacing: t.uppercase ? "0.1em" : undefined,
             transition: "color 250ms",
+            // One line with an ellipsis, as the Compose label is: a long uppercase label must not
+            // push into its neighbour.
+            display: "block",
+            maxWidth: "100%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           }}
         >
           {tab.label}

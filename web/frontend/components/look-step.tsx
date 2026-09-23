@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Catalogue } from "../lib/api";
 import {
   DESIGN_TRAITS,
@@ -55,12 +55,13 @@ export function ScaledPreview({
  * reaches the screens that have no tab — sign in, when auth is on.
  */
 export function LivePreview({ config, onDark }: { config: PreviewConfig; onDark: (dark: boolean) => void }) {
-  const screens = screensFor(config.features);
+  const screens = useMemo(() => screensFor(config.features), [config.features]);
   const [screen, setScreen] = useState<Screen>(screens[0] ?? "settings");
+  const activeScreen = screens.includes(screen) ? screen : screens[0] ?? "settings";
 
   useEffect(() => {
-    if (!screens.includes(screen) && screens.length > 0) setScreen(screens[0]);
-  }, [screens, screen]);
+    if (activeScreen !== screen) setScreen(activeScreen);
+  }, [activeScreen, screen]);
 
   return (
     <div className="lg:sticky lg:top-24">
@@ -72,7 +73,7 @@ export function LivePreview({ config, onDark }: { config: PreviewConfig; onDark:
               type="button"
               onClick={() => setScreen(option)}
               className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
-                option === screen ? "bg-ink-100 text-ink-950" : "text-ink-400 hover:bg-ink-800 hover:text-ink-100"
+                option === activeScreen ? "bg-ink-100 text-ink-950" : "text-ink-400 hover:bg-ink-800 hover:text-ink-100"
               }`}
             >
               {SCREEN_LABELS[option]}
@@ -91,7 +92,7 @@ export function LivePreview({ config, onDark }: { config: PreviewConfig; onDark:
       </div>
       {screens.length > 0 ? (
         <div className="flex justify-center">
-          <AppPreview config={config} screen={screen} onScreen={setScreen} />
+          <AppPreview config={config} screen={activeScreen} onScreen={setScreen} />
         </div>
       ) : (
         <p className="rounded-lg border border-ink-700 bg-ink-900 p-4 text-sm text-ink-400">
