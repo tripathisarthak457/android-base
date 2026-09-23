@@ -366,7 +366,7 @@ def apply_build_settings(destination: Path, spec: ProjectSpec) -> None:
         "VERSION_NAME": f'"{spec.version_name}"',
     }
     for name, value in substitutions.items():
-        text = re.sub(rf"(const val {name} = ).*", rf"\g<1>{value}", text, count=1)
+        text = re.sub(rf"(const val {name} = ).*", lambda m, v=value: m.group(1) + v, text, count=1)
 
     for flavour, url in spec.api_base_urls.items():
         text = _replace_flavour_field(text, flavour, "apiBaseUrl", url)
@@ -397,8 +397,8 @@ def apply_fonts(destination: Path, spec: ProjectSpec) -> None:
         return
 
     text = fonts.read_text(encoding="utf-8")
-    text = re.sub(r'(const val Sans = )"[^"]*"', rf'\g<1>"{spec.font_name}"', text, count=1)
-    text = re.sub(r'(const val Mono = )"[^"]*"', rf'\g<1>"{spec.mono_font_name}"', text, count=1)
+    text = re.sub(r'(const val Sans = )"[^"]*"', lambda m: f'{m.group(1)}"{spec.font_name}"', text, count=1)
+    text = re.sub(r'(const val Mono = )"[^"]*"', lambda m: f'{m.group(1)}"{spec.mono_font_name}"', text, count=1)
     fonts.write_text(text, encoding="utf-8")
 
 
@@ -455,7 +455,7 @@ def _replace_flavour_field(text: str, flavour: str, field: str, value: str) -> s
         rf'(flavorName = "{flavour}",.*?{field} = )"[^"]*"',
         re.DOTALL,
     )
-    return pattern.sub(rf'\g<1>"{value}"', text, count=1)
+    return pattern.sub(lambda m: f'{m.group(1)}"{value}"', text, count=1)
 
 
 def apply_app_name(destination: Path, spec: ProjectSpec) -> None:
@@ -472,20 +472,20 @@ def apply_app_name(destination: Path, spec: ProjectSpec) -> None:
         label = spec.app_name if relative.startswith("app/") else f"{spec.app_name} Catalog"
         text = re.sub(
             r'(<string name="app_name">).*?(</string>)',
-            rf"\g<1>{label}\g<2>",
+            lambda m: m.group(1) + label + m.group(2),
             text,
             count=1,
         )
         if spec.has("deeplink"):
             text = re.sub(
                 r'(<string name="deeplink_scheme" translatable="false">).*?(</string>)',
-                rf"\g<1>{spec.effective_deeplink_scheme}\g<2>",
+                lambda m: m.group(1) + spec.effective_deeplink_scheme + m.group(2),
                 text,
                 count=1,
             )
             text = re.sub(
                 r'(<string name="deeplink_host" translatable="false">).*?(</string>)',
-                rf"\g<1>{spec.effective_deeplink_host}\g<2>",
+                lambda m: m.group(1) + spec.effective_deeplink_host + m.group(2),
                 text,
                 count=1,
             )
@@ -503,12 +503,24 @@ def write_keystore_properties(destination: Path, keystores: list[KeystoreSpec]) 
     for keystore in keystores:
         lines += [
             f"{keystore.name}.storeFile=keys/{keystore.name}.jks",
-            f"{keystore.name}.storePassword={keystore.store_password}",
+            f"{keystore.name}.storePassword={_properties_value(keystore.store_password)}",
             f"{keystore.name}.keyAlias={keystore.alias}",
-            f"{keystore.name}.keyPassword={keystore.key_password}",
+            f"{keystore.name}.keyPassword={_properties_value(keystore.key_password)}",
             "",
         ]
     (destination / "keystore.properties").write_text("\n".join(lines), encoding="utf-8")
+
+
+def _properties_value(value: str) -> str:
+    """
+    Escapes a value for java.util.Properties, which is how Gradle reads the file back.
+
+    Unescaped, a backslash in a password is swallowed and leading spaces are trimmed, so Gradle
+    would open the store with a different password from the one keytool was given.
+    """
+    escaped = value.replace("\\", "\\\\")
+    stripped = escaped.lstrip(" ")
+    return "\\ " * (len(escaped) - len(stripped)) + stripped
 
 
 def find_keytool() -> str | None:

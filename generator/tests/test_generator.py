@@ -400,6 +400,90 @@ class PresetTest(unittest.TestCase):
         self.assertIn("standard", str(caught.exception))
 
 
+class InjectionTest(unittest.TestCase):
+    """
+    Free text from a spec is written into Kotlin that Gradle compiles and runs, and into XML.
+    A spec file can come from anyone, so nothing in it may be able to become code.
+    """
+
+    def test_a_url_cannot_close_the_string_or_open_a_template(self):
+        for url in (
+            'https://x.com/" + System.exit(0) + "',
+            "https://x.com/${System.getenv()}",
+            "https://x.com/\\path",
+            "https://x.com/a b",
+            "ftp://x.com/",
+            "javascript:alert(1)",
+        ):
+            with self.assertRaises(SpecError, msg=url):
+                spec(api_base_urls={"dev": url}).validated()
+
+    def test_ordinary_urls_are_accepted(self):
+        for url in ("https://api.example.com/v1/", "http://10.0.2.2:8080/api/?key=a&b=c"):
+            spec(api_base_urls={"prod": url}).validated()
+        spec(web_socket_urls={"dev": "wss://api.example.com/ws"}).validated()
+
+    def test_a_socket_url_must_be_a_socket_url(self):
+        with self.assertRaises(SpecError):
+            spec(web_socket_urls={"dev": "https://api.example.com/ws"}).validated()
+
+    def test_an_unknown_flavour_is_refused(self):
+        with self.assertRaises(SpecError):
+            spec(api_base_urls={"qa": "https://api.example.com/"}).validated()
+
+    def test_font_names_are_family_names(self):
+        for bad in ('Inter" ; val x = "', "Inter\\", "", "a" * 61, "<b>"):
+            with self.assertRaises(SpecError, msg=bad):
+                spec(font_name=bad).validated()
+        for good in ("Plus Jakarta Sans", "M PLUS 1p", "IBM Plex Mono"):
+            spec(font_name=good, mono_font_name=good).validated()
+
+    def test_deep_link_parts_cannot_carry_markup(self):
+        for scheme in ("my<app", "My", "1app", "a b"):
+            with self.assertRaises(SpecError, msg=scheme):
+                spec(deeplink_scheme=scheme).validated()
+        for host in ("example.com</string>", "localhost", "-x.com", "a..com"):
+            with self.assertRaises(SpecError, msg=host):
+                spec(deeplink_host=host).validated()
+        spec(deeplink_scheme="my-app+v2", deeplink_host="links.example.co.uk").validated()
+
+    def test_backslashes_do_not_reach_the_regex_engine(self):
+        from genkit.render import apply_fonts
+
+        with tempfile.TemporaryDirectory() as directory:
+            fonts = Path(directory) / "core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/theme/AppFonts.kt"
+            fonts.parent.mkdir(parents=True)
+            fonts.write_text('const val Sans = "DM Sans"\nconst val Mono = "JetBrains Mono"\n', encoding="utf-8")
+            apply_fonts(Path(directory), spec(font_name="M PLUS 1p"))
+            self.assertIn('const val Sans = "M PLUS 1p"', fonts.read_text(encoding="utf-8"))
+
+
+class KeystorePropertiesTest(unittest.TestCase):
+
+    def test_passwords_survive_java_properties(self):
+        from genkit.render import _properties_value
+
+        self.assertEqual("a\\\\b", _properties_value("a\\b"))
+        self.assertEqual("\\ \\ pw", _properties_value("  pw"))
+        self.assertEqual("plain=value:ok", _properties_value("plain=value:ok"))
+
+
+class LegacySpecTest(unittest.TestCase):
+    """A spec saved by an earlier release still generates."""
+
+    def test_removed_features_drop_out_and_merged_ones_map_across(self):
+        resolved = spec(features=frozenset({"crashlytics", "staticanalysis", "ci", "network"})).validated()
+
+        self.assertIn("firebase", resolved.features)
+        self.assertIn("network", resolved.features)
+        for gone in ("crashlytics", "staticanalysis", "ci"):
+            self.assertNotIn(gone, resolved.features)
+
+    def test_a_genuinely_unknown_feature_is_still_refused(self):
+        with self.assertRaises(SpecError):
+            spec(features=frozenset({"telepathy"})).validated()
+
+
 class ReservedNameTest(unittest.TestCase):
 
     def test_the_modules_new_features_ship_are_reserved(self):

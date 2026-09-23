@@ -10,6 +10,7 @@ the rules testable without a terminal.
 from __future__ import annotations
 
 import re
+import secrets
 import sys
 from dataclasses import replace
 
@@ -128,7 +129,7 @@ def ask_int(question: str, default: int, minimum: int | None = None) -> int:
         return value
 
 
-def ask_password(question: str, minimum_length: int = 6) -> str:
+def ask_password(question: str, minimum_length: int = 6, generate_if_blank: bool = False) -> str:
     """
     Read visibly rather than through `getpass`.
 
@@ -136,12 +137,27 @@ def ask_password(question: str, minimum_length: int = 6) -> str:
     written to `keystore.properties` in plain text moments later, so hiding it would imply a
     secrecy the storage does not provide — and a silently mistyped keystore password is not
     discovered until a release build fails.
+
+    With [generate_if_blank], pressing Enter makes a strong password and prints it once — so
+    taking every default in the wizard still ends with real keys rather than a prompt that loops.
+    Only for a key being created: an existing store's password has to be the real one.
     """
+    hint = " (Enter to generate one)" if generate_if_blank else ""
     while True:
-        value = input(f"{question}: ").strip()
+        value = input(f"{question}{hint}: ").strip()
+        if not value and generate_if_blank:
+            value = _strong_password()
+            print(yellow(f"    Generated: {value}   — save it in your password manager now."))
+            return value
         if len(value) >= minimum_length:
             return value
         print(red(f"  At least {minimum_length} characters — keytool rejects anything shorter."))
+
+
+def _strong_password() -> str:
+    # No characters that are easy to misread or that need escaping in a properties file.
+    alphabet = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+    return "".join(secrets.choice(alphabet) for _ in range(20))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -453,7 +469,7 @@ def ask_keystores(app_name: str, package_name: str) -> tuple[KeystoreSpec, ...]:
                 )
             else:
                 alias = ask("    Key alias", f"{default_alias}-{name}")
-                store_password = ask_password("    Keystore password")
+                store_password = ask_password("    Keystore password", generate_if_blank=True)
                 key_password = ask("    Key password", store_password)
                 keystore = KeystoreSpec(
                     name=name,

@@ -21,7 +21,15 @@ from pathlib import Path
 
 from genkit import build as builder
 from genkit import catalogue, prompts, render
-from genkit.spec import FEATURES, FEATURES_BY_KEY, PRESETS, KeystoreSpec, ProjectSpec, SpecError
+from genkit.spec import (
+    FEATURES,
+    FEATURES_BY_KEY,
+    PRESETS,
+    KeystoreSpec,
+    ProjectSpec,
+    SpecError,
+    upgrade_features,
+)
 
 HERE = Path(__file__).resolve().parent
 TEMPLATE_DIR = HERE.parent / "template"
@@ -339,6 +347,9 @@ def load_spec(path: Path) -> ProjectSpec:
     data = json.loads(path.read_text(encoding="utf-8"))
     keystores = tuple(KeystoreSpec(**entry) for entry in data.pop("keystores", []))
     features = frozenset(data.pop("features", []))
+    for note in upgrade_features(set(features))[1]:
+        # stderr, because --json promises that stdout is JSON and nothing else.
+        print(prompts.yellow(f"  ! {note}"), file=sys.stderr)
     modules = tuple(data.pop("feature_modules", []))
     return ProjectSpec(
         features=features,

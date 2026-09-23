@@ -494,6 +494,38 @@ FEATURES: tuple[Feature, ...] = (
 
 FEATURES_BY_KEY: dict[str, Feature] = {feature.key: feature for feature in FEATURES}
 
+#: Feature keys from earlier releases, and what each became. None means it was removed.
+#:
+#: Saved specs outlive releases — `--save-spec` exists to be re-run months later — and a spec
+#: naming a feature that has since gone would otherwise be refused outright.
+LEGACY_FEATURES: dict[str, str | None] = {
+    "analytics-firebase": "firebase",
+    "crashlytics": "firebase",
+    "flags-remote": "firebase",
+    "staticanalysis": None,
+    "ci": None,
+    "fastlane": None,
+    "architecturetests": None,
+    "screenshottests": None,
+}
+
+
+def upgrade_features(features: set[str]) -> tuple[set[str], list[str]]:
+    """Legacy keys translated to today's, with one line per change for whoever asked for them."""
+    upgraded: set[str] = set()
+    notes: list[str] = []
+    for key in sorted(features):
+        if key not in LEGACY_FEATURES:
+            upgraded.add(key)
+            continue
+        replacement = LEGACY_FEATURES[key]
+        if replacement is None:
+            notes.append(f"'{key}' is no longer a feature and was left out.")
+        else:
+            upgraded.add(replacement)
+            notes.append(f"'{key}' is now part of '{replacement}'.")
+    return upgraded, notes
+
 
 @dataclass(frozen=True)
 class Preset:
@@ -623,10 +655,10 @@ MOTION_STYLE_NAMES: tuple[str, ...] = tuple(name for name, _ in MOTION_STYLES)
 
 #: The component looks, matching AppDesignStyle in the design system. The default first.
 DESIGN_STYLES: tuple[tuple[str, str], ...] = (
-    ("Utility", "Hairline outlines, modest corners, a docked tab bar. Tools, finance, admin."),
-    ("Social", "Pill buttons, soft raised cards, filled fields, a floating tab bar. Feeds and chat."),
-    ("Editorial", "Near-square corners, underlined fields, uppercase labels. Reading and news."),
-    ("Playful", "Thick outlines and solid offset shadows. Games, kids, anything toy-like."),
+    ("Utility", "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin."),
+    ("Social", "Brand-tinted surfaces, pill buttons, heavier headlines, a floating tab bar. Feeds and chat."),
+    ("Editorial", "Warm paper and ink, large tight display type, underlined fields. Reading and news."),
+    ("Playful", "Cream surfaces, extra-bold type, thick outlines and offset shadows. Games and kids."),
 )
 
 DESIGN_STYLE_NAMES: tuple[str, ...] = tuple(name for name, _ in DESIGN_STYLES)
@@ -675,6 +707,23 @@ _PACKAGE_SEGMENT = re.compile(r"^[a-z][a-z0-9_]*$")
 _HEX_COLOUR = re.compile(r"^#?[0-9A-Fa-f]{6}$")
 
 _APP_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9 ._-]*$")
+
+#: A Google Fonts family name as the family page spells it: "Plus Jakarta Sans", "M PLUS 1p".
+_FONT_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 -]{0,59}$")
+
+#: What a backend URL may contain. Deliberately narrower than RFC 3986: no quote, backslash or `$`,
+#: because the value is written into a Kotlin string literal in build-logic, which Gradle compiles
+#: and runs. A `"` would end the literal and a `${…}` would be a template — either one is code
+#: running on the machine of whoever builds the project, from a spec file they were handed.
+_URL_BODY = r"[A-Za-z0-9._~:/?#\[\]@!&'()*+,;=%-]+"
+_HTTP_URL = re.compile(rf"^https?://{_URL_BODY}$")
+_SOCKET_URL = re.compile(rf"^wss?://{_URL_BODY}$")
+
+_SCHEME = re.compile(r"^[a-z][a-z0-9+.-]{0,31}$")
+_HOST = re.compile(r"^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$")
+
+#: The build flavours a URL can be set for. Anything else would be silently ignored.
+FLAVOURS: tuple[str, ...] = ("dev", "staging", "prod", "playstore")
 
 
 class SpecError(ValueError):
@@ -804,7 +853,8 @@ class ProjectSpec:
         if len(set(names)) != len(names):
             raise SpecError("Each signing key can only be described once.")
 
-        unknown = set(self.features) - set(FEATURES_BY_KEY)
+        features, _ = upgrade_features(set(self.features))
+        unknown = features - set(FEATURES_BY_KEY)
         if unknown:
             raise SpecError(f"Unknown feature(s): {', '.join(sorted(unknown))}.")
 
@@ -820,6 +870,37 @@ class ProjectSpec:
                 f"Choose one of: {', '.join(MOTION_STYLE_NAMES)}."
             )
 
+        for label, value in (("typeface", self.font_name), ("monospace typeface", self.mono_font_name)):
+            if not _FONT_NAME.match(value):
+                raise SpecError(
+                    f"The {label} '{value}' is not a Google Fonts family name — letters, digits, "
+                    "spaces and hyphens, as fonts.google.com spells it."
+                )
+
+        for label, urls, pattern, example in (
+            ("API base URL", self.api_base_urls, _HTTP_URL, "https://api.example.com/"),
+            ("WebSocket URL", self.web_socket_urls, _SOCKET_URL, "wss://api.example.com/ws"),
+        ):
+            for flavour, url in urls.items():
+                if flavour not in FLAVOURS:
+                    raise SpecError(
+                        f"Unknown flavour '{flavour}' for an {label}. "
+                        f"Choose from: {', '.join(FLAVOURS)}."
+                    )
+                if not pattern.match(url):
+                    raise SpecError(
+                        f"The {flavour} {label} must look like {example}, without quotes, "
+                        "spaces, backslashes or $."
+                    )
+
+        if self.deeplink_scheme and not _SCHEME.match(self.deeplink_scheme):
+            raise SpecError(
+                "The deep-link scheme must start with a lowercase letter and contain only "
+                "lowercase letters, digits, +, . and -."
+            )
+        if self.deeplink_host and not _HOST.match(self.deeplink_host):
+            raise SpecError("The deep-link host must be a domain name, like example.com.")
+
         for label, value in (
             ("accent", self.accent_colour),
             ("secondary", self.secondary_colour),
@@ -830,7 +911,7 @@ class ProjectSpec:
                     f"The {label} colour must be a six-digit hex, e.g. #2C6BED."
                 )
 
-        return replace(self, features=frozenset(resolve_features(set(self.features))))
+        return replace(self, features=frozenset(resolve_features(features)))
 
 
 def validate_package_name(package_name: str) -> None:
