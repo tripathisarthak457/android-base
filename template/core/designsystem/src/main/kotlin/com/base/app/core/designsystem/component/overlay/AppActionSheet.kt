@@ -32,20 +32,7 @@ data class SheetAction(
     val enabled: Boolean = true,
 )
 
-/**
- * A list of choices in a sheet, for "what would you like to do with this?".
- *
- * ## Cancel is separated, not just another row
- *
- * A gap and its own surface, because it is the one option that is never what the user came for.
- * Putting it flush with the others makes it a mis-tap target directly under the finger that just
- * opened the sheet.
- *
- * ## Every action dismisses first
- *
- * A sheet that stays open while its action runs can be tapped twice, and the second tap on
- * "Delete" is the one nobody wants to explain.
- */
+/** A list of choices in a sheet, for "what would you like to do with this?". */
 @Composable
 fun AppActionSheet(
     actions: List<SheetAction>,
@@ -140,19 +127,7 @@ fun AppActionSheet(
     }
 }
 
-/**
- * A scrim with a spinner, over everything, while something irreversible is in flight.
- *
- * ## Use it sparingly
- *
- * Blocking the whole screen is the heaviest thing a loading state can do, and it is right in
- * exactly one situation: an operation that must not be started twice and cannot be undone —
- * placing an order, submitting a payment. For everything else the button's own loading state or a
- * skeleton is better, because they leave the user able to read the screen and to leave it.
- *
- * The scrim consumes pointer input, which is the part that actually prevents a double submit. A
- * spinner drawn on top without it looks blocking and is not.
- */
+/** A scrim with a spinner, over everything, while something irreversible is in flight. */
 @Composable
 fun AppLoadingOverlay(
     visible: Boolean,

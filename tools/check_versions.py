@@ -3,10 +3,6 @@ Every version in the template's catalogue against the newest stable release.
 
     python3 tools/check_versions.py            # report
     python3 tools/check_versions.py --apply    # rewrite libs.versions.toml to the newest stable
-
-Coordinates are read from the catalogue itself: each version is checked through the first library
-or plugin that refers to it, so a new entry needs nothing added here. Pre-releases — alpha, beta,
-rc, dev, eap, milestones — are never offered. Standard library only, like the generator.
 """
 
 from __future__ import annotations

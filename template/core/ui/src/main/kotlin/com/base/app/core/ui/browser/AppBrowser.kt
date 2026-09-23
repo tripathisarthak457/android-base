@@ -13,17 +13,13 @@ import androidx.compose.ui.platform.LocalContext
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * Opens web pages in a Custom Tab coloured like the app, instead of throwing the user out to
- * the browser. For terms, privacy, help articles — pages that belong to the app but live on the
- * web.
+ * Opens web pages in a Custom Tab coloured like the app, instead of throwing the user out to the
+ * browser. For terms, privacy, help articles — pages that belong to the app but live on the web.
  *
  * ```
  * val openInApp = rememberInAppBrowser()
  * AppListItem(title = "Privacy policy", onClick = { openInApp("https://…") })
  * ```
- *
- * Falls back to whatever handles the link when no browser supports Custom Tabs, and does nothing
- * rather than crash when nothing handles it at all.
  */
 @Composable
 fun rememberInAppBrowser(): (String) -> Unit {

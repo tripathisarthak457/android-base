@@ -10,21 +10,8 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 
 /**
- * The type scale, named by role.
- *
- * Fifteen styles rather than a continuum, because a scale a developer has to choose a size from
- * is a scale that grows a sixteenth size the first week. If a screen needs something that is not
- * here, the answer is usually that one of these is right and the mock is off by a point.
- *
- * Two settings apply to every style and are worth stating once:
- *
- * `includeFontPadding = false` removes the legacy top and bottom padding the platform adds inside
- * a text node. That padding is font-metric-dependent and asymmetric, which is why text sitting in
- * a fixed-height button or chip looks a pixel or two high until you turn it off.
- *
- * `LineHeightStyle(alignment = Center, trim = Both)` distributes the leftover leading evenly
- * around the glyphs and trims it at the first and last line, so a multi-line paragraph is
- * optically centred in its box and a single-line label has no phantom space above it.
+ * The type scale, named by role. Fifteen styles rather than a continuum, because a scale a
+ * developer has to choose a size from is a scale that grows a sixteenth size the first week.
  */
 @Immutable
 data class AppTypography(
@@ -77,17 +64,8 @@ private fun style(
 )
 
 /*
- * The scale, for a given pair of typefaces.
- *
- * A function rather than a constant, because the typeface is a one-string decision made at the
- * theme — see [AppFonts]. Every style below reads its family from the argument, so nothing in the
- * project names a typeface twice.
- *
- * Headings take negative tracking and body text takes none.
- *
- * Type set large has proportionally too much space between letters at the same tracking that
- * reads correctly at 14sp — pulling it in is what stops a 32sp number from looking loose and
- * unresolved. Below about 16sp the effect reverses and tightening starts to hurt legibility.
+ * The scale, for a given pair of typefaces. A function rather than a constant, because the typeface
+ * is a one-string decision made at the theme — see [AppFonts].
  */
 fun appTypography(fonts: AppFonts): AppTypography {
     val sans = fonts.sans
@@ -118,12 +96,7 @@ fun appTypography(fonts: AppFonts): AppTypography {
     )
 }
 
-/**
- * The scale set in the platform's own typefaces.
- *
- * The value the composition local falls back to outside an [AppTheme] — a preview that forgot the
- * wrapper, a unit test — and the one a downloaded family replaces once it resolves.
- */
+/** The scale set in the platform's own typefaces. */
 val DefaultTypography: AppTypography = appTypography(PlatformFonts)
 
 internal val LocalAppTypography = staticCompositionLocalOf { DefaultTypography }

@@ -23,10 +23,6 @@ import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * Read-only presentation: the components a details screen, a receipt or a dashboard is built from.
- *
- * The two charts are drawn on a `Canvas` rather than pulled from a charting library. Anything more
- * than a trend line or a ranked bar belongs to a real library — these exist so the common case
- * does not drag one in.
  */
 @Composable
 fun DataSection() {

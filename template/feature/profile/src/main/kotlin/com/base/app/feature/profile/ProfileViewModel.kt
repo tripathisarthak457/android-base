@@ -35,8 +35,7 @@ sealed interface ProfileEffect : UiEffect
 
 /**
  * The fields are edited here and only written on Save, so typing never races the store and a
- * half-typed name is not what the rest of the app sees. The photo is the exception: picking one
- * is already a deliberate act, and asking for a second tap to keep it is one tap too many.
+ * half-typed name is not what the rest of the app sees.
  */
 @HiltViewModel
 class ProfileViewModel @Inject constructor(

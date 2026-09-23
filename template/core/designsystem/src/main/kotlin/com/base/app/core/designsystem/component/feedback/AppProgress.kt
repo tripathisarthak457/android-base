@@ -27,16 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.LocalContentColor
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A spinner: a track ring with a single arc travelling around it.
- *
- * Constant angular velocity and a fixed sweep, rather than the accelerating-and-decelerating
- * double animation Material uses. A steady rotation reads as "working" without competing for
- * attention, which matters when one of these is sitting inside a button the user is waiting on.
- *
- * The track is not decoration: without it, a lone arc on a busy surface is hard to locate and the
- * component has no stable visual footprint as it spins.
- */
+/** A spinner: a track ring with a single arc travelling around it. */
 @Composable
 fun AppCircularProgress(
     modifier: Modifier = Modifier,
@@ -133,8 +124,8 @@ fun AppCircularProgress(
 
 /**
  * A determinate bar. Fully rounded at both ends, including at very low progress — a fill that
- * starts as a square sliver and becomes rounded once it is wide enough looks like a rendering
- * bug, so the fill is never drawn narrower than its own height.
+ * starts as a square sliver and becomes rounded once it is wide enough looks like a rendering bug,
+ * so the fill is never drawn narrower than its own height.
  */
 @Composable
 fun AppLinearProgress(

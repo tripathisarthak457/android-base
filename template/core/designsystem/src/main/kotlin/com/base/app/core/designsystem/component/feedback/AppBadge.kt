@@ -27,16 +27,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 
-/**
- * A count badge, anchored to the top-right of whatever it decorates.
- *
- * `99+` rather than an unbounded number: a three-digit count is wider than the icon it sits on,
- * which pushes the badge out of the tab bar entirely. The cap is applied here so no caller has to
- * remember it.
- *
- * It animates in and out with a scale rather than appearing instantly, because a badge popping
- * into existence with no transition reads as a rendering glitch on a bar the user is looking at.
- */
+/** A count badge, anchored to the top-right of whatever it decorates. */
 @Composable
 fun AppBadgedBox(
     count: Int,
@@ -105,12 +96,7 @@ fun AppDotBadge(
     }
 }
 
-/**
- * A status pill — "Delivered", "Pending", "Failed".
- *
- * Takes a [StatusColors] rather than a foreground and a background, so a caller picks a *meaning*
- * (`AppTheme.colors.danger`) and cannot pair a red label with an amber fill.
- */
+/** A status pill — "Delivered", "Pending", "Failed". */
 @Composable
 fun AppStatusPill(
     text: String,

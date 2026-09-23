@@ -10,28 +10,7 @@ import com.base.app.data.sample.SampleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-/**
- * The reference ViewModel. Every feature in this project is shaped like this one.
- *
- * ## What comes back after process death, and what does not
- *
- * The query is persisted and the list is not. Restoring the list would show rows fetched
- * before the app was killed as though they were current; re-running the load is both simpler
- * and honest. See `MviViewModel.persistState`.
- *
- * ## The initial load runs from `init`
- *
- * Rather than from a `LaunchedEffect` in the composable. A `LaunchedEffect(Unit)` re-runs whenever
- * the composable leaves and re-enters the composition — a tab switch, a configuration change on
- * some paths — and re-fetches a list the ViewModel already has. `init` runs exactly once per
- * ViewModel, which is exactly once per screen instance.
- *
- * ## Refresh keeps the content on screen
- *
- * The distinction between [LoadState.Loading] and [LoadState.Refreshing] is why pull-to-refresh
- * here does not blank the list it is refreshing. It costs one `if` and it is the difference
- * between a refresh that feels instant and one that feels like a reload.
- */
+/** The reference ViewModel. Every feature in this project is shaped like this one. */
 @HiltViewModel
 class SampleListViewModel @Inject constructor(
     private val repository: SampleRepository,
@@ -74,9 +53,7 @@ class SampleListViewModel @Inject constructor(
             }
 
             is AppResult.Failure -> {
-                // A failed *refresh* keeps whatever is already on screen and says so in a
-                // snackbar. Replacing a good list with a full-screen error because a background
-                // refresh failed is the most annoying possible response to a flaky network.
+                // A failed refresh keeps the list on screen and reports it in a snackbar.
                 if (refreshing && currentState.items.isNotEmpty()) {
                     updateState { copy(loadState = LoadState.Success) }
                     showMessage(

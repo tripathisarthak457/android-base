@@ -11,27 +11,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Whether the app should be showing its own unlock screen right now.
- *
- * ## Why the clock is `elapsedRealtime`
- *
- * The grace period exists so that a camera picker or a share sheet does not re-prompt on the way
- * back. Measuring it against the wall clock would make the lock trivially bypassable: put the
- * phone in flight mode, move the date forward, and the timeout is over. `elapsedRealtime` counts
- * since boot and cannot be set by anybody.
- *
- * ## Why a cold start always locks
- *
- * A process that has just started has no record of when it was last used, and the safe reading of
- * "no record" is "long enough ago". The alternative — treating an unknown as recent — means the
- * lock is skipped exactly when the process was killed while backgrounded, which is the case it
- * most needs to cover.
- *
- * The enrolment check is separate from the setting on purpose. Somebody can turn the lock on and
- * then remove every fingerprint from the device; [canAuthenticate] going false is what stops that
- * from locking them out of their own app permanently.
- */
+/** Whether the app should be showing its own unlock screen right now. */
 @Singleton
 class AppLock @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -58,13 +38,7 @@ class AppLock @Inject constructor(
         lastVisibleAt = SystemClock.elapsedRealtime()
     }
 
-    /**
-     * Whether this device can ask at all — a biometric enrolled, or a PIN, pattern or password.
-     *
-     * Both are accepted deliberately. A lock that insists on a fingerprint is a lock that shuts
-     * out everybody whose sensor has stopped working, and Android's own credential fallback is
-     * better tested than anything an app can put in its place.
-     */
+    /** Whether this device can ask at all — a biometric enrolled, or a PIN, pattern or password. */
     fun canAuthenticate(): Boolean =
         BiometricManager.from(context).canAuthenticate(allowedAuthenticators()) ==
             BiometricManager.BIOMETRIC_SUCCESS
@@ -81,8 +55,7 @@ class AppLock @Inject constructor(
         /**
          * `BIOMETRIC_STRONG or DEVICE_CREDENTIAL` is documented as unsupported on API 28 and 29 —
          * the call throws rather than returning an error — so those two levels ask for the weak
-         * class instead. This is the exact fragmentation androidx.biometric exists to cover, and
-         * one of the few places it does not cover it for you.
+         * class instead.
          */
         fun allowedAuthenticators(): Int =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

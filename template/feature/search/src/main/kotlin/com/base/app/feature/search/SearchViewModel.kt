@@ -35,16 +35,7 @@ sealed interface SearchEffect : UiEffect {
     data class OpenResult(val id: Int) : SearchEffect
 }
 
-/**
- * Search as you type.
- *
- * Each keystroke replaces the pending search rather than queueing another, and waits
- * [DEBOUNCE_MILLIS] first, so typing "weather" sends one request instead of seven and a slow
- * answer for "wea" can never land on top of the answer for "weather".
- *
- * A query is remembered when the user commits to it — submits, or opens a result — not on every
- * keystroke, or the recent list fills with half-words.
- */
+/** Search as you type. */
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,

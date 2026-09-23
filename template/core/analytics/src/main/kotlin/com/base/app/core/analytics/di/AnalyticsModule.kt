@@ -11,13 +11,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/**
- * Binds the analytics vendor.
- *
- * This is the whole of the app's coupling to Firebase Analytics. Swapping vendors, or turning
- * analytics off entirely, replaces this file and touches nothing else — which is the only reason
- * [AnalyticsTracker] is an interface rather than the concrete class.
- */
+/** Binds the analytics vendor. This is the whole of the app's coupling to Firebase Analytics. */
 @Module
 @InstallIn(SingletonComponent::class)
 object AnalyticsModule {

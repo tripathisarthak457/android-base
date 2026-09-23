@@ -27,21 +27,8 @@ import com.base.app.core.designsystem.foundation.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * A transient message bar.
- *
- * ## It is toned, not uniform
- *
- * An error and a confirmation look different — a red-tinted surface with an error glyph versus a
- * green one — rather than both being a neutral dark slab. The user's first glance should tell
- * them whether something went wrong, before they have read a word.
- *
- * ## It appears at the bottom and slides from the bottom
- *
- * Sliding down from the top for a bottom-anchored bar means the bar travels across content it is
- * not related to. Entering from the nearest edge keeps the movement short and local.
- *
- * Auto-dismissal is not handled here. The visual and the timing are separate concerns; timing
- * belongs to the host that also knows about the queue — see `MessageHost` in `:core:ui`.
+ * A transient message bar. An error and a confirmation look different — a red-tinted surface with
+ * an error glyph versus a green one — rather than both being a neutral dark slab.
  */
 @Composable
 fun AppSnackbar(
@@ -106,12 +93,7 @@ fun AppSnackbar(
     }
 }
 
-/**
- * Positions a snackbar over the content, above the navigation bar, and animates it in and out.
- *
- * Kept separate from [AppSnackbar] so that the same bar can also be embedded inline — in a form,
- * or at the top of a list — without inheriting the floating placement.
- */
+/** Positions a snackbar over the content, above the navigation bar, and animates it in and out. */
 @Composable
 fun BoxScope.AppSnackbarHost(
     visible: Boolean,

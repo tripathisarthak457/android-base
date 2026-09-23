@@ -8,18 +8,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * What the components look like, as one choice.
- *
- * The same eighty components suit very different apps once their corners, borders and bars
- * change together. Picking those one at a time produces a pill button beside a sharp card and a
- * floating bar over an underlined field; naming the combinations keeps them agreeing.
+ * What the components look like, as one choice. These are starting points: edit [style] to move
+ * a style towards your own, and every component still accepts its own `shape` and friends.
  *
  * ```
  * AppTheme(designStyle = AppDesignStyle.Social) { … }
  * ```
- *
- * These are starting points. Every component still takes a `shape` and friends, and the values
- * below are the place to push a style towards your own.
  */
 enum class AppDesignStyle {
     /** Cool neutrals, hairline outlines, a docked bar. Dense and calm: tools, finance, admin. */
@@ -170,12 +164,7 @@ enum class TypeVoice {
     Rounded,
 }
 
-/**
- * The tokens a design style decides. Read through `AppTheme.style`.
- *
- * [offsetShadow] above zero turns on the hard shadow that [CardTreatment.Offset] and the
- * filled buttons draw; it is a distance, so a style can make it subtler without a new enum.
- */
+/** The tokens a design style decides. Read through `AppTheme.style`. */
 @Immutable
 data class AppStyle(
     val shapes: AppShapes = AppShapes(),

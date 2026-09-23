@@ -25,9 +25,6 @@ import org.gradle.kotlin.dsl.register
  * be built or tested in isolation and every change recompiles everything. It always arrives as a
  * one-line convenience in a pull request that is about something else, which is why this is a
  * build failure rather than a review checklist item.
- *
- * The check runs per project and reads only that project's own dependencies, so it stays
- * compatible with configuration caching and project isolation.
  */
 internal fun Project.verifyModuleDependencies() {
     val tier = ModuleTier.of(path) ?: return

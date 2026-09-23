@@ -58,11 +58,8 @@ sealed interface PasswordResetEffect : UiEffect {
 }
 
 /**
- * Request a password-reset link.
- *
- * Success says a link *has been sent if the address is registered*, never whether it was. Telling
- * the user "no account with that email" turns the form into a way for anyone to test whether a
- * given person has an account here, which is a disclosure the reset flow gets nothing for.
+ * Request a password-reset link. Success says a link *has been sent if the address is registered*,
+ * never whether it was.
  */
 @HiltViewModel
 class PasswordResetViewModel @Inject constructor(

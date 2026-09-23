@@ -10,17 +10,9 @@ import org.junit.Test
 /**
  * Measures cold start, with and without the baseline profile.
  *
- * Two tests rather than one, because the number that matters is the *difference*. An absolute
- * startup figure is meaningless across devices, thermal states and Android versions; the ratio
- * between the two compilation modes tells you whether the profile is actually doing anything,
- * and catches the case where it silently stopped being applied.
- *
  * ```
  * ./gradlew :benchmark:connectedBenchmarkAndroidTest
  * ```
- *
- * Run it on a physical device with a stable thermal state. Emulator numbers are not comparable
- * between runs and will send you chasing regressions that do not exist.
  */
 class StartupBenchmark {
 

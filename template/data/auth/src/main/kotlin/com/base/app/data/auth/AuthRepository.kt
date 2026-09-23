@@ -27,14 +27,7 @@ data class SignUpDetails(
     val password: String,
 )
 
-/**
- * Signing in, signing up, and knowing whether either has happened.
- *
- * Signing *out* is deliberately absent: it belongs to `SessionController`, which clears every
- * session-scoped store rather than only this one. An auth repository that could sign out would be
- * a second way to end a session, and the one nobody remembers to update is the one that leaves
- * the previous user's cached data on disk.
- */
+/** Signing in, signing up, and knowing whether either has happened. */
 interface AuthRepository {
 
     val isSignedIn: Flow<Boolean>
@@ -54,16 +47,8 @@ interface AuthRepository {
 /**
  * Talks to the auth endpoints and puts what comes back in the token store.
  *
- * ## `requiresAuth = false`
- *
- * Set on every call here. Without it the client attaches the current bearer token and, on a 401,
- * tries to refresh it — so a wrong password would trigger a refresh attempt, fail that too, and
- * surface as a session expiry rather than as "wrong password".
- *
- * ## The paths
- *
- * Change [SIGN_IN_PATH] and its neighbours to match your backend. They are the only strings in
- * this module that are not the backend's own field names.
+ * Every call passes `requiresAuth = false`: with a bearer token attached, a wrong password would
+ * trigger a token refresh and surface as a session expiry instead.
  */
 @Singleton
 class DefaultAuthRepository @Inject constructor(
@@ -92,9 +77,9 @@ class DefaultAuthRepository @Inject constructor(
         ).persist()
 
     /**
-     * `execute` rather than `post<_, Unit>`: this endpoint conventionally answers 204 with no
-     * body, and decoding an empty body into `Unit` fails at the JSON parse before it ever reaches
-     * the `Unit`. Only the status matters here.
+     * `execute` rather than `post<_, Unit>`: this endpoint conventionally answers 204 with no body,
+     * and decoding an empty body into `Unit` fails at the JSON parse before it ever reaches the
+     * `Unit`. Only the status matters here.
      */
     override suspend fun requestPasswordReset(email: String): AppResult<Unit> =
         networkClient.execute(
@@ -108,9 +93,9 @@ class DefaultAuthRepository @Inject constructor(
 
     // <opt:googlesignin>
     /**
-     * The backend verifies the ID token with Google and answers with tokens of its own, exactly
-     * as a password sign-in does. The app never treats Google's token as a session: it expires in
-     * an hour and says nothing about what this backend allows.
+     * The backend verifies the ID token with Google and answers with tokens of its own, exactly as
+     * a password sign-in does. The app never treats Google's token as a session: it expires in an
+     * hour and says nothing about what this backend allows.
      */
     override suspend fun signInWithGoogle(idToken: String): AppResult<Unit> =
         networkClient.post<GoogleSignInRequestDto, TokenResponseDto>(
@@ -120,13 +105,7 @@ class DefaultAuthRepository @Inject constructor(
         ).persist()
 
     // </opt:googlesignin>
-    /**
-     * Writes the tokens before returning success.
-     *
-     * Returning first and saving in a `launch` is the version that reads more cleanly and is
-     * wrong: the screen navigates to a signed-in destination whose first request fires before the
-     * token is on disk, and the user is bounced straight back to sign-in once in every few runs.
-     */
+    /** Writes the tokens before returning success. */
     private suspend fun AppResult<TokenResponseDto>.persist(): AppResult<Unit> = when (this) {
         is AppResult.Success -> {
             tokenStore.save(
@@ -144,9 +123,6 @@ class DefaultAuthRepository @Inject constructor(
 
     /**
      * Turns the two failures a sign-in form actually produces into sentences a person can act on.
-     *
-     * Everything else keeps the server's own message: a backend that returns "That account is
-     * locked. Contact support." says it better than any string that could be written here.
      */
     private fun AppResult.Failure.withFriendlyMessage(): AppResult.Failure = when (code) {
         HTTP_UNAUTHORIZED -> copy(message = "That email and password do not match an account.")
@@ -155,6 +131,7 @@ class DefaultAuthRepository @Inject constructor(
     }
 
     private companion object {
+        // Change these to your backend's routes.
         const val SIGN_IN_PATH = "auth/login"
         const val SIGN_UP_PATH = "auth/register"
         const val PASSWORD_RESET_PATH = "auth/password/forgot"

@@ -14,14 +14,7 @@ private data class Detail(val id: Int) : AppNavKey
 @Serializable
 private data object Login : AppNavKey
 
-/**
- * The navigation semantics, tested without a composition.
- *
- * This is the whole reason [AppBackStack.apply] lives on the stack rather than inside the host
- * composable: the rules that actually matter — what singleTop does, what popUpTo removes, that
- * the stack can never empty — are testable as plain data here, and would need an instrumented
- * test with a real display otherwise.
- */
+/** The navigation semantics, tested without a composition. */
 class AppBackStackTest {
 
     private fun stackOf(vararg keys: AppNavKey) =

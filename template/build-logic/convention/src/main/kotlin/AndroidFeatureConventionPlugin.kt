@@ -5,19 +5,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 
-/**
- * Every `:feature:*` module: presentation, and nothing else.
- *
- * A feature owns its MVI contract, its ViewModel, its composables and its navigation keys. It
- * reaches data exclusively through the `:data:*` module it declares for itself, and it never
- * depends on another feature — cross-feature state travels through a singleton exposed by a data
- * module, which is what keeps the graph acyclic by construction rather than by review. The
- * `moduleGraphCheck` task fails the build if that rule is broken.
- *
- * Note what is absent: any navigation library. Features implement `AppNavKey` from
- * `:core:navigation` and register their destinations through Hilt, so the day Navigation 3 is
- * replaced, no feature module changes.
- */
+/** Every `:feature:*` module: presentation, and nothing else. */
 class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.base.app.android.library")

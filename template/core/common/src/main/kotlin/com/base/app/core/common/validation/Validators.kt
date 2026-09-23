@@ -3,11 +3,8 @@ package com.base.app.core.common.validation
 import com.base.app.core.common.util.UiText
 
 /**
- * The outcome of checking one value.
- *
- * A sealed result rather than a nullable error string, so a validator that returns "no error" and
- * one that was never run are different things. That distinction is what lets a form show errors
- * only on fields the user has actually touched.
+ * The outcome of checking one value. A sealed result rather than a nullable error string, so a
+ * validator that returns "no error" and one that was never run are different things.
  */
 sealed interface ValidationResult {
     data object Valid : ValidationResult
@@ -17,24 +14,12 @@ sealed interface ValidationResult {
     val errorOrNull: UiText? get() = (this as? Invalid)?.message
 }
 
-/**
- * A rule applied to one value.
- *
- * A `fun interface` over a plain lambda so rules compose readably (`Required and Email`) and so a
- * rule can be named at the call site — `Validators.required()` reads as intent where an inline
- * lambda reads as arithmetic.
- */
+/** A rule applied to one value. */
 fun interface Validator<T> {
     fun validate(value: T): ValidationResult
 }
 
-/**
- * Runs both, reporting the *first* failure.
- *
- * Showing one message at a time is deliberate. A field that reports "required, and must be an
- * email, and must be under 60 characters" all at once is a field nobody reads, and the second and
- * third messages are usually consequences of the first.
- */
+/** Runs both, reporting the *first* failure. Showing one message at a time is deliberate. */
 infix fun <T> Validator<T>.and(next: Validator<T>): Validator<T> = Validator { value ->
     when (val first = validate(value)) {
         is ValidationResult.Invalid -> first
@@ -42,12 +27,7 @@ infix fun <T> Validator<T>.and(next: Validator<T>): Validator<T> = Validator { v
     }
 }
 
-/**
- * The rules a form needs before it needs a library.
- *
- * Every message is a [UiText], so a validator never holds a `Context` and its output is localised
- * where it is rendered — the same reason ViewModels do not format strings.
- */
+/** The rules a form needs before it needs a library. */
 object Validators {
 
     fun required(message: String = "This is required."): Validator<String> = Validator { value ->
@@ -71,11 +51,8 @@ object Validators {
     }
 
     /**
-     * A deliberately permissive email check.
-     *
-     * Full RFC 5322 validation rejects addresses that work and accepts ones that do not; the only
-     * authoritative test is sending mail to it. This catches the typos worth catching — a missing
-     * `@`, a missing dot, a trailing space — and lets everything else through to the server.
+     * A deliberately permissive email check. Full RFC 5322 validation rejects addresses that work
+     * and accepts ones that do not; the only authoritative test is sending mail to it.
      */
     fun email(message: String = "Enter a valid email address."): Validator<String> =
         Validator { value ->
@@ -83,10 +60,8 @@ object Validators {
         }
 
     /**
-     * Digits only, within a length range.
-     *
-     * Not a country-aware check: phone numbering plans change, and a client that knows them goes
-     * out of date silently. Length and digits catch the mistakes a person makes typing.
+     * Digits only, within a length range. Not a country-aware check: phone numbering plans change,
+     * and a client that knows them goes out of date silently.
      */
     fun phone(
         minDigits: Int = 6,
@@ -117,13 +92,7 @@ object Validators {
         }
     }
 
-    /**
-     * A password rule that states what it wants up front.
-     *
-     * The message lists every requirement rather than reporting them one at a time, because
-     * password rules are the one case where drip-feeding failures is genuinely infuriating —
-     * the user cannot see the rules and is guessing.
-     */
+    /** A password rule that states what it wants up front. */
     fun password(
         minLength: Int = 8,
         requireDigit: Boolean = true,

@@ -24,18 +24,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
- * Collects every release artifact into `build/outputs/dist/<variant>/` under a name that says
- * what it is, and writes a checksum manifest beside them.
- *
- * The default AGP output is four files all called `app-release.apk` in four sibling directories.
- * The moment two of them are attached to a bug report or uploaded to a distribution service,
- * nobody can tell the arm64 staging build from the universal production one. A name that carries
- * the variant, the ABI, the version and the minute it was built removes that whole class of
- * question.
- *
- * Renaming happens by copy rather than by setting `outputFileName`, which is only reachable
- * through AGP internals. The copy is cheap, keeps the original tree intact for anything that
- * expects it, and gives one directory to hand to CI as the upload set.
+ * Collects every release artifact into `build/outputs/dist/<variant>/` under a name that says what
+ * it is, and writes a checksum manifest beside them.
  */
 internal fun Project.registerDistributionTasks(components: ApplicationAndroidComponentsExtension) {
     val distAll = tasks.register("dist") {
@@ -67,11 +57,7 @@ internal fun Project.registerDistributionTasks(components: ApplicationAndroidCom
             outputDirectory.set(layout.buildDirectory.dir("outputs/dist/${variant.name}"))
         }
 
-        // The one people actually type. It covers the APKs only, and that is not an oversight:
-        // AGP refuses to build ABI splits and an app bundle in the same invocation, because the
-        // shrunk-resources output would be ambiguous. The two jobs are also genuinely different —
-        // per-ABI APKs are for handing to testers, a bundle is for Play, which does its own
-        // splitting — so `dist<Variant>Bundle` stays a separate call.
+        // APKs only: AGP cannot build ABI splits and a bundle in the same invocation.
         val variantTask = tasks.register("dist$capitalised") {
             group = "distribution"
             description = "Names and checksums the ${variant.name} APKs. Bundle: dist${capitalised}Bundle."

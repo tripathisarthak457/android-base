@@ -36,29 +36,7 @@ import com.base.app.core.designsystem.foundation.clickableNoIndication
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 
-/**
- * A modal bottom sheet, drag-to-dismiss included.
- *
- * ## Why it is built by hand
- *
- * There is no bottom sheet outside Material. What it needs — a full-window surface, a scrim, an
- * entrance that can be interrupted, and a drag that either dismisses or springs back — is about
- * a hundred lines, and building it means the sheet obeys this project's motion tokens rather
- * than Material's.
- *
- * ## Dismissal is by distance *or* velocity
- *
- * A slow drag past the halfway mark dismisses; so does a fast flick that never got there. Testing
- * only distance means a confident flick springs back, which feels broken because the user has
- * already moved on. Testing only velocity means a deliberate slow drag to the bottom does
- * nothing. Both, and neither gesture is misread.
- *
- * ## Exit is animated, unlike the dialog's
- *
- * Dismissal runs the slide-down first and calls [onDismissRequest] when it finishes, so the sheet
- * is still composed while it animates. Achieving the same for a dialog is not worth the ceremony;
- * for a sheet — which the user is physically dragging — a snap-off would be jarring.
- */
+/** A modal bottom sheet, drag-to-dismiss included. */
 @Composable
 fun AppBottomSheet(
     onDismissRequest: () -> Unit,
@@ -97,9 +75,8 @@ fun AppBottomSheet(
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
-            // The scrim fades with the sheet's own travel, so dragging the sheet down lightens
-            // the screen behind it progressively — the feedback that tells you the gesture is
-            // going to dismiss before you have committed to it.
+            // The scrim fades with the sheet's travel, showing a drag will dismiss before it
+            // commits.
             val progress = if (sheetHeight > 0f) {
                 (1f - offsetY.value / sheetHeight).coerceIn(0f, 1f)
             } else {

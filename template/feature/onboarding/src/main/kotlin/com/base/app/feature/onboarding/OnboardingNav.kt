@@ -16,13 +16,7 @@ import kotlinx.serialization.modules.SerializersModule
 @Serializable
 data object OnboardingKey : AppNavKey
 
-/**
- * Where the app goes once onboarding is finished.
- *
- * Supplied by the application module: onboarding cannot name the home screen without depending on
- * the feature that owns it, and a `:feature:` depending on another `:feature:` is the edge that
- * turns a module graph into a knot.
- */
+/** Where the app goes once onboarding is finished. */
 data class OnboardingDestination(val next: AppNavKey)
 
 /**

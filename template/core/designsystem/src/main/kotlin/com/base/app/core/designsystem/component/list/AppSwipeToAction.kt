@@ -40,11 +40,8 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 /**
- * One action revealed by swiping a row.
- *
- * [isDestructive] does two things: it colours the action, and it makes a full swipe past the
- * threshold trigger it directly rather than resting the row open. Delete is the action people
- * swipe hard for; making them swipe and then tap is the interaction everyone complains about.
+ * One action revealed by swiping a row. [isDestructive] does two things: it colours the action, and
+ * it makes a full swipe past the threshold trigger it directly rather than resting the row open.
  */
 data class SwipeAction(
     val label: String,
@@ -56,25 +53,8 @@ data class SwipeAction(
 )
 
 /**
- * A row that reveals actions when swiped.
- *
- * ## Resting versus committing
- *
- * A short swipe rests the row open so the actions can be tapped. A swipe past
- * [COMMIT_FRACTION] of the row's width fires the first action directly — but only when it is
- * destructive, because a full-swipe that silently performs a non-destructive action the user
- * cannot see is a surprise, and a full-swipe that performs a *destructive* one they can undo is
- * the interaction they expect.
- *
- * ## The actions are behind, not beside
- *
- * They fill the row's own bounds and the content slides over them, so no measurement pass is
- * needed and the actions cannot be laid out at a different height than the row.
- *
- * ## Resetting
- *
- * [resetKey] snaps the row closed when it changes. Pass the list's own identity: a row left open
- * when the list refreshes underneath it ends up showing another item's actions.
+ * A row that reveals actions when swiped. A short swipe rests the row open so the actions can be
+ * tapped.
  */
 @Composable
 fun AppSwipeToAction(
@@ -165,10 +145,8 @@ fun AppSwipeToAction(
                             }
 
                             travelled > revealPx * REST_FRACTION || velocity < -FLING_VELOCITY -> {
-                                // The row has come to rest open. Without a tick here the gesture
-                                // has no moment of commitment — the actions simply appear, and
-                                // the difference between "resting open" and "still dragging" is
-                                // only visible, never felt.
+                                // A tick when the row settles open, so committing to the gesture
+                                // can be felt.
                                 haptics.perform(HapticEffect.Threshold)
                                 offset.animateTo(-revealPx, motion.sheet())
                             }

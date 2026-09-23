@@ -1,7 +1,5 @@
 """
-Turning a `ProjectSpec` and the template on disk into a project.
-
-Four passes, in order:
+Turning a `ProjectSpec` and the template on disk into a project, in four passes:
 
 1. **Copy** the template, skipping build output and anything the disabled features own.
 2. **Overlay** the variant directories for features that are off but need a *different* file
@@ -28,20 +26,15 @@ from .spec import FEATURES_BY_KEY, KeystoreSpec, ProjectSpec
 # Markers
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: `// <opt:name>` … `// </opt:name>` — keep the inner lines only when `name` is enabled.
-#:
-#: `// <opt:a|b>` keeps them when *any* of the named features is on. For the lines that more than
-#: one feature needs and none of them owns — the `javax.inject.Inject` import that three optional
-#: blocks in the application class share, and which is an unused import the moment all three are
-#: off. Repeating it inside each block would produce a duplicate import when two are on.
+#: `// <opt:name>` … `// </opt:name>` keeps the inner lines only when `name` is enabled;
+#: `// <opt:a|b>` keeps them when *any* of the named features is on.
 _BLOCK_OPEN = re.compile(r"<opt:([a-z0-9|-]+)>")
 _BLOCK_CLOSE = re.compile(r"</opt:([a-z0-9|-]+)>")
 
-#: `// <opt:!name>CODE` — emit `CODE` verbatim only when `name` is *disabled*.
-#:
-#: The alternative code has to live inside a comment, because the template itself must compile:
-#: two live declarations of the same class, one per branch, would break the build this project
-#: relies on to prove the template works.
+#: `// <opt:!name>CODE` — emit `CODE` verbatim only when `name` is *disabled*. The alternative code
+#: has to live inside a comment, because the template itself must compile: two live declarations of
+#: the same class, one per branch, would break the build this project relies on to prove the
+#: template works.
 _INLINE_ELSE = re.compile(r"<opt:!([a-z0-9-]+)>")
 
 #: `// <generated:name>` — replaced wholesale by generated lines.
@@ -54,13 +47,8 @@ _BINARY_SUFFIXES = {".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".
 _SKIP_DIRS = {"build", ".gradle", ".kotlin", ".idea", ".git", "keys", ".cxx"}
 _SKIP_FILES = {"local.properties", "keystore.properties", ".DS_Store"}
 
-#: Paths that belong to this repository rather than to any project generated from it.
-#:
-#: The reference screenshots are recorded against the template's own palette and typeface. A
-#: project that chose its own brand renders differently on the very first run, so shipping
-#: them would hand somebody a suite that fails before they have written a line. The tests go
-#: out; the images they compare against are the project's own to record, once, with
-#: `./gradlew :catalog:recordRoborazziDebug`.
+#: Paths that belong to this repository rather than to any project generated from it. The reference
+#: screenshots are recorded against the template's own palette and typeface.
 _TEMPLATE_ONLY = {"catalog/src/test/screenshots"}
 
 
@@ -83,11 +71,8 @@ class RenderResult:
 
 def strip_markers(text: str, enabled: set[str], generated: dict[str, list[str]]) -> str:
     """
-    Resolves every marker in one pass.
-
-    Nested blocks are supported and are common: an `<opt:coil>` image inside an `<opt:media>`
-    region. A disabled outer block suppresses everything inside it regardless of the inner
-    state, which is what "this needs that" means at the file level.
+    Resolves every marker in one pass. Nested blocks are supported and are common: an `<opt:coil>`
+    image inside an `<opt:media>` region.
     """
     output: list[str] = []
     #: Stack of (feature, keeping). `keeping` is false for the whole nested region once any
@@ -129,10 +114,8 @@ def strip_markers(text: str, enabled: set[str], generated: dict[str, list[str]])
 
 def rename(text: str, spec: ProjectSpec) -> str:
     """
-    The template's own identity, replaced by the project's.
-
-    Order matters: the longest and most specific token first, so that `com.base.app` is consumed
-    before `baseapp` could match part of it.
+    The template's own identity, replaced by the project's. Longest token first, so `com.base.app`
+    is consumed before `baseapp` could match part of it.
     """
     return (
         text.replace("com.base.app", spec.package_name)
@@ -144,21 +127,7 @@ def rename(text: str, spec: ProjectSpec) -> str:
 
 
 def collapse_blank_runs(text: str) -> str:
-    """
-    Tidies the whitespace a stripped block leaves behind.
-
-    Three or more consecutive blank lines become one: a project generated with half the features
-    off would otherwise be full of six-line gaps, which reads as carelessness in the first file
-    anyone opens.
-
-    A blank line against either side of a brace is removed outright: a block stripped from the
-    start or the end of a function would otherwise leave the kind of gap that Android Studio's
-    formatter and every Kotlin style guide remove, in code the author has not touched yet.
-
-    Only a brace, deliberately. A blank line after an opening *parenthesis* is legal and is
-    sometimes how a long argument list is laid out, and collapsing it would be the generator
-    reformatting code it was not asked to touch.
-    """
+    """Tidies the whitespace a stripped block leaves behind."""
     text = re.sub(r"\n{3,}", "\n\n", text)
     text = re.sub(r"\n[ \t]*\n([ \t]*\})", r"\n\1", text)
     return re.sub(r"(\{[ \t]*)\n[ \t]*\n", r"\1\n", text)
@@ -186,14 +155,7 @@ def _is_owned(relative: Path, owned: set[str]) -> bool:
 
 
 def copy_template(template: Path, destination: Path, spec: ProjectSpec) -> list[str]:
-    """
-    Copies the template, dropping anything a disabled feature owns. Returns warnings.
-
-    `os.walk` with the skip list pruned in place, rather than `rglob("*")` filtered afterwards.
-    The template is 256 files, but a checkout that has been built once also contains tens of
-    thousands under `build/` and `.gradle/` — and `rglob` walks into them all before the filter
-    gets a say. On this machine that was the difference between sixteen seconds and one.
-    """
+    """Copies the template, dropping anything a disabled feature owns. Returns warnings."""
     warnings: list[str] = []
     owned = _owned_paths(spec) | _TEMPLATE_ONLY
 
@@ -236,9 +198,7 @@ def copy_template(template: Path, destination: Path, spec: ProjectSpec) -> list[
 
 #: Files that have to be executable in the generated project. `write_text` creates a 0644 file, so
 #: without this the very first command in the README — `./gradlew` — exits 126 with "permission
-#: denied" on macOS and Linux. The zip path sets the bit itself; a directory copy has to do it
-#: here. Named rather than mode-copied from the source, because a Windows checkout has no bit to
-#: copy: git stores the mode, the filesystem does not.
+#: denied" on macOS and Linux.
 _EXECUTABLE_NAMES = {"gradlew"}
 _EXECUTABLE_SUFFIXES = {".sh"}
 
@@ -252,12 +212,7 @@ def _make_executable_if_needed(path: Path) -> None:
 
 
 def overlay_variants(variants_root: Path, destination: Path, spec: ProjectSpec) -> None:
-    """
-    Copies the "feature is off" version of any file that has one.
-
-    Runs after the main copy so it overwrites, and before the rewrite pass so its files are
-    renamed and marker-stripped like everything else.
-    """
+    """Copies the "feature is off" version of any file that has one."""
     owned = _owned_paths(spec)
     for feature in FEATURES_BY_KEY.values():
         if feature.variant_dir is None or feature.key in spec.features:
@@ -303,17 +258,7 @@ def rewrite_all(destination: Path, spec: ProjectSpec, generated: dict[str, list[
 
 
 def _is_hollow_kotlin(text: str) -> bool:
-    """
-    True when a Kotlin file has a package line and imports and nothing else.
-
-    Stripping every optional block out of a file can leave a shell: the app module's
-    `FeatureBindingsModule` exists to supply things to the settings, auth and onboarding features,
-    and a project with none of them gets an empty Hilt module and three unused imports. A file with
-    nothing in it is not a file the project needs.
-
-    Deliberately conservative: a single declaration of any kind keeps the file. It is looking for
-    "nothing survived", not "not much survived".
-    """
+    """True when a Kotlin file has a package line and imports and nothing else."""
     for line in text.splitlines():
         stripped = line.strip()
         if not stripped:
@@ -325,14 +270,7 @@ def _is_hollow_kotlin(text: str) -> bool:
 
 
 def _prune_empty_directories(destination: Path) -> None:
-    """
-    Removes directories left with nothing in them.
-
-    Deleting the last file in a package leaves the package directory behind, and an empty source
-    directory in a fresh project is a small mystery for whoever opens it — deep enough, Android
-    Studio shows it as a package that exists for no reason. Deepest first, so a directory whose
-    only content was another empty directory goes too.
-    """
+    """Removes directories left with nothing in them."""
     for path in sorted(destination.rglob("*"), key=lambda p: len(p.parts), reverse=True):
         if path.is_dir() and not any(path.iterdir()):
             path.rmdir()
@@ -344,13 +282,7 @@ def _prune_empty_directories(destination: Path) -> None:
 
 
 def apply_build_settings(destination: Path, spec: ProjectSpec) -> None:
-    """
-    Writes the numbers and URLs into `AppConfig.kt`, which is where the build reads them from.
-
-    A regex substitution on named constants rather than a template placeholder, so the file stays
-    valid Kotlin in the template and can be edited by hand afterwards without the generator's
-    formatting getting in the way.
-    """
+    """Writes the numbers and URLs into `AppConfig.kt`, which is where the build reads them from."""
     config = destination / "build-logic/convention/src/main/kotlin" / spec.package_path / "buildlogic/AppConfig.kt"
     if not config.exists():
         raise RenderError(f"AppConfig.kt not found where expected: {config}")
@@ -377,16 +309,7 @@ def apply_build_settings(destination: Path, spec: ProjectSpec) -> None:
 
 
 def apply_fonts(destination: Path, spec: ProjectSpec) -> None:
-    """
-    Writes the chosen typeface names into `AppFontNames`.
-
-    That object is the only place in the project a typeface is named — every one of the fifteen
-    text styles is built from it — so this is the whole of "set the app's font".
-
-    Silently skipped when the file is absent, which is not a real case today but would be if the
-    design system were ever made optional; a generator that hard-fails on a missing cosmetic file
-    is a generator that blocks on the least important thing.
-    """
+    """Writes the chosen typeface names into `AppFontNames`."""
     fonts = (
         destination
         / "core/designsystem/src/main/kotlin"
@@ -404,11 +327,8 @@ def apply_fonts(destination: Path, spec: ProjectSpec) -> None:
 
 def apply_feel(destination: Path, spec: ProjectSpec) -> None:
     """
-    Writes the motion style, the design style and the haptics default into the one place that
-    reads them.
-
-    Both are arguments to the single `AppTheme` call in `AppRoot`, so a project can still change
-    either at runtime — the generator only decides where it starts.
+    Writes the motion style, the design style and the haptics default into the one place that reads
+    them.
     """
     root = (
         destination
@@ -445,12 +365,7 @@ def apply_feel(destination: Path, spec: ProjectSpec) -> None:
 
 
 def _replace_flavour_field(text: str, flavour: str, field: str, value: str) -> str:
-    """
-    Replaces one field of one flavour without touching the identically-named field of another.
-
-    The flavour blocks are structurally identical, so a naive replace on `apiBaseUrl = "..."`
-    would rewrite whichever one happened to come first, four times.
-    """
+    """Replaces one field of one flavour without touching the identically-named field of another."""
     pattern = re.compile(
         rf'(flavorName = "{flavour}",.*?{field} = )"[^"]*"',
         re.DOTALL,
@@ -459,11 +374,7 @@ def _replace_flavour_field(text: str, flavour: str, field: str, value: str) -> s
 
 
 def apply_app_name(destination: Path, spec: ProjectSpec) -> None:
-    """
-    The display name, which is the one string that keeps its spaces.
-
-    Everything else derives from `pascal_name`; this is what a user sees under the icon.
-    """
+    """The display name, which is the one string that keeps its spaces."""
     for relative in ("app/src/main/res/values/strings.xml", "catalog/src/main/res/values/strings.xml"):
         path = destination / relative
         if not path.exists():
@@ -512,25 +423,14 @@ def write_keystore_properties(destination: Path, keystores: list[KeystoreSpec]) 
 
 
 def _properties_value(value: str) -> str:
-    """
-    Escapes a value for java.util.Properties, which is how Gradle reads the file back.
-
-    Unescaped, a backslash in a password is swallowed and leading spaces are trimmed, so Gradle
-    would open the store with a different password from the one keytool was given.
-    """
+    """Escapes a value for java.util.Properties, which is how Gradle reads the file back."""
     escaped = value.replace("\\", "\\\\")
     stripped = escaped.lstrip(" ")
     return "\\ " * (len(escaped) - len(stripped)) + stripped
 
 
 def find_keytool() -> str | None:
-    """
-    Where `keytool` is, or None.
-
-    Checked under JAVA_HOME as well as on PATH because a JDK installed by Android Studio or by a
-    Docker base image very often is not on PATH, and "no keystores were created" is a confusing
-    thing to be told on a machine that plainly has a JDK.
-    """
+    """Where `keytool` is, or None."""
     found = shutil.which("keytool")
     if found is not None:
         return found
@@ -550,14 +450,7 @@ def generate_keystores(
     destination: Path,
     keystores: list[KeystoreSpec],
 ) -> tuple[list[str], list[str], list[str]]:
-    """
-    Creates the .jks files with `keytool`.
-
-    Returns (generated, skipped, warnings). A missing `keytool` is a warning rather than an
-    error: the project is still complete and buildable — the build falls back to debug signing
-    and says so — and failing the whole generation over a JDK that is not on PATH would be a
-    poor trade.
-    """
+    """Creates the .jks files with `keytool`. Returns (generated, skipped, warnings)."""
     if not keystores:
         return [], [], []
 
@@ -650,16 +543,7 @@ def zip_project(project_dir: Path, archive_path: Path) -> Path:
 
 
 def git_init(project_dir: Path, spec: ProjectSpec) -> list[str]:
-    """
-    Initialises a repository and commits the project as generated.
-
-    Returns warnings, never raises: a missing `git` must not cost the user the project they
-    just waited for.
-
-    The commit is made with `-c user.name=...` rather than by configuring the repository, so it
-    works on a machine with no global git identity — a fresh CI container, or a colleague's new
-    laptop — without leaving a committer identity behind that they did not choose.
-    """
+    """Initialises a repository and commits the project as generated."""
     if shutil.which("git") is None:
         return ["git was not found on PATH, so the repository was not initialised."]
 
@@ -748,26 +632,14 @@ def _rotate_hue(rgb: tuple[float, float, float], degrees: float):
 #: The template's own primary, and what a supporting colour falls back to being derived from.
 TEMPLATE_ACCENT = "#2C6BED"
 
-#: How a supporting colour is worked out when only the primary was given.
-#:
-#: Material's rule, because the obvious alternatives are worse. A complement — the colour opposite
-#: on the wheel — is what a naive derivation reaches for, and it produces the orange-beside-blue
-#: pairing nobody would have chosen deliberately. Analogous hues sit too close together to tell
-#: apart. Taking the chroma out of the primary gives a secondary that supports it and cannot
-#: clash with it, and a sixth of a turn gives a tertiary far enough away to read as its own
-#: colour. Both are a starting point rather than a brand decision; the wizard asks for all three.
+#: How a supporting colour is worked out when only the primary was given. Material's rule, because
+#: the obvious alternatives are worse.
 _SECONDARY_SATURATION = 0.45
 _TERTIARY_HUE_SHIFT = 60
 
 
 def brand_colours(spec: ProjectSpec) -> dict[str, tuple[float, float, float]]:
-    """
-    The three brand colours as RGB, with anything left blank worked out from the primary.
-
-    Blank means derived, not left alone. A project that took a custom primary and kept the
-    template's supporting colours would ship a palette whose three members were picked by two
-    people who had never met, which is how an app ends up with a blue button beside a teal chip.
-    """
+    """The three brand colours as RGB, with anything left blank worked out from the primary."""
     primary = _hex_to_rgb(spec.accent_colour or TEMPLATE_ACCENT)
     return {
         "Accent": primary,
@@ -785,18 +657,7 @@ def brand_colours(spec: ProjectSpec) -> dict[str, tuple[float, float, float]]:
 
 
 def apply_accent(destination: Path, spec: ProjectSpec) -> None:
-    """
-    Derives three full colour ramps from the brand colours.
-
-    Six values per ramp, not one: the resting colour, its pressed state, a tint for subtle fills,
-    and the same three again for the dark palette — plus the launcher background and the
-    black-or-white decision for text on top. Asking for eighteen hex codes would get eighteen that
-    do not agree with each other, and using one colour everywhere gives a pressed state that is
-    invisible and a "subtle" fill that is not subtle.
-
-    Everything is moved along the colour's own hue rather than towards black or white, so a brand
-    orange darkens to a deeper orange instead of to brown.
-    """
+    """Derives three full colour ramps from the brand colours."""
     if not (spec.accent_colour or spec.secondary_colour or spec.tertiary_colour):
         return
 
@@ -858,14 +719,7 @@ def apply_accent(destination: Path, spec: ProjectSpec) -> None:
 
 
 def _apply_on_brand(destination: Path, spec: ProjectSpec) -> None:
-    """
-    Picks black or white for text sitting on each brand colour.
-
-    A brand yellow with white text on it is the most common way a themed design system produces
-    something unreadable, and it is entirely mechanical to avoid: compare the contrast both ways
-    and take the better one. Done per ramp, because the three are chosen independently and a
-    primary dark enough for white text says nothing about the tertiary.
-    """
+    """Picks black or white for text sitting on each brand colour."""
     colors = (
         destination
         / "core/designsystem/src/main/kotlin"

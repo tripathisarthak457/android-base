@@ -1,10 +1,5 @@
-// Package config reads the service's settings from the environment.
-//
-// Everything has a default that works on a laptop, so `go run ./cmd/server` starts without a
-// single variable set. The two that have no sensible default — the database URL and the admin
-// token — fail loudly at boot rather than at the first request that needs them, because a service
-// that starts and then 500s on its third endpoint is much harder to diagnose than one that
-// refuses to start.
+// Package config reads the service's settings from the environment. Everything has a default that
+// works on a laptop, so `go run ./cmd/server` starts without a single variable set.
 package config
 
 import (
@@ -96,12 +91,9 @@ func Load() (Config, error) {
 // at all when it is false, rather than registered and returning empty results.
 func (c Config) Persistent() bool { return c.DatabaseURL != "" }
 
-// defaultAddr picks a listen address from the environment the process finds itself in.
-//
-// A container platform hands the port over in PORT and expects the server on every interface —
-// loopback there means the health check never connects and the deployment is rolled back with no
-// useful error. Everywhere else loopback is the safe default: on the VPS, Caddy is the only thing
-// that should be able to reach this port. ADDR still overrides both.
+// defaultAddr picks a listen address from the environment the process finds itself in. A container
+// platform hands the port over in PORT and expects the server on every interface — loopback there
+// means the health check never connects and the deployment is rolled back with no useful error.
 func defaultAddr() string {
 	if port := strings.TrimSpace(os.Getenv("PORT")); port != "" {
 		return "0.0.0.0:" + port

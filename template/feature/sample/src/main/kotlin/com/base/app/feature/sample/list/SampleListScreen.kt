@@ -34,11 +34,8 @@ import com.base.app.data.sample.SampleItem
 import com.base.app.feature.sample.R
 
 /**
- * The list screen.
- *
- * Stateless by construction: it takes a state and emits events, and holds nothing of its own. That
- * is what makes it previewable in every state below without a ViewModel, a network call, or a
- * device — and previews that need none of those are previews people actually keep working.
+ * The list screen. Stateless by construction: it takes a state and emits events, and holds nothing
+ * of its own.
  */
 @Composable
 fun SampleListScreen(
@@ -122,9 +119,7 @@ private fun Content(
                 contentPadding = PaddingValues(AppTheme.spacing.gutter),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {
-                // Keyed on the item's own id, not the index. Without a stable key, inserting a row
-                // at the top makes Compose re-map every item to a different slot, which loses
-                // scroll position and restarts every animation in the list.
+                // Keyed on the id so inserts keep scroll position and animations.
                 items(items = visible, key = SampleItem::id) { item ->
                     SampleRow(item = item, onClick = { onEvent(SampleListEvent.ItemClicked(item.id)) })
                 }

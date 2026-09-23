@@ -1,18 +1,6 @@
 package com.base.app.core.common
 
-/**
- * The outcome of anything that talks to the outside world.
- *
- * Named `AppResult` rather than `Result` so it never shadows `kotlin.Result`; the two appear in
- * the same file often enough — `runCatching` returns one and repositories return the other — that
- * a shadowed import is a genuine source of confusion.
- *
- * The [Failure] fields exist because a screen has to make different decisions for each of them,
- * and inferring those from a `Throwable` at the UI layer means the UI layer importing the network
- * layer's exception types. [isOffline] in particular separates "you are not connected" from
- * "the server said no", which every design treats as two different states with two different
- * calls to action.
- */
+/** The outcome of anything that talks to the outside world. */
 sealed interface AppResult<out T> {
 
     data class Success<T>(
@@ -69,13 +57,7 @@ fun <T> AppResult<T>.getOrNull(): T? = (this as? AppResult.Success)?.data
 
 fun <T> AppResult<T>.getOrDefault(fallback: T): T = getOrNull() ?: fallback
 
-/**
- * Runs [block], converting anything it throws into [AppResult.Failure].
- *
- * `CancellationException` is deliberately re-thrown. Swallowing it turns a cancelled coroutine
- * into a spurious error toast and, worse, stops the cancellation propagating — the caller's scope
- * believes the child completed normally and carries on.
- */
+/** Runs [block], converting anything it throws into [AppResult.Failure]. */
 inline fun <T> resultOf(block: () -> T): AppResult<T> = try {
     AppResult.Success(block())
 } catch (cancellation: kotlinx.coroutines.CancellationException) {

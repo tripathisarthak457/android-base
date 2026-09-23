@@ -6,9 +6,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-/**
- * The mapper, which is where wire-format surprises become app-level bugs.
- */
+/** The mapper, which is where wire-format surprises become app-level bugs. */
 class SampleMapperTest {
 
     @Test

@@ -21,18 +21,6 @@ import com.base.app.core.designsystem.theme.AppTheme
 /**
  * The one container every other component is built on: a shape, a fill, an optional outline, an
  * optional lift, and a content colour for everything inside it.
- *
- * ## Elevation becomes an outline in dark theme
- *
- * A drop shadow works by darkening what is behind it. On a near-black background there is
- * nothing left to darken, so the shadow is either invisible or — with a large radius — a grey
- * smudge that makes the surface look dirty. Dark interfaces separate layers by *lightness*
- * instead: the raised surface is lighter than what it sits on, and a hairline outline reinforces
- * the edge.
- *
- * Handling that here means a caller writes `elevation = AppTheme.elevation.card` once and gets
- * the right treatment in both themes, instead of every card in the app carrying an
- * `if (isLight)`.
  */
 @Composable
 fun AppSurface(
@@ -66,17 +54,8 @@ fun AppSurface(
 }
 
 /**
- * A surface that responds to a tap.
- *
- * [contentAlignment] matters whenever a minimum size makes the surface larger than what is inside
- * it — an icon button, a chip. The default leaves the content where a Box would put it; a
- * component that sets a minimum size almost always wants `Alignment.Center`, and getting it wrong
- * puts the glyph in the corner of its own touch target.
- *
- * Separate from the plain overload rather than an `onClick: (() -> Unit)?` parameter, because a
- * nullable click handler makes accessibility ambiguous — a surface with a null handler still
- * announces itself as a button to a screen reader if the semantics are applied unconditionally,
- * and only one of the two shapes wants `Role.Button` and a press scale at all.
+ * A surface that responds to a tap. [contentAlignment] matters whenever a minimum size makes the
+ * surface larger than what is inside it — an icon button, a chip.
  */
 @Composable
 fun AppClickableSurface(
@@ -103,10 +82,8 @@ fun AppClickableSurface(
     }
 
     Box(
-        // `disabledAlpha` has to come before the background, not after it. It is a graphics
-        // layer, and a layer only fades what is drawn inside it — placed later in the chain it
-        // dims the label and leaves the container at full strength, which is how a disabled
-        // primary button ends up looking enabled with grey text on it.
+        // `disabledAlpha` before the background, or the container stays at full strength when
+        // disabled.
         modifier = modifier
             .disabledAlpha(enabled)
             .then(if (scaleOnPress) Modifier.pressScale(interactionSource, enabled) else Modifier)
@@ -129,9 +106,6 @@ fun AppClickableSurface(
 
 /*
  * The shadow is tinted rather than pure black.
- *
- * A black shadow under a coloured or off-white surface reads as grey and slightly dirty; pulling
- * it towards the same blue as the neutrals keeps the whole surface looking like one material.
  */
 private val ShadowTint = Color(0xFF0B0F1A)
 

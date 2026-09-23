@@ -1,10 +1,5 @@
 /*
  * The design-system catalog: every component, every state, on a device.
- *
- * Its own application rather than a screen inside the app, for two reasons. It installs beside
- * the real app so a designer or a tester can hold both at once, and it depends on
- * `:core:designsystem` alone — so iterating on a component recompiles two modules instead of the
- * whole graph. No flavours: there is no environment for a catalog to point at.
  */
 
 plugins {

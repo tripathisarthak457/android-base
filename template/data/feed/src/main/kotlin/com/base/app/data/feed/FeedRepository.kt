@@ -21,11 +21,8 @@ interface FeedRepository {
 }
 
 /**
- * Pages through the same public API the reference feature reads, ten posts at a time.
- *
- * Swap [FeedPagingSource.load] for your own endpoint: it is the only part that knows the API
- * pages by number. A cursor-based API keeps the same shape with a `String` key instead of an
- * `Int`.
+ * Pages through the same public API the reference feature reads, ten posts at a time. Point
+ * [FeedPagingSource.load] at your endpoint; a cursor-based API uses a `String` key instead.
  */
 @Singleton
 class DefaultFeedRepository @Inject constructor(

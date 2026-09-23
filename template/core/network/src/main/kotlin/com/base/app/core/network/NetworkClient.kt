@@ -13,28 +13,12 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 
-/**
- * The whole network surface: one operation, plus typed conveniences.
- *
- * [execute] resolves connectivity, authentication, caching and offline queueing and hands back
- * the raw response. The `get`/`post`/… helpers below decode it. They are extension functions
- * rather than interface members because a generic type parameter cannot be `reified` on an
- * override — which is also why there is a non-reified [request] for use inside `override fun`
- * bodies, where an explicit serializer is passed instead.
- */
+/** The whole network surface: one operation, plus typed conveniences. */
 interface NetworkClient {
     suspend fun execute(request: NetworkRequest): AppResult<NetworkResponse>
 }
 
-/**
- * Decodes a successful response into [T].
- *
- * The decode runs on the Default dispatcher. `execute` returns to the *caller's* dispatcher, which
- * for a ViewModel is `Main.immediate` — so without this hop, every list response in the app is
- * parsed on the UI thread and shows up as dropped frames on exactly the screens with the most
- * data. Default rather than IO because parsing is CPU work; IO's pool is sized for threads that
- * sit blocked, and parsing there competes with the requests themselves.
- */
+/** Decodes a successful response into [T]. The decode runs on the Default dispatcher. */
 @PublishedApi
 internal suspend inline fun <reified T> NetworkClient.decode(
     request: NetworkRequest,

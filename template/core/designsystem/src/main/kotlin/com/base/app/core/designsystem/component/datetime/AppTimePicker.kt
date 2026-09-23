@@ -23,19 +23,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
 
-/**
- * Hour, minute and — when the locale uses one — a period, each on its own wheel.
- *
- * Wheels rather than a clock dial. A dial is charming and it is slow: setting 7:43 means two
- * separate drags with a mode switch between them, and the minute hand is fiddly at any size that
- * fits on a phone. Two wheels get there in one gesture each, and they are usable one-handed.
- *
- * ## Twelve- or twenty-four-hour is read from the locale
- *
- * Asked of `DateTimeFormatter`, not assumed. Showing a 24-hour user an AM/PM control is a
- * conversion they have to do in their head every time, and the reverse is worse — a 12-hour user
- * shown "19" will frequently misread it.
- */
+/** Hour, minute and — when the locale uses one — a period, each on its own wheel. */
 @Composable
 fun AppTimePicker(
     time: LocalTime,
@@ -166,13 +154,7 @@ fun AppTimePickerDialog(
     }
 }
 
-/**
- * Whether this locale writes times on a 24-hour clock.
- *
- * Asked of the platform by formatting a sample, rather than derived from a hardcoded list of
- * countries. Country lists are wrong for the user who has set a different regional format from
- * their country's default, which is common enough to matter.
- */
+/** Whether this locale writes times on a 24-hour clock. */
 private fun Locale.uses24HourClock(): Boolean {
     val sample = runCatching {
         LocalTime.of(13, 0).format(

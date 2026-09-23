@@ -1,10 +1,8 @@
 package com.base.app.core.common.mvi
 
 /**
- * The three halves of a screen's contract. Marker interfaces, so a `MviViewModel`'s type
- * parameters read as intent rather than as `<A, B, C>`.
- *
- * The split is the whole point of the pattern:
+ * The three halves of a screen's contract. Marker interfaces, so a `MviViewModel`'s type parameters
+ * read as intent rather than as `<A, B, C>`.
  *
  * - [UiState] is everything the screen renders, and it is complete. Rendering must never need a
  *   value that is not in here — no reading a repository from a composable, no second source of

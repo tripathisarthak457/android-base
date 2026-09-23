@@ -17,13 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-/**
- * The reference ViewModel test. Every feature's tests are shaped like these.
- *
- * No Robolectric, no instrumentation, no network: the repository is a fake and the dispatcher is
- * a test one, so the whole file runs in milliseconds. That is the practical payoff of injecting
- * dispatchers and putting the repository behind an interface.
- */
+/** The reference ViewModel test. Every feature's tests are shaped like these. */
 class SampleListViewModelTest {
 
     @get:Rule

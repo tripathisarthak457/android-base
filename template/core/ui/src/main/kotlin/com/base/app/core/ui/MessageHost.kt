@@ -18,21 +18,7 @@ import com.base.app.core.designsystem.component.feedback.AppTone
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 
-/**
- * Renders the messages a ViewModel emits, and times them out.
- *
- * ## One at a time, newest wins
- *
- * A new message replaces whatever is showing rather than queueing behind it. Queueing sounds
- * fairer and is worse in practice: three failed requests produce three identical toasts the user
- * has to sit through, and the message that matters — the one about what they just did — is the
- * last to appear.
- *
- * ## The timer is keyed on the message
- *
- * `LaunchedEffect(current)` restarts the countdown whenever the message changes, so a replacement
- * gets its own full duration instead of inheriting the remainder of its predecessor's.
- */
+/** Renders the messages a ViewModel emits, and times them out. */
 @Composable
 fun BoxScope.MessageHost(messages: Flow<UiMessage>) {
     var current by remember { mutableStateOf<UiMessage?>(null) }
@@ -63,13 +49,7 @@ fun BoxScope.MessageHost(messages: Flow<UiMessage>) {
     }
 }
 
-/**
- * A screen that hosts its own messages.
- *
- * The wrapper exists so a feature writes `MessagingScaffold(viewModel.messages) { … }` instead of
- * remembering to put a `Box` and a host around every screen — and forgetting on the one screen
- * where a failure most needs to be visible.
- */
+/** A screen that hosts its own messages. */
 @Composable
 fun MessagingSurface(
     messages: Flow<UiMessage>,
@@ -82,12 +62,7 @@ fun MessagingSurface(
     }
 }
 
-/**
- * The application's message severity, mapped to the design system's visual tone.
- *
- * Five lines, and they are the reason `:core:designsystem` does not depend on `:core:common` —
- * see [AppTone].
- */
+/** The application's message severity, mapped to the design system's visual tone. */
 private fun MessageKind.toTone(): AppTone = when (this) {
     MessageKind.Success -> AppTone.Success
     MessageKind.Error -> AppTone.Error

@@ -18,13 +18,7 @@ interface CommonModule {
     @Singleton
     fun bindNetworkMonitor(impl: ConnectivityNetworkMonitor): NetworkMonitor
 
-    /**
-     * Declares the set so it can be injected even when nothing has contributed to it yet.
-     *
-     * Without this, a build with no session-scoped stores fails to compile at the injection site
-     * rather than injecting an empty set — which would make removing the last store a
-     * surprisingly large change.
-     */
+    /** Declares the set so it can be injected even when nothing has contributed to it yet. */
     @Multibinds
     fun sessionScopedStores(): Set<SessionScopedStore>
 }

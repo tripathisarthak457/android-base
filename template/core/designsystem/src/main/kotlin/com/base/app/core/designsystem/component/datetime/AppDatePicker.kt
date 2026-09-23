@@ -44,25 +44,8 @@ import java.time.temporal.WeekFields
 import java.util.Locale
 
 /**
- * A month calendar.
- *
- * ## The week starts where the user's locale says it starts
- *
- * Read from `WeekFields.of(Locale.getDefault())` rather than hardcoded to Monday or Sunday. A
- * calendar that starts on the wrong day is not a cosmetic problem — people read the position of a
- * date in the grid, and a shifted grid produces genuinely wrong answers about what day something
- * falls on.
- *
- * ## Selectable dates are a predicate
- *
- * [minDate] and [maxDate] cover the common bounds, and [isDateEnabled] covers everything else —
- * no weekends, no public holidays, only dates a delivery slot exists for. A component that only
- * understood a range would need a second component the first time a real rule appeared.
- *
- * ## Month changes slide in the direction of travel
- *
- * Forwards enters from the right, backwards from the left. Cross-fading loses the one piece of
- * information the animation could carry, which is which way in time you just moved.
+ * A month calendar. Read from `WeekFields.of(Locale.getDefault())` rather than hardcoded to Monday
+ * or Sunday.
  */
 @Composable
 fun AppDatePicker(

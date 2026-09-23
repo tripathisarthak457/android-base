@@ -9,24 +9,7 @@ import io.ktor.client.statement.request
 import io.ktor.http.Headers
 import io.ktor.http.content.TextContent
 
-/**
- * Feeds every request and response into the on-device inspector.
- *
- * ## Why `ResponseObserver` rather than a plugin of our own
- *
- * A response body can be read once. A hand-rolled interceptor that reads it to log it hands the
- * caller an empty channel, and the symptom is a repository that parses fine in release and
- * returns nothing in debug — the worst possible place for a difference. `ResponseObserver` exists
- * for exactly this: Ktor saves the response when one is installed, so both the observer and the
- * caller get a complete body.
- *
- * ## Off means absent
- *
- * [NetworkConfig.recordExchanges] is false in a production build, so nothing is installed and no
- * body is ever held. That is a stronger statement than a flag checked at render time: there is no
- * point in the process where a response body and an auth token are sitting in a list waiting for
- * somebody to decide not to show them.
- */
+/** Feeds every request and response into the on-device inspector. */
 internal fun HttpClientConfig<*>.installRecording(config: NetworkConfig, log: DevToolsLog) {
     if (!config.recordExchanges) return
 

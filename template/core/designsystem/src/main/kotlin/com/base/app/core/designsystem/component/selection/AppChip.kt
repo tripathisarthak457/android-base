@@ -22,13 +22,7 @@ import com.base.app.core.designsystem.foundation.clickableNoIndication
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A chip: a filter, a choice, or a removable token.
- *
- * Selection is carried by fill *and* border, not by fill alone. A selected chip distinguished
- * only by a pale tint is invisible to a colour-blind user and nearly invisible in sunlight; the
- * border change gives the state a second, non-colour signal.
- */
+/** A chip: a filter, a choice, or a removable token. */
 @Composable
 fun AppChip(
     label: String,
@@ -85,9 +79,7 @@ fun AppChip(
                     imageVector = AppIcons.Close,
                     contentDescription = "Remove $label",
                     size = 15.dp,
-                    // No indication of its own: the chip already responds, and a second overlay
-                    // inside the first reads as two nested buttons rather than one with an
-                    // affordance.
+                    // No indication of its own; the chip already responds to the press.
                     modifier = Modifier.clickableNoIndication(enabled = enabled, onClick = remove),
                 )
             }

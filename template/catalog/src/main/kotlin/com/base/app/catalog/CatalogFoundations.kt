@@ -259,11 +259,6 @@ private fun ShapeSwatch(name: String, shape: @Composable () -> Shape) {
     }
 }
 
-/**
- * `#AARRGGBB`, which is the form you paste back into a palette file.
- *
- * `toArgb()` returns a signed Int, so the value is masked to a Long before formatting — without
- * that, every colour with an alpha above 0x7F formats as a sixteen-digit negative.
- */
+/** `#AARRGGBB`, which is the form you paste back into a palette file. */
 private fun Color.hex(): String =
     "#%08X".format(toArgb().toLong() and 0xFFFFFFFFL)

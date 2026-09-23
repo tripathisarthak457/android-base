@@ -6,24 +6,15 @@ import { Badge, Button } from "./primitives";
 const REPO = "https://github.com/tripathisarthak457/android-base";
 
 /**
- * The one screen a visitor decides on.
- *
- * It has to answer three questions before they scroll: what is this, what do I get, and is it
- * going to work. So: a sentence, a terminal showing the thing actually being run, and the counts
- * that make the claim checkable.
+ * The one screen a visitor decides on. It has to answer three questions before they scroll: what is
+ * this, what do I get, and is it going to work.
  */
 export function Hero({
   onStart,
   featureCount,
 }: {
   onStart: () => void;
-  /**
-   * How many features there are, from the generator itself.
-   *
-   * Typed into this file as a literal until it said 26 and the answer was 32 — for four releases,
-   * on the one number the page uses to make its claim checkable. Undefined while the catalogue is
-   * still loading, which is the only reason there is still a number in the source at all.
-   */
+  /** How many features there are, from the generator itself. */
   featureCount?: number;
 }) {
   return (
@@ -127,13 +118,7 @@ export function Hero({
   );
 }
 
-/**
- * The same commands the README tells you to run, with their real output.
- *
- * Not a marketing screenshot: `6m 3s` is what `./gradlew build` took on a freshly generated lean
- * project on a laptop, and quoting a real number is the difference between "this works" and
- * "somebody typed that it works".
- */
+/** The same commands the README tells you to run, with their real output. */
 function Terminal() {
   const lines: { text: string; tone?: "prompt" | "dim" | "ok" }[] = [
     { text: "$ ./gradlew :app:assembleDevDebug", tone: "prompt" },

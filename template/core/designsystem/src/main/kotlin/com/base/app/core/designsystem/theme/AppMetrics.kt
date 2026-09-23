@@ -7,12 +7,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/**
- * The spacing scale. A 4dp grid, with the two values you reach for most given their own names.
- *
- * Hard-coded `.dp` in a screen is how two lists end up with 14dp and 16dp gutters that nobody
- * notices individually and everybody feels collectively.
- */
+/** The spacing scale. A 4dp grid, with the two values you reach for most given their own names. */
 @Immutable
 data class AppSpacing(
     val xxs: Dp = 2.dp,
@@ -35,10 +30,8 @@ data class AppSpacing(
 )
 
 /**
- * Corner radii.
- *
- * [pill] is a very large radius rather than a `CircleShape`, so it stays correct on a component
- * that is wider than it is tall — a circle on a 200×40 chip clips the label.
+ * Corner radii. [pill] is a very large radius rather than a `CircleShape`, so it stays correct on a
+ * component that is wider than it is tall — a circle on a 200×40 chip clips the label.
  */
 @Immutable
 data class AppShapes(
@@ -54,12 +47,7 @@ data class AppShapes(
     val sheet: Shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
 )
 
-/**
- * Elevation, as a token rather than a raw `Dp` at the call site.
- *
- * Only used in light theme — see `AppSurface`, which substitutes a border in dark, where a black
- * drop shadow on a near-black surface is invisible at best and a grey smear at worst.
- */
+/** Elevation, as a token rather than a raw `Dp` at the call site. */
 @Immutable
 data class AppElevation(
     val none: Dp = 0.dp,
@@ -69,14 +57,7 @@ data class AppElevation(
     val modal: Dp = 16.dp,
 )
 
-/**
- * Minimum interactive sizes.
- *
- * [minTouchTarget] is 48dp because that is the accessibility floor, and it is enforced by
- * `Modifier.minimumTouchTarget` in the components rather than left to each caller — a 24dp icon
- * button that is only 24dp of touch area is the single most common accessibility defect in a
- * hand-rolled design system.
- */
+/** Minimum interactive sizes. */
 @Immutable
 data class AppSizes(
     val minTouchTarget: Dp = 48.dp,

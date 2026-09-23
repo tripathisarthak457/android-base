@@ -1,13 +1,6 @@
 "use client";
 
-/**
- * The handful of controls the site is built from.
- *
- * Small enough to live in one file, and kept there deliberately: a component library for a
- * five-screen site is a directory nobody navigates. Each of these has one job and one visual
- * state machine, and the press animation is shared so nothing on the page responds differently
- * from anything else.
- */
+/** The handful of controls the site is built from. */
 
 import { motion, type HTMLMotionProps } from "framer-motion";
 import type { ReactNode } from "react";

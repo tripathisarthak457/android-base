@@ -9,11 +9,8 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Analytics are not wired up in this project.
- *
- * Every `analytics.track(...)` call in feature code still compiles and still runs — it simply
- * goes nowhere. That is deliberate: adding a vendor later is a change to this one file, not a
- * pass through every screen to add instrumentation that should have been there all along.
+ * Analytics are not wired up in this project. Every `analytics.track(...)` call in feature code
+ * still compiles and still runs — it simply goes nowhere.
  */
 @Module
 @InstallIn(SingletonComponent::class)

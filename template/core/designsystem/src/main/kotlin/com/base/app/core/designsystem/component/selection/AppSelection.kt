@@ -31,16 +31,7 @@ import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.foundation.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A checkbox whose tick is drawn on rather than faded in.
- *
- * The stroke is revealed along its own length using a [PathMeasure], so the check appears to be
- * written in the direction a person would write it. A tick that cross-fades reads as a static
- * image swapping; one that draws reads as a response to the tap, and it costs about fifteen lines.
- *
- * The whole row is the touch target when a [label] is given — tapping the word next to a checkbox
- * and having nothing happen is the most common small frustration in a settings screen.
- */
+/** A checkbox whose tick is drawn on rather than faded in. */
 @Composable
 fun AppCheckbox(
     checked: Boolean,
@@ -132,13 +123,7 @@ fun AppCheckbox(
     }
 }
 
-/**
- * A radio button. Ring plus a dot that scales in from nothing.
- *
- * `Role.RadioButton` and `selectable` rather than `toggleable`, so assistive technology announces
- * it as one of a set rather than as an independent on/off — which is the difference between "one
- * of three, selected" and "checked".
- */
+/** A radio button. Ring plus a dot that scales in from nothing. */
 @Composable
 fun AppRadioButton(
     selected: Boolean,
@@ -195,11 +180,8 @@ fun AppRadioButton(
 }
 
 /**
- * A switch.
- *
- * The thumb travels on a spring rather than a tween, so a rapid double-toggle reverses from where
- * the thumb actually is instead of restarting. It is the one control people flip back and forth
- * to see what happens, and a tween makes that feel unresponsive.
+ * A switch. The thumb travels on a spring rather than a tween, so a rapid double-toggle reverses
+ * from where the thumb actually is instead of restarting.
  */
 @Composable
 fun AppSwitch(
@@ -265,13 +247,7 @@ fun AppSwitch(
     }
 }
 
-/**
- * The shared row: the control, and an optional label that is part of the same touch target.
- *
- * The interaction modifier is applied to the row when there is a label and to nothing when there
- * is not — a bare control keeps whatever target its parent gave it, which is what lets a checkbox
- * sit inside an already-clickable list row without two competing click handlers.
- */
+/** The shared row: the control, and an optional label that is part of the same touch target. */
 @Composable
 private fun SelectionRow(
     modifier: Modifier,

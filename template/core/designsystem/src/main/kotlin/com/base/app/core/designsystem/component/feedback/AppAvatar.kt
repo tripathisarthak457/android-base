@@ -16,17 +16,7 @@ import com.base.app.core.designsystem.foundation.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.absoluteValue
 
-/**
- * An initials avatar, with a colour derived from the name.
- *
- * The colour comes from a hash of the name rather than being random or always the accent, so the
- * same person is the same colour on every screen and across sessions. In a list of names that
- * consistency is what makes an avatar useful at a glance rather than decorative.
- *
- * Image avatars live in `:core:ui` — loading one needs an image library, and this module
- * deliberately has no dependencies beyond Compose. Pass [content] to place any composable inside
- * the same circle; that is the seam `:core:ui` uses.
- */
+/** An initials avatar, with a colour derived from the name. */
 @Composable
 fun AppAvatar(
     name: String,
@@ -58,13 +48,7 @@ fun AppAvatar(
     }
 }
 
-/**
- * The first letter of the first word and of the last, upper-cased.
- *
- * Words are split on whitespace and blanks are dropped, so a double space or a trailing one does
- * not produce an initial that is a space character — which renders as an empty circle and looks
- * like a loading failure.
- */
+/** The first letter of the first word and of the last, upper-cased. */
 private fun String.initials(): String {
     val words = trim().split(Regex("\\s+")).filter { it.isNotBlank() }
     return when (words.size) {
@@ -74,21 +58,14 @@ private fun String.initials(): String {
     }
 }
 
-/**
- * A stable index for this string.
- *
- * `String.hashCode` is specified by the language, not by the JVM implementation, so the same name
- * lands on the same colour on every device and every release — which a hash chosen by the runtime
- * would not guarantee.
- */
+/** A stable index for this string. */
 private fun String.stableIndex(bound: Int): Int =
     if (bound <= 0) 0 else hashCode().absoluteValue % bound
 
 /**
- * Muted tints for avatar backgrounds.
- *
- * Drawn from the status washes rather than a separate palette: they are already tuned for both
- * themes and already guaranteed to carry the primary content colour legibly.
+ * Muted tints for avatar backgrounds. Drawn from the status washes rather than a separate palette:
+ * they are already tuned for both themes and already guaranteed to carry the primary content colour
+ * legibly.
  */
 @Composable
 private fun AppTheme.avatarPalette(): List<Color> = listOf(

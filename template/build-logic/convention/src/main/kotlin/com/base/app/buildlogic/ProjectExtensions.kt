@@ -8,18 +8,13 @@ import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
 
 /**
- * Access to `gradle/libs.versions.toml` from precompiled plugin code, where the generated
- * `libs.` accessors of a normal build script are not available.
+ * Access to `gradle/libs.versions.toml` from precompiled plugin code, where the generated `libs.`
+ * accessors of a normal build script are not available.
  */
 val Project.libs: VersionCatalog
     get() = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-/**
- * Fails loudly and by name when an alias is missing.
- *
- * The alternative — `findLibrary(alias).get()` — throws `NoSuchElementException: No value
- * present`, which says nothing about which alias or which module, and costs a bisect to locate.
- */
+/** Fails loudly and by name when an alias is missing. */
 fun VersionCatalog.library(alias: String): Provider<MinimalExternalModuleDependency> =
     findLibrary(alias).orElseThrow {
         IllegalArgumentException(

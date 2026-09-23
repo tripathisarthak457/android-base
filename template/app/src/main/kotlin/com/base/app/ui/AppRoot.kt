@@ -28,27 +28,6 @@ import com.base.app.session.SessionCoordinator
 /**
  * Everything above the navigation host: the theme, the back stack, and the two app-wide reactions
  * that have to outlive any single screen.
- *
- * ## One shape or the other, decided by [tabs]
- *
- * An empty list gives a single back stack — the right shape for a wizard, a kiosk, or an app
- * whose entry point is a sign-in screen. A non-empty one gives the tabbed shell, where each tab
- * keeps its own stack so switching away and back does not lose the user's place.
- *
- * The decision is a parameter rather than two entry points because sign-in and the signed-in app
- * are usually both of these at different moments, and swapping between them should not mean
- * swapping which composable is at the root.
- *
- * ## The theme is state, not a constant
- *
- * Read from the settings store as a flow, so changing it in settings repaints immediately rather
- * than on next launch. Haptics come from the same place: one boolean here silences every control
- * in the app, and no component owns the decision.
- *
- * ## Sign-out resets here
- *
- * Not in whatever screen called `signOut()`: that screen is being destroyed. This collector lives
- * as long as the app does.
  */
 @Composable
 fun AppRoot(
@@ -107,22 +86,14 @@ fun AppRoot(
             }
 
             // <opt:devtools>
-            // Last child of the root Box, so the badge floats over whichever screen is
-            // showing, and inside the theme so the panel it opens is themed. A no-op in a
-            // production build.
+            // Last in the Box so the badge floats over every screen; a no-op in production builds.
             DevToolsOverlay(environment = devEnvironment, log = devToolsLog)
             // </opt:devtools>
         }
     }
 }
 
-/**
- * The stored preference as the design system's own type.
- *
- * A function rather than four lines inlined at the call site because the lock screen renders
- * outside this composable and has to reach the same answer — two copies of this `when` is how one
- * of them ends up a theme behind.
- */
+/** The stored preference as the design system's own type. */
 fun AppSettings.themeMode(): ThemeMode = when (themeMode) {
     AppSettings.THEME_LIGHT -> ThemeMode.Light
     AppSettings.THEME_DARK -> ThemeMode.Dark

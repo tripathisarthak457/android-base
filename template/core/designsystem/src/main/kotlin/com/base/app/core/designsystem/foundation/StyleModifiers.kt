@@ -9,13 +9,7 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-/**
- * A solid copy of [shape] drawn behind the element, [distance] down and to the right.
- *
- * The Playful style's shadow. Drawn rather than blurred, so it costs one path per frame and
- * reads the same in both themes — a blurred shadow disappears on a dark background, a solid
- * one does not.
- */
+/** A solid copy of [shape] drawn behind the element, [distance] down and to the right. */
 fun Modifier.offsetShadow(shape: Shape, distance: Dp, color: Color): Modifier {
     if (distance <= 0.dp) return this
     return drawBehind {

@@ -39,9 +39,9 @@ import com.base.app.core.designsystem.foundation.offsetShadow
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * The five things a button can mean. Not five ways it can look — the distinction matters, because
- * a screen picks a variant by asking "how important is this action" rather than "what colour
- * should this be", and that is what keeps two screens from disagreeing.
+ * The five things a button can mean. Not five ways it can look — the distinction matters, because a
+ * screen picks a variant by asking "how important is this action" rather than "what colour should
+ * this be", and that is what keeps two screens from disagreeing.
  */
 enum class ButtonVariant {
     /** The one action the screen exists for. At most one per screen. */
@@ -63,18 +63,8 @@ enum class ButtonVariant {
 enum class ButtonSize { Small, Medium, Large }
 
 /**
- * The app's button.
- *
- * ## Loading does not resize the button
- *
- * While [loading], the label stays laid out at zero alpha and a spinner is centred over it. The
- * obvious implementation — swap the label for a spinner — makes the button shrink to spinner
- * width the instant it is tapped, which shifts everything beside it and, on a full-width submit,
- * looks like the screen broke. Keeping the label's footprint costs one `Box` and removes the
- * whole problem.
- *
- * A loading button is also not clickable. Leaving it enabled is how a double tap submits an order
- * twice.
+ * The app's button. While [loading], the label stays laid out at zero alpha and a spinner is
+ * centred over it.
  */
 @Composable
 fun AppButton(
@@ -139,9 +129,7 @@ fun AppButton(
         interactionSource = interactionSource,
         role = Role.Button,
         scaleOnPress = shadow == null,
-        // The surface is at least `metrics.height` tall and, when filled, the whole width — both
-        // larger than the label. Without this the label is laid out in the top-left corner of its
-        // own button, which is the single most visible way a hand-built button gives itself away.
+        // Centre the label; the surface is taller and, when filled, wider than it.
         contentAlignment = Alignment.Center,
     ) {
         Box(contentAlignment = Alignment.Center) {
@@ -175,12 +163,7 @@ fun AppButton(
     }
 }
 
-/**
- * An icon-only button.
- *
- * [contentDescription] is required rather than nullable: with no label, it is the only thing a
- * screen reader can announce, and an optional parameter here is one that gets omitted.
- */
+/** An icon-only button. */
 @Composable
 fun AppIconButton(
     icon: ImageVector,

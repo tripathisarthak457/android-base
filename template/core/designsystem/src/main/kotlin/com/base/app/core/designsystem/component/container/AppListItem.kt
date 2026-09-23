@@ -18,11 +18,6 @@ import com.base.app.core.designsystem.theme.AppTheme
 /**
  * A row: an optional leading slot, a title with an optional supporting line, and an optional
  * trailing slot.
- *
- * Ubiquitous enough that letting each screen assemble its own `Row` guarantees three different
- * heights, two different gaps and one that forgets the minimum touch target. The slots are
- * composable rather than typed as icons so that a row can carry an avatar, a checkbox, a chevron
- * or a badge without this component learning about any of them.
  */
 @Composable
 fun AppListItem(

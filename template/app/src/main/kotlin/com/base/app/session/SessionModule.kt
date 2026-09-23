@@ -6,12 +6,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-/**
- * Binds the session implementation to the interface features see.
- *
- * The one line that lets a settings screen in a feature module sign the user out without knowing
- * anything about stores, navigation, or the composition root.
- */
+/** Binds the session implementation to the interface features see. */
 @Module
 @InstallIn(SingletonComponent::class)
 interface SessionModule {

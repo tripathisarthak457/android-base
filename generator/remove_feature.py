@@ -6,17 +6,6 @@ Remove a feature module from a project, and undo the three edits that added it.
     py remove_feature.py orders profile            # two at once
     py remove_feature.py orders --project ../MyApp
     py remove_feature.py orders --dry-run          # say what would go, delete nothing
-
-The exact inverse of `add_feature.py`: it deletes `:data:<name>` and `:feature:<name>` and takes
-their lines back out of `settings.gradle.kts`, the app module's dependencies, and
-`AppDestinations`. Doing it by hand means remembering all three, and the one people forget is the
-Gradle include — which fails the next sync with an error about a missing project rather than about
-the directory they deleted.
-
-It refuses a module the template ships. `:feature:auth` and the rest are removed by generating
-without them, not by deleting the directory: their code is referenced from the app module's
-navigation and from files no name-based scan would find, and half-removing one leaves a project
-that does not compile with no obvious way back.
 """
 
 from __future__ import annotations
@@ -132,13 +121,7 @@ def unregister_dependencies(project: Path, names: tuple[str, ...]) -> None:
 
 
 def unregister_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> None:
-    """
-    Takes each module's tab and its import back out of `AppDestinations`.
-
-    Matched on the module's own key class rather than on the whole line, because the label and the
-    icon are the two things somebody is most likely to have edited since — and a tab left behind
-    is a compile error naming a class that no longer exists.
-    """
+    """Takes each module's tab and its import back out of `AppDestinations`."""
     path = project / "app/src/main/kotlin" / package_name.replace(".", "/") / "ui/AppDestinations.kt"
     if not path.is_file():
         print(prompts.yellow(f"  ! No AppDestinations.kt at {path}; check the tabs by hand."))
@@ -157,14 +140,7 @@ def unregister_tabs(project: Path, package_name: str, names: tuple[str, ...]) ->
 
 
 def _drop_lines(path: Path, matches) -> None:
-    """
-    Removes whole lines from [path]. Silent when the file does not have them.
-
-    Line-based rather than a regex over the whole file, for the same reason `add_feature.py`
-    inserts line by line: these are build scripts somebody is expected to have edited by hand, and
-    a pattern that spans lines starts matching things it did not mean the moment the formatting
-    changes.
-    """
+    """Removes whole lines from [path]. Silent when the file does not have them."""
     if not path.is_file():
         return
     lines = path.read_text(encoding="utf-8").splitlines(keepends=True)

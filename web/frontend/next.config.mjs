@@ -1,12 +1,7 @@
 /**
- * Where the page may load things from.
- *
- * Scripts keep 'unsafe-inline' because Next.js hydrates through inline scripts, and nonces would
- * make every page render per request instead of being served static. What the policy does stop:
- * any script, style or font from an origin that is not this one or Google Fonts, plugins, the
- * page being framed, a <base> tag re-pointing relative URLs, and forms posting anywhere else.
- * `connect-src` names the API's origin when it is not this one — local development, or a split
- * deployment through NEXT_PUBLIC_API_BASE.
+ * Where the page may load things from. Scripts keep 'unsafe-inline' because Next.js hydrates
+ * through inline scripts, and nonces would make every page render per request instead of being
+ * served static.
  */
 const apiOrigin = (() => {
   const base = process.env.NEXT_PUBLIC_API_BASE;

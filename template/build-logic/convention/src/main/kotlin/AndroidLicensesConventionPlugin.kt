@@ -6,17 +6,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.register
 
-/**
- * Puts the app's real dependency licences into its assets, per variant.
- *
- * The list is generated from the resolved runtime classpath at build time rather than written by
- * hand, because a hand-written one is out of date the first time anybody adds a library — and it
- * is the kind of stale that nobody notices until a store review asks about it.
- *
- * Applied *after* `app.cash.licensee` in the same plugins block; it reads that plugin's report
- * rather than resolving anything itself. Licensee also fails the build on a licence the project
- * has not allowed, which is how a GPL dependency becomes a build error rather than a discovery.
- */
+/** Puts the app's real dependency licences into its assets, per variant. */
 class AndroidLicensesConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         if (!pluginManager.hasPlugin("app.cash.licensee")) {

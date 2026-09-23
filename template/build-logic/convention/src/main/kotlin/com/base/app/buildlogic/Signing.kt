@@ -7,23 +7,12 @@ import java.util.Properties
 /**
  * Signing, read from a `keystore.properties` that is never committed.
  *
- * The file is expected at the root of the build and holds four values per environment:
- *
  * ```
  * dev.storeFile=keys/dev.jks
  * dev.storePassword=…
  * dev.keyAlias=…
  * dev.keyPassword=…
  * ```
- *
- * When the file — or one environment's block within it — is missing, that environment falls back
- * to the debug keystore and the build carries on. This is the whole point: a colleague or a CI
- * runner that has only just cloned the repository can still produce a running devDebug without
- * being handed secrets first, and only the person cutting a release needs the real keys. A build
- * that hard-failed on a missing keystore would make `assembleDevDebug` a credentials problem.
- *
- * The fallback is announced on the console rather than applied silently, so nobody discovers at
- * upload time that their "release" was signed with the debug key.
  */
 internal data class KeystoreEntry(
     val storeFile: String,
@@ -65,13 +54,8 @@ internal fun Project.loadKeystoreEntries(): Map<String, KeystoreEntry> {
 }
 
 /**
- * Creates one signing config per distinct key named in [AppFlavor] and attaches it to the
- * flavours that asked for it.
- *
- * The `debug` build type's own signing config is cleared first. AGP assigns the shared debug
- * keystore to it by default, and a build type's signing config wins over a flavour's — so
- * without this line `devDebug` would be signed with the generic debug key rather than the dev
- * key, and would refuse to install over a build that used the right one.
+ * Creates one signing config per distinct key named in [AppFlavor] and attaches it to the flavours
+ * that asked for it.
  */
 internal fun Project.configureSigning(extension: ApplicationExtension) {
     val entries = loadKeystoreEntries()

@@ -9,19 +9,7 @@ import androidx.compose.ui.graphics.vector.PathBuilder
 import androidx.compose.ui.graphics.vector.PathData
 import androidx.compose.ui.unit.dp
 
-/**
- * The icon set, drawn here rather than pulled from a library.
- *
- * `material-icons-extended` is roughly 30 000 vectors and ~10 MB of dex before shrinking, it is
- * unmistakably one visual language, and depending on it would reintroduce the Material artifact
- * this design system exists without. These are authored on a 24 grid with a uniform 1.8 stroke
- * and round caps, so they sit together at any size and inherit the surrounding content colour
- * through `AppIcon`'s tint.
- *
- * Adding one is a `val` and a path. Keep to the same grid and stroke width — an icon at a
- * different weight is instantly visible in a row next to the others, even when nobody can say
- * why.
- */
+/** The icon set, drawn here rather than pulled from a library. */
 object AppIcons {
 
     // ── Direction ───────────────────────────────────────────────────────────────

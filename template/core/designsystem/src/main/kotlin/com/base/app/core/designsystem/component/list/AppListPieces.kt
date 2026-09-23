@@ -41,16 +41,7 @@ import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A header that opens and closes the block beneath it.
- *
- * Expansion state is the caller's, not the component's. A settings screen that remembers which
- * section was open across a process death cannot do that if the state lives inside the row — and
- * an accordion group where opening one closes the others is impossible without hoisting.
- *
- * The chevron rotates rather than swapping glyphs: 0° to 180° reads as the same object turning,
- * where a chevron-down replaced by a chevron-up reads as a flicker.
- */
+/** A header that opens and closes the block beneath it. */
 @Composable
 fun AppAccordion(
     title: String,
@@ -116,12 +107,7 @@ fun AppAccordion(
     }
 }
 
-/**
- * Where a paged list is up to, as one value rather than three booleans.
- *
- * `isLoading` + `hasMore` + `error` has eight combinations and four meaningful ones, and the
- * invalid ones render as a spinner underneath an error message.
- */
+/** Where a paged list is up to, as one value rather than three booleans. */
 sealed interface LoadMoreState {
     data object Idle : LoadMoreState
     data object Loading : LoadMoreState
@@ -131,18 +117,7 @@ sealed interface LoadMoreState {
     data object Exhausted : LoadMoreState
 }
 
-/**
- * The footer of an infinite list.
- *
- * Put it in the last `item { }` of a `LazyColumn`. It is a footer rather than a scroll listener
- * because "the footer became visible" is exactly the signal you want and it needs no threshold
- * arithmetic — a listener firing on "within 3 items of the end" behaves differently for a list of
- * tall cards than for one of thin rows.
- *
- * The error state gives the user a retry rather than retrying silently: a list that keeps
- * re-requesting a failing page burns the battery and the API quota of everyone who leaves the
- * screen open.
- */
+/** The footer of an infinite list. Put it in the last `item { }` of a `LazyColumn`. */
 @Composable
 fun AppLoadMoreFooter(
     state: LoadMoreState,
@@ -195,22 +170,7 @@ fun AppLoadMoreFooter(
     }
 }
 
-/**
- * A horizontal pager with a dot indicator.
- *
- * The indicator is here rather than left to the caller because a pager without one gives no hint
- * that there is anything to the right — which is the whole reason a carousel underperforms in
- * testing when the first card fills the screen.
- *
- * The active dot widens into a pill rather than only changing colour, so position is legible
- * without relying on a colour difference.
- *
- * The dots sit over the bottom of the page rather than in a row beneath it. Stacking them in a
- * column would make the pager's height depend on whether the caller's height is bounded: given a
- * fixed height the pager fills it and the dots are pushed off the edge, and given wrap-content the
- * pager measures its tallest page and the dots land correctly. Overlaying removes the difference.
- * A page whose content would collide with them adds bottom padding.
- */
+/** A horizontal pager with a dot indicator. */
 @Composable
 fun AppPager(
     pageCount: Int,
@@ -279,14 +239,7 @@ data class TimelineStep(
     val timestamp: String? = null,
 )
 
-/**
- * A vertical progress trail: order status, a multi-step form, an audit history.
- *
- * The connector between two steps is coloured by the *earlier* of the two, so the line reads as
- * progress flowing forwards and the boundary between done and pending sits exactly where the user
- * expects it. Colouring by the later step puts the transition one node too early — a detail
- * nobody articulates but everybody notices.
- */
+/** A vertical progress trail: order status, a multi-step form, an audit history. */
 @Composable
 fun AppTimeline(
     steps: List<TimelineStep>,

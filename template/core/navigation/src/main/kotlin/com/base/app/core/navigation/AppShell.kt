@@ -30,14 +30,8 @@ import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 
 /**
- * One tab.
- *
- * [key] is the tab's root destination and doubles as its identity, so two tabs cannot
+ * One tab. [key] is the tab's root destination and doubles as its identity, so two tabs cannot
  * accidentally share a stack.
- *
- * [badgeCount] is a plain value the caller recomputes — a cart count, unread notifications. It is
- * not a flow, because the shell is composed inside whatever already collects that state, and a
- * second collector per tab would be four collectors for one number.
  */
 data class ShellTab(
     val key: AppNavKey,
@@ -47,22 +41,7 @@ data class ShellTab(
     val badgeCount: Int = 0,
 )
 
-/**
- * The tab bar's state: one back stack per tab, and which one is in front.
- *
- * ## Why per-tab stacks
- *
- * The simpler design — one stack, and switching tabs resets it — loses the user's place. Someone
- * three screens deep in Orders who checks Profile and comes back expects to be where they left
- * off, and every app they use behaves that way. The cost is this class; the alternative costs a
- * complaint in every review cycle.
- *
- * ## Why not one stack with markers
- *
- * A single list with tab boundaries in it has to answer "what does Back do at a boundary" for
- * every position in the list, and gets it subtly wrong somewhere. Separate lists make the answer
- * structural: back inside a tab pops that tab, back at a tab root is the shell's decision.
- */
+/** The tab bar's state: one back stack per tab, and which one is in front. */
 class ShellState internal constructor(
     internal val stacks: List<SnapshotStateList<AppNavKey>>,
     initialTab: Int,
@@ -73,13 +52,7 @@ class ShellState internal constructor(
     /** The stack that is currently on screen. Every navigation command applies to this one. */
     val current: AppBackStack get() = AppBackStack(stacks[selectedIndex])
 
-    /**
-     * Switches tabs, or — when the tab is already selected — returns it to its root.
-     *
-     * Re-tapping the active tab to get back to the top is a gesture people use constantly and
-     * almost never discover being told about; a tab that ignores its own re-tap feels broken to
-     * anyone who has the habit.
-     */
+    /** Switches tabs, or — when the tab is already selected — returns it to its root. */
     fun select(index: Int) {
         if (index !in stacks.indices) return
         if (index == selectedIndex) {
@@ -90,12 +63,7 @@ class ShellState internal constructor(
         selectedIndex = index
     }
 
-    /**
-     * Empties every tab and returns to the first one.
-     *
-     * For sign-out. Resetting only the visible tab leaves the previous user's screens sitting
-     * behind the other three, which the next person to sign in on a shared device will find.
-     */
+    /** Empties every tab and returns to the first one. */
     fun resetAll(rootKeys: List<AppNavKey>) {
         stacks.forEachIndexed { index, stack ->
             stack.clear()
@@ -104,13 +72,7 @@ class ShellState internal constructor(
         selectedIndex = 0
     }
 
-    /**
-     * What Back should do, given where we are.
-     *
-     * Inside a tab it pops. At a tab root it moves to the first tab, which is the behaviour
-     * Android's own guidance describes and what makes the hardware Back predictable in a tabbed
-     * app. Only at the root of the first tab is it the application's problem.
-     */
+    /** What Back should do, given where we are. Inside a tab it pops. */
     internal fun handleBack(onExitRequested: () -> Unit) {
         val stack = stacks[selectedIndex]
         when {
@@ -121,12 +83,7 @@ class ShellState internal constructor(
     }
 }
 
-/**
- * Per-tab stacks that survive process death.
- *
- * Every tab's stack is serialised, not just the visible one — coming back from a kill to find the
- * other three tabs reset is the same lost-place problem the per-tab design exists to avoid.
- */
+/** Per-tab stacks that survive process death. */
 @Composable
 fun rememberShellState(
     tabs: List<ShellTab>,
@@ -141,13 +98,7 @@ fun rememberShellState(
     }
 }
 
-/**
- * Saved as `selectedIndex|[[…],[…]]`.
- *
- * A hand-joined string rather than a wrapper `@Serializable` type, because the stacks are already
- * polymorphic and wrapping them means annotating the element type through two levels of `List` —
- * more ceremony than one separator, and one more thing to get wrong when a key is added.
- */
+/** Saved as `selectedIndex|[[…],[…]]`. */
 private fun shellSaver(
     tabs: List<ShellTab>,
     serialization: NavKeySerialization,
@@ -171,9 +122,8 @@ private fun shellSaver(
                 serialization.json.decodeFromString(stacksSerializer, encoded.substring(separator + 1))
             }.getOrNull()
 
-            // A tab added or removed since the bundle was written makes the saved shape wrong, and
-            // an app update between the kill and the restore is exactly when that happens. Starting
-            // fresh loses the user's place once; restoring a mismatched stack would crash.
+            // Start fresh if the tab count changed since this was saved; a mismatched restore would
+            // crash.
             val usable = savedStacks?.takeIf { it.size == tabs.size }
 
             ShellState(
@@ -187,26 +137,7 @@ private fun shellSaver(
     )
 }
 
-/**
- * The tabbed shell: a persistent bar, and the current tab's stack behind it.
- *
- * ## The bar is hosted above the display, not inside a screen
- *
- * A bar that is part of each tab's screen is torn down and rebuilt on every switch, which makes
- * the badge flicker and lets the bar animate in with the content behind it. Here it is a sibling
- * of the display and is never recomposed by a tab change.
- *
- * ## It slides away off a tab root
- *
- * A detail screen pushed from a tab is not a tab, and leaving the bar up invites the user to
- * switch away mid-task. The bar slides out rather than vanishing, over content whose size does
- * not change — see [TabbedNavHost]. [alwaysShowBar] exists for the designs that disagree.
- *
- * ## Back at a tab root goes to the first tab
- *
- * The display only handles Back when it has something to pop, so this is the shell's handler,
- * enabled only in the one position where the display's is not.
- */
+/** The tabbed shell: a persistent bar, and the current tab's stack behind it. */
 @Composable
 fun AppShell(
     tabs: List<ShellTab>,

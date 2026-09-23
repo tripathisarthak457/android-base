@@ -42,27 +42,8 @@ sealed interface SocketState {
 }
 
 /**
- * One long-lived WebSocket, with reconnection.
- *
- * ## Reconnection backs off, and it has a ceiling
- *
- * Delays double from one second to a maximum of thirty. A fixed short retry against a server that
- * is down is a client hammering it every second, from every installed copy of the app, for as
- * long as the outage lasts — which measurably extends the outage. The ceiling matters just as
- * much as the growth: unbounded exponential backoff means a socket that has been down for an hour
- * takes another hour to notice the server came back.
- *
- * ## Jitter is not decoration
- *
- * Every client that lost the connection to the same server lost it at the same instant, and
- * without jitter they all retry at the same instant too — a thundering herd that knocks the
- * server over again just as it recovers. A random fraction of the delay staggers them.
- *
- * ## Messages are raw text
- *
- * Decoding belongs to the feature that knows what the payload means. A socket that decodes to a
- * shared type either grows a sealed hierarchy of every message in the app, or an `Any` that every
- * consumer casts.
+ * One long-lived WebSocket, with reconnection. Delays double from one second to a maximum of
+ * thirty.
  */
 @Singleton
 class AppWebSocket @Inject constructor(
@@ -82,12 +63,7 @@ class AppWebSocket @Inject constructor(
     private var connection: Job? = null
     private var session: DefaultClientWebSocketSession? = null
 
-    /**
-     * Opens the socket, or does nothing if it is already open.
-     *
-     * [path] is appended to the configured WebSocket URL, so a caller names a channel rather than
-     * a full address and the environment stays a build concern.
-     */
+    /** Opens the socket, or does nothing if it is already open. */
     fun connect(path: String = "", authenticated: Boolean = true) {
         if (connection?.isActive == true) return
 

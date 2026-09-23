@@ -13,9 +13,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
 
-    // Navigation 3 stops here. Feature modules depend on this module's own AppNavKey /
-    // NavGraphEntry types and never see androidx.navigation3 — which is what makes replacing it
-    // a change to two files in this module rather than to every feature.
+    // Only this module sees androidx.navigation3; features depend on AppNavKey and NavGraphEntry.
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)

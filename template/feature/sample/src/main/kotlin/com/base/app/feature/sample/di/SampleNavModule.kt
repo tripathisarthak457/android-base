@@ -16,17 +16,8 @@ import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
 /**
- * How this feature joins the navigation graph.
- *
- * Two contributions, both `@IntoSet`: what to render for each key, and how to serialise the keys
- * so the back stack survives process death. Nothing outside this module is edited to add a
- * screen — no central sealed class, no `when` in the app module — which is what makes a feature
- * genuinely self-contained, and what stops two people adding screens in the same week from
- * conflicting on the same two files.
- *
- * Forgetting the [navKeys] half is the one mistake worth knowing about: the app works perfectly
- * until it is killed in the background, and then comes back at the start destination instead of
- * where the user was.
+ * How this feature joins the navigation graph. Two contributions, both `@IntoSet`: what to render
+ * for each key, and how to serialise the keys so the back stack survives process death.
  */
 @Module
 @InstallIn(SingletonComponent::class)

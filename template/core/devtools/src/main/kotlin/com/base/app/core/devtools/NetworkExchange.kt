@@ -1,13 +1,6 @@
 package com.base.app.core.devtools
 
-/**
- * One request and what came back, as the inspector shows it.
- *
- * Headers are stored already redacted — see [DevToolsLog.record]. Keeping the raw values and
- * hiding them at render time would mean a bearer token living in memory for the lifetime of the
- * log and appearing in any screenshot of a stack trace, which is not a trade worth making for a
- * value nobody needs to read.
- */
+/** One request and what came back, as the inspector shows it. */
 data class NetworkExchange(
     /** Assigned by [DevToolsLog.record]; whatever a caller passes is replaced. */
     val id: Long = UNASSIGNED_ID,

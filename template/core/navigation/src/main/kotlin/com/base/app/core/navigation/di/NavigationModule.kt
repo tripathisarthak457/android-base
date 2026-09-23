@@ -14,25 +14,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NavigationModule {
 
-    /**
-     * Assembled once from every feature's contribution.
-     *
-     * A `@Singleton` because building it validates the whole graph — duplicate keys fail here —
-     * and because the map is read on every navigation.
-     */
+    /** Assembled once from every feature's contribution. */
     @Provides
     @Singleton
     fun provideNavRegistry(graphs: Set<@JvmSuppressWildcards NavGraphEntry>): NavRegistry =
         NavRegistry(graphs)
 }
 
-/**
- * Declares both multibound sets so the build still compiles with no features installed.
- *
- * Without these, an app that has not yet added a feature fails at the injection site rather than
- * receiving an empty set — which would make the very first feature a strangely large change, and
- * make deleting the last one impossible.
- */
+/** Declares both multibound sets so the build still compiles with no features installed. */
 @Module
 @InstallIn(SingletonComponent::class)
 interface NavigationMultibindings {

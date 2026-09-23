@@ -40,11 +40,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 
 /**
- * Lists, and the gestures that act on them.
- *
- * The scrolling examples are given an explicit height. A `LazyColumn` measured inside a scrolling
- * parent gets an infinite height constraint and crashes — showing it working at a fixed height is
- * both the honest demo and a reminder of the rule.
+ * Lists, and the gestures that act on them. The scrolling examples are given an explicit height.
  */
 @Composable
 fun ListsSection() {

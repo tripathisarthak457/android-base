@@ -27,21 +27,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
-/**
- * A small set of mutually exclusive options, with a pill that slides to the selection.
- *
- * The pill is a single element that moves, rather than a background that appears on the selected
- * option and disappears from the old one. That is the whole effect: the eye follows one object
- * across, which makes the relationship between the two options obvious. A cross-fade between two
- * backgrounds communicates nothing about direction.
- *
- * Segments are equal width, so the pill's position is arithmetic rather than a measurement pass —
- * which is also why a long label truncates rather than stretching its segment and making every
- * other one jump.
- *
- * Use it for two to four options. Beyond that the labels stop fitting and the right control is
- * [com.base.app.core.designsystem.component.navigation.AppTabRow] or a dropdown.
- */
+/** A small set of mutually exclusive options, with a pill that slides to the selection. */
 @Composable
 fun AppSegmentedControl(
     options: List<String>,

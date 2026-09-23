@@ -2,11 +2,8 @@
 """
 Generate a project from a JSON spec on stdin, writing a zip to a path given on the command line.
 
-    echo '{"app_name": "My App", "package_name": "com.acme.myapp"}' \\
+    echo '{"app_name": "My App", "package_name": "com.acme.myapp"}' \
       | py generate_headless.py /tmp/out.zip
-
-This is what the web API invokes. It exists rather than the API shelling out to
-`create_project.py --spec` for three reasons:
 
 * **stdin, not a file.** The API never has to write the user's answers — which now include
   keystore passwords — to a path that something else could read.
@@ -14,15 +11,6 @@ This is what the web API invokes. It exists rather than the API shelling out to
   resolved feature set, timings. `create_project.py` prints a box-drawn report for a human.
 * **One failure shape.** Anything that goes wrong exits non-zero with `{"error": "…"}` on stdout,
   so the API has exactly one thing to parse rather than a mix of tracebacks and exit codes.
-
-Keystores are generated only when the spec explicitly asks for them, and the caller is expected
-to have said out loud what that means: a key created on a server and sent back over the wire is a
-key whose custody cannot be claimed, and losing control of a Play upload key is the one Android
-mistake that cannot be undone. Ask for none and the zip ships `keystore.properties.template` and
-a README with the four `keytool` commands, exactly as before.
-
-`existing_path` is dropped from every entry rather than honoured. It makes the generator copy a
-file from the machine it runs on into the zip, which over HTTP is an arbitrary file read.
 """
 
 from __future__ import annotations
@@ -88,10 +76,8 @@ def main(argv: list[str]) -> int:
     }
     unknown = sorted(set(payload) - allowed)
 
-    # `null` is dropped along with the unknown keys, so that omitting an optional field and
-    # sending it as null behave the same. They do not otherwise: a JSON encoder that does not
-    # skip empty values — Go's, without `omitempty` — turns an unset list into `null`, and the
-    # dataclass would take it happily and fail several frames later on "NoneType is not iterable".
+    # `null` is dropped along with the unknown keys, so that omitting an optional field and sending
+    # it as null behave the same.
     fields = {
         key: value for key, value in payload.items() if key in allowed and value is not None
     }

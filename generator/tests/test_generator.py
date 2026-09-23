@@ -2,13 +2,6 @@
 The generator's own checks.
 
     py -m unittest discover -s tests -t .
-
-Covers the two things that break silently: the marker grammar, and the rename. A bug in either
-produces a project that *looks* right and fails to compile — or worse, compiles with the wrong
-package name buried three directories down.
-
-Stdlib `unittest` rather than pytest, so this runs on a machine with nothing installed, which is
-the same reason the generator itself is dependency-free.
 """
 
 from __future__ import annotations
@@ -402,8 +395,8 @@ class PresetTest(unittest.TestCase):
 
 class InjectionTest(unittest.TestCase):
     """
-    Free text from a spec is written into Kotlin that Gradle compiles and runs, and into XML.
-    A spec file can come from anyone, so nothing in it may be able to become code.
+    Free text from a spec is written into Kotlin that Gradle compiles and runs, and into XML. A spec
+    file can come from anyone, so nothing in it may be able to become code.
     """
 
     def test_a_url_cannot_close_the_string_or_open_a_template(self):
@@ -593,14 +586,7 @@ class KeystoreValidationTest(unittest.TestCase):
 
 
 class CatalogueTest(unittest.TestCase):
-    """
-    The tables the website renders from, checked against the features that actually exist.
-
-    This class is here because it did not exist and the thing it checks had already gone wrong:
-    eight features were added and neither table was touched, so all eight rendered on the site
-    filed under "Tooling" with a headline that repeated the title back. Nothing failed, which is
-    why it survived four releases. The point of this class is that the ninth cannot.
-    """
+    """The tables the website renders from, checked against the features that actually exist."""
 
     def test_every_feature_has_a_group_and_a_headline(self):
         for feature in FEATURES:
@@ -681,12 +667,7 @@ class PlanTest(unittest.TestCase):
 
 
 class SpecRoundTripTest(unittest.TestCase):
-    """
-    --save-spec then --spec has to produce the same project.
-
-    It is the only way to regenerate one after changing a single answer, and a field that does not
-    survive the round trip is a silent difference between two projects meant to be identical.
-    """
+    """--save-spec then --spec has to produce the same project."""
 
     def test_every_answer_survives_being_written_and_read_back(self):
         from create_project import load_spec, save_spec
@@ -713,13 +694,7 @@ class SpecRoundTripTest(unittest.TestCase):
 
 
 class RemoveFeatureTest(unittest.TestCase):
-    """
-    The inverse of add_feature, which is the half that has to leave nothing behind.
-
-    A leftover `include(":feature:orders")` fails the next Gradle sync with an error about a
-    missing project rather than about the directory somebody deleted — the least useful version
-    of that message.
-    """
+    """The inverse of add_feature, which is the half that has to leave nothing behind."""
 
     def setUp(self):
         temp = tempfile.TemporaryDirectory()

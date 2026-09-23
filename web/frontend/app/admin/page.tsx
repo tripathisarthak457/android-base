@@ -1,16 +1,6 @@
 "use client";
 
-/**
- * The admin portal.
- *
- * Deliberately one page. Every number the generator produces fits on a screen, and splitting it
- * across five routes would mean five loads to answer "is anything broken" — which is the only
- * question this exists to answer quickly.
- *
- * The token is held in `sessionStorage`, not a cookie: it is a bearer token for a read-only API
- * that one person uses, and a cookie would have to be scoped, secured and cleared on a domain
- * this page does not own. Closing the tab logs you out, which for an admin panel is correct.
- */
+/** The admin portal. Deliberately one page. */
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
@@ -364,12 +354,7 @@ function Funnel({ funnel }: { funnel: Record<string, number> }) {
   );
 }
 
-/**
- * The daily chart, drawn as an SVG.
- *
- * No charting library. It is a bar per day and a line for visitors; pulling in Recharts to draw
- * that would add 90KB to a page one person opens.
- */
+/** The daily chart, drawn as an SVG. No charting library. */
 function DailyChart({ points }: { points: DayPoint[] }) {
   if (points.length === 0) {
     return (

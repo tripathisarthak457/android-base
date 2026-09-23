@@ -22,20 +22,11 @@ data object SignUpKey : AppNavKey
 @Serializable
 data object PasswordResetKey : AppNavKey
 
-/**
- * Where the app goes once the user is authenticated.
- *
- * Supplied by the application module for the same reason as onboarding's: this feature must not
- * name the screen another feature owns.
- */
+/** Where the app goes once the user is authenticated. */
 data class AuthDestination(val next: AppNavKey)
 
 /**
  * `resetTo` rather than `navigate`: after signing in, Back must not return to the sign-in screen.
- *
- * Both sign-in and sign-up land on the same destination through the same call, so there is no
- * second path to keep in step — which is how "sign up works but back goes to the login form"
- * gets into a release.
  */
 @Module
 @InstallIn(SingletonComponent::class)

@@ -35,9 +35,6 @@ import com.base.app.core.designsystem.theme.AppTheme
  * - The next page failed: a short line and a retry under the last row, keeping every row already
  *   loaded. Replacing a long list with a full-screen error because page seven failed is the
  *   most irritating thing a feed can do.
- *
- * Pull to refresh reloads from where the user is, not from the top — see the paging source's
- * `getRefreshKey`.
  */
 @Composable
 fun <T : Any> AppPagingList(

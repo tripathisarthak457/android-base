@@ -30,26 +30,7 @@ import com.base.app.ui.themeMode
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-/**
- * The unlock screen, shown over the app until the user proves who they are.
- *
- * ## Why this is a second Activity
- *
- * `androidx.biometric` hosts its prompt in a Fragment, so it needs a `FragmentActivity`. Keeping
- * the lock here is what lets the app's only real Activity stay a plain `ComponentActivity` — no
- * fragment manager, and no `androidx.fragment` in the graph of a project that did not ask for a
- * lock.
- *
- * It also gets the behaviour right without any work. The lock has to cover the app completely,
- * survive rotation and refuse to be dismissed; a separate Activity that `finish()`es on success
- * is all three at once, where an overlay composable inside the app is a standing invitation to
- * find the state that renders underneath it.
- *
- * ## Back leaves rather than dismisses
- *
- * The default would return the user to the screen this is covering. Finishing the task instead
- * means the only way past this Activity is through it.
- */
+/** The unlock screen, shown over the app until the user proves who they are. */
 @AndroidEntryPoint
 class LockActivity : FragmentActivity() {
 
@@ -85,9 +66,7 @@ class LockActivity : FragmentActivity() {
                     finish()
                 }
 
-                // Deliberately does nothing. An error here — too many attempts, or the user
-                // dismissing the sheet — leaves this Activity up with its own Unlock button, so
-                // the app stays locked and they can try again when they are ready.
+                // Nothing to do: the Unlock button stays on screen for another try.
                 override fun onAuthenticationError(code: Int, message: CharSequence) = Unit
             },
         ).authenticate(

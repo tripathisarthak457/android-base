@@ -3,31 +3,7 @@ package com.base.app.core.media
 import android.graphics.Bitmap
 import android.os.Build
 
-/**
- * What "compress this image" should mean for a given upload.
- *
- * ## Why every knob is here rather than baked in
- *
- * An avatar, a KYC document and a chat attachment want three genuinely different trades. An
- * avatar can be 512px and heavily compressed; a document has to stay readable when zoomed, so it
- * wants a high edge and a high quality; a chat photo wants the smallest file that still looks
- * fine. A single hardcoded "compress" produces blurry documents *and* oversized avatars.
- *
- * ## The two-stage approach
- *
- * Scaling and quality do different jobs and are applied in that order. Downscaling removes
- * pixels — it is what actually collapses a 12-megapixel camera image, and it costs no visible
- * quality when the result is displayed at 400dp. JPEG quality then trades detail for bytes within
- * whatever resolution is left. Doing only the second on a full-resolution photo produces a large
- * file that also looks bad.
- *
- * ## Targeting a byte budget
- *
- * When [maxBytes] is set, quality is stepped down until the encoded result fits, and the encoder
- * runs more than once. That is the point: the size of a JPEG is not predictable from its quality
- * — the same setting produces wildly different sizes for a photo of a wall and a photo of a
- * forest. Measuring is the only way to actually honour an upload limit.
- */
+/** What "compress this image" should mean for a given upload. */
 data class ImageCompression(
     /** Longest edge after scaling. The single biggest lever on the final size. */
     val maxDimension: Int = 1920,
@@ -37,25 +13,13 @@ data class ImageCompression(
 
     val format: ImageFormat = ImageFormat.Jpeg,
 
-    /**
-     * Hard ceiling on the encoded size, or null for none.
-     *
-     * The encoder retries at successively lower quality until it fits or hits [minQuality]. If it
-     * still does not fit, the image is returned at [minQuality] rather than failing: an upload
-     * that is slightly over is a server-side rejection you can report, where a null result is a
-     * feature that silently does nothing.
-     */
+    /** Hard ceiling on the encoded size, or null for none. */
     val maxBytes: Long? = null,
 
     /** The floor the byte-budget search will not go below, however large the file stays. */
     val minQuality: Int = 45,
 
-    /**
-     * Strip location, device model and timestamps.
-     *
-     * On by default. A photo taken on a phone carries GPS coordinates, and uploading one to a
-     * public profile publishes the user's home address without anyone intending to.
-     */
+    /** Strip location, device model and timestamps. On by default. */
     val stripMetadata: Boolean = true,
 ) {
     init {
@@ -80,15 +44,8 @@ data class ImageCompression(
 }
 
 /**
- * The encoders worth offering.
- *
- * WebP is smaller than JPEG at the same perceived quality — typically 25-30% — and is supported
- * everywhere this project runs. It is not the default only because plenty of backends still
- * inspect the extension and reject what they do not recognise; switch to it once yours does not.
- *
- * PNG ignores [ImageCompression.quality] entirely: it is lossless, so the parameter has nothing
- * to act on. Use it only for images with flat colour and hard edges — a signature, a QR code, a
- * chart — where JPEG's ringing artefacts are visible.
+ * The encoders worth offering. WebP is smaller than JPEG at the same perceived quality — typically
+ * 25-30% — and is supported everywhere this project runs.
  */
 enum class ImageFormat(val mimeType: String, val extension: String) {
     Jpeg("image/jpeg", "jpg"),
@@ -115,24 +72,7 @@ enum class ImageFormat(val mimeType: String, val extension: String) {
     internal val isLossy: Boolean get() = this != Png
 }
 
-/**
- * What "compress this video" should mean.
- *
- * ## This describes intent; it does not transcode
- *
- * Re-encoding video correctly needs `MediaCodec` and a `MediaMuxer` — several hundred lines, a
- * per-device codec capability check, and a hardware encoder that behaves differently on every
- * chipset. That is a library's job, not a starter's, and pretending otherwise produces something
- * that works on the developer's phone and corrupts output on a quarter of the market.
- *
- * What this project ships instead: these settings, a probe that reports what a video actually is,
- * and a [VideoTranscoder] seam with a no-op default. Pick a transcoder, bind it, and every call
- * site already speaks in these terms.
- *
- * The recommended route is to constrain capture in the first place — see
- * [MediaPicker.recordVideo], which passes the duration and quality limits to the camera app and
- * costs nothing.
- */
+/** What "compress this video" should mean. */
 data class VideoCompression(
     /** Longest edge. 720p is the sweet spot for anything not being watched on a television. */
     val maxDimension: Int = 1280,

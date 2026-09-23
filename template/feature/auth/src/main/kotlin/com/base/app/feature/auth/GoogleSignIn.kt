@@ -22,17 +22,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import kotlinx.coroutines.launch
 
-/**
- * "Continue with Google", through Credential Manager.
- *
- * The button only fetches an ID token and hands it up. Exchanging it for a session is the
- * repository's job, like every other sign-in, so a Google account and a password end up in the
- * same token store through the same code.
- *
- * Needs the *web* client id from the Google Cloud console in `auth_google_server_client_id` —
- * the Android client id is the most common wrong answer and fails with a bare "developer error".
- * Until it is set, the button says so instead of opening a sheet that cannot work.
- */
+/** "Continue with Google", through Credential Manager. */
 @Composable
 fun GoogleSignInButton(
     onIdToken: (String) -> Unit,

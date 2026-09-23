@@ -9,12 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/**
- * Binds the crash reporter.
- *
- * Separate from [AnalyticsModule] because the two are independently switchable: plenty of
- * products ship crash reporting to everyone and product analytics only to users who opted in.
- */
+/** Binds the crash reporter. */
 @Module
 @InstallIn(SingletonComponent::class)
 object CrashModule {

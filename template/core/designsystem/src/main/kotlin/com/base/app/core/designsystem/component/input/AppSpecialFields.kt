@@ -40,13 +40,7 @@ import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A quantity stepper.
- *
- * Bounds are enforced here rather than by the caller, and the button at a bound is disabled
- * rather than hidden — a control that disappears at the limit makes the layout jump and leaves
- * the user unsure whether they hit a maximum or the app broke.
- */
+/** A quantity stepper. */
 @Composable
 fun AppStepper(
     value: Int,
@@ -95,13 +89,7 @@ fun AppStepper(
     }
 }
 
-/**
- * A field that opens a menu instead of a keyboard.
- *
- * Read-only rather than disabled: a disabled field is dimmed and skipped by accessibility
- * traversal, which is wrong for a control the user is expected to operate. Read-only keeps it
- * focusable and announced, and simply refuses text.
- */
+/** A field that opens a menu instead of a keyboard. */
 @Composable
 fun <T> AppSelectField(
     value: T?,
@@ -172,13 +160,7 @@ fun <T> AppSelectField(
     }
 }
 
-/**
- * A phone number, split into a dialling code and the rest.
- *
- * Two controls rather than one free-text field, because a number stored with the country code
- * inconsistently attached is the single most common cause of "we sent the code and it never
- * arrived". [onValueChange] reports them separately so the caller stores both.
- */
+/** A phone number, split into a dialling code and the rest. */
 @Composable
 fun AppPhoneField(
     dialCode: String,
@@ -196,9 +178,7 @@ fun AppPhoneField(
     var expanded by remember { mutableStateOf(false) }
     val colors = AppTheme.colors
 
-    // One label above a Row of two bare fields, rather than a label on each. Two labelled fields
-    // side by side either read as two separate questions or need a blank label on one to keep the
-    // baselines aligned — and a blank label is a screen reader announcing nothing.
+    // One label for both fields; two would read as separate questions to a screen reader.
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
@@ -216,9 +196,8 @@ fun AppPhoneField(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // A fixed width, not a minimum. AppTextField fills the width it is given, and an
-            // unweighted child that fills the width takes the whole Row — leaving the weighted
-            // number field beside it measuring zero and rendering as nothing at all.
+            // A fixed width: an unweighted field that fills the Row would leave the weighted one at
+            // zero.
             Box(modifier = Modifier.width(DIAL_CODE_WIDTH)) {
                 AppTextField(
                     value = dialCode,
@@ -280,13 +259,7 @@ val DefaultDialCodes: List<String> = listOf("+1", "+44", "+61", "+65", "+91", "+
 /** Wide enough for a four-digit code and the chevron. */
 private val DIAL_CODE_WIDTH = 108.dp
 
-/**
- * A money field that groups digits as they are typed.
- *
- * The value is carried as **minor units** — paise, cents — not as a formatted string and not as a
- * `Double`. Storing money in a float is how a total ends up at 19.999999999999998, and re-parsing
- * a formatted string on every keystroke is how a group separator ends up inside the value.
- */
+/** A money field that groups digits as they are typed. */
 @Composable
 fun AppCurrencyField(
     minorUnits: Long,
@@ -333,8 +306,8 @@ fun AppCurrencyField(
  * `123456` → `1,234.56`.
  *
  * Grouping is done by hand rather than through `NumberFormat`, because the field has to render a
- * partially typed value — and a locale formatter given "1" while the user is mid-entry will
- * happily produce something the next keystroke cannot be appended to.
+ * partially typed value — and a locale formatter given "1" while the user is mid-entry will happily
+ * produce something the next keystroke cannot be appended to.
  */
 private fun formatMinorUnits(minorUnits: Long, fractionDigits: Int): String {
     val text = minorUnits.toString().padStart(fractionDigits + 1, '0')
@@ -347,12 +320,7 @@ private fun formatMinorUnits(minorUnits: Long, fractionDigits: Int): String {
 
 private const val MAX_DIGITS = 12
 
-/**
- * A field that turns what you type into removable chips.
- *
- * Commas and the Done key both commit, because people reach for either. Duplicates are rejected
- * silently rather than with an error — the tag is already there, which is what the user wanted.
- */
+/** A field that turns what you type into removable chips. */
 @Composable
 fun AppTagInput(
     tags: List<String>,
@@ -429,12 +397,7 @@ fun AppTagInput(
     }
 }
 
-/**
- * A labelled control with an icon, for a settings row that opens something.
- *
- * Not a list item: this is a *field*, so it lines up with the text fields above and below it in a
- * form rather than spanning to the window edges the way a list row does.
- */
+/** A labelled control with an icon, for a settings row that opens something. */
 @Composable
 fun AppFieldButton(
     label: String,

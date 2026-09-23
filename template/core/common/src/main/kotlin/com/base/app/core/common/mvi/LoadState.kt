@@ -2,19 +2,7 @@ package com.base.app.core.common.mvi
 
 import com.base.app.core.common.util.UiText
 
-/**
- * How a screen's primary content is currently doing.
- *
- * This replaces the `isLoading: Boolean` + `error: String?` pair that most UiStates start with.
- * That pair has four representable combinations and only three meaningful ones — "loading *and*
- * errored" is nonsense the type permits, and in practice it renders as a spinner sitting on top
- * of an error message. A sealed state cannot express it.
- *
- * The distinction that earns its keep day to day is [Loading] versus [Refreshing]: the first has
- * nothing to show and gets a skeleton, the second already has content on screen and must not
- * replace it with one. Collapsing them is why pull-to-refresh so often blanks the list it was
- * asked to refresh.
- */
+/** How a screen's primary content is currently doing. */
 sealed interface LoadState {
 
     /** Nothing requested yet. */
@@ -29,12 +17,7 @@ sealed interface LoadState {
     /** Loaded, and the content is authoritative. */
     data object Success : LoadState
 
-    /**
-     * Loaded successfully, and the result was empty.
-     *
-     * Distinct from [Success] with zero rows because an empty state carries its own copy and its
-     * own call to action, which a generic success cannot supply.
-     */
+    /** Loaded successfully, and the result was empty. */
     data object Empty : LoadState
 
     /**

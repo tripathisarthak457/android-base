@@ -45,26 +45,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.clickableNoIndication
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A one-time-code field: [length] boxes fed by a single hidden text field.
- *
- * ## One field, not N
- *
- * The obvious build — one `BasicTextField` per box, each advancing focus to the next — is the one
- * everybody regrets. Backspace on an empty box has to move focus back and delete the previous
- * character; pasting a six-digit code has to be split across six fields; and the SMS autofill
- * suggestion only ever populates the field it was attached to. One invisible field holding the
- * whole value makes paste, autofill and backspace work for free, and the boxes become pure
- * decoration drawn from its text.
- *
- * ## Autofill
- *
- * `KeyboardOptions(autoCorrectEnabled = false)` plus the numeric keyboard is what lets the
- * platform offer an incoming SMS code above the keyboard on most devices.
- *
- * [onFilled] fires the moment the last digit lands, so the caller submits without the user having
- * to reach for a button they can no longer see behind the keyboard.
- */
+/** A one-time-code field: [length] boxes fed by a single hidden text field. */
 @Composable
 fun AppOtpField(
     value: String,
@@ -115,9 +96,7 @@ fun AppOtpField(
 
         Box {
             BasicTextField(
-                // The selection is pinned to the end so a tap anywhere in the (invisible) field
-                // cannot land the caret in the middle of the code, where the next digit would be
-                // inserted where nobody expects it.
+                // Keep the caret at the end so a tap cannot insert a digit mid-code.
                 value = TextFieldValue(text = value, selection = androidx.compose.ui.text.TextRange(value.length)),
                 onValueChange = { candidate ->
                     val digits = candidate.text.filter(Char::isDigit).take(length)

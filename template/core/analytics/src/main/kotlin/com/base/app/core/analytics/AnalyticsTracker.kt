@@ -1,13 +1,6 @@
 package com.base.app.core.analytics
 
-/**
- * One event worth recording.
- *
- * A typed class rather than a bare name and a map, so the analytics call sites in feature code
- * read as domain language and the vendor's parameter-name rules — length limits, reserved
- * prefixes, allowed characters — are enforced in one place instead of being discovered when a
- * dashboard silently stops receiving one event.
- */
+/** One event worth recording. */
 data class AnalyticsEvent(
     val name: String,
     val parameters: Map<String, Any?> = emptyMap(),
@@ -23,18 +16,7 @@ data class AnalyticsEvent(
     }
 }
 
-/**
- * Where analytics go.
- *
- * An interface with a no-op default, for three reasons that all show up eventually: swapping
- * vendors becomes one binding rather than a search through every feature; tests do not fire real
- * events; and a build with analytics disabled needs no conditional code at the call sites, only a
- * different binding.
- *
- * [setUserId] takes a nullable so that sign-out has an unambiguous call. Leaving a stale user id
- * attached after sign-out attributes the next person's session to the previous one, which is both
- * wrong data and, on a shared device, a privacy problem.
- */
+/** Where analytics go. */
 interface AnalyticsTracker {
 
     fun track(event: AnalyticsEvent)
@@ -48,10 +30,8 @@ interface AnalyticsTracker {
 }
 
 /**
- * Records nothing.
- *
- * The binding used in debug builds and in tests, and the one that keeps the rest of the app
- * unaware of whether analytics exist at all.
+ * Records nothing. The binding used in debug builds and in tests, and the one that keeps the rest
+ * of the app unaware of whether analytics exist at all.
  */
 class NoOpAnalyticsTracker : AnalyticsTracker {
     override fun track(event: AnalyticsEvent) = Unit
@@ -60,13 +40,7 @@ class NoOpAnalyticsTracker : AnalyticsTracker {
     override fun setEnabled(enabled: Boolean) = Unit
 }
 
-/**
- * Where crashes and non-fatal errors go.
- *
- * Separate from [AnalyticsTracker] because the two have genuinely different lifecycles: crash
- * reporting stays on when a user opts out of product analytics, and it is initialised earlier —
- * before the DI graph is fully built, so that a crash during startup is still captured.
- */
+/** Where crashes and non-fatal errors go. */
 interface CrashReporter {
 
     fun recordException(throwable: Throwable, message: String? = null)

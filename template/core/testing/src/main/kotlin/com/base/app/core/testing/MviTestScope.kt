@@ -9,14 +9,7 @@ import com.base.app.core.common.mvi.UiMessage
 import com.base.app.core.common.mvi.UiState
 import kotlinx.coroutines.test.runTest
 
-/**
- * The three things a ViewModel emits, collected together for the duration of a test.
- *
- * Without this, every feature's tests open with the same twenty lines: a dispatcher rule, a
- * Turbine on the state, another on the effects, a `skipItems(1)` for the initial value, and a
- * `cancelAndIgnoreRemainingEvents` at the end. Retyping that per screen is how one screen's tests
- * end up asserting on effects and another's quietly do not.
- */
+/** The three things a ViewModel emits, collected together for the duration of a test. */
 class MviTestScope<S : UiState, E : UiEvent, F : UiEffect>(
     private val viewModel: MviViewModel<S, E, F>,
     val states: ReceiveTurbine<S>,
@@ -29,13 +22,7 @@ class MviTestScope<S : UiState, E : UiEvent, F : UiEffect>(
     /** The next state. Fails the test if none arrives. */
     suspend fun state(): S = states.awaitItem()
 
-    /**
-     * The state after the queue has caught up: the last one emitted, discarding those in front.
-     *
-     * For an assertion about where a screen ended up rather than how it got there — a load that
-     * goes Loading then Success does not need both asserted, and a test that names every
-     * intermediate state fails when somebody adds a legitimate one.
-     */
+    /** The state after the queue has caught up: the last one emitted, discarding those in front. */
     suspend fun settledState(): S {
         states.awaitItem()
         return states.expectMostRecentItem()
@@ -51,10 +38,6 @@ class MviTestScope<S : UiState, E : UiEvent, F : UiEffect>(
 
 /**
  * Runs [block] against a ViewModel with its state, effects and messages already being collected.
- *
- * The initial state is consumed before [block] starts, so the first `state()` inside it is the
- * first change rather than the value the screen opened with — which is the assertion nearly every
- * test actually wants to make.
  *
  * ```
  * @Test

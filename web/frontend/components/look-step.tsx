@@ -48,12 +48,7 @@ export function ScaledPreview({
   );
 }
 
-/**
- * The big phone beside the Look and Motion steps.
- *
- * Tapping a tab in the phone switches screen exactly as the app does, and the row above it
- * reaches the screens that have no tab — sign in, when auth is on.
- */
+/** The big phone beside the Look and Motion steps. */
 export function LivePreview({ config, onDark }: { config: PreviewConfig; onDark: (dark: boolean) => void }) {
   const screens = useMemo(() => screensFor(config.features), [config.features]);
   const [screen, setScreen] = useState<Screen>(screens[0] ?? "settings");
@@ -317,9 +312,9 @@ function MotionNumbers({ styleKey }: { styleKey: MotionStyleKey }) {
 }
 
 /**
- * One brand colour: a swatch, the hex, and — for the two supporting colours — a way back to
- * having it worked out from the primary. `value` is what gets sent (empty means derive);
- * `resolved` is what gets shown.
+ * One brand colour: a swatch, the hex, and — for the two supporting colours — a way back to having
+ * it worked out from the primary. `value` is what gets sent (empty means derive); `resolved` is
+ * what gets shown.
  */
 function BrandColourRow({
   label,

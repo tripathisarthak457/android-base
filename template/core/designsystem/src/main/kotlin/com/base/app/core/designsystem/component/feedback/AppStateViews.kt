@@ -26,11 +26,8 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * The "there is nothing here" state.
- *
- * Every empty list gets one of these rather than blank space, and every one of them takes a
- * [title] and an [action]. An empty screen with no explanation is indistinguishable from a screen
- * that failed to load, and the user's next move is to close the app.
+ * The "there is nothing here" state. Every empty list gets one of these rather than blank space,
+ * and every one of them takes a [title] and an [action].
  */
 @Composable
 fun AppEmptyState(
@@ -54,14 +51,7 @@ fun AppEmptyState(
     )
 }
 
-/**
- * The "it did not load" state.
- *
- * [isOffline] chooses both the glyph and the copy, because those two failures need different
- * words and a different promise: an offline retry is "try again when you are back", a server
- * error is "try again now". Collapsing them into one message means one of the two is always
- * wrong.
- */
+/** The "it did not load" state. */
 @Composable
 fun AppErrorState(
     message: String,
@@ -144,11 +134,8 @@ private fun StateLayout(
 }
 
 /**
- * A slim bar for a whole-screen condition that does not stop the screen working — offline, a
- * stale cache, an update available.
- *
- * Distinct from a snackbar because it persists: it stays until the condition clears, so it must
- * not steal the tap target of anything beneath it or animate on a timer.
+ * A slim bar for a whole-screen condition that does not stop the screen working — offline, a stale
+ * cache, an update available.
  */
 @Composable
 fun AppBanner(

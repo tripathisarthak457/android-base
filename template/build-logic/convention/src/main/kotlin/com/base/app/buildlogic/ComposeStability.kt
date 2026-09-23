@@ -19,54 +19,13 @@ import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import java.io.File
 
-/**
- * Reads the Compose compiler's own stability report and fails on a new recomposition cost.
- *
- * The report has always been available — `enableComposeCompilerMetrics` has been in
- * `gradle.properties` since the first commit — and reading it is a thing somebody does once,
- * during a performance investigation, six months after the composable that caused the problem
- * was merged. This makes it a build failure on the day it is written instead.
- *
- * ## What is being checked
- *
- * Two things, both of which cost a frame and neither of which is visible in a diff. A
- * `restartable` composable that is not also `skippable` re-executes whenever its parent
- * recomposes, unconditionally — in a list row, once per row per frame. And a composable taking a
- * parameter the compiler cannot prove immutable stays skippable under strong skipping but pays an
- * `equals` on that parameter every recomposition instead, which for a `List` is O(n) per frame and
- * for a `var`-holding class is a comparison that never says equal.
- *
- * The cause of the second is almost always a `List<T>` where a `PersistentList<T>` would do, a
- * type from a module without the compiler plugin, or a `var` in a class being passed as state.
- * When the type belongs to a library this project cannot change, `config/compose-stability.conf`
- * is where it is declared immutable — that file is why `IntRange` is not on this list.
- *
- * ## Scoped to the design system
- *
- * `:core:designsystem` and `:core:ui` only. Those are the leaves every screen calls, so a
- * component that cannot skip is paid for by every feature that uses it. A feature's own screen is
- * called once per navigation and the same defect there is worth a fraction as much — checking it
- * everywhere would cost every module the ~15% compile overhead metrics carry, to catch things
- * nobody would act on.
- *
- * ## Why there is a baseline
- *
- * A check retrofitted onto existing code either starts green with the current state written down, or starts red and
- * is switched off within a week. [RecordComposeStabilityTask] writes the file;
- * [CheckComposeStabilityTask] fails on anything not in it. Deleting a line is how a fix is
- * recorded.
- */
+/** Reads the Compose compiler's own stability report and fails on a new recomposition cost. */
 internal fun Project.configureComposeStability() {
     if (path !in STABILITY_CHECKED_MODULES) return
 
-    // Set here rather than beside the `enableComposeCompilerMetrics` property in
-    // [configureCompose], so that the whole feature — which modules, why, and the tasks that read
-    // the result — is one file. These two always write a report; every other module still only
-    // writes one when the property asks for it.
+    // Kept here so the whole stability feature is in one file.
     extensions.configure<ComposeCompilerGradlePluginExtension> {
-        // `reportsDestination`, not `metricsDestination`. The latter writes a module-level JSON
-        // of totals — 295 composables, 153 skippable — which says a number is bad without saying
-        // which function it is. The per-composable text file that names them is the report.
+        // reportsDestination names each composable; metricsDestination only gives module totals.
         reportsDestination.set(layout.buildDirectory.dir("compose_reports"))
     }
 
@@ -76,12 +35,6 @@ internal fun Project.configureComposeStability() {
 
     /*
      * Declared as an output of the compilation that writes it.
-     *
-     * Without this the report is a file Gradle knows nothing about: a second build finds the
-     * compile UP-TO-DATE, or restores it FROM-CACHE on CI, and the directory is simply not there.
-     * The check would then read nothing and pass — the worst failure mode a check has, because it
-     * is indistinguishable from passing honestly. Declaring it makes it cached and restored with
-     * everything else the compile produces.
      */
     tasks.matching { it.name == COMPILE_TASK }.configureEach {
         outputs.dir(reportsDir).withPropertyName("composeStabilityReports")
@@ -120,17 +73,14 @@ internal fun Project.configureComposeStability() {
 private val STABILITY_CHECKED_MODULES = setOf(":core:designsystem", ":core:ui")
 
 /**
- * The compilation that writes the report.
- *
- * One variant, not all of them: these are library modules with no flavours, and the two build
- * types compile the same sources to the same stability answers.
+ * The compilation that writes the report. One variant, not all of them: these are library modules
+ * with no flavours, and the two build types compile the same sources to the same stability answers.
  */
 private const val COMPILE_TASK = "compileDebugKotlin"
 
 /**
- * Every composable the report says is paying for a recomposition it did not need, as `FunctionName`.
- *
- * Two distinct findings, one list, because the fix for both starts by opening the same file:
+ * Every composable the report says is paying for a recomposition it did not need, as
+ * `FunctionName`.
  *
  * * **restartable but not skippable.** The function re-executes whenever its parent recomposes,
  *   unconditionally. In a list row that is once per row per frame.
@@ -138,10 +88,6 @@ private const val COMPILE_TASK = "compileDebugKotlin"
  *   parameter with `equals` on every recomposition instead of skipping the comparison — which for
  *   a `List` is O(n) per frame, and for a `var`-holding class is a comparison that never says
  *   equal.
- *
- * The name alone rather than the whole report line: the line carries the parameter list and the
- * scheme string, and both change for reasons unrelated to stability. A renamed parameter would
- * otherwise read as a new violation and a fixed one as still present.
  */
 private fun offenders(reports: Set<File>): List<String> =
     reports.asSequence()

@@ -11,13 +11,7 @@ import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * The catalog's pages.
- *
- * An enum rather than a list of objects holding composable lambdas, because the selection is
- * persisted with `rememberSaveable` — an enum saves as its name, a lambda does not save at all,
- * and rotating the device would otherwise throw the reader back to the index.
- */
+/** The catalog's pages. */
 enum class CatalogSection(val title: String, val summary: String) {
     Foundations("Foundations", "Colour, type, spacing, elevation, motion"),
     Buttons("Buttons", "Five variants, three sizes, loading and disabled"),
@@ -56,10 +50,8 @@ fun CatalogSection.Content() {
 }
 
 /**
- * A labelled group.
- *
- * Every example on every page sits in one of these, so the pages stay readable as they grow and
- * nobody has to invent a heading style per section.
+ * A labelled group. Every example on every page sits in one of these, so the pages stay readable as
+ * they grow and nobody has to invent a heading style per section.
  */
 @Composable
 fun CatalogGroup(

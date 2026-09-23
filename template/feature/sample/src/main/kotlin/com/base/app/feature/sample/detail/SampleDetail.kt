@@ -46,11 +46,8 @@ sealed interface SampleDetailEffect : UiEffect {
 }
 
 /**
- * The detail ViewModel.
- *
- * The item id arrives through assisted injection, at construction, from the navigation key. Each
- * destination owns its ViewModel, so there is exactly one of these per open detail screen and it
- * never has to be told which item it is for after the fact.
+ * The detail ViewModel. The item id arrives through assisted injection, at construction, from the
+ * navigation key.
  */
 @HiltViewModel(assistedFactory = SampleDetailViewModel.Factory::class)
 class SampleDetailViewModel @AssistedInject constructor(

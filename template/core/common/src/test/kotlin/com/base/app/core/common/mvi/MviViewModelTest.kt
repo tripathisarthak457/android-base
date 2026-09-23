@@ -12,12 +12,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-/**
- * The two helpers in [MviViewModel] that are more than a line of plumbing.
- *
- * Both fail silently when broken — a state that quietly does not come back, a stale response that
- * quietly wins — so they are exactly the parts worth pinning down.
- */
+/** The two helpers in [MviViewModel] that are more than a line of plumbing. */
 class MviViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
@@ -93,10 +88,8 @@ class MviViewModelTest {
                 is TestEvent.Search -> {
                     updateState { copy(query = event.query) }
                     launchLatest("search") {
-                        // The shorter query is the slower one, which is the shape of the real
-                        // race: "ca" matches more rows than "cars" and the server takes
-                        // longer over it, so its answer lands last and wins. Equal delays
-                        // would let this test pass without any cancellation at all.
+                        // The shorter query answers last, as in the real race: "ca" matches more
+                        // rows than "cars".
                         delay(SLOW_MILLIS * (LONGEST_QUERY - event.query.length))
                         updateState { copy(results = event.query) }
                     }

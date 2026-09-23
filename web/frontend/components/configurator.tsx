@@ -67,14 +67,7 @@ function appNameError(value: string): string | undefined {
   return undefined;
 }
 
-/**
- * The reserved list is not written out here.
- *
- * It comes down in the catalogue, because it is longer than the obvious directories: naming a
- * module `auth` scaffolds a generic repository over the curated `:data:auth`, and the project
- * that comes out does not compile. A second copy of that list on the site would be right until
- * the day the template gained a module, and then it would be a broken zip rather than a message.
- */
+/** The reserved list is not written out here. */
 function moduleError(names: string[], reserved: string[]): string | undefined {
   for (const name of names) {
     if (!/^[a-z][a-z0-9_]*$/.test(name)) {
@@ -89,8 +82,8 @@ function moduleError(names: string[], reserved: string[]): string | undefined {
 }
 
 /**
- * Mirrors the generator's URL rule. The value is written into a Kotlin string that Gradle
- * compiles, so a quote, a backslash or a `$` is refused rather than escaped.
+ * Mirrors the generator's URL rule. The value is written into a Kotlin string that Gradle compiles,
+ * so a quote, a backslash or a `$` is refused rather than escaped.
  */
 function urlError(url: string): string | undefined {
   if (!/^https?:\/\/[A-Za-z0-9._~:/?#[\]@!&'()*+,;=%-]+$/.test(url.trim())) {
@@ -132,12 +125,7 @@ function signingError(
   return undefined;
 }
 
-/**
- * A password strong enough that accepting the default is the right move.
- *
- * Generated in the browser rather than on the server: the server never needs to invent a secret,
- * and a visitor who wants their own can type over it.
- */
+/** A password strong enough that accepting the default is the right move. */
 function randomPassword(): string {
   const alphabet = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   const bytes = crypto.getRandomValues(new Uint32Array(20));
@@ -237,12 +225,7 @@ export function Configurator({
   };
   const identityValid = !errors.appName && !errors.packageName;
 
-  /**
-   * Ticking a feature also ticks what it needs; unticking one unticks what needed it.
-   *
-   * The dependency graph lives in the generator and comes down in `implies`, so the site does not
-   * have a second copy of "push needs Firebase" to keep in step.
-   */
+  /** Ticking a feature also ticks what it needs; unticking one unticks what needed it. */
   function toggleFeature(key: string) {
     setFeatures((current) => {
       const next = new Set(current);
@@ -980,16 +963,7 @@ function BuildStep({
   );
 }
 
-/**
- * Signing keys, off by default.
- *
- * The warning is not a formality. A key generated here was created on a machine the visitor does
- * not control and travelled back over the wire, so its custody cannot be claimed — and a Play
- * upload key whose custody is in doubt is the one Android mistake that cannot be undone. That is
- * an argument for saying so plainly and letting people decide, not for refusing: most projects
- * are not on Play yet, and four `keytool` invocations are exactly the friction that leaves a team
- * building release variants with the debug key for a year.
- */
+/** Signing keys, off by default. The warning is not a formality. */
 function SigningPanel({
   catalogue,
   signing,

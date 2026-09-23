@@ -4,27 +4,7 @@ import androidx.compose.ui.graphics.Color
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-/**
- * Every text-on-background pair in both palettes, against WCAG AA.
- *
- * ## Why this is a test and not a review note
- *
- * Contrast is the one design property that is objectively wrong or right, invisible to the person
- * changing it, and catastrophic to the person who cannot read the result. A reviewer looking at
- * `Grey500 -> Grey550` in a diff cannot evaluate it; a bright monitor at midday hides the failure
- * from everyone who might notice. This ran on the palette as it stood and found the success pill
- * at 4.36 — legible to us, under the line for somebody who needs it not to be.
- *
- * ## What is exempt, and why
- *
- * Disabled text only. WCAG 1.4.3 exempts inactive controls, and a disabled label that meets AA is
- * a disabled label that does not read as disabled — which is a worse outcome for the same person.
- *
- * The generator rewrites the accent ramp per project, so what this pins is the template's own
- * palette and the neutrals every project keeps. A project with its own brand colour should keep
- * this test and re-run it; the on-accent decision is made by contrast in the generator, and this
- * is what checks the answer.
- */
+/** Every text-on-background pair in both palettes, against WCAG AA. */
 class PaletteContrastTest {
 
     @Test

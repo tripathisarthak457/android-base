@@ -2,14 +2,7 @@
 
 import { motion } from "framer-motion";
 
-/**
- * What arrives whatever you tick.
- *
- * This section exists because the configurator below it is a list of things you can *remove*, and
- * a visitor who only sees that list forms the impression that an untouched project is empty. The
- * opposite is true, and the parts that are not optional are the ones worth choosing this over a
- * blank Android Studio project for.
- */
+/** What arrives whatever you tick. */
 const ALWAYS = [
   {
     title: "A design system with no Material",

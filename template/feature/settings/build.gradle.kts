@@ -7,8 +7,6 @@ android {
 }
 
 dependencies {
-    // Settings is the one screen that reads the preference store directly rather than through a
-    // :data: module — the values are the app's own configuration, not a business domain, and
-    // wrapping them in a repository would be a layer that only ever forwards.
+    // Settings reads the preference store directly; it is app configuration, not a domain.
     implementation(project(":core:datastore"))
 }

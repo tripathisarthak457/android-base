@@ -258,9 +258,7 @@ fun ContainersSection() {
         title = "Top bars",
         caption = "AppScaffold takes one of these; each already handles the status-bar inset.",
     ) {
-        // Each bar applies `statusBarsPadding()`, which is right at the top of a window and wrong
-        // half-way down this page — the demos would render 40dp taller than they really are.
-        // Consuming the inset here tells them it has already been dealt with.
+        // Consume the status-bar inset so the demo bars do not pad themselves mid-page.
         Column(
             modifier = Modifier
                 .consumeWindowInsets(WindowInsets.statusBars)
@@ -562,9 +560,7 @@ fun OverlaysSection() {
 
 @Composable
 fun DateTimeSection() {
-    // A fixed date in the past, so the page is the same on every day it is opened. `AppDatePicker`
-    // takes its visible month from the selection and rings whichever cell is today, and a past
-    // month can never contain today.
+    // A fixed past date keeps the page identical every day; the picker rings today's cell.
     var date by remember { mutableStateOf<LocalDate?>(LocalDate.of(2026, 3, 14)) }
     var time by remember { mutableStateOf(LocalTime.of(9, 30)) }
     var wheel by remember { mutableIntStateOf(2) }

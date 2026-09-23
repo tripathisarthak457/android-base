@@ -18,13 +18,7 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Whether the device currently has usable connectivity.
- *
- * An interface rather than the implementation directly, because "the user is offline" is a state
- * every test of every repository needs to produce, and doing that against a real
- * `ConnectivityManager` means an instrumented test and a device with its radio turned off.
- */
+/** Whether the device currently has usable connectivity. */
 interface NetworkMonitor {
     val isOnline: Flow<Boolean>
 }
@@ -35,19 +29,7 @@ class ConnectivityNetworkMonitor @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : NetworkMonitor {
 
-    /**
-     * Tracks the set of validated networks rather than a single boolean.
-     *
-     * Callbacks arrive per network, and a handover from Wi-Fi to cellular delivers `onAvailable`
-     * for the new one and `onLost` for the old one in an order that is not guaranteed. A single
-     * boolean flips to false in the middle of a handover that never actually dropped, which the
-     * UI shows as an offline banner flashing on a working connection. Counting networks cannot
-     * produce that.
-     *
-     * `NET_CAPABILITY_VALIDATED` is what separates "associated with an access point" from
-     * "packets actually reach the internet" — the captive-portal case that otherwise reports
-     * online while every request times out.
-     */
+    /** Tracks the set of validated networks rather than a single boolean. */
     override val isOnline: Flow<Boolean> = callbackFlow {
         val connectivityManager = context.getSystemService<ConnectivityManager>()
         if (connectivityManager == null) {

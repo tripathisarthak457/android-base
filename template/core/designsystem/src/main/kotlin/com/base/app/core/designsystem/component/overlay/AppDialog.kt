@@ -35,20 +35,8 @@ import com.base.app.core.designsystem.foundation.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * A modal dialog.
- *
- * ## It animates in
- *
- * `Dialog` puts its content on screen the instant it composes, with no transition of any kind —
- * one of several things Material supplied that has to be rebuilt here. A one-shot
- * [LaunchedEffect] flips a flag on the first frame so the scale and fade animate from their
- * starting values rather than being already finished.
- *
- * There is no matching exit animation, and that is a real limitation: the dialog window is
- * removed from the hierarchy the moment the caller stops composing it, so there is nothing left
- * to animate out. Achieving one means the caller keeping the dialog composed through its own exit
- * transition, which is more ceremony than a confirmation dialog is worth. An entrance without an
- * exit still reads far better than neither.
+ * A modal dialog. `Dialog` puts its content on screen the instant it composes, with no transition
+ * of any kind — one of several things Material supplied that has to be rebuilt here.
  */
 @Composable
 fun AppDialog(
@@ -80,9 +68,8 @@ fun AppDialog(
             label = "dialogAlpha",
         )
 
-        // Centred by this Box rather than by the Dialog. With usePlatformDefaultWidth = false the
-        // window fills the screen and where the content lands is left to the implementation —
-        // owning the alignment here means it cannot move under us.
+        // Centred here, not by the Dialog: with usePlatformDefaultWidth = false the window fills
+        // the screen.
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -107,15 +94,7 @@ fun AppDialog(
     }
 }
 
-/**
- * The confirmation dialog: an optional icon, a title, a message, and one or two actions.
- *
- * The confirm button is [ButtonVariant.Destructive] when [tone] is [AppTone.Error], so a delete
- * confirmation cannot accidentally be styled the same as a save.
- *
- * Both callbacks dismiss before acting. A dialog that stays on screen while its action runs
- * either blocks the UI or lets the action be triggered twice.
- */
+/** The confirmation dialog: an optional icon, a title, a message, and one or two actions. */
 @Composable
 fun AppAlertDialog(
     title: String,

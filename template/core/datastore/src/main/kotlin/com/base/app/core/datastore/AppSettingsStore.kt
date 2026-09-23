@@ -12,13 +12,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * The user's preferences: things they chose, which must survive a sign-out.
- *
- * Exposed as flows rather than suspend reads because the theme in particular is consumed by the
- * composition at the very root of the app — it has to *react*, not be fetched once at startup and
- * then be wrong until the next launch.
- */
+/** The user's preferences: things they chose, which must survive a sign-out. */
 data class AppSettings(
     val themeMode: String = THEME_SYSTEM,
     val dynamicColorEnabled: Boolean = false,

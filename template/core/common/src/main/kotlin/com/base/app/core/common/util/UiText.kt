@@ -3,17 +3,7 @@ package com.base.app.core.common.util
 import android.content.Context
 import androidx.annotation.StringRes
 
-/**
- * A string that a ViewModel can produce without holding a `Context`.
- *
- * A ViewModel that resolves strings itself either keeps a Context — which leaks and breaks under
- * configuration change and locale switches — or returns raw English, which cannot be localised.
- * [UiText] defers resolution to the composable that renders it, so the same state object renders
- * correctly in every locale and survives the user changing theirs while the screen is open.
- *
- * [Resource] is the default. [Dynamic] exists for the one case a resource cannot cover: a message
- * that only the server knows.
- */
+/** A string that a ViewModel can produce without holding a `Context`. */
 sealed interface UiText {
 
     data class Dynamic(val value: String) : UiText

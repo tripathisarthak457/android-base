@@ -45,10 +45,9 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 
 /**
- * One destination in the bottom bar.
- *
- * [selectedIcon] is separate from [icon] so a tab can switch from an outline to a filled glyph
- * when active — a second, non-colour signal for the selected state.
+ * One destination in the bottom bar. [selectedIcon] is separate from [icon] so a tab can switch
+ * from an outline to a filled glyph when active — a second, non-colour signal for the selected
+ * state.
  */
 @Immutable
 data class BottomNavItem(
@@ -58,16 +57,7 @@ data class BottomNavItem(
     val badgeCount: Int = 0,
 )
 
-/**
- * The persistent bottom bar, drawn the way the design style says — see [BarTreatment].
- *
- * Host it *above* the navigation container rather than inside each tab's screen. A bar that is
- * part of the screen is torn down and rebuilt on every tab switch, which makes the badge flicker
- * and lets the bar animate in with the content behind it.
- *
- * Where there is an indicator it slides from tab to tab rather than fading between them, so the
- * eye follows one object across the bar instead of watching one light go off and another on.
- */
+/** The persistent bottom bar, drawn the way the design style says — see [BarTreatment]. */
 @Composable
 fun AppBottomBar(
     items: List<BottomNavItem>,
@@ -86,12 +76,7 @@ object AppBottomBarDefaults {
     private val FloatingHeight = 64.dp
     private val FloatingMargin = 12.dp
 
-    /**
-     * How much of the bottom of the window the bar covers, navigation bar included.
-     *
-     * Computed rather than measured, so a tab's root screen is laid out at its final size on the
-     * very first frame instead of shrinking once the bar has reported in.
-     */
+    /** How much of the bottom of the window the bar covers, navigation bar included. */
     @Composable
     fun occupiedHeight(): Dp {
         val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()

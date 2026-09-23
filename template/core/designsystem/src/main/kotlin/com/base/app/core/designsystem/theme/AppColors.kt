@@ -6,15 +6,6 @@ import androidx.compose.ui.graphics.Color
 
 /**
  * Every colour the app is allowed to use, named for what it means rather than what it looks like.
- *
- * A screen asks for `colors.danger.content`, never for a red. That is the difference between a
- * dark theme being one more instance of this class and being a search-and-replace through every
- * feature — and it is why a status pill, an error banner and a destructive button are guaranteed
- * to agree with each other.
- *
- * `@Immutable` is load-bearing: it tells the Compose compiler this can be compared by reference,
- * so a composable taking it as a parameter can skip. Without it, every component in the design
- * system recomposes whenever anything in the theme is read.
  */
 @Immutable
 data class AppColors(
@@ -34,14 +25,7 @@ data class AppColors(
     val accentSubtle: Color,
     val onAccent: Color,
 
-    /**
-     * Two supporting brand colours, each with the same three roles as the accent.
-     *
-     * Nothing in the design system reads them: every component draws with [accent], which is
-     * what keeps one action per screen looking like the action. They are here so that a screen
-     * that genuinely needs a second colour — a chart with two series, a promotion beside a
-     * primary button — has one that the theme derived rather than one somebody typed inline.
-     */
+    /** Two supporting brand colours, each with the same three roles as the accent. */
     val secondary: Color,
     val secondaryPressed: Color,
     val secondarySubtle: Color,
@@ -73,9 +57,6 @@ data class AppColors(
 /**
  * One meaning, three roles: [content] for text and icons, [subtle] for the pill or panel behind
  * them, [border] for the outline when the block needs one.
- *
- * Grouped so a caller picks a meaning and physically cannot pair a red foreground with an amber
- * background — the drift that turns four status styles into eleven.
  */
 @Immutable
 data class StatusColors(

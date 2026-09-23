@@ -1,9 +1,5 @@
-// Package generate runs the Python generator and hands back a zip.
-//
-// The generator is not reimplemented here. It is the same code the CLI runs, invoked as a
-// subprocess, so there is exactly one definition of what a generated project is. A Go port would
-// be faster and would be wrong within a month — the two would drift, and the drift would show up
-// as a project from the website that does not match the one from the terminal.
+// Package generate runs the Python generator and hands back a zip. The generator is not
+// reimplemented here.
 package generate
 
 import (
@@ -47,15 +43,7 @@ type Request struct {
 	Keystores       []Keystore `json:"keystores,omitempty"`
 }
 
-// Keystore asks the generator to create one signing key.
-//
-// These fields carry passwords. They go to the subprocess's stdin and nowhere else: never to the
-// analytics store, never to a log line, and never back in the response — the only place they end
-// up is inside the zip the visitor downloads, in `keystore.properties`, which is what makes the
-// generated project buildable. Anything added here that widens that path is a credential leak.
-//
-// There is deliberately no field for an existing .jks path. The generator would read that file
-// off this server's disk and put it in the zip.
+// Keystore asks the generator to create one signing key. These fields carry passwords.
 type Keystore struct {
 	Name          string `json:"name"`
 	Alias         string `json:"alias"`
@@ -85,9 +73,7 @@ type Result struct {
 }
 
 // InvalidRequestError is a rejection by the generator's own validation — a bad package name, an
-// unknown feature. It is the caller's fault, so it becomes a 400 rather than a 500. Separating it
-// from a genuine failure is what keeps the error dashboard meaningful: everything left in there
-// is a bug in the generator rather than a typo by a visitor.
+// unknown feature. It is the caller's fault, so it becomes a 400 rather than a 500.
 type InvalidRequestError struct{ Message string }
 
 func (e *InvalidRequestError) Error() string { return e.Message }

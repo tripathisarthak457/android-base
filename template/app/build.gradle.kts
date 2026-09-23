@@ -33,10 +33,8 @@ android {
 
     buildTypes {
         release {
-            // `getDefaultProguardFile` is only reachable from a build script, which is why this
-            // one block stays here rather than in the convention plugin. The optimised variant
-            // of the default file is the one worth having: it enables the class-merging and
-            // inlining passes that the plain file leaves off.
+            // `getDefaultProguardFile` is only reachable from a build script, which is why this one
+            // block stays here rather than in the convention plugin.
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -143,12 +141,9 @@ dependencies {
 
 // <opt:licenses>
 /*
- * What this app is allowed to ship.
- *
- * Licensee fails the build on anything not listed, which turns "we shipped a copyleft dependency"
- * from a discovery into a build error at the moment the dependency is added. The list below is
- * the permissive set; adding to it should be a decision somebody makes deliberately, which is
- * exactly why it is here and not hidden in a plugin default.
+ * What this app is allowed to ship. Licensee fails the build on anything not listed, which turns
+ * "we shipped a copyleft dependency" from a discovery into a build error at the moment the
+ * dependency is added.
  */
 licensee {
     allow("Apache-2.0")
@@ -158,9 +153,7 @@ licensee {
     allow("EPL-1.0")
     allow("CC0-1.0")
 
-    // Three real dependencies state their terms as a URL rather than as an SPDX identifier,
-    // so each one has to be allowed by hand. That is the plugin working: an unrecognised
-    // licence stops the build until somebody has actually looked at it.
+    // These three state their licence as a URL rather than an SPDX id, so each is allowed by hand.
     allowUrl("https://developer.android.com/studio/terms.html") {
         because("The Android Software Development Kit License, on Google's own artifacts.")
     }

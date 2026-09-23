@@ -7,21 +7,7 @@ import android.os.Build
 import android.os.LocaleList
 import java.util.Locale
 
-/**
- * The app's own language, independent of the phone's.
- *
- * On Android 13 and later this is the system's per-app language: it shows up in the phone's
- * settings too, and the system restarts the activity itself. Earlier releases have no such
- * thing, so the choice is kept here and applied by wrapping the activity's context — which is
- * why `MainActivity.attachBaseContext` calls [wrap].
- *
- * Deliberately not AppCompat's `setApplicationLocales`. Below 13 that only works in an
- * `AppCompatActivity`, and this app has no other reason to depend on AppCompat.
- *
- * Add a language by adding `values-xx` directories and putting its tag in [supported]. The
- * phone's settings pick it up by themselves: the build generates their list from the same
- * directories.
- */
+/** The app's own language, independent of the phone's. */
 object AppLocales {
 
     /** Every language the app ships strings for, source language first. */

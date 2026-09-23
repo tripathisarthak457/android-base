@@ -53,26 +53,7 @@ data class CompressedImage(
     }
 }
 
-/**
- * Turns a picked image into something worth uploading.
- *
- * ## Decoding happens twice, on purpose
- *
- * The first pass reads only the bounds (`inJustDecodeBounds`) to learn the dimensions without
- * allocating the pixels. That number chooses an `inSampleSize`, so the second pass decodes
- * straight to roughly the target size. Decoding a 12-megapixel photo at full resolution first
- * allocates ~48MB and is the single most common cause of an `OutOfMemoryError` in an app that
- * lets people attach photos — on the devices least able to afford it.
- *
- * `inSampleSize` only halves, so the result is then scaled precisely; halving alone would leave
- * an image up to twice the requested edge.
- *
- * ## Rotation is applied, not carried
- *
- * A camera photo is usually stored landscape with an EXIF orientation tag saying which way is up.
- * Strip the metadata without rotating the pixels and every portrait photo uploads sideways —
- * which is exactly the bug that makes people think an app is broken.
- */
+/** Turns a picked image into something worth uploading. */
 @Singleton
 class ImageCompressor @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -163,12 +144,7 @@ class ImageCompressor @Inject constructor(
         }
     }
 
-    /**
-     * The largest power-of-two divisor that keeps the image at or above the target.
-     *
-     * At or above, not below: sampling past the target and scaling *up* afterwards throws away
-     * detail that cannot be recovered.
-     */
+    /** The largest power-of-two divisor that keeps the image at or above the target. */
     private fun sampleSizeFor(width: Int, height: Int, maxDimension: Int): Int {
         if (width <= 0 || height <= 0) return 1
         var sample = 1
@@ -213,13 +189,7 @@ class ImageCompressor @Inject constructor(
         )
     }
 
-    /**
-     * Encodes, stepping quality down until the result fits [ImageCompression.maxBytes].
-     *
-     * Linear steps rather than a binary search: the range is narrow, each attempt is fast at this
-     * resolution, and a binary search on a non-monotonic-in-practice function is more code for no
-     * measurable gain.
-     */
+    /** Encodes, stepping quality down until the result fits [ImageCompression.maxBytes]. */
     private fun encodeWithinBudget(
         bitmap: Bitmap,
         settings: ImageCompression,

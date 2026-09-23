@@ -5,14 +5,7 @@ import kotlinx.serialization.json.JsonElement
 /** The verbs this client speaks. An enum rather than a string, so a typo cannot reach the wire. */
 enum class HttpMethodType { GET, POST, PUT, PATCH, DELETE }
 
-/**
- * A transport-agnostic description of one call.
- *
- * The Ktor client translates this into a request. Keeping the description separate from the
- * execution is what lets a failed mutation be *persisted* and replayed later — see the offline
- * queue — which is impossible if the only representation of a request is the builder lambda that
- * issued it.
- */
+/** A transport-agnostic description of one call. */
 data class NetworkRequest(
     val method: HttpMethodType,
     val path: String,
@@ -63,14 +56,7 @@ sealed interface MultipartPart {
     }
 }
 
-/**
- * Whether, and for how long, a successful response may be served from disk.
- *
- * Read-through rather than a plain expiry: [maxAgeMillis] is how long the cached copy is served
- * *without* a network call, and a request that fails after that still falls back to the stale
- * copy rather than showing an error. A user on a train sees yesterday's list, which is almost
- * always better than a retry button.
- */
+/** Whether, and for how long, a successful response may be served from disk. */
 sealed interface CachePolicy {
 
     data object Disabled : CachePolicy

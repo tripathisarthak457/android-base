@@ -16,14 +16,7 @@ import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.icon.AppIcons
 
-/**
- * A password field with a reveal toggle.
- *
- * Visibility is local state rather than hoisted. It is a momentary display preference that should
- * reset every time the screen is recreated — a ViewModel remembering that the password was
- * revealed, and restoring that after the app returns from the background, is a small privacy leak
- * nobody asked for.
- */
+/** A password field with a reveal toggle. Visibility is local state rather than hoisted. */
 @Composable
 fun AppPasswordField(
     value: String,
@@ -67,13 +60,7 @@ fun AppPasswordField(
     )
 }
 
-/**
- * A search field.
- *
- * The clear button appears only when there is something to clear. A permanently visible clear
- * affordance on an empty field is a control that does nothing, and it competes with the
- * placeholder for the same space.
- */
+/** A search field. The clear button appears only when there is something to clear. */
 @Composable
 fun AppSearchField(
     value: String,
@@ -109,10 +96,9 @@ fun AppSearchField(
 }
 
 /**
- * A multi-line field for free text.
- *
- * [minLines] rather than a fixed height, so the box starts at a size that invites a paragraph and
- * still grows with the content instead of scrolling inside four lines.
+ * A multi-line field for free text. [minLines] rather than a fixed height, so the box starts at a
+ * size that invites a paragraph and still grows with the content instead of scrolling inside four
+ * lines.
  */
 @Composable
 fun AppTextArea(
@@ -149,13 +135,7 @@ fun AppTextArea(
     )
 }
 
-/**
- * A numeric field that only ever receives digits.
- *
- * Filtering here rather than trusting the keyboard type matters: `KeyboardType.Number` is a hint,
- * not a constraint. A physical keyboard, a paste, a voice input or several third-party IMEs will
- * all happily deliver letters into a field marked numeric.
- */
+/** A numeric field that only ever receives digits. */
 @Composable
 fun AppNumberField(
     value: String,

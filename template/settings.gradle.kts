@@ -1,7 +1,5 @@
 /*
- * Module graph.
- *
- * Four tiers, and the dependency direction between them is one-way:
+ * Module graph. Four tiers, and the dependency direction between them is one-way:
  *
  *   :app / :catalog   composition roots — wire everything, own no logic
  *        ↓
@@ -10,9 +8,6 @@
  *   :data:*           one business domain end to end. Never depends on another :data:*.
  *        ↓
  *   :core:*           infrastructure. Never depends on :data:* or :feature:*.
- *
- * The two "never depends on a sibling" rules are what keep the graph acyclic and the build
- * parallel. They are enforced by the :moduleGraphCheck task rather than by review discipline.
  */
 
 pluginManagement {

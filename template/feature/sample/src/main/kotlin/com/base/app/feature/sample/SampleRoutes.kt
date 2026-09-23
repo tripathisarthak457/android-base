@@ -11,12 +11,7 @@ import com.base.app.feature.sample.list.SampleListEffect
 import com.base.app.feature.sample.list.SampleListScreen
 import com.base.app.feature.sample.list.SampleListViewModel
 
-/**
- * The route composables: where a ViewModel, its screen and navigation meet.
- *
- * Kept apart from the screens so the screens stay free of Hilt and of the navigator, which is
- * what lets them be previewed and tested as pure functions of their state.
- */
+/** The route composables: where a ViewModel, its screen and navigation meet. */
 @Composable
 fun SampleListRoute(
     navigator: AppNavigator,

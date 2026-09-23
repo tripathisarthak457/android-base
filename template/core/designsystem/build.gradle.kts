@@ -9,9 +9,7 @@ android {
 
 dependencies {
 
-    // Exposed as `api` on purpose: every module that draws anything needs foundation and ui
-    // types in its own signatures — Modifier, Color, Dp, TextStyle — and re-declaring them per
-    // module is noise that also lets two modules end up on different Compose versions.
+    // `api` so modules can use Modifier, Color and friends without re-declaring Compose.
     api(platform(libs.androidx.compose.bom))
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.ui)

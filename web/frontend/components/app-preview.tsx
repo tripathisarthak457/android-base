@@ -14,12 +14,8 @@ import {
 } from "../lib/app-theme";
 
 /*
- * The generated app, drawn in the browser.
- *
- * Every screen here is one the template ships, with its real copy, laid out with the same tokens
- * the Kotlin uses. Only screens for features that are switched on can appear, so the preview
- * cannot show something the zip will not contain. It is still a drawing: fonts load from Google
- * the same way the app's do, but text wraps a little differently in a browser.
+ * The generated app, drawn in the browser. Every screen here is one the template ships, with its
+ * real copy, laid out with the same tokens the Kotlin uses.
  */
 
 export type Screen = "signin" | "home" | "feed" | "search" | "profile" | "settings";

@@ -39,11 +39,8 @@ interface SearchRepository {
 }
 
 /**
- * Searches the public demo API's full-text `q` parameter. Point [search] at your own endpoint;
- * the recent-searches half works unchanged.
- *
- * Recent searches live in the session store, so they go when the user signs out — a search
- * history is exactly the kind of thing the next person on a shared phone should not see.
+ * Searches the public demo API's full-text `q` parameter. Point [search] at your own endpoint; the
+ * recent-searches half works unchanged.
  */
 @Singleton
 class DefaultSearchRepository @Inject constructor(

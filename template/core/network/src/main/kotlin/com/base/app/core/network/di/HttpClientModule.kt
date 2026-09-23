@@ -51,21 +51,9 @@ object HttpClientModule {
     }
 
     /**
-     * The client every repository uses.
-     *
-     * ## `expectSuccess = false`
-     *
-     * Ktor's default throws on any non-2xx, which turns a perfectly ordinary 404 or 422 into an
-     * exception that has to be caught and re-inspected to recover the status and body. The client
-     * layer here classifies failures deliberately (see `KtorNetworkClient.failure`), and it needs
-     * the response, not a throwable.
-     *
-     * ## Refresh failure is classified before the session is ended
-     *
-     * A refresh that never reached the server — offline, timeout — leaves the session alone, so a
-     * user in a tunnel is not signed out. Only a 4xx, which is the server explicitly refusing the
-     * refresh token, ends it: that session is unrecoverable, and leaving the user signed in
-     * against a token nothing will accept produces an app where every screen fails silently.
+     * The client every repository uses. Ktor's default throws on any non-2xx, which turns a
+     * perfectly ordinary 404 or 422 into an exception that has to be caught and re-inspected to
+     * recover the status and body.
      */
     @Provides
     @Singleton
@@ -117,9 +105,7 @@ object HttpClientModule {
                     }
 
                     // A request marked requiresAuth=false never receives a token, which is what
-                    // keeps sign-in and refresh from carrying a stale one. Everything else gets
-                    // it proactively rather than waiting for a 401, so the common case costs one
-                    // round trip instead of two.
+                    // keeps sign-in and refresh from carrying a stale one.
                     sendWithoutRequest { request ->
                         request.attributes.getOrNull(SkipAuthAttribute) != true
                     }
@@ -148,13 +134,7 @@ object HttpClientModule {
     private val REFUSED_RANGE = 400..499
 }
 
-/**
- * Debug-only request logging. Filter Logcat by `KtorApi`, or run `adb logcat -s KtorApi`.
- *
- * Split on Logcat's ~4000-character per-entry limit, because a JSON body longer than that is
- * silently truncated otherwise — and the part that gets cut is always the end, which is where the
- * interesting field turns out to be.
- */
+/** Debug-only request logging. Filter Logcat by `KtorApi`, or run `adb logcat -s KtorApi`. */
 private object LogcatLogger : Logger {
 
     override fun log(message: String) {

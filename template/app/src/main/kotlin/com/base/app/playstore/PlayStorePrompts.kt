@@ -23,21 +23,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Offers the user a newer build, without taking the app away from them.
- *
- * Flexible rather than immediate: an immediate update blocks the screen behind a full-screen
- * Play dialog and is the right call for a security fix and for nothing else. Flexible downloads
- * in the background and asks to restart when it is ready, so somebody halfway through a form
- * keeps their form.
- *
- * The flow is cold and re-checks on every collection, so collecting it from the Activity's
- * `repeatOnLifecycle` is what makes an app that has been backgrounded for a week notice.
- *
- * Nothing here works on a build that did not come from Play — sideloaded and debug installs get
- * `NotAvailable`, and the emulator without Play Services throws, which is why the flow catches
- * rather than letting a store outage take the Activity down with it.
- */
+/** Offers the user a newer build, without taking the app away from them. */
 @Singleton
 class AppUpdates @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -66,19 +52,7 @@ class AppUpdates @Inject constructor(
     }
 }
 
-/**
- * Asks for a Play Store rating, at a moment the user might plausibly say yes.
- *
- * The policy is the whole point. Play's own API is silently rate-limited — call it too often and
- * it does nothing at all, with no error — so an app that asks on every launch is an app whose
- * rating prompt never appears, and nobody finds out until they wonder why the review count is
- * flat. Asking after [LAUNCHES_BEFORE_ASKING] launches and at most once every
- * [DAYS_BETWEEN_ASKING] days keeps the requests inside what Play will actually honour.
- *
- * Counting launches rather than sessions or screens because it needs no instrumentation to stay
- * true, and any threshold here is a guess anyway. Move it to something your app knows means
- * "this went well" — an order placed, a workout finished — and the same two calls still apply.
- */
+/** Asks for a Play Store rating, at a moment the user might plausibly say yes. */
 @Singleton
 class ReviewPrompt @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -97,9 +71,8 @@ class ReviewPrompt @Inject constructor(
         if (launches < LAUNCHES_BEFORE_ASKING) return
         if (now - lastAsked < DAYS_BETWEEN_ASKING * MILLIS_PER_DAY) return
 
-        // Recorded before the flow rather than after it: Play never reports whether the sheet was
-        // shown or what the user did, by design. Recording on the way out would mean a failure
-        // re-asks on the next launch, which is the behaviour the rate limit exists to stop.
+        // Recorded before the flow: Play never reports the outcome, so recording after would re-ask
+        // on failure.
         dataStore.edit { it[LAST_ASKED] = now }
 
         runCatching {

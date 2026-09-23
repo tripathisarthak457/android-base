@@ -31,10 +31,8 @@ import org.json.JSONArray
 import javax.inject.Inject
 
 /**
- * One dependency, as the build recorded it.
- *
- * The licence is a list because a library can offer a choice of them, and showing all of them is
- * more honest than showing the first.
+ * One dependency, as the build recorded it. The licence is a list because a library can offer a
+ * choice of them, and showing all of them is more honest than showing the first.
  */
 data class LicensedArtifact(
     val name: String,
@@ -56,17 +54,7 @@ sealed interface LicensesEffect : UiEffect {
     data object NavigateBack : LicensesEffect
 }
 
-/**
- * Reads the licence list the build generated into assets.
- *
- * Parsed with `org.json` rather than kotlinx.serialization: it is one array of flat objects, the
- * parser is already in the platform, and the alternative is three data classes and a serializer
- * for a file read once on one screen.
- *
- * A missing or unreadable asset is an empty list rather than a crash. The file is generated at
- * build time, so its absence means a variant where the task did not run — and an About screen
- * that says so is a better answer than a stack trace in front of a user.
- */
+/** Reads the licence list the build generated into assets. */
 @HiltViewModel
 class LicensesViewModel @Inject constructor(
     @ApplicationContext private val context: Context,

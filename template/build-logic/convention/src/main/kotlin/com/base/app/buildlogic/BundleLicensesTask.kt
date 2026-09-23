@@ -10,14 +10,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 
-/**
- * Copies licensee's report into the variant's assets under a name the app reads at runtime.
- *
- * A task rather than a `Copy` because AGP's `addGeneratedSourceDirectory` needs a task with a
- * `DirectoryProperty` output it can point the asset merger at — that is what makes the generated
- * file a first-class input to the build rather than something written into a directory and hoped
- * for.
- */
+/** Copies licensee's report into the variant's assets under a name the app reads at runtime. */
 abstract class BundleLicensesTask : DefaultTask() {
 
     @get:InputFiles

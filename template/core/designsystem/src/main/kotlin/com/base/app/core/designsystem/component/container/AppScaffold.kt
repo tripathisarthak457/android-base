@@ -15,22 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * The frame every screen sits in: an optional top bar, the content, an optional bottom bar, and
- * an optional floating action anchored over the content.
- *
- * Far simpler than Material's Scaffold, and deliberately so. It does not hand the content a
- * `PaddingValues` to apply, because the bars here are laid out *beside* the content rather than
- * over it — the content already occupies exactly the space that is left. The whole class of bug
- * where a list is hidden behind a bottom bar because someone forgot to consume the padding
- * cannot occur.
- *
- * Window insets are each bar's own responsibility: [AppTopBar] takes the status bar and
- * [AppBottomBar] takes the navigation bar. A screen with no bottom bar and content that needs
- * to clear the navigation bar adds `Modifier.navigationBarsPadding()` itself, which is one line
- * at the one place it is true.
- *
- * `imePadding` is applied here, once, so a text field near the bottom of any screen is pushed
- * above the keyboard without every screen remembering to ask.
+ * The frame every screen sits in: an optional top bar, the content, an optional bottom bar, and an
+ * optional floating action anchored over the content.
  */
 @Composable
 fun AppScaffold(

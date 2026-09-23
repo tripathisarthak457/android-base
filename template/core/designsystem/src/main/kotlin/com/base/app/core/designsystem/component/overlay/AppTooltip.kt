@@ -24,24 +24,7 @@ import com.base.app.core.designsystem.foundation.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 
-/**
- * A short explanation anchored above whatever it wraps.
- *
- * ## It is not a replacement for a label
- *
- * A tooltip is invisible until someone long-presses, and on a touch device most people never
- * will. It is for the *second* level of detail — what a threshold means, why a field is disabled
- * — never for the only description a control has. An icon-only button still needs its
- * `contentDescription`.
- *
- * ## Long-press, not hover
- *
- * Hover exists on desktop and on a connected mouse, and nowhere else that matters here. The
- * gesture is a long press, which is also what TalkBack's own "read more" gesture maps to.
- *
- * It dismisses itself after [durationMillis]; a tooltip that waits for a tap elsewhere leaves the
- * user tapping the screen to get rid of something they did not ask for.
- */
+/** A short explanation anchored above whatever it wraps. */
 @Composable
 fun AppTooltip(
     text: String,

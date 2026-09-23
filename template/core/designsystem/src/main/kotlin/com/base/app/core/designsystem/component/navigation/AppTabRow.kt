@@ -28,16 +28,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
-/**
- * Fixed-width tabs with an underline that slides between them.
- *
- * The indicator travels on a spring, so switching tabs rapidly reverses from wherever it has got
- * to instead of restarting — the same reason the segmented control's pill does.
- *
- * Tabs are equal width. Scrollable, content-width tabs need a measurement pass per tab and a
- * scroll position to keep in sync with the selection; if a screen has enough tabs to need that,
- * it almost always wants a dropdown or a different information architecture instead.
- */
+/** Fixed-width tabs with an underline that slides between them. */
 @Composable
 fun AppTabRow(
     tabs: List<String>,

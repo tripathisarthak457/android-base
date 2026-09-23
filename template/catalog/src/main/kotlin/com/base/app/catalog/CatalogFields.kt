@@ -21,13 +21,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * The fields that exist because a plain text box gets them wrong.
- *
- * Every one is live: typing into the OTP boxes advances them, the currency field reformats as
- * digits arrive, the stepper clamps at its range. A catalog of screenshots would not show any of
- * that, which is the reason this is an app rather than a document.
- */
+/** The fields that exist because a plain text box gets them wrong. */
 @Composable
 fun FieldsSection() {
     var otp by remember { mutableStateOf("") }

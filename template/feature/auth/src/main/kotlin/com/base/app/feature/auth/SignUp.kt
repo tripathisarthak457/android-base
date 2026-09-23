@@ -61,22 +61,13 @@ sealed interface SignUpEffect : UiEffect {
     data object NavigateBack : SignUpEffect
 }
 
-/**
- * Create an account.
- *
- * The confirmation field validates against the password field by reading it back through the
- * form — `Validators.sameAs { form["password"].value }` — rather than by comparing the two in the
- * submit handler. A rule that lives in the field shows its message where the mistake is, and the
- * submit button stays disabled until it is fixed.
- */
+/** Create an account. */
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : MviViewModel<SignUpState, SignUpEvent, SignUpEffect>(SignUpState()) {
 
-    // `form` refers to itself inside the confirm rule. That is legal because the lambda is not
-    // called during construction — it runs when the field is validated, by which time the property
-    // is set. It is also the only way to express a rule about two fields as a rule *on* a field.
+    // `form` refers to itself in the confirm rule; safe because the rule runs after construction.
     val form: FormState = buildForm {
         field("name", validator = Validators.required() and Validators.minLength(MIN_NAME_LENGTH))
         field("email", validator = Validators.required() and Validators.email())

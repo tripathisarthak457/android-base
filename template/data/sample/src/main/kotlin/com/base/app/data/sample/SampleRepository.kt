@@ -11,12 +11,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Everything the app can ask about samples.
- *
- * An interface, so a ViewModel test injects a fake and never touches a socket. That is the whole
- * of the argument — an interface with one implementation is otherwise exactly the speculative
- * abstraction worth avoiding, and it earns its place here only because the alternative is
- * untestable ViewModels.
+ * Everything the app can ask about samples. An interface, so a ViewModel test injects a fake and
+ * never touches a socket.
  */
 interface SampleRepository {
 
@@ -30,12 +26,7 @@ class DefaultSampleRepository @Inject constructor(
     private val networkClient: NetworkClient,
 ) : SampleRepository {
 
-    /**
-     * The list, cached for five minutes.
-     *
-     * [forceRefresh] is what pull-to-refresh passes. Without it the gesture would hit the cache
-     * and appear to do nothing, which is worse than not offering the gesture at all.
-     */
+    /** The list, cached for five minutes. [forceRefresh] is what pull-to-refresh passes. */
     override suspend fun items(forceRefresh: Boolean): AppResult<List<SampleItem>> =
         networkClient.get<List<SampleDto>>(
             path = LIST_PATH,

@@ -39,17 +39,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
 import kotlinx.coroutines.delay
 
-/**
- * The transitions the app animates content with, as named pairs.
- *
- * Every one of these already respects the theme's durations and easings, so a screen never writes
- * a raw `tween(300)` — the value that ends up half a beat out of step with everything else on the
- * same screen.
- *
- * They are also all *reduce-motion aware* through [rememberAppTransitions], which is the whole
- * reason they are a lookup rather than a set of free functions: honouring the setting at each of
- * forty call sites is a promise nobody keeps.
- */
+/** The transitions the app animates content with, as named pairs. */
 class AppTransitions internal constructor(
     private val motion: AppMotion,
     private val reduceMotion: Boolean,
@@ -62,12 +52,7 @@ class AppTransitions internal constructor(
     val fadeOut: ExitTransition
         get() = if (reduceMotion) ExitTransition.None else fadeOut(tween(motion.quick, easing = motion.exit))
 
-    /**
-     * For a block that opens in place — an accordion, a validation message, an expanding card.
-     *
-     * The fade is faster than the expansion on purpose: text that is fully opaque while the box
-     * is still growing reads as the text being clipped, rather than as the box opening.
-     */
+    /** For a block that opens in place — an accordion, a validation message, an expanding card. */
     val expandIn: EnterTransition
         get() = if (reduceMotion) {
             EnterTransition.None
@@ -115,12 +100,7 @@ class AppTransitions internal constructor(
             scaleOut(tween(motion.instant), targetScale = 0.85f) + fadeOut(tween(motion.instant))
         }
 
-    /**
-     * A lateral move: step 2 of a form replacing step 1.
-     *
-     * [forward] flips the direction so going back moves left, which is the only thing that makes
-     * a multi-step flow feel like a line rather than a shuffle.
-     */
+    /** A lateral move: step 2 of a form replacing step 1. */
     fun slideIn(forward: Boolean = true): EnterTransition =
         if (reduceMotion) {
             EnterTransition.None
@@ -139,13 +119,7 @@ class AppTransitions internal constructor(
             } + fadeOut(tween(motion.quick))
         }
 
-    /**
-     * The entrance for row [index] of a list that is appearing for the first time.
-     *
-     * Each row is offset by [STAGGER_MILLIS], up to [MAX_STAGGERED_ROWS]. The cap matters more
-     * than the delay: without it, row 40 waits a second and a half to appear, and a list that is
-     * scrolled quickly shows a cascade of blanks. Past the cap everything arrives together.
-     */
+    /** The entrance for row [index] of a list that is appearing for the first time. */
     fun staggeredIn(index: Int): EnterTransition {
         if (reduceMotion) return EnterTransition.None
         val delay = (index.coerceAtMost(MAX_STAGGERED_ROWS) * STAGGER_MILLIS)
@@ -163,12 +137,7 @@ class AppTransitions internal constructor(
     }
 }
 
-/**
- * The transition set for the current theme and accessibility settings.
- *
- * Read it once at the top of a screen and use it throughout; it is cheap, but re-reading
- * `rememberReduceMotion()` per row is not.
- */
+/** The transition set for the current theme and accessibility settings. */
 @Composable
 fun rememberAppTransitions(): AppTransitions {
     val motion = AppTheme.motion
@@ -176,16 +145,7 @@ fun rememberAppTransitions(): AppTransitions {
     return remember(motion, reduceMotion) { AppTransitions(motion, reduceMotion) }
 }
 
-/**
- * Fades and lifts its content in once, the first time it is shown.
- *
- * For a screen's content arriving after a load.
- *
- * Drawn, not laid out: the content occupies its full size from the first frame and only its
- * alpha and offset animate, so nothing around it moves while it arrives. And it happens once —
- * the flag is saved, so returning to a tab or rotating the phone shows the content where it is
- * rather than playing the entrance again.
- */
+/** Fades and lifts its content in once, the first time it is shown. */
 @Composable
 fun AppAppear(
     modifier: Modifier = Modifier,
@@ -204,15 +164,7 @@ fun AppAppear(
 
 private val APPEAR_OFFSET = 12.dp
 
-/**
- * Animates a row into place when the list is reordered, filtered or inserted into.
- *
- * A thin wrapper over `Modifier.animateItem` so that feature code does not repeat the spec, and
- * so reduce-motion turns it off in one place.
- *
- * It only works when the list supplies a stable `key` — without one, Compose cannot tell an
- * inserted row from a changed one and there is nothing to animate between.
- */
+/** Animates a row into place when the list is reordered, filtered or inserted into. */
 @Composable
 fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
     val motion = AppTheme.motion
@@ -225,16 +177,7 @@ fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
     )
 }
 
-/**
- * Applies a staggered entrance to a column of items that all appear at once.
- *
- * For a fixed set of rows — a settings group, a dashboard's cards. A `LazyColumn` should use
- * [appAnimateItem] instead: staggering rows the user scrolls to would re-animate them every time
- * they come back on screen.
- *
- * Like [AppAppear], every row is laid out at full size immediately and only drawn in, so the
- * column never grows row by row, and the entrance runs once rather than on every return.
- */
+/** Applies a staggered entrance to a column of items that all appear at once. */
 @Composable
 fun AppStaggeredColumn(
     itemCount: Int,
@@ -268,9 +211,7 @@ fun AppStaggeredColumn(
     }
 }
 
-/**
- * 0 to 1, once per saved-state lifetime. Starts at 1 under reduce motion, so nothing animates.
- */
+/** 0 to 1, once per saved-state lifetime. Starts at 1 under reduce motion, so nothing animates. */
 @Composable
 private fun rememberAppearProgress(
     delayMillis: Long,
@@ -291,17 +232,7 @@ private fun rememberAppearProgress(
     return progress
 }
 
-/**
- * Dims and blocks its content while [busy].
- *
- * `alpha` rather than a scrim on top, so the content stays legible — the user can still read what
- * they submitted while it is being saved — and a pointer filter rather than `enabled = false` on
- * every child, which would be dozens of parameters threaded down for one transient state.
- *
- * The pointer loop consumes every change, which is what actually blocks the input: a plain
- * `clickable {}` overlay would still let a scroll through, and a scrollable list that moves under
- * a "saving…" overlay reads as the app having lost the submission.
- */
+/** Dims and blocks its content while [busy]. */
 @Composable
 fun Modifier.busyOverlay(busy: Boolean): Modifier {
     val alpha by animateFloatAsState(

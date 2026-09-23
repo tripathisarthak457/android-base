@@ -36,9 +36,9 @@ object CoroutinesModule {
     fun provideMainImmediateDispatcher(): CoroutineDispatcher = Dispatchers.Main.immediate
 
     /**
-     * A [SupervisorJob], so one failed child does not cancel the scope and take every other
-     * piece of background work in the process down with it — which for an application-lifetime
-     * scope means nothing works again until the app is restarted.
+     * A [SupervisorJob], so one failed child does not cancel the scope and take every other piece
+     * of background work in the process down with it — which for an application-lifetime scope
+     * means nothing works again until the app is restarted.
      */
     @Provides
     @Singleton

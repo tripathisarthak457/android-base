@@ -14,22 +14,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import com.base.app.core.designsystem.theme.AppMotion
 
-/**
- * The app's screen-to-screen transitions. Three shapes, and only three.
- *
- * ## Springs, not durations
- *
- * The push and pop are spring-driven so an interrupted gesture keeps its velocity. Someone who
- * flicks back halfway through a push should see the screen continue from where it actually is; a
- * tween has to either snap or finish an animation nobody is watching, and that difference is most
- * of what separates a stack that feels native from one that feels like a slideshow.
- *
- * ## The parallax is the whole effect
- *
- * On a push the incoming screen travels a full width while the one underneath travels a quarter
- * and dims. Moving both the same distance reads as two unrelated slides; moving the one
- * underneath *less* is what places it behind, and it is the entire perception of depth.
- */
+/** The app's screen-to-screen transitions. Three shapes, and only three. */
 internal object NavTransitions {
 
     private const val TAB_ENTER_SCALE = 0.985f
@@ -103,12 +88,7 @@ internal object NavTransitions {
             )
     }
 
-    /**
-     * Peers. Tab to tab, and a splash handing off.
-     *
-     * A small vertical rise rather than a horizontal slide, on purpose: a horizontal slide between
-     * tabs reads as forward navigation, and then Back not undoing it is a small lie every time.
-     */
+    /** Peers. Tab to tab, and a splash handing off. */
     fun fade(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
         (
             fadeIn(tween(motion.medium, easing = motion.enter)) + slideInVertically(
@@ -119,13 +99,8 @@ internal object NavTransitions {
     }
 
     /**
-     * Tab to tab: the outgoing tab fades quickly, the incoming one fades in and settles from a
-     * hair below full size.
-     *
-     * No travel at all, because tabs are peers — anything that slides reads as going forward.
-     * The two fades barely overlap, so there is never a frame with both tabs legible on top of
-     * each other, and the incoming scale is small enough to register as "arriving" rather than
-     * as zoom. Starts after the outgoing fade is mostly done, which is what keeps it calm.
+     * Tab to tab: the outgoing tab fades quickly, the incoming one fades in and settles from a hair
+     * below full size.
      */
     fun tabSwitch(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
         (

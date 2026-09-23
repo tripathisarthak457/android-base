@@ -19,13 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 
 /**
- * Where a permission request ended up.
- *
- * [PermanentlyDenied] is the state that matters and the one most implementations omit. After two
- * refusals — or one on newer releases — the system stops showing the dialog altogether and the
- * request returns "denied" instantly. An app that keeps calling `launch()` then does nothing at
- * all from the user's point of view, forever. The only way out is Settings, and the app has to
- * say so.
+ * Where a permission request ended up. [PermanentlyDenied] is the state that matters and the one
+ * most implementations omit.
  */
 sealed interface PermissionState {
     data object Granted : PermissionState
@@ -36,9 +31,7 @@ sealed interface PermissionState {
     val isGranted: Boolean get() = this is Granted
 }
 
-/**
- * A permission, its current state, and the two things you can do about it.
- */
+/** A permission, its current state, and the two things you can do about it. */
 @Stable
 class PermissionController internal constructor(
     private val permission: String,
@@ -78,14 +71,7 @@ class PermissionController internal constructor(
 }
 
 /**
- * A permission the screen can ask for.
- *
- * ## Distinguishing "denied" from "denied forever"
- *
- * The platform gives no direct signal. What it gives is
- * `shouldShowRequestPermissionRationale`, and the trick is *when* to read it: false **after** a
- * denial means the system will not ask again. Reading it before the first request is meaningless,
- * which is why the check is inside the result callback and not anywhere else.
+ * A permission the screen can ask for. The platform gives no direct signal.
  *
  * ```
  * val camera = rememberPermission(Manifest.permission.CAMERA)
@@ -124,14 +110,7 @@ fun rememberPermission(permission: String): PermissionController {
     return created
 }
 
-/**
- * The permission needed to read images the user picks, for this API level.
- *
- * On 33+ the coarse `READ_EXTERNAL_STORAGE` was split by media type. On 34+ nothing is needed at
- * all when the photo picker is used, which is why [MediaPicker.pickImage] does not ask — an app
- * that requests storage access to show a picker is asking for far more than it needs, and the
- * permission dialog says exactly that to the user.
- */
+/** The permission needed to read images the user picks, for this API level. */
 val readImagesPermission: String
     get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         Manifest.permission.READ_MEDIA_IMAGES

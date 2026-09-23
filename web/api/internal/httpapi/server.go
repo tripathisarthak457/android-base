@@ -1,8 +1,5 @@
-// Package httpapi is the service's HTTP surface: five public endpoints and five admin ones.
-//
-// No router dependency. Go 1.22's `http.ServeMux` matches on method and path pattern, which is
-// everything this needs — and a service whose whole API fits on one screen does not benefit from
-// a framework that has to be learned by whoever inherits it.
+// Package httpapi is the service's HTTP surface: five public endpoints and five admin ones. No
+// router dependency.
 package httpapi
 
 import (
@@ -39,18 +36,9 @@ type Server struct {
 	background context.Context
 }
 
-// recordingContext bounds one analytics write.
-//
-// Detached from the request, because by the time a download has finished streaming the request's
-// own context is already cancelled and losing the timing of exactly the slow requests would be the
-// opposite of useful. Bounded, because an analytics insert must never be the reason a handler
-// hangs — five seconds is a hundred times what one of these takes.
-//
-// Called synchronously rather than in a goroutine, which it used to be. A serverless instance is
-// frozen the moment the response completes, so a detached goroutine is simply never scheduled and
-// the row is silently lost — which is exactly what happened: requests arrived, generations did
-// not. The insert is a single statement on an already-open pool; waiting for it costs a few
-// milliseconds after the last byte is already on the wire.
+// recordingContext bounds one analytics write. Detached from the request, because by the time a
+// download has finished streaming the request's own context is already cancelled and losing the
+// timing of exactly the slow requests would be the opposite of useful.
 func (s *Server) recordingContext() (context.Context, context.CancelFunc) {
 	return context.WithTimeout(s.background, 5*time.Second)
 }
@@ -309,11 +297,8 @@ var (
 	}
 )
 
-// handleFeedback takes a bug report or a suggestion.
-//
-// Rate-limited on the same counter as generation, because it is the other public write path.
-// Nothing here is optional to validate: it is stored, rendered in the portal, and read by a
-// person, and every one of those is a place unchecked input causes a problem.
+// handleFeedback takes a bug report or a suggestion. Rate-limited on the same counter as
+// generation, because it is the other public write path.
 func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
 	if s.store == nil {
 		// Honest rather than a silent 204: somebody took the trouble to write this, and telling

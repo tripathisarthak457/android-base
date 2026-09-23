@@ -30,18 +30,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * The top bar.
- *
- * The title is start-aligned, which is the correct default for a phone: it sits directly above
- * the content it names, it has room for a long title, and it does not have to be re-centred
- * whenever an action is added or removed. [centerTitle] exists for the screens where a design
- * genuinely calls for it.
- *
- * [showDivider] is a parameter rather than something the bar decides for itself. A bar over a
- * scrolling list wants the hairline; a bar over a form on the same background wants nothing, and
- * having the component guess is how one screen ends up with a rule floating in empty space.
- */
+/** The top bar. */
 @Composable
 fun AppTopBar(
     title: String,
@@ -64,17 +53,13 @@ fun AppTopBar(
 
     val hasNavigation = navigationIcon != null && onNavigationClick != null
 
-    // An icon button is a 44dp target around a 20dp glyph, so its edge has to sit 12dp outside
-    // the gutter for the *glyph* to land on it. Aligning the target instead is the reason so many
-    // back arrows look 12dp adrift of everything below them.
+    // Offset so the glyph, not its 44dp target, lines up with the gutter.
     val slot = AppTheme.sizes.buttonMedium
     val glyphInset = (slot - AppTheme.sizes.icon) / 2
     val edge = AppTheme.spacing.gutter - glyphInset
 
     // Centred means centred in the bar, not centred in the gap between the two slots — those are
-    // the same thing only when both slots are occupied by the same number of icons. The title is
-    // laid out across the full bar and inset by a slot at each end so it truncates before it can
-    // reach one, rather than being squeezed between them.
+    // the same thing only when both slots are occupied by the same number of icons.
     val titleStart = when {
         centerTitle -> edge + slot
         hasNavigation -> edge + slot + AppTheme.spacing.xs
@@ -182,9 +167,7 @@ fun AppLargeTitle(
         modifier = modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            // The end inset is smaller than the start on purpose: an action's glyph is centred
-            // in a 44dp target, so the target has to overhang for the glyph to sit on the same
-            // gutter the title starts from.
+            // Smaller end inset so the action glyph, centred in its target, sits on the gutter.
             .padding(
                 start = AppTheme.spacing.gutter,
                 end = AppTheme.spacing.gutter - (AppTheme.sizes.buttonMedium - AppTheme.sizes.icon) / 2,

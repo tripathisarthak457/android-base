@@ -5,10 +5,6 @@ Generate a new Android project from the template.
     py create_project.py                                   # the wizard
     py create_project.py --all                             # every optional feature on
     py create_project.py --spec spec.json --out ./build    # unattended
-
-Standard library only, on purpose: this runs on a colleague's laptop with nothing installed, and
-it is the same code that will sit behind an HTTP endpoint later. `tkinter` is the one optional
-import — when it is absent, or there is no display, the save location is typed instead.
 """
 
 from __future__ import annotations
@@ -170,13 +166,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def list_features(as_json: bool) -> None:
-    """
-    Every feature, grouped as the website groups them.
-
-    Read from the same catalogue the site renders, rather than from `FEATURES` directly, so the
-    terminal cannot describe a different set of options from the one the site offers — and so a
-    feature added without a group or a headline fails here too, rather than only on the web.
-    """
+    """Every feature, grouped as the website groups them."""
     data = catalogue.catalogue()
     if as_json:
         json.dump(data["features"], sys.stdout, indent=2)
@@ -208,13 +198,7 @@ def list_features(as_json: bool) -> None:
 
 
 def describe_plan(spec: ProjectSpec, as_json: bool) -> None:
-    """
-    What generating would produce, without producing it.
-
-    The two things worth knowing before waiting for a build: which features were turned on that
-    nobody asked for — Crashlytics quietly brings Firebase and the analytics seam with it — and
-    what is being left out.
-    """
+    """What generating would produce, without producing it."""
     result = builder.plan(spec)
     if as_json:
         json.dump({"projectName": spec.pascal_name, **result}, sys.stdout, indent=2)
@@ -238,13 +222,7 @@ def describe_plan(spec: ProjectSpec, as_json: bool) -> None:
 
 
 def _requested(spec: ProjectSpec) -> set[str]:
-    """
-    The features that would have been asked for, given the resolved set.
-
-    Every feature in the set that nothing else in the set requires. Not perfect — a feature both
-    chosen *and* implied reads as implied — but it is the distinction that matters here, which is
-    "you did not tick this and you have it".
-    """
+    """The features that would have been asked for, given the resolved set."""
     required = {
         needed
         for key in spec.features
@@ -271,17 +249,7 @@ def resolve_destination(spec: ProjectSpec, args: argparse.Namespace) -> Path | N
 
 
 def confirm_overwrite(destination: Path, force: bool, unattended: bool) -> bool:
-    """
-    Guards the one path that destroys work: regenerating over a directory that already exists.
-
-    `--spec` plus `--out` is how a project is regenerated after editing its saved answers, and the
-    generator replaces the destination wholesale — which is right, and is also indistinguishable
-    from pointing it at the checkout somebody has been working in for a month. A save dialog asks
-    this question itself; a command line has to be asked here.
-
-    Unattended runs are refused rather than prompted, because there is nobody to answer: CI would
-    hang on the input, and defaulting to yes would make the destructive case the silent one.
-    """
+    """Guards the one path that destroys work: regenerating over a directory that already exists."""
     if force or not destination.exists():
         return True
     if destination.is_dir() and not any(destination.iterdir()):
@@ -303,12 +271,7 @@ def confirm_overwrite(destination: Path, force: bool, unattended: bool) -> bool:
 
 
 def ask_save_location(default_name: str, zip_output: bool) -> Path | None:
-    """
-    A native save dialog, falling back to a typed path.
-
-    The fallback is not an edge case: this same function runs over SSH, in CI, and inside the
-    container that will eventually host the web version, none of which have a display.
-    """
+    """A native save dialog, falling back to a typed path."""
     try:
         import tkinter
         from tkinter import filedialog

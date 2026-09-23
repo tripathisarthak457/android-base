@@ -33,16 +33,7 @@ import com.base.app.core.designsystem.theme.AppDesignStyle
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 
-/**
- * The catalog's own navigation: one nullable selection, and a system back handler.
- *
- * Deliberately not the app's navigation stack. The catalog depends on `:core:designsystem` alone,
- * and pulling in `:core:navigation` to move between eleven static pages would defeat the entire
- * point of keeping this module's rebuild cheap.
- *
- * The theme toggle is the reason anyone opens this app twice: every component below has a dark
- * variant, and the only way to know they all work is to flip between them on a real screen.
- */
+/** The catalog's own navigation: one nullable selection, and a system back handler. */
 @Composable
 fun CatalogApp() {
     var themeMode by rememberSaveable { mutableStateOf(ThemeMode.System) }

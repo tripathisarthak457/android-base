@@ -35,15 +35,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 
-/**
- * The motion vocabulary, running.
- *
- * Every transition here comes from `rememberAppTransitions()`, which means two things worth
- * seeing rather than reading: they all use the theme's durations and easings, so nothing on a
- * screen is half a beat out of step with anything else; and they all collapse to no animation
- * when the device has "remove animations" turned on. Turn it on in Developer options and come
- * back to this page — every example still works, none of them move.
- */
+/** The motion vocabulary, running. */
 @Composable
 fun MotionSection() {
     val transitions = rememberAppTransitions()

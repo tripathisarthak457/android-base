@@ -14,17 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A hairline.
- *
- * The thickness is a fixed 1dp rather than `Dp.Hairline`. A hairline is a *pixel*, so on a 3.5x
- * density screen it renders a third as thick as it does on a 1x one, and a rule that reads
- * correctly on the test device disappears on a flagship.
- *
- * [startIndent] exists because a divider in a list of rows with leading icons should start where
- * the text does, not at the window edge — a full-bleed rule cuts the icon column off from its own
- * row.
- */
+/** A hairline. The thickness is a fixed 1dp rather than `Dp.Hairline`. */
 @Composable
 fun AppDivider(
     modifier: Modifier = Modifier,

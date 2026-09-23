@@ -12,29 +12,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * AES-256-GCM through the Android Keystore, for the handful of values that must not be readable
- * off disk — access and refresh tokens, chiefly.
- *
- * ## Why not just trust app-private storage
- *
- * A DataStore file lives in the app's private directory, which is unreadable on a stock device
- * and trivially readable on a rooted one, on an emulator, or through any backup that captures
- * app data. Encrypting with a key that never leaves the Keystore's hardware-backed store means
- * the file on disk is useless on its own.
- *
- * ## The IV is stored with the ciphertext
- *
- * GCM needs a unique initialisation vector per encryption, and reusing one with the same key is
- * a catastrophic failure — it leaks the plaintext relationship between the two messages. The
- * cipher generates a fresh IV each time and it is prefixed to the output, which is standard and
- * safe: an IV is not secret, it only has to be unique.
- *
- * ## Decryption failure returns null rather than throwing
- *
- * The key is invalidated by events outside the app's control: the user adding or removing a
- * screen lock on some OEM builds, a restore onto a different device, a Keystore corruption. The
- * correct response is "this session is gone, sign in again", not a crash loop on launch that only
- * a reinstall escapes.
+ * AES-256-GCM through the Android Keystore, for the handful of values that must not be readable off
+ * disk — access and refresh tokens, chiefly.
  */
 @Singleton
 class KeystoreCipher @Inject constructor() {
@@ -72,9 +51,8 @@ class KeystoreCipher @Inject constructor() {
                 .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
                 .setKeySize(KEY_SIZE_BITS)
-                // Deliberately *not* setUserAuthenticationRequired: these values are read during
-                // cold start, before any screen exists to prompt on, and requiring authentication
-                // would make the app unusable until the user happened to unlock at the right time.
+                // No setUserAuthenticationRequired: these values are read at cold start, before any
+                // prompt can show.
                 .setRandomizedEncryptionRequired(true)
                 .build(),
         )

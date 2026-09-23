@@ -29,22 +29,7 @@ import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
-/**
- * The environment badge, and the panel it opens.
- *
- * Call this once, as the last child of the root Box, so it draws over whatever screen is showing.
- * An overlay rather than something the app's content is wrapped in: wrapping would mean one more
- * level of indentation around the whole app that exists only when this feature is switched on,
- * and a diff nobody can read. Everything here is a no-op when [DevEnvironment.visible] is false,
- * so there is no call site anybody has to remember to remove before a release.
- *
- * ## Why it is draggable
- *
- * A badge in a fixed corner covers something eventually — a top-bar action, a snackbar, the exact
- * row somebody is trying to read — and the answer to that cannot be "move it in the source and
- * rebuild". It stays where it was put across configuration changes and deliberately resets on a
- * fresh launch, because a badge dragged into a corner and forgotten is one nobody finds again.
- */
+/** The environment badge, and the panel it opens. */
 @Composable
 fun DevToolsOverlay(environment: DevEnvironment, log: DevToolsLog) {
     if (!environment.visible) return

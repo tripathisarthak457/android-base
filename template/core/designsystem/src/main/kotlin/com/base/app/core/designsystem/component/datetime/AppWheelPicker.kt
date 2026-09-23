@@ -31,25 +31,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.flow.drop
 import kotlin.math.abs
 
-/**
- * A scrolling wheel that snaps to whichever item is centred.
- *
- * The building block for the time picker and for any "pick one of many" where a dropdown would be
- * a long list of near-identical rows.
- *
- * ## Finding the selection
- *
- * The centred item is found by measuring, not by arithmetic on the scroll offset. With
- * content padding in play, `firstVisibleItemIndex` plus a computed offset gets the answer right
- * in the middle of the list and wrong at both ends, which shows up as the first and last options
- * being unselectable. Asking `layoutInfo` which visible item's centre is closest to the
- * viewport's centre is exact everywhere, including while the list is still settling.
- *
- * ## Items fade and shrink with distance
- *
- * Purely functional: it makes the centre unambiguous when several adjacent values look alike —
- * which for a list of two-digit numbers is always.
- */
+/** A scrolling wheel that snaps to whichever item is centred. */
 @Composable
 fun <T> AppWheelPicker(
     items: List<T>,
@@ -81,11 +63,7 @@ fun <T> AppWheelPicker(
         }
     }
 
-    // Nothing is reported until the wheel has been placed at its starting value.
-    //
-    // Without this the first layout pass sees the list at index 0 while the caller's value is
-    // still, say, 9 — and reports 9 -> 0 before the initial scroll has had a chance to run. On the
-    // time picker that reads as opening at 09:30 and immediately snapping to 12:00.
+    // Stay silent until the initial scroll to the starting value has run.
     var placed by remember { mutableStateOf(false) }
 
     LaunchedEffect(items) {
@@ -93,9 +71,7 @@ fun <T> AppWheelPicker(
         placed = true
     }
 
-    // Only report a change once the wheel has come to rest. Emitting on every frame of a fling
-    // would fire the callback thirty times for one gesture, and anything it drives — a network
-    // call, a validation — thirty times with it.
+    // Report only once the wheel settles, not on every frame of a fling.
     LaunchedEffect(listState, items, placed) {
         if (!placed) return@LaunchedEffect
         snapshotFlow { listState.isScrollInProgress to centeredIndex }
@@ -104,10 +80,7 @@ fun <T> AppWheelPicker(
             }
     }
 
-    // The tick, on the other hand, fires on every item that passes the centre — that is the whole
-    // point of it. A wheel that only buzzes when it stops feels like a list; one that ticks as it
-    // spins feels like a wheel, and it is the single thing that most separates this control from
-    // a scrolling column of text.
+    // The tick fires on every item that passes the centre; it is what makes this feel like a wheel.
     LaunchedEffect(listState, placed) {
         if (!placed) return@LaunchedEffect
         snapshotFlow { centeredIndex }
@@ -155,12 +128,8 @@ fun <T> AppWheelPicker(
                         .fillMaxWidth()
                         .height(itemHeight)
                         .graphicsLayer {
-                            // Driven by where the row actually is, not by how many rows away it
-                            // is from the selection. An integer distance can only change one
-                            // whole step at a time, so the fade and the tilt jump between two
-                            // states as the wheel turns; a fraction of the item's own height
-                            // moves with the finger, which is what makes it read as a cylinder
-                            // rather than a list that is highlighting a row.
+                            // Driven by the row's fractional offset, not its index distance, so
+                            // fade and tilt move with the finger.
                             val offset = itemCenterOffset(listState, index)
                             val steps = (offset / itemHeightPx).coerceIn(-edgeSpan, edgeSpan)
                             val magnitude = abs(steps)
@@ -198,14 +167,7 @@ fun <T> AppWheelPicker(
     }
 }
 
-/**
- * How far this row's centre is from the wheel's centre, in pixels.
- *
- * Read from `layoutInfo` rather than computed, for the same reason the selected index is: with
- * content padding in play, arithmetic on the scroll offset is right in the middle of the list and
- * wrong at both ends. A row that is not currently laid out is parked at the far edge so it
- * arrives already faded rather than popping in at full strength.
- */
+/** How far this row's centre is from the wheel's centre, in pixels. */
 private fun itemCenterOffset(state: LazyListState, index: Int): Float {
     val info = state.layoutInfo
     val item = info.visibleItemsInfo.firstOrNull { it.index == index } ?: return Float.MAX_VALUE
@@ -220,11 +182,5 @@ private const val SHRUNK_SCALE = 0.86f
 /** Degrees of lean per item away from the centre. Enough to curve, not enough to read as broken. */
 private const val TILT_PER_STEP = 26f
 
-/**
- * How far the "camera" sits from the strip, in dp.
- *
- * The default is 8dp, which at this rotation makes the far rows fan out with a violently wrong
- * perspective. Pushing it back flattens the projection to something that looks like a physical
- * drum rather than a fisheye.
- */
+/** How far the "camera" sits from the strip, in dp. */
 private const val CAMERA_DISTANCE = 24f

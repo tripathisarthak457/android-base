@@ -26,14 +26,7 @@ interface ProfileRepository {
     suspend fun setPhoto(uri: String?)
 }
 
-/**
- * The profile, kept on the device in the session store so it goes on sign-out.
- *
- * Local on purpose: it is the part of a profile screen every app has, and the network half —
- * `GET /me`, `PATCH /me` — is where backends disagree most. Put your calls here and keep the
- * store as the cache the screen reads from, so the screen shows the last known profile at once
- * rather than a spinner.
- */
+/** The profile, kept on the device in the session store so it goes on sign-out. */
 @Singleton
 class DefaultProfileRepository @Inject constructor(
     @SessionDataStore private val store: DataStore<Preferences>,

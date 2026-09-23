@@ -26,16 +26,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * How the app feels under a finger, which is the part a screenshot cannot show.
- *
- * Three things happen on every tap and they are meant to be felt rather than noticed: the state
- * layer, the shrink, and the overshoot on release. A fourth — the haptic — is the one people
- * describe as "expensive" without being able to say why.
- *
- * Both are one setting each at `AppTheme`, so this page is a way of choosing them rather than a
- * gallery of things somebody has to implement.
- */
+/** How the app feels under a finger, which is the part a screenshot cannot show. */
 @Composable
 fun FeelSection() {
     var style by remember { mutableStateOf(AppMotionStyle.Standard) }

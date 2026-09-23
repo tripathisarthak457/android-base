@@ -15,17 +15,8 @@ import com.base.app.core.designsystem.foundation.LocalTextStyle
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * All text in the app.
- *
- * Built on `BasicText`, which is foundation rather than Material and comes with no colour, no
- * style and no notion of a theme. Everything Material's `Text` supplied is supplied here instead:
- * the inherited [LocalTextStyle], the inherited [LocalContentColor], and the merge order between
- * them and whatever the caller passed.
- *
- * That merge order is the part worth stating. An explicit [color] wins; failing that, a colour
- * set on the [style] wins; failing that, the surrounding [LocalContentColor]. Which means a label
- * inside a coloured button is correct without being told, and a caller who does want to override
- * still can.
+ * All text in the app. Built on `BasicText`, which is foundation rather than Material and comes
+ * with no colour, no style and no notion of a theme.
  */
 @Composable
 fun AppText(
@@ -100,11 +91,8 @@ private fun TextStyle.resolve(
 }
 
 /**
- * Numbers a person reads aloud, compares digit by digit, or types back: order references,
- * amounts in a column, codes, timestamps.
- *
- * Monospaced so that `0` and `O` cannot be mistaken for one another and so that a column of
- * amounts aligns on the decimal without any layout work.
+ * Numbers a person reads aloud, compares digit by digit, or types back: order references, amounts
+ * in a column, codes, timestamps.
  */
 @Composable
 fun AppMonoText(

@@ -81,9 +81,7 @@ fun SearchScreen(
                         vertical = AppTheme.spacing.sm,
                     ),
                 )
-                // A thin line rather than a spinner in the middle of the page: the previous
-                // results stay readable while the next ones load. The space is always reserved,
-                // so the list does not shift down by two pixels on every keystroke.
+                // A thin line so results stay readable while loading; its space is always reserved.
                 Box(modifier = Modifier.fillMaxWidth().height(2.dp)) {
                     if (state.loadState is LoadState.Refreshing) {
                         AppLinearProgress(modifier = Modifier.fillMaxWidth(), height = 2.dp)

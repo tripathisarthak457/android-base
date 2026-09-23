@@ -18,24 +18,6 @@ import com.base.app.core.network.auth.SessionEvents
 
 /**
  * Ends a session: clears every session-scoped store, then announces that it is safe to navigate.
- *
- * ## The order is load-bearing
- *
- * Teardown completes *before* [signedOut] emits. Navigating first and wiping afterwards leaves a
- * window in which the sign-in screen is on top while the previous user's cached responses are
- * still on disk — and if the process is killed in that window, they stay there for the next
- * person to use the device.
- *
- * ## Nothing here names a store
- *
- * The set is multibound; a store registers itself next to its own binding. A hand-written list of
- * things to clear is a list somebody forgets to update, and the symptom is a data leak rather
- * than a crash, so nothing surfaces it.
- *
- * ## It runs in the application scope
- *
- * Sign-out must finish even though the screen that triggered it is being destroyed at the same
- * moment. A `viewModelScope` here would cancel the wipe halfway through.
  */
 @Singleton
 class SessionCoordinator @Inject constructor(
@@ -56,9 +38,8 @@ class SessionCoordinator @Inject constructor(
 
     init {
         // <opt:network>
-        // An involuntary sign-out — the server refused the refresh token — takes exactly the same
-        // path as a deliberate one. Two paths would eventually differ, and the one nobody tests
-        // is the one that leaves data behind.
+        // An involuntary sign-out takes the same path as a deliberate one, so both clear the same
+        // data.
         scope.launch {
             sessionEvents.expired.collect { signOut() }
         }

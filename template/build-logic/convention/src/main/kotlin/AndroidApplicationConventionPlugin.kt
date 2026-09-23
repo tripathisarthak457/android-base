@@ -9,14 +9,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
-/**
- * Everything an application module needs that is not environment-specific.
- *
- * Product flavours, signing and release packaging live in a separate plugin
- * ([AndroidApplicationFlavorsConventionPlugin]) so that `:catalog` — which is an application but
- * ships to nobody — can take this without inheriting a four-flavour variant matrix it has no use
- * for.
- */
+/** Everything an application module needs that is not environment-specific. */
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.application")

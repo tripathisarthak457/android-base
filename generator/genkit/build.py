@@ -1,16 +1,4 @@
-"""
-The one place that says what generating a project consists of, and in what order.
-
-There are two entry points — the wizard in `create_project.py` and the JSON-on-stdin script the
-web API drives — and until this file existed both spelled out the same nine render steps in the
-same order. Which meant every step added since had to be added twice, and the day one of them was
-not, the website would have started quietly shipping projects missing whatever it was, with
-nothing failing and nothing to notice. The order is load-bearing too: the variant overlay has to
-land before the rewrite pass or its files keep the template's package name.
-
-Kept free of printing and of `argparse` so that both callers can report in their own voice — one
-prints a box-drawn summary for a person and the other prints JSON for a program.
-"""
+"""The one place that says what generating a project consists of, and in what order."""
 
 from __future__ import annotations
 
@@ -46,13 +34,7 @@ def build(
     git_init: bool = False,
     template_dir: Path | None = None,
 ) -> BuildResult:
-    """
-    Renders [spec] into [destination], as a .zip or a directory.
-
-    Built in a temporary directory and moved into place at the end, so a failure halfway through
-    leaves nothing behind. The alternative is a half-written project that the user has to work out
-    is broken before deleting — worse than no project at all.
-    """
+    """Renders [spec] into [destination], as a .zip or a directory."""
     template = template_dir or TEMPLATE_DIR
     if not template.is_dir():
         raise render.RenderError(f"Template not found at {template}")
@@ -61,6 +43,7 @@ def build(
         project = Path(staging) / spec.pascal_name
 
         warnings = render.copy_template(template, project, spec)
+        # Before the rewrite pass, or the overlaid files keep the template's package name.
         render.overlay_variants(VARIANTS_DIR, project, spec)
         scaffold.write_feature_modules(project, spec)
         render.rewrite_all(project, spec, scaffold.generated_blocks(spec))
@@ -107,14 +90,7 @@ def build(
 
 
 def plan(spec: ProjectSpec) -> dict[str, list[str]]:
-    """
-    What a build would do, without doing any of it. Backs `--dry-run`.
-
-    Answers the question people actually have before they wait for a zip: which features am I
-    getting that I did not tick, and what is being left out. Both are derived from the same
-    `FEATURES` table the render reads, so this cannot describe a build the generator would not
-    perform.
-    """
+    """What a build would do, without doing any of it. Backs `--dry-run`."""
     enabled = sorted(spec.features)
     return {
         "enabled": enabled,

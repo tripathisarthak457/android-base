@@ -5,13 +5,6 @@ Add a feature module to a project that already exists.
     py add_feature.py orders                      # in the current project
     py add_feature.py orders profile --tab         # two modules, both as bottom-nav tabs
     py add_feature.py orders --project ../MyApp
-
-Produces the same `:data:<name>` + `:feature:<name>` pair the generator scaffolds at creation
-time, and performs the three edits that are otherwise done by hand and forgotten one at a time:
-`settings.gradle.kts`, the app module's dependencies, and — with `--tab` — `AppDestinations`.
-
-It reads the project's own package name out of its Gradle files rather than asking, so running it
-in the wrong directory fails immediately instead of writing a module in the wrong namespace.
 """
 
 from __future__ import annotations
@@ -77,13 +70,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def inspect_project(project: Path) -> ProjectSpec:
-    """
-    Recovers just enough of the original spec to scaffold against.
-
-    Only the package name, the app name and whether networking is present actually affect what is
-    written; everything else on `ProjectSpec` is left at its default because the scaffold does not
-    read it.
-    """
+    """Recovers just enough of the original spec to scaffold against."""
     settings = project / "settings.gradle.kts"
     if not settings.is_file():
         raise SpecError(f"No settings.gradle.kts in {project}. Is that the project root?")
@@ -105,13 +92,7 @@ def inspect_project(project: Path) -> ProjectSpec:
 
 
 def find_package_name(project: Path) -> str:
-    """
-    The app module's namespace, which is the package every scaffolded file is written under.
-
-    Read from the build file rather than inferred from the directory layout: a module whose
-    directories and namespace disagree is unusual but legal, and guessing would put new files in
-    a package that does not compile.
-    """
+    """The app module's namespace, which is the package every scaffolded file is written under."""
     build_file = project / "app" / "build.gradle.kts"
     if not build_file.is_file():
         raise SpecError(f"No app/build.gradle.kts in {project}. Is that the project root?")
@@ -140,12 +121,7 @@ def spec_with_modules(spec: ProjectSpec, names: tuple[str, ...]) -> ProjectSpec:
 
 
 def register_modules(project: Path, names: tuple[str, ...]) -> None:
-    """
-    Appends the includes to settings.gradle.kts, under the section each belongs to.
-
-    Anchored on the existing `include(":data:` and `include(":feature:` lines rather than on the
-    section comments, so it still works in a project where those comments have been edited away.
-    """
+    """Appends the includes to settings.gradle.kts, under the section each belongs to."""
     path = project / "settings.gradle.kts"
     text = path.read_text(encoding="utf-8")
 
@@ -173,13 +149,7 @@ def register_dependencies(project: Path, spec: ProjectSpec, names: tuple[str, ..
 
 
 def insert_into_dependencies_block(text: str, addition: str) -> str:
-    """
-    Puts [addition] just before the closing brace of the `dependencies { }` block.
-
-    The fallback for a project that has no feature modules yet — which is every project the first
-    time this runs. Appending at the end of the file instead produces a build script that fails to
-    compile, with an error about `implementation` not resolving that says nothing about why.
-    """
+    """Puts [addition] just before the closing brace of the `dependencies { }` block."""
     lines = text.splitlines(keepends=True)
     try:
         start = next(
@@ -197,12 +167,7 @@ def insert_into_dependencies_block(text: str, addition: str) -> str:
 
 
 def register_tabs(project: Path, spec: ProjectSpec, names: tuple[str, ...]) -> None:
-    """
-    Adds each module to `AppDestinations.tabs`, and imports its key.
-
-    Inserted before the closing paren of the `tabs` list rather than after the last entry, because
-    a project may legitimately have none — and the file still has to compile after the edit.
-    """
+    """Adds each module to `AppDestinations.tabs`, and imports its key."""
     path = (
         project
         / "app/src/main/kotlin"
@@ -242,14 +207,7 @@ def insert_after_last(
     addition: str,
     fallback: Callable[[str, str], str] | None = None,
 ) -> str:
-    """
-    Inserts [addition] after the last line starting with [prefix].
-
-    A project with no feature modules yet has no such line — the normal case for the first run of
-    this script, not an error. [fallback] says where to put it then; without one the lines are
-    appended, which is correct for a file of top-level `include(...)` calls and wrong for anything
-    with a block structure.
-    """
+    """Inserts [addition] after the last line starting with [prefix]."""
     if not addition:
         return text
 

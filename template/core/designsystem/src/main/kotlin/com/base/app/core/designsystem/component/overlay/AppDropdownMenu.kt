@@ -28,17 +28,7 @@ import com.base.app.core.designsystem.foundation.AppSurface
 import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A menu anchored to whatever composed it.
- *
- * Built on `Popup`, which is `compose.ui` rather than Material — the anchoring, the outside-tap
- * dismissal and the back-press handling all come from the platform primitive, so what is left is
- * the surface, the entrance, and the rows.
- *
- * It scales out of its top-start corner rather than fading in place, which is what connects it
- * visually to the control that opened it. A menu that fades in centred appears to come from
- * nowhere.
- */
+/** A menu anchored to whatever composed it. */
 @Composable
 fun AppDropdownMenu(
     expanded: Boolean,
@@ -82,10 +72,7 @@ fun AppDropdownMenu(
 }
 
 /**
- * A row in a menu.
- *
- * [destructive] colours the whole row, icon included, rather than only the label. A red word next
- * to a neutral icon reads as an accident; the two agreeing reads as a decision.
+ * A row in a menu. [destructive] colours the whole row, icon included, rather than only the label.
  */
 @Composable
 fun AppMenuItem(

@@ -10,9 +10,7 @@ import com.base.app.core.network.NetworkClient
 import com.base.app.core.network.PassthroughUnwrapper
 import com.base.app.core.network.ResponseUnwrapper
 // <opt:room>
-// Every one of these lives in ResponseCache.kt, which the room feature owns and which is deleted
-// with it. Left outside the marker they are unresolved references in a project that asked for
-// networking without offline support.
+// These live in ResponseCache.kt, which only exists with the room feature.
 import androidx.room.Room
 import com.base.app.core.common.session.SessionScopedStore
 import com.base.app.core.network.CachedResponseDao
@@ -43,10 +41,8 @@ import javax.inject.Singleton
 annotation class AuthenticatedClient
 
 /**
- * No auth plugin at all.
- *
- * Used only by the token refresh call itself, which would otherwise recurse: a 401 on the refresh
- * endpoint would trigger a refresh, which would 401.
+ * No auth plugin at all. Used only by the token refresh call itself, which would otherwise recurse:
+ * a 401 on the refresh endpoint would trigger a refresh, which would 401.
  */
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
@@ -62,13 +58,7 @@ interface NetworkBindings {
     @Binds
     fun bindTokenRefresher(impl: KtorTokenRefresher): TokenRefresher
 
-    /**
-     * The default assumes the payload is the response body.
-     *
-     * Bind [com.base.app.core.network.EnvelopeUnwrapper] from the app module instead if your API
-     * wraps everything in `{"data": …}` — one `@Provides` in the app, and every call site changes
-     * with it.
-     */
+    /** The default assumes the payload is the response body. */
     @Binds
     fun bindResponseUnwrapper(impl: PassthroughUnwrapper): ResponseUnwrapper
 
@@ -102,9 +92,8 @@ object NetworkProviders {
     @Singleton
     fun provideNetworkDatabase(@ApplicationContext context: Context): NetworkDatabase =
         Room.databaseBuilder(context, NetworkDatabase::class.java, NetworkDatabase.NAME)
-            // Everything in this database is a cache or a replayable request; none of it is the
-            // source of truth for anything. Dropping it on a schema change is cheaper, and far
-            // safer, than maintaining migrations for data the server can re-supply.
+            // Everything here is a cache or a replayable request, so dropping it on a schema change
+            // is safe.
             .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
 

@@ -17,13 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
 import java.io.File
 
-/**
- * The picker actions a screen can trigger.
- *
- * A single object rather than four separate `rememberLauncherForActivityResult` calls, so a screen
- * that offers "take a photo or choose one" is two lines rather than two launchers, two temp-file
- * dances and a `when` over which one came back.
- */
+/** The picker actions a screen can trigger. */
 @Stable
 class MediaPickerController internal constructor(
     private val pickImageAction: () -> Unit,
@@ -34,12 +28,8 @@ class MediaPickerController internal constructor(
     private val recordVideoAction: () -> Unit,
 ) {
     /**
-     * The system photo picker.
-     *
-     * Needs no permission at all on API 33+, and on older releases runs through a backport that
-     * also needs none. An app that requests `READ_MEDIA_IMAGES` to show a picker is asking for
-     * access to *every* photo on the device in order to receive one — which is what the
-     * permission dialog tells the user, and why they decline.
+     * The system photo picker. Needs no permission at all on API 33+, and on older releases runs
+     * through a backport that also needs none.
      */
     fun pickImage() = pickImageAction()
 
@@ -54,32 +44,11 @@ class MediaPickerController internal constructor(
     /** Opens the camera app. The result lands at a file this controller created. */
     fun takePhoto() = takePhotoAction()
 
-    /**
-     * Records a video, with the duration and quality limits applied *at capture*.
-     *
-     * This is the cheap half of video compression: a camera app told to record 60 seconds at
-     * standard quality produces a small file directly, with no re-encoding. See [VideoTranscoder]
-     * for why the expensive half is a seam rather than an implementation.
-     */
+    /** Records a video, with the duration and quality limits applied *at capture*. */
     fun recordVideo() = recordVideoAction()
 }
 
-/**
- * Wires up every picker a screen might need and reports results through one callback.
- *
- * ## The camera path needs a file up front
- *
- * `TakePicture` writes to a `Uri` you supply — it does not hand one back. That URI must come from
- * a `FileProvider`, because passing a `file://` URI to another app has thrown `FileUriExposedException`
- * since Android 7. The provider is declared in this module's manifest, so nothing is needed in
- * the app's.
- *
- * ## Cancellation is silent
- *
- * Every launcher reports null or false when the user backs out, and none of them call
- * [onResult] — a picker that fires an "operation failed" message when someone changes their mind
- * is worse than one that says nothing.
- */
+/** Wires up every picker a screen might need and reports results through one callback. */
 @Composable
 fun rememberMediaPicker(
     videoSettings: VideoCompression = VideoCompression.Standard,
@@ -161,25 +130,14 @@ fun rememberMediaPicker(
     }
 }
 
-/**
- * A file in this app's cache, exposed through the FileProvider declared in this module.
- *
- * The camera app writes here directly, so there is no copy step and no second full-size bitmap in
- * memory.
- */
+/** A file in this app's cache, exposed through the FileProvider declared in this module. */
 private fun Context.createCaptureUri(prefix: String, extension: String): Uri {
     val directory = File(cacheDir, CAPTURE_DIRECTORY).apply { mkdirs() }
     val file = File(directory, "${prefix}_${System.currentTimeMillis()}.$extension")
     return FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
 }
 
-/**
- * The video-capture extras the platform understands.
- *
- * Exposed so a caller building its own intent applies the same limits. `EXTRA_DURATION_LIMIT` and
- * `EXTRA_VIDEO_QUALITY` are honoured by the stock camera app and by most OEM ones; a camera app
- * that ignores them still produces a usable file, so this is a hint rather than a guarantee.
- */
+/** The video-capture extras the platform understands. */
 fun VideoCompression.captureExtras(): Map<String, Any> = buildMap {
     maxDurationSeconds?.let { put(MediaStore.EXTRA_DURATION_LIMIT, it) }
     // 0 is the low-quality/MMS profile, 1 is high. Anything below 720p wants the former.

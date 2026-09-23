@@ -35,14 +35,8 @@ import com.base.app.MainActivity
 import com.base.app.R
 
 /**
- * A home-screen widget: the app's name and one line the app keeps current.
- *
- * Glance, not the design system: a widget is drawn by the launcher from RemoteViews, so the
- * app's composables cannot run there. It uses the launcher's own colours through [GlanceTheme],
- * which is what makes it sit comfortably beside every other widget on the page.
- *
- * Tapping it opens the app. Change the line with [AppWidgets.setHeadline] — an unread count, the
- * next appointment, today's streak — from wherever that value changes.
+ * A home-screen widget: the app's name and one line the app keeps current. Update the line with
+ * [AppWidgets.setHeadline] wherever that value changes — an unread count, the next appointment.
  */
 class AppWidget : GlanceAppWidget() {
 

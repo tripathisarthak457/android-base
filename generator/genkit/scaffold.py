@@ -1,14 +1,4 @@
-"""
-Scaffolding for the feature modules a user names at generation time.
-
-Each name produces a matching `:data:<name>` and `:feature:<name>` pair, shaped exactly like the
-reference feature: a repository behind an interface, an MVI contract, a ViewModel, a stateless
-screen, a navigation key and the two Hilt contributions that register it.
-
-The point is not to save typing — it is that the first feature somebody writes in a new project
-sets the pattern for every feature after it, and a scaffold that already does the right thing is
-a far more reliable way to establish that than a paragraph in a README.
-"""
+"""Scaffolding for the feature modules a user names at generation time."""
 
 from __future__ import annotations
 
@@ -29,12 +19,7 @@ def title(name: str) -> str:
 
 
 def generated_blocks(spec: ProjectSpec) -> dict[str, list[str]]:
-    """
-    The content for every `<generated:…>` marker in the template.
-
-    Returned as lists of lines including their newlines, because the marker substitution splices
-    them directly into the surrounding file.
-    """
+    """The content for every `<generated:…>` marker in the template."""
     data_includes = [f'include(":data:{name}")\n' for name in spec.feature_modules]
     feature_includes = [f'include(":feature:{name}")\n' for name in spec.feature_modules]
     app_dependencies = [
@@ -54,9 +39,7 @@ def generated_blocks(spec: ProjectSpec) -> dict[str, list[str]]:
     ]
 
     # `start` is `tabs.firstOrNull()?.key`, which is nullable however many tabs there are — so the
-    # elvis is not a fallback for an empty list, it is what gives the property its type. The
-    # template carries one behind an `<opt:sample>` block; this replaces it when that goes.
-    # The fallback names the first tab that exists, in the same order AppDestinations lists them.
+    # elvis is not a fallback for an empty list, it is what gives the property its type.
     start_destination: list[str] = []
     if not spec.has("sample"):
         if spec.has("paging"):
@@ -142,23 +125,13 @@ import javax.inject.Singleton"""
 
 {imports}
 
-/**
- * The domain model for {title(name)}.
- *
- * Lives here rather than in `:core:model` because it belongs to this domain. Keep the wire format
- * separate the moment the two diverge: add a DTO with a mapper, and the backend renaming a field
- * stops being a change to every screen.
- */
+/** The domain model for {title(name)}. Add a DTO and a mapper once the wire format differs. */
 data class {class_name}Item(
     val id: Int,
     val title: String,
 )
 
-/**
- * Everything the app can ask about {title(name)}.
- *
- * An interface so a ViewModel test injects a fake and never opens a socket.
- */
+/** Everything the app can ask about {title(name)}. An interface, so tests can use a fake. */
 interface {class_name}Repository {{
 
     suspend fun items(): AppResult<List<{class_name}Item>>
@@ -217,13 +190,7 @@ dependencies {{
 import {pkg}.core.navigation.AppNavKey
 import kotlinx.serialization.Serializable
 
-/**
- * This feature's destinations. Owned entirely by this module — nothing in `:core:navigation` or
- * `:app` names them.
- *
- * Keys carry ids, never models: a key is serialised into the saved-state bundle, so one holding a
- * whole object both bloats the bundle and goes stale the moment the app is backgrounded.
- */
+/** This feature's destinations. Keys carry ids, never models: they are saved in the bundle. */
 @Serializable
 data object {class_name}ListKey : AppNavKey
 
@@ -266,11 +233,7 @@ import {pkg}.data.{name}.{class_name}Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-/**
- * Loads on creation rather than from a `LaunchedEffect` in the composable: `init` runs once per
- * ViewModel, which is once per screen instance, where a `LaunchedEffect(Unit)` re-runs whenever
- * the composable re-enters the composition.
- */
+/** Loads in `init`, which runs once per screen, rather than from a `LaunchedEffect`. */
 @HiltViewModel
 class {class_name}ViewModel @Inject constructor(
     private val repository: {class_name}Repository,
@@ -341,10 +304,7 @@ import {pkg}.core.designsystem.theme.AppTheme
 import {pkg}.core.ui.asString
 import {pkg}.data.{name}.{class_name}Item
 
-/**
- * Stateless: it takes a state and emits events, and holds nothing of its own. That is what makes
- * the previews below work without a ViewModel, a network call, or a device.
- */
+/** Stateless, so the previews below need no ViewModel or network. */
 @Composable
 fun {class_name}Screen(
     state: {class_name}State,
@@ -382,8 +342,7 @@ fun {class_name}Screen(
                 contentPadding = PaddingValues(AppTheme.spacing.gutter),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {{
-                // Keyed on the item's own id: without a stable key, inserting a row at the top
-                // re-maps every item to a different slot and loses the scroll position.
+                // Keyed on the id so inserts keep scroll position.
                 items(items = state.items, key = {class_name}Item::id) {{ item ->
                     AppCard(
                         onClick = {{ onEvent({class_name}Event.ItemClicked(item.id)) }},
@@ -425,10 +384,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import {pkg}.core.navigation.AppNavigator
 import {pkg}.core.ui.MviScreen
 
-/**
- * Where the ViewModel, the screen and navigation meet. Kept apart from the screen so the screen
- * stays free of Hilt and of the navigator, and therefore previewable.
- */
+/** Connects the ViewModel, the screen and navigation, keeping the screen previewable. */
 @Composable
 fun {class_name}ListRoute(
     navigator: AppNavigator,
@@ -464,15 +420,10 @@ import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
 /**
- * How this feature joins the graph: what to render, and how to serialise its keys so the back
- * stack survives process death.
+ * Registers this feature's screens and key serializers. Without the serializers the back stack
+ * does not survive process death.
  *
- * Forgetting the second half is the mistake worth knowing about — the app works perfectly until
- * it is killed in the background, then comes back at the start destination.
- *
- * `{class_name}DetailKey` has no screen registered yet. Add one with `entry<{class_name}DetailKey> {{ … }}`
- * when you build the detail screen; until then, navigating to it fails loudly rather than
- * silently rendering nothing.
+ * `{class_name}DetailKey` has no screen yet: add `entry<{class_name}DetailKey> {{ … }}` with it.
  */
 @Module
 @InstallIn(SingletonComponent::class)

@@ -17,18 +17,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * The notification channels this app posts to.
- *
- * Declared as an enum rather than created ad hoc, because a channel's importance, sound and
- * vibration are fixed at creation and **cannot be changed afterwards** — Android ignores every
- * later attempt, by design, so the user stays in control. Getting a channel wrong therefore means
- * shipping a new channel id and leaving the old one orphaned in the user's settings. Having them
- * all in one place makes that decision visible when it is made.
- *
- * The split matters to users: someone who wants order updates but not marketing has to be able to
- * turn one off without the other, and that is only possible if they are separate channels.
- */
+/** The notification channels this app posts to. */
 enum class NotificationChannelSpec(
     val id: String,
     val channelName: String,
@@ -61,22 +50,7 @@ enum class NotificationChannelSpec(
     ),
 }
 
-/**
- * Creating channels and posting notifications.
- *
- * ## Channels are created at startup, not at first use
- *
- * They have to exist before the user can find them in system settings, and a user who wants to
- * mute one category should not have to receive a notification from it first in order to be able
- * to. `createNotificationChannels` is called from `Application.onCreate`.
- *
- * ## Posting checks the permission
- *
- * On API 33+ `POST_NOTIFICATIONS` is a runtime permission, and posting without it throws no
- * exception and shows nothing. Checking here means the failure is logged rather than silent,
- * which is the difference between "notifications are broken" being a five-minute answer and a
- * two-day investigation.
- */
+/** Creating channels and posting notifications. */
 @Singleton
 class AppNotifications @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -101,13 +75,7 @@ class AppNotifications @Inject constructor(
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
 
-    /**
-     * Posts a notification.
-     *
-     * [contentIntent] is what happens on tap. It is a plain [Intent] rather than a
-     * `PendingIntent`, so the caller does not have to remember `FLAG_IMMUTABLE` — which is
-     * mandatory from API 31 and throws at runtime if omitted.
-     */
+    /** Posts a notification. [contentIntent] is what happens on tap. */
     fun post(
         id: Int,
         title: String,
@@ -144,10 +112,8 @@ class AppNotifications @Inject constructor(
             )
         }
 
-        // The `hasPermission` guard above is the check, but it is a property rather than an
-        // inline `checkSelfPermission`, so lint cannot follow it. The runCatching is the second
-        // half of the answer: an OEM that revokes the grant between the check and the post
-        // throws, and a crash there would be caused by the user tapping "don't allow".
+        // The `hasPermission` guard above is the check, but it is a property rather than an inline
+        // `checkSelfPermission`, so lint cannot follow it.
         @SuppressLint("MissingPermission")
         val posted = runCatching { manager.notify(id, builder.build()) }
         posted.onFailure { AppLogger.e("Failed to post notification $id", it, TAG) }
@@ -164,8 +130,8 @@ class AppNotifications @Inject constructor(
 
 /**
  * Pre-O devices have no channels; the importance has to be carried on the notification itself.
- * Without this, every notification on an old device arrives at default priority regardless of
- * which channel it nominally belongs to.
+ * Without this, every notification on an old device arrives at default priority regardless of which
+ * channel it nominally belongs to.
  */
 private fun Int.toCompatPriority(): Int = when (this) {
     NotificationManager.IMPORTANCE_HIGH -> NotificationCompat.PRIORITY_HIGH

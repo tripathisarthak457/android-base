@@ -15,28 +15,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-/**
- * The migration, replayed against a database that really was at version 1.
- *
- * ## Why this test exists at all
- *
- * A migration is the one piece of code that runs exactly once per user, on their data, where it
- * cannot be retried. It is also the easiest thing in a project to write, never run, and ship —
- * because every development install is a fresh one, and a fresh install never migrates. The first
- * time an untested migration executes is on somebody's phone, after they updated, with the only
- * copy of their data.
- *
- * ## Why the old database is built by hand
- *
- * Room's `MigrationTestHelper` reads the exported schema for the older version, which only exists
- * if the project was ever built at that version. A template has never been at version 1, so the
- * v1 table is written out here as the SQL Room would have generated. That is also the more honest
- * test: it proves the migration works against what the table actually was, rather than against
- * Room's description of it.
- *
- * Room validates the result. If [MIGRATION_1_2] produced a table that disagreed with the entity
- * by so much as a column's nullability, opening the database below would throw.
- */
+/** The migration, replayed against a database that really was at version 1. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [MIGRATION_TEST_SDK])
 class AppDatabaseMigrationTest {

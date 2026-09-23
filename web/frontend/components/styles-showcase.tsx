@@ -17,13 +17,7 @@ const STYLES: { key: DesignStyleKey; accent: string; font: string; blurb: string
 const SHOWCASE_FEATURES = new Set(["sample", "paging", "search", "profile", "settings", "language", "media"]);
 const CYCLE: Screen[] = ["home", "feed", "profile", "settings"];
 
-/**
- * Four design styles side by side, each with a brand colour and typeface that suits it.
- *
- * The point is that these are one codebase: the same eighty components, the same screens, with
- * one enum changed. Each phone steps through its screens on a timer, offset from its neighbour so
- * the row never changes all at once.
- */
+/** Four design styles side by side, each with a brand colour and typeface that suits it. */
 export function StylesShowcase() {
   const [dark, setDark] = useState(false);
   const [tick, setTick] = useState(0);

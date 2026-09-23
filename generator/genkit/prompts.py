@@ -1,10 +1,6 @@
 """
-The interactive wizard.
-
-Everything here is I/O and nothing here is logic: it collects answers, hands them to
-`ProjectSpec`, and re-asks whatever `ProjectSpec.validated()` rejects. That split is what lets the
-same generator be driven later by an HTTP request with no duplicated validation — and what keeps
-the rules testable without a terminal.
+The interactive wizard. Everything here is I/O and nothing here is logic: it collects answers, hands
+them to `ProjectSpec`, and re-asks whatever `ProjectSpec.validated()` rejects.
 """
 
 from __future__ import annotations
@@ -38,8 +34,7 @@ from .spec import (
 
 # Windows consoles still default to a legacy code page, which cannot encode the box-drawing and
 # arrow characters this wizard prints — and an unhandled UnicodeEncodeError halfway through a
-# summary is a spectacularly unhelpful failure. Reconfiguring is a no-op where the stream is
-# already UTF-8.
+# summary is a spectacularly unhelpful failure.
 for _stream in (sys.stdout, sys.stderr):
     try:
         _stream.reconfigure(encoding="utf-8", errors="replace")
@@ -131,16 +126,8 @@ def ask_int(question: str, default: int, minimum: int | None = None) -> int:
 
 def ask_password(question: str, minimum_length: int = 6, generate_if_blank: bool = False) -> str:
     """
-    Read visibly rather than through `getpass`.
-
-    A hidden prompt is the right default for a password that authenticates something. This one is
-    written to `keystore.properties` in plain text moments later, so hiding it would imply a
-    secrecy the storage does not provide — and a silently mistyped keystore password is not
-    discovered until a release build fails.
-
-    With [generate_if_blank], pressing Enter makes a strong password and prints it once — so
-    taking every default in the wizard still ends with real keys rather than a prompt that loops.
-    Only for a key being created: an existing store's password has to be the real one.
+    Read visibly rather than through `getpass`. A hidden prompt is the right default for a password
+    that authenticates something.
     """
     hint = " (Enter to generate one)" if generate_if_blank else ""
     while True:
@@ -207,10 +194,6 @@ def ask_version() -> tuple[str, int]:
 def ask_preset() -> set[str] | None:
     """
     Offers the three starting points, or None when the user wants to choose feature by feature.
-
-    Presented before the per-feature run rather than instead of it: eighteen yes/no questions is
-    the right interface for someone who knows exactly what they want, and the wrong one for
-    everybody else.
     """
     print(dim("  Start from a preset, or answer for each feature."))
     print()
@@ -307,10 +290,8 @@ def ask_deeplinks(features: set[str], app_name: str) -> tuple[str, str]:
 
 def ask_fonts(features: set[str]) -> tuple[str, str]:
     """
-    The app's typeface, by name.
-
-    Only asked when downloadable fonts are on — without them the project uses the platform
-    families and a name here would be a setting that does nothing.
+    The app's typeface, by name. Only asked when downloadable fonts are on — without them the
+    project uses the platform families and a name here would be a setting that does nothing.
     """
     if "googlefonts" not in features:
         return "DM Sans", "JetBrains Mono"
@@ -329,14 +310,7 @@ def ask_fonts(features: set[str]) -> tuple[str, str]:
 
 
 def ask_look_and_feel(features: set[str]) -> tuple[str, str, str, str, str, bool]:
-    """
-    The three decisions that change how the app looks and feels everywhere.
-
-    Each is one value in one file: three hexes the whole palette is derived from, an enum the
-    press feedback reads, and a boolean the haptics read. Asking here rather than leaving them at
-    a default is the difference between a generated project that looks generated and one that
-    looks like the product it is going to be.
-    """
+    """The three decisions that change how the app looks and feels everywhere."""
     heading("Look and feel")
 
     print(dim("  The brand colours. Every shade of each — pressed, subtle, and the dark-theme"))
@@ -570,13 +544,7 @@ def summarise(spec: ProjectSpec) -> None:
 
 
 def describe_brand_colours(spec: ProjectSpec) -> str:
-    """
-    The three brand colours for the confirmation summary, derived ones marked as such.
-
-    Shows the resolved hex rather than the word "derived" alone: the point of the summary is that
-    someone can catch a wrong answer before two minutes of generation, and "worked out from the
-    primary" is not something anyone can look at and recognise as wrong.
-    """
+    """The three brand colours for the confirmation summary, derived ones marked as such."""
     from .render import brand_colours, _to_argb
 
     resolved = brand_colours(spec)

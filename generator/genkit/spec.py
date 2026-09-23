@@ -1,11 +1,6 @@
 """
 What a generated project is: the answers, the rules that validate them, and the catalogue of
 optional features.
-
-Kept free of I/O and of prompting on purpose. The wizard in `prompts.py` produces a `ProjectSpec`,
-and the renderer in `render.py` consumes one — so the same generator can later be driven by an
-HTTP request body with no change to anything here, and every rule below is unit-testable without
-a terminal.
 """
 
 from __future__ import annotations
@@ -61,13 +56,10 @@ class Feature:
     """
     One switchable capability.
 
-    `requires` is resolved transitively before rendering, so a user who asks for push
-    notifications gets Firebase without having to know that push is a Firebase product.
-
-    `files` are removed from the generated project when the feature is off. `variant_dir` is a
-    directory under `generator/variants/` whose contents are copied over the project in that same
-    case — the mechanism for a file that has to *change* rather than disappear, which markers
-    inside a single file cannot express without breaking the template's own build.
+    `requires` is resolved transitively, so asking for push brings Firebase. `files` are removed
+    from the project when the feature is off; `variant_dir` names a directory under
+    `generator/variants/` copied over the project in that case, for a file that has to change
+    rather than disappear.
     """
 
     key: str
@@ -93,9 +85,7 @@ FEATURES: tuple[Feature, ...] = (
         files=(
             "core/network",
             # AppModule exists only to supply NetworkConfig from BuildConfig. Without the network
-            # module there is nothing for it to provide, and leaving it behind fails Hilt. Named
-            # file by file rather than by directory: `di/` also holds bindings that have nothing
-            # to do with networking.
+            # module there is nothing for it to provide, and leaving it behind fails Hilt.
             "app/src/main/kotlin/{pkg_path}/di/AppModule.kt",
         ),
     ),
@@ -119,7 +109,10 @@ FEATURES: tuple[Feature, ...] = (
         ),
         default=True,
         requires=("network",),
-        files=("core/network/src/main/kotlin/{pkg_path}/core/network/ResponseCache.kt",),
+        files=(
+            "core/network/src/main/kotlin/{pkg_path}/core/network/ResponseCache.kt",
+            "core/network/src/test/kotlin/{pkg_path}/core/network/QueuedRequestReplayerTest.kt",
+        ),
     ),
     Feature(
         key="coil",
@@ -495,9 +488,6 @@ FEATURES: tuple[Feature, ...] = (
 FEATURES_BY_KEY: dict[str, Feature] = {feature.key: feature for feature in FEATURES}
 
 #: Feature keys from earlier releases, and what each became. None means it was removed.
-#:
-#: Saved specs outlive releases — `--save-spec` exists to be re-run months later — and a spec
-#: naming a feature that has since gone would otherwise be refused outright.
 LEGACY_FEATURES: dict[str, str | None] = {
     "analytics-firebase": "firebase",
     "crashlytics": "firebase",
@@ -529,13 +519,7 @@ def upgrade_features(features: set[str]) -> tuple[set[str], list[str]]:
 
 @dataclass(frozen=True)
 class Preset:
-    """
-    A named starting point, so the common cases are one answer rather than eighteen.
-
-    `everything` is deliberately not "all features": a preset is a recommendation, and a
-    recommendation that includes the baseline-profile benchmark module — which most teams never
-    run — is not one. `--all` still exists for that.
-    """
+    """A named starting point, so the common cases are one answer rather than eighteen."""
 
     key: str
     title: str
@@ -620,12 +604,7 @@ def preset_features(key: str) -> set[str]:
 
 
 def resolve_features(selected: set[str]) -> set[str]:
-    """
-    Adds everything the selection implies, transitively.
-
-    Asking for Crashlytics and getting a build that fails because Firebase was not also ticked is
-    the kind of paper cut that makes a generator feel unfinished.
-    """
+    """Adds everything the selection implies, transitively."""
     resolved = set(selected)
     changed = True
     while changed:
@@ -691,13 +670,7 @@ class KeystoreSpec:
 # The spec
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: Names a scaffolded feature module may not take.
-#:
-#: The structural directories are the obvious half. The rest are the modules the template itself
-#: ships: scaffolding one of those writes a generic `items()` repository and list screen straight
-#: over the curated module of the same name, and the files that survive still call the API that
-#: was overwritten. The result is a project that does not compile, reported as a dozen unresolved
-#: references in files the user never named. Cheaper to refuse the name.
+#: Names a scaffolded feature module may not take. The structural directories are the obvious half.
 RESERVED_MODULE_NAMES: frozenset[str] = frozenset({
     "app", "core", "data", "feature", "build", "catalog", "benchmark",
     "auth", "onboarding", "sample", "settings", "feed", "search", "profile",
@@ -713,8 +686,7 @@ _FONT_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 -]{0,59}$")
 
 #: What a backend URL may contain. Deliberately narrower than RFC 3986: no quote, backslash or `$`,
 #: because the value is written into a Kotlin string literal in build-logic, which Gradle compiles
-#: and runs. A `"` would end the literal and a `${…}` would be a template — either one is code
-#: running on the machine of whoever builds the project, from a spec file they were handed.
+#: and runs.
 _URL_BODY = r"[A-Za-z0-9._~:/?#\[\]@!&'()*+,;=%-]+"
 _HTTP_URL = re.compile(rf"^https?://{_URL_BODY}$")
 _SOCKET_URL = re.compile(rf"^wss?://{_URL_BODY}$")
@@ -778,14 +750,7 @@ class ProjectSpec:
 
     @property
     def effective_deeplink_scheme(self) -> str:
-        """
-        The custom scheme to write into `strings.xml`, never empty.
-
-        `android:scheme` cannot be blank — Android lint fails the build with AppLinkUrlError, so a
-        project generated with deep links on and no scheme supplied would not compile. The wizard
-        offers this same value as its default; this is what makes it the default everywhere else
-        too, including a request that arrives from the website without one.
-        """
+        """The custom scheme to write into `strings.xml`, never empty."""
         return self.deeplink_scheme or self.lower_name or "app"
 
     @property
@@ -812,12 +777,7 @@ class ProjectSpec:
     # ── Validation ───────────────────────────────────────────────────────────
 
     def validated(self) -> "ProjectSpec":
-        """
-        Returns a spec with implied features resolved, or raises [SpecError].
-
-        Validation lives on the spec rather than in the wizard so that the future HTTP entry point
-        enforces exactly the same rules — and so these rules have tests.
-        """
+        """Returns a spec with implied features resolved, or raises [SpecError]."""
         if not _APP_NAME.match(self.app_name.strip()):
             raise SpecError(
                 "App name must start with a letter and contain only letters, digits, spaces, "
@@ -964,13 +924,7 @@ _DNAME_SPECIALS = set(',=+<>#;\\"')
 
 
 def validate_keystore(keystore: KeystoreSpec) -> None:
-    """
-    Checks one signing key, before `keytool` sees any of it.
-
-    Called from [ProjectSpec.validated], so the wizard and the HTTP entry point enforce the same
-    rules — and so a value that arrived over the network is checked at the boundary rather than
-    trusted because the terminal wizard would never have produced it.
-    """
+    """Checks one signing key, before `keytool` sees any of it."""
     if keystore.name not in KEYSTORE_NAMES:
         raise SpecError(
             f"Unknown signing key '{keystore.name}'. "
@@ -1019,12 +973,7 @@ _JAVA_KEYWORDS = {
 
 
 def validate_dname_part(label: str, value: str) -> None:
-    """
-    One component of a certificate's subject.
-
-    Its own function so the wizard can check an answer as it is typed rather than at the end of
-    the run, when rejecting it would mean losing everything else the user has entered.
-    """
+    """One component of a certificate's subject."""
     if not value.strip():
         raise SpecError(f"The {label} cannot be empty.")
     if not value.isprintable() or any(character in _DNAME_SPECIALS for character in value):

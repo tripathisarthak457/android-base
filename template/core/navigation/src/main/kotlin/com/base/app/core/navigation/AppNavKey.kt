@@ -1,14 +1,7 @@
 package com.base.app.core.navigation
 
 /**
- * A navigable destination.
- *
- * Deliberately *not* `androidx.navigation3.runtime.NavKey`. Feature modules implement this
- * interface, and this module is the only one that knows Navigation 3 exists — so replacing the
- * navigation library is a change to four files in `:core:navigation` rather than a change to
- * every feature in the project. That is the entire reason this wrapper exists.
- *
- * Two rules hold for every implementation:
+ * A navigable destination. Deliberately *not* `androidx.navigation3.runtime.NavKey`.
  *
  * 1. **Annotate it `@Serializable` and register it.** The back stack survives process death by
  *    being serialised whole (see [AppBackStack]), and a key that is not registered in its
@@ -23,16 +16,7 @@ package com.base.app.core.navigation
  */
 interface AppNavKey
 
-/**
- * How a destination arrives and leaves.
- *
- * Declared per destination by the feature that owns it, in this module's own vocabulary — the
- * actual animations live in [NavTransitions] and the Navigation 3 metadata that carries them
- * never leaves this module.
- *
- * Four options, and that is on purpose. A screen that invents a fifth is a screen that will feel
- * like it came from a different app.
- */
+/** How a destination arrives and leaves. */
 enum class NavTransitionStyle {
     /** Deeper into a stack, and back out. The overwhelming majority of navigation. */
     Push,

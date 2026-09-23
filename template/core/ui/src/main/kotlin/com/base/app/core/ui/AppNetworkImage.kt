@@ -17,18 +17,7 @@ import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A remote image, with a skeleton while it loads and a glyph when it fails.
- *
- * Lives here rather than in `:core:designsystem` because loading one needs an image library, and
- * that module is deliberately Compose-only — which is what keeps the design-system iteration loop
- * down to two modules to rebuild.
- *
- * The loading placeholder is a skeleton rather than a spinner: an image has a known shape, and a
- * block of that shape stops the layout jumping when the bytes arrive. The failure state is a
- * glyph on the same block rather than nothing at all, so "the URL is wrong" is distinguishable
- * from "the network is slow" — which are two different bugs to chase.
- */
+/** A remote image, with a skeleton while it loads and a glyph when it fails. */
 @Composable
 fun AppNetworkImage(
     url: String?,
@@ -52,12 +41,7 @@ fun AppNetworkImage(
     )
 }
 
-/**
- * A person's picture, falling back to their initials.
- *
- * The initials are not a placeholder waiting to be replaced — for most people in most lists they
- * are what actually renders, because most people never set a photo.
- */
+/** A person's picture, falling back to their initials. */
 @Composable
 fun AppUserAvatar(
     name: String,

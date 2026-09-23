@@ -9,13 +9,11 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 /**
- * Where this install's push address is sent: its Firebase Installation ID, which the server
- * targets with `Message.fid`.
+ * Where this install's push address is sent: its Firebase Installation ID, which the server targets
+ * with `Message.fid`.
  *
- * The default logs it and stops there, because a template cannot know your endpoint. Replace the
- * body with a call into whichever `:data:*` module owns device registration — that module is a
- * legitimate dependency of `:app`, and this is the seam that keeps `:core:notification` from
- * having to reach up into it.
+ * The default only logs it. Replace the body with a call into the `:data:` module that owns device
+ * registration.
  */
 @Module
 @InstallIn(SingletonComponent::class)

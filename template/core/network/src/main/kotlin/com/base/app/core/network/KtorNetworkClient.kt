@@ -40,19 +40,11 @@ import javax.inject.Singleton
 /**
  * The Ktor implementation. The only class in the project that knows what HTTP library is in use.
  *
- * ## Order of operations
- *
  * 1. A cache hit that is still fresh short-circuits everything — no socket is opened.
  * 2. Offline, with a stale cache entry and a policy that allows it: serve the stale copy.
  * 3. Offline, with a queueable mutation: persist it and report success-shaped failure so the
  *    caller can show "we'll send this when you're back".
  * 4. Otherwise: make the call.
- *
- * ## Failures are classified, not wrapped
- *
- * `isOffline` on the result distinguishes "the request never left the device" from "the server
- * said no", because those need different copy and a different action on every screen — and
- * deciding that at the UI layer would mean the UI layer importing Ktor's exception types.
  */
 @Singleton
 class KtorNetworkClient @Inject constructor(
@@ -110,11 +102,8 @@ class KtorNetworkClient @Inject constructor(
             } catch (cancellation: CancellationException) {
                 throw cancellation
             } catch (io: IOException) {
-                // The recovery is the same as being offline — stale cache, then the queue — but
-                // the message is not. The connectivity check above passed, so if the device is
-                // still online this is the server being unreachable: a wrong base URL, DNS that
-                // does not resolve, a service that is down. Telling that user "you are offline"
-                // sends them to check their wifi, which is fine, and is not the problem.
+                // Online but unreachable: wrong base URL, DNS or a server that is down. Recovery is
+                // the same as offline, the message is not.
                 AppLogger.w("Network IO failure for ${request.path}", throwable = io)
                 unreachable(
                     request = request,

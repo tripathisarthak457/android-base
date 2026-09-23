@@ -7,13 +7,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
-/**
- * The palette with a style's neutrals in place of the template's.
- *
- * Only the neutrals move: background, surfaces, borders, the three text greys and the skeleton.
- * The brand and status colours are left exactly as they were, so a success pill means the same
- * thing in every style, and `PaletteContrastTest` checks every combination against AA.
- */
+/** The palette with a style's neutrals in place of the template's. */
 fun AppColors.withSurfaces(tone: SurfaceTone): AppColors = when (tone) {
     SurfaceTone.Cool -> this
     SurfaceTone.BrandTint -> brandTinted()

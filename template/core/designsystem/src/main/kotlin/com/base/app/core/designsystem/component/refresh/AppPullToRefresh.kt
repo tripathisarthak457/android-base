@@ -28,28 +28,7 @@ import com.base.app.core.designsystem.foundation.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 
-/**
- * Pull-to-refresh, over any scrollable.
- *
- * ## Why by hand
- *
- * Pull-to-refresh ships in Material 3. The mechanics are a `NestedScrollConnection` plus an
- * indicator, so rebuilding it costs a hundred lines and buys a spinner that matches the rest of
- * this design system rather than one that does not.
- *
- * ## The drag is resisted
- *
- * The indicator moves at 55% of the finger, and its travel is capped. Without resistance the
- * indicator shoots to the threshold in a few millimetres and the gesture has no sense of tension
- * — the user cannot feel how far they have to go, so they either overshoot or give up early.
- *
- * ## Only the overscroll is consumed
- *
- * `onPreScroll` claims upward drags only while the indicator is already extended, so a list that
- * is scrolled down still scrolls normally; `onPostScroll` claims downward drags only once the
- * list itself has reached the top and left the delta unconsumed. That ordering is what stops the
- * gesture fighting the list.
- */
+/** Pull-to-refresh, over any scrollable. Pull-to-refresh ships in Material 3. */
 @Composable
 fun AppPullToRefresh(
     isRefreshing: Boolean,
@@ -108,9 +87,7 @@ fun AppPullToRefresh(
         }
     }
 
-    // Retracting is driven by the caller's flag rather than by the gesture, so the indicator stays
-    // out for as long as the refresh actually takes — including when it finishes in 20ms, where
-    // snapping away instantly would read as nothing having happened.
+    // Retracts on the caller's flag, so a 20ms refresh still shows the indicator briefly.
     LaunchedEffect(isRefreshing) {
         if (!isRefreshing && offset.value > 0f) offset.animateTo(0f)
     }

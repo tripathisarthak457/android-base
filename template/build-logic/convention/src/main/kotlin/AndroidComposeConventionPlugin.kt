@@ -6,12 +6,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-/**
- * Compose for a module that already has an Android plugin applied.
- *
- * Works for both application and library modules; which one it is only affects where the
- * extension is read from.
- */
+/** Compose for a module that already has an Android plugin applied. */
 class AndroidComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         val extension: CommonExtension = extensions.findByType(ApplicationExtension::class.java)

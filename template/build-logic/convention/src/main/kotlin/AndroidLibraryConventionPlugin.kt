@@ -9,14 +9,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
-/**
- * Every `:core:*`, `:data:*` and `:feature:*` module.
- *
- * Library modules carry no product flavours on purpose — see [com.base.app.buildlogic.configureFlavors]
- * for why. They also do not enable `buildConfig`: a library that reads `BuildConfig.DEBUG` is a
- * library that behaves differently depending on who compiled it, which is exactly the bug you
- * cannot reproduce. What varies by environment is injected instead.
- */
+/** Every `:core:*`, `:data:*` and `:feature:*` module. */
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.library")
@@ -24,9 +17,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         extensions.configure<LibraryExtension> {
             configureAndroidCommon(this)
 
-            // The instrumentation test APK of a library is built for the debug variant only, and
-            // building the release one costs a full extra R8 pass per module for artifacts nobody
-            // runs.
+            // Library instrumentation tests only run on debug; building release would cost an extra
+            // R8 pass.
             buildTypes.getByName("release").isMinifyEnabled = false
         }
 

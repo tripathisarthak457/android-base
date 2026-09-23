@@ -45,9 +45,8 @@ import javax.inject.Inject
 /** One onboarding page. Replace the placeholder copy and icons with your own. */
 @Immutable
 /**
- * Resource ids rather than strings, because the list of pages is a top-level `val` and a
- * composable cannot be called from one. Holding the id defers the lookup to the screen, which
- * is also what makes the copy follow a locale change without the list being rebuilt.
+ * Resource ids rather than strings, because the list of pages is a top-level `val` and a composable
+ * cannot be called from one.
  */
 data class OnboardingPage(
     @param:StringRes val title: Int,
@@ -70,11 +69,8 @@ sealed interface OnboardingEffect : UiEffect {
 }
 
 /**
- * Onboarding, which is finished exactly once.
- *
- * Both "Get started" and "Skip" write the same flag and emit the same effect. Treating them
- * differently — skipping without recording it — is why some apps show onboarding again on the
- * next launch to a user who explicitly declined it.
+ * Onboarding, which is finished exactly once. Both "Get started" and "Skip" write the same flag and
+ * emit the same effect.
  */
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
@@ -119,9 +115,7 @@ fun OnboardingScreen(
     val onLastPage = pagerState.currentPage == state.pages.lastIndex
 
     AppScaffold(modifier = modifier) {
-        // This screen has neither a top bar nor a bottom bar, and those are what normally carry
-        // the system-bar insets. Without them here, "Skip" sits under the clock and the button
-        // sits under the gesture pill — on the very first screen anybody sees.
+        // No top or bottom bar here, so this screen applies the system-bar insets itself.
         Column(
             modifier = Modifier
                 .fillMaxSize()

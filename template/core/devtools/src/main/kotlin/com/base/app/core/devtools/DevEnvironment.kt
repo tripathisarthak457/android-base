@@ -1,15 +1,6 @@
 package com.base.app.core.devtools
 
-/**
- * What the badge says, and whether it appears at all.
- *
- * Supplied by the application module from its own `BuildConfig`, for the same reason
- * `NetworkConfig` is: a library module that reads its own `BuildConfig` reports whichever variant
- * compiled *it*, not the app.
- *
- * [visible] is the whole safety rule in one place. A production build shows nothing and records
- * nothing — see the module's own documentation for why absence beats a runtime check.
- */
+/** What the badge says, and whether it appears at all. */
 data class DevEnvironment(
     val name: String,
     val versionName: String,

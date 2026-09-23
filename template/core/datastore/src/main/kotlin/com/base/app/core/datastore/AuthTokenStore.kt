@@ -15,13 +15,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Where the session tokens live.
- *
- * An interface because `:core:network` needs to read tokens and must not depend on how they are
- * stored — and because a test of the refresh flow needs to hand the client a token store it
- * controls, without a Keystore or a filesystem.
- */
+/** Where the session tokens live. */
 interface AuthTokenStore {
 
     val isAuthenticated: Flow<Boolean>
@@ -38,12 +32,7 @@ interface AuthTokenStore {
     suspend fun clear()
 }
 
-/**
- * Tokens on disk, encrypted with a Keystore-held key.
- *
- * Registered as a [SessionScopedStore] so sign-out clears it without anything having to name it —
- * see that interface for why that matters.
- */
+/** Tokens on disk, encrypted with a Keystore-held key. */
 @Singleton
 class DataStoreAuthTokenStore @Inject constructor(
     @SessionDataStore private val dataStore: DataStore<Preferences>,

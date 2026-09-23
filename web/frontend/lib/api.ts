@@ -1,23 +1,9 @@
 /**
- * The API client, and the shapes it returns.
- *
- * Every type here mirrors what `genkit/catalogue.py` emits. They are hand-written rather than
- * generated because there are nine of them and a codegen step is a build dependency that has to
- * be installed on every machine that touches the site — but the *values* are never duplicated:
- * the feature list, the presets and the defaults all come down the wire.
+ * The API client, and the shapes it returns. Every type here mirrors what `genkit/catalogue.py`
+ * emits.
  */
 
-/**
- * Where the Go API lives.
- *
- * Empty in production, and that is the correct value rather than a missing one: the deployment
- * runs the site and the API as two services behind one domain, so `/api/options` is same-origin
- * and a relative URL is what should be fetched. It also means no CORS, and no way for the site to
- * end up pointed at a stale hostname.
- *
- * In development the two are separate processes on separate ports, so the fallback names the Go
- * server directly. NEXT_PUBLIC_API_BASE overrides both, for a split deployment.
- */
+/** Where the Go API lives. */
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") ??
   (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8080" : "");
@@ -79,18 +65,17 @@ export type Catalogue = {
   /** Whether the server that answered has a JDK, and so can run `keytool` at all. */
   keystoresAvailable: boolean;
   minKeystorePassword: number;
-  /** Module names the template already occupies. Checked in the form, so a taken name is caught
-   *  before the round trip and the site never keeps its own copy of the list. */
+  /**
+   * Module names the template already occupies. Checked in the form, so a taken name is caught
+   * before the round trip and the site never keeps its own copy of the list.
+   */
   reservedModuleNames: string[];
   fontSuggestions: string[];
 };
 
 /**
- * One signing key to create.
- *
- * These carry passwords, which is why they are assembled at submit time and never put in
- * `localStorage`, in a URL, or in the funnel event the page sends alongside. The only place they
- * come to rest is `keystore.properties` inside the zip the visitor downloads.
+ * One signing key to create. These carry passwords, which is why they are assembled at submit time
+ * and never put in `localStorage`, in a URL, or in the funnel event the page sends alongside.
  */
 export type Keystore = {
   name: string;
@@ -147,13 +132,7 @@ export async function fetchCatalogue(signal?: AbortSignal): Promise<Catalogue> {
   return response.json();
 }
 
-/**
- * Posts the spec and returns the zip as a Blob.
- *
- * The response is a file rather than a URL, so there is nothing to clean up on the server and no
- * window in which a generated project sits on disk addressable by anyone who guesses an id. The
- * cost is that the whole zip is held in memory here — about 400KB, which is fine.
- */
+/** Posts the spec and returns the zip as a Blob. */
 export async function generateProject(
   request: GenerateRequest,
   signal?: AbortSignal,
@@ -191,12 +170,7 @@ export async function generateProject(
   };
 }
 
-/**
- * Records one funnel step.
- *
- * `keepalive` so the "downloaded" ping survives the navigation the download triggers, and every
- * failure is swallowed: analytics must never be the reason a visitor sees an error.
- */
+/** Records one funnel step. */
 export function track(step: "landed" | "configured" | "downloaded"): void {
   try {
     void fetch(`${API_BASE}/api/track`, {

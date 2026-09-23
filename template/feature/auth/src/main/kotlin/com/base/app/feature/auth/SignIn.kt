@@ -74,21 +74,7 @@ sealed interface SignInEffect : UiEffect {
     data object OpenPasswordReset : SignInEffect
 }
 
-/**
- * Sign in.
- *
- * ## The form lives here, not in the composable
- *
- * [form] is held by the ViewModel, so the typed values survive a rotation without a
- * `rememberSaveable` per field, and so the code that validates them sits next to the code that
- * sends them. The screen only renders it.
- *
- * ## Failures land on fields where the server names them
- *
- * A 422 carrying `fieldErrors` is routed back onto the fields that caused it; anything else
- * becomes the banner at the top. A form that shows every failure as one banner makes the user
- * hunt through eight inputs for the one the server meant.
- */
+/** Sign in. */
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val authRepository: AuthRepository,

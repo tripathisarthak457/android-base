@@ -5,15 +5,8 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.font.FontFamily
 
 /**
- * The two typefaces the app draws with.
- *
- * This project was generated without downloadable fonts, so both are the platform's own — the app
- * inherits whatever the device ships. That is a perfectly good default and it costs nothing to
- * download.
- *
- * ## Using a specific typeface
- *
- * Drop the `.ttf` files into `res/font/` and build the families from them:
+ * The two typefaces the app draws with. This project was generated without downloadable fonts, so
+ * both are the platform's own — the app inherits whatever the device ships.
  *
  * ```
  * val brand = FontFamily(
@@ -26,10 +19,6 @@ import androidx.compose.ui.text.font.FontFamily
  *
  * AppTheme(fonts = AppFonts(sans = brand, mono = FontFamily.Monospace)) { … }
  * ```
- *
- * Every one of the fifteen styles in [AppTypography] picks it up; nothing else changes. Prefer
- * separate files per weight over a single variable font: some OEM builds ignore the weight axis
- * and fake bold by smearing the regular weight.
  */
 @Immutable
 data class AppFonts(
@@ -46,13 +35,7 @@ object AppFontNames {
 /** The platform families. */
 val PlatformFonts = AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
 
-/**
- * The signature the theme calls, kept identical to the downloadable-fonts build.
- *
- * The names are ignored here because there is no provider to ask. Keeping the parameters rather
- * than removing them means `AppTheme` is the same file in both builds and switching a project
- * from platform fonts to downloaded ones is adding a dependency, not editing call sites.
- */
+/** The signature the theme calls, kept identical to the downloadable-fonts build. */
 @Suppress("UnusedParameter")
 @Composable
 fun rememberAppFonts(

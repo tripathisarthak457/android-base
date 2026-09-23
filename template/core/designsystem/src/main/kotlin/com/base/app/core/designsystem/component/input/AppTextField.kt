@@ -43,28 +43,7 @@ import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.FieldTreatment
 
-/**
- * A text field.
- *
- * ## The label sits above the field
- *
- * Not a floating label that animates into the border. That pattern hides the label the moment
- * there is a value — which is precisely when someone reviewing a filled-in form needs it — and
- * it is unmistakably one design language. A static label above is always readable, wraps
- * properly at large font scales, and leaves the field's own space for the value.
- *
- * ## Error text replaces helper text, and the layout does not jump
- *
- * Only one of the two is ever shown, and the row animates its height, so a validation failure
- * does not shove every field below it down the screen. Nothing about the field's own height
- * changes when it becomes invalid.
- *
- * ## The length cap is enforced here
- *
- * [maxLength] rejects the excess character instead of accepting it and showing a counter in red.
- * A field that lets you type past the limit and then refuses to submit is a field that wasted
- * your time twice.
- */
+/** A text field. Not a floating label that animates into the border. */
 @Composable
 fun AppTextField(
     value: String,

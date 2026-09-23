@@ -1,13 +1,6 @@
 "use client";
 
-/**
- * Reports from people, as opposed to `errors`, which is what the software noticed about itself.
- *
- * A row collapses to a title; expanding shows everything the reporter typed *and* everything the
- * site attached. That second half is the reason this beats a GitHub issue template — the exact
- * feature set, package name, motion style and browser arrive without anybody being asked for
- * them, which is usually the difference between reproducing a bug today and three emails later.
- */
+/** Reports from people, as opposed to `errors`, which is what the software noticed about itself. */
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";

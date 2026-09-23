@@ -16,14 +16,7 @@ import com.base.app.core.designsystem.foundation.offsetShadow
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.CardTreatment
 
-/**
- * The default container for a block of related content.
- *
- * How it is drawn follows the design style — see [CardTreatment]. Outlined is the Utility default. A list of eight elevated cards is eight drop shadows
- * competing on one screen, which reads as noise; a hairline outline separates them just as well
- * and costs no overdraw. Elevation is reserved for something that genuinely floats above the
- * content — a sheet, a menu, a sticky action bar.
- */
+/** The default container for a block of related content. */
 @Composable
 fun AppCard(
     modifier: Modifier = Modifier,

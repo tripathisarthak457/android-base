@@ -6,15 +6,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
-/**
- * Room, with its schemas exported to a directory that is meant to be committed.
- *
- * The exported JSON is what `MigrationTestHelper` reads to open a database at an older version
- * and replay a migration against it. Without it a migration can only be tested by upgrading a
- * device by hand, which is to say it is not tested. The schema directory is wired through a KSP
- * argument rather than the Room Gradle plugin — it is the same result, one fewer plugin on the
- * classpath, and one fewer thing to keep version-aligned.
- */
+/** Room, with its schemas exported to a directory that is meant to be committed. */
 class AndroidRoomConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.google.devtools.ksp")

@@ -1,9 +1,6 @@
 /*
- * The convention plugins.
- *
- * Every module in the main build applies one or more of these instead of configuring the Android
- * and Kotlin extensions itself. That is the difference between changing the JVM target in one
- * place and changing it in twenty-two build files, one of which you will miss.
+ * The convention plugins. Every module in the main build applies one or more of these instead of
+ * configuring the Android and Kotlin extensions itself.
  */
 
 plugins {

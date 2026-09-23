@@ -10,12 +10,9 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 
 /**
- * How the app moves, as one choice.
- *
- * The personality of an interface is carried almost entirely by two numbers — how far something
- * moves when you touch it, and how much it overshoots on the way back. Naming the combinations
- * means a project picks a feel once, in [AppTheme], instead of every component arriving at its
- * own by accident.
+ * How the app moves, as one choice. The personality of an interface is carried almost entirely by
+ * two numbers — how far something moves when you touch it, and how much it overshoots on the way
+ * back.
  *
  * ```
  * AppTheme(motionStyle = AppMotionStyle.Bouncy) { … }
@@ -32,8 +29,8 @@ enum class AppMotionStyle {
     Standard,
 
     /**
-     * No overshoot anywhere and slightly longer durations. For dense, professional interfaces
-     * where motion should be legible rather than expressive.
+     * No overshoot anywhere and slightly longer durations. For dense, professional interfaces where
+     * motion should be legible rather than expressive.
      */
     Calm,
 
@@ -91,27 +88,7 @@ enum class AppMotionStyle {
     }
 }
 
-/**
- * Every duration, easing and spring the app animates with.
- *
- * ## Springs for anything a finger can interrupt
- *
- * A press, a drag, a sheet, a screen transition: these are all things the user can reverse
- * mid-flight. A spring carries the current velocity into the new target, so a flick that changes
- * direction halfway continues from where the thing actually is. A tween has to either snap or
- * play out an animation nobody is watching any more, and that difference is most of what
- * separates an interface that feels physical from one that feels like a slideshow.
- *
- * ## Tweens for anything that just appears
- *
- * A fade, a colour change, a skeleton shimmer — nothing to interrupt, and a duration is easier to
- * reason about and cheaper to run.
- *
- * ## Don't build one of these by hand
- *
- * Pick an [AppMotionStyle] instead. The fields are public so a project with a real motion spec
- * can express it, but four numbers chosen independently rarely agree with each other.
- */
+/** Every duration, easing and spring the app animates with. */
 @Immutable
 data class AppMotion(
     val instant: Int = 90,
@@ -132,11 +109,8 @@ data class AppMotion(
     val pressScale: Float = 0.96f,
 
     /**
-     * The scale it passes through on the way back.
-     *
-     * The reason a tap on a well-built app feels answered. A press-and-release can be over in
-     * forty milliseconds — far too fast for the shrink to finish — so without an overshoot on the
-     * release the control barely moves and the tap reads as unregistered. `1f` disables it.
+     * The scale it passes through on the way back. The reason a tap on a well-built app feels
+     * answered.
      */
     val pressOvershoot: Float = 1.02f,
 
@@ -179,12 +153,7 @@ data class AppMotion(
 
     fun <T> fadeOut(): FiniteAnimationSpec<T> = tween(quick, easing = exit)
 
-    /**
-     * How far the screen underneath travels during a push, as a fraction of the one on top.
-     *
-     * Moving both the same distance reads as two unrelated slides. Moving the one underneath
-     * *less* is what places it behind, and is the entire perception of depth in a stack.
-     */
+    /** How far the screen underneath travels during a push, as a fraction of the one on top. */
     val outgoingParallax: Float = 0.25f
 
     /** How much the outgoing screen dims. Enough to recede, not enough to look switched off. */

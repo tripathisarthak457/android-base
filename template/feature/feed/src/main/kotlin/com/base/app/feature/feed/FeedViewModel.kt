@@ -26,10 +26,8 @@ sealed interface FeedEvent : UiEvent {
 sealed interface FeedEffect : UiEffect
 
 /**
- * The pages themselves are not in [FeedState]: Paging owns them, and copying every loaded page
- * into a state object on each append would mean diffing the whole feed to add ten rows.
- * `cachedIn` keeps the loaded pages across a rotation and a tab switch, so coming back to the
- * feed shows where the user was rather than a spinner.
+ * The pages themselves are not in [FeedState]: Paging owns them, and copying every loaded page into
+ * a state object on each append would mean diffing the whole feed to add ten rows.
  */
 @HiltViewModel
 class FeedViewModel @Inject constructor(

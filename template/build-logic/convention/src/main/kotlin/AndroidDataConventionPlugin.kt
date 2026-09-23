@@ -8,11 +8,6 @@ import org.gradle.kotlin.dsl.project
 /**
  * Every `:data:*` module: one business domain end to end — its DTOs, its mappers, its API service
  * and its repository — depending only on `:core:*`.
- *
- * Deliberately absent: Compose, and any other `:data:*` module. A data module that needs a
- * sibling's model is a sign the domain boundary is in the wrong place, not that the graph needs
- * another edge. Keeping Compose out is also why these modules compile in parallel with the
- * feature modules above them rather than behind them.
  */
 class AndroidDataConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {

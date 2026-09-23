@@ -3,13 +3,7 @@ package com.base.app.buildlogic
 import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-/**
- * Every number that describes *this app* rather than *this module*.
- *
- * Deliberately one object rather than values scattered across build files: bumping the target SDK
- * or the version code is a single edit, and no module can disagree with another about what it
- * compiles against.
- */
+/** Every number that describes *this app* rather than *this module*. */
 object AppConfig {
 
     const val APPLICATION_ID = "com.base.app"
@@ -38,16 +32,7 @@ object AppConfig {
     val NEEDS_CORE_LIBRARY_DESUGARING: Boolean get() = MIN_SDK < 26
 }
 
-/**
- * The build environments, and everything that differs between them.
- *
- * A flavour exists to answer three questions — which backend, whether it installs alongside the
- * others, and which key signs it — so all three live here together. Adding a fourth environment
- * is one entry; nothing else in the build has to learn about it.
- *
- * [signingKeyName] is the prefix looked up in `keystore.properties` (see [Signing]). Two flavours
- * may share a key: dev and staging commonly do. Production and Play Store must not.
- */
+/** The build environments, and everything that differs between them. */
 enum class AppFlavor(
     val flavorName: String,
     val applicationIdSuffix: String?,
@@ -78,14 +63,7 @@ enum class AppFlavor(
         signingKeyName = "prod",
     ),
 
-    /**
-     * Identical to [PROD] in every respect except the key it is signed with.
-     *
-     * It exists so that the artifact uploaded to Play is produced by a build you can point at,
-     * rather than by remembering to swap a signing config before running the release task. The
-     * debug variant of this flavour is disabled — there is no such thing as a debuggable Play
-     * build — which is why the matrix is seven variants and not eight.
-     */
+    /** Identical to [PROD] in every respect except the key it is signed with. */
     PLAYSTORE(
         flavorName = "playstore",
         applicationIdSuffix = null,

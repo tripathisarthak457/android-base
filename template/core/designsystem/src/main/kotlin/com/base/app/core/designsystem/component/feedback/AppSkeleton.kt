@@ -27,21 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.theme.AppTheme
 
-/**
- * A placeholder block with a highlight sweeping across it.
- *
- * The point of a skeleton is that it is *shaped like the content it is standing in for*. A
- * centred spinner tells the user something is happening; a skeleton tells them what is about to
- * arrive and stops the layout jumping when it does. Reach for the spinner only when the shape of
- * the result is genuinely unknown.
- *
- * The sweep is a translated gradient rather than an animated alpha. A block that pulses in
- * brightness is easy to mistake for content that has loaded and is flickering; a directional
- * sweep is unambiguously a loading state.
- *
- * Semantics are cleared: a screen reader announcing five empty placeholder boxes is worse than
- * silence while the screen loads.
- */
+/** A placeholder block with a highlight sweeping across it. */
 @Composable
 fun AppSkeleton(
     modifier: Modifier = Modifier,
@@ -71,9 +57,8 @@ fun AppSkeleton(
             .background(base)
             .drawWithCache {
                 val width = size.width
-                // The gradient is three widths long and travels four, so the highlight is fully
-                // off-screen at both ends of the cycle. A shorter travel leaves it visibly parked
-                // at the edge between passes.
+                // The gradient is three widths long and travels four, so it is fully off-screen at
+                // both ends.
                 val start = -width + progress * (width * 3f)
                 val brush = Brush.linearGradient(
                     colors = listOf(base, highlight, base),
@@ -109,12 +94,7 @@ fun AppSkeletonCircle(
     AppSkeleton(modifier = modifier.size(size), shape = AppTheme.shapes.pill)
 }
 
-/**
- * A stand-in for a list row: a circle and two lines of different lengths.
- *
- * The second line is deliberately shorter. Two equal-length bars read as a table; unequal ones
- * read as prose, which is what most rows actually contain.
- */
+/** A stand-in for a list row: a circle and two lines of different lengths. */
 @Composable
 fun AppSkeletonListItem(
     modifier: Modifier = Modifier,

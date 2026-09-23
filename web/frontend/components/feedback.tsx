@@ -1,15 +1,8 @@
 "use client";
 
 /**
- * The bug report form.
- *
- * Two things make a report worth having: enough context to reproduce it, and few enough questions
- * that somebody actually finishes it. Those pull in opposite directions, so the split here is —
- * the person types four things at most, and everything else is attached from state the page
- * already has: the exact feature set they configured, the package name, the motion style, the
- * browser, the page they were on.
- *
- * A reporter who has to retype what the wizard already knows is a reporter who closes the tab.
+ * The bug report form. Two things make a report worth having: enough context to reproduce it, and
+ * few enough questions that somebody actually finishes it.
  */
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -408,13 +401,7 @@ function FeedbackModal({
   );
 }
 
-/**
- * Shows exactly what is being attached, and lets it be turned off.
- *
- * A form that silently uploads the reporter's configuration is a form that gets a reputation. It
- * is all things they typed into a public page and none of it identifies them, but showing it is
- * cheap and the alternative is asking people to trust a claim.
- */
+/** Shows exactly what is being attached, and lets it be turned off. */
 function ContextPanel({
   context,
   attached,

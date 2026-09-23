@@ -4,15 +4,6 @@ import androidx.compose.ui.graphics.Color
 
 /*
  * The raw palette. Rebranding a project starts and, in most cases, ends here.
- *
- * Nothing outside this file names a colour by its hue — screens ask for `AppTheme.colors.accent`
- * or `AppTheme.colors.danger.content`, never for "blue" or "red". That indirection is what lets
- * the whole app change accent in one edit, and it is also what makes a dark theme possible at
- * all: the same token resolves to a different value, and no call site changes.
- *
- * The neutrals carry a slight cool cast rather than being pure grey. On an OLED panel a pure
- * grey next to a saturated accent reads faintly brown; a few points of blue in the neutral keeps
- * the whole surface looking deliberate.
  */
 
 // ── Neutrals · light ────────────────────────────────────────────────────────────
@@ -48,13 +39,7 @@ internal val AccentDarkPressed = Color(0xFF7BA5F5)
 internal val AccentSubtleDark = Color(0xFF16233B)
 
 // ── Secondary and tertiary ──────────────────────────────────────────────────────
-// Two more brand colours, for the app to spend where the accent would be wrong: a second
-// call to action, a chart series, a highlight that must not read as the primary action. The
-// design system itself uses none of them — it draws with the accent alone, so adding these
-// changes nothing until a screen asks for one.
-//
-// The shipped pair is what the generator derives from the accent when only one hex is given:
-// the same hue with the chroma taken out, and a sixth of a turn around the wheel.
+// Two more brand colours for a second action, a chart series or a highlight.
 internal val Secondary = Color(0xFF617DB8)
 internal val SecondaryPressed = Color(0xFF445F97)
 internal val SecondarySubtleLight = Color(0xFFEFF2F8)
@@ -70,9 +55,7 @@ internal val TertiaryDarkPressed = Color(0xFFCB89EC)
 internal val TertiarySubtleDark = Color(0xFF221438)
 
 // ── Status · light ──────────────────────────────────────────────────────────────
-// Three percent darker than it looks like it wants to be: at 0xFF12805C this sits at 4.36
-// against SuccessSubtleLight, and the pill it fills carries body-sized text. See
-// PaletteContrastTest, which is what found it.
+// Slightly darker than instinct suggests: 0xFF12805C measured 4.36:1 on SuccessSubtleLight.
 internal val SuccessLight = Color(0xFF117C59)
 internal val SuccessSubtleLight = Color(0xFFE4F5EE)
 internal val SuccessBorderLight = Color(0xFFB7E2D2)
@@ -90,8 +73,7 @@ internal val InfoSubtleLight = Color(0xFFE7F0FD)
 internal val InfoBorderLight = Color(0xFFC3D8F7)
 
 // ── Status · dark ───────────────────────────────────────────────────────────────
-// Lifted in lightness and dropped in saturation. A colour tuned for white shown on near-black
-// either vibrates or disappears; these are re-picked against Ink900 rather than reused.
+// Lighter and less saturated than the light set; re-picked against Ink900.
 internal val SuccessDark = Color(0xFF3DD4A0)
 internal val SuccessSubtleDark = Color(0xFF10271F)
 internal val SuccessBorderDark = Color(0xFF1E4638)

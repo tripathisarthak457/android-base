@@ -38,16 +38,7 @@ interface TokenRefresher {
     suspend fun refresh(refreshToken: String): TokenRefreshResult
 }
 
-/**
- * Exchanges a refresh token for a new pair.
- *
- * Uses the [PlainClient] deliberately: issuing this call on the authenticated client would put it
- * through the same 401 interceptor that triggered it, and a 401 on refresh would then trigger
- * another refresh, indefinitely.
- *
- * The request and response shapes are the common OAuth-ish ones. An API that differs needs this
- * one class changed and nothing else — `TokenRefresher` is an interface for exactly that reason.
- */
+/** Exchanges a refresh token for a new pair. */
 @Singleton
 class KtorTokenRefresher @Inject constructor(
     @PlainClient private val client: HttpClient,
@@ -96,16 +87,7 @@ private data class RefreshResponse(
     @SerialName("expires_in") val expiresInSeconds: Long? = null,
 )
 
-/**
- * Broadcasts "this session is over" from the network layer to whatever is listening.
- *
- * A flow rather than a callback because several things react: the navigation host resets to the
- * sign-in screen, the session-scoped stores are wiped, and analytics clears its user id. A
- * callback would mean one of them owning the others.
- *
- * `extraBufferCapacity = 1` with `DROP_OLDEST`: expiry is idempotent, and two concurrent 401s
- * should not queue two sign-outs.
- */
+/** Broadcasts "this session is over" from the network layer to whatever is listening. */
 @Singleton
 class SessionEvents @Inject constructor() {
 

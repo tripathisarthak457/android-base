@@ -7,15 +7,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 
-/**
- * The visual severity of a message, banner or pill.
- *
- * This is the design system's own vocabulary, deliberately separate from `:core:common`'s
- * `MessageKind` — which is an application concept. `:core:ui` maps one to the other in five
- * lines, and in exchange `:core:designsystem` depends on nothing but Compose, which is what
- * keeps the catalog app (and the iteration loop for anyone working on a component) down to two
- * modules to rebuild.
- */
+/** The visual severity of a message, banner or pill. */
 enum class AppTone {
     Success,
     Error,

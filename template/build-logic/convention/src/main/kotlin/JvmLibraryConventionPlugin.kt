@@ -8,14 +8,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
-/**
- * A plain Kotlin module, with no Android in it at all.
- *
- * Used by `:core:model`, whose contents are data classes and nothing else. Skipping the Android
- * plugin there is not a purity argument: it removes resource merging, manifest processing and
- * variant computation from the module that sits at the very bottom of the graph and therefore
- * gets rebuilt more often than any other. Its tests are plain JUnit that run in milliseconds.
- */
+/** A plain Kotlin module, with no Android in it at all. */
 class JvmLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("org.jetbrains.kotlin.jvm")

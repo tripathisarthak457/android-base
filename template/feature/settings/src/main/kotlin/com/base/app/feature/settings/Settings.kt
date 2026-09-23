@@ -109,19 +109,7 @@ sealed interface SettingsEffect : UiEffect {
     // </opt:licenses>
 }
 
-/**
- * Settings, reading and writing the store the rest of the app already uses.
- *
- * ## The state is the store, not a copy of it
- *
- * Collecting `settingsStore.settings` into the state means the theme switch takes effect through
- * the same path as a change made anywhere else. Holding a local copy and writing to the store
- * separately gives two sources of truth for the same value, and they disagree the first time a
- * write fails.
- *
- * `WhileSubscribed(5_000)` keeps the collection alive briefly across a configuration change, so
- * rotating the screen does not tear down and re-establish it.
- */
+/** Settings, reading and writing the store the rest of the app already uses. */
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val settingsStore: AppSettingsStore,

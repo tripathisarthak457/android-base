@@ -1,12 +1,6 @@
 "use client";
 
-/**
- * Who wrote this, and how to reach them.
- *
- * Deliberately at the bottom and deliberately small. Someone who has just downloaded a project
- * and hit a problem needs a person to ask before they need a biography, so this is three links
- * and a sentence rather than an about page.
- */
+/** Who wrote this, and how to reach them. Deliberately at the bottom and deliberately small. */
 
 import { motion } from "framer-motion";
 import { Card, press } from "./primitives";

@@ -5,13 +5,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import com.base.app.core.common.util.UiText
 
-/**
- * Resolves a [UiText] against the current configuration.
- *
- * Reading through `LocalContext` rather than a captured one is what makes a locale change take
- * effect immediately: the composition is recreated with a new context, and every string resolves
- * again. A ViewModel that had formatted the string itself would still be holding the old one.
- */
+/** Resolves a [UiText] against the current configuration. */
 @Composable
 @ReadOnlyComposable
 fun UiText.asString(): String = resolve(LocalContext.current)

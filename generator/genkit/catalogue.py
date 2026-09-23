@@ -1,14 +1,7 @@
 """
 The generator's own options, as JSON, for anything that is not a terminal.
 
-The website renders a form from this. Duplicating the feature list in TypeScript would mean two
-lists that agree until the day somebody adds a feature to one of them — and the failure would be
-a checkbox on the site that does nothing, which nobody notices until a user asks why their
-project has no Room.
-
     py -m genkit.catalogue > catalogue.json
-
-Everything here is derived from `spec.py`. There is no second source.
 """
 
 from __future__ import annotations
@@ -119,16 +112,7 @@ HEADLINES: dict[str, str] = {
 
 
 def describe(feature_key: str) -> tuple[str, str]:
-    """
-    The group and headline for one feature, or [KeyError] naming what is missing.
-
-    Loudly rather than quietly. Both tables used to answer a missing key with a default — group
-    "Tooling", headline the feature's own title — which meant the eight features added after they
-    were last touched appeared on the website filed under the wrong heading with a headline that
-    repeated the title back. Nothing failed, nothing looked broken, and it stayed that way for
-    four releases. A KeyError here is caught by the catalogue's own test and by CI, before it is
-    a checkbox in the wrong section that nobody can see is wrong.
-    """
+    """The group and headline for one feature, or [KeyError] naming what is missing."""
     missing = [name for name, table in (("GROUPS", GROUPS), ("HEADLINES", HEADLINES))
                if feature_key not in table]
     if missing:

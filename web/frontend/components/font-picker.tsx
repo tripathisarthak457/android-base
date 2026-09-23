@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-/**
- * Loads a Google Fonts family into the page, once, and reports whether Google knows it.
- *
- * The same service the generated app downloads its typeface from, so a family that fails here
- * would also fail on the phone — where it degrades quietly to the system font. Better to find out
- * while the name can still be corrected.
- */
+/** Loads a Google Fonts family into the page, once, and reports whether Google knows it. */
 const requested = new Map<string, Promise<boolean>>();
 
 export function loadGoogleFont(family: string): Promise<boolean> {

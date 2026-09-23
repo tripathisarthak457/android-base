@@ -1,12 +1,5 @@
-// Package store is everything the admin portal reads and everything the API writes.
-//
-// A thin layer over pgx with hand-written SQL. No ORM: every query here is either an insert or a
-// grouped count, and both are clearer as SQL than as a query builder — the two aggregate queries
-// in particular are the whole portal, and hiding them behind method chains would make them harder
-// to reason about rather than easier.
-//
-// Writes are best-effort. A generation that succeeded must not be reported as failed because the
-// database was briefly unreachable, so `Record*` logs and returns rather than propagating.
+// Package store is everything the admin portal reads and everything the API writes. A thin layer
+// over pgx with hand-written SQL.
 package store
 
 import (
@@ -456,12 +449,9 @@ func (s *Store) Health(ctx context.Context) ([]RouteHealth, error) {
 	return health, rows.Err()
 }
 
-// list keeps a nil slice out of a NOT NULL text[] column.
-//
-// Go marshals a nil slice to SQL NULL, not to an empty array, so a request that simply omitted
-// `features` — legal, and what the minimal body from a script looks like — failed the insert with
-// a not-null violation. Recorded generations then silently disappeared while every other table
-// kept filling up, which is a bad way to find out.
+// list keeps a nil slice out of a NOT NULL text[] column. Go marshals a nil slice to SQL NULL, not
+// to an empty array, so a request that simply omitted `features` — legal, and what the minimal body
+// from a script looks like — failed the insert with a not-null violation.
 func list(values []string) []string {
 	if values == nil {
 		return []string{}
@@ -499,10 +489,8 @@ func truncate(s string, limit int) string {
 
 // ── Feedback ─────────────────────────────────────────────────────────────────
 
-// Feedback is a bug report or a suggestion from a person, as opposed to `errors`, which is what
-// the software noticed about itself. The two are kept apart because they are triaged differently:
-// an error has a fingerprint and an occurrence count, a report has a description and a reply
-// address.
+// Feedback is a bug report or a suggestion from a person, as opposed to `errors`, which is what the
+// software noticed about itself.
 type Feedback struct {
 	ID           int64     `json:"id"`
 	CreatedAt    time.Time `json:"createdAt"`
@@ -531,11 +519,8 @@ type Feedback struct {
 	VisitorHash  string    `json:"-"`
 }
 
-// SaveFeedback returns an error rather than swallowing it, unlike the other writes here.
-//
-// The rest are telemetry: losing one costs a row in a chart. This is somebody taking the trouble
-// to report a bug, and telling them it was received when it was not is worse than telling them it
-// failed.
+// SaveFeedback returns an error rather than swallowing it, unlike the other writes here. The rest
+// are telemetry: losing one costs a row in a chart.
 func (s *Store) SaveFeedback(ctx context.Context, f Feedback) (int64, error) {
 	const query = `
 		INSERT INTO feedback (

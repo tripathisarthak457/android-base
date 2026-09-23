@@ -24,27 +24,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
 
 /**
- * The display, and nothing else.
- *
- * This is the *only* file in the project that names Navigation 3. Feature modules see
- * [AppNavKey], [AppNavigator] and [navGraph]; if the library is replaced, this file and
- * [NavTransitions] are the extent of the change.
- *
- * It deliberately does not collect [AppNavigator] commands — [AppNavigationHost] does that for a
- * single-stack app, and `AppShell` does it for a tabbed one, where the same command has to land
- * in whichever tab's stack is in front.
- *
- * ## Every entry gets its own ViewModel store
- *
- * Without [rememberViewModelStoreNavEntryDecorator], `hiltViewModel()` falls through to the
- * Activity: two detail screens for two different items share one ViewModel, and nothing a
- * screen creates is ever cleared when it is popped.
- *
- * ## The transition belongs to the destination, not to the host
- *
- * Each entry carries its own spec as metadata, so a cart that rises from the bottom and a detail
- * screen that slides in from the side each get the right treatment without the host knowing what
- * either of them is.
+ * The display, and nothing else. This is the *only* file in the project that names Navigation 3.
  */
 @Composable
 fun AppNavHost(
@@ -63,14 +43,7 @@ fun AppNavHost(
     StackDisplay(entries = entries, onBack = onBack, modifier = modifier)
 }
 
-/**
- * The single-stack host: one back stack, fed by the navigator.
- *
- * What an app without tabs uses. `AppShell` replaces it when there are tabs.
- *
- * Back pops when there is something to pop and calls [onExitRequested] when there is not,
- * rather than letting the display empty the stack — a display with nothing to show crashes.
- */
+/** The single-stack host: one back stack, fed by the navigator. */
 @Composable
 fun AppNavigationHost(
     backStack: AppBackStack,
@@ -93,29 +66,7 @@ fun AppNavigationHost(
     )
 }
 
-/**
- * Every tab's stack, with only the selected one on screen.
- *
- * ## Why each tab is decorated all the time
- *
- * Navigation 3 treats an entry that leaves the list it was given as popped, and throws away its
- * saved state and its ViewModels. Handing one display a different tab's list on every switch
- * therefore reset the tab being left: its scroll position, its search field, its loaded data.
- * Decorating each stack on its own, and keeping all of them composed, means leaving a tab is
- * just hiding it.
- *
- * ## Why a tab switch is not a push
- *
- * One display fed a different list reads a switch as forward navigation and slides the new tab
- * in from the side. Tabs are peers, so the switch crossfades one display into another and each
- * display only ever animates its own pushes and pops.
- *
- * ## The root reserves room for the bar
- *
- * A tab's root screen is laid out above the bar; screens pushed on top are full height. The
- * bar then slides away over a layout that never changes size, instead of the content growing by
- * the bar's height halfway through the push.
- */
+/** Every tab's stack, with only the selected one on screen. */
 @Composable
 internal fun TabbedNavHost(
     state: ShellState,
@@ -216,11 +167,7 @@ private fun rememberEntryProvider(
     }
 }
 
-/**
- * Turns this module's [NavTransitionStyle] into the metadata map Navigation 3 reads.
- *
- * `Push` produces no metadata at all: it is what the display's own defaults already do.
- */
+/** Turns this module's [NavTransitionStyle] into the metadata map Navigation 3 reads. */
 private fun metadataFor(
     style: NavTransitionStyle,
     motion: AppMotion,

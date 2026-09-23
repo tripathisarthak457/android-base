@@ -11,12 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface MediaModule {
 
-    /**
-     * The default hands video through unchanged and logs when it should not have.
-     *
-     * Replace this binding with a real transcoder when you need one — see [VideoTranscoder] for
-     * why a starter does not ship one. Nothing else in the app changes.
-     */
+    /** Passes video through unchanged. Bind a real [VideoTranscoder] here when you need one. */
     @Binds
     fun bindVideoTranscoder(impl: PassthroughVideoTranscoder): VideoTranscoder
 }

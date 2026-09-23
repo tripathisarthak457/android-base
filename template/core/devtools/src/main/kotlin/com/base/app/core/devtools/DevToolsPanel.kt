@@ -44,14 +44,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-/**
- * Everything the badge opens onto: the requests, what they cost, and what this build is.
- *
- * A dialog rather than a navigation destination, deliberately. The inspector has to be reachable
- * from any screen including one mid-flow, and pushing it onto the back stack would put a
- * debug-only entry inside the app's own navigation — which is then a thing to strip before a
- * release, and therefore a thing to get wrong.
- */
+/** Everything the badge opens onto: the requests, what they cost, and what this build is. */
 @Composable
 fun DevToolsPanel(
     environment: DevEnvironment,
@@ -251,13 +244,7 @@ private fun StatRow(label: String, value: String) {
     }
 }
 
-/**
- * One request in full.
- *
- * Wrapped in a selection container because the reason to read a response body on a device is
- * almost always to get part of it into a bug report, and a body nobody can copy has to be
- * retyped by hand off a screen.
- */
+/** One request in full. */
 @Composable
 private fun ExchangeDetail(exchange: NetworkExchange) {
     SelectionContainer {

@@ -4,13 +4,8 @@ import androidx.compose.runtime.Composable
 import kotlin.reflect.KClass
 
 /**
- * One feature's destinations.
- *
- * A feature builds one of these and contributes it to a Hilt `@IntoSet`; the host merges every
- * contribution into a single lookup. That is what makes adding a feature a change to *only* that
- * feature — no central `Route` sealed class to extend, no `when` in the app module to add a
- * branch to, and therefore no merge conflict on those two files every time two people add a
- * screen in the same week.
+ * One feature's destinations. A feature builds one of these and contributes it to a Hilt
+ * `@IntoSet`; the host merges every contribution into a single lookup.
  *
  * ```
  * @Module
@@ -38,12 +33,7 @@ class NavGraphBuilder internal constructor() {
 
     private val destinations = mutableMapOf<KClass<out AppNavKey>, Destination>()
 
-    /**
-     * Registers [content] as the screen for key type [T].
-     *
-     * The cast inside is safe by construction: the entry is stored under `T::class` and only ever
-     * invoked with a key the registry looked up by that same class.
-     */
+    /** Registers [content] as the screen for key type [T]. */
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T : AppNavKey> entry(
         transition: NavTransitionStyle = NavTransitionStyle.Push,
@@ -70,12 +60,8 @@ fun navGraph(builder: NavGraphBuilder.() -> Unit): NavGraphEntry =
     NavGraphBuilder().apply(builder).build()
 
 /**
- * Every feature's destinations, merged.
- *
- * A duplicate registration fails at construction rather than at the moment the second screen is
- * opened. Two features claiming the same key type is a real mistake — usually a copied module
- * whose keys were not renamed — and discovering it on a device three weeks later is much worse
- * than discovering it on the first launch after the build.
+ * Every feature's destinations, merged. A duplicate registration fails at construction rather than
+ * at the moment the second screen is opened.
  */
 class NavRegistry(graphs: Set<NavGraphEntry>) {
 

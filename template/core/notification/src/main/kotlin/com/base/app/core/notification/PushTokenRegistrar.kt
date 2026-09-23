@@ -7,30 +7,12 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Where this install's push address goes.
- *
- * An interface implemented by the app module rather than a call into a repository from here,
- * because `:core:notification` sits below every `:data:*` module and must not reach up into one.
- * The app binds an implementation that posts the value to whatever endpoint the backend uses.
- *
- * The value is the Firebase Installation ID. FCM now addresses an app instance by its FID —
- * `Message.fid` on the server — and the registration token it replaces is deprecated.
- */
+/** Where this install's push address goes. */
 fun interface PushTokenSink {
     suspend fun submit(installationId: String)
 }
 
-/**
- * Registers this install with FCM and hands its installation ID to the [PushTokenSink].
- *
- * ## It runs on every launch, not only when the ID changes
- *
- * `onRegistered` is how FCM reports a new ID, and nothing guarantees it fires again for an ID it
- * has already reported. If the upload after that first report failed — offline, a 500 — the
- * device would silently never receive a push. So each launch registers, reads the ID directly and
- * submits it again: a cheap idempotent write that closes the hole.
- */
+/** Registers this install with FCM and hands its installation ID to the [PushTokenSink]. */
 @Singleton
 class PushTokenRegistrar @Inject constructor(
     private val sink: PushTokenSink,

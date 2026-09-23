@@ -1,13 +1,6 @@
 """
-Launcher icons from one source image.
-
-Android wants the same mark at eight sizes in three shapes, and getting one of them wrong is not
-visible until the app is on a device with that launcher. This produces the whole set from a single
-square image.
-
-Pillow is an optional import. The rest of the generator is standard library on purpose — it runs
-on a colleague's laptop with nothing installed — so a missing Pillow is a warning and a project
-that still builds with the template's own mark, never a failure.
+Launcher icons from one source image. Android wants the same mark at eight sizes in three shapes,
+and getting one of them wrong is not visible until the app is on a device with that launcher.
 """
 
 from __future__ import annotations
@@ -38,12 +31,7 @@ _PLAY_STORE_SIZE = 512
 
 
 def generate(source: Path, project_dir: Path, spec: ProjectSpec) -> list[str]:
-    """
-    Writes every launcher asset derived from [source]. Returns warnings, never raises.
-
-    The project already has a working icon before this runs, so every failure here is recoverable
-    by leaving that one in place — which is why nothing in this module aborts the generation.
-    """
+    """Writes every launcher asset derived from [source]. Returns warnings, never raises."""
     warnings: list[str] = []
 
     if not source.is_file():
@@ -89,12 +77,7 @@ def generate(source: Path, project_dir: Path, spec: ProjectSpec) -> list[str]:
 
 
 def _foreground_name(res: Path) -> str:
-    """
-    The drawable the module's adaptive icon uses as its foreground.
-
-    Read rather than assumed: the catalog deliberately carries a different mark, and writing a PNG
-    under the app's name there would produce an icon nothing references.
-    """
+    """The drawable the module's adaptive icon uses as its foreground."""
     adaptive = res / "mipmap-anydpi-v26" / "ic_launcher.xml"
     if adaptive.is_file():
         match = re.search(
@@ -107,13 +90,7 @@ def _foreground_name(res: Path) -> str:
 
 
 def _icon_modules(project_dir: Path, spec: ProjectSpec) -> list[Path]:
-    """
-    Every application module's res directory.
-
-    The catalog is a second installable app and gets the same icon; two apps that look identical
-    in the launcher is the point — they are the same product — and leaving it with the template's
-    default is how a tester ends up reporting the wrong build.
-    """
+    """Every application module's res directory."""
     modules = [project_dir / "app" / "src" / "main" / "res"]
     catalog = project_dir / "catalog" / "src" / "main" / "res"
     if spec.has("catalog") and catalog.is_dir():
@@ -141,11 +118,7 @@ def _write_icon_set(res: Path, original, Image, ImageDraw) -> None:
 
 
 def _write_adaptive_foreground(res: Path, original, Image, foreground: str) -> None:
-    """
-    The adaptive foreground: the artwork inset into the safe zone on a transparent canvas.
-
-    `-nodpi` because there is exactly one of these and it must not be resampled per density.
-    """
+    """The adaptive foreground: the artwork inset into the safe zone on a transparent canvas."""
     inner = int(_FOREGROUND_CANVAS * _FOREGROUND_SAFE_FRACTION)
     offset = (_FOREGROUND_CANVAS - inner) // 2
 
@@ -174,12 +147,7 @@ def _circular(square, size: int, Image, ImageDraw):
 
 
 def _write_play_store_icon(project_dir: Path, original, Image) -> None:
-    """
-    512×512 for the store listing, flattened onto white.
-
-    Play rejects a listing icon with transparency, and a source image with a transparent corner
-    would otherwise be discovered at upload time rather than here.
-    """
+    """512×512 for the store listing, flattened onto white."""
     listing = Image.new("RGB", (_PLAY_STORE_SIZE, _PLAY_STORE_SIZE), (255, 255, 255))
     scaled = original.resize((_PLAY_STORE_SIZE, _PLAY_STORE_SIZE), Image.LANCZOS)
     listing.paste(scaled, (0, 0), scaled)
@@ -187,13 +155,7 @@ def _write_play_store_icon(project_dir: Path, original, Image) -> None:
 
 
 def _point_monochrome_at_the_template_mark(project_dir: Path, warnings: list[str]) -> None:
-    """
-    Repoints the themed-icon layer at the vector the foreground PNG replaced.
-
-    A photographic foreground cannot become a themed icon: Android tints the layer flat, so a
-    full-bleed image renders as a solid blob of the wallpaper colour. Keeping the template's
-    silhouette there is wrong, but visibly wrong in a way somebody will fix — a blob is not.
-    """
+    """Repoints the themed-icon layer at the vector the foreground PNG replaced."""
     replaced = False
     for xml in project_dir.rglob("mipmap-anydpi-v26/ic_launcher*.xml"):
         text = xml.read_text(encoding="utf-8")

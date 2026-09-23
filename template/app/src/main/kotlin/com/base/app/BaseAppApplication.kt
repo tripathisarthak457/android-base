@@ -3,34 +3,32 @@ package com.base.app
 import android.app.Application
 import com.base.app.core.common.util.AppLogger
 import dagger.hilt.android.HiltAndroidApp
-// <opt:analytics|push|workmanager>
-// Needed by whichever of the three blocks below survives, and by none of them alone — which is
-// what the `a|b` marker form is for. Repeating it inside each would duplicate it when two are on.
+// <opt:analytics|push|workmanager|room>
+// Shared by several optional blocks below. Repeating it inside each would duplicate it when two
+// are on, which is what the `a|b` marker form avoids.
 import javax.inject.Inject
-// </opt:analytics|push|workmanager>
+// </opt:analytics|push|workmanager|room>
 // <opt:analytics>
 import com.base.app.core.analytics.CrashReporter
 // </opt:analytics>
-// <opt:push>
+// <opt:push|room>
 import com.base.app.core.coroutines.ApplicationScope
-import com.base.app.core.notification.AppNotifications
-import com.base.app.core.notification.PushTokenRegistrar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+// </opt:push|room>
+// <opt:push>
+import com.base.app.core.notification.AppNotifications
+import com.base.app.core.notification.PushTokenRegistrar
 // </opt:push>
+// <opt:room>
+import com.base.app.core.network.QueuedRequestReplayer
+// </opt:room>
 // <opt:workmanager>
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 // </opt:workmanager>
 
-/**
- * The composition root.
- *
- * Deliberately thin. Everything here is either "wire two modules together" or "the one thing that
- * genuinely has to happen before any screen exists" — anything more and the application class
- * becomes where work goes when nobody can think of a better home, and cold-start time goes with
- * it.
- */
+/** The composition root. Deliberately thin. */
 // <opt:workmanager>
 @HiltAndroidApp
 class BaseAppApplication : Application(), Configuration.Provider {
@@ -59,11 +57,18 @@ class BaseAppApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var pushRegistrar: PushTokenRegistrar
+    // </opt:push>
 
+    // <opt:room>
+    @Inject
+    lateinit var queuedRequestReplayer: QueuedRequestReplayer
+    // </opt:room>
+
+    // <opt:push|room>
     @Inject
     @ApplicationScope
     lateinit var appScope: CoroutineScope
-    // </opt:push>
+    // </opt:push|room>
 
     override fun onCreate() {
         super.onCreate()
@@ -81,11 +86,14 @@ class BaseAppApplication : Application(), Configuration.Provider {
         // </opt:analytics>
 
         // <opt:push>
-        // Channels have to exist before the user can find them in system settings. Creating them
-        // lazily means someone must receive a notification from a category before they are able
-        // to mute it.
+        // Channels must exist before a notification arrives, or the user cannot mute a category in
+        // advance.
         notifications.createChannels()
         appScope.launch { pushRegistrar.registerOnLaunch() }
         // </opt:push>
+
+        // <opt:room>
+        appScope.launch { queuedRequestReplayer.replayWhenOnline() }
+        // </opt:room>
     }
 }

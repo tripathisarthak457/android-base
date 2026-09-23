@@ -12,10 +12,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 /**
  * The Android and Kotlin configuration every module shares, applied once by
  * [AndroidApplicationConventionPlugin] and [AndroidLibraryConventionPlugin].
- *
- * Nothing environment-specific belongs here — see [configureFlavors] for that. This is only the
- * settings that would otherwise be copy-pasted identically into every build file and then drift
- * the first time one of them is edited alone.
  */
 internal fun Project.configureAndroidCommon(extension: CommonExtension) {
     extension.compileSdk = AppConfig.COMPILE_SDK
@@ -33,9 +29,7 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
     }
 
     extension.testOptions.unitTests.apply {
-        // android.util.Log is an unimplemented stub off-device and throws "not mocked" on every
-        // call, so any class that logs fails its test for a reason unrelated to the logic under
-        // test. Returning defaults makes logging a silent no-op in unit tests instead.
+        // android.util.Log throws "not mocked" in unit tests; defaults make it a no-op instead.
         isReturnDefaultValues = true
         isIncludeAndroidResources = true
     }
@@ -48,10 +42,7 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
         excludes += "kotlin-tooling-metadata.json"
     }
 
-    // Gradle 9 fails a test task that finds no tests, on the assumption it is misconfigured. For
-    // a module that legitimately has none yet — a design system, a DI-only module — that turns
-    // `./gradlew build` into a failure with nothing wrong. The genuine misconfiguration this
-    // guards against (a broken runner) surfaces as a compile or class-loading error anyway.
+    // Gradle 9 fails a test task with no tests, which would fail modules that have none yet.
     tasks.withType(Test::class.java).configureEach {
         failOnNoDiscoveredTests.set(false)
     }
@@ -74,9 +65,7 @@ private fun Project.configureKotlinCompiler() {
 
     tasks.withType<KotlinCompile>().configureEach {
         // `runTest`, `TestScope` and the test dispatchers are all still marked experimental, and
-        // every test that touches a coroutine warns until it opts in. Granting it once here beats
-        // an @OptIn line at the top of every test file anyone ever writes — and it is scoped to
-        // test compilation, so nothing in main quietly gains the same licence.
+        // every test that touches a coroutine warns until it opts in.
         if (name.endsWith("UnitTestKotlin") || name.endsWith("AndroidTestKotlin")) {
             compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
         }

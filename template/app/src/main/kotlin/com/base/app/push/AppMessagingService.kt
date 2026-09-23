@@ -14,22 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
-/**
- * Receives pushes.
- *
- * ## Only data messages reach here while backgrounded
- *
- * A push containing a `notification` block is posted by the FCM SDK itself when the app is not in
- * the foreground — this service is never called, which is why the manifest also declares a
- * default channel and icon. A push containing only `data` always arrives here, in both states.
- * If you need consistent behaviour, send data-only messages and post the notification yourself.
- *
- * ## Work is launched in the application scope
- *
- * A `FirebaseMessagingService` is torn down as soon as `onMessageReceived` returns, so a
- * coroutine tied to the service would be cancelled before it finished. The registration upload
- * in particular has to outlive the callback.
- */
+/** Receives pushes. */
 @AndroidEntryPoint
 class AppMessagingService : FirebaseMessagingService() {
 
@@ -51,9 +36,7 @@ class AppMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        // The notification block is preferred when present, with the data map as the fallback,
-        // because a message can legitimately carry either — and a service that reads only one
-        // shape drops half the pushes a backend sends.
+        // Read the notification block first and the data map as a fallback; backends send either.
         val title = message.notification?.title ?: message.data["title"] ?: return
         val body = message.notification?.body ?: message.data["body"].orEmpty()
 
@@ -67,9 +50,8 @@ class AppMessagingService : FirebaseMessagingService() {
         AppLogger.d("Push received on ${channel.id}", tag = "Push")
 
         notifications.post(
-            // A random id so two pushes do not replace each other. Use a stable id derived from
-            // the entity instead when an update genuinely should replace its predecessor — an
-            // order status, say, where two notifications would be noise.
+            // A random id so pushes do not replace each other. Use a stable id when one should
+            // replace the last.
             id = message.data["notificationId"]?.toIntOrNull() ?: Random.nextInt(),
             title = title,
             body = body,

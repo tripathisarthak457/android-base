@@ -6,13 +6,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * What a ViewModel can ask navigation to do.
- *
- * A command rather than a direct call on a back stack, because the back stack is Compose state
- * owned by the host and a ViewModel must not touch it: doing so ties the ViewModel's lifetime to
- * a composition, and makes it untestable without one.
- */
+/** What a ViewModel can ask navigation to do. */
 sealed interface NavCommand {
 
     /**
@@ -39,31 +33,14 @@ sealed interface NavCommand {
     data class PopTo(val key: AppNavKey, val inclusive: Boolean = false) : NavCommand
 }
 
-/**
- * The seam between "a ViewModel decided to navigate" and "the back stack changed".
- *
- * A singleton, so any ViewModel can inject it without the screen above it having to thread a
- * callback down. The host collects [commands] and applies them to the stack it owns.
- *
- * The channel is buffered rather than conflated: two navigations issued in quick succession — a
- * pop followed by a push, say — must both arrive, in order. A conflated channel would drop the
- * first, and the user would land somewhere unexpected.
- */
+/** The seam between "a ViewModel decided to navigate" and "the back stack changed". */
 @Singleton
 class AppNavigator @Inject constructor() {
 
     private val _commands = Channel<NavCommand>(Channel.BUFFERED)
     val commands: Flow<NavCommand> = _commands.receiveAsFlow()
 
-    /**
-     * Not `suspend`, unlike the obvious design.
-     *
-     * A suspending navigate has to be called from a coroutine, which means every event handler
-     * that navigates needs a scope, and a handler that is cancelled part-way — because the
-     * screen it belongs to is leaving, which is exactly when navigation happens — silently drops
-     * the navigation. `trySend` on a buffered channel cannot fail in practice and cannot be
-     * cancelled.
-     */
+    /** Not `suspend`, unlike the obvious design. */
     fun navigate(
         key: AppNavKey,
         popUpTo: AppNavKey? = null,

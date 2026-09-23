@@ -6,12 +6,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Firebase behind the vendor-agnostic seam.
- *
- * Parameters are coerced to the handful of types Firebase actually accepts. Anything else it
- * drops silently, at runtime, on the user's device — so a `LocalDate` passed as a parameter
- * produces an event that arrives with a field missing and no error anywhere to explain it.
- * Converting here means the event always carries what the call site meant.
+ * Firebase behind the vendor-agnostic seam. Parameters are coerced to the handful of types Firebase
+ * actually accepts.
  */
 @Singleton
 class FirebaseAnalyticsTracker @Inject constructor(

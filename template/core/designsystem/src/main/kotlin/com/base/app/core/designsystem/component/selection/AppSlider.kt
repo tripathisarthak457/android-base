@@ -35,19 +35,8 @@ import com.base.app.core.designsystem.foundation.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * A slider.
- *
- * ## Tapping the track jumps to that point
- *
- * A slider that only responds to a drag on the thumb is a slider that is fiddly to set roughly —
- * which is what most sliders are for. The tap handler and the drag handler share one conversion
- * from x-position to value, so they cannot disagree about where a position maps to.
- *
- * ## The thumb grows while dragged
- *
- * Under a finger the thumb is completely hidden, so its size is not what the growth is for: the
- * halo that appears around it is visible past the fingertip, and it is the only confirmation the
- * user has that the control is tracking them rather than the page scrolling.
+ * A slider. A slider that only responds to a drag on the thumb is a slider that is fiddly to set
+ * roughly — which is what most sliders are for.
  */
 @Composable
 fun AppSlider(
@@ -87,9 +76,7 @@ fun AppSlider(
 
     fun emit(positionX: Float) {
         if (trackWidth <= 0f) return
-        // Mapped through the same inset the thumb is drawn with, so tapping the very left edge
-        // still reaches the minimum. Without it the last few pixels at each end are unreachable
-        // and the slider feels like it will not quite go to zero.
+        // Map through the thumb's inset so the ends of the track are reachable.
         val travel = (trackWidth - 2 * thumbInsetPx).takeIf { it > 0f } ?: trackWidth
         val raw = ((positionX - thumbInsetPx) / travel).coerceIn(0f, 1f)
         // Snapping happens on the *fraction*, before mapping back to the range, so the steps are
@@ -101,9 +88,7 @@ fun AppSlider(
             raw
         }
 
-        // A tick per detent crossed, and nothing at all on a continuous slider. Buzzing on every
-        // pixel of a smooth drag is a vibration, not feedback, and it drains the battery of
-        // whoever is scrubbing.
+        // One tick per detent; nothing on a continuous slider.
         if (steps > 0 && snapped != lastSnapped) {
             lastSnapped = snapped
             haptics.perform(HapticEffect.Tick)
@@ -152,9 +137,7 @@ fun AppSlider(
                     cornerRadius = radius,
                 )
 
-                // The thumb travels between two insets rather than edge to edge. At zero and at
-                // one, an un-inset thumb is drawn half outside its own bounds — clipped by
-                // whatever is beside it, and visibly not lining up with the end of the track.
+                // The thumb travels between insets so it is never drawn half outside its bounds.
                 val travel = (size.width - 2 * thumbInsetPx).coerceAtLeast(0f)
                 val thumbX = thumbInsetPx + travel * fraction
 

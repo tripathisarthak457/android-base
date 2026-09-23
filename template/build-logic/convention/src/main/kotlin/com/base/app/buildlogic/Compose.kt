@@ -14,22 +14,13 @@ import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
-/**
- * Compose, minus Material.
- *
- * The dependency set is foundation + ui + animation and nothing else. Every visual primitive the
- * app uses comes from `:core:designsystem`, which is built on those. See [verifyNoMaterial] for
- * the guard that keeps it that way.
- */
+/** Compose, minus Material. The dependency set is foundation + ui + animation and nothing else. */
 internal fun Project.configureCompose(extension: CommonExtension) {
     pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
     extension.buildFeatures.compose = true
 
     extensions.configure<ComposeCompilerGradlePluginExtension> {
-        // Tells the compiler that types it cannot see inside — java.time, kotlinx.collections —
-        // are in fact immutable, so composables taking them can skip recomposition instead of
-        // conservatively re-running. Without this a LocalDate parameter alone is enough to make a
-        // whole subtree unskippable.
+        // Marks java.time and similar types immutable so composables taking them can skip.
         stabilityConfigurationFiles.add(
             rootProject.layout.projectDirectory.file("config/compose-stability.conf"),
         )
@@ -48,9 +39,7 @@ internal fun Project.configureCompose(extension: CommonExtension) {
     }
 
     // <opt:composemetrics>
-    // Turns the metrics report on for the two modules whose components every screen calls, and
-    // registers the task that reads it. Everything it needs is in ComposeStability.kt, including
-    // the decision about which modules those are.
+    // Enables the metrics report and the task that reads it; see ComposeStability.kt.
     configureComposeStability()
     // </opt:composemetrics>
 
@@ -82,29 +71,7 @@ internal fun Project.configureCompose(extension: CommonExtension) {
     }
 }
 
-/**
- * Three build-time guards over every module's Kotlin sources.
- *
- * **Composable without the compiler plugin.** Compose's runtime annotations arrive transitively
- * from plenty of libraries, so a module can declare `@Composable` functions and compile perfectly
- * happily without the compiler plugin applied. Those functions are emitted as ordinary ones, with
- * no `Composer` parameters. A caller in a module that *does* have the plugin emits a call to the
- * composable signature, the two disagree, and the only symptom is a `NoSuchMethodError` the first
- * time that screen renders. Adding the plugin is one line; discovering you needed it is a crash
- * on a device.
- *
- * **A Material import.** This project's design system is a complete, self-contained set of
- * components with its own tokens. One `androidx.compose.material3` import is how that becomes two
- * competing systems: a screen picks up `MaterialTheme.colorScheme.primary`, it renders close
- * enough to the real accent that nobody notices in review, and six months later half the app
- * ignores the palette. The check is here rather than in review because it is exactly the kind of
- * line an IDE auto-import adds without anybody typing it.
- *
- * **Copy written into Kotlin.** Feature modules only. The project has string resources per
- * feature and `UiText` for what a ViewModel produces, and had neither used: every screen was
- * English in the source, so a second language meant a week of finding it. One `stringResource`
- * is easy to add and impossible to remember, so it is checked rather than asked for.
- */
+/** Three build-time guards over every module's Kotlin sources. */
 internal fun Project.registerComposeGuards() {
     val kotlinSources = fileTree("src") { include("**/*.kt") }
     val projectPath = path
@@ -175,20 +142,7 @@ internal abstract class VerifyComposeUsageTask : org.gradle.api.DefaultTask() {
         )
     }
 
-    /**
-     * Copy typed straight into a composable, where a resource should be.
-     *
-     * The project has the machinery for this — string resources per feature module, `UiText` for
-     * the strings a ViewModel produces — and it had none of the discipline: every screen was
-     * English in Kotlin, and the first attempt at a second language would have been a week of
-     * finding them. One `stringResource` is easy to add and impossible to remember, so it is
-     * checked instead of asked for.
-     *
-     * Deliberately narrow. Only the named parameters that carry visible copy, only when the
-     * literal reads like prose — a lowercase letter and a space — so that an identifier, a symbol
-     * or a format fragment passes. Preview functions are exempt: their fake data is not shipped,
-     * and making somebody translate "A sample row" teaches the wrong lesson about what this is for.
-     */
+    /** Copy typed straight into a composable, where a resource should be. */
     private fun verifyNoHardcodedCopy(files: List<java.io.File>) {
         val offenders = mutableListOf<String>()
 
@@ -255,9 +209,7 @@ internal abstract class VerifyComposeUsageTask : org.gradle.api.DefaultTask() {
         const val MAX_REPORTED = 5
         const val MAIN_SOURCES = "/src/main/"
 
-        // Plain strings rather than raw ones: a regex that ends in a quote and lives in a
-        // """ literal is four quotes in a row, and which of them belong to the pattern is a
-        // question nobody should have to answer while reading a build guard.
+        // Plain strings, not raw ones: a regex ending in a quote inside """ is hard to read.
         val FUNCTION = Regex("\\bfun\\s+(\\w+)\\s*\\(")
         val COPY_PARAMETER = Regex(
             "\\b(text|title|label|helper|supporting|message|description|placeholder|" +

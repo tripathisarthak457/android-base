@@ -4,14 +4,7 @@ import { useAnimate, useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { MOTION_TOKENS, type MotionStyleKey, composeSpring } from "../lib/app-theme";
 
-/**
- * A few seconds of the app moving, in one motion style.
- *
- * The loop plays the three moments that carry a motion style — a button press and its release,
- * a screen pushed and popped, and a tab switch — with the style's own springs and durations from
- * `AppMotion.kt`. The button also answers a real press, which is the only way to feel the
- * difference between Standard and Bouncy.
- */
+/** A few seconds of the app moving, in one motion style. */
 export function MotionPreview({
   styleKey,
   accent,

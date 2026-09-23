@@ -1,11 +1,4 @@
-/**
- * The generated app's look, recomputed in the browser for the previews.
- *
- * Every number here is copied from the template: the neutrals from `Palette.kt`, the ramp maths
- * from `render.py`'s `apply_accent`, the style tokens from `AppDesignStyle.kt` and the springs
- * from `AppMotion.kt`. When one of those changes, this file changes with it — the previews are
- * only worth showing while they are the same numbers the APK uses.
- */
+/** The generated app's look, recomputed in the browser for the previews. */
 
 type Rgb = [number, number, number];
 
@@ -357,12 +350,7 @@ export const MOTION_TOKENS: Record<MotionStyleKey, MotionTokens> = {
   },
 };
 
-/**
- * A Compose spring as framer-motion parameters.
- *
- * Compose takes a damping *ratio*; framer takes the damping coefficient. With unit mass the
- * coefficient is ratio × 2√stiffness, which makes the two the same differential equation.
- */
+/** A Compose spring as framer-motion parameters. */
 export function composeSpring(dampingRatio: number, stiffness: number) {
   return {
     type: "spring" as const,

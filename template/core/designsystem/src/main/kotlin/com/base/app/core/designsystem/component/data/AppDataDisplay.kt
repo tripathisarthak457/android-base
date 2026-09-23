@@ -44,15 +44,9 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 
 /**
- * A label-and-value row, for a detail screen.
- *
- * The value is monospaced when [mono] is set — order numbers, references, amounts, anything the
- * user might read aloud or compare character by character. That is not decoration: `0` and `O`
- * are genuinely ambiguous in a proportional face, and a column of amounts only aligns on the
- * decimal in a monospaced one.
- *
- * The value wraps and the label does not. A truncated label leaves the reader unable to tell what
- * they are looking at; a truncated value loses the thing they came for.
+ * A label-and-value row, for a detail screen. The value is monospaced when [mono] is set — order
+ * numbers, references, amounts, anything the user might read aloud or compare character by
+ * character.
  */
 @Composable
 fun AppDetailRow(
@@ -115,13 +109,7 @@ fun AppDetailRow(
     }
 }
 
-/**
- * A single headline number with its label, and optionally which way it moved.
- *
- * The delta carries an arrow as well as a colour, because "up 12%" rendered only in green is
- * invisible to a red-green colour-blind reader — and on a dashboard, direction is the entire
- * message.
- */
+/** A single headline number with its label, and optionally which way it moved. */
 @Composable
 fun AppStatTile(
     label: String,
@@ -192,12 +180,7 @@ fun AppStatTile(
     }
 }
 
-/**
- * A heading over a group, with an optional action on the right.
- *
- * The action is a text button rather than an icon: "See all" is unambiguous where an arrow glyph
- * beside a heading is read as decoration about half the time.
- */
+/** A heading over a group, with an optional action on the right. */
 @Composable
 fun AppSectionHeader(
     title: String,
@@ -239,18 +222,7 @@ fun AppSectionHeader(
     }
 }
 
-/**
- * A star rating, with real half stars.
- *
- * A fractional rating is the normal case — an average of other people's ratings almost never
- * lands on a whole number — and rounding 3.5 up to four stars erases exactly the difference the
- * number exists to express. The half is drawn by clipping a filled star over an outline one, so
- * there is no third icon to keep in step with the other two.
- *
- * Read-only unless [onRatingChange] is given, and the read-only form clears its semantics and
- * announces the value as text — five separate star images is not what a screen reader user needs
- * to hear.
- */
+/** A star rating, with real half stars. */
 @Composable
 fun AppRating(
     rating: Float,
@@ -309,16 +281,7 @@ fun AppRating(
 private const val FULL_STAR = 0.75f
 private const val HALF_STAR = 0.25f
 
-/**
- * A tiny chart, sized to sit inside a row or a stat tile.
- *
- * Deliberately not a charting library. It draws one series with no axes, no legend and no
- * tooltip, because that is what a sparkline *is* — the moment a chart needs an axis it needs a
- * real chart, and pretending otherwise produces something that is bad at both jobs.
- *
- * Values are normalised against their own range, so a flat series renders as a centred line
- * rather than dividing by zero.
- */
+/** A tiny chart, sized to sit inside a row or a stat tile. */
 @Composable
 fun AppSparkline(
     values: List<Float>,
@@ -336,10 +299,7 @@ fun AppSparkline(
         label = "sparkline",
     )
 
-    // The height is a parameter rather than something the caller puts in the modifier, because a
-    // Canvas is a Spacer: it measures to zero on any axis whose constraint is not *fixed*, so a
-    // minimum height silently does nothing and the chart draws as a flat line inside a box that
-    // did grow. Only `height()` is a fixed constraint.
+    // Height is a parameter because a Canvas measures to zero unless its size is fixed.
     Canvas(
         modifier = modifier
             .height(height)
@@ -392,13 +352,7 @@ fun AppSparkline(
     }
 }
 
-/**
- * A horizontal bar chart, one row per value.
- *
- * Rows rather than vertical columns, because a category label fits beside a horizontal bar and
- * has to be rotated or truncated under a vertical one — and on a phone there is far more vertical
- * room than horizontal.
- */
+/** A horizontal bar chart, one row per value. */
 @Composable
 fun AppBarChart(
     entries: List<Pair<String, Float>>,
@@ -466,12 +420,7 @@ fun AppBarChart(
     }
 }
 
-/**
- * A dense two-column grid for records, where a list row would waste half the width.
- *
- * Zebra striping rather than dividers: at this density a rule between every row is more ink than
- * the data, and the alternating fill keeps a long row readable across the screen.
- */
+/** A dense two-column grid for records, where a list row would waste half the width. */
 @Composable
 fun AppKeyValueGrid(
     entries: List<Pair<String, String>>,

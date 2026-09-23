@@ -1,11 +1,4 @@
-"""
-The README that ships inside a generated project.
-
-Kept out of `create_project.py` and written with `__TOKEN__` placeholders rather than an f-string,
-because the text is full of Kotlin and Gradle snippets — and every `{ }` in those would have to be
-doubled inside an f-string, which is exactly the kind of quiet corruption nobody notices until a
-generated README shows `navGraph { }` as `navGraph  `.
-"""
+"""The README that ships inside a generated project."""
 
 from __future__ import annotations
 
