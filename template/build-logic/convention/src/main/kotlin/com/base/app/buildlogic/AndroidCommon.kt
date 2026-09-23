@@ -69,10 +69,6 @@ private fun Project.configureKotlinCompiler() {
     extensions.configure<KotlinAndroidProjectExtension> {
         compilerOptions {
             jvmTarget.set(AppConfig.JVM_TARGET)
-            // Kotlin 2.2 changed where an annotation on a constructor parameter lands by default
-            // and warns on every one until told explicitly. `param-property` is the behaviour the
-            // annotations in this project (@Inject, @SerialName, @Json*) already assume.
-            freeCompilerArgs.add("-Xannotation-default-target=param-property")
         }
     }
 

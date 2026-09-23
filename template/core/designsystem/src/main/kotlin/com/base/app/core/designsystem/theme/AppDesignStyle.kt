@@ -22,16 +22,22 @@ import androidx.compose.ui.unit.dp
  * below are the place to push a style towards your own.
  */
 enum class AppDesignStyle {
-    /** Hairline outlines, modest corners, a docked bar. Dense and calm: tools, finance, admin. */
+    /** Cool neutrals, hairline outlines, a docked bar. Dense and calm: tools, finance, admin. */
     Utility,
 
-    /** Pill buttons, soft raised cards, filled fields, a floating bar. Feeds, chat, communities. */
+    /**
+     * Surfaces faintly tinted with the brand, pill buttons, soft raised cards, filled fields, a
+     * floating bar and heavier headlines. Feeds, chat, communities.
+     */
     Social,
 
-    /** Near-square corners, underlined fields, uppercase labels. Reading, news, portfolios. */
+    /**
+     * Warm paper and ink, near-square corners, underlined fields, uppercase labels and large, tight
+     * display type. Reading, news, portfolios.
+     */
     Editorial,
 
-    /** Thick outlines and hard offset shadows. Games, kids, anything that should feel like a toy. */
+    /** Cream surfaces, thick outlines, hard offset shadows and extra-bold type. Games, kids. */
     Playful,
     ;
 
@@ -52,6 +58,8 @@ enum class AppDesignStyle {
             card = CardTreatment.Raised,
             field = FieldTreatment.Filled,
             bar = BarTreatment.Floating,
+            surfaces = SurfaceTone.BrandTint,
+            voice = TypeVoice.Bold,
         )
 
         Editorial -> AppStyle(
@@ -69,6 +77,8 @@ enum class AppDesignStyle {
             field = FieldTreatment.Underlined,
             bar = BarTreatment.Minimal,
             uppercaseLabels = true,
+            surfaces = SurfaceTone.Paper,
+            voice = TypeVoice.Editorial,
         )
 
         Playful -> AppStyle(
@@ -88,6 +98,8 @@ enum class AppDesignStyle {
             borderWidth = 2.dp,
             borderWidthStrong = 2.5.dp,
             offsetShadow = 4.dp,
+            surfaces = SurfaceTone.Cream,
+            voice = TypeVoice.Rounded,
         )
     }
 }
@@ -128,6 +140,36 @@ enum class BarTreatment {
     Chunky,
 }
 
+/** The neutrals a style sits on. The accent ramps are the brand's and never change here. */
+enum class SurfaceTone {
+    /** The template's cool greys. */
+    Cool,
+
+    /** The cool greys with a few percent of the accent mixed in, so the app reads as the brand's. */
+    BrandTint,
+
+    /** Warm off-white paper and warm ink. */
+    Paper,
+
+    /** Cream and butter, warmer and brighter than paper. */
+    Cream,
+}
+
+/** How the type scale speaks. The typeface is still the one `AppTheme` was given. */
+enum class TypeVoice {
+    /** The scale as `appTypography` defines it. */
+    Neutral,
+
+    /** Headlines and titles a weight heavier. */
+    Bold,
+
+    /** Display sizes larger and tighter, labels more widely tracked. */
+    Editorial,
+
+    /** Everything above body text extra-bold, body a little airier. */
+    Rounded,
+}
+
 /**
  * The tokens a design style decides. Read through `AppTheme.style`.
  *
@@ -146,6 +188,8 @@ data class AppStyle(
     val borderWidthStrong: Dp = 1.5.dp,
     val uppercaseLabels: Boolean = false,
     val offsetShadow: Dp = 0.dp,
+    val surfaces: SurfaceTone = SurfaceTone.Cool,
+    val voice: TypeVoice = TypeVoice.Neutral,
 )
 
 internal val LocalAppStyle = staticCompositionLocalOf { AppStyle() }

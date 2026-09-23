@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.Role
@@ -133,16 +132,15 @@ fun Modifier.clickableNoIndication(
     role: Role? = null,
     onClickLabel: String? = null,
     onClick: () -> Unit,
-): Modifier = composed {
-    clickable(
-        interactionSource = remember { MutableInteractionSource() },
-        indication = null,
-        enabled = enabled,
-        role = role,
-        onClickLabel = onClickLabel,
-        onClick = onClick,
-    )
-}
+): Modifier = clickable(
+    // Null lets clickable create an interaction source only once something needs one.
+    interactionSource = null,
+    indication = null,
+    enabled = enabled,
+    role = role,
+    onClickLabel = onClickLabel,
+    onClick = onClick,
+)
 
 /**
  * The standard clickable: the theme's indication, a haptic, and a touch target that meets the

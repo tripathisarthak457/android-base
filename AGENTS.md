@@ -72,6 +72,19 @@ A new optional feature needs all of:
 4. Its place in the presets, if it belongs in one.
 5. A line in the root README's feature table. The website reads the catalogue by itself.
 
+## Keeping dependencies current
+
+Every version lives in `template/gradle/libs.versions.toml`, and only stable releases belong
+there — no alpha, beta or rc.
+
+```bash
+python3 tools/check_versions.py            # each version against the newest stable release
+python3 tools/check_versions.py --apply    # update the catalogue, then run everything below
+```
+
+After an update, read the build's warnings as well as its result: a new release often deprecates
+something the template calls, and `./gradlew build --warning-mode all` is where that shows up.
+
 ## Verifying
 
 Nothing is done until these pass. Run them and read the output.

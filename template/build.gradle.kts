@@ -50,7 +50,7 @@ subprojects {
 }
 
 dependencies {
-    subprojects.forEach { kover(it) }
+    subprojects.forEach { kover(project(it.path)) }
 }
 
 kover {

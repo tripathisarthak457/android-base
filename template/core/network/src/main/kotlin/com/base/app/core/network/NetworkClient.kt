@@ -29,17 +29,18 @@ interface NetworkClient {
 /**
  * Decodes a successful response into [T].
  *
- * The decode runs on the IO dispatcher. `execute` already does its work there, but it returns to
- * the *caller's* dispatcher, which for a ViewModel is `Main.immediate` — so without this hop,
- * every list response in the app is parsed on the UI thread and shows up as dropped frames on
- * exactly the screens with the most data.
+ * The decode runs on the Default dispatcher. `execute` returns to the *caller's* dispatcher, which
+ * for a ViewModel is `Main.immediate` — so without this hop, every list response in the app is
+ * parsed on the UI thread and shows up as dropped frames on exactly the screens with the most
+ * data. Default rather than IO because parsing is CPU work; IO's pool is sized for threads that
+ * sit blocked, and parsing there competes with the requests themselves.
  */
 @PublishedApi
 internal suspend inline fun <reified T> NetworkClient.decode(
     request: NetworkRequest,
     unwrapper: ResponseUnwrapper,
 ): AppResult<T> = when (val result = execute(request)) {
-    is AppResult.Success -> withContext(Dispatchers.IO) {
+    is AppResult.Success -> withContext(Dispatchers.Default) {
         runCatching {
             val root = NetworkJson.parseToJsonElement(result.data.body)
             val payload = unwrapper.payload(root)
@@ -67,7 +68,7 @@ suspend fun <T> NetworkClient.request(
     deserializer: KSerializer<T>,
     unwrapper: ResponseUnwrapper,
 ): AppResult<T> = when (val result = execute(request)) {
-    is AppResult.Success -> withContext(Dispatchers.IO) {
+    is AppResult.Success -> withContext(Dispatchers.Default) {
         runCatching {
             val root = NetworkJson.parseToJsonElement(result.data.body)
             AppResult.Success(

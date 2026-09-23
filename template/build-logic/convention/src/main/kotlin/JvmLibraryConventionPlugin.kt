@@ -23,7 +23,6 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
         extensions.configure<KotlinJvmProjectExtension> {
             compilerOptions {
                 jvmTarget.set(AppConfig.JVM_TARGET)
-                freeCompilerArgs.add("-Xannotation-default-target=param-property")
             }
         }
 

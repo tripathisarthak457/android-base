@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.base.app.core.datastore.AppSettings
 import com.base.app.core.datastore.AppSettingsStore
@@ -156,7 +156,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val current by startup.collectAsState()
+            val current by startup.collectAsStateWithLifecycle()
             val resolved = current ?: return@setContent
             val (startKey, tabs) = resolved.entryPoint()
 

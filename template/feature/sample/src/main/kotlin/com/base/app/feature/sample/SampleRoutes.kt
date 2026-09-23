@@ -1,12 +1,10 @@
 package com.base.app.feature.sample
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
 import com.base.app.feature.sample.detail.SampleDetailEffect
-import com.base.app.feature.sample.detail.SampleDetailEvent
 import com.base.app.feature.sample.detail.SampleDetailScreen
 import com.base.app.feature.sample.detail.SampleDetailViewModel
 import com.base.app.feature.sample.list.SampleListEffect
@@ -40,12 +38,10 @@ fun SampleListRoute(
 fun SampleDetailRoute(
     itemId: Int,
     navigator: AppNavigator,
-    viewModel: SampleDetailViewModel = hiltViewModel(),
+    viewModel: SampleDetailViewModel = hiltViewModel<SampleDetailViewModel, SampleDetailViewModel.Factory>(
+        creationCallback = { factory -> factory.create(itemId) },
+    ),
 ) {
-    // Keyed on the id: returning to this screen for a different item re-fires the load, and
-    // returning for the same one does not, because the ViewModel short-circuits a repeat.
-    LaunchedEffect(itemId) { viewModel.onEvent(SampleDetailEvent.Load(itemId)) }
-
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->

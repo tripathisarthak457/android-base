@@ -85,7 +85,7 @@ class AppDatabaseMigrationTest {
                 db.execSQL("INSERT INTO notes (title, body) VALUES ('Ideas', 'a better one')")
             }
 
-            override fun onUpgrade(db: SupportSQLiteDatabase, old: Int, new: Int) = Unit
+            override fun onUpgrade(db: SupportSQLiteDatabase, oldVersion: Int, newVersion: Int) = Unit
         }
 
         val helper = FrameworkSQLiteOpenHelperFactory().create(

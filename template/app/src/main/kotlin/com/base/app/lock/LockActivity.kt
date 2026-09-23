@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.base.app.R
 import com.base.app.core.datastore.AppSettings
 import com.base.app.core.datastore.AppSettingsStore
@@ -66,7 +66,7 @@ class LockActivity : FragmentActivity() {
         onBackPressedDispatcher.addCallback(this) { finishAffinity() }
 
         setContent {
-            val settings by settingsStore.settings.collectAsState(initial = AppSettings())
+            val settings by settingsStore.settings.collectAsStateWithLifecycle(initialValue = AppSettings())
             AppTheme(mode = settings.themeMode()) {
                 LockScreen(onUnlock = ::prompt)
             }

@@ -78,11 +78,94 @@ Every screen that loads something draws all of its states: loading (a skeleton s
 content), empty, error with retry, and offline. The `LoadState` type exists so none of them is
 left out.
 
+### State, effect or message?
+
+| It is… | Use | Example |
+|---|---|---|
+| Something the screen renders, now or after rotation | `updateState { copy(…) }` | the list, a field's error, a loading flag |
+| Something that happens once and must not replay | `emitEffect(…)` | navigate, open the share sheet, close the screen |
+| A transient note the user may miss without harm | `showMessage(…)` | "Saved", "Could not refresh" |
+
+Effects are collected only while the screen is started and on `Main.immediate`, so a navigation
+emitted while the app is backgrounded waits for the user to come back rather than being lost.
+
+### A screen that takes an argument
+
+The key carries an id, never a model. The id reaches the ViewModel through Hilt assisted injection,
+at construction — not through a `LaunchedEffect` that sends a "load" event after the fact. Every
+destination has its own ViewModel store, so this ViewModel belongs to exactly one open screen:
+
+```kotlin
+@Serializable
+data class OrderKey(val orderId: Long) : AppNavKey
+
+@HiltViewModel(assistedFactory = OrderViewModel.Factory::class)
+class OrderViewModel @AssistedInject constructor(
+    private val repository: OrderRepository,
+    @Assisted private val orderId: Long,
+) : MviViewModel<OrderState, OrderEvent, OrderEffect>(OrderState()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(orderId: Long): OrderViewModel
+    }
+
+    init {
+        onEvent(OrderEvent.Retry)
+    }
+    …
+}
+
+@Composable
+fun OrderRoute(
+    orderId: Long,
+    viewModel: OrderViewModel = hiltViewModel<OrderViewModel, OrderViewModel.Factory>(
+        creationCallback = { factory -> factory.create(orderId) },
+    ),
+) { … }
+```
+
+Retry uses the injected id, so it works even when the first load failed and there is no item on
+screen to read an id from.
+<!-- <opt:sample> -->
+`SampleDetailViewModel` is the working example.
+<!-- </opt:sample> -->
+
+### Recipes
+
+- **A new tab:** add a `ShellTab` to `AppDestinations.tabs`. Each tab keeps its own back stack,
+  scroll position and ViewModels; switching crossfades.
+- **Keep typed input across process death:** `persistState(savedStateHandle, save, restore)` in
+  the ViewModel's `init`, for the fields the user typed — not for loaded data, which is fetched
+  again.
+- **Search as you type:** `launchLatest(key, debounceMillis)` cancels the previous request, so a
+  slow answer for an old query can never overwrite a newer one.
+<!-- <opt:search> -->
+  `SearchViewModel` shows it.
+<!-- </opt:search> -->
+- **Data that belongs to the signed-in user:** the `@SessionDataStore` store, which sign-out
+  clears. Settings that outlive a session go in `@SettingsDataStore`.
+<!-- <opt:paging> -->
+- **A paged list:** return `Flow<PagingData<T>>` from the repository, `cachedIn(viewModelScope)` in
+  the ViewModel, and render it with `AppPagingList`, which already draws loading, error, empty
+  and the load-more footer. `feature/feed` is the example.
+<!-- </opt:paging> -->
+- **A new string:** the feature's own `res/values/strings.xml`. Copy typed into Kotlin fails the
+  build.
+- **A new dependency:** a version and alias in `gradle/libs.versions.toml`, then `libs.x` in the
+  module. Take the latest stable release, not an alpha.
+
 ## 5. The base components are a starting point
 
 `:core:designsystem` ships about eighty components, four design styles (`AppDesignStyle`) and
 four motion styles (`AppMotionStyle`). **They are there for you to change.** Treat them as a
 reference, not as a fixed kit you have to use exactly as delivered.
+
+A design style is a bundle of tokens read through `AppTheme.style`: corner radii, button and chip
+shapes, how cards, fields and the tab bar are drawn, border weight, label casing, the surface tone
+(`SurfaceTone` — cool greys, brand-tinted, paper, cream) and the type voice (`TypeVoice`). The
+four enums are named starting points; editing `AppDesignStyle.style()` or adding a fifth is the
+intended way to give the app its own look everywhere at once.
 
 - Make the app look like itself. Adjust tokens first (`Palette.kt`, `AppDesignStyle`, `AppShapes`,
   `AppSpacing`, `AppTypography`), then edit the components. A finished app that looks exactly
@@ -95,6 +178,12 @@ reference, not as a fixed kit you have to use exactly as delivered.
 - Keep what makes them solid when you change how they look: 48dp touch targets, content
   descriptions on icon-only controls, contrast in both themes, reduce-motion handling, and the
   loading states that do not change a button's size.
+- Changed a colour or a surface tone? Run `./gradlew :core:designsystem:test`.
+  `PaletteContrastTest` checks every text colour against its background in every style and both
+  themes against WCAG AA.
+- Animate with the theme's tokens (`AppTheme.motion`, `rememberAppTransitions()`), never a raw
+  `tween(300)`. Animate `graphicsLayer` properties (alpha, offset, scale) rather than size, so
+  nothing around the animated element moves.
 
 ## 6. Code quality: write like the person who owns this code
 
@@ -139,7 +228,16 @@ This is what separates a good agent change from a typical one. Follow it exactly
 | Call an API | a `data/` module, through `NetworkClient` |
 | Store something | `core/datastore`: the session store for per-user data (cleared on sign-out), the settings store for the rest |
 
-## 8. Never
+## 8. Before you say it is done
+
+1. `./gradlew build` is green, or you have said exactly what fails and why.
+2. Every new screen has loading, empty, error and offline states, and works in dark theme.
+3. Every new string is in `strings.xml`; every new colour, size and duration is a token.
+4. New logic has a test beside the existing ones; no test was deleted or weakened.
+5. The diff contains only what the task needed, with comments that explain decisions, not the
+   change.
+
+## 9. Never
 
 - Commit `keystore.properties`, `keys/`, `local.properties` or a real `google-services.json`.
 - Print tokens, passwords or personal data to the log.

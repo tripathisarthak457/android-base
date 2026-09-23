@@ -39,8 +39,9 @@ import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
@@ -302,8 +303,10 @@ private fun Section(title: String, body: String?) {
 private fun Map<String, String>.asText(): String =
     entries.joinToString("\n") { (name, value) -> name + ": " + value }
 
+private val TimeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US)
+
 private fun timeOf(millis: Long): String =
-    SimpleDateFormat("HH:mm:ss", Locale.US).format(Date(millis))
+    Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).format(TimeFormat)
 
 private val TABS = listOf("Network", "Stats", "Build")
 private const val BYTES_PER_KB = 1024

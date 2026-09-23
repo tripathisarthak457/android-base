@@ -27,8 +27,8 @@ import kotlin.random.Random
  * ## Work is launched in the application scope
  *
  * A `FirebaseMessagingService` is torn down as soon as `onMessageReceived` returns, so a
- * coroutine tied to the service would be cancelled before it finished. The token upload in
- * particular has to outlive the callback.
+ * coroutine tied to the service would be cancelled before it finished. The registration upload
+ * in particular has to outlive the callback.
  */
 @AndroidEntryPoint
 class AppMessagingService : FirebaseMessagingService() {
@@ -43,9 +43,9 @@ class AppMessagingService : FirebaseMessagingService() {
     @ApplicationScope
     lateinit var scope: CoroutineScope
 
-    override fun onNewToken(token: String) {
-        super.onNewToken(token)
-        scope.launch { tokenRegistrar.onNewToken(token) }
+    override fun onRegistered(installationId: String) {
+        super.onRegistered(installationId)
+        scope.launch { tokenRegistrar.onRegistered(installationId) }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

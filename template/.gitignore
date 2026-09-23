@@ -26,15 +26,6 @@ google-services.json
 *.aab
 *.log
 
-# Fastlane.
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-*.gem
-.bundle/
-vendor/bundle/
-
 # Play Console service-account keys. Never commit one: it can publish to your listing.
 /*.json
 !/*.template.json

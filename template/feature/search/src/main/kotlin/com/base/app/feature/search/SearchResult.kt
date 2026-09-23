@@ -8,7 +8,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -30,8 +29,10 @@ import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.asString
 import com.base.app.data.search.SearchRepository
 import com.base.app.data.search.SearchResult
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 @Immutable
 data class SearchResultState(
@@ -40,22 +41,31 @@ data class SearchResultState(
 ) : UiState
 
 sealed interface SearchResultEvent : UiEvent {
-    data class Load(val id: Int) : SearchResultEvent
+    data object Retry : SearchResultEvent
 }
 
 sealed interface SearchResultEffect : UiEffect
 
-@HiltViewModel
-class SearchResultViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = SearchResultViewModel.Factory::class)
+class SearchResultViewModel @AssistedInject constructor(
     private val repository: SearchRepository,
+    @Assisted private val id: Int,
 ) : MviViewModel<SearchResultState, SearchResultEvent, SearchResultEffect>(SearchResultState()) {
+
+    @AssistedFactory
+    interface Factory {
+        fun create(id: Int): SearchResultViewModel
+    }
+
+    init {
+        onEvent(SearchResultEvent.Retry)
+    }
 
     override suspend fun handleEvent(event: SearchResultEvent) {
         when (event) {
-            is SearchResultEvent.Load -> {
-                if (currentState.result?.id == event.id) return
+            SearchResultEvent.Retry -> {
                 updateState { copy(loadState = LoadState.Loading) }
-                when (val result = repository.result(event.id)) {
+                when (val result = repository.result(id)) {
                     is AppResult.Success -> updateState { copy(loadState = LoadState.Success, result = result.data) }
                     is AppResult.Failure -> updateState { copy(loadState = result.toLoadState()) }
                 }
@@ -68,9 +78,10 @@ class SearchResultViewModel @Inject constructor(
 fun SearchResultRoute(
     id: Int,
     navigator: AppNavigator,
-    viewModel: SearchResultViewModel = hiltViewModel(),
+    viewModel: SearchResultViewModel = hiltViewModel<SearchResultViewModel, SearchResultViewModel.Factory>(
+        creationCallback = { factory -> factory.create(id) },
+    ),
 ) {
-    LaunchedEffect(id) { viewModel.onEvent(SearchResultEvent.Load(id)) }
     MviScreen(viewModel = viewModel) { state, onEvent ->
         AppScaffold(
             topBar = {
@@ -81,7 +92,7 @@ fun SearchResultRoute(
                 is LoadState.Error -> AppErrorState(
                     message = loadState.message.asString(),
                     isOffline = loadState.isOffline,
-                    onRetry = { onEvent(SearchResultEvent.Load(id)) },
+                    onRetry = { onEvent(SearchResultEvent.Retry) },
                     retryLabel = stringResource(R.string.search_retry),
                 )
 

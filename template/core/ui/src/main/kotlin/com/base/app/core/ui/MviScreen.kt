@@ -15,6 +15,8 @@ import com.base.app.core.common.mvi.MviViewModel
 import com.base.app.core.common.mvi.UiEffect
 import com.base.app.core.common.mvi.UiEvent
 import com.base.app.core.common.mvi.UiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * The bridge between a [MviViewModel] and its screen.
@@ -34,7 +36,9 @@ import com.base.app.core.common.mvi.UiState
  * navigation effect emitted then fires immediately — from a screen nobody is looking at — and the
  * user returns to the app somewhere they never asked to go. `repeatOnLifecycle(STARTED)` cancels
  * the collector on STOP and restarts it on START; the effects channel buffers in the meantime, so
- * nothing is lost, it is only deferred until it can be acted on safely.
+ * nothing is lost, it is only deferred until it can be acted on safely. Collection runs on
+ * `Dispatchers.Main.immediate`, which closes the one gap a channel leaves: an effect received and
+ * then dropped because the lifecycle stopped before it was dispatched.
  *
  * ## Messages have a host
  *
@@ -67,7 +71,12 @@ fun <S : UiState, E : UiEvent, F : UiEffect> MviScreen(
 
     LaunchedEffect(viewModel, lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.effects.collect { effect -> currentOnEffect(effect) }
+            // Main.immediate, not the frame clock Compose would otherwise use: an effect taken off
+            // the channel is handled in the same frame, so a STOP arriving before the next frame
+            // cannot cancel the collector with a navigation already received and never acted on.
+            withContext(Dispatchers.Main.immediate) {
+                viewModel.effects.collect { effect -> currentOnEffect(effect) }
+            }
         }
     }
 

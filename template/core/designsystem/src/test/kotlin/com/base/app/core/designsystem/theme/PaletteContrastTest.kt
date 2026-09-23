@@ -37,6 +37,15 @@ class PaletteContrastTest {
         DarkColors.assertReadable()
     }
 
+    @Test
+    fun `every design style's surfaces meet AA in both themes`() {
+        AppDesignStyle.entries.forEach { design ->
+            listOf(LightColors, DarkColors).forEach { base ->
+                base.withSurfaces(design.style().surfaces).assertReadable()
+            }
+        }
+    }
+
     private fun AppColors.assertReadable() {
         val theme = if (isLight) "light" else "dark"
 

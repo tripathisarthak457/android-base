@@ -20,6 +20,7 @@ dependencies {
     // google-services.json. The SDK itself is needed here, where the messaging service lives.
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     testImplementation(project(":core:testing"))
 }

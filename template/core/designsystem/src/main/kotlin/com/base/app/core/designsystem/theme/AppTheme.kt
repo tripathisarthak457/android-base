@@ -77,11 +77,15 @@ fun AppTheme(
     hapticsEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    val resolved = colors ?: if (mode.isDark()) DarkColors else LightColors
-    val resolvedFonts = fonts ?: rememberAppFonts(fontName, monoFontName)
-    val typography = remember(resolvedFonts) { appTypography(resolvedFonts) }
-    val motion = remember(motionStyle) { motionStyle.motion() }
     val style = remember(designStyle) { designStyle.style() }
+    val dark = mode.isDark()
+    // Explicit colours are taken as given; the style only restyles the palette it chose itself.
+    val resolved = colors ?: remember(dark, style.surfaces) {
+        (if (dark) DarkColors else LightColors).withSurfaces(style.surfaces)
+    }
+    val resolvedFonts = fonts ?: rememberAppFonts(fontName, monoFontName)
+    val typography = remember(resolvedFonts, style.voice) { appTypography(resolvedFonts).withVoice(style.voice) }
+    val motion = remember(motionStyle) { motionStyle.motion() }
     val sizes = remember(style) {
         AppSizes(borderWidth = style.borderWidth, borderWidthStrong = style.borderWidthStrong)
     }

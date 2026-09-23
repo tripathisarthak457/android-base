@@ -25,8 +25,10 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.asString
 import com.base.app.data.sample.SampleItem
 import com.base.app.data.sample.SampleRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 @Immutable
 data class SampleDetailState(
@@ -35,7 +37,7 @@ data class SampleDetailState(
 ) : UiState
 
 sealed interface SampleDetailEvent : UiEvent {
-    data class Load(val id: Int) : SampleDetailEvent
+    data object Retry : SampleDetailEvent
     data object BackClicked : SampleDetailEvent
 }
 
@@ -46,31 +48,36 @@ sealed interface SampleDetailEffect : UiEffect {
 /**
  * The detail ViewModel.
  *
- * It has no id until the screen tells it one, because the navigation key is delivered to the
- * composable rather than to the ViewModel — see `SampleDetailRoute`. `Load` is idempotent for the
- * same id, so a recomposition that re-fires it costs nothing.
+ * The item id arrives through assisted injection, at construction, from the navigation key. Each
+ * destination owns its ViewModel, so there is exactly one of these per open detail screen and it
+ * never has to be told which item it is for after the fact.
  */
-@HiltViewModel
-class SampleDetailViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = SampleDetailViewModel.Factory::class)
+class SampleDetailViewModel @AssistedInject constructor(
     private val repository: SampleRepository,
+    @Assisted private val itemId: Int,
 ) : MviViewModel<SampleDetailState, SampleDetailEvent, SampleDetailEffect>(SampleDetailState()) {
 
-    private var loadedId: Int? = null
+    @AssistedFactory
+    interface Factory {
+        fun create(itemId: Int): SampleDetailViewModel
+    }
+
+    init {
+        onEvent(SampleDetailEvent.Retry)
+    }
 
     override suspend fun handleEvent(event: SampleDetailEvent) {
         when (event) {
-            is SampleDetailEvent.Load -> load(event.id)
+            SampleDetailEvent.Retry -> load()
             SampleDetailEvent.BackClicked -> emitEffect(SampleDetailEffect.NavigateBack)
         }
     }
 
-    private suspend fun load(id: Int) {
-        if (loadedId == id && currentState.loadState is LoadState.Success) return
-        loadedId = id
-
+    private suspend fun load() {
         updateState { copy(loadState = LoadState.Loading) }
 
-        when (val result = repository.item(id)) {
+        when (val result = repository.item(itemId)) {
             is AppResult.Success -> updateState {
                 copy(loadState = LoadState.Success, item = result.data)
             }
@@ -99,7 +106,7 @@ fun SampleDetailScreen(
             is LoadState.Error -> AppErrorState(
                 message = loadState.message.asString(),
                 isOffline = loadState.isOffline,
-                onRetry = { state.item?.id?.let { onEvent(SampleDetailEvent.Load(it)) } },
+                onRetry = { onEvent(SampleDetailEvent.Retry) },
             )
 
             else -> Column(

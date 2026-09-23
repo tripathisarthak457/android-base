@@ -12,7 +12,11 @@ import javax.inject.Inject
 import com.base.app.core.analytics.CrashReporter
 // </opt:analytics>
 // <opt:push>
+import com.base.app.core.coroutines.ApplicationScope
 import com.base.app.core.notification.AppNotifications
+import com.base.app.core.notification.PushTokenRegistrar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 // </opt:push>
 // <opt:workmanager>
 import androidx.hilt.work.HiltWorkerFactory
@@ -52,6 +56,13 @@ class BaseAppApplication : Application(), Configuration.Provider {
     // <opt:push>
     @Inject
     lateinit var notifications: AppNotifications
+
+    @Inject
+    lateinit var pushRegistrar: PushTokenRegistrar
+
+    @Inject
+    @ApplicationScope
+    lateinit var appScope: CoroutineScope
     // </opt:push>
 
     override fun onCreate() {
@@ -74,6 +85,7 @@ class BaseAppApplication : Application(), Configuration.Provider {
         // lazily means someone must receive a notification from a category before they are able
         // to mute it.
         notifications.createChannels()
+        appScope.launch { pushRegistrar.registerOnLaunch() }
         // </opt:push>
     }
 }
