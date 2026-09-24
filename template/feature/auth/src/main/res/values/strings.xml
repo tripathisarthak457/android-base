@@ -20,13 +20,20 @@
     <string name="auth_send_reset_link">Send reset link</string>
     <string name="auth_sign_in">Sign in</string>
     <string name="auth_welcome_back">Welcome back</string>
-    <string name="auth_email_placeholder">you@example.com</string>
+    <string name="auth_email_placeholder" translatable="false">you@example.com</string>
     <!-- <opt:googlesignin> -->
     <string name="auth_continue_with_google">Continue with Google</string>
     <string name="auth_or">or</string>
     <string name="auth_google_not_configured">Google sign-in is not set up yet. Add the web client id to auth_google_server_client_id.</string>
+    <string name="auth_google_sign_in_failed">Could not sign you in with Google.</string>
     <string name="auth_google_failed">Google sign-in did not finish. Try again, or use your email.</string>
     <!-- The OAuth *web* client id from the Google Cloud console, not the Android one. -->
     <string name="auth_google_server_client_id" translatable="false"></string>
     <!-- </opt:googlesignin> -->
+    <string name="auth_wrong_credentials">That email and password do not match an account.</string>
+    <string name="auth_too_many_attempts">Too many attempts. Try again in a few minutes.</string>
+    <string name="auth_sign_in_failed">Could not sign you in.</string>
+    <string name="auth_sign_up_failed">Could not create the account.</string>
+    <string name="auth_reset_failed">Could not send the link.</string>
+    <string name="auth_passwords_do_not_match">Passwords do not match.</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.base.app.core.navigation
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -8,7 +9,14 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,10 +30,14 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.navigation.AppBottomBar
 import com.base.app.core.designsystem.component.navigation.AppBottomBarDefaults
+import com.base.app.core.designsystem.component.navigation.AppNavigationRail
 import com.base.app.core.designsystem.component.navigation.BottomNavItem
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.WindowWidth
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -35,7 +47,7 @@ import kotlinx.serialization.builtins.ListSerializer
  */
 data class ShellTab(
     val key: AppNavKey,
-    val label: String,
+    @param:StringRes val label: Int,
     val icon: ImageVector,
     val selectedIcon: ImageVector = icon,
     val badgeCount: Int = 0,
@@ -137,7 +149,11 @@ private fun shellSaver(
     )
 }
 
-/** The tabbed shell: a persistent bar, and the current tab's stack behind it. */
+/**
+ * The tabbed shell: the current tab's stack, with a bottom bar in a Compact-width window and a
+ * navigation rail beside it from Medium up — a tablet, an unfolded foldable, a phone held
+ * sideways, a desktop window.
+ */
 @Composable
 fun AppShell(
     tabs: List<ShellTab>,
@@ -164,7 +180,41 @@ fun AppShell(
         state.handleBack(onExitRequested)
     }
 
+    val items = tabs.map { tab ->
+        BottomNavItem(
+            label = stringResource(tab.label),
+            icon = tab.icon,
+            selectedIcon = tab.selectedIcon,
+            badgeCount = tab.badgeCount,
+        )
+    }
+
     Box(modifier = modifier.fillMaxSize()) {
+        // A rail stays beside the content at every depth; nothing covers the bottom of the window,
+        // so no entry needs the bar's inset.
+        if (AppTheme.windowSize.width >= WindowWidth.Medium) {
+            Row(modifier = Modifier.fillMaxSize()) {
+                AppNavigationRail(
+                    items = items,
+                    selectedIndex = state.selectedIndex,
+                    onItemSelected = state::select,
+                )
+                TabbedNavHost(
+                    state = state,
+                    registry = registry,
+                    rootBottomInset = 0.dp,
+                    insetEveryEntry = false,
+                    onBack = { state.handleBack(onExitRequested) },
+                    // The rail already clears the cutout on its side.
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)),
+                )
+            }
+            return@Box
+        }
+
         TabbedNavHost(
             state = state,
             registry = registry,
@@ -182,14 +232,7 @@ fun AppShell(
                 fadeOut(tween(motion.medium, easing = motion.exit)),
         ) {
             AppBottomBar(
-                items = tabs.map { tab ->
-                    BottomNavItem(
-                        label = tab.label,
-                        icon = tab.icon,
-                        selectedIcon = tab.selectedIcon,
-                        badgeCount = tab.badgeCount,
-                    )
-                },
+                items = items,
                 selectedIndex = state.selectedIndex,
                 onItemSelected = state::select,
             )

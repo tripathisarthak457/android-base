@@ -67,6 +67,7 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
 ) {
     AppScaffold(
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
             Column {

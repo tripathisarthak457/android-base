@@ -8,6 +8,9 @@ import com.base.app.core.network.model.NetworkException
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -16,14 +19,28 @@ import kotlinx.serialization.json.encodeToJsonElement
 /** The whole network surface: one operation, plus typed conveniences. */
 interface NetworkClient {
     suspend fun execute(request: NetworkRequest): AppResult<NetworkResponse>
+
+    /**
+     * The saved copy first, when there is one, then the network's answer: a screen has something
+     * to show at once and always ends on the latest. A failure after a saved copy is emitted too,
+     * so the screen can keep what it has and say the refresh failed.
+     */
+    fun stream(request: NetworkRequest): Flow<AppResult<NetworkResponse>> = flow { emit(execute(request)) }
 }
 
-/** Decodes a successful response into [T]. The decode runs on the Default dispatcher. */
+/** Runs [request] and decodes a successful response into [T]. */
 @PublishedApi
 internal suspend inline fun <reified T> NetworkClient.decode(
     request: NetworkRequest,
     unwrapper: ResponseUnwrapper,
-): AppResult<T> = when (val result = execute(request)) {
+): AppResult<T> = decodeResult(execute(request), unwrapper)
+
+/** Decodes a successful response into [T], on the Default dispatcher. Failures pass through. */
+@PublishedApi
+internal suspend inline fun <reified T> decodeResult(
+    result: AppResult<NetworkResponse>,
+    unwrapper: ResponseUnwrapper,
+): AppResult<T> = when (result) {
     is AppResult.Success -> withContext(Dispatchers.Default) {
         runCatching {
             val root = NetworkJson.parseToJsonElement(result.data.body)
@@ -35,7 +52,6 @@ internal suspend inline fun <reified T> NetworkClient.decode(
             )
         }.getOrElse { throwable ->
             AppResult.Failure(
-                message = "Could not read the server's response.",
                 cause = NetworkException.Serialization(throwable),
                 code = result.data.statusCode,
                 rawBody = result.data.body,
@@ -62,7 +78,6 @@ suspend fun <T> NetworkClient.request(
             )
         }.getOrElse { throwable ->
             AppResult.Failure(
-                message = "Could not read the server's response.",
                 cause = NetworkException.Serialization(throwable),
                 code = result.data.statusCode,
                 rawBody = result.data.body,
@@ -91,6 +106,28 @@ suspend inline fun <reified T> NetworkClient.get(
     ),
     unwrapper,
 )
+
+/**
+ * [stream] decoded into [T]: the saved copy, then the latest. For screens that should never wait on
+ * a spinner when they have something to show.
+ */
+inline fun <reified T> NetworkClient.getStream(
+    path: String,
+    cache: CachePolicy.Enabled,
+    query: Map<String, Any?> = emptyMap(),
+    headers: Map<String, String> = emptyMap(),
+    requiresAuth: Boolean = true,
+    unwrapper: ResponseUnwrapper = PassthroughUnwrapper(),
+): Flow<AppResult<T>> = stream(
+    NetworkRequest(
+        method = HttpMethodType.GET,
+        path = path,
+        query = query,
+        headers = headers,
+        requiresAuth = requiresAuth,
+        cache = cache,
+    ),
+).map { result -> decodeResult<T>(result, unwrapper) }
 
 suspend inline fun <reified B, reified T> NetworkClient.post(
     path: String,

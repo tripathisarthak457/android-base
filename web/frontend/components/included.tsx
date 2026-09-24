@@ -29,6 +29,14 @@ const ALWAYS = [
     detail: "Navigation 3",
   },
   {
+    title: "Designed for every screen, not just phones",
+    body:
+      "Layout follows Android's window size classes, never orientation or device. The tab bar " +
+      "becomes a rail from tablet width, a list and its detail share a wide window, and forms and " +
+      "text stop at a readable width. Locking an activity to one orientation fails the build.",
+    detail: "AppTheme.windowSize",
+  },
+  {
     title: "Tabs that feel like tabs",
     body:
       "Each tab keeps its own back stack, scroll position and ViewModels, and switching crossfades " +

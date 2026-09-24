@@ -118,16 +118,7 @@ class DefaultAuthRepository @Inject constructor(
             map { }
         }
 
-        is AppResult.Failure -> withFriendlyMessage()
-    }
-
-    /**
-     * Turns the two failures a sign-in form actually produces into sentences a person can act on.
-     */
-    private fun AppResult.Failure.withFriendlyMessage(): AppResult.Failure = when (code) {
-        HTTP_UNAUTHORIZED -> copy(message = "That email and password do not match an account.")
-        HTTP_TOO_MANY_REQUESTS -> copy(message = "Too many attempts. Try again in a few minutes.")
-        else -> this
+        is AppResult.Failure -> this
     }
 
     private companion object {
@@ -139,7 +130,5 @@ class DefaultAuthRepository @Inject constructor(
         const val GOOGLE_SIGN_IN_PATH = "auth/google"
         // </opt:googlesignin>
         const val MILLIS_PER_SECOND = 1_000L
-        const val HTTP_UNAUTHORIZED = 401
-        const val HTTP_TOO_MANY_REQUESTS = 429
     }
 }

@@ -2,6 +2,7 @@ package com.base.app.buildlogic
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.android.build.api.variant.HostTestBuilder
 import org.gradle.api.Project
 
 /** Product flavours, and the per-variant identity that follows from them. */
@@ -29,6 +30,12 @@ internal fun Project.configureVariants(components: ApplicationAndroidComponentsE
             variant.buildType == "debug"
         ) {
             variant.enable = false
+        }
+
+        // Flavours differ only in BuildConfig values and the signing key, so every variant would run
+        // identical unit tests. devDebug runs them once.
+        if (variant.name != UNIT_TESTED_VARIANT) {
+            variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
         }
     }
 
@@ -65,3 +72,5 @@ internal fun Project.configureAbiSplits(extension: ApplicationExtension) {
         isUniversalApk = true
     }
 }
+
+private const val UNIT_TESTED_VARIANT = "devDebug"

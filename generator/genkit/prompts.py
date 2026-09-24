@@ -247,14 +247,12 @@ def ask_environments(features: set[str]) -> tuple[dict[str, str], dict[str, str]
     heading("Backend URLs")
     print(dim("  One per environment. They become BuildConfig fields, so switching environment is"))
     print(dim("  a variant switch — no code change, and no library module is rebuilt."))
-    if "sample" in features:
-        print(dim("  The reference feature reads a public demo API, which is the dev default."))
     print()
 
     api: dict[str, str] = {}
     sockets: dict[str, str] = {}
     defaults = {
-        "dev": "https://jsonplaceholder.typicode.com/" if "sample" in features else "https://dev.example.com/api/",
+        "dev": "https://dev.example.com/api/",
         "staging": "https://staging.example.com/api/",
         "prod": "https://api.example.com/api/",
     }
@@ -388,6 +386,26 @@ def ask_feature_modules() -> tuple[str, ...]:
         return names
 
 
+def ask_languages() -> tuple[str, ...]:
+    # Imported here, as in spec.py: translations reads specs.
+    from .translations import available
+
+    offered = available()
+    heading("Languages")
+    print(dim("  English is always included. Add others as comma-separated tags; every screen the"))
+    print(dim("  template ships is translated, and the language picker in Settings lists them."))
+    print(dim("  " + ", ".join(f"{tag} ({name})" for tag, name in offered.items())))
+    print()
+
+    while True:
+        answer = ask("  Languages", "", allow_empty=True)
+        tags = tuple(dict.fromkeys(part.strip() for part in answer.split(",") if part.strip()))
+        unknown = [tag for tag in tags if tag not in offered]
+        if not unknown:
+            return tags
+        print(red(f"  No translation for {', '.join(unknown)}."))
+
+
 def ask_keystores(app_name: str, package_name: str) -> tuple[KeystoreSpec, ...]:
     heading("Signing keys")
     print(dim("  Four keys: dev, staging, prod and playstore."))
@@ -490,6 +508,7 @@ def run_wizard(select_all: bool = False, preset: str | None = None) -> ProjectSp
         haptics_enabled,
     ) = ask_look_and_feel(features)
     feature_modules = ask_feature_modules()
+    languages = ask_languages()
     keystores = ask_keystores(app_name, package_name)
 
     spec = ProjectSpec(
@@ -515,6 +534,7 @@ def run_wizard(select_all: bool = False, preset: str | None = None) -> ProjectSp
         motion_style=motion_style,
         design_style=design_style,
         haptics_enabled=haptics_enabled,
+        languages=languages,
     )
     return spec.validated()
 
@@ -530,6 +550,7 @@ def summarise(spec: ProjectSpec) -> None:
         ("Desugaring", "on — java.time below API 26" if spec.needs_desugaring else "off"),
         ("Features", ", ".join(sorted(spec.features)) or "none"),
         ("Modules", ", ".join(spec.feature_modules) or "none"),
+        ("Languages", ", ".join(("en", *spec.languages))),
         ("Typeface", f"{spec.font_name}  ·  {spec.mono_font_name}"),
         ("Colours", describe_brand_colours(spec)),
         ("Style", spec.design_style),

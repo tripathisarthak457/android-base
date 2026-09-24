@@ -24,6 +24,8 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /**
  * The "there is nothing here" state. Every empty list gets one of these rather than blank space,
@@ -59,14 +61,16 @@ fun AppErrorState(
     title: String? = null,
     isOffline: Boolean = false,
     onRetry: (() -> Unit)? = null,
-    retryLabel: String = "Try again",
+    retryLabel: String = stringResource(R.string.designsystem_try_again),
 ) {
     StateLayout(
         modifier = modifier,
         icon = if (isOffline) AppIcons.WifiOff else AppIcons.AlertTriangle,
         iconTint = AppTheme.colors.danger.content,
         iconBackground = AppTheme.colors.danger.subtle,
-        title = title ?: if (isOffline) "You are offline" else "Something went wrong",
+        title = title ?: stringResource(
+            if (isOffline) R.string.designsystem_offline_title else R.string.designsystem_error_title,
+        ),
         message = message,
         actionLabel = if (onRetry != null) retryLabel else null,
         onAction = onRetry,

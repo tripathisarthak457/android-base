@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BaseApp</string>
+    <string name="app_name" translatable="false">BaseApp</string>
+
+    <!-- <opt:sample> -->
+    <string name="tab_home">Home</string>
+    <!-- </opt:sample> -->
+    <!-- <opt:paging> -->
+    <string name="tab_feed">Feed</string>
+    <!-- </opt:paging> -->
+    <!-- <opt:search> -->
+    <string name="tab_search">Search</string>
+    <!-- </opt:search> -->
+    <!-- <opt:profile> -->
+    <string name="tab_profile">Profile</string>
+    <!-- </opt:profile> -->
+    <!-- <opt:settings> -->
+    <string name="tab_settings">Settings</string>
+    <!-- </opt:settings> -->
 
     <!-- <opt:deeplink> -->
     <!--

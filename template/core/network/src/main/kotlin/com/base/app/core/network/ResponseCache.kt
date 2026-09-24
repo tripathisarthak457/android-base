@@ -16,11 +16,13 @@ import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
 import io.ktor.http.encodeURLParameter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 /**
  * Responses kept on disk so a screen has something to show before — or instead of — a network call.
@@ -216,7 +218,12 @@ class QueuedRequestReplayer @Inject constructor(
 
     /** Suspends for as long as the calling scope lives. Start it once, in the application scope. */
     suspend fun replayWhenOnline() {
-        networkMonitor.isOnline.distinctUntilChanged().filter { it }.collect { replayPending() }
+        networkMonitor.isOnline.distinctUntilChanged().filter { it }.collect {
+            // Spread out: after an outage every device reconnects at once, and a backend that just
+            // came back should not take all of their queues in the same second.
+            delay(Random.nextLong(MAX_REPLAY_JITTER_MILLIS))
+            replayPending()
+        }
     }
 
     suspend fun replayPending() {
@@ -241,5 +248,6 @@ class QueuedRequestReplayer @Inject constructor(
 
     private companion object {
         val REFUSED_RANGE = 400..499
+        const val MAX_REPLAY_JITTER_MILLIS = 15_000L
     }
 }

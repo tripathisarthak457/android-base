@@ -4,14 +4,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.button.AppFloatingActionButton
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -44,6 +45,7 @@ import com.base.app.core.designsystem.component.feedback.AppLinearProgress
 import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
 import com.base.app.core.designsystem.component.feedback.AppSnackbar
 import com.base.app.core.designsystem.component.feedback.AppStatusPill
+import com.base.app.core.designsystem.component.feedback.AppStepIndicator
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.input.AppNumberField
 import com.base.app.core.designsystem.component.input.AppPasswordField
@@ -68,6 +70,7 @@ import com.base.app.core.designsystem.component.overlay.SheetAction
 import com.base.app.core.designsystem.component.selection.AppCheckbox
 import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.selection.AppRadioButton
+import com.base.app.core.designsystem.component.selection.AppRangeSlider
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.selection.AppSlider
 import com.base.app.core.designsystem.component.selection.AppSwitch
@@ -76,9 +79,9 @@ import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
+import kotlinx.coroutines.delay
 
 @Composable
 fun ButtonsSection() {
@@ -128,6 +131,14 @@ fun ButtonsSection() {
             delay(LOADING_DEMO_MILLIS)
             loading = false
         }
+    }
+
+    CatalogGroup(
+        title = "Floating action button",
+        caption = "Tie expanded to the list, so the label steps aside while someone scrolls down.",
+    ) {
+        var expanded by remember { mutableStateOf(true) }
+        AppFloatingActionButton(AppIcons.Plus, "New note", { expanded = !expanded }, expanded = expanded)
     }
 
     CatalogGroup(title = "Icon buttons") {
@@ -223,6 +234,15 @@ fun SelectionSection() {
         AppMonoText("%.2f".format(slider), color = AppTheme.colors.contentTertiary)
         AppSlider(value = stepped, onValueChange = { stepped = it }, valueRange = 0f..10f, steps = 9)
         AppMonoText("%.0f of 10".format(stepped), color = AppTheme.colors.contentTertiary)
+    }
+
+    CatalogGroup(title = "Range slider", caption = "A touch moves the nearer thumb; they never cross.") {
+        var range by remember { mutableStateOf(20f..80f) }
+        AppRangeSlider(value = range, onValueChange = { range = it }, valueRange = 0f..100f, steps = 19)
+        AppMonoText(
+            "%.0f – %.0f".format(range.start, range.endInclusive),
+            color = AppTheme.colors.contentTertiary,
+        )
     }
 
     CatalogGroup(title = "Segmented control") {
@@ -372,6 +392,16 @@ fun FeedbackSection() {
         }
         AppLinearProgress(modifier = Modifier.fillMaxWidth())
         AppLinearProgress(progress = 0.4f, modifier = Modifier.fillMaxWidth())
+    }
+
+    CatalogGroup(title = "Step indicator", caption = "Read as one sentence: Step 2 of 4, Payment.") {
+        var step by remember { mutableIntStateOf(1) }
+        val steps = listOf("Cart", "Payment", "Address", "Review")
+        AppStepIndicator(steps = steps, currentStep = step)
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+            AppButton("Back", { step = (step - 1).coerceAtLeast(0) }, variant = ButtonVariant.Secondary)
+            AppButton("Next", { step = (step + 1).coerceAtMost(steps.lastIndex) })
+        }
     }
 
     CatalogGroup(title = "Skeletons", caption = "Shaped like the content they stand in for.") {

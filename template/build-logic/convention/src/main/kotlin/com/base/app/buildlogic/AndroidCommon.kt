@@ -42,6 +42,14 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
         excludes += "kotlin-tooling-metadata.json"
     }
 
+    // Android runs on phones, foldables, tablets, desktop windows and cars. An activity locked to
+    // one orientation, or refusing to resize, letterboxes on most of them, so either fails the build.
+    extension.lint.error += setOf(
+        "LockedOrientationActivity",
+        "SourceLockedOrientationActivity",
+        "NonResizeableActivity",
+    )
+
     // Gradle 9 fails a test task with no tests, which would fail modules that have none yet.
     tasks.withType(Test::class.java).configureEach {
         failOnNoDiscoveredTests.set(false)

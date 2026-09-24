@@ -3,13 +3,8 @@ package com.base.app.feature.auth
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -32,7 +27,6 @@ import com.base.app.core.common.validation.and
 import com.base.app.core.designsystem.animation.busyOverlay
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
-import com.base.app.core.designsystem.component.container.AppScaffold
 // <opt:googlesignin>
 import com.base.app.core.designsystem.component.container.AppDivider
 // </opt:googlesignin>
@@ -103,7 +97,7 @@ class SignInViewModel @Inject constructor(
         when (val result = authRepository.signInWithGoogle(idToken)) {
             is AppResult.Success -> emitEffect(SignInEffect.SignedIn)
             is AppResult.Failure -> updateState {
-                copy(error = UiText.Dynamic(result.message ?: "Could not sign you in with Google."))
+                copy(error = result.authMessage(R.string.auth_google_sign_in_failed))
             }
         }
     }
@@ -126,7 +120,7 @@ class SignInViewModel @Inject constructor(
                 form.applyServerErrors(result.fieldErrors)
                 if (result.fieldErrors.isEmpty()) {
                     updateState {
-                        copy(error = UiText.Dynamic(result.message ?: "Could not sign you in."))
+                        copy(error = result.authMessage(R.string.auth_sign_in_failed))
                     }
                 }
             }
@@ -164,86 +158,75 @@ fun SignInScreen(
     val email = form["email"]
     val password = form["password"]
 
-    AppScaffold(modifier = modifier) {
-        // No top bar on this screen, so it carries the status-bar inset itself.
+    AuthFrame(modifier = modifier) {
+        AppText(
+            text = stringResource(R.string.auth_welcome_back),
+            modifier = Modifier.padding(top = AppTheme.spacing.xxl),
+            style = AppTheme.typography.displaySmall,
+            color = AppTheme.colors.contentPrimary,
+        )
+
+        state.error?.let {
+            AppBanner(text = it.asString(), tone = AppTone.Error)
+        }
+
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(AppTheme.spacing.gutter),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
+            modifier = Modifier.busyOverlay(form.isSubmitting),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
-            AppText(
-                text = stringResource(R.string.auth_welcome_back),
-                modifier = Modifier.padding(top = AppTheme.spacing.xxl),
-                style = AppTheme.typography.displaySmall,
-                color = AppTheme.colors.contentPrimary,
+            AppTextField(
+                value = email.value,
+                onValueChange = email::onChange,
+                modifier = Modifier.touchOnFocusLost(email),
+                label = stringResource(R.string.auth_email),
+                placeholder = stringResource(R.string.auth_email_placeholder),
+                error = email.error?.asString(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next,
+                ),
             )
+            AppPasswordField(
+                value = password.value,
+                onValueChange = password::onChange,
+                modifier = Modifier.touchOnFocusLost(password),
+                label = stringResource(R.string.auth_password),
+                error = password.error?.asString(),
+                keyboardActions = KeyboardActions(onDone = { onEvent(SignInEvent.Submit) }),
+            )
+        }
 
-            state.error?.let {
-                AppBanner(text = it.asString(), tone = AppTone.Error)
-            }
+        AppButton(
+            text = stringResource(R.string.auth_sign_in),
+            onClick = { onEvent(SignInEvent.Submit) },
+            loading = form.isSubmitting,
+            fillWidth = true,
+        )
+        // <opt:googlesignin>
 
-            Column(
-                modifier = Modifier.busyOverlay(form.isSubmitting),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-            ) {
-                AppTextField(
-                    value = email.value,
-                    onValueChange = email::onChange,
-                    modifier = Modifier.touchOnFocusLost(email),
-                    label = stringResource(R.string.auth_email),
-                    placeholder = stringResource(R.string.auth_email_placeholder),
-                    error = email.error?.asString(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next,
-                    ),
-                )
-                AppPasswordField(
-                    value = password.value,
-                    onValueChange = password::onChange,
-                    modifier = Modifier.touchOnFocusLost(password),
-                    label = stringResource(R.string.auth_password),
-                    error = password.error?.asString(),
-                    keyboardActions = KeyboardActions(onDone = { onEvent(SignInEvent.Submit) }),
-                )
-            }
+        OrDivider()
+        GoogleSignInButton(
+            onIdToken = { onEvent(SignInEvent.GoogleIdTokenReceived(it)) },
+            onFailure = { onEvent(SignInEvent.GoogleFailed(it)) },
+            enabled = !form.isSubmitting,
+        )
+        // </opt:googlesignin>
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             AppButton(
-                text = stringResource(R.string.auth_sign_in),
-                onClick = { onEvent(SignInEvent.Submit) },
-                loading = form.isSubmitting,
-                fillWidth = true,
+                text = stringResource(R.string.auth_create_account),
+                onClick = { onEvent(SignInEvent.CreateAccountClicked) },
+                variant = ButtonVariant.Ghost,
             )
-            // <opt:googlesignin>
-
-            OrDivider()
-            GoogleSignInButton(
-                onIdToken = { onEvent(SignInEvent.GoogleIdTokenReceived(it)) },
-                onFailure = { onEvent(SignInEvent.GoogleFailed(it)) },
-                enabled = !form.isSubmitting,
+            AppButton(
+                text = stringResource(R.string.auth_forgot_password),
+                onClick = { onEvent(SignInEvent.ForgotPasswordClicked) },
+                variant = ButtonVariant.Ghost,
             )
-            // </opt:googlesignin>
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                AppButton(
-                    text = stringResource(R.string.auth_create_account),
-                    onClick = { onEvent(SignInEvent.CreateAccountClicked) },
-                    variant = ButtonVariant.Ghost,
-                )
-                AppButton(
-                    text = stringResource(R.string.auth_forgot_password),
-                    onClick = { onEvent(SignInEvent.ForgotPasswordClicked) },
-                    variant = ButtonVariant.Ghost,
-                )
-            }
         }
     }
 }

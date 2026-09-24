@@ -14,14 +14,14 @@ import com.base.app.core.designsystem.theme.AppTheme
 /** The catalog's pages. */
 enum class CatalogSection(val title: String, val summary: String) {
     Foundations("Foundations", "Colour, type, spacing, elevation, motion"),
-    Buttons("Buttons", "Five variants, three sizes, loading and disabled"),
+    Buttons("Buttons", "Five variants, three sizes, loading, disabled, floating"),
     Inputs("Inputs", "Text, password, search, numeric, multi-line"),
     Fields("Specialised fields", "OTP, stepper, select, phone, currency, tags"),
-    Selection("Selection", "Checkbox, radio, switch, slider, chips, segments"),
+    Selection("Selection", "Checkbox, radio, switch, sliders, chips, segments"),
     Containers("Containers", "Cards, list rows, dividers, bars"),
     Lists("Lists & gestures", "Swipe, accordion, pull-to-refresh, pager, timeline"),
-    Data("Data display", "Detail rows, stats, ratings, sparkline, bar chart"),
-    Feedback("Feedback", "Progress, skeletons, badges, banners, empty and error"),
+    Data("Data display", "Counters, expandable text, stats, ratings, charts"),
+    Feedback("Feedback", "Progress, steps, skeletons, badges, banners, empty"),
     Overlays("Overlays", "Dialogs, sheets, menus, tooltips, snackbars"),
     Motion("Animation", "The transition set, running, including list animation"),
     Feel("Motion & haptics", "Press feedback, motion styles, the haptic vocabulary"),

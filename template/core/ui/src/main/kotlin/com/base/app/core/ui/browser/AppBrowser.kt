@@ -31,7 +31,13 @@ fun rememberInAppBrowser(): (String) -> Unit {
     }
 }
 
+/**
+ * Only http and https are opened. URLs here often come from server data, and a `file:`, `intent:`
+ * or custom-scheme link handed to ACTION_VIEW can reach other apps' components or local files.
+ */
 fun Context.openInAppBrowser(url: String, toolbarColor: Int, isLight: Boolean) {
+    val uri = Uri.parse(url)
+    if (uri.scheme?.lowercase() !in WEB_SCHEMES || uri.host.isNullOrBlank()) return
     val colours = CustomTabColorSchemeParams.Builder()
         .setToolbarColor(toolbarColor)
         .setNavigationBarColor(toolbarColor)
@@ -43,8 +49,10 @@ fun Context.openInAppBrowser(url: String, toolbarColor: Int, isLight: Boolean) {
         .setDefaultColorSchemeParams(colours)
         .build()
     try {
-        intent.launchUrl(this, Uri.parse(url))
+        intent.launchUrl(this, uri)
     } catch (_: ActivityNotFoundException) {
-        runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+        runCatching { startActivity(Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
     }
 }
+
+private val WEB_SCHEMES = setOf("http", "https")

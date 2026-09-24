@@ -7,7 +7,7 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import icons, render, scaffold
+from . import icons, record, render, scaffold, translations
 from .readme import write_readme
 from .spec import FEATURES_BY_KEY, ProjectSpec
 
@@ -52,6 +52,8 @@ def build(
         render.apply_fonts(project, spec)
         render.apply_accent(project, spec)
         render.apply_feel(project, spec)
+        # After the rewrite pass, which decides which strings exist to be translated.
+        translations.apply(project, spec)
 
         keystores = list(spec.keystores)
         generated, skipped, key_warnings = render.generate_keystores(project, keystores)
@@ -63,6 +65,7 @@ def build(
         warnings.extend(key_warnings)
 
         write_readme(project, spec)
+        record.write(project, spec, repository=HERE.parent)
 
         if icon_source is not None:
             warnings.extend(icons.generate(icon_source, project, spec))

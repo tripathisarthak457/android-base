@@ -66,6 +66,11 @@ sealed interface CachePolicy {
         val maxAgeMillis: Long,
         /** Serve a stale entry when the network call fails. */
         val staleOnFailure: Boolean = true,
+        /**
+         * Ask the network even when a fresh copy is saved, still saving the answer and still
+         * falling back to the saved copy if the call fails. What pull-to-refresh wants.
+         */
+        val forceRefresh: Boolean = false,
     ) : CachePolicy
 }
 

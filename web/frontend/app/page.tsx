@@ -186,9 +186,9 @@ const QUESTIONS = [
     a:
       "Yes, and that is checked rather than asserted. The template in the repository is a real " +
       "Gradle project, and on every change CI generates four projects — every feature on, every " +
-      "feature off, and the lean and everything presets — and runs ./gradlew build on each: all " +
-      "seven variants, the unit tests and Android lint. If one of those broke, the site would not " +
-      "have been deployed.",
+      "feature off, and the lean and everything presets — and builds each one: a debug build, a " +
+      "shrunk release build, the unit tests, Android lint and the build's own guards. If one of " +
+      "those broke, the site would not have been deployed.",
   },
   {
     q: "Why no Material?",

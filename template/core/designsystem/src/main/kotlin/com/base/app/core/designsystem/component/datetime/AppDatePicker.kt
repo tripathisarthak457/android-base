@@ -42,6 +42,8 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
 import java.util.Locale
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /**
  * A month calendar. Read from `WeekFields.of(Locale.getDefault())` rather than hardcoded to Monday
@@ -142,7 +144,7 @@ private fun MonthHeader(
     ) {
         AppIconButton(
             icon = AppIcons.ChevronLeft,
-            contentDescription = "Previous month",
+            contentDescription = stringResource(R.string.designsystem_previous_month),
             onClick = onPrevious,
             size = ButtonSize.Small,
         )
@@ -155,7 +157,7 @@ private fun MonthHeader(
         )
         AppIconButton(
             icon = AppIcons.ChevronRight,
-            contentDescription = "Next month",
+            contentDescription = stringResource(R.string.designsystem_next_month),
             onClick = onNext,
             size = ButtonSize.Small,
         )
@@ -269,7 +271,7 @@ fun AppDatePickerDialog(
     onDismissRequest: () -> Unit,
     onConfirm: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
-    title: String = "Select date",
+    title: String = stringResource(R.string.designsystem_select_date),
     minDate: LocalDate? = null,
     maxDate: LocalDate? = null,
     isDateEnabled: (LocalDate) -> Boolean = { true },
@@ -301,13 +303,13 @@ fun AppDatePickerDialog(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
         ) {
             AppButton(
-                text = "Cancel",
+                text = stringResource(R.string.designsystem_cancel),
                 onClick = onDismissRequest,
                 variant = ButtonVariant.Secondary,
                 modifier = Modifier.weight(1f),
             )
             AppButton(
-                text = "Confirm",
+                text = stringResource(R.string.designsystem_confirm),
                 onClick = {
                     onDismissRequest()
                     onConfirm(draft)

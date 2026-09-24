@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.data.AppBarChart
 import com.base.app.core.designsystem.component.data.AppDetailRow
@@ -17,6 +20,8 @@ import com.base.app.core.designsystem.component.data.AppRating
 import com.base.app.core.designsystem.component.data.AppSectionHeader
 import com.base.app.core.designsystem.component.data.AppSparkline
 import com.base.app.core.designsystem.component.data.AppStatTile
+import com.base.app.core.designsystem.component.text.AppAnimatedCounter
+import com.base.app.core.designsystem.component.text.AppExpandableText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -27,6 +32,27 @@ import com.base.app.core.designsystem.theme.AppTheme
 @Composable
 fun DataSection() {
     var rating by remember { mutableIntStateOf(4) }
+    var count by remember { mutableLongStateOf(1_280L) }
+
+    CatalogGroup(title = "Animated counter", caption = "Digits roll up as it grows and down as it shrinks.") {
+        AppAnimatedCounter(count = count, style = AppTheme.typography.displaySmall)
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+            AppButton("−1", { count = (count - 1).coerceAtLeast(0) }, variant = ButtonVariant.Secondary)
+            AppButton("+1", { count += 1 }, variant = ButtonVariant.Secondary)
+            AppButton("+250", { count += 250 }, variant = ButtonVariant.Secondary)
+        }
+    }
+
+    CatalogGroup(title = "Expandable text", caption = "Show more appears only when something was cut.") {
+        AppExpandableText(
+            text = "A design system is a set of decisions made once, so every screen does not have to " +
+                "make them again. The components are the visible part; the tokens underneath — " +
+                "colour, type, spacing, motion — are what keep two screens built a year apart " +
+                "looking like the same app.",
+            collapsedMaxLines = 2,
+        )
+        AppExpandableText(text = "Short text gets no control at all.")
+    }
 
     CatalogGroup(title = "Section header", caption = "With an optional action on the right.") {
         AppSectionHeader(

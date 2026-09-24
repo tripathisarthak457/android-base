@@ -18,6 +18,16 @@ def title(name: str) -> str:
     return " ".join(words).capitalize() if words else name
 
 
+def shell_tab(name: str) -> str:
+    """A tab for a scaffolded feature, labelled with that feature's own title string."""
+    return f"        ShellTab(key = {pascal(name)}ListKey, label = {pascal(name)}R.string.{name}_title, icon = AppIcons.Grid),\n"
+
+
+def shell_tab_imports(spec: ProjectSpec, name: str) -> list[str]:
+    feature = f"{spec.package_name}.feature.{name}"
+    return [f"import {feature}.{pascal(name)}ListKey\n", f"import {feature}.R as {pascal(name)}R\n"]
+
+
 def generated_blocks(spec: ProjectSpec) -> dict[str, list[str]]:
     """The content for every `<generated:…>` marker in the template."""
     data_includes = [f'include(":data:{name}")\n' for name in spec.feature_modules]
@@ -28,15 +38,8 @@ def generated_blocks(spec: ProjectSpec) -> dict[str, list[str]]:
 
     # Every named feature becomes a tab, in the order the user typed them — so the first one is
     # both the first tab and, by AppDestinations' own rule, the start destination.
-    shell_tabs = [
-        f'        ShellTab(key = {pascal(name)}ListKey, label = "{title(name)}", '
-        f"icon = AppIcons.Grid),\n"
-        for name in spec.feature_modules
-    ]
-    start_import = [
-        f"import {spec.package_name}.feature.{name}.{pascal(name)}ListKey\n"
-        for name in spec.feature_modules
-    ]
+    shell_tabs = [shell_tab(name) for name in spec.feature_modules]
+    start_import = [line for name in spec.feature_modules for line in shell_tab_imports(spec, name)]
 
     # `start` is `tabs.firstOrNull()?.key`, which is nullable however many tabs there are — so the
     # elvis is not a fallback for an empty list, it is what gives the property its type.
@@ -313,6 +316,7 @@ fun {class_name}Screen(
 ) {{
     AppScaffold(
         modifier = modifier,
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = {{ AppLargeTitle(title = stringResource(R.string.{name}_title)) }},
     ) {{
         when (val loadState = state.loadState) {{
@@ -407,6 +411,7 @@ fun {class_name}ListRoute(
 
 import {pkg}.core.navigation.AppNavigator
 import {pkg}.core.navigation.NavGraphEntry
+import {pkg}.core.navigation.NavPane
 import {pkg}.core.navigation.navGraph
 import {pkg}.core.navigation.navKeys
 import {pkg}.feature.{name}.{class_name}DetailKey
@@ -423,7 +428,8 @@ import kotlinx.serialization.modules.SerializersModule
  * Registers this feature's screens and key serializers. Without the serializers the back stack
  * does not survive process death.
  *
- * `{class_name}DetailKey` has no screen yet: add `entry<{class_name}DetailKey> {{ … }}` with it.
+ * `{class_name}DetailKey` has no screen yet: add `entry<{class_name}DetailKey>(pane = NavPane.Detail) {{ … }}`
+ * with it, and on a wide window it opens beside the list.
  */
 @Module
 @InstallIn(SingletonComponent::class)
@@ -432,7 +438,7 @@ object {class_name}NavModule {{
     @Provides
     @IntoSet
     fun {name}NavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {{
-        entry<{class_name}ListKey> {{ {class_name}ListRoute(navigator = navigator) }}
+        entry<{class_name}ListKey>(pane = NavPane.List) {{ {class_name}ListRoute(navigator = navigator) }}
     }}
 
     @Provides

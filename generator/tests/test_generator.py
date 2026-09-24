@@ -535,7 +535,9 @@ class ScaffoldTest(unittest.TestCase):
         self.assertEqual(
             [
                 "import com.acme.field.feature.orders.OrdersListKey\n",
+                "import com.acme.field.feature.orders.R as OrdersR\n",
                 "import com.acme.field.feature.wallet.WalletListKey\n",
+                "import com.acme.field.feature.wallet.R as WalletR\n",
             ],
             blocks["start-destination-import"],
         )
@@ -545,7 +547,8 @@ class ScaffoldTest(unittest.TestCase):
 
         self.assertEqual(2, len(blocks["shell-tabs"]))
         self.assertIn("key = OrdersListKey", blocks["shell-tabs"][0])
-        self.assertIn('label = "Order history"', blocks["shell-tabs"][1])
+        # The label is the feature's own title string, so translating the feature translates its tab.
+        self.assertIn("label = OrderHistoryR.string.order_history_title", blocks["shell-tabs"][1])
 
     def test_settings_supplies_the_start_destination_when_nothing_else_does(self):
         blocks = generated_blocks(spec(features=frozenset({"settings"})))
@@ -775,3 +778,32 @@ class RemoveFeatureTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RecordTest(unittest.TestCase):
+    """The generator-spec.json a project keeps of how it was made."""
+
+    def test_the_record_loads_back_as_the_same_spec_and_holds_no_keys(self):
+        from create_project import load_spec
+        from genkit.build import build
+
+        made = spec(
+            features=frozenset({"network", "settings"}),
+            feature_modules=("orders",),
+            languages=("es",),
+            keystores=(keystore(),),
+        ).validated()
+        with tempfile.TemporaryDirectory() as temp:
+            project = Path(temp) / "App"
+            build(made, project, zip_output=False)
+            recorded = project / "generator-spec.json"
+
+            text = recorded.read_text(encoding="utf-8")
+            again = load_spec(recorded)
+
+        self.assertNotIn("hunter22", text)
+        self.assertIn('"commit"', text)
+        self.assertEqual(made.features, again.features)
+        self.assertEqual(made.feature_modules, again.feature_modules)
+        self.assertEqual(made.languages, again.languages)
+        self.assertEqual((), again.keystores)

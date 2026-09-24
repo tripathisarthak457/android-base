@@ -50,6 +50,7 @@ fun ProfileScreen(
     val displayName = state.saved.name.ifBlank { stringResource(R.string.profile_unnamed) }
 
     AppScaffold(
+        contentMaxWidth = AppTheme.layout.formMaxWidth,
         modifier = modifier,
         topBar = { AppLargeTitle(title = stringResource(R.string.profile_title)) },
     ) {

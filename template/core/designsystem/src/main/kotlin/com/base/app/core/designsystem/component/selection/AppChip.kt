@@ -21,6 +21,8 @@ import com.base.app.core.designsystem.foundation.AppClickableSurface
 import com.base.app.core.designsystem.foundation.clickableNoIndication
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /** A chip: a filter, a choice, or a removable token. */
 @Composable
@@ -77,7 +79,7 @@ fun AppChip(
             onRemove?.let { remove ->
                 AppIcon(
                     imageVector = AppIcons.Close,
-                    contentDescription = "Remove $label",
+                    contentDescription = stringResource(R.string.designsystem_remove_item, label),
                     size = 15.dp,
                     // No indication of its own; the chip already responds to the press.
                     modifier = Modifier.clickableNoIndication(enabled = enabled, onClick = remove),

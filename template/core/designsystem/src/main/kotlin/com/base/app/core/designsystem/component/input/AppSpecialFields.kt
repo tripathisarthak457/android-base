@@ -39,6 +39,8 @@ import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /** A quantity stepper. */
 @Composable
@@ -63,7 +65,7 @@ fun AppStepper(
     ) {
         AppIconButton(
             icon = AppIcons.Minus,
-            contentDescription = "Decrease",
+            contentDescription = stringResource(R.string.designsystem_decrease),
             onClick = { onValueChange((value - step).coerceIn(range)) },
             enabled = canDecrease,
             size = ButtonSize.Small,
@@ -80,7 +82,7 @@ fun AppStepper(
         )
         AppIconButton(
             icon = AppIcons.Plus,
-            contentDescription = "Increase",
+            contentDescription = stringResource(R.string.designsystem_increase),
             onClick = { onValueChange((value + step).coerceIn(range)) },
             enabled = canIncrease,
             size = ButtonSize.Small,
@@ -97,7 +99,7 @@ fun <T> AppSelectField(
     onSelect: (T) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
-    placeholder: String = "Select",
+    placeholder: String = stringResource(R.string.designsystem_select),
     helper: String? = null,
     error: String? = null,
     enabled: Boolean = true,
@@ -169,7 +171,7 @@ fun AppPhoneField(
     onNumberChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     dialCodes: List<String> = DefaultDialCodes,
-    label: String? = "Phone number",
+    label: String? = stringResource(R.string.designsystem_phone_number),
     helper: String? = null,
     error: String? = null,
     enabled: Boolean = true,
@@ -214,7 +216,7 @@ fun AppPhoneField(
                     trailing = {
                         AppIcon(
                             AppIcons.ChevronDown,
-                            contentDescription = "Change country code",
+                            contentDescription = stringResource(R.string.designsystem_change_country_code),
                             tint = colors.contentTertiary,
                             size = 16.dp,
                         )
@@ -327,7 +329,7 @@ fun AppTagInput(
     onTagsChange: (List<String>) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
-    placeholder: String = "Add a tag",
+    placeholder: String = stringResource(R.string.designsystem_add_a_tag),
     helper: String? = null,
     enabled: Boolean = true,
     maxTags: Int = 10,
@@ -357,7 +359,11 @@ fun AppTagInput(
                 }
             },
             label = label,
-            placeholder = if (tags.size >= maxTags) "Limit reached" else placeholder,
+            placeholder = if (tags.size >= maxTags) {
+                stringResource(R.string.designsystem_tag_limit_reached)
+            } else {
+                placeholder
+            },
             helper = helper ?: "${tags.size} of $maxTags",
             enabled = enabled && tags.size < maxTags,
             singleLine = true,
@@ -367,7 +373,7 @@ fun AppTagInput(
                 {
                     AppIconButton(
                         icon = AppIcons.Plus,
-                        contentDescription = "Add tag",
+                        contentDescription = stringResource(R.string.designsystem_add_tag),
                         onClick = { commit() },
                         size = ButtonSize.Small,
                     )
@@ -404,7 +410,7 @@ fun AppFieldButton(
     value: String?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "Not set",
+    placeholder: String = stringResource(R.string.designsystem_not_set),
     icon: ImageVector? = null,
     enabled: Boolean = true,
     error: String? = null,

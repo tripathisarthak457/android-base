@@ -47,9 +47,11 @@ These fail the build. Working around them is never the fix.
   `:core:designsystem`, and from `foundation` and `ui` when it lacks something.
 - **Layering.** `feature → feature` and `data → data` fail `verifyModuleDependencies`. When two
   features need the same thing, it belongs in `core/` or in a `data/` module both depend on.
-- **Copy lives in `strings.xml`.** A prose literal passed to `text =`, `title =`, `label =` and
-  similar parameters in a feature fails the build. Use `stringResource(R.string.x)`, or
-  `UiText.of(R.string.x)` from a ViewModel.
+- **Copy lives in `strings.xml`.** A literal passed to any copy parameter (`text`, `title`,
+  `confirmLabel`, `contentDescription` and the rest), either branch of an `if` written into one,
+  or a `?: "…"` fallback turned into a `UiText` fails the build in features, `:app`,
+  `:core:designsystem` and `:core:ui`. Use `stringResource(R.string.x)`, or `UiText.of(R.string.x)`
+  (`UiText.plural` for a count) from a ViewModel.
 
 ## 4. How a feature is shaped
 
@@ -150,10 +152,36 @@ screen to read an id from.
   the ViewModel, and render it with `AppPagingList`, which already draws loading, error, empty
   and the load-more footer. `feature/feed` is the example.
 <!-- </opt:paging> -->
+<!-- <opt:network> -->
+- **Show saved data at once, then the latest:** `networkClient.getStream<T>(path, cache =
+  CachePolicy.Enabled(key, maxAge))` emits the saved copy and then the network's answer. For a plain
+  call, `forceRefresh = true` on the policy is what pull-to-refresh passes: it still saves the answer
+  and still falls back to the saved copy offline.
+- **Show a failure:** `failure.userMessage(UiText.of(R.string.x))`. `Failure.message` is the server's
+  own text only; the app's wording comes from resources so it can be translated.
+<!-- </opt:network> -->
 - **A new string:** the feature's own `res/values/strings.xml`. Copy typed into Kotlin fails the
-  build.
+  build. If the project ships other languages (`values-es/` and the like beside `values/`), add
+  the translation to each one too: lint fails a build with a string missing from a language.
 - **A new dependency:** a version and alias in `gradle/libs.versions.toml`, then `libs.x` in the
   module. Take the latest stable release, not an alpha.
+
+### Every screen works on every window
+
+Android runs on phones, foldables, tablets, desktop windows and cars. A screen built for a phone
+held upright is not finished.
+
+- Decide layout from `AppTheme.windowSize` (window size classes), never from orientation, screen
+  size or device type. Never lock orientation: lint fails the build.
+- Give content a width to stop at: `AppScaffold(contentMaxWidth = AppTheme.layout.readableMaxWidth)`
+  for text and lists, `formMaxWidth` for a form. Full-width lines on a tablet are unreadable.
+- A list with a detail registers both halves: `entry<ListKey>(pane = NavPane.List)` and
+  `entry<DetailKey>(pane = NavPane.Detail)`. They share the window when it is wide; do not build
+  your own two-pane layout for it.
+- Two halves of one screen use `AppTwoPane`; a set of cards uses `AppResponsiveGrid` or
+  `LazyVerticalGrid(GridCells.Adaptive(AppTheme.layout.gridMinCellWidth))`.
+- Check the screen at Compact, Medium and Expanded width, and in landscape. On the emulator,
+  `adb shell wm size 1600x2560` plus `adb shell wm density 320` is a tablet; `wm size reset` undoes it.
 
 ## 5. The base components are a starting point
 

@@ -42,6 +42,8 @@ import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /**
  * A label-and-value row, for a detail screen. The value is monospaced when [mono] is set — order
@@ -165,7 +167,9 @@ fun AppStatTile(
                 ) {
                     AppIcon(
                         imageVector = if (deltaIsPositive) AppIcons.ArrowUp else AppIcons.ArrowDown,
-                        contentDescription = if (deltaIsPositive) "Up" else "Down",
+                        contentDescription = stringResource(
+                            if (deltaIsPositive) R.string.designsystem_trend_up else R.string.designsystem_trend_down,
+                        ),
                         tint = deltaColors.content,
                         size = 14.dp,
                     )
@@ -232,7 +236,8 @@ fun AppRating(
     onRatingChange: ((Int) -> Unit)? = null,
 ) {
     val colors = AppTheme.colors
-    val description = "$rating out of $max"
+    // "3.5 out of 5" rather than 3.5 on its own, which a screen reader would read as a bare number.
+    val description = stringResource(R.string.designsystem_rating, rating, max)
 
     Row(
         modifier = modifier.semantics { contentDescription = description },

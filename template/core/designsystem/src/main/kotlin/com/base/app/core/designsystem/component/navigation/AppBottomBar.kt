@@ -45,9 +45,9 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 
 /**
- * One destination in the bottom bar. [selectedIcon] is separate from [icon] so a tab can switch
- * from an outline to a filled glyph when active — a second, non-colour signal for the selected
- * state.
+ * One destination in the bottom bar or the navigation rail. [selectedIcon] is separate from [icon]
+ * so a tab can switch from an outline to a filled glyph when active — a second, non-colour signal
+ * for the selected state.
  */
 @Immutable
 data class BottomNavItem(
@@ -216,7 +216,7 @@ private fun ItemRow(
 }
 
 @Composable
-private fun BottomBarItem(
+internal fun BottomBarItem(
     item: BottomNavItem,
     selected: Boolean,
     onClick: () -> Unit,

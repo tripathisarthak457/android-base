@@ -181,17 +181,14 @@ def register_tabs(project: Path, spec: ProjectSpec, names: tuple[str, ...]) -> N
     text = path.read_text(encoding="utf-8")
 
     imports = "".join(
-        f"import {spec.package_name}.feature.{name}.{scaffold.pascal(name)}ListKey\n"
+        line
         for name in names
         if f".feature.{name}." not in text
+        for line in scaffold.shell_tab_imports(spec, name)
     )
     text = insert_after_last(text, f"import {spec.package_name}.", imports)
 
-    entries = "".join(
-        f'        ShellTab(key = {scaffold.pascal(name)}ListKey, '
-        f'label = "{scaffold.title(name)}", icon = AppIcons.Grid),\n'
-        for name in names
-    )
+    entries = "".join(scaffold.shell_tab(name) for name in names)
     text = text.replace(
         "    val tabs: List<ShellTab> = listOf(\n",
         f"    val tabs: List<ShellTab> = listOf(\n{entries}",

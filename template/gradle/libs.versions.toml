@@ -44,6 +44,8 @@ credentials = "1.6.0"
 googleid = "1.2.1"
 paging = "3.5.1"
 browser = "1.10.0"
+androidxWindow = "1.5.1"
+lottie = "6.7.1"
 glance = "1.2.0"
 
 firebaseBom = "34.19.0"
@@ -146,6 +148,8 @@ androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", 
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 androidx-paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "paging" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
+androidx-window-core = { group = "androidx.window", name = "window-core", version.ref = "androidxWindow" }
+lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }

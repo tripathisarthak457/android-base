@@ -71,7 +71,7 @@ def main(argv: list[str]) -> int:
         "version_name", "version_code", "features", "feature_modules",
         "api_base_urls", "web_socket_urls", "deeplink_scheme", "deeplink_host",
         "font_name", "mono_font_name", "accent_colour", "secondary_colour", "tertiary_colour",
-        "motion_style", "design_style", "haptics_enabled",
+        "motion_style", "design_style", "haptics_enabled", "languages",
         "keystores",
     }
     unknown = sorted(set(payload) - allowed)
@@ -82,7 +82,7 @@ def main(argv: list[str]) -> int:
         key: value for key, value in payload.items() if key in allowed and value is not None
     }
 
-    for key in ("features", "feature_modules"):
+    for key in ("features", "feature_modules", "languages"):
         if key in fields and isinstance(fields[key], list):
             fields[key] = frozenset(fields[key]) if key == "features" else tuple(fields[key])
 

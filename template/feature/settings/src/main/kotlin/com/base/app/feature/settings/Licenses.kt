@@ -130,6 +130,7 @@ fun LicensesRoute(
 @Composable
 fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Unit) {
     AppScaffold(
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = {
             AppBackTopBar(
                 title = stringResource(R.string.settings_open_source_licences),
@@ -156,7 +157,7 @@ fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Unit) {
                     AppListItem(
                         title = artifact.name,
                         supporting = artifact.licences.joinToString()
-                            .ifBlank { "Licence not stated" },
+                            .ifBlank { stringResource(R.string.settings_licence_not_stated) },
                     )
                 }
             }

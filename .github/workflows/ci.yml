@@ -115,6 +115,10 @@ jobs:
               "features": sorted(features),
               "feature_modules": ["orders"],
           }
+          if chosen == "all":
+              # Every language too, so lint checks each translation against the strings it ships.
+              from genkit.translations import available
+              spec["languages"] = sorted(available())
           pathlib.Path("ci-spec.json").write_text(json.dumps(spec))
           PY
           python create_project.py --spec ci-spec.json --out "$GITHUB_WORKSPACE/out" --no-zip
@@ -126,22 +130,16 @@ jobs:
         run: test -x ./gradlew
 
       - name: Build it
-        # `build` covers the Compose stability check, which is hooked onto `check`. The coverage
-        # floor below is not part of `build` by design and has to be asked for.
+        # `check` is lint, the unit tests and the guards. The seven variants differ only in
+        # BuildConfig values and signing keys, so one debug build and one R8 release build prove
+        # what building all seven would. One invocation, so nothing is configured twice.
         working-directory: out
-        run: ./gradlew build --no-daemon --stacktrace
-
-      - name: The coverage floor holds
-        # Only on `all`: it is the only generated project that has Kover, because the presets
-        # leave it off. Running a task the project does not have would be a red build about
-        # nothing.
-        #
-        # `buildHealth` is deliberately not here. It takes fourteen minutes on a project this
-        # size and, being a report rather than a gate, cannot fail — so it would buy nothing but
-        # a real chance of hitting this job's timeout.
-        if: matrix.preset == 'all'
-        working-directory: out
-        run: ./gradlew koverVerify --no-daemon --stacktrace
+        run: |
+          tasks="check assembleDevDebug assembleProdRelease"
+          # Only `all` has Kover: the presets leave it off, and naming a task the project does
+          # not have fails the build.
+          if [ "${{ matrix.preset }}" = all ]; then tasks="$tasks koverVerify"; fi
+          ./gradlew $tasks --no-daemon --stacktrace
 
   deploy:
     name: Deploy to production

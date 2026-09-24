@@ -122,6 +122,20 @@ FEATURES: tuple[Feature, ...] = (
         files=("core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt",),
     ),
     Feature(
+        key="lottie",
+        title="Lottie animations",
+        description=(
+            "An AppLottie component for raw, asset and URL animations, tintable to the theme and "
+            "held on its last frame when the system's animations are off, with a success animation "
+            "that plays when a password-reset link is sent."
+        ),
+        default=False,
+        files=(
+            "core/ui/src/main/kotlin/{pkg_path}/core/ui/AppLottie.kt",
+            "core/ui/src/main/res/raw/lottie_success.json",
+        ),
+    ),
+    Feature(
         key="workmanager",
         title="WorkManager",
         description=(
@@ -203,6 +217,7 @@ FEATURES: tuple[Feature, ...] = (
             "every wire on first run; delete it once your own first feature exists."
         ),
         default=True,
+        requires=("network",),
         files=("data/sample", "feature/sample"),
     ),
     Feature(
@@ -310,6 +325,7 @@ FEATURES: tuple[Feature, ...] = (
         files=(
             "core/devtools",
             "core/network/src/main/kotlin/{pkg_path}/core/network/NetworkRecording.kt",
+            "app/src/main/kotlin/{pkg_path}/di/DevToolsModule.kt",
         ),
     ),
     Feature(
@@ -573,7 +589,7 @@ PRESETS: tuple[Preset, ...] = (
         title="Everything",
         description=(
             "The standard set plus Firebase, push, Google sign-in, a paged feed, search, a "
-            "home-screen widget, WorkManager, WebSocket and baseline profiles."
+            "home-screen widget, Lottie, WorkManager, WebSocket and baseline profiles."
         ),
         features=_STANDARD
         + (
@@ -584,6 +600,7 @@ PRESETS: tuple[Preset, ...] = (
             "paging",
             "search",
             "widget",
+            "lottie",
             "workmanager",
             "websocket",
             "baselineprofile",
@@ -734,6 +751,8 @@ class ProjectSpec:
     design_style: str = "Utility"
     #: Whether haptics are on by default. The user's own device setting still applies on top.
     haptics_enabled: bool = True
+    #: Languages shipped besides English, as tags with a file in translations/: "es", "pt-BR".
+    languages: tuple[str, ...] = ()
 
     # ── Derived names ────────────────────────────────────────────────────────
 
@@ -870,6 +889,19 @@ class ProjectSpec:
                 raise SpecError(
                     f"The {label} colour must be a six-digit hex, e.g. #2C6BED."
                 )
+
+        # Imported here: translations reads specs, so a module-level import would be circular.
+        from .translations import available as available_languages
+
+        offered = available_languages()
+        for tag in self.languages:
+            if tag not in offered:
+                raise SpecError(
+                    f"No translation for '{tag}'. Choose from: {', '.join(offered)}. English is "
+                    "always included."
+                )
+        if len(set(self.languages)) != len(self.languages):
+            raise SpecError("Each language can only be listed once.")
 
         return replace(self, features=frozenset(resolve_features(features)))
 

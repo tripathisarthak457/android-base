@@ -1,10 +1,5 @@
 package com.base.app.feature.auth
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -24,7 +19,6 @@ import com.base.app.core.common.util.UiText
 import com.base.app.core.common.validation.Validators
 import com.base.app.core.common.validation.and
 import com.base.app.core.designsystem.component.button.AppButton
-import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.input.AppTextField
@@ -40,6 +34,13 @@ import com.base.app.core.ui.form.submitting
 import com.base.app.core.ui.form.touchOnFocusLost
 import com.base.app.data.auth.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+// <opt:lottie>
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
+import com.base.app.core.ui.AppLottie
+import com.base.app.core.ui.LottieSource
+// </opt:lottie>
 import javax.inject.Inject
 
 @Immutable
@@ -91,7 +92,7 @@ class PasswordResetViewModel @Inject constructor(
                 form.applyServerErrors(result.fieldErrors)
                 if (result.fieldErrors.isEmpty()) {
                     updateState {
-                        copy(error = UiText.Dynamic(result.message ?: "Could not send the link."))
+                        copy(error = result.authMessage(R.string.auth_reset_failed))
                     }
                 }
             }
@@ -125,7 +126,7 @@ fun PasswordResetScreen(
 ) {
     val email = form["email"]
 
-    AppScaffold(
+    AuthFrame(
         modifier = modifier,
         topBar = {
             AppBackTopBar(
@@ -134,53 +135,56 @@ fun PasswordResetScreen(
             )
         },
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding()
-                .padding(AppTheme.spacing.gutter),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
-        ) {
-            if (state.sent) {
-                AppBanner(
-                    text = stringResource(R.string.auth_reset_sent),
-                    tone = AppTone.Success,
-                )
-            }
-
-            AppText(
-                text = stringResource(R.string.auth_reset_explanation),
-                style = AppTheme.typography.bodyMedium,
-                color = AppTheme.colors.contentSecondary,
+        if (state.sent) {
+            // <opt:lottie>
+            AppLottie(
+                source = LottieSource.Success,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(SENT_ANIMATION_SIZE)
+                    .align(Alignment.CenterHorizontally),
+                iterations = 1,
+                tint = AppTheme.colors.success.content,
             )
-
-            state.error?.let {
-                AppBanner(text = it.asString(), tone = AppTone.Error)
-            }
-
-            AppTextField(
-                value = email.value,
-                onValueChange = email::onChange,
-                modifier = Modifier.touchOnFocusLost(email),
-                label = stringResource(R.string.auth_email),
-                placeholder = stringResource(R.string.auth_email_placeholder),
-                error = email.error?.asString(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Done,
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { onEvent(PasswordResetEvent.Submit) },
-                ),
-            )
-
-            AppButton(
-                text = stringResource(R.string.auth_send_reset_link),
-                onClick = { onEvent(PasswordResetEvent.Submit) },
-                loading = form.isSubmitting,
-                fillWidth = true,
+            // </opt:lottie>
+            AppBanner(
+                text = stringResource(R.string.auth_reset_sent),
+                tone = AppTone.Success,
             )
         }
+
+        AppText(
+            text = stringResource(R.string.auth_reset_explanation),
+            style = AppTheme.typography.bodyMedium,
+            color = AppTheme.colors.contentSecondary,
+        )
+
+        state.error?.let {
+            AppBanner(text = it.asString(), tone = AppTone.Error)
+        }
+
+        AppTextField(
+            value = email.value,
+            onValueChange = email::onChange,
+            modifier = Modifier.touchOnFocusLost(email),
+            label = stringResource(R.string.auth_email),
+            placeholder = stringResource(R.string.auth_email_placeholder),
+            error = email.error?.asString(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Done,
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { onEvent(PasswordResetEvent.Submit) },
+            ),
+        )
+
+        AppButton(
+            text = stringResource(R.string.auth_send_reset_link),
+            onClick = { onEvent(PasswordResetEvent.Submit) },
+            loading = form.isSubmitting,
+            fillWidth = true,
+        )
     }
 }
 
@@ -195,3 +199,7 @@ private fun PasswordResetPreview() {
         )
     }
 }
+// <opt:lottie>
+
+private val SENT_ANIMATION_SIZE = 96.dp
+// </opt:lottie>

@@ -22,6 +22,8 @@ import com.base.app.core.designsystem.foundation.AppSurface
 import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.foundation.clickableNoIndication
 import com.base.app.core.designsystem.theme.AppTheme
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /** One choice in an [AppActionSheet]. */
 data class SheetAction(
@@ -40,7 +42,7 @@ fun AppActionSheet(
     modifier: Modifier = Modifier,
     title: String? = null,
     message: String? = null,
-    cancelLabel: String? = "Cancel",
+    cancelLabel: String? = stringResource(R.string.designsystem_cancel),
 ) {
     AppBottomSheet(
         onDismissRequest = onDismissRequest,

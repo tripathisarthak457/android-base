@@ -30,11 +30,12 @@ class DefaultSampleRepository @Inject constructor(
     override suspend fun items(forceRefresh: Boolean): AppResult<List<SampleItem>> =
         networkClient.get<List<SampleDto>>(
             path = LIST_PATH,
-            cache = if (forceRefresh) {
-                CachePolicy.Disabled
-            } else {
-                CachePolicy.Enabled(key = LIST_CACHE_KEY, maxAgeMillis = CACHE_MAX_AGE_MILLIS)
-            },
+            // Refreshing still saves the answer, and still falls back to the saved list offline.
+            cache = CachePolicy.Enabled(
+                key = LIST_CACHE_KEY,
+                maxAgeMillis = CACHE_MAX_AGE_MILLIS,
+                forceRefresh = forceRefresh,
+            ),
             requiresAuth = false,
         ).map { it.toDomain() }
 
@@ -49,7 +50,9 @@ class DefaultSampleRepository @Inject constructor(
         ).map { it.toDomain() }
 
     private companion object {
-        const val LIST_PATH = "posts"
+        // A public demo API rather than the app's own backend, so the reference feature works on
+        // first run whatever the backend URLs are set to. Absolute URLs never receive the user's token.
+        const val LIST_PATH = "https://jsonplaceholder.typicode.com/posts"
         const val LIST_CACHE_KEY = "sample:list"
         const val CACHE_MAX_AGE_MILLIS = 5 * 60 * 1000L
     }

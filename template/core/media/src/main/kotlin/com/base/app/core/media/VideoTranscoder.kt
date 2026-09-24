@@ -84,7 +84,7 @@ class PassthroughVideoTranscoder @Inject constructor(
             AppResult.Success(target)
         }.getOrElse { throwable ->
             AppLogger.e("Video copy failed", throwable, tag = TAG)
-            AppResult.Failure(message = "Could not process that video.", cause = throwable)
+            AppResult.Failure(cause = throwable)
         }
     }
 
@@ -131,7 +131,7 @@ class VideoProbe @Inject constructor(
             }
         }.getOrElse { throwable ->
             AppLogger.e("Could not read video metadata", throwable, tag = "VideoProbe")
-            AppResult.Failure(message = "Could not read that video.", cause = throwable)
+            AppResult.Failure(cause = throwable)
         }
     }
 }

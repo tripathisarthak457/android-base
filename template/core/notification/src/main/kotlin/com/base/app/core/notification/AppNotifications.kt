@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -20,32 +21,32 @@ import javax.inject.Singleton
 /** The notification channels this app posts to. */
 enum class NotificationChannelSpec(
     val id: String,
-    val channelName: String,
-    val description: String,
+    @param:StringRes val channelName: Int,
+    @param:StringRes val description: Int,
     val importance: Int,
 ) {
     Default(
         id = "base_app_default",
-        channelName = "General",
-        description = "Account activity and important updates.",
+        channelName = R.string.notification_channel_default,
+        description = R.string.notification_channel_default_description,
         importance = NotificationManager.IMPORTANCE_DEFAULT,
     ),
     Urgent(
         id = "base_app_urgent",
-        channelName = "Time-sensitive",
-        description = "Things that need your attention right now.",
+        channelName = R.string.notification_channel_urgent,
+        description = R.string.notification_channel_urgent_description,
         importance = NotificationManager.IMPORTANCE_HIGH,
     ),
     Promotions(
         id = "base_app_promotions",
-        channelName = "Offers",
-        description = "Deals and product news.",
+        channelName = R.string.notification_channel_promotions,
+        description = R.string.notification_channel_promotions_description,
         importance = NotificationManager.IMPORTANCE_LOW,
     ),
     Silent(
         id = "base_app_silent",
-        channelName = "Background",
-        description = "Sync and progress updates.",
+        channelName = R.string.notification_channel_silent,
+        description = R.string.notification_channel_silent_description,
         importance = NotificationManager.IMPORTANCE_MIN,
     ),
 }
@@ -63,8 +64,9 @@ class AppNotifications @Inject constructor(
 
         val systemManager = context.getSystemService<NotificationManager>() ?: return
         NotificationChannelSpec.entries.forEach { spec ->
-            val channel = NotificationChannel(spec.id, spec.channelName, spec.importance).apply {
-                description = spec.description
+            // Created again on every launch, so a language change renames the channels too.
+            val channel = NotificationChannel(spec.id, context.getString(spec.channelName), spec.importance).apply {
+                description = context.getString(spec.description)
             }
             systemManager.createNotificationChannel(channel)
         }

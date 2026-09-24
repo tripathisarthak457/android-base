@@ -38,6 +38,8 @@ import com.base.app.core.devtools.DevToolsLog
 import android.view.WindowManager
 import com.base.app.lock.AppLock
 import com.base.app.lock.LockActivity
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 // </opt:applock>
 // <opt:applock|deeplink>
 import android.content.Intent
@@ -118,12 +120,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // <opt:applock>
-        // Keeps the app's content out of the task switcher's thumbnail, and out of screenshots. A
-        // lock that leaves the last screen legible in the recents list is a lock in name only.
-        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
-        // </opt:applock>
-
         lifecycleScope.launch {
             combine(
                 settingsStore.settings,
@@ -131,6 +127,21 @@ class MainActivity : ComponentActivity() {
                 ::Startup,
             ).collect { startup.value = it }
         }
+        // <opt:applock>
+
+        // With the lock on, the app's content stays out of the task switcher's thumbnail and out of
+        // screenshots: a lock that leaves the last screen legible in recents is a lock in name only.
+        // With it off, people can screenshot and screen-share the app like any other.
+        lifecycleScope.launch {
+            settingsStore.settings.map { it.appLockEnabled }.distinctUntilChanged().collect { locked ->
+                if (locked) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                }
+            }
+        }
+        // </opt:applock>
 
         setContent {
             val current by startup.collectAsStateWithLifecycle()

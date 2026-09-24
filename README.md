@@ -248,6 +248,10 @@ between all four design styles live.
 **Feature modules.** Comma-separated names, or blank. Each one produces a matching `:data:x` and
 `:feature:x` pair with a repository, an MVI contract, a ViewModel, a screen, a nav key and tests.
 
+**Languages.** English is always there. Add Spanish, French, German, Brazilian Portuguese or
+Hindi and every screen the template ships is translated, including the components' own copy, and
+the language picker in Settings lists them.
+
 **Signing keys.** Four: dev, staging, prod, playstore. dev and staging may share one — they never
 leave your team. prod and playstore must not share with anything; the Play upload key is the one
 credential whose loss cannot be undone. The script generates `.jks` files with `keytool` and
@@ -263,9 +267,9 @@ dead code behind.
 
 | Feature | Default | What you get |
 |---|---|---|
-| REST networking (Ktor) | on | Typed client, bearer auth with transparent 401 refresh, classified failures, pluggable response-envelope unwrapper |
+| REST networking (Ktor) | on | Typed client, bearer auth with transparent 401 refresh sent only to your API host, classified and translatable failures, retries with backoff for requests safe to repeat, identical reads shared, an HTTP cache that honours ETag and Cache-Control, optional certificate pinning, pluggable response-envelope unwrapper |
 | WebSocket | off | One long-lived socket, exponential backoff with jitter, a connection state a UI can render |
-| Offline cache + queue (Room) | on | Per-call-site response caching with stale-on-failure, and failed mutations replayed when connectivity returns |
+| Offline cache + queue (Room) | on | Per-call-site response caching with stale-on-failure, force refresh and saved-then-latest streams, and failed mutations replayed with idempotency keys when connectivity returns |
 | App database (Room) | off | The app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration, and a test that replays it against a database that really was at the older version |
 | Image loading (Coil) | on | Remote images with a skeleton placeholder and a failure glyph |
 | Paged feed | off | A Feed tab on Paging 3. A failed page keeps what is loaded and offers a retry; pull to refresh reloads from where you are. The list component is in `:core:ui` for your own feeds |
@@ -290,6 +294,7 @@ dead code behind.
 | Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
 | Firebase | off | One switch for Analytics, Crashlytics and Remote Config: the analytics seam, crash breadcrumbs and the flag seam all bound to Firebase |
 | Push notifications (FCM) | off | Channels, the runtime permission check, a messaging service, token re-registration |
+| Lottie animations | off | `AppLottie` for raw, asset and URL animations, tinted to the theme and held on the last frame when the system's animations are off. A success animation plays when a password-reset link is sent |
 | Downloadable Google Font | on | Real files per weight through the Play Services provider |
 | Component catalog app | on | A second installable app showing every component in both themes and all four design styles |
 | Compose stability check | off | Reads the Compose compiler's own report and fails on a design-system composable that restarts without skipping, or takes a parameter it cannot prove immutable. A baseline holds what is already there, so it starts green and can only improve |
@@ -316,6 +321,12 @@ composition locals read through `AppTheme.`. Changing the font is one string; ch
 colour is one hex, and the ramp around it follows; changing how every control responds to a
 finger is one enum.
 
+**Every form factor.** Layout follows Android's window size classes, never orientation or device
+type, so the same app is designed for a phone, a foldable, a tablet and a desktop window. A bottom
+bar becomes a rail from Medium width; a list and its detail share the window from Expanded width;
+forms and text stop at a readable width and centre; sheets and dialogs stop stretching. Locking an
+activity to one orientation fails the build.
+
 **Decentralised navigation.** A feature registers its own screens through Hilt multibinding.
 Adding a screen touches no file outside its own module — there is no central sealed `Route` class
 to extend and no `when` in `:app` to add a branch to. Navigation 3 is named in exactly one file,
@@ -340,10 +351,11 @@ switching environment rebuilds nothing in `core`, `data` or `feature`.
 **Enforced layering.** `feature → feature` and `data → data` fail the build rather than a code
 review. See the `verifyModuleDependencies` task.
 
-**Copy that can be translated.** Every string a feature renders lives in that feature's own
-`strings.xml`, and a literal typed into a composable fails the build — see the third check in
-`verifyComposeUsage`. The rule is narrow on purpose: only the parameters that carry visible
-copy, only when the literal reads like prose, and never inside a `@Preview`. Adding a
+**Copy that can be translated.** Every string the app renders lives in a `strings.xml`, and a
+literal typed into a composable fails the build in the features, the app shell and the design
+system — see the third check in `verifyComposeUsage`. It catches copy passed to any copy parameter
+(`text`, `title`, `confirmLabel` and the rest), either branch of an `if` written into one, and an
+English fallback turned into a `UiText`, but never anything inside a `@Preview`. Adding a
 `stringResource` is easy and remembering to is not, so it is checked rather than asked for.
 For a string a ViewModel produces, `UiText.of(R.string.x)` resolves at render time — so it
 follows a locale change without the ViewModel knowing there was one.
@@ -361,7 +373,7 @@ the second week.
 | Guard | Where it lives | What it catches |
 |---|---|---|
 | `verifyModuleDependencies` | every module | An edge the layering forbids — `:feature:cart` depending on `:feature:catalog`, `:core:*` reaching up into `:data:*`. Reads only that module's own dependencies, so it stays compatible with configuration caching |
-| `verifyComposeUsage` | every module | An `androidx.compose.material` import, a `@Composable` in a module without the compiler plugin, and copy typed into a feature's Kotlin instead of its `strings.xml` |
+| `verifyComposeUsage` | every module | An `androidx.compose.material` import, a `@Composable` in a module without the compiler plugin, and copy typed into Kotlin instead of a `strings.xml` |
 | `checkComposeStability` | `:core:designsystem`, `:core:ui` | A component that recomposes when nothing it draws has changed |
 
 All three are Gradle tasks in `build-logic`. The first two run on every build; the stability check

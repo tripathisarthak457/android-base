@@ -84,6 +84,7 @@ fun SearchResultRoute(
 ) {
     MviScreen(viewModel = viewModel) { state, onEvent ->
         AppScaffold(
+            contentMaxWidth = AppTheme.layout.readableMaxWidth,
             topBar = {
                 AppBackTopBar(title = stringResource(R.string.search_title), onBack = navigator::navigateUp)
             },

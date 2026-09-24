@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import com.base.app.core.common.mvi.LoadState
 import com.base.app.core.common.mvi.hasContent
 import com.base.app.core.common.mvi.isRefreshing
+import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppBanner
@@ -44,6 +45,7 @@ fun SampleListScreen(
     modifier: Modifier = Modifier,
 ) {
     AppScaffold(
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
             Column {
@@ -121,7 +123,11 @@ private fun Content(
             ) {
                 // Keyed on the id so inserts keep scroll position and animations.
                 items(items = visible, key = SampleItem::id) { item ->
-                    SampleRow(item = item, onClick = { onEvent(SampleListEvent.ItemClicked(item.id)) })
+                    SampleRow(
+                        item = item,
+                        onClick = { onEvent(SampleListEvent.ItemClicked(item.id)) },
+                        modifier = appAnimateItem(),
+                    )
                 }
             }
         }
@@ -132,8 +138,9 @@ private fun Content(
 private fun SampleRow(
     item: SampleItem,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    AppCard(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
+    AppCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         AppText(
             text = item.title,
             style = AppTheme.typography.titleLarge,

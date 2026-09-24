@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -114,6 +115,7 @@ fun BoxScope.AppSnackbarHost(
     ) {
         Box(
             modifier = Modifier
+                .widthIn(max = AppTheme.layout.sheetMaxWidth)
                 .navigationBarsPadding()
                 .padding(AppTheme.spacing.lg),
         ) {

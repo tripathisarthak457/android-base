@@ -27,6 +27,7 @@ from .spec import (
     describe_api_level,
     resolve_features,
 )
+from .translations import available as available_languages
 
 #: Which part of the wizard a feature belongs to. Purely presentational — the generator does not
 #: care — but a flat list of three dozen checkboxes is a list nobody reads to the end of.
@@ -59,6 +60,7 @@ GROUPS: dict[str, tuple[str, str]] = {
     "analytics": ("Google", ""),
     "flags": ("Google", ""),
     "googlefonts": ("Design", "The look, and the app that shows it to you."),
+    "lottie": ("Design", ""),
     "catalog": ("Design", ""),
     "composemetrics": ("Design", ""),
     "leakcanary": ("Tooling", "The parts that keep it healthy after the first week."),
@@ -77,6 +79,7 @@ HEADLINES: dict[str, str] = {
     "websocket": "Keep a live connection open",
     "room": "Work offline",
     "coil": "Load images from URLs",
+    "lottie": "Play Lottie animations",
     "paging": "An endless feed that loads as you scroll",
     "workmanager": "Run work in the background",
     "analytics": "Track events and crashes, vendor-free",
@@ -167,6 +170,8 @@ def catalogue() -> dict[str, Any]:
         "designStyles": [
             {"key": name, "description": description} for name, description in DESIGN_STYLES
         ],
+        # English is always shipped and is not listed.
+        "languages": [{"tag": tag, "name": name} for tag, name in available_languages().items()],
         "apiLevels": [
             {
                 "level": level,

@@ -12,8 +12,9 @@ Contents:
 5. [Storage and the session](#storage-and-the-session)
 6. [App-wide services](#app-wide-services)
 7. [The design system](#the-design-system)
-8. [Build](#build)
-9. [Testing](#testing)
+8. [Every form factor](#every-form-factor)
+9. [Build](#build)
+10. [Testing](#testing)
 
 ## Modules
 
@@ -255,6 +256,30 @@ resizes during a transition.
 
 Tapping the active tab again pops it to its root, as it does in most apps.
 
+The bar is a bottom bar in a Compact-width window and a navigation rail beside the content from
+Medium width up. The choice is made from the window size class, so a phone in split screen gets
+the bar and a phone held sideways gets the rail.
+
+### List and detail share the window
+
+A destination registers as `NavPane.List`, `NavPane.Detail` or, by default, `NavPane.Single`:
+
+```kotlin
+entry<OrdersKey>(pane = NavPane.List) { OrdersRoute() }
+entry<OrderKey>(pane = NavPane.Detail) { key -> OrderRoute(key.orderId) }
+```
+
+From Expanded width, `ListDetailSceneStrategy` draws a list and the detail on top of it side by
+side, and a list on its own beside a "nothing selected" pane. Below that width the same entries
+are separate screens. The back stack, the keys and the features are the same either way, so a
+feature does not know which it is in and nothing has to be kept in sync when the window is resized
+or a foldable is opened.
+
+Details opened one after another from the same list stack up: the newest is shown, and Back steps
+through the earlier ones in the detail pane before it closes the pane. A detail replaces the pane
+without a crossfade, because a popped entry's ViewModel store has been cleared and drawing it
+through a fade-out would create a new ViewModel for a screen that is gone.
+
 <!-- <opt:deeplink> -->
 ### Deep links
 
@@ -282,8 +307,52 @@ for the UI to choose its message:
 - An I/O failure while online (wrong base URL, DNS, server down) is also a failure without a
   status code, but with a different message, because telling the user to check their connection
   would be wrong.
-- An HTTP error keeps its `code`, the raw body, a message and any per-field validation errors.
+- An HTTP error keeps its `code`, the raw body, the server's message and any per-field validation
+  errors.
 - `CancellationException` is always rethrown, so cancelling a screen cancels its request.
+
+`Failure.message` is only ever what the server said. The app's own wording lives in string
+resources, so it can be translated: `failure.userMessage(fallback)` returns the server's message
+when there is one, and otherwise a sentence for what went wrong — offline, unreachable, or queued
+to send later — or the fallback.
+
+### Retries
+
+A request that got no answer, or a 408, 429 or 5xx, is sent again up to twice — but only for GET,
+PUT and DELETE, which are safe to repeat. A POST sent twice can create two orders. The wait doubles
+each time with random jitter, so clients that failed together do not all come back in the same
+second, which is how a short outage becomes a long one. A `Retry-After` header is followed, up to
+eight seconds. `RetryPolicy` holds the rules, and `NetworkConfig.maxRetries` changes the count.
+
+### Sharing identical reads
+
+Identical GETs made while one is already in flight wait for that one instead of sending their own.
+The shared call runs in the application scope, so the caller that started it leaving its screen
+does not cancel it for everyone else.
+
+### Security
+
+- The access token is sent only to the host in the configured base URL. A full URL to another host
+  (a third-party API) never carries it, and neither does any request marked `requiresAuth = false`.
+- Release builds allow HTTPS only and trust only the system's certificate authorities
+  (`res/xml/network_security_config.xml`). Debug builds also trust user-installed certificates, so
+  a proxy such as Charles or Proxyman can show the traffic, and allow plain HTTP to a backend on
+  the development machine (`10.0.2.2` from the emulator).
+- `NetworkConfig.certificatePins` pins public keys per host. Pin only with a backup key already
+  issued: a rotated certificate that matches no pin locks every installed copy out until an update
+  ships.
+- Every request sends `Accept-Language`, so the server's own messages come back in the app's
+  language, and a `User-Agent` naming the app and its version.
+
+### Caching
+
+Two caches, for two jobs.
+
+The HTTP cache (OkHttp's, 50 MB in the cache directory) follows the server's `Cache-Control`,
+`ETag` and `Last-Modified` headers. A resource the server marks cacheable is served without a call
+while it is fresh, and revalidated with a conditional request when it is not, so an unchanged
+resource costs a 304 and no body. It is cleared on sign-out. Nothing in the app has to ask for it:
+it is as good as the headers the backend sends.
 
 ### Response shape
 
@@ -311,18 +380,30 @@ old token is never attached to them.
 <!-- <opt:room> -->
 ### Response cache and offline queue
 
-A request can opt in to caching with `CachePolicy.Enabled(key, maxAgeMillis, staleOnFailure)`:
+The app's own cache is for data the app decides about, whatever the headers say. A request opts in
+with `CachePolicy.Enabled(key, maxAgeMillis, staleOnFailure, forceRefresh)`:
 
-1. A cached response younger than `maxAgeMillis` is returned without a network call.
+1. A cached response younger than `maxAgeMillis` is returned without a network call, unless
+   `forceRefresh` is set — which is what pull-to-refresh passes.
 2. Otherwise the network is called and a successful response is stored.
 3. If the call fails and `staleOnFailure` is set, the cached copy of any age is returned instead.
 
 The policy is set per call site, because only the repository knows how stale its data can be.
 
+When a screen should never wait on a spinner if it has something to show, `NetworkClient.stream`
+(or `getStream<T>` for a decoded type) emits the saved copy at once and then the network's answer,
+so the screen shows something immediately and always ends on the latest. If the refresh fails
+after the saved copy was shown, the failure is emitted too, so the screen can keep what it has and
+say the refresh failed.
+
 A mutation can opt in to `enqueueOnFailure`. If it fails for lack of connectivity, it is written to
-the `RequestQueue` and the caller gets a failure saying it will be sent later. Only requests with a
+the `RequestQueue` and the caller gets a failure marked `queued`. It carries an `Idempotency-Key`
+header from the first attempt, so a backend that honours the header applies it once even if the
+first attempt did arrive before the connection dropped. Only requests with a
 JSON body are queued; multipart requests carry file contents and are not. `QueuedRequestReplayer`
-runs in the application scope and sends the queue in order each time the device comes back online.
+runs in the application scope and sends the queue in order each time the device comes back online,
+after a random wait of up to fifteen seconds: after an outage every device reconnects at once, and
+a backend that has just come back should not take all of their queues in the same second.
 A request the server rejects with a 4xx is removed, since sending it again would get the same
 answer. Any other failure stops the pass and keeps the remaining requests in order.
 
@@ -454,6 +535,61 @@ themes against WCAG AA, so a change to a colour or surface tone that breaks cont
 `AppTheme.motion`. Components animate `graphicsLayer` properties (alpha, offset, scale) rather
 than size, so an animation never moves the elements around it. `rememberAppTransitions()` turns
 transitions off when the system's remove-animations setting is on.
+
+### Copy and languages
+
+Every string a user reads is a resource, and the build fails on copy written into Kotlin in the
+features, `:app`, `:core:designsystem` and `:core:ui`. A ViewModel produces `UiText.of(R.string.x)`
+(or `UiText.plural` for a count), which is resolved when it is drawn, so a language change reaches
+it without the ViewModel knowing. Components take their default copy from resources too, so an app
+in Spanish has Spanish buttons in its date picker.
+
+If the project was generated with extra languages, each module has a `values-xx/strings.xml` beside
+`values/`, and `AppLocales.supported` lists them for the language picker. Lint fails a build that
+ships a language with a string missing from it.
+
+## Every form factor
+
+The same app runs on a phone, a foldable, a tablet, a Chromebook, a desktop window and a car. None
+of the screens assumes one: no activity is locked to an orientation, and lint fails the build if
+one is (`LockedOrientationActivity`, `SourceLockedOrientationActivity`, `NonResizeableActivity`).
+
+Layout is decided from the window, never from the device or its orientation. `AppTheme.windowSize`
+holds Android's window size classes, computed by `androidx.window` from the window the app is
+actually in — which changes when the window is resized, split or unfolded:
+
+| Width | From | Typically |
+|---|---|---|
+| Compact | 0dp | a phone held upright, a narrow split-screen pane |
+| Medium | 600dp | a phone held sideways, a small tablet, an unfolded foldable |
+| Expanded | 840dp | a tablet held sideways, a desktop window |
+| Large, ExtraLarge | 1200dp, 1600dp | a large tablet or a wide desktop window |
+
+`AppTheme.layout` turns the class into measurements, so screens do not choose numbers:
+
+- `gutter`, the margin to the window's edge, grows with the window. `AppTheme.spacing.gutter` is the
+  same value, so every screen's margins adapt without asking.
+- `formMaxWidth`, `readableMaxWidth` and `contentMaxWidth` are the widths content stops growing at.
+  `AppScaffold(contentMaxWidth = …)` centres the content at that width while the bars and the
+  background still span the window.
+- `listPaneWidth` and `gridMinCellWidth` size list-detail panes and grid cells.
+
+What adapts, and how:
+
+- **Navigation:** a bottom bar below Medium width, a rail from Medium up. A rail widens to clear a
+  camera cutout on its side instead of squeezing its labels.
+- **List and detail:** side by side from Expanded width (see Navigation).
+- **Two halves of one screen** (`AppTwoPane`): side by side from Expanded width, and on a short
+  window of Medium width or more — a phone held sideways has no height to stack them in.
+- **Grids** (`AppResponsiveGrid`): as many equal columns as fit at `gridMinCellWidth`.
+- **Sheets, dialogs and snackbars** stop at `sheetMaxWidth` and centre.
+- **Display cutouts:** `AppScaffold` pads both sides for them. A screen with a full-bleed panel turns
+  that off (`clearDisplayCutout = false`) and pads the panel's content itself, so the colour reaches
+  the edge of the glass.
+
+To check a screen on other sizes without other devices, run the emulator and change its display:
+`adb shell wm size 1600x2560` and `adb shell wm density 320` make a tablet, rotating makes it a
+landscape tablet, and `adb shell wm size reset` undoes it.
 
 ## Build
 

@@ -52,5 +52,12 @@
   },
   "deeplink_scheme": "acmefield",
   "deeplink_host": "acmefield.example.com",
-  "design_style": "Social"
+  "design_style": "Social",
+  "languages": [
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "pt-BR"
+  ]
 }

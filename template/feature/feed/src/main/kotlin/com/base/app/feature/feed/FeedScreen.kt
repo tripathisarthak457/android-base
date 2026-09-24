@@ -16,6 +16,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.base.app.core.common.userMessage
+import com.base.app.core.common.util.UiText
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -30,6 +32,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
+import com.base.app.core.ui.asString
 import com.base.app.core.ui.paging.AppPagingList
 import com.base.app.data.feed.FeedLoadException
 import com.base.app.data.feed.FeedPost
@@ -51,6 +54,7 @@ fun FeedScreen(
 ) {
     AppScaffold(
         modifier = modifier,
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = {
             AppLargeTitle(
                 title = stringResource(R.string.feed_title),
@@ -66,7 +70,9 @@ fun FeedScreen(
             loading = { LoadingFeed() },
             failed = { error, retry ->
                 AppErrorState(
-                    message = (error as? FeedLoadException)?.failure?.message
+                    message = (error as? FeedLoadException)?.failure
+                        ?.userMessage(UiText.of(R.string.feed_load_failed))
+                        ?.asString()
                         ?: stringResource(R.string.feed_load_failed),
                     isOffline = (error as? FeedLoadException)?.failure?.isOffline == true,
                     onRetry = retry,

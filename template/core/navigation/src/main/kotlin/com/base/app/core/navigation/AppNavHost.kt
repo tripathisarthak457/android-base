@@ -18,6 +18,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.rememberDecoratedNavEntries
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.scene.SinglePaneSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import com.base.app.core.designsystem.theme.AppMotion
 import com.base.app.core.designsystem.theme.AppTheme
@@ -118,6 +119,8 @@ private fun StackDisplay(
         entries = entries,
         modifier = modifier,
         onBack = onBack,
+        // The first strategy that claims the top of the stack draws it; everything else is one pane.
+        sceneStrategies = listOf(rememberListDetailSceneStrategy(), SinglePaneSceneStrategy()),
         transitionSpec = if (reduceMotion) NavTransitions.none() else NavTransitions.push(motion),
         popTransitionSpec = if (reduceMotion) NavTransitions.none() else NavTransitions.pop(motion),
         predictivePopTransitionSpec = { _ ->
@@ -145,7 +148,8 @@ private fun rememberEntryProvider(
         val destination = registry.destinationFor(key)
         NavEntry(
             key = key,
-            metadata = metadataFor(destination.transition, motion, reduceMotion),
+            metadata = metadataFor(destination.transition, motion, reduceMotion) +
+                (PANE_METADATA_KEY to destination.pane),
             content = {
                 val inset = bottomInsetFor(it)
                 if (inset > 0.dp) {

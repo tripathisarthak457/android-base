@@ -40,12 +40,21 @@ export type ApiLevel = {
   needsDesugaring: boolean;
 };
 
+export type Language = {
+  /** A BCP 47 tag, as the generator's spec takes it: "es", "pt-BR". */
+  tag: string;
+  /** The language's name for itself, which is how people look for their own. */
+  name: string;
+};
+
 export type Catalogue = {
   features: Feature[];
   groups: Group[];
   presets: Preset[];
   motionStyles: MotionStyle[];
   designStyles: DesignStyle[];
+  /** Translations the generator ships. English is always included and is not listed. */
+  languages: Language[];
   apiLevels: ApiLevel[];
   defaults: {
     minSdk: number;
@@ -110,6 +119,7 @@ export type GenerateRequest = {
   motion_style: string;
   design_style: string;
   haptics_enabled: boolean;
+  languages: string[];
   preset?: string;
   keystores?: Keystore[];
 };

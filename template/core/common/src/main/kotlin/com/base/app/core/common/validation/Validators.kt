@@ -1,5 +1,6 @@
 package com.base.app.core.common.validation
 
+import com.base.app.core.common.R
 import com.base.app.core.common.util.UiText
 
 /**
@@ -27,26 +28,30 @@ infix fun <T> Validator<T>.and(next: Validator<T>): Validator<T> = Validator { v
     }
 }
 
-/** The rules a form needs before it needs a library. */
+/**
+ * The rules a form needs before it needs a library. Messages are resources, so they follow the
+ * app's language; pass your own [UiText] to say something more specific.
+ */
 object Validators {
 
-    fun required(message: String = "This is required."): Validator<String> = Validator { value ->
-        if (value.isNotBlank()) ValidationResult.Valid else invalid(message)
-    }
+    fun required(message: UiText = UiText.of(R.string.validation_required)): Validator<String> =
+        Validator { value ->
+            if (value.isNotBlank()) ValidationResult.Valid else ValidationResult.Invalid(message)
+        }
 
-    fun minLength(length: Int, message: String? = null): Validator<String> = Validator { value ->
+    fun minLength(length: Int, message: UiText? = null): Validator<String> = Validator { value ->
         if (value.length >= length) {
             ValidationResult.Valid
         } else {
-            invalid(message ?: "Must be at least $length characters.")
+            ValidationResult.Invalid(message ?: UiText.plural(R.plurals.validation_min_length, length))
         }
     }
 
-    fun maxLength(length: Int, message: String? = null): Validator<String> = Validator { value ->
+    fun maxLength(length: Int, message: UiText? = null): Validator<String> = Validator { value ->
         if (value.length <= length) {
             ValidationResult.Valid
         } else {
-            invalid(message ?: "Must be $length characters or fewer.")
+            ValidationResult.Invalid(message ?: UiText.plural(R.plurals.validation_max_length, length))
         }
     }
 
@@ -54,9 +59,9 @@ object Validators {
      * A deliberately permissive email check. Full RFC 5322 validation rejects addresses that work
      * and accepts ones that do not; the only authoritative test is sending mail to it.
      */
-    fun email(message: String = "Enter a valid email address."): Validator<String> =
+    fun email(message: UiText = UiText.of(R.string.validation_email)): Validator<String> =
         Validator { value ->
-            if (EMAIL.matches(value.trim())) ValidationResult.Valid else invalid(message)
+            if (EMAIL.matches(value.trim())) ValidationResult.Valid else ValidationResult.Invalid(message)
         }
 
     /**
@@ -66,60 +71,65 @@ object Validators {
     fun phone(
         minDigits: Int = 6,
         maxDigits: Int = 15,
-        message: String = "Enter a valid phone number.",
+        message: UiText = UiText.of(R.string.validation_phone),
     ): Validator<String> = Validator { value ->
         val digits = value.filter(Char::isDigit)
         if (digits.length in minDigits..maxDigits && digits.length == value.count { !it.isWhitespace() }) {
             ValidationResult.Valid
         } else {
-            invalid(message)
+            ValidationResult.Invalid(message)
         }
     }
 
-    fun matches(pattern: Regex, message: String): Validator<String> = Validator { value ->
-        if (pattern.matches(value)) ValidationResult.Valid else invalid(message)
+    fun matches(pattern: Regex, message: UiText): Validator<String> = Validator { value ->
+        if (pattern.matches(value)) ValidationResult.Valid else ValidationResult.Invalid(message)
     }
 
     fun numericRange(
         range: LongRange,
-        message: String? = null,
+        message: UiText? = null,
     ): Validator<String> = Validator { value ->
         val parsed = value.toLongOrNull()
         when {
-            parsed == null -> invalid(message ?: "Enter a number.")
-            parsed !in range -> invalid(message ?: "Must be between ${range.first} and ${range.last}.")
+            parsed == null -> ValidationResult.Invalid(message ?: UiText.of(R.string.validation_number))
+            parsed !in range -> ValidationResult.Invalid(
+                message ?: UiText.of(R.string.validation_range, range.first, range.last),
+            )
             else -> ValidationResult.Valid
         }
     }
 
-    /** A password rule that states what it wants up front. */
+    /**
+     * A password rule. Reports the first unmet requirement, like [and]; show the whole rule as the
+     * field's helper text so nobody learns it one failure at a time.
+     */
     fun password(
         minLength: Int = 8,
         requireDigit: Boolean = true,
         requireLetter: Boolean = true,
     ): Validator<String> = Validator { value ->
-        val failures = buildList {
-            if (value.length < minLength) add("$minLength characters")
-            if (requireLetter && value.none(Char::isLetter)) add("a letter")
-            if (requireDigit && value.none(Char::isDigit)) add("a number")
-        }
-        if (failures.isEmpty()) {
-            ValidationResult.Valid
-        } else {
-            invalid("Needs at least ${failures.joinToString(", ")}.")
+        when {
+            value.length < minLength ->
+                ValidationResult.Invalid(UiText.plural(R.plurals.validation_password_length, minLength))
+            requireLetter && value.none(Char::isLetter) ->
+                ValidationResult.Invalid(UiText.of(R.string.validation_password_letter))
+            requireDigit && value.none(Char::isDigit) ->
+                ValidationResult.Invalid(UiText.of(R.string.validation_password_digit))
+            else -> ValidationResult.Valid
         }
     }
 
     /** For a confirm-password field, or any value that has to equal another. */
-    fun sameAs(other: () -> String, message: String = "Does not match."): Validator<String> =
+    fun sameAs(
+        other: () -> String,
+        message: UiText = UiText.of(R.string.validation_mismatch),
+    ): Validator<String> =
         Validator { value ->
-            if (value == other()) ValidationResult.Valid else invalid(message)
+            if (value == other()) ValidationResult.Valid else ValidationResult.Invalid(message)
         }
 
     /** Always passes. The identity, for a field whose rules are decided at runtime. */
     fun <T> none(): Validator<T> = Validator { ValidationResult.Valid }
-
-    private fun invalid(message: String) = ValidationResult.Invalid(UiText.Dynamic(message))
 
     private val EMAIL = Regex("^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$")
 }

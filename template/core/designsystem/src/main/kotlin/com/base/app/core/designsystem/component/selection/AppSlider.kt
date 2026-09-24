@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -25,9 +24,13 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.setProgress
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.HapticEffect
 import com.base.app.core.designsystem.foundation.disabledAlpha
@@ -74,18 +77,16 @@ fun AppSlider(
         label = "haloAlpha",
     )
 
-    fun emit(positionX: Float) {
-        if (trackWidth <= 0f) return
-        // Map through the thumb's inset so the ends of the track are reachable.
-        val travel = (trackWidth - 2 * thumbInsetPx).takeIf { it > 0f } ?: trackWidth
-        val raw = ((positionX - thumbInsetPx) / travel).coerceIn(0f, 1f)
+    val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+
+    fun emitFraction(raw: Float) {
         // Snapping happens on the *fraction*, before mapping back to the range, so the steps are
         // evenly spaced regardless of what the range happens to be.
         val snapped = if (steps > 0) {
             val stepSize = 1f / (steps + 1)
             (Math.round(raw / stepSize) * stepSize).coerceIn(0f, 1f)
         } else {
-            raw
+            raw.coerceIn(0f, 1f)
         }
 
         // One tick per detent; nothing on a continuous slider.
@@ -97,6 +98,14 @@ fun AppSlider(
         currentOnValueChange(valueRange.start + snapped * span)
     }
 
+    fun emit(positionX: Float) {
+        if (trackWidth <= 0f) return
+        // Map through the thumb's inset so the ends of the track are reachable.
+        val travel = (trackWidth - 2 * thumbInsetPx).takeIf { it > 0f } ?: trackWidth
+        val fromStart = if (rtl) trackWidth - positionX else positionX
+        emitFraction((fromStart - thumbInsetPx) / travel)
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -105,6 +114,15 @@ fun AppSlider(
             .onSizeChanged { trackWidth = it.width.toFloat() }
             .semantics {
                 progressBarRangeInfo = ProgressBarRangeInfo(value, valueRange, steps)
+                // What TalkBack's volume keys and switch access call; without it the slider can be
+                // heard but not moved.
+                if (enabled) {
+                    setProgress { target ->
+                        emitFraction((target - valueRange.start) / span)
+                        onValueChangeFinished?.invoke()
+                        true
+                    }
+                }
             }
             .pointerInput(enabled, trackWidth, steps) {
                 if (!enabled) return@pointerInput
@@ -117,7 +135,7 @@ fun AppSlider(
                 state = rememberDraggableState { delta ->
                     if (trackWidth > 0f) {
                         val travel = (trackWidth - 2 * thumbInsetPx).takeIf { it > 0f } ?: trackWidth
-                        emit(thumbInsetPx + fraction * travel + delta)
+                        emitFraction(fraction + (if (rtl) -delta else delta) / travel)
                     }
                 },
                 orientation = Orientation.Horizontal,
@@ -139,12 +157,13 @@ fun AppSlider(
 
                 // The thumb travels between insets so it is never drawn half outside its bounds.
                 val travel = (size.width - 2 * thumbInsetPx).coerceAtLeast(0f)
-                val thumbX = thumbInsetPx + travel * fraction
+                val fromStart = thumbInsetPx + travel * fraction
+                val thumbX = if (rtl) size.width - fromStart else fromStart
 
                 drawRoundRect(
                     color = colors.accent,
-                    topLeft = Offset(0f, centerY - trackHeight / 2f),
-                    size = Size(thumbX, trackHeight),
+                    topLeft = Offset(if (rtl) thumbX else 0f, centerY - trackHeight / 2f),
+                    size = Size(fromStart, trackHeight),
                     cornerRadius = radius,
                 )
 

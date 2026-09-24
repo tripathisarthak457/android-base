@@ -135,6 +135,16 @@ And to take one back out again, including the three registrations it added:
 py remove_feature.py orders --project .
 ```
 
+## Regenerating
+
+`generator-spec.json` records the answers this project was generated from, and the generator
+commit that produced it. Signing keys are left out of it, so it is safe to commit. To see what a
+newer template would change, generate the same project again and compare:
+
+```bash
+python3 create_project.py --spec path/to/this/generator-spec.json --out /tmp/fresh --no-zip
+```
+
 ## Signing
 
 __SIGNING__

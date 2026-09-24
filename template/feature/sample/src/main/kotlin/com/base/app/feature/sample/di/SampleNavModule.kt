@@ -2,6 +2,7 @@ package com.base.app.feature.sample.di
 
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
+import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
 import com.base.app.feature.sample.SampleDetailKey
@@ -26,8 +27,8 @@ object SampleNavModule {
     @Provides
     @IntoSet
     fun sampleNavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {
-        entry<SampleListKey> { SampleListRoute(navigator = navigator) }
-        entry<SampleDetailKey> { key ->
+        entry<SampleListKey>(pane = NavPane.List) { SampleListRoute(navigator = navigator) }
+        entry<SampleDetailKey>(pane = NavPane.Detail) { key ->
             SampleDetailRoute(itemId = key.itemId, navigator = navigator)
         }
     }

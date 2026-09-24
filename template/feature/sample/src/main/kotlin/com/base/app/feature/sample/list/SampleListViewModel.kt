@@ -1,12 +1,14 @@
 package com.base.app.feature.sample.list
 
+import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.common.AppResult
 import com.base.app.core.common.mvi.LoadState
 import com.base.app.core.common.mvi.MessageKind
 import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.util.asUiText
-import androidx.lifecycle.SavedStateHandle
+import com.base.app.core.common.userMessage
+import com.base.app.core.common.util.UiText
 import com.base.app.data.sample.SampleRepository
+import com.base.app.feature.sample.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -57,7 +59,7 @@ class SampleListViewModel @Inject constructor(
                 if (refreshing && currentState.items.isNotEmpty()) {
                     updateState { copy(loadState = LoadState.Success) }
                     showMessage(
-                        text = (result.message ?: "Could not refresh.").asUiText(),
+                        text = result.userMessage(UiText.of(R.string.sample_refresh_failed)),
                         kind = MessageKind.Error,
                     )
                 } else {

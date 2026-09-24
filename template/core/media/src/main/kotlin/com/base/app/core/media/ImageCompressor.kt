@@ -89,10 +89,7 @@ class ImageCompressor @Inject constructor(
             )
         }.getOrElse { throwable ->
             AppLogger.e("Image compression failed", throwable, tag = TAG)
-            AppResult.Failure(
-                message = "Could not process that image.",
-                cause = throwable,
-            )
+            AppResult.Failure(cause = throwable)
         }
     }
 
@@ -108,7 +105,7 @@ class ImageCompressor @Inject constructor(
                 file.writeBytes(result.data.bytes)
                 AppResult.Success(file)
             }.getOrElse {
-                AppResult.Failure(message = "Could not write the image.", cause = it)
+                AppResult.Failure(cause = it)
             }
         }
 

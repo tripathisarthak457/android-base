@@ -16,7 +16,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from genkit import build as builder
-from genkit import catalogue, prompts, render
+from genkit import catalogue, prompts, record, render
 from genkit.spec import (
     FEATURES,
     FEATURES_BY_KEY,
@@ -308,15 +308,19 @@ def ask_save_location(default_name: str, zip_output: bool) -> Path | None:
 
 def load_spec(path: Path) -> ProjectSpec:
     data = json.loads(path.read_text(encoding="utf-8"))
+    # A project's own generator-spec.json says where it came from; that is not part of the spec.
+    data.pop(record.STAMP_KEY, None)
     keystores = tuple(KeystoreSpec(**entry) for entry in data.pop("keystores", []))
     features = frozenset(data.pop("features", []))
     for note in upgrade_features(set(features))[1]:
         # stderr, because --json promises that stdout is JSON and nothing else.
         print(prompts.yellow(f"  ! {note}"), file=sys.stderr)
     modules = tuple(data.pop("feature_modules", []))
+    languages = tuple(data.pop("languages", []))
     return ProjectSpec(
         features=features,
         feature_modules=modules,
+        languages=languages,
         keystores=keystores,
         **data,
     ).validated()
@@ -326,6 +330,7 @@ def save_spec(spec: ProjectSpec, path: Path) -> None:
     data = asdict(spec)
     data["features"] = sorted(spec.features)
     data["feature_modules"] = list(spec.feature_modules)
+    data["languages"] = list(spec.languages)
     data["keystores"] = [asdict(keystore) for keystore in spec.keystores]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")

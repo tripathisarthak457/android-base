@@ -1,4 +1,6 @@
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.variant.HostTestBuilder
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.base.app.buildlogic.configureAndroidCommon
 import com.base.app.buildlogic.libs
 import com.base.app.buildlogic.library
@@ -20,6 +22,13 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             // Library instrumentation tests only run on debug; building release would cost an extra
             // R8 pass.
             buildTypes.getByName("release").isMinifyEnabled = false
+        }
+
+        extensions.configure<LibraryAndroidComponentsExtension> {
+            // Release compiles the same sources as debug, so its unit tests would only run them twice.
+            beforeVariants(selector().withBuildType("release")) { variant ->
+                variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
+            }
         }
 
         dependencies {

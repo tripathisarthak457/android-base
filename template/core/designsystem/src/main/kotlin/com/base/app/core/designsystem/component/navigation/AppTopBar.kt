@@ -29,6 +29,8 @@ import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /** The top bar. */
 @Composable
@@ -37,7 +39,7 @@ fun AppTopBar(
     modifier: Modifier = Modifier,
     subtitle: String? = null,
     navigationIcon: ImageVector? = null,
-    navigationContentDescription: String = "Navigate back",
+    navigationContentDescription: String = stringResource(R.string.designsystem_navigate_back),
     onNavigationClick: (() -> Unit)? = null,
     centerTitle: Boolean = false,
     showDivider: Boolean = true,

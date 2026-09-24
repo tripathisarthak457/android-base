@@ -1,9 +1,7 @@
 package com.base.app.di
 
+import android.os.Build
 import com.base.app.BuildConfig
-// <opt:devtools>
-import com.base.app.core.devtools.DevEnvironment
-// </opt:devtools>
 import com.base.app.core.network.NetworkConfig
 import dagger.Module
 import dagger.Provides
@@ -24,26 +22,12 @@ object AppModule {
         isDebug = BuildConfig.DEBUG,
         // Blank disables automatic 401 refresh. Set it once your backend issues refresh tokens.
         refreshTokenPath = "",
+        userAgent = "${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} " +
+            "(Android ${Build.VERSION.RELEASE}; ${Build.MANUFACTURER} ${Build.MODEL})",
         // <opt:devtools>
         // Same rule as the badge: debug builds, and dev and staging releases. Never
         // production, where the recorder is not installed and no body is ever held.
-        recordExchanges = devEnvironment().visible,
+        recordExchanges = buildDevEnvironment().visible,
         // </opt:devtools>
     )
-
-    // <opt:devtools>
-    /** What this build is, for the inspector. */
-    @Provides
-    @Singleton
-    fun provideDevEnvironment(): DevEnvironment = devEnvironment()
-
-    private fun devEnvironment() = DevEnvironment(
-        name = BuildConfig.ENVIRONMENT,
-        versionName = BuildConfig.VERSION_NAME,
-        applicationId = BuildConfig.APPLICATION_ID,
-        apiBaseUrl = BuildConfig.API_BASE_URL,
-        isDebugBuild = BuildConfig.DEBUG,
-        isShippable = BuildConfig.IS_SHIPPABLE,
-    )
-    // </opt:devtools>
 }

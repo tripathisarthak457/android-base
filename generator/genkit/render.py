@@ -382,7 +382,7 @@ def apply_app_name(destination: Path, spec: ProjectSpec) -> None:
         text = path.read_text(encoding="utf-8")
         label = spec.app_name if relative.startswith("app/") else f"{spec.app_name} Catalog"
         text = re.sub(
-            r'(<string name="app_name">).*?(</string>)',
+            r'(<string name="app_name"[^>]*>).*?(</string>)',
             lambda m: m.group(1) + label + m.group(2),
             text,
             count=1,

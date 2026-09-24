@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.base.app.core.common.AppResult
+import com.base.app.core.common.R
+import com.base.app.core.common.userMessage
 import com.base.app.core.common.util.AppLogger
 import com.base.app.core.common.util.UiText
 import com.base.app.core.common.util.asUiText
@@ -160,9 +162,9 @@ abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(
 
     /** The error state for a failed request, with a fallback when the server sent no message. */
     protected fun AppResult.Failure.toLoadState(
-        fallback: UiText = UiText.Dynamic(DEFAULT_ERROR),
+        fallback: UiText = UiText.of(R.string.common_error_generic),
     ): LoadState.Error = LoadState.Error(
-        message = message?.takeIf { it.isNotBlank() }?.asUiText() ?: fallback,
+        message = userMessage(fallback),
         isOffline = isOffline,
         code = code,
     )
@@ -173,7 +175,7 @@ abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(
      */
     protected open fun onError(throwable: Throwable) {
         AppLogger.e(tag = this::class.simpleName ?: "ViewModel", message = "Unhandled", throwable = throwable)
-        showMessage(text = DEFAULT_ERROR.asUiText(), kind = MessageKind.Error)
+        showMessage(text = UiText.of(R.string.common_error_generic), kind = MessageKind.Error)
     }
 
     override fun onCleared() {
@@ -182,8 +184,6 @@ abstract class MviViewModel<S : UiState, E : UiEvent, F : UiEffect>(
     }
 
     private companion object {
-        const val DEFAULT_ERROR = "Something went wrong. Please try again."
-
         // Namespaced so a persisted field cannot collide with a navigation argument.
         const val PERSIST_PREFIX = "mvi:"
     }

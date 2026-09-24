@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -100,6 +101,9 @@ fun AppBottomSheet(
             Column(
                 modifier = modifier
                     .align(Alignment.BottomCenter)
+                    // Before fillMaxWidth, which would otherwise win: on a tablet the sheet stops at a
+                    // readable width and centres instead of running edge to edge.
+                    .widthIn(max = AppTheme.layout.sheetMaxWidth)
                     .fillMaxWidth()
                     .onSizeChanged { sheetHeight = it.height.toFloat() }
                     .graphicsLayer { translationY = offsetY.value }

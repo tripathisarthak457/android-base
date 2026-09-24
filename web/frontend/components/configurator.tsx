@@ -7,6 +7,7 @@ import {
   type Catalogue,
   type GenerateRequest,
   type Keystore,
+  type Language,
   generateProject,
   track,
 } from "../lib/api";
@@ -157,6 +158,7 @@ export function Configurator({
     () => new Set(catalogue.presets.find((p) => p.key === catalogue.defaults.preset)?.features ?? []),
   );
   const [modules, setModules] = useState("");
+  const [languages, setLanguages] = useState<string[]>([]);
   const [fontName, setFontName] = useState(catalogue.defaults.fontName);
   const [accent, setAccent] = useState(catalogue.defaults.accentColour);
   // Empty means "derive it from the primary", which is the same contract the generator has:
@@ -335,6 +337,8 @@ export function Configurator({
       motion_style: motionStyle,
       design_style: designStyle,
       haptics_enabled: haptics,
+      // In the catalogue's order, so the picker in the app lists them the same way every time.
+      languages: catalogue.languages.map((l) => l.tag).filter((tag) => languages.includes(tag)),
       preset,
       ...(hasNetwork
         ? {
@@ -427,6 +431,9 @@ export function Configurator({
                 errors={errors}
                 modules={modules}
                 setModules={setModules}
+                offeredLanguages={catalogue.languages}
+                languages={languages}
+                setLanguages={setLanguages}
               />
             )}
             {step === "features" && (
@@ -614,6 +621,9 @@ function IdentityStep({
   errors,
   modules,
   setModules,
+  offeredLanguages,
+  languages,
+  setLanguages,
 }: {
   appName: string;
   setAppName: (v: string) => void;
@@ -622,6 +632,9 @@ function IdentityStep({
   errors: { appName?: string; packageName?: string; modules?: string };
   modules: string;
   setModules: (v: string) => void;
+  offeredLanguages: Language[];
+  languages: string[];
+  setLanguages: (update: (current: string[]) => string[]) => void;
 }) {
   const derived = pascal(appName) || "MyApp";
 
@@ -668,6 +681,39 @@ function IdentityStep({
             className="font-mono text-sm"
           />
         </Field>
+
+        {offeredLanguages.length > 0 && (
+          <Field
+            label="Languages"
+            hint="English is always included. Each one you pick ships a translation of every screen, and the language picker in Settings lists it."
+          >
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Languages">
+              {offeredLanguages.map((language) => {
+                const on = languages.includes(language.tag);
+                return (
+                  <button
+                    key={language.tag}
+                    type="button"
+                    aria-pressed={on}
+                    lang={language.tag}
+                    onClick={() =>
+                      setLanguages((current) =>
+                        on ? current.filter((tag) => tag !== language.tag) : [...current, language.tag],
+                      )
+                    }
+                    className={`rounded-md border px-3 py-1.5 text-sm transition-colors ${
+                      on
+                        ? "border-accent bg-ink-700 text-ink-100"
+                        : "border-ink-600 bg-ink-900 text-ink-400 hover:text-ink-200"
+                    }`}
+                  >
+                    {language.name}
+                  </button>
+                );
+              })}
+            </div>
+          </Field>
+        )}
       </div>
 
       <div className="rounded-lg border border-ink-700 bg-ink-900 p-5">

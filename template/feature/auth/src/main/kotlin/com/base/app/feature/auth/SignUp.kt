@@ -2,13 +2,8 @@ package com.base.app.feature.auth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
@@ -27,7 +22,6 @@ import com.base.app.core.common.validation.Validators
 import com.base.app.core.common.validation.and
 import com.base.app.core.designsystem.animation.busyOverlay
 import com.base.app.core.designsystem.component.button.AppButton
-import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.input.AppPasswordField
@@ -75,7 +69,7 @@ class SignUpViewModel @Inject constructor(
         field(
             name = "confirm",
             validator = Validators.required() and
-                Validators.sameAs({ form["password"].value }, "Passwords do not match."),
+                Validators.sameAs({ form["password"].value }, UiText.of(R.string.auth_passwords_do_not_match)),
         )
     }
 
@@ -106,7 +100,7 @@ class SignUpViewModel @Inject constructor(
                 form.applyServerErrors(result.fieldErrors)
                 if (result.fieldErrors.isEmpty()) {
                     updateState {
-                        copy(error = UiText.Dynamic(result.message ?: "Could not create the account."))
+                        copy(error = result.authMessage(R.string.auth_sign_up_failed))
                     }
                 }
             }
@@ -149,7 +143,7 @@ fun SignUpScreen(
     val password = form["password"]
     val confirm = form["confirm"]
 
-    AppScaffold(
+    AuthFrame(
         modifier = modifier,
         topBar = {
             AppBackTopBar(
@@ -158,68 +152,59 @@ fun SignUpScreen(
             )
         },
     ) {
+        state.error?.let {
+            AppBanner(text = it.asString(), tone = AppTone.Error)
+        }
+
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(AppTheme.spacing.gutter),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
+            modifier = Modifier.busyOverlay(form.isSubmitting),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
-            state.error?.let {
-                AppBanner(text = it.asString(), tone = AppTone.Error)
-            }
-
-            Column(
-                modifier = Modifier.busyOverlay(form.isSubmitting),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-            ) {
-                AppTextField(
-                    value = name.value,
-                    onValueChange = name::onChange,
-                    modifier = Modifier.touchOnFocusLost(name),
-                    label = stringResource(R.string.auth_name),
-                    error = name.error?.asString(),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                )
-                AppTextField(
-                    value = email.value,
-                    onValueChange = email::onChange,
-                    modifier = Modifier.touchOnFocusLost(email),
-                    label = stringResource(R.string.auth_email),
-                    placeholder = stringResource(R.string.auth_email_placeholder),
-                    error = email.error?.asString(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next,
-                    ),
-                )
-                AppPasswordField(
-                    value = password.value,
-                    onValueChange = password::onChange,
-                    modifier = Modifier.touchOnFocusLost(password),
-                    label = stringResource(R.string.auth_password),
-                    helper = stringResource(R.string.auth_password_rules),
-                    error = password.error?.asString(),
+            AppTextField(
+                value = name.value,
+                onValueChange = name::onChange,
+                modifier = Modifier.touchOnFocusLost(name),
+                label = stringResource(R.string.auth_name),
+                error = name.error?.asString(),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            )
+            AppTextField(
+                value = email.value,
+                onValueChange = email::onChange,
+                modifier = Modifier.touchOnFocusLost(email),
+                label = stringResource(R.string.auth_email),
+                placeholder = stringResource(R.string.auth_email_placeholder),
+                error = email.error?.asString(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next,
-                )
-                AppPasswordField(
-                    value = confirm.value,
-                    onValueChange = confirm::onChange,
-                    modifier = Modifier.touchOnFocusLost(confirm),
-                    label = stringResource(R.string.auth_confirm_password),
-                    error = confirm.error?.asString(),
-                    keyboardActions = KeyboardActions(onDone = { onEvent(SignUpEvent.Submit) }),
-                )
-            }
-
-            AppButton(
-                text = stringResource(R.string.auth_create_account),
-                onClick = { onEvent(SignUpEvent.Submit) },
-                loading = form.isSubmitting,
-                fillWidth = true,
+                ),
+            )
+            AppPasswordField(
+                value = password.value,
+                onValueChange = password::onChange,
+                modifier = Modifier.touchOnFocusLost(password),
+                label = stringResource(R.string.auth_password),
+                helper = stringResource(R.string.auth_password_rules),
+                error = password.error?.asString(),
+                imeAction = ImeAction.Next,
+            )
+            AppPasswordField(
+                value = confirm.value,
+                onValueChange = confirm::onChange,
+                modifier = Modifier.touchOnFocusLost(confirm),
+                label = stringResource(R.string.auth_confirm_password),
+                error = confirm.error?.asString(),
+                keyboardActions = KeyboardActions(onDone = { onEvent(SignUpEvent.Submit) }),
             )
         }
+
+        AppButton(
+            text = stringResource(R.string.auth_create_account),
+            onClick = { onEvent(SignUpEvent.Submit) },
+            loading = form.isSubmitting,
+            fillWidth = true,
+        )
     }
 }
 

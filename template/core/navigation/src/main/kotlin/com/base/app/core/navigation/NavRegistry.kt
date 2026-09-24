@@ -14,8 +14,8 @@ import kotlin.reflect.KClass
  *     @Provides
  *     @IntoSet
  *     fun sampleEntries(): NavGraphEntry = navGraph {
- *         entry<SampleListKey> { SampleListRoute() }
- *         entry<SampleDetailKey>(NavTransitionStyle.Push) { key -> SampleDetailRoute(key.id) }
+ *         entry<SampleListKey>(pane = NavPane.List) { SampleListRoute() }
+ *         entry<SampleDetailKey>(pane = NavPane.Detail) { key -> SampleDetailRoute(key.id) }
  *     }
  * }
  * ```
@@ -26,6 +26,7 @@ class NavGraphEntry internal constructor(
 
 internal class Destination(
     val transition: NavTransitionStyle,
+    val pane: NavPane,
     val content: @Composable (AppNavKey) -> Unit,
 )
 
@@ -33,22 +34,27 @@ class NavGraphBuilder internal constructor() {
 
     private val destinations = mutableMapOf<KClass<out AppNavKey>, Destination>()
 
-    /** Registers [content] as the screen for key type [T]. */
+    /**
+     * Registers [content] as the screen for key type [T]. A [NavPane.List] and the [NavPane.Detail]
+     * opened from it share the window when it is wide enough.
+     */
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T : AppNavKey> entry(
         transition: NavTransitionStyle = NavTransitionStyle.Push,
+        pane: NavPane = NavPane.Single,
         noinline content: @Composable (T) -> Unit,
     ) {
-        register(T::class, transition) { key -> content(key as T) }
+        register(T::class, transition, pane) { key -> content(key as T) }
     }
 
     @PublishedApi
     internal fun register(
         type: KClass<out AppNavKey>,
         transition: NavTransitionStyle,
+        pane: NavPane,
         content: @Composable (AppNavKey) -> Unit,
     ) {
-        require(destinations.put(type, Destination(transition, content)) == null) {
+        require(destinations.put(type, Destination(transition, pane, content)) == null) {
             "${type.simpleName} is registered twice in the same nav graph."
         }
     }

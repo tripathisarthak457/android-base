@@ -97,7 +97,8 @@ func (s *Server) requireAdmin(next http.HandlerFunc) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		provided := []byte(r.Header.Get("Authorization"))
-		if subtle.ConstantTimeCompare(provided, expected) != 1 {
+		// Config refuses a blank token today; this keeps a blank one from ever matching "Bearer ".
+		if s.adminToken == "" || subtle.ConstantTimeCompare(provided, expected) != 1 {
 			writeError(w, http.StatusUnauthorized, "Not authorised.")
 			return
 		}

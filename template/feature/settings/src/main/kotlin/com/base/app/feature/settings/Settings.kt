@@ -220,6 +220,7 @@ fun SettingsScreen(
     // </opt:browser>
 
     AppScaffold(
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = { AppLargeTitle(title = stringResource(R.string.settings_title)) },
     ) {
@@ -245,7 +246,11 @@ fun SettingsScreen(
                     color = AppTheme.colors.contentTertiary,
                 )
                 AppSegmentedControl(
-                    options = listOf("System", "Light", "Dark"),
+                    options = listOf(
+                        stringResource(R.string.settings_theme_system),
+                        stringResource(R.string.settings_theme_light),
+                        stringResource(R.string.settings_theme_dark),
+                    ),
                     selectedIndex = state.themeIndex,
                     onSelect = { onEvent(SettingsEvent.ThemeSelected(it)) },
                 )
@@ -432,9 +437,9 @@ fun SettingsScreen(
             title = stringResource(R.string.settings_sign_out_confirm),
             message = stringResource(R.string.settings_sign_out_explanation),
             onDismissRequest = { confirmSignOut = false },
-            confirmLabel = "Sign out",
+            confirmLabel = stringResource(R.string.settings_sign_out),
             onConfirm = { onEvent(SettingsEvent.SignOutConfirmed) },
-            dismissLabel = "Stay",
+            dismissLabel = stringResource(R.string.settings_stay),
             icon = AppIcons.Logout,
             tone = AppTone.Error,
         )

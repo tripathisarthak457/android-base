@@ -1,5 +1,6 @@
 package com.base.app.ui
 
+import com.base.app.R
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.navigation.AppNavKey
 import com.base.app.core.navigation.ShellTab
@@ -29,21 +30,21 @@ object AppDestinations {
     /** The bottom-bar tabs, or an empty list for a single-stack app. */
     val tabs: List<ShellTab> = listOf(
         // <opt:sample>
-        ShellTab(key = SampleListKey, label = "Home", icon = AppIcons.Home),
+        ShellTab(key = SampleListKey, label = R.string.tab_home, icon = AppIcons.Home),
         // </opt:sample>
         // <opt:paging>
-        ShellTab(key = FeedKey, label = "Feed", icon = AppIcons.ListView),
+        ShellTab(key = FeedKey, label = R.string.tab_feed, icon = AppIcons.ListView),
         // </opt:paging>
         // <opt:search>
-        ShellTab(key = SearchKey, label = "Search", icon = AppIcons.Search),
+        ShellTab(key = SearchKey, label = R.string.tab_search, icon = AppIcons.Search),
         // </opt:search>
         // <generated:shell-tabs>
         // <opt:profile>
-        ShellTab(key = ProfileKey, label = "Profile", icon = AppIcons.User),
+        ShellTab(key = ProfileKey, label = R.string.tab_profile, icon = AppIcons.User),
         // </opt:profile>
         // Settings sits last because that is where people look for it.
         // <opt:settings>
-        ShellTab(key = SettingsKey, label = "Settings", icon = AppIcons.Settings),
+        ShellTab(key = SettingsKey, label = R.string.tab_settings, icon = AppIcons.Settings),
         // </opt:settings>
     )
 

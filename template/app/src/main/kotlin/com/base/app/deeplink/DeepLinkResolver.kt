@@ -10,8 +10,8 @@ import com.base.app.feature.sample.SampleListKey
 // </opt:sample>
 
 /**
- * Turns an incoming link into a destination. `baseapp://item/12` and
- * `https://baseapp.example.com/item/12` produce the same key.
+ * Turns an incoming link into a destination. `baseapp://items/12` and
+ * `https://baseapp.example.com/items/12` produce the same key.
  */
 @Singleton
 class DeepLinkResolver @Inject constructor() {

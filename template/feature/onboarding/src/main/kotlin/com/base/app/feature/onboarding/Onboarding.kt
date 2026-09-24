@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -35,6 +36,9 @@ import com.base.app.core.designsystem.component.list.AppPager
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.AppSurface
+import com.base.app.core.designsystem.foundation.AppTwoPane
+import com.base.app.core.designsystem.foundation.centeredMaxWidth
+import com.base.app.core.designsystem.foundation.shouldUseTwoPanes
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
@@ -113,6 +117,7 @@ fun OnboardingScreen(
     val pagerState = rememberPagerState(pageCount = { state.pages.size })
     val scope = rememberCoroutineScope()
     val onLastPage = pagerState.currentPage == state.pages.lastIndex
+    val sideBySide = shouldUseTwoPanes
 
     AppScaffold(modifier = modifier) {
         // No top or bottom bar here, so this screen applies the system-bar insets itself.
@@ -141,49 +146,18 @@ fun OnboardingScreen(
                 state = pagerState,
                 modifier = Modifier.weight(1f),
             ) { index ->
-                val page = state.pages[index]
-                Column(
+                OnboardingPageContent(
+                    page = state.pages[index],
+                    sideBySide = sideBySide,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = AppTheme.spacing.lg)
-                        .padding(bottom = AppTheme.spacing.xxl),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(
-                        AppTheme.spacing.lg,
-                        Alignment.CenterVertically,
-                    ),
-                ) {
-                    AppSurface(
-                        modifier = Modifier.size(96.dp),
-                        shape = AppTheme.shapes.pill,
-                        color = AppTheme.colors.accentSubtle,
-                    ) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            AppIcon(
-                                page.icon,
-                                contentDescription = null,
-                                tint = AppTheme.colors.accent,
-                                size = 40.dp,
-                            )
-                        }
-                    }
-                    AppText(
-                        text = stringResource(page.title),
-                        style = AppTheme.typography.displaySmall,
-                        color = AppTheme.colors.contentPrimary,
-                        textAlign = TextAlign.Center,
-                    )
-                    AppText(
-                        text = stringResource(page.body),
-                        style = AppTheme.typography.bodyLarge,
-                        color = AppTheme.colors.contentTertiary,
-                        textAlign = TextAlign.Center,
-                    )
-                }
+                        .padding(bottom = AppTheme.spacing.xl),
+                )
             }
 
             AppButton(
-                text = if (onLastPage) "Get started" else "Next",
+                text = stringResource(if (onLastPage) R.string.onboarding_get_started else R.string.onboarding_next),
                 onClick = {
                     if (onLastPage) {
                         onEvent(OnboardingEvent.Completed)
@@ -192,9 +166,65 @@ fun OnboardingScreen(
                     }
                 },
                 fillWidth = true,
-                modifier = Modifier.padding(vertical = AppTheme.spacing.lg),
+                modifier = Modifier
+                    .centeredMaxWidth(AppTheme.layout.formMaxWidth)
+                    .padding(vertical = AppTheme.spacing.lg),
             )
         }
+    }
+}
+
+/**
+ * One page: the picture above the words on a phone, beside them when the window is wide or short —
+ * a phone held sideways has no height to stack them in.
+ */
+@Composable
+private fun OnboardingPageContent(page: OnboardingPage, sideBySide: Boolean, modifier: Modifier = Modifier) {
+    val textAlign = if (sideBySide) TextAlign.Start else TextAlign.Center
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        AppTwoPane(
+            sideBySide = sideBySide,
+            modifier = Modifier.widthIn(max = AppTheme.layout.contentMaxWidth),
+            first = {
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    AppSurface(
+                        modifier = Modifier.size(if (sideBySide) 160.dp else 96.dp),
+                        shape = AppTheme.shapes.pill,
+                        color = AppTheme.colors.accentSubtle,
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            AppIcon(
+                                page.icon,
+                                contentDescription = null,
+                                tint = AppTheme.colors.accent,
+                                size = if (sideBySide) 64.dp else 40.dp,
+                            )
+                        }
+                    }
+                }
+            },
+            second = {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = if (sideBySide) Alignment.Start else Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+                ) {
+                    AppText(
+                        text = stringResource(page.title),
+                        style = AppTheme.typography.displaySmall,
+                        color = AppTheme.colors.contentPrimary,
+                        textAlign = textAlign,
+                    )
+                    AppText(
+                        text = stringResource(page.body),
+                        modifier = Modifier.widthIn(max = AppTheme.layout.readableMaxWidth),
+                        style = AppTheme.typography.bodyLarge,
+                        color = AppTheme.colors.contentTertiary,
+                        textAlign = textAlign,
+                    )
+                }
+            },
+        )
     }
 }
 

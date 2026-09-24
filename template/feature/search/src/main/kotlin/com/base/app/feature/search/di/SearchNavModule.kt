@@ -2,6 +2,7 @@ package com.base.app.feature.search.di
 
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
+import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
 import com.base.app.feature.search.SearchKey
@@ -22,8 +23,12 @@ object SearchNavModule {
     @Provides
     @IntoSet
     fun searchNavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {
-        entry<SearchKey> { SearchRoute(onOpenResult = { navigator.navigate(SearchResultKey(it)) }) }
-        entry<SearchResultKey> { key -> SearchResultRoute(id = key.id, navigator = navigator) }
+        entry<SearchKey>(pane = NavPane.List) {
+            SearchRoute(onOpenResult = { navigator.navigate(SearchResultKey(it)) })
+        }
+        entry<SearchResultKey>(pane = NavPane.Detail) { key ->
+            SearchResultRoute(id = key.id, navigator = navigator)
+        }
     }
 
     @Provides

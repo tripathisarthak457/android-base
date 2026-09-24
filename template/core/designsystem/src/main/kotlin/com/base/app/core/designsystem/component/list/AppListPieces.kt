@@ -40,6 +40,8 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /** A header that opens and closes the block beneath it. */
 @Composable
@@ -152,7 +154,7 @@ fun AppLoadMoreFooter(
                     color = AppTheme.colors.contentTertiary,
                 )
                 AppButton(
-                    text = "Retry",
+                    text = stringResource(R.string.designsystem_retry),
                     onClick = onLoadMore,
                     variant = ButtonVariant.Tertiary,
                     size = ButtonSize.Small,

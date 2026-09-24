@@ -8,6 +8,8 @@
 -->
 <resources>
     <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_get_started">Get started</string>
     <string name="onboarding_stay_in_the_loop">Stay in the loop</string>
     <string name="onboarding_welcome">Welcome</string>
     <string name="onboarding_your_data_is_yours">Your data is yours</string>

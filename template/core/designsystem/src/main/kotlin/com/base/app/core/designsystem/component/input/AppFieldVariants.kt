@@ -15,6 +15,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.icon.AppIcons
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /** A password field with a reveal toggle. Visibility is local state rather than hoisted. */
 @Composable
@@ -46,7 +48,9 @@ fun AppPasswordField(
         trailing = {
             AppIconButton(
                 icon = if (revealed) AppIcons.EyeOff else AppIcons.Eye,
-                contentDescription = if (revealed) "Hide password" else "Show password",
+                contentDescription = stringResource(
+                    if (revealed) R.string.designsystem_hide_password else R.string.designsystem_show_password,
+                ),
                 onClick = { revealed = !revealed },
                 size = ButtonSize.Small,
             )
@@ -66,7 +70,7 @@ fun AppSearchField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "Search",
+    placeholder: String = stringResource(R.string.designsystem_search),
     enabled: Boolean = true,
     onSearch: (() -> Unit)? = null,
 ) {
@@ -82,7 +86,7 @@ fun AppSearchField(
             {
                 AppIconButton(
                     icon = AppIcons.Close,
-                    contentDescription = "Clear search",
+                    contentDescription = stringResource(R.string.designsystem_clear_search),
                     onClick = { onValueChange("") },
                     size = ButtonSize.Small,
                 )

@@ -12,6 +12,11 @@ sealed interface AppResult<out T> {
     ) : AppResult<T>
 
     data class Failure(
+        /**
+         * What the server said, when it said something. The app never writes its own wording here,
+         * because this string is shown as it is and the app's own copy has to be translatable:
+         * [userMessage] turns a failure into something to show.
+         */
         val message: String? = null,
         val cause: Throwable? = null,
         /** The HTTP status, when there was one. Null for transport failures. */
@@ -22,6 +27,8 @@ sealed interface AppResult<out T> {
         val isOffline: Boolean = false,
         /** The raw response body, kept for endpoints whose error shape does not match the rest. */
         val rawBody: String? = null,
+        /** True when the request was kept and will be sent once the connection is back. */
+        val queued: Boolean = false,
     ) : AppResult<Nothing>
 }
 
@@ -63,5 +70,5 @@ inline fun <T> resultOf(block: () -> T): AppResult<T> = try {
 } catch (cancellation: kotlinx.coroutines.CancellationException) {
     throw cancellation
 } catch (throwable: Throwable) {
-    AppResult.Failure(message = throwable.message, cause = throwable)
+    AppResult.Failure(cause = throwable)
 }

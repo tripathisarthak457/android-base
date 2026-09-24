@@ -34,13 +34,16 @@ A spec is plain JSON. Only `app_name` and `package_name` are required:
   "design_style": "Social",
   "motion_style": "Calm",
   "accent_colour": "#1F7A5C",
-  "font_name": "Plus Jakarta Sans"
+  "font_name": "Plus Jakarta Sans",
+  "languages": ["es", "hi"]
 }
 ```
 
 - Pick features by what the app needs, not everything. `--dry-run` shows what they imply.
 - `design_style` is one of `Utility`, `Social`, `Editorial`, `Playful`. `motion_style` is one
   of `Standard`, `Bouncy`, `Calm`, `Snappy`.
+- `languages` adds translations besides English: `de`, `es`, `fr`, `hi`, `pt-BR`. Each lists
+  itself in the app's language picker. Adding one means adding it to `generator/translations/`.
 - `feature_modules` scaffolds a `:data:x` and `:feature:x` pair each. Names the template already
   uses (`auth`, `feed`, `profile`, `search` and so on) are refused.
 - Then build it (`./gradlew :app:assembleDevDebug`) before you tell the user it is ready.
@@ -71,6 +74,9 @@ A new optional feature needs all of:
 3. A group and a headline in `generator/genkit/catalogue.py`. The catalogue test fails without them.
 4. Its place in the presets, if it belongs in one.
 5. A line in the root README's feature table. The website reads the catalogue by itself.
+
+A new user-facing string in the template also needs a translation in every file under
+`generator/translations/`. `tests/test_translations.py` names any that are missing.
 
 ## Keeping dependencies current
 

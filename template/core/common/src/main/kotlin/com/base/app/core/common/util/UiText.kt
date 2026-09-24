@@ -1,6 +1,7 @@
 package com.base.app.core.common.util
 
 import android.content.Context
+import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 
 /** A string that a ViewModel can produce without holding a `Context`. */
@@ -13,12 +14,20 @@ sealed interface UiText {
         val args: List<Any> = emptyList(),
     ) : UiText
 
+    /** A count, worded for the current language's plural rules: "1 character", "8 characters". */
+    data class Plural(
+        @param:PluralsRes val id: Int,
+        val count: Int,
+        val args: List<Any> = listOf(count),
+    ) : UiText
+
     /** Concatenation, for a label assembled from parts that resolve differently. */
     data class Composite(val parts: List<UiText>, val separator: String = " ") : UiText
 
     fun resolve(context: Context): String = when (this) {
         is Dynamic -> value
         is Resource -> context.getString(id, *args.toTypedArray())
+        is Plural -> context.resources.getQuantityString(id, count, *args.toTypedArray())
         is Composite -> parts.joinToString(separator) { it.resolve(context) }
     }
 
@@ -26,6 +35,8 @@ sealed interface UiText {
         val Empty: UiText = Dynamic("")
 
         fun of(@StringRes id: Int, vararg args: Any): UiText = Resource(id, args.toList())
+
+        fun plural(@PluralsRes id: Int, count: Int): UiText = Plural(id, count)
     }
 }
 

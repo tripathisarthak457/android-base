@@ -22,6 +22,8 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+import androidx.compose.ui.res.stringResource
+import com.base.app.core.designsystem.R
 
 /** Hour, minute and — when the locale uses one — a period, each on its own wheel. */
 @Composable
@@ -112,7 +114,7 @@ fun AppTimePickerDialog(
     onDismissRequest: () -> Unit,
     onConfirm: (LocalTime) -> Unit,
     modifier: Modifier = Modifier,
-    title: String = "Select time",
+    title: String = stringResource(R.string.designsystem_select_time),
     minuteStep: Int = 1,
 ) {
     var draft by remember { mutableStateOf(initialTime) }
@@ -137,13 +139,13 @@ fun AppTimePickerDialog(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
         ) {
             AppButton(
-                text = "Cancel",
+                text = stringResource(R.string.designsystem_cancel),
                 onClick = onDismissRequest,
                 variant = ButtonVariant.Secondary,
                 modifier = Modifier.weight(1f),
             )
             AppButton(
-                text = "Confirm",
+                text = stringResource(R.string.designsystem_confirm),
                 onClick = {
                     onDismissRequest()
                     onConfirm(draft)

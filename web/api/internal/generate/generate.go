@@ -40,6 +40,7 @@ type Request struct {
 	MotionStyle     string     `json:"motion_style,omitempty"`
 	DesignStyle     string     `json:"design_style,omitempty"`
 	HapticsEnabled  *bool      `json:"haptics_enabled,omitempty"`
+	Languages       []string   `json:"languages,omitempty"`
 	Keystores       []Keystore `json:"keystores,omitempty"`
 }
 
@@ -138,6 +139,9 @@ func (g *Generator) Run(ctx context.Context, request Request) (Result, func(), e
 	cmd.Stdin = bytes.NewReader(body)
 	// Unbuffered, so a crash's traceback is not lost in a pipe that never flushes.
 	cmd.Env = append(os.Environ(), "PYTHONUNBUFFERED=1", "PYTHONIOENCODING=utf-8")
+	ownProcessGroup(cmd)
+	// A child that outlives the kill still holds the output pipes open; stop waiting on them.
+	cmd.WaitDelay = 5 * time.Second
 
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout

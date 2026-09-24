@@ -64,11 +64,18 @@ fun AppTheme(
     }
 
     val indication = remember(resolved) { AppIndication(resolved.contentPrimary) }
+    val windowSize = rememberAppWindowSize()
+    val layout = remember(windowSize) { AppLayout.forWindow(windowSize) }
+    // The gutter every screen already uses follows the window, so margins grow on large screens
+    // without any screen asking.
+    val spacing = remember(layout) { AppSpacing(gutter = layout.gutter) }
 
     CompositionLocalProvider(
         LocalAppColors provides resolved,
         LocalAppTypography provides typography,
-        LocalAppSpacing provides AppSpacing(),
+        LocalAppSpacing provides spacing,
+        LocalAppWindowSize provides windowSize,
+        LocalAppLayout provides layout,
         LocalAppShapes provides style.shapes,
         LocalAppElevation provides AppElevation(),
         LocalAppSizes provides sizes,
@@ -128,4 +135,16 @@ object AppTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalAppStyle.current
+
+    /** The window's size classes. Decide layout from this, never from orientation or device. */
+    val windowSize: AppWindowSize
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppWindowSize.current
+
+    /** Measurements that follow the window: gutters, pane widths, maximum content widths. */
+    val layout: AppLayout
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppLayout.current
 }

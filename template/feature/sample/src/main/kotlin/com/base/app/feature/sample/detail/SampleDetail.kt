@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import com.base.app.core.common.AppResult
 import com.base.app.core.common.mvi.LoadState
 import com.base.app.core.common.mvi.MviViewModel
@@ -25,6 +26,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.asString
 import com.base.app.data.sample.SampleItem
 import com.base.app.data.sample.SampleRepository
+import com.base.app.feature.sample.R
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -91,10 +93,11 @@ fun SampleDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     AppScaffold(
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
             AppBackTopBar(
-                title = state.item?.title ?: "Detail",
+                title = state.item?.title ?: stringResource(R.string.sample_detail_title),
                 onBack = { onEvent(SampleDetailEvent.BackClicked) },
             )
         },

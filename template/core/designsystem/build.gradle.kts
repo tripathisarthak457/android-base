@@ -17,6 +17,9 @@ dependencies {
     api(libs.androidx.compose.animation)
     api(libs.androidx.compose.ui.tooling.preview)
 
+    // Android's own window size classes, so breakpoints match every other app on the device.
+    implementation(libs.androidx.window.core)
+
     // <opt:googlefonts>
     implementation(libs.androidx.compose.ui.text.googlefonts)
     // </opt:googlefonts>

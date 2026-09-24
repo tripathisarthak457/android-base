@@ -71,6 +71,9 @@ internal fun Project.configureCompose(extension: CommonExtension) {
     }
 }
 
+/** Core modules that draw copy a user reads, and so are held to the same rule as features. */
+private val LOCALISED_CORE = setOf(":app", ":core:designsystem", ":core:ui")
+
 /** Three build-time guards over every module's Kotlin sources. */
 internal fun Project.registerComposeGuards() {
     val kotlinSources = fileTree("src") { include("**/*.kt") }
@@ -86,9 +89,9 @@ internal fun Project.registerComposeGuards() {
         composePluginApplied.set(
             provider { pluginManager.hasPlugin("org.jetbrains.kotlin.plugin.compose") },
         )
-        // Feature modules only, decided from the path. The design system takes its copy as
-        // parameters and the catalog's copy is documentation, so neither is translated.
-        localisedStrings.set(projectPath.startsWith(":feature:"))
+        // Everything a user reads: features, the app shell, and the defaults the design system
+        // and core UI draw. The catalog is left out because its copy is documentation.
+        localisedStrings.set(projectPath.startsWith(":feature:") || projectPath in LOCALISED_CORE)
     }
 
     tasks.named("preBuild") { dependsOn(guard) }
@@ -106,7 +109,7 @@ internal abstract class VerifyComposeUsageTask : org.gradle.api.DefaultTask() {
     @get:Input
     abstract val composePluginApplied: Property<Boolean>
 
-    /** Only feature modules. The design system takes its copy as parameters. */
+    /** Modules whose copy reaches a user, and so has to be translatable. */
     @get:Input
     abstract val localisedStrings: Property<Boolean>
 
@@ -155,10 +158,8 @@ internal abstract class VerifyComposeUsageTask : org.gradle.api.DefaultTask() {
                 if (declaration != null) inPreview = declaration.groupValues[1].endsWith("Preview")
                 if (inPreview) return@forEachIndexed
 
-                val match = COPY_PARAMETER.find(line) ?: return@forEachIndexed
-                val literal = match.groupValues[2]
-                if (!literal.contains(' ') || literal.none { it.isLowerCase() }) return@forEachIndexed
-                offenders += "${file.name}:${index + 1}: ${line.trim()}"
+                if (line.trimStart().startsWith("*") || line.trimStart().startsWith("//")) return@forEachIndexed
+                if (copyIn(line).any(::isProse)) offenders += "${file.name}:${index + 1}: ${line.trim()}"
             }
         }
 
@@ -178,6 +179,19 @@ internal abstract class VerifyComposeUsageTask : org.gradle.api.DefaultTask() {
             follows a locale change without the ViewModel knowing there was one.
             """.trimIndent(),
         )
+    }
+
+    /** The literals on [line] that end up on screen: copy parameters, and fallbacks turned into UiText. */
+    private fun copyIn(line: String): List<String> = buildList {
+        COPY_PARAMETER.findAll(line).forEach { add(it.groupValues[2]) }
+        if (COPY_PARAMETER.containsMatchIn(line)) ELSE_BRANCH.findAll(line).forEach { add(it.groupValues[1]) }
+        if ("UiText" in line) UI_TEXT_FALLBACK.findAll(line).forEach { add(it.groupValues[1]) }
+    }
+
+    /** A word or a sentence, once string templates are taken out. "Next" is copy; "${a} ${b}" is not. */
+    private fun isProse(literal: String): Boolean {
+        val words = literal.replace(TEMPLATE, "").trim()
+        return words.matches(CAPITALISED_WORD) || (' ' in words && words.any(Char::isLowerCase))
     }
 
     private fun verifyComposeCompiler(files: List<java.io.File>) {
@@ -211,9 +225,15 @@ internal abstract class VerifyComposeUsageTask : org.gradle.api.DefaultTask() {
 
         // Plain strings, not raw ones: a regex ending in a quote inside """ is hard to read.
         val FUNCTION = Regex("\\bfun\\s+(\\w+)\\s*\\(")
+        // Any parameter named for copy, including prefixed ones like confirmLabel, and the first
+        // branch of an `if` written straight into one.
         val COPY_PARAMETER = Regex(
-            "\\b(text|title|label|helper|supporting|message|description|placeholder|" +
-                "overline|subtitle|actionLabel|caption|contentDescription)\\s*=\\s*\"([^\"]*)\"",
+            "\\b(\\w*(?:[Tt]ext|[Tt]itle|[Ll]abel|[Hh]elper|[Ss]upporting|[Mm]essage|[Dd]escription|" +
+                "[Pp]laceholder|[Oo]verline|[Ss]ubtitle|[Cc]aption))\\s*=\\s*(?:if\\s*\\(.*?\\)\\s*)?\"([^\"]*)\"",
         )
+        val ELSE_BRANCH = Regex("\\belse\\s+\"([^\"]*)\"")
+        val UI_TEXT_FALLBACK = Regex("(?:\\?:\\s*|UiText\\.Dynamic\\(\\s*)\"([^\"]*)\"")
+        val TEMPLATE = Regex("\\$\\{[^}]*}|\\$\\w+")
+        val CAPITALISED_WORD = Regex("[A-Z][a-z].*")
     }
 }
