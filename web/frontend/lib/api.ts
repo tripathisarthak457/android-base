@@ -139,7 +139,10 @@ export async function fetchCatalogue(signal?: AbortSignal): Promise<Catalogue> {
   if (!response.ok) {
     throw new ApiError("Could not load the options.", response.status);
   }
-  return response.json();
+  const catalogue = (await response.json()) as Catalogue;
+  // A browser can hold the previous deploy's catalogue for the length of its max-age, so a field
+  // added since then may be missing. The page offers less rather than failing to render.
+  return { ...catalogue, languages: catalogue.languages ?? [] };
 }
 
 /** Posts the spec and returns the zip as a Blob. */

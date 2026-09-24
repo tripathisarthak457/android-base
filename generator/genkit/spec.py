@@ -39,6 +39,9 @@ DESUGARING_THRESHOLD = 26
 DEFAULT_MIN_SDK = 26
 DEFAULT_TARGET_SDK = 37
 DEFAULT_COMPILE_SDK = 37
+#: The lowest compileSdk the template's libraries accept. AndroidX publishes the level each release
+#: needs in its AAR metadata, and compiling below it fails `checkAarMetadata` on the first build.
+MIN_COMPILE_SDK = 37
 
 
 def describe_api_level(level: int) -> str:
@@ -816,6 +819,11 @@ class ProjectSpec:
             raise SpecError("targetSdk cannot be lower than minSdk.")
         if self.compile_sdk < self.target_sdk:
             raise SpecError("compileSdk cannot be lower than targetSdk.")
+        if self.compile_sdk < MIN_COMPILE_SDK:
+            raise SpecError(
+                f"compileSdk must be at least {MIN_COMPILE_SDK}: the template's libraries are built "
+                "against it, and an older one fails the project's first build."
+            )
         if self.version_code < 1:
             raise SpecError("versionCode must be 1 or greater.")
         if not re.match(r"^\d+\.\d+\.\d+$", self.version_name):

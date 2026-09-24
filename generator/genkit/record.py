@@ -39,7 +39,13 @@ def write(project: Path, spec: ProjectSpec, repository: Path) -> None:
 
 
 def _commit(repository: Path) -> str:
-    """The generator's commit, or "unknown" where it runs from a copy without git history."""
+    """
+    The generator's commit. A deployment has no git history, so CI writes the commit into
+    generator/COMMIT before deploying; "unknown" only when neither is there.
+    """
+    stamped = repository / "generator" / "COMMIT"
+    if stamped.is_file():
+        return stamped.read_text(encoding="utf-8").strip() or "unknown"
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--short=12", "HEAD"],

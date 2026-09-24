@@ -807,3 +807,29 @@ class RecordTest(unittest.TestCase):
         self.assertEqual(made.feature_modules, again.feature_modules)
         self.assertEqual(made.languages, again.languages)
         self.assertEqual((), again.keystores)
+
+
+class CommitStampTest(unittest.TestCase):
+
+    def test_a_deployment_without_git_reads_the_commit_ci_wrote(self):
+        from genkit.record import _commit
+
+        with tempfile.TemporaryDirectory() as temp:
+            repository = Path(temp)
+            (repository / "generator").mkdir()
+            (repository / "generator" / "COMMIT").write_text("8e3461d0a1b2\n", encoding="utf-8")
+
+            self.assertEqual("8e3461d0a1b2", _commit(repository))
+
+    def test_no_git_and_no_stamp_is_unknown(self):
+        from genkit.record import _commit
+
+        with tempfile.TemporaryDirectory() as temp:
+            self.assertEqual("unknown", _commit(Path(temp)))
+
+
+class CompileSdkTest(unittest.TestCase):
+
+    def test_a_compile_sdk_below_what_the_libraries_need_is_refused(self):
+        with self.assertRaisesRegex(SpecError, "compileSdk must be at least"):
+            spec(target_sdk=35, compile_sdk=36).validated()

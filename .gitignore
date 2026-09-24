@@ -63,3 +63,6 @@ Thumbs.db
 /out/
 *.zip
 .env*
+
+# Written by CI before a deploy, read by generated projects' generator-spec.json.
+generator/COMMIT

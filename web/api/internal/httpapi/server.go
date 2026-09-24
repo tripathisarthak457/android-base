@@ -4,6 +4,7 @@ package httpapi
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -29,7 +30,9 @@ type Server struct {
 	origins    []string
 	adminToken string
 	catalogue  json.RawMessage
-	startedAt  time.Time
+	// A strong validator for the catalogue, fixed for the life of the process.
+	catalogueTag string
+	startedAt    time.Time
 
 	// background outlives any one request, for the recording that must not be cancelled when a
 	// client disconnects mid-download.
@@ -56,16 +59,17 @@ func New(
 	}
 
 	return &Server{
-		cfg:        cfg,
-		generator:  generator,
-		store:      st,
-		log:        log,
-		limiter:    newLimiter(cfg.RateLimitPerHour),
-		origins:    cfg.AllowedOrigins,
-		adminToken: cfg.AdminToken,
-		catalogue:  catalogue,
-		startedAt:  time.Now(),
-		background: context.Background(),
+		cfg:          cfg,
+		generator:    generator,
+		store:        st,
+		log:          log,
+		limiter:      newLimiter(cfg.RateLimitPerHour),
+		origins:      cfg.AllowedOrigins,
+		adminToken:   cfg.AdminToken,
+		catalogue:    catalogue,
+		catalogueTag: fmt.Sprintf(`"%x"`, sha256.Sum256(catalogue)),
+		startedAt:    time.Now(),
+		background:   context.Background(),
 	}, nil
 }
 
@@ -121,9 +125,18 @@ func (s *Server) handleHealth(w http.ResponseWriter, _ *http.Request) {
 //
 // The site's form is rendered from this rather than from a list checked into the frontend, so a
 // feature added to the Python cannot become a checkbox that the site does not offer.
-func (s *Server) handleOptions(w http.ResponseWriter, _ *http.Request) {
+//
+// Revalidated on every load rather than trusted for minutes: a browser holding the previous deploy's
+// catalogue would render a form the page's code no longer matches. An unchanged catalogue costs a
+// 304 with no body.
+func (s *Server) handleOptions(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("ETag", s.catalogueTag)
+	if r.Header.Get("If-None-Match") == s.catalogueTag {
+		w.WriteHeader(http.StatusNotModified)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Header().Set("Cache-Control", "public, max-age=300")
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(s.catalogue)
 }
