@@ -124,8 +124,8 @@ val DarkColors = AppColors(
     accent = AccentDark,
     accentPressed = AccentDarkPressed,
     accentSubtle = AccentSubtleDark,
-    // Near-black rather than white: at this lightness the accent needs dark text on it to stay
-    // legible, and white-on-light-blue is the single most common contrast failure in dark themes.
+    // Whichever of near-black or white reads better on this lighter shade. For a light accent it is
+    // near-black: white on light blue is the most common contrast failure in dark themes.
     onAccent = Color(0xFF06101F),
 
     secondary = SecondaryDark,

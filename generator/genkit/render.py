@@ -665,7 +665,7 @@ def apply_accent(destination: Path, spec: ProjectSpec) -> None:
     ink = (0.043, 0.063, 0.106)
 
     replacements: dict[str, str] = {}
-    for prefix, base in brand_colours(spec).items():
+    for prefix, (base, dark) in brand_shades(spec).items():
         replacements.update(
             {
                 prefix: _to_argb(base),
@@ -674,7 +674,7 @@ def apply_accent(destination: Path, spec: ProjectSpec) -> None:
                 # The dark palette needs a lighter, slightly desaturated version: the same hex
                 # that reads as confident on white reads as muddy on near-black, and a fully
                 # saturated colour on a dark surface vibrates.
-                f"{prefix}Dark": _to_argb(_shift(_mix(base, white, 0.22), 1.0, 0.92)),
+                f"{prefix}Dark": _to_argb(dark),
                 f"{prefix}DarkPressed": _to_argb(_shift(_mix(base, white, 0.40), 1.0, 0.85)),
                 f"{prefix}SubtleDark": _to_argb(_mix(ink, base, 0.14)),
             }
@@ -718,8 +718,62 @@ def apply_accent(destination: Path, spec: ProjectSpec) -> None:
         path.write_text(text, encoding="utf-8")
 
 
+#: The dark text each palette puts on a brand colour, Ink900 and the dark theme's near-black.
+_LIGHT_THEME_INK = (0x0B / 255, 0x0E / 255, 0x14 / 255)
+_DARK_THEME_INK = (0x06 / 255, 0x10 / 255, 0x1F / 255)
+_WHITE = (1.0, 1.0, 1.0)
+#: WCAG AA for body text, which is what a label on a button is.
+_AA = 4.5
+
+
+def _contrast(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
+    light, dark = sorted((_relative_luminance(a), _relative_luminance(b)), reverse=True)
+    return (light + 0.05) / (dark + 0.05)
+
+
+def _dark_variant(base: tuple[float, float, float]) -> tuple[float, float, float]:
+    return _shift(_mix(base, _WHITE, 0.22), 1.0, 0.92)
+
+
+def _legible(colour: tuple[float, float, float], ink: tuple[float, float, float]):
+    """
+    [colour], or the nearest darker shade that white or [ink] text on it reads at AA. Mid-tones sit
+    in a band where neither reaches 4.5:1; darkening a few percent moves them into white's range.
+    """
+    for _ in range(_MAX_DARKENING_STEPS):
+        if max(_contrast(colour, _WHITE), _contrast(colour, ink)) >= _AA:
+            return colour
+        colour = _shift(colour, 0.97)
+    return colour
+
+
+_MAX_DARKENING_STEPS = 40
+
+
+Rgb = tuple[float, float, float]
+
+
+def brand_shades(spec: ProjectSpec) -> dict[str, tuple[Rgb, Rgb]]:
+    """Each brand colour as the light and the dark palette draw it, both legible under text."""
+    return {
+        prefix: (
+            _legible(base, _LIGHT_THEME_INK),
+            _legible(_dark_variant(_legible(base, _LIGHT_THEME_INK)), _DARK_THEME_INK),
+        )
+        for prefix, base in brand_colours(spec).items()
+    }
+
+
+def _readable_on(colour: Rgb, ink: Rgb, white: str, dark: str) -> str:
+    """Whichever of white or [ink] text contrasts more with [colour], by its Kotlin name."""
+    return white if _contrast(colour, _WHITE) >= _contrast(colour, ink) else dark
+
+
 def _apply_on_brand(destination: Path, spec: ProjectSpec) -> None:
-    """Picks black or white for text sitting on each brand colour."""
+    """
+    Picks black or white for text sitting on each brand colour, in each palette. The dark palette
+    draws a lighter shade of the same colour, so its answer can differ from the light one's.
+    """
     colors = (
         destination
         / "core/designsystem/src/main/kotlin"
@@ -730,16 +784,20 @@ def _apply_on_brand(destination: Path, spec: ProjectSpec) -> None:
         return
 
     text = colors.read_text(encoding="utf-8")
-    for prefix, base in brand_colours(spec).items():
-        luminance = _relative_luminance(base)
-        on_white = 1.05 / (luminance + 0.05)
-        on_black = (luminance + 0.05) / 0.05
-        readable = "White" if on_white >= on_black else "Ink900"
-
+    for prefix, (light, dark) in brand_shades(spec).items():
         role = prefix[0].lower() + prefix[1:]
+        on_light = _readable_on(light, _LIGHT_THEME_INK, "White", "Ink900")
+        on_dark = _readable_on(dark, _DARK_THEME_INK, "White", "Color(0xFF06101F)")
         text = re.sub(
             rf"({role}Subtle = {prefix}SubtleLight,\s*\n\s*on{prefix} = )\w+",
-            rf"\g<1>{readable}",
+            lambda m, on=on_light: m.group(1) + on,
+            text,
+            count=1,
+        )
+        # Comment lines may sit between the subtle shade and the text colour in the dark palette.
+        text = re.sub(
+            rf"({role}Subtle = {prefix}SubtleDark,\s*\n(?:\s*//[^\n]*\n)*\s*on{prefix} = )[^,\n]+",
+            lambda m, on=on_dark: m.group(1) + on,
             text,
             count=1,
         )

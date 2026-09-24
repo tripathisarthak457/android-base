@@ -833,3 +833,33 @@ class CompileSdkTest(unittest.TestCase):
     def test_a_compile_sdk_below_what_the_libraries_need_is_refused(self):
         with self.assertRaisesRegex(SpecError, "compileSdk must be at least"):
             spec(target_sdk=35, compile_sdk=36).validated()
+
+
+class BrandContrastTest(unittest.TestCase):
+    """Whatever accent is typed, text on every brand colour reads at AA in both palettes."""
+
+    def test_every_accent_gives_legible_brand_colours(self):
+        import colorsys
+
+        from genkit.render import (
+            _DARK_THEME_INK,
+            _LIGHT_THEME_INK,
+            _WHITE,
+            _contrast,
+            _readable_on,
+            brand_shades,
+        )
+
+        failures = []
+        for hue in range(0, 360, 10):
+            for lightness in (0.2, 0.3, 0.4, 0.45, 0.5, 0.55, 0.6, 0.7, 0.8):
+                for saturation in (0.45, 0.7, 0.95):
+                    r, g, b = colorsys.hls_to_rgb(hue / 360, lightness, saturation)
+                    accent = "#%02X%02X%02X" % (round(r * 255), round(g * 255), round(b * 255))
+                    for prefix, (light, dark) in brand_shades(spec(accent_colour=accent)).items():
+                        for shade, ink in ((light, _LIGHT_THEME_INK), (dark, _DARK_THEME_INK)):
+                            text = _WHITE if _readable_on(shade, ink, "w", "i") == "w" else ink
+                            if _contrast(shade, text) < 4.5:
+                                failures.append((accent, prefix, round(_contrast(shade, text), 2)))
+
+        self.assertEqual([], failures[:10])
