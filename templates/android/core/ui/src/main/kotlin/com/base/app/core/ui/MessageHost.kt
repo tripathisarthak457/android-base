@@ -1,38 +1,44 @@
 package com.base.app.core.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import com.base.app.core.common.mvi.MessageKind
-import com.base.app.core.common.mvi.UiMessage
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.base.app.core.designsystem.component.feedback.AppSnackbar
 import com.base.app.core.designsystem.component.feedback.AppSnackbarHost
 import com.base.app.core.designsystem.component.feedback.AppTone
+import com.base.app.core.mvi.MessageKind
+import com.base.app.core.mvi.UiMessage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 
-/** Renders the messages a ViewModel emits, and times them out. */
+/**
+ * Renders the messages a ViewModel emits, and times them out. Collected only while the screen is
+ * started: a message taken from the channel while the app is in the background would time out
+ * with nothing on screen, and the person would never see it.
+ */
 @Composable
 fun BoxScope.MessageHost(messages: Flow<UiMessage>) {
     var current by remember { mutableStateOf<UiMessage?>(null) }
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(messages) {
-        messages.collect { current = it }
+    LaunchedEffect(messages, lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            messages.collect { current = it }
+        }
     }
 
-    LaunchedEffect(current) {
+    // Keyed on the id, so the same words emitted twice restart the timer instead of being ignored.
+    LaunchedEffect(current?.id) {
         val message = current ?: return@LaunchedEffect
         delay(message.durationMillis)
-        // Only clear if it is still the same message: a replacement arriving mid-delay starts its
-        // own effect, and this one must not dismiss it on the old timer.
-        if (current === message) current = null
+        if (current?.id == message.id) current = null
     }
 
     AppSnackbarHost(visible = current != null) {
@@ -46,19 +52,6 @@ fun BoxScope.MessageHost(messages: Flow<UiMessage>) {
                 onDismiss = { current = null },
             )
         }
-    }
-}
-
-/** A screen that hosts its own messages. */
-@Composable
-fun MessagingSurface(
-    messages: Flow<UiMessage>,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    Box(modifier = modifier.fillMaxSize()) {
-        content()
-        MessageHost(messages)
     }
 }
 

@@ -17,8 +17,6 @@ class AndroidDataConventionPlugin : Plugin<Project> {
 
         dependencies {
             add("api", project(":core:common"))
-            add("api", project(":core:model"))
-            add("implementation", project(":core:coroutines"))
             add("implementation", project(":core:datastore"))
             // <opt:network>
             add("implementation", project(":core:network"))
