@@ -1,0 +1,191 @@
+# Device gates. `perf.sh --gate <column>` compares the median of the runs with one column and exits
+# non-zero on any failing row, including a row of that column the invocation did not measure.
+#
+# Columns: `solid` (the everything preset, solid chrome), `standard` and `lean` (their presets, only
+# the rows that apply to them), `smoke` (a tolerance against a reference run given with --baseline).
+#
+# A limit is a number (the metric must be at or under it), `true` (a check that must pass in every
+# run) or "ratchet" (reported, not yet gated: the first measured value plus 10 % goes here). A smoke
+# tolerance is a table: the reference value plus max(`add`, reference × `scale`).
+#
+# Measured on a Redmi Note 10 Pro (120 Hz, 8.33 ms frame budget) with release builds compiled with
+# their baseline profile. Frame times are UI-thread milliseconds; janky is the FrameTimeline count.
+
+[[row]]
+metric = "tab_first_visit.first_frame_ms.median"
+label = "First visit to a tab, first frame median (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "tab_first_visit.first_frame_ms.max"
+label = "First visit to a tab, first frame max (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "tabs.janky_pct"
+label = "Tab switch, janky frames (%)"
+solid = 1.0
+standard = 1.0
+lean = 1.0
+smoke = { add = 0.5, scale = 0.2 }
+
+[[row]]
+metric = "tabs.first_frame_ms.median"
+label = "Tab switch to a visited tab, first frame median (ms)"
+solid = 8.0
+standard = 8.0
+lean = 8.0
+smoke = { add = 2.0 }
+
+[[row]]
+metric = "tabs.first_frame_ms.max"
+label = "Tab switch to a visited tab, first frame max (ms)"
+solid = 16.0
+standard = 16.0
+lean = 16.0
+
+[[row]]
+metric = "pushpop.push_first_frame_ms.median"
+label = "Push, first frame median (ms)"
+solid = "ratchet"
+smoke = { add = 2.0 }
+
+[[row]]
+metric = "pushpop.push_first_frame_ms.max"
+label = "Push, first frame max (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "pushpop.pop_first_frame_ms.median"
+label = "Pop, first frame median (ms)"
+solid = 8.0
+standard = 8.0
+smoke = { add = 2.0 }
+
+[[row]]
+metric = "pushpop.pop_first_frame_ms.max"
+label = "Pop, first frame max (ms)"
+solid = 16.0
+standard = 16.0
+
+[[row]]
+metric = "pushpop.janky_pct"
+label = "Push/pop with the Back key, janky frames (%)"
+solid = 2.0
+standard = 2.0
+lean = 2.0
+smoke = { add = 0.5, scale = 0.2 }
+
+[[row]]
+metric = "pushpop.p99_ms"
+label = "Push/pop with the Back key, p99 frame (ms)"
+solid = 25.0
+standard = 25.0
+lean = 25.0
+
+[[row]]
+metric = "pushpop_gesture.janky_pct"
+label = "Push/pop with the back gesture, janky frames (%)"
+solid = 2.0
+
+[[row]]
+metric = "rapid_back.alive"
+label = "Rapid Back: the app is still running"
+solid = true
+
+[[row]]
+metric = "rapid_back.final_screen"
+label = "Rapid Back: lands on the expected screen"
+solid = true
+
+[[row]]
+metric = "rapid_back.janky_pct"
+label = "Rapid Back, janky frames (%)"
+solid = 4.0
+
+[[row]]
+metric = "rapid_back.pop_frame_ms.median"
+label = "Rapid Back, slowest frame of the coalesced pop, median (ms)"
+solid = 8.0
+
+[[row]]
+metric = "rapid_back.pop_frame_ms.max"
+label = "Rapid Back, slowest frame of the coalesced pop, max (ms)"
+solid = 16.0
+
+[[row]]
+metric = "nav_stress.alive"
+label = "Navigation stress: the app is still running"
+solid = true
+
+[[row]]
+metric = "nav_stress.invariants"
+label = "Navigation stress: stack invariants hold"
+solid = true
+
+[[row]]
+metric = "nav_stress.janky_pct"
+label = "Navigation stress, janky frames (%)"
+solid = 4.0
+
+[[row]]
+metric = "restore.restored"
+label = "Process death: tab, stacks and presented sheet restored"
+solid = true
+
+[[row]]
+metric = "restore.back_pops"
+label = "Process death: Back pops the restored stack"
+solid = true
+
+[[row]]
+metric = "scroll_root.janky_pct"
+label = "Scroll a root list, janky frames (%)"
+solid = 0.5
+standard = 0.5
+smoke = { add = 0.5, scale = 0.2 }
+
+[[row]]
+metric = "scroll_root.gpu_p90_ms"
+label = "Scroll a root list, GPU p90 (ms)"
+solid = 7.0
+standard = 7.0
+smoke = { add = 1.0 }
+
+[[row]]
+metric = "scroll_minimize.janky_pct"
+label = "Scroll with the bar minimizing, janky frames (%)"
+solid = 0.5
+
+[[row]]
+metric = "scroll_minimize.gpu_p90_ms"
+label = "Scroll with the bar minimizing, GPU p90 (ms)"
+solid = 7.0
+
+[[row]]
+metric = "idle.frames"
+label = "Idle 5 s on every tab, frames rendered"
+solid = 0
+standard = 0
+lean = 0
+smoke = { add = 0.0 }
+
+[[row]]
+metric = "coldstart.median_ms"
+label = "Cold start, speed-profile, median (ms)"
+solid = 380
+standard = 380
+lean = 380
+
+[[row]]
+metric = "coldstart_installed.median_ms"
+label = "Cold start as installed (profile from the APK only), median (ms)"
+solid = 400
+standard = 400
+lean = 400
+
+[[row]]
+metric = "meminfo.pss_mb"
+label = "PSS after the journey (MB)"
+solid = 70
+standard = 70
