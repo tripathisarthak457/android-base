@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.navigationevent.compose)
     implementation(libs.androidx.activity.compose)
 
     api(libs.kotlinx.serialization.json)

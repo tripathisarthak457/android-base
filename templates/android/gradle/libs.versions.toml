@@ -21,7 +21,8 @@ androidxCore = "1.19.0"
 androidxLifecycle = "2.11.0"
 androidxActivity = "1.13.0"
 composeBom = "2026.09.00"
-navigation3 = "1.1.7"
+navigation3 = "1.2.0"
+navigationevent = "1.2.0"
 splashscreen = "1.2.0"
 biometric = "1.1.0"
 
@@ -97,6 +98,7 @@ androidx-compose-animation = { group = "androidx.compose.animation", name = "ani
 androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
 androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
 androidx-lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidxLifecycle" }
+androidx-navigationevent-compose = { group = "androidx.navigationevent", name = "navigationevent-compose", version.ref = "navigationevent" }
 
 # ── DI ───────────────────────────────────────────────────────────────────────
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

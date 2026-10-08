@@ -96,7 +96,11 @@ class Device:
         return int(match.group(1)) / 10 if match else None
 
     def wake(self):
+        """Turns the screen on; a locked phone stops the run, since nothing can be measured behind it."""
         self.shell("input keyevent KEYCODE_WAKEUP")
+        time.sleep(0.5)
+        if "isKeyguardShowing=true" in self.shell("dumpsys window | grep -m1 isKeyguardShowing"):
+            raise HarnessError("the phone is locked: unlock it (and keep the screen on) before measuring")
 
     def ui(self, attempts=4):
         """The current UI hierarchy. Retried: uiautomator refuses while the screen keeps animating."""
@@ -339,10 +343,10 @@ class Run:
     # Start
 
     def start(self, apk):
+        self.device.wake()
         self.app.install(apk)
         self.app.clear()
         self.app.compile_with_apk_profile()
-        self.device.wake()
         self.device.shell("input keyevent KEYCODE_HOME")
         self.app.launch()
         tree, tabs = self.wait_for(lambda t: t.tabs(), "the tab bar (tab_0)", timeout=30)
