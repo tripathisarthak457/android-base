@@ -879,6 +879,7 @@ func (s *Store) Generations(ctx context.Context, f Filter, before int64, limit i
 			&g.DeviceClass, &g.FailureReason, &g.FailureField, &g.GeneratorCommit, &spec); err != nil {
 			return err
 		}
+		g.At = g.At.UTC()
 		g.Spec = spec
 		rows = append(rows, g)
 		return nil
@@ -920,6 +921,7 @@ func (s *Store) Errors(ctx context.Context, f Filter, includeResolved bool, limi
 				&g.Occurrences, &g.FirstSeen, &g.LastSeen, &g.Resolved); err != nil {
 				return err
 			}
+			g.FirstSeen, g.LastSeen = g.FirstSeen.UTC(), g.LastSeen.UTC()
 			groups = append(groups, g)
 			return nil
 		})

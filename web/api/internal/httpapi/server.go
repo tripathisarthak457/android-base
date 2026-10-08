@@ -287,7 +287,10 @@ func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	payload.VisitorHash = s.store.VisitorHash(s.clientKey(r), time.Now())
-	payload.UserAgent = r.UserAgent()
+	// The browser family is what a report needs to be reproduced; the raw user agent is not stored
+	// anywhere (MASTER-PLAN A10.2).
+	agent := telemetry.ClassifyAgent(r.UserAgent(), r.Header.Get("Sec-CH-UA-Mobile"))
+	payload.UserAgent = agent.Browser + " · " + agent.OS + " · " + agent.DeviceClass
 
 	id, err := s.store.SaveFeedback(r.Context(), payload)
 	if err != nil {

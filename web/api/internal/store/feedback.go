@@ -115,6 +115,7 @@ func (s *Store) FeedbackList(ctx context.Context, f Filter, status string, limit
 		); err != nil {
 			return nil, err
 		}
+		r.CreatedAt = r.CreatedAt.UTC()
 		all = append(all, r)
 	}
 	return all, rows.Err()
