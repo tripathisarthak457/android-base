@@ -1,19 +1,32 @@
-# What not to upload to Vercel. Without this the CLI packs `templates/android/`'s Gradle output — 2.7GB on
-# any machine that has ever built it — to deliver the 1.5MB the container actually needs.
-#
-# `templates/` and `generator/` themselves must stay: the API service is a container built from the
-# repository root, and they are its payload.
+# What not to upload to Vercel. Both services build from this upload: the site from `web/frontend/`
+# and the API container from the root (see `.dockerignore` for what that image takes). So
+# `generator/`, `templates/` and `tokens/` must stay; build output inside them must not, or the CLI
+# packs gigabytes of Gradle and Xcode output to deliver a few megabytes.
 
 **/build/
 **/.gradle/
 **/.kotlin/
+**/.cxx/
 **/.idea/
+**/captures/
 **/__pycache__/
+**/DerivedData/
+**/.build/
+**/xcuserdata/
+**/.swiftpm/
+**/kotlin-js-store/
 **/node_modules/
 **/.next/
 **/*.tsbuildinfo
-**/.cxx
-**/captures/
+*.zip
+
+# Local working state that is in .gitignore but not, by itself, kept out of an upload.
+/out/
+/tools/
+.claude/
+.agents/
+.venv/
+venv/
 
 # Signing material and anything that has ever held a secret.
 **/local.properties
