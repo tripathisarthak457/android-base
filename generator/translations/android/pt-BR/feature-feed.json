@@ -1,0 +1,12 @@
+{
+  "feed_title": "Feed",
+  "feed_subtitle": "Carrega dez de cada vez enquanto você rola",
+  "feed_author": "Autor %1$d",
+  "feed_empty_title": "Nada para mostrar",
+  "feed_empty_message": "Quando houver novidades, elas aparecem aqui.",
+  "feed_load_failed": "Não foi possível carregar o feed.",
+  "feed_load_more_failed": "Não foi possível carregar mais.",
+  "feed_retry": "Tentar de novo",
+  "feed_show_more": "Mostrar mais",
+  "feed_show_less": "Mostrar menos"
+}

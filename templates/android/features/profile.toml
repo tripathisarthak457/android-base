@@ -1,0 +1,15 @@
+key = "profile"
+title = "Profile screen"
+headline = "A profile tab with a photo"
+description = """
+A Profile tab with an avatar, name and bio, saved on the device per user. With the media picker
+on, the avatar can be a photo."""
+group = "Sign-in and account"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "data/profile",
+  "feature/profile",
+]
+legacy = []

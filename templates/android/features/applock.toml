@@ -1,0 +1,14 @@
+key = "applock"
+title = "Biometric app lock"
+headline = "Ask for a fingerprint on resume"
+description = """
+A fingerprint, face or screen-lock prompt when the app comes back from the background, a setting
+to turn it on, and the app kept out of the task switcher's thumbnail."""
+group = "Sign-in and account"
+default = false
+# The toggle lives on the settings screen, and the unlock screen reads the stored theme so it does
+# not flash the wrong one on the way in.
+requires = ["settings"]
+implied_only = false
+owns = ["app/src/main/kotlin/{pkg_path}/lock"]
+legacy = []
