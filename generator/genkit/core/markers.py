@@ -273,7 +273,7 @@ def render(
                 raise TemplateError(path, number, f"</opt-else:{expr}> closes nothing")
             stack.pop()
             removed()
-        elif match := patterns.inline.match(body):
+        elif (match := patterns.inline.match(body)) and not MARKER_TEXT.search(match.group("rest")):
             expression = Expression.parse(match.group("expr"), known, path, number)
             if active() and expression.holds(enabled):
                 out.append((match.group("rest") + ending, False))

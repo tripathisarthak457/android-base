@@ -290,8 +290,9 @@ def upgrade(raw: object, platform: str) -> tuple[dict[str, Any], list[str], list
         data.setdefault("architecture", "compact")
         moved = _move_android_fields(data)
         notes.append(
-            "Upgraded a schema-1 spec: "
-            + (f"{_join(moved)} now live under \"android\"." if moved else "no fields moved.")
+            f"Upgraded a schema-1 spec: {_join(moved)} now live under \"android\"."
+            if moved
+            else "Upgraded a schema-1 spec (it has no \"schema\" field)."
         )
     else:
         data.setdefault("platform", platform)

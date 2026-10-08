@@ -17,6 +17,7 @@ import argparse
 import json
 import shutil
 import sys
+from contextlib import redirect_stdout
 from pathlib import Path
 from typing import Any
 
@@ -158,7 +159,9 @@ def parse_override(item: str) -> tuple[str, Any]:
 
 def load_raw(args: argparse.Namespace, target) -> object:
     if args.spec is None:
-        return prompts.run_wizard(target, select_all=args.all, preset=args.preset)
+        # With --json, stdout carries the result alone, so the questions go to stderr.
+        with redirect_stdout(sys.stderr if args.json else sys.stdout):
+            return prompts.run_wizard(target, select_all=args.all, preset=args.preset)
     try:
         raw = json.loads(args.spec.read_text(encoding="utf-8"))
     except FileNotFoundError:

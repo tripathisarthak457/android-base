@@ -132,6 +132,7 @@ class ErrorTest(unittest.TestCase):
     def test_a_marker_sharing_its_line_with_code(self):
         self.assertFails("foo() // <opt:a>\n", "sharing its line")
         self.assertFails("// <opt:a>\n// </opt:a> trailing\n", "sharing its line")
+        self.assertFails("// <opt:a> // </opt:a>\n", "sharing its line")
 
     def test_opt_else_not_directly_after_its_block(self):
         self.assertFails("// <opt:a>\n// </opt:a>\nx\n// <opt-else:a>\n// </opt-else:a>\n", "must directly follow")
