@@ -81,6 +81,28 @@ class SettingsTest(unittest.TestCase):
         self.assertIn("- language\n", readme)
 
 
+class TokenCopyTest(unittest.TestCase):
+
+    def test_a_shipped_token_copy_is_re_emitted_with_the_specs_brand(self):
+        import shutil
+        from unittest import mock
+
+        from genkit.tokens import kotlin
+
+        with tempfile.TemporaryDirectory() as temp:
+            template = Path(temp) / "android"
+            shutil.copytree(ANDROID.template_dir, template, ignore=shutil.ignore_patterns("build", ".gradle"))
+            copy = template / kotlin.RELATIVE_PATH.format(package_path="com/base/app")
+            copy.parent.mkdir(parents=True)
+            copy.write_text("// emitted for the template's defaults\n", encoding="utf-8")
+            with mock.patch.object(type(ANDROID), "template_dir", template):
+                project = generate(Path(temp), accent_colour="#16A34A")
+            text = (project / kotlin.RELATIVE_PATH.format(package_path="com/acme/field")).read_text(encoding="utf-8")
+        self.assertTrue(text.startswith(kotlin.HEADER))
+        self.assertIn("package com.acme.field.core.designsystem.theme.tokens", text)
+        self.assertIn(f"accent = Color({brand.to_argb(brand.brand_ramps('#16A34A')['Accent'].base)}),", text)
+
+
 class TabsTest(unittest.TestCase):
 
     def test_each_module_becomes_a_tab_in_the_order_given(self):
