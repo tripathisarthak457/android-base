@@ -8,7 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
-import com.base.app.core.common.util.AppLogger
+import com.base.app.core.common.log.Log
 import com.base.app.core.datastore.di.SettingsDataStore
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.ktx.AppUpdateResult
@@ -33,7 +33,7 @@ class AppUpdates @Inject constructor(
         AppUpdateManagerFactory.create(context)
             .requestUpdateFlow()
             .catch { error ->
-                AppLogger.w("Update check failed: ${error.message}")
+                Log.w("Update check failed: ${error.message}")
                 emit(AppUpdateResult.NotAvailable)
             }
 
@@ -79,7 +79,7 @@ class ReviewPrompt @Inject constructor(
             val manager = ReviewManagerFactory.create(context)
             val info = manager.requestReview()
             manager.launchReview(activity, info)
-        }.onFailure { AppLogger.w("Review prompt unavailable: ${it.message}") }
+        }.onFailure { Log.w("Review prompt unavailable: ${it.message}") }
     }
 
     private companion object {

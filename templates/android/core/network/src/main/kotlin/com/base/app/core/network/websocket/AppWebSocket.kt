@@ -1,8 +1,8 @@
 package com.base.app.core.network.websocket
 
-import com.base.app.core.common.util.AppLogger
-import com.base.app.core.coroutines.ApplicationScope
-import com.base.app.core.coroutines.IoDispatcher
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.common.log.Log
 import com.base.app.core.datastore.AuthTokenStore
 import com.base.app.core.network.NetworkConfig
 import com.base.app.core.network.di.PlainClient
@@ -15,8 +15,6 @@ import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -50,8 +48,8 @@ class AppWebSocket @Inject constructor(
     @PlainClient private val client: HttpClient,
     private val config: NetworkConfig,
     private val tokenStore: AuthTokenStore,
-    @ApplicationScope private val scope: CoroutineScope,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val scope: ApplicationScope,
+    private val dispatchers: AppDispatchers,
 ) {
 
     private val _state = MutableStateFlow<SocketState>(SocketState.Disconnected)
@@ -67,7 +65,7 @@ class AppWebSocket @Inject constructor(
     fun connect(path: String = "", authenticated: Boolean = true) {
         if (connection?.isActive == true) return
 
-        connection = scope.launch(ioDispatcher) {
+        connection = scope.launch(dispatchers.io) {
             var attempt = 0
             while (isActive) {
                 _state.value = SocketState.Connecting
@@ -92,7 +90,7 @@ class AppWebSocket @Inject constructor(
                 } catch (cancellation: CancellationException) {
                     throw cancellation
                 } catch (throwable: Throwable) {
-                    AppLogger.w("WebSocket failed", throwable = throwable)
+                    Log.w("WebSocket failed", throwable = throwable)
                     _state.value = SocketState.Failed(throwable, willRetry = true)
                 } finally {
                     session = null
@@ -104,7 +102,7 @@ class AppWebSocket @Inject constructor(
         }
     }
 
-    suspend fun send(message: String): Boolean = withContext(ioDispatcher) {
+    suspend fun send(message: String): Boolean = withContext(dispatchers.io) {
         val active = session ?: return@withContext false
         runCatching { active.send(Frame.Text(message)) }.isSuccess
     }
@@ -112,7 +110,7 @@ class AppWebSocket @Inject constructor(
     fun disconnect() {
         connection?.cancel()
         connection = null
-        scope.launch(ioDispatcher) {
+        scope.launch(dispatchers.io) {
             runCatching { session?.close() }
             session = null
             _state.value = SocketState.Disconnected

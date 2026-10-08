@@ -1,6 +1,7 @@
 package com.base.app.core.network
 
-import com.base.app.core.common.AppResult
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
@@ -103,7 +104,7 @@ class QueuedRequestReplayerTest {
             return if (code < 300) {
                 AppResult.Success(NetworkResponse(statusCode = code, body = "{}", headers = emptyMap()))
             } else {
-                AppResult.Failure(code = code)
+                AppResult.Failure(AppError.Http(status = code))
             }
         }
     }

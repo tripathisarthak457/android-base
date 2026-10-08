@@ -9,8 +9,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.base.app.core.common.session.SessionScopedStore
-import com.base.app.core.coroutines.ApplicationScope
-import com.base.app.core.coroutines.IoDispatcher
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.coroutines.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.plus
 import javax.inject.Qualifier
 import javax.inject.Singleton
@@ -42,9 +41,9 @@ object DataStoreModule {
     @SessionDataStore
     fun provideSessionDataStore(
         @ApplicationContext context: Context,
-        @ApplicationScope scope: CoroutineScope,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): DataStore<Preferences> = create(context, scope, dispatcher, SESSION_FILE)
+        scope: ApplicationScope,
+        dispatchers: AppDispatchers,
+    ): DataStore<Preferences> = create(context, scope, dispatchers.io, SESSION_FILE)
 
     /** Any repository can keep per-user data in the session file without registering a store. */
     @Provides
@@ -58,13 +57,13 @@ object DataStoreModule {
     @SettingsDataStore
     fun provideSettingsDataStore(
         @ApplicationContext context: Context,
-        @ApplicationScope scope: CoroutineScope,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): DataStore<Preferences> = create(context, scope, dispatcher, SETTINGS_FILE)
+        scope: ApplicationScope,
+        dispatchers: AppDispatchers,
+    ): DataStore<Preferences> = create(context, scope, dispatchers.io, SETTINGS_FILE)
 
     private fun create(
         context: Context,
-        scope: CoroutineScope,
+        scope: ApplicationScope,
         dispatcher: CoroutineDispatcher,
         fileName: String,
     ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
