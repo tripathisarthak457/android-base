@@ -1,28 +1,19 @@
 package com.base.app.data.sample
 
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.map
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.common.result.map
 import com.base.app.core.network.NetworkClient
 import com.base.app.core.network.get
 import com.base.app.core.network.model.CachePolicy
+import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.SampleRepository
 import com.base.app.data.sample.remote.SampleDto
 import com.base.app.data.sample.remote.toDomain
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Everything the app can ask about samples. An interface, so a ViewModel test injects a fake and
- * never touches a socket.
- */
-interface SampleRepository {
-
-    suspend fun items(forceRefresh: Boolean = false): AppResult<List<SampleItem>>
-
-    suspend fun item(id: Int): AppResult<SampleItem>
-}
-
 @Singleton
-class DefaultSampleRepository @Inject constructor(
+internal class DefaultSampleRepository @Inject constructor(
     private val networkClient: NetworkClient,
 ) : SampleRepository {
 

@@ -16,4 +16,7 @@ dependencies {
     implementation(libs.androidx.credentials.play.services)
     implementation(libs.googleid)
     // </opt:googlesignin>
+
+    // A real Bundle, for the process-death test of the sign-in form.
+    testImplementation(libs.robolectric)
 }

@@ -2,20 +2,22 @@ package com.base.app.feature.auth
 
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
-import com.base.app.core.common.util.UiText
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.validation.Validators
 import com.base.app.core.common.validation.and
 import com.base.app.core.designsystem.component.button.AppButton
@@ -25,14 +27,15 @@ import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
+import com.base.app.core.mvi.UiText
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.asString
-import com.base.app.core.ui.form.FormState
-import com.base.app.core.ui.form.buildForm
-import com.base.app.core.ui.form.submitting
-import com.base.app.core.ui.form.touchOnFocusLost
-import com.base.app.data.auth.AuthRepository
+import com.base.app.data.auth.api.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 // <opt:lottie>
 import androidx.compose.foundation.layout.size
@@ -44,17 +47,20 @@ import com.base.app.core.ui.LottieSource
 import javax.inject.Inject
 
 @Immutable
-data class PasswordResetState(
+internal data class PasswordResetState(
+    val emailError: UiText? = null,
+    val canSubmit: Boolean = false,
+    val submitting: Boolean = false,
     val error: UiText? = null,
     val sent: Boolean = false,
 ) : UiState
 
-sealed interface PasswordResetEvent : UiEvent {
+internal sealed interface PasswordResetEvent : UiEvent {
     data object Submit : PasswordResetEvent
     data object BackClicked : PasswordResetEvent
 }
 
-sealed interface PasswordResetEffect : UiEffect {
+internal sealed interface PasswordResetEffect : UiEffect {
     data object NavigateBack : PasswordResetEffect
 }
 
@@ -63,45 +69,67 @@ sealed interface PasswordResetEffect : UiEffect {
  * never whether it was.
  */
 @HiltViewModel
-class PasswordResetViewModel @Inject constructor(
+internal class PasswordResetViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    savedStateHandle: SavedStateHandle,
 ) : MviViewModel<PasswordResetState, PasswordResetEvent, PasswordResetEffect>(PasswordResetState()) {
 
-    val form: FormState = buildForm {
-        field("email", validator = Validators.required() and Validators.email())
-    }
+    @OptIn(SavedStateHandleSaveableApi::class)
+    val email: TextFieldState = savedStateHandle.saveable(EMAIL, saver = TextFieldState.Saver) { TextFieldState() }
 
-    override suspend fun handleEvent(event: PasswordResetEvent) {
-        when (event) {
-            PasswordResetEvent.Submit -> submit()
-            PasswordResetEvent.BackClicked -> emitEffect(PasswordResetEffect.NavigateBack)
+    // Errors stay quiet until the first submit, then follow the text as it is corrected.
+    private var showErrors = false
+
+    init {
+        observe(snapshotFlow { email.text.toString() }) {
+            copy(emailError = emailRule.errorFor(it, showErrors), canSubmit = it.isNotBlank())
         }
     }
 
-    private suspend fun submit() {
-        updateState { copy(error = null) }
+    override fun handleEvent(event: PasswordResetEvent) {
+        when (event) {
+            PasswordResetEvent.Submit -> submit()
+            PasswordResetEvent.BackClicked -> emit(PasswordResetEffect.NavigateBack)
+        }
+    }
 
-        val result = form.submitting { values ->
-            authRepository.requestPasswordReset(values.getValue("email"))
-        } ?: return
+    private fun submit() {
+        showErrors = true
+        val emailError = emailRule.errorFor(email.text, showErrors)
+        setState { copy(emailError = emailError, error = null) }
+        if (emailError != null) return
 
-        when (result) {
-            is AppResult.Success -> updateState { copy(sent = true) }
-
-            is AppResult.Failure -> {
-                form.applyServerErrors(result.fieldErrors)
-                if (result.fieldErrors.isEmpty()) {
-                    updateState {
-                        copy(error = result.authMessage(R.string.auth_reset_failed))
+        launchExclusive(SUBMIT) {
+            setState { copy(submitting = true) }
+            val result = authRepository.requestPasswordReset(email.text.toString())
+            setState { copy(submitting = false) }
+            when (result) {
+                is AppResult.Success -> setState { copy(sent = true) }
+                is AppResult.Failure -> {
+                    val fieldError = result.error.fieldError(EMAIL)
+                    setState {
+                        if (fieldError != null) {
+                            copy(emailError = fieldError)
+                        } else {
+                            copy(error = result.error.authMessage(R.string.auth_reset_failed))
+                        }
                     }
                 }
             }
         }
     }
+
+    private companion object {
+        // The name the server's validation errors use, and the saved-state key.
+        const val EMAIL = "email"
+        const val SUBMIT = "submit"
+
+        val emailRule = Validators.required() and Validators.email()
+    }
 }
 
 @Composable
-fun PasswordResetRoute(
+internal fun PasswordResetRoute(
     navigator: AppNavigator,
     viewModel: PasswordResetViewModel = hiltViewModel(),
 ) {
@@ -113,19 +141,17 @@ fun PasswordResetRoute(
             }
         },
     ) { state, onEvent ->
-        PasswordResetScreen(state = state, form = viewModel.form, onEvent = onEvent)
+        PasswordResetScreen(state = state, email = viewModel.email, onEvent = onEvent)
     }
 }
 
 @Composable
-fun PasswordResetScreen(
+internal fun PasswordResetScreen(
     state: PasswordResetState,
-    form: FormState,
+    email: TextFieldState,
     onEvent: (PasswordResetEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val email = form["email"]
-
     AuthFrame(
         modifier = modifier,
         topBar = {
@@ -164,12 +190,11 @@ fun PasswordResetScreen(
         }
 
         AppTextField(
-            value = email.value,
-            onValueChange = email::onChange,
-            modifier = Modifier.touchOnFocusLost(email),
+            value = email.text.toString(),
+            onValueChange = email::setTextAndPlaceCursorAtEnd,
             label = stringResource(R.string.auth_email),
             placeholder = stringResource(R.string.auth_email_placeholder),
-            error = email.error?.asString(),
+            error = state.emailError?.asString(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done,
@@ -182,7 +207,8 @@ fun PasswordResetScreen(
         AppButton(
             text = stringResource(R.string.auth_send_reset_link),
             onClick = { onEvent(PasswordResetEvent.Submit) },
-            loading = form.isSubmitting,
+            enabled = state.canSubmit,
+            loading = state.submitting,
             fillWidth = true,
         )
     }
@@ -194,7 +220,7 @@ private fun PasswordResetPreview() {
     AppTheme {
         PasswordResetScreen(
             state = PasswordResetState(sent = true),
-            form = buildForm { field("email") },
+            email = rememberTextFieldState(),
             onEvent = {},
         )
     }

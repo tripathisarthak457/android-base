@@ -1,19 +1,19 @@
-package com.base.app.feature.sample
+package com.base.app.feature.sample.list
 
-import app.cash.turbine.test
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.mvi.LoadState
+import app.cash.turbine.test
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
-import com.base.app.data.sample.SampleItem
-import com.base.app.data.sample.SampleRepository
-import com.base.app.feature.sample.list.SampleListEffect
-import com.base.app.feature.sample.list.SampleListEvent
-import com.base.app.feature.sample.list.SampleListViewModel
+import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.SampleRepository
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,45 +29,57 @@ class SampleListViewModelTest {
     )
 
     @Test
-    fun `loads on creation and lands in Success`() = runTest {
+    fun `appearing loads and lands in Success`() = runTest {
         val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
 
+        viewModel.onEvent(SampleListEvent.Appeared)
         advanceUntilIdle()
 
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
-        assertEquals(items, viewModel.state.value.items)
+        assertEquals(items, viewModel.state.value.visibleItems)
+    }
+
+    @Test
+    fun `appearing again does not reload what is already on screen`() = runTest {
+        val repository = FakeSampleRepository(AppResult.Success(items))
+        val viewModel = SampleListViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SampleListEvent.Appeared)
+        advanceUntilIdle()
+        viewModel.onEvent(SampleListEvent.Appeared)
+        advanceUntilIdle()
+
+        assertEquals(1, repository.loads)
     }
 
     @Test
     fun `an empty response is Empty, not Success with no rows`() = runTest {
         val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(emptyList())), SavedStateHandle())
 
+        viewModel.onEvent(SampleListEvent.Appeared)
         advanceUntilIdle()
 
         assertEquals(LoadState.Empty, viewModel.state.value.loadState)
     }
 
     @Test
-    fun `a failed first load surfaces the error and its offline flag`() = runTest {
-        val repository = FakeSampleRepository(
-            AppResult.Failure(message = "Nope", isOffline = true),
-        )
-        val viewModel = SampleListViewModel(repository, SavedStateHandle())
+    fun `a failed first load surfaces the error`() = runTest {
+        val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Failure(AppError.Offline)), SavedStateHandle())
 
+        viewModel.onEvent(SampleListEvent.Appeared)
         advanceUntilIdle()
 
-        val loadState = viewModel.state.value.loadState
-        assertTrue(loadState is LoadState.Error)
-        assertTrue((loadState as LoadState.Error).isOffline)
+        assertEquals(LoadState.Error(AppError.Offline), viewModel.state.value.loadState)
     }
 
     @Test
     fun `a failed refresh keeps the content already on screen`() = runTest {
         val repository = FakeSampleRepository(AppResult.Success(items))
         val viewModel = SampleListViewModel(repository, SavedStateHandle())
+        viewModel.onEvent(SampleListEvent.Appeared)
         advanceUntilIdle()
 
-        repository.result = AppResult.Failure(message = "Flaky")
+        repository.result = AppResult.Failure(AppError.Timeout)
         viewModel.onEvent(SampleListEvent.Refresh)
         advanceUntilIdle()
 
@@ -76,11 +88,13 @@ class SampleListViewModelTest {
     }
 
     @Test
-    fun `the query filters without touching the loaded list`() = runTest {
+    fun `typing filters without touching the loaded list`() = runTest {
         val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
+        viewModel.state.launchIn(backgroundScope)
+        viewModel.onEvent(SampleListEvent.Appeared)
         advanceUntilIdle()
 
-        viewModel.onEvent(SampleListEvent.QueryChanged("alp"))
+        viewModel.query.type("alp")
         advanceUntilIdle()
 
         assertEquals(listOf(items[0]), viewModel.state.value.visibleItems)
@@ -90,7 +104,6 @@ class SampleListViewModelTest {
     @Test
     fun `tapping a row emits a navigation effect`() = runTest {
         val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
-        advanceUntilIdle()
 
         viewModel.effects.test {
             viewModel.onEvent(SampleListEvent.ItemClicked(2))
@@ -99,17 +112,27 @@ class SampleListViewModelTest {
     }
 }
 
+/** What a keyboard does to the field, plus the frame tick that tells snapshot observers about it. */
+private fun TextFieldState.type(text: String) {
+    edit { replace(0, length, text) }
+    Snapshot.sendApplyNotifications()
+}
+
 private class FakeSampleRepository(
     var result: AppResult<List<SampleItem>>,
 ) : SampleRepository {
+    var loads = 0
 
-    override suspend fun items(forceRefresh: Boolean): AppResult<List<SampleItem>> = result
+    override suspend fun items(forceRefresh: Boolean): AppResult<List<SampleItem>> {
+        loads++
+        return result
+    }
 
     override suspend fun item(id: Int): AppResult<SampleItem> =
         when (val current = result) {
-            is AppResult.Success -> current.data.firstOrNull { it.id == id }
+            is AppResult.Success -> current.value.firstOrNull { it.id == id }
                 ?.let { AppResult.Success(it) }
-                ?: AppResult.Failure(message = "Not found", code = 404)
+                ?: AppResult.Failure(AppError.Http(status = 404))
 
             is AppResult.Failure -> current
         }

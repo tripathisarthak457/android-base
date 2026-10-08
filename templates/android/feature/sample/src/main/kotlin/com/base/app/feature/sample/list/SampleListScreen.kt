@@ -4,43 +4,45 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import com.base.app.core.common.mvi.LoadState
-import com.base.app.core.common.mvi.hasContent
-import com.base.app.core.common.mvi.isRefreshing
+import androidx.compose.ui.tooling.preview.Preview
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.hasContent
+import com.base.app.core.common.isRefreshing
+import com.base.app.core.common.result.AppError
 import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
 import com.base.app.core.designsystem.component.feedback.AppErrorState
 import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
-import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
-import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.ui.asString
-import com.base.app.data.sample.SampleItem
+import com.base.app.core.ui.text
+import com.base.app.data.sample.api.SampleItem
 import com.base.app.feature.sample.R
+import com.base.app.feature.sample.component.SampleRow
 
 /**
- * The list screen. Stateless by construction: it takes a state and emits events, and holds nothing
- * of its own.
+ * The list screen. Stateless by construction: it takes a state, the ViewModel's search field, and
+ * emits events. It holds nothing of its own.
  */
 @Composable
-fun SampleListScreen(
+internal fun SampleListScreen(
     state: SampleListState,
+    query: TextFieldState,
     onEvent: (SampleListEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -53,9 +55,11 @@ fun SampleListScreen(
                     title = stringResource(R.string.sample_title),
                     subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
                 )
+                // The design-system field takes a String: the text is read from the ViewModel's
+                // field and written straight back, so nothing is copied into the state.
                 AppSearchField(
-                    value = state.query,
-                    onValueChange = { onEvent(SampleListEvent.QueryChanged(it)) },
+                    value = query.text.toString(),
+                    onValueChange = query::setTextAndPlaceCursorAtEnd,
                     placeholder = stringResource(R.string.sample_search_titles),
                     modifier = Modifier.padding(
                         horizontal = AppTheme.spacing.gutter,
@@ -69,8 +73,8 @@ fun SampleListScreen(
             state.loadState is LoadState.Loading -> LoadingList()
 
             state.loadState is LoadState.Error -> AppErrorState(
-                message = state.loadState.message.asString(),
-                isOffline = state.loadState.isOffline,
+                message = state.loadState.error.text(),
+                isOffline = state.loadState.error == AppError.Offline,
                 onRetry = { onEvent(SampleListEvent.Retry) },
             )
 
@@ -82,7 +86,7 @@ fun SampleListScreen(
                 onAction = { onEvent(SampleListEvent.Retry) },
             )
 
-            state.loadState.hasContent -> Content(state, onEvent)
+            state.loadState.hasContent -> Content(state, query, onEvent)
         }
     }
 }
@@ -90,6 +94,7 @@ fun SampleListScreen(
 @Composable
 private fun Content(
     state: SampleListState,
+    query: TextFieldState,
     onEvent: (SampleListEvent) -> Unit,
 ) {
     AppPullToRefresh(
@@ -98,26 +103,20 @@ private fun Content(
         modifier = Modifier.fillMaxSize(),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            if (state.isFromCache) {
-                AppBanner(
-                    text = stringResource(R.string.sample_showing_cached),
-                    tone = AppTone.Info,
-                    icon = AppIcons.WifiOff,
-                )
-            }
-
             val visible = state.visibleItems
             if (visible.isEmpty()) {
                 AppEmptyState(
                     title = stringResource(R.string.sample_no_matches),
-                    message = stringResource(R.string.sample_no_matches_for_query, state.query),
+                    message = stringResource(R.string.sample_no_matches_for_query, query.text.trim()),
                     icon = AppIcons.Search,
                 )
                 return@Column
             }
 
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("primary_list"),
                 contentPadding = PaddingValues(AppTheme.spacing.gutter),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {
@@ -131,31 +130,6 @@ private fun Content(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun SampleRow(
-    item: SampleItem,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    AppCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
-        AppText(
-            text = item.title,
-            style = AppTheme.typography.titleLarge,
-            color = AppTheme.colors.contentPrimary,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-        )
-        AppText(
-            text = item.preview,
-            modifier = Modifier.padding(top = AppTheme.spacing.xs),
-            style = AppTheme.typography.bodySmall,
-            color = AppTheme.colors.contentTertiary,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-        )
     }
 }
 
@@ -182,17 +156,16 @@ private const val SKELETON_ROWS = 6
 @Composable
 private fun SampleListContentPreview() {
     AppTheme {
+        val items = List(4) {
+            SampleItem(
+                id = it,
+                title = "A sample row number ${it + 1}",
+                body = "Some supporting copy that gets truncated when it runs long enough.",
+            )
+        }
         SampleListScreen(
-            state = SampleListState(
-                loadState = LoadState.Success,
-                items = List(4) {
-                    SampleItem(
-                        id = it,
-                        title = "A sample row number ${it + 1}",
-                        body = "Some supporting copy that gets truncated when it runs long enough.",
-                    )
-                },
-            ),
+            state = SampleListState(loadState = LoadState.Success, items = items, visibleItems = items),
+            query = rememberTextFieldState(),
             onEvent = {},
         )
     }
@@ -202,7 +175,11 @@ private fun SampleListContentPreview() {
 @Composable
 private fun SampleListLoadingPreview() {
     AppTheme {
-        SampleListScreen(state = SampleListState(loadState = LoadState.Loading), onEvent = {})
+        SampleListScreen(
+            state = SampleListState(loadState = LoadState.Loading),
+            query = rememberTextFieldState(),
+            onEvent = {},
+        )
     }
 }
 
@@ -210,6 +187,10 @@ private fun SampleListLoadingPreview() {
 @Composable
 private fun SampleListEmptyPreview() {
     AppTheme {
-        SampleListScreen(state = SampleListState(loadState = LoadState.Empty), onEvent = {})
+        SampleListScreen(
+            state = SampleListState(loadState = LoadState.Empty),
+            query = rememberTextFieldState(),
+            onEvent = {},
+        )
     }
 }

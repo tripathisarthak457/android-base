@@ -1,9 +1,6 @@
-package com.base.app.data.sample
+package com.base.app.data.sample.api
 
-/**
- * The domain model. Lives in the data module that owns it rather than in `:core:model`, and is
- * exposed to feature modules simply by being public.
- */
+/** The domain model: what the app knows about a sample, with no trace of the wire format. */
 data class SampleItem(
     val id: Int,
     val title: String,

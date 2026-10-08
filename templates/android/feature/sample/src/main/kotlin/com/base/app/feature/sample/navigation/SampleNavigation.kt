@@ -1,14 +1,14 @@
-package com.base.app.feature.sample.di
+package com.base.app.feature.sample.navigation
 
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
-import com.base.app.feature.sample.SampleDetailKey
-import com.base.app.feature.sample.SampleDetailRoute
-import com.base.app.feature.sample.SampleListKey
-import com.base.app.feature.sample.SampleListRoute
+import com.base.app.feature.sample.api.SampleDetailKey
+import com.base.app.feature.sample.api.SampleListKey
+import com.base.app.feature.sample.detail.SampleDetailRoute
+import com.base.app.feature.sample.list.SampleListRoute
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ import kotlinx.serialization.modules.SerializersModule
  */
 @Module
 @InstallIn(SingletonComponent::class)
-object SampleNavModule {
+internal object SampleNavigation {
 
     @Provides
     @IntoSet

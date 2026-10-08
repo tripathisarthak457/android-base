@@ -1,4 +1,4 @@
-package com.base.app.data.feed
+package com.base.app.data.feed.api
 
 data class FeedPost(
     val id: Int,

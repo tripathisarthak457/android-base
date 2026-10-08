@@ -13,13 +13,10 @@
       "widget_default_headline": "Touchez pour ouvrir",
       "widget_description": "Votre app en un coup d’œil"
     },
-    "core/common/src/main/res": {
+    "core/ui/src/main/res": {
       "common_error_generic": "Un problème est survenu. Veuillez réessayer.",
       "validation_required": "Ce champ est obligatoire.",
       "validation_email": "Saisissez une adresse e-mail valide.",
-      "validation_phone": "Saisissez un numéro de téléphone valide.",
-      "validation_number": "Saisissez un nombre.",
-      "validation_range": "Doit être compris entre %1$d et %2$d.",
       "validation_mismatch": "Ne correspond pas.",
       "validation_password_letter": "Ajoutez au moins une lettre.",
       "validation_password_digit": "Ajoutez au moins un chiffre.",
@@ -27,17 +24,12 @@
         "one": "Doit contenir au moins %1$d caractère.",
         "other": "Doit contenir au moins %1$d caractères."
       },
-      "validation_max_length": {
-        "one": "Doit contenir %1$d caractère au maximum.",
-        "other": "Doit contenir %1$d caractères au maximum."
-      },
       "validation_password_length": {
         "one": "Utilisez au moins %1$d caractère.",
         "other": "Utilisez au moins %1$d caractères."
       },
       "common_error_offline": "Vous êtes hors ligne. Vérifiez votre connexion et réessayez.",
-      "common_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant.",
-      "common_error_queued": "Vous êtes hors ligne. L’envoi se fera dès votre retour en ligne."
+      "common_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant."
     },
     "core/designsystem/src/main/res": {
       "designsystem_previous_month": "Mois précédent",
@@ -102,7 +94,6 @@
       "auth_welcome_back": "Bon retour",
       "auth_continue_with_google": "Continuer avec Google",
       "auth_or": "ou",
-      "auth_google_not_configured": "La connexion avec Google n’est pas encore configurée. Ajoutez l’ID client web dans auth_google_server_client_id.",
       "auth_google_sign_in_failed": "Impossible de vous connecter avec Google.",
       "auth_google_failed": "La connexion avec Google n’a pas abouti. Réessayez ou utilisez votre e-mail.",
       "auth_wrong_credentials": "Cet e-mail et ce mot de passe ne correspondent à aucun compte.",
@@ -156,9 +147,9 @@
       "sample_reload": "Recharger",
       "sample_refresh_failed": "Impossible d’actualiser.",
       "sample_detail_title": "Détail",
+      "sample_related": "Similaires",
       "sample_title": "Exemples",
       "sample_search_titles": "Rechercher un titre",
-      "sample_showing_cached": "Données enregistrées affichées. Tirez vers le bas pour actualiser.",
       "sample_empty_explanation": "Quand il y aura quelque chose à afficher, cela apparaîtra sur cet écran."
     },
     "feature/search/src/main/res": {

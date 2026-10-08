@@ -5,27 +5,24 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.base.app.core.common.AppResult
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.network.NetworkClient
 import com.base.app.core.network.get
+import com.base.app.data.feed.api.FeedLoadException
+import com.base.app.data.feed.api.FeedPost
+import com.base.app.data.feed.api.FeedRepository
 import com.base.app.data.feed.remote.FeedPostDto
 import com.base.app.data.feed.remote.toDomain
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface FeedRepository {
-
-    /** An endless list, a page at a time. Collect it with `collectAsLazyPagingItems()`. */
-    fun posts(): Flow<PagingData<FeedPost>>
-}
-
 /**
  * Pages through the same public API the reference feature reads, ten posts at a time. Point
  * [FeedPagingSource.load] at your endpoint; a cursor-based API uses a `String` key instead.
  */
 @Singleton
-class DefaultFeedRepository @Inject constructor(
+internal class DefaultFeedRepository @Inject constructor(
     private val networkClient: NetworkClient,
 ) : FeedRepository {
 
@@ -59,12 +56,12 @@ internal class FeedPagingSource(
         )
         return when (result) {
             is AppResult.Success -> LoadResult.Page(
-                data = result.data.map { it.toDomain() },
+                data = result.value.map { it.toDomain() },
                 prevKey = if (page == FIRST_PAGE) null else page - 1,
-                nextKey = nextPage(page, loaded = result.data.size, requested = params.loadSize),
+                nextKey = nextPage(page, loaded = result.value.size, requested = params.loadSize),
             )
 
-            is AppResult.Failure -> LoadResult.Error(FeedLoadException(result))
+            is AppResult.Failure -> LoadResult.Error(FeedLoadException(result.error))
         }
     }
 
@@ -83,6 +80,3 @@ internal class FeedPagingSource(
             if (loaded < requested || loaded == 0) null else page + 1
     }
 }
-
-/** Carries the classified failure through Paging, which only knows about throwables. */
-class FeedLoadException(val failure: AppResult.Failure) : Exception(failure.message)

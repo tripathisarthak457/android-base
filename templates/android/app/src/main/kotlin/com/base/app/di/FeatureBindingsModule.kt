@@ -8,13 +8,13 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 // <opt:settings>
 import com.base.app.BuildConfig
-import com.base.app.feature.settings.SettingsAppInfo
+import com.base.app.feature.settings.api.SettingsAppInfo
 // </opt:settings>
 // <opt:onboarding>
-import com.base.app.feature.onboarding.OnboardingDestination
+import com.base.app.feature.onboarding.api.OnboardingDestination
 // </opt:onboarding>
 // <opt:auth>
-import com.base.app.feature.auth.AuthDestination
+import com.base.app.feature.auth.api.AuthDestination
 // </opt:auth>
 import com.base.app.ui.AppDestinations
 

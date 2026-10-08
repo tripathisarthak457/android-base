@@ -1,21 +1,18 @@
 package com.base.app.feature.sample.detail
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.mvi.LoadState
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
+import androidx.compose.ui.tooling.preview.Preview
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.result.AppError
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppErrorState
 import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
@@ -23,71 +20,13 @@ import com.base.app.core.designsystem.component.navigation.AppBackTopBar
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.ui.asString
-import com.base.app.data.sample.SampleItem
-import com.base.app.data.sample.SampleRepository
+import com.base.app.core.ui.text
+import com.base.app.data.sample.api.SampleItem
 import com.base.app.feature.sample.R
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
-
-@Immutable
-data class SampleDetailState(
-    val loadState: LoadState = LoadState.Idle,
-    val item: SampleItem? = null,
-) : UiState
-
-sealed interface SampleDetailEvent : UiEvent {
-    data object Retry : SampleDetailEvent
-    data object BackClicked : SampleDetailEvent
-}
-
-sealed interface SampleDetailEffect : UiEffect {
-    data object NavigateBack : SampleDetailEffect
-}
-
-/**
- * The detail ViewModel. The item id arrives through assisted injection, at construction, from the
- * navigation key.
- */
-@HiltViewModel(assistedFactory = SampleDetailViewModel.Factory::class)
-class SampleDetailViewModel @AssistedInject constructor(
-    private val repository: SampleRepository,
-    @Assisted private val itemId: Int,
-) : MviViewModel<SampleDetailState, SampleDetailEvent, SampleDetailEffect>(SampleDetailState()) {
-
-    @AssistedFactory
-    interface Factory {
-        fun create(itemId: Int): SampleDetailViewModel
-    }
-
-    init {
-        onEvent(SampleDetailEvent.Retry)
-    }
-
-    override suspend fun handleEvent(event: SampleDetailEvent) {
-        when (event) {
-            SampleDetailEvent.Retry -> load()
-            SampleDetailEvent.BackClicked -> emitEffect(SampleDetailEffect.NavigateBack)
-        }
-    }
-
-    private suspend fun load() {
-        updateState { copy(loadState = LoadState.Loading) }
-
-        when (val result = repository.item(itemId)) {
-            is AppResult.Success -> updateState {
-                copy(loadState = LoadState.Success, item = result.data)
-            }
-
-            is AppResult.Failure -> updateState { copy(loadState = result.toLoadState()) }
-        }
-    }
-}
+import com.base.app.feature.sample.component.SampleRow
 
 @Composable
-fun SampleDetailScreen(
+internal fun SampleDetailScreen(
     state: SampleDetailState,
     onEvent: (SampleDetailEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -104,8 +43,8 @@ fun SampleDetailScreen(
     ) {
         when (val loadState = state.loadState) {
             is LoadState.Error -> AppErrorState(
-                message = loadState.message.asString(),
-                isOffline = loadState.isOffline,
+                message = loadState.error.text(),
+                isOffline = loadState.error == AppError.Offline,
                 onRetry = { onEvent(SampleDetailEvent.Retry) },
             )
 
@@ -142,7 +81,32 @@ fun SampleDetailScreen(
                     style = AppTheme.typography.bodyLarge,
                     color = AppTheme.colors.contentSecondary,
                 )
+                Related(state.related, onEvent)
             }
+        }
+    }
+}
+
+/** More samples, each opening another detail screen: the reference for a stack that goes deep. */
+@Composable
+private fun Related(items: List<SampleItem>, onEvent: (SampleDetailEvent) -> Unit) {
+    if (items.isEmpty()) return
+
+    Column(
+        modifier = Modifier.padding(top = AppTheme.spacing.section),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+    ) {
+        AppText(
+            text = stringResource(R.string.sample_related),
+            style = AppTheme.typography.titleSmall,
+            color = AppTheme.colors.contentSecondary,
+        )
+        items.forEach { item ->
+            SampleRow(
+                item = item,
+                onClick = { onEvent(SampleDetailEvent.RelatedClicked(item.id)) },
+                modifier = Modifier.testTag("related_row"),
+            )
         }
     }
 }
@@ -157,6 +121,7 @@ private fun SampleDetailPreview() {
             state = SampleDetailState(
                 loadState = LoadState.Success,
                 item = SampleItem(1, "A sample title", "The body of the sample, at some length."),
+                related = listOf(SampleItem(2, "Another sample", "Its body.")),
             ),
             onEvent = {},
         )

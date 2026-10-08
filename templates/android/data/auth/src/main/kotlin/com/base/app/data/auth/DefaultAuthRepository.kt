@@ -1,13 +1,16 @@
 package com.base.app.data.auth
 
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.map
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.common.result.map
+import com.base.app.core.common.time.AppClock
 import com.base.app.core.datastore.AuthTokenStore
 import com.base.app.core.network.NetworkClient
 import com.base.app.core.network.NetworkJson
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.post
+import com.base.app.data.auth.api.AuthRepository
+import com.base.app.data.auth.api.SignUpDetails
 import com.base.app.data.auth.remote.EmailRequestDto
 // <opt:googlesignin>
 import com.base.app.data.auth.remote.GoogleSignInRequestDto
@@ -15,34 +18,11 @@ import com.base.app.data.auth.remote.GoogleSignInRequestDto
 import com.base.app.data.auth.remote.SignInRequestDto
 import com.base.app.data.auth.remote.SignUpRequestDto
 import com.base.app.data.auth.remote.TokenResponseDto
-import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.json.encodeToJsonElement
 import javax.inject.Inject
 import javax.inject.Singleton
-
-/** What the caller supplies to create an account. A parameter object, so the order cannot slip. */
-data class SignUpDetails(
-    val name: String,
-    val email: String,
-    val password: String,
-)
-
-/** Signing in, signing up, and knowing whether either has happened. */
-interface AuthRepository {
-
-    val isSignedIn: Flow<Boolean>
-
-    suspend fun signIn(email: String, password: String): AppResult<Unit>
-
-    suspend fun signUp(details: SignUpDetails): AppResult<Unit>
-
-    suspend fun requestPasswordReset(email: String): AppResult<Unit>
-    // <opt:googlesignin>
-
-    /** Trades an ID token from Google for this app's own tokens. */
-    suspend fun signInWithGoogle(idToken: String): AppResult<Unit>
-    // </opt:googlesignin>
-}
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Talks to the auth endpoints and puts what comes back in the token store.
@@ -51,9 +31,10 @@ interface AuthRepository {
  * trigger a token refresh and surface as a session expiry instead.
  */
 @Singleton
-class DefaultAuthRepository @Inject constructor(
+internal class DefaultAuthRepository @Inject constructor(
     private val networkClient: NetworkClient,
     private val tokenStore: AuthTokenStore,
+    private val clock: AppClock,
 ) : AuthRepository {
 
     override val isSignedIn: Flow<Boolean> = tokenStore.isAuthenticated
@@ -109,10 +90,10 @@ class DefaultAuthRepository @Inject constructor(
     private suspend fun AppResult<TokenResponseDto>.persist(): AppResult<Unit> = when (this) {
         is AppResult.Success -> {
             tokenStore.save(
-                accessToken = data.accessToken,
-                refreshToken = data.refreshToken,
-                expiresAtEpochMillis = data.expiresIn?.let {
-                    System.currentTimeMillis() + it * MILLIS_PER_SECOND
+                accessToken = value.accessToken,
+                refreshToken = value.refreshToken,
+                expiresAtEpochMillis = value.expiresIn?.let {
+                    (clock.now() + it.seconds).toEpochMilliseconds()
                 },
             )
             map { }
@@ -129,6 +110,5 @@ class DefaultAuthRepository @Inject constructor(
         // <opt:googlesignin>
         const val GOOGLE_SIGN_IN_PATH = "auth/google"
         // </opt:googlesignin>
-        const val MILLIS_PER_SECOND = 1_000L
     }
 }

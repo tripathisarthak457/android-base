@@ -1,9 +1,14 @@
 package com.base.app.feature.profile
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshots.Snapshot
+import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.testing.MainDispatcherRule
-import com.base.app.data.profile.Profile
-import com.base.app.data.profile.ProfileRepository
+import com.base.app.data.profile.api.Profile
+import com.base.app.data.profile.api.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -19,20 +24,31 @@ class ProfileViewModelTest {
 
     @Test
     fun `fields start from the stored profile`() = runTest {
-        val viewModel = ProfileViewModel(FakeProfileRepository(Profile(name = "Ada", bio = "Engines")))
+        val viewModel = appeared(FakeProfileRepository(Profile(name = "Ada", bio = "Engines")))
+
+        assertEquals("Ada", viewModel.name.text.toString())
+        assertTrue(viewModel.state.value.loaded)
+        assertFalse(viewModel.state.value.isDirty)
+    }
+
+    @Test
+    fun `text restored after process death is not overwritten by the stored value`() = runTest {
+        // The saved state of a process that died mid-edit: the fields were filled before it died.
+        val viewModel = ProfileViewModel(FakeProfileRepository(Profile(name = "Ada")), SavedStateHandle(mapOf("filled" to true)))
+        viewModel.name.type("Ada Lovelace")
+
+        viewModel.onEvent(ProfileEvent.Appeared)
         advanceUntilIdle()
 
-        assertEquals("Ada", viewModel.state.value.name)
-        assertFalse(viewModel.state.value.isDirty)
+        assertEquals("Ada Lovelace", viewModel.name.text.toString())
     }
 
     @Test
     fun `a blank name is refused and nothing is written`() = runTest {
         val repository = FakeProfileRepository(Profile(name = "Ada"))
-        val viewModel = ProfileViewModel(repository)
-        advanceUntilIdle()
+        val viewModel = appeared(repository)
 
-        viewModel.onEvent(ProfileEvent.NameChanged("  "))
+        viewModel.name.type("  ")
         viewModel.onEvent(ProfileEvent.Save)
         advanceUntilIdle()
 
@@ -43,16 +59,28 @@ class ProfileViewModelTest {
     @Test
     fun `saving writes the trimmed values`() = runTest {
         val repository = FakeProfileRepository(Profile())
-        val viewModel = ProfileViewModel(repository)
-        advanceUntilIdle()
+        val viewModel = appeared(repository)
 
-        viewModel.onEvent(ProfileEvent.NameChanged(" Grace "))
+        viewModel.name.type(" Grace ")
         viewModel.onEvent(ProfileEvent.Save)
         advanceUntilIdle()
 
         assertEquals("Grace", repository.state.value.name)
         assertFalse(viewModel.state.value.isDirty)
     }
+
+    private fun TestScope.appeared(repository: ProfileRepository): ProfileViewModel =
+        ProfileViewModel(repository, SavedStateHandle()).also {
+            it.state.launchIn(backgroundScope)
+            it.onEvent(ProfileEvent.Appeared)
+            advanceUntilIdle()
+        }
+}
+
+/** What a keyboard does to the field, plus the frame tick that tells snapshot observers about it. */
+private fun TextFieldState.type(text: String) {
+    edit { replace(0, length, text) }
+    Snapshot.sendApplyNotifications()
 }
 
 private class FakeProfileRepository(initial: Profile) : ProfileRepository {

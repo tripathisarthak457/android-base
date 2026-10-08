@@ -4,11 +4,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.map
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.common.result.map
 import com.base.app.core.datastore.di.SessionDataStore
 import com.base.app.core.network.NetworkClient
 import com.base.app.core.network.get
+import com.base.app.data.search.api.SearchRepository
+import com.base.app.data.search.api.SearchResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.SerialName
@@ -16,34 +18,12 @@ import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton
 
-data class SearchResult(
-    val id: Int,
-    val title: String,
-    val snippet: String,
-)
-
-interface SearchRepository {
-
-    /** Most recent first, at most [RecentSearches.LIMIT]. Belongs to the signed-in user. */
-    val recent: Flow<List<String>>
-
-    suspend fun search(query: String): AppResult<List<SearchResult>>
-
-    suspend fun result(id: Int): AppResult<SearchResult>
-
-    suspend fun remember(query: String)
-
-    suspend fun forget(query: String)
-
-    suspend fun clearRecent()
-}
-
 /**
  * Searches the public demo API's full-text `q` parameter. Point [search] at your own endpoint; the
  * recent-searches half works unchanged.
  */
 @Singleton
-class DefaultSearchRepository @Inject constructor(
+internal class DefaultSearchRepository @Inject constructor(
     private val networkClient: NetworkClient,
     @SessionDataStore private val store: DataStore<Preferences>,
 ) : SearchRepository {

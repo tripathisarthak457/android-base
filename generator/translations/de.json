@@ -13,13 +13,10 @@
       "widget_default_headline": "Zum Öffnen tippen",
       "widget_description": "Deine App auf einen Blick"
     },
-    "core/common/src/main/res": {
+    "core/ui/src/main/res": {
       "common_error_generic": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
       "validation_required": "Pflichtfeld.",
       "validation_email": "Gib eine gültige E-Mail-Adresse ein.",
-      "validation_phone": "Gib eine gültige Telefonnummer ein.",
-      "validation_number": "Gib eine Zahl ein.",
-      "validation_range": "Muss zwischen %1$d und %2$d liegen.",
       "validation_mismatch": "Stimmt nicht überein.",
       "validation_password_letter": "Verwende mindestens einen Buchstaben.",
       "validation_password_digit": "Verwende mindestens eine Zahl.",
@@ -27,17 +24,12 @@
         "one": "Mindestens %1$d Zeichen.",
         "other": "Mindestens %1$d Zeichen."
       },
-      "validation_max_length": {
-        "one": "Höchstens %1$d Zeichen.",
-        "other": "Höchstens %1$d Zeichen."
-      },
       "validation_password_length": {
         "one": "Verwende mindestens %1$d Zeichen.",
         "other": "Verwende mindestens %1$d Zeichen."
       },
       "common_error_offline": "Du bist offline. Prüfe deine Verbindung und versuche es noch einmal.",
-      "common_error_unreachable": "Der Server ist nicht erreichbar. Versuche es gleich noch einmal.",
-      "common_error_queued": "Du bist offline. Es wird gesendet, sobald du wieder online bist."
+      "common_error_unreachable": "Der Server ist nicht erreichbar. Versuche es gleich noch einmal."
     },
     "core/designsystem/src/main/res": {
       "designsystem_previous_month": "Vorheriger Monat",
@@ -102,7 +94,6 @@
       "auth_welcome_back": "Willkommen zurück",
       "auth_continue_with_google": "Weiter mit Google",
       "auth_or": "oder",
-      "auth_google_not_configured": "Die Anmeldung mit Google ist noch nicht eingerichtet. Trage die Web-Client-ID in auth_google_server_client_id ein.",
       "auth_google_sign_in_failed": "Die Anmeldung mit Google hat nicht geklappt.",
       "auth_google_failed": "Die Anmeldung mit Google wurde nicht abgeschlossen. Versuche es noch einmal oder nutze deine E-Mail-Adresse.",
       "auth_wrong_credentials": "Diese E-Mail-Adresse und dieses Passwort passen zu keinem Konto.",
@@ -156,9 +147,9 @@
       "sample_reload": "Neu laden",
       "sample_refresh_failed": "Aktualisierung fehlgeschlagen.",
       "sample_detail_title": "Details",
+      "sample_related": "Ähnliche",
       "sample_title": "Beispiele",
       "sample_search_titles": "Titel durchsuchen",
-      "sample_showing_cached": "Gespeicherte Daten. Zum Aktualisieren nach unten ziehen.",
       "sample_empty_explanation": "Sobald es etwas anzuzeigen gibt, erscheint es auf diesem Bildschirm."
     },
     "feature/search/src/main/res": {

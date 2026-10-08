@@ -16,8 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.base.app.core.common.userMessage
-import com.base.app.core.common.util.UiText
+import com.base.app.core.common.result.AppError
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -31,14 +30,15 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.mvi.UiText
 import com.base.app.core.ui.MviScreen
-import com.base.app.core.ui.asString
 import com.base.app.core.ui.paging.AppPagingList
-import com.base.app.data.feed.FeedLoadException
-import com.base.app.data.feed.FeedPost
+import com.base.app.core.ui.text
+import com.base.app.data.feed.api.FeedLoadException
+import com.base.app.data.feed.api.FeedPost
 
 @Composable
-fun FeedRoute(viewModel: FeedViewModel = hiltViewModel()) {
+internal fun FeedRoute(viewModel: FeedViewModel = hiltViewModel()) {
     val posts = viewModel.posts.collectAsLazyPagingItems()
     MviScreen(viewModel = viewModel, onEffect = {}) { state, onEvent ->
         FeedScreen(state = state, posts = posts, onEvent = onEvent)
@@ -46,7 +46,7 @@ fun FeedRoute(viewModel: FeedViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun FeedScreen(
+internal fun FeedScreen(
     state: FeedState,
     posts: LazyPagingItems<FeedPost>,
     onEvent: (FeedEvent) -> Unit,
@@ -68,13 +68,12 @@ fun FeedScreen(
             loadMoreFailedLabel = stringResource(R.string.feed_load_more_failed),
             retryLabel = stringResource(R.string.feed_retry),
             loading = { LoadingFeed() },
-            failed = { error, retry ->
+            failed = { throwable, retry ->
+                val error = (throwable as? FeedLoadException)?.error
                 AppErrorState(
-                    message = (error as? FeedLoadException)?.failure
-                        ?.userMessage(UiText.of(R.string.feed_load_failed))
-                        ?.asString()
+                    message = error?.text(UiText.of(R.string.feed_load_failed))
                         ?: stringResource(R.string.feed_load_failed),
-                    isOffline = (error as? FeedLoadException)?.failure?.isOffline == true,
+                    isOffline = error == AppError.Offline,
                     onRetry = retry,
                     retryLabel = stringResource(R.string.feed_retry),
                 )

@@ -3,8 +3,8 @@ package com.base.app.feature.profile.di
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
-import com.base.app.feature.profile.ProfileKey
 import com.base.app.feature.profile.ProfileRoute
+import com.base.app.feature.profile.api.ProfileKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ import kotlinx.serialization.modules.SerializersModule
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ProfileNavModule {
+internal object ProfileNavModule {
 
     @Provides
     @IntoSet

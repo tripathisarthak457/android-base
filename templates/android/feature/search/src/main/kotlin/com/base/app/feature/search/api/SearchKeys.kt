@@ -1,6 +1,6 @@
-package com.base.app.feature.search
+package com.base.app.feature.search.api
 
-import com.base.app.core.navigation.AppNavKey
+import com.base.app.core.common.navigation.AppNavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
