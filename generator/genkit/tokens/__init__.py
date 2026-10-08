@@ -66,11 +66,6 @@ def motion_style_names() -> tuple[str, ...]:
     return tuple(load()["motion"]["styles"])
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Checking
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def validate(data: dict[str, Any]) -> None:
     """Raises TemplateError naming the file and key of the first thing wrong."""
     _validate_foundation(data["foundation"])
@@ -230,11 +225,6 @@ def _validate_styles(styles: dict[str, Any], tones: tuple[str, ...], voices: tup
             raise _fail("styles", f"{name}.surfaces", f"must be one of the palette's tones: {', '.join(tones)}")
         if style["voice"] not in voices:
             raise _fail("styles", f"{name}.voice", f"must be one of the type voices: {', '.join(voices)}")
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Resolving
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def spring(response: float, bounce: float) -> tuple[float, float]:

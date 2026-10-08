@@ -57,11 +57,6 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Reading the project
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def normalise(name: str) -> str:
     cleaned = name.strip().lower().replace("-", "_").replace(" ", "_")
     validate_module_name(cleaned, AndroidTarget().reserved_module_names)
@@ -115,11 +110,6 @@ def shipped_languages(project: Path) -> tuple[str, ...]:
         if path.parent.name.removeprefix("values-") in by_qualifier
     }
     return tuple(sorted(found))
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# The registrations
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def register_modules(project: Path, names: tuple[str, ...]) -> None:

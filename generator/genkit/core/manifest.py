@@ -224,11 +224,6 @@ class TemplateManifest:
         return f"'{old}' is now {'part of ' if merged else ''}{joined}."
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Loading
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def _read_toml(path: Path) -> dict[str, Any]:
     try:
         return tomllib.loads(path.read_text(encoding="utf-8"))

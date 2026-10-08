@@ -142,11 +142,6 @@ def write_json(data: object) -> None:
     sys.stdout.write("\n")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# The answers
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def parse_override(item: str) -> tuple[str, Any]:
     key, separator, text = item.partition("=")
     if not separator or not key:
@@ -184,11 +179,6 @@ def save_spec(spec, path: Path) -> None:
     if spec.android is not None and spec.android.keystores:
         note += " It holds the keystore passwords: keep it out of version control."
     print(prompts.dim(note), file=sys.stderr)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Answering without generating
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def list_features(target, as_json: bool) -> None:
@@ -235,11 +225,6 @@ def describe_plan(parsed, target, warnings: list[str], as_json: bool) -> None:
     print()
     print(prompts.dim("  Nothing was written. Drop --dry-run to generate."))
     print()
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Destination
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def resolve_destination(project_name: str, args: argparse.Namespace) -> Path | None:

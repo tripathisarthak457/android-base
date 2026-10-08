@@ -6,6 +6,7 @@ from pathlib import Path
 
 from ...core.spec import Spec, module_title, pascal_case
 
+
 def regions(spec: Spec) -> dict[str, list[str] | None]:
     """Each module's settings includes and its dependency from :app."""
     return {
@@ -21,11 +22,6 @@ def write_feature_modules(destination: Path, spec: Spec) -> None:
     for name in spec.feature_modules:
         _write_data_module(destination, spec, name)
         _write_feature_module(destination, spec, name)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# :data:<name>
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def _write_data_module(destination: Path, spec: Spec, name: str) -> None:
@@ -108,11 +104,6 @@ interface {class_name}DataModule {{
     fun bind{class_name}Repository(impl: Default{class_name}Repository): {class_name}Repository
 }}
 """)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# :feature:<name>
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def _write_feature_module(destination: Path, spec: Spec, name: str) -> None:

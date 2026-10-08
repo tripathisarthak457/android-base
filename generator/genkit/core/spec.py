@@ -253,11 +253,6 @@ class Parsed:
     requested: frozenset[str]
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Upgrading older shapes
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def upgrade(raw: object, platform: str) -> tuple[dict[str, Any], list[str], list[str], int]:
     """
     Any accepted spec shape → a schema-2 dict. Returns (data, notes, ignored fields, the schema the
@@ -341,11 +336,6 @@ def _move_android_fields(data: dict[str, Any]) -> list[str]:
 def _join(names: list[str]) -> str:
     quoted = [f"'{name}'" for name in names]
     return quoted[0] if len(quoted) == 1 else ", ".join(quoted[:-1]) + " and " + quoted[-1]
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Reading the fields
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def parse(
@@ -510,11 +500,6 @@ def _text_map(data: dict[str, Any], key: str, where: str) -> dict[str, str]:
     if not isinstance(value, dict) or not all(isinstance(item, str) for item in value.values()):
         raise SpecError(f"`{where}` must be an object of strings.", where)
     return dict(value)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Rules every target shares
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def validate(spec: Spec, manifest: "TemplateManifest", vocabulary: Vocabulary) -> None:

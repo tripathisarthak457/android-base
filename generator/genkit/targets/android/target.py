@@ -218,11 +218,6 @@ class AndroidTarget:
         }
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# android.* rules
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def validate_android(android: AndroidSettings) -> None:
     if android.min_sdk not in API_LEVELS:
         raise SpecError(

@@ -99,11 +99,6 @@ def wrap(text: str, width: int) -> list[str]:
     return lines or [""]
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Asking
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def ask(question: str, default: str | None = None, allow_empty: bool = False) -> str:
     suffix = f" {dim(f'[{default}]')}" if default else ""
     while True:
@@ -196,11 +191,6 @@ def _pattern_check(pattern: str, message: str, field: str) -> Callable[[str], No
             raise SpecError(message, field)
 
     return check
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Sections
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def ask_identity() -> dict[str, str]:
@@ -490,11 +480,6 @@ def ask_keystores(app_name: str) -> list[dict[str, Any]]:
                 print(red(f"    {error}"))
         entries.append(entry)
     return entries
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# The wizard
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def run_wizard(target: Target, select_all: bool = False, preset: str | None = None) -> dict[str, Any]:
