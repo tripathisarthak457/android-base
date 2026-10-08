@@ -40,7 +40,8 @@ type Server struct {
 	adminToken string
 	known      telemetry.Known
 	startedAt  time.Time
-	served     atomic.Bool
+	// warm is set by the first generation this process runs, which is recorded as a cold start.
+	warm atomic.Bool
 
 	generateLimit *limiter
 	feedbackLimit *limiter

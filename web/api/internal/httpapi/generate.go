@@ -40,7 +40,7 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 		SessionID:   session.ID,
 		Client:      session.Client,
 		ConfigMs:    session.ConfigMs,
-		ColdStart:   !s.served.Swap(true),
+		ColdStart:   !s.warm.Swap(true),
 		Country:     s.geo(r).Country,
 		DeviceClass: agent.DeviceClass,
 	}
