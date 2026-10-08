@@ -14,7 +14,7 @@ never needs a second origin and CORS never enters into it.
 
 The API is a container rather than a plain Go build for one reason: it shells out to
 `generate_headless.py`, and Vercel's Go runtime image has no Python in it. `Dockerfile.api` at the
-repository root puts the Go binary, the interpreter, `generator/` and `template/` in one image.
+repository root puts the Go binary, the interpreter, `generator/` and `templates/` in one image.
 
 ---
 

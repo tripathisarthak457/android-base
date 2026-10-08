@@ -15,7 +15,7 @@ import tomllib
 import urllib.request
 from pathlib import Path
 
-CATALOGUE = Path(__file__).resolve().parent.parent / "template/gradle/libs.versions.toml"
+CATALOGUE = Path(__file__).resolve().parent.parent / "templates/android/gradle/libs.versions.toml"
 
 REPOSITORIES = (
     "https://dl.google.com/android/maven2/",

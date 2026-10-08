@@ -1,7 +1,7 @@
-# What not to upload to Vercel. Without this the CLI packs `template/`'s Gradle output — 2.7GB on
+# What not to upload to Vercel. Without this the CLI packs `templates/android/`'s Gradle output — 2.7GB on
 # any machine that has ever built it — to deliver the 1.5MB the container actually needs.
 #
-# `template/` and `generator/` themselves must stay: the API service is a container built from the
+# `templates/` and `generator/` themselves must stay: the API service is a container built from the
 # repository root, and they are its payload.
 
 **/build/

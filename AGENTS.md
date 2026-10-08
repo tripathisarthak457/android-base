@@ -5,10 +5,10 @@ pointed at a project that was *generated* from it, read that project's own `AGEN
 every generated project ships one.
 
 ```
-template/     a real Android app. Every optional feature is in it, fenced by markers
-generator/    Python, standard library only: copies template/, strips what was not chosen, renames it
-web/frontend  the Next.js site that drives the generator
-web/api       the Go service the site calls. It shells out to generator/generate_headless.py
+templates/android/  a real Android app. Every optional feature is in it, fenced by markers
+generator/          Python, standard library only: copies templates/android/, strips what was not chosen, renames it
+web/frontend        the Next.js site that drives the generator
+web/api             the Go service the site calls. It shells out to generator/generate_headless.py
 ```
 
 ## Generating a project for someone
@@ -69,7 +69,7 @@ manifest, or a variant file under `generator/variants/`.
 
 A new optional feature needs all of:
 
-1. Its code in `template/`, behind markers, and any whole directories or files it owns.
+1. Its code in `templates/android/`, behind markers, and any whole directories or files it owns.
 2. A `Feature(...)` in `generator/genkit/spec.py`, listing `requires` and the `files` it owns.
 3. A group and a headline in `generator/genkit/catalogue.py`. The catalogue test fails without them.
 4. Its place in the presets, if it belongs in one.
@@ -80,7 +80,7 @@ A new user-facing string in the template also needs a translation in every file 
 
 ## Keeping dependencies current
 
-Every version lives in `template/gradle/libs.versions.toml`, and only stable releases belong
+Every version lives in `templates/android/gradle/libs.versions.toml`, and only stable releases belong
 there — no alpha, beta or rc.
 
 ```bash
@@ -97,7 +97,7 @@ Nothing is done until these pass. Run them and read the output.
 
 ```bash
 cd generator && python3 -m unittest discover -s tests -t .       # seconds
-cd template  && ./gradlew build                                  # the template, all features on
+cd templates/android && ./gradlew build                                  # the template, all features on
 
 # both extremes of the generator, built for real
 cd generator

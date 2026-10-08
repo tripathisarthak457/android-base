@@ -8,7 +8,7 @@
 
 This repository is two things.
 
-`template/` is a working Android app: multi-module, Jetpack Compose, MVI, Hilt, Ktor, four build
+`templates/android/` is a working Android app: multi-module, Jetpack Compose, MVI, Hilt, Ktor, four build
 environments, signed release output. You can open it in Android Studio right now and run it.
 
 `generator/` is a Python script that copies that app, renames it to whatever you are building,
@@ -360,7 +360,7 @@ English fallback turned into a `UiText`, but never anything inside a `@Preview`.
 For a string a ViewModel produces, `UiText.of(R.string.x)` resolves at render time — so it
 follows a locale change without the ViewModel knowing there was one.
 
-`template/docs/ARCHITECTURE.md` explains the reasoning behind each of these.
+`templates/android/docs/ARCHITECTURE.md` explains the reasoning behind each of these.
 
 ---
 
@@ -463,7 +463,7 @@ directory that half the app still references.
 
 ## Working on the template itself
 
-`template/` is a normal Android project. Open it, build it, change it.
+`templates/android/` is a normal Android project. Open it, build it, change it.
 
 ```bash
 cd template
@@ -543,7 +543,7 @@ py create_project.py --spec tests/spec_minimal.json --out ../out/Bare --no-zip -
 ### Layout
 
 ```
-template/                the Android project. Open this in Android Studio.
+templates/android/       the Android project. Open this in Android Studio.
 generator/
   create_project.py      the wizard and the entry point
   add_feature.py         the scaffolder, for a project that already exists

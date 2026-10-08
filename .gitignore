@@ -19,7 +19,7 @@ keys/
 
 # The template's placeholder google-services.json is tracked deliberately — without it the
 # generated project cannot run the Firebase plugin and the first build fails. It cannot be
-# un-ignored from here: template/.gitignore ignores it and the nearer file wins, so it is
+# un-ignored from here: templates/android/.gitignore ignores it and the nearer file wins, so it is
 # force-added instead. Once tracked, git follows its changes regardless.
 
 # Python

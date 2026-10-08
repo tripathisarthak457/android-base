@@ -12,7 +12,7 @@ from .readme import write_readme
 from .spec import FEATURES_BY_KEY, ProjectSpec
 
 HERE = Path(__file__).resolve().parent.parent
-TEMPLATE_DIR = HERE.parent / "template"
+TEMPLATE_DIR = HERE.parent / "templates" / "android"
 VARIANTS_DIR = HERE / "variants"
 
 

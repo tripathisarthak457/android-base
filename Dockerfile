@@ -2,13 +2,13 @@
 #
 # Two stages, and the second one is the interesting half: the service is a Go binary that shells
 # out to `generate_headless.py`, so the runtime image needs a Python interpreter and the whole
-# generator — `genkit/` and the `template/` tree it copies from — sitting next to the binary. That
+# generator — `genkit/` and the `templates/` tree it copies from — sitting next to the binary. That
 # is the entire reason this is a container rather than a plain Go build: Vercel's Go runtime image
 # has no Python in it, and reimplementing the generator in Go to avoid the dependency is how the
 # terminal and the website start producing different projects.
 #
 # It lives at the repository root rather than beside the Go code because the build context is the
-# directory the Dockerfile is in, and `generator/` and `template/` are what the image is mostly
+# directory the Dockerfile is in, and `generator/` and `templates/` are what the image is mostly
 # made of — hence the `web/api/` prefixes on the COPY lines below. `.dockerignore` keeps the 2.7GB
 # of Gradle build output out of the context; what actually goes in is about 1.5MB.
 #
@@ -42,9 +42,9 @@ RUN apk add --no-cache openjdk21-jre-headless
 # decision pays for itself.
 COPY --from=build /out/server /app/server
 COPY generator/ /app/generator/
-COPY template/ /app/template/
+COPY templates/ /app/templates/
 
-# generate_headless.py resolves the template as `Path(__file__).parent.parent / "template"`, so
+# generate_headless.py resolves the template as `Path(__file__).parent.parent / "templates" / "android"`, so
 # the two have to stay siblings here exactly as they are in the repository.
 #
 # JAVA_HOME is set as well as PATH because Alpine's JRE packages do not reliably symlink keytool

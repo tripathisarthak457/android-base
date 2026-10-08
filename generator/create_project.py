@@ -28,7 +28,7 @@ from genkit.spec import (
 )
 
 HERE = Path(__file__).resolve().parent
-TEMPLATE_DIR = HERE.parent / "template"
+TEMPLATE_DIR = HERE.parent / "templates" / "android"
 
 
 def main(argv: list[str] | None = None) -> int:
