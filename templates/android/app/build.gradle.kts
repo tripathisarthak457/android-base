@@ -43,6 +43,16 @@ android {
     }
 }
 
+// <opt:baselineprofile>
+// One profile, recorded on the dev flavour and merged into main so every flavour ships it. It is
+// generated only on request (`:app:generateBaselineProfile`), because that needs a connected phone.
+baselineProfile {
+    mergeIntoMain = true
+    saveInSrc = true
+    automaticGenerationDuringBuild = false
+}
+// </opt:baselineprofile>
+
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:coroutines"))

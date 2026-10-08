@@ -20,6 +20,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
@@ -65,7 +66,7 @@ fun AppNavigationRail(
                         item = item,
                         selected = index == selectedIndex,
                         onClick = { onItemSelected(index) },
-                        modifier = Modifier.fillMaxWidth().height(ItemHeight),
+                        modifier = Modifier.fillMaxWidth().height(ItemHeight).testTag("tab_$index"),
                     )
                 }
             }

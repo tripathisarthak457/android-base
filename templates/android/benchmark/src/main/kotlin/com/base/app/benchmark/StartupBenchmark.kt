@@ -6,40 +6,43 @@ import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
 /**
- * Measures cold start, with and without the baseline profile.
- *
- * ```
- * ./gradlew :benchmark:connectedBenchmarkAndroidTest
- * ```
+ * Cold and warm start to the tab shell, without a profile (what a sideloaded build gets) and with the
+ * baseline profile (what a Play install gets).
  */
-class StartupBenchmark {
+@RunWith(Parameterized::class)
+class StartupBenchmark(
+    private val startupMode: StartupMode,
+    private val compilationMode: CompilationMode,
+) {
 
     @get:Rule
     val rule = MacrobenchmarkRule()
 
     @Test
-    fun startupWithoutProfile() = measure(CompilationMode.None())
-
-    @Test
-    fun startupWithProfile() = measure(CompilationMode.Partial())
-
-    private fun measure(mode: CompilationMode) = rule.measureRepeated(
-        packageName = PACKAGE_NAME,
+    fun startup() = rule.measureRepeated(
+        packageName = TARGET_APP_ID,
         metrics = listOf(StartupTimingMetric()),
         iterations = ITERATIONS,
-        startupMode = StartupMode.COLD,
-        compilationMode = mode,
+        startupMode = startupMode,
+        compilationMode = compilationMode,
     ) {
         pressHome()
-        startActivityAndWait()
+        startToShell()
     }
 
-    private companion object {
-        const val PACKAGE_NAME = "com.base.app.dev"
-
+    companion object {
         /** Enough for the median to be stable; more mostly buys thermal throttling. */
-        const val ITERATIONS = 10
+        private const val ITERATIONS = 10
+
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0} {1}")
+        fun parameters(): List<Array<Any>> =
+            listOf(StartupMode.COLD, StartupMode.WARM).flatMap { mode ->
+                listOf(CompilationMode.None(), CompilationMode.Partial()).map { arrayOf(mode, it) }
+            }
     }
 }

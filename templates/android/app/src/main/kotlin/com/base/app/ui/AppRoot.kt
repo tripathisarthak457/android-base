@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.base.app.core.datastore.AppSettings
 // <opt:devtools>
 import com.base.app.core.devtools.DevEnvironment
@@ -48,7 +50,8 @@ fun AppRoot(
     val themeMode = settings.themeMode()
 
     AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        // Test tags become resource ids, which is how benchmarks and tools/perf find tabs and lists.
+        Box(modifier = Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
             if (tabs.isEmpty()) {
                 val backStack = rememberAppBackStack(startKey = startKey, serialization = serialization)
 

@@ -19,6 +19,7 @@ import com.base.app.core.navigation.ShellTab
 import com.base.app.session.SessionCoordinator
 import com.base.app.ui.AppDestinations
 import com.base.app.ui.AppRoot
+import com.base.app.ui.LaunchHook
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -78,6 +79,9 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var tokenStore: AuthTokenStore
 
+    @Inject
+    lateinit var launchHooks: Set<@JvmSuppressWildcards LaunchHook>
+
     // <opt:deeplink>
     @Inject
     lateinit var deepLinkResolver: DeepLinkResolver
@@ -121,6 +125,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         lifecycleScope.launch {
+            if (savedInstanceState == null) launchHooks.forEach { it.beforeStart(intent) }
             combine(
                 settingsStore.settings,
                 tokenStore.isAuthenticated,

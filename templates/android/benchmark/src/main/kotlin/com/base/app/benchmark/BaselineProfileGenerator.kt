@@ -1,16 +1,21 @@
 package com.base.app.benchmark
 
+import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import org.junit.Rule
 import org.junit.Test
 
 /**
- * Records the classes and methods used on the startup path, so ART can compile them ahead of time
- * at install rather than interpreting them on first launch.
+ * Records the code a person's first minutes run, so ART compiles it at install instead of
+ * interpreting it while they watch:
  *
  * ```
- * ./gradlew :benchmark:generateBaselineProfile
+ * ./gradlew :app:generateBaselineProfile
+ * python3 tools/perf/split_profile.py
  * ```
+ *
+ * Startup goes into the startup profile too, which lays out the primary dex; the journeys do not, so
+ * that file stays the startup path alone.
  */
 class BaselineProfileGenerator {
 
@@ -18,23 +23,28 @@ class BaselineProfileGenerator {
     val rule = BaselineProfileRule()
 
     @Test
-    fun generate() = rule.collect(
-        packageName = PACKAGE_NAME,
-        includeInStartupProfile = true,
-    ) {
+    fun startup() = rule.collect(packageName = TARGET_APP_ID, includeInStartupProfile = true) {
         pressHome()
-        startActivityAndWait()
-
-        // Scrolling is included because the first list frames are part of perceived startup.
-        device.waitForIdle()
+        startToShell()
     }
 
-    private companion object {
-        /**
-         * The dev flavour's id. The profile is recorded against whichever variant is installed; dev
-         * is the one a developer has on the device, and the profile is applicable to all of them
-         * because the code path is identical.
-         */
-        const val PACKAGE_NAME = "com.base.app.dev"
+    @Test
+    fun journeys() = rule.collect(packageName = TARGET_APP_ID) {
+        startToShell()
+        (1 until tabCount()).forEach(::tapTab)
+        tapTab(0)
+        openFirstRow()
+        openRelated()
+        backToRelatedThenRoot()
+        openFirstRow()
+        edgeSwipeBack()
+        assertAtRoot()
+        flingPrimaryList()
+    }
+
+    private fun MacrobenchmarkScope.backToRelatedThenRoot() {
+        device.pressBack()
+        device.waitForIdle()
+        backToRoot()
     }
 }

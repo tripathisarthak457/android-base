@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -209,7 +210,7 @@ private fun ItemRow(
                 item = item,
                 selected = index == selectedIndex,
                 onClick = { onItemSelected(index) },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).testTag("tab_$index"),
             )
         }
     }
