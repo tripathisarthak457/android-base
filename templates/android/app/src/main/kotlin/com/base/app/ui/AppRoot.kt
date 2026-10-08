@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.datastore.AppSettings
 // <opt:devtools>
 import com.base.app.core.devtools.DevEnvironment
@@ -13,7 +14,6 @@ import com.base.app.core.devtools.DevToolsLog
 // </opt:devtools>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
-import com.base.app.core.navigation.AppNavKey
 import com.base.app.core.navigation.AppNavigationHost
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell
