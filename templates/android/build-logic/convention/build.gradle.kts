@@ -31,6 +31,8 @@ dependencies {
     compileOnly(libs.google.services.gradlePlugin)
     compileOnly(libs.firebase.crashlytics.gradlePlugin)
     // </opt:firebase>
+
+    testImplementation(libs.junit)
 }
 
 gradlePlugin {
