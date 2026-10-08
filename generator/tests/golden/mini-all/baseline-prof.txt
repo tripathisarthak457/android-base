@@ -1,0 +1,3 @@
+HSPLcom/example/trail/TrailNotesApplication;-><init>()V
+Lcom/example/trail/core/Logger;
+PLandroidx/compose/Foo;

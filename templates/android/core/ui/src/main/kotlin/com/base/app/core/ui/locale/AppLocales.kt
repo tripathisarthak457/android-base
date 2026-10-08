@@ -11,7 +11,9 @@ import java.util.Locale
 object AppLocales {
 
     /** Every language the app ships strings for, source language first. */
+    // <generated:supported-locales>
     val supported: List<String> = listOf("en")
+    // </generated:supported-locales>
 
     /** The chosen language tag, or null when the app follows the phone. */
     fun current(context: Context): String? =

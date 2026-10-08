@@ -1,0 +1,12 @@
+{
+  "feed_title": "Fil",
+  "feed_subtitle": "Dix à la fois, au fil du défilement",
+  "feed_author": "Auteur %1$d",
+  "feed_empty_title": "Rien à afficher",
+  "feed_empty_message": "Les nouveautés apparaîtront ici.",
+  "feed_load_failed": "Impossible de charger le fil.",
+  "feed_load_more_failed": "Impossible d’en charger plus.",
+  "feed_retry": "Réessayer",
+  "feed_show_more": "Afficher plus",
+  "feed_show_less": "Afficher moins"
+}

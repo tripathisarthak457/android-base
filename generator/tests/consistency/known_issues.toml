@@ -1,0 +1,34 @@
+# Issues generated projects have today, each with the package that fixes it. The runner fails on an
+# issue that is not listed, and the full run also fails on a listed one that no longer occurs, so
+# this list only shrinks. `match` is a regular expression searched in the issue line; {pkg} is the
+# package path and {package} the package.
+
+[[issue]]
+match = "^CONVENTION AndroidFirebaseConventionPlugin is never registered$"
+owner = "WP06"
+why = "the plugin's registration is fenced by <opt:firebase>, its file is not owned by firebase"
+
+[[issue]]
+match = "^CONVENTION AndroidRoomConventionPlugin is never registered$"
+owner = "WP06"
+why = "the plugin ships with room and database both off; ownership cannot say 'when both are off'"
+
+[[issue]]
+match = "^UNUSED-IMPORT app/src/main/kotlin/\\{pkg\\}/ui/AppDestinations\\.kt: \\{package\\}\\.(R|core\\.designsystem\\.icon\\.AppIcons)$"
+owner = "WP04"
+why = "the imports sit outside the <opt:> blocks of the tabs that use them"
+
+[[issue]]
+match = "^UNUSED-IMPORT app/src/main/kotlin/\\{pkg\\}/di/FeatureBindingsModule\\.kt: \\{package\\}\\.ui\\.AppDestinations$"
+owner = "WP02"
+why = "only some of the bindings that read AppDestinations survive a given feature set"
+
+[[issue]]
+match = "^UNUSED-IMPORT feature/profile/src/main/kotlin/\\{pkg\\}/feature/profile/ProfileScreen\\.kt: androidx\\.compose\\.foundation\\.layout\\.Row$"
+owner = "WP02"
+why = "Row is used only by the media-picker block"
+
+[[issue]]
+match = "^UNUSED-IMPORT core/network/src/test/kotlin/\\{pkg\\}/core/network/KtorNetworkClientTest\\.kt: kotlinx\\.serialization\\.json\\.(JsonPrimitive|buildJsonObject)$"
+owner = "WP06"
+why = "used only by the room-gated cache tests"

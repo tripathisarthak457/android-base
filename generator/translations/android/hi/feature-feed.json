@@ -1,0 +1,12 @@
+{
+  "feed_title": "फ़ीड",
+  "feed_subtitle": "स्क्रोल करते ही एक बार में दस लोड होते हैं",
+  "feed_author": "लेखक %1$d",
+  "feed_empty_title": "दिखाने के लिए कुछ नहीं",
+  "feed_empty_message": "कुछ नया आने पर यहां दिखेगा।",
+  "feed_load_failed": "फ़ीड लोड नहीं हो सकी।",
+  "feed_load_more_failed": "और लोड नहीं हो सका।",
+  "feed_retry": "फिर से कोशिश करें",
+  "feed_show_more": "ज़्यादा दिखाएं",
+  "feed_show_less": "कम दिखाएं"
+}

@@ -1,0 +1,11 @@
+key = "leakcanary"
+title = "LeakCanary (debug only)"
+headline = "Find memory leaks in debug builds"
+description = """
+Memory-leak detection in debug builds."""
+group = "Build and quality"
+default = true
+requires = []
+implied_only = false
+owns = []
+legacy = []

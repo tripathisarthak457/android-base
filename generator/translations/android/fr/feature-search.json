@@ -1,0 +1,12 @@
+{
+  "search_title": "Recherche",
+  "search_placeholder": "Rechercher des publications",
+  "search_recent": "Récentes",
+  "search_clear_recent": "Effacer",
+  "search_start_title": "Trouvez ce que vous voulez",
+  "search_start_message": "Les résultats s’affichent pendant la saisie. Vos recherches sont conservées ici.",
+  "search_no_results_title": "Aucun résultat",
+  "search_no_results_message": "Rien ne correspond à « %1$s ». Essayez avec moins de mots ou d’autres mots.",
+  "search_retry": "Réessayer",
+  "search_remove_recent": "Retirer %1$s"
+}

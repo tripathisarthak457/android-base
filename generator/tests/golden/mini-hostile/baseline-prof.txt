@@ -1,0 +1,3 @@
+HSPLcom/base/apple/XbaseappApplication;-><init>()V
+Lcom/base/apple/core/Logger;
+PLandroidx/compose/Foo;
