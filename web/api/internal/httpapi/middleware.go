@@ -1,13 +1,16 @@
 package httpapi
 
 import (
+	"context"
 	"crypto/subtle"
-	"log/slog"
-	"net"
+	"io"
+	"mime"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/base-android/generator-api/internal/store"
 )
 
 // recorder captures what a handler did so the middleware can log and record it. `http.ResponseWriter`
@@ -19,7 +22,9 @@ type recorder struct {
 }
 
 func (r *recorder) WriteHeader(status int) {
-	r.status = status
+	if r.status == 0 {
+		r.status = status
+	}
 	r.ResponseWriter.WriteHeader(status)
 }
 
@@ -32,52 +37,94 @@ func (r *recorder) Write(b []byte) (int, error) {
 	return n, err
 }
 
-// Flush is forwarded so a streamed download is not buffered to completion by the middleware.
+// ReadFrom lets io.Copy reach the connection's own ReadFrom, so a zip goes out with sendfile instead
+// of through a 32 KB buffer.
+func (r *recorder) ReadFrom(src io.Reader) (int64, error) {
+	if r.status == 0 {
+		r.status = http.StatusOK
+	}
+	n, err := io.Copy(r.ResponseWriter, src)
+	r.bytes += n
+	return n, err
+}
+
 func (r *recorder) Flush() {
 	if flusher, ok := r.ResponseWriter.(http.Flusher); ok {
 		flusher.Flush()
 	}
 }
 
+func (r *recorder) Unwrap() http.ResponseWriter { return r.ResponseWriter }
+
+type batchKey struct{}
+
+// recordings returns the batch the current request writes its telemetry into.
+func recordings(r *http.Request) *store.Batch {
+	if batch, ok := r.Context().Value(batchKey{}).(*store.Batch); ok {
+		return batch
+	}
+	return &store.Batch{}
+}
+
+// telemetryWait bounds how long a finished request stays alive for its own telemetry write.
+const telemetryWait = 2 * time.Second
+
+// observe logs every request and records what its handler gathered, in one batch.
+//
+// The client never waits for the database: every response carries a Content-Length, so flushing it
+// hands the whole response over before the write starts. The handler then stays alive until the
+// batch is written (bounded), because the hosting platform freezes the process once the handler
+// returns, and a write left in a goroutine at that point was never scheduled and silently lost.
 func (s *Server) observe(route string, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		started := time.Now()
 		rec := &recorder{ResponseWriter: w}
+		batch := &store.Batch{}
 
-		next(rec, r)
+		next(rec, r.WithContext(context.WithValue(r.Context(), batchKey{}, batch)))
 
 		duration := time.Since(started)
 		if rec.status == 0 {
 			rec.status = http.StatusOK
 		}
-
 		s.log.Info("request",
 			"route", route, "method", r.Method, "status", rec.status,
 			"ms", duration.Milliseconds(), "bytes", rec.bytes,
 		)
-		if s.store != nil {
-			ctx, cancel := s.recordingContext()
-			s.store.RecordRequest(ctx, route, r.Method, rec.status, duration, rec.bytes)
-			cancel()
+		if s.sink == nil {
+			return
+		}
+		// The admin's own reads would otherwise fill the route health it is reading.
+		if !strings.HasPrefix(route, "admin.") {
+			batch.Requests = append(batch.Requests, store.Request{
+				Route: route, Method: r.Method, Status: rec.status, Duration: duration, Bytes: rec.bytes,
+			})
+		}
+		if batch.Empty() {
+			return
+		}
+		rec.Flush()
+		timer := time.NewTimer(telemetryWait)
+		defer timer.Stop()
+		select {
+		case <-s.sink.Submit(batch):
+		case <-timer.C:
 		}
 	}
 }
 
-// cors answers the browser. An explicit allow-list rather than `*`: the generate endpoint is a
-// POST that returns a file, and there is no reason for any origin but the site to call it.
+// cors answers the browser. An explicit allow-list rather than `*`: the generate endpoint is a POST
+// that returns a file, and there is no reason for any origin but the site to call it.
 func (s *Server) cors(next http.HandlerFunc) http.HandlerFunc {
-	allowed := make(map[string]bool, len(s.origins))
-	for _, origin := range s.origins {
-		allowed[origin] = true
-	}
-
 	return func(w http.ResponseWriter, r *http.Request) {
-		origin := r.Header.Get("Origin")
-		if origin != "" && allowed[origin] {
+		if origin := r.Header.Get("Origin"); origin != "" && s.origins[origin] {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Set("Vary", "Origin")
+			w.Header().Add("Vary", "Origin")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			w.Header().Set("Access-Control-Allow-Headers",
+				"Content-Type, Authorization, If-None-Match, X-Session-Id, X-Config-Ms, X-Client")
+			w.Header().Set("Access-Control-Expose-Headers",
+				"Content-Disposition, ETag, Retry-After, X-Project-Name, X-Generation-Ms, X-Keystores-Skipped, X-Next-Before")
 			w.Header().Set("Access-Control-Max-Age", "86400")
 		}
 		if r.Method == http.MethodOptions {
@@ -88,7 +135,22 @@ func (s *Server) cors(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// requireAdmin guards the portal with a bearer token compared in constant time.
+// requireJSON refuses a POST that is not declared as JSON (audit web-api M10). A cross-site page
+// can send a form or text/plain POST without asking; a JSON one needs a preflight, which the CORS
+// allow-list then refuses.
+func requireJSON(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
+		if err != nil || mediaType != "application/json" {
+			writeError(w, http.StatusUnsupportedMediaType, "unsupported_media_type", "Send the request as application/json.", "")
+			return
+		}
+		next(w, r)
+	}
+}
+
+// requireAdmin guards the portal with a bearer token compared in constant time. Only a missing or
+// wrong token is a 401, so the portal can tell "log in again" from "the database is down".
 //
 // A shared token rather than accounts: there is one administrator, and a login system for one
 // person is a login system whose password reset flow nobody will ever test.
@@ -97,17 +159,18 @@ func (s *Server) requireAdmin(next http.HandlerFunc) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		provided := []byte(r.Header.Get("Authorization"))
-		// Config refuses a blank token today; this keeps a blank one from ever matching "Bearer ".
+		// Config refuses a blank token; this keeps a blank one from ever matching "Bearer ".
 		if s.adminToken == "" || subtle.ConstantTimeCompare(provided, expected) != 1 {
-			writeError(w, http.StatusUnauthorized, "Not authorised.")
+			writeError(w, http.StatusUnauthorized, "unauthorized", "Not authorised.", "")
 			return
 		}
 		next(w, r)
 	}
 }
 
-// limiter is a fixed-window counter per client, which is the right amount of machinery for a public
-// endpoint that costs a CPU-second.
+// limiter is a fixed-window counter per client key, which is the right amount of machinery for
+// public endpoints that cost a CPU-second at most. It counts in one process: across several
+// instances the real ceiling is the limit times the instance count.
 type limiter struct {
 	mu       sync.Mutex
 	perHour  int
@@ -119,7 +182,9 @@ func newLimiter(perHour int) *limiter {
 	return &limiter{perHour: perHour, counts: map[string]int{}, windowAt: time.Now()}
 }
 
-func (l *limiter) allow(key string) bool {
+// allow counts one request. first is true for the first refusal of a key in a window, so a refused
+// client is recorded once rather than once per retry.
+func (l *limiter) allow(key string) (ok, first bool) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
@@ -127,43 +192,26 @@ func (l *limiter) allow(key string) bool {
 		l.counts = map[string]int{}
 		l.windowAt = time.Now()
 	}
-	if l.counts[key] >= l.perHour {
-		return false
+	count := l.counts[key]
+	if count < l.perHour {
+		l.counts[key] = count + 1
+		return true, false
 	}
-	l.counts[key]++
-	return true
+	if count == l.perHour {
+		l.counts[key] = count + 1
+		return false, true
+	}
+	return false, false
 }
 
-func (s *Server) rateLimit(next http.HandlerFunc) http.HandlerFunc {
+// limit refuses a client over its hourly allowance for one route family.
+func (s *Server) limit(l *limiter, next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if !s.limiter.allow(clientIP(r)) {
+		if ok, _ := l.allow(s.clientKey(r)); !ok {
 			w.Header().Set("Retry-After", "3600")
-			writeError(w, http.StatusTooManyRequests,
-				"That is a lot of projects. Try again in an hour, or run the generator locally — "+
-					"it is the same code and there is no limit on it.")
+			writeError(w, http.StatusTooManyRequests, "rate_limited", "Too many requests. Try again in an hour.", "")
 			return
 		}
 		next(w, r)
 	}
-}
-
-// clientIP trusts X-Forwarded-For only because this service is designed to sit behind Caddy on
-// the same host. Exposed directly to the internet it would be spoofable, which is worth knowing
-// before anyone moves it.
-func clientIP(r *http.Request) string {
-	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
-		if comma := strings.IndexByte(forwarded, ','); comma > 0 {
-			return strings.TrimSpace(forwarded[:comma])
-		}
-		return strings.TrimSpace(forwarded)
-	}
-	host, _, err := net.SplitHostPort(r.RemoteAddr)
-	if err != nil {
-		return r.RemoteAddr
-	}
-	return host
-}
-
-func logger() *slog.Logger {
-	return slog.New(slog.NewJSONHandler(logWriter{}, &slog.HandlerOptions{Level: slog.LevelInfo}))
 }
