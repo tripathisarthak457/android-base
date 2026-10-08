@@ -5,6 +5,7 @@
 plugins {
     id("com.base.app.android.application")
     id("com.base.app.android.compose")
+    alias(libs.plugins.kotlin.serialization)
 }
 android {
     namespace = "com.base.app.catalog"
@@ -28,6 +29,8 @@ android {
 
 dependencies {
     implementation(project(":core:designsystem"))
+    // The Navigation section runs the app's own shell, transitions and back handling.
+    implementation(project(":core:navigation"))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
 

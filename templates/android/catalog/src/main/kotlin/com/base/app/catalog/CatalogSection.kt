@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.catalog.sections.NavigationSection
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** The catalog's pages. */
@@ -23,6 +24,7 @@ enum class CatalogSection(val title: String, val summary: String) {
     Data("Data display", "Counters, expandable text, stats, ratings, charts"),
     Feedback("Feedback", "Progress, steps, skeletons, badges, banners, empty"),
     Overlays("Overlays", "Dialogs, sheets, menus, tooltips, snackbars"),
+    Navigation("Navigation", "The tab bar in every variant, push, pop, cover and back"),
     Motion("Animation", "The transition set, running, including list animation"),
     Feel("Motion & haptics", "Press feedback, motion styles, the haptic vocabulary"),
     DateTime("Date & time", "Calendar, wheels, pickers"),
@@ -42,6 +44,7 @@ fun CatalogSection.Content() {
         CatalogSection.Data -> DataSection()
         CatalogSection.Feedback -> FeedbackSection()
         CatalogSection.Overlays -> OverlaysSection()
+        CatalogSection.Navigation -> NavigationSection()
         CatalogSection.Motion -> MotionSection()
         CatalogSection.Feel -> FeelSection()
         CatalogSection.DateTime -> DateTimeSection()
