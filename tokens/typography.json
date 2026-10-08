@@ -1,0 +1,17 @@
+{
+  "voices": ["Neutral", "Bold", "Editorial", "Rounded"],
+  "roles": {
+    "largeTitle": { "size": 34, "lineHeight": 41, "tracking": -0.8, "weight": { "Neutral": 700, "Bold": 900, "Editorial": 600, "Rounded": 900 } },
+    "title1": { "size": 28, "lineHeight": 34, "tracking": -0.6, "weight": { "Neutral": 700, "Bold": 900, "Editorial": 600, "Rounded": 900 } },
+    "title2": { "size": 22, "lineHeight": 28, "tracking": -0.5, "weight": { "Neutral": 700, "Bold": 800, "Editorial": 600, "Rounded": 900 } },
+    "title3": { "size": 20, "lineHeight": 25, "tracking": -0.3, "weight": { "Neutral": 600, "Bold": 800, "Editorial": 600, "Rounded": 800 } },
+    "headline": { "size": 17, "lineHeight": 22, "tracking": -0.2, "weight": { "Neutral": 600, "Bold": 800, "Editorial": 600, "Rounded": 800 } },
+    "body": { "size": 17, "lineHeight": 22, "tracking": 0, "weight": { "Neutral": 400, "Bold": 400, "Editorial": 400, "Rounded": 400 } },
+    "callout": { "size": 16, "lineHeight": 21, "tracking": 0, "weight": { "Neutral": 400, "Bold": 400, "Editorial": 400, "Rounded": 400 } },
+    "subheadline": { "size": 15, "lineHeight": 20, "tracking": 0, "weight": { "Neutral": 400, "Bold": 400, "Editorial": 400, "Rounded": 400 } },
+    "footnote": { "size": 13, "lineHeight": 18, "tracking": 0, "weight": { "Neutral": 400, "Bold": 500, "Editorial": 400, "Rounded": 500 } },
+    "caption1": { "size": 12, "lineHeight": 16, "tracking": 0.1, "weight": { "Neutral": 400, "Bold": 500, "Editorial": 400, "Rounded": 500 } },
+    "caption2": { "size": 11, "lineHeight": 13, "tracking": 0.2, "weight": { "Neutral": 500, "Bold": 600, "Editorial": 500, "Rounded": 600 } },
+    "mono": { "size": 15, "lineHeight": 20, "tracking": 0, "weight": { "Neutral": 400, "Bold": 400, "Editorial": 400, "Rounded": 400 } }
+  }
+}

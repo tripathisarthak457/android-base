@@ -1,0 +1,17 @@
+key = "devtools"
+title = "On-device inspector"
+headline = "See every request the app made"
+description = """
+A draggable badge naming the environment on every build except production, and a panel behind it
+holding the last 200 requests with their full bodies, timing and failure rate. Absent from a
+production build rather than hidden in one."""
+group = "Observability"
+default = true
+requires = []
+implied_only = false
+owns = [
+  "core/devtools",
+  "core/network/src/main/kotlin/{pkg_path}/core/network/NetworkRecording.kt",
+  "app/src/main/kotlin/{pkg_path}/di/DevToolsModule.kt",
+]
+legacy = []

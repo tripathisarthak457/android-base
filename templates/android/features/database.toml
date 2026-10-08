@@ -1,0 +1,13 @@
+key = "database"
+title = "App database (Room)"
+headline = "Store your own data, not just a cache"
+description = """
+A database for the app's own data, separate from the network cache: an entity, a DAO returning
+flows, a hand-written migration and a test that replays it against a database that really was at
+the older version."""
+group = "Networking and data"
+default = false
+requires = ["room"]
+implied_only = false
+owns = ["core/database"]
+legacy = []

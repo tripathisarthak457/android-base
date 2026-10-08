@@ -1,0 +1,14 @@
+key = "googlesignin"
+title = "Sign in with Google"
+headline = "Continue with Google"
+description = """
+A Continue with Google button on the sign-in screen through Credential Manager. The ID token goes
+to your backend, which answers with its own tokens like any sign-in."""
+group = "Sign-in and account"
+default = false
+requires = ["auth"]
+implied_only = false
+owns = [
+  "feature/auth/src/main/kotlin/{pkg_path}/feature/auth/GoogleSignIn.kt",
+]
+legacy = []

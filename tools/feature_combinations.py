@@ -3,7 +3,7 @@ Feature sets that between them put every pair of features in every on/off pairin
 
 A marker that only balances when two features are both on, or one on and the other off, is
 invisible to the all-features and no-features builds. Testing every pairing directly would take
-2^35 projects; a pairwise set takes about a dozen.
+2^n projects; a pairwise set takes about a dozen.
 
     python3 tools/feature_combinations.py              # one JSON list of feature lists
     python3 tools/feature_combinations.py --specs DIR  # also write DIR/combo-N.json specs
@@ -20,7 +20,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "generator"))
 
-from genkit.spec import FEATURES, resolve_features  # noqa: E402
+from genkit.targets import get  # noqa: E402
+
+MANIFEST = get("android").manifest
 
 # Fixed, so CI builds the same sets on every run and a failure can be reproduced locally.
 SEED = 20260924
@@ -32,17 +34,17 @@ def pairs_of(features: frozenset[str], keys: list[str]) -> set[tuple[str, bool, 
 
 
 def combinations() -> list[list[str]]:
-    keys = sorted(f.key for f in FEATURES if not f.implied_only)
+    keys = sorted(feature.key for feature in MANIFEST.selectable)
     # A pairing that `requires` rules out, such as push on with firebase off, can never be built,
     # so only pairings some resolved set actually reaches are asked for.
     rng = random.Random(SEED)
     reachable: set[tuple[str, bool, str, bool]] = set()
     for _ in range(4000):
         chosen = {k for k in keys if rng.random() < 0.5}
-        reachable |= pairs_of(frozenset(resolve_features(chosen)), keys)
+        reachable |= pairs_of(MANIFEST.resolve(chosen), keys)
     for key in keys:
-        reachable |= pairs_of(frozenset(resolve_features({key})), keys)
-        reachable |= pairs_of(frozenset(resolve_features(set(keys) - {key})), keys)
+        reachable |= pairs_of(MANIFEST.resolve({key}), keys)
+        reachable |= pairs_of(MANIFEST.resolve(set(keys) - {key}), keys)
 
     uncovered = set(reachable)
     result: list[list[str]] = []
@@ -50,7 +52,7 @@ def combinations() -> list[list[str]]:
         best, best_gain = frozenset(), -1
         for _ in range(CANDIDATES_PER_ROUND):
             density = rng.choice((0.2, 0.5, 0.8))
-            candidate = frozenset(resolve_features({k for k in keys if rng.random() < density}))
+            candidate = MANIFEST.resolve({k for k in keys if rng.random() < density})
             gain = len(pairs_of(candidate, keys) & uncovered)
             if gain > best_gain:
                 best, best_gain = candidate, gain
@@ -58,7 +60,7 @@ def combinations() -> list[list[str]]:
             # Random candidates stopped finding the last few; build one around a missing pairing.
             a, a_on, b, b_on = next(iter(sorted(uncovered)))
             wanted = {k for k, on in ((a, a_on), (b, b_on)) if on}
-            best = frozenset(resolve_features(wanted))
+            best = MANIFEST.resolve(wanted)
             if not pairs_of(best, keys) & uncovered:
                 uncovered.discard((a, a_on, b, b_on))
                 continue
