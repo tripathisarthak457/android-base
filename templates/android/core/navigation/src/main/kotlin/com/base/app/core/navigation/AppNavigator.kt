@@ -1,5 +1,7 @@
 package com.base.app.core.navigation
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -40,7 +42,11 @@ class AppNavigator @Inject constructor() {
     private val _commands = Channel<NavCommand>(Channel.BUFFERED)
     val commands: Flow<NavCommand> = _commands.receiveAsFlow()
 
-    /** Not `suspend`, unlike the obvious design. */
+    /*
+     * Not suspending, so a click handler can call these directly. The channel buffers, and the
+     * shell applies commands one at a time, after any transition that is running has settled.
+     */
+
     fun navigate(
         key: AppNavKey,
         popUpTo: AppNavKey? = null,
@@ -60,5 +66,17 @@ class AppNavigator @Inject constructor() {
 
     fun popTo(key: AppNavKey, inclusive: Boolean = false) {
         _commands.trySend(NavCommand.PopTo(key, inclusive))
+    }
+}
+
+/**
+ * Hands the navigator's commands to [apply] while [lifecycle] is started, and keeps them waiting
+ * otherwise. Each command goes to one collector and the navigator is one per process: a second
+ * activity left stopped behind the one on screen would take every other command, and the tap that
+ * sent it would seem to do nothing.
+ */
+suspend fun AppNavigator.applyWhileStarted(lifecycle: Lifecycle, apply: suspend (NavCommand) -> Unit) {
+    lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        commands.collect { apply(it) }
     }
 }

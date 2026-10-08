@@ -37,6 +37,8 @@ class NavKeySerialization @Inject constructor(
         }
         ignoreUnknownKeys = true
         encodeDefaults = true
-        classDiscriminator = "key"
+        // Not a name a key's own property could have: a key with a `key` property made the whole
+        // stack fail to encode, and the app came back from the background without it.
+        classDiscriminator = "#type"
     }
 }

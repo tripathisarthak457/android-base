@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -15,6 +14,7 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
@@ -53,9 +53,11 @@ internal fun listDetailPanes(panes: List<NavPane>): Pair<Int, Int?>? {
 }
 
 /** Puts a list and its detail side by side whenever [twoPanes] is true. */
-internal class ListDetailSceneStrategy(
+internal data class ListDetailSceneStrategy(
     private val twoPanes: Boolean,
     private val listPaneWidth: Dp,
+    private val motion: ScreenMotion,
+    private val gate: BackGate,
 ) : SceneStrategy<AppNavKey> {
 
     override fun SceneStrategyScope<AppNavKey>.calculateScene(
@@ -68,15 +70,10 @@ internal class ListDetailSceneStrategy(
             detail = detailIndex?.let(entries::get),
             previousEntries = entries.dropLast(1),
             listPaneWidth = listPaneWidth,
+            motion = motion,
+            gate = gate,
         )
     }
-}
-
-@Composable
-internal fun rememberListDetailSceneStrategy(): SceneStrategy<AppNavKey> {
-    val twoPanes = AppTheme.windowSize.hasRoomForTwoPanes
-    val listPaneWidth = AppTheme.layout.listPaneWidth
-    return remember(twoPanes, listPaneWidth) { ListDetailSceneStrategy(twoPanes, listPaneWidth) }
 }
 
 private class ListDetailScene(
@@ -84,6 +81,8 @@ private class ListDetailScene(
     private val detail: NavEntry<AppNavKey>?,
     override val previousEntries: List<NavEntry<AppNavKey>>,
     private val listPaneWidth: Dp,
+    private val motion: ScreenMotion,
+    private val gate: BackGate,
 ) : Scene<AppNavKey> {
 
     // Keyed by the list, so opening another item swaps the detail pane in place instead of
@@ -93,11 +92,12 @@ private class ListDetailScene(
     override val entries: List<NavEntry<AppNavKey>> = listOfNotNull(list, detail)
 
     override val content: @Composable () -> Unit = {
+        val transition = LocalNavAnimatedContentScope.current.transition
+        ReportMotion(transition, transition.arrival(motion), gate)
         Row(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.width(listPaneWidth).fillMaxHeight()) { list.Content() }
             AppVerticalDivider()
-            // Swapped, not cross-faded: a detail that has been popped has had its ViewModel store
-            // cleared, and drawing it through a fade-out would bring a ViewModel back to life.
+            // Swapped, not cross-faded: the pane changes in the frame the selection does.
             Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
                 key(detail?.contentKey) {
                     if (detail != null) detail.Content() else NothingSelected()
@@ -105,6 +105,16 @@ private class ListDetailScene(
             }
         }
     }
+
+    // Recomputed on every back-stack change; an equal scene must compare equal, or Navigation 3
+    // starts a transition to a scene that looks identical.
+    override fun equals(other: Any?): Boolean =
+        other is ListDetailScene && list == other.list && detail == other.detail &&
+            previousEntries == other.previousEntries && listPaneWidth == other.listPaneWidth &&
+            motion == other.motion && gate === other.gate
+
+    override fun hashCode(): Int =
+        ((list.hashCode() * 31 + detail.hashCode()) * 31 + previousEntries.hashCode()) * 31 + listPaneWidth.hashCode()
 }
 
 @Composable

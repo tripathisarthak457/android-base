@@ -1,140 +1,122 @@
 package com.base.app.core.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.FloatSpringSpec
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import com.base.app.core.designsystem.theme.AppMotion
+import androidx.compose.runtime.Immutable
+import androidx.compose.ui.unit.IntOffset
+import androidx.navigation3.scene.Scene
+import kotlin.math.PI
+import kotlin.math.roundToInt
 
-/** The app's screen-to-screen transitions. Three shapes, and only three. */
-internal object NavTransitions {
+/**
+ * The one spring every full-screen move rides: push, pop and covers. Critically damped, because a
+ * long travel with any overshoot in it reads as unstable, and short, because a slow settle leaves a
+ * sliver of the old screen crawling at the edge. [response] is in seconds, as iOS states springs:
+ * stiffness = (2π / response)².
+ */
+@Immutable
+internal data class ScreenMotion(val response: Float = DEFAULT_RESPONSE, val parallax: Float = PARALLAX) {
+    private val stiffness = ((2 * PI / response) * (2 * PI / response)).toFloat()
 
-    private const val TAB_ENTER_SCALE = 0.985f
+    val offset: SpringSpec<IntOffset> = spring(1f, stiffness, IntOffset.VisibilityThreshold)
 
-    fun push(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-        slideIntoContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-            animationSpec = motion.navigation(),
-        ) togetherWith slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-            animationSpec = motion.navigation(),
-            targetOffset = { fullWidth -> (fullWidth * motion.outgoingParallax).toInt() },
-        ) + fadeOut(
-            animationSpec = tween(motion.medium, easing = motion.standard),
-            targetAlpha = 1f - motion.outgoingDim,
-        )
+    /** The same spring for a 0 to 1 progress, so a scrim or a follower moves in step with the slide. */
+    val fraction: SpringSpec<Float> = spring(1f, stiffness, visibilityThreshold = FRACTION_THRESHOLD)
+
+    /** How long the spring takes to bring [distancePx] of travel to rest, to within a pixel. */
+    fun settleMillis(distancePx: Float): Int {
+        val nanos = FloatSpringSpec(1f, stiffness, visibilityThreshold = 1f)
+            .getDurationNanos(initialValue = distancePx, targetValue = 0f, initialVelocity = 0f)
+        return (nanos / 1_000_000).toInt().coerceAtLeast(1)
     }
 
-    /** The exact mirror of [push]. Programmatic back, and the end of a completed gesture. */
-    fun pop(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-        (
-            slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.End,
-                animationSpec = motion.navigation(),
-                initialOffset = { fullWidth -> (fullWidth * motion.outgoingParallax).toInt() },
-            ) + fadeIn(
-                animationSpec = tween(motion.medium, easing = motion.standard),
-                initialAlpha = 1f - motion.outgoingDim,
-            )
-            ) togetherWith slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.End,
-            animationSpec = motion.navigation(),
-        )
-    }
+    companion object {
+        /** Provisional: the user picks between 0.24, 0.30 and 0.36 s from device recordings. */
+        const val DEFAULT_RESPONSE = 0.24f
 
-    /**
-     * A layer over the current screen. Rises from the bottom edge; the screen underneath settles
-     * back and dims, so the new layer reads as sitting on top of it rather than replacing it.
-     */
-    fun modal(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-        (
-            slideInVertically(
-                animationSpec = motion.sheet(),
-                initialOffsetY = { fullHeight -> fullHeight },
-            ) + fadeIn(tween(motion.quick))
-            ) togetherWith (
-            scaleOut(
-                animationSpec = tween(motion.medium, easing = motion.standard),
-                targetScale = motion.behindSheetScale,
-            ) + fadeOut(
-                animationSpec = tween(motion.medium, easing = motion.standard),
-                targetAlpha = 1f - motion.outgoingDim,
-            )
-            )
-    }
+        /** How far the covered screen moves, as a fraction of the one arriving over it. */
+        const val PARALLAX = 0.30f
 
-    fun modalDismiss(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-        (
-            scaleIn(
-                animationSpec = tween(motion.medium, easing = motion.enter),
-                initialScale = motion.behindSheetScale,
-            ) + fadeIn(
-                animationSpec = tween(motion.medium, easing = motion.standard),
-                initialAlpha = 1f - motion.outgoingDim,
-            )
-            ) togetherWith (
-            slideOutVertically(
-                animationSpec = motion.sheet(),
-                targetOffsetY = { fullHeight -> fullHeight },
-            ) + fadeOut(tween(motion.slow))
-            )
-    }
-
-    /** Peers. Tab to tab, and a splash handing off. */
-    fun fade(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-        (
-            fadeIn(tween(motion.medium, easing = motion.enter)) + slideInVertically(
-                animationSpec = tween(motion.medium, easing = motion.enter),
-                initialOffsetY = { fullHeight -> fullHeight / 44 },
-            )
-            ) togetherWith fadeOut(tween(motion.quick))
-    }
-
-    /**
-     * Tab to tab: the outgoing tab fades quickly, the incoming one fades in and settles from a hair
-     * below full size.
-     */
-    fun tabSwitch(motion: AppMotion): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-        (
-            fadeIn(tween(motion.medium, delayMillis = motion.instant, easing = motion.enter)) +
-                scaleIn(
-                    animationSpec = tween(motion.medium, delayMillis = motion.instant, easing = motion.enter),
-                    initialScale = TAB_ENTER_SCALE,
-                )
-            ) togetherWith fadeOut(tween(motion.instant + motion.instant / 2, easing = motion.exit))
-    }
-
-    fun none(): AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-        EnterTransition.None togetherWith ExitTransition.None
-    }
-
-    fun forStyle(
-        style: NavTransitionStyle,
-        motion: AppMotion,
-        reduceMotion: Boolean,
-    ): AnimatedContentTransitionScope<*>.() -> ContentTransform = when {
-        reduceMotion || style == NavTransitionStyle.None -> none()
-        style == NavTransitionStyle.Modal -> modal(motion)
-        style == NavTransitionStyle.Fade -> fade(motion)
-        else -> push(motion)
-    }
-
-    fun popForStyle(
-        style: NavTransitionStyle,
-        motion: AppMotion,
-        reduceMotion: Boolean,
-    ): AnimatedContentTransitionScope<*>.() -> ContentTransform = when {
-        reduceMotion || style == NavTransitionStyle.None -> none()
-        style == NavTransitionStyle.Modal -> modalDismiss(motion)
-        style == NavTransitionStyle.Fade -> fade(motion)
-        else -> pop(motion)
+        private const val FRACTION_THRESHOLD = 0.001f
     }
 }
+
+private typealias SceneTransform = AnimatedContentTransitionScope<Scene<AppNavKey>>.() -> ContentTransform
+
+/**
+ * Screen-to-screen transitions. Screens only slide: no alpha and no scale, because either renders
+ * the whole screen offscreen on every frame. Depth comes from the scrim the arriving screen draws
+ * over the one it covers ([coverScrim]).
+ */
+internal object NavTransitions {
+
+    fun push(motion: ScreenMotion): SceneTransform = {
+        if (sameStack(initialState, targetState)) {
+            none
+        } else {
+            slideIntoContainer(SlideDirection.Start, motion.offset) togetherWith
+                slideOutOfContainer(SlideDirection.Start, motion.offset, targetOffset = { (it * motion.parallax).roundToInt() })
+        }
+    }
+
+    fun pop(motion: ScreenMotion): SceneTransform = {
+        if (sameStack(initialState, targetState)) {
+            none
+        } else {
+            slideIntoContainer(SlideDirection.End, motion.offset, initialOffset = { (it * motion.parallax).roundToInt() }) togetherWith
+                slideOutOfContainer(SlideDirection.End, motion.offset)
+        }
+    }
+
+    /**
+     * Navigation 3 seeks a predictive back by gesture progress, mapping it onto the transition's
+     * play time, so the track has to be linear or the screen runs ahead of the finger. [durationMs]
+     * is the screen spring's settle time, so a released swipe finishes at the pace of a Back press.
+     */
+    fun predictivePop(motion: ScreenMotion, durationMs: Int): AnimatedContentTransitionScope<Scene<AppNavKey>>.(Int) -> ContentTransform = {
+        val track = tween<IntOffset>(durationMs, easing = LinearEasing)
+        slideIntoContainer(SlideDirection.End, track, initialOffset = { (it * motion.parallax).roundToInt() }) togetherWith
+            slideOutOfContainer(SlideDirection.End, track)
+    }
+
+    /** A cover rises over whatever is presented beneath it, which stays where it is. */
+    fun present(motion: ScreenMotion): SceneTransform = {
+        slideInVertically(motion.offset) { it } togetherWith ExitTransition.KeepUntilTransitionsFinished
+    }
+
+    fun dismiss(motion: ScreenMotion): SceneTransform = {
+        EnterTransition.None togetherWith slideOutVertically(motion.offset) { it }
+    }
+
+    fun predictiveDismiss(durationMs: Int): AnimatedContentTransitionScope<Scene<AppNavKey>>.(Int) -> ContentTransform = {
+        EnterTransition.None togetherWith slideOutVertically(tween(durationMs, easing = LinearEasing)) { it }
+    }
+
+    val none: ContentTransform = EnterTransition.None togetherWith ExitTransition.None
+
+    val noneSpec: SceneTransform = { none }
+
+    val noneDuringPredictive: AnimatedContentTransitionScope<Scene<AppNavKey>>.(Int) -> ContentTransform = { none }
+}
+
+/**
+ * The same back stack shown by another scene: a fold, an unfold or a resize across the two-pane
+ * width. That is a layout change, not navigation, so nothing slides.
+ */
+private fun sameStack(initial: Scene<AppNavKey>, target: Scene<AppNavKey>): Boolean =
+    initial.stackKeys() == target.stackKeys()
+
+private fun Scene<AppNavKey>.stackKeys(): List<Any> =
+    previousEntries.map { it.contentKey } + entries.last().contentKey

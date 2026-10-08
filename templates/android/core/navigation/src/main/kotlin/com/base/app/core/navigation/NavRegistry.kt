@@ -16,9 +16,13 @@ import kotlin.reflect.KClass
  *     fun sampleEntries(): NavGraphEntry = navGraph {
  *         entry<SampleListKey>(pane = NavPane.List) { SampleListRoute() }
  *         entry<SampleDetailKey>(pane = NavPane.Detail) { key -> SampleDetailRoute(key.id) }
+ *         entry<SampleFilterKey>(presentation = Presentation.Sheet()) { SampleFilterRoute() }
  *     }
  * }
  * ```
+ *
+ * The keys of one graph belong together: a link to a detail opens the tab whose root key is
+ * registered in the same graph.
  */
 class NavGraphEntry internal constructor(
     internal val destinations: Map<KClass<out AppNavKey>, Destination>,
@@ -27,6 +31,7 @@ class NavGraphEntry internal constructor(
 internal class Destination(
     val transition: NavTransitionStyle,
     val pane: NavPane,
+    val presentation: Presentation?,
     val content: @Composable (AppNavKey) -> Unit,
 )
 
@@ -36,15 +41,17 @@ class NavGraphBuilder internal constructor() {
 
     /**
      * Registers [content] as the screen for key type [T]. A [NavPane.List] and the [NavPane.Detail]
-     * opened from it share the window when it is wide enough.
+     * opened from it share the window when it is wide enough. A key with a [presentation] is shown
+     * above the tab bar, as a sheet or a cover, wherever it is navigated to from.
      */
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T : AppNavKey> entry(
         transition: NavTransitionStyle = NavTransitionStyle.Push,
         pane: NavPane = NavPane.Single,
+        presentation: Presentation? = null,
         noinline content: @Composable (T) -> Unit,
     ) {
-        register(T::class, transition, pane) { key -> content(key as T) }
+        register(T::class, transition, pane, presentation) { key -> content(key as T) }
     }
 
     @PublishedApi
@@ -52,9 +59,10 @@ class NavGraphBuilder internal constructor() {
         type: KClass<out AppNavKey>,
         transition: NavTransitionStyle,
         pane: NavPane,
+        presentation: Presentation?,
         content: @Composable (AppNavKey) -> Unit,
     ) {
-        require(destinations.put(type, Destination(transition, pane, content)) == null) {
+        require(destinations.put(type, Destination(transition, pane, presentation, content)) == null) {
             "${type.simpleName} is registered twice in the same nav graph."
         }
     }
@@ -71,13 +79,16 @@ fun navGraph(builder: NavGraphBuilder.() -> Unit): NavGraphEntry =
  */
 class NavRegistry(graphs: Set<NavGraphEntry>) {
 
-    private val destinations: Map<KClass<out AppNavKey>, Destination> = buildMap {
-        graphs.forEach { graph ->
+    private val destinations = mutableMapOf<KClass<out AppNavKey>, Destination>()
+    private val graphOf = mutableMapOf<KClass<out AppNavKey>, Int>()
+
+    init {
+        graphs.forEachIndexed { index, graph ->
             graph.destinations.forEach { (type, destination) ->
-                val existing = put(type, destination)
-                require(existing == null) {
+                require(destinations.put(type, destination) == null) {
                     "${type.simpleName} is registered by more than one feature's nav graph."
                 }
+                graphOf[type] = index
             }
         }
     }
@@ -88,7 +99,14 @@ class NavRegistry(graphs: Set<NavGraphEntry>) {
                 "navGraph { } block and contribute that with @Provides @IntoSet.",
         )
 
-    fun transitionFor(key: AppNavKey): NavTransitionStyle = destinationFor(key).transition
+    internal fun presentationOf(key: AppNavKey): Presentation? = destinations[key::class]?.presentation
 
-    val registeredCount: Int get() = destinations.size
+    /** Whether [a] and [b] were registered by the same feature's graph. */
+    internal fun sameGraph(a: AppNavKey, b: AppNavKey): Boolean {
+        val graph = graphOf[a::class]
+        return graph != null && graph == graphOf[b::class]
+    }
+
+    /** Whether a destination for [type] is installed: optional features may be left out of a build. */
+    fun has(type: KClass<out AppNavKey>): Boolean = type in destinations
 }

@@ -1,5 +1,6 @@
 package com.base.app.core.navigation.di
 
+import com.base.app.core.navigation.DeepLinkRoute
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavRegistry
 import dagger.Module
@@ -21,7 +22,7 @@ object NavigationModule {
         NavRegistry(graphs)
 }
 
-/** Declares both multibound sets so the build still compiles with no features installed. */
+/** Declares the multibound sets so the build still compiles with no features installed. */
 @Module
 @InstallIn(SingletonComponent::class)
 interface NavigationMultibindings {
@@ -31,4 +32,7 @@ interface NavigationMultibindings {
 
     @Multibinds
     fun navKeySerializers(): Set<SerializersModule>
+
+    @Multibinds
+    fun deepLinkRoutes(): Set<DeepLinkRoute>
 }

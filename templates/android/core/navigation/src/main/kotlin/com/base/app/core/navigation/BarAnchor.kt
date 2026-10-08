@@ -1,0 +1,114 @@
+package com.base.app.core.navigation
+
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.node.DrawModifierNode
+import androidx.compose.ui.node.LayoutAwareModifierNode
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.unit.LayoutDirection
+
+/**
+ * How far a destination that hides the tab bar (`hideBarOnPush`) has slid over its tab's root:
+ * 0 with the root on screen, 1 with the root covered. The bar reads it to travel with the root, as
+ * `hidesBottomBarWhenPushed` does on iOS, so it leaves and returns with the screen it belongs to,
+ * follows a back swipe, and never animates on a clock of its own.
+ *
+ * The scene with the covering screen on top publishes its progress while it is composed; the last
+ * value is kept after it leaves, so the bar does not jump in the frame between a stack change and
+ * the scene that animates it.
+ */
+@Stable
+class BarAnchor internal constructor() {
+    private var follower by mutableStateOf<(() -> Float)?>(null)
+    private var last = 0f
+
+    internal fun progress(): Float = follower?.invoke() ?: last
+
+    internal fun attach(progress: () -> Float) {
+        follower = progress
+    }
+
+    internal fun detach(progress: () -> Float) {
+        if (follower !== progress) return
+        last = progress()
+        follower = null
+    }
+}
+
+/**
+ * Moves the bar with its tab's root (see [BarAnchor]): shifted by the root's parallax, clipped at
+ * the covering screen's leading edge, and darkened by the same scrim the root gets. All of it in
+ * the draw phase, so a push or pop recomposes nothing here. The scrim needs the bar's own pixels as
+ * a mask (a floating capsule has transparent margins the root's scrim already darkens), so only
+ * while the bar is partly covered is it drawn through a layer of its own size.
+ */
+internal fun Modifier.followRoot(anchor: BarAnchor, parallax: Float, scrimAlpha: Float): Modifier =
+    this then FollowRootElement(anchor, parallax, scrimAlpha)
+
+private data class FollowRootElement(
+    val anchor: BarAnchor,
+    val parallax: Float,
+    val scrimAlpha: Float,
+) : ModifierNodeElement<FollowRootNode>() {
+    override fun create() = FollowRootNode(anchor, parallax, scrimAlpha)
+
+    override fun update(node: FollowRootNode) {
+        node.anchor = anchor
+        node.parallax = parallax
+        node.scrimAlpha = scrimAlpha
+    }
+}
+
+private class FollowRootNode(
+    var anchor: BarAnchor,
+    var parallax: Float,
+    var scrimAlpha: Float,
+) : Modifier.Node(), DrawModifierNode, LayoutAwareModifierNode {
+
+    private var windowLeft = 0f
+    private var windowWidth = 0f
+    private val layerPaint = Paint()
+
+    override fun onPlaced(coordinates: LayoutCoordinates) {
+        windowLeft = coordinates.positionInWindow().x
+        var root = coordinates
+        while (true) root = root.parentLayoutCoordinates ?: break
+        windowWidth = root.size.width.toFloat()
+    }
+
+    override fun ContentDrawScope.draw() {
+        val progress = anchor.progress()
+        if (progress <= 0f) {
+            drawContent()
+            return
+        }
+        val ltr = layoutDirection == LayoutDirection.Ltr
+        val shift = parallax * windowWidth * progress * if (ltr) -1f else 1f
+        // The part of the window the covering screen has not reached yet, in this node's coordinates.
+        val edge = windowWidth * (1f - progress)
+        val visibleLeft = if (ltr) -windowLeft else windowWidth - edge - windowLeft
+        val visibleRight = if (ltr) edge - windowLeft else windowWidth - windowLeft
+        clipRect(left = visibleLeft, right = visibleRight) {
+            drawIntoCanvas { canvas -> canvas.saveLayer(Rect(Offset.Zero, size), layerPaint) }
+            translate(left = shift) {
+                this@draw.drawContent()
+                drawRect(Color.Black, size = size, alpha = scrimAlpha * progress, blendMode = BlendMode.SrcAtop)
+            }
+            drawIntoCanvas { canvas -> canvas.restore() }
+        }
+    }
+}

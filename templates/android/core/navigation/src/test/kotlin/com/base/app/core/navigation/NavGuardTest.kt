@@ -1,0 +1,43 @@
+package com.base.app.core.navigation
+
+import androidx.compose.runtime.mutableStateListOf
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+/** The rules of A3.4a for commands that arrive while their host is moving. */
+class NavGuardTest {
+
+    private val stack = AppBackStack(mutableStateListOf(FeedTab, Post(1)))
+
+    @Test
+    fun `the destination already on top is never pushed again`() {
+        assertEquals(Verdict.Drop, guard(NavCommand.Navigate(Post(1)), stack))
+    }
+
+    @Test
+    fun `a push at rest applies`() {
+        assertEquals(Verdict.Apply, guard(NavCommand.Navigate(Post(2)), stack))
+    }
+
+    @Test
+    fun `a second push during a push is dropped, so the first row tapped wins`() {
+        stack.gate.changed(StackChange.Push)
+
+        assertEquals(Verdict.Drop, guard(NavCommand.Navigate(Post(2)), stack))
+    }
+
+    @Test
+    fun `a push during a pop waits for it to settle`() {
+        stack.gate.changed(StackChange.Pop)
+
+        assertEquals(Verdict.Wait, guard(NavCommand.Navigate(Post(2)), stack))
+    }
+
+    @Test
+    fun `Up and pop-to from an effect wait for a running push`() {
+        stack.gate.changed(StackChange.Push)
+
+        assertEquals(Verdict.Wait, guard(NavCommand.Up, stack))
+        assertEquals(Verdict.Wait, guard(NavCommand.PopTo(FeedTab), stack))
+    }
+}

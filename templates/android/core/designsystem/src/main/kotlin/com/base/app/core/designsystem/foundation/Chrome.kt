@@ -41,6 +41,21 @@ val LocalTopChrome = staticCompositionLocalOf { ChromeInset() }
  */
 val LocalTabVisible = compositionLocalOf { true }
 
+/**
+ * True where the tab bar floats over the content: tab screens, pushed or not. False on a full-screen
+ * destination, in a sheet or a cover, and outside the tab shell. A screen-level bottom bar
+ * (AppBottomActionBar) belongs only where this is false; on a tab screen the bar's accessory slot
+ * takes that role.
+ */
+val LocalTabBarVisible = compositionLocalOf { false }
+
+/**
+ * Where a screen's own bottom bar reports its settled height. The shell gives every screen its own
+ * holder and, while that screen is the settled one in front with the tab bar hidden, reports this
+ * height through [LocalBottomChrome], so toasts stay above the action bar.
+ */
+val LocalScreenBottomBar = staticCompositionLocalOf { ChromeInset() }
+
 /** [base] plus the chrome at both ends, for a scrolling container's contentPadding. */
 @Composable
 fun chromeContentPadding(base: PaddingValues = PaddingValues(0.dp)): PaddingValues {
