@@ -18,3 +18,34 @@ export function androidTarget(catalogue: Catalogue = loadCatalogue()): Target {
   if (!target) throw new Error("The catalogue has no android target.");
   return target;
 }
+
+/**
+ * The checked-in catalogue plus the two targets the platform step is built for, shaped like
+ * MASTER-PLAN A7.3 and A8: a beta multiplatform target with a smaller feature set and no signing
+ * keys, and an iOS target that is coming soon. Until WP07 and WP08 add them to the generator, the
+ * platform logic is tested against these.
+ */
+export function threePlatformCatalogue(): Catalogue {
+  const catalogue = loadCatalogue();
+  const android = androidTarget(catalogue);
+  const kept = new Set(["network", "coil", "database", "room", "sample", "settings", "onboarding", "language", "catalog"]);
+  const features = android.features.filter((feature) => kept.has(feature.key));
+  const multiplatform: Target = {
+    ...android,
+    key: "multiplatform",
+    title: "Compose Multiplatform",
+    status: "beta",
+    status_note: "Beta: the iOS app is not yet verified on a Mac",
+    features,
+    presets: [{ key: "standard", title: "Standard", description: "", default: true, features: ["catalog", "network", "sample"] }],
+    defaults: { ...android.defaults, preset: "standard" },
+    fields: [
+      ...android.fields.filter((field) => field.type !== "keystores"),
+      { key: "ios.bundle_id", type: "string" },
+      { key: "ios.deployment_target", type: "string", default: "17.0" },
+    ],
+    languages: android.languages.filter((language) => language.tag !== "hi"),
+  };
+  const ios: Target = { ...multiplatform, key: "ios", title: "Swift", status: "coming_soon", status_note: "" };
+  return { ...catalogue, targets: [android, multiplatform, ios] };
+}

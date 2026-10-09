@@ -1,0 +1,139 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { loadCatalogue, threePlatformCatalogue } from "../catalogue/testing.ts";
+import { parseDraft, serializeDraft } from "./draft.ts";
+import { presetFeatures } from "./resolve.ts";
+import { type Action, type ConfigState, initialState, moduleNames, reducer, selectableTargets, suggestPackage } from "./state.ts";
+
+const catalogue = loadCatalogue();
+
+function run(state: ConfigState, ...actions: Action[]): ConfigState {
+  return actions.reduce((current, action) => reducer(current, action, catalogue), state);
+}
+
+test("the initial answers are the catalogue's defaults", () => {
+  const state = initialState(catalogue);
+  const android = catalogue.targets[0];
+  assert.equal(state.target, "android");
+  assert.deepEqual(state.features, [...presetFeatures(android!, "standard")].sort());
+  assert.equal(state.settings["android.min_sdk"], 26);
+  assert.deepEqual(state.settings["android.api_base_urls"], {});
+});
+
+test("the package follows the app name until it is typed", () => {
+  let state = run(initialState(catalogue), { type: "appName", value: "Trail Notes" });
+  assert.equal(state.packageName, "com.example.trailnotes");
+  state = run(state, { type: "packageName", value: "io.trail.app" }, { type: "appName", value: "Trail" });
+  assert.equal(state.packageName, "io.trail.app");
+  assert.equal(suggestPackage(""), "com.example.myapp");
+});
+
+test("an untick that takes dependents with it can be undone", () => {
+  let state = run(initialState(catalogue), { type: "preset", key: "everything" });
+  const everything = state.features;
+  state = run(state, { type: "feature", key: "analytics" });
+  assert.equal(state.hint?.on, false);
+  assert.deepEqual([...(state.hint?.alsoRemoved ?? [])].sort(), ["firebase", "push"]);
+  state = run(state, { type: "undoToggle" });
+  assert.deepEqual(state.features, everything);
+  assert.equal(state.hint, null);
+});
+
+test("any other edit drops the undo hint", () => {
+  const state = run(initialState(catalogue), { type: "feature", key: "network" }, { type: "fontName", value: "Inter" });
+  assert.equal(state.hint, null);
+});
+
+test("every edit bumps the revision, so a finished download stops describing the answers", () => {
+  const state = initialState(catalogue);
+  assert.equal(run(state, { type: "haptics", value: false }).revision, state.revision + 1);
+});
+
+test("module names are normalised the way they will be generated", () => {
+  assert.deepEqual(moduleNames(" Orders, wallet-history ,, Trip  plans"), ["orders", "wallet_history", "trip_plans"]);
+});
+
+test("only available and beta targets can be picked", () => {
+  assert.deepEqual(selectableTargets(threePlatformCatalogue()).map((target) => target.key), ["android", "multiplatform"]);
+});
+
+test("switching platform keeps compatible answers and drops the rest", () => {
+  const three = threePlatformCatalogue();
+  let state = initialState(three);
+  state = reducer(state, { type: "appName", value: "Trail Notes" }, three);
+  state = reducer(state, { type: "language", tag: "hi" }, three);
+  state = reducer(state, { type: "language", tag: "es" }, three);
+  state = reducer(state, { type: "signing", value: { enabled: true } }, three);
+  state = reducer(state, { type: "target", target: "multiplatform" }, three);
+  assert.equal(state.target, "multiplatform");
+  assert.equal(state.appName, "Trail Notes");
+  assert.deepEqual(state.languages, ["es"]);
+  assert.equal(state.signing.enabled, false);
+  assert.deepEqual(state.features, ["catalog", "network", "sample"], "an untouched default preset becomes the new default");
+});
+
+test("a customised feature set keeps what the new platform also has", () => {
+  const three = threePlatformCatalogue();
+  let state = initialState(three);
+  state = reducer(state, { type: "preset", key: "lean" }, three);
+  state = reducer(state, { type: "feature", key: "database" }, three);
+  state = reducer(state, { type: "target", target: "multiplatform" }, three);
+  assert.deepEqual(state.features, ["catalog", "database", "network", "room", "sample"]);
+});
+
+test("a design style that needs a feature turns it on", () => {
+  const withGlass = loadCatalogue();
+  const android = withGlass.targets[0]!;
+  android.design_styles = [...android.design_styles, { key: "Glass", title: "Glass", description: "", requires: ["coil"] }];
+  let state = reducer(initialState(withGlass), { type: "preset", key: "lean" }, withGlass);
+  state = reducer(state, { type: "designStyle", value: "Glass" }, withGlass);
+  assert.equal(state.designStyle, "Glass");
+  assert.ok(state.features.includes("coil"));
+  assert.equal(reducer(state, { type: "designStyle", value: "Brutal" }, withGlass), state);
+});
+
+test("a draft round-trips without the signing passwords", () => {
+  let state = run(
+    initialState(catalogue),
+    { type: "appName", value: "Café Notes" },
+    { type: "displayName", value: "Café" },
+    { type: "setting", key: "android.api_base_urls", value: { prod: "https://api.trail.app/" } },
+    { type: "signing", value: { enabled: true, passwords: { prod: "secret-one" } } },
+  );
+  const text = serializeDraft(state);
+  assert.equal(text.includes("secret-one"), false);
+  assert.equal(text.includes("signing"), false);
+  const restored = parseDraft(text, catalogue);
+  assert.ok(restored);
+  state = { ...state, signing: restored.signing, hint: null, revision: restored.revision };
+  assert.deepEqual(restored, state);
+});
+
+test("a draft from an older catalogue loses only what no longer exists", () => {
+  const text = JSON.stringify({
+    version: 1,
+    state: {
+      target: "android",
+      appName: "Old",
+      features: ["telepathy", "sample"],
+      languages: ["xx", "es"],
+      designStyle: "Brutal",
+      settings: { "android.min_sdk": 30, "android.removed": 1, "android.version_name": { bad: 1 } },
+    },
+  });
+  const state = parseDraft(text, catalogue);
+  assert.ok(state);
+  assert.equal(state.appName, "Old");
+  assert.deepEqual(state.features, ["network", "sample"]);
+  assert.deepEqual(state.languages, ["es"]);
+  assert.equal(state.designStyle, "Utility");
+  assert.equal(state.settings["android.min_sdk"], 30);
+  assert.equal("android.removed" in state.settings, false);
+  assert.equal(state.settings["android.version_name"], "1.0.0");
+});
+
+test("anything that is not a draft reads as none", () => {
+  for (const text of [null, "", "{", "[]", JSON.stringify({ version: 2, state: {} }), JSON.stringify({ version: 1 })]) {
+    assert.equal(parseDraft(text, catalogue), null, String(text));
+  }
+});
