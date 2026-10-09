@@ -1,0 +1,11 @@
+default = "all"
+
+[small]
+title = "Small"
+description = "Networking only."
+features = ["net"]
+
+[all]
+title = "All"
+description = "Everything."
+all = true

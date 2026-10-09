@@ -1,0 +1,12 @@
+key = "baselineprofile"
+title = "Baseline profile and startup benchmark"
+headline = "Cut cold-start time"
+description = """
+A profile generator and a macrobenchmark that measures cold start with and without it. Typically a
+20-30% cut in cold start for no code change."""
+group = "Build and quality"
+default = false
+requires = []
+implied_only = false
+owns = ["benchmark"]
+legacy = []

@@ -1,0 +1,22 @@
+key = "firebase"
+title = "Firebase"
+headline = "Analytics, Crashlytics and Remote Config"
+description = """
+Analytics, Crashlytics and Remote Config in one switch: the analytics seam sends to Firebase,
+every logged error becomes a Crashlytics breadcrumb, and feature flags resolve from Remote Config
+seeded with their declared defaults."""
+group = "Observability"
+default = false
+requires = ["analytics", "flags"]
+# Hidden from the wizard and the website: Firebase arrives with the features that need it.
+implied_only = true
+owns = [
+  # The placeholder json is renamed by the ordinary text pass, like any other file. It has to be:
+  # the plugin matches the applicationId against a client entry and fails the build when none
+  # matches, so a copy still saying `com.base.app` breaks the first build.
+  "app/google-services.json",
+  "core/analytics/src/main/kotlin/{pkg_path}/core/analytics/FirebaseAnalyticsTracker.kt",
+  "core/analytics/src/main/kotlin/{pkg_path}/core/analytics/CrashlyticsReporter.kt",
+  "core/flags/src/main/kotlin/{pkg_path}/core/flags/RemoteConfigFeatureFlags.kt",
+]
+legacy = ["analytics-firebase", "crashlytics", "flags-remote"]

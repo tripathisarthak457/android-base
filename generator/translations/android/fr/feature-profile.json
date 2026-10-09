@@ -1,0 +1,13 @@
+{
+  "profile_title": "Profil",
+  "profile_name": "Nom",
+  "profile_name_placeholder": "Comment doit-on vous appeler ?",
+  "profile_bio": "À propos de vous",
+  "profile_bio_placeholder": "Une ligne ou deux pour votre profil",
+  "profile_save": "Enregistrer",
+  "profile_saved": "Profil enregistré",
+  "profile_name_required": "Ajoutez un nom pour qu’on sache qui vous êtes.",
+  "profile_unnamed": "Vous",
+  "profile_change_photo": "Changer de photo",
+  "profile_remove_photo": "Supprimer la photo"
+}
