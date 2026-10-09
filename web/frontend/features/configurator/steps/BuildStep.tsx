@@ -82,7 +82,7 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
         </p>
       )}
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         {fields.map((field) => (
           <SettingField key={field.key} field={field} model={model} wide={field.type === "map"} />
         ))}
@@ -134,7 +134,7 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
     return (
       <fieldset className={wide ? "md:col-span-2" : ""}>
         <legend className="mb-1.5 text-sm font-medium text-ink-200">{label}</legend>
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {(field.keys ?? []).map((key) => (
             <label key={key} className="flex items-center gap-2">
               <span className="w-20 shrink-0 font-mono text-xs text-ink-400">{key}</span>

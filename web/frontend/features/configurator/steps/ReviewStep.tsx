@@ -48,9 +48,9 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
   const screen = tabs[0];
 
   return (
-    <div className="grid gap-8 md:grid-cols-5">
-      <div className="space-y-5 md:col-span-3">
-        <dl className="grid gap-3 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
+      <div className="min-w-0 space-y-5 md:col-span-3">
+        <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {rows.map(([label, value]) => (
             <div key={label} className="rounded-lg border border-ink-700 bg-ink-900 px-4 py-3">
               <dt className="text-xs text-ink-400">{label}</dt>
@@ -84,7 +84,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
         </div>
       </div>
 
-      <div className="md:col-span-2">
+      <div className="min-w-0 md:col-span-2">
         {screen && (
           <div className="mb-4 flex justify-center">
             <ScaledPreview theme={theme} font={state.fontName} tabs={tabs} screen={screen} options={options} scale={0.62} />

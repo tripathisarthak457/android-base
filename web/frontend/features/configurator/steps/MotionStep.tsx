@@ -61,7 +61,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
   const input = usePreviewInput(catalogue, model);
   const name = useId();
   return (
-    <div className="grid gap-10 lg:grid-cols-[1fr_300px]">
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-6">
         <div>
           <p className="text-sm font-medium text-ink-200">How it moves</p>
@@ -70,7 +70,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
             a tab switch. Hold the button to feel the press. Every spring is interruptible and keeps its velocity in the app.
           </p>
         </div>
-        <fieldset className="grid gap-3 sm:grid-cols-2">
+        <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <legend className="sr-only">Motion style</legend>
           {target.motion_styles.map((style) => (
             <MotionCard key={style.key} catalogue={catalogue} model={model} styleKey={style.key} title={style.title} description={style.description} name={name} dark={dark} />

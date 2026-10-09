@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useId } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
@@ -18,7 +18,10 @@ export function FeaturesStep({ model }: { model: Configurator }) {
   const titleOf = new Map(target.features.map((feature) => [feature.key, feature.title]));
   const offered = target.features.filter((feature) => !feature.implied_only);
   const current = target.presets.find((option) => option.key === preset);
-  const hint = state.hint;
+  const hidden = new Set(target.features.filter((feature) => feature.implied_only).map((feature) => feature.key));
+  // Features nobody can tick, like Firebase, come and go with others and are not worth naming.
+  const visible = (keys: string[]) => keys.filter((key) => !hidden.has(key));
+  const hint = state.hint && (visible(state.hint.alsoAdded).length > 0 || visible(state.hint.alsoRemoved).length > 0) ? state.hint : null;
 
   return (
     <div>
@@ -44,27 +47,25 @@ export function FeaturesStep({ model }: { model: Configurator }) {
       </div>
       <p className="mt-3 text-sm text-ink-400">{current?.description ?? "Your own selection. Ticking a feature also ticks what it needs."}</p>
 
-      <div aria-live="polite" className="min-h-0">
-        <AnimatePresence initial={false}>
-          {hint && (
-            <motion.p
-              key={`${hint.key}-${hint.on}`}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-ink-600 bg-ink-900 px-4 py-2.5 text-sm text-ink-200"
-            >
-              <span>
-                {hint.on
-                  ? `Turning on ${titleOf.get(hint.key) ?? hint.key} also turned on what it needs: ${titles(hint.alsoAdded, titleOf)}.`
-                  : `Turning off ${titleOf.get(hint.key) ?? hint.key} also turned off what needs it: ${titles(hint.alsoRemoved, titleOf)}.`}
-              </span>
-              <button type="button" onClick={() => dispatch({ type: "undoToggle" })} className="font-semibold text-accent hover:text-accent-bright">
-                Undo
-              </button>
-            </motion.p>
-          )}
-        </AnimatePresence>
+      {/* Re-keyed on each toggle so a new hint replaces the last one instead of stacking under it. */}
+      <div aria-live="polite">
+        {hint && (
+          <motion.p
+            key={`${hint.key}-${hint.on}-${state.revision}`}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-ink-600 bg-ink-900 px-4 py-2.5 text-sm text-ink-200"
+          >
+            <span>
+              {hint.on
+                ? `Turning on ${titleOf.get(hint.key) ?? hint.key} also turned on what it needs: ${titles(visible(hint.alsoAdded), titleOf)}.`
+                : `Turning off ${titleOf.get(hint.key) ?? hint.key} also turned off what needs it: ${titles(visible(hint.alsoRemoved), titleOf)}.`}
+            </span>
+            <button type="button" onClick={() => dispatch({ type: "undoToggle" })} className="font-semibold text-accent hover:text-accent-bright">
+              Undo
+            </button>
+          </motion.p>
+        )}
       </div>
       {errors.get("features") && <p className="mt-3 text-sm text-rose">{errors.get("features")}</p>}
 
@@ -75,7 +76,7 @@ export function FeaturesStep({ model }: { model: Configurator }) {
           return (
             <fieldset key={group.key}>
               <legend className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-200">{group.title}</legend>
-              <div className="grid gap-2.5 md:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
                 {inGroup.map((feature) => {
                   const on = selected.has(feature.key);
                   const needed = on ? dependentsOf(selected, feature.key, target) : [];

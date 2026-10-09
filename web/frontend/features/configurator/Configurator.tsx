@@ -30,11 +30,20 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
   const heading = useRef<HTMLHeadingElement>(null);
   const moved = useRef(false);
 
+  const bar = useRef<HTMLElement>(null);
+
   // After a step change the focus moves to the new panel's heading, so a keyboard or screen reader
-  // user lands on what changed rather than staying on the Next button.
+  // user lands on what changed rather than staying on the Next button. On a narrow screen the step
+  // bar scrolls sideways, so the current step is brought to its middle.
   useEffect(() => {
     if (moved.current) heading.current?.focus();
     moved.current = true;
+    const nav = bar.current;
+    const current = nav?.querySelector<HTMLElement>('[aria-current="step"]');
+    if (nav && current) {
+      const offset = current.getBoundingClientRect().left - nav.getBoundingClientRect().left + nav.scrollLeft;
+      nav.scrollTo({ left: offset - (nav.clientWidth - current.clientWidth) / 2, behavior: "smooth" });
+    }
   }, [step]);
 
   const reachable = (index: number) => index <= 1 || identityValid;
@@ -58,7 +67,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
         </Button>
       </div>
 
-      <nav aria-label="Steps" className="no-scrollbar mt-8 overflow-x-auto pb-1">
+      <nav ref={bar} aria-label="Steps" className="no-scrollbar mt-8 overflow-x-auto pb-1">
         <ol className="flex gap-2">
           {STEPS.map((id, index) => {
             const active = id === step;

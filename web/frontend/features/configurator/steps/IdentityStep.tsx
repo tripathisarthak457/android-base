@@ -24,8 +24,8 @@ export function IdentityStep({ model }: { model: Configurator }) {
   const placeholderPackage = !errors.has("package_name") && /^com\.example(\.|$)/.test(state.packageName);
 
   return (
-    <div className="grid gap-6 md:grid-cols-2">
-      <div className="space-y-5">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="min-w-0 space-y-5">
         <Field label="App name" hint="Letters, digits, spaces, dots and hyphens. It names the project and its classes." error={errors.get("app_name")}>
           {(control) => (
             <TextInput {...control} value={state.appName} onChange={(event) => dispatch({ type: "appName", value: event.target.value })} placeholder="My App" />

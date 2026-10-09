@@ -63,7 +63,7 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
   const options = useMemo(() => ({ features: deferred.features, haptics: deferred.haptics }), [deferred.features, deferred.haptics]);
 
   return (
-    <div className="lg:sticky lg:top-24">
+    <div className="min-w-0 lg:sticky lg:top-24">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div role="radiogroup" aria-label="Screen" className="no-scrollbar flex gap-1 overflow-x-auto">
           {screens.map((option) => {

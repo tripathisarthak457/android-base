@@ -25,7 +25,7 @@ export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model
         Which app to start from. Your answers carry over if you change your mind; anything the other platform does not offer
         is left out.
       </p>
-      <div role="radiogroup" aria-label="Platform" className="mt-5 grid gap-3 md:grid-cols-3">
+      <div role="radiogroup" aria-label="Platform" className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
         {shown.map((target) => {
           const soon = target.status === "coming_soon";
           const off = model.live.enabled !== null && model.live.enabled[target.key] === false && !soon;

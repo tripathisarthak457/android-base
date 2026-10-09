@@ -56,7 +56,7 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
   const derived = accent ? brandColours(accent, null, null) : null;
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[1fr_300px]">
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-8">
         <fieldset>
           <legend className="text-sm font-medium text-ink-200">Design style</legend>
@@ -64,7 +64,7 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
             Corners, borders, fields, the tab bar and the type voice, chosen together. One argument to{" "}
             <code className="text-ink-300">AppTheme</code>, and the components are yours to reshape from there.
           </p>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {target.design_styles.map((style) => {
               const tokens = catalogue.tokens.styles[style.key];
               return (
