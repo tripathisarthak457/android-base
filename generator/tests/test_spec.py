@@ -262,16 +262,11 @@ class ValidationCasesTest(unittest.TestCase):
 
 class FixtureTest(unittest.TestCase):
 
-    def test_the_v2_fixtures_read_and_modular_is_refused_for_now(self):
+    def test_the_v2_fixtures_read(self):
         for path in sorted((FIXTURES / "v2").glob("*.json")):
             raw = json.loads(path.read_text(encoding="utf-8"))
             with self.subTest(fixture=path.name):
-                if raw.get("architecture") == "modular":
-                    with self.assertRaises(SpecError) as caught:
-                        read(raw)
-                    self.assertEqual("modular is not available yet; generate compact for now.", str(caught.exception))
-                else:
-                    self.assertEqual(f"com.example.{path.stem.replace('-', '')}", read(raw).spec.package_name)
+                self.assertEqual(f"com.example.{path.stem.replace('-', '')}", read(raw).spec.package_name)
 
 
 if __name__ == "__main__":

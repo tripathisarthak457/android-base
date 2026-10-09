@@ -9,7 +9,7 @@ from __future__ import annotations
 from ... import brand
 from ...core.spec import AndroidSettings, Spec
 from ...core.translations import SOURCE_LANGUAGE
-from .strings import escape
+from .strings import escape, resource_qualifier
 
 #: The build flavours a URL can be set for. Anything else would be silently ignored.
 FLAVOURS: tuple[str, ...] = ("dev", "staging", "prod", "playstore")
@@ -33,6 +33,8 @@ def regions(spec: Spec) -> Regions:
             + ", ".join(f'"{tag}"' for tag in (SOURCE_LANGUAGE, *spec.languages))
             + ")\n"
         ],
+        # Every library ships its own translations; the APK keeps only the languages the app speaks.
+        "locale-filters": [f'        "{resource_qualifier(tag)}",\n' for tag in (SOURCE_LANGUAGE, *spec.languages)],
         **_readme(spec, android),
     }
 

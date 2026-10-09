@@ -834,9 +834,8 @@
       }
     },
     {
-      "name": "modular is not available yet",
-      "valid": false,
-      "field": "architecture",
+      "name": "modular is accepted",
+      "valid": true,
       "spec": {
         "schema": 2,
         "platform": "android",

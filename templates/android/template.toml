@@ -15,7 +15,7 @@ tokens = [
 
 [regions]                                   # every point and region the target fills
 required = [
-  "app-config", "app-version",                                                   # AppConfig.kt
+  "app-config", "app-version", "locale-filters",                                 # AppConfig.kt
   "api-url-dev", "api-url-staging", "api-url-prod", "api-url-playstore",
   "socket-url-dev", "socket-url-staging", "socket-url-prod", "socket-url-playstore",
   "app-name", "deeplink-strings", "launcher-background", "supported-locales",
