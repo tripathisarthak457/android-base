@@ -96,15 +96,14 @@ internal class OnboardingViewModel @Inject constructor(
 }
 
 @Composable
-internal fun OnboardingRoute(
-    onFinished: () -> Unit,
-    viewModel: OnboardingViewModel = hiltViewModel(),
-) {
+internal fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
-                OnboardingEffect.Finished -> onFinished()
+                // The completed flag moves the app on to sign-in or the tabs; navigating as well
+                // would open that screen twice, once in each host.
+                OnboardingEffect.Finished -> Unit
             }
         },
     ) { state, onEvent ->

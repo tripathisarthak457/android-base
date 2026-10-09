@@ -64,12 +64,6 @@ object AppDestinations {
     /** Where a first launch starts. */
     val onboarding: AppNavKey = resolveOnboarding()
 
-    /**
-     * Where onboarding hands off. The same place: onboarding runs before sign-in, and cannot name
-     * the next screen itself without depending on whichever feature owns it.
-     */
-    val afterOnboarding: AppNavKey get() = signIn
-
     private fun resolveSignIn(): AppNavKey {
         // <opt:auth>
         return SignInKey

@@ -1,10 +1,8 @@
 package com.base.app.feature.onboarding
 
-import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
-import com.base.app.feature.onboarding.api.OnboardingDestination
 import com.base.app.feature.onboarding.api.OnboardingKey
 import dagger.Module
 import dagger.Provides
@@ -14,8 +12,8 @@ import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
 /**
- * `resetTo` rather than `navigate`, so Back from the first real screen leaves the app instead of
- * returning to a walkthrough the user has already completed.
+ * Finishing writes the completed flag, and the app moves on to sign-in or the tabs by itself: they
+ * are another host with their own stack, so Back never returns to the walkthrough.
  */
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,13 +21,8 @@ internal object OnboardingNavModule {
 
     @Provides
     @IntoSet
-    fun onboardingNavGraph(
-        navigator: AppNavigator,
-        destination: OnboardingDestination,
-    ): NavGraphEntry = navGraph {
-        entry<OnboardingKey> {
-            OnboardingRoute(onFinished = { navigator.resetTo(destination.next) })
-        }
+    fun onboardingNavGraph(): NavGraphEntry = navGraph {
+        entry<OnboardingKey> { OnboardingRoute() }
     }
 
     @Provides
