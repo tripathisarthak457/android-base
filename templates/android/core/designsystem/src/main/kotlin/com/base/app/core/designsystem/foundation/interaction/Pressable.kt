@@ -3,11 +3,9 @@ package com.base.app.core.designsystem.foundation.interaction
 import android.view.ViewConfiguration
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.Modifier
@@ -32,7 +30,6 @@ import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
-import androidx.compose.ui.node.DelegatableNode
 import androidx.compose.ui.node.DelegatingNode
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutModifierNode
@@ -63,77 +60,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/** What a control does under the finger. Every control says which; nothing gets one by default. */
-enum class PressFeedback {
-    /** Nothing: the control's own change, a selection moving or a switch flipping, is the answer. */
-    None,
-
-    /** Shrinks under the finger and springs back: filled buttons, chips, cards. */
-    Scale,
-
-    /** Fades: text and icon buttons, links, top-bar actions. */
-    Dim,
-
-    /** The highlight colour over the row, on at once and fading after the finger lifts: rows, menu items. */
-    Highlight,
-}
-
-/**
- * The app-wide indication: nothing is drawn. A bare `clickable` under it gives no feedback at all,
- * which is why controls use [pressable] and say what they want.
- */
-object NoIndication : IndicationNodeFactory {
-    override fun create(interactionSource: InteractionSource): DelegatableNode = object : Modifier.Node() {}
-
-    override fun equals(other: Any?): Boolean = other === this
-
-    override fun hashCode(): Int = 0
-}
-
-/**
- * A row under the finger, as iOS draws a table cell: the highlight colour at once, fading out over
- * a fifth of a second after the finger lifts. Translucent, so it reads on any surface.
- */
-object RowHighlight : IndicationNodeFactory {
-    override fun create(interactionSource: InteractionSource): DelegatableNode = RowHighlightNode(interactionSource)
-
-    override fun equals(other: Any?): Boolean = other === this
-
-    override fun hashCode(): Int = 1
-}
-
-private class RowHighlightNode(
-    private val interactionSource: InteractionSource,
-) : Modifier.Node(), DrawModifierNode, CompositionLocalConsumerModifierNode {
-    private val alpha = Animatable(0f)
-
-    override fun onAttach() {
-        coroutineScope.launch {
-            // Counted, so a second finger lifting does not clear the first one's highlight.
-            var presses = 0
-            interactionSource.interactions.collect { interaction ->
-                presses = when (interaction) {
-                    is PressInteraction.Press -> presses + 1
-                    is PressInteraction.Release, is PressInteraction.Cancel -> (presses - 1).coerceAtLeast(0)
-                    else -> return@collect
-                }
-                if (presses > 0) {
-                    alpha.snapTo(1f)
-                } else {
-                    val fade = currentValueOf(LocalAppSprings).highlightFadeOut
-                    launch { alpha.animateTo(0f, tween(fade)) }
-                }
-            }
-        }
-    }
-
-    override fun ContentDrawScope.draw() {
-        drawContent()
-        val value = alpha.value
-        if (value > 0f) drawRect(currentValueOf(LocalAppColors).highlight, alpha = value)
-    }
-}
-
 /**
  * A tap target with the feedback it names, iOS style: no grey flash, haptics only when asked for,
  * and a hit area of at least 48dp however small the control draws (the space is reserved and the
@@ -163,38 +89,6 @@ fun Modifier.pressable(
     onLongClick = onLongClick,
     interactionSource = interactionSource,
 )
-
-/**
- * Reserves at least the 48dp touch target around content that draws smaller, and centres it there.
- * The reserved space belongs to the node, so a pointer input before this modifier covers all of it.
- */
-fun Modifier.minimumTouchTarget(): Modifier = this then MinimumTouchTargetElement
-
-private object MinimumTouchTargetElement : ModifierNodeElement<MinimumTouchTargetNode>() {
-    override fun create() = MinimumTouchTargetNode()
-
-    override fun update(node: MinimumTouchTargetNode) = Unit
-
-    override fun InspectorInfo.inspectableProperties() {
-        name = "minimumTouchTarget"
-    }
-
-    override fun equals(other: Any?) = other === this
-
-    override fun hashCode() = 2
-}
-
-private class MinimumTouchTargetNode : Modifier.Node(), LayoutModifierNode {
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
-        val placeable = measurable.measure(constraints)
-        val target = MinTouchTarget.roundToPx()
-        val width = constraints.constrainWidth(maxOf(placeable.width, target))
-        val height = constraints.constrainHeight(maxOf(placeable.height, target))
-        return layout(width, height) {
-            placeable.place((width - placeable.width) / 2, (height - placeable.height) / 2)
-        }
-    }
-}
 
 private data class PressableElement(
     val onClick: () -> Unit,
@@ -507,7 +401,6 @@ private class PressableNode(
     override fun onPreKeyEvent(event: KeyEvent): Boolean = false
 }
 
-private val MinTouchTarget = 48.dp
 private val LargeSurface = 80.dp
 private val CompactControl = 56.dp
 private val FocusRingWidth = 2.dp
