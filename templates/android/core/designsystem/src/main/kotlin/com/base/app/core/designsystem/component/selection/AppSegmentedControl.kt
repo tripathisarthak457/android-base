@@ -98,7 +98,7 @@ fun AppSegmentedControl(
                     }
                 }
                 .dropShadow(ThumbShape, ThumbShadow)
-                .background(colors.surfaceElevated, ThumbShape),
+                .background(colors.segmentThumb, ThumbShape),
         )
         Row(
             Modifier

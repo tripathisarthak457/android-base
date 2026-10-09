@@ -2,6 +2,7 @@ package com.base.app.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.luminance
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -60,6 +61,18 @@ class PaletteContrastTest {
     }
 
     @Test
+    fun `a segmented thumb stands apart from its track`() = palettes.forEach { (name, colors) ->
+        if (colors.isLight) {
+            // iOS's own pairing: the lightest surface on a track a step darker, lifted by its shadow.
+            assertTrue("$name thumb is the lighter of the two", colors.segmentThumb.luminance() > colors.fill.luminance())
+            assertAtLeast("$name thumb on track", colors.segmentThumb, colors.fill, LIGHT_THUMB_ON_TRACK)
+        } else {
+            assertAtLeast("$name thumb on track", colors.segmentThumb, colors.fill, THUMB_ON_TRACK)
+        }
+        assertAtLeast("$name label on the thumb", colors.contentPrimary, colors.segmentThumb, AA_TEXT)
+    }
+
+    @Test
     fun `the tab bar shows its selection without relying on a faint pill`() {
         AppDesignStyle.entries.forEach { design ->
             val style = design.style()
@@ -103,5 +116,9 @@ class PaletteContrastTest {
         val first = luminance(a)
         val second = luminance(b)
         return (maxOf(first, second) + 0.05) / (minOf(first, second) + 0.05)
+    }
+
+    private companion object {
+        const val LIGHT_THUMB_ON_TRACK = 1.15f
     }
 }

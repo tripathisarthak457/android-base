@@ -51,6 +51,7 @@ fun FoundationsSection() {
             "surfaceElevated" to colors.surfaceElevated,
             "surfaceInverse" to colors.surfaceInverse,
             "fill" to colors.fill,
+            "segmentThumb" to colors.segmentThumb,
             "separator" to colors.separator,
             "outline" to colors.outline,
         )

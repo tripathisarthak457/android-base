@@ -31,6 +31,11 @@ data class AppColors(
     val surfaceInverse: Color,
     /** Tracks and wells: a slider's rail, a segmented control's background, the off switch. */
     val fill: Color,
+    /**
+     * The raised thumb of a segmented control on [fill]. White in light theme, where its shadow
+     * lifts it; in dark theme a step lighter than the track, as iOS draws it, never darker.
+     */
+    val segmentThumb: Color,
     /** Hairlines between rows and around cards. Decorative, so not held to a contrast ratio. */
     val separator: Color,
     /**
@@ -113,6 +118,7 @@ val LightColors: AppColors = AppColors(
     surfaceElevated = White,
     surfaceInverse = Grey900,
     fill = Grey150,
+    segmentThumb = White,
     separator = Grey200,
     outline = Grey450,
 
@@ -163,6 +169,7 @@ val DarkColors: AppColors = AppColors(
     surfaceElevated = Ink700,
     surfaceInverse = Ink100,
     fill = Ink600,
+    segmentThumb = Ink500,
     separator = Ink600,
     outline = Ink350,
 
@@ -213,6 +220,8 @@ val DarkColors: AppColors = AppColors(
 internal fun AppColors.withDerivedRoles(): AppColors = copy(
     accentContent = legibleOn(accent, backgrounds + accentSubtle, isLight),
     outline = legibleOn(outline, backgrounds, isLight, AA_NON_TEXT),
+    // A shadow does not show on a dark track, so the thumb itself has to stand apart from it.
+    segmentThumb = if (isLight) segmentThumb else legibleOn(segmentThumb, listOf(fill), light = false, THUMB_ON_TRACK),
     success = success.legibleOnSurfaces(backgrounds, isLight),
     warning = warning.legibleOnSurfaces(backgrounds, isLight),
     danger = danger.legibleOnSurfaces(backgrounds, isLight),
@@ -253,6 +262,7 @@ internal fun legibleOn(color: Color, backgrounds: List<Color>, light: Boolean, m
 
 internal const val AA_TEXT = 4.5f
 internal const val AA_NON_TEXT = 3f
+internal const val THUMB_ON_TRACK = 1.5f
 private const val MAX_SHADE_STEPS = 30
 private const val SHADE_STEP = 0.05f
 
