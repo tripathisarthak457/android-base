@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
-import { BUILD, apiError, postJson } from "../../lib/api.ts";
+import { API_BASE, BUILD, apiError } from "../../lib/api.ts";
 import { type ReportContext, readReportContext } from "./context.ts";
 
 /**
@@ -132,16 +132,20 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
     setBusy(true);
     setFailure(null);
     try {
-      const response = await postJson("/api/v1/feedback", {
-        kind,
-        severity: bug ? severity : "",
-        area,
-        title: title.trim(),
-        body: body.trim(),
-        steps: bug ? steps.trim() : "",
-        contact: contact.trim(),
-        appVersion: BUILD,
-        ...(attach && context ? { ...context, pageUrl: `${location.origin}${location.pathname}` } : { features: [] }),
+      const response = await fetch(`${API_BASE}/api/v1/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind,
+          severity: bug ? severity : "",
+          area,
+          title: title.trim(),
+          body: body.trim(),
+          steps: bug ? steps.trim() : "",
+          contact: contact.trim(),
+          appVersion: BUILD,
+          ...(attach && context ? { ...context, pageUrl: `${location.origin}${location.pathname}` } : { features: [] }),
+        }),
       });
       if (!response.ok) throw await apiError(response, "That could not be sent.");
       const result = (await response.json()) as { id?: number };

@@ -35,12 +35,3 @@ export async function apiError(response: Response, fallback: string): Promise<Ap
     return new ApiError(fallback, response.status);
   }
 }
-
-export function postJson(path: string, body: unknown, init: RequestInit = {}): Promise<Response> {
-  return fetch(`${API_BASE}${path}`, {
-    ...init,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...init.headers },
-    body: JSON.stringify(body),
-  });
-}

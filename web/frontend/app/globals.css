@@ -5,9 +5,10 @@
  * template's cool blue-grey, so a screenshot of the product and a screenshot of the site cannot be
  * mistaken for each other.
  *
- * The `ink` scale runs from the page (950) to the strongest text (100) in both themes, and every
- * text step from 500 up reads at WCAG AA on every surface step. Each token holds both themes;
- * `color-scheme` on the root picks one, so the theme toggle only has to set that.
+ * The `ink` scale runs from the page (950) to the strongest text (100) in both themes. Every text
+ * step from 400 up reads at WCAG AA on every surface step, 950 to 700; 500 does only on 950 to 850,
+ * so it is kept for placeholders in fields. Each token holds both themes; `color-scheme` on the
+ * root picks one, so the theme toggle only has to set that.
  */
 @theme {
   --color-ink-950: light-dark(#f2ece2, #141311);
