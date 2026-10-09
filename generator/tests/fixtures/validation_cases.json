@@ -896,6 +896,35 @@
       }
     },
     {
+      "name": "target sdk past the newest release",
+      "valid": false,
+      "field": "android.target_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "target_sdk": 99,
+          "compile_sdk": 99
+        }
+      }
+    },
+    {
+      "name": "compile sdk past the newest release",
+      "valid": false,
+      "field": "android.compile_sdk",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "compile_sdk": 99
+        }
+      }
+    },
+    {
       "name": "version name with two parts",
       "valid": false,
       "field": "android.version_name",

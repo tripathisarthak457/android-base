@@ -233,6 +233,10 @@ def validate_android(android: AndroidSettings) -> None:
         )
     if android.target_sdk < android.min_sdk:
         raise SpecError("targetSdk cannot be lower than minSdk.", "android.target_sdk")
+    for label, key, level in (("targetSdk", "target_sdk", android.target_sdk), ("compileSdk", "compile_sdk", android.compile_sdk)):
+        # An API level past the table has no SDK platform to install yet, so the first build fails.
+        if level > max(API_LEVELS):
+            raise SpecError(f"{label} {level} is past API {max(API_LEVELS)}, the newest level this generator knows.", f"android.{key}")
     if android.compile_sdk < android.target_sdk:
         raise SpecError("compileSdk cannot be lower than targetSdk.", "android.compile_sdk")
     if android.compile_sdk < MIN_COMPILE_SDK:
