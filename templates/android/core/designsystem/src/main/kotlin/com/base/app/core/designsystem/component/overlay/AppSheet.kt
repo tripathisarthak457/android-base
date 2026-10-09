@@ -74,6 +74,9 @@ import kotlin.math.roundToInt
  * The content is measured once, at the large detent's height, and only moved after that, so dragging
  * the sheet re-places it and never re-measures it. A [footer] (an `AppBottomActionBar`) stays at the
  * bottom of the part that is showing.
+ *
+ * The content runs edge to edge, as a screen's does: an `AppSection` insets itself, and anything else
+ * pads with `AppTheme.spacing.gutter`.
  */
 @Composable
 fun AppSheet(

@@ -1,6 +1,7 @@
 package com.base.app.catalog.sections
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -89,7 +90,11 @@ fun OverlaysSection() {
             AppSection { repeat(16) { AppRow(title = "Option ${it + 1}", onClick = {}) } }
         }
         AppSheet(visible = large, onDismissRequest = { large = false }, detents = setOf(SheetDetent.Large), title = "New message", showCloseButton = true) {
-            AppText(text = "A large-only sheet opens nearly full height.", modifier = Modifier, style = AppTheme.typography.body)
+            AppText(
+                text = "A large-only sheet opens nearly full height.",
+                modifier = Modifier.padding(horizontal = AppTheme.spacing.gutter),
+                style = AppTheme.typography.body,
+            )
         }
     }
     CatalogGroup("Menu", caption = "A pull-down from a button, or a context menu from a long press. It grows out of its anchor and keeps off the edges.") {
