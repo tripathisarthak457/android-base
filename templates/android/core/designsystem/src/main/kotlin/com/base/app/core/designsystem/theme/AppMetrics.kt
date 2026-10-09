@@ -57,24 +57,24 @@ data class AppElevation(
     val modal: Dp = 16.dp,
 )
 
-/** Minimum interactive sizes. */
+/**
+ * Fixed sizes: the 48dp touch target every control reserves however small it draws, icon sizes, and
+ * the heights components start from. Text-bearing components treat their height as a minimum, so
+ * they grow with the user's font size.
+ */
 @Immutable
 data class AppSizes(
     val minTouchTarget: Dp = 48.dp,
     val iconSmall: Dp = 16.dp,
     val icon: Dp = 20.dp,
     val iconLarge: Dp = 24.dp,
-    val buttonSmall: Dp = 36.dp,
+    val buttonSmall: Dp = 32.dp,
     val buttonMedium: Dp = 44.dp,
     val buttonLarge: Dp = 52.dp,
-    val fieldHeight: Dp = 52.dp,
-    val topBarHeight: Dp = 56.dp,
-    val bottomBarHeight: Dp = 60.dp,
-    val borderWidth: Dp = 1.dp,
-    val borderWidthStrong: Dp = 1.5.dp,
+    val fieldHeight: Dp = 48.dp,
+    val rowHeight: Dp = 48.dp,
+    val topBarHeight: Dp = 52.dp,
 )
 
 internal val LocalAppSpacing = staticCompositionLocalOf { AppSpacing() }
 internal val LocalAppShapes = staticCompositionLocalOf { AppShapes() }
-internal val LocalAppElevation = staticCompositionLocalOf { AppElevation() }
-internal val LocalAppSizes = staticCompositionLocalOf { AppSizes() }

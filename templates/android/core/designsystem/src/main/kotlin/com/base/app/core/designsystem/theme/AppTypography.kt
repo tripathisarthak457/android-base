@@ -2,7 +2,6 @@ package com.base.app.core.designsystem.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -10,48 +9,38 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 
 /**
- * The type scale, named by role. Fifteen styles rather than a continuum, because a scale a
- * developer has to choose a size from is a scale that grows a sixteenth size the first week.
+ * The type scale, named by role and sized as iOS Dynamic Type is at its default setting (an
+ * Android sp is close to an iOS point). [body] is the text style everything inherits.
  */
 @Immutable
 data class AppTypography(
-    val displayLarge: TextStyle,
-    val displayMedium: TextStyle,
-    val displaySmall: TextStyle,
-
-    val headingLarge: TextStyle,
-    val headingMedium: TextStyle,
-    val headingSmall: TextStyle,
-
-    val titleLarge: TextStyle,
-    val titleMedium: TextStyle,
-    val titleSmall: TextStyle,
-
-    val bodyLarge: TextStyle,
-    val bodyMedium: TextStyle,
-    val bodySmall: TextStyle,
-
-    val label: TextStyle,
-    val labelSmall: TextStyle,
-    val caption: TextStyle,
-
-    val button: TextStyle,
+    val largeTitle: TextStyle,
+    val title1: TextStyle,
+    val title2: TextStyle,
+    val title3: TextStyle,
+    val headline: TextStyle,
+    val body: TextStyle,
+    val callout: TextStyle,
+    val subheadline: TextStyle,
+    val footnote: TextStyle,
+    val caption1: TextStyle,
+    val caption2: TextStyle,
     val mono: TextStyle,
-)
+) {
+    internal val sansRoles: List<TextStyle>
+        get() = listOf(largeTitle, title1, title2, title3, headline, body, callout, subheadline, footnote, caption1, caption2)
+}
 
 private val Metrics = LineHeightStyle(
     alignment = LineHeightStyle.Alignment.Center,
     trim = LineHeightStyle.Trim.Both,
 )
 
-@Suppress("DEPRECATION")
-private val Platform = PlatformTextStyle(includeFontPadding = false)
-
 private fun style(
     size: Int,
     lineHeight: Int,
     weight: FontWeight,
-    tracking: Double = 0.0,
+    tracking: Double,
     family: FontFamily,
 ) = TextStyle(
     fontFamily = family,
@@ -60,43 +49,39 @@ private fun style(
     lineHeight = lineHeight.sp,
     letterSpacing = tracking.sp,
     lineHeightStyle = Metrics,
-    platformStyle = Platform,
 )
 
 /*
- * The scale, for a given pair of typefaces. A function rather than a constant, because the typeface
- * is a one-string decision made at the theme — see [AppFonts].
+ * The scale for a given pair of typefaces. A function rather than a constant, because the typeface
+ * is a one-string decision made at the theme; see [AppFonts]. Large sizes are tracked in, as
+ * display cuts are; the smallest are opened up so they stay legible.
  */
 fun appTypography(fonts: AppFonts): AppTypography {
     val sans = fonts.sans
     return AppTypography(
-        displayLarge = style(32, 38, FontWeight.ExtraBold, -0.8, sans),
-        displayMedium = style(28, 34, FontWeight.ExtraBold, -0.6, sans),
-        displaySmall = style(24, 30, FontWeight.Bold, -0.5, sans),
-
-        headingLarge = style(20, 26, FontWeight.Bold, -0.3, sans),
-        headingMedium = style(17, 23, FontWeight.Bold, -0.2, sans),
-        headingSmall = style(15, 21, FontWeight.Bold, -0.1, sans),
-
-        titleLarge = style(16, 22, FontWeight.SemiBold, 0.0, sans),
-        titleMedium = style(14, 20, FontWeight.SemiBold, 0.0, sans),
-        titleSmall = style(13, 18, FontWeight.SemiBold, 0.0, sans),
-
-        bodyLarge = style(16, 24, FontWeight.Normal, 0.0, sans),
-        bodyMedium = style(14, 21, FontWeight.Normal, 0.0, sans),
-        bodySmall = style(13, 19, FontWeight.Normal, 0.0, sans),
-
-        // Uppercase labels need tracking added back — capitals at small sizes crowd each other.
-        label = style(12, 16, FontWeight.SemiBold, 0.3, sans),
-        labelSmall = style(11, 14, FontWeight.SemiBold, 0.4, sans),
-        caption = style(11, 15, FontWeight.Normal, 0.1, sans),
-
-        button = style(15, 20, FontWeight.Bold, -0.1, sans),
-        mono = style(13, 18, FontWeight.Medium, 0.0, fonts.mono),
+        largeTitle = style(34, 41, FontWeight.Bold, -0.6, sans),
+        title1 = style(28, 34, FontWeight.Bold, -0.5, sans),
+        title2 = style(22, 28, FontWeight.Bold, -0.35, sans),
+        title3 = style(20, 25, FontWeight.SemiBold, -0.25, sans),
+        headline = style(17, 22, FontWeight.SemiBold, -0.15, sans),
+        body = style(17, 22, FontWeight.Normal, -0.15, sans),
+        callout = style(16, 21, FontWeight.Normal, -0.1, sans),
+        subheadline = style(15, 20, FontWeight.Normal, -0.05, sans),
+        footnote = style(13, 18, FontWeight.Normal, 0.0, sans),
+        caption1 = style(12, 16, FontWeight.Normal, 0.05, sans),
+        caption2 = style(11, 13, FontWeight.Medium, 0.1, sans),
+        mono = style(15, 20, FontWeight.Normal, 0.0, fonts.mono),
     )
 }
 
 /** The scale set in the platform's own typefaces. */
 val DefaultTypography: AppTypography = appTypography(PlatformFonts)
+
+/** The weights of the sans family that [voice] draws with, lightest first: exactly what to download. */
+fun sansWeights(voice: TypeVoice): List<FontWeight> =
+    DefaultTypography.withVoice(voice).sansRoles.mapNotNull { it.fontWeight }.distinct().sortedBy { it.weight }
+
+/** The weights of the mono family the scale uses. */
+val MonoWeights: List<FontWeight> = listOf(FontWeight.Normal)
 
 internal val LocalAppTypography = staticCompositionLocalOf { DefaultTypography }

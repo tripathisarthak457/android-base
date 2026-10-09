@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
  * ```
  */
 enum class AppDesignStyle {
-    /** Cool neutrals, hairline outlines, a docked bar. Dense and calm: tools, finance, admin. */
+    /** Cool neutrals, hairline outlines, a docked tab bar. Dense and calm: tools, finance, admin. */
     Utility,
 
     /**
@@ -52,6 +52,7 @@ enum class AppDesignStyle {
             card = CardTreatment.Raised,
             field = FieldTreatment.Filled,
             bar = BarTreatment.Floating,
+            indicator = BarIndicator.Pill,
             surfaces = SurfaceTone.BrandTint,
             voice = TypeVoice.Bold,
         )
@@ -69,7 +70,7 @@ enum class AppDesignStyle {
             chipShape = RoundedCornerShape(2.dp),
             card = CardTreatment.Outlined,
             field = FieldTreatment.Underlined,
-            bar = BarTreatment.Minimal,
+            bar = BarTreatment.Translucent,
             uppercaseLabels = true,
             surfaces = SurfaceTone.Paper,
             voice = TypeVoice.Editorial,
@@ -88,7 +89,8 @@ enum class AppDesignStyle {
             chipShape = RoundedCornerShape(12.dp),
             card = CardTreatment.Offset,
             field = FieldTreatment.Outlined,
-            bar = BarTreatment.Chunky,
+            bar = BarTreatment.Floating,
+            indicator = BarIndicator.Pill,
             borderWidth = 2.dp,
             borderWidthStrong = 2.5.dp,
             offsetShadow = 4.dp,
@@ -120,18 +122,25 @@ enum class FieldTreatment {
     Underlined,
 }
 
+/** How the tab bar is drawn. Editing a style's treatment changes the bar app-wide. */
 enum class BarTreatment {
-    /** Full width, a hairline above, icon and label per tab. */
-    Docked,
-
-    /** A rounded capsule lifted off the bottom edge, the selected tab in a tinted pill. */
+    /** A capsule lifted off the bottom edge, on the elevated surface with a hairline and one soft shadow. */
     Floating,
 
-    /** Full width and flat, uppercase labels, a short rule over the selected tab. */
-    Minimal,
+    /** The capsule on the surface at 88 % opacity, so content shows faintly through at no GPU cost. */
+    Translucent,
 
-    /** Full width with a heavy top rule, the selected icon sitting in a solid pill. */
-    Chunky,
+    /** Full width against the bottom edge with a hairline above, as iOS drew it before 26. */
+    Docked,
+}
+
+/** How the bar marks the selected tab. */
+enum class BarIndicator {
+    /** A solid pill in `barIndicator` behind the selected item, its glyph and label in `onAccent`. */
+    Pill,
+
+    /** No pill: the selected glyph turns filled and takes `accentContent`, which carries selection alone. */
+    Subtle,
 }
 
 /** The neutrals a style sits on. The accent ramps are the brand's and never change here. */
@@ -173,6 +182,7 @@ data class AppStyle(
     val card: CardTreatment = CardTreatment.Outlined,
     val field: FieldTreatment = FieldTreatment.Outlined,
     val bar: BarTreatment = BarTreatment.Docked,
+    val indicator: BarIndicator = BarIndicator.Subtle,
     val borderWidth: Dp = 1.dp,
     val borderWidthStrong: Dp = 1.5.dp,
     val uppercaseLabels: Boolean = false,

@@ -1,89 +1,107 @@
 package com.base.app.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-/** Every text-on-background pair in both palettes, against WCAG AA. */
+/**
+ * Every pairing the components draw, in every design style and both themes: text at WCAG AA (4.5:1)
+ * on every background, controls that must be seen at 3:1, and the tab bar's selection.
+ */
 class PaletteContrastTest {
 
-    @Test
-    fun `the light palette meets AA everywhere text sits on a background`() {
-        LightColors.assertReadable()
+    private val palettes: List<Pair<String, AppColors>> = AppDesignStyle.entries.flatMap { design ->
+        listOf(LightColors, DarkColors).map { base ->
+            "${design.name} ${if (base.isLight) "light" else "dark"}" to base.withSurfaces(design.style().surfaces)
+        }
     }
 
     @Test
-    fun `the dark palette meets AA everywhere text sits on a background`() {
-        DarkColors.assertReadable()
+    fun `text roles read on every background`() = palettes.forEach { (name, colors) ->
+        colors.backgrounds.forEach { background ->
+            assertAtLeast("$name contentPrimary", colors.contentPrimary, background, AA_TEXT)
+            assertAtLeast("$name contentSecondary", colors.contentSecondary, background, AA_TEXT)
+            assertAtLeast("$name contentTertiary", colors.contentTertiary, background, AA_TEXT)
+        }
     }
 
     @Test
-    fun `every design style's surfaces meet AA in both themes`() {
+    fun `the accent as text reads on every background and on its own tint`() = palettes.forEach { (name, colors) ->
+        (colors.backgrounds + colors.accentSubtle).forEach { background ->
+            assertAtLeast("$name accentContent", colors.accentContent, background, AA_TEXT)
+        }
+    }
+
+    @Test
+    fun `text on brand fills reads`() = palettes.forEach { (name, colors) ->
+        assertAtLeast("$name onAccent on accent", colors.onAccent, colors.accent, AA_TEXT)
+        assertAtLeast("$name onSecondary on secondary", colors.onSecondary, colors.secondary, AA_TEXT)
+        assertAtLeast("$name onTertiary on tertiary", colors.onTertiary, colors.tertiary, AA_TEXT)
+    }
+
+    @Test
+    fun `status colours read on surfaces, on their tint, and under their own text`() = palettes.forEach { (name, colors) ->
+        listOf("success" to colors.success, "warning" to colors.warning, "danger" to colors.danger, "info" to colors.info)
+            .forEach { (meaning, status) ->
+                (colors.backgrounds + status.subtle).forEach { background ->
+                    assertAtLeast("$name $meaning content", status.content, background, AA_TEXT)
+                }
+                assertAtLeast("$name $meaning on its base", status.on, status.base, AA_TEXT)
+            }
+    }
+
+    @Test
+    fun `controls that must be seen stand out at 3 to 1`() = palettes.forEach { (name, colors) ->
+        colors.backgrounds.forEach { background ->
+            assertAtLeast("$name outline (checkbox ring, field edge, off switch)", colors.outline, background, AA_NON_TEXT)
+            assertAtLeast("$name accent as a control", colors.accent, background, AA_NON_TEXT)
+        }
+    }
+
+    @Test
+    fun `the tab bar shows its selection without relying on a faint pill`() {
         AppDesignStyle.entries.forEach { design ->
+            val style = design.style()
             listOf(LightColors, DarkColors).forEach { base ->
-                base.withSurfaces(design.style().surfaces).assertReadable()
+                val colors = base.withSurfaces(style.surfaces)
+                val name = "${design.name} ${if (colors.isLight) "light" else "dark"} ${style.bar}"
+                val bar = barSurface(style.bar, colors)
+                when (style.indicator) {
+                    BarIndicator.Pill -> {
+                        assertAtLeast("$name barIndicator against the bar", colors.barIndicator, bar, AA_NON_TEXT)
+                        assertAtLeast("$name onAccent on the indicator", colors.onAccent, colors.barIndicator, AA_TEXT)
+                    }
+                    BarIndicator.Subtle -> assertAtLeast("$name selected glyph on the bar", colors.accentContent, bar, AA_TEXT)
+                }
             }
         }
     }
 
-    private fun AppColors.assertReadable() {
-        val theme = if (isLight) "light" else "dark"
-
-        assertContrast("contentPrimary on background", contentPrimary, background)
-        assertContrast("contentPrimary on surface", contentPrimary, surface)
-        assertContrast("contentSecondary on surface", contentSecondary, surface)
-        assertContrast("contentTertiary on surface", contentTertiary, surface)
-
-        assertContrast("onAccent on accent", onAccent, accent)
-        assertContrast("onSecondary on secondary", onSecondary, secondary)
-        assertContrast("onTertiary on tertiary", onTertiary, tertiary)
-
-        listOf(
-            "success" to success,
-            "warning" to warning,
-            "danger" to danger,
-            "info" to info,
-            "neutral" to neutral,
-        ).forEach { (name, status) ->
-            assertContrast("$name content on its subtle fill ($theme)", status.content, status.subtle)
-        }
+    private fun barSurface(treatment: BarTreatment, colors: AppColors): Color = when (treatment) {
+        BarTreatment.Floating -> colors.surfaceElevated
+        BarTreatment.Translucent -> colors.surface.copy(alpha = 0.88f).compositeOver(colors.background)
+        BarTreatment.Docked -> colors.surface
     }
 
-    private fun assertContrast(what: String, foreground: Color, background: Color) {
-        val ratio = contrastRatio(foreground, background)
+    private fun assertAtLeast(what: String, foreground: Color, background: Color, minimum: Float) {
+        val ratio = wcagContrast(foreground, background)
         assertTrue(
-            "$what is ${"%.2f".format(ratio)}:1, below the $MINIMUM_RATIO:1 that AA asks for. " +
-                "Darken the foreground or lighten the fill — do not lower this threshold.",
-            ratio >= MINIMUM_RATIO,
+            "$what is ${"%.2f".format(ratio)}:1, below $minimum:1. Darken the foreground or lighten the fill; " +
+                "do not lower this threshold.",
+            ratio >= minimum,
         )
     }
 
-    private fun contrastRatio(a: Color, b: Color): Double {
-        val first = relativeLuminance(a)
-        val second = relativeLuminance(b)
-        return (maxOf(first, second) + OFFSET) / (minOf(first, second) + OFFSET)
-    }
-
-    /** WCAG's own definition, which is not the same as perceptual lightness. */
-    private fun relativeLuminance(color: Color): Double {
+    /** WCAG 2's definition, computed here rather than with the palette's own helper. */
+    private fun wcagContrast(a: Color, b: Color): Double {
         fun channel(value: Float): Double {
             val v = value.toDouble()
-            return if (v <= LINEAR_LIMIT) v / LINEAR_DIVISOR else ((v + 0.055) / 1.055).pow(2.4)
+            return if (v <= 0.03928) v / 12.92 else Math.pow((v + 0.055) / 1.055, 2.4)
         }
-        return RED_WEIGHT * channel(color.red) +
-            GREEN_WEIGHT * channel(color.green) +
-            BLUE_WEIGHT * channel(color.blue)
-    }
-
-    private fun Double.pow(exponent: Double): Double = Math.pow(this, exponent)
-
-    private companion object {
-        const val MINIMUM_RATIO = 4.5
-        const val OFFSET = 0.05
-        const val LINEAR_LIMIT = 0.03928
-        const val LINEAR_DIVISOR = 12.92
-        const val RED_WEIGHT = 0.2126
-        const val GREEN_WEIGHT = 0.7152
-        const val BLUE_WEIGHT = 0.0722
+        fun luminance(c: Color) = 0.2126 * channel(c.red) + 0.7152 * channel(c.green) + 0.0722 * channel(c.blue)
+        val first = luminance(a)
+        val second = luminance(b)
+        return (maxOf(first, second) + 0.05) / (minOf(first, second) + 0.05)
     }
 }

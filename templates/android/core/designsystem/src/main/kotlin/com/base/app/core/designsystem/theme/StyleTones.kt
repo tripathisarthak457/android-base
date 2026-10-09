@@ -4,8 +4,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 
 /** The palette with a style's neutrals in place of the template's. */
 fun AppColors.withSurfaces(tone: SurfaceTone): AppColors = when (tone) {
@@ -13,7 +11,7 @@ fun AppColors.withSurfaces(tone: SurfaceTone): AppColors = when (tone) {
     SurfaceTone.BrandTint -> brandTinted()
     SurfaceTone.Paper -> if (isLight) PaperLight.applyTo(this) else PaperDark.applyTo(this)
     SurfaceTone.Cream -> if (isLight) CreamLight.applyTo(this) else CreamDark.applyTo(this)
-}
+}.withDerivedRoles()
 
 /*
  * A few percent of the accent, never more. Enough that a feed in a pink brand reads as pink at a
@@ -22,134 +20,132 @@ fun AppColors.withSurfaces(tone: SurfaceTone): AppColors = when (tone) {
 private fun AppColors.brandTinted(): AppColors {
     fun tint(base: Color, amount: Float) = lerp(base, accent, amount)
     return copy(
-        background = tint(background, if (isLight) 0.045f else 0.05f),
-        surfaceVariant = tint(surfaceVariant, if (isLight) 0.07f else 0.07f),
+        background = tint(background, 0.045f),
+        backgroundGrouped = tint(backgroundGrouped, 0.05f),
         surface = if (isLight) surface else tint(surface, 0.05f),
-        border = tint(border, 0.1f),
-        divider = tint(divider, 0.08f),
+        surfaceGrouped = if (isLight) surfaceGrouped else tint(surfaceGrouped, 0.05f),
+        surfaceElevated = if (isLight) surfaceElevated else tint(surfaceElevated, 0.05f),
+        fill = tint(fill, 0.07f),
+        separator = tint(separator, 0.1f),
         skeleton = tint(skeleton, 0.08f),
     )
 }
 
 private class Neutrals(
     val background: Color,
+    val backgroundGrouped: Color,
     val surface: Color,
-    val surfaceVariant: Color,
+    val surfaceElevated: Color,
+    val fill: Color,
+    val separator: Color,
+    val outline: Color,
     val contentPrimary: Color,
     val contentSecondary: Color,
     val contentTertiary: Color,
-    val border: Color,
-    val borderStrong: Color,
-    val divider: Color,
+    val skeletonHighlight: Color,
 ) {
     fun applyTo(colors: AppColors) = colors.copy(
         background = background,
+        backgroundGrouped = backgroundGrouped,
         surface = surface,
-        surfaceVariant = surfaceVariant,
+        surfaceGrouped = surface,
+        surfaceElevated = surfaceElevated,
+        fill = fill,
+        separator = separator,
+        outline = outline,
         contentPrimary = contentPrimary,
         contentSecondary = contentSecondary,
         contentTertiary = contentTertiary,
-        border = border,
-        borderStrong = borderStrong,
-        divider = divider,
-        skeleton = divider,
+        skeleton = fill,
+        skeletonHighlight = skeletonHighlight,
     )
 }
 
 private val PaperLight = Neutrals(
     background = Color(0xFFF7F4EE),
+    backgroundGrouped = Color(0xFFF1EDE5),
     surface = Color(0xFFFFFDF9),
-    surfaceVariant = Color(0xFFEFEAE1),
+    surfaceElevated = Color(0xFFFFFDF9),
+    fill = Color(0xFFEAE4DA),
+    separator = Color(0xFFE2DBCF),
+    outline = Color(0xFF8C8273),
     contentPrimary = Color(0xFF15130F),
     contentSecondary = Color(0xFF3F3931),
-    contentTertiary = Color(0xFF6A6256),
-    border = Color(0xFFE2DBCF),
-    borderStrong = Color(0xFFCCC2B1),
-    divider = Color(0xFFEAE4DA),
+    contentTertiary = Color(0xFF655D51),
+    skeletonHighlight = Color(0xFFF7F4EE),
 )
 
 private val PaperDark = Neutrals(
     background = Color(0xFF12110F),
+    backgroundGrouped = Color(0xFF12110F),
     surface = Color(0xFF1B1916),
-    surfaceVariant = Color(0xFF25221E),
+    surfaceElevated = Color(0xFF25221E),
+    fill = Color(0xFF2E2A25),
+    separator = Color(0xFF34302A),
+    outline = Color(0xFF7A7164),
     contentPrimary = Color(0xFFF4EFE6),
     contentSecondary = Color(0xFFCBC2B4),
-    contentTertiary = Color(0xFF999080),
-    border = Color(0xFF34302A),
-    borderStrong = Color(0xFF4A443B),
-    divider = Color(0xFF27241F),
+    contentTertiary = Color(0xFFA0978A),
+    skeletonHighlight = Color(0xFF443F37),
 )
 
 private val CreamLight = Neutrals(
     background = Color(0xFFFFF7EA),
+    backgroundGrouped = Color(0xFFFCF1DE),
     surface = Color(0xFFFFFFFF),
-    surfaceVariant = Color(0xFFFFEFD6),
+    surfaceElevated = Color(0xFFFFFFFF),
+    fill = Color(0xFFF6E8D0),
+    separator = Color(0xFFF0DFC2),
+    outline = Color(0xFF94855F),
     contentPrimary = Color(0xFF1A1206),
     contentSecondary = Color(0xFF45392A),
-    contentTertiary = Color(0xFF6F6048),
-    border = Color(0xFFF0DFC2),
-    borderStrong = Color(0xFFDDC59D),
-    divider = Color(0xFFF6E8D0),
+    contentTertiary = Color(0xFF6A5B43),
+    skeletonHighlight = Color(0xFFFFF7EA),
 )
 
 private val CreamDark = Neutrals(
     background = Color(0xFF15120D),
+    backgroundGrouped = Color(0xFF15120D),
     surface = Color(0xFF1F1A13),
-    surfaceVariant = Color(0xFF2A2419),
+    surfaceElevated = Color(0xFF2A2419),
+    fill = Color(0xFF332C20),
+    separator = Color(0xFF3A3224),
+    outline = Color(0xFF7E715A),
     contentPrimary = Color(0xFFFBF3E4),
     contentSecondary = Color(0xFFD6C8B0),
-    contentTertiary = Color(0xFFA3947B),
-    border = Color(0xFF3A3224),
-    borderStrong = Color(0xFF514634),
-    divider = Color(0xFF2B2519),
+    contentTertiary = Color(0xFFA99A80),
+    skeletonHighlight = Color(0xFF4A4030),
 )
 
-/** The type scale in a style's voice. Sizes stay on the same grid; weight and tracking move. */
+/**
+ * The type scale in a style's voice. Only weights move: sizes and line heights stay on the scale,
+ * so a style change never reflows a layout, and the fonts download only the weights listed here.
+ */
 fun AppTypography.withVoice(voice: TypeVoice): AppTypography = when (voice) {
     TypeVoice.Neutral -> this
 
     TypeVoice.Bold -> copy(
-        displayLarge = displayLarge.weight(FontWeight.Black),
-        displayMedium = displayMedium.weight(FontWeight.Black),
-        displaySmall = displaySmall.weight(FontWeight.ExtraBold),
-        headingLarge = headingLarge.weight(FontWeight.ExtraBold),
-        headingMedium = headingMedium.weight(FontWeight.ExtraBold),
-        headingSmall = headingSmall.weight(FontWeight.ExtraBold),
-        titleLarge = titleLarge.weight(FontWeight.Bold),
-        titleMedium = titleMedium.weight(FontWeight.Bold),
-        button = button.weight(FontWeight.ExtraBold),
+        largeTitle = largeTitle.weight(FontWeight.ExtraBold),
+        title1 = title1.weight(FontWeight.ExtraBold),
+        title2 = title2.weight(FontWeight.ExtraBold),
+        title3 = title3.weight(FontWeight.Bold),
+        headline = headline.weight(FontWeight.Bold),
     )
 
     TypeVoice.Editorial -> copy(
-        displayLarge = displayLarge.grow(6, -0.035),
-        displayMedium = displayMedium.grow(5, -0.03),
-        displaySmall = displaySmall.grow(4, -0.03),
-        headingLarge = headingLarge.grow(2, -0.02),
-        headingMedium = headingMedium.grow(1, -0.015),
-        label = label.copy(letterSpacing = 0.12.em),
-        labelSmall = labelSmall.copy(letterSpacing = 0.14.em),
+        largeTitle = largeTitle.weight(FontWeight.Medium),
+        title1 = title1.weight(FontWeight.Medium),
+        title2 = title2.weight(FontWeight.Medium),
     )
 
     TypeVoice.Rounded -> copy(
-        displayLarge = displayLarge.weight(FontWeight.Black),
-        displayMedium = displayMedium.weight(FontWeight.Black),
-        displaySmall = displaySmall.weight(FontWeight.Black),
-        headingLarge = headingLarge.weight(FontWeight.ExtraBold),
-        headingMedium = headingMedium.weight(FontWeight.ExtraBold),
-        headingSmall = headingSmall.weight(FontWeight.ExtraBold),
-        titleLarge = titleLarge.weight(FontWeight.ExtraBold),
-        titleMedium = titleMedium.weight(FontWeight.Bold),
-        titleSmall = titleSmall.weight(FontWeight.Bold),
-        bodyLarge = bodyLarge.copy(lineHeight = (bodyLarge.lineHeight.value + 2).sp),
-        bodyMedium = bodyMedium.copy(lineHeight = (bodyMedium.lineHeight.value + 2).sp),
-        button = button.weight(FontWeight.ExtraBold),
+        largeTitle = largeTitle.weight(FontWeight.Black),
+        title1 = title1.weight(FontWeight.Black),
+        title2 = title2.weight(FontWeight.ExtraBold),
+        title3 = title3.weight(FontWeight.ExtraBold),
+        headline = headline.weight(FontWeight.Bold),
+        caption2 = caption2.weight(FontWeight.SemiBold),
     )
 }
 
 private fun TextStyle.weight(weight: FontWeight) = copy(fontWeight = weight)
-
-private fun TextStyle.grow(bySp: Int, tracking: Double) = copy(
-    fontSize = (fontSize.value + bySp).sp,
-    lineHeight = (lineHeight.value + bySp).sp,
-    letterSpacing = tracking.em,
-)
