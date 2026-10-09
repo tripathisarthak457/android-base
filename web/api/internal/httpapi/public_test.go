@@ -212,3 +212,41 @@ func TestHealthIsNeitherLimitedNorRecorded(t *testing.T) {
 		t.Fatalf("health probes recorded %d batches", n)
 	}
 }
+
+func TestOnlyAPagesPathIsKeptFromItsURL(t *testing.T) {
+	cases := map[string]string{
+		"https://site/configure?draft=abc#look": "/configure",
+		"https://site":                          "/",
+		"http://localhost:3000/a%20b":           "/a%20b",
+		"/report?x=1":                           "/report",
+		"javascript:alert(1)":                   "",
+		"data:text/html,hi":                     "",
+		"//elsewhere.example/x":                 "",
+		"https:///no-host":                      "",
+		"configure":                             "",
+		"https://site/\u0007":                   "",
+		"":                                      "",
+	}
+	for raw, want := range cases {
+		if got := pagePath(raw); got != want {
+			t.Errorf("pagePath(%q) = %q, want %q", raw, got, want)
+		}
+	}
+}
+
+func TestTheSitesOwnReferrerIsDroppedBehindAVercelRewrite(t *testing.T) {
+	landed := `{"session_id": "` + sessionID + `", "events": [{"name": "landed", "referrer": "https://site.example/about"}]}`
+	referrer := func(policy config.ProxyPolicy) string {
+		t.Helper()
+		ts := newTestServer(t, okScript, func(cfg *config.Config) { cfg.TrustedProxy = policy })
+		ts.do(http.MethodPost, "/api/v1/events", landed, map[string]string{"X-Forwarded-Host": "site.example"})
+		return ts.sink.last(t).Visits[0].Landing.ReferrerOrigin
+	}
+	if got := referrer(config.ProxyPolicy{Hops: 1, Vercel: true}); got != "" {
+		t.Errorf("behind Vercel the site's own page was kept as a referrer: %q", got)
+	}
+	// Anywhere else the header is the client's to forge.
+	if got := referrer(config.ProxyPolicy{}); got != "https://site.example" {
+		t.Errorf("without a trusted proxy: %q", got)
+	}
+}

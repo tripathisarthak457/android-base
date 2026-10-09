@@ -53,3 +53,16 @@ func clientKey(addr netip.Addr) string {
 func (s *Server) clientKey(r *http.Request) string {
 	return clientKey(clientAddr(r, s.cfg.TrustedProxy))
 }
+
+// siteHost is the host the visitor's browser addressed. Behind Vercel the request can reach this
+// service through a rewrite, with the rewrite's destination as its Host and the site's own host in
+// X-Forwarded-Host.
+func (s *Server) siteHost(r *http.Request) string {
+	if s.cfg.TrustedProxy.Vercel {
+		forwarded, _, _ := strings.Cut(r.Header.Get("X-Forwarded-Host"), ",")
+		if forwarded = strings.TrimSpace(forwarded); forwarded != "" {
+			return forwarded
+		}
+	}
+	return r.Host
+}

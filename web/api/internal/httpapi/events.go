@@ -19,7 +19,7 @@ func (s *Server) handleEvents(w http.ResponseWriter, r *http.Request) {
 	batch, err := telemetry.DecodeEvents(body)
 	var validated telemetry.Validated
 	if err == nil {
-		validated, err = telemetry.ValidateEvents(batch, s.known, r.Host)
+		validated, err = telemetry.ValidateEvents(batch, s.known, s.siteHost(r))
 	}
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "invalid_events", err.Error(), "")

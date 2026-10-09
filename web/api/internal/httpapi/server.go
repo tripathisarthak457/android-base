@@ -3,17 +3,18 @@ package httpapi
 
 import (
 	"bytes"
+	"cmp"
 	"encoding/json"
 	"errors"
 	"io"
 	"log/slog"
 	"net/http"
+	"net/url"
 	"slices"
 	"strconv"
 	"strings"
 	"sync/atomic"
 	"time"
-	"unicode"
 
 	"github.com/base-android/generator-api/internal/config"
 	"github.com/base-android/generator-api/internal/generate"
@@ -359,22 +360,21 @@ func (s *Server) handleClientError(w http.ResponseWriter, r *http.Request) {
 }
 
 // pagePath keeps the path of a page URL and drops its query and fragment, which can carry anything.
+// A value that is not a page's URL (a `javascript:` URL, a bare word) is not kept at all.
 func pagePath(raw string) string {
-	if i := strings.Index(raw, "://"); i >= 0 {
-		raw = raw[i+3:]
-		if slash := strings.IndexByte(raw, '/'); slash >= 0 {
-			raw = raw[slash:]
-		} else {
-			raw = "/"
-		}
-	}
-	if i := strings.IndexAny(raw, "?#"); i >= 0 {
-		raw = raw[:i]
-	}
-	if strings.IndexFunc(raw, unicode.IsControl) >= 0 {
+	page, err := url.Parse(raw)
+	if err != nil {
 		return ""
 	}
-	return raw
+	switch {
+	case page.Scheme == "http" || page.Scheme == "https":
+		if page.Host == "" {
+			return ""
+		}
+	case page.Scheme != "" || page.Host != "" || !strings.HasPrefix(page.Path, "/"):
+		return ""
+	}
+	return cmp.Or(page.EscapedPath(), "/")
 }
 
 // readBody reads at most limit bytes, answering 413 or 400 itself when it cannot.
