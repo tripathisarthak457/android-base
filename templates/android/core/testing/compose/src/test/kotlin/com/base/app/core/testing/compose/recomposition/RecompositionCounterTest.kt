@@ -3,6 +3,7 @@ package com.base.app.core.testing.compose.recomposition
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -73,7 +74,7 @@ private fun Slider(moved: Boolean, readInLayout: Boolean) {
     val modifier = if (readInLayout) {
         Modifier.offset { IntOffset(offset.value.roundToInt(), 0) }
     } else {
-        Modifier.offset(x = offset.value.dp)
+        Modifier.padding(start = offset.value.dp)
     }
     Box(modifier.size(10.dp))
 }

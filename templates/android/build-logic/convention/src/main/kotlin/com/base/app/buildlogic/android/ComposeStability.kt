@@ -16,6 +16,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 
 /**
@@ -171,6 +172,7 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
     }
 }
 
+@DisableCachingByDefault(because = "Appends to the checked-in baseline when someone asks it to.")
 internal abstract class RecordComposeStabilityTask : DefaultTask() {
 
     @get:InputFiles

@@ -34,6 +34,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.base.app.core.designsystem.component.container.AppDivider
@@ -159,14 +160,14 @@ private fun FloatingBar(
 
 @Composable
 private fun SlidingPill(selectedIndex: Int, itemWidth: Dp) {
-    val x by animateDpAsState(
+    val x = animateDpAsState(
         targetValue = itemWidth * selectedIndex,
         animationSpec = AppTheme.motion.sheet(),
         label = "barPill",
     )
     Box(
         modifier = Modifier
-            .offset(x = x)
+            .offset { IntOffset(x.value.roundToPx(), 0) }
             .width(itemWidth)
             .fillMaxHeight()
             .background(AppTheme.colors.accentSubtle, AppTheme.shapes.pill),
@@ -175,14 +176,14 @@ private fun SlidingPill(selectedIndex: Int, itemWidth: Dp) {
 
 @Composable
 private fun SlidingRule(selectedIndex: Int, itemWidth: Dp) {
-    val x by animateDpAsState(
-        targetValue = itemWidth * selectedIndex,
+    val x = animateDpAsState(
+        targetValue = itemWidth * selectedIndex + itemWidth / 2 - RuleWidth / 2,
         animationSpec = AppTheme.motion.sheet(),
         label = "barRule",
     )
     Box(
         modifier = Modifier
-            .offset(x = x + itemWidth / 2 - RuleWidth / 2)
+            .offset { IntOffset(x.value.roundToPx(), 0) }
             .width(RuleWidth)
             .height(2.dp)
             .background(AppTheme.colors.contentPrimary),

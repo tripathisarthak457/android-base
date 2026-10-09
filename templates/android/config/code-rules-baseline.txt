@@ -32,8 +32,7 @@ core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSpecialFields.kt animated-delegate 1
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppTextField.kt animated-delegate 2
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppListPieces.kt animated-delegate 2
-core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt animated-delegate 6
-core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppNavigationRail.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt animated-delegate 4
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabRow.kt animated-delegate 2
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt animated-delegate 1
 core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppBottomSheet.kt layer-alpha-fill 1

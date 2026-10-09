@@ -19,6 +19,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.security.MessageDigest
 import java.time.LocalDateTime
@@ -96,6 +97,7 @@ private fun writeManifest(directory: File, entries: List<Pair<File, String>>) {
     )
 }
 
+@DisableCachingByDefault(because = "Copies finished APKs to a folder; a cached copy would be no faster.")
 internal abstract class DistributeApksTask : DefaultTask() {
 
     @get:InputDirectory
@@ -154,6 +156,7 @@ internal abstract class DistributeApksTask : DefaultTask() {
     }
 }
 
+@DisableCachingByDefault(because = "Copies the finished bundle to a folder; a cached copy would be no faster.")
 internal abstract class DistributeBundleTask : DefaultTask() {
 
     @get:InputFile

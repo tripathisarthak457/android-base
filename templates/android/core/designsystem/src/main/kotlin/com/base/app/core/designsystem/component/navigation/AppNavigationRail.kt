@@ -18,9 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.theme.AppTheme
@@ -85,14 +85,14 @@ object AppNavigationRailDefaults {
 
 @Composable
 private fun VerticalPill(selectedIndex: Int) {
-    val y by animateDpAsState(
+    val y = animateDpAsState(
         targetValue = ItemHeight * selectedIndex,
         animationSpec = AppTheme.motion.sheet(),
         label = "railPill",
     )
     Box(
         modifier = Modifier
-            .offset(y = y)
+            .offset { IntOffset(0, y.value.roundToPx()) }
             .padding(horizontal = 10.dp, vertical = 4.dp)
             .fillMaxWidth()
             .height(ItemHeight - 8.dp)
@@ -102,14 +102,14 @@ private fun VerticalPill(selectedIndex: Int) {
 
 @Composable
 private fun LeadingRule(selectedIndex: Int) {
-    val y by animateDpAsState(
+    val y = animateDpAsState(
         targetValue = ItemHeight * selectedIndex + ItemHeight / 2 - RuleLength / 2,
         animationSpec = AppTheme.motion.sheet(),
         label = "railRule",
     )
     Box(
         modifier = Modifier
-            .offset(y = y)
+            .offset { IntOffset(0, y.value.roundToPx()) }
             .width(2.dp)
             .height(RuleLength)
             .background(AppTheme.colors.contentPrimary),

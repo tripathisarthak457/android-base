@@ -37,7 +37,10 @@ internal fun Project.configureCompose(extension: CommonExtension) {
 
     // Compose's own lint checks, warnings by default: each is a recomposition, layout or state bug
     // the compiler accepts. Lint ignores an id it does not know without a word, so every one here
-    // was checked against the lint jars of the Compose, lifecycle and navigation3 artifacts.
+    // was checked against the lint jars of the Compose, lifecycle and navigation3 artifacts. Two
+    // stay warnings: ComposableLambdaParameterNaming wants a lone trailing slot named `content`
+    // even when it is a bar's actions, and ModifierFactoryExtensionFunction flags a factory that
+    // needs a scope receiver such as LazyItemScope.
     extension.lint.error += COMPOSE_LINT_ERRORS
 
     extensions.configure<KotlinAndroidProjectExtension> {
@@ -82,7 +85,6 @@ internal const val COMPOSE_REPORTS = "compose_reports"
 private val COMPOSE_LINT_ERRORS = setOf(
     // runtime
     "ComposableNaming",
-    "ComposableLambdaParameterNaming",
     "CompositionLocalNaming",
     "UnrememberedMutableState",
     "UnrememberedState",
@@ -98,7 +100,6 @@ private val COMPOSE_LINT_ERRORS = setOf(
     // ui
     "ModifierParameter",
     "ModifierFactoryReturnType",
-    "ModifierFactoryExtensionFunction",
     "ModifierFactoryUnreferencedReceiver",
     "UnnecessaryComposedModifier",
     "SuspiciousModifierThen",
