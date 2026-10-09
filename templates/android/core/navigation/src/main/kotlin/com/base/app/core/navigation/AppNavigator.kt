@@ -1,5 +1,6 @@
 package com.base.app.core.navigation
 
+import com.base.app.core.common.navigation.AppNavKey
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow

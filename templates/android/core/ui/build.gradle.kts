@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    api(project(":core:common"))
+    api(project(":core:mvi"))
     api(project(":core:designsystem"))
     implementation(project(":core:navigation"))
 

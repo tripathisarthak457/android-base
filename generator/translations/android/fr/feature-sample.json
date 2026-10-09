@@ -6,8 +6,8 @@
   "sample_reload": "Recharger",
   "sample_refresh_failed": "Impossible d’actualiser.",
   "sample_detail_title": "Détail",
+  "sample_related": "Similaires",
   "sample_title": "Exemples",
   "sample_search_titles": "Rechercher un titre",
-  "sample_showing_cached": "Données enregistrées affichées. Tirez vers le bas pour actualiser.",
   "sample_empty_explanation": "Quand il y aura quelque chose à afficher, cela apparaîtra sur cet écran."
 }

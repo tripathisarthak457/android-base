@@ -1,9 +1,8 @@
 package com.base.app.core.network
 
-import com.base.app.core.common.AppResult
-import com.base.app.core.coroutines.ApplicationScope
+import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.network.model.NetworkResponse
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -22,7 +21,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class InFlightRequests @Inject constructor(
-    @ApplicationScope private val scope: CoroutineScope,
+    private val scope: ApplicationScope,
 ) {
     private val mutex = Mutex()
     private val running = mutableMapOf<String, Deferred<AppResult<NetworkResponse>>>()

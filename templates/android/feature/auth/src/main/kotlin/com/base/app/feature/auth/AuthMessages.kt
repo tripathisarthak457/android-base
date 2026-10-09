@@ -1,19 +1,32 @@
 package com.base.app.feature.auth
 
 import androidx.annotation.StringRes
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.util.UiText
-import com.base.app.core.common.userMessage
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.validation.Validator
+import com.base.app.core.mvi.UiText
+import com.base.app.core.ui.form.toUiText
+import com.base.app.core.ui.toUiText
 
 /**
  * What to tell the person after a failed auth request. The two failures a form actually produces
  * get sentences they can act on; anything else shows the server's message, or [fallback].
  */
-internal fun AppResult.Failure.authMessage(@StringRes fallback: Int): UiText = when (code) {
-    HTTP_UNAUTHORIZED -> UiText.of(R.string.auth_wrong_credentials)
-    HTTP_TOO_MANY_REQUESTS -> UiText.of(R.string.auth_too_many_attempts)
-    else -> userMessage(UiText.of(fallback))
+internal fun AppError.authMessage(@StringRes fallback: Int): UiText = when {
+    this is AppError.Http && status == HTTP_UNAUTHORIZED -> UiText.of(R.string.auth_wrong_credentials)
+    this is AppError.Http && status == HTTP_TOO_MANY_REQUESTS -> UiText.of(R.string.auth_too_many_attempts)
+    else -> toUiText(UiText.of(fallback))
 }
+
+/** The server's message for [field] from a validation response, keyed by the name the request used. */
+internal fun AppError.fieldError(field: String): UiText? =
+    (this as? AppError.Http)?.fieldErrors?.get(field)?.firstOrNull { it.isNotBlank() }?.let(UiText::Dynamic)
+
+/**
+ * A field's message: nothing until the person has tried to submit once ([shown]), then whatever
+ * the rule says about the text as they correct it.
+ */
+internal fun Validator<CharSequence>.errorFor(text: CharSequence, shown: Boolean): UiText? =
+    if (shown) validate(text)?.toUiText() else null
 
 private const val HTTP_UNAUTHORIZED = 401
 private const val HTTP_TOO_MANY_REQUESTS = 429

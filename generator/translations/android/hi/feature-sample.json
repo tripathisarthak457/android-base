@@ -6,8 +6,8 @@
   "sample_reload": "फिर से लोड करें",
   "sample_refresh_failed": "रीफ़्रेश नहीं हो सका।",
   "sample_detail_title": "विवरण",
+  "sample_related": "संबंधित",
   "sample_title": "उदाहरण",
   "sample_search_titles": "शीर्षक खोजें",
-  "sample_showing_cached": "सेव किया गया डेटा दिख रहा है। रीफ़्रेश करने के लिए नीचे खींचें।",
   "sample_empty_explanation": "दिखाने के लिए कुछ होने पर वह इस स्क्रीन पर दिखेगा।"
 }

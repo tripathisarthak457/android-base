@@ -10,7 +10,6 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:coroutines"))
     implementation(project(":core:datastore"))
 
     implementation(libs.androidx.core.ktx)

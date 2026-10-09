@@ -5,10 +5,10 @@ import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
-import com.base.app.feature.search.SearchKey
-import com.base.app.feature.search.SearchResultKey
 import com.base.app.feature.search.SearchResultRoute
 import com.base.app.feature.search.SearchRoute
+import com.base.app.feature.search.api.SearchKey
+import com.base.app.feature.search.api.SearchResultKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +18,7 @@ import kotlinx.serialization.modules.SerializersModule
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SearchNavModule {
+internal object SearchNavModule {
 
     @Provides
     @IntoSet

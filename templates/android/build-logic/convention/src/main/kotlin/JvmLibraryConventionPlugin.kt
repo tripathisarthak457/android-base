@@ -1,6 +1,7 @@
 import com.base.app.buildlogic.AppConfig
 import com.base.app.buildlogic.libs
 import com.base.app.buildlogic.library
+import com.base.app.buildlogic.verifyApiPurity
 import com.base.app.buildlogic.verifyModuleDependencies
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -33,5 +34,6 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
         }
 
         verifyModuleDependencies()
+        verifyApiPurity()
     }
 }

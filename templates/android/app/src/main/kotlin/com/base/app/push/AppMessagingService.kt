@@ -1,15 +1,14 @@
 package com.base.app.push
 
 import com.base.app.R
-import com.base.app.core.common.util.AppLogger
-import com.base.app.core.coroutines.ApplicationScope
+import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.common.log.Log
 import com.base.app.core.notification.AppNotifications
 import com.base.app.core.notification.NotificationChannelSpec
 import com.base.app.core.notification.PushTokenRegistrar
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
@@ -25,8 +24,7 @@ class AppMessagingService : FirebaseMessagingService() {
     lateinit var tokenRegistrar: PushTokenRegistrar
 
     @Inject
-    @ApplicationScope
-    lateinit var scope: CoroutineScope
+    lateinit var scope: ApplicationScope
 
     override fun onRegistered(installationId: String) {
         super.onRegistered(installationId)
@@ -47,7 +45,7 @@ class AppMessagingService : FirebaseMessagingService() {
             else -> NotificationChannelSpec.Default
         }
 
-        AppLogger.d("Push received on ${channel.id}", tag = "Push")
+        Log.d("Push received on ${channel.id}", tag = "Push")
 
         notifications.post(
             // A random id so pushes do not replace each other. Use a stable id when one should

@@ -8,33 +8,33 @@ import kotlinx.serialization.Serializable
  * are the backend's field names on the backend's schedule.
  */
 @Serializable
-data class TokenResponseDto(
+internal data class TokenResponseDto(
     @SerialName("access_token") val accessToken: String,
     @SerialName("refresh_token") val refreshToken: String,
     @SerialName("expires_in") val expiresIn: Long? = null,
 )
 
 @Serializable
-data class SignInRequestDto(
+internal data class SignInRequestDto(
     val email: String,
     val password: String,
 )
 
 @Serializable
-data class SignUpRequestDto(
+internal data class SignUpRequestDto(
     val name: String,
     val email: String,
     val password: String,
 )
 
 @Serializable
-data class EmailRequestDto(
+internal data class EmailRequestDto(
     val email: String,
 )
 // <opt:googlesignin>
 
 @Serializable
-data class GoogleSignInRequestDto(
+internal data class GoogleSignInRequestDto(
     @SerialName("id_token") val idToken: String,
 )
 // </opt:googlesignin>

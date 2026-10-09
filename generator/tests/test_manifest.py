@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import tempfile
 import unittest
 from pathlib import Path
 
+from genkit.core.copy import SKIP_DIRS, is_under
 from genkit.core.manifest import LegacyKey, TemplateManifest
 from genkit.core.markers import TemplateError
 from genkit.targets import REGISTRY
@@ -64,6 +66,42 @@ class RealManifestTest(unittest.TestCase):
                 with self.subTest(feature=feature.key):
                     self.assertNotEqual(feature.title, feature.headline)
                     self.assertTrue(feature.description)
+
+
+class OrphanedTestTest(unittest.TestCase):
+    """
+    A feature that removes a package has to take that package's tests with it. The template
+    compiles with every feature on, so a test left behind only fails `./gradlew build` in a
+    generated project, which nothing here compiles.
+    """
+
+    def test_no_test_outlives_the_main_source_it_tests(self):
+        for target in REGISTRY.values():
+            manifest, template = target.manifest, target.template_dir
+            tests = []
+            for directory, subdirectories, filenames in os.walk(template):
+                subdirectories[:] = [name for name in subdirectories if name not in SKIP_DIRS]
+                for filename in filenames:
+                    parts = Path(directory, filename).relative_to(template).parts
+                    if not filename.endswith(".kt") or "src" not in parts:
+                        continue
+                    source_set = parts.index("src") + 1
+                    if parts[source_set] != "main" and parts[source_set + 1] == "kotlin":
+                        main = Path(*parts[:source_set], "main", *parts[source_set + 1 :])
+                        tests.append((Path(*parts).as_posix(), main))
+            self.assertTrue(tests, f"no test sources found under {template}")
+
+            for key in manifest.features:
+                # Switching one feature off also switches off everything that requires it.
+                enabled = frozenset(other for other in manifest.features if key not in manifest.resolve({other}))
+                owned = manifest.owned_paths(enabled)
+                for test, main in tests:
+                    if is_under(test, owned):
+                        continue
+                    tested = (main.parent, main.with_name(main.name.removesuffix("Test.kt") + ".kt"))
+                    removed = [path.as_posix() for path in tested if (template / path).exists() and is_under(path.as_posix(), owned)]
+                    with self.subTest(target=target.key, feature=key, test=test):
+                        self.assertEqual([], removed, f"'{key}' removes what this test compiles against")
 
 
 class UpgradeKeysTest(unittest.TestCase):
