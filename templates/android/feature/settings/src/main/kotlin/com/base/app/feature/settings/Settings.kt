@@ -19,10 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
 import com.base.app.core.common.session.SessionController
 import com.base.app.core.datastore.AppSettings
 import com.base.app.core.datastore.AppSettingsStore
@@ -41,11 +37,16 @@ import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
+// <opt:licenses>
+import com.base.app.feature.settings.api.LicensesKey
+// </opt:licenses>
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 // <opt:language>
 import androidx.compose.ui.platform.LocalContext
@@ -58,7 +59,7 @@ import com.base.app.core.ui.browser.rememberInAppBrowser
 // </opt:browser>
 
 @Immutable
-data class SettingsState(
+internal data class SettingsState(
     val settings: AppSettings = AppSettings(),
     val appVersion: String = "",
     // <opt:language>
@@ -75,7 +76,7 @@ data class SettingsState(
         }
 }
 
-sealed interface SettingsEvent : UiEvent {
+internal sealed interface SettingsEvent : UiEvent {
     data class ThemeSelected(val index: Int) : SettingsEvent
     data class AnalyticsToggled(val enabled: Boolean) : SettingsEvent
     data class HapticsToggled(val enabled: Boolean) : SettingsEvent
@@ -97,7 +98,7 @@ sealed interface SettingsEvent : UiEvent {
     data object BackClicked : SettingsEvent
 }
 
-sealed interface SettingsEffect : UiEffect {
+internal sealed interface SettingsEffect : UiEffect {
     data object NavigateBack : SettingsEffect
 
     // <opt:language>
@@ -111,72 +112,76 @@ sealed interface SettingsEffect : UiEffect {
 
 /** Settings, reading and writing the store the rest of the app already uses. */
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+internal class SettingsViewModel @Inject constructor(
     private val settingsStore: AppSettingsStore,
     private val sessionController: SessionController,
 ) : MviViewModel<SettingsState, SettingsEvent, SettingsEffect>(SettingsState()) {
 
     init {
-        launchWork {
-            settingsStore.settings
-                .stateIn(this, SharingStarted.WhileSubscribed(SUBSCRIBE_TIMEOUT_MILLIS), AppSettings())
-                .collect { settings -> updateState { copy(settings = settings) } }
-        }
+        observe(settingsStore.settings) { copy(settings = it) }
     }
 
-    override suspend fun handleEvent(event: SettingsEvent) {
+    // Each write sets an absolute value, so a newer tap cancelling an older write loses nothing.
+    override fun handleEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.ThemeSelected -> settingsStore.setThemeMode(
-                when (event.index) {
-                    1 -> AppSettings.THEME_LIGHT
-                    2 -> AppSettings.THEME_DARK
-                    else -> AppSettings.THEME_SYSTEM
-                },
-            )
+            is SettingsEvent.ThemeSelected -> launchLatest(THEME) {
+                settingsStore.setThemeMode(
+                    when (event.index) {
+                        1 -> AppSettings.THEME_LIGHT
+                        2 -> AppSettings.THEME_DARK
+                        else -> AppSettings.THEME_SYSTEM
+                    },
+                )
+            }
 
-            is SettingsEvent.AnalyticsToggled -> settingsStore.setAnalyticsEnabled(event.enabled)
+            is SettingsEvent.AnalyticsToggled -> launchLatest(ANALYTICS) { settingsStore.setAnalyticsEnabled(event.enabled) }
 
-            is SettingsEvent.HapticsToggled -> settingsStore.setHapticsEnabled(event.enabled)
+            is SettingsEvent.HapticsToggled -> launchLatest(HAPTICS) { settingsStore.setHapticsEnabled(event.enabled) }
 
             // <opt:applock>
-            is SettingsEvent.AppLockToggled -> settingsStore.setAppLockEnabled(event.enabled)
+            is SettingsEvent.AppLockToggled -> launchLatest(APP_LOCK) { settingsStore.setAppLockEnabled(event.enabled) }
             // </opt:applock>
 
             SettingsEvent.SignOutConfirmed -> sessionController.signOut()
 
             // <opt:language>
             is SettingsEvent.LanguagePicked -> {
-                updateState { copy(languageTag = event.tag) }
-                emitEffect(SettingsEffect.ApplyLanguage(event.tag))
+                setState { copy(languageTag = event.tag) }
+                emit(SettingsEffect.ApplyLanguage(event.tag))
             }
             // </opt:language>
 
             // <opt:licenses>
-            SettingsEvent.LicensesClicked -> emitEffect(SettingsEffect.OpenLicenses)
+            SettingsEvent.LicensesClicked -> emit(SettingsEffect.OpenLicenses)
             // </opt:licenses>
 
-            SettingsEvent.BackClicked -> emitEffect(SettingsEffect.NavigateBack)
+            SettingsEvent.BackClicked -> emit(SettingsEffect.NavigateBack)
         }
     }
 
     fun setAppVersion(version: String) {
-        updateState { copy(appVersion = version) }
+        setState { copy(appVersion = version) }
     }
     // <opt:language>
 
     /** The language lives in the platform rather than the store, so the route reads it. */
     fun setLanguage(tag: String?) {
-        updateState { copy(languageTag = tag) }
+        setState { copy(languageTag = tag) }
     }
     // </opt:language>
 
     private companion object {
-        const val SUBSCRIBE_TIMEOUT_MILLIS = 5_000L
+        const val THEME = "theme"
+        const val ANALYTICS = "analytics"
+        const val HAPTICS = "haptics"
+        // <opt:applock>
+        const val APP_LOCK = "appLock"
+        // </opt:applock>
     }
 }
 
 @Composable
-fun SettingsRoute(
+internal fun SettingsRoute(
     navigator: AppNavigator,
     appVersion: String,
     viewModel: SettingsViewModel = hiltViewModel(),
@@ -206,7 +211,7 @@ fun SettingsRoute(
 }
 
 @Composable
-fun SettingsScreen(
+internal fun SettingsScreen(
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier,

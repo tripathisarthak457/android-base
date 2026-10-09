@@ -1,0 +1,15 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Lean",
+  "package_name": "com.example.lean",
+  "architecture": "compact",
+  "features": [
+    "catalog",
+    "leakcanary",
+    "network",
+    "sample"
+  ],
+  "feature_modules": [],
+  "languages": []
+}

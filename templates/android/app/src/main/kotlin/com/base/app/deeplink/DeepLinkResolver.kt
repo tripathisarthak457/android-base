@@ -1,12 +1,12 @@
 package com.base.app.deeplink
 
 import android.net.Uri
-import com.base.app.core.navigation.AppNavKey
+import com.base.app.core.common.navigation.AppNavKey
 import javax.inject.Inject
 import javax.inject.Singleton
 // <opt:sample>
-import com.base.app.feature.sample.SampleDetailKey
-import com.base.app.feature.sample.SampleListKey
+import com.base.app.feature.sample.api.SampleDetailKey
+import com.base.app.feature.sample.api.SampleListKey
 // </opt:sample>
 
 /**

@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "None",
+  "package_name": "com.example.none",
+  "architecture": "compact",
+  "features": [],
+  "feature_modules": [],
+  "languages": []
+}

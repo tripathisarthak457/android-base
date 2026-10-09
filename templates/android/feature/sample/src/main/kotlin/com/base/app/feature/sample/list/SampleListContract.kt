@@ -1,38 +1,30 @@
 package com.base.app.feature.sample.list
 
 import androidx.compose.runtime.Immutable
-import com.base.app.core.common.mvi.LoadState
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
-import com.base.app.data.sample.SampleItem
+import com.base.app.core.common.LoadState
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
+import com.base.app.data.sample.api.SampleItem
 
-/** Everything the list screen renders. */
+/**
+ * Everything the list screen renders. The search text is not here: it lives in the ViewModel's
+ * `query` field, and [visibleItems] is what the reducer derived from it.
+ */
 @Immutable
-data class SampleListState(
+internal data class SampleListState(
     val loadState: LoadState = LoadState.Idle,
     val items: List<SampleItem> = emptyList(),
-    val query: String = "",
-    val isFromCache: Boolean = false,
-) : UiState {
+    val visibleItems: List<SampleItem> = emptyList(),
+) : UiState
 
-    /** Filtering lives in the state, not in the composable. */
-    val visibleItems: List<SampleItem>
-        get() = if (query.isBlank()) {
-            items
-        } else {
-            items.filter { it.title.contains(query, ignoreCase = true) }
-        }
-}
-
-sealed interface SampleListEvent : UiEvent {
-    data object Load : SampleListEvent
+internal sealed interface SampleListEvent : UiEvent {
+    data object Appeared : SampleListEvent
     data object Refresh : SampleListEvent
     data object Retry : SampleListEvent
-    data class QueryChanged(val query: String) : SampleListEvent
     data class ItemClicked(val id: Int) : SampleListEvent
 }
 
-sealed interface SampleListEffect : UiEffect {
+internal sealed interface SampleListEffect : UiEffect {
     data class OpenDetail(val id: Int) : SampleListEffect
 }

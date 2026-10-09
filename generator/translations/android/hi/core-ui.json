@@ -1,0 +1,18 @@
+{
+  "common_error_generic": "कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।",
+  "validation_required": "यह ज़रूरी है।",
+  "validation_email": "सही ईमेल पता डालें।",
+  "validation_mismatch": "मेल नहीं खाता।",
+  "validation_password_letter": "कम से कम एक अक्षर शामिल करें।",
+  "validation_password_digit": "कम से कम एक अंक शामिल करें।",
+  "validation_min_length": {
+    "one": "कम से कम %1$d वर्ण होना चाहिए।",
+    "other": "कम से कम %1$d वर्ण होने चाहिए।"
+  },
+  "validation_password_length": {
+    "one": "कम से कम %1$d वर्ण इस्तेमाल करें।",
+    "other": "कम से कम %1$d वर्ण इस्तेमाल करें।"
+  },
+  "common_error_offline": "आप ऑफ़लाइन हैं। अपना कनेक्शन जांचें और फिर से कोशिश करें।",
+  "common_error_unreachable": "सर्वर से कनेक्ट नहीं हो सका। थोड़ी देर में फिर से कोशिश करें।"
+}

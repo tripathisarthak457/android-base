@@ -8,15 +8,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.mvi.LoadState
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.designsystem.animation.AppAppear
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppErrorState
@@ -24,30 +22,35 @@ import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
-import com.base.app.core.ui.asString
-import com.base.app.data.search.SearchRepository
-import com.base.app.data.search.SearchResult
+import com.base.app.core.ui.text
+import com.base.app.data.search.api.SearchRepository
+import com.base.app.data.search.api.SearchResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Immutable
-data class SearchResultState(
-    val loadState: LoadState = LoadState.Loading,
+internal data class SearchResultState(
+    val loadState: LoadState = LoadState.Idle,
     val result: SearchResult? = null,
 ) : UiState
 
-sealed interface SearchResultEvent : UiEvent {
+internal sealed interface SearchResultEvent : UiEvent {
+    data object Appeared : SearchResultEvent
     data object Retry : SearchResultEvent
 }
 
-sealed interface SearchResultEffect : UiEffect
+internal sealed interface SearchResultEffect : UiEffect
 
 @HiltViewModel(assistedFactory = SearchResultViewModel.Factory::class)
-class SearchResultViewModel @AssistedInject constructor(
+internal class SearchResultViewModel @AssistedInject constructor(
     private val repository: SearchRepository,
     @Assisted private val id: Int,
 ) : MviViewModel<SearchResultState, SearchResultEvent, SearchResultEffect>(SearchResultState()) {
@@ -57,31 +60,38 @@ class SearchResultViewModel @AssistedInject constructor(
         fun create(id: Int): SearchResultViewModel
     }
 
-    init {
-        onEvent(SearchResultEvent.Retry)
+    override fun handleEvent(event: SearchResultEvent) {
+        when (event) {
+            SearchResultEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
+            SearchResultEvent.Retry -> load()
+        }
     }
 
-    override suspend fun handleEvent(event: SearchResultEvent) {
-        when (event) {
-            SearchResultEvent.Retry -> {
-                updateState { copy(loadState = LoadState.Loading) }
-                when (val result = repository.result(id)) {
-                    is AppResult.Success -> updateState { copy(loadState = LoadState.Success, result = result.data) }
-                    is AppResult.Failure -> updateState { copy(loadState = result.toLoadState()) }
-                }
+    private fun load() {
+        launchLatest(LOAD) {
+            setState { copy(loadState = LoadState.Loading) }
+            when (val result = repository.result(id)) {
+                is AppResult.Success -> setState { copy(loadState = LoadState.Success, result = result.value) }
+                is AppResult.Failure -> setState { copy(loadState = LoadState.Error(result.error)) }
             }
         }
+    }
+
+    private companion object {
+        const val LOAD = "load"
     }
 }
 
 @Composable
-fun SearchResultRoute(
+internal fun SearchResultRoute(
     id: Int,
     navigator: AppNavigator,
     viewModel: SearchResultViewModel = hiltViewModel<SearchResultViewModel, SearchResultViewModel.Factory>(
         creationCallback = { factory -> factory.create(id) },
     ),
 ) {
+    LaunchedEffect(Unit) { viewModel.onEvent(SearchResultEvent.Appeared) }
+
     MviScreen(viewModel = viewModel) { state, onEvent ->
         AppScaffold(
             contentMaxWidth = AppTheme.layout.readableMaxWidth,
@@ -91,8 +101,8 @@ fun SearchResultRoute(
         ) {
             when (val loadState = state.loadState) {
                 is LoadState.Error -> AppErrorState(
-                    message = loadState.message.asString(),
-                    isOffline = loadState.isOffline,
+                    message = loadState.error.text(),
+                    isOffline = loadState.error == AppError.Offline,
                     onRetry = { onEvent(SearchResultEvent.Retry) },
                     retryLabel = stringResource(R.string.search_retry),
                 )

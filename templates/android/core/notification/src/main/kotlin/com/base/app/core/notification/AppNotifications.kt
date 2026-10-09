@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import com.base.app.core.common.util.AppLogger
+import com.base.app.core.common.log.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -88,7 +88,7 @@ class AppNotifications @Inject constructor(
         autoCancel: Boolean = true,
     ) {
         if (!hasPermission) {
-            AppLogger.w("Notification suppressed: POST_NOTIFICATIONS not granted.", tag = TAG)
+            Log.w("Notification suppressed: POST_NOTIFICATIONS not granted.", tag = TAG)
             return
         }
 
@@ -118,7 +118,7 @@ class AppNotifications @Inject constructor(
         // `checkSelfPermission`, so lint cannot follow it.
         @SuppressLint("MissingPermission")
         val posted = runCatching { manager.notify(id, builder.build()) }
-        posted.onFailure { AppLogger.e("Failed to post notification $id", it, TAG) }
+        posted.onFailure { Log.e("Failed to post notification $id", it, TAG) }
     }
 
     fun cancel(id: Int) = manager.cancel(id)

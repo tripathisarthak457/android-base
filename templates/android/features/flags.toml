@@ -1,0 +1,13 @@
+key = "flags"
+title = "Feature flag seam"
+headline = "Turn a feature on without shipping"
+description = """
+Typed flags declared in one file with their defaults beside them, read through an interface that
+resolves locally until a vendor is bound. Lets both sides of a flag be written before anybody has
+chosen one."""
+group = "Observability"
+default = true
+requires = []
+implied_only = false
+owns = ["core/flags"]
+legacy = []

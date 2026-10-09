@@ -13,13 +13,13 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
+    implementation(libs.androidx.core.ktx)
 
     // <opt:devtools>
     // The recorder writes into the inspector's log. `implementation` rather than `api`, so
     // the design system this pulls in behind it stays out of this module's own API.
     implementation(project(":core:devtools"))
     // </opt:devtools>
-    implementation(project(":core:coroutines"))
     api(project(":core:datastore"))
 
     api(libs.ktor.client.core)

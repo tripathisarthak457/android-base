@@ -1,0 +1,12 @@
+key = "playstore"
+title = "Play in-app update and review prompts"
+headline = "Offer updates and ask for ratings"
+description = """
+A flexible update offered in the background when a newer build is live, and a rating prompt on a
+schedule Play will actually honour rather than silently drop."""
+group = "Platform"
+default = false
+requires = []
+implied_only = false
+owns = ["app/src/main/kotlin/{pkg_path}/playstore"]
+legacy = []

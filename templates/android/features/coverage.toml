@@ -1,0 +1,12 @@
+key = "coverage"
+title = "Coverage floor (Kover)"
+headline = "Fail a build that drops coverage"
+description = """
+One merged coverage number for the whole project with a floor the build enforces, generated code
+excluded so the report is about code somebody wrote."""
+group = "Build and quality"
+default = false
+requires = []
+implied_only = false
+owns = []
+legacy = []

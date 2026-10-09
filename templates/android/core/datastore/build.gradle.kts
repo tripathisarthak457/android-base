@@ -10,7 +10,6 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:coroutines"))
 
     api(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.serialization.json)

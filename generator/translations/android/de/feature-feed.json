@@ -1,0 +1,12 @@
+{
+  "feed_title": "Feed",
+  "feed_subtitle": "Lädt beim Scrollen jeweils zehn",
+  "feed_author": "Autor %1$d",
+  "feed_empty_title": "Nichts anzuzeigen",
+  "feed_empty_message": "Sobald es etwas Neues gibt, erscheint es hier.",
+  "feed_load_failed": "Der Feed konnte nicht geladen werden.",
+  "feed_load_more_failed": "Weitere Einträge konnten nicht geladen werden.",
+  "feed_retry": "Wiederholen",
+  "feed_show_more": "Mehr anzeigen",
+  "feed_show_less": "Weniger anzeigen"
+}
