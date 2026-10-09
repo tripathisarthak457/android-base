@@ -21,6 +21,7 @@ internal fun testRegistry(screen: @Composable (AppNavKey) -> Unit = { Screen(it)
         navGraph {
             entry<FeedTab> { screen(it) }
             entry<Post> { screen(it) }
+            entry<Player> { screen(it) }
         },
         navGraph {
             entry<ProfileTab> { screen(it) }
@@ -42,6 +43,7 @@ internal val testSerialization = NavKeySerialization(
             subclass(ProfileTab::class, ProfileTab.serializer())
             subclass(Post::class, Post.serializer())
             subclass(Compose::class, Compose.serializer())
+            subclass(Player::class, Player.serializer())
         },
     ),
 )

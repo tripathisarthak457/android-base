@@ -23,8 +23,9 @@ import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.unit.LayoutDirection
 
 /**
- * How far a destination that hides the tab bar (`hideBarOnPush`) has slid over its tab's root:
- * 0 with the root on screen, 1 with the root covered. The bar reads it to travel with the root, as
+ * How far a destination that hides the tab bar (a `FullScreenKey`, or any push with `hideBarOnPush`)
+ * has slid over the screen beneath it, the last one that showed the bar: 0 with that screen in
+ * view, 1 with it covered. The bar reads it to travel with that screen, as
  * `hidesBottomBarWhenPushed` does on iOS, so it leaves and returns with the screen it belongs to,
  * follows a back swipe, and never animates on a clock of its own.
  *
@@ -51,23 +52,23 @@ class BarAnchor internal constructor() {
 }
 
 /**
- * Moves the bar with its tab's root (see [BarAnchor]): shifted by the root's parallax, clipped at
- * the covering screen's leading edge, and darkened by the same scrim the root gets. All of it in
- * the draw phase, so a push or pop recomposes nothing here. The scrim needs the bar's own pixels as
- * a mask (a floating capsule has transparent margins the root's scrim already darkens), so only
- * while the bar is partly covered is it drawn through a layer of its own size.
+ * Moves the bar with the screen it belongs to (see [BarAnchor]): shifted by that screen's parallax,
+ * clipped at the covering screen's leading edge, and darkened by the same scrim that screen gets.
+ * All of it in the draw phase, so a push or pop recomposes nothing here. The scrim needs the bar's
+ * own pixels as a mask (a floating capsule has transparent margins the screen's scrim already
+ * darkens), so only while the bar is partly covered is it drawn through a layer of its own size.
  */
-internal fun Modifier.followRoot(anchor: BarAnchor, parallax: Float, scrimAlpha: Float): Modifier =
-    this then FollowRootElement(anchor, parallax, scrimAlpha)
+internal fun Modifier.followCovered(anchor: BarAnchor, parallax: Float, scrimAlpha: Float): Modifier =
+    this then FollowCoveredElement(anchor, parallax, scrimAlpha)
 
-private data class FollowRootElement(
+private data class FollowCoveredElement(
     val anchor: BarAnchor,
     val parallax: Float,
     val scrimAlpha: Float,
-) : ModifierNodeElement<FollowRootNode>() {
-    override fun create() = FollowRootNode(anchor, parallax, scrimAlpha)
+) : ModifierNodeElement<FollowCoveredNode>() {
+    override fun create() = FollowCoveredNode(anchor, parallax, scrimAlpha)
 
-    override fun update(node: FollowRootNode) {
+    override fun update(node: FollowCoveredNode) {
         node.anchor = anchor
         node.parallax = parallax
         node.scrimAlpha = scrimAlpha
@@ -75,7 +76,7 @@ private data class FollowRootElement(
     }
 }
 
-private class FollowRootNode(
+private class FollowCoveredNode(
     var anchor: BarAnchor,
     var parallax: Float,
     var scrimAlpha: Float,

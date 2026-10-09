@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -48,6 +49,7 @@ import com.base.app.core.designsystem.component.navigation.rememberAppTabBarStat
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.LocalTabBarVisible
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.common.navigation.FullScreenKey
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.WindowWidth
 import kotlinx.coroutines.flow.first
@@ -56,7 +58,8 @@ import kotlinx.coroutines.flow.first
  * How the shell behaves, app-wide.
  *
  * @param hideBarOnPush every pushed screen hides the tab bar, which travels out with its tab's root
- *   and back with it (iOS `hidesBottomBarWhenPushed`). Off, the bar stays at every depth.
+ *   and back with it (iOS `hidesBottomBarWhenPushed`). Off, the bar stays at every depth except over
+ *   a [FullScreenKey] destination, which always hides it.
  * @param screenResponse overrides the screen spring's response, in seconds, to compare candidates
  *   on a device; null uses the theme's.
  */
@@ -113,7 +116,7 @@ fun AppShell(
 
     val motion = remember(config.screenResponse) { config.screenMotion() }
     val hidesBar = remember(config.hideBarOnPush, state) {
-        { key: AppNavKey -> config.hideBarOnPush && key !in state.rootKeys }
+        { key: AppNavKey -> key is FullScreenKey || (config.hideBarOnPush && key !in state.rootKeys) }
     }
     val wide = AppTheme.windowSize.width >= WindowWidth.Medium
     val barState = rememberAppTabBarState()
@@ -220,7 +223,7 @@ private fun ShellBar(
             modifier
         } else {
             modifier
-                .followRoot(state.anchors[state.selectedIndex], parallax, coverScrimAlpha(AppTheme.colors.isLight))
+                .followCovered(state.anchors[state.selectedIndex], parallax, coverScrimAlpha(AppTheme.colors.isLight))
                 .hideUnderKeyboard()
                 .then(if (covered) Parked else Modifier)
         },
@@ -273,6 +276,10 @@ private fun BottomChromeWriter(state: ShellState, barState: AppTabBarState, wide
     val chrome = LocalBottomChrome.current
     val density = LocalDensity.current
     val keyboard = WindowInsets.imeAnimationTarget
+    // The holder is the window's: once the shell is gone (signed out), nothing covers the bottom edge.
+    DisposableEffect(chrome) {
+        onDispose { chrome.value = 0.dp }
+    }
     LaunchedEffect(state, barState, wide, chrome, density) {
         snapshotFlow {
             if (state.moving) {

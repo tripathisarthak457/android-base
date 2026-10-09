@@ -128,6 +128,21 @@ class ChromeLayeringTest {
     }
 
     @Test
+    fun `a full-screen destination hides the bar, even over a pushed screen, and Back brings it back`() {
+        val state = shell(stacks = listOf(listOf(FeedTab, Post(1)), listOf(ProfileTab)))
+        showShell(state)
+        rule.onNodeWithTag("tab_0").assertExists()
+
+        rule.runOnIdle { state.submit(NavCommand.Navigate(Player)) }
+        rule.waitForIdle()
+        rule.onNodeWithTag("tab_0").assertDoesNotExist()
+
+        rule.runOnUiThread { rule.activity.onBackPressedDispatcher.onBackPressed() }
+        rule.waitForIdle()
+        rule.onNodeWithTag("tab_0").assertExists()
+    }
+
+    @Test
     fun `what covers the bottom edge, in order`() {
         assertEquals(40.dp, bottomChrome(presented = 40.dp, keyboard = 300.dp, screenBar = 72.dp, bar = 96.dp))
         assertEquals(300.dp, bottomChrome(presented = null, keyboard = 300.dp, screenBar = 72.dp, bar = 96.dp))

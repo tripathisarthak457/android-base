@@ -103,7 +103,7 @@ internal class KeepUnderScene(
     override fun toString(): String = "KeepUnderScene(top=${top.contentKey}, under=${under?.contentKey})"
 }
 
-/** A scene whose top hides the tab bar over its tab's root: the bar follows the root out and back. */
+/** A scene whose top hides the tab bar over a screen that shows it: the bar follows that screen out and back. */
 internal data class BarFollow(val anchor: BarAnchor, val coveringKey: AppNavKey, val stack: AppBackStack) {
     fun stillCovering(): Boolean = stack.contains(coveringKey)
 }
@@ -116,10 +116,12 @@ internal class KeepUnderSceneStrategy(
 
     override fun SceneStrategyScope<AppNavKey>.calculateScene(entries: List<NavEntry<AppNavKey>>): Scene<AppNavKey> {
         val top = entries.last()
-        val coveringKey = top.navKey.takeIf { entries.size == 2 && top.hidesBar }
+        val under = entries.getOrNull(entries.lastIndex - 1)
+        // The bar leaves with the last screen that showed it; pushed deeper, it is already gone.
+        val coveringKey = top.navKey.takeIf { top.hidesBar && under != null && !under.hidesBar }
         return KeepUnderScene(
             top = top,
-            under = entries.getOrNull(entries.lastIndex - 1),
+            under = under,
             previousEntries = entries.dropLast(1),
             motion = motion,
             gate = stack.gate,
