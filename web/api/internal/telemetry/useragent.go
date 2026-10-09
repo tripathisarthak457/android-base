@@ -22,11 +22,7 @@ const (
 	DeviceUnknown = "unknown"
 )
 
-var (
-	Browsers      = []string{"chrome", "safari", "firefox", "edge", "opera", "samsung", "other"}
-	OSFamilies    = []string{"android", "ios", "windows", "macos", "chromeos", "linux", "other"}
-	DeviceClasses = []string{DeviceMobile, DeviceTablet, DeviceDesktop, DeviceUnknown}
-)
+var DeviceClasses = []string{DeviceMobile, DeviceTablet, DeviceDesktop, DeviceUnknown}
 
 // botPattern matches crawlers, link unfurlers, uptime monitors and headless browsers. curl, wget and
 // HTTP libraries are not bots: they are how people script the generator, which is the cli client.

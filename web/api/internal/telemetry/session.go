@@ -58,10 +58,6 @@ type Session struct {
 	Client   Client
 }
 
-// SessionHeaders lists the headers the generate route reads and strips before running the
-// generator. The child process only ever sees the spec on stdin.
-var SessionHeaders = []string{"X-Session-Id", "X-Config-Ms", "X-Client"}
-
 // ReadSession reads the session headers and classifies the client.
 func ReadSession(h http.Header) Session {
 	return Session{
