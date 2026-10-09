@@ -1,0 +1,18 @@
+{
+  "common_error_generic": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
+  "validation_required": "Pflichtfeld.",
+  "validation_email": "Gib eine gültige E-Mail-Adresse ein.",
+  "validation_mismatch": "Stimmt nicht überein.",
+  "validation_password_letter": "Verwende mindestens einen Buchstaben.",
+  "validation_password_digit": "Verwende mindestens eine Zahl.",
+  "validation_min_length": {
+    "one": "Mindestens %1$d Zeichen.",
+    "other": "Mindestens %1$d Zeichen."
+  },
+  "validation_password_length": {
+    "one": "Verwende mindestens %1$d Zeichen.",
+    "other": "Verwende mindestens %1$d Zeichen."
+  },
+  "common_error_offline": "Du bist offline. Prüfe deine Verbindung und versuche es noch einmal.",
+  "common_error_unreachable": "Der Server ist nicht erreichbar. Versuche es gleich noch einmal."
+}

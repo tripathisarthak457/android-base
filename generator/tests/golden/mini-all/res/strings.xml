@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TrailNotes</string>
+    <string name="screen_title">Screens</string>
+<string name="endpoint">https://trailnotes.example.com</string>
+</resources>

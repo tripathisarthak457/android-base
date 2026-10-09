@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Remove a feature module from a project, and undo the three edits that added it.
+Remove a feature module from an Android project, and undo the three edits that added it.
 
     py remove_feature.py orders                    # in the current project
     py remove_feature.py orders profile            # two at once
@@ -15,9 +15,9 @@ import shutil
 import sys
 from pathlib import Path
 
-from add_feature import inspect_project
-from genkit import prompts, scaffold
-from genkit.spec import RESERVED_MODULE_NAMES, SpecError, validate_module_name
+from add_feature import find_package_name, normalise
+from genkit.core import prompts
+from genkit.core.spec import SpecError, pascal_case
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -47,7 +47,7 @@ def main(argv: list[str] | None = None) -> int:
     project = args.project.expanduser().resolve()
 
     try:
-        spec = inspect_project(project)
+        package_name = find_package_name(project)
         names = tuple(normalise(name) for name in args.names)
     except SpecError as error:
         print(prompts.red(str(error)))
@@ -66,15 +66,15 @@ def main(argv: list[str] | None = None) -> int:
         print(prompts.dim("  Nothing was changed. Check the name, or the --project path."))
         return 1
 
-    report_plan(project, names, present)
+    report_plan(project, present)
 
     if args.dry_run:
         print(prompts.dim("  Nothing was deleted. Drop --dry-run to do it."))
         print()
         return 0
 
-    # Source files, not build output. Asked once, listing everything, rather than per module —
-    # answering the same question four times is how somebody stops reading it.
+    # Asked once, listing everything, rather than per module: answering the same question four
+    # times is how somebody stops reading it.
     if not args.yes and not prompts.ask_yes_no("\nDelete these permanently?", False):
         print("Cancelled.")
         return 0
@@ -84,26 +84,10 @@ def main(argv: list[str] | None = None) -> int:
 
     unregister_modules(project, names)
     unregister_dependencies(project, names)
-    unregister_tabs(project, spec.package_name, names)
+    unregister_tabs(project, package_name, names)
 
     report_done(names)
     return 0
-
-
-def normalise(name: str) -> str:
-    cleaned = name.strip().lower().replace("-", "_").replace(" ", "_")
-    validate_module_name(cleaned)
-    if cleaned in RESERVED_MODULE_NAMES:
-        # Unreachable via validate_module_name, which rejects these first. Kept as the place the
-        # rule is explained, because the reason it is a rule is not the same reason it cannot be
-        # scaffolded — see the module docstring.
-        raise SpecError(f"'{cleaned}' is part of the template, not a scaffolded module.")
-    return cleaned
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Undoing the three edits
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def unregister_modules(project: Path, names: tuple[str, ...]) -> None:
@@ -121,13 +105,13 @@ def unregister_dependencies(project: Path, names: tuple[str, ...]) -> None:
 
 
 def unregister_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> None:
-    """Takes each module's tab and its import back out of `AppDestinations`."""
+    """Takes each module's tab and its imports back out of `AppDestinations`."""
     path = project / "app/src/main/kotlin" / package_name.replace(".", "/") / "ui/AppDestinations.kt"
     if not path.is_file():
         print(prompts.yellow(f"  ! No AppDestinations.kt at {path}; check the tabs by hand."))
         return
 
-    keys = {f"{scaffold.pascal(name)}ListKey" for name in names}
+    keys = {f"{pascal_case(name)}ListKey" for name in names}
     imports = {f"import {package_name}.feature.{name}." for name in names}
 
     def is_ours(line: str) -> bool:
@@ -149,12 +133,7 @@ def _drop_lines(path: Path, matches) -> None:
         path.write_text("".join(kept), encoding="utf-8")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Output
-# ─────────────────────────────────────────────────────────────────────────────
-
-
-def report_plan(project: Path, names: tuple[str, ...], present: list[Path]) -> None:
+def report_plan(project: Path, present: list[Path]) -> None:
     prompts.heading("Removing")
     for path in present:
         print(f"  {prompts.red('delete')}  {path.relative_to(project).as_posix()}/")

@@ -1,0 +1,12 @@
+{
+  "tab_home": "Accueil",
+  "tab_feed": "Fil",
+  "tab_search": "Recherche",
+  "tab_profile": "Profil",
+  "tab_settings": "Réglages",
+  "app_lock_title": "Déverrouillez pour continuer",
+  "app_lock_subtitle": "Utilisez votre empreinte, votre visage ou le verrouillage de l’écran.",
+  "app_lock_action": "Déverrouiller",
+  "widget_default_headline": "Touchez pour ouvrir",
+  "widget_description": "Votre app en un coup d’œil"
+}

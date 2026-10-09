@@ -1,0 +1,14 @@
+key = "websocket"
+title = "WebSocket"
+headline = "Keep a live connection open"
+description = """
+One long-lived socket with exponential backoff, a jittered retry and a connection state a UI can
+render."""
+group = "Networking and data"
+default = false
+requires = ["network"]
+implied_only = false
+owns = [
+  "core/network/src/main/kotlin/{pkg_path}/core/network/websocket",
+]
+legacy = []

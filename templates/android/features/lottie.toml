@@ -1,0 +1,16 @@
+key = "lottie"
+title = "Lottie animations"
+headline = "Play Lottie animations"
+description = """
+An AppLottie component for raw, asset and URL animations, tintable to the theme and held on its
+last frame when the system's animations are off, with a success animation that plays when a
+password-reset link is sent."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/AppLottie.kt",
+  "core/ui/src/main/res/raw/lottie_success.json",
+]
+legacy = []
