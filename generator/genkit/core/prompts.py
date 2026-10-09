@@ -14,7 +14,13 @@ from typing import Any, TextIO
 
 from .. import brand, tokens
 from ..targets.android import keystores
-from ..targets.android.target import API_LEVELS, DESUGARING_THRESHOLD, MIN_COMPILE_SDK, describe_api_level
+from ..targets.android.target import (
+    API_LEVELS,
+    DESUGARING_THRESHOLD,
+    MAX_VERSION_CODE,
+    MIN_COMPILE_SDK,
+    describe_api_level,
+)
 from . import translations
 from .catalogue import FONT_SUGGESTIONS
 from .spec import (
@@ -359,8 +365,11 @@ def ask_android(features: frozenset[str], app_name: str) -> dict[str, Any]:
         if min_sdk in API_LEVELS:
             break
         print(red(f"  {min_sdk} is not a level this template supports."))
-    target_sdk = ask_int("targetSdk", DEFAULT_TARGET_SDK, minimum=min_sdk)
-    compile_sdk = ask_int("compileSdk", max(DEFAULT_COMPILE_SDK, target_sdk), minimum=max(target_sdk, MIN_COMPILE_SDK))
+    newest = max(API_LEVELS)
+    target_sdk = ask_int("targetSdk", DEFAULT_TARGET_SDK, minimum=min_sdk, maximum=newest)
+    compile_sdk = ask_int(
+        "compileSdk", max(DEFAULT_COMPILE_SDK, target_sdk), minimum=max(target_sdk, MIN_COMPILE_SDK), maximum=newest
+    )
 
     heading("Version")
     print(dim("  dev and staging builds are stamped 1.0.0-devDebug and so on; prod and playstore"))
@@ -369,7 +378,7 @@ def ask_android(features: frozenset[str], app_name: str) -> dict[str, Any]:
     version_name = ask_valid(
         "versionName", _pattern_check(VERSION_NAME_PATTERN, "Like 1.0.0.", "android.version_name"), "1.0.0"
     )
-    version_code = ask_int("versionCode", 1, minimum=1)
+    version_code = ask_int("versionCode", 1, minimum=1, maximum=MAX_VERSION_CODE)
 
     settings: dict[str, Any] = {
         "min_sdk": min_sdk,
