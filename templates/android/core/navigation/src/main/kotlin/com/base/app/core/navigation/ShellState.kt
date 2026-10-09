@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.base.app.core.common.navigation.AppNavKey
 
 /**
  * One tab. [key] is the tab's root destination and doubles as its identity, so two tabs cannot

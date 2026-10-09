@@ -15,6 +15,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.LocalScreenBottomBar

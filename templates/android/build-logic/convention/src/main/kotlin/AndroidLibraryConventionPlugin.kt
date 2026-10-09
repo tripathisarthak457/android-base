@@ -5,6 +5,7 @@ import com.base.app.buildlogic.configureAndroidCommon
 import com.base.app.buildlogic.libs
 import com.base.app.buildlogic.library
 import com.base.app.buildlogic.registerComposeGuards
+import com.base.app.buildlogic.verifyApiPurity
 import com.base.app.buildlogic.verifyModuleDependencies
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -44,5 +45,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
         registerComposeGuards()
         verifyModuleDependencies()
+        verifyApiPurity()
     }
 }

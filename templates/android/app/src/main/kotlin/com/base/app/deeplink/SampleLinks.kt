@@ -2,8 +2,8 @@
 package com.base.app.deeplink
 
 import com.base.app.core.navigation.DeepLinkRoute
-import com.base.app.feature.sample.SampleDetailKey
-import com.base.app.feature.sample.SampleListKey
+import com.base.app.feature.sample.api.SampleDetailKey
+import com.base.app.feature.sample.api.SampleListKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

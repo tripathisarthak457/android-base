@@ -17,6 +17,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation3.scene.Scene
+import com.base.app.core.common.navigation.AppNavKey
 import kotlin.math.PI
 import kotlin.math.roundToInt
 

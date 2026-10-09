@@ -8,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import com.base.app.core.common.navigation.AppNavKey
 import kotlinx.coroutines.flow.drop
 
 /** Every opened tab's host, kept composed, with only the selected one measured and drawn. */

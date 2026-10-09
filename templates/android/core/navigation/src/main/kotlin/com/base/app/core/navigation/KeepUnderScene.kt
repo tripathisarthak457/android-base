@@ -16,6 +16,7 @@ import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.LocalTabVisible
 import kotlin.math.roundToInt
 

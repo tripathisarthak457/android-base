@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.theme.AppTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

@@ -11,10 +11,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

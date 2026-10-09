@@ -243,6 +243,7 @@ FEATURES: tuple[Feature, ...] = (
         default=True,
         files=(
             "core/common/src/main/kotlin/{pkg_path}/core/common/validation",
+            "core/common/src/test/kotlin/{pkg_path}/core/common/validation",
             "core/ui/src/main/kotlin/{pkg_path}/core/ui/form",
         ),
     ),

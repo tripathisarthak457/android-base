@@ -47,6 +47,7 @@ import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.designsystem.component.navigation.rememberAppTabBarState
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.LocalTabBarVisible
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.WindowWidth
 import kotlinx.coroutines.flow.first

@@ -21,6 +21,7 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.datastore.AppSettings
 // <opt:devtools>
 import com.base.app.core.devtools.DevEnvironment
@@ -29,7 +30,6 @@ import com.base.app.core.devtools.DevToolsLog
 // </opt:devtools>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
-import com.base.app.core.navigation.AppNavKey
 import com.base.app.core.navigation.AppNavigationHost
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell

@@ -1,5 +1,6 @@
 package com.base.app.core.navigation
 
+import com.base.app.core.common.navigation.AppNavKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

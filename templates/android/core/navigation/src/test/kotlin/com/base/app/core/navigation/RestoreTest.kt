@@ -3,6 +3,7 @@ package com.base.app.core.navigation
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.theme.AppTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotSame

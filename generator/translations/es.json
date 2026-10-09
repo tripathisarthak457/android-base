@@ -13,13 +13,10 @@
       "widget_default_headline": "Toca para abrir",
       "widget_description": "Tu app de un vistazo"
     },
-    "core/common/src/main/res": {
+    "core/ui/src/main/res": {
       "common_error_generic": "Algo salió mal. Inténtalo de nuevo.",
       "validation_required": "Este campo es obligatorio.",
       "validation_email": "Introduce un correo electrónico válido.",
-      "validation_phone": "Introduce un número de teléfono válido.",
-      "validation_number": "Introduce un número.",
-      "validation_range": "Debe estar entre %1$d y %2$d.",
       "validation_mismatch": "No coincide.",
       "validation_password_letter": "Incluye al menos una letra.",
       "validation_password_digit": "Incluye al menos un número.",
@@ -27,17 +24,12 @@
         "one": "Debe tener al menos %1$d carácter.",
         "other": "Debe tener al menos %1$d caracteres."
       },
-      "validation_max_length": {
-        "one": "Debe tener %1$d carácter como máximo.",
-        "other": "Debe tener %1$d caracteres como máximo."
-      },
       "validation_password_length": {
         "one": "Usa al menos %1$d carácter.",
         "other": "Usa al menos %1$d caracteres."
       },
       "common_error_offline": "Sin conexión. Revisa tu conexión e inténtalo de nuevo.",
-      "common_error_unreachable": "No se pudo conectar con el servidor. Inténtalo de nuevo en un momento.",
-      "common_error_queued": "Sin conexión. Se enviará en cuanto vuelvas a estar en línea."
+      "common_error_unreachable": "No se pudo conectar con el servidor. Inténtalo de nuevo en un momento."
     },
     "core/designsystem/src/main/res": {
       "designsystem_previous_month": "Mes anterior",
@@ -102,7 +94,6 @@
       "auth_welcome_back": "Hola de nuevo",
       "auth_continue_with_google": "Continuar con Google",
       "auth_or": "o",
-      "auth_google_not_configured": "El inicio de sesión con Google aún no está configurado. Añade el ID de cliente web en auth_google_server_client_id.",
       "auth_google_sign_in_failed": "No se pudo iniciar sesión con Google.",
       "auth_google_failed": "El inicio de sesión con Google no terminó. Inténtalo de nuevo o usa tu correo.",
       "auth_wrong_credentials": "Ese correo y esa contraseña no coinciden con ninguna cuenta.",
@@ -156,9 +147,9 @@
       "sample_reload": "Recargar",
       "sample_refresh_failed": "No se pudo actualizar.",
       "sample_detail_title": "Detalle",
+      "sample_related": "Relacionados",
       "sample_title": "Ejemplos",
       "sample_search_titles": "Buscar títulos",
-      "sample_showing_cached": "Mostrando datos guardados. Desliza hacia abajo para actualizar.",
       "sample_empty_explanation": "Cuando haya algo que mostrar, aparecerá en esta pantalla."
     },
     "feature/search/src/main/res": {

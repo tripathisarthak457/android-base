@@ -13,13 +13,10 @@
       "widget_default_headline": "Toque para abrir",
       "widget_description": "Seu app num relance"
     },
-    "core/common/src/main/res": {
+    "core/ui/src/main/res": {
       "common_error_generic": "Algo deu errado. Tente de novo.",
       "validation_required": "Campo obrigatório.",
       "validation_email": "Informe um e-mail válido.",
-      "validation_phone": "Informe um telefone válido.",
-      "validation_number": "Informe um número.",
-      "validation_range": "Deve ficar entre %1$d e %2$d.",
       "validation_mismatch": "Não confere.",
       "validation_password_letter": "Inclua pelo menos uma letra.",
       "validation_password_digit": "Inclua pelo menos um número.",
@@ -27,17 +24,12 @@
         "one": "Deve ter pelo menos %1$d caractere.",
         "other": "Deve ter pelo menos %1$d caracteres."
       },
-      "validation_max_length": {
-        "one": "Deve ter no máximo %1$d caractere.",
-        "other": "Deve ter no máximo %1$d caracteres."
-      },
       "validation_password_length": {
         "one": "Use pelo menos %1$d caractere.",
         "other": "Use pelo menos %1$d caracteres."
       },
       "common_error_offline": "Você está off-line. Verifique a conexão e tente de novo.",
-      "common_error_unreachable": "Não foi possível falar com o servidor. Tente de novo daqui a pouco.",
-      "common_error_queued": "Você está off-line. Isso será enviado assim que você voltar a ficar on-line."
+      "common_error_unreachable": "Não foi possível falar com o servidor. Tente de novo daqui a pouco."
     },
     "core/designsystem/src/main/res": {
       "designsystem_previous_month": "Mês anterior",
@@ -102,7 +94,6 @@
       "auth_welcome_back": "Que bom ver você de novo",
       "auth_continue_with_google": "Continuar com o Google",
       "auth_or": "ou",
-      "auth_google_not_configured": "O login com o Google ainda não foi configurado. Adicione o ID do cliente web em auth_google_server_client_id.",
       "auth_google_sign_in_failed": "Não foi possível entrar com o Google.",
       "auth_google_failed": "O login com o Google não foi concluído. Tente de novo ou use seu e-mail.",
       "auth_wrong_credentials": "Esse e-mail e essa senha não correspondem a nenhuma conta.",
@@ -156,9 +147,9 @@
       "sample_reload": "Recarregar",
       "sample_refresh_failed": "Não foi possível atualizar.",
       "sample_detail_title": "Detalhes",
+      "sample_related": "Relacionados",
       "sample_title": "Exemplos",
       "sample_search_titles": "Buscar títulos",
-      "sample_showing_cached": "Mostrando dados salvos. Puxe para baixo para atualizar.",
       "sample_empty_explanation": "Quando houver algo para mostrar, aparecerá nesta tela."
     },
     "feature/search/src/main/res": {

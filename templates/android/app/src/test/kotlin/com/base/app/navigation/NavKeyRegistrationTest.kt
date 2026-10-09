@@ -1,6 +1,6 @@
 package com.base.app.navigation
 
-import com.base.app.core.navigation.AppNavKey
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.ui.AppDestinations
 import java.io.File

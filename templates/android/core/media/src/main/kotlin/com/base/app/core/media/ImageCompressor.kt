@@ -6,11 +6,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import androidx.exifinterface.media.ExifInterface
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.util.AppLogger
-import com.base.app.core.coroutines.IoDispatcher
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.log.Log
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -57,13 +57,13 @@ data class CompressedImage(
 @Singleton
 class ImageCompressor @Inject constructor(
     @ApplicationContext private val context: Context,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val dispatchers: AppDispatchers,
 ) {
 
     suspend fun compress(
         uri: Uri,
         settings: ImageCompression = ImageCompression.Photo,
-    ): AppResult<CompressedImage> = withContext(ioDispatcher) {
+    ): AppResult<CompressedImage> = withContext(dispatchers.io) {
         runCatching {
             val originalSize = sizeOf(uri)
             val bounds = readBounds(uri)
@@ -88,8 +88,8 @@ class ImageCompressor @Inject constructor(
                 ),
             )
         }.getOrElse { throwable ->
-            AppLogger.e("Image compression failed", throwable, tag = TAG)
-            AppResult.Failure(cause = throwable)
+            Log.e("Image compression failed", throwable, tag = TAG)
+            AppResult.Failure(AppError.Storage(throwable))
         }
     }
 
@@ -99,13 +99,13 @@ class ImageCompressor @Inject constructor(
         settings: ImageCompression = ImageCompression.Photo,
         fileName: String = "upload_${System.currentTimeMillis()}",
     ): AppResult<File> = when (val result = compress(uri, settings)) {
-        is AppResult.Success -> withContext(ioDispatcher) {
+        is AppResult.Success -> withContext(dispatchers.io) {
             runCatching {
                 val file = File(context.cacheDir, "$fileName.${settings.format.extension}")
-                file.writeBytes(result.data.bytes)
+                file.writeBytes(result.value.bytes)
                 AppResult.Success(file)
             }.getOrElse {
-                AppResult.Failure(cause = it)
+                AppResult.Failure(AppError.Storage(it))
             }
         }
 
@@ -203,7 +203,7 @@ class ImageCompressor @Inject constructor(
         }
 
         if (bytes.size > budget) {
-            AppLogger.w(
+            Log.w(
                 "Image is ${bytes.size} bytes at quality $quality, over the $budget budget.",
                 tag = TAG,
             )

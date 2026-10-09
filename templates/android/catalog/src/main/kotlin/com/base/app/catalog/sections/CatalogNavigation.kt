@@ -40,7 +40,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
-import com.base.app.core.navigation.AppNavKey
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell
 import com.base.app.core.navigation.NavKeySerialization

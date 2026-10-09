@@ -7,7 +7,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import com.base.app.core.common.util.AppLogger
+import com.base.app.core.common.log.Log
+import com.base.app.core.common.navigation.AppNavKey
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 
@@ -120,12 +121,12 @@ private val stackSerializer = ListSerializer(PolymorphicSerializer(AppNavKey::cl
 
 internal fun NavKeySerialization.encodeStack(keys: List<AppNavKey>): String? =
     runCatching { json.encodeToString(stackSerializer, keys) }
-        .onFailure { AppLogger.e("Back stack not saved", it, NAV_LOG_TAG) }
+        .onFailure { Log.e("Back stack not saved", it, NAV_LOG_TAG) }
         .getOrNull()
 
 internal fun NavKeySerialization.decodeStack(encoded: String): List<AppNavKey>? =
     runCatching { json.decodeFromString(stackSerializer, encoded) }
-        .onFailure { AppLogger.e("Back stack not restored", it, NAV_LOG_TAG) }
+        .onFailure { Log.e("Back stack not restored", it, NAV_LOG_TAG) }
         .getOrNull()
 
 internal const val NAV_LOG_TAG = "Navigation"
