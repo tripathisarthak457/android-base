@@ -9,8 +9,11 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
@@ -112,11 +115,15 @@ class ChromeLayeringTest {
     fun `a screen that hides the bar reports its own bottom bar instead`() {
         val state = shell()
         showShell(state, ShellConfig(hideBarOnPush = true))
+        val profileTab = rule.onNodeWithTag("tab_1", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot.center
         rule.runOnIdle { state.submit(NavCommand.Navigate(Post(1))) }
         rule.waitForIdle()
 
         assertEquals(ACTION_BAR, bottomChrome.value)
-        rule.onNodeWithTag("tab_0", useUnmergedTree = true).assertDoesNotExist()
+        // Hidden, the bar is out of what accessibility reads and takes no touch where it was.
+        rule.onNodeWithTag("tab_0").assertDoesNotExist()
+        rule.onRoot().performTouchInput { click(profileTab) }
+        rule.runOnIdle { assertEquals(0, state.selectedIndex) }
     }
 
     @Test

@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -198,12 +199,12 @@ private fun ShellBar(
     val items = remember(tabs, labels) {
         tabs.mapIndexed { index, tab -> TabItem(labels[index], tab.icon, tab.selectedIcon, tab.badgeCount) }
     }
-    // Fully covered by a screen that hides it, the bar leaves composition: nothing to draw, touch or
-    // read out. It comes back with the root, in the frame the covering screen starts to leave.
+    // Fully covered by a screen that hides it, the bar stays composed but is not placed: nothing to
+    // draw, touch or read out, and nothing to compose again in the first frame of the pop that
+    // brings it back.
     val covered by remember(state) {
         derivedStateOf { state.anchors[state.selectedIndex].progress() >= 1f }
     }
-    if (covered && !vertical) return
     val focus = LocalFocusManager.current
     AppTabBar(
         items = items,
@@ -220,6 +221,7 @@ private fun ShellBar(
             modifier
                 .followRoot(state.anchors[state.selectedIndex], parallax, coverScrimAlpha(AppTheme.colors.isLight))
                 .hideUnderKeyboard()
+                .then(if (covered) Parked else Modifier)
         },
         orientation = if (vertical) BarOrientation.Vertical else BarOrientation.Horizontal,
         labels = config.barLabels,
@@ -247,6 +249,14 @@ private fun Modifier.hideUnderKeyboard(): Modifier {
         }
     }
 }
+
+/** Measured, so the bar keeps its size, but neither placed nor in the semantics tree. */
+private val Parked = Modifier
+    .clearAndSetSemantics {}
+    .layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        layout(placeable.width, placeable.height) {}
+    }
 
 /** Back at the root of another tab selects the first tab; registered first, so asked last. */
 @Composable

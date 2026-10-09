@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -39,6 +40,7 @@ private data class CoverScrimElement(
         node.covered = covered
         node.maxAlpha = maxAlpha
         node.shadow = shadow
+        node.invalidateDraw()
     }
 
     override fun InspectorInfo.inspectableProperties() {

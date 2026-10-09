@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutAwareModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.unit.LayoutDirection
 
 /**
@@ -70,6 +71,7 @@ private data class FollowRootElement(
         node.anchor = anchor
         node.parallax = parallax
         node.scrimAlpha = scrimAlpha
+        node.invalidateDraw()
     }
 }
 
