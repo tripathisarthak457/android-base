@@ -40,5 +40,7 @@
   },
   "designsystem_total": "Total",
   "designsystem_move_up": "Mover para cima",
-  "designsystem_move_down": "Mover para baixo"
+  "designsystem_move_down": "Mover para baixo",
+  "designsystem_refresh": "Atualizar",
+  "designsystem_refreshing": "Atualizando"
 }

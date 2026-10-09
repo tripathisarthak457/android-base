@@ -40,5 +40,7 @@
   },
   "designsystem_total": "कुल",
   "designsystem_move_up": "ऊपर ले जाएं",
-  "designsystem_move_down": "नीचे ले जाएं"
+  "designsystem_move_down": "नीचे ले जाएं",
+  "designsystem_refresh": "रीफ़्रेश करें",
+  "designsystem_refreshing": "रीफ़्रेश हो रहा है"
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -48,31 +49,55 @@ fun AppActivityIndicator(
         LaunchedEffect(step) {
             while (true) {
                 delay(step)
-                head = (head + 1) % SPOKES
+                head = (head + 1) % ACTIVITY_SPOKES
             }
         }
     }
     val description = stringResource(R.string.designsystem_loading)
     Canvas(modifier.size(size).semantics { contentDescription = description }) {
-        val outer = this.size.minDimension / 2f
-        val inner = outer * 0.48f
-        val width = outer * 0.2f
-        val center = Offset(this.size.width / 2f, this.size.height / 2f)
-        for (i in 0 until SPOKES) {
-            val age = (head - i + SPOKES) % SPOKES
-            rotate(degrees = i * 360f / SPOKES, pivot = center) {
-                drawLine(
-                    color = color,
-                    start = Offset(center.x, center.y - inner),
-                    end = Offset(center.x, center.y - outer + width / 2f),
-                    strokeWidth = width,
-                    cap = StrokeCap.Round,
-                    alpha = 1f - age * (0.75f / SPOKES),
-                )
-            }
+        drawActivitySpokes(
+            center = Offset(this.size.width / 2f, this.size.height / 2f),
+            radius = this.size.minDimension / 2f,
+            color = color,
+            head = head,
+        )
+    }
+}
+
+/**
+ * The activity indicator's spokes, shared by [AppActivityIndicator] and pull to refresh so the
+ * spinner a pull reveals is the one that then turns. With [head] null the spokes are still, the
+ * first [revealed] of them shown at the brightest spoke's alpha; otherwise they fade behind [head].
+ * The geometry is iOS's: spokes from a third of the radius to its edge, a fifth of it wide.
+ */
+internal fun DrawScope.drawActivitySpokes(
+    center: Offset,
+    radius: Float,
+    color: Color,
+    head: Int?,
+    revealed: Int = ACTIVITY_SPOKES,
+    alpha: Float = 1f,
+) {
+    val width = radius / 5f
+    for (i in 0 until revealed.coerceAtMost(ACTIVITY_SPOKES)) {
+        val spokeAlpha = if (head == null) SpokeAlphas[0] else SpokeAlphas[(head - i).mod(ACTIVITY_SPOKES)]
+        rotate(degrees = i * 360f / ACTIVITY_SPOKES, pivot = center) {
+            drawLine(
+                color = color,
+                start = Offset(center.x, center.y - radius / 3f - width / 2f),
+                end = Offset(center.x, center.y - radius + width / 2f),
+                strokeWidth = width,
+                cap = StrokeCap.Round,
+                alpha = spokeAlpha * alpha,
+            )
         }
     }
 }
+
+internal const val ACTIVITY_SPOKES = 8
+
+/** Newest to oldest, as iOS fades the trail behind the brightest spoke. */
+private val SpokeAlphas = floatArrayOf(147f, 122f, 97f, 72f, 47f, 47f, 47f, 47f).map { it / 255f }.toFloatArray()
 
 /** A determinate bar. The fill glides to each new [progress] on the layout spring, read while drawing. */
 @Composable
@@ -94,5 +119,4 @@ fun AppLinearProgress(
     }
 }
 
-private const val SPOKES = 8
-private const val STEP_MILLIS = 85L
+private const val STEP_MILLIS = 125L

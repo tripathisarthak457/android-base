@@ -1,10 +1,12 @@
 package com.base.app.core.designsystem.theme
 
 import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.exponentialDecay
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Immutable
@@ -92,6 +94,32 @@ class AppSprings internal constructor(val style: AppMotionStyle) {
 
     /** Pop-ins, badges and success marks. */
     val emphasis = AppSpring(response = 0.50f, bounce = style.bounce)
+
+    /** Alerts, action sheets, menus and popovers arriving: quicker than a sheet, never bouncing. */
+    val dialog = AppSpring(response = 0.275f / style.speed, bounce = 0f)
+
+    /** A value trailing the finger, such as a lifted row: quick enough to feel attached. */
+    val interactive = AppSpring(response = 0.15f, bounce = 0.14f)
+
+    /**
+     * Content coming back from past an edge: a pull to refresh settling, a fling caught at the end of
+     * a list. Overdamped, so it carries the finger's velocity in without overshooting the edge.
+     */
+    val bounceBack = AppSpring(response = 0.444f, bounce = -0.1f)
+
+    /**
+     * A rubber band let go with no velocity, in pixels. So overdamped it is a decay: it closes by half
+     * every 70 ms without ever travelling past the edge.
+     */
+    val overscrollRelease: SpringSpec<Float> =
+        spring(dampingRatio = 158.1f, stiffness = 9.8e6f, visibilityThreshold = 0.5f)
+
+    /**
+     * A fling's deceleration, as iOS scroll views slow down (0.998 of the velocity kept per
+     * millisecond). [flingFast] is the paging and picker rate (0.99), which stops much sooner.
+     */
+    val fling: DecayAnimationSpec<Float> = exponentialDecay(frictionMultiplier = 0.4767f)
+    val flingFast: DecayAnimationSpec<Float> = exponentialDecay(frictionMultiplier = 2.393f)
 
     /** Colour and opacity only; anything that moves uses a spring. */
     val fadeQuick: Int = 120

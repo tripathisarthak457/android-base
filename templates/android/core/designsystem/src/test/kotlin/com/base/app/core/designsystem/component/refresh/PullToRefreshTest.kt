@@ -1,14 +1,21 @@
 package com.base.app.core.designsystem.component.refresh
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -18,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TEST_SDK
 import com.base.app.core.designsystem.setThemed
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,21 +39,68 @@ class PullToRefreshTest {
     @get:Rule
     val rule = createComposeRule()
 
-    @Test
-    fun `a pull past the threshold refreshes, and another pull while it runs does not`() {
-        var refreshing by mutableStateOf(false)
-        var refreshes = 0
+    private var refreshing by mutableStateOf(false)
+    private var refreshes = 0
+    private var rowCompositions = 0
+    private lateinit var list: LazyListState
+    private var firstRow: LayoutCoordinates? = null
+
+    private fun setList(refreshOnPull: Boolean = true) {
         rule.setThemed {
-            AppPullToRefresh(isRefreshing = refreshing, onRefresh = { refreshes++; refreshing = true }, modifier = Modifier.fillMaxSize()) {
-                LazyColumn(Modifier.fillMaxSize().testTag("list")) {
-                    items((1..30).toList(), key = { it }) { Box(Modifier.height(60.dp)) }
+            list = rememberLazyListState()
+            AppPullToRefresh(
+                isRefreshing = refreshing,
+                onRefresh = {
+                    refreshes++
+                    if (refreshOnPull) refreshing = true
+                },
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                LazyColumn(Modifier.fillMaxSize().testTag("list"), state = list) {
+                    items((1..40).toList(), key = { it }) { row ->
+                        SideEffect { rowCompositions++ }
+                        Box(
+                            Modifier
+                                .height(RowHeight)
+                                .then(if (row == 1) Modifier.onGloballyPositioned { firstRow = it } else Modifier),
+                        )
+                    }
                 }
             }
         }
-        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+    }
+
+    /**
+     * Where the first row is drawn now. Read from its coordinates rather than its semantics bounds,
+     * which follow layout and placement but not a layer moving on its own.
+     */
+    private fun firstRowTop(): Float = rule.runOnUiThread { checkNotNull(firstRow).positionInRoot().y }
+
+    /** Finger travel well past the trigger on any viewport the tests run in. */
+    private fun pullFarWithoutLifting() {
+        rule.onNodeWithTag("list").performTouchInput {
+            down(Offset(centerX, top + 10f))
+            repeat(PULL_STEPS) { moveBy(Offset(0f, PULL_STEP)) }
+        }
+    }
+
+    @Test
+    fun `the refresh starts as the pull crosses the trigger, before the finger lifts`() {
+        setList()
+        pullFarWithoutLifting()
         rule.waitForIdle()
         assertEquals(1, refreshes)
 
+        rule.onNodeWithTag("list").performTouchInput { up() }
+        rule.waitForIdle()
+        assertEquals(1, refreshes)
+    }
+
+    @Test
+    fun `a pull while a refresh runs does not start another, and one after it ends does`() {
+        setList()
+        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.waitForIdle()
         rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
         rule.waitForIdle()
         assertEquals(1, refreshes)
@@ -56,5 +111,134 @@ class PullToRefreshTest {
         rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
         rule.waitForIdle()
         assertEquals(2, refreshes)
+    }
+
+    @Test
+    fun `the content rests below the spinner while refreshing, and returns when it ends`() {
+        setList()
+        val top = firstRowTop()
+        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.mainClock.advanceTimeBy(1_000)
+        rule.waitForIdle()
+        assertEquals(top + REST_PX, firstRowTop(), 1f)
+
+        refreshing = false
+        rule.mainClock.advanceTimeBy(2_000)
+        rule.waitForIdle()
+        assertEquals(top, firstRowTop(), 0.5f)
+    }
+
+    @Test
+    fun `pushing up during a refresh closes the gap before the list scrolls`() {
+        setList()
+        val top = firstRowTop()
+        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.mainClock.advanceTimeBy(1_000)
+        rule.waitForIdle()
+
+        rule.onNodeWithTag("list").performTouchInput {
+            down(center)
+            moveBy(Offset(0f, -viewConfiguration.touchSlop - 1f))
+            moveBy(Offset(0f, -REST_PX / 2f))
+        }
+        rule.waitForIdle()
+        assertEquals(0, list.firstVisibleItemIndex)
+        assertEquals(0, list.firstVisibleItemScrollOffset)
+        assertTrue(firstRowTop() < top + REST_PX)
+
+        rule.onNodeWithTag("list").performTouchInput {
+            moveBy(Offset(0f, -REST_PX))
+            up()
+        }
+        rule.waitForIdle()
+        assertTrue(list.firstVisibleItemScrollOffset > 0 || list.firstVisibleItemIndex > 0)
+    }
+
+    @Test
+    fun `a pull released short of the trigger springs back without refreshing`() {
+        setList()
+        val top = firstRowTop()
+        rule.onNodeWithTag("list").performTouchInput {
+            down(Offset(centerX, this.top + 10f))
+            moveBy(Offset(0f, viewConfiguration.touchSlop + 1f))
+            moveBy(Offset(0f, 60f))
+        }
+        rule.waitForIdle()
+        assertTrue(firstRowTop() > top)
+        rule.onNodeWithTag("list").performTouchInput { up() }
+        rule.mainClock.advanceTimeBy(2_000)
+        rule.waitForIdle()
+        assertEquals(0, refreshes)
+        assertEquals(top, firstRowTop(), 0.5f)
+    }
+
+    @Test
+    fun `a fling that reaches the top never refreshes`() {
+        setList()
+        // Far enough down that the drag alone cannot reach the top: only its fling does.
+        rule.runOnIdle { list.requestScrollToItem(FLING_FROM_ROW) }
+        rule.waitForIdle()
+        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 80) }
+        rule.mainClock.advanceTimeBy(3_000)
+        rule.waitForIdle()
+        assertEquals(0, refreshes)
+    }
+
+    @Test
+    fun `the release carries the finger's velocity into the settle`() {
+        setList(refreshOnPull = false)
+        val top = firstRowTop()
+
+        fun pullAndRelease(pauseBeforeLift: Boolean): Float {
+            rule.mainClock.autoAdvance = false
+            rule.onNodeWithTag("list").performTouchInput {
+                down(Offset(centerX, this.top + 10f))
+                moveBy(Offset(0f, viewConfiguration.touchSlop + 1f))
+                repeat(SHORT_PULL_STEPS) { moveBy(Offset(0f, PULL_STEP), delayMillis = 8) }
+                if (pauseBeforeLift) {
+                    repeat(SETTLE_PAUSE_STEPS) { moveBy(Offset.Zero, delayMillis = 40) }
+                }
+                up()
+            }
+            rule.mainClock.advanceTimeByFrame()
+            rule.mainClock.advanceTimeByFrame()
+            val afterTwoFrames = firstRowTop()
+            rule.mainClock.autoAdvance = true
+            rule.mainClock.advanceTimeBy(2_000)
+            rule.waitForIdle()
+            assertEquals(top, firstRowTop(), 0.5f)
+            return afterTwoFrames
+        }
+
+        val withVelocity = pullAndRelease(pauseBeforeLift = false)
+        val fromRest = pullAndRelease(pauseBeforeLift = true)
+        // Both start from the same gap. A release still moving down keeps going a little before the
+        // spring turns it, so it is lower two frames in than one let go from rest.
+        assertTrue("$withVelocity vs $fromRest", withVelocity > fromRest)
+    }
+
+    @Test
+    fun `pulling and settling recompose none of the content`() {
+        setList(refreshOnPull = false)
+        rule.waitForIdle()
+        val before = rowCompositions
+        pullFarWithoutLifting()
+        rule.onNodeWithTag("list").performTouchInput { up() }
+        rule.mainClock.advanceTimeBy(3_000)
+        rule.waitForIdle()
+        assertEquals(1, refreshes)
+        assertEquals(before, rowCompositions)
+    }
+
+    private companion object {
+        val RowHeight = 60.dp
+        const val PULL_STEPS = 40
+        const val SHORT_PULL_STEPS = 8
+        const val FLING_FROM_ROW = 15
+        const val SETTLE_PAUSE_STEPS = 6
+        const val PULL_STEP = 20f
+
+        /** The resting gap, 60dp, at Robolectric's default density of 1. */
+        const val REST_PX = 60f
     }
 }
