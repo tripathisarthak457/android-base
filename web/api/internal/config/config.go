@@ -12,8 +12,8 @@ import (
 )
 
 type Config struct {
-	// Addr is the listen address. Behind Caddy on a VPS this stays on loopback; in a container
-	// it has to be reachable from outside the container, which is what defaultAddr works out.
+	// Addr is the listen address. Locally this stays on loopback; in a container it has to be
+	// reachable from outside the container, which is what defaultAddr works out.
 	Addr string
 
 	// DatabaseURL is a libpq connection string. Empty disables persistence entirely: the API
@@ -23,6 +23,18 @@ type Config struct {
 
 	// GeneratorDir holds generate_headless.py and the genkit package.
 	GeneratorDir string
+
+	// CatalogueFile is the catalogue precomputed when the image was built. Empty runs the generator
+	// once at boot to produce it.
+	CatalogueFile string
+
+	// EnableTargets are the targets this deployment generates. A target the catalogue lists but this
+	// does not name is shown on the site and refused by the generate route, which is how `ios`
+	// stays "coming soon" while its generator exists.
+	EnableTargets []string
+
+	// TrustedProxy says which X-Forwarded-For entry is the client. See ProxyPolicy.
+	TrustedProxy ProxyPolicy
 
 	// PythonBin is the interpreter. `python3` everywhere except Windows.
 	PythonBin string
@@ -40,18 +52,64 @@ type Config struct {
 	// modest box; anything past this is a hang, not a slow run.
 	GenerateTimeout time.Duration
 
-	// MaxConcurrentGenerations caps how many Python processes run at once. Each is short but
-	// CPU- and IO-heavy, and an unbounded queue on a 1GB VPS is how the box dies rather than
-	// slows down.
+	// MaxConcurrentGenerations caps how many Python processes run at once, per target. Each is
+	// short but CPU- and IO-heavy, and an unbounded number on a small instance is how it dies rather
+	// than slows down.
 	MaxConcurrentGenerations int
 
 	// RateLimitPerHour is per client IP, counted in one process. See the note on `limiter`:
 	// across several instances the real ceiling is this times the instance count.
 	RateLimitPerHour int
 
-	// IPSalt is mixed into the hash used for unique-visitor counts. Rotating it forgets who
-	// visited yesterday, which is the point: the counts survive, the identities do not.
+	// IPSalt is mixed, with the date, into the hash used for unique-visitor counts, so the same
+	// visitor hashes differently every day and the database never holds a stable pseudonym.
 	IPSalt string
+
+	// Retention for requests, events and visits, and for app and package names on generations.
+	RetainRequests time.Duration
+	RetainEvents   time.Duration
+	RetainNames    time.Duration
+}
+
+// ProxyPolicy decides which address is the client's. Every proxy that appends to X-Forwarded-For
+// adds the address it received the request from, so with N such proxies in front of
+// the server the client is the Nth entry from the right; anything further left was written by the
+// client and proves nothing.
+type ProxyPolicy struct {
+	// Hops is the number of trusted proxies. Zero ignores X-Forwarded-For and uses the connection.
+	Hops int
+	// Vercel's edge replaces X-Forwarded-For with the client address and adds the geo headers, which
+	// are trusted only under this policy.
+	Vercel bool
+}
+
+func (p ProxyPolicy) String() string {
+	switch {
+	case p.Vercel:
+		return "vercel"
+	case p.Hops == 0:
+		return "none"
+	default:
+		return fmt.Sprintf("hops=%d", p.Hops)
+	}
+}
+
+// ParseProxyPolicy reads TRUSTED_PROXY: `none`, `vercel`, or `hops=N`.
+func ParseProxyPolicy(raw string) (ProxyPolicy, error) {
+	switch raw = strings.TrimSpace(raw); {
+	case raw == "" || raw == "none":
+		return ProxyPolicy{}, nil
+	case raw == "vercel":
+		return ProxyPolicy{Hops: 1, Vercel: true}, nil
+	case strings.HasPrefix(raw, "hops="):
+		hops, err := strconv.Atoi(strings.TrimPrefix(raw, "hops="))
+		if err != nil || hops < 1 || hops > 10 {
+			return ProxyPolicy{}, fmt.Errorf("TRUSTED_PROXY %q: hops must be between 1 and 10", raw)
+		}
+		return ProxyPolicy{Hops: hops}, nil
+	default:
+		return ProxyPolicy{}, fmt.Errorf("TRUSTED_PROXY %q: use none, vercel or hops=N", raw)
+	}
 }
 
 func Load() (Config, error) {
@@ -59,6 +117,8 @@ func Load() (Config, error) {
 		Addr:                     env("ADDR", defaultAddr()),
 		DatabaseURL:              os.Getenv("DATABASE_URL"),
 		GeneratorDir:             env("GENERATOR_DIR", "../../generator"),
+		CatalogueFile:            os.Getenv("CATALOGUE_FILE"),
+		EnableTargets:            splitAndTrim(env("ENABLE_TARGETS", "android,multiplatform")),
 		PythonBin:                env("PYTHON_BIN", defaultPython()),
 		AdminToken:               os.Getenv("ADMIN_TOKEN"),
 		AllowedOrigins:           splitAndTrim(env("ALLOWED_ORIGINS", "http://localhost:3000")),
@@ -66,9 +126,20 @@ func Load() (Config, error) {
 		MaxConcurrentGenerations: integer("MAX_CONCURRENT_GENERATIONS", 4),
 		RateLimitPerHour:         integer("RATE_LIMIT_PER_HOUR", 30),
 		IPSalt:                   env("IP_SALT", ""),
+		RetainRequests:           days("RETENTION_REQUESTS_DAYS", 30),
+		RetainEvents:             days("RETENTION_EVENTS_DAYS", 400),
+		RetainNames:              days("RETENTION_NAMES_DAYS", 90),
 	}
 
 	var problems []string
+	proxy, err := ParseProxyPolicy(os.Getenv("TRUSTED_PROXY"))
+	if err != nil {
+		problems = append(problems, err.Error())
+	}
+	cfg.TrustedProxy = proxy
+	if len(cfg.EnableTargets) == 0 {
+		problems = append(problems, "ENABLE_TARGETS must name at least one target")
+	}
 	if cfg.DatabaseURL != "" && cfg.AdminToken == "" {
 		problems = append(problems, "ADMIN_TOKEN must be set when DATABASE_URL is")
 	}
@@ -116,6 +187,10 @@ func integer(key string, fallback int) int {
 	return value
 }
 
+func days(key string, fallback int) time.Duration {
+	return time.Duration(integer(key, fallback)) * 24 * time.Hour
+}
+
 func duration(key string, fallback time.Duration) time.Duration {
 	value, err := time.ParseDuration(os.Getenv(key))
 	if err != nil || value <= 0 {
@@ -144,8 +219,8 @@ func defaultPython() string {
 
 func (c Config) String() string {
 	return fmt.Sprintf(
-		"addr=%s generator=%s python=%s persistent=%t origins=%v concurrency=%d",
-		c.Addr, c.GeneratorDir, c.PythonBin, c.Persistent(), c.AllowedOrigins,
-		c.MaxConcurrentGenerations,
+		"addr=%s generator=%s python=%s persistent=%t origins=%v targets=%v proxy=%s concurrency=%d",
+		c.Addr, c.GeneratorDir, c.PythonBin, c.Persistent(), c.AllowedOrigins, c.EnableTargets,
+		c.TrustedProxy, c.MaxConcurrentGenerations,
 	)
 }
