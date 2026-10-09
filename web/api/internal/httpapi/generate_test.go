@@ -4,6 +4,7 @@ package httpapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"slices"
 	"strings"
@@ -267,5 +268,68 @@ func TestOnlyTheFirstGenerationIsAColdStart(t *testing.T) {
 	second := onlyGeneration(t, ts.sink.last(t)).ColdStart
 	if !first || second {
 		t.Fatalf("cold start: first %v, second %v", first, second)
+	}
+}
+
+// internalFailure is a generator that fails as headless.py does on a bug: the same message every
+// time, and a traceback through its own code (under the directory it runs in) into pathlib.
+func internalFailure(t *testing.T, function string, line int, exception string) string {
+	t.Helper()
+	detail := strings.Join([]string{
+		"Traceback (most recent call last):",
+		`  File "@GENERATOR@/genkit/core/headless.py", line 50, in run`,
+		"    result = _generate(raw, target_key, output)",
+		fmt.Sprintf(`  File "@GENERATOR@/genkit/targets/android/target.py", line %d, in %s`, line, function),
+		"    text = (project / name).read_text()",
+		`  File "/usr/lib/python3.12/pathlib.py", line 1027, in read_text`,
+		"    with self.open(mode='r') as f:",
+		exception,
+	}, "\n")
+	reply, err := json.Marshal(map[string]any{"ok": false, "kind": "internal", "error": "The generator failed.", "detail": detail})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return "sed \"s|@GENERATOR@|$(pwd -P)|g\" <<'EOF'\n" + string(reply) + "\nEOF\nexit 1\n"
+}
+
+func TestGenerationErrorsAreGroupedByTheBugBehindThem(t *testing.T) {
+	// Each test server runs its generator from a directory of its own, as two deployments would.
+	failed := func(script string) store.ErrorRecord {
+		t.Helper()
+		ts := newTestServer(t, script, nil)
+		if w := ts.do(http.MethodPost, "/api/v1/android/generate", `{}`, nil); w.Code != http.StatusInternalServerError {
+			t.Fatalf("got %d", w.Code)
+		}
+		errs := ts.sink.last(t).Errors
+		if len(errs) != 1 || errs[0].Fingerprint == "" {
+			t.Fatalf("error list entry %+v", errs)
+		}
+		return errs[0]
+	}
+	fingerprint := func(script string) string { return failed(script).Fingerprint }
+	missing := func(dir string) string {
+		return "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/" + dir + "/app/build.gradle.kts'"
+	}
+
+	bug := failed(internalFailure(t, "finish", 118, missing("android-4121")))
+	if bug.Message != "android: The generator failed." || !strings.Contains(bug.Detail, "target.py\", line 118, in finish") {
+		t.Fatalf("error list entry %+v", bug)
+	}
+	first := bug.Fingerprint
+	if again := fingerprint(internalFailure(t, "finish", 131, missing("android-9907"))); again != first {
+		t.Error("the same bug at another line, with another temp directory, got another fingerprint")
+	}
+	others := map[string]string{
+		"another function":  fingerprint(internalFailure(t, "transform", 118, missing("android-4121"))),
+		"another exception": fingerprint(internalFailure(t, "finish", 118, "KeyError: 'app_name'")),
+		"a crash at import": fingerprint(`echo 'ModuleNotFoundError: No module named genkit' >&2; exit 1`),
+		"a kill":            fingerprint(`echo 'Writing the project' >&2; kill -9 $$`),
+	}
+	seen := map[string]string{first: "the first bug"}
+	for name, fp := range others {
+		if previous, ok := seen[fp]; ok {
+			t.Errorf("%s shares a fingerprint with %s", name, previous)
+		}
+		seen[fp] = name
 	}
 }

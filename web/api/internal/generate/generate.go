@@ -40,6 +40,9 @@ type Generator struct {
 
 	pythonBin string
 	scriptDir string
+	// sourceDir is scriptDir with symlinks resolved, which is how Python names the files in a
+	// traceback.
+	sourceDir string
 	workRoot  string
 	timeout   time.Duration
 	slots     chan struct{}
@@ -57,11 +60,16 @@ func New(stopping context.Context, opts Options, target TargetEntry, rules Rules
 	if _, err := os.Stat(filepath.Join(dir, "generate_headless.py")); err != nil {
 		return nil, fmt.Errorf("generate_headless.py not found in %s: %w", dir, err)
 	}
+	source, err := filepath.EvalSymlinks(dir)
+	if err != nil {
+		return nil, fmt.Errorf("resolving the generator directory: %w", err)
+	}
 	return &Generator{
 		Target:    target,
 		Rules:     rules,
 		pythonBin: opts.PythonBin,
 		scriptDir: dir,
+		sourceDir: source,
 		workRoot:  opts.WorkRoot,
 		timeout:   opts.Timeout,
 		slots:     make(chan struct{}, max(opts.Concurrency, 1)),
@@ -101,8 +109,12 @@ type Failure struct {
 	Message string
 	Field   string
 	Detail  string
-	Queue   time.Duration
-	Run     time.Duration
+	// Signature tells apart the bugs behind internal failures that share a Message: the exception
+	// and the frame it was raised in, or the last thing a crashed child wrote. Empty when Message
+	// is all there is to go on.
+	Signature string
+	Queue     time.Duration
+	Run       time.Duration
 }
 
 func (f *Failure) Error() string {
@@ -190,22 +202,23 @@ func (g *Generator) run(ctx context.Context, dir string, spec []byte) (*Output, 
 	var reply headlessReply
 	if err := json.Unmarshal(stdout.Bytes(), &reply); err != nil {
 		return nil, &Failure{Outcome: telemetry.InternalError, Message: "the generator's reply was not JSON",
-			Detail: describeExit(runErr, &stdout, &stderr), Run: ran}
+			Detail: describeExit(runErr, &stdout, &stderr), Signature: g.crashSignature(runErr, &stderr), Run: ran}
 	}
 
 	if !reply.OK {
 		if reply.Kind == "invalid" {
 			return nil, &Failure{Outcome: telemetry.Invalid, Message: reply.Error, Field: reply.Field, Run: ran}
 		}
-		detail := reply.Detail
+		detail, signature := reply.Detail, g.signature(reply.Detail)
 		if detail == "" {
-			detail = describeExit(runErr, &stdout, &stderr)
+			detail, signature = describeExit(runErr, &stdout, &stderr), g.crashSignature(runErr, &stderr)
 		}
 		message := reply.Error
 		if message == "" {
 			message = "the generator failed"
 		}
-		return nil, &Failure{Outcome: telemetry.InternalError, Message: message, Detail: detail, Run: ran}
+		return nil, &Failure{Outcome: telemetry.InternalError, Message: message, Detail: detail, Signature: signature,
+			Run: ran}
 	}
 
 	info, err := os.Stat(zipPath)

@@ -102,6 +102,8 @@ func TestFailureKindsMapToOutcomes(t *testing.T) {
 		message string
 		field   string
 		detail  string
+		// signature is what groups the failure in the error list.
+		signature string
 	}{
 		{
 			name:    "invalid input",
@@ -112,11 +114,13 @@ func TestFailureKindsMapToOutcomes(t *testing.T) {
 			name:    "internal failure keeps the traceback",
 			script:  `echo '{"ok": false, "kind": "internal", "error": "The generator failed.", "detail": "Traceback: KeyError"}'; exit 1`,
 			outcome: telemetry.InternalError, message: "The generator failed.", detail: "Traceback: KeyError",
+			signature: "Traceback: KeyError",
 		},
 		{
 			name:    "a crash without a reply",
 			script:  `echo 'Fatal Python error' >&2; exit 1`,
 			outcome: telemetry.InternalError, detail: "Fatal Python error",
+			signature: "exit status 1\nFatal Python error",
 		},
 		{
 			name:    "success without a zip",
@@ -140,6 +144,9 @@ func TestFailureKindsMapToOutcomes(t *testing.T) {
 			}
 			if !strings.Contains(f.Detail, c.detail) {
 				t.Fatalf("detail %q does not contain %q", f.Detail, c.detail)
+			}
+			if f.Signature != c.signature {
+				t.Fatalf("signature = %q, want %q", f.Signature, c.signature)
 			}
 			assertEmpty(t, root)
 		})

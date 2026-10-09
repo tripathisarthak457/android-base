@@ -187,6 +187,9 @@ func (s *Server) generationFailed(w http.ResponseWriter, r *http.Request, record
 			Message: fmt.Sprintf("%s: %s", record.Target, failure.Message),
 			Detail:  failure.Detail,
 			Path:    r.URL.Path,
+			// The generator words every internal failure the same way, so the message alone
+			// would put every bug in one group.
+			Fingerprint: store.Fingerprint("generation", record.Target, cmp.Or(failure.Signature, failure.Message)),
 		})
 		code := "generator_failed"
 		if failure.Outcome == telemetry.Timeout {
