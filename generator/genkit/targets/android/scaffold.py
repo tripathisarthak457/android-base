@@ -185,17 +185,11 @@ _IMPORT = re.compile(r"^import [\w.]+(?: as \w+)?\n", re.MULTILINE)
 
 
 def sort_imports(text: str) -> str:
-    """Kotlin imports in the order ktlint's IntelliJ layout expects: all, then java, javax, kotlin."""
+    """Kotlin imports in ASCII order, the Android style guide's and `.editorconfig`'s `*` layout."""
     found = _IMPORT.findall(text)
     if not found:
         return text
     first = text.index(found[0])
     last = text.index(found[-1]) + len(found[-1])
-
-    def rank(line: str) -> tuple[int, str]:
-        name = line.split()[1]
-        group = next((index for index, prefix in enumerate(("java.", "javax.", "kotlin."), 1) if name.startswith(prefix)), 0)
-        return group, name
-
-    ordered = sorted(set(found), key=rank)
+    ordered = sorted(set(found), key=lambda line: line.split()[1])
     return text[:first] + "".join(ordered) + text[last:]

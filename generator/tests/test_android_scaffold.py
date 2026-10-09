@@ -97,7 +97,7 @@ class GeneratedModuleTest(unittest.TestCase):
                 package = re.search(r"^package ([\w.]+)$", text, re.MULTILINE).group(1)
                 self.assertTrue(path.parent.as_posix().endswith(package.replace(".", "/")))
                 imports = re.findall(r"^import ([\w.]+)$", text, re.MULTILINE)
-                self.assertEqual(imports, sorted(imports, key=lambda name: (name.startswith(("java.", "javax.", "kotlin.")), name)))
+                self.assertEqual(imports, sorted(imports))
 
     def test_the_screens_use_the_mvi_and_navigation_apis_of_m1(self):
         list_screen = (self.online / f"feature/orders/src/main/kotlin/{PKG}/feature/orders/list/OrdersListViewModel.kt").read_text()

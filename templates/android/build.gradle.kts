@@ -39,12 +39,19 @@ plugins {
  * rules are ktlint's Android Studio style, read from .editorconfig, so the IDE formats the same way.
  */
 spotless {
+    // <generated:formatting-check>
+    // The template's own sources move to this style in one mechanical commit once the UI work has
+    // merged; until then its check leaves formatting out. Generated projects always enforce it.
+    isEnforceCheck = false
+    // </generated:formatting-check>
     kotlin {
         target("**/src/**/*.kt")
+        targetExclude("**/build/**")
         ktlint(libs.versions.ktlint.get())
     }
     kotlinGradle {
         target("*.gradle.kts", "*/**/*.gradle.kts")
+        targetExclude("**/build/**")
         ktlint(libs.versions.ktlint.get())
     }
 }

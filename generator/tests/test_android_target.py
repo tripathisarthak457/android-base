@@ -81,6 +81,12 @@ class SettingsTest(unittest.TestCase):
         self.assertIn("- language\n", readme)
 
 
+    def test_a_project_with_formatting_fails_its_check_on_unformatted_code(self):
+        with tempfile.TemporaryDirectory() as temp:
+            build = (generate(Path(temp), features=["formatting"]) / "build.gradle.kts").read_text(encoding="utf-8")
+        self.assertIn("spotless {", build)
+        self.assertNotIn("isEnforceCheck", build)
+
 class TokenCopyTest(unittest.TestCase):
 
     def test_a_shipped_token_copy_is_re_emitted_with_the_specs_brand(self):

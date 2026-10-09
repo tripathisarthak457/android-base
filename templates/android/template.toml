@@ -23,6 +23,7 @@ required = [
   "shell-tabs", "start-destination", "start-destination-import",
   "readme-title", "readme-styles", "readme-theme-call", "readme-version", "readme-modules",
   "readme-signing-generated", "readme-signing-manual", "readme-features",
+  "formatting-check",                                                             # build.gradle.kts
 ]
 
 [files]
