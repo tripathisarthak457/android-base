@@ -47,7 +47,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--set", action="append", default=[], metavar="KEY=VALUE",
         help="Override one spec field, after the spec is read: --set package_name=com.example.demo, "
-        "--set android.min_sdk=28. The value is read as JSON when it parses, as a string otherwise.",
+        "--set android.min_sdk=28. The value is read as JSON when it parses, as a string otherwise; "
+        "null removes the field.",
     )
     parser.add_argument("--out", type=Path, help="The project directory (--no-zip) or the .zip to write.")
     parser.add_argument("--no-zip", action="store_true", help="Write a directory rather than a zip.")

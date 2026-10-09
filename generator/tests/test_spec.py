@@ -216,6 +216,16 @@ class OverrideTest(unittest.TestCase):
         parsed = read(minimal(package_name="com.example.null"), [("package_name", "com.example.wp01.std")])
         self.assertEqual("com.example.wp01.std", parsed.spec.package_name)
 
+    def test_null_removes_a_field_as_it_does_in_a_spec(self):
+        parsed = read(minimal(display_name="Acme"), [("display_name", None), ("android.min_sdk", None)])
+        self.assertEqual("", parsed.spec.display_name)
+        self.assertEqual(read(minimal()).spec.android.min_sdk, parsed.spec.android.min_sdk)
+
+    def test_the_schema_cannot_be_overridden(self):
+        with self.assertRaises(SpecError) as caught:
+            read(minimal(), [("schema", 1)])
+        self.assertEqual("schema", caught.exception.field)
+
     def test_an_override_into_a_value_that_is_not_an_object(self):
         with self.assertRaises(SpecError):
             apply_overrides({"app_name": "x"}, [("app_name.first", 1)])

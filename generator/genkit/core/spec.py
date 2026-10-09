@@ -302,10 +302,15 @@ def upgrade(raw: object, platform: str) -> tuple[dict[str, Any], list[str], list
 def apply_overrides(data: dict[str, Any], overrides: list[tuple[str, Any]]) -> None:
     """
     `--set key=value` pairs, applied to an upgraded spec. Dotted keys reach into the settings
-    blocks (`android.min_sdk`); a flat Android key means the one under "android".
+    blocks (`android.min_sdk`); a flat Android key means the one under "android". A null value
+    removes the field, as null means absent in a spec file.
     """
     for key, value in overrides:
         parts = key.split(".")
+        if parts[0] == "schema":
+            # The spec is already upgraded to the current schema when overrides apply, so a schema
+            # given here would be accepted and then never read.
+            raise SpecError("--set cannot change the schema: write it in the spec file.", key)
         if parts[0] in ANDROID_FIELDS:
             parts = ["android", *parts]
         holder = data
@@ -313,7 +318,10 @@ def apply_overrides(data: dict[str, Any], overrides: list[tuple[str, Any]]) -> N
             holder = holder.setdefault(part, {})
             if not isinstance(holder, dict):
                 raise SpecError(f"Cannot set '{key}': '{part}' is not an object.", key)
-        holder[parts[-1]] = value
+        if value is None:
+            holder.pop(parts[-1], None)
+        else:
+            holder[parts[-1]] = value
 
 
 def _move_android_fields(data: dict[str, Any]) -> list[str]:
