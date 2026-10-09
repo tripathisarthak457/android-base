@@ -61,8 +61,9 @@ internal class SearchViewModel @Inject constructor(
 
     override fun handleEvent(event: SearchEvent) {
         when (event) {
-            // A snapshot observer costs nothing while nobody types, so the watcher on the field
-            // runs for as long as the ViewModel does.
+            // Typing has to start a search, a side effect that `observe`'s pure reducer cannot run,
+            // so the watcher lives as long as the ViewModel. Between keystrokes it only checks each
+            // snapshot apply against the one field it reads.
             SearchEvent.Appeared -> launchExclusive(TYPING) {
                 snapshotFlow { query.text.toString() }.collect { search(it, debounce = true) }
             }
@@ -81,8 +82,8 @@ internal class SearchViewModel @Inject constructor(
                 remember(event.query)
             }
 
-            is SearchEvent.RecentRemoved -> launchLatest(FORGET) { repository.forget(event.query) }
-            SearchEvent.ClearRecent -> launchLatest(FORGET) { repository.clearRecent() }
+            is SearchEvent.RecentRemoved -> launchLatest(FORGET to event.query) { repository.forget(event.query) }
+            SearchEvent.ClearRecent -> launchLatest(CLEAR) { repository.clearRecent() }
 
             // Navigation first: the tap must not wait for the recent-searches write to reach disk.
             is SearchEvent.ResultClicked -> {
@@ -117,13 +118,18 @@ internal class SearchViewModel @Inject constructor(
                     )
                 }
 
-                is AppResult.Failure -> setState { copy(loadState = LoadState.Error(result.error), results = emptyList()) }
+                is AppResult.Failure -> setState {
+                    copy(loadState = LoadState.Error(result.error), results = emptyList())
+                }
             }
         }
     }
 
+    // Keyed by the query, so only a repeat of the same write replaces itself. Under one shared key
+    // the second of two quick writes would cancel the first, and DataStore drops an edit whose
+    // caller is cancelled.
     private fun remember(text: String) {
-        launchLatest(REMEMBER) { repository.remember(text) }
+        launchLatest(REMEMBER to text) { repository.remember(text) }
     }
 
     private companion object {
@@ -132,6 +138,7 @@ internal class SearchViewModel @Inject constructor(
         const val SEARCH = "search"
         const val REMEMBER = "remember"
         const val FORGET = "forget"
+        const val CLEAR = "clear"
         val DEBOUNCE = 350.milliseconds
     }
 }

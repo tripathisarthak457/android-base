@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
-    /** Most recent first, at most eight. Belongs to the signed-in user. */
+    /** Most recent first, and short: the oldest drop off. Belongs to the signed-in user. */
     val recent: Flow<List<String>>
 
     suspend fun search(query: String): AppResult<List<SearchResult>>
