@@ -14,24 +14,31 @@ internal fun Project.configureCompose(extension: CommonExtension) {
     pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
     extension.buildFeatures.compose = true
 
-    // Writing the reports costs about 15 % of every compile, so they are written only when asked
-    // for: `./gradlew <task> -PcomposeReports`, then read build/compose_reports.
-    val reports = providers.gradleProperty("composeReports").orNull.toBoolean()
+    // The stability gate reads the report of the modules every screen calls, so they always write
+    // it. Elsewhere writing reports slows every compile, so they come only when asked for:
+    // `./gradlew <task> -PcomposeReports`, then read build/compose_reports and build/compose_metrics.
+    val requested = providers.gradleProperty("composeReports").orNull.toBoolean()
 
     extensions.configure<ComposeCompilerGradlePluginExtension> {
-        // Marks java.time and similar types immutable so composables taking them can skip.
+        // Types the compiler cannot see into but which are immutable here, so composables taking
+        // them are compared with equals rather than by identity.
         stabilityConfigurationFiles.add(
             rootProject.layout.projectDirectory.file("config/compose-stability.conf"),
         )
-        if (reports) {
+        if (requested || path in STABILITY_CHECKED_MODULES) {
             reportsDestination.set(layout.buildDirectory.dir(COMPOSE_REPORTS))
+        }
+        if (requested) {
             metricsDestination.set(layout.buildDirectory.dir("compose_metrics"))
         }
     }
 
-    // <opt:composemetrics>
-    if (reports) configureComposeStability()
-    // </opt:composemetrics>
+    configureComposeStability()
+
+    // Compose's own lint checks, warnings by default: each is a recomposition, layout or state bug
+    // the compiler accepts. Lint ignores an id it does not know without a word, so every one here
+    // was checked against the lint jars of the Compose, lifecycle and navigation3 artifacts.
+    extension.lint.error += COMPOSE_LINT_ERRORS
 
     extensions.configure<KotlinAndroidProjectExtension> {
         compilerOptions {
@@ -62,6 +69,53 @@ internal fun Project.configureCompose(extension: CommonExtension) {
             add("debugImplementation", libs.library("androidx-compose-ui-test-manifest"))
         }
     }
+
+    // A Compose test rule launches an empty activity, which has to be in the manifest the test
+    // runs against.
+    onRobolectricTests {
+        dependencies.add("debugImplementation", libs.library("androidx-compose-ui-test-manifest"))
+    }
 }
 
 internal const val COMPOSE_REPORTS = "compose_reports"
+
+private val COMPOSE_LINT_ERRORS = setOf(
+    // runtime
+    "ComposableNaming",
+    "ComposableLambdaParameterNaming",
+    "CompositionLocalNaming",
+    "UnrememberedMutableState",
+    "UnrememberedState",
+    "RememberReturnType",
+    "AutoboxingStateCreation",
+    "AutoboxingStateValueProperty",
+    "MutableCollectionMutableState",
+    "OpaqueUnitKey",
+    "ProduceStateDoesNotAssignValue",
+    "CoroutineCreationDuringComposition",
+    "FlowOperatorInvokedInComposition",
+    "StateFlowValueCalledInComposition",
+    // ui
+    "ModifierParameter",
+    "ModifierFactoryReturnType",
+    "ModifierFactoryExtensionFunction",
+    "ModifierFactoryUnreferencedReceiver",
+    "UnnecessaryComposedModifier",
+    "SuspiciousModifierThen",
+    "NonObservableLocale",
+    "MultipleAwaitPointerEventScopes",
+    "ExitAwaitPointerEventScope",
+    "ReturnFromAwaitPointerEventScope",
+    "ConfigurationScreenWidthHeight",
+    "LocalContextConfigurationRead",
+    "LocalContextResourcesRead",
+    // foundation and animation
+    "UnusedBoxWithConstraintsScope",
+    "UseOfNonLambdaOffsetOverload",
+    "UnrememberedAnimatable",
+    "RememberInComposition",
+    "FrequentlyChangingValue",
+    // lifecycle and navigation3
+    "LifecycleCurrentStateInComposition",
+    "SceneEqualsHashCode",
+)

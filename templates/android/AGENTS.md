@@ -43,7 +43,7 @@ Do not report success on a build you did not run.
 
 These fail the build. Working around them is never the fix.
 
-- **No Material.** Any `androidx.compose.material*` import fails `verifyComposeUsage`. Build from
+- **No Material.** Any `androidx.compose.material*` import fails `verifyCodeRules`. Build from
   `:core:designsystem`, and from `foundation` and `ui` when it lacks something.
 - **Layering.** `feature → feature` and `data → data` fail `verifyModuleDependencies`. When two
   features need the same thing, it belongs in `core/` or in a `data/` module both depend on.

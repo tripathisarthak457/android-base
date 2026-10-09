@@ -19,9 +19,12 @@ import org.gradle.kotlin.dsl.register
 import java.io.File
 
 /**
- * Reads the Compose compiler's own stability report and fails on a new recomposition cost. Called
- * only with `-PcomposeReports`, since the report is what it reads.
+ * The modules whose composables every screen calls: a parameter compared by identity here costs a
+ * recomposition in every screen that uses them. Their stability report is always written.
  */
+internal val STABILITY_CHECKED_MODULES = setOf(":core:designsystem", ":core:ui", ":core:navigation")
+
+/** Registers `checkComposeStability`, which reads the compiler's report, and wires it into `check`. */
 internal fun Project.configureComposeStability() {
     if (path !in STABILITY_CHECKED_MODULES) return
 
@@ -36,14 +39,13 @@ internal fun Project.configureComposeStability() {
     val written = fileTree(reportsDir) {
         include("**/*-composables.txt")
     }
-    val baseline = rootProject.layout.projectDirectory
-        .file("config/compose-stability-baseline.txt")
+    val baseline = rootProject.layout.projectDirectory.file(ComposeStability.BASELINE)
 
     val check = tasks.register<CheckComposeStabilityTask>("checkComposeStability") {
         group = "verification"
-        description = "Fails on a composable that recomposes when it did not need to."
+        description = "Fails on a composable parameter the compiler compares by identity."
         reports.setFrom(written)
-        baselineFile.set(baseline)
+        if (baseline.asFile.exists()) baselineFile.set(baseline)
         modulePath.set(path)
         marker.set(layout.buildDirectory.file("guards/checkComposeStability.ok"))
         // The report is a by-product of compiling, so the task that writes it has to have run.
@@ -52,7 +54,7 @@ internal fun Project.configureComposeStability() {
 
     tasks.register<RecordComposeStabilityTask>("recordComposeStability") {
         group = "verification"
-        description = "Writes the current unskippable composables to the baseline."
+        description = "Adds the current identity-compared parameters to the baseline, without reasons."
         reports.setFrom(written)
         baselineFile.set(baseline)
         dependsOn(COMPILE_TASK)
@@ -62,49 +64,52 @@ internal fun Project.configureComposeStability() {
     tasks.matching { it.name == "check" }.configureEach { dependsOn(check) }
 }
 
-/** The modules whose components every screen calls, and therefore the only ones worth the cost. */
-private val STABILITY_CHECKED_MODULES = setOf(":core:designsystem", ":core:ui")
-
 /**
  * The compilation that writes the report. One variant, not all of them: these are library modules
  * with no flavours, and the two build types compile the same sources to the same stability answers.
  */
 private const val COMPILE_TASK = "compileDebugKotlin"
 
-/**
- * Every composable the report says is paying for a recomposition it did not need, as
- * `FunctionName`.
- *
- * * **restartable but not skippable.** The function re-executes whenever its parent recomposes,
- *   unconditionally. In a list row that is once per row per frame.
- * * **an unstable parameter.** Strong skipping keeps the function skippable, but by comparing that
- *   parameter with `equals` on every recomposition instead of skipping the comparison — which for
- *   a `List` is O(n) per frame, and for a `var`-holding class is a comparison that never says
- *   equal.
- */
-private fun offenders(reports: Set<File>): List<String> =
-    reports.asSequence()
-        .filter { it.isFile }
-        .flatMap { report ->
-            var current: String? = null
-            report.readLines().mapNotNull { line ->
-                val declaration = FUNCTION.find(line)
-                if (declaration != null) {
-                    current = declaration.groupValues[1]
-                    val unskippable = line.startsWith("restartable ") && !line.contains(" skippable ")
-                    return@mapNotNull if (unskippable) current else null
-                }
-                // A parameter line, which the compiler indents under the function it belongs to.
-                if (line.trimStart().startsWith("unstable ")) current else null
-            }
-        }
-        .filterNotNull()
-        .distinct()
-        .sorted()
-        .toList()
+/** The report reading and the baseline, apart from Gradle so they can be unit tested. */
+internal object ComposeStability {
 
-/** `fun com.base.app.core.designsystem.component.AppButton(` → `AppButton`. */
-private val FUNCTION = Regex("\\bfun\\s+(?:[\\w.]+\\.)?(\\w+)\\s*\\(")
+    const val BASELINE = "config/compose-stability-baseline.txt"
+
+    /** `restartable skippable scheme(…) fun <T> com.acme.AppPicker(` → `com.acme.AppPicker`. */
+    private val FUNCTION = Regex("""\bfun\s+(?:<[^>]*>\s+)?([\w.]+)\s*\(""")
+
+    /** `  unstable items: List<T>` → `items`. */
+    private val UNSTABLE = Regex("""^\s+unstable\s+([\w<>]+):""")
+
+    /**
+     * Every problem in the reports, as `fqName(parameter)` for a parameter of a type the compiler
+     * cannot prove stable, and `fqName: not skippable` for a restartable function that cannot skip,
+     * which under strong skipping only happens when the compiler flags were changed.
+     */
+    fun problems(reports: List<String>): List<String> =
+        reports.flatMap { report ->
+            var function: String? = null
+            report.lines().mapNotNull { line ->
+                FUNCTION.find(line)?.let { declaration ->
+                    function = declaration.groupValues[1]
+                    val unskippable = line.startsWith("restartable ") && " skippable " !in line
+                    return@mapNotNull if (unskippable) "${declaration.groupValues[1]}: not skippable" else null
+                }
+                UNSTABLE.find(line)?.let { parameter -> function?.let { "$it(${parameter.groupValues[1]})" } }
+            }
+        }.distinct().sorted()
+
+    class Baseline(val accepted: Set<String>, val unexplained: List<String>)
+
+    /** Entries are `fqName(parameter)  # reason`; an entry without a reason is listed as unexplained. */
+    fun baseline(text: String): Baseline {
+        val entries = text.lines().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }
+        return Baseline(
+            accepted = entries.map { it.substringBefore('#').trim() }.toSet(),
+            unexplained = entries.filter { it.substringAfter('#', missingDelimiterValue = "").isBlank() },
+        )
+    }
+}
 
 @CacheableTask
 internal abstract class CheckComposeStabilityTask : DefaultTask() {
@@ -115,7 +120,7 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
 
     @get:InputFile
     @get:Optional
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NONE)
     abstract val baselineFile: RegularFileProperty
 
     @get:Input
@@ -126,27 +131,24 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
 
     @TaskAction
     fun verify() {
-        val allowed = baselineFile.asFile.orNull
-            ?.takeIf { it.isFile }
-            ?.readLines()
-            ?.map { it.trim() }
-            ?.filter { it.isNotEmpty() && !it.startsWith("#") }
-            .orEmpty()
-            .toSet()
+        val baseline = ComposeStability.baseline(baselineFile.asFile.orNull?.readText().orEmpty())
+        if (baseline.unexplained.isNotEmpty()) {
+            throw GradleException(
+                "${ComposeStability.BASELINE} accepts entries without a reason. Say why each one has to " +
+                    "stay, after a `#` on its line:\n\n" + baseline.unexplained.joinToString("\n") { "  $it" },
+            )
+        }
 
         val present = reports.files.filter { it.isFile }
         if (present.isEmpty()) {
             throw GradleException(
-                "${modulePath.get()}: the Compose compiler wrote no stability report, so this " +
-                    "check has nothing to read. That is a build configuration problem rather than " +
-                    "a clean result — silence here would be indistinguishable from passing. " +
-                    "Check that reportsDestination is still set in Compose.kt.",
+                "${modulePath.get()}: the Compose compiler wrote no stability report, so this check has nothing " +
+                    "to read. That is a build configuration problem rather than a clean result: silence here " +
+                    "would be indistinguishable from passing. Check that reportsDestination is still set in Compose.kt.",
             )
         }
 
-        val found = offenders(present.toSet())
-        val fresh = found - allowed
-
+        val fresh = ComposeStability.problems(present.sortedBy { it.path }.map(File::readText)) - baseline.accepted
         if (fresh.isEmpty()) {
             marker.get().asFile.writeText("ok")
             return
@@ -154,21 +156,16 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
 
         throw GradleException(
             """
-            ${modulePath.get()} has ${fresh.size} composable(s) taking a parameter the Compose
-            compiler cannot prove is immutable. That makes the whole composable unskippable: it
-            re-runs on every recomposition of whatever called it — in a list, once per row per
-            frame:
+            ${modulePath.get()} has composable parameters the Compose compiler compares by identity:
 
             ${fresh.joinToString("\n            ") { "  $it" }}
 
-            Read build/compose_reports/*-composables.txt for the parameter that caused it. It is
-            almost always one of three things: a List or Map passed straight in (wrap it in an
-            @Immutable class), a type from a module without the Compose compiler plugin, or a `var`
-            in a class being passed as a parameter. A type this project cannot change, one from a
-            library, goes in config/compose-stability.conf instead.
-
-            If it genuinely has to stay, run :${modulePath.get().removePrefix(":")}:recordComposeStability
-            to accept it, in a commit that says why.
+            Under strong skipping such a parameter is compared with ===, so the composable reruns
+            whenever its caller passes a new instance, even an equal one. Pass a stable type (a
+            read-only collection, an @Immutable class, a type listed in config/compose-stability.conf),
+            make it a () -> T provider, or accept it in ${ComposeStability.BASELINE} with a
+            `# reason` in a commit that says why. Read build/$COMPOSE_REPORTS/*-composables.txt for
+            the parameter's type.
             """.trimIndent(),
         )
     }
@@ -186,26 +183,14 @@ internal abstract class RecordComposeStabilityTask : DefaultTask() {
     @TaskAction
     fun record() {
         val file = baselineFile.get().asFile
-        val existing = file.takeIf { it.isFile }
-            ?.readLines()
-            ?.map { it.trim() }
-            ?.filter { it.isNotEmpty() && !it.startsWith("#") }
-            .orEmpty()
+        val existing = file.takeIf { it.isFile }?.readLines().orEmpty()
+        val accepted = ComposeStability.baseline(existing.joinToString("\n")).accepted
 
-        // Merged rather than replaced: each module writes its own report, so recording from one
-        // module would otherwise delete every other module's accepted entries.
-        val merged = (existing + offenders(reports.files)).distinct().sorted()
-
+        // Appended rather than rewritten: each module writes its own report, and recording from one
+        // module must keep every other module's entries and their reasons.
+        val added = ComposeStability.problems(reports.files.filter { it.isFile }.map(File::readText)) - accepted
         file.parentFile.mkdirs()
-        file.writeText(
-            buildString {
-                appendLine("# Composables paying for a recomposition they did not need, accepted for now.")
-                appendLine("#")
-                appendLine("# Written by :recordComposeStability. Deleting a line is how a fix is")
-                appendLine("# recorded — the check fails again if it comes back.")
-                merged.forEach { appendLine(it) }
-            },
-        )
-        logger.lifecycle("Recorded ${merged.size} composable(s) in ${file.path}")
+        file.writeText((existing + added).joinToString("\n", postfix = "\n"))
+        logger.lifecycle("Added ${added.size} entries to ${file.path}; the check fails until each has a `# reason`.")
     }
 }

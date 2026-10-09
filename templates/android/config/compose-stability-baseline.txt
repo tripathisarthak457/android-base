@@ -1,6 +1,4 @@
-# Composables paying for a recomposition they did not need, accepted for now.
-#
-# Written by :recordComposeStability. Deleting a line is how a fix is
-# recorded — the check fails again if it comes back.
-AppSwipeToAction
-MviScreen
+# Composable parameters the Compose compiler compares by identity, accepted with a reason:
+# `fqName(parameter)  # why it has to stay`. Deleting a line records a fix; the check fails
+# again if the parameter comes back.
+com.base.app.core.designsystem.component.list.AppSwipeToAction(resetKey)  # any value whose change closes the row; callers pass the row's own key

@@ -5,6 +5,7 @@ import com.base.app.buildlogic.config.AppConfig
 import com.base.app.buildlogic.library
 import com.base.app.buildlogic.libs
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
@@ -31,8 +32,13 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
     }
 
     // android.util.Log throws "not mocked" in unit tests; defaults make it a no-op instead.
-    // Android resources stay out of unit tests unless a module runs Robolectric and opts in.
     extension.testOptions.unitTests.isReturnDefaultValues = true
+
+    // Robolectric runs unit tests against the merged manifest and resources, so a module whose
+    // tests use it gets them; every other module's unit tests skip that merge.
+    onRobolectricTests {
+        extension.testOptions.unitTests.isIncludeAndroidResources = true
+    }
 
     extension.packaging.resources.apply {
         excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -86,3 +92,23 @@ internal fun Project.configureTestDependencies() {
         }
     }
 }
+
+/**
+ * Runs [action] once this module's unit tests depend on Robolectric, directly or through
+ * `:core:testing:compose`. Dependencies are declared after the conventions apply, so this waits
+ * for them instead of looking now.
+ */
+internal fun Project.onRobolectricTests(action: () -> Unit) {
+    var applied = false
+    configurations.named("testImplementation").configure {
+        dependencies.configureEach {
+            val robolectric = group == "org.robolectric" || (this is ProjectDependency && path == COMPOSE_TESTING)
+            if (robolectric && !applied) {
+                applied = true
+                action()
+            }
+        }
+    }
+}
+
+private const val COMPOSE_TESTING = ":core:testing:compose"
