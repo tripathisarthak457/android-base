@@ -25,6 +25,21 @@ object AppConfig {
     const val VERSION_NAME = "1.0.0"
     // </generated:app-version>
 
+    /**
+     * The languages the app ships, as resource qualifiers. Library translations for any other
+     * language are dropped from the APK.
+     */
+    val LOCALES: List<String> = listOf(
+        // <generated:locale-filters>
+        "en",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "pt-rBR",
+        // </generated:locale-filters>
+    )
+
     val JAVA_VERSION: JavaVersion = JavaVersion.VERSION_17
     val JVM_TARGET: JvmTarget = JvmTarget.JVM_17
 

@@ -87,9 +87,10 @@ kover {
 
 // <opt:depsanalysis>
 /*
- * What each module actually uses, against what it declares.
- */
-/*
+ * What each module actually uses, against what it declares: `./gradlew buildHealth` writes the
+ * report to build/reports/dependency-analysis. It reports rather than fails: the advice is for a
+ * person to weigh, and an unused declaration is not worth stopping a build over.
+ *
  * Applied to every module, not only the root. The root plugin aggregates; it does not analyse.
  */
 subprojects {
@@ -99,12 +100,9 @@ subprojects {
 dependencyAnalysis {
     issues {
         all {
-            onAny { severity("fail") }
-            // Two exceptions the plugin cannot see the reason for: annotation processors and
-            // platforms have no classes to detect, and the design system exposes Compose as `api`
-            // on purpose.
+            onAny { severity("warn") }
+            // Annotation processors have no classes for the plugin to detect in the module's code.
             onUnusedAnnotationProcessors { severity("ignore") }
-            onUsedTransitiveDependencies { severity("warn") }
         }
     }
 }

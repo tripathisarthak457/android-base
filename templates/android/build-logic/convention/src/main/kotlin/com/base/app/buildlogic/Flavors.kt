@@ -9,12 +9,18 @@ import org.gradle.api.Project
 internal fun Project.configureFlavors(extension: ApplicationExtension) {
     extension.flavorDimensions += AppFlavor.DIMENSION
 
+    // `-PapiBaseUrl=http://10.0.2.2:8080/api/` points dev and staging at a machine of your own
+    // without editing AppConfig. The shipped flavours never take it, so a release cannot be built
+    // against a laptop by accident.
+    val apiBaseUrlOverride = providers.gradleProperty("apiBaseUrl").orNull
+
     AppFlavor.entries.forEach { flavor ->
         extension.productFlavors.create(flavor.flavorName).apply {
             dimension = AppFlavor.DIMENSION
             flavor.applicationIdSuffix?.let { applicationIdSuffix = it }
 
-            buildConfigField("String", "API_BASE_URL", "\"${flavor.apiBaseUrl}\"")
+            val apiBaseUrl = apiBaseUrlOverride?.takeUnless { flavor.isShippable } ?: flavor.apiBaseUrl
+            buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
             buildConfigField("String", "WEB_SOCKET_URL", "\"${flavor.webSocketUrl}\"")
             buildConfigField("String", "ENVIRONMENT", "\"${flavor.flavorName}\"")
             buildConfigField("boolean", "IS_SHIPPABLE", flavor.isShippable.toString())
@@ -37,6 +43,14 @@ internal fun Project.configureVariants(components: ApplicationAndroidComponentsE
         if (variant.name != UNIT_TESTED_VARIANT) {
             variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
         }
+
+        // The baseline-profile build types exist to generate and measure one profile, which is
+        // merged into main and so ships with every flavour. Dev is the flavour that runs them.
+        if (variant.buildType in PROFILE_BUILD_TYPES &&
+            variant.productFlavors.none { it.second == AppFlavor.DEV.flavorName }
+        ) {
+            variant.enable = false
+        }
     }
 
     components.onVariants { variant ->
@@ -55,18 +69,14 @@ internal fun Project.configureVariants(components: ApplicationAndroidComponentsE
     }
 }
 
-/** Per-ABI APKs plus a universal one, for release APK builds only. */
+/**
+ * Per-ABI APKs plus a universal one, only with `-PabiSplits=true`. The template's native code is
+ * a few small libraries, so splitting saves tens of kilobytes per APK, and Play already delivers
+ * one ABI per device from the bundle.
+ */
 internal fun Project.configureAbiSplits(extension: ApplicationExtension) {
-    val requestedTasks = gradle.startParameter.taskNames
-    val explicit = providers.gradleProperty("abiSplits").orNull?.toBooleanStrictOrNull()
-
-    // AGP cannot produce ABI splits and an app bundle in one invocation — the shrunk-resources
-    // output would be ambiguous, and it fails the build saying so.
-    val buildsBundle = requestedTasks.any { it.contains("bundle", ignoreCase = true) }
-    val assemblingRelease = requestedTasks.any { it.contains("Release") } && !buildsBundle
-
     extension.splits.abi.apply {
-        isEnable = explicit ?: assemblingRelease
+        isEnable = providers.gradleProperty("abiSplits").orNull.toBoolean()
         reset()
         include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         isUniversalApk = true
@@ -74,3 +84,4 @@ internal fun Project.configureAbiSplits(extension: ApplicationExtension) {
 }
 
 private const val UNIT_TESTED_VARIANT = "devDebug"
+private val PROFILE_BUILD_TYPES = setOf("benchmarkRelease", "nonMinifiedRelease")

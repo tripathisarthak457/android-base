@@ -2,6 +2,8 @@
 .gradle/
 .kotlin/
 local.properties
+# Gradle writes this when a daemon JVM is pinned; the project runs on whatever JDK 17+ is installed.
+gradle/gradle-daemon-jvm.properties
 .idea/
 .DS_Store
 build/
