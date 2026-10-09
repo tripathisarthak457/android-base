@@ -7,12 +7,14 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
+import com.base.app.core.common.result.AppError
 import com.base.app.core.mvi.MessageKind
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
 import com.base.app.core.mvi.UiEvent
 import com.base.app.core.mvi.UiState
 import com.base.app.core.mvi.UiText
+import com.base.app.core.ui.toUiText
 import com.base.app.data.profile.api.Profile
 import com.base.app.data.profile.api.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -98,6 +100,12 @@ internal class ProfileViewModel @Inject constructor(
             repository.save(name, bio)
             showMessage(text = UiText.of(R.string.profile_saved), kind = MessageKind.Success)
         }
+    }
+
+    // The profile lives on the device, so a failure here is the store refusing a write, and the
+    // person would otherwise believe the change was kept.
+    override fun onUnexpected(error: AppError.Unexpected) {
+        showMessage(text = error.toUiText(), kind = MessageKind.Error)
     }
 
     companion object {

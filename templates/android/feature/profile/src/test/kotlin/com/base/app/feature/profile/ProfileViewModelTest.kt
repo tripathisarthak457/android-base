@@ -3,10 +3,12 @@ package com.base.app.feature.profile
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
+import com.base.app.core.mvi.MessageKind
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.data.profile.api.Profile
 import com.base.app.data.profile.api.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -16,6 +18,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import java.io.IOException
 
 class ProfileViewModelTest {
 
@@ -69,6 +72,19 @@ class ProfileViewModelTest {
         assertFalse(viewModel.state.value.isDirty)
     }
 
+    @Test
+    fun `a save the store refuses is reported`() = runTest {
+        val repository = FakeProfileRepository(Profile(name = "Ada"), refuseWrites = true)
+        val viewModel = appeared(repository)
+
+        viewModel.name.type("Grace")
+        viewModel.onEvent(ProfileEvent.Save)
+        advanceUntilIdle()
+
+        assertEquals(MessageKind.Error, viewModel.messages.first().kind)
+        assertEquals("Ada", repository.state.value.name)
+    }
+
     private fun TestScope.appeared(repository: ProfileRepository): ProfileViewModel =
         ProfileViewModel(repository, SavedStateHandle()).also {
             it.state.launchIn(backgroundScope)
@@ -83,11 +99,15 @@ private fun TextFieldState.type(text: String) {
     Snapshot.sendApplyNotifications()
 }
 
-private class FakeProfileRepository(initial: Profile) : ProfileRepository {
+private class FakeProfileRepository(
+    initial: Profile,
+    private val refuseWrites: Boolean = false,
+) : ProfileRepository {
     val state = MutableStateFlow(initial)
     override val profile = state
 
     override suspend fun save(name: String, bio: String) {
+        if (refuseWrites) throw IOException("No space left on device")
         state.value = state.value.copy(name = name.trim(), bio = bio.trim())
     }
 
