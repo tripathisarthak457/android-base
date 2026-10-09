@@ -88,6 +88,7 @@ type Result struct {
 	IgnoredFields    []string `json:"ignored_fields"`
 	GeneratorCommit  string   `json:"generator_commit"`
 	// Keys that were asked for and not produced: no JDK on this host, or keytool refused them.
+	// Optional: generate_headless.py does not report it yet.
 	KeystoresSkipped []string `json:"keystores_skipped"`
 }
 

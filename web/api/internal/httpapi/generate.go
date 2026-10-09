@@ -21,8 +21,9 @@ import (
 const glassFeature = "liquidglass"
 
 // generate answers POST /api/v1/{target}/generate (and the legacy /api/generate as android): the spec
-// is checked for size and shape, passed to the generator unchanged, and the zip streamed back. Every
-// request is recorded with its outcome, whatever happens.
+// is checked for size and shape, passed to the generator unchanged, and the zip streamed back. A
+// request for an enabled target is recorded with its outcome unless its body could not be read; a
+// client over the rate limit is recorded once per window, not once per refusal.
 func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string) {
 	started := time.Now()
 	gen := s.generators[target]
@@ -140,8 +141,9 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 	w.Header().Set("Content-Length", strconv.FormatInt(out.ZipBytes, 10))
 	w.Header().Set("X-Project-Name", strings.TrimSuffix(name, ".zip"))
 	w.Header().Set("X-Generation-Ms", strconv.Itoa(elapsed))
-	// A key that was asked for and not produced: the zip is complete, but a visitor who was told
-	// they were getting keys has to hear that they did not.
+	// Keys asked for and not produced: the zip is complete, but a visitor who was told they were
+	// getting keys has to hear that they did not. The generator does not list them in its result
+	// yet (it only explains them in warnings), so until it does this header is never sent.
 	if skipped := identifiers(out.KeystoresSkipped); len(skipped) > 0 {
 		w.Header().Set("X-Keystores-Skipped", strings.Join(skipped, ","))
 	}
