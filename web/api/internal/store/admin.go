@@ -477,12 +477,20 @@ func (s *Store) Failures(ctx context.Context, f Filter, featureKeys []string) (F
 	}
 	f.Outcome = ""
 
+	// The generator quotes the value it refused ("Unknown field 'colour'.", with the field named
+	// after it too), so quoted values are masked, and a field the reason quotes is left out: one
+	// cause is one row, however many values it was given.
 	var p params
 	from, where := f.generations(&p)
+	quote := p.add("'")
 	err := s.query(ctx, `
-		SELECT COALESCE(g.failure_field, ''), COALESCE(g.failure_reason, ''), count(*)
-		FROM `+from+` WHERE `+where+` AND g.outcome = 'invalid'
-		GROUP BY 1, 2 ORDER BY 3 DESC LIMIT 20`, p.args,
+		WITH r AS (
+			SELECT CASE WHEN strpos(g.failure_reason, `+quote+` || g.failure_field || `+quote+`) > 0 THEN ''
+			            ELSE COALESCE(g.failure_field, '') END AS field,
+			       regexp_replace(COALESCE(g.failure_reason, ''), `+p.add(`'[^']*'`)+`, `+p.add("'…'")+`, 'g') AS reason
+			FROM `+from+` WHERE `+where+` AND g.outcome = 'invalid')
+		SELECT field, reason, count(*) FROM r
+		GROUP BY 1, 2 ORDER BY 3 DESC, 2 LIMIT 20`, p.args,
 		func(rows pgx.Rows) error {
 			var r Rejection
 			if err := rows.Scan(&r.Field, &r.Reason, &r.N); err != nil {

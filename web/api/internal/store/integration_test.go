@@ -450,6 +450,38 @@ func TestIntegrationAdminQueriesReadWhatWasRecorded(t *testing.T) {
 	}
 }
 
+func TestIntegrationRejectionsAreGroupedByCauseNotByValue(t *testing.T) {
+	s := connected(t, testDatabase(t))
+	ctx := context.Background()
+	rejected := func(field, reason string) Generation {
+		return Generation{Target: "android", Outcome: telemetry.Invalid, VisitorHash: "h", FailureField: field, FailureReason: reason}
+	}
+	batch := &Batch{Generations: []Generation{
+		rejected("colour", "Unknown field 'colour'."),
+		rejected("theme", "Unknown field 'theme'."),
+		rejected("design_style", "Unknown design style 'Neon'. Choose one of: Utility, Social."),
+		rejected("design_style", "Unknown design style 'Retro'. Choose one of: Utility, Social."),
+		rejected("package_name", "A package name is required, like com.example.myapp."),
+		rejected("package_name", "A package name is required, like com.example.myapp."),
+	}}
+	if err := s.write(ctx, batch); err != nil {
+		t.Fatal(err)
+	}
+
+	failures, err := s.Failures(ctx, today(), []string{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []Rejection{
+		{Field: "package_name", Reason: "A package name is required, like com.example.myapp.", N: 2},
+		{Field: "design_style", Reason: "Unknown design style '…'. Choose one of: Utility, Social.", N: 2},
+		{Field: "", Reason: "Unknown field '…'.", N: 2},
+	}
+	if !slices.Equal(failures.Rejections, want) {
+		t.Fatalf("rejections %+v", failures.Rejections)
+	}
+}
+
 func TestIntegrationTheWriterRecordsInTheBackground(t *testing.T) {
 	s := connected(t, testDatabase(t))
 	w := NewWriter(s, 4, quiet)
