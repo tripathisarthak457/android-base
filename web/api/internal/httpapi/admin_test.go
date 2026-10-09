@@ -3,6 +3,7 @@
 package httpapi
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -90,9 +91,13 @@ func TestAdminSeparatesAuthFromAnUnreachableDatabase(t *testing.T) {
 		}
 		w := ts.do(http.MethodGet, "/api/v1/admin/"+path, "", auth)
 		if path == "health" {
-			// Route health needs the database; the process half answers regardless.
-			if w.Code != http.StatusServiceUnavailable {
-				t.Errorf("health: %d", w.Code)
+			var health struct {
+				Routes   []any  `json:"routes"`
+				Database string `json:"database"`
+			}
+			if err := json.Unmarshal(w.Body.Bytes(), &health); err != nil || w.Code != http.StatusOK ||
+				health.Routes == nil || len(health.Routes) != 0 || health.Database != "connecting" {
+				t.Errorf("health with the database down: %d %s", w.Code, w.Body.String())
 			}
 			continue
 		}

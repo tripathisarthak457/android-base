@@ -471,6 +471,11 @@ func (s *Server) handleFeedbackList(w http.ResponseWriter, r *http.Request) {
 func (s *Server) handleAdminHealth(w http.ResponseWriter, r *http.Request) {
 	s.admin(func(r *http.Request, f store.Filter) (any, error) {
 		routes, err := s.store.RouteHealth(r.Context(), f)
+		// The process's own state is what the admin needs most while the database is still
+		// connecting, so it answers then too, with no routes.
+		if errors.Is(err, store.ErrNotReady) {
+			routes, err = []store.RouteHealth{}, nil
+		}
 		return struct {
 			window
 			Routes    []store.RouteHealth `json:"routes"`
