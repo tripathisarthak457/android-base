@@ -116,6 +116,7 @@ fun AppTextField(
             suffix = suffix,
             leadingIcon = leadingIcon,
             trailing = trailing,
+            multiline = lineLimits != TextFieldLineLimits.SingleLine,
         ),
     )
 }
@@ -138,6 +139,7 @@ internal fun fieldDecorator(
     leadingIcon: ImageVector? = null,
     trailing: (@Composable () -> Unit)? = null,
     textStyle: TextStyle = AppTheme.typography.body,
+    multiline: Boolean = false,
 ): TextFieldDecorator {
     val colors = AppTheme.colors
     val spacing = AppTheme.spacing
@@ -173,25 +175,33 @@ internal fun fieldDecorator(
                     .fieldBox(treatment, shape, fill, edge, strokeWidth.value)
                     .padding(horizontal = if (treatment == FieldTreatment.Underlined) spacing.xxs else spacing.md),
                 horizontalArrangement = Arrangement.spacedBy(spacing.sm),
-                verticalAlignment = Alignment.CenterVertically,
+                // A multi-line field grows downwards from its first line, so everything beside the
+                // text lines up with that line rather than with the middle of the box.
+                verticalAlignment = if (multiline) Alignment.Top else Alignment.CenterVertically,
             ) {
-                leadingIcon?.let { AppIcon(it, contentDescription = null, tint = colors.contentTertiary) }
-                prefix?.let { AppText(text = it, style = textStyle, color = colors.contentSecondary) }
+                val besideText = if (multiline) Modifier.padding(top = spacing.md) else Modifier
+                leadingIcon?.let { AppIcon(it, contentDescription = null, modifier = besideText, tint = colors.contentTertiary) }
+                prefix?.let { AppText(text = it, modifier = besideText, style = textStyle, color = colors.contentSecondary) }
                 Box(
                     modifier = Modifier.weight(1f).padding(vertical = spacing.md),
-                    contentAlignment = Alignment.CenterStart,
+                    contentAlignment = if (multiline) Alignment.TopStart else Alignment.CenterStart,
                 ) {
                     if (placeholder != null && empty()) {
-                        AppText(text = placeholder, style = textStyle, color = colors.contentTertiary, maxLines = 1)
+                        AppText(
+                            text = placeholder,
+                            style = textStyle,
+                            color = colors.contentTertiary,
+                            maxLines = if (multiline) Int.MAX_VALUE else 1,
+                        )
                     }
                     innerTextField()
                 }
-                suffix?.let { AppText(text = it, style = textStyle, color = colors.contentSecondary) }
-                trailing?.invoke()
+                suffix?.let { AppText(text = it, modifier = besideText, style = textStyle, color = colors.contentSecondary) }
+                trailing?.let { Box(besideText) { it() } }
             }
             AnimatedVisibility(visible = supporting != null || counter != null) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     AppText(
