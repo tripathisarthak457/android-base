@@ -20,6 +20,7 @@ const DIMENSIONS: [string, string][] = [
 export function Adoption({ token, query, version, onUnauthorized }: PanelProps) {
   const result = useAdminQuery<AdoptionData>("adoption", token, query, version, onUnauthorized);
   const [chosen, setChosen] = useState<string | null>(null);
+  const [dimension, setDimension] = useState("features");
   return (
     <Panel title="Adoption" note="generated projects only" result={result}>
       {(data) => {
@@ -27,8 +28,12 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
         if (!target) return <p className="text-sm text-ink-400">No targets.</p>;
         const weeks = target.weekly.map((week) => week.week);
         const total = new Map(target.weekly.map((week) => [week.week, week.total]));
-        const weekly = new Map(target.weekly.map((week) => [week.week, week.values.features ?? {}]));
+        const weekly = new Map(target.weekly.map((week) => [week.week, week.values[dimension] ?? {}]));
         const features = [...target.features].sort((a, b) => b.n - a.n);
+        const rows =
+          dimension === "features"
+            ? features.map((feature) => ({ key: feature.key, label: feature.title || feature.key }))
+            : (target.dimensions[dimension] ?? []).map((row) => ({ key: row.key, label: row.key || "none" }));
         return (
           <div className="space-y-6">
             {data.targets.length > 1 && (
@@ -69,9 +74,23 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
               </div>
             </div>
             <div>
-              <h3 className="mb-2 text-xs font-medium text-ink-300">Weekly share of projects with each feature</h3>
+              <div className="mb-2 flex flex-wrap items-center gap-3">
+                <h3 className="text-xs font-medium text-ink-300">Weekly share of projects</h3>
+                <select
+                  aria-label="Weekly share of"
+                  value={dimension}
+                  onChange={(event) => setDimension(event.target.value)}
+                  className="h-7 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100"
+                >
+                  {[["features", "Features"], ...DIMENSIONS].map(([key, label]) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <Heatmap
-                rows={features.map((feature) => ({ key: feature.key, label: feature.title || feature.key }))}
+                rows={rows}
                 columns={weeks}
                 count={(row, column) => weekly.get(column)?.[row] ?? 0}
                 share={(row, column) => {
