@@ -10,7 +10,7 @@ import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.stack.StackHost
 import com.base.app.core.navigation.transition.ScreenMotion
 
-/** Every opened tab's host, kept composed, with only the selected one measured and drawn. */
+/** Every opened tab's host, kept composed, with only the selected one drawn. */
 @Composable
 internal fun TabbedNavHost(
     state: ShellState,
@@ -19,7 +19,12 @@ internal fun TabbedNavHost(
     hidesBar: (AppNavKey) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
-    KeptTabs(selected = state.selectedIndex, generation = state.generation, modifier = modifier) { index ->
+    KeptTabs(
+        selected = state.selectedIndex,
+        generation = state.generation,
+        modifier = modifier,
+        revealSwitch = state::revealSwitch,
+    ) { index ->
         CompositionLocalProvider(LocalTabReselections provides state.reselections[index]) {
             StackHost(
                 stack = state.tabs[index],

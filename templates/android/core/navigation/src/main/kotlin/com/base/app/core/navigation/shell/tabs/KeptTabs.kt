@@ -1,16 +1,20 @@
 package com.base.app.core.navigation.shell.tabs
 
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.focus.focusProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -20,28 +24,38 @@ import androidx.navigationevent.NavigationEventDispatcher
 import androidx.navigationevent.NavigationEventDispatcherOwner
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.TabVisibility
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.rememberReduceMotion
 
 /**
  * Every tab opened in this session stays composed, and a switch shows another one instead of
- * building it again: rebuilding composed a whole screen on the frame of the tap. The switch is
- * instant, as on iOS; the bar's indicator is the motion.
+ * building it again: rebuilding composed a whole screen on the frame of the tap.
  *
- * A hidden tab is neither measured nor placed, so it costs nothing in layout or drawing, and its
- * lifecycle is held at CREATED: flows collected with the lifecycle pause, and a screen that acts on
- * being seen does not act while out of sight. [LocalTabVisible] is false inside it, so shimmer and
- * spinners stop their clocks.
+ * A hidden tab is parked: still measured and placed, so its layers and display lists survive, but
+ * drawn at alpha 0 off the window, out of the semantics tree and out of reach of touch. Showing it
+ * again changes two layer properties; nothing is measured or recorded on the switch frame.
+ * Skipping its layout instead would drop every layer it had, and the switch would pay to rebuild
+ * them. Its lifecycle is held at CREATED, so flows collected with the lifecycle pause and a screen
+ * that acts on being seen does not act out of sight; [LocalTabVisible] tells clocks to stop.
  *
- * A hidden tab also stops answering Back. Navigation 3 registers each stack's back handler for as
- * long as the stack is composed, and the most recently registered enabled handler wins: a tab left a
- * few screens deep would take the swipe meant for the visible one.
+ * A hidden tab also stops answering Back: its dispatcher is disabled, or a tab left a few screens
+ * deep would take the swipe meant for the visible one.
+ *
+ * The tab coming to the front on a tap is nudged toward the direction of travel and unveiled
+ * ([TabReveal]); the one leaving disappears at once, so two screens are never drawn together.
  *
  * A new [generation] (sign-out, another account) starts with nothing kept.
+ *
+ * @param revealSwitch whether the switch to [selected] is one the user made, which gets the reveal;
+ *   a deep link or a programmatic switch shows the tab at once.
  */
 @Composable
 internal fun KeptTabs(
     selected: Int,
     generation: Int,
     modifier: Modifier = Modifier,
+    revealSwitch: () -> Boolean = { false },
     content: @Composable (index: Int) -> Unit,
 ) {
     // Grows only when [selected] changes, which recomposes this anyway; written after composition so
@@ -49,22 +63,32 @@ internal fun KeptTabs(
     val opened = remember(generation) { mutableStateListOf<Int>() }
     if (selected !in opened) SideEffect { opened += selected }
 
+    val selection = rememberUpdatedState(selected)
+    val reveal = remember(generation) { TabReveal(selected) }
+    val reduceMotion = rememberReduceMotion()
+    // Applied with the composition that switches, before that frame is laid out and drawn, so the
+    // first frame of the incoming tab is already nudged and veiled.
+    SideEffect { reveal.switchTo(selected, animate = revealSwitch() && !reduceMotion) }
+    LaunchedEffect(reveal, selected) { reveal.run(selected) }
+    val veil = AppTheme.colors.background
+
     Box(modifier) {
         (opened + selected).distinct().forEach { index ->
             key(generation, index) {
                 val active = index == selected
+                val visibility = remember { TabVisibility { selection.value == index } }
                 CompositionLocalProvider(
                     LocalLifecycleOwner provides rememberTabLifecycle(active),
+                    LocalTabVisible provides visibility,
                     *rememberTabBackDispatcher(active),
                 ) {
                     Box(
-                        Modifier.layout { measurable, constraints ->
-                            if (!active) return@layout layout(constraints.maxWidth, constraints.maxHeight) {}
-                            val placeable = measurable.measure(constraints)
-                            layout(placeable.width, placeable.height) { placeable.place(0, 0) }
-                        },
+                        Modifier
+                            .keptTab(parked = !active, reveal = reveal, index = index, veil = veil)
+                            .focusProperties { onEnter = { if (selection.value != index) cancelFocusChange() } }
+                            .focusGroup(),
                     ) {
-                        CompositionLocalProvider(LocalTabVisible provides active) { content(index) }
+                        content(index)
                     }
                 }
             }
@@ -91,6 +115,11 @@ private class TabBackDispatcher(parent: NavigationEventDispatcher) : NavigationE
     override val navigationEventDispatcher = NavigationEventDispatcher(parent)
 }
 
+/**
+ * A tab's lifecycle: lowered to CREATED on the frame it is hidden, and raised two frames after it
+ * comes to the front, once the switch frame is on screen. Raised on the switch frame itself, every
+ * collector in the tab would restart inside the frame that has to show it.
+ */
 @Composable
 internal fun rememberTabLifecycle(active: Boolean): LifecycleOwner {
     val parent = LocalLifecycleOwner.current
@@ -103,9 +132,18 @@ internal fun rememberTabLifecycle(active: Boolean): LifecycleOwner {
             owner.end()
         }
     }
-    SideEffect {
-        owner.cap = if (active) Lifecycle.State.RESUMED else Lifecycle.State.CREATED
-        owner.follow(parent.lifecycle.currentState)
+    if (active) {
+        LaunchedEffect(owner) {
+            withFrameNanos {}
+            withFrameNanos {}
+            owner.cap = Lifecycle.State.RESUMED
+            owner.follow(parent.lifecycle.currentState)
+        }
+    } else {
+        SideEffect {
+            owner.cap = Lifecycle.State.CREATED
+            owner.follow(parent.lifecycle.currentState)
+        }
     }
     return owner
 }

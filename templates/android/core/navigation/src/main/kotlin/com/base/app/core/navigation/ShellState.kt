@@ -55,6 +55,13 @@ class ShellState internal constructor(
     var selectedIndex by mutableIntStateOf(initialTab)
         private set
 
+    /**
+     * Whether the last switch was the user's (a tap, or Back at another tab's root), which the
+     * incoming tab reveals; a deep link or a navigation to a root shows the tab at once.
+     */
+    internal var revealSwitch = false
+        private set
+
     /** Counts reselections of each tab at its root, which scroll its primary list to the top. */
     internal val reselections: List<MutableIntState> = List(tabs.size) { mutableIntStateOf(0) }
 
@@ -87,6 +94,7 @@ class ShellState internal constructor(
     fun select(index: Int) {
         if (index !in tabs.indices) return
         if (index != selectedIndex) {
+            revealSwitch = true
             selectedIndex = index
             return
         }
@@ -128,6 +136,7 @@ class ShellState internal constructor(
             showRoot(root)
             return
         }
+        revealSwitch = false
         selectedIndex = rootKeys.indexOfFirst { sameGraph(it, key) }.takeIf { it >= 0 } ?: selectedIndex
         val host = if (isPresented(key)) presented else current
         if (host.entries.lastOrNull() == key) return
@@ -141,6 +150,7 @@ class ShellState internal constructor(
 
     internal fun backAtRoot(): Boolean {
         if (!canBackAtRoot) return false
+        revealSwitch = true
         selectedIndex = 0
         return true
     }
@@ -149,6 +159,7 @@ class ShellState internal constructor(
         val stack = tabs[tab]
         if (tab != selectedIndex) {
             stack.pop(stack.size)
+            revealSwitch = false
             selectedIndex = tab
             return Verdict.Apply
         }

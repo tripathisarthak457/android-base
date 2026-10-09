@@ -31,6 +31,7 @@ import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
 import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.TabVisibility
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.shell.tabs.CappedLifecycle
@@ -48,14 +49,14 @@ internal fun StackLayout(
     listPaneWidth: Dp,
     modifier: Modifier = Modifier,
 ) {
-    val tabVisible = LocalTabVisible.current
+    val tab = LocalTabVisible.current
     val isLight = AppTheme.colors.isLight
     Layout(
         modifier = modifier,
         content = {
             shown.forEach { entry ->
                 key(entry.contentKey) {
-                    EntrySlot(entry, scene, plan, onTop = entry.contentKey in plan.top.shown, tabVisible, isLight)
+                    EntrySlot(entry, scene, plan, onTop = entry.contentKey in plan.top.shown, tab, isLight)
                 }
             }
             plan.emptyDetails.forEach { empty ->
@@ -93,11 +94,12 @@ private fun EntrySlot(
     scene: StackScene,
     plan: StackPlan,
     onTop: Boolean,
-    tabVisible: Boolean,
+    tab: TabVisibility,
     isLight: Boolean,
 ) {
     val key = entry.contentKey
     val lifecycle = rememberEntryLifecycle(scene, key)
+    val visibility = remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
     val detailPane = plan.slotOf(key) == Slot.Detail
     val divider = AppTheme.colors.divider
     val draw = remember(scene, key, isLight, detailPane, divider) {
@@ -110,7 +112,7 @@ private fun EntrySlot(
     }
     CompositionLocalProvider(
         LocalLifecycleOwner provides lifecycle,
-        LocalTabVisible provides (tabVisible && onTop),
+        LocalTabVisible provides visibility,
     ) {
         Box(draw.then(if (onTop) Modifier else Covered)) { entry.Content() }
     }

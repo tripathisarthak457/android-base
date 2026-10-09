@@ -20,6 +20,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.TabVisibility
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.FeedTab
@@ -53,7 +54,7 @@ class StackSceneTest {
 
     private val probe = Probe()
     private var rootLifecycle: Lifecycle? = null
-    private var rootVisible = true
+    private var rootVisible: TabVisibility? = null
     private val stack = AppBackStack(mutableStateListOf(FeedTab))
 
     private val registry = testRegistry { key ->
@@ -92,7 +93,7 @@ class StackSceneTest {
         assertEquals("composed once", 1, probe.compositions)
         assertEquals("never detached", 0, probe.detaches)
         assertEquals("the page under the top is started, so its data stays current", Lifecycle.State.STARTED, rootLifecycle!!.currentState)
-        assertFalse(rootVisible)
+        assertFalse(rootVisible!!.isVisible)
         // What accessibility reads: the parked root's semantics are cleared.
         rule.onNodeWithTag(FeedTab.toString()).assertDoesNotExist()
 
@@ -102,7 +103,7 @@ class StackSceneTest {
         assertEquals("the pop composed nothing", 1, probe.compositions)
         assertEquals("the pop detached nothing", 0, probe.detaches)
         assertEquals(Lifecycle.State.RESUMED, rootLifecycle!!.currentState)
-        assertTrue(rootVisible)
+        assertTrue(rootVisible!!.isVisible)
         rule.onNodeWithTagExists(FeedTab)
     }
 

@@ -36,10 +36,21 @@ val LocalBottomChrome = staticCompositionLocalOf { ChromeInset() }
 val LocalTopChrome = staticCompositionLocalOf { ChromeInset() }
 
 /**
- * False inside a kept tab or a covered entry that is not on screen. Ambient animations (shimmer, spinners, anything
- * infinite) stop while it is false, so hidden content costs nothing per frame.
+ * Whether the screen it is provided to is on display: its tab is in front and nothing covers it in its stack. Hidden
+ * tabs and covered screens stay composed, so anything that runs on a clock (shimmer, a spinner, a blinking caret)
+ * pauses while [isVisible] is false, and hidden content costs nothing per frame.
+ *
+ * The holder a screen gets never changes, so a tab switch or a push recomposes nothing through it. Read [isVisible]
+ * in an effect (`snapshotFlow`) or a draw block.
  */
-val LocalTabVisible = compositionLocalOf { true }
+@Stable
+class TabVisibility(private val visible: () -> Boolean) {
+    val isVisible: Boolean get() = visible()
+}
+
+val LocalTabVisible = staticCompositionLocalOf { AlwaysVisible }
+
+private val AlwaysVisible = TabVisibility { true }
 
 /**
  * True where the tab bar floats over the content: tab screens, pushed or not. False on a full-screen
