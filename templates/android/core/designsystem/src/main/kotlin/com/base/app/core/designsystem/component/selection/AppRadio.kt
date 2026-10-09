@@ -28,7 +28,7 @@ fun AppRadio(
 ) {
     val colors = AppTheme.colors
     val haptics = rememberAppHaptics()
-    val dot = animateFloatAsState(if (selected) 1f else 0f, AppTheme.springs.selection.unit, label = "radio")
+    val dot = animateFloatAsState(if (selected) 1f else 0f, AppTheme.springs.thumb.unit, label = "radio")
     val interaction = if (enabled && onClick != null) {
         Modifier.selectable(selected = selected, indication = null, interactionSource = null, role = Role.RadioButton) {
             if (!selected) haptics.perform(AppHaptic.Selection)

@@ -76,7 +76,7 @@ object AppNavigationRailDefaults {
 private fun VerticalPill(selectedIndex: Int) {
     val y by animateDpAsState(
         targetValue = ItemHeight * selectedIndex,
-        animationSpec = AppTheme.springs.selection.dp,
+        animationSpec = AppTheme.springs.thumb.dp,
         label = "railPill",
     )
     Box(

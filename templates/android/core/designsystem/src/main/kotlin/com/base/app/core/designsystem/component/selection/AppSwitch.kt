@@ -99,7 +99,7 @@ fun AppSwitch(
                                 if (landed != checked) {
                                     toggle(landed)
                                 } else {
-                                    motion.position.animateTo(if (checked) 1f else 0f, springs.selection.unit)
+                                    motion.position.animateTo(if (checked) 1f else 0f, springs.thumb.unit)
                                 }
                             },
                         )
@@ -134,7 +134,7 @@ internal fun SwitchTrack(
     val pressed by interactionSource.collectIsPressedAsState()
     val dragged by interactionSource.collectIsDraggedAsState()
     val widen = animateFloatAsState(if (pressed || dragged) 1f else 0f, springs.press.unit, label = "switchWiden")
-    LaunchedEffect(checked) { motion.position.animateTo(if (checked) 1f else 0f, springs.selection.unit) }
+    LaunchedEffect(checked) { motion.position.animateTo(if (checked) 1f else 0f, springs.thumb.unit) }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
 
     Canvas(modifier = modifier.size(width = TrackWidth, height = TrackHeight)) {

@@ -13,8 +13,8 @@ import org.junit.Test
 class PaletteContrastTest {
 
     private val palettes: List<Pair<String, AppColors>> = AppDesignStyle.entries.flatMap { design ->
-        listOf(LightColors, DarkColors).map { base ->
-            "${design.name} ${if (base.isLight) "light" else "dark"}" to base.withSurfaces(design.style().surfaces)
+        listOf(false, true).map { dark ->
+            "${design.name} ${if (dark) "dark" else "light"}" to design.style().surfaces.colors(dark)
         }
     }
 
@@ -76,8 +76,8 @@ class PaletteContrastTest {
     fun `the tab bar shows its selection without relying on a faint pill`() {
         AppDesignStyle.entries.forEach { design ->
             val style = design.style()
-            listOf(LightColors, DarkColors).forEach { base ->
-                val colors = base.withSurfaces(style.surfaces)
+            listOf(false, true).forEach { dark ->
+                val colors = style.surfaces.colors(dark)
                 val name = "${design.name} ${if (colors.isLight) "light" else "dark"} ${style.bar}"
                 val bar = barSurface(style.bar, colors)
                 when (style.indicator) {
@@ -119,6 +119,9 @@ class PaletteContrastTest {
     }
 
     private companion object {
+        const val AA_TEXT = 4.5f
+        const val AA_NON_TEXT = 3f
+        const val THUMB_ON_TRACK = 1.5f
         const val LIGHT_THUMB_ON_TRACK = 1.15f
     }
 }

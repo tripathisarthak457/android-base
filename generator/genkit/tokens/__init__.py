@@ -4,7 +4,7 @@ every emitter (Kotlin, Swift, the website's catalogue) writes out.
 
     foundation.json   spacing, radii, sizes, borders, elevation
     typography.json   the role scale and each voice's weight per role
-    motion.json       springs as (response, bounce scale), motion styles, fades, press, navigation
+    motion.json       springs as (response, bounce), motion styles, scrolling, fades, press, navigation, tab bar
     palette.json      ramps, the template brand, status hues, roles per theme, surface tones
     styles.json       design styles: corners, treatments, surface tone, type voice
 
@@ -36,7 +36,20 @@ THEMES: tuple[str, ...] = ("light", "dark")
 BRAND_COLOURS: tuple[str, ...] = ("accent", "secondary", "tertiary")
 _BRAND_FIELDS = ("base", "pressed", "subtleLight", "dark", "darkPressed", "subtleDark", "onLight", "onDark")
 _STYLE_RADII = ("xs", "sm", "md", "lg", "xl", "sheet")
-_STATUS_FIELDS = ("base", "subtle", "border")
+_STATUS_FIELDS = ("base", "subtle")
+
+#: What a project without downloadable fonts draws with, named as Android names the families.
+PLATFORM_SANS = "sans-serif"
+PLATFORM_MONO = "monospace"
+
+#: The surfaces text is drawn on, which every text and control role must read against.
+SURFACE_ROLES: tuple[str, ...] = ("background", "backgroundGrouped", "surface", "surfaceGrouped", "surfaceElevated")
+#: WCAG 2.1's 3:1 for the parts of a control that must be seen (1.4.11).
+AA_NON_TEXT = 3.0
+#: A dark segmented thumb against its track, where no shadow separates them.
+THUMB_ON_TRACK = 1.5
+_SHADE_STEPS = 30
+_SHADE_STEP = 0.05
 
 _HEX = re.compile(r"^#(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$")
 _IDENTIFIER = re.compile(r"^[A-Z][A-Za-z]*$")
@@ -145,21 +158,48 @@ def _validate_motion(motion: dict[str, Any]) -> None:
         if _number("motion", f"styles.{name}.speed", style["speed"]) <= 0:
             raise _fail("motion", f"styles.{name}.speed", "must be above 0")
     for name, spring in _table("motion", "springs", motion.get("springs")).items():
-        _table("motion", f"springs.{name}", spring, ("response", "bounceScale", "bySpeed"))
-        if _number("motion", f"springs.{name}.response", spring["response"]) <= 0:
-            raise _fail("motion", f"springs.{name}.response", "must be above 0")
-        _number("motion", f"springs.{name}.bounceScale", spring["bounceScale"], 0)
+        where = f"springs.{name}"
+        _table("motion", where, spring, ("response", "bySpeed"))
+        if _number("motion", f"{where}.response", spring["response"]) <= 0:
+            raise _fail("motion", f"{where}.response", "must be above 0")
+        if ("bounce" in spring) == ("bounceScale" in spring):
+            raise _fail("motion", where, "needs either bounce (fixed) or bounceScale (of the style's bounce)")
+        if "bounceScale" in spring:
+            _number("motion", f"{where}.bounceScale", spring["bounceScale"], 0)
+        elif not -1 < _number("motion", f"{where}.bounce", spring["bounce"]) < 1:
+            raise _fail("motion", f"{where}.bounce", "must be above -1 and below 1")
         if not isinstance(spring["bySpeed"], bool):
-            raise _fail("motion", f"springs.{name}.bySpeed", "must be true or false")
-    for group in ("visibilityThreshold", "fades", "stagger", "press"):
+            raise _fail("motion", f"{where}.bySpeed", "must be true or false")
+    scroll = _table(
+        "motion", "scroll", motion.get("scroll"), ("rubberBand", "flingFriction", "pagingFriction", "overscrollRelease")
+    )
+    for key in ("rubberBand", "flingFriction", "pagingFriction"):
+        if _number("motion", f"scroll.{key}", scroll[key]) <= 0:
+            raise _fail("motion", f"scroll.{key}", "must be above 0")
+    release = _table("motion", "scroll.overscrollRelease", scroll["overscrollRelease"], ("stiffness", "dampingRatio"))
+    for key in ("stiffness", "dampingRatio"):
+        if _number("motion", f"scroll.overscrollRelease.{key}", release[key]) <= 0:
+            raise _fail("motion", f"scroll.overscrollRelease.{key}", "must be above 0")
+    for group in ("visibilityThreshold", "fades", "stagger", "press", "tabBar"):
         for key, value in _table("motion", group, motion.get(group)).items():
-            _number("motion", f"{group}.{key}", value, 0)
-    navigation = _table("motion", "navigation", motion.get("navigation"), ("parallax", "scrimAlpha", "edgeShadow"))
-    _number("motion", "navigation.parallax", navigation["parallax"], 0)
+            if group == "fades" and key.endswith("Easing"):
+                if not isinstance(value, list) or len(value) != 4:
+                    raise _fail("motion", f"fades.{key}", "must be a cubic Bézier's four control values")
+                for index, control in enumerate(value):
+                    _number("motion", f"fades.{key}[{index}]", control)
+            else:
+                _number("motion", f"{group}.{key}", value, 0)
+    navigation = _table(
+        "motion", "navigation", motion.get("navigation"),
+        ("parallax", "scrimAlpha", "edgeShadow", "edgeShadowAlpha", "backGateRelease"),
+    )
+    _number("motion", "navigation.parallax", navigation["parallax"], 0, 1)
     _number("motion", "navigation.edgeShadow", navigation["edgeShadow"], 0)
+    _number("motion", "navigation.edgeShadowAlpha", navigation["edgeShadowAlpha"], 0, 1)
+    _number("motion", "navigation.backGateRelease", navigation["backGateRelease"], 0, 1)
     scrim = _table("motion", "navigation.scrimAlpha", navigation["scrimAlpha"], THEMES)
     for theme in THEMES:
-        _number("motion", f"navigation.scrimAlpha.{theme}", scrim[theme], 0)
+        _number("motion", f"navigation.scrimAlpha.{theme}", scrim[theme], 0, 1)
 
 
 def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
@@ -216,7 +256,7 @@ def _check_role(names: list[str], tone: str, role: str) -> None:
 
 def _validate_styles(styles: dict[str, Any], tones: tuple[str, ...], voices: tuple[str, ...]) -> None:
     required = (
-        "description", "requires", "radii", "buttonRadius", "chipRadius", "card", "field", "bar",
+        "description", "requires", "radii", "buttonRadius", "chipRadius", "card", "field", "bar", "indicator",
         "borderWidth", "borderWidthStrong", "uppercaseLabels", "offsetShadow", "surfaces", "voice",
     )
     for name, style in _table("styles", "styles", styles).items():
@@ -228,7 +268,7 @@ def _validate_styles(styles: dict[str, Any], tones: tuple[str, ...], voices: tup
         for key in ("buttonRadius", "chipRadius"):
             if style[key] != "pill":
                 _number("styles", f"{name}.{key}", style[key], 0)
-        for key in ("card", "field", "bar"):
+        for key in ("card", "field", "bar", "indicator"):
             if not _IDENTIFIER.fullmatch(str(style[key])):
                 raise _fail("styles", f"{name}.{key}", "must name a treatment, like Outlined")
         for key in ("borderWidth", "borderWidthStrong", "offsetShadow"):
@@ -272,10 +312,17 @@ def resolve(spec: "Spec | None" = None, platform: str = "android") -> dict[str, 
             "designStyle": spec.design_style if spec else DEFAULT_DESIGN_STYLE,
             "motionStyle": spec.motion_style if spec else DEFAULT_MOTION_STYLE,
             "hapticsEnabled": spec.haptics_enabled if spec else True,
-            "fontName": spec.font_name if spec else DEFAULT_FONT,
-            "monoFontName": spec.mono_font_name if spec else DEFAULT_MONO_FONT,
+            "fontName": _font(spec, "font_name", DEFAULT_FONT, PLATFORM_SANS),
+            "monoFontName": _font(spec, "mono_font_name", DEFAULT_MONO_FONT, PLATFORM_MONO),
         },
     }
+
+
+def _font(spec: "Spec | None", field: str, default: str, platform: str) -> str:
+    """The family the spec names, or the platform's when the project does not download fonts."""
+    if spec is None:
+        return default
+    return getattr(spec, field) if spec.has("googlefonts") else platform
 
 
 def _motion(motion: dict[str, Any]) -> dict[str, Any]:
@@ -284,7 +331,14 @@ def _motion(motion: dict[str, Any]) -> dict[str, Any]:
         springs = {}
         for key, definition in motion["springs"].items():
             response = definition["response"] / (style["speed"] if definition["bySpeed"] else 1)
-            bounce = style["bounce"] * definition["bounceScale"]
+            if "bounceScale" in definition:
+                bounce = style["bounce"] * definition["bounceScale"]
+            else:
+                bounce = definition["bounce"]
+                # A style without bounce promises no overshoot anywhere; an overdamped spring
+                # (negative bounce) never overshoots, so it stays.
+                if style["bounce"] == 0 and bounce > 0:
+                    bounce = 0.0
             stiffness, damping = spring(response, bounce)
             springs[key] = {
                 "response": round(response, 4),
@@ -292,10 +346,15 @@ def _motion(motion: dict[str, Any]) -> dict[str, Any]:
                 "stiffness": round(stiffness, 2),
                 "dampingRatio": round(damping, 4),
             }
-        styles[name] = {"bounce": style["bounce"], "speed": style["speed"], "springs": springs}
+        styles[name] = {
+            "description": style["description"], "bounce": style["bounce"], "speed": style["speed"], "springs": springs,
+        }
     return {
         "styles": styles,
-        **{key: motion[key] for key in ("visibilityThreshold", "fades", "stagger", "press", "navigation")},
+        **{
+            key: motion[key]
+            for key in ("scroll", "visibilityThreshold", "fades", "stagger", "press", "navigation", "tabBar")
+        },
     }
 
 
@@ -413,24 +472,47 @@ def _resolve_roles(
         mixed = brand.lerp_oklab(resolved[name][:3], accent[:3], amount)
         resolved[name] = (*mixed, resolved[name][3])
 
-    for colour in BRAND_COLOURS:
-        shade = brand.readable_shade(resolved[colour][:3], resolved["background"][:3])
-        resolved[f"{colour}Content"] = (*brand.readable_shade(shade, resolved["surface"][:3]), 1.0)
+    # Whatever the tone did to the surfaces, the roles read on top of them keep their contrast: a
+    # brand tint a few percent into the background is enough to drop a mid-tone below AA.
+    surfaces = [resolved[name][:3] for name in SURFACE_ROLES]
+    resolved["accentContent"] = (*_legible_on(accent[:3], surfaces + [resolved["accentSubtle"][:3]], light), 1.0)
+    resolved["outline"] = (*_legible_on(resolved["outline"][:3], surfaces, light, AA_NON_TEXT), 1.0)
+    if not light:
+        # A shadow does not show on a dark track, so the thumb itself has to stand apart from it.
+        resolved["segmentThumb"] = (
+            *_legible_on(resolved["segmentThumb"][:3], [resolved["fill"][:3]], False, THUMB_ON_TRACK), 1.0,
+        )
 
     ink = brand.LIGHT_THEME_INK if light else brand.DARK_THEME_INK
     roles: dict[str, Any] = {name: resolved[name] for name in palette["roles"][theme]}
     for colour in BRAND_COLOURS:
-        for suffix in ("", "Pressed", "Subtle", "Content"):
+        for suffix in ("", "Pressed", "Subtle"):
             roles[f"{colour}{suffix}"] = resolved[f"{colour}{suffix}"]
         roles[f"on{colour.capitalize()}"] = resolved[f"on{colour.capitalize()}"]
+    roles["accentContent"] = resolved["accentContent"]
     for status, themes in palette["status"].items():
         base = value_of(themes[theme]["base"], ())
         subtle = value_of(themes[theme]["subtle"], ())
         roles[status] = {
             "base": base,
-            "content": (*brand.readable_shade(base[:3], subtle[:3]), 1.0),
+            "content": (*_legible_on(base[:3], surfaces + [subtle[:3]], light), 1.0),
             "subtle": subtle,
-            "border": value_of(themes[theme]["border"], ()),
             "on": (*(brand.WHITE if brand.white_reads_better(base[:3], ink) else ink), 1.0),
         }
     return roles
+
+
+def _legible_on(colour: brand.Rgb, backgrounds: list[brand.Rgb], light: bool, minimum: float = brand.AA) -> brand.Rgb:
+    """
+    `colour`, or the nearest shade of it that reaches `minimum` on every one of `backgrounds`:
+    darker in a light palette, lighter in a dark one. Brand colours are picked as fills, and a
+    mid-tone that looks right on a button can be unreadable as a link. Each step is an Oklab mix
+    rounded to 8 bits, as Compose's `lerp` produces it.
+    """
+    toward = (0.0, 0.0, 0.0) if light else brand.WHITE
+    shade = colour
+    for _ in range(_SHADE_STEPS):
+        if all(brand.contrast(shade, background) >= minimum for background in backgrounds):
+            return shade
+        shade = tuple(round(max(0.0, min(1.0, c)) * 255) / 255 for c in brand.lerp_oklab(shade, toward, _SHADE_STEP))
+    return shade

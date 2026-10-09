@@ -67,7 +67,7 @@ fun AppSegmentedControl(
     var drag by remember { mutableStateOf<Float?>(null) }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val density = LocalDensity.current
-    LaunchedEffect(selected) { position.animateTo(selected.toFloat(), springs.selection.unit) }
+    LaunchedEffect(selected) { position.animateTo(selected.toFloat(), springs.thumb.unit) }
 
     fun choose(index: Int) {
         if (index == selected) return
@@ -117,7 +117,7 @@ fun AppSegmentedControl(
                                 val landed = (drag ?: position.value).roundToInt()
                                 position.snapTo(drag ?: position.value)
                                 drag = null
-                                if (landed != selected) choose(landed) else position.animateTo(selected.toFloat(), springs.selection.unit)
+                                if (landed != selected) choose(landed) else position.animateTo(selected.toFloat(), springs.thumb.unit)
                             },
                         )
                     } else {

@@ -153,11 +153,16 @@ fun FoundationsSection() {
         val springs = AppTheme.springs
         SpringRow("press", springs.press)
         SpringRow("release", springs.release)
-        SpringRow("selection", springs.selection)
+        SpringRow("thumb", springs.thumb)
+        SpringRow("indicatorLead", springs.indicatorLead)
+        SpringRow("indicatorTrail", springs.indicatorTrail)
         SpringRow("screen", springs.screen)
         SpringRow("sheet", springs.sheet)
+        SpringRow("dialog", springs.dialog)
         SpringRow("layout", springs.layout)
         SpringRow("emphasis", springs.emphasis)
+        SpringRow("interactive", springs.interactive)
+        SpringRow("bounceBack", springs.bounceBack)
         AppText(
             text = "Fades ${springs.fadeQuick} and ${springs.fadeSlow} ms. Stagger ${springs.staggerMillis} ms, up to ${springs.staggerMaxItems} items. " +
                 "Press scale ${springs.pressScale}, large ${springs.pressScaleLarge}, compact ${springs.pressScaleCompact}, dim ${springs.pressDimAlpha}.",

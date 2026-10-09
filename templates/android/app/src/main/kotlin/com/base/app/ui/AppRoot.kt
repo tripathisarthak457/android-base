@@ -47,7 +47,7 @@ fun AppRoot(
 ) {
     val themeMode = settings.themeMode()
 
-    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
+    AppTheme(mode = themeMode, hapticsEnabled = AppTheme.defaults.hapticsEnabled && settings.hapticsEnabled) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (tabs.isEmpty()) {
                 val backStack = rememberAppBackStack(startKey = startKey, serialization = serialization)

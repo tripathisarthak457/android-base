@@ -46,7 +46,7 @@ fun AppDisclosure(
     val transitions = rememberAppTransitions()
     val turn = animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = AppTheme.springs.selection.unit,
+        animationSpec = AppTheme.springs.thumb.unit,
         label = "disclosureChevron",
     )
     val state = stringResource(if (expanded) R.string.designsystem_expanded else R.string.designsystem_collapsed)

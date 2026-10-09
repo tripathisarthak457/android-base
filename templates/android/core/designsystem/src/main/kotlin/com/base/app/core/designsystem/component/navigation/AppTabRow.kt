@@ -52,7 +52,7 @@ fun AppTabRow(
     val haptics = rememberAppHaptics()
     val position = animateFloatAsState(
         targetValue = selected.coerceIn(0, tabs.lastIndex).toFloat(),
-        animationSpec = AppTheme.springs.selection.unit,
+        animationSpec = AppTheme.springs.thumb.unit,
         label = "tabIndicator",
     )
     val measurer = rememberTextMeasurer()

@@ -3,10 +3,7 @@ package com.base.app.core.designsystem.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.graphics.luminance
-import kotlin.math.max
-import kotlin.math.min
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /**
  * Every colour the app is allowed to use, named for what it means rather than what it looks like.
@@ -110,160 +107,17 @@ data class StatusColors(
     val on: Color,
 )
 
-val LightColors: AppColors = AppColors(
-    background = Grey50,
-    backgroundGrouped = Grey75,
-    surface = White,
-    surfaceGrouped = White,
-    surfaceElevated = White,
-    surfaceInverse = Grey900,
-    fill = Grey150,
-    segmentThumb = White,
-    separator = Grey200,
-    outline = Grey450,
-
-    contentPrimary = Grey900,
-    contentSecondary = Grey700,
-    contentTertiary = Grey550,
-    contentDisabled = Grey400,
-    contentInverse = White,
-
-    accent = Accent,
-    accentPressed = AccentPressed,
-    accentSubtle = AccentSubtleLight,
-    onAccent = readableOn(Accent, Ink900),
-    accentContent = Accent,
-
-    secondary = Secondary,
-    secondaryPressed = SecondaryPressed,
-    secondarySubtle = SecondarySubtleLight,
-    onSecondary = readableOn(Secondary, Ink900),
-
-    tertiary = Tertiary,
-    tertiaryPressed = TertiaryPressed,
-    tertiarySubtle = TertiarySubtleLight,
-    onTertiary = readableOn(Tertiary, Ink900),
-
-    success = status(SuccessLight, SuccessSubtleLight, Ink900),
-    warning = status(WarningLight, WarningSubtleLight, Ink900),
-    danger = status(DangerLight, DangerSubtleLight, Ink900),
-    info = status(InfoLight, InfoSubtleLight, Ink900),
-    neutral = status(Grey600, Grey100, Ink900),
-
-    highlight = Grey900.copy(alpha = 0.07f),
-    scrim = Grey900.copy(alpha = 0.40f),
-    focusRing = Accent,
-    shadow = Grey900.copy(alpha = 0.14f),
-    barIndicator = Accent,
-    skeleton = Grey150,
-    skeletonHighlight = Grey50,
-
-    isLight = true,
-).withDerivedRoles()
-
-val DarkColors: AppColors = AppColors(
-    background = Ink900,
-    backgroundGrouped = Ink900,
-    surface = Ink800,
-    surfaceGrouped = Ink800,
-    surfaceElevated = Ink700,
-    surfaceInverse = Ink100,
-    fill = Ink600,
-    segmentThumb = Ink500,
-    separator = Ink600,
-    outline = Ink350,
-
-    contentPrimary = Ink100,
-    contentSecondary = Ink200,
-    contentTertiary = Ink300,
-    contentDisabled = Ink400,
-    contentInverse = Ink900,
-
-    accent = AccentDark,
-    accentPressed = AccentDarkPressed,
-    accentSubtle = AccentSubtleDark,
-    onAccent = readableOn(AccentDark, Ink900),
-    accentContent = AccentDark,
-
-    secondary = SecondaryDark,
-    secondaryPressed = SecondaryDarkPressed,
-    secondarySubtle = SecondarySubtleDark,
-    onSecondary = readableOn(SecondaryDark, Ink900),
-
-    tertiary = TertiaryDark,
-    tertiaryPressed = TertiaryDarkPressed,
-    tertiarySubtle = TertiarySubtleDark,
-    onTertiary = readableOn(TertiaryDark, Ink900),
-
-    success = status(SuccessDark, SuccessSubtleDark, Ink900),
-    warning = status(WarningDark, WarningSubtleDark, Ink900),
-    danger = status(DangerDark, DangerSubtleDark, Ink900),
-    info = status(InfoDark, InfoSubtleDark, Ink900),
-    neutral = status(Ink200, Ink700, Ink900),
-
-    highlight = White.copy(alpha = 0.09f),
-    scrim = Color.Black.copy(alpha = 0.56f),
-    focusRing = AccentDark,
-    shadow = Color.Black.copy(alpha = 0.40f),
-    barIndicator = AccentDark,
-    skeleton = Ink700,
-    skeletonHighlight = Ink500,
-
-    isLight = false,
-).withDerivedRoles()
-
 /**
- * The roles that must hold their contrast whatever the surfaces are: the accent and status colours
- * as text, and the outline of controls. Run again whenever the surfaces change, as a design style's
- * tone does: a brand tint a few percent into the background is enough to drop a mid-tone below AA.
+ * The palette a surface tone draws with, light or [dark]. Every role is resolved when the tokens
+ * are emitted, the brand's colours included, and the roles drawn over the surfaces (the accent as
+ * text, status text, outlines, a dark segment thumb) already darkened or lightened until they keep
+ * their contrast on every one of them; `PaletteContrastTest` holds them to it.
  */
-internal fun AppColors.withDerivedRoles(): AppColors = copy(
-    accentContent = legibleOn(accent, backgrounds + accentSubtle, isLight),
-    outline = legibleOn(outline, backgrounds, isLight, AA_NON_TEXT),
-    // A shadow does not show on a dark track, so the thumb itself has to stand apart from it.
-    segmentThumb = if (isLight) segmentThumb else legibleOn(segmentThumb, listOf(fill), light = false, THUMB_ON_TRACK),
-    success = success.legibleOnSurfaces(backgrounds, isLight),
-    warning = warning.legibleOnSurfaces(backgrounds, isLight),
-    danger = danger.legibleOnSurfaces(backgrounds, isLight),
-    info = info.legibleOnSurfaces(backgrounds, isLight),
-)
-
-private fun StatusColors.legibleOnSurfaces(backgrounds: List<Color>, light: Boolean) =
-    copy(content = legibleOn(content, backgrounds + subtle, light))
-
-private fun status(base: Color, subtle: Color, ink: Color) =
-    StatusColors(base = base, content = base, subtle = subtle, on = readableOn(base, ink))
-
-/** WCAG 2 contrast ratio between two opaque colours. */
-internal fun contrast(a: Color, b: Color): Float {
-    val la = a.luminance()
-    val lb = b.luminance()
-    return (max(la, lb) + 0.05f) / (min(la, lb) + 0.05f)
+fun SurfaceTone.colors(dark: Boolean): AppColors = when (this) {
+    SurfaceTone.Cool -> if (dark) DesignTokens.Palette.Cool.dark else DesignTokens.Palette.Cool.light
+    SurfaceTone.BrandTint -> if (dark) DesignTokens.Palette.BrandTint.dark else DesignTokens.Palette.BrandTint.light
+    SurfaceTone.Paper -> if (dark) DesignTokens.Palette.Paper.dark else DesignTokens.Palette.Paper.light
+    SurfaceTone.Cream -> if (dark) DesignTokens.Palette.Cream.dark else DesignTokens.Palette.Cream.light
 }
 
-/** White or [ink], whichever reads better on [background]. */
-internal fun readableOn(background: Color, ink: Color): Color =
-    if (contrast(White, background) >= contrast(ink, background)) White else ink
-
-/**
- * [color], or the nearest shade of it that reaches [minimum] on every one of [backgrounds]: darker
- * in a light palette, lighter in a dark one. Brand colours are picked as fills, and a mid-tone that
- * looks right on a button can be unreadable as a link.
- */
-internal fun legibleOn(color: Color, backgrounds: List<Color>, light: Boolean, minimum: Float = AA_TEXT): Color {
-    val toward = if (light) Color.Black else Color.White
-    var shade = color
-    repeat(MAX_SHADE_STEPS) {
-        if (backgrounds.all { contrast(shade, it) >= minimum }) return shade
-        shade = lerp(shade, toward, SHADE_STEP)
-    }
-    return shade
-}
-
-internal const val AA_TEXT = 4.5f
-internal const val AA_NON_TEXT = 3f
-internal const val THUMB_ON_TRACK = 1.5f
-private const val MAX_SHADE_STEPS = 30
-private const val SHADE_STEP = 0.05f
-
-internal val LocalAppColors = staticCompositionLocalOf { LightColors }
+internal val LocalAppColors = staticCompositionLocalOf { SurfaceTone.Cool.colors(dark = false) }

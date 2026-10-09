@@ -44,8 +44,8 @@ fun AppAnimatedCounter(
         modifier = described,
         transitionSpec = {
             val up = targetState >= initialState
-            (slideInVertically(springs.selection.offset) { if (up) it else -it } + fadeIn(springs.fadeIn())) togetherWith
-                (slideOutVertically(springs.selection.offset) { if (up) -it else it } + fadeOut(springs.fadeOut())) using
+            (slideInVertically(springs.thumb.offset) { if (up) it else -it } + fadeIn(springs.fadeIn())) togetherWith
+                (slideOutVertically(springs.thumb.offset) { if (up) -it else it } + fadeOut(springs.fadeOut())) using
                 SizeTransform(clip = true)
         },
         label = "counter",

@@ -1,6 +1,5 @@
 package com.base.app.core.designsystem.theme
 
-import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.DecayAnimationSpec
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FiniteAnimationSpec
@@ -14,39 +13,60 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 import kotlin.math.PI
 
 /**
- * How the app moves, as one choice: how much a release overshoots ([bounce], 0 for none) and how
- * quickly things travel ([speed], dividing every travelling spring's response).
+ * How the app moves, as one choice: how much a release overshoots, and how quickly things travel.
+ * The numbers are in `DesignTokens.Motion`.
  *
  * ```
  * AppTheme(motionStyle = AppMotionStyle.Calm) { … }
  * ```
  */
-enum class AppMotionStyle(val bounce: Float, val speed: Float, val summary: String) {
-    Standard(0.15f, 1f, "A trace of overshoot on release. Lively without drawing attention to itself."),
-    Bouncy(0.35f, 1f, "A visible overshoot on release. Playful; the wrong choice for anything handling money."),
-    Calm(0f, 0.87f, "No overshoot anywhere and slightly slower travel. Dense, professional interfaces."),
-    Snappy(0.10f, 1.15f, "Quicker travel and a hint of overshoot. Utilities used dozens of times a day."),
+enum class AppMotionStyle {
+    /** A trace of overshoot on release. Lively without drawing attention to itself. */
+    Standard,
+
+    /** A visible overshoot on release. Playful; the wrong choice for anything handling money. */
+    Bouncy,
+
+    /** No overshoot anywhere and slightly slower travel. Dense, professional interfaces. */
+    Calm,
+
+    /** Quicker travel and a hint of overshoot. Utilities used dozens of times a day. */
+    Snappy,
+    ;
+
+    /** One line saying what the style feels like, for pickers and the catalog. */
+    val summary: String
+        get() = tokens().summary
+
+    internal fun tokens(): DesignTokens.MotionStyle = when (this) {
+        Standard -> DesignTokens.Motion.standard
+        Bouncy -> DesignTokens.Motion.bouncy
+        Calm -> DesignTokens.Motion.calm
+        Snappy -> DesignTokens.Motion.snappy
+    }
 }
 
 /**
  * One spring in the terms iOS designs with: how long it takes to feel settled ([response], in
- * seconds) and how far it overshoots ([bounce], 0 for none). With mass 1 that is
- * `stiffness = (2π / response)²` and `dampingRatio = 1 − bounce`.
+ * seconds) and how far it overshoots ([bounce], 0 for none, negative for overdamped). With mass 1
+ * that is `stiffness = (2π / response)²` and `dampingRatio = 1 − bounce`.
  *
  * The specs are built once, with visibility thresholds, so the invisible tail of a settle stops
  * drawing and nothing allocates a spec per recomposition.
  */
 @Immutable
 class AppSpring(val response: Float, val bounce: Float) {
+    internal constructor(token: DesignTokens.Spring) : this(token.response, token.bounce)
+
     val stiffness: Float = ((2 * PI / response) * (2 * PI / response)).toFloat()
     val dampingRatio: Float = 1f - bounce
 
     /** For values on a 0 to 1 scale: a press, a scale, a progress. */
-    val unit: SpringSpec<Float> = spring(dampingRatio, stiffness, visibilityThreshold = 0.001f)
+    val unit: SpringSpec<Float> = spring(dampingRatio, stiffness, DesignTokens.Motion.visibilityThreshold)
 
     /** For a distance in pixels held as a float. */
     val pixels: SpringSpec<Float> = spring(dampingRatio, stiffness, visibilityThreshold = 0.5f)
@@ -56,16 +76,42 @@ class AppSpring(val response: Float, val bounce: Float) {
     val dp: SpringSpec<Dp> = spring(dampingRatio, stiffness, Dp.VisibilityThreshold)
 }
 
-/** How a screen recedes when another covers it. */
+/** How a screen recedes when another covers it, and when the shell lets a held Back through. */
 @Immutable
-class NavigationMotion(
+class NavigationMotion internal constructor() {
     /** How far the covered screen travels, as a fraction of the one arriving over it. */
-    val parallax: Float,
-    val scrimAlphaLight: Float,
-    val scrimAlphaDark: Float,
-    /** The soft shadow along the arriving screen's leading edge. */
-    val edgeShadow: Dp,
-)
+    val parallax: Float = DesignTokens.Motion.navigationParallax
+    val scrimAlphaLight: Float = DesignTokens.Motion.navigationScrimAlphaLight
+    val scrimAlphaDark: Float = DesignTokens.Motion.navigationScrimAlphaDark
+
+    /** The soft shadow along the arriving screen's leading edge: its width and its darkest alpha. */
+    val edgeShadow: Dp = DesignTokens.Motion.navigationEdgeShadow
+    val edgeShadowAlpha: Float = DesignTokens.Motion.navigationEdgeShadowAlpha
+
+    /**
+     * The fraction of a transition's travel after which Back presses counted during it are applied
+     * as one pop. Earlier than this, the pop that follows starts from rest and the screens jump.
+     */
+    val backGateRelease: Float = DesignTokens.Motion.navigationBackGateRelease
+}
+
+/**
+ * The tab bar's motion. Switching tabs nudges the incoming tab [revealShift] toward the travel and
+ * lifts a [revealVeilAlpha] veil off it, both on `thumb`; the indicator stretches between its two
+ * edges up to [indicatorMaxStretch] slots and squashes its height by [indicatorSquash] per slot of
+ * stretch; the selected glyph dips to [iconBounceScale] and springs back; the bar minimizes after
+ * [minimizeHysteresis] of scrolling one way.
+ */
+@Immutable
+class TabBarMotion internal constructor() {
+    val revealShift: Dp = DesignTokens.Motion.tabRevealShift
+    val revealVeilAlpha: Float = DesignTokens.Motion.tabRevealVeilAlpha
+    val indicatorHeight: Dp = DesignTokens.Motion.tabIndicatorHeight
+    val indicatorMaxStretch: Float = DesignTokens.Motion.tabIndicatorMaxStretch
+    val indicatorSquash: Float = DesignTokens.Motion.tabIndicatorSquash
+    val iconBounceScale: Float = DesignTokens.Motion.tabIconBounceScale
+    val minimizeHysteresis: Dp = DesignTokens.Motion.tabMinimizeHysteresis
+}
 
 /**
  * Every spring, fade and press value the app animates with, precomputed for one motion style. Read
@@ -74,90 +120,112 @@ class NavigationMotion(
  */
 @Immutable
 class AppSprings internal constructor(val style: AppMotionStyle) {
+    private val tokens = style.tokens()
+
     /** Finger down. Quick and flat, so the press is seen before the finger hides it. */
-    val press = AppSpring(response = 0.16f, bounce = 0f)
+    val press = AppSpring(tokens.press)
 
     /** Finger up: the one place most styles overshoot. */
-    val release = AppSpring(response = 0.32f, bounce = style.bounce)
+    val release = AppSpring(tokens.release)
 
-    /** Indicators, pills, thumbs and page dots moving to a new choice. */
-    val selection = AppSpring(response = 0.30f, bounce = 0.6f * style.bounce)
+    /**
+     * Thumbs, page dots and anything else moving to a new choice: a switch, a segmented control,
+     * the tab reveal and the bar minimizing. Never bounces: overshoot belongs to the release.
+     */
+    val thumb = AppSpring(tokens.thumb)
 
-    /** Push, pop and full-screen covers. */
-    val screen = AppSpring(response = 0.24f / style.speed, bounce = 0f)
+    /**
+     * The tab indicator's two edges. The edge in front leads on a quicker spring with the style's
+     * bounce and the one behind follows flat, so the pill stretches toward its target and settles.
+     */
+    val indicatorLead = AppSpring(tokens.indicatorLead)
+    val indicatorTrail = AppSpring(tokens.indicatorTrail)
 
-    /** Sheets, detents, menus and alerts. */
-    val sheet = AppSpring(response = 0.34f / style.speed, bounce = 0f)
+    /** Push, pop, full-screen covers and the back card's commit. */
+    val screen = AppSpring(tokens.screen)
 
-    /** List placement, expanding and collapsing. */
-    val layout = AppSpring(response = 0.36f / style.speed, bounce = 0f)
-
-    /** Pop-ins, badges and success marks. */
-    val emphasis = AppSpring(response = 0.50f, bounce = style.bounce)
+    /** Sheets and their detents, toasts, the search field's focus. */
+    val sheet = AppSpring(tokens.sheet)
 
     /** Alerts, action sheets, menus and popovers arriving: quicker than a sheet, never bouncing. */
-    val dialog = AppSpring(response = 0.275f / style.speed, bounce = 0f)
+    val dialog = AppSpring(tokens.dialog)
+
+    /** List placement, expanding and collapsing. */
+    val layout = AppSpring(tokens.layout)
+
+    /** Pop-ins, badges and success marks. */
+    val emphasis = AppSpring(tokens.emphasis)
 
     /** A value trailing the finger, such as a lifted row: quick enough to feel attached. */
-    val interactive = AppSpring(response = 0.15f, bounce = 0.14f)
+    val interactive = AppSpring(tokens.interactive)
 
     /**
      * Content coming back from past an edge: a pull to refresh settling, a fling caught at the end of
      * a list. Overdamped, so it carries the finger's velocity in without overshooting the edge.
      */
-    val bounceBack = AppSpring(response = 0.444f, bounce = -0.1f)
+    val bounceBack = AppSpring(tokens.bounceBack)
+
+    /** A glyph's bounce, as SF Symbols plays it: a quick flat dip, then a springy return. */
+    val iconBounceDown = AppSpring(tokens.iconBounceDown)
+    val iconBounceUp = AppSpring(tokens.iconBounceUp)
 
     /**
      * A rubber band let go with no velocity, in pixels. So overdamped it is a decay: it closes by half
      * every 70 ms without ever travelling past the edge.
      */
-    val overscrollRelease: SpringSpec<Float> =
-        spring(dampingRatio = 158.1f, stiffness = 9.8e6f, visibilityThreshold = 0.5f)
+    val overscrollRelease: SpringSpec<Float> = spring(
+        dampingRatio = DesignTokens.Motion.overscrollReleaseDampingRatio,
+        stiffness = DesignTokens.Motion.overscrollReleaseStiffness,
+        visibilityThreshold = 0.5f,
+    )
+
+    /**
+     * How hard content resists being pulled past an edge: iOS's `c` in `c·x·d / (d + c·x)`, the
+     * same for overscroll, pull to refresh, sheets and swipe actions.
+     */
+    val rubberBand: Float = DesignTokens.Motion.rubberBand
 
     /**
      * A fling's deceleration, as iOS scroll views slow down (0.998 of the velocity kept per
      * millisecond). [flingFast] is the paging and picker rate (0.99), which stops much sooner.
      */
-    val fling: DecayAnimationSpec<Float> = exponentialDecay(frictionMultiplier = 0.4767f)
-    val flingFast: DecayAnimationSpec<Float> = exponentialDecay(frictionMultiplier = 2.393f)
+    val fling: DecayAnimationSpec<Float> = exponentialDecay(DesignTokens.Motion.flingFriction)
+    val flingFast: DecayAnimationSpec<Float> = exponentialDecay(DesignTokens.Motion.pagingFriction)
 
     /** Colour and opacity only; anything that moves uses a spring. */
-    val fadeQuick: Int = 120
-    val fadeSlow: Int = 200
+    val fadeQuick: Int = DesignTokens.Motion.fadeShortMs
+    val fadeSlow: Int = DesignTokens.Motion.fadeLongMs
 
     /** Arrivals decelerate hard, so they read as settled rather than coasting. */
-    val enterEasing: Easing = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
-    val exitEasing: Easing = CubicBezierEasing(0.3f, 0f, 0.8f, 0.15f)
+    val enterEasing: Easing = DesignTokens.Motion.fadeEnterEasing
+    val exitEasing: Easing = DesignTokens.Motion.fadeExitEasing
 
     fun <T> fadeIn(): FiniteAnimationSpec<T> = tween(fadeSlow, easing = enterEasing)
     fun <T> fadeOut(): FiniteAnimationSpec<T> = tween(fadeQuick, easing = exitEasing)
 
-    /** The delay between items of a list appearing together, and how many of them wait their turn. */
-    val staggerMillis: Int = 24
-    val staggerMaxItems: Int = 6
-    val appearOffset: Dp = 12.dp
+    /** The delay between items of a list appearing together, how many wait their turn, and how far they rise. */
+    val staggerMillis: Int = DesignTokens.Motion.staggerStepMs
+    val staggerMaxItems: Int = DesignTokens.Motion.staggerMaxItems
+    val appearOffset: Dp = DesignTokens.Motion.staggerOffset
 
     /** A pressed button or chip. */
-    val pressScale: Float = 0.96f
+    val pressScale: Float = DesignTokens.Motion.pressScale
 
     /** A pressed card or anything wide, where 0.96 reads as the layout jumping. */
-    val pressScaleLarge: Float = 0.98f
+    val pressScaleLarge: Float = DesignTokens.Motion.pressScaleLarge
 
     /** A pressed icon-sized control, which has to travel further to be seen around the finger. */
-    val pressScaleCompact: Float = 0.90f
+    val pressScaleCompact: Float = DesignTokens.Motion.pressScaleIcon
 
     /** A pressed text or icon button. */
-    val pressDimAlpha: Float = 0.45f
+    val pressDimAlpha: Float = DesignTokens.Motion.pressDimAlpha
 
     /** How long a pressed row's highlight takes to fade after the finger lifts. It appears at once. */
-    val highlightFadeOut: Int = 220
+    val highlightFadeOut: Int = DesignTokens.Motion.highlightFadeOutMs
 
-    val navigation = NavigationMotion(
-        parallax = 0.30f,
-        scrimAlphaLight = 0.10f,
-        scrimAlphaDark = 0.24f,
-        edgeShadow = 8.dp,
-    )
+    val navigation = NavigationMotion()
+
+    val tabBar = TabBarMotion()
 }
 
 private val SpringsByStyle = AppMotionStyle.entries.associateWith(::AppSprings)

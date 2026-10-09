@@ -34,6 +34,7 @@ import com.base.app.core.designsystem.foundation.content.LocalContentColor
 import com.base.app.core.designsystem.foundation.content.LocalTextStyle
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
 import com.base.app.core.designsystem.foundation.interaction.NoIndication
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /** Which palette to render with. [System] follows the device; the other two override it. */
 enum class ThemeMode {
@@ -68,6 +69,7 @@ class AppThemeDefaults internal constructor(
  * Nothing in the app draws a press overlay unless a component asks for one: the default indication
  * is [NoIndication], and each control states its feedback through `Modifier.pressable`.
  *
+ * [colors] default to the palette of [designStyle]'s surface tone in the mode's theme.
  * [reduceMotion] overrides the system's "Remove animations" setting, for previews and the catalog;
  * left null, the setting is followed as it changes. [posture] and [input] come from the activity,
  * which watches the window for them; a nested theme keeps its parent's.
@@ -78,25 +80,20 @@ fun AppTheme(
     designStyle: AppDesignStyle = AppTheme.defaults.designStyle,
     motionStyle: AppMotionStyle = AppTheme.defaults.motionStyle,
     hapticsEnabled: Boolean = AppTheme.defaults.hapticsEnabled,
-    colors: AppColors? = null,
+    colors: AppColors = designStyle.style().surfaces.colors(dark = mode.isDark()),
     fonts: AppFonts = themeFonts(),
     reduceMotion: Boolean? = null,
     posture: WindowPosture = AppTheme.posture,
     input: InputTraits = AppTheme.input,
     content: @Composable () -> Unit,
 ) {
-    val style = remember(designStyle) { designStyle.style() }
-    val dark = mode.isDark()
-    // Explicit colours are taken as given; the style only restyles the palette it chose itself.
-    val resolved = colors ?: remember(dark, style.surfaces) {
-        (if (dark) DarkColors else LightColors).withSurfaces(style.surfaces)
-    }
-    val typography = remember(fonts, style.voice) { appTypography(fonts).withVoice(style.voice) }
-    val selectionColors = remember(resolved) {
+    val style = designStyle.style()
+    val typography = remember(fonts, style.voice) { appTypography(fonts, style.voice) }
+    val selectionColors = remember(colors) {
         TextSelectionColors(
-            handleColor = resolved.accent,
+            handleColor = colors.accent,
             // Low enough alpha that selected text stays readable through the selection.
-            backgroundColor = resolved.accent.copy(alpha = 0.28f),
+            backgroundColor = colors.accent.copy(alpha = 0.28f),
         )
     }
     val systemReduceMotion = rememberSystemReduceMotion()
@@ -118,7 +115,7 @@ fun AppTheme(
     val shimmer = if (outermost) remember { ShimmerClock(scope) } else LocalShimmer.current
 
     CompositionLocalProvider(
-        LocalAppColors provides resolved,
+        LocalAppColors provides colors,
         LocalAppTypography provides typography,
         LocalAppSpacing provides spacing,
         LocalWindowClass provides windowClass,
@@ -131,7 +128,7 @@ fun AppTheme(
         LocalAppStyle provides style,
         LocalAppSprings provides motionStyle.springs(),
         LocalReduceMotion provides reduceMotionState,
-        LocalContentColor provides resolved.contentPrimary,
+        LocalContentColor provides colors.contentPrimary,
         LocalTextStyle provides typography.body,
         LocalTextSelectionColors provides selectionColors,
         LocalIndication provides NoIndication,
@@ -151,11 +148,11 @@ object AppTheme {
 
     /** The design style, motion style, haptics and fonts the project was generated with. */
     val defaults = AppThemeDefaults(
-        designStyle = AppDesignStyle.Utility,
-        motionStyle = AppMotionStyle.Standard,
-        hapticsEnabled = true,
-        fontName = AppFontNames.Sans,
-        monoFontName = AppFontNames.Mono,
+        designStyle = DesignTokens.Defaults.designStyle,
+        motionStyle = DesignTokens.Defaults.motionStyle,
+        hapticsEnabled = DesignTokens.Defaults.hapticsEnabled,
+        fontName = DesignTokens.Defaults.fontName,
+        monoFontName = DesignTokens.Defaults.monoFontName,
     )
 
     val colors: AppColors

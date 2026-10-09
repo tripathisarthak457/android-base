@@ -148,7 +148,7 @@ private fun FloatingBar(
 private fun SlidingPill(selectedIndex: Int, itemWidth: Dp) {
     val x by animateDpAsState(
         targetValue = itemWidth * selectedIndex,
-        animationSpec = AppTheme.springs.selection.dp,
+        animationSpec = AppTheme.springs.thumb.dp,
         label = "barPill",
     )
     Box(

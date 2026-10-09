@@ -64,7 +64,7 @@ fun AppSlider(
     // glides the thumb over rather than teleporting it.
     var dragging by remember { mutableStateOf(false) }
     val shown = remember { Animatable(fraction) }
-    LaunchedEffect(fraction, dragging) { if (dragging) shown.snapTo(fraction) else shown.animateTo(fraction, springs.selection.unit) }
+    LaunchedEffect(fraction, dragging) { if (dragging) shown.snapTo(fraction) else shown.animateTo(fraction, springs.thumb.unit) }
 
     fun snapped(raw: Float): Float {
         val clamped = raw.coerceIn(0f, 1f)

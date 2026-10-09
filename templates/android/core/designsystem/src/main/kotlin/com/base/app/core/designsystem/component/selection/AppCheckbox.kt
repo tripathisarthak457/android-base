@@ -43,7 +43,7 @@ fun AppCheckbox(
 ) {
     val colors = AppTheme.colors
     val haptics = rememberAppHaptics()
-    val progress = animateFloatAsState(if (checked) 1f else 0f, AppTheme.springs.selection.unit, label = "checkbox")
+    val progress = animateFloatAsState(if (checked) 1f else 0f, AppTheme.springs.thumb.unit, label = "checkbox")
     val interaction = if (enabled && onCheckedChange != null) {
         Modifier.toggleable(value = checked, indication = null, interactionSource = null, role = Role.Checkbox) {
             haptics.perform(if (it) AppHaptic.ToggleOn else AppHaptic.ToggleOff)

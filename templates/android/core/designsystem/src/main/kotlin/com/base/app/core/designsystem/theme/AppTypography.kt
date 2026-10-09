@@ -6,7 +6,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.unit.sp
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /**
  * The type scale, named by role and sized as iOS Dynamic Type is at its default setting (an
@@ -36,42 +36,46 @@ private val Metrics = LineHeightStyle(
     trim = LineHeightStyle.Trim.Both,
 )
 
-private fun style(
-    size: Int,
-    lineHeight: Int,
-    weight: FontWeight,
-    tracking: Double,
-    family: FontFamily,
-) = TextStyle(
+private fun DesignTokens.TypeRole.style(voice: TypeVoice, family: FontFamily) = TextStyle(
     fontFamily = family,
-    fontWeight = weight,
-    fontSize = size.sp,
-    lineHeight = lineHeight.sp,
-    letterSpacing = tracking.sp,
+    fontWeight = FontWeight(
+        when (voice) {
+            TypeVoice.Neutral -> weightNeutral
+            TypeVoice.Bold -> weightBold
+            TypeVoice.Editorial -> weightEditorial
+            TypeVoice.Rounded -> weightRounded
+        },
+    ),
+    fontSize = size,
+    lineHeight = lineHeight,
+    letterSpacing = tracking,
     lineHeightStyle = Metrics,
 )
 
 /*
- * The scale for a given pair of typefaces. A function rather than a constant, because the typeface
- * is a one-string decision made at the theme; see [AppFonts]. Large sizes are tracked in, as
- * display cuts are; the smallest are opened up so they stay legible.
+ * The scale for a pair of typefaces, in a style's voice. Only weights move between voices: sizes
+ * and line heights stay on the scale, so a style change never reflows a layout, and the fonts
+ * download only the weights the voice uses. Large sizes are tracked in, as display cuts are; the
+ * smallest are opened up so they stay legible.
  */
-fun appTypography(fonts: AppFonts): AppTypography {
+fun appTypography(fonts: AppFonts, voice: TypeVoice = TypeVoice.Neutral): AppTypography {
     val sans = fonts.sans
-    return AppTypography(
-        largeTitle = style(34, 41, FontWeight.Bold, -0.6, sans),
-        title1 = style(28, 34, FontWeight.Bold, -0.5, sans),
-        title2 = style(22, 28, FontWeight.Bold, -0.35, sans),
-        title3 = style(20, 25, FontWeight.SemiBold, -0.25, sans),
-        headline = style(17, 22, FontWeight.SemiBold, -0.15, sans),
-        body = style(17, 22, FontWeight.Normal, -0.15, sans),
-        callout = style(16, 21, FontWeight.Normal, -0.1, sans),
-        subheadline = style(15, 20, FontWeight.Normal, -0.05, sans),
-        footnote = style(13, 18, FontWeight.Normal, 0.0, sans),
-        caption1 = style(12, 16, FontWeight.Normal, 0.05, sans),
-        caption2 = style(11, 13, FontWeight.Medium, 0.1, sans),
-        mono = style(15, 20, FontWeight.Normal, 0.0, fonts.mono),
-    )
+    return with(DesignTokens.Type) {
+        AppTypography(
+            largeTitle = largeTitle.style(voice, sans),
+            title1 = title1.style(voice, sans),
+            title2 = title2.style(voice, sans),
+            title3 = title3.style(voice, sans),
+            headline = headline.style(voice, sans),
+            body = body.style(voice, sans),
+            callout = callout.style(voice, sans),
+            subheadline = subheadline.style(voice, sans),
+            footnote = footnote.style(voice, sans),
+            caption1 = caption1.style(voice, sans),
+            caption2 = caption2.style(voice, sans),
+            mono = mono.style(voice, fonts.mono),
+        )
+    }
 }
 
 /** The scale set in the platform's own typefaces. */
@@ -79,9 +83,9 @@ val DefaultTypography: AppTypography = appTypography(PlatformFonts)
 
 /** The weights of the sans family that [voice] draws with, lightest first: exactly what to download. */
 fun sansWeights(voice: TypeVoice): List<FontWeight> =
-    DefaultTypography.withVoice(voice).sansRoles.mapNotNull { it.fontWeight }.distinct().sortedBy { it.weight }
+    appTypography(PlatformFonts, voice).sansRoles.mapNotNull { it.fontWeight }.distinct().sortedBy { it.weight }
 
 /** The weights of the mono family the scale uses. */
-val MonoWeights: List<FontWeight> = listOf(FontWeight.Normal)
+val MonoWeights: List<FontWeight> = listOfNotNull(DefaultTypography.mono.fontWeight)
 
 internal val LocalAppTypography = staticCompositionLocalOf { DefaultTypography }
