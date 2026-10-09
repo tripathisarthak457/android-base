@@ -38,78 +38,13 @@ import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.AppSurface
-import com.base.app.core.designsystem.foundation.appClickable
+import com.base.app.core.designsystem.foundation.PressFeedback
+import com.base.app.core.designsystem.foundation.pressable
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 import androidx.compose.ui.res.stringResource
 import com.base.app.core.designsystem.R
-
-/**
- * A label-and-value row, for a detail screen. The value is monospaced when [mono] is set — order
- * numbers, references, amounts, anything the user might read aloud or compare character by
- * character.
- */
-@Composable
-fun AppDetailRow(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-    mono: Boolean = false,
-    valueColor: Color = AppTheme.colors.contentPrimary,
-    icon: ImageVector? = null,
-    onClick: (() -> Unit)? = null,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .then(
-                if (onClick != null) {
-                    Modifier.appClickable(onClick = onClick, minTouchTarget = 0.dp)
-                } else {
-                    Modifier
-                },
-            )
-            .padding(vertical = AppTheme.spacing.sm),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-        verticalAlignment = Alignment.Top,
-    ) {
-        icon?.let {
-            AppIcon(it, contentDescription = null, tint = AppTheme.colors.contentTertiary, size = 16.dp)
-        }
-        AppText(
-            text = label,
-            modifier = Modifier.weight(LABEL_WEIGHT),
-            style = AppTheme.typography.bodySmall,
-            color = AppTheme.colors.contentTertiary,
-        )
-        if (mono) {
-            AppMonoText(
-                text = value,
-                modifier = Modifier.weight(VALUE_WEIGHT),
-                color = valueColor,
-                textAlign = TextAlign.End,
-                maxLines = 2,
-            )
-        } else {
-            AppText(
-                text = value,
-                modifier = Modifier.weight(VALUE_WEIGHT),
-                style = AppTheme.typography.bodyMedium,
-                color = valueColor,
-                textAlign = TextAlign.End,
-            )
-        }
-        if (onClick != null) {
-            AppIcon(
-                AppIcons.ChevronRight,
-                contentDescription = null,
-                tint = AppTheme.colors.contentTertiary,
-                size = 16.dp,
-            )
-        }
-    }
-}
 
 /** A single headline number with its label, and optionally which way it moved. */
 @Composable
@@ -127,11 +62,11 @@ fun AppStatTile(
 
     AppSurface(
         modifier = modifier.then(
-            if (onClick != null) Modifier.appClickable(onClick = onClick, minTouchTarget = 0.dp) else Modifier,
+            if (onClick != null) Modifier.pressable(onClick = onClick, feedback = PressFeedback.Scale) else Modifier,
         ),
         shape = AppTheme.shapes.md,
         color = colors.surface,
-        border = BorderStroke(AppTheme.sizes.borderWidth, colors.border),
+        border = BorderStroke(AppTheme.style.borderWidth, colors.separator),
     ) {
         Column(
             modifier = Modifier.padding(AppTheme.spacing.lg),
@@ -146,7 +81,7 @@ fun AppStatTile(
                 }
                 AppText(
                     text = label,
-                    style = AppTheme.typography.labelSmall,
+                    style = AppTheme.typography.caption2,
                     color = colors.contentTertiary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -155,7 +90,7 @@ fun AppStatTile(
 
             AppText(
                 text = value,
-                style = AppTheme.typography.displaySmall,
+                style = AppTheme.typography.title2,
                 color = colors.contentPrimary,
                 maxLines = 1,
             )
@@ -175,53 +110,11 @@ fun AppStatTile(
                     )
                     AppText(
                         text = it,
-                        style = AppTheme.typography.labelSmall,
+                        style = AppTheme.typography.caption2,
                         color = deltaColors.content,
                     )
                 }
             }
-        }
-    }
-}
-
-/** A heading over a group, with an optional action on the right. */
-@Composable
-fun AppSectionHeader(
-    title: String,
-    modifier: Modifier = Modifier,
-    subtitle: String? = null,
-    actionLabel: String? = null,
-    onAction: (() -> Unit)? = null,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = AppTheme.spacing.sm),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            AppText(
-                text = title,
-                style = AppTheme.typography.headingSmall,
-                color = AppTheme.colors.contentPrimary,
-            )
-            subtitle?.let {
-                AppText(
-                    text = it,
-                    style = AppTheme.typography.caption,
-                    color = AppTheme.colors.contentTertiary,
-                )
-            }
-        }
-        if (actionLabel != null && onAction != null) {
-            AppText(
-                text = actionLabel,
-                modifier = Modifier.appClickable(onClick = onAction, minTouchTarget = 0.dp)
-                    .padding(horizontal = AppTheme.spacing.sm, vertical = AppTheme.spacing.xs),
-                style = AppTheme.typography.titleSmall,
-                color = AppTheme.colors.accent,
-            )
         }
     }
 }
@@ -246,10 +139,7 @@ fun AppRating(
         repeat(max) { index ->
             val fill = (rating - index).coerceIn(0f, 1f)
             val tapModifier = if (onRatingChange != null) {
-                Modifier.appClickable(
-                    onClick = { onRatingChange(index + 1) },
-                    minTouchTarget = 0.dp,
-                )
+                Modifier.pressable(onClick = { onRatingChange(index + 1) }, feedback = PressFeedback.Scale)
             } else {
                 Modifier
             }
@@ -262,7 +152,7 @@ fun AppRating(
                 AppIcon(
                     imageVector = if (fill >= FULL_STAR) AppIcons.StarFilled else AppIcons.Star,
                     contentDescription = null,
-                    tint = if (fill >= FULL_STAR) colors.warning.content else colors.borderStrong,
+                    tint = if (fill >= FULL_STAR) colors.warning.content else colors.outline,
                     size = starSize,
                 )
 
@@ -300,7 +190,7 @@ fun AppSparkline(
 
     val progress by animateFloatAsState(
         targetValue = 1f,
-        animationSpec = AppTheme.motion.navigation(),
+        animationSpec = AppTheme.springs.layout.unit,
         label = "sparkline",
     )
 
@@ -363,7 +253,7 @@ fun AppBarChart(
     entries: List<Pair<String, Float>>,
     modifier: Modifier = Modifier,
     barColor: Color = AppTheme.colors.accent,
-    trackColor: Color = AppTheme.colors.surfaceVariant,
+    trackColor: Color = AppTheme.colors.fill,
     barHeight: Dp = 10.dp,
     valueLabel: (Float) -> String = { it.toInt().toString() },
 ) {
@@ -377,7 +267,7 @@ fun AppBarChart(
         entries.forEach { (label, value) ->
             val fraction by animateFloatAsState(
                 targetValue = value / maximum,
-                animationSpec = AppTheme.motion.navigation(),
+                animationSpec = AppTheme.springs.layout.unit,
                 label = "bar",
             )
 
@@ -388,7 +278,7 @@ fun AppBarChart(
                 ) {
                     AppText(
                         text = label,
-                        style = AppTheme.typography.bodySmall,
+                        style = AppTheme.typography.subheadline,
                         color = AppTheme.colors.contentSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -440,7 +330,7 @@ fun AppKeyValueGrid(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        if (striped && index % 2 == 1) colors.surfaceVariant else Color.Transparent,
+                        if (striped && index % 2 == 1) colors.fill else Color.Transparent,
                     )
                     .padding(horizontal = AppTheme.spacing.md, vertical = AppTheme.spacing.sm),
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
@@ -448,13 +338,13 @@ fun AppKeyValueGrid(
                 AppText(
                     text = key,
                     modifier = Modifier.weight(1f),
-                    style = AppTheme.typography.bodySmall,
+                    style = AppTheme.typography.subheadline,
                     color = colors.contentTertiary,
                 )
                 AppText(
                     text = value,
                     modifier = Modifier.weight(1f),
-                    style = AppTheme.typography.bodySmall,
+                    style = AppTheme.typography.subheadline,
                     color = colors.contentPrimary,
                     textAlign = TextAlign.End,
                 )

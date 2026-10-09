@@ -1,4 +1,4 @@
-package com.base.app.core.designsystem.component.feedback
+package com.base.app.core.designsystem.component.fields
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -70,8 +70,8 @@ fun AppStepIndicator(
                 AppText(
                     text = label,
                     modifier = Modifier.padding(horizontal = 2.dp),
-                    style = AppTheme.typography.labelSmall,
-                    color = if (index == current) AppTheme.colors.contentPrimary else AppTheme.colors.contentTertiary,
+                    style = AppTheme.typography.caption2,
+                    color = if (index == current) AppTheme.colors.contentPrimary else AppTheme.colors.contentSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Center,
@@ -95,9 +95,9 @@ private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier) {
         targetValue = when {
             !visible -> Color.Transparent
             done -> AppTheme.colors.accent
-            else -> AppTheme.colors.divider
+            else -> AppTheme.colors.separator
         },
-        animationSpec = tween(AppTheme.motion.medium, easing = AppTheme.motion.standard),
+        animationSpec = tween(AppTheme.springs.fadeSlow),
         label = "stepConnector",
     )
     Box(modifier = modifier.height(2.dp).background(colour))
@@ -108,12 +108,12 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
     val colors = AppTheme.colors
     val fill by animateColorAsState(
         targetValue = if (done) colors.accent else colors.surface,
-        animationSpec = tween(AppTheme.motion.medium, easing = AppTheme.motion.standard),
+        animationSpec = tween(AppTheme.springs.fadeSlow),
         label = "stepFill",
     )
     val ring by animateColorAsState(
-        targetValue = if (done || active) colors.accent else colors.border,
-        animationSpec = tween(AppTheme.motion.medium, easing = AppTheme.motion.standard),
+        targetValue = if (done || active) colors.accent else colors.outline,
+        animationSpec = tween(AppTheme.springs.fadeSlow),
         label = "stepRing",
     )
 
@@ -134,8 +134,8 @@ private fun StepNode(number: Int, done: Boolean, active: Boolean) {
         } else {
             AppText(
                 text = number.toString(),
-                style = AppTheme.typography.labelSmall,
-                color = if (active) colors.accent else colors.contentTertiary,
+                style = AppTheme.typography.caption2,
+                color = if (active) colors.accentContent else colors.contentSecondary,
             )
         }
     }

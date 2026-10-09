@@ -1,4 +1,4 @@
-package com.base.app.core.designsystem.component.selection
+package com.base.app.core.designsystem.component.fields
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
-import com.base.app.core.designsystem.foundation.HapticEffect
+import com.base.app.core.designsystem.foundation.AppHaptic
 import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.foundation.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
@@ -88,7 +88,7 @@ fun AppRangeSlider(
         }
         if (steps > 0 && snapped != lastSnapped) {
             lastSnapped = snapped
-            haptics.perform(HapticEffect.Tick)
+            haptics.perform(AppHaptic.Selection)
         }
         val moved = valueRange.start + snapped * span
         val now = current
@@ -114,12 +114,12 @@ fun AppRangeSlider(
     val endFraction = fractionOf(value.endInclusive)
     val startRadius by animateFloatAsState(
         targetValue = if (dragging == START) THUMB_RADIUS_DRAGGED else THUMB_RADIUS,
-        animationSpec = AppTheme.motion.press(),
+        animationSpec = AppTheme.springs.press.unit,
         label = "startThumb",
     )
     val endRadius by animateFloatAsState(
         targetValue = if (dragging == END) THUMB_RADIUS_DRAGGED else THUMB_RADIUS,
-        animationSpec = AppTheme.motion.press(),
+        animationSpec = AppTheme.springs.press.unit,
         label = "endThumb",
     )
 
@@ -160,7 +160,7 @@ fun AppRangeSlider(
                 val endX = thumbX(endFraction)
 
                 drawRoundRect(
-                    color = colors.surfaceVariant,
+                    color = colors.fill,
                     topLeft = Offset(0f, centerY - trackHeight / 2f),
                     size = Size(size.width, trackHeight),
                     cornerRadius = radius,
@@ -171,8 +171,8 @@ fun AppRangeSlider(
                     size = Size(abs(endX - startX), trackHeight),
                     cornerRadius = radius,
                 )
-                drawThumb(Offset(startX, centerY), startRadius, colors.surface, colors.accent)
-                drawThumb(Offset(endX, centerY), endRadius, colors.surface, colors.accent)
+                drawThumb(Offset(startX, centerY), startRadius, Color.White, colors.outline)
+                drawThumb(Offset(endX, centerY), endRadius, Color.White, colors.outline)
             },
     ) {
         ThumbControl(
