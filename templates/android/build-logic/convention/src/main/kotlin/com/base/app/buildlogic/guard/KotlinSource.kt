@@ -17,8 +17,11 @@ internal class KotlinSource(val text: String) {
     /** Comments replaced by spaces; strings kept, for rules that read what a string says. */
     val codeAndStrings: String
 
-    /** Every `//` comment by line number (1-based), with the code before it on that line blanked or not. */
-    val lineComments: Map<Int, LineComment>
+    /** Every comment in the file, in order: `//` lines, block comments and KDoc. */
+    val comments: List<Comment>
+
+    /** Every `//` comment by its 1-based line. */
+    val lineComments: Map<Int, Comment>
 
     private val lineStarts: IntArray = text.indices.filter { text[it] == '\n' }.map { it + 1 }.let { intArrayOf(0) + it }
 
@@ -26,17 +29,28 @@ internal class KotlinSource(val text: String) {
         val scan = Scanner(text).also { it.run() }
         code = String(scan.code)
         codeAndStrings = String(scan.codeAndStrings)
-        lineComments = scan.comments.associate { (start, end) ->
+        comments = scan.comments.map { (start, end) ->
             val line = lineOf(start)
-            line to LineComment(
-                text = text.substring(start, end),
+            val raw = text.substring(start, end)
+            Comment(
+                line = line,
+                kind = when {
+                    raw.startsWith("//") -> Comment.Kind.LINE
+                    raw.startsWith("/**") && raw != "/**/" -> Comment.Kind.KDOC
+                    else -> Comment.Kind.BLOCK
+                },
+                raw = raw,
                 alone = code.substring(lineStarts[line - 1], start).isBlank(),
             )
         }
+        lineComments = comments.filter { it.kind == Comment.Kind.LINE }.associateBy { it.line }
     }
 
     val codeLines: List<String> by lazy { code.split('\n') }
     val codeAndStringLines: List<String> by lazy { codeAndStrings.split('\n') }
+
+    /** The number of lines, counting a last line without a line break. */
+    val lineCount: Int get() = lineStarts.size - if (text.endsWith('\n')) 1 else 0
 
     /** The 1-based line holding [offset]. */
     fun lineOf(offset: Int): Int {
@@ -44,7 +58,48 @@ internal class KotlinSource(val text: String) {
         return if (index >= 0) index + 1 else -index - 1
     }
 
-    data class LineComment(val text: String, val alone: Boolean)
+    /** The offset where 1-based [line] starts. */
+    fun offsetOf(line: Int): Int = lineStarts[line - 1]
+
+    /** The brace and parenthesis depth at each offset of [code], counted before the character there. */
+    val depths: Depths by lazy { Depths(code) }
+
+    class Comment(val line: Int, val kind: Kind, val raw: String, val alone: Boolean) {
+        enum class Kind { LINE, BLOCK, KDOC }
+
+        /** The words of the comment, without its delimiters or the leading `*` of block lines. */
+        val content: String by lazy {
+            when (kind) {
+                Kind.LINE -> raw.removePrefix("//").trim()
+                Kind.BLOCK, Kind.KDOC -> raw.removePrefix("/**").removePrefix("/*").removeSuffix("*/")
+                    .lines()
+                    .joinToString("\n") { it.trim().removePrefix("*").trim() }
+                    .trim()
+            }
+        }
+    }
+
+    class Depths(code: String) {
+        val braces = IntArray(code.length + 1)
+        val parens = IntArray(code.length + 1)
+
+        init {
+            var brace = 0
+            var paren = 0
+            code.forEachIndexed { index, char ->
+                braces[index] = brace
+                parens[index] = paren
+                when (char) {
+                    '{' -> brace++
+                    '}' -> brace = maxOf(0, brace - 1)
+                    '(' -> paren++
+                    ')' -> paren = maxOf(0, paren - 1)
+                }
+            }
+            braces[code.length] = brace
+            parens[code.length] = paren
+        }
+    }
 
     private class Scanner(private val text: String) {
         val code = text.toCharArray()
@@ -130,6 +185,7 @@ internal class KotlinSource(val text: String) {
                     else -> i++
                 }
             }
+            comments += start to i
             blankComment(start, i)
         }
 

@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.component.button.AppButton
@@ -67,12 +68,16 @@ fun <T : Any> AppPagingList(
                 contentPadding = contentPadding,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {
-                items(count = items.itemCount, key = items.itemKey(key)) { index ->
+                items(
+                    count = items.itemCount,
+                    key = items.itemKey(key),
+                    contentType = items.itemContentType { ROW },
+                ) { index ->
                     val item = items[index] ?: return@items
                     Box(modifier = appAnimateItem()) { itemContent(item) }
                 }
 
-                item(key = "append-footer") {
+                item(key = APPEND_FOOTER, contentType = APPEND_FOOTER) {
                     val append = items.loadState.append
                     AppendFooter(
                         loading = append is LoadState.Loading,
@@ -127,3 +132,6 @@ private fun AppendFooter(
         }
     }
 }
+
+private const val ROW = "row"
+private const val APPEND_FOOTER = "append-footer"
