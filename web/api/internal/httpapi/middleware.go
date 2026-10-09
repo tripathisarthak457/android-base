@@ -129,9 +129,11 @@ func recordsTimings(route string) bool {
 // that returns a file, and there is no reason for any origin but the site to call it.
 func (s *Server) cors(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Every response depends on Origin, including one without CORS headers: a cache that kept
+		// that one would serve it to the site as well.
+		w.Header().Add("Vary", "Origin")
 		if origin := r.Header.Get("Origin"); origin != "" && s.origins[origin] {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Add("Vary", "Origin")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers",
 				"Content-Type, Authorization, If-None-Match, X-Session-Id, X-Config-Ms, X-Client")

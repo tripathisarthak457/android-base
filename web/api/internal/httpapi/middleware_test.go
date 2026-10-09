@@ -156,6 +156,9 @@ func TestCORSAllowsTheSessionHeadersForTheSiteOnly(t *testing.T) {
 	if w.Header().Get("Access-Control-Allow-Origin") != "" {
 		t.Fatal("an unknown origin was allowed")
 	}
+	if w.Header().Get("Vary") != "Origin" {
+		t.Fatal("a refusal that depends on Origin does not say so to caches")
+	}
 }
 
 func containsToken(list, token string) bool {
