@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -47,7 +46,7 @@ func TestIntegrationRealGenerator(t *testing.T) {
 
 			spec := mustJSON(t, map[string]any{
 				"schema": 2, "platform": key, "app_name": "Integration", "package_name": "com.example.integration",
-				"features": requestable(*target),
+				"features": target.SmallestPresetFeatures(),
 			})
 			if _, err := Precheck(spec, key, catalogue.Rules); err != nil {
 				t.Fatalf("the precheck refused a spec the generator accepts: %v", err)
@@ -122,21 +121,6 @@ func fieldOf(f *Failure) string {
 		return ""
 	}
 	return f.Field
-}
-
-// requestable is the smallest preset's features that can be asked for directly.
-func requestable(target TargetEntry) []string {
-	features := []string{}
-	if len(target.Presets) == 0 {
-		return features
-	}
-	smallest := slices.MinFunc(target.Presets, func(a, b PresetInfo) int { return len(a.Features) - len(b.Features) })
-	for _, key := range smallest.Features {
-		if slices.ContainsFunc(target.Features, func(f FeatureInfo) bool { return f.Key == key && !f.ImpliedOnly }) {
-			features = append(features, key)
-		}
-	}
-	return features
 }
 
 // assertRunnableZip checks the zip opens and its Gradle wrapper kept the executable bit, which the

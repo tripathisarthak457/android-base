@@ -107,3 +107,20 @@ func TestResolveAddsWhatEachFeatureImplies(t *testing.T) {
 		})
 	}
 }
+
+func TestSmallestPresetFeaturesLeavesOutWhatCannotBeAskedFor(t *testing.T) {
+	target := TargetEntry{
+		Features: []FeatureInfo{{Key: "network"}, {Key: "firebase", ImpliedOnly: true}, {Key: "push"}},
+		Presets: []PresetInfo{
+			{Key: "everything", Features: []string{"network", "firebase", "push"}},
+			{Key: "lean", Features: []string{"network", "firebase"}},
+		},
+	}
+	if got := target.SmallestPresetFeatures(); !slices.Equal(got, []string{"network"}) {
+		t.Fatalf("got %v", got)
+	}
+	// Marshalled into a spec, where null is not a list.
+	if got := (&TargetEntry{}).SmallestPresetFeatures(); got == nil {
+		t.Fatal("a target without presets gave nil")
+	}
+}

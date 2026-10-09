@@ -164,6 +164,22 @@ func (t *TargetEntry) Resolve(requested []string) []string {
 	return slices.Sorted(maps.Keys(resolved))
 }
 
+// SmallestPresetFeatures is what to ask for to get the quickest project the target makes: the
+// features of the preset with the fewest that can be asked for directly.
+func (t *TargetEntry) SmallestPresetFeatures() []string {
+	features := []string{}
+	if len(t.Presets) == 0 {
+		return features
+	}
+	smallest := slices.MinFunc(t.Presets, func(a, b PresetInfo) int { return len(a.Features) - len(b.Features) })
+	for _, key := range smallest.Features {
+		if slices.ContainsFunc(t.Features, func(f FeatureInfo) bool { return f.Key == key && !f.ImpliedOnly }) {
+			features = append(features, key)
+		}
+	}
+	return features
+}
+
 // NearestPreset names the preset whose features differ least from resolved, and the differences:
 // what was added on top of it and what was taken out. Ties go to the catalogue's default preset, then
 // to catalogue order. The spec carries no preset of its own, so this is how the admin tells a

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-	"slices"
 	"time"
 
 	"github.com/base-android/generator-api/internal/config"
@@ -63,7 +62,7 @@ func generateOne(ctx context.Context, g *generate.Generator) (int, error) {
 		"platform":     g.Target.Key,
 		"app_name":     "Selftest",
 		"package_name": "com.example.selftest",
-		"features":     smallestPreset(g.Target),
+		"features":     g.Target.SmallestPresetFeatures(),
 	})
 	if err != nil {
 		return 0, err
@@ -87,25 +86,4 @@ func generateOne(ctx context.Context, g *generate.Generator) (int, error) {
 		return 0, fmt.Errorf("the zip is empty")
 	}
 	return len(archive.File), nil
-}
-
-// smallestPreset returns the requestable features of the preset with the fewest, which is the
-// quickest project the target can make.
-func smallestPreset(target generate.TargetEntry) []string {
-	if len(target.Presets) == 0 {
-		return []string{}
-	}
-	smallest := slices.MinFunc(target.Presets, func(a, b generate.PresetInfo) int {
-		return len(a.Features) - len(b.Features)
-	})
-	features := []string{}
-	for _, key := range smallest.Features {
-		requestable := slices.ContainsFunc(target.Features, func(f generate.FeatureInfo) bool {
-			return f.Key == key && !f.ImpliedOnly
-		})
-		if requestable {
-			features = append(features, key)
-		}
-	}
-	return features
 }
