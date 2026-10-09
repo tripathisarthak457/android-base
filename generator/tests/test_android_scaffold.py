@@ -123,6 +123,13 @@ class GeneratedProjectTest(unittest.TestCase):
                 entry = f"{path.relative_to(project).as_posix()} adaptive-preview 1"
                 self.assertEqual(not annotated, entry in baseline, entry)
 
+    def test_a_modular_project_translates_the_modules_it_split(self):
+        with tempfile.TemporaryDirectory() as temp:
+            project = Path(temp) / "p"
+            parsed = spec(architecture="modular", features=["network"], feature_modules=["orders"], languages=["de"])
+            pipeline.build(parsed, ANDROID, project, zip_output=False, commit="t")
+            self.assertTrue((project / "feature/orders/impl/src/main/res/values-de/strings.xml").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

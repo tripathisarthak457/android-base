@@ -6,6 +6,7 @@ build that ships a language with a string missing, so a gap here is an error, no
 
 from __future__ import annotations
 
+import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -69,7 +70,12 @@ def write(project: Path, spec: Spec, modules: set[str] | None = None) -> None:
 
 
 def _module(project: Path, strings: Path) -> str:
-    return strings.parent.parent.relative_to(project).as_posix().removesuffix(f"/{_RES}")
+    """The module that owns `strings`, by its compact path: a modular `:impl` holds its module's copy."""
+    module = strings.parent.parent.relative_to(project).as_posix().removesuffix(f"/{_RES}")
+    return _IMPL.sub(r"\1", module)
+
+
+_IMPL = re.compile(r"^((?:feature|data)/[a-z0-9_]+)/impl$")
 
 
 def strings_xml(names: list[str], texts: dict[str, Text]) -> str:
