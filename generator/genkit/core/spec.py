@@ -10,6 +10,7 @@ set resolved. Target-specific rules (SDK levels, signing, bundle ids) live with 
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field, replace
 from typing import TYPE_CHECKING, Any
 
@@ -578,14 +579,18 @@ def validate_app_name(name: str) -> None:
 
 
 def validate_display_name(name: str) -> None:
+    # Code points, not UTF-16 units: the website's validator has to count the same way.
     if len(name) > MAX_DISPLAY_NAME:
         raise SpecError(
             f"The display name can be at most {MAX_DISPLAY_NAME} characters: launchers cut it "
             "off well before that.",
             "display_name",
         )
-    if not name.isprintable():
-        raise SpecError("The display name cannot contain control characters.", "display_name")
+    # Format characters and spaces stay: Persian needs the zero-width non-joiner, and family emoji
+    # are joined sequences. A surrogate cannot be written as UTF-8, and U+FFFE and U+FFFF are not
+    # allowed in XML.
+    if any(unicodedata.category(c) in ("Cc", "Cs", "Zl", "Zp") or c in "\ufffe\uffff" for c in name):
+        raise SpecError("The display name cannot contain control characters or line breaks.", "display_name")
 
 
 def validate_package_name(package_name: str) -> None:

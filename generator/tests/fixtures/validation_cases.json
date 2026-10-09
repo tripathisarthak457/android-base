@@ -308,6 +308,63 @@
       }
     },
     {
+      "name": "display name with a zero-width non-joiner and a no-break space",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "کتاب‌ها Notes"
+      }
+    },
+    {
+      "name": "display name with a joined emoji sequence",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "👨‍👩‍👧 Family"
+      }
+    },
+    {
+      "name": "display name of 30 characters outside the BMP, counted as code points",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀"
+      }
+    },
+    {
+      "name": "display name of 31 characters outside the BMP",
+      "valid": false,
+      "field": "display_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀"
+      }
+    },
+    {
+      "name": "display name with a line separator",
+      "valid": false,
+      "field": "display_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "display_name": "Two Lines"
+      }
+    },
+    {
       "name": "one segment",
       "valid": false,
       "field": "package_name",
