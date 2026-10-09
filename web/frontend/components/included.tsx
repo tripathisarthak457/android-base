@@ -16,8 +16,7 @@ function items() {
       title: "Smooth by rule, not by hope",
       body:
         "Animated values are read in layout and draw only, screens slide rather than fade, and the patterns that cost frames " +
-        "fail the build: Modifier.composed, collectAsState in features, raw tweens, lists without keys. Release builds ship " +
-        "baseline profiles.",
+        "fail the build: Modifier.composed, collectAsState in features, raw tweens, lists without keys.",
       detail: "./gradlew check",
     },
     {

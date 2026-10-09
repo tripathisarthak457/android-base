@@ -27,8 +27,9 @@ export function Faq() {
       q: "Is the project it gives me actually going to build?",
       a:
         "Yes, and that is checked rather than asserted. The template in the repository is a real Gradle project, and CI " +
-        "generates projects across the presets and feature combinations and builds each one: debug and shrunk release builds, " +
-        "unit tests, Android lint and the build's own rules. A change that breaks one does not ship.",
+        "generates every preset, plus a project with every feature and one with none, and builds each of them; between them " +
+        "they run debug and shrunk release builds, unit tests, Android lint and the build's own rules. A change that breaks " +
+        "one does not ship.",
     },
     ...(platforms ? [{ q: "Which platforms can it make?", a: platforms }] : []),
     {
@@ -72,8 +73,10 @@ export function Faq() {
         "browser, system and device class, a screen-size bucket, where you came from, whether you have been here before, and " +
         "a daily-rotating salted hash instead of your IP address. No IP, " +
         "no user agent string, no cookies, no third-party analytics. Your browser keeps a random id for this tab in " +
-        "sessionStorage, your configurator answers in localStorage so they are here when you come back, and your light or " +
-        "dark choice if you change it. Start over clears the answers.",
+        "sessionStorage, your configurator answers in localStorage once you change one, so they are here when you come " +
+        "back, and your light or dark choice if you change it. Start over clears the answers. The style previews and the " +
+        "typeface you pick load from Google Fonts, which sees your IP address as any font request does; the site's own " +
+        "fonts are served from here.",
       link: { href: PRIVACY, label: "The full list" },
     },
     {
