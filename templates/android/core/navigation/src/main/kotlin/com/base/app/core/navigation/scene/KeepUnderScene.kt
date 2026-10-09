@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.scene
 
 import androidx.compose.animation.EnterExitState
 import androidx.compose.foundation.layout.Box
@@ -18,6 +18,16 @@ import androidx.navigation3.scene.SceneStrategyScope
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.navigation.AppBackStack
+import com.base.app.core.navigation.back.BackGate
+import com.base.app.core.navigation.back.StackChange
+import com.base.app.core.navigation.shell.BarAnchor
+import com.base.app.core.navigation.shell.tabs.rememberTabLifecycle
+import com.base.app.core.navigation.stack.hidesBar
+import com.base.app.core.navigation.stack.navKey
+import com.base.app.core.navigation.transition.ReportMotion
+import com.base.app.core.navigation.transition.ScreenMotion
+import com.base.app.core.navigation.transition.arrival
 import kotlin.math.roundToInt
 
 /**

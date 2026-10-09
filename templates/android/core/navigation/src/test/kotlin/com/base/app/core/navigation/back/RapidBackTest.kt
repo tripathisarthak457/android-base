@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.back
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.LaunchedEffect
@@ -8,6 +8,14 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.navigation.AppBackStack
+import com.base.app.core.navigation.FeedTab
+import com.base.app.core.navigation.Post
+import com.base.app.core.navigation.ROBOLECTRIC_SDK
+import com.base.app.core.navigation.onNodeWithTagExists
+import com.base.app.core.navigation.stack.StackHost
+import com.base.app.core.navigation.testRegistry
+import com.base.app.core.navigation.transition.ScreenMotion
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

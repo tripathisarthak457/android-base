@@ -1,6 +1,7 @@
 package com.base.app.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import com.base.app.core.common.navigation.AppNavKey
 import kotlin.reflect.KClass
 
@@ -111,3 +112,10 @@ class NavRegistry(graphs: Set<NavGraphEntry>) {
     /** Whether a destination for [type] is installed: optional features may be left out of a build. */
     fun has(type: KClass<out AppNavKey>): Boolean = type in destinations
 }
+
+/**
+ * Which half of a list-detail pair a destination is. A [List] and the [Detail] opened from it sit
+ * side by side when the window has room, and stack as two screens when it does not — the same
+ * back stack, the same keys, nothing in the feature knowing which.
+ */
+enum class NavPane { Single, List, Detail }

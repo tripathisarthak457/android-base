@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.scene
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
@@ -18,6 +18,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.base.app.core.designsystem.foundation.LocalTabVisible
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.navigation.AppBackStack
+import com.base.app.core.navigation.FeedTab
+import com.base.app.core.navigation.NavCommand
+import com.base.app.core.navigation.Post
+import com.base.app.core.navigation.ROBOLECTRIC_SDK
+import com.base.app.core.navigation.Screen
+import com.base.app.core.navigation.back.StackChange
+import com.base.app.core.navigation.onNodeWithTagExists
+import com.base.app.core.navigation.stack.StackHost
+import com.base.app.core.navigation.testRegistry
+import com.base.app.core.navigation.transition.ScreenMotion
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Rule

@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.navigation.back.submit
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotSame
 import org.junit.Rule

@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.transition
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection

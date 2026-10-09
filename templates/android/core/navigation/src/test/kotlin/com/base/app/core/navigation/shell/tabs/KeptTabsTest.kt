@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.shell.tabs
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigationevent.NavigationEventDispatcher
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.navigation.ROBOLECTRIC_SDK
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

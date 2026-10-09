@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.transition
 
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier

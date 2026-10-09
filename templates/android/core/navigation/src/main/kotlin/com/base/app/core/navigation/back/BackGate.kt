@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.back
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -22,7 +22,7 @@ import androidx.compose.runtime.setValue
  * reference to Compose UI, so its rules are tested without a screen.
  */
 @Stable
-class BackGate internal constructor(private val maxCoalesced: Int = MAX_COALESCED) {
+internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
 
     private val reporters = mutableStateSetOf<Any>()
 

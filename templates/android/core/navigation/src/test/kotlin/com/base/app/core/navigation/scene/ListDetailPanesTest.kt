@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.scene
 
 import com.base.app.core.navigation.NavPane.Detail
 import com.base.app.core.navigation.NavPane.List

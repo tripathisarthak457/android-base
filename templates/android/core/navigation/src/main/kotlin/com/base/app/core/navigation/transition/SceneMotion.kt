@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.transition
 
 import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.core.Transition
@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import com.base.app.core.navigation.back.BackGate
 
 /**
  * How far a scene or entry has arrived: 0 off screen, 1 in place, on the spring its slide uses, so

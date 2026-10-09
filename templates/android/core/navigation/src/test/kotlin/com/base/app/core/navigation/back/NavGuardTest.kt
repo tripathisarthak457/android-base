@@ -1,6 +1,10 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.back
 
 import androidx.compose.runtime.mutableStateListOf
+import com.base.app.core.navigation.AppBackStack
+import com.base.app.core.navigation.FeedTab
+import com.base.app.core.navigation.NavCommand
+import com.base.app.core.navigation.Post
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

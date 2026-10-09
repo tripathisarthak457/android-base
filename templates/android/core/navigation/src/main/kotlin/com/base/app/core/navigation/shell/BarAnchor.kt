@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.shell
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.LayoutDirection
  * the scene that animates it.
  */
 @Stable
-class BarAnchor internal constructor() {
+internal class BarAnchor {
     private var follower by mutableStateOf<(() -> Float)?>(null)
     private var last = 0f
 

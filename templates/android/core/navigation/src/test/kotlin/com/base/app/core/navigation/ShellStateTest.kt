@@ -1,6 +1,8 @@
 package com.base.app.core.navigation
 
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.navigation.back.StackChange
+import com.base.app.core.navigation.back.submit
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

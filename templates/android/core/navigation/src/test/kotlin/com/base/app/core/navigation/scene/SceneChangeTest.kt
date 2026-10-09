@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.scene
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.unit.dp
@@ -7,6 +7,14 @@ import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.navigation.AppBackStack
+import com.base.app.core.navigation.FeedTab
+import com.base.app.core.navigation.NavPane
+import com.base.app.core.navigation.Post
+import com.base.app.core.navigation.stack.HIDES_BAR_METADATA
+import com.base.app.core.navigation.stack.KEY_METADATA
+import com.base.app.core.navigation.transition.ScreenMotion
+import com.base.app.core.navigation.transition.sameStack
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

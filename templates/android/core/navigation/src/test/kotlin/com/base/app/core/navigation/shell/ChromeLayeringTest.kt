@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.shell
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
@@ -8,8 +8,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.click
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
@@ -21,6 +21,22 @@ import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.LocalScreenBottomBar
 import com.base.app.core.designsystem.foundation.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.navigation.AppNavigator
+import com.base.app.core.navigation.AppShell
+import com.base.app.core.navigation.Compose
+import com.base.app.core.navigation.FeedTab
+import com.base.app.core.navigation.NavCommand
+import com.base.app.core.navigation.Player
+import com.base.app.core.navigation.Post
+import com.base.app.core.navigation.ProfileTab
+import com.base.app.core.navigation.ROBOLECTRIC_SDK
+import com.base.app.core.navigation.Screen
+import com.base.app.core.navigation.ShellConfig
+import com.base.app.core.navigation.ShellState
+import com.base.app.core.navigation.back.submit
+import com.base.app.core.navigation.shell
+import com.base.app.core.navigation.testRegistry
+import com.base.app.core.navigation.testTabs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

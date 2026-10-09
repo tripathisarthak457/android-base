@@ -9,6 +9,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.base.app.core.common.log.Log
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.navigation.back.BackGate
+import com.base.app.core.navigation.back.StackChange
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 

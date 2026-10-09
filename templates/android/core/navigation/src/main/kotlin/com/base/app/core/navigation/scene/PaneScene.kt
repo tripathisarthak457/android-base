@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.scene
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,13 +20,11 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
 import com.base.app.core.designsystem.icon.AppIcons
-
-/**
- * Which half of a list-detail pair a destination is. A [List] and the [Detail] opened from it sit
- * side by side when the window has room, and stack as two screens when it does not — the same
- * back stack, the same keys, nothing in the feature knowing which.
- */
-enum class NavPane { Single, List, Detail }
+import com.base.app.core.navigation.NavPane
+import com.base.app.core.navigation.back.BackGate
+import com.base.app.core.navigation.transition.ReportMotion
+import com.base.app.core.navigation.transition.ScreenMotion
+import com.base.app.core.navigation.transition.arrival
 
 internal const val PANE_METADATA_KEY = "com.base.app.navigation.pane"
 

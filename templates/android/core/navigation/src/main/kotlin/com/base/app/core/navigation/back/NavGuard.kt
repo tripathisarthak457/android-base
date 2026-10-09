@@ -1,4 +1,7 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.back
+
+import com.base.app.core.navigation.AppBackStack
+import com.base.app.core.navigation.NavCommand
 
 /**
  * What to do with a navigation command, given the host it targets.
@@ -21,3 +24,12 @@ internal fun guard(command: NavCommand, host: AppBackStack): Verdict {
 }
 
 internal enum class Verdict { Apply, Drop, Wait }
+
+internal fun AppBackStack.submit(command: NavCommand): Verdict {
+    val verdict = guard(command, this)
+    if (verdict == Verdict.Apply) {
+        apply(command)
+        gate.changed(change(command))
+    }
+    return verdict
+}

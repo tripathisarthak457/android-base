@@ -1,4 +1,4 @@
-package com.base.app.core.navigation
+package com.base.app.core.navigation.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,6 +29,17 @@ import com.base.app.core.designsystem.foundation.LocalScreenBottomBar
 import com.base.app.core.designsystem.foundation.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
+import com.base.app.core.navigation.Destination
+import com.base.app.core.navigation.NavRegistry
+import com.base.app.core.navigation.Presentation
+import com.base.app.core.navigation.ShellState
+import com.base.app.core.navigation.back.BackGate
+import com.base.app.core.navigation.back.GateEffects
+import com.base.app.core.navigation.stack.ScreenBars
+import com.base.app.core.navigation.transition.NavTransitions
+import com.base.app.core.navigation.transition.ReportMotion
+import com.base.app.core.navigation.transition.ScreenMotion
+import com.base.app.core.navigation.transition.arrival
 
 /**
  * Sheets and covers, above the tab bar (bottom to top: content, bar, presented, overlays, toasts). A key
