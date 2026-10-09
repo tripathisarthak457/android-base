@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -76,6 +77,43 @@ func TestIntegrationRealGenerator(t *testing.T) {
 			}
 		})
 	}
+
+	// A run that fails is recorded with the catalogue's resolution of what it asked for, so that
+	// resolution has to be the generator's.
+	t.Run("resolution", func(t *testing.T) {
+		target := catalogue.Target("android")
+		if target == nil {
+			t.Skip("no android target")
+		}
+		var requested []string
+		for _, feature := range target.Features {
+			if len(feature.Implies) > 0 && !feature.ImpliedOnly {
+				requested = append(requested, feature.Key)
+			}
+		}
+		if len(requested) == 0 {
+			t.Fatal("no feature in the catalogue implies another")
+		}
+		g, err := New(ctx, opts, *target, catalogue.Rules)
+		if err != nil {
+			t.Fatal(err)
+		}
+		out, err := g.Run(ctx, mustJSON(t, map[string]any{
+			"schema": 2, "platform": "android", "app_name": "Integration", "package_name": "com.example.integration",
+			"features": requested,
+		}))
+		var failure *Failure
+		if errors.As(err, &failure) {
+			t.Fatalf("%v\n%s", failure, failure.Detail)
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer func() { _ = out.Close() }()
+		if got := target.Resolve(requested); !slices.Equal(got, out.ResolvedFeatures) {
+			t.Fatalf("the catalogue resolves %v to %v, the generator to %v", requested, got, out.ResolvedFeatures)
+		}
+	})
 
 	t.Run("v1 spec", func(t *testing.T) {
 		target := catalogue.Target("android")
