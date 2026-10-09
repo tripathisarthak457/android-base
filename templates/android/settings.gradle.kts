@@ -56,6 +56,7 @@ include(":core:designsystem")
 include(":core:navigation")
 include(":core:ui")
 include(":core:testing")
+include(":core:testing:compose")
 // <opt:network>
 include(":core:network")
 // </opt:network>

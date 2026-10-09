@@ -29,6 +29,15 @@ class ModuleGraphTest {
     }
 
     @Test
+    fun `a nested core module is core, and core is all it may see`() {
+        assertEquals(ModuleKind.CORE, ModuleShape.of(":core:testing:compose")?.kind)
+        assertEquals(
+            listOf(":core:testing:compose -> :feature:orders"),
+            violations(":core:testing:compose", ":core:designsystem", ":core:testing", ":feature:orders"),
+        )
+    }
+
+    @Test
     fun `a feature impl sees other features only through their api`() {
         assertEquals(
             listOf(":feature:trips:impl -> :feature:orders:impl", ":feature:trips:impl -> :data:orders:impl"),
