@@ -218,7 +218,7 @@ class RealTemplatesTest(unittest.TestCase):
     """Every file of every template renders with all features on and with all off."""
 
     def test_every_template_renders_both_ways(self):
-        from genkit.core.copy import template_files
+        from genkit.core.copy import is_verbatim, template_files
 
         for target in REGISTRY.values():
             manifest = target.manifest
@@ -227,6 +227,8 @@ class RealTemplatesTest(unittest.TestCase):
             regions: dict[str, list[str] | None] = dict.fromkeys(names, None)
             for enabled in (known, frozenset()):
                 for source in template_files(target.template_dir, list(manifest.template_only), {}):
+                    if is_verbatim(source.relative, manifest.verbatim):
+                        continue
                     try:
                         text = source.source.read_text(encoding="utf-8")
                     except UnicodeDecodeError:

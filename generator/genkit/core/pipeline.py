@@ -27,7 +27,7 @@ from typing import Any
 
 from . import markers, package, record
 from . import spec as specs
-from .copy import is_executable, mark_executable, prune_empty_directories, template_files
+from .copy import is_executable, is_verbatim, mark_executable, prune_empty_directories, template_files
 from .manifest import TemplateManifest
 from .markers import MARKER_TEXT, TemplateError
 from .rename import IdentityRenamer
@@ -119,13 +119,14 @@ def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str
     excluded = manifest.owned_paths(spec.features) + list(manifest.template_only)
     warnings: list[str] = []
 
-    for source in template_files(target.template_dir, excluded, target.overlays(spec)):
-        relative = renamer.rename(source.relative)
+    for source in template_files(target.template_dir, excluded, target.overlays(spec), manifest.verbatim):
+        verbatim = is_verbatim(source.relative, manifest.verbatim)
+        relative = source.relative if verbatim else renamer.rename(source.relative)
         destination = project / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         data = source.source.read_bytes()
 
-        if Path(source.relative).suffix.lower() in manifest.binary_suffixes:
+        if verbatim or Path(source.relative).suffix.lower() in manifest.binary_suffixes:
             destination.write_bytes(data)
         else:
             try:

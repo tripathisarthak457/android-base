@@ -28,10 +28,13 @@ def is_under(relative: str, prefixes: list[str] | tuple[str, ...]) -> bool:
     return any(relative == prefix or relative.startswith(prefix + "/") for prefix in prefixes)
 
 
-def template_files(template: Path, excluded: list[str], overlays: dict[str, Path]) -> Iterator[SourceFile]:
+def template_files(
+    template: Path, excluded: list[str], overlays: dict[str, Path], verbatim: tuple[str, ...] = ()
+) -> Iterator[SourceFile]:
     """
     Every file a project gets from `template`, in a stable order. `excluded` are template-relative
-    paths left out with everything under them; `overlays` replace or add files.
+    paths left out with everything under them; `overlays` replace or add files. Inside a `verbatim`
+    tree nothing is skipped as build output: upstream documentation may well have a `build/` folder.
     """
     seen: set[str] = set()
     root = str(template)
@@ -39,7 +42,8 @@ def template_files(template: Path, excluded: list[str], overlays: dict[str, Path
         relative_dir = os.path.relpath(directory, root).replace(os.sep, "/")
         subdirectories[:] = sorted(
             name for name in subdirectories
-            if name not in SKIP_DIRS and not is_under(_join(relative_dir, name), excluded)
+            if (name not in SKIP_DIRS or is_verbatim(_join(relative_dir, name) + "/", verbatim))
+            and not is_under(_join(relative_dir, name), excluded)
         )
         for filename in sorted(filenames):
             relative = _join(relative_dir, filename)
@@ -57,6 +61,11 @@ def _join(directory: str, name: str) -> str:
 
 
 def is_executable(relative: str, patterns: tuple[str, ...]) -> bool:
+    return any(fnmatch(relative, pattern) for pattern in patterns)
+
+
+def is_verbatim(relative: str, patterns: tuple[str, ...]) -> bool:
+    """True for a path the manifest's `verbatim` globs cover; `**` and `*` both cross directories."""
     return any(fnmatch(relative, pattern) for pattern in patterns)
 
 
