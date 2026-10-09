@@ -56,10 +56,7 @@ NONE = Syntax("none", "", "", False)
 
 _BY_SUFFIX: dict[str, Syntax] = {
     **dict.fromkeys((".kt", ".kts", ".java", ".swift", ".gradle", ".aidl"), SLASH),
-    **dict.fromkeys(
-        (".toml", ".properties", ".yml", ".yaml", ".pro", ".sh", ".cfg", ".gitignore", ".gitattributes"),
-        HASH,
-    ),
+    **dict.fromkeys((".toml", ".properties", ".yml", ".yaml", ".pro", ".sh", ".cfg"), HASH),
     **dict.fromkeys((".xml", ".html", ".plist", ".storyboard", ".xib"), XML),
     ".md": MARKDOWN,
     **dict.fromkeys((".json", ".xcstrings"), NONE),
@@ -183,7 +180,7 @@ def render(
     Resolves every marker in `text`. `regions` holds the target's lines for each `generated` name;
     None keeps a region's default lines. Raises TemplateError on anything malformed.
     """
-    lines = text.splitlines(keepends=True)
+    lines = _lines(text)
     if syntax is NONE:
         for number, line in enumerate(lines, start=1):
             if MARKER_TEXT.search(line):
@@ -295,7 +292,9 @@ def render(
                 if not default:
                     removed()
             elif supplied:
-                out.extend((line if line.endswith("\n") else line + ending, True) for line in supplied)
+                # A point on a last line with no newline still has to keep the lines it supplies apart.
+                separator = ending or "\n"
+                out.extend((line if line.endswith("\n") else line + separator, True) for line in supplied)
             else:
                 removed()
         elif patterns.generated_end.match(body):
@@ -330,6 +329,14 @@ def _region_end(lines: list[str], start: int, name: str, patterns: _Patterns, pa
         # Any other marker means the start was a point: a region holds plain default lines only.
         return None
     return None
+
+
+def _lines(text: str) -> list[str]:
+    # Only \n ends a line. str.splitlines also breaks on form feeds and Unicode separators, which
+    # would put every TemplateError after one on the wrong line number.
+    lines = text.split("\n")
+    tail = lines.pop()
+    return [line + "\n" for line in lines] + ([tail] if tail else [])
 
 
 def collapse(lines: list[tuple[str, bool]], seams: set[int]) -> list[tuple[str, bool]]:

@@ -82,19 +82,3 @@ data class NetworkResponse(
     val fromCache: Boolean = false,
     val cachedAtEpochMillis: Long? = null,
 )
-
-sealed class NetworkException(message: String, cause: Throwable? = null) :
-    Exception(message, cause) {
-
-    class NoConnectivity : NetworkException("No internet connection.")
-
-    class Timeout(cause: Throwable? = null) : NetworkException("The request timed out.", cause)
-
-    class Serialization(cause: Throwable) :
-        NetworkException("Could not read the server's response.", cause)
-
-    class Http(val statusCode: Int, val body: String?) :
-        NetworkException("HTTP $statusCode")
-
-    class Unknown(cause: Throwable) : NetworkException(cause.message ?: "Unknown error.", cause)
-}

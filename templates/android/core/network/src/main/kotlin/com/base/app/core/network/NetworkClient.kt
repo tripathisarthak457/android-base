@@ -1,10 +1,10 @@
 package com.base.app.core.network
 
-import com.base.app.core.common.AppResult
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.network.model.CachePolicy
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.MultipartPart
-import com.base.app.core.network.model.NetworkException
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
 import kotlinx.coroutines.Dispatchers
@@ -43,20 +43,9 @@ internal suspend inline fun <reified T> decodeResult(
 ): AppResult<T> = when (result) {
     is AppResult.Success -> withContext(Dispatchers.Default) {
         runCatching {
-            val root = NetworkJson.parseToJsonElement(result.data.body)
-            val payload = unwrapper.payload(root)
-            AppResult.Success(
-                data = NetworkJson.decodeFromJsonElement<T>(payload),
-                fromCache = result.data.fromCache,
-                cachedAtEpochMillis = result.data.cachedAtEpochMillis,
-            )
-        }.getOrElse { throwable ->
-            AppResult.Failure(
-                cause = NetworkException.Serialization(throwable),
-                code = result.data.statusCode,
-                rawBody = result.data.body,
-            )
-        }
+            val root = NetworkJson.parseToJsonElement(result.value.body)
+            AppResult.Success(NetworkJson.decodeFromJsonElement<T>(unwrapper.payload(root)))
+        }.getOrElse { throwable -> AppResult.Failure(AppError.Decode(throwable)) }
     }
 
     is AppResult.Failure -> result
@@ -70,19 +59,9 @@ suspend fun <T> NetworkClient.request(
 ): AppResult<T> = when (val result = execute(request)) {
     is AppResult.Success -> withContext(Dispatchers.Default) {
         runCatching {
-            val root = NetworkJson.parseToJsonElement(result.data.body)
-            AppResult.Success(
-                data = NetworkJson.decodeFromJsonElement(deserializer, unwrapper.payload(root)),
-                fromCache = result.data.fromCache,
-                cachedAtEpochMillis = result.data.cachedAtEpochMillis,
-            )
-        }.getOrElse { throwable ->
-            AppResult.Failure(
-                cause = NetworkException.Serialization(throwable),
-                code = result.data.statusCode,
-                rawBody = result.data.body,
-            )
-        }
+            val root = NetworkJson.parseToJsonElement(result.value.body)
+            AppResult.Success(NetworkJson.decodeFromJsonElement(deserializer, unwrapper.payload(root)))
+        }.getOrElse { throwable -> AppResult.Failure(AppError.Decode(throwable)) }
     }
 
     is AppResult.Failure -> result

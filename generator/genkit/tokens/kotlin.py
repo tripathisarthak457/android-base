@@ -7,6 +7,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from . import number
+
 HEADER = (
     "// Generated from tokens/*.json by generator/genkit/tokens. "
     "Do not edit; run python3 -m genkit.tokens --write."
@@ -58,11 +60,6 @@ def emit(tokens: dict[str, Any], package: str) -> str:
 
 def _indent(lines: list[str]) -> list[str]:
     return [f"    {line}" if line else "" for line in lines]
-
-
-def number(value: float) -> str:
-    """A Kotlin literal: whole numbers without a fraction, everything else as written."""
-    return str(int(value)) if float(value).is_integer() else repr(round(float(value), 4))
 
 
 def _float(value: float) -> str:

@@ -12,7 +12,7 @@ import zipfile
 from pathlib import Path
 from unittest import mock
 
-from genkit.core import headless, pipeline
+from genkit.core import headless, pipeline, record
 from genkit.targets import get
 
 GENERATOR = Path(__file__).resolve().parent.parent
@@ -117,6 +117,21 @@ class InternalFailureTest(unittest.TestCase):
             code = headless.run(["--target", "android", f"{temp}/out.zip"], io.BytesIO(json.dumps(SPEC).encode()), stdout)
         self.assertEqual(0, code)
         self.assertTrue(json.loads(stdout.getvalue())["ok"])
+
+
+class CommitStampTest(unittest.TestCase):
+    """The commit every response and every generated record carries."""
+
+    def test_a_deployment_without_git_reads_the_commit_ci_wrote(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repository = Path(temp)
+            (repository / "generator").mkdir()
+            (repository / "generator" / "COMMIT").write_text("8e3461d0a1b2\n", encoding="utf-8")
+            self.assertEqual("8e3461d0a1b2", record.generator_commit(repository))
+
+    def test_no_git_and_no_stamp_is_unknown(self):
+        with tempfile.TemporaryDirectory() as temp:
+            self.assertEqual("unknown", record.generator_commit(Path(temp)))
 
 
 class StagingTest(unittest.TestCase):

@@ -73,7 +73,7 @@ class PropertiesTest(unittest.TestCase):
         self.assertEqual("plain=value:ok", keystores.properties_value("plain=value:ok"))
 
     def test_non_ascii_travels_as_unicode_escapes(self):
-        # Properties.load reads ISO-8859-1, so UTF-8 bytes came back as pÃ¤sswÃ¶rd1 (audit 4.3).
+        # Properties.load reads ISO-8859-1, so raw UTF-8 bytes would read back as pÃ¤sswÃ¶rd1.
         self.assertEqual("p\\u00e4ssw\\u00f6rd1", keystores.properties_value("pässwörd1"))
         self.assertEqual("\\ud83d\\ude80x", keystores.properties_value("🚀x"))
 

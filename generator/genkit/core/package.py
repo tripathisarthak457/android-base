@@ -23,10 +23,9 @@ def zip_project(project: Path, archive: Path, executable: tuple[str, ...]) -> Pa
     archive.parent.mkdir(parents=True, exist_ok=True)
     root = project.name
     with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as output:
-        for path in sorted(project.rglob("*")):
-            if path.is_dir():
-                continue
-            relative = path.relative_to(project).as_posix()
+        files = {path.relative_to(project).as_posix(): path for path in project.rglob("*") if not path.is_dir()}
+        for relative in sorted(files):
+            path = files[relative]
             info = zipfile.ZipInfo(f"{root}/{relative}", date_time=_TIMESTAMP)
             info.create_system = _UNIX
             # Without the mode in the high bits, some unzip tools extract every file as 0000, and

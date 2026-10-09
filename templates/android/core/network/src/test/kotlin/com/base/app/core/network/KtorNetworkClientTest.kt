@@ -1,6 +1,10 @@
 package com.base.app.core.network
 
-import com.base.app.core.common.AppResult
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.common.result.errorOrNull
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 // <opt:room>
@@ -56,8 +60,8 @@ class KtorNetworkClientTest {
             networkMonitor = monitor,
             unwrapper = PassthroughUnwrapper(),
             retryPolicy = RetryPolicy(random = Random(1)),
-            inFlight = InFlightRequests(backgroundScope),
-            ioDispatcher = StandardTestDispatcher(testScheduler),
+            inFlight = InFlightRequests(ApplicationScope(backgroundScope)),
+            dispatchers = StandardTestDispatcher(testScheduler).let { AppDispatchers(io = it, default = it, main = it) },
             // <opt:room>
             responseCache = cache,
             requestQueue = queue,
@@ -81,7 +85,7 @@ class KtorNetworkClientTest {
 
         val result = client.execute(NetworkRequest(HttpMethodType.POST, "orders"))
 
-        assertEquals(503, (result as AppResult.Failure).code)
+        assertEquals(503, (result.errorOrNull() as AppError.Http).status)
         assertEquals(1, seen.size)
     }
 
@@ -89,11 +93,11 @@ class KtorNetworkClientTest {
     fun `retries stop at the limit and the failure carries no english of its own`() = runTest {
         val client = client({ respond("", HttpStatusCode.BadGateway) })
 
-        val result = client.execute(get()) as AppResult.Failure
+        val error = client.execute(get()).errorOrNull() as AppError.Http
 
         assertEquals(1 + RetryPolicy.DEFAULT_MAX_RETRIES, seen.size)
-        assertEquals(502, result.code)
-        assertNull(result.message)
+        assertEquals(502, error.status)
+        assertNull(error.message)
     }
 
     @Test
@@ -121,9 +125,9 @@ class KtorNetworkClientTest {
     fun `the server's own message is kept for the user`() = runTest {
         val client = client({ respond("""{"message":"Name taken"}""", HttpStatusCode.UnprocessableEntity) })
 
-        val result = client.execute(get()) as AppResult.Failure
+        val error = client.execute(get()).errorOrNull() as AppError.Http
 
-        assertEquals("Name taken", result.message)
+        assertEquals("Name taken", error.message)
     }
 
     @Test
@@ -167,10 +171,9 @@ class KtorNetworkClientTest {
                 body = buildJsonObject { put("text", JsonPrimitive("hi")) },
                 enqueueOnFailure = true,
             ),
-        ) as AppResult.Failure
+        )
 
-        assertTrue(result.queued)
-        assertTrue(result.isOffline)
+        assertEquals(AppError.Offline, result.errorOrNull())
         assertTrue(queue.requests.single().headers["Idempotency-Key"].orEmpty().isNotBlank())
         assertEquals(0, seen.size)
     }
@@ -182,7 +185,7 @@ class KtorNetworkClientTest {
 
         val result = client.execute(cached()) as AppResult.Success
 
-        assertEquals("saved", result.data.body)
+        assertEquals("saved", result.value.body)
         assertEquals(0, seen.size)
     }
 
@@ -193,7 +196,7 @@ class KtorNetworkClientTest {
 
         val result = client.execute(cached(forceRefresh = true)) as AppResult.Success
 
-        assertEquals("latest", result.data.body)
+        assertEquals("latest", result.value.body)
         assertEquals("latest", cache.any("items")?.body)
     }
 
@@ -204,7 +207,7 @@ class KtorNetworkClientTest {
 
         val result = client.execute(cached(forceRefresh = true)) as AppResult.Success
 
-        assertEquals("saved", result.data.body)
+        assertEquals("saved", result.value.body)
     }
 
     @Test
@@ -212,7 +215,7 @@ class KtorNetworkClientTest {
         cache.put("items", "saved", 200)
         val client = client({ respond("latest", HttpStatusCode.OK) })
 
-        val bodies = client.stream(cached()).toList().map { (it as AppResult.Success).data.body }
+        val bodies = client.stream(cached()).toList().map { (it as AppResult.Success).value.body }
 
         assertEquals(listOf("saved", "latest"), bodies)
     }
@@ -225,7 +228,7 @@ class KtorNetworkClientTest {
         val results = client.stream(cached()).toList()
 
         assertTrue(results[0] is AppResult.Success)
-        assertEquals(404, (results[1] as AppResult.Failure).code)
+        assertEquals(404, (results[1].errorOrNull() as AppError.Http).status)
     }
 
     private fun cached(forceRefresh: Boolean = false) = get().copy(

@@ -14,7 +14,6 @@
   "auth_welcome_back": "फिर से स्वागत है",
   "auth_continue_with_google": "Google के साथ जारी रखें",
   "auth_or": "या",
-  "auth_google_not_configured": "Google से साइन इन अभी सेट नहीं है। auth_google_server_client_id में वेब क्लाइंट आईडी जोड़ें।",
   "auth_google_sign_in_failed": "Google से साइन इन नहीं हो सका।",
   "auth_google_failed": "Google से साइन इन पूरा नहीं हुआ। फिर से कोशिश करें या अपना ईमेल इस्तेमाल करें।",
   "auth_wrong_credentials": "यह ईमेल और पासवर्ड किसी खाते से मेल नहीं खाते।",

@@ -1,9 +1,10 @@
 package com.base.app.core.network
 
-import com.base.app.core.common.AppResult
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.log.Log
 import com.base.app.core.common.network.NetworkMonitor
-import com.base.app.core.common.util.AppLogger
-import com.base.app.core.coroutines.IoDispatcher
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.network.di.AuthenticatedClient
 // <opt:room>
 import com.base.app.core.network.model.CachePolicy
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.flowOn
 // </opt:room>
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.MultipartPart
-import com.base.app.core.network.model.NetworkException
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
 import io.ktor.client.HttpClient
@@ -37,7 +37,6 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -48,8 +47,8 @@ import kotlinx.serialization.json.JsonElement
  *
  * 1. A cache hit that is still fresh short-circuits everything — no socket is opened.
  * 2. Offline, with a stale cache entry and a policy that allows it: serve the stale copy.
- * 3. Offline, with a queueable mutation: persist it and report a failure marked `queued`, so the
- *    caller can say it will be sent later.
+ * 3. Offline, with a queueable mutation: persist it and report [AppError.Offline]; the queue
+ *    sends it once the connection is back.
  * 4. Otherwise: make the call, and retry it as [RetryPolicy] allows when it gets no answer or a
  *    transient one.
  */
@@ -61,7 +60,7 @@ class KtorNetworkClient @Inject constructor(
     private val unwrapper: ResponseUnwrapper,
     private val retryPolicy: RetryPolicy,
     private val inFlight: InFlightRequests,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val dispatchers: AppDispatchers,
     // <opt:room>
     private val responseCache: ResponseCache,
     private val requestQueue: RequestQueue,
@@ -69,7 +68,7 @@ class KtorNetworkClient @Inject constructor(
 ) : NetworkClient {
 
     override suspend fun execute(request: NetworkRequest): AppResult<NetworkResponse> =
-        withContext(ioDispatcher) {
+        withContext(dispatchers.io) {
             // Keyed before anything else, so a request queued straight away carries its key too.
             val outgoing = request.withIdempotencyKey()
             // <opt:room>
@@ -82,7 +81,7 @@ class KtorNetworkClient @Inject constructor(
             // </opt:room>
 
             if (!networkMonitor.isOnline.first()) {
-                return@withContext unreachable(outgoing, deviceIsOffline = true, cause = null)
+                return@withContext unreachable(outgoing, deviceIsOffline = true)
             }
 
             if (outgoing.method == HttpMethodType.GET) {
@@ -97,13 +96,13 @@ class KtorNetworkClient @Inject constructor(
         val policy = request.cache as? CachePolicy.Enabled
         val saved = policy?.let { responseCache.any(it.key) }
         if (saved != null) {
-            emit(AppResult.Success(saved, fromCache = true, cachedAtEpochMillis = saved.cachedAtEpochMillis))
+            emit(AppResult.Success(saved))
         }
         // The saved copy is already on screen, so a failure is reported rather than papered over
         // with the same copy a second time.
         val latest = policy?.copy(forceRefresh = true, staleOnFailure = saved == null) ?: request.cache
         emit(execute(request.copy(cache = latest)))
-    }.flowOn(ioDispatcher)
+    }.flowOn(dispatchers.io)
     // </opt:room>
 
     private suspend fun sendWithRetries(outgoing: NetworkRequest): AppResult<NetworkResponse> {
@@ -116,8 +115,8 @@ class KtorNetworkClient @Inject constructor(
             } catch (io: IOException) {
                 Outcome.NoAnswer(io)
             } catch (throwable: Throwable) {
-                AppLogger.e("Request failed: ${outgoing.path}", throwable)
-                return AppResult.Failure(cause = NetworkException.Unknown(throwable))
+                Log.e("Request failed: ${outgoing.path}", throwable)
+                return AppResult.Failure(AppError.Unexpected(throwable))
             }
 
             val wait = when (outcome) {
@@ -162,8 +161,8 @@ class KtorNetworkClient @Inject constructor(
             is Outcome.NoAnswer -> {
                 // Online but unreachable: wrong base URL, DNS or a server that is down. Recovery is
                 // the same as offline, the message is not.
-                AppLogger.w("Network IO failure for ${request.path}", throwable = outcome.cause)
-                unreachable(request, deviceIsOffline = !networkMonitor.isOnline.first(), cause = outcome.cause)
+                Log.w("Network IO failure for ${request.path}", throwable = outcome.cause)
+                unreachable(request, deviceIsOffline = !networkMonitor.isOnline.first())
             }
 
             is Outcome.Answered -> if (!outcome.response.status.isSuccess()) {
@@ -192,13 +191,8 @@ class KtorNetworkClient @Inject constructor(
     private suspend fun unreachable(
         request: NetworkRequest,
         deviceIsOffline: Boolean,
-        cause: Throwable?,
     ): AppResult<NetworkResponse> {
-        val exception = if (deviceIsOffline) {
-            NetworkException.NoConnectivity()
-        } else {
-            cause?.let { NetworkException.Unknown(it) } ?: NetworkException.NoConnectivity()
-        }
+        val error = if (deviceIsOffline) AppError.Offline else AppError.Timeout
 
         // <opt:room>
         val policy = request.cache as? CachePolicy.Enabled
@@ -210,21 +204,20 @@ class KtorNetworkClient @Inject constructor(
 
         if (request.enqueueOnFailure && request.parts == null) {
             requestQueue.enqueue(request)
-            return AppResult.Failure(cause = exception, isOffline = deviceIsOffline, queued = true)
         }
         // </opt:room>
 
-        return AppResult.Failure(cause = exception, isOffline = deviceIsOffline)
+        return AppResult.Failure(error)
     }
 
     private fun failure(response: HttpResponse, body: String): AppResult.Failure {
         val root = runCatching { NetworkJson.parseToJsonElement(body) }.getOrNull()
         return AppResult.Failure(
-            message = root?.let(unwrapper::errorMessage),
-            cause = NetworkException.Http(response.status.value, body),
-            code = response.status.value,
-            fieldErrors = root?.let(unwrapper::fieldErrors).orEmpty(),
-            rawBody = body,
+            AppError.Http(
+                status = response.status.value,
+                message = root?.let(unwrapper::errorMessage),
+                fieldErrors = root?.let(unwrapper::fieldErrors).orEmpty(),
+            ),
         )
     }
 }

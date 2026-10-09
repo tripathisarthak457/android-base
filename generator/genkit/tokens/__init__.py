@@ -36,6 +36,7 @@ THEMES: tuple[str, ...] = ("light", "dark")
 BRAND_COLOURS: tuple[str, ...] = ("accent", "secondary", "tertiary")
 _BRAND_FIELDS = ("base", "pressed", "subtleLight", "dark", "darkPressed", "subtleDark", "onLight", "onDark")
 _STYLE_RADII = ("xs", "sm", "md", "lg", "xl", "sheet")
+_STATUS_FIELDS = ("base", "subtle", "border")
 
 _HEX = re.compile(r"^#(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$")
 _IDENTIFIER = re.compile(r"^[A-Z][A-Za-z]*$")
@@ -79,12 +80,21 @@ def _fail(file: str, where: str, message: str) -> TemplateError:
     return TemplateError(TOKENS_DIR / f"{file}.json", None, f"{where}: {message}")
 
 
-def _number(file: str, where: str, value: object, minimum: float | None = None) -> float:
+def _number(
+    file: str, where: str, value: object, minimum: float | None = None, maximum: float | None = None
+) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise _fail(file, where, "must be a number")
     if minimum is not None and value < minimum:
         raise _fail(file, where, f"must be at least {minimum}")
+    if maximum is not None and value > maximum:
+        raise _fail(file, where, f"must be at most {maximum}")
     return value
+
+
+def number(value: float) -> str:
+    """A numeric literal for Kotlin and Swift alike: whole numbers without a fraction, the rest to four places."""
+    return str(int(value)) if float(value).is_integer() else repr(round(float(value), 4))
 
 
 def _table(file: str, where: str, value: object, keys: tuple[str, ...] | None = None) -> dict[str, Any]:
@@ -147,8 +157,9 @@ def _validate_motion(motion: dict[str, Any]) -> None:
     navigation = _table("motion", "navigation", motion.get("navigation"), ("parallax", "scrimAlpha", "edgeShadow"))
     _number("motion", "navigation.parallax", navigation["parallax"], 0)
     _number("motion", "navigation.edgeShadow", navigation["edgeShadow"], 0)
+    scrim = _table("motion", "navigation.scrimAlpha", navigation["scrimAlpha"], THEMES)
     for theme in THEMES:
-        _number("motion", f"navigation.scrimAlpha.{theme}", _table("motion", "navigation.scrimAlpha", navigation["scrimAlpha"], THEMES)[theme], 0)
+        _number("motion", f"navigation.scrimAlpha.{theme}", scrim[theme], 0)
 
 
 def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
@@ -164,6 +175,11 @@ def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
         for field, value in _table("palette", f"templateBrand.{colour}", brand_table[colour], _BRAND_FIELDS).items():
             if not _HEX.fullmatch(str(value)):
                 raise _fail("palette", f"templateBrand.{colour}.{field}", "must be a hex colour")
+
+    for status, themes in _table("palette", "status", palette.get("status")).items():
+        themes = _table("palette", f"status.{status}", themes, THEMES)
+        for theme in THEMES:
+            _table("palette", f"status.{status}.{theme}", themes[theme], _STATUS_FIELDS)
 
     roles = _table("palette", "roles", palette.get("roles"), THEMES)
     names = list(_table("palette", "roles.light", roles["light"]))
@@ -367,7 +383,7 @@ def _resolve_roles(
     def value_of(spec: object, trail: tuple[str, ...]) -> Rgba:
         if isinstance(spec, dict):
             base = value_of(spec.get("ref"), trail)
-            return (*base[:3], base[3] * _number("palette", f"{tone}.{theme}", spec.get("alpha"), 0))
+            return (*base[:3], base[3] * _number("palette", f"{tone}.{theme}", spec.get("alpha"), 0, 1))
         if not isinstance(spec, str):
             raise _fail("palette", f"tones.{tone}.{theme}", f"cannot read colour {spec!r}")
         if spec.startswith("@"):

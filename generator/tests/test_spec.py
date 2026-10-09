@@ -13,7 +13,9 @@ from genkit.core.spec import (
     SpecError,
     Vocabulary,
     apply_overrides,
+    module_title,
     parse,
+    pascal_case,
     to_json,
     upgrade,
 )
@@ -101,7 +103,7 @@ class SchemaTwoTest(unittest.TestCase):
 
 
 class TypeTest(unittest.TestCase):
-    """The shapes a hand-written or API spec can get wrong (audit generator-python 4.8)."""
+    """The shapes a hand-written or API spec can get wrong."""
 
     def test_wrong_shapes_name_their_field(self):
         cases = {
@@ -130,8 +132,9 @@ class NameTest(unittest.TestCase):
                 read(minimal(package_name=f"com.example.{segment}"))
 
     def test_python_keywords_and_kotlin_soft_keywords_are_ordinary_segments(self):
-        # Python's keyword list once refused com.global.bank (audit 4.1). Soft keywords such as
-        # `value` and `data` are identifiers wherever a package segment can appear.
+        # Only Kotlin's hard keywords are refused, never Python's: com.global.bank is a valid package.
+        # Soft keywords such as `value` and `data` are identifiers wherever a package segment can
+        # appear.
         for segment in ("global", "pass", "async", "lambda", "value", "data", "get", "field"):
             with self.subTest(segment=segment):
                 read(minimal(package_name=f"com.example.{segment}"))
@@ -148,7 +151,7 @@ class NameTest(unittest.TestCase):
 
     def test_every_pattern_must_match_the_whole_value(self):
         # `$` matches before a trailing newline; a newline in a Kotlin string literal fails the
-        # build (audit web-api M2).
+        # build.
         for raw in (
             minimal(package_name="com.acme.field\n"),
             minimal(font_name="DM Sans\n"),
@@ -173,6 +176,35 @@ class NameTest(unittest.TestCase):
                 read(raw)
 
 
+class DerivedNameTest(unittest.TestCase):
+
+    def test_spaces_and_punctuation_become_a_pascal_name(self):
+        self.assertEqual("MyGreatApp", read(minimal(app_name="My Great App")).spec.pascal_name)
+        self.assertEqual("MyGreatApp", read(minimal(app_name="my-great_app")).spec.pascal_name)
+
+    def test_the_snake_form_splits_on_case_boundaries(self):
+        # The Keystore alias is the snake form, so these are pinned exactly, capitals included: an
+        # app regenerated under a different alias can no longer decrypt what it stored.
+        for app_name, snake in (
+            ("My Great App", "my_great_app"),
+            ("NASA Tracker", "n_a_s_a_tracker"),
+            ("iPhone Notes", "i_phone_notes"),
+            ("Acme 2 Go", "acme2_go"),
+        ):
+            with self.subTest(app_name=app_name):
+                self.assertEqual(snake, read(minimal(app_name=app_name)).spec.snake_name)
+
+    def test_the_lower_form_has_no_separators(self):
+        self.assertEqual("mygreatapp", read(minimal(app_name="My Great App")).spec.lower_name)
+
+    def test_the_package_path_uses_directory_separators(self):
+        self.assertEqual("com/acme/field", read(minimal()).spec.package_path)
+
+    def test_module_names_become_class_and_title_forms(self):
+        self.assertEqual(("OrderHistory", "Order history"), (pascal_case("order_history"), module_title("order_history")))
+        self.assertEqual(("V2", "V2"), (pascal_case("v2"), module_title("v2")))
+
+
 class OverrideTest(unittest.TestCase):
 
     def test_dotted_and_flat_keys(self):
@@ -183,6 +215,16 @@ class OverrideTest(unittest.TestCase):
     def test_overrides_apply_before_validation(self):
         parsed = read(minimal(package_name="com.example.null"), [("package_name", "com.example.wp01.std")])
         self.assertEqual("com.example.wp01.std", parsed.spec.package_name)
+
+    def test_null_removes_a_field_as_it_does_in_a_spec(self):
+        parsed = read(minimal(display_name="Acme"), [("display_name", None), ("android.min_sdk", None)])
+        self.assertEqual("", parsed.spec.display_name)
+        self.assertEqual(read(minimal()).spec.android.min_sdk, parsed.spec.android.min_sdk)
+
+    def test_the_schema_cannot_be_overridden(self):
+        with self.assertRaises(SpecError) as caught:
+            read(minimal(), [("schema", 1)])
+        self.assertEqual("schema", caught.exception.field)
 
     def test_an_override_into_a_value_that_is_not_an_object(self):
         with self.assertRaises(SpecError):

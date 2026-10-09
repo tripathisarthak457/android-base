@@ -70,6 +70,14 @@ class SchemaTest(unittest.TestCase):
     def test_a_style_on_a_tone_that_does_not_exist(self):
         self.assertIn("Utility.surfaces", self.broken(lambda d: d["styles"]["Utility"].update(surfaces="Neon")))
 
+    def test_an_alpha_above_one(self):
+        self.assertIn("at most 1", self.broken(lambda d: d["palette"]["roles"]["light"]["scrim"].update(alpha=1.5)))
+
+    def test_a_status_colour_missing_a_theme_or_a_field(self):
+        self.assertIn("status.success: is missing dark", self.broken(lambda d: d["palette"]["status"]["success"].pop("dark")))
+        self.assertIn("status.danger.light: is missing border", self.broken(lambda d: d["palette"]["status"]["danger"]["light"].pop("border")))
+        self.assertIn("status", self.broken(lambda d: d["palette"].pop("status")))
+
     def test_a_size_missing_a_platform(self):
         self.assertIn("sizes.minTouchTarget.ios", self.broken(lambda d: d["foundation"]["sizes"]["minTouchTarget"].pop("ios")))
 
@@ -114,6 +122,15 @@ class ResolveTest(unittest.TestCase):
         template = tokens.load()["palette"]["templateBrand"]
         for name in ("Secondary", "Tertiary"):
             self.assertEqual(template[name.lower()]["base"], brand.to_hex(derived[name].base))
+
+    def test_the_brand_maths_constants_are_the_palette_tokens(self):
+        # brand.py cannot read the tokens, which import it, so its copies are held to them here.
+        palette = tokens.load()["palette"]
+        self.assertEqual(palette["templateAccent"], brand.TEMPLATE_ACCENT)
+        self.assertEqual(palette["ramps"]["ink"]["900"], brand.to_hex(brand.LIGHT_THEME_INK))
+        for colour in palette["templateBrand"].values():
+            self.assertIn(colour["onLight"], ("#FFFFFF", brand.to_hex(brand.LIGHT_THEME_INK)))
+            self.assertIn(colour["onDark"], ("#FFFFFF", brand.to_hex(brand.DARK_THEME_INK)))
 
     def test_accent_content_reads_on_every_surface(self):
         for hex_value in ("#FFEB3B", "#16A34A", "#2C6BED", "#0E1A2B", "#9E0000", "#FF69B4", "#00FFFF"):
@@ -214,6 +231,8 @@ class EmitterTest(unittest.TestCase):
         ):
             self.assertIn(line + "\n", self.swift)
         self.assertIn("static let minTouchTarget: CGFloat = 44", self.swift)
+        # A hairline is device pixels on both platforms, never points.
+        self.assertIn(f"static let hairlinePx: Int = {int(tokens.load()['foundation']['borders']['hairlinePx'])}\n", self.swift)
 
     def test_the_website_gets_a_palette_per_design_style(self):
         catalogue = web.catalogue_tokens(tokens.resolve(None, "web"))

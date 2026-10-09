@@ -1,5 +1,6 @@
 package com.base.app.core.navigation
 
+import com.base.app.core.common.navigation.AppNavKey
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.PolymorphicModuleBuilder
 import kotlinx.serialization.modules.SerializersModule

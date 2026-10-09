@@ -80,11 +80,12 @@ def catalogue(environment: bool = False) -> dict[str, Any]:
     generate signing keys), which differs per machine and so stays out of the checked-in copy.
     """
     registry = targets.REGISTRY
+    own = {key: target.catalogue() for key, target in registry.items()}
     data: dict[str, Any] = {
         "version": 2,
         "generator_commit": record.generator_commit(),
-        "targets": [_target(target) for target in registry.values()],
-        "rules": _rules(registry),
+        "targets": [_target(target, own[key]) for key, target in registry.items()],
+        "rules": _rules(own),
         "tokens": web.catalogue_tokens(tokens.resolve(None, "web")),
     }
     if environment:
@@ -96,9 +97,8 @@ def group_key(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
 
 
-def _target(target: Target) -> dict[str, Any]:
+def _target(target: Target, own: dict[str, Any]) -> dict[str, Any]:
     manifest = target.manifest
-    own = target.catalogue()
     styles = tokens.load()
     return {
         "key": target.key,
@@ -186,7 +186,7 @@ def _common_fields() -> list[dict[str, Any]]:
     ]
 
 
-def _rules(registry: dict[str, Target]) -> dict[str, Any]:
+def _rules(own_by_target: dict[str, dict[str, Any]]) -> dict[str, Any]:
     rules: dict[str, Any] = {
         "app_name": APP_NAME_PATTERN,
         "app_name_max": MAX_APP_NAME,
@@ -214,10 +214,14 @@ def _rules(registry: dict[str, Target]) -> dict[str, Any]:
         "scheme": SCHEME_PATTERN,
         "host": HOST_PATTERN,
     }
-    for key, target in registry.items():
-        own = target.catalogue()
+    for key, own in own_by_target.items():
         rules["template_module_names"][key] = own["reserved_module_names"]
-        rules.update(own.get("rules", {}))
+        for name, value in own.get("rules", {}).items():
+            # The website reads one flat table, so a second target giving a rule a different value
+            # would leave the first validating against the second's.
+            if name in rules and rules[name] != value:
+                raise ValueError(f"The {key} target's catalogue rule '{name}' clashes with one already set.")
+            rules[name] = value
     return rules
 
 

@@ -8,10 +8,10 @@ import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.datastore.AppSettings
 import com.base.app.core.datastore.AppSettingsStore
 import com.base.app.core.datastore.AuthTokenStore
-import com.base.app.core.navigation.AppNavKey
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
@@ -28,7 +28,7 @@ import javax.inject.Inject
 import com.base.app.deeplink.DeepLinkResolver
 // </opt:deeplink>
 // <opt:onboarding>
-import com.base.app.feature.onboarding.OnboardingKey
+import com.base.app.feature.onboarding.api.OnboardingKey
 // </opt:onboarding>
 // <opt:devtools>
 import com.base.app.core.devtools.DevEnvironment

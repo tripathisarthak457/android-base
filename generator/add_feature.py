@@ -2,9 +2,9 @@
 """
 Add a feature module to an Android project that already exists.
 
-    python3 add_feature.py orders                      # in the current project
-    python3 add_feature.py orders profile --tab        # two modules, both as bottom-bar tabs
-    python3 add_feature.py orders --project ../MyApp
+    py add_feature.py orders                      # in the current project
+    py add_feature.py orders profile --tab         # two modules, both as bottom-nav tabs
+    py add_feature.py orders --project ../MyApp
 """
 
 from __future__ import annotations
@@ -16,11 +16,11 @@ import sys
 from collections.abc import Callable
 from pathlib import Path
 
+from genkit import targets
 from genkit.core import prompts, translations
 from genkit.core.record import RECORD_NAME
 from genkit.core.spec import Spec, SpecError, validate_module_name
 from genkit.targets.android import scaffold, strings, tabs
-from genkit.targets.android.target import AndroidTarget
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -29,11 +29,21 @@ def main(argv: list[str] | None = None) -> int:
         description="Scaffold a data + feature module pair into an existing project.",
     )
     parser.add_argument("names", nargs="+", help="Module names, lower_snake_case.")
-    parser.add_argument("--project", type=Path, default=Path.cwd(), help="The project root. Defaults to here.")
-    parser.add_argument("--tab", action="store_true", help="Also add each module as a bottom-bar tab.")
+    parser.add_argument(
+        "--project",
+        type=Path,
+        default=Path.cwd(),
+        help="The project root. Defaults to the current directory.",
+    )
+    parser.add_argument(
+        "--tab",
+        action="store_true",
+        help="Also add each module as a bottom-navigation tab.",
+    )
     args = parser.parse_args(argv)
 
     project = args.project.expanduser().resolve()
+
     try:
         names = tuple(normalise(name) for name in args.names)
         spec = inspect_project(project, names)
@@ -48,6 +58,7 @@ def main(argv: list[str] | None = None) -> int:
 
     scaffold.write_feature_modules(project, spec)
     strings.write(project, spec, {f"feature/{name}" for name in names})
+
     register_modules(project, names)
     register_dependencies(project, names)
     if args.tab:
@@ -57,17 +68,12 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-def normalise(name: str) -> str:
-    cleaned = name.strip().lower().replace("-", "_").replace(" ", "_")
-    validate_module_name(cleaned, AndroidTarget().reserved_module_names)
-    return cleaned
-
-
 def inspect_project(project: Path, names: tuple[str, ...]) -> Spec:
     """Just enough of the original spec to scaffold against, with `names` as its modules."""
     settings = project / "settings.gradle.kts"
     if not settings.is_file():
         raise SpecError(f"No settings.gradle.kts in {project}. Is that the project root?")
+
     text = settings.read_text(encoding="utf-8")
     match = re.search(r'rootProject\.name\s*=\s*"([^"]+)"', text)
     if match is None:
@@ -87,10 +93,17 @@ def find_package_name(project: Path) -> str:
     build_file = project / "app" / "build.gradle.kts"
     if not build_file.is_file():
         raise SpecError(f"No app/build.gradle.kts in {project}. Is that the project root?")
+
     match = re.search(r'namespace\s*=\s*"([^"]+)"', build_file.read_text(encoding="utf-8"))
     if match is None:
         raise SpecError("Could not read the app module's namespace from app/build.gradle.kts.")
     return match.group(1)
+
+
+def normalise(name: str) -> str:
+    cleaned = name.strip().lower().replace("-", "_").replace(" ", "_")
+    validate_module_name(cleaned, targets.get("android").reserved_module_names)
+    return cleaned
 
 
 def shipped_languages(project: Path) -> tuple[str, ...]:
@@ -116,30 +129,44 @@ def register_modules(project: Path, names: tuple[str, ...]) -> None:
     """Appends the includes to settings.gradle.kts, under the section each belongs to."""
     path = project / "settings.gradle.kts"
     text = path.read_text(encoding="utf-8")
+
     for prefix in (":data:", ":feature:"):
         additions = "".join(f'include("{prefix}{name}")\n' for name in names)
         text = insert_after_last(text, f'include("{prefix}', additions)
+
     path.write_text(text, encoding="utf-8")
 
 
 def register_dependencies(project: Path, names: tuple[str, ...]) -> None:
     path = project / "app" / "build.gradle.kts"
     text = path.read_text(encoding="utf-8")
-    additions = "".join(f'    implementation(project(":feature:{name}"))\n' for name in names)
+
+    additions = "".join(
+        f'    implementation(project(":feature:{name}"))\n' for name in names
+    )
     text = insert_after_last(
-        text, '    implementation(project(":feature:', additions, fallback=insert_into_dependencies_block
+        text,
+        '    implementation(project(":feature:',
+        additions,
+        fallback=insert_into_dependencies_block,
     )
     path.write_text(text, encoding="utf-8")
 
 
 def insert_into_dependencies_block(text: str, addition: str) -> str:
-    """Puts `addition` just before the closing brace of the `dependencies { }` block."""
+    """Puts [addition] just before the closing brace of the `dependencies { }` block."""
     lines = text.splitlines(keepends=True)
     try:
-        start = next(index for index, line in enumerate(lines) if line.startswith("dependencies {"))
+        start = next(
+            index for index, line in enumerate(lines) if line.startswith("dependencies {")
+        )
     except StopIteration:
         return text.rstrip("\n") + "\n\ndependencies {\n" + addition + "}\n"
-    end = next((index for index in range(start + 1, len(lines)) if lines[index].rstrip("\n") == "}"), len(lines))
+
+    end = next(
+        (index for index in range(start + 1, len(lines)) if lines[index].rstrip("\n") == "}"),
+        len(lines),
+    )
     lines.insert(end, addition)
     return "".join(lines)
 
@@ -160,6 +187,7 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
         return
 
     text = path.read_text(encoding="utf-8")
+
     imports = "".join(
         line
         for name in names
@@ -169,13 +197,14 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
     text = insert_after_last(text, f"import {package_name}.", imports)
 
     lines = text.splitlines(keepends=True)
-    try:
-        opening = next(index for index, line in enumerate(lines) if "val tabs: List<ShellTab> = listOf(" in line)
-    except StopIteration:
+    opening = next((index for index, line in enumerate(lines) if "val tabs: List<ShellTab> = listOf(" in line), None)
+    closing = None
+    if opening is not None:
+        closing = next((index for index in range(opening + 1, len(lines)) if lines[index].strip() == ")"), None)
+    if closing is None:
         print(prompts.yellow(f"  ! No tab list in {path}; add the tabs by hand."))
         path.write_text(text, encoding="utf-8")
         return
-    closing = next(index for index in range(opening + 1, len(lines)) if lines[index].strip() == ")")
     position = closing
     for index in range(opening + 1, closing):
         if _MODULE_TAB.match(lines[index]):
@@ -195,13 +224,18 @@ def insert_after_last(
     addition: str,
     fallback: Callable[[str, str], str] | None = None,
 ) -> str:
-    """Inserts `addition` after the last line starting with `prefix`."""
+    """Inserts [addition] after the last line starting with [prefix]."""
     if not addition:
         return text
+
     lines = text.splitlines(keepends=True)
-    last = max((index for index, line in enumerate(lines) if line.startswith(prefix)), default=None)
+    last = max(
+        (index for index, line in enumerate(lines) if line.startswith(prefix)),
+        default=None,
+    )
     if last is None:
         return fallback(text, addition) if fallback else text.rstrip("\n") + "\n" + addition
+
     lines.insert(last + 1, addition)
     return "".join(lines)
 

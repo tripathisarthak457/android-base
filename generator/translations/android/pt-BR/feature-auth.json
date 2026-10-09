@@ -14,7 +14,6 @@
   "auth_welcome_back": "Que bom ver você de novo",
   "auth_continue_with_google": "Continuar com o Google",
   "auth_or": "ou",
-  "auth_google_not_configured": "O login com o Google ainda não foi configurado. Adicione o ID do cliente web em auth_google_server_client_id.",
   "auth_google_sign_in_failed": "Não foi possível entrar com o Google.",
   "auth_google_failed": "O login com o Google não foi concluído. Tente de novo ou use seu e-mail.",
   "auth_wrong_credentials": "Esse e-mail e essa senha não correspondem a nenhuma conta.",

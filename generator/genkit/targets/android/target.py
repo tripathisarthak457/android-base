@@ -124,7 +124,7 @@ class AndroidTarget:
         return {**settings.regions(spec), **tabs.regions(spec), **scaffold.regions(spec)}
 
     def overlays(self, spec: Spec) -> dict[str, Path]:
-        return variants.overlays(spec, self.manifest)
+        return variants.overlays(spec)
 
     def transform(self, project: Path, spec: Spec) -> list[str]:
         scaffold.write_feature_modules(project, spec)
@@ -233,6 +233,16 @@ def validate_android(android: AndroidSettings) -> None:
         )
     if android.target_sdk < android.min_sdk:
         raise SpecError("targetSdk cannot be lower than minSdk.", "android.target_sdk")
+    newest = max(API_LEVELS)
+    for label, key, level in (
+        ("targetSdk", "target_sdk", android.target_sdk),
+        ("compileSdk", "compile_sdk", android.compile_sdk),
+    ):
+        # An API level past the table has no SDK platform to install yet, so the first build fails.
+        if level > newest:
+            raise SpecError(
+                f"{label} {level} is past API {newest}, the newest level this generator knows.", f"android.{key}"
+            )
     if android.compile_sdk < android.target_sdk:
         raise SpecError("compileSdk cannot be lower than targetSdk.", "android.compile_sdk")
     if android.compile_sdk < MIN_COMPILE_SDK:

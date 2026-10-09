@@ -28,6 +28,9 @@ class ZipTest(unittest.TestCase):
             "tools/perf/gates.toml": "x = 1\n",
             "app/build.gradle.kts": "plugins {}\n",
             "README.md": "# Trail\n",
+            # Path order puts a/b.txt first and name order a-c.txt; the archive follows the names.
+            "a/b.txt": "b\n",
+            "a-c.txt": "c\n",
         }.items():
             path = self.project / relative
             path.parent.mkdir(parents=True, exist_ok=True)

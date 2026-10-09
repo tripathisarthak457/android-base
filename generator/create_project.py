@@ -8,14 +8,13 @@ Generate a new project from a template.
     python3 create_project.py --spec app.json --set package_name=com.example.demo --out demo.zip
 
 `--out` is the project directory with --no-zip and the zip file otherwise. `--force` replaces
-exactly that path and nothing else.
+exactly that path and nothing else, once the new project is complete. --json needs --out.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import sys
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -48,7 +47,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--set", action="append", default=[], metavar="KEY=VALUE",
         help="Override one spec field, after the spec is read: --set package_name=com.example.demo, "
-        "--set android.min_sdk=28. The value is read as JSON when it parses, as a string otherwise.",
+        "--set android.min_sdk=28. The value is read as JSON when it parses, as a string otherwise; "
+        "null removes the field.",
     )
     parser.add_argument("--out", type=Path, help="The project directory (--no-zip) or the .zip to write.")
     parser.add_argument("--no-zip", action="store_true", help="Write a directory rather than a zip.")
@@ -68,6 +68,9 @@ def main(argv: list[str] | None = None) -> int:
             raise SpecError(
                 f"Unknown preset '{args.preset}'. Choose one of: {', '.join(target.manifest.presets)}.", "preset"
             )
+        if args.json and args.out is None and not args.dry_run:
+            # Asking where to write would put a prompt on stdout, or wait on a script that cannot answer.
+            raise SpecError("--json needs --out: the project's directory, or the .zip to write.", "out")
         overrides = [parse_override(item) for item in args.set]
         raw = load_raw(args, target)
         parsed, warnings = pipeline.read_spec(raw, target, overrides)
@@ -76,6 +79,12 @@ def main(argv: list[str] | None = None) -> int:
     except (KeyboardInterrupt, EOFError):
         print("\nCancelled.", file=sys.stderr)
         return EXIT_CANCELLED
+    except Exception:
+        # Under --json even a bug answers with one JSON object; otherwise the traceback is the report.
+        if not args.json:
+            raise
+        write_json(internal())
+        return EXIT_FAILED
 
     spec = parsed.spec
     if args.dry_run:
@@ -99,9 +108,10 @@ def main(argv: list[str] | None = None) -> int:
         if destination is None:
             print("Cancelled.", file=human)
             return EXIT_OK
-        clear_destination(destination, force=args.force, unattended=bool(args.spec) or args.json)
+        replace = confirm_replace(destination, force=args.force, unattended=bool(args.spec) or args.json)
         result = pipeline.build(
-            spec, target, destination, zip_output=not args.no_zip, icon_source=args.icon, git_init=args.git
+            spec, target, destination,
+            zip_output=not args.no_zip, icon_source=args.icon, git_init=args.git, replace=replace,
         )
     except SpecError as error:
         return fail(args.json, invalid(error), str(error), EXIT_INVALID)
@@ -110,6 +120,11 @@ def main(argv: list[str] | None = None) -> int:
     except (KeyboardInterrupt, EOFError):
         print("\nCancelled.", file=sys.stderr)
         return EXIT_CANCELLED
+    except Exception:
+        if not args.json:
+            raise
+        write_json(internal())
+        return EXIT_FAILED
 
     if args.json:
         write_json({
@@ -229,23 +244,22 @@ def describe_plan(parsed, target, warnings: list[str], as_json: bool) -> None:
 
 def resolve_destination(project_name: str, args: argparse.Namespace) -> Path | None:
     if args.out is not None:
-        out = args.out.expanduser().resolve()
+        out = absolute(args.out)
         if not args.no_zip and out.suffix.lower() != ".zip":
             raise SpecError(f"--out {args.out} must end in .zip, or add --no-zip to write a directory.", "out")
         return out
     return ask_save_location(project_name if args.no_zip else f"{project_name}.zip", zip_output=not args.no_zip)
 
 
-def clear_destination(destination: Path, force: bool, unattended: bool) -> None:
+def confirm_replace(destination: Path, force: bool, unattended: bool) -> bool:
     """
-    Makes room at `destination`, deleting that exact path and nothing else, and only when allowed.
-    Raises SpecError when it may not.
+    Whether something at `destination` is to be replaced. The build deletes that exact path, and
+    nothing else, once the new project is complete. Raises SpecError when it may not be replaced.
     """
     if not destination.exists() and not destination.is_symlink():
-        return
+        return False
     if destination.is_dir() and not destination.is_symlink() and not any(destination.iterdir()):
-        destination.rmdir()
-        return
+        return True
 
     refusal = _unsafe_to_delete(destination)
     if refusal:
@@ -255,21 +269,30 @@ def clear_destination(destination: Path, force: bool, unattended: bool) -> None:
         print(prompts.yellow(f"  {destination} already exists and is not empty."), file=sys.stderr)
         if unattended or not prompts.ask_yes_no(f"  Replace that {what} entirely?", False):
             raise SpecError(f"{destination} already exists. Pass --force to replace it.", "out")
+    return True
 
-    if destination.is_dir() and not destination.is_symlink():
-        shutil.rmtree(destination)
-    else:
-        destination.unlink()
+
+def absolute(path: Path) -> Path:
+    """
+    `path` made absolute with its directories resolved but not its last part, so that a symbolic
+    link given as the destination is what gets replaced, never the directory it points at.
+    """
+    path = path.expanduser().absolute()
+    if path.name in ("", ".."):
+        return path.resolve()
+    return path.parent.resolve() / path.name
 
 
 def _unsafe_to_delete(destination: Path) -> str | None:
-    resolved = destination.resolve()
-    if resolved == Path(resolved.anchor):
+    # Only the link itself is ever deleted, but a link that stands in for the home directory is
+    # checked as that directory too: refusing it costs nothing, and losing the way home costs a lot.
+    paths = {destination, destination.resolve()}
+    if any(path == Path(path.anchor) for path in paths):
         return "it is a filesystem root"
     for name, place in (("your home directory", Path.home()), ("the current directory", Path.cwd()), ("the generator", HERE)):
-        place = place.resolve()
-        if resolved == place or resolved in place.parents:
-            return f"it is or contains {name}"
+        for form in {place, place.resolve()}:
+            if any(path == form or path in form.parents for path in paths):
+                return f"it is or contains {name}"
     return None
 
 
@@ -298,7 +321,7 @@ def ask_save_location(default_name: str, zip_output: bool) -> Path | None:
     except Exception:  # noqa: BLE001 - no display, no Tk: fall back to typing a path
         prompts.heading("Where should it go?")
         answer = prompts.ask("  Path", str(Path.cwd() / default_name))
-        return Path(answer).expanduser().resolve()
+        return absolute(Path(answer))
 
 
 def report(spec, warnings: list[str], summary: list[str], destination: Path, zip_output: bool) -> None:

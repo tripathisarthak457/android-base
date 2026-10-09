@@ -10,6 +10,7 @@ set resolved. Target-specific rules (SDK levels, signing, bundle ids) live with 
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field, replace
 from typing import TYPE_CHECKING, Any
 
@@ -302,10 +303,15 @@ def upgrade(raw: object, platform: str) -> tuple[dict[str, Any], list[str], list
 def apply_overrides(data: dict[str, Any], overrides: list[tuple[str, Any]]) -> None:
     """
     `--set key=value` pairs, applied to an upgraded spec. Dotted keys reach into the settings
-    blocks (`android.min_sdk`); a flat Android key means the one under "android".
+    blocks (`android.min_sdk`); a flat Android key means the one under "android". A null value
+    removes the field, as null means absent in a spec file.
     """
     for key, value in overrides:
         parts = key.split(".")
+        if parts[0] == "schema":
+            # The spec is already upgraded to the current schema when overrides apply, so a schema
+            # given here would be accepted and then never read.
+            raise SpecError("--set cannot change the schema: write it in the spec file.", key)
         if parts[0] in ANDROID_FIELDS:
             parts = ["android", *parts]
         holder = data
@@ -313,7 +319,10 @@ def apply_overrides(data: dict[str, Any], overrides: list[tuple[str, Any]]) -> N
             holder = holder.setdefault(part, {})
             if not isinstance(holder, dict):
                 raise SpecError(f"Cannot set '{key}': '{part}' is not an object.", key)
-        holder[parts[-1]] = value
+        if value is None:
+            holder.pop(parts[-1], None)
+        else:
+            holder[parts[-1]] = value
 
 
 def _move_android_fields(data: dict[str, Any]) -> list[str]:
@@ -489,7 +498,7 @@ def _flag(data: dict[str, Any], key: str, where: str, default: bool) -> bool:
 
 def _text_list(data: dict[str, Any], key: str, where: str) -> tuple[str, ...]:
     value = data.get(key, [])
-    # A bare string is iterable, which once turned "home" into the modules h, o, m and e.
+    # A bare string is iterable, so "home" would become the modules h, o, m and e.
     if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         raise SpecError(f"`{where}` must be a list of strings.", where)
     return tuple(value)
@@ -570,14 +579,18 @@ def validate_app_name(name: str) -> None:
 
 
 def validate_display_name(name: str) -> None:
+    # Code points, not UTF-16 units: the website's validator has to count the same way.
     if len(name) > MAX_DISPLAY_NAME:
         raise SpecError(
             f"The display name can be at most {MAX_DISPLAY_NAME} characters: launchers cut it "
             "off well before that.",
             "display_name",
         )
-    if not name.isprintable():
-        raise SpecError("The display name cannot contain control characters.", "display_name")
+    # Format characters and spaces stay: Persian needs the zero-width non-joiner, and family emoji
+    # are joined sequences. A surrogate cannot be written as UTF-8, and U+FFFE and U+FFFF are not
+    # allowed in XML.
+    if any(unicodedata.category(c) in ("Cc", "Cs", "Zl", "Zp") or c in "\ufffe\uffff" for c in name):
+        raise SpecError("The display name cannot contain control characters or line breaks.", "display_name")
 
 
 def validate_package_name(package_name: str) -> None:

@@ -1,71 +1,83 @@
 package com.base.app.feature.sample.list
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.mvi.LoadState
-import com.base.app.core.common.mvi.MessageKind
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.userMessage
-import com.base.app.core.common.util.UiText
-import com.base.app.data.sample.SampleRepository
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.mvi.MessageKind
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiText
+import com.base.app.core.ui.toUiText
+import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.SampleRepository
 import com.base.app.feature.sample.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /** The reference ViewModel. Every feature in this project is shaped like this one. */
 @HiltViewModel
-class SampleListViewModel @Inject constructor(
+internal class SampleListViewModel @Inject constructor(
     private val repository: SampleRepository,
     savedStateHandle: SavedStateHandle,
 ) : MviViewModel<SampleListState, SampleListEvent, SampleListEffect>(SampleListState()) {
 
+    /**
+     * The search field. What the user typed survives the process being killed; the list does not,
+     * because it is a request away and a restored one would be stale.
+     */
+    @OptIn(SavedStateHandleSaveableApi::class)
+    val query: TextFieldState = savedStateHandle.saveable(QUERY, saver = TextFieldState.Saver) { TextFieldState() }
+
     init {
-        // What the user typed survives the process being killed; the list itself does not,
-        // because it is a request away and a restored one would be an hour stale.
-        persistState(
-            handle = savedStateHandle,
-            save = { mapOf("query" to it.query) },
-            restore = { copy(query = it["query"] as? String ?: query) },
-        )
-        onEvent(SampleListEvent.Load)
+        observe(snapshotFlow { query.text.toString() }) { text -> copy(visibleItems = items.matching(text)) }
     }
 
-    override suspend fun handleEvent(event: SampleListEvent) {
+    override fun handleEvent(event: SampleListEvent) {
         when (event) {
-            SampleListEvent.Load -> load(refreshing = false)
+            SampleListEvent.Appeared -> if (current.loadState == LoadState.Idle) load(refreshing = false)
             SampleListEvent.Refresh -> load(refreshing = true)
             SampleListEvent.Retry -> load(refreshing = false)
-            is SampleListEvent.QueryChanged -> updateState { copy(query = event.query) }
-            is SampleListEvent.ItemClicked -> emitEffect(SampleListEffect.OpenDetail(event.id))
+            is SampleListEvent.ItemClicked -> emit(SampleListEffect.OpenDetail(event.id))
         }
     }
 
-    private suspend fun load(refreshing: Boolean) {
-        updateState {
-            copy(loadState = if (refreshing) LoadState.Refreshing else LoadState.Loading)
-        }
+    private fun load(refreshing: Boolean) {
+        launchLatest(LOAD) {
+            setState { copy(loadState = if (refreshing) LoadState.Refreshing else LoadState.Loading) }
 
-        when (val result = repository.items(forceRefresh = refreshing)) {
-            is AppResult.Success -> updateState {
-                copy(
-                    loadState = if (result.data.isEmpty()) LoadState.Empty else LoadState.Success,
-                    items = result.data,
-                    isFromCache = result.fromCache,
-                )
-            }
+            when (val result = repository.items(forceRefresh = refreshing)) {
+                is AppResult.Success -> setState {
+                    copy(
+                        loadState = if (result.value.isEmpty()) LoadState.Empty else LoadState.Success,
+                        items = result.value,
+                        visibleItems = result.value.matching(query.text.toString()),
+                    )
+                }
 
-            is AppResult.Failure -> {
                 // A failed refresh keeps the list on screen and reports it in a snackbar.
-                if (refreshing && currentState.items.isNotEmpty()) {
-                    updateState { copy(loadState = LoadState.Success) }
+                is AppResult.Failure -> if (refreshing && current.items.isNotEmpty()) {
+                    setState { copy(loadState = LoadState.Success) }
                     showMessage(
-                        text = result.userMessage(UiText.of(R.string.sample_refresh_failed)),
+                        text = result.error.toUiText(UiText.of(R.string.sample_refresh_failed)),
                         kind = MessageKind.Error,
                     )
                 } else {
-                    updateState { copy(loadState = result.toLoadState()) }
+                    setState { copy(loadState = LoadState.Error(result.error)) }
                 }
             }
         }
     }
+
+    private companion object {
+        const val QUERY = "query"
+        const val LOAD = "load"
+    }
+}
+
+private fun List<SampleItem>.matching(query: String): List<SampleItem> {
+    val wanted = query.trim()
+    return if (wanted.isEmpty()) this else filter { it.title.contains(wanted, ignoreCase = true) }
 }

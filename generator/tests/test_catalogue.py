@@ -66,6 +66,14 @@ class ShapeTest(unittest.TestCase):
                 self.assertTrue(rules[key].startswith("^") and rules[key].endswith("$"))
                 re.compile(rules[key])
 
+    def test_two_targets_cannot_give_one_rule_different_values(self):
+        own = {"reserved_module_names": [], "rules": {"min_compile_sdk": 37}}
+        self.assertEqual(37, catalogue._rules({"a": own, "b": own})["min_compile_sdk"])
+        with self.assertRaises(ValueError):
+            catalogue._rules({"a": own, "b": {"reserved_module_names": [], "rules": {"min_compile_sdk": 36}}})
+        with self.assertRaises(ValueError):
+            catalogue._rules({"a": {"reserved_module_names": [], "rules": {"hex": "^x$"}}})
+
     def test_styles_come_from_the_tokens(self):
         for target in self.data["targets"]:
             styles = [style["key"] for style in target["design_styles"]]

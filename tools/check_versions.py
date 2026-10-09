@@ -22,9 +22,8 @@ GOOGLE = "https://dl.google.com/android/maven2/"
 CENTRAL = "https://repo1.maven.org/maven2/"
 PLUGINS = "https://plugins.gradle.org/m2/"
 
-#: Where each group publishes, longest prefix first. A group missing here is looked up everywhere.
+#: Where each group publishes, by group prefix. A group missing here is looked up everywhere.
 REPOSITORIES_BY_GROUP: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("androidx.room3", (GOOGLE,)),
     ("androidx", (GOOGLE,)),
     ("com.android", (GOOGLE,)),
     ("com.google.android", (GOOGLE,)),
@@ -46,6 +45,8 @@ GRADLE_RELEASES = "https://services.gradle.org/versions/current"
 
 _UNSTABLE = re.compile(r"(alpha|beta|rc|dev|eap|snapshot|preview|-m\d|\.m\d|-b\d)", re.IGNORECASE)
 _WRAPPER_VERSION = re.compile(r"(distributionUrl=.*?gradle-)([0-9][^-]*)(-(?:bin|all)\.zip)")
+_WRAPPER_URL = re.compile(r"^distributionUrl=(.+)$", re.M)
+_WRAPPER_CHECKSUM = re.compile(r"^(distributionSha256Sum=)\S*$", re.M)
 
 
 def _ordering(version: str) -> list[tuple[int, int | str]]:
@@ -54,10 +55,11 @@ def _ordering(version: str) -> list[tuple[int, int | str]]:
 
 
 def repositories(group: str) -> tuple[str, ...]:
-    for prefix, found in REPOSITORIES_BY_GROUP:
-        if group == prefix or group.startswith(prefix + "."):
-            return found
-    return _EVERYWHERE
+    """The repositories under the longest prefix that covers `group`, so a narrower entry wins wherever it sits."""
+    matches = [
+        (prefix, found) for prefix, found in REPOSITORIES_BY_GROUP if group == prefix or group.startswith(prefix + ".")
+    ]
+    return max(matches, key=lambda match: len(match[0]))[1] if matches else _EVERYWHERE
 
 
 def catalogues() -> list[Path]:
@@ -98,7 +100,8 @@ def latest_stable(coordinate: str) -> str | None:
         except OSError:
             continue
         versions = [
-            version for version in re.findall(r"<version>([^<]+)</version>", metadata)
+            version
+            for version in re.findall(r"<version>([^<]+)</version>", metadata)
             if not _UNSTABLE.search(version)
         ]
         if versions:
@@ -112,6 +115,16 @@ def latest_gradle() -> str | None:
             return json.loads(response.read().decode()).get("version")
     except (OSError, ValueError):
         return None
+
+
+def distribution_checksum(url: str) -> str | None:
+    """The SHA-256 Gradle publishes beside each distribution, as `<url>.sha256`."""
+    try:
+        with urllib.request.urlopen(url + ".sha256", timeout=20) as response:
+            checksum = response.read().decode().strip()
+    except OSError:
+        return None
+    return checksum if re.fullmatch(r"[0-9a-f]{64}", checksum) else None
 
 
 def check_catalogue(path: Path, apply: bool) -> int:
@@ -158,7 +171,18 @@ def check_wrapper(path: Path, newest: str | None, apply: bool) -> int:
     status = "could not be looked up" if newest is None else (f"-> {newest}" if behind else "latest")
     print(f"\n{path.relative_to(TEMPLATES.parent)}\n  {'gradle':28} {current:16} {status}")
     if apply and behind:
-        path.write_text(_WRAPPER_VERSION.sub(rf"\g<1>{newest}\g<3>", text, count=1), encoding="utf-8")
+        updated = _WRAPPER_VERSION.sub(rf"\g<1>{newest}\g<3>", text, count=1)
+        if _WRAPPER_CHECKSUM.search(updated):
+            # The wrapper refuses a distribution whose checksum differs from the pin, so the pin moves
+            # with the version or not at all.
+            url = _WRAPPER_URL.search(updated).group(1).replace("\\:", ":")
+            checksum = distribution_checksum(url)
+            if checksum is None:
+                print(f"  could not fetch {url}.sha256, so it stays at {current}; "
+                      f"run ./gradlew wrapper --gradle-version {newest} in that template instead")
+                return int(behind)
+            updated = _WRAPPER_CHECKSUM.sub(rf"\g<1>{checksum}", updated, count=1)
+        path.write_text(updated, encoding="utf-8")
     return int(behind)
 
 

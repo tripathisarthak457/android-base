@@ -3,8 +3,8 @@ The design-system look a spec chooses (typefaces, motion and design style, hapti
 written into the template's theme files by substitution.
 
 These appliers stay until the theme reads the emitted DesignTokens file instead. Each one counts
-its substitutions and fails when an expected one did not happen, so renaming a template line can
-no longer drop a user's choice without a word.
+its substitutions and fails when an expected one did not happen, so a renamed template line fails
+the build instead of silently dropping a user's choice.
 """
 
 from __future__ import annotations

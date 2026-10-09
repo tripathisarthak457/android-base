@@ -5,27 +5,27 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.mvi.LoadState
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
-import com.base.app.core.common.util.AppLogger
-import com.base.app.core.coroutines.IoDispatcher
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.log.Log
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppListItem
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import javax.inject.Inject
@@ -34,52 +34,50 @@ import javax.inject.Inject
  * One dependency, as the build recorded it. The licence is a list because a library can offer a
  * choice of them, and showing all of them is more honest than showing the first.
  */
-data class LicensedArtifact(
+internal data class LicensedArtifact(
     val name: String,
     val coordinates: String,
     val licences: List<String>,
 )
 
-data class LicensesState(
+internal data class LicensesState(
     val loadState: LoadState = LoadState.Idle,
     val artifacts: List<LicensedArtifact> = emptyList(),
 ) : UiState
 
-sealed interface LicensesEvent : UiEvent {
-    data object Load : LicensesEvent
+internal sealed interface LicensesEvent : UiEvent {
+    data object Appeared : LicensesEvent
     data object BackClicked : LicensesEvent
 }
 
-sealed interface LicensesEffect : UiEffect {
+internal sealed interface LicensesEffect : UiEffect {
     data object NavigateBack : LicensesEffect
 }
 
 /** Reads the licence list the build generated into assets. */
 @HiltViewModel
-class LicensesViewModel @Inject constructor(
+internal class LicensesViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    @IoDispatcher private val io: CoroutineDispatcher,
+    private val dispatchers: AppDispatchers,
 ) : MviViewModel<LicensesState, LicensesEvent, LicensesEffect>(LicensesState()) {
 
-    init {
-        onEvent(LicensesEvent.Load)
-    }
-
-    override suspend fun handleEvent(event: LicensesEvent) {
+    override fun handleEvent(event: LicensesEvent) {
         when (event) {
-            LicensesEvent.Load -> load()
-            LicensesEvent.BackClicked -> emitEffect(LicensesEffect.NavigateBack)
+            LicensesEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
+            LicensesEvent.BackClicked -> emit(LicensesEffect.NavigateBack)
         }
     }
 
-    private suspend fun load() {
-        updateState { copy(loadState = LoadState.Loading) }
-        val artifacts = withContext(io) { read() }
-        updateState {
-            copy(
-                loadState = if (artifacts.isEmpty()) LoadState.Empty else LoadState.Success,
-                artifacts = artifacts,
-            )
+    private fun load() {
+        launchLatest(LOAD) {
+            setState { copy(loadState = LoadState.Loading) }
+            val artifacts = withContext(dispatchers.io) { read() }
+            setState {
+                copy(
+                    loadState = if (artifacts.isEmpty()) LoadState.Empty else LoadState.Success,
+                    artifacts = artifacts,
+                )
+            }
         }
     }
 
@@ -102,19 +100,22 @@ class LicensesViewModel @Inject constructor(
             )
         }.sortedBy { it.name.lowercase() }
     }.onFailure {
-        AppLogger.w("No licence list in assets: ${it.message}")
+        Log.w("No licence list in assets: ${it.message}")
     }.getOrDefault(emptyList())
 
     private companion object {
         const val ASSET_NAME = "licenses.json"
+        const val LOAD = "load"
     }
 }
 
 @Composable
-fun LicensesRoute(
+internal fun LicensesRoute(
     navigator: AppNavigator,
     viewModel: LicensesViewModel = hiltViewModel(),
 ) {
+    LaunchedEffect(Unit) { viewModel.onEvent(LicensesEvent.Appeared) }
+
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
@@ -128,7 +129,7 @@ fun LicensesRoute(
 }
 
 @Composable
-fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Unit) {
+internal fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Unit) {
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = {

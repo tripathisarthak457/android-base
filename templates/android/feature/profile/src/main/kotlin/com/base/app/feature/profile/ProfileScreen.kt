@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,15 +38,23 @@ import com.base.app.core.media.rememberMediaPicker
 // </opt:media>
 
 @Composable
-fun ProfileRoute(viewModel: ProfileViewModel = hiltViewModel()) {
+internal fun ProfileRoute(viewModel: ProfileViewModel = hiltViewModel()) {
+    LaunchedEffect(Unit) { viewModel.onEvent(ProfileEvent.Appeared) }
+
     MviScreen(viewModel = viewModel) { state, onEvent ->
-        ProfileScreen(state = state, onEvent = onEvent)
+        ProfileScreen(state = state, name = viewModel.name, bio = viewModel.bio, onEvent = onEvent)
     }
 }
 
+/**
+ * The design-system fields take a String, so each field's text is read from the ViewModel's
+ * `TextFieldState` and written straight back; nothing is copied into the state.
+ */
 @Composable
-fun ProfileScreen(
+internal fun ProfileScreen(
     state: ProfileState,
+    name: TextFieldState,
+    bio: TextFieldState,
     onEvent: (ProfileEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -92,16 +103,16 @@ fun ProfileScreen(
                 }
 
                 AppTextField(
-                    value = state.name,
-                    onValueChange = { onEvent(ProfileEvent.NameChanged(it)) },
+                    value = name.text.toString(),
+                    onValueChange = name::setTextAndPlaceCursorAtEnd,
                     label = stringResource(R.string.profile_name),
                     placeholder = stringResource(R.string.profile_name_placeholder),
                     error = if (state.nameError) stringResource(R.string.profile_name_required) else null,
                     maxLength = ProfileViewModel.NAME_LIMIT,
                 )
                 AppTextArea(
-                    value = state.bio,
-                    onValueChange = { onEvent(ProfileEvent.BioChanged(it)) },
+                    value = bio.text.toString(),
+                    onValueChange = bio::setTextAndPlaceCursorAtEnd,
                     label = stringResource(R.string.profile_bio),
                     placeholder = stringResource(R.string.profile_bio_placeholder),
                     maxLength = ProfileViewModel.BIO_LIMIT,

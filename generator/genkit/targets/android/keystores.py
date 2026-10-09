@@ -206,7 +206,7 @@ def write_properties(project: Path, keystores: list[KeystoreSpec]) -> None:
             f"{keystore.name}.storeFile=keys/{keystore.name}.jks",
             f"{keystore.name}.storePassword={properties_value(keystore.store_password)}",
             f"{keystore.name}.keyAlias={keystore.alias}",
-            f"{keystore.name}.keyPassword={properties_value(key_password or keystore.store_password)}",
+            f"{keystore.name}.keyPassword={properties_value(key_password)}",
             "",
         ]
     # java.util.Properties reads ISO-8859-1, so anything beyond ASCII travels as \uXXXX.

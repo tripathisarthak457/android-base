@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ...core.manifest import TemplateManifest
 from ...core.spec import Spec
 from ...core.target import RenderError
 
@@ -21,7 +20,7 @@ VARIANTS: dict[str, str] = {
 }
 
 
-def overlays(spec: Spec, manifest: TemplateManifest) -> dict[str, Path]:
+def overlays(spec: Spec) -> dict[str, Path]:
     """Template-relative path → the variant file that replaces or adds it."""
     files: dict[str, Path] = {}
     for feature, directory in VARIANTS.items():

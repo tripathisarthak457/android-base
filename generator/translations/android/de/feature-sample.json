@@ -6,8 +6,8 @@
   "sample_reload": "Neu laden",
   "sample_refresh_failed": "Aktualisierung fehlgeschlagen.",
   "sample_detail_title": "Details",
+  "sample_related": "Ähnliche",
   "sample_title": "Beispiele",
   "sample_search_titles": "Titel durchsuchen",
-  "sample_showing_cached": "Gespeicherte Daten. Zum Aktualisieren nach unten ziehen.",
   "sample_empty_explanation": "Sobald es etwas anzuzeigen gibt, erscheint es auf diesem Bildschirm."
 }

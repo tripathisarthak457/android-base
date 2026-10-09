@@ -7,7 +7,7 @@ from pathlib import Path
 
 from genkit.core import markers
 from genkit.core.markers import HASH, MARKDOWN, NONE, SLASH, XML, TemplateError, render
-from genkit.core.pipeline import template_region_names
+from genkit.core.pipeline import is_hollow_kotlin, template_region_names
 from genkit.targets import REGISTRY
 
 KNOWN = frozenset({"push", "firebase", "crashlytics", "analytics", "room", "workmanager", "a", "b", "c"})
@@ -90,6 +90,9 @@ class GeneratedTest(unittest.TestCase):
             run("before\n// <generated:modules>\nafter\n", regions={"modules": ['include(":data:a")\n']}),
         )
 
+    def test_a_point_on_a_last_line_with_no_newline_keeps_its_lines_apart(self):
+        self.assertEqual("x\none\ntwo\n", run("x\n// <generated:n>", regions={"n": ["one", "two"]}))
+
     def test_a_region_replaces_its_default_lines(self):
         source = "x\n    // <generated:version>\n    const val V = 1\n    // </generated:version>\ny\n"
         self.assertEqual("x\n    const val V = 2\ny\n", run(source, regions={"version": ["    const val V = 2\n"]}))
@@ -129,6 +132,12 @@ class ErrorTest(unittest.TestCase):
     def test_an_unknown_feature(self):
         self.assertFails("// <opt:pushh>\n// </opt:pushh>\n", "unknown feature 'pushh'")
 
+    def test_the_line_number_counts_only_newlines(self):
+        with self.assertRaises(TemplateError) as caught:
+            run("val a = 1 // page\x0cbreak\nval b = '\u2028'\n// </opt:a>\n")
+        self.assertIn("T.kt:3", str(caught.exception))
+        self.assertEqual("x\x0cy\n", run("x\x0cy\n"))
+
     def test_a_marker_sharing_its_line_with_code(self):
         self.assertFails("foo() // <opt:a>\n", "sharing its line")
         self.assertFails("// <opt:a>\n// </opt:a> trailing\n", "sharing its line")
@@ -163,13 +172,31 @@ class CollapseTest(unittest.TestCase):
         self.assertEqual("fun x() {\n    a()\n}\n", run("fun x() {\n    // <opt:a>\n    b()\n    // </opt:a>\n\n    a()\n}\n"))
 
     def test_untouched_code_keeps_its_spacing(self):
-        # The old generator collapsed every file, reformatting code nobody asked it to touch.
+        # Collapsing every file would reformat code nobody asked the generator to touch.
         source = "class A {\n\n    val x = 1\n\n\n    val y = 2\n}\n"
         self.assertEqual(source, run(source))
 
     def test_markdown_is_never_collapsed(self):
         source = "a\n\n<!-- <opt:a> -->\nb\n<!-- </opt:a> -->\n\nc\n"
         self.assertEqual("a\n\n\nc\n", run(source, syntax=MARKDOWN))
+
+
+class HollowFileTest(unittest.TestCase):
+    """A Kotlin file the markers leave with nothing to declare is dropped rather than written."""
+
+    def test_a_file_left_with_only_a_package_and_imports_is_hollow(self):
+        # The app module's FeatureBindingsModule with none of settings, auth or onboarding on: an
+        # empty Hilt module and unused imports, which detekt fails the build over.
+        self.assertTrue(is_hollow_kotlin("\n".join(["package a.b", "", "import c.D", "import c.E", ""])))
+
+    def test_comments_alone_do_not_save_a_file(self):
+        self.assertTrue(is_hollow_kotlin("\n".join(["package a.b", "", "/**", " * Why this exists.", " */", ""])))
+
+    def test_one_surviving_declaration_keeps_it(self):
+        self.assertFalse(is_hollow_kotlin("\n".join(["package a.b", "", "import c.D", "", "object X", ""])))
+
+    def test_an_empty_file_is_hollow(self):
+        self.assertTrue(is_hollow_kotlin(""))
 
 
 class SyntaxTableTest(unittest.TestCase):

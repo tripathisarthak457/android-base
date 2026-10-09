@@ -14,7 +14,7 @@ from genkit.core import pipeline
 from genkit.core.record import RECORD_NAME
 from genkit.core.target import RenderError
 from genkit.targets import get
-from genkit.targets.android import look, settings, tabs, variants
+from genkit.targets.android import look, scaffold, settings, tabs, variants
 
 ANDROID = get("android")
 
@@ -127,13 +127,38 @@ class TabsTest(unittest.TestCase):
             regions["start-destination-import"],
         )
 
+    def test_the_feed_then_search_start_before_any_module(self):
+        for features, key in ((["paging", "search"], "FeedKey"), (["search"], "SearchKey")):
+            with self.subTest(features=features):
+                regions = tabs.regions(spec(features=features, feature_modules=["orders"]))
+                self.assertEqual([f"        ?: {key}\n"], regions["start-destination"])
+
+    def test_profile_starts_before_settings(self):
+        self.assertEqual(["        ?: ProfileKey\n"], tabs.regions(spec(features=["profile", "settings"]))["start-destination"])
+
     def test_settings_starts_when_nothing_else_does(self):
         self.assertEqual(["        ?: SettingsKey\n"], tabs.regions(spec(features=["settings"]))["start-destination"])
+
+    def test_with_no_screen_to_start_on_the_build_says_what_to_do(self):
+        (line,) = tabs.regions(spec(features=["network"]))["start-destination"]
+        self.assertIn('error("Set a start destination', line)
 
     def test_the_labels_follow_the_bar(self):
         self.assertEqual(
             ["Home", "Feed", "Orders", "Profile", "Settings"],
             tabs.labels(spec(features=["sample", "paging", "profile", "settings"], feature_modules=["orders"])),
+        )
+
+
+class ScaffoldTest(unittest.TestCase):
+
+    def test_each_module_contributes_its_includes_and_an_app_dependency(self):
+        regions = scaffold.regions(spec(feature_modules=["orders", "wallet"]))
+        self.assertEqual(['include(":data:orders")\n', 'include(":data:wallet")\n'], regions["data-modules"])
+        self.assertEqual(['include(":feature:orders")\n', 'include(":feature:wallet")\n'], regions["feature-modules"])
+        self.assertEqual(
+            ['    implementation(project(":feature:orders"))\n', '    implementation(project(":feature:wallet"))\n'],
+            regions["app-feature-dependencies"],
         )
 
 
@@ -298,17 +323,35 @@ class ProjectScriptsTest(unittest.TestCase):
         self.assertIn("import com.acme.field.feature.wallet.WalletListKey", text)
         self.assertLess(text.index("WalletListKey, label"), text.index("// Settings sits last"))
 
+    def test_a_tab_list_it_cannot_read_is_left_to_the_user(self):
+        from add_feature import main
+
+        project = self.copy()
+        path = next(project.rglob("AppDestinations.kt"))
+        lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+        opening = next(index for index, line in enumerate(lines) if "val tabs: List<ShellTab> = listOf(" in line)
+        unclosed = lines[: opening + 1] + [line for line in lines[opening + 1 :] if line.strip() != ")"]
+        path.write_text("".join(unclosed), encoding="utf-8")
+        with redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(0, main(["wallet", "--tab", "--project", str(project)]))
+        self.assertIn("add the tabs by hand", out.getvalue())
+        self.assertNotIn("WalletListKey, label", self.destinations(project))
+
     def test_a_new_module_ships_every_language_the_project_does(self):
         from add_feature import main
 
         project = self.copy()
+        # Only the new module's files are written; a translation someone edited elsewhere stays.
+        edited = project / "feature/orders/src/main/res/values-de/strings.xml"
+        edited.write_text(edited.read_text(encoding="utf-8").replace("</resources>", "    <!-- mine -->\n</resources>"), encoding="utf-8")
+        before = edited.read_text(encoding="utf-8")
+        self.assertIn("<!-- mine -->", before)
         with redirect_stdout(io.StringIO()):
             main(["wallet", "--project", str(project)])
         res = project / "feature/wallet/src/main/res"
         self.assertTrue((res / "values-de/strings.xml").is_file())
         self.assertTrue((res / "values-pt-rBR/strings.xml").is_file())
-        # Only the new module's files are written; a translation someone edited elsewhere stays.
-        self.assertTrue((project / "feature/orders/src/main/res/values-de/strings.xml").is_file())
+        self.assertEqual(before, edited.read_text(encoding="utf-8"))
 
     def test_remove_undoes_add(self):
         from add_feature import main as add
@@ -326,6 +369,42 @@ class ProjectScriptsTest(unittest.TestCase):
         for name, text in before.items():
             self.assertEqual(text, (project / name).read_text(encoding="utf-8"), name)
         self.assertEqual(before_tabs, self.destinations(project))
+        self.assertFalse((project / "feature/wallet").exists())
+
+    def test_a_tab_goes_even_when_its_label_has_been_edited(self):
+        from add_feature import main as add
+        from remove_feature import main as remove
+
+        project = self.copy()
+        with redirect_stdout(io.StringIO()):
+            add(["wallet", "--tab", "--project", str(project)])
+        path = next(project.rglob("AppDestinations.kt"))
+        text = path.read_text(encoding="utf-8")
+        edited = text.replace("label = WalletR.string.wallet_title", 'label = "Purse"')
+        self.assertNotEqual(text, edited)
+        path.write_text(edited, encoding="utf-8")
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(0, remove(["wallet", "--yes", "--project", str(project)]))
+        remaining = self.destinations(project)
+        self.assertNotIn("Wallet", remaining)
+        self.assertNotIn("Purse", remaining)
+        self.assertIn("ShellTab(key = OrdersListKey", remaining)
+
+    def test_a_missing_tab_file_still_gets_the_gradle_edits(self):
+        # Stopping at a renamed AppDestinations would leave the module half removed: its directory
+        # gone, its include still in settings.gradle.kts.
+        from add_feature import main as add
+        from remove_feature import main as remove
+
+        project = self.copy()
+        with redirect_stdout(io.StringIO()):
+            add(["wallet", "--project", str(project)])
+        next(project.rglob("AppDestinations.kt")).unlink()
+        with redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(0, remove(["wallet", "--yes", "--project", str(project)]))
+        self.assertIn("check the tabs by hand", out.getvalue())
+        self.assertNotIn(":wallet", (project / "settings.gradle.kts").read_text(encoding="utf-8"))
+        self.assertNotIn(":wallet", (project / "app/build.gradle.kts").read_text(encoding="utf-8"))
         self.assertFalse((project / "feature/wallet").exists())
 
     def test_a_template_module_cannot_be_removed(self):
