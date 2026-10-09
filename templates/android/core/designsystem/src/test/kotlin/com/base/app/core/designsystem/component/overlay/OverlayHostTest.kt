@@ -27,6 +27,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.base.app.core.designsystem.TEST_SDK
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.feedback.AppLoadingOverlay
+import com.base.app.core.designsystem.foundation.ChromeInset
+import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.setThemed
 import com.base.app.core.designsystem.theme.AppTheme
 import org.junit.Assert.assertEquals
@@ -106,6 +108,27 @@ class OverlayHostTest {
         assertEquals(1, queue.restarts)
         queue.dismiss()
         assertNull(queue.current)
+    }
+
+    @Test
+    fun `a toast rests just above whatever covers the bottom edge`() {
+        lateinit var host: OverlayHostState
+        lateinit var bottomChrome: ChromeInset
+        rule.setThemed {
+            host = LocalOverlayHost.current!!
+            bottomChrome = LocalBottomChrome.current
+            Box(Modifier.fillMaxSize().testTag("window"))
+        }
+        rule.runOnIdle {
+            bottomChrome.value = 80.dp
+            // Shown for longer than the test runs, so it is measured where it rests.
+            host.toasts.show(ToastMessage(text = "Saved", durationMillis = 600_000))
+        }
+        rule.waitForIdle()
+        val window = rule.onNodeWithTag("window", useUnmergedTree = true).getUnclippedBoundsInRoot()
+        val toast = rule.onNodeWithText("Saved", useUnmergedTree = true).getUnclippedBoundsInRoot()
+        assertTrue("the toast clears the bottom chrome: $toast in $window", toast.bottom < window.bottom - 80.dp)
+        assertTrue("the toast sits near the bottom, not at the top: $toast in $window", toast.top > window.bottom - 80.dp - 120.dp)
     }
 
     @Test

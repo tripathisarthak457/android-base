@@ -1,9 +1,12 @@
 package com.base.app.core.designsystem.component.overlay
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -199,32 +202,47 @@ internal fun ToastLayer(queue: ToastQueue) {
         if (queue.current === showing) queue.dismiss()
     }
 
+    // The container holds the whole window and does not animate itself: each toast moves by its
+    // own height, measured from where it rests, so it rises from the bottom edge and stops above the
+    // chrome rather than travelling the height of the window.
     AnimatedContent(
         targetState = message,
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter,
-        transitionSpec = {
-            (slideInVertically(springs.sheet.offset) { it } + fadeIn(springs.fadeIn())) togetherWith
-                (slideOutVertically(springs.sheet.offset) { it } + fadeOut(springs.fadeOut()))
-        },
+        transitionSpec = { EnterTransition.None togetherWith ExitTransition.None using null },
         contentKey = { it },
         label = "toast",
     ) { shown ->
         if (shown == null) return@AnimatedContent
         if (shown.hud) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                AppToast(shown, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
-            }
-        } else {
-            SwipeAway(onGone = queue::dismiss) {
                 AppToast(
                     message = shown,
-                    onDismiss = queue::dismiss,
                     modifier = Modifier
-                        .padding(horizontal = AppTheme.spacing.gutter)
-                        .aboveBottomChrome(bottomChrome, navigationBars)
+                        .animateEnterExit(
+                            enter = fadeIn(springs.fadeIn()) + scaleIn(springs.emphasis.unit, initialScale = HUD_START_SCALE),
+                            exit = fadeOut(springs.fadeOut()),
+                        )
                         .semantics { liveRegion = LiveRegionMode.Polite },
                 )
+            }
+        } else {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+                SwipeAway(
+                    onGone = queue::dismiss,
+                    modifier = Modifier.animateEnterExit(
+                        enter = slideInVertically(springs.sheet.offset) { it } + fadeIn(springs.fadeIn()),
+                        exit = slideOutVertically(springs.sheet.offset) { it } + fadeOut(springs.fadeOut()),
+                    ),
+                ) {
+                    AppToast(
+                        message = shown,
+                        onDismiss = queue::dismiss,
+                        modifier = Modifier
+                            .padding(horizontal = AppTheme.spacing.gutter)
+                            .aboveBottomChrome(bottomChrome, navigationBars)
+                            .semantics { liveRegion = LiveRegionMode.Polite },
+                    )
+                }
             }
         }
     }
@@ -243,12 +261,12 @@ private fun Modifier.aboveBottomChrome(chrome: ChromeInset, navigationBars: Wind
 
 /** A vertical drag moves the content as a plain float; let go far enough down and it leaves. */
 @Composable
-private fun SwipeAway(onGone: () -> Unit, content: @Composable () -> Unit) {
+private fun SwipeAway(onGone: () -> Unit, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val scope = rememberCoroutineScope()
     var drag by remember { mutableFloatStateOf(0f) }
     val spring = AppTheme.springs.sheet.pixels
     Box(
-        modifier = Modifier
+        modifier = modifier
             .graphicsLayer { translationY = drag.coerceAtLeast(0f) }
             .draggable(
                 state = rememberDraggableState { delta -> drag = (drag + delta).coerceAtLeast(-RESISTED) },
@@ -272,3 +290,4 @@ private const val DISMISS_VELOCITY = 900f
 private const val RESISTED = 12f
 private val ToastGap = 12.dp
 private val HudSize = 140.dp
+private const val HUD_START_SCALE = 0.9f
