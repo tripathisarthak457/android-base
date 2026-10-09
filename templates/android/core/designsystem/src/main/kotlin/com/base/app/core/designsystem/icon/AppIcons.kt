@@ -1,6 +1,7 @@
 package com.base.app.core.designsystem.icon
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -13,79 +14,79 @@ import androidx.compose.ui.unit.dp
 object AppIcons {
 
     // ── Direction ───────────────────────────────────────────────────────────────
-    val ArrowLeft = icon("ArrowLeft") {
+    val ArrowLeft by icon("ArrowLeft", autoMirror = true) {
         stroke { moveTo(20f, 12f); lineTo(4f, 12f); moveTo(10f, 6f); lineTo(4f, 12f); lineTo(10f, 18f) }
     }
-    val ArrowRight = icon("ArrowRight") {
+    val ArrowRight by icon("ArrowRight", autoMirror = true) {
         stroke { moveTo(4f, 12f); lineTo(20f, 12f); moveTo(14f, 6f); lineTo(20f, 12f); lineTo(14f, 18f) }
     }
-    val ArrowUp = icon("ArrowUp") {
+    val ArrowUp by icon("ArrowUp") {
         stroke { moveTo(12f, 20f); lineTo(12f, 4f); moveTo(6f, 10f); lineTo(12f, 4f); lineTo(18f, 10f) }
     }
-    val ArrowDown = icon("ArrowDown") {
+    val ArrowDown by icon("ArrowDown") {
         stroke { moveTo(12f, 4f); lineTo(12f, 20f); moveTo(6f, 14f); lineTo(12f, 20f); lineTo(18f, 14f) }
     }
-    val ChevronLeft = icon("ChevronLeft") {
+    val ChevronLeft by icon("ChevronLeft", autoMirror = true) {
         stroke { moveTo(15f, 5f); lineTo(8f, 12f); lineTo(15f, 19f) }
     }
-    val ChevronRight = icon("ChevronRight") {
+    val ChevronRight by icon("ChevronRight", autoMirror = true) {
         stroke { moveTo(9f, 5f); lineTo(16f, 12f); lineTo(9f, 19f) }
     }
-    val ChevronUp = icon("ChevronUp") {
+    val ChevronUp by icon("ChevronUp") {
         stroke { moveTo(5f, 15f); lineTo(12f, 8f); lineTo(19f, 15f) }
     }
-    val ChevronDown = icon("ChevronDown") {
+    val ChevronDown by icon("ChevronDown") {
         stroke { moveTo(5f, 9f); lineTo(12f, 16f); lineTo(19f, 9f) }
     }
 
     // ── Primitives ──────────────────────────────────────────────────────────────
-    val Close = icon("Close") {
+    val Close by icon("Close") {
         stroke { moveTo(6f, 6f); lineTo(18f, 18f); moveTo(18f, 6f); lineTo(6f, 18f) }
     }
-    val Check = icon("Check") {
+    val Check by icon("Check") {
         stroke { moveTo(4.5f, 12.5f); lineTo(9.5f, 17.5f); lineTo(19.5f, 6.5f) }
     }
-    val Plus = icon("Plus") {
+    val Plus by icon("Plus") {
         stroke { moveTo(12f, 5f); lineTo(12f, 19f); moveTo(5f, 12f); lineTo(19f, 12f) }
     }
-    val Minus = icon("Minus") {
+    val Minus by icon("Minus") {
         stroke { moveTo(5f, 12f); lineTo(19f, 12f) }
     }
-    val Menu = icon("Menu") {
+    val Menu by icon("Menu") {
         stroke { moveTo(4f, 6.5f); lineTo(20f, 6.5f); moveTo(4f, 12f); lineTo(20f, 12f); moveTo(4f, 17.5f); lineTo(20f, 17.5f) }
     }
-    val MoreVertical = icon("MoreVertical") {
+    val MoreVertical by icon("MoreVertical") {
         stroke(DOT_WIDTH) { dot(12f, 5.5f); dot(12f, 12f); dot(12f, 18.5f) }
     }
-    val MoreHorizontal = icon("MoreHorizontal") {
+    val MoreHorizontal by icon("MoreHorizontal") {
         stroke(DOT_WIDTH) { dot(5.5f, 12f); dot(12f, 12f); dot(18.5f, 12f) }
     }
 
     // ── Status ──────────────────────────────────────────────────────────────────
-    val Info = icon("Info") {
+    val Info by icon("Info") {
         stroke { circle(12f, 12f, 9f) }
         stroke { moveTo(12f, 11f); lineTo(12f, 16.5f) }
         stroke(DOT_WIDTH) { dot(12f, 7.9f) }
     }
-    val AlertCircle = icon("AlertCircle") {
+    val AlertCircle by icon("AlertCircle") {
         stroke { circle(12f, 12f, 9f) }
         stroke { moveTo(12f, 7.3f); lineTo(12f, 13f) }
         stroke(DOT_WIDTH) { dot(12f, 16.4f) }
     }
-    val AlertTriangle = icon("AlertTriangle") {
+    val AlertTriangle by icon("AlertTriangle") {
         stroke { moveTo(12f, 3.6f); lineTo(21.8f, 20.4f); lineTo(2.2f, 20.4f); close() }
         stroke { moveTo(12f, 9.6f); lineTo(12f, 14.6f) }
         stroke(DOT_WIDTH) { dot(12f, 17.6f) }
     }
-    val CheckCircle = icon("CheckCircle") {
+    val CheckCircle by icon("CheckCircle") {
         stroke { circle(12f, 12f, 9f) }
         stroke { moveTo(7.8f, 12.3f); lineTo(10.8f, 15.3f); lineTo(16.2f, 9.4f) }
     }
-    val XCircle = icon("XCircle") {
+    val XCircle by icon("XCircle") {
         stroke { circle(12f, 12f, 9f) }
         stroke { moveTo(9f, 9f); lineTo(15f, 15f); moveTo(15f, 9f); lineTo(9f, 15f) }
     }
-    val HelpCircle = icon("HelpCircle") {
+    val HelpCircle by icon("HelpCircle") {
         stroke { circle(12f, 12f, 9f) }
         stroke {
             moveTo(9.4f, 9.6f)
@@ -97,11 +98,11 @@ object AppIcons {
     }
 
     // ── Navigation ──────────────────────────────────────────────────────────────
-    val Home = icon("Home") {
+    val Home by icon("Home") {
         stroke { moveTo(3.5f, 10.4f); lineTo(12f, 3.4f); lineTo(20.5f, 10.4f); lineTo(20.5f, 20.4f); lineTo(3.5f, 20.4f); close() }
         stroke { moveTo(9.4f, 20.4f); lineTo(9.4f, 14f); lineTo(14.6f, 14f); lineTo(14.6f, 20.4f) }
     }
-    val Grid = icon("Grid") {
+    val Grid by icon("Grid") {
         stroke {
             moveTo(4f, 4f); lineTo(10.4f, 4f); lineTo(10.4f, 10.4f); lineTo(4f, 10.4f); close()
             moveTo(13.6f, 4f); lineTo(20f, 4f); lineTo(20f, 10.4f); lineTo(13.6f, 10.4f); close()
@@ -109,22 +110,22 @@ object AppIcons {
             moveTo(13.6f, 13.6f); lineTo(20f, 13.6f); lineTo(20f, 20f); lineTo(13.6f, 20f); close()
         }
     }
-    val ListView = icon("ListView") {
+    val ListView by icon("ListView") {
         stroke { moveTo(8.5f, 6.5f); lineTo(20f, 6.5f); moveTo(8.5f, 12f); lineTo(20f, 12f); moveTo(8.5f, 17.5f); lineTo(20f, 17.5f) }
         stroke(DOT_WIDTH) { dot(4.5f, 6.5f); dot(4.5f, 12f); dot(4.5f, 17.5f) }
     }
-    val Search = icon("Search") {
+    val Search by icon("Search") {
         stroke { circle(10.5f, 10.5f, 6.6f) }
         stroke { moveTo(15.4f, 15.4f); lineTo(20.5f, 20.5f) }
     }
-    val Filter = icon("Filter") {
+    val Filter by icon("Filter") {
         stroke { moveTo(3.5f, 6f); lineTo(20.5f, 6f); moveTo(6.5f, 12f); lineTo(17.5f, 12f); moveTo(10f, 18f); lineTo(14f, 18f) }
     }
-    val Sliders = icon("Sliders") {
+    val Sliders by icon("Sliders") {
         stroke { moveTo(3.5f, 7.5f); lineTo(20.5f, 7.5f); moveTo(3.5f, 16.5f); lineTo(20.5f, 16.5f) }
         stroke { circle(9f, 7.5f, 2.4f); circle(15.5f, 16.5f, 2.4f) }
     }
-    val Settings = icon("Settings") {
+    val Settings by icon("Settings") {
         stroke { circle(12f, 12f, 3.2f) }
         stroke {
             moveTo(19.1f, 14.6f)
@@ -183,14 +184,14 @@ object AppIcons {
             close()
         }
     }
-    val ExternalLink = icon("ExternalLink") {
+    val ExternalLink by icon("ExternalLink") {
         stroke { moveTo(13.5f, 4.5f); lineTo(19.5f, 4.5f); lineTo(19.5f, 10.5f) }
         stroke { moveTo(19.5f, 4.5f); lineTo(11f, 13f) }
         stroke { moveTo(18f, 14f); lineTo(18f, 19.5f); lineTo(4.5f, 19.5f); lineTo(4.5f, 6f); lineTo(10f, 6f) }
     }
 
     // ── People and account ──────────────────────────────────────────────────────
-    val User = icon("User") {
+    val User by icon("User") {
         stroke { circle(12f, 8f, 4f) }
         stroke {
             moveTo(4.5f, 20.5f)
@@ -198,7 +199,7 @@ object AppIcons {
             curveTo(16.1f, 14f, 19.5f, 16.4f, 19.5f, 20.5f)
         }
     }
-    val Users = icon("Users") {
+    val Users by icon("Users") {
         stroke { circle(9.5f, 8f, 3.6f) }
         stroke {
             moveTo(2.8f, 20.5f)
@@ -212,7 +213,7 @@ object AppIcons {
         }
         stroke { moveTo(18.2f, 15.4f); curveTo(20.1f, 16.3f, 21.2f, 18.1f, 21.2f, 20.5f) }
     }
-    val Lock = icon("Lock") {
+    val Lock by icon("Lock") {
         stroke { moveTo(4.8f, 10.5f); lineTo(19.2f, 10.5f); lineTo(19.2f, 20.5f); lineTo(4.8f, 20.5f); close() }
         stroke {
             moveTo(8f, 10.5f); lineTo(8f, 7.6f)
@@ -221,11 +222,11 @@ object AppIcons {
             lineTo(16f, 10.5f)
         }
     }
-    val Logout = icon("Logout") {
+    val Logout by icon("Logout") {
         stroke { moveTo(10f, 4.5f); lineTo(4.5f, 4.5f); lineTo(4.5f, 19.5f); lineTo(10f, 19.5f) }
         stroke { moveTo(9.5f, 12f); lineTo(20.5f, 12f); moveTo(16.5f, 8f); lineTo(20.5f, 12f); lineTo(16.5f, 16f) }
     }
-    val Eye = icon("Eye") {
+    val Eye by icon("Eye") {
         stroke {
             moveTo(2.2f, 12f)
             curveTo(4.6f, 7.5f, 8.1f, 5.2f, 12f, 5.2f)
@@ -236,7 +237,7 @@ object AppIcons {
         }
         stroke { circle(12f, 12f, 3.2f) }
     }
-    val EyeOff = icon("EyeOff") {
+    val EyeOff by icon("EyeOff") {
         stroke {
             moveTo(9.6f, 5.6f)
             curveTo(10.4f, 5.3f, 11.2f, 5.2f, 12f, 5.2f)
@@ -253,18 +254,18 @@ object AppIcons {
     }
 
     // ── Time ────────────────────────────────────────────────────────────────────
-    val Calendar = icon("Calendar") {
+    val Calendar by icon("Calendar") {
         stroke { moveTo(3.6f, 5.6f); lineTo(20.4f, 5.6f); lineTo(20.4f, 20.4f); lineTo(3.6f, 20.4f); close() }
         stroke { moveTo(3.6f, 9.8f); lineTo(20.4f, 9.8f) }
         stroke { moveTo(8f, 3.2f); lineTo(8f, 7f); moveTo(16f, 3.2f); lineTo(16f, 7f) }
     }
-    val Clock = icon("Clock") {
+    val Clock by icon("Clock") {
         stroke { circle(12f, 12f, 8.8f) }
         stroke { moveTo(12f, 6.8f); lineTo(12f, 12.3f); lineTo(15.8f, 14.5f) }
     }
 
     // ── Communication ───────────────────────────────────────────────────────────
-    val Bell = icon("Bell") {
+    val Bell by icon("Bell") {
         stroke {
             moveTo(6.4f, 10.2f)
             curveTo(6.4f, 7.1f, 8.9f, 4.6f, 12f, 4.6f)
@@ -277,11 +278,11 @@ object AppIcons {
         }
         stroke { moveTo(10f, 20.2f); curveTo(10.5f, 21.2f, 13.5f, 21.2f, 14f, 20.2f) }
     }
-    val Mail = icon("Mail") {
+    val Mail by icon("Mail") {
         stroke { moveTo(3.2f, 5.6f); lineTo(20.8f, 5.6f); lineTo(20.8f, 18.4f); lineTo(3.2f, 18.4f); close() }
         stroke { moveTo(3.6f, 6.6f); lineTo(12f, 12.8f); lineTo(20.4f, 6.6f) }
     }
-    val Phone = icon("Phone") {
+    val Phone by icon("Phone") {
         stroke {
             moveTo(20.8f, 17f)
             lineTo(20.8f, 19.6f)
@@ -301,7 +302,7 @@ object AppIcons {
             close()
         }
     }
-    val Message = icon("Message") {
+    val Message by icon("Message") {
         stroke {
             moveTo(20.6f, 11.6f)
             curveTo(20.6f, 16.3f, 16.7f, 20.1f, 12f, 20.1f)
@@ -314,13 +315,13 @@ object AppIcons {
             close()
         }
     }
-    val Send = icon("Send") {
+    val Send by icon("Send", autoMirror = true) {
         stroke { moveTo(21f, 3f); lineTo(10.5f, 13.5f) }
         stroke { moveTo(21f, 3f); lineTo(14.3f, 21f); lineTo(10.5f, 13.5f); lineTo(3f, 9.7f); close() }
     }
 
     // ── Content ─────────────────────────────────────────────────────────────────
-    val Heart = icon("Heart") {
+    val Heart by icon("Heart") {
         stroke {
             moveTo(12f, 20.4f)
             curveTo(12f, 20.4f, 3.2f, 15f, 3.2f, 9f)
@@ -332,34 +333,34 @@ object AppIcons {
             close()
         }
     }
-    val Star = icon("Star") {
+    val Star by icon("Star") {
         stroke {
             moveTo(12f, 3.4f); lineTo(14.6f, 9.1f); lineTo(20.8f, 9.9f); lineTo(16.2f, 14.1f)
             lineTo(17.5f, 20.3f); lineTo(12f, 17.2f); lineTo(6.5f, 20.3f); lineTo(7.8f, 14.1f)
             lineTo(3.2f, 9.9f); lineTo(9.4f, 9.1f); close()
         }
     }
-    val StarFilled = icon("StarFilled") {
+    val StarFilled by icon("StarFilled") {
         fill {
             moveTo(12f, 3.4f); lineTo(14.6f, 9.1f); lineTo(20.8f, 9.9f); lineTo(16.2f, 14.1f)
             lineTo(17.5f, 20.3f); lineTo(12f, 17.2f); lineTo(6.5f, 20.3f); lineTo(7.8f, 14.1f)
             lineTo(3.2f, 9.9f); lineTo(9.4f, 9.1f); close()
         }
     }
-    val Bookmark = icon("Bookmark") {
+    val Bookmark by icon("Bookmark") {
         stroke { moveTo(6f, 3.6f); lineTo(18f, 3.6f); lineTo(18f, 20.4f); lineTo(12f, 15.4f); lineTo(6f, 20.4f); close() }
     }
-    val Trash = icon("Trash") {
+    val Trash by icon("Trash") {
         stroke { moveTo(3.8f, 6.5f); lineTo(20.2f, 6.5f) }
         stroke { moveTo(9f, 6.5f); lineTo(9f, 3.8f); lineTo(15f, 3.8f); lineTo(15f, 6.5f) }
         stroke { moveTo(6.4f, 6.5f); lineTo(7.4f, 20.2f); lineTo(16.6f, 20.2f); lineTo(17.6f, 6.5f) }
         stroke { moveTo(10.4f, 10.4f); lineTo(10.4f, 16.6f); moveTo(13.6f, 10.4f); lineTo(13.6f, 16.6f) }
     }
-    val Edit = icon("Edit") {
+    val Edit by icon("Edit") {
         stroke { moveTo(16.6f, 3.4f); lineTo(20.6f, 7.4f); lineTo(8f, 20f); lineTo(3.2f, 20.8f); lineTo(4f, 16f); close() }
         stroke { moveTo(14.4f, 5.6f); lineTo(18.4f, 9.6f) }
     }
-    val Copy = icon("Copy") {
+    val Copy by icon("Copy") {
         stroke {
             moveTo(15f, 9f); lineTo(15f, 5f)
             curveTo(15f, 4.4f, 14.6f, 4f, 14f, 4f)
@@ -381,19 +382,19 @@ object AppIcons {
             close()
         }
     }
-    val Share = icon("Share") {
+    val Share by icon("Share") {
         stroke { circle(18f, 5.6f, 2.6f); circle(6f, 12f, 2.6f); circle(18f, 18.4f, 2.6f) }
         stroke { moveTo(8.3f, 10.7f); lineTo(15.7f, 6.9f); moveTo(8.3f, 13.3f); lineTo(15.7f, 17.1f) }
     }
-    val Download = icon("Download") {
+    val Download by icon("Download") {
         stroke { moveTo(12f, 3.5f); lineTo(12f, 15.4f); moveTo(7f, 10.4f); lineTo(12f, 15.4f); lineTo(17f, 10.4f) }
         stroke { moveTo(4f, 20.4f); lineTo(20f, 20.4f) }
     }
-    val Upload = icon("Upload") {
+    val Upload by icon("Upload") {
         stroke { moveTo(12f, 15.4f); lineTo(12f, 3.5f); moveTo(7f, 8.5f); lineTo(12f, 3.5f); lineTo(17f, 8.5f) }
         stroke { moveTo(4f, 20.4f); lineTo(20f, 20.4f) }
     }
-    val Refresh = icon("Refresh") {
+    val Refresh by icon("Refresh") {
         stroke {
             moveTo(20.4f, 13.4f)
             curveTo(19.7f, 17.5f, 16.2f, 20.6f, 12f, 20.6f)
@@ -405,23 +406,23 @@ object AppIcons {
     }
 
     // ── Media and files ─────────────────────────────────────────────────────────
-    val Camera = icon("Camera") {
+    val Camera by icon("Camera") {
         stroke {
             moveTo(3.2f, 8.4f); lineTo(7.6f, 8.4f); lineTo(9.3f, 5.4f); lineTo(14.7f, 5.4f)
             lineTo(16.4f, 8.4f); lineTo(20.8f, 8.4f); lineTo(20.8f, 19.2f); lineTo(3.2f, 19.2f); close()
         }
         stroke { circle(12f, 13.4f, 3.6f) }
     }
-    val ImageIcon = icon("ImageIcon") {
+    val ImageIcon by icon("ImageIcon") {
         stroke { moveTo(3.6f, 4.6f); lineTo(20.4f, 4.6f); lineTo(20.4f, 19.4f); lineTo(3.6f, 19.4f); close() }
         stroke { circle(8.8f, 9.4f, 1.9f) }
         stroke { moveTo(20.4f, 16f); lineTo(15.4f, 11f); lineTo(5.2f, 19.4f) }
     }
-    val File = icon("File") {
+    val File by icon("File") {
         stroke { moveTo(6f, 3.6f); lineTo(14f, 3.6f); lineTo(19f, 8.6f); lineTo(19f, 20.4f); lineTo(6f, 20.4f); close() }
         stroke { moveTo(14f, 3.6f); lineTo(14f, 8.6f); lineTo(19f, 8.6f) }
     }
-    val Folder = icon("Folder") {
+    val Folder by icon("Folder") {
         stroke {
             moveTo(3.2f, 6.6f); lineTo(9.4f, 6.6f); lineTo(11.4f, 9.2f); lineTo(20.8f, 9.2f)
             lineTo(20.8f, 19.4f); lineTo(3.2f, 19.4f); close()
@@ -429,29 +430,29 @@ object AppIcons {
     }
 
     // ── Commerce ────────────────────────────────────────────────────────────────
-    val Cart = icon("Cart") {
+    val Cart by icon("Cart") {
         stroke { moveTo(2.6f, 4f); lineTo(5.4f, 4f); lineTo(7.8f, 15.2f); lineTo(19f, 15.2f); lineTo(21.4f, 7.2f); lineTo(6.2f, 7.2f) }
         stroke { circle(9f, 19.2f, 1.6f); circle(17.6f, 19.2f, 1.6f) }
     }
-    val CreditCard = icon("CreditCard") {
+    val CreditCard by icon("CreditCard") {
         stroke { moveTo(2.8f, 5.4f); lineTo(21.2f, 5.4f); lineTo(21.2f, 18.6f); lineTo(2.8f, 18.6f); close() }
         stroke { moveTo(2.8f, 9.8f); lineTo(21.2f, 9.8f) }
         stroke { moveTo(6.4f, 14.6f); lineTo(10f, 14.6f) }
     }
-    val Tag = icon("Tag") {
+    val Tag by icon("Tag") {
         stroke {
             moveTo(11.2f, 3.2f); lineTo(20.8f, 12.8f); lineTo(12.8f, 20.8f); lineTo(3.2f, 11.2f)
             lineTo(3.2f, 3.2f); close()
         }
         stroke(DOT_WIDTH) { dot(7.4f, 7.4f) }
     }
-    val Package = icon("Package") {
+    val Package by icon("Package") {
         stroke { moveTo(12f, 3.2f); lineTo(20.8f, 7.6f); lineTo(20.8f, 16.4f); lineTo(12f, 20.8f); lineTo(3.2f, 16.4f); lineTo(3.2f, 7.6f); close() }
         stroke { moveTo(3.2f, 7.6f); lineTo(12f, 12f); lineTo(20.8f, 7.6f); moveTo(12f, 12f); lineTo(12f, 20.8f) }
     }
 
     // ── Location and connectivity ───────────────────────────────────────────────
-    val MapPin = icon("MapPin") {
+    val MapPin by icon("MapPin") {
         stroke {
             moveTo(12f, 21f)
             curveTo(12f, 21f, 19f, 15.2f, 19f, 10.2f)
@@ -462,7 +463,7 @@ object AppIcons {
         }
         stroke { circle(12f, 10f, 2.6f) }
     }
-    val Globe = icon("Globe") {
+    val Globe by icon("Globe") {
         stroke { circle(12f, 12f, 8.8f) }
         stroke { moveTo(3.2f, 12f); lineTo(20.8f, 12f) }
         stroke {
@@ -474,13 +475,13 @@ object AppIcons {
             close()
         }
     }
-    val Wifi = icon("Wifi") {
+    val Wifi by icon("Wifi") {
         stroke { moveTo(2.4f, 8.6f); curveTo(8f, 3.8f, 16f, 3.8f, 21.6f, 8.6f) }
         stroke { moveTo(5.8f, 12.4f); curveTo(9.5f, 9.3f, 14.5f, 9.3f, 18.2f, 12.4f) }
         stroke { moveTo(9.2f, 16.2f); curveTo(10.9f, 14.8f, 13.1f, 14.8f, 14.8f, 16.2f) }
         stroke(DOT_WIDTH) { dot(12f, 19.6f) }
     }
-    val WifiOff = icon("WifiOff") {
+    val WifiOff by icon("WifiOff") {
         stroke { moveTo(3.5f, 3.5f); lineTo(20.5f, 20.5f) }
         stroke { moveTo(9.2f, 16.2f); curveTo(10.9f, 14.8f, 13.1f, 14.8f, 14.8f, 16.2f) }
         stroke { moveTo(2.4f, 8.6f); curveTo(4f, 7.2f, 5.8f, 6.2f, 7.7f, 5.6f) }
@@ -489,7 +490,7 @@ object AppIcons {
     }
 
     // ── Theme ───────────────────────────────────────────────────────────────────
-    val Sun = icon("Sun") {
+    val Sun by icon("Sun") {
         stroke { circle(12f, 12f, 4.4f) }
         stroke {
             moveTo(12f, 1.8f); lineTo(12f, 4f); moveTo(12f, 20f); lineTo(12f, 22.2f)
@@ -498,7 +499,7 @@ object AppIcons {
             moveTo(19.2f, 4.8f); lineTo(17.6f, 6.4f); moveTo(6.4f, 17.6f); lineTo(4.8f, 19.2f)
         }
     }
-    val Moon = icon("Moon") {
+    val Moon by icon("Moon") {
         stroke {
             moveTo(20.6f, 14.4f)
             curveTo(19.3f, 15f, 17.9f, 15.3f, 16.4f, 15.3f)
@@ -511,43 +512,168 @@ object AppIcons {
         }
     }
 
-    /** Everything above, for the catalog's icon grid. Order is the order they are declared. */
-    val all: List<Pair<String, ImageVector>> = listOf(
-        "ArrowLeft" to ArrowLeft, "ArrowRight" to ArrowRight, "ArrowUp" to ArrowUp,
-        "ArrowDown" to ArrowDown, "ChevronLeft" to ChevronLeft, "ChevronRight" to ChevronRight,
-        "ChevronUp" to ChevronUp, "ChevronDown" to ChevronDown, "Close" to Close,
-        "Check" to Check, "Plus" to Plus, "Minus" to Minus, "Menu" to Menu,
-        "MoreVertical" to MoreVertical, "MoreHorizontal" to MoreHorizontal, "Info" to Info,
-        "AlertCircle" to AlertCircle, "AlertTriangle" to AlertTriangle,
-        "CheckCircle" to CheckCircle, "XCircle" to XCircle, "HelpCircle" to HelpCircle,
-        "Home" to Home, "Grid" to Grid, "ListView" to ListView, "Search" to Search,
-        "Filter" to Filter, "Sliders" to Sliders, "Settings" to Settings,
-        "ExternalLink" to ExternalLink, "User" to User, "Users" to Users, "Lock" to Lock,
-        "Logout" to Logout, "Eye" to Eye, "EyeOff" to EyeOff, "Calendar" to Calendar,
-        "Clock" to Clock, "Bell" to Bell, "Mail" to Mail, "Phone" to Phone,
-        "Message" to Message, "Send" to Send, "Heart" to Heart, "Star" to Star,
-        "StarFilled" to StarFilled, "Bookmark" to Bookmark, "Trash" to Trash, "Edit" to Edit,
-        "Copy" to Copy, "Share" to Share, "Download" to Download, "Upload" to Upload,
-        "Refresh" to Refresh, "Camera" to Camera, "ImageIcon" to ImageIcon, "File" to File,
-        "Folder" to Folder, "Cart" to Cart, "CreditCard" to CreditCard, "Tag" to Tag,
-        "Package" to Package, "MapPin" to MapPin, "Globe" to Globe, "Wifi" to Wifi,
-        "WifiOff" to WifiOff, "Sun" to Sun, "Moon" to Moon,
-    )
+    // ── Filled, for a selected tab ──────────────────────────────────────────────────
+    val HomeFilled by icon("HomeFilled") {
+        fill(evenOdd = true) {
+            moveTo(3.5f, 10.4f); lineTo(12f, 3.4f); lineTo(20.5f, 10.4f); lineTo(20.5f, 20.4f); lineTo(3.5f, 20.4f); close()
+            moveTo(9.4f, 20.4f); lineTo(9.4f, 14f); lineTo(14.6f, 14f); lineTo(14.6f, 20.4f); close()
+        }
+        stroke { moveTo(3.5f, 10.4f); lineTo(12f, 3.4f); lineTo(20.5f, 10.4f); lineTo(20.5f, 20.4f); lineTo(3.5f, 20.4f); close() }
+    }
+    val SearchFilled by icon("SearchFilled") {
+        stroke(BOLD_STROKE_WIDTH) { circle(10.5f, 10.5f, 6.4f) }
+        stroke(BOLD_STROKE_WIDTH) { moveTo(15.4f, 15.4f); lineTo(20.3f, 20.3f) }
+    }
+    val UserFilled by icon("UserFilled") {
+        fill { circle(12f, 8f, 4.4f) }
+        fill {
+            moveTo(3.8f, 20.8f)
+            curveTo(3.8f, 16.2f, 7.5f, 13.5f, 12f, 13.5f)
+            curveTo(16.5f, 13.5f, 20.2f, 16.2f, 20.2f, 20.8f)
+            close()
+        }
+    }
+    val SettingsFilled by icon("SettingsFilled") {
+        fill(evenOdd = true) {
+            moveTo(19.1f, 14.6f)
+            curveTo(18.9f, 15.1f, 19f, 15.6f, 19.4f, 16f)
+            lineTo(19.5f, 16.1f)
+            curveTo(20.1f, 16.7f, 20.1f, 17.6f, 19.5f, 18.2f)
+            curveTo(18.9f, 18.8f, 18f, 18.8f, 17.4f, 18.2f)
+            lineTo(17.3f, 18.1f)
+            curveTo(16.9f, 17.7f, 16.4f, 17.6f, 15.9f, 17.8f)
+            curveTo(15.4f, 18f, 15.1f, 18.5f, 15.1f, 19f)
+            lineTo(15.1f, 19.2f)
+            curveTo(15.1f, 20.1f, 14.4f, 20.8f, 13.5f, 20.8f)
+            lineTo(10.5f, 20.8f)
+            curveTo(9.6f, 20.8f, 8.9f, 20.1f, 8.9f, 19.2f)
+            lineTo(8.9f, 19f)
+            curveTo(8.9f, 18.5f, 8.6f, 18f, 8.1f, 17.8f)
+            curveTo(7.6f, 17.6f, 7.1f, 17.7f, 6.7f, 18.1f)
+            lineTo(6.6f, 18.2f)
+            curveTo(6f, 18.8f, 5.1f, 18.8f, 4.5f, 18.2f)
+            curveTo(3.9f, 17.6f, 3.9f, 16.7f, 4.5f, 16.1f)
+            lineTo(4.6f, 16f)
+            curveTo(5f, 15.6f, 5.1f, 15.1f, 4.9f, 14.6f)
+            curveTo(4.7f, 14.1f, 4.2f, 13.8f, 3.7f, 13.8f)
+            lineTo(3.6f, 13.8f)
+            curveTo(2.7f, 13.8f, 2f, 13.1f, 2f, 12.2f)
+            lineTo(2f, 11.8f)
+            curveTo(2f, 10.9f, 2.7f, 10.2f, 3.6f, 10.2f)
+            lineTo(3.7f, 10.2f)
+            curveTo(4.2f, 10.2f, 4.7f, 9.9f, 4.9f, 9.4f)
+            curveTo(5.1f, 8.9f, 5f, 8.4f, 4.6f, 8f)
+            lineTo(4.5f, 7.9f)
+            curveTo(3.9f, 7.3f, 3.9f, 6.4f, 4.5f, 5.8f)
+            curveTo(5.1f, 5.2f, 6f, 5.2f, 6.6f, 5.8f)
+            lineTo(6.7f, 5.9f)
+            curveTo(7.1f, 6.3f, 7.6f, 6.4f, 8.1f, 6.2f)
+            curveTo(8.6f, 6f, 8.9f, 5.5f, 8.9f, 5f)
+            lineTo(8.9f, 4.8f)
+            curveTo(8.9f, 3.9f, 9.6f, 3.2f, 10.5f, 3.2f)
+            lineTo(13.5f, 3.2f)
+            curveTo(14.4f, 3.2f, 15.1f, 3.9f, 15.1f, 4.8f)
+            lineTo(15.1f, 5f)
+            curveTo(15.1f, 5.5f, 15.4f, 6f, 15.9f, 6.2f)
+            curveTo(16.4f, 6.4f, 16.9f, 6.3f, 17.3f, 5.9f)
+            lineTo(17.4f, 5.8f)
+            curveTo(18f, 5.2f, 18.9f, 5.2f, 19.5f, 5.8f)
+            curveTo(20.1f, 6.4f, 20.1f, 7.3f, 19.5f, 7.9f)
+            lineTo(19.4f, 8f)
+            curveTo(19f, 8.4f, 18.9f, 8.9f, 19.1f, 9.4f)
+            curveTo(19.3f, 9.9f, 19.8f, 10.2f, 20.3f, 10.2f)
+            lineTo(20.4f, 10.2f)
+            curveTo(21.3f, 10.2f, 22f, 10.9f, 22f, 11.8f)
+            lineTo(22f, 12.2f)
+            curveTo(22f, 13.1f, 21.3f, 13.8f, 20.4f, 13.8f)
+            lineTo(20.3f, 13.8f)
+            curveTo(19.8f, 13.8f, 19.3f, 14.1f, 19.1f, 14.6f)
+            close()
+            circle(12f, 12f, 3.2f)
+        }
+    }
+    val BellFilled by icon("BellFilled") {
+        fill {
+            moveTo(6.4f, 10.2f)
+            curveTo(6.4f, 7.1f, 8.9f, 4.6f, 12f, 4.6f)
+            curveTo(15.1f, 4.6f, 17.6f, 7.1f, 17.6f, 10.2f)
+            lineTo(17.6f, 15f)
+            lineTo(19.6f, 17.6f)
+            lineTo(4.4f, 17.6f)
+            lineTo(6.4f, 15f)
+            close()
+        }
+        stroke { moveTo(10f, 20.2f); curveTo(10.5f, 21.2f, 13.5f, 21.2f, 14f, 20.2f) }
+    }
+    val HeartFilled by icon("HeartFilled") {
+        fill {
+            moveTo(12f, 20.4f)
+            curveTo(12f, 20.4f, 3.2f, 15f, 3.2f, 9f)
+            curveTo(3.2f, 6.3f, 5.4f, 4.1f, 8.1f, 4.1f)
+            curveTo(9.7f, 4.1f, 11.2f, 4.9f, 12f, 6.2f)
+            curveTo(12.8f, 4.9f, 14.3f, 4.1f, 15.9f, 4.1f)
+            curveTo(18.6f, 4.1f, 20.8f, 6.3f, 20.8f, 9f)
+            curveTo(20.8f, 15f, 12f, 20.4f, 12f, 20.4f)
+            close()
+        }
+    }
+    val BookmarkFilled by icon("BookmarkFilled") {
+        fill { moveTo(6f, 3.6f); lineTo(18f, 3.6f); lineTo(18f, 20.4f); lineTo(12f, 15.4f); lineTo(6f, 20.4f); close() }
+    }
+    val MessageFilled by icon("MessageFilled") {
+        fill {
+            moveTo(20.6f, 11.6f)
+            curveTo(20.6f, 16.3f, 16.7f, 20.1f, 12f, 20.1f)
+            curveTo(10.6f, 20.1f, 9.3f, 19.8f, 8.1f, 19.2f)
+            lineTo(3.4f, 20.6f)
+            lineTo(4.9f, 16.2f)
+            curveTo(4f, 14.9f, 3.4f, 13.3f, 3.4f, 11.6f)
+            curveTo(3.4f, 6.9f, 7.3f, 3.1f, 12f, 3.1f)
+            curveTo(16.7f, 3.1f, 20.6f, 6.9f, 20.6f, 11.6f)
+            close()
+        }
+    }
+    val GridFilled by icon("GridFilled") {
+        fill {
+            moveTo(4f, 4f); lineTo(10.4f, 4f); lineTo(10.4f, 10.4f); lineTo(4f, 10.4f); close()
+            moveTo(13.6f, 4f); lineTo(20f, 4f); lineTo(20f, 10.4f); lineTo(13.6f, 10.4f); close()
+            moveTo(4f, 13.6f); lineTo(10.4f, 13.6f); lineTo(10.4f, 20f); lineTo(4f, 20f); close()
+            moveTo(13.6f, 13.6f); lineTo(20f, 13.6f); lineTo(20f, 20f); lineTo(13.6f, 20f); close()
+        }
+    }
+    val FolderFilled by icon("FolderFilled") {
+        fill {
+            moveTo(3.2f, 6.6f); lineTo(9.4f, 6.6f); lineTo(11.4f, 9.2f); lineTo(20.8f, 9.2f)
+            lineTo(20.8f, 19.4f); lineTo(3.2f, 19.4f); close()
+        }
+    }
 }
 
 private const val STROKE_WIDTH = 1.8f
+private const val BOLD_STROKE_WIDTH = 2.6f
 
 /** Dots are drawn as a zero-length round-capped stroke, so the width *is* the diameter. */
 private const val DOT_WIDTH = 2.4f
 
-private fun icon(name: String, block: ImageVector.Builder.() -> Unit): ImageVector =
+/**
+ * Built the first time something draws it, not when the set is first touched: building all of them
+ * at once would land on the first frame. [autoMirror] flips a directional glyph in right-to-left
+ * layouts, so a back arrow points back.
+ */
+private fun icon(
+    name: String,
+    autoMirror: Boolean = false,
+    block: ImageVector.Builder.() -> Unit,
+): Lazy<ImageVector> = lazy(LazyThreadSafetyMode.NONE) {
     ImageVector.Builder(
         name = name,
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
         viewportWidth = 24f,
         viewportHeight = 24f,
+        autoMirror = autoMirror,
     ).apply(block).build()
+}
 
 private fun ImageVector.Builder.stroke(
     width: Float = STROKE_WIDTH,
@@ -560,8 +686,14 @@ private fun ImageVector.Builder.stroke(
     strokeLineJoin = StrokeJoin.Round,
 )
 
-private fun ImageVector.Builder.fill(path: PathBuilder.() -> Unit): ImageVector.Builder =
-    addPath(pathData = PathData(path), fill = SolidColor(Color.Black))
+private fun ImageVector.Builder.fill(
+    evenOdd: Boolean = false,
+    path: PathBuilder.() -> Unit,
+): ImageVector.Builder = addPath(
+    pathData = PathData(path),
+    pathFillType = if (evenOdd) PathFillType.EvenOdd else PathFillType.NonZero,
+    fill = SolidColor(Color.Black),
+)
 
 /** Two half-arcs, because the vector format has no circle primitive. */
 private fun PathBuilder.circle(centerX: Float, centerY: Float, radius: Float) {

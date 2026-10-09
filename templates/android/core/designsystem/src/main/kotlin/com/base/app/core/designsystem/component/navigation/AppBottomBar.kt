@@ -28,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -66,8 +65,8 @@ fun AppBottomBar(
     modifier: Modifier = Modifier,
 ) {
     when (AppTheme.style.bar) {
-        BarTreatment.Floating -> FloatingBar(items, selectedIndex, onItemSelected, modifier)
-        else -> EdgeBar(items, selectedIndex, onItemSelected, modifier)
+        BarTreatment.Docked -> EdgeBar(items, selectedIndex, onItemSelected, modifier)
+        else -> FloatingBar(items, selectedIndex, onItemSelected, modifier)
     }
 }
 
@@ -81,8 +80,8 @@ object AppBottomBarDefaults {
     fun occupiedHeight(): Dp {
         val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         return when (AppTheme.style.bar) {
-            BarTreatment.Floating -> FloatingHeight + FloatingMargin * 2 + navigationBar
-            else -> AppTheme.sizes.bottomBarHeight + AppTheme.sizes.borderWidth + navigationBar
+            BarTreatment.Docked -> BarHeight + AppTheme.style.borderWidth + navigationBar
+            else -> FloatingHeight + FloatingMargin * 2 + navigationBar
         }
     }
 
@@ -98,34 +97,22 @@ private fun EdgeBar(
     modifier: Modifier,
 ) {
     val colors = AppTheme.colors
-    val treatment = AppTheme.style.bar
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(colors.surface),
     ) {
-        if (treatment == BarTreatment.Chunky) {
-            AppDivider(thickness = AppTheme.sizes.borderWidth, color = colors.contentPrimary)
-        } else {
-            AppDivider(color = colors.divider)
-        }
-
-        BoxWithConstraints(
-            modifier = Modifier
+        AppDivider(color = colors.separator)
+        ItemRow(
+            items,
+            selectedIndex,
+            onItemSelected,
+            Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
-                .height(AppTheme.sizes.bottomBarHeight),
-        ) {
-            if (treatment == BarTreatment.Minimal && items.isNotEmpty()) {
-                SlidingRule(
-                    selectedIndex = selectedIndex,
-                    itemWidth = maxWidth / items.size,
-                )
-            }
-
-            ItemRow(items, selectedIndex, onItemSelected, Modifier.fillMaxHeight())
-        }
+                .height(BarHeight),
+        )
     }
 }
 
@@ -161,7 +148,7 @@ private fun FloatingBar(
 private fun SlidingPill(selectedIndex: Int, itemWidth: Dp) {
     val x by animateDpAsState(
         targetValue = itemWidth * selectedIndex,
-        animationSpec = AppTheme.motion.sheet(),
+        animationSpec = AppTheme.springs.selection.dp,
         label = "barPill",
     )
     Box(
@@ -173,23 +160,7 @@ private fun SlidingPill(selectedIndex: Int, itemWidth: Dp) {
     )
 }
 
-@Composable
-private fun SlidingRule(selectedIndex: Int, itemWidth: Dp) {
-    val x by animateDpAsState(
-        targetValue = itemWidth * selectedIndex,
-        animationSpec = AppTheme.motion.sheet(),
-        label = "barRule",
-    )
-    Box(
-        modifier = Modifier
-            .offset(x = x + itemWidth / 2 - RuleWidth / 2)
-            .width(RuleWidth)
-            .height(2.dp)
-            .background(AppTheme.colors.contentPrimary),
-    )
-}
-
-private val RuleWidth = 20.dp
+private val BarHeight = 60.dp
 
 @Composable
 private fun ItemRow(
@@ -223,38 +194,17 @@ internal fun BottomBarItem(
     modifier: Modifier = Modifier,
 ) {
     val colors = AppTheme.colors
-    val treatment = AppTheme.style.bar
-    val chunky = treatment == BarTreatment.Chunky
 
     val tint by animateColorAsState(
-        targetValue = when {
-            chunky && selected -> colors.onAccent
-            selected && treatment == BarTreatment.Minimal -> colors.contentPrimary
-            selected -> colors.accent
-            else -> colors.contentTertiary
-        },
-        animationSpec = tween(AppTheme.motion.medium, easing = AppTheme.motion.standard),
+        targetValue = if (selected) colors.accentContent else colors.contentTertiary,
+        animationSpec = tween(AppTheme.springs.fadeSlow),
         label = "navTint",
     )
-    val labelTint by animateColorAsState(
-        targetValue = when {
-            selected && (chunky || treatment == BarTreatment.Minimal) -> colors.contentPrimary
-            selected -> colors.accent
-            else -> colors.contentTertiary
-        },
-        animationSpec = tween(AppTheme.motion.medium, easing = AppTheme.motion.standard),
-        label = "navLabelTint",
-    )
-    val pill by animateColorAsState(
-        targetValue = if (chunky && selected) colors.accent else Color.Transparent,
-        animationSpec = tween(AppTheme.motion.quick),
-        label = "navPill",
-    )
-    // Only the edge bars lift the icon. On the floating bar the sliding pill already says which
-    // tab is selected, and a second movement inside it reads as a wobble.
+    // Only the edge bar lifts the icon. On the capsule the sliding pill already says which tab is
+    // selected, and a second movement inside it reads as a wobble.
     val iconScale by animateFloatAsState(
-        targetValue = if (selected && treatment != BarTreatment.Floating) 1.06f else 1f,
-        animationSpec = AppTheme.motion.press(),
+        targetValue = if (selected && AppTheme.style.bar == BarTreatment.Docked) 1.06f else 1f,
+        animationSpec = AppTheme.springs.press.unit,
         label = "navScale",
     )
 
@@ -270,30 +220,23 @@ internal fun BottomBarItem(
         verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterVertically),
     ) {
         AppBadgedBox(count = item.badgeCount) {
-            Box(
-                modifier = Modifier
-                    .background(pill, AppTheme.shapes.pill)
-                    .padding(horizontal = if (chunky) 14.dp else 0.dp, vertical = if (chunky) 3.dp else 0.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                AppIcon(
-                    imageVector = if (selected) item.selectedIcon else item.icon,
-                    contentDescription = null,
-                    tint = tint,
-                    size = AppTheme.sizes.iconLarge,
-                    modifier = Modifier.scale(iconScale),
-                )
-            }
+            AppIcon(
+                imageVector = if (selected) item.selectedIcon else item.icon,
+                contentDescription = null,
+                tint = tint,
+                size = AppTheme.sizes.iconLarge,
+                modifier = Modifier.scale(iconScale),
+            )
         }
         val uppercase = AppTheme.style.uppercaseLabels
         AppText(
             text = if (uppercase) item.label.uppercase() else item.label,
             style = if (uppercase) {
-                AppTheme.typography.labelSmall.copy(letterSpacing = 0.1.em)
+                AppTheme.typography.caption2.copy(letterSpacing = 0.1.em)
             } else {
-                AppTheme.typography.labelSmall
+                AppTheme.typography.caption2
             },
-            color = labelTint,
+            color = tint,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,

@@ -9,10 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
-import com.base.app.core.designsystem.foundation.AppClickableSurface
+import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.AppSurface
+import com.base.app.core.designsystem.foundation.PressFeedback
+import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.foundation.offsetShadow
+import com.base.app.core.designsystem.foundation.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.CardTreatment
 
@@ -21,7 +25,7 @@ import com.base.app.core.designsystem.theme.CardTreatment
 fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = AppTheme.shapes.md,
-    color: Color = AppTheme.colors.surface,
+    color: Color = AppCardDefaults.color(),
     border: BorderStroke? = AppCardDefaults.border(),
     elevation: Dp = AppCardDefaults.elevation(),
     contentPadding: PaddingValues = PaddingValues(AppTheme.spacing.lg),
@@ -38,29 +42,32 @@ fun AppCard(
     }
 }
 
+/**
+ * A card that opens something. It shrinks slightly under the finger, by less than a button does
+ * since it is larger, and never lays a film over what it shows.
+ */
 @Composable
 fun AppCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    onClickLabel: String? = null,
     shape: Shape = AppTheme.shapes.md,
-    color: Color = AppTheme.colors.surface,
+    color: Color = AppCardDefaults.color(),
     border: BorderStroke? = AppCardDefaults.border(),
     elevation: Dp = AppCardDefaults.elevation(),
     contentPadding: PaddingValues = PaddingValues(AppTheme.spacing.lg),
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    AppClickableSurface(
-        onClick = onClick,
-        modifier = modifier.cardShadow(shape),
-        enabled = enabled,
+    AppSurface(
+        modifier = modifier
+            .pressable(onClick = onClick, feedback = PressFeedback.Scale, enabled = enabled, role = Role.Button, onClickLabel = onClickLabel)
+            .disabledAlpha(enabled)
+            .cardShadow(shape),
         shape = shape,
         color = color,
         border = border,
         elevation = elevation,
-        // A card is large enough that scaling the whole thing on press reads as the layout
-        // jumping rather than as a button depressing. The overlay alone is the right feedback.
-        scaleOnPress = false,
     ) {
         Column(modifier = Modifier.padding(contentPadding), content = content)
     }
@@ -69,16 +76,20 @@ fun AppCard(
 /** What a card looks like when the caller does not say, per [CardTreatment]. */
 object AppCardDefaults {
 
+    /** Raised cards sit on the elevated surface, so in dark theme they still read as lifted. */
+    @Composable
+    fun color(): Color =
+        if (AppTheme.style.card == CardTreatment.Raised) AppTheme.colors.surfaceElevated else AppTheme.colors.surface
+
     @Composable
     fun border(): BorderStroke? = when (AppTheme.style.card) {
-        CardTreatment.Outlined -> BorderStroke(AppTheme.sizes.borderWidth, AppTheme.colors.border)
+        CardTreatment.Outlined -> BorderStroke(AppTheme.style.borderWidth, AppTheme.colors.separator)
         CardTreatment.Raised -> null
-        CardTreatment.Offset -> BorderStroke(AppTheme.sizes.borderWidth, AppTheme.colors.contentPrimary)
+        CardTreatment.Offset -> BorderStroke(AppTheme.style.borderWidth, AppTheme.colors.contentPrimary)
     }
 
     @Composable
-    fun elevation(): Dp =
-        if (AppTheme.style.card == CardTreatment.Raised) AppTheme.elevation.card else AppTheme.elevation.none
+    fun elevation(): Dp = if (AppTheme.style.card == CardTreatment.Raised) AppTheme.elevation.card else 0.dp
 }
 
 @Composable

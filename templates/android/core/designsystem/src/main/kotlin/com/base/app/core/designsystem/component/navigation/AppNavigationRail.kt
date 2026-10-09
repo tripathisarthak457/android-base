@@ -40,7 +40,6 @@ fun AppNavigationRail(
     modifier: Modifier = Modifier,
 ) {
     val colors = AppTheme.colors
-    val treatment = AppTheme.style.bar
 
     Row(modifier = modifier.fillMaxHeight().background(colors.surface)) {
         Box(
@@ -52,13 +51,7 @@ fun AppNavigationRail(
                 .width(AppNavigationRailDefaults.Width)
                 .padding(vertical = AppTheme.spacing.lg),
         ) {
-            if (items.isNotEmpty()) {
-                when (treatment) {
-                    BarTreatment.Floating -> VerticalPill(selectedIndex)
-                    BarTreatment.Minimal -> LeadingRule(selectedIndex)
-                    else -> Unit
-                }
-            }
+            if (items.isNotEmpty() && AppTheme.style.bar != BarTreatment.Docked) VerticalPill(selectedIndex)
             Column(modifier = Modifier.fillMaxWidth().selectableGroup()) {
                 items.forEachIndexed { index, item ->
                     BottomBarItem(
@@ -70,11 +63,7 @@ fun AppNavigationRail(
                 }
             }
         }
-        if (treatment == BarTreatment.Chunky) {
-            AppVerticalDivider(color = colors.contentPrimary, thickness = AppTheme.sizes.borderWidth)
-        } else {
-            AppVerticalDivider(color = colors.divider)
-        }
+        AppVerticalDivider(color = colors.separator)
     }
 }
 
@@ -87,7 +76,7 @@ object AppNavigationRailDefaults {
 private fun VerticalPill(selectedIndex: Int) {
     val y by animateDpAsState(
         targetValue = ItemHeight * selectedIndex,
-        animationSpec = AppTheme.motion.sheet(),
+        animationSpec = AppTheme.springs.selection.dp,
         label = "railPill",
     )
     Box(
@@ -100,23 +89,6 @@ private fun VerticalPill(selectedIndex: Int) {
     )
 }
 
-@Composable
-private fun LeadingRule(selectedIndex: Int) {
-    val y by animateDpAsState(
-        targetValue = ItemHeight * selectedIndex + ItemHeight / 2 - RuleLength / 2,
-        animationSpec = AppTheme.motion.sheet(),
-        label = "railRule",
-    )
-    Box(
-        modifier = Modifier
-            .offset(y = y)
-            .width(2.dp)
-            .height(RuleLength)
-            .background(AppTheme.colors.contentPrimary),
-    )
-}
-
 private val ItemHeight = 68.dp
 private val RailInsets: WindowInsets
     @Composable get() = WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical + WindowInsetsSides.Start)
-private val RuleLength = 24.dp

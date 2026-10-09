@@ -1,45 +1,44 @@
 package com.base.app.core.designsystem.component.selection
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsDraggedAsState
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.horizontalDrag
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
-import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.foundation.HapticEffect
+import com.base.app.core.designsystem.foundation.AppHaptic
 import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.foundation.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlin.math.roundToInt
 
 /**
- * A slider. A slider that only responds to a drag on the thumb is a slider that is fiddly to set
- * roughly — which is what most sliders are for.
+ * A slider. The value follows where the finger is, not how far it moved, so a slow drag across a
+ * stepped slider moves step by step; a touch that starts a vertical scroll changes nothing; a tap
+ * sets the value where it lands. With [steps], each step plays the selection haptic.
  */
 @Composable
 fun AppSlider(
@@ -52,144 +51,104 @@ fun AppSlider(
     onValueChangeFinished: (() -> Unit)? = null,
 ) {
     val colors = AppTheme.colors
-    val interactionSource = remember { MutableInteractionSource() }
-    val dragged by interactionSource.collectIsDraggedAsState()
-
-    var trackWidth by remember { mutableFloatStateOf(0f) }
-    val currentOnValueChange by rememberUpdatedState(onValueChange)
-
+    val springs = AppTheme.springs
     val haptics = rememberAppHaptics()
-    var lastSnapped by remember { mutableFloatStateOf(Float.NaN) }
-    // The largest the thumb ever gets, so the travel does not change as it grows under a finger.
-    val thumbInsetPx = with(LocalDensity.current) { THUMB_RADIUS_DRAGGED.dp.toPx() }
-
-    val span = (valueRange.endInclusive - valueRange.start).takeIf { it > 0f } ?: 1f
-    val fraction = ((value - valueRange.start) / span).coerceIn(0f, 1f)
-
-    val thumbRadius by animateFloatAsState(
-        targetValue = if (dragged) THUMB_RADIUS_DRAGGED else THUMB_RADIUS,
-        animationSpec = AppTheme.motion.press(),
-        label = "thumbRadius",
-    )
-    val haloAlpha by animateFloatAsState(
-        targetValue = if (dragged) 0.18f else 0f,
-        animationSpec = AppTheme.motion.press(),
-        label = "haloAlpha",
-    )
-
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    val onChange by rememberUpdatedState(onValueChange)
+    val onFinished by rememberUpdatedState(onValueChangeFinished)
+    val currentValue by rememberUpdatedState(value)
+    val span = valueRange.endInclusive - valueRange.start
+    val fraction = if (span == 0f) 0f else ((value - valueRange.start) / span).coerceIn(0f, 1f)
 
-    fun emitFraction(raw: Float) {
-        // Snapping happens on the *fraction*, before mapping back to the range, so the steps are
-        // evenly spaced regardless of what the range happens to be.
-        val snapped = if (steps > 0) {
-            val stepSize = 1f / (steps + 1)
-            (Math.round(raw / stepSize) * stepSize).coerceIn(0f, 1f)
-        } else {
-            raw.coerceIn(0f, 1f)
-        }
+    // What is drawn: the finger's fraction while dragging, else a spring towards the value, so a tap
+    // glides the thumb over rather than teleporting it.
+    var dragging by remember { mutableStateOf(false) }
+    val shown = remember { Animatable(fraction) }
+    LaunchedEffect(fraction, dragging) { if (dragging) shown.snapTo(fraction) else shown.animateTo(fraction, springs.selection.unit) }
 
-        // One tick per detent; nothing on a continuous slider.
-        if (steps > 0 && snapped != lastSnapped) {
-            lastSnapped = snapped
-            haptics.perform(HapticEffect.Tick)
-        }
-
-        currentOnValueChange(valueRange.start + snapped * span)
+    fun snapped(raw: Float): Float {
+        val clamped = raw.coerceIn(0f, 1f)
+        if (steps <= 0) return clamped
+        val intervals = steps + 1
+        return (clamped * intervals).roundToInt() / intervals.toFloat()
     }
 
-    fun emit(positionX: Float) {
-        if (trackWidth <= 0f) return
-        // Map through the thumb's inset so the ends of the track are reachable.
-        val travel = (trackWidth - 2 * thumbInsetPx).takeIf { it > 0f } ?: trackWidth
-        val fromStart = if (rtl) trackWidth - positionX else positionX
-        emitFraction((fromStart - thumbInsetPx) / travel)
+    fun emit(raw: Float) {
+        val next = valueRange.start + snapped(raw) * span
+        if (next == currentValue) return
+        if (steps > 0) haptics.perform(AppHaptic.Selection)
+        onChange(next)
     }
 
-    Box(
+    Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(AppTheme.sizes.minTouchTarget)
+            .height(ThumbSize + 16.dp)
             .disabledAlpha(enabled)
-            .onSizeChanged { trackWidth = it.width.toFloat() }
+            .progressSemantics(value, valueRange, steps)
             .semantics {
-                progressBarRangeInfo = ProgressBarRangeInfo(value, valueRange, steps)
-                // What TalkBack's volume keys and switch access call; without it the slider can be
-                // heard but not moved.
                 if (enabled) {
                     setProgress { target ->
-                        emitFraction((target - valueRange.start) / span)
-                        onValueChangeFinished?.invoke()
+                        emit(if (span == 0f) 0f else (target - valueRange.start) / span)
                         true
                     }
                 }
             }
-            .pointerInput(enabled, trackWidth, steps) {
-                if (!enabled) return@pointerInput
-                detectTapGestures(
-                    onPress = { offset -> emit(offset.x) },
-                    onTap = { onValueChangeFinished?.invoke() },
-                )
-            }
-            .draggable(
-                state = rememberDraggableState { delta ->
-                    if (trackWidth > 0f) {
-                        val travel = (trackWidth - 2 * thumbInsetPx).takeIf { it > 0f } ?: trackWidth
-                        emitFraction(fraction + (if (rtl) -delta else delta) / travel)
+            .then(
+                if (enabled) {
+                    Modifier.pointerInput(steps, rtl, span) {
+                        val inset = ThumbSize.toPx() / 2f
+                        fun fractionAt(x: Float): Float {
+                            val f = (x - inset) / (size.width - inset * 2)
+                            return if (rtl) 1f - f else f
+                        }
+                        awaitEachGesture {
+                            val down = awaitFirstDown()
+                            var overSlop = 0f
+                            val drag = awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
+                                change.consume()
+                                overSlop = over
+                            }
+                            if (drag != null) {
+                                dragging = true
+                                emit(fractionAt(drag.position.x + overSlop))
+                                horizontalDrag(drag.id) { change ->
+                                    change.consume()
+                                    emit(fractionAt(change.position.x))
+                                }
+                                dragging = false
+                                onFinished?.invoke()
+                            } else {
+                                val up = waitForUpOrCancellation()
+                                if (up != null) {
+                                    up.consume()
+                                    emit(fractionAt(down.position.x))
+                                    onFinished?.invoke()
+                                }
+                            }
+                        }
                     }
+                } else {
+                    Modifier
                 },
-                orientation = Orientation.Horizontal,
-                enabled = enabled,
-                interactionSource = interactionSource,
-                onDragStopped = { onValueChangeFinished?.invoke() },
-            )
-            .drawBehind {
-                val centerY = size.height / 2f
-                val trackHeight = TRACK_HEIGHT.toPx()
-                val radius = CornerRadius(trackHeight / 2f)
-
-                drawRoundRect(
-                    color = colors.surfaceVariant,
-                    topLeft = Offset(0f, centerY - trackHeight / 2f),
-                    size = Size(size.width, trackHeight),
-                    cornerRadius = radius,
-                )
-
-                // The thumb travels between insets so it is never drawn half outside its bounds.
-                val travel = (size.width - 2 * thumbInsetPx).coerceAtLeast(0f)
-                val fromStart = thumbInsetPx + travel * fraction
-                val thumbX = if (rtl) size.width - fromStart else fromStart
-
-                drawRoundRect(
-                    color = colors.accent,
-                    topLeft = Offset(if (rtl) thumbX else 0f, centerY - trackHeight / 2f),
-                    size = Size(fromStart, trackHeight),
-                    cornerRadius = radius,
-                )
-
-                if (haloAlpha > 0f) {
-                    drawCircle(
-                        color = colors.accent.copy(alpha = haloAlpha),
-                        radius = HALO_RADIUS.toPx(),
-                        center = Offset(thumbX, centerY),
-                    )
-                }
-                drawCircle(
-                    color = colors.surface,
-                    radius = thumbRadius.dp.toPx(),
-                    center = Offset(thumbX, centerY),
-                )
-                drawCircle(
-                    color = colors.accent,
-                    radius = thumbRadius.dp.toPx(),
-                    center = Offset(thumbX, centerY),
-                    style = Stroke(width = 2.5.dp.toPx()),
-                )
-            },
-    )
+            ),
+    ) {
+        val thumb = ThumbSize.toPx()
+        val track = TrackHeight.toPx()
+        val inset = thumb / 2f
+        val usable = size.width - inset * 2
+        val f = shown.value
+        val x = inset + usable * (if (rtl) 1f - f else f)
+        val y = size.height / 2f
+        val radius = CornerRadius(track / 2f)
+        drawRoundRect(colors.fill, topLeft = Offset(inset, y - track / 2f), size = Size(usable, track), cornerRadius = radius)
+        val activeStart = if (rtl) x else inset
+        drawRoundRect(colors.accent, topLeft = Offset(activeStart, y - track / 2f), size = Size(usable * f, track), cornerRadius = radius)
+        drawCircle(Color.Black.copy(alpha = 0.12f), radius = thumb / 2f, center = Offset(x, y + 1.dp.toPx()))
+        drawCircle(Color.White, radius = thumb / 2f, center = Offset(x, y))
+        drawCircle(colors.separator, radius = thumb / 2f, center = Offset(x, y), style = Stroke(0.5.dp.toPx()))
+    }
 }
 
-private const val THUMB_RADIUS = 10f
-private const val THUMB_RADIUS_DRAGGED = 12f
-private val TRACK_HEIGHT = 6.dp
-private val HALO_RADIUS = 22.dp
+private val ThumbSize = 28.dp
+private val TrackHeight = 4.dp

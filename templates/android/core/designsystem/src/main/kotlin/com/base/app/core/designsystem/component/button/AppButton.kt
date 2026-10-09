@@ -1,21 +1,19 @@
 package com.base.app.core.designsystem.component.button
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,53 +23,52 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import com.base.app.core.designsystem.component.feedback.AppCircularProgress
+import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppClickableSurface
+import com.base.app.core.designsystem.foundation.PressFeedback
 import com.base.app.core.designsystem.foundation.ProvideContentColor
+import com.base.app.core.designsystem.foundation.disabledAlpha
 import com.base.app.core.designsystem.foundation.offsetShadow
+import com.base.app.core.designsystem.foundation.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * The five things a button can mean. Not five ways it can look — the distinction matters, because a
- * screen picks a variant by asking "how important is this action" rather than "what colour should
- * this be", and that is what keeps two screens from disagreeing.
+ * How prominent an action is. A screen picks a variant by asking "how important is this action",
+ * not "what colour should this be", which is what keeps two screens from disagreeing.
  */
 enum class ButtonVariant {
     /** The one action the screen exists for. At most one per screen. */
-    Primary,
+    Filled,
 
-    /** A real alternative to Primary — "Save as draft" beside "Publish". */
-    Secondary,
+    /** A real alternative: "Save as draft" beside "Publish". The accent, tinted. */
+    Tinted,
 
-    /** Available, but not being encouraged. Text with no container. */
-    Tertiary,
+    /** Available, but not being encouraged. Text with no container; dims under the finger. */
+    Plain,
 
-    /** Deletes, cancels, or otherwise loses something. */
+    /** Deletes or otherwise loses something. Red on a red tint, which stays readable in dark theme. */
     Destructive,
-
-    /** For a toolbar or a dense row, where a filled container would be noise. */
-    Ghost,
 }
 
 enum class ButtonSize { Small, Medium, Large }
 
 /**
- * The app's button. While [loading], the label stays laid out at zero alpha and a spinner is
- * centred over it.
+ * The app's button. Filled, tinted and destructive buttons shrink under the finger; a plain one
+ * dims. While [loading], the label keeps its space at zero alpha and a spinner sits over it, so the
+ * button never changes size.
  */
 @Composable
 fun AppButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    variant: ButtonVariant = ButtonVariant.Primary,
+    variant: ButtonVariant = ButtonVariant.Filled,
     size: ButtonSize = ButtonSize.Medium,
     enabled: Boolean = true,
     loading: Boolean = false,
@@ -80,208 +77,174 @@ fun AppButton(
     fillWidth: Boolean = false,
     shape: Shape = AppTheme.style.buttonShape,
 ) {
-    val style = variant.style()
-    val metrics = size.metrics()
-    val interactionSource = remember { MutableInteractionSource() }
-    val pressed by interactionSource.collectIsPressedAsState()
+    val colors = AppButtonDefaults.colors(variant)
+    val metrics = AppButtonDefaults.metrics(size)
+    val style = AppTheme.style
+    val outlined = style.offsetShadow > 0.dp && variant != ButtonVariant.Plain
+    val label = if (style.uppercaseLabels) text.uppercase() else text
 
-    // The Playful style's press: the button sinks into its own shadow instead of shrinking.
-    // Only filled variants have a shadow; a text button with one would look like a sticker.
-    val shadow = AppTheme.style.offsetShadow.takeIf {
-        it > 0.dp && (style.border != null || style.container != Color.Transparent)
-    }
-    val sink by animateFloatAsState(
-        targetValue = if (pressed && enabled && !loading) 1f else 0f,
-        animationSpec = AppTheme.motion.press(),
-        label = "buttonSink",
-    )
-    val label = if (AppTheme.style.uppercaseLabels) text.uppercase() else text
-
-    val container by animateColorAsState(
-        targetValue = if (pressed) style.containerPressed else style.container,
-        animationSpec = androidx.compose.animation.core.tween(AppTheme.motion.instant),
-        label = "buttonContainer",
-    )
-
-    AppClickableSurface(
-        onClick = onClick,
+    Box(
         modifier = modifier
             .then(if (fillWidth) Modifier.fillMaxWidth() else Modifier)
+            .pressable(
+                onClick = onClick,
+                feedback = if (variant == ButtonVariant.Plain) PressFeedback.Dim else PressFeedback.Scale,
+                enabled = enabled && !loading,
+                role = Role.Button,
+            )
+            .disabledAlpha(enabled)
             .then(
-                if (shadow != null) {
+                if (outlined) {
                     Modifier
-                        .offset { IntOffset((shadow * sink).roundToPx(), (shadow * sink).roundToPx()) }
-                        .offsetShadow(shape, shadow * (1f - sink), AppTheme.colors.contentPrimary)
+                        .offsetShadow(shape, style.offsetShadow, AppTheme.colors.contentPrimary)
+                        .border(BorderStroke(style.borderWidth, AppTheme.colors.contentPrimary), shape)
                 } else {
                     Modifier
                 },
             )
-            .defaultMinSize(minHeight = metrics.height),
-        enabled = enabled && !loading,
-        shape = shape,
-        color = container,
-        contentColor = style.content,
-        border = if (shadow != null) {
-            BorderStroke(AppTheme.sizes.borderWidth, AppTheme.colors.contentPrimary)
-        } else {
-            style.border
-        },
-        interactionSource = interactionSource,
-        role = Role.Button,
-        scaleOnPress = shadow == null,
-        // Centre the label; the surface is taller and, when filled, wider than it.
+            .background(colors.container, shape)
+            .heightIn(min = metrics.height)
+            .padding(metrics.padding),
         contentAlignment = Alignment.Center,
     ) {
-        Box(contentAlignment = Alignment.Center) {
+        ProvideContentColor(colors.content) {
             Row(
-                modifier = Modifier
-                    .padding(metrics.padding)
-                    .alpha(if (loading) 0f else 1f),
+                modifier = if (loading) Modifier.alpha(0f) else Modifier,
                 horizontalArrangement = Arrangement.spacedBy(metrics.gap, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
                 AppText(
                     text = label,
-                    style = if (AppTheme.style.uppercaseLabels) {
-                        metrics.textStyle.copy(letterSpacing = UppercaseTracking)
-                    } else {
-                        metrics.textStyle
-                    },
+                    style = if (style.uppercaseLabels) metrics.textStyle.copy(letterSpacing = UppercaseTracking) else metrics.textStyle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
             }
-
-            if (loading) {
-                ProvideContentColor(style.content) {
-                    AppCircularProgress(size = metrics.iconSize, strokeWidth = 2.dp)
-                }
-            }
+            if (loading) AppActivityIndicator(size = metrics.iconSize, color = colors.content)
         }
     }
 }
 
-/** An icon-only button. */
+/**
+ * An icon-only button. A plain one is a bare glyph that dims under the finger; a tinted or filled
+ * one sits in a circle and shrinks. Whatever it draws, it answers taps across 48dp.
+ */
 @Composable
 fun AppIconButton(
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    variant: ButtonVariant = ButtonVariant.Ghost,
+    variant: ButtonVariant = ButtonVariant.Plain,
     size: ButtonSize = ButtonSize.Medium,
     enabled: Boolean = true,
-    shape: Shape = AppTheme.style.buttonShape,
+    tint: Color = if (variant == ButtonVariant.Plain) AppTheme.colors.contentSecondary else AppButtonDefaults.colors(variant).content,
 ) {
-    val style = variant.style()
-    val metrics = size.metrics()
-
-    AppClickableSurface(
-        onClick = onClick,
-        modifier = modifier.defaultMinSize(minWidth = metrics.height, minHeight = metrics.height),
-        enabled = enabled,
-        shape = shape,
-        color = style.container,
-        contentColor = style.content,
-        border = style.border,
-        role = Role.Button,
+    val colors = AppButtonDefaults.colors(variant)
+    val diameter = AppButtonDefaults.iconButtonSize(size)
+    Box(
+        modifier = modifier
+            .pressable(
+                onClick = onClick,
+                feedback = if (variant == ButtonVariant.Plain) PressFeedback.Dim else PressFeedback.Scale,
+                enabled = enabled,
+                role = Role.Button,
+            )
+            .disabledAlpha(enabled)
+            .size(diameter)
+            .then(if (variant == ButtonVariant.Plain) Modifier else Modifier.background(colors.container, CircleShape)),
         contentAlignment = Alignment.Center,
     ) {
-        AppIcon(icon, contentDescription = contentDescription, size = metrics.iconSize)
+        AppIcon(icon, contentDescription = contentDescription, tint = tint, size = AppButtonDefaults.metrics(size).iconSize)
+    }
+}
+
+/** A link: accent text that dims under the finger, for an action inside or beside running text. */
+@Composable
+fun AppLinkButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    style: TextStyle = AppTheme.typography.body,
+) {
+    AppText(
+        text = text,
+        modifier = modifier
+            .pressable(onClick = onClick, feedback = PressFeedback.Dim, enabled = enabled, role = Role.Button)
+            .disabledAlpha(enabled),
+        style = style,
+        color = AppTheme.colors.accentContent,
+    )
+}
+
+/** What a button looks like when the caller does not say, so a glass or branded variant can reuse it. */
+object AppButtonDefaults {
+
+    @Immutable
+    class Colors(val container: Color, val content: Color)
+
+    @Immutable
+    class Metrics(
+        val height: Dp,
+        val padding: PaddingValues,
+        val gap: Dp,
+        val iconSize: Dp,
+        val textStyle: TextStyle,
+    )
+
+    @Composable
+    fun colors(variant: ButtonVariant): Colors {
+        val colors = AppTheme.colors
+        return remember(variant, colors) {
+            when (variant) {
+                ButtonVariant.Filled -> Colors(colors.accent, colors.onAccent)
+                ButtonVariant.Tinted -> Colors(colors.accentSubtle, colors.accentContent)
+                ButtonVariant.Plain -> Colors(Color.Transparent, colors.accentContent)
+                ButtonVariant.Destructive -> Colors(colors.danger.subtle, colors.danger.content)
+            }
+        }
+    }
+
+    @Composable
+    fun metrics(size: ButtonSize): Metrics {
+        val sizes = AppTheme.sizes
+        val typography = AppTheme.typography
+        return remember(size, typography) {
+            when (size) {
+                ButtonSize.Small -> Metrics(
+                    height = sizes.buttonSmall,
+                    padding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                    gap = 6.dp,
+                    iconSize = sizes.iconSmall,
+                    textStyle = typography.subheadline.copy(fontWeight = FontWeight.SemiBold),
+                )
+                ButtonSize.Medium -> Metrics(
+                    height = sizes.buttonMedium,
+                    padding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
+                    gap = 8.dp,
+                    iconSize = sizes.icon,
+                    textStyle = typography.headline,
+                )
+                ButtonSize.Large -> Metrics(
+                    height = sizes.buttonLarge,
+                    padding = PaddingValues(horizontal = 24.dp, vertical = 14.dp),
+                    gap = 10.dp,
+                    iconSize = sizes.iconLarge,
+                    textStyle = typography.headline,
+                )
+            }
+        }
+    }
+
+    fun iconButtonSize(size: ButtonSize): Dp = when (size) {
+        ButtonSize.Small -> 32.dp
+        ButtonSize.Medium -> 40.dp
+        ButtonSize.Large -> 48.dp
     }
 }
 
 /** Uppercase labels need air between the letters, or they read as a single block. */
 private val UppercaseTracking = 0.08.em
-
-@Immutable
-private data class ButtonStyle(
-    val container: Color,
-    val containerPressed: Color,
-    val content: Color,
-    val border: BorderStroke?,
-)
-
-@Composable
-private fun ButtonVariant.style(): ButtonStyle {
-    val colors = AppTheme.colors
-    val width = AppTheme.sizes.borderWidth
-    return when (this) {
-        ButtonVariant.Primary -> ButtonStyle(
-            container = colors.accent,
-            containerPressed = colors.accentPressed,
-            content = colors.onAccent,
-            border = null,
-        )
-
-        ButtonVariant.Secondary -> ButtonStyle(
-            container = colors.surface,
-            containerPressed = colors.surfaceVariant,
-            content = colors.contentPrimary,
-            border = BorderStroke(width, colors.borderStrong),
-        )
-
-        ButtonVariant.Tertiary -> ButtonStyle(
-            container = Color.Transparent,
-            containerPressed = colors.accentSubtle,
-            content = colors.accent,
-            border = null,
-        )
-
-        ButtonVariant.Destructive -> ButtonStyle(
-            container = colors.danger.content,
-            containerPressed = colors.danger.content.copy(alpha = 0.86f),
-            content = Color.White,
-            border = null,
-        )
-
-        ButtonVariant.Ghost -> ButtonStyle(
-            container = Color.Transparent,
-            containerPressed = colors.surfaceVariant,
-            content = colors.contentSecondary,
-            border = null,
-        )
-    }
-}
-
-@Immutable
-private data class ButtonMetrics(
-    val height: Dp,
-    val padding: PaddingValues,
-    val gap: Dp,
-    val iconSize: Dp,
-    val textStyle: TextStyle,
-)
-
-@Composable
-private fun ButtonSize.metrics(): ButtonMetrics {
-    val sizes = AppTheme.sizes
-    val typography = AppTheme.typography
-    return when (this) {
-        ButtonSize.Small -> ButtonMetrics(
-            height = sizes.buttonSmall,
-            padding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-            gap = 6.dp,
-            iconSize = sizes.iconSmall,
-            textStyle = typography.titleSmall,
-        )
-
-        ButtonSize.Medium -> ButtonMetrics(
-            height = sizes.buttonMedium,
-            padding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
-            gap = 8.dp,
-            iconSize = sizes.icon,
-            textStyle = typography.button,
-        )
-
-        ButtonSize.Large -> ButtonMetrics(
-            height = sizes.buttonLarge,
-            padding = PaddingValues(horizontal = 24.dp, vertical = 14.dp),
-            gap = 10.dp,
-            iconSize = sizes.iconLarge,
-            textStyle = typography.button,
-        )
-    }
-}
