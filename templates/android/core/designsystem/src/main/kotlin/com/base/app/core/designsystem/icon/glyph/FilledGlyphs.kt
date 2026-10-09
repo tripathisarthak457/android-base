@@ -136,4 +136,90 @@ internal object FilledGlyphs {
             lineTo(20.8f, 19.4f); lineTo(3.2f, 19.4f); close()
         }
     }
+    val ListViewFilled by icon("ListViewFilled") {
+        stroke(BOLD_STROKE_WIDTH) { moveTo(9f, 6.5f); lineTo(20f, 6.5f); moveTo(9f, 12f); lineTo(20f, 12f); moveTo(9f, 17.5f); lineTo(20f, 17.5f) }
+        fill { circle(4.6f, 6.5f, 1.7f); circle(4.6f, 12f, 1.7f); circle(4.6f, 17.5f, 1.7f) }
+    }
+    val CalendarFilled by icon("CalendarFilled") {
+        // The header and the days are one card, parted by a cut where the outline draws a rule.
+        fill(evenOdd = true) {
+            moveTo(3.6f, 5.6f); lineTo(20.4f, 5.6f); lineTo(20.4f, 20.4f); lineTo(3.6f, 20.4f); close()
+            moveTo(3.6f, 9.3f); lineTo(20.4f, 9.3f); lineTo(20.4f, 10.7f); lineTo(3.6f, 10.7f); close()
+        }
+        stroke { moveTo(3.6f, 5.6f); lineTo(20.4f, 5.6f); lineTo(20.4f, 20.4f); lineTo(3.6f, 20.4f); close() }
+        stroke { moveTo(8f, 3.2f); lineTo(8f, 6f); moveTo(16f, 3.2f); lineTo(16f, 6f) }
+    }
+    val MailFilled by icon("MailFilled") {
+        fill(evenOdd = true) {
+            moveTo(3.2f, 5.6f); lineTo(20.8f, 5.6f); lineTo(20.8f, 18.4f); lineTo(3.2f, 18.4f); close()
+            moveTo(3.2f, 6.4f); lineTo(12f, 12.7f); lineTo(20.8f, 6.4f); lineTo(20.8f, 8.2f); lineTo(12f, 14.5f); lineTo(3.2f, 8.2f); close()
+        }
+        stroke { moveTo(3.2f, 5.6f); lineTo(20.8f, 5.6f); lineTo(20.8f, 18.4f); lineTo(3.2f, 18.4f); close() }
+    }
+    val UsersFilled by icon("UsersFilled") {
+        fill { circle(9.2f, 8.2f, 3.8f) }
+        fill {
+            moveTo(2.6f, 20.6f)
+            curveTo(2.6f, 16.6f, 5.6f, 14.2f, 9.2f, 14.2f)
+            curveTo(12.8f, 14.2f, 15.8f, 16.6f, 15.8f, 20.6f)
+            close()
+        }
+        fill { circle(16.6f, 8.8f, 2.9f) }
+        fill {
+            moveTo(16.8f, 14.4f)
+            curveTo(19.5f, 14.8f, 21.4f, 16.9f, 21.4f, 20.6f)
+            lineTo(17.4f, 20.6f)
+            curveTo(17.4f, 18.2f, 16.6f, 16.3f, 15.2f, 15f)
+            close()
+        }
+    }
+    val CartFilled by icon("CartFilled") {
+        fill { moveTo(6.2f, 7.2f); lineTo(21.4f, 7.2f); lineTo(19f, 15.2f); lineTo(7.8f, 15.2f); close() }
+        stroke { moveTo(2.6f, 4f); lineTo(5.4f, 4f); lineTo(7.8f, 15.2f); lineTo(19f, 15.2f); lineTo(21.4f, 7.2f); lineTo(6.2f, 7.2f) }
+        fill { circle(9f, 19.2f, 1.9f); circle(17.6f, 19.2f, 1.9f) }
+    }
+    val CreditCardFilled by icon("CreditCardFilled") {
+        fill(evenOdd = true) {
+            moveTo(2.8f, 5.4f); lineTo(21.2f, 5.4f); lineTo(21.2f, 18.6f); lineTo(2.8f, 18.6f); close()
+            moveTo(2.8f, 8.6f); lineTo(21.2f, 8.6f); lineTo(21.2f, 10.8f); lineTo(2.8f, 10.8f); close()
+            moveTo(6.2f, 13.8f); lineTo(10.4f, 13.8f); lineTo(10.4f, 15.4f); lineTo(6.2f, 15.4f); close()
+        }
+        stroke { moveTo(2.8f, 5.4f); lineTo(21.2f, 5.4f); lineTo(21.2f, 18.6f); lineTo(2.8f, 18.6f); close() }
+    }
+    val TagFilled by icon("TagFilled") {
+        fill(evenOdd = true) {
+            moveTo(11.2f, 3.2f); lineTo(20.8f, 12.8f); lineTo(12.8f, 20.8f); lineTo(3.2f, 11.2f); lineTo(3.2f, 3.2f); close()
+            circle(7.4f, 7.4f, 1.5f)
+        }
+        stroke { moveTo(11.2f, 3.2f); lineTo(20.8f, 12.8f); lineTo(12.8f, 20.8f); lineTo(3.2f, 11.2f); lineTo(3.2f, 3.2f); close() }
+    }
+    val PackageFilled by icon("PackageFilled") {
+        // Three faces with a gap between them, which is how a filled box shows its edges.
+        fill { moveTo(12f, 3.2f); lineTo(20.8f, 7.6f); lineTo(12f, 12f); lineTo(3.2f, 7.6f); close() }
+        fill { moveTo(3.2f, 8.8f); lineTo(11.4f, 12.9f); lineTo(11.4f, 20.6f); lineTo(3.2f, 16.4f); close() }
+        fill { moveTo(20.8f, 8.8f); lineTo(12.6f, 12.9f); lineTo(12.6f, 20.6f); lineTo(20.8f, 16.4f); close() }
+    }
+    val MapPinFilled by icon("MapPinFilled") {
+        fill(evenOdd = true) {
+            moveTo(12f, 21.4f)
+            curveTo(12f, 21.4f, 19.6f, 15.4f, 19.6f, 10.2f)
+            curveTo(19.6f, 6f, 16.2f, 2.6f, 12f, 2.6f)
+            curveTo(7.8f, 2.6f, 4.4f, 6f, 4.4f, 10.2f)
+            curveTo(4.4f, 15.4f, 12f, 21.4f, 12f, 21.4f)
+            close()
+            circle(12f, 10f, 2.6f)
+        }
+    }
+    val GlobeFilled by icon("GlobeFilled") {
+        stroke(BOLD_STROKE_WIDTH) { circle(12f, 12f, 8.8f) }
+        stroke(BOLD_STROKE_WIDTH) { moveTo(3.2f, 12f); lineTo(20.8f, 12f) }
+        stroke(BOLD_STROKE_WIDTH) {
+            moveTo(12f, 3.2f)
+            curveTo(14.4f, 5.6f, 15.6f, 8.8f, 15.6f, 12f)
+            curveTo(15.6f, 15.2f, 14.4f, 18.4f, 12f, 20.8f)
+            curveTo(9.6f, 18.4f, 8.4f, 15.2f, 8.4f, 12f)
+            curveTo(8.4f, 8.8f, 9.6f, 5.6f, 12f, 3.2f)
+            close()
+        }
+    }
 }

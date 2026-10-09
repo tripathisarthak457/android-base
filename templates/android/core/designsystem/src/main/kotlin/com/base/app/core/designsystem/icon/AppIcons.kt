@@ -89,4 +89,14 @@ object AppIcons {
     val MessageFilled: ImageVector get() = FilledGlyphs.MessageFilled
     val GridFilled: ImageVector get() = FilledGlyphs.GridFilled
     val FolderFilled: ImageVector get() = FilledGlyphs.FolderFilled
+    val ListViewFilled: ImageVector get() = FilledGlyphs.ListViewFilled
+    val CalendarFilled: ImageVector get() = FilledGlyphs.CalendarFilled
+    val MailFilled: ImageVector get() = FilledGlyphs.MailFilled
+    val UsersFilled: ImageVector get() = FilledGlyphs.UsersFilled
+    val CartFilled: ImageVector get() = FilledGlyphs.CartFilled
+    val CreditCardFilled: ImageVector get() = FilledGlyphs.CreditCardFilled
+    val TagFilled: ImageVector get() = FilledGlyphs.TagFilled
+    val PackageFilled: ImageVector get() = FilledGlyphs.PackageFilled
+    val MapPinFilled: ImageVector get() = FilledGlyphs.MapPinFilled
+    val GlobeFilled: ImageVector get() = FilledGlyphs.GlobeFilled
 }
