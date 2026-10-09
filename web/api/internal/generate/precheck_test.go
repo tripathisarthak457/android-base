@@ -69,6 +69,17 @@ func fieldList(n int) string {
 	return strings.Join(fields, ", ")
 }
 
+func TestPrecheckNamesTheSameFieldEveryTime(t *testing.T) {
+	body := []byte(`{"languages": ` + list(11, func(i int) string { return fmt.Sprintf(`"l%d"`, i) }) +
+		`, "app_name": "` + strings.Repeat("a", 121) + `", "feature_modules": ["a\u0007"]}`)
+	for range 20 {
+		var refused *PrecheckError
+		if _, err := Precheck(body, "android", Rules{}); !errors.As(err, &refused) || refused.Field != "app_name" {
+			t.Fatalf("got %v, want the first faulty field in order, app_name", err)
+		}
+	}
+}
+
 func TestPrecheckRefusesAnOversizedBodyAsTooLarge(t *testing.T) {
 	body := []byte(`{"app_name": "` + strings.Repeat("a", 32<<10) + `"}`)
 	if _, err := Precheck(body, "android", Rules{}); !errors.Is(err, ErrTooLarge) {

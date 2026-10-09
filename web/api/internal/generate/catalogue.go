@@ -58,8 +58,8 @@ type Defaults struct {
 	MotionStyle  string `json:"motion_style"`
 }
 
-// Rules are the limits the generator enforces. The precheck uses the same numbers, so it can never
-// refuse a spec the generator would accept.
+// Rules are the limits the generator enforces. The precheck uses the same numbers for these counts
+// and sizes, so it never refuses a spec for exceeding one the generator would accept.
 type Rules struct {
 	SpecBytesMax      int `json:"spec_bytes_max"`
 	FeaturesMax       int `json:"features_max"`

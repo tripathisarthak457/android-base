@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"maps"
+	"slices"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -126,12 +128,12 @@ func check(value any, path, key string, depth int, limits map[string]int) error 
 		if len(v) > maxEntries {
 			return &PrecheckError{Message: fmt.Sprintf("%s has more than %d fields.", describe(path), maxEntries), Field: path}
 		}
-		for name, child := range v {
-			childPath := join(path, name)
+		// In order, so a spec with several faults is always refused for the same one.
+		for _, name := range slices.Sorted(maps.Keys(v)) {
 			if len(name) > maxIdentifierBytes || strings.IndexFunc(name, unicode.IsControl) >= 0 {
 				return &PrecheckError{Message: "The spec has a field name that is too long or not printable.", Field: path}
 			}
-			if err := check(child, childPath, name, depth+1, limits); err != nil {
+			if err := check(v[name], join(path, name), name, depth+1, limits); err != nil {
 				return err
 			}
 		}
