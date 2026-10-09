@@ -485,7 +485,8 @@ func TestIntegrationRetentionForgetsNamesAndOldRows(t *testing.T) {
 		UPDATE generations SET created_at = now() - interval '100 days' WHERE app_name = 'App 0';
 		UPDATE generations SET created_at = now() - interval '100 days' WHERE outcome = 'invalid';
 		UPDATE requests SET at = now() - interval '31 days';
-		UPDATE events SET at = now() - interval '401 days' WHERE name = 'landed';`)
+		UPDATE events SET at = now() - interval '401 days' WHERE name = 'landed';
+		UPDATE visits SET at = now() - interval '401 days' WHERE session_id = '`+sessionB+`';`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -525,13 +526,18 @@ func TestIntegrationRetentionForgetsNamesAndOldRows(t *testing.T) {
 		t.Fatalf("an old rejection kept the input it quoted: %q", *reason)
 	}
 
-	var requests, landed, recent int
+	var requests, landed, recent, visits, oldVisits int
 	if err := s.pool.QueryRow(ctx, `SELECT (SELECT count(*) FROM requests), (SELECT count(*) FROM events WHERE name = 'landed'),
-		(SELECT count(*) FROM generations WHERE app_name IS NOT NULL)`).Scan(&requests, &landed, &recent); err != nil {
+		(SELECT count(*) FROM generations WHERE app_name IS NOT NULL), (SELECT count(*) FROM visits),
+		(SELECT count(*) FROM visits WHERE session_id = $1)`, sessionB).
+		Scan(&requests, &landed, &recent, &visits, &oldVisits); err != nil {
 		t.Fatal(err)
 	}
 	if requests != 0 || landed != 0 || recent != 5 {
 		t.Fatalf("requests %d, old events %d, recent named generations %d", requests, landed, recent)
+	}
+	if visits != 5 || oldVisits != 0 {
+		t.Fatalf("%d visits left, %d of them old", visits, oldVisits)
 	}
 }
 
