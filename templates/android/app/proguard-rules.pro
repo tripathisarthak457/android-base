@@ -10,10 +10,10 @@
 # polymorphic navigation keys: those are resolved by class name at runtime, from a JSON string in
 # a saved-state bundle, so R8 sees nothing referencing them and renames them. The symptom is
 # an app that restores the wrong screen after being killed in the background — release only.
--keepclassmembers class ** implements com.base.app.core.navigation.AppNavKey {
+-keepclassmembers class ** implements com.base.app.core.common.navigation.AppNavKey {
     *** Companion;
 }
--keep,includedescriptorclasses class ** implements com.base.app.core.navigation.AppNavKey {
+-keep,includedescriptorclasses class ** implements com.base.app.core.common.navigation.AppNavKey {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

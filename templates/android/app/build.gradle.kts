@@ -127,6 +127,10 @@ dependencies {
     implementation(libs.androidx.glance.appwidget)
     // </opt:widget>
 
+    // Names each composable in a Perfetto trace, so a slow frame shows what composed in it. Only
+    // the dev flavour, where traces and benchmarks are taken; it costs nothing until one records.
+    devImplementation(libs.androidx.compose.runtime.tracing)
+
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)
     // </opt:leakcanary>
