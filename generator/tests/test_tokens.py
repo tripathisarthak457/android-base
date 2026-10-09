@@ -115,6 +115,15 @@ class ResolveTest(unittest.TestCase):
         for name in ("Secondary", "Tertiary"):
             self.assertEqual(template[name.lower()]["base"], brand.to_hex(derived[name].base))
 
+    def test_the_brand_maths_constants_are_the_palette_tokens(self):
+        # brand.py cannot read the tokens, which import it, so its copies are held to them here.
+        palette = tokens.load()["palette"]
+        self.assertEqual(palette["templateAccent"], brand.TEMPLATE_ACCENT)
+        self.assertEqual(palette["ramps"]["ink"]["900"], brand.to_hex(brand.LIGHT_THEME_INK))
+        for colour in palette["templateBrand"].values():
+            self.assertIn(colour["onLight"], ("#FFFFFF", brand.to_hex(brand.LIGHT_THEME_INK)))
+            self.assertIn(colour["onDark"], ("#FFFFFF", brand.to_hex(brand.DARK_THEME_INK)))
+
     def test_accent_content_reads_on_every_surface(self):
         for hex_value in ("#FFEB3B", "#16A34A", "#2C6BED", "#0E1A2B", "#9E0000", "#FF69B4", "#00FFFF"):
             palette = tokens.resolve(spec(accent_colour=hex_value))["palette"]["tones"]

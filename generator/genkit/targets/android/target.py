@@ -124,7 +124,7 @@ class AndroidTarget:
         return {**settings.regions(spec), **tabs.regions(spec), **scaffold.regions(spec)}
 
     def overlays(self, spec: Spec) -> dict[str, Path]:
-        return variants.overlays(spec, self.manifest)
+        return variants.overlays(spec)
 
     def transform(self, project: Path, spec: Spec) -> list[str]:
         scaffold.write_feature_modules(project, spec)
