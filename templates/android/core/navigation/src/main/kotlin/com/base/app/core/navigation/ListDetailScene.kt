@@ -20,7 +20,6 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
 import com.base.app.core.designsystem.icon.AppIcons
-import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * Which half of a list-detail pair a destination is. A [List] and the [Detail] opened from it sit
