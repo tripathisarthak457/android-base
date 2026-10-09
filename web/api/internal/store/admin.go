@@ -830,6 +830,9 @@ type GenerationRow struct {
 	FailureReason   string          `json:"failure_reason"`
 	FailureField    string          `json:"failure_field"`
 	GeneratorCommit string          `json:"generator_commit"`
+	Notes           []string        `json:"notes"`
+	IgnoredFields   []string        `json:"ignored_fields"`
+	Warnings        []string        `json:"warnings"`
 	Spec            json.RawMessage `json:"spec"`
 }
 
@@ -848,7 +851,8 @@ func (s *Store) Generations(ctx context.Context, f Filter, before int64, limit i
 		       g.languages, g.min_sdk, g.target_sdk, g.glass, g.duration_ms, g.queue_ms, g.python_ms,
 		       g.stream_ms, g.config_ms, g.zip_bytes, g.cold_start, COALESCE(g.client, ''),
 		       COALESCE(g.country, ''), COALESCE(g.device_class, ''), COALESCE(g.failure_reason, ''),
-		       COALESCE(g.failure_field, ''), COALESCE(g.generator_commit, ''), COALESCE(g.spec, 'null'::jsonb)
+		       COALESCE(g.failure_field, ''), COALESCE(g.generator_commit, ''), g.notes, g.ignored_fields,
+		       g.warnings, COALESCE(g.spec, 'null'::jsonb)
 		FROM ` + from + ` WHERE ` + where + `
 		ORDER BY g.id DESC LIMIT ` + p.add(limit)
 
@@ -860,7 +864,8 @@ func (s *Store) Generations(ctx context.Context, f Filter, before int64, limit i
 			&g.Features, &g.Added, &g.Removed, &g.FeatureModules, &g.Architecture, &g.DesignStyle,
 			&g.MotionStyle, &g.Languages, &g.MinSDK, &g.TargetSDK, &g.Glass, &g.DurationMs, &g.QueueMs,
 			&g.PythonMs, &g.StreamMs, &g.ConfigMs, &g.ZipBytes, &g.ColdStart, &g.Client, &g.Country,
-			&g.DeviceClass, &g.FailureReason, &g.FailureField, &g.GeneratorCommit, &spec); err != nil {
+			&g.DeviceClass, &g.FailureReason, &g.FailureField, &g.GeneratorCommit, &g.Notes, &g.IgnoredFields,
+			&g.Warnings, &spec); err != nil {
 			return err
 		}
 		g.At = g.At.UTC()

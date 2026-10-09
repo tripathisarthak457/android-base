@@ -44,8 +44,9 @@ const testCatalogue = `{
 // okScript is a generator that writes the spec it was given as the zip and reports success.
 const okScript = `cat > "$3"
 echo '{"ok": true, "target": "'"$2"'", "project_name": "TrailNotes", "elapsed_ms": 412, "zip_bytes": 1,
-  "resolved_features": ["network", "auth", "settings", "liquidglass"], "notes": [], "warnings": [],
-  "ignored_fields": [], "generator_commit": "99c4edf", "keystores_skipped": ["release"]}'
+  "resolved_features": ["network", "auth", "settings", "liquidglass"], "notes": [],
+  "warnings": ["The release key password was not used."], "ignored_fields": ["theme"],
+  "generator_commit": "99c4edf", "keystores_skipped": ["release"]}'
 `
 
 type fakeSink struct {

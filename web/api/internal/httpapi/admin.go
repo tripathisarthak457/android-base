@@ -364,7 +364,7 @@ var csvColumns = []string{
 	"architecture", "design_style", "motion_style", "languages", "feature_modules", "min_sdk", "target_sdk",
 	"glass", "duration_ms", "queue_ms", "python_ms", "stream_ms", "config_ms", "zip_bytes", "cold_start",
 	"client", "country", "device_class", "failure_field", "failure_reason", "generator_commit",
-	"app_name", "package_name",
+	"notes", "ignored_fields", "warnings", "app_name", "package_name",
 }
 
 // handleGenerationsCSV exports the generations under the current filter, a page at a time. The next
@@ -393,7 +393,8 @@ func (s *Server) handleGenerationsCSV(w http.ResponseWriter, r *http.Request) {
 			optional(g.TargetSDK), optional(g.Glass), strconv.Itoa(g.DurationMs), optional(g.QueueMs),
 			optional(g.PythonMs), optional(g.StreamMs), optional(g.ConfigMs), optional(g.ZipBytes),
 			optional(g.ColdStart), g.Client, g.Country, g.DeviceClass, g.FailureField, g.FailureReason,
-			g.GeneratorCommit, g.AppName, g.PackageName,
+			g.GeneratorCommit, strings.Join(g.Notes, "\n"), strings.Join(g.IgnoredFields, " "),
+			strings.Join(g.Warnings, "\n"), g.AppName, g.PackageName,
 		}))
 	}
 	writer.Flush()

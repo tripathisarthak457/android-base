@@ -28,7 +28,13 @@ ALTER TABLE generations
     ADD COLUMN languages        text[]  NOT NULL DEFAULT '{}',
     ADD COLUMN glass            boolean,
     -- The spec as sent, with keystore entries reduced to their names.
-    ADD COLUMN spec             jsonb;
+    ADD COLUMN spec             jsonb,
+    -- What the generator said about the spec: how it upgraded it, the fields it ignored and its
+    -- warnings about the project. A rise in any of them is the site and the generator drifting
+    -- apart.
+    ADD COLUMN notes            text[]  NOT NULL DEFAULT '{}',
+    ADD COLUMN ignored_fields   text[]  NOT NULL DEFAULT '{}',
+    ADD COLUMN warnings         text[]  NOT NULL DEFAULT '{}';
 
 -- Rows from before this migration only recorded a boolean. The API's own failure messages tell its
 -- failures apart from rejections by the generator's validation.

@@ -239,7 +239,8 @@ func seed(t *testing.T, s *Store) {
 			MinSDK: 26, TargetSDK: 37, Spec: []byte(`{"app_name": "App", "package_name": "com.example.app", "ios": {"bundle_id": "x"}}`),
 			QueueMs: intp(5), PythonMs: intp(300 + i), StreamMs: intp(20), Duration: time.Duration(310+i) * time.Millisecond,
 			ZipBytes: 500_000, GeneratorCommit: "99c4edf", Country: "IN", DeviceClass: telemetry.DeviceMobile,
-			FailureReason: reason,
+			FailureReason: reason, Notes: []string{`Moved min_sdk under "android".`}, IgnoredFields: []string{"theme"},
+			Warnings: []string{"Keystore 'release' could not be created: keytool error"},
 		})
 	}
 	batch.Generations = append(batch.Generations,
@@ -388,6 +389,10 @@ func TestIntegrationAdminQueriesReadWhatWasRecorded(t *testing.T) {
 	if len(page) != 4 || len(next) != 5 || next[0].ID >= page[3].ID {
 		t.Fatalf("pages of %d and %d", len(page), len(next))
 	}
+	if g := next[len(next)-1]; g.AppName != "App 0" || !slices.Equal(g.IgnoredFields, []string{"theme"}) ||
+		len(g.Notes) != 1 || len(g.Warnings) != 1 {
+		t.Fatalf("what the generator said was not read back: %+v", g)
+	}
 
 	errs, err := s.Errors(ctx, f, false, 10)
 	if err != nil || len(errs) != 1 || errs[0].Detail != "Traceback" {
@@ -459,6 +464,13 @@ func TestIntegrationRetentionForgetsNamesAndOldRows(t *testing.T) {
 	s := connected(t, testDatabase(t))
 	seed(t, s)
 	ctx := context.Background()
+	// A spec the generator refused can hold anything where an object belongs.
+	refused := &Batch{Generations: []Generation{{Target: "android", Outcome: telemetry.Invalid, VisitorHash: "h",
+		AppName: "Trails", Spec: []byte(`{"app_name": "Trails", "ios": [1], "android": {"deeplink_host": "trails.example", "min_sdk": 26},
+			"api_base_urls": {"prod": "https://api.trails.example"}, "features": ["network"]}`)}}}
+	if err := s.write(ctx, refused); err != nil {
+		t.Fatal(err)
+	}
 	_, err := s.pool.Exec(ctx, `
 		UPDATE generations SET created_at = now() - interval '100 days' WHERE app_name = 'App 0';
 		UPDATE generations SET created_at = now() - interval '100 days' WHERE outcome = 'invalid';
@@ -473,12 +485,28 @@ func TestIntegrationRetentionForgetsNamesAndOldRows(t *testing.T) {
 
 	var appName, packageName, reason *string
 	var spec []byte
-	if err := s.pool.QueryRow(ctx, `SELECT app_name, package_name, spec FROM generations WHERE app_name IS NULL AND spec IS NOT NULL`).
+	if err := s.pool.QueryRow(ctx, `SELECT app_name, package_name, spec FROM generations WHERE app_name IS NULL AND spec IS NOT NULL
+		AND outcome = 'ok'`).
 		Scan(&appName, &packageName, &spec); err != nil {
 		t.Fatal(err)
 	}
 	if appName != nil || packageName != nil || string(spec) != `{"ios": {}}` {
 		t.Fatalf("names kept: %v %v %s", appName, packageName, spec)
+	}
+	var notes, ignored, warnings []string
+	if err := s.pool.QueryRow(ctx, `SELECT notes, ignored_fields, warnings FROM generations WHERE app_name IS NULL AND
+		spec IS NOT NULL AND outcome = 'ok'`).Scan(&notes, &ignored, &warnings); err != nil {
+		t.Fatal(err)
+	}
+	if len(notes) != 1 || len(ignored) != 1 || len(warnings) != 0 {
+		t.Fatalf("notes %v, ignored fields %v, warnings %v", notes, ignored, warnings)
+	}
+	if err := s.pool.QueryRow(ctx, `SELECT spec FROM generations WHERE spec ? 'features' AND outcome = 'invalid'`).
+		Scan(&spec); err != nil {
+		t.Fatal(err)
+	}
+	if string(spec) != `{"ios": [1], "android": {"min_sdk": 26}, "features": ["network"]}` {
+		t.Fatalf("a refused spec kept what names its project: %s", spec)
 	}
 	if err := s.pool.QueryRow(ctx, `SELECT failure_reason FROM generations WHERE outcome = 'invalid'`).Scan(&reason); err != nil {
 		t.Fatal(err)

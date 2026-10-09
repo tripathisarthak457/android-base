@@ -57,6 +57,10 @@ type Generation struct {
 	AccentColour   string
 	Spec           []byte
 
+	Notes         []string
+	IgnoredFields []string
+	Warnings      []string
+
 	// Nil when the request never reached that stage.
 	QueueMs  *int
 	PythonMs *int
@@ -125,10 +129,11 @@ const insertGeneration = `
 		app_name, package_name, preset, features, added, removed, feature_modules,
 		architecture, design_style, motion_style, languages, min_sdk, target_sdk, glass,
 		font_name, accent_colour, spec, queue_ms, python_ms, stream_ms, duration_ms, zip_bytes,
-		succeeded, failure_reason, failure_field, generator_commit, country, device_class
+		succeeded, failure_reason, failure_field, generator_commit, country, device_class,
+		notes, ignored_fields, warnings
 	) VALUES (
 		$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
-		$21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35
+		$21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38
 	)`
 
 // upsertRollup recomputes the day's row for the generation just inserted, so its percentiles are
@@ -188,6 +193,7 @@ func (b *Batch) queue(into *pgx.Batch) {
 			g.QueueMs, g.PythonMs, g.StreamMs, g.Duration.Milliseconds(), nullableInt64(g.ZipBytes),
 			succeeded, nullable(clip.String(g.FailureReason, 1000)), nullable(g.FailureField),
 			nullable(g.GeneratorCommit), nullable(g.Country), nullable(g.DeviceClass),
+			clipped(g.Notes, 300), clipped(g.IgnoredFields, 120), clipped(g.Warnings, 300),
 		)
 		into.Queue(upsertRollup, g.Target, g.Preset, string(g.Outcome), g.Country, g.DeviceClass)
 	}
@@ -243,6 +249,16 @@ func list(values []string) []string {
 		return []string{}
 	}
 	return values
+}
+
+// clipped is a text[] of the generator's free text, each entry clipped to limit bytes: the
+// generator bounds how many entries there are, not how long each is.
+func clipped(values []string, limit int) []string {
+	out := make([]string, len(values))
+	for i, value := range values {
+		out[i] = clip.String(value, limit)
+	}
+	return out
 }
 
 func nullable(s string) any {

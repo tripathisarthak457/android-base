@@ -74,6 +74,10 @@ func TestGenerateStreamsTheZipAndRecordsTheSession(t *testing.T) {
 	if g.QueueMs == nil || g.PythonMs == nil || g.StreamMs == nil || g.ZipBytes != int64(len(spec)) {
 		t.Fatalf("timings not recorded: %+v", g)
 	}
+	if len(g.Notes) != 0 || !slices.Equal(g.IgnoredFields, []string{"theme"}) ||
+		!slices.Equal(g.Warnings, []string{"The release key password was not used."}) {
+		t.Fatalf("what the generator said about the spec was not recorded: %+v", g)
+	}
 	if strings.Contains(string(g.Spec), "hunter22") {
 		t.Fatalf("a keystore password reached the recorded spec: %s", g.Spec)
 	}

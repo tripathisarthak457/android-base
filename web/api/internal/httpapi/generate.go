@@ -115,6 +115,7 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 	record.Preset, record.Added, record.Removed = gen.Target.NearestPreset(out.ResolvedFeatures)
 	record.Glass = slices.Contains(out.ResolvedFeatures, glassFeature)
 	record.GeneratorCommit = out.GeneratorCommit
+	record.Notes, record.IgnoredFields, record.Warnings = out.Notes, out.IgnoredFields, out.Warnings
 	record.ZipBytes = out.ZipBytes
 	record.QueueMs = store.Milliseconds(out.QueueTime)
 	record.PythonMs = store.Milliseconds(out.RunTime)
