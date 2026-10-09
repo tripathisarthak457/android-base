@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { type InputHTMLAttributes, useId, useState } from "react";
 import { ChoiceCard, Field, TextInput, Toggle } from "../../../components/primitives.tsx";
 import type { Catalogue, Field as CatalogueField } from "../../catalogue/types.ts";
 import { offersSigning } from "../request.ts";
@@ -169,14 +169,12 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
     <Field label={label} hint={hint} error={error}>
       {(control) =>
         field.type === "int" ? (
-          <TextInput
+          <IntegerInput
             {...control}
-            type="number"
-            inputMode="numeric"
             min={field.min}
             max={field.max}
-            value={typeof value === "number" ? value : ""}
-            onChange={(event) => set(event.target.value === "" ? Number(field.default ?? 1) : Math.trunc(Number(event.target.value)))}
+            value={typeof value === "number" ? value : Number(field.default ?? 1)}
+            onCommit={set}
             className="font-mono text-sm"
           />
         ) : (
@@ -192,6 +190,36 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
         )
       }
     </Field>
+  );
+}
+
+/**
+ * A whole-number field that keeps what is typed, so it can be cleared and typed again; only a whole
+ * number reaches the answers, and leaving the field with anything else shows the answer again.
+ */
+function IntegerInput({
+  value,
+  onCommit,
+  ...rest
+}: { value: number; onCommit: (value: number) => void } & Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "onChange">) {
+  const [text, setText] = useState(String(value));
+  const [synced, setSynced] = useState(value);
+  if (value !== synced) {
+    setSynced(value);
+    setText(String(value));
+  }
+  return (
+    <TextInput
+      {...rest}
+      type="number"
+      inputMode="numeric"
+      value={text}
+      onChange={(event) => {
+        setText(event.target.value);
+        if (/^\d+$/.test(event.target.value)) onCommit(Number(event.target.value));
+      }}
+      onBlur={() => setText(String(value))}
+    />
   );
 }
 

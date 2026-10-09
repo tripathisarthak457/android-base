@@ -191,7 +191,9 @@ export async function downloadCsv(token: string, query: string): Promise<void> {
   const anchor = document.createElement("a");
   anchor.href = url;
   anchor.download = `generations-${new URLSearchParams(query).get("from")}-${new URLSearchParams(query).get("to")}.csv`;
+  document.body.appendChild(anchor);
   anchor.click();
+  anchor.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 

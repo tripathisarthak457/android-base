@@ -5,6 +5,17 @@ import { useEffect, useRef } from "react";
 import type { Tokens } from "../catalogue/types.ts";
 import type { PreviewTheme } from "./theme.ts";
 
+/** Where each moving part sits between runs, as the markup first draws it. */
+const REST: [part: string, values: Record<string, string | number>][] = [
+  ["button", { scale: 1 }],
+  ["list", { x: "0%" }],
+  ["scrim", { opacity: 0 }],
+  ["detail", { x: "100%" }],
+  ["page", { opacity: 1 }],
+  ["other", { opacity: 0 }],
+  ["indicator", { x: "0%" }],
+];
+
 /**
  * A few seconds of the app moving in one motion style, on its own springs: a press and release,
  * a push and pop (slide only, the covered screen darkened by a drawn scrim and moving at the
@@ -22,6 +33,9 @@ export function MotionPreview({ theme, tokens, font }: { theme: PreviewTheme; to
   const up = () => animate("[data-part=button]", { scale: 1 }, theme.spring("release"));
 
   useEffect(() => {
+    // A run stopped part-way, by scrolling off or a theme or reduced-motion change, leaves the
+    // detail half-pushed or the other tab showing, and React does not restore styles it never changed.
+    for (const [part, values] of REST) animate(`[data-part=${part}]`, values, { duration: 0 });
     if (!inView || reduce) return;
     let cancelled = false;
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
