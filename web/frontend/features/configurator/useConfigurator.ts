@@ -48,29 +48,49 @@ function writeDraft(text: string | null): void {
   }
 }
 
-function useLive(catalogue: Catalogue): Live {
-  const [live, setLive] = useState<Live>({ enabled: null, keytool: {} });
+function getJson(path: string, signal: AbortSignal): Promise<unknown> {
+  return fetch(`${API_BASE}${path}`, { signal }).then((response) => (response.ok ? response.json() : null));
+}
+
+/**
+ * The targets this deployment generates, asked once on load (a few hundred bytes). Whether it can
+ * make signing keys comes from the live catalogue, which is a hundred kilobytes, so that is asked
+ * only once the visitor reaches the Build step, where the answer is shown.
+ */
+function useLive(catalogue: Catalogue, step: Step): Live {
+  const [enabled, setEnabled] = useState<Record<string, boolean> | null>(null);
+  const [keytool, setKeytool] = useState<Record<string, boolean>>({});
+  const [wantsCatalogue, setWantsCatalogue] = useState(false);
+  if (step === "build" && !wantsCatalogue) setWantsCatalogue(true);
+
   useEffect(() => {
     const controller = new AbortController();
-    const json = (path: string) =>
-      fetch(`${API_BASE}${path}`, { signal: controller.signal }).then((response) => (response.ok ? response.json() : null));
-    void Promise.allSettled([json("/api/v1/targets"), json("/api/v1/catalogue")]).then(([targets, served]) => {
-      if (controller.signal.aborted) return;
-      const enabled: Record<string, boolean> = {};
-      if (targets.status === "fulfilled" && Array.isArray(targets.value)) {
-        for (const entry of targets.value as { key?: unknown; enabled?: unknown }[]) {
-          if (typeof entry.key === "string") enabled[entry.key] = entry.enabled === true;
+    void getJson("/api/v1/targets", controller.signal)
+      .then((value) => {
+        if (!Array.isArray(value)) return;
+        const answer: Record<string, boolean> = {};
+        for (const entry of value as { key?: unknown; enabled?: unknown }[]) {
+          if (typeof entry.key === "string") answer[entry.key] = entry.enabled === true;
         }
-      }
-      const parsed = served.status === "fulfilled" ? parseCatalogue(served.value) : null;
-      setLive({
-        enabled: Object.keys(enabled).length > 0 ? enabled : null,
-        keytool: Object.fromEntries(catalogue.targets.map((target) => [target.key, canMakeKeystores(parsed, target.key)])),
-      });
-    });
+        if (Object.keys(answer).length > 0) setEnabled(answer);
+      })
+      .catch(() => undefined);
     return () => controller.abort();
-  }, [catalogue]);
-  return live;
+  }, []);
+
+  useEffect(() => {
+    if (!wantsCatalogue) return;
+    const controller = new AbortController();
+    void getJson("/api/v1/catalogue", controller.signal)
+      .then((value) => {
+        const live = parseCatalogue(value);
+        setKeytool(Object.fromEntries(catalogue.targets.map((target) => [target.key, canMakeKeystores(live, target.key)])));
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [wantsCatalogue, catalogue]);
+
+  return { enabled, keytool };
 }
 
 function filenameOf(response: Response): string {
@@ -104,7 +124,7 @@ export function useConfigurator(catalogue: Catalogue) {
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [restored, setRestored] = useState(false);
   const identityAt = useRef<number | null>(null);
-  const live = useLive(catalogue);
+  const live = useLive(catalogue, step);
   const target = findTarget(catalogue, state.target);
 
   useEffect(() => {
