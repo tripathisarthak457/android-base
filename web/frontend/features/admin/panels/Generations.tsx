@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { type Generation, type Generations as GenerationsData, downloadCsv, useAdminQuery } from "../api.ts";
 import { OUTCOME_COLOUR, seconds } from "../charts.tsx";
@@ -11,15 +11,14 @@ const CSV_ROWS = 10_000;
 
 /** Every generation in the window, newest first, a page at a time; a row opens its sanitised spec. */
 export function Generations({ token, query, version, onUnauthorized }: PanelProps) {
-  const [cursors, setCursors] = useState<number[]>([]);
+  // Pages are kept per filter, so a new filter starts again from the newest row on its first fetch.
+  const [paging, setPaging] = useState<{ query: string; cursors: number[] }>({ query, cursors: [] });
+  const cursors = paging.query === query ? paging.cursors : [];
   const [open, setOpen] = useState<number | null>(null);
   const [exporting, setExporting] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
   const before = cursors.at(-1);
   const result = useAdminQuery<GenerationsData>("generations", token, `${query}&limit=${PAGE}${before ? `&before=${before}` : ""}`, version, onUnauthorized);
-
-  // A new filter starts again from the newest row.
-  useEffect(() => setCursors([]), [query]);
 
   async function exportCsv() {
     setExporting(true);
@@ -133,7 +132,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
             </table>
           </div>
           <div className="mt-3 flex justify-between">
-            <Button variant="ghost" size="small" onClick={() => setCursors((current) => current.slice(0, -1))} disabled={cursors.length === 0}>
+            <Button variant="ghost" size="small" onClick={() => setPaging({ query, cursors: cursors.slice(0, -1) })} disabled={cursors.length === 0}>
               Newer
             </Button>
             <Button
@@ -141,7 +140,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
               size="small"
               onClick={() => {
                 const next = data.next_before;
-                if (next !== null) setCursors((current) => [...current, next]);
+                if (next !== null) setPaging({ query, cursors: [...cursors, next] });
               }}
               disabled={data.next_before === null}
             >

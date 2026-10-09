@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useId, useMemo, useState } from "react";
+import { memo, useDeferredValue, useId, useMemo, useState } from "react";
 import { ChoiceCard, Field, TextInput } from "../../../components/primitives.tsx";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
@@ -51,7 +51,10 @@ const StyleThumbnail = memo(function StyleThumbnail({ input, styleKey, dark }: {
 export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: Configurator; dark: boolean; onDark: (dark: boolean) => void }) {
   const { state, dispatch, target, errors } = model;
   const input = usePreviewInput(catalogue, model);
+  // Four thumbnails redraw on every colour-picker move or keystroke, so they wait, as the live preview does.
+  const thumbnailInput = useDeferredValue(input);
   const styleName = useId();
+  const featureTitle = new Map(target.features.map((feature) => [feature.key, feature.title]));
   const accent = parseHex(state.accent);
   const derived = accent ? brandColours(accent, null, null) : null;
 
@@ -76,7 +79,7 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
                   onChange={() => dispatch({ type: "designStyle", value: style.key })}
                   className="flex gap-3 overflow-hidden p-3"
                 >
-                  <StyleThumbnail input={input} styleKey={style.key} dark={dark} />
+                  <StyleThumbnail input={thumbnailInput} styleKey={style.key} dark={dark} />
                   <span className="min-w-0 py-1">
                     <span className="block font-display text-base font-bold text-ink-100">{style.title}</span>
                     <span className="mt-1 block text-xs leading-relaxed text-ink-400">{style.description}</span>
@@ -90,7 +93,9 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
                         ))}
                       </span>
                     )}
-                    {style.requires.length > 0 && <span className="mt-2 block text-[11px] text-amber">Turns on {style.requires.join(", ")}</span>}
+                    {style.requires.length > 0 && (
+                      <span className="mt-2 block text-[11px] text-amber">Turns on {style.requires.map((key) => featureTitle.get(key) ?? key).join(", ")}</span>
+                    )}
                   </span>
                 </ChoiceCard>
               );
@@ -158,7 +163,12 @@ function ColourRow({
   derivable?: boolean;
 }) {
   const [draft, setDraft] = useState(value);
-  useEffect(() => setDraft(value), [value]);
+  // A value set from outside, by the picker or Derive, replaces whatever is half-typed.
+  const [synced, setSynced] = useState(value);
+  if (value !== synced) {
+    setSynced(value);
+    setDraft(value);
+  }
   const valid = draft === "" ? Boolean(derivable) : parseHex(draft) !== null;
   const swatch = parseHex(shown) ? `#${shown.replace(/^#/, "")}` : "#000000";
 
