@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/base-android/generator-api/internal/config"
 	"github.com/base-android/generator-api/internal/store"
@@ -169,5 +170,30 @@ func TestFeedbackIsRefusedWhileTheDatabaseIsUnreachable(t *testing.T) {
 	w := ts.do(http.MethodPost, "/api/v1/feedback", `{"kind": "bug", "title": "Broken zip", "body": "The zip would not open at all."}`, nil)
 	if w.Code != http.StatusServiceUnavailable {
 		t.Fatalf("got %d", w.Code)
+	}
+}
+
+// stalledSink takes batches and never finishes writing them, as while the database is connecting.
+type stalledSink struct{ fakeSink }
+
+func (s *stalledSink) Submit(b *store.Batch) <-chan struct{} {
+	s.fakeSink.Submit(b)
+	return make(chan struct{})
+}
+
+func TestRequestsDoNotWaitForTelemetryBeforeTheDatabaseConnects(t *testing.T) {
+	ts := newTestServer(t, okScript, nil)
+	sink := &stalledSink{}
+	ts.sink, ts.Server.sink = &sink.fakeSink, sink
+
+	started := time.Now()
+	if w := ts.do(http.MethodGet, "/api/v1/targets", "", nil); w.Code != http.StatusOK {
+		t.Fatalf("got %d", w.Code)
+	}
+	if elapsed := time.Since(started); elapsed >= telemetryWait {
+		t.Fatalf("the request waited %s for a database that is not connected", elapsed)
+	}
+	if batch := ts.sink.last(t); len(batch.Requests) != 1 {
+		t.Fatalf("the request row was not queued: %+v", batch)
 	}
 }

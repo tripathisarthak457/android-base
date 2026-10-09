@@ -104,10 +104,16 @@ func (s *Server) observe(route string, next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		rec.Flush()
+		written := s.sink.Submit(batch)
+		// Until the database is connected the batch can only queue, and waiting would hold every
+		// request, and the edge's connection it came on, for the whole bound.
+		if !s.store.Ready() {
+			return
+		}
 		timer := time.NewTimer(telemetryWait)
 		defer timer.Stop()
 		select {
-		case <-s.sink.Submit(batch):
+		case <-written:
 		case <-timer.C:
 		}
 	}
