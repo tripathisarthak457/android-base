@@ -489,7 +489,7 @@ def _flag(data: dict[str, Any], key: str, where: str, default: bool) -> bool:
 
 def _text_list(data: dict[str, Any], key: str, where: str) -> tuple[str, ...]:
     value = data.get(key, [])
-    # A bare string is iterable, which once turned "home" into the modules h, o, m and e.
+    # A bare string is iterable, so "home" would become the modules h, o, m and e.
     if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         raise SpecError(f"`{where}` must be a list of strings.", where)
     return tuple(value)

@@ -21,8 +21,8 @@ ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
 class MonochromeTest(unittest.TestCase):
 
     def test_the_rewritten_adaptive_icons_are_valid_xml(self):
-        # The substitution once dropped its own groups and wrote `@drawable/… />` as bare text,
-        # which failed resource linking in every project generated with an icon (audit 3.2).
+        # A substitution that drops its own groups writes `@drawable/… />` as bare text, which fails
+        # resource linking in every project generated with an icon (audit 3.2).
         with tempfile.TemporaryDirectory() as temp:
             project = Path(temp)
             target = project / "app/src/main/res/mipmap-anydpi-v26"

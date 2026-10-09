@@ -130,8 +130,9 @@ class NameTest(unittest.TestCase):
                 read(minimal(package_name=f"com.example.{segment}"))
 
     def test_python_keywords_and_kotlin_soft_keywords_are_ordinary_segments(self):
-        # Python's keyword list once refused com.global.bank (audit 4.1). Soft keywords such as
-        # `value` and `data` are identifiers wherever a package segment can appear.
+        # Only Kotlin's hard keywords are refused, never Python's: com.global.bank is a valid package
+        # (audit 4.1). Soft keywords such as `value` and `data` are identifiers wherever a package
+        # segment can appear.
         for segment in ("global", "pass", "async", "lambda", "value", "data", "get", "field"):
             with self.subTest(segment=segment):
                 read(minimal(package_name=f"com.example.{segment}"))

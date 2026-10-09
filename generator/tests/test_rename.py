@@ -59,7 +59,8 @@ class BoundaryTest(unittest.TestCase):
         self.assertEqual("xLcom/base/app/X", renamer().rename("xLcom/base/app/X"))
 
     def test_the_replacement_is_never_scanned_again(self):
-        # The old chain of str.replace calls turned com.base.apple into com.base.applele.
+        # Replacing one token after another rescans its own output and turns com.base.apple into
+        # com.base.applele.
         result = renamer(package="com.base.apple").rename("package com.base.app.feature")
         self.assertEqual("package com.base.apple.feature", result)
         self.assertEqual("com/example/databaseapp/x", renamer(package="com.example.databaseapp").rename("com/base/app/x"))

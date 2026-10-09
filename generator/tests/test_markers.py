@@ -163,7 +163,7 @@ class CollapseTest(unittest.TestCase):
         self.assertEqual("fun x() {\n    a()\n}\n", run("fun x() {\n    // <opt:a>\n    b()\n    // </opt:a>\n\n    a()\n}\n"))
 
     def test_untouched_code_keeps_its_spacing(self):
-        # The old generator collapsed every file, reformatting code nobody asked it to touch.
+        # Collapsing every file would reformat code nobody asked the generator to touch.
         source = "class A {\n\n    val x = 1\n\n\n    val y = 2\n}\n"
         self.assertEqual(source, run(source))
 
