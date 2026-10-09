@@ -7,6 +7,7 @@ The generator's own checks.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -667,6 +668,45 @@ class PlanTest(unittest.TestCase):
         resolved = spec(feature_modules=("orders",)).validated()
 
         self.assertEqual([":data:orders", ":feature:orders"], plan(resolved)["modules"])
+
+
+class OrphanedTestTest(unittest.TestCase):
+    """
+    A feature that removes a package has to take that package's tests with it. The template
+    compiles with every feature on, so a test left behind only fails `./gradlew build` in a
+    generated project, which nothing here compiles.
+    """
+
+    def test_no_test_outlives_the_main_source_it_tests(self):
+        from genkit.build import TEMPLATE_DIR
+        from genkit.render import _SKIP_DIRS, _is_owned, _owned_paths
+        from genkit.spec import FEATURES_BY_KEY
+
+        tests = []
+        for directory, subdirectories, filenames in os.walk(TEMPLATE_DIR):
+            subdirectories[:] = [d for d in subdirectories if d not in _SKIP_DIRS]
+            for filename in filenames:
+                relative = Path(directory, filename).relative_to(TEMPLATE_DIR)
+                parts = relative.parts
+                if relative.suffix != ".kt" or "src" not in parts:
+                    continue
+                source_set = parts.index("src") + 1
+                if parts[source_set] != "main" and parts[source_set + 1] == "kotlin":
+                    main = Path(*parts[:source_set], "main", *parts[source_set + 1 :])
+                    tests.append((relative, main))
+        self.assertTrue(tests, "no test sources found under the template")
+
+        for key in FEATURES_BY_KEY:
+            # Switching one feature off also switches off everything that requires it.
+            enabled = frozenset(k for k in FEATURES_BY_KEY if key not in resolve_features({k}))
+            owned = _owned_paths(spec(features=enabled))
+            for test, main in tests:
+                if _is_owned(test, owned):
+                    continue
+                tested = (main.parent, main.with_name(main.name.removesuffix("Test.kt") + ".kt"))
+                removed = [p for p in tested if (TEMPLATE_DIR / p).exists() and _is_owned(p, owned)]
+                with self.subTest(feature=key, test=test.as_posix()):
+                    self.assertEqual([], removed, f"'{key}' removes what this test compiles against")
 
 
 class SpecRoundTripTest(unittest.TestCase):
