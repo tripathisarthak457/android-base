@@ -7,6 +7,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from . import number
+
 HEADER = (
     "// Generated from tokens/*.json by generator/genkit/tokens. "
     "Do not edit; run python3 -m genkit.tokens --write."
@@ -21,7 +23,7 @@ def emit(tokens: dict[str, Any]) -> str:
         _points("Spacing", tokens["spacing"]),
         _points("Radii", tokens["radii"]),
         _points("Sizes", tokens["sizes"]),
-        _points("Borders", tokens["borders"]),
+        _borders(tokens["borders"]),
         _points("Elevation", tokens["elevation"]),
         _type(tokens["type"]),
         _motion(tokens["motion"]),
@@ -34,10 +36,6 @@ def emit(tokens: dict[str, Any]) -> str:
         lines.extend(f"    {line}" if line else "" for line in section)
     lines.append("}")
     return "\n".join(lines) + "\n"
-
-
-def _number(value: float) -> str:
-    return str(int(value)) if float(value).is_integer() else repr(round(float(value), 4))
 
 
 def _lower(name: str) -> str:
@@ -53,7 +51,17 @@ def _color(hex_argb: str) -> str:
 
 
 def _points(name: str, values: dict[str, float]) -> list[str]:
-    return [f"enum {name} {{", *(f"    static let {key}: CGFloat = {_number(value)}" for key, value in values.items()), "}"]
+    return [f"enum {name} {{", *(f"    static let {key}: CGFloat = {number(value)}" for key, value in values.items()), "}"]
+
+
+def _borders(borders: dict[str, float]) -> list[str]:
+    widths = {key: value for key, value in borders.items() if key != "hairlinePx"}
+    return [
+        "enum Borders {",
+        "    /// Physical pixels, not points: a hairline is `hairlinePx / displayScale` points on every screen.",
+        f"    static let hairlinePx: Int = {int(borders['hairlinePx'])}",
+        *_points("Borders", widths)[1:],
+    ]
 
 
 def _type(type_tokens: dict[str, Any]) -> list[str]:
@@ -71,8 +79,8 @@ def _type(type_tokens: dict[str, Any]) -> list[str]:
     for name, role in type_tokens["roles"].items():
         weights = ", ".join(f"weight{voice}: {role['weight'][voice]}" for voice in voices)
         lines.append(
-            f"    static let {name} = TypeRole(size: {_number(role['size'])}, lineHeight: "
-            f"{_number(role['lineHeight'])}, tracking: {_number(role['tracking'])}, {weights})"
+            f"    static let {name} = TypeRole(size: {number(role['size'])}, lineHeight: "
+            f"{number(role['lineHeight'])}, tracking: {number(role['tracking'])}, {weights})"
         )
     lines.append("}")
     return lines
@@ -95,25 +103,25 @@ def _motion(motion: dict[str, Any]) -> list[str]:
     ]
     for style, values in motion["styles"].items():
         springs = ", ".join(
-            f"{name}: SpringToken(response: {_number(spring['response'])}, bounce: {_number(spring['bounce'])})"
+            f"{name}: SpringToken(response: {number(spring['response'])}, bounce: {number(spring['bounce'])})"
             for name, spring in values["springs"].items()
         )
         lines.append(f"    static let {_lower(style)} = MotionStyle({springs})")
     navigation = motion["navigation"]
     lines += [
-        f"    static let fadeShort: Double = {_number(motion['fades']['shortMs'] / 1000)}",
-        f"    static let fadeLong: Double = {_number(motion['fades']['longMs'] / 1000)}",
-        f"    static let staggerStep: Double = {_number(motion['stagger']['stepMs'] / 1000)}",
+        f"    static let fadeShort: Double = {number(motion['fades']['shortMs'] / 1000)}",
+        f"    static let fadeLong: Double = {number(motion['fades']['longMs'] / 1000)}",
+        f"    static let staggerStep: Double = {number(motion['stagger']['stepMs'] / 1000)}",
         f"    static let staggerMaxItems: Int = {int(motion['stagger']['maxItems'])}",
-        f"    static let pressScale: CGFloat = {_number(motion['press']['scale'])}",
-        f"    static let pressScaleLarge: CGFloat = {_number(motion['press']['scaleLarge'])}",
-        f"    static let pressScaleIcon: CGFloat = {_number(motion['press']['scaleIcon'])}",
-        f"    static let pressDimAlpha: Double = {_number(motion['press']['dimAlpha'])}",
-        f"    static let highlightFadeOut: Double = {_number(motion['press']['highlightFadeOutMs'] / 1000)}",
-        f"    static let navigationParallax: CGFloat = {_number(navigation['parallax'])}",
-        f"    static let navigationScrimAlphaLight: Double = {_number(navigation['scrimAlpha']['light'])}",
-        f"    static let navigationScrimAlphaDark: Double = {_number(navigation['scrimAlpha']['dark'])}",
-        f"    static let navigationEdgeShadow: CGFloat = {_number(navigation['edgeShadow'])}",
+        f"    static let pressScale: CGFloat = {number(motion['press']['scale'])}",
+        f"    static let pressScaleLarge: CGFloat = {number(motion['press']['scaleLarge'])}",
+        f"    static let pressScaleIcon: CGFloat = {number(motion['press']['scaleIcon'])}",
+        f"    static let pressDimAlpha: Double = {number(motion['press']['dimAlpha'])}",
+        f"    static let highlightFadeOut: Double = {number(motion['press']['highlightFadeOutMs'] / 1000)}",
+        f"    static let navigationParallax: CGFloat = {number(navigation['parallax'])}",
+        f"    static let navigationScrimAlphaLight: Double = {number(navigation['scrimAlpha']['light'])}",
+        f"    static let navigationScrimAlphaDark: Double = {number(navigation['scrimAlpha']['dark'])}",
+        f"    static let navigationEdgeShadow: CGFloat = {number(navigation['edgeShadow'])}",
         "}",
     ]
     return lines
@@ -180,14 +188,14 @@ def _styles(styles: dict[str, Any]) -> list[str]:
         "enum Styles {",
     ]
     for name, style in styles.items():
-        arguments = [f"radius{key.capitalize()}: {_number(style['radii'][key])}" for key in radii]
+        arguments = [f"radius{key.capitalize()}: {number(style['radii'][key])}" for key in radii]
         arguments += [
-            f"{key}: {'nil' if style[key] == 'pill' else _number(style[key])}" for key in ("buttonRadius", "chipRadius")
+            f"{key}: {'nil' if style[key] == 'pill' else number(style[key])}" for key in ("buttonRadius", "chipRadius")
         ]
         arguments += [f'{key}: "{style[key]}"' for key in ("card", "field", "bar")]
-        arguments += [f"{key}: {_number(style[key])}" for key in ("borderWidth", "borderWidthStrong")]
+        arguments += [f"{key}: {number(style[key])}" for key in ("borderWidth", "borderWidthStrong")]
         arguments.append(f"uppercaseLabels: {'true' if style['uppercaseLabels'] else 'false'}")
-        arguments.append(f"offsetShadow: {_number(style['offsetShadow'])}")
+        arguments.append(f"offsetShadow: {number(style['offsetShadow'])}")
         arguments += [f'{key}: "{style[key]}"' for key in ("surfaces", "voice")]
         lines.append(f"    static let {_lower(name)} = Style({', '.join(arguments)})")
     lines.append("}")
