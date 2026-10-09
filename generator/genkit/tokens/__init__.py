@@ -176,8 +176,9 @@ def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
                 raise _fail("palette", f"templateBrand.{colour}.{field}", "must be a hex colour")
 
     for status, themes in _table("palette", "status", palette.get("status")).items():
+        themes = _table("palette", f"status.{status}", themes, THEMES)
         for theme in THEMES:
-            _table("palette", f"status.{status}.{theme}", _table("palette", f"status.{status}", themes, THEMES)[theme], _STATUS_FIELDS)
+            _table("palette", f"status.{status}.{theme}", themes[theme], _STATUS_FIELDS)
 
     roles = _table("palette", "roles", palette.get("roles"), THEMES)
     names = list(_table("palette", "roles.light", roles["light"]))
