@@ -6,6 +6,7 @@ import com.base.app.buildlogic.android.configureAndroidCommon
 import com.base.app.buildlogic.android.configureTestDependencies
 import com.base.app.buildlogic.config.AppConfig
 import com.base.app.buildlogic.guard.verifyCodeRules
+import com.base.app.buildlogic.guard.verifyManifestRules
 import com.base.app.buildlogic.library
 import com.base.app.buildlogic.libs
 import org.gradle.api.Plugin
@@ -45,6 +46,13 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 isShrinkResources = true
                 proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
+
+            // The app's lint sees every module it depends on, so a check that needs the whole
+            // picture (an unused resource, a string missing from one language) runs once, here.
+            lint {
+                abortOnError = true
+                checkDependencies = true
+            }
         }
 
         extensions.configure<ApplicationAndroidComponentsExtension> {
@@ -57,6 +65,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             onVariants(selector().withBuildType("release")) { variant ->
                 variant.packaging.resources.excludes.add("/META-INF/*.version")
             }
+            verifyManifestRules(this)
         }
 
         dependencies {
