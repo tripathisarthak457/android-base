@@ -129,6 +129,12 @@ class ErrorTest(unittest.TestCase):
     def test_an_unknown_feature(self):
         self.assertFails("// <opt:pushh>\n// </opt:pushh>\n", "unknown feature 'pushh'")
 
+    def test_the_line_number_counts_only_newlines(self):
+        with self.assertRaises(TemplateError) as caught:
+            run("val a = 1 // page\x0cbreak\nval b = '\u2028'\n// </opt:a>\n")
+        self.assertIn("T.kt:3", str(caught.exception))
+        self.assertEqual("x\x0cy\n", run("x\x0cy\n"))
+
     def test_a_marker_sharing_its_line_with_code(self):
         self.assertFails("foo() // <opt:a>\n", "sharing its line")
         self.assertFails("// <opt:a>\n// </opt:a> trailing\n", "sharing its line")

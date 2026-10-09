@@ -180,7 +180,7 @@ def render(
     Resolves every marker in `text`. `regions` holds the target's lines for each `generated` name;
     None keeps a region's default lines. Raises TemplateError on anything malformed.
     """
-    lines = text.splitlines(keepends=True)
+    lines = _lines(text)
     if syntax is NONE:
         for number, line in enumerate(lines, start=1):
             if MARKER_TEXT.search(line):
@@ -327,6 +327,14 @@ def _region_end(lines: list[str], start: int, name: str, patterns: _Patterns, pa
         # Any other marker means the start was a point: a region holds plain default lines only.
         return None
     return None
+
+
+def _lines(text: str) -> list[str]:
+    # Only \n ends a line. str.splitlines also breaks on form feeds and Unicode separators, which
+    # would put every TemplateError after one on the wrong line number.
+    lines = text.split("\n")
+    tail = lines.pop()
+    return [line + "\n" for line in lines] + ([tail] if tail else [])
 
 
 def collapse(lines: list[tuple[str, bool]], seams: set[int]) -> list[tuple[str, bool]]:
