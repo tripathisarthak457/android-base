@@ -15,7 +15,9 @@ import com.base.app.data.auth.api.SignUpDetails
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -24,6 +26,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.time.Duration.Companion.seconds
 
 class SignInViewModelTest {
 
@@ -67,6 +70,28 @@ class SignInViewModelTest {
 
         assertEquals(UiText.Dynamic("No account uses this address"), viewModel.state.value.emailError)
         assertNull(viewModel.state.value.error)
+    }
+
+    @Test
+    fun `the server's message on a field outlasts the screen going away`() = runTest {
+        repository.result = AppResult.Failure(
+            AppError.Http(status = 422, fieldErrors = mapOf("email" to listOf("No account uses this address"))),
+        )
+        val viewModel = filledIn()
+        val screen = viewModel.state.launchIn(backgroundScope)
+        runCurrent()
+
+        viewModel.onEvent(SignInEvent.Submit)
+        advanceUntilIdle()
+        screen.cancel()
+        // Past the grace period, so the field observers stop and start again when the screen returns.
+        advanceTimeBy(6.seconds)
+        viewModel.state.launchIn(backgroundScope)
+        // runCurrent, not advanceUntilIdle: with only background work queued, the latter returns
+        // before the new collector has subscribed.
+        runCurrent()
+
+        assertEquals(UiText.Dynamic("No account uses this address"), viewModel.state.value.emailError)
     }
 
     @Test

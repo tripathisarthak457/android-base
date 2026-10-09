@@ -52,6 +52,7 @@ import com.base.app.data.auth.api.AuthRepository
 import com.base.app.feature.auth.api.PasswordResetKey
 import com.base.app.feature.auth.api.SignUpKey
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.drop
 import javax.inject.Inject
 
 /** The fields' text is not here: it lives in the ViewModel's `TextFieldState`s. */
@@ -96,8 +97,15 @@ internal class SignInViewModel @Inject constructor(
     private var showErrors = false
 
     init {
-        observe(snapshotFlow { email.text.toString() }) { copy(emailError = emailRule.errorFor(it, showErrors)) }
-        observe(snapshotFlow { password.text.toString() }) { copy(passwordError = passwordRule.errorFor(it, showErrors)) }
+        // A rule runs only when its text changes. A collection restarted after the screen was away
+        // starts with the text already judged, and judging it again would replace the error the
+        // server returned for it.
+        observe(snapshotFlow { email.text.toString() }.drop(1)) {
+            copy(emailError = emailRule.errorFor(it, showErrors))
+        }
+        observe(snapshotFlow { password.text.toString() }.drop(1)) {
+            copy(passwordError = passwordRule.errorFor(it, showErrors))
+        }
         observe(snapshotFlow { email.text.isNotBlank() && password.text.isNotEmpty() }) { copy(canSubmit = it) }
     }
 

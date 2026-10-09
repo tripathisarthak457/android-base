@@ -45,6 +45,7 @@ import com.base.app.core.ui.form.toUiText
 import com.base.app.data.auth.api.AuthRepository
 import com.base.app.data.auth.api.SignUpDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.drop
 import javax.inject.Inject
 
 /** The fields' text is not here: it lives in the ViewModel's `TextFieldState`s. */
@@ -91,11 +92,20 @@ internal class SignUpViewModel @Inject constructor(
     private var showErrors = false
 
     init {
-        observe(snapshotFlow { name.text.toString() }) { copy(nameError = nameRule.errorFor(it, showErrors)) }
-        observe(snapshotFlow { email.text.toString() }) { copy(emailError = emailRule.errorFor(it, showErrors)) }
-        observe(snapshotFlow { password.text.toString() }) { copy(passwordError = passwordRule.errorFor(it, showErrors)) }
+        // A rule runs only when its text changes. A collection restarted after the screen was away
+        // starts with the text already judged, and judging it again would replace the error the
+        // server returned for it.
+        observe(snapshotFlow { name.text.toString() }.drop(1)) {
+            copy(nameError = nameRule.errorFor(it, showErrors))
+        }
+        observe(snapshotFlow { email.text.toString() }.drop(1)) {
+            copy(emailError = emailRule.errorFor(it, showErrors))
+        }
+        observe(snapshotFlow { password.text.toString() }.drop(1)) {
+            copy(passwordError = passwordRule.errorFor(it, showErrors))
+        }
         // Keyed on both, so changing the password re-checks the confirmation too.
-        observe(snapshotFlow { confirm.text.toString() to password.text.toString() }) { (text, _) ->
+        observe(snapshotFlow { confirm.text.toString() to password.text.toString() }.drop(1)) { (text, _) ->
             copy(confirmError = confirmError(text))
         }
         observe(snapshotFlow { listOf(name, email, password, confirm).all { it.text.isNotBlank() } }) {

@@ -37,6 +37,7 @@ import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.asString
 import com.base.app.data.auth.api.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.drop
 // <opt:lottie>
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Alignment
@@ -81,9 +82,13 @@ internal class PasswordResetViewModel @Inject constructor(
     private var showErrors = false
 
     init {
-        observe(snapshotFlow { email.text.toString() }) {
-            copy(emailError = emailRule.errorFor(it, showErrors), canSubmit = it.isNotBlank())
+        // The rule runs only when the text changes. A collection restarted after the screen was away
+        // starts with the text already judged, and judging it again would replace the error the
+        // server returned for it.
+        observe(snapshotFlow { email.text.toString() }.drop(1)) {
+            copy(emailError = emailRule.errorFor(it, showErrors))
         }
+        observe(snapshotFlow { email.text.isNotBlank() }) { copy(canSubmit = it) }
     }
 
     override fun handleEvent(event: PasswordResetEvent) {
