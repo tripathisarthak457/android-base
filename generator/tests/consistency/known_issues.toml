@@ -34,6 +34,31 @@ owner = "WP06"
 why = "used only by the room-gated cache tests"
 
 [[issue]]
-match = "^IMPORT (data|feature)/[a-z0-9_]+/src/(main|test)/kotlin/\\{pkg\\}/(data|feature)/[a-z0-9_]+/[A-Za-z]+\\.kt: \\{package\\}\\.core\\.(common\\.AppResult|common\\.mvi\\.[A-Za-z]+|navigation\\.AppNavKey) is not declared$"
+match = "^IMPORT (data|feature)/[a-z0-9_]+/src/(main|test)/kotlin/\\{pkg\\}/(data|feature)/[a-z0-9_]+/[A-Za-z0-9]+\\.kt: \\{package\\}\\.core\\.(common\\.AppResult|common\\.mvi\\.[A-Za-z]+|navigation\\.AppNavKey) is not declared$"
 owner = "WP02"
 why = "scaffold.py still writes the MVI shape and packages the template had before :core:mvi; WP02-M2 rewrites it"
+
+[[issue]]
+match = "^UNUSED-RES feature/settings/src/main/res/values/strings\\.xml: string/settings_(about|open_source_licences|licences_explanation|no_licences_explanation|no_licences_recorded|licence_not_stated)$"
+owner = "WP02"
+why = "the licences section's strings sit outside an <opt:licenses> fence, so they ship without the screen"
+
+[[issue]]
+match = "^UNUSED-RES feature/settings/src/main/res/values/strings\\.xml: string/settings_(require_unlock|app_lock_explanation)$"
+owner = "WP06"
+why = "the app-lock toggle's strings sit outside an <opt:applock> fence, so they ship without the toggle"
+
+[[issue]]
+match = "^UNUSED-RES feature/profile/src/main/res/values/strings\\.xml: string/profile_(change|remove)_photo$"
+owner = "WP02"
+why = "only the media-picker block uses them, and they are not fenced with it"
+
+[[issue]]
+match = "^UNUSED-RES feature/search/src/main/res/values/strings\\.xml: string/search_remove_recent$"
+owner = "WP02"
+why = "nothing in the template uses it, even with every feature on"
+
+[[issue]]
+match = "^UNUSED-RES app/src/main/res/drawable/ic_notification\\.xml: drawable/ic_notification$"
+owner = "WP06"
+why = "only push uses the notification icon, and push does not own the file"

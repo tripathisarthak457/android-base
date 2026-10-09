@@ -38,6 +38,7 @@ def check(root: Path, package: str, reference: Project | None, identity: bool = 
     issues += _conventions(root, project, package)
     issues += _manifests(root, project, package)
     issues += _resources(root, project)
+    issues += _unused_resources(root, project)
     issues += _translations(root)
     issues += _hollow(root, project)
     return issues
@@ -291,6 +292,85 @@ def _resources(root: Path, project: Project) -> list[str]:
             if name not in names.get(match.group(1), set()) and not name.startswith("glance_"):
                 issues.append(f"RES {path.relative_to(root)}: @{match.group(1)}/{match.group(2)}")
     return issues
+
+
+#: Values tags whose resources the unused check covers, by the R class each lands in.
+_TRACKED_VALUES = {
+    "string": "string", "plurals": "plurals", "color": "color", "dimen": "dimen",
+    "string-array": "array", "integer-array": "array", "array": "array",
+}
+_TRACKED_FILES = ("drawable", "raw", "xml", "font")
+_TRACKED = "|".join(sorted(set(_TRACKED_VALUES.values()) | set(_TRACKED_FILES)))
+_REFERENCES = (
+    # Any `…R.kind.name`, since modules import each other's R under an alias. A stray match can
+    # only hide an unused resource, never report a used one.
+    re.compile(rf"R\.({_TRACKED})\.(\w+)"),
+    re.compile(rf"@(?!android:)(?:[\w.]+:)?({_TRACKED})/([\w.]+)"),
+)
+
+
+def _references(text: str) -> set[tuple[str, str]]:
+    return {
+        (match.group(1), match.group(2).replace(".", "_"))
+        for pattern in _REFERENCES
+        for match in pattern.finditer(text)
+    }
+
+
+def _unused_resources(root: Path, project: Project) -> list[str]:
+    """
+    Resources a module ships that nothing reaches: dead weight in the APK and, for strings, a line
+    every language has to translate. A values resource that only another values resource names
+    (the font-certificate arrays under their parent array, a colour aliased by another) counts as
+    used only when that one is.
+    """
+    declared: dict[tuple[str, str], str] = {}
+    # What each values resource names, for every qualifier it is defined under.
+    bodies: dict[tuple[str, str], list[str]] = defaultdict(list)
+    roots = [project.code[path] for path in project.kotlin] + [project.text[path] for path in project.gradle]
+    roots += [
+        re.sub(r"<!--.*?-->", "", path.read_text(encoding="utf-8"), flags=re.S)
+        for path in sorted(root.rglob("*.xml"))
+        if not (path.parent.parent.name == "res" and path.parent.name.split("-")[0] == "values")
+    ]
+    for res in sorted(root.rglob("src/*/res")):
+        main = res.parent.name == "main"
+        for directory in sorted(d for d in res.iterdir() if d.is_dir()):
+            kind = directory.name.split("-")[0]
+            for path in sorted(p for p in directory.iterdir() if p.is_file()):
+                if kind != "values":
+                    if main and kind in _TRACKED_FILES:
+                        declared.setdefault((kind, path.name.split(".")[0]), path.relative_to(root).as_posix())
+                    continue
+                try:
+                    elements = ET.parse(path).getroot()
+                except ET.ParseError:
+                    continue  # `_resources` reports it.
+                for element in elements:
+                    body = ET.tostring(element, encoding="unicode")
+                    tag = element.get("type", "item") if element.tag == "item" else element.tag
+                    name = element.get("name")
+                    if tag not in _TRACKED_VALUES or not name:
+                        # Styles, attributes and the like are not checked here; what they name is used.
+                        roots.append(body)
+                        continue
+                    key = (_TRACKED_VALUES[tag], name.replace(".", "_"))
+                    bodies[key].append(body)
+                    if main and directory.name == "values":
+                        declared.setdefault(key, path.relative_to(root).as_posix())
+
+    used: set[tuple[str, str]] = set()
+    pending = [reference for text in roots for reference in _references(text)]
+    while pending:
+        key = pending.pop()
+        if key not in used:
+            used.add(key)
+            pending.extend(reference for body in bodies.get(key, ()) for reference in _references(body))
+    return [
+        f"UNUSED-RES {where}: {kind}/{name}"
+        for (kind, name), where in sorted(declared.items(), key=lambda item: (item[1], item[0]))
+        if (kind, name) not in used
+    ]
 
 
 def _translations(root: Path) -> list[str]:
