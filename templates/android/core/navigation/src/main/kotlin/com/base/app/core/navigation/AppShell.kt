@@ -192,7 +192,7 @@ fun AppShell(
     Box(modifier = modifier.fillMaxSize()) {
         // A rail stays beside the content at every depth; nothing covers the bottom of the window,
         // so no entry needs the bar's inset.
-        if (AppTheme.windowSize.width >= WindowWidth.Medium) {
+        if (AppTheme.windowClass.width >= WindowWidth.Medium) {
             Row(modifier = Modifier.fillMaxSize()) {
                 AppNavigationRail(
                     items = items,

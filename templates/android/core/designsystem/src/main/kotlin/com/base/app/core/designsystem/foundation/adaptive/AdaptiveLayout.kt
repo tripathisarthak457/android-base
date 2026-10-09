@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -34,8 +33,8 @@ fun Modifier.centeredMaxWidth(maxWidth: Dp): Modifier = this
  */
 val shouldUseTwoPanes: Boolean
     @Composable get() {
-        val window = AppTheme.windowSize
-        return window.hasRoomForTwoPanes || (window.isShort && window.width >= WindowWidth.Medium)
+        val container = AppTheme.containerClass
+        return container.hasRoomForTwoPanes || (container.isShort && container.width >= WindowWidth.Medium)
     }
 
 /**

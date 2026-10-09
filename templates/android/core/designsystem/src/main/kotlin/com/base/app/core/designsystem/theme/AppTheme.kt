@@ -19,10 +19,17 @@ import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.adaptive.AppLayout
-import com.base.app.core.designsystem.foundation.adaptive.AppWindowSize
+import com.base.app.core.designsystem.foundation.adaptive.InputTraits
 import com.base.app.core.designsystem.foundation.adaptive.LocalAppLayout
-import com.base.app.core.designsystem.foundation.adaptive.LocalAppWindowSize
-import com.base.app.core.designsystem.foundation.adaptive.rememberAppWindowSize
+import com.base.app.core.designsystem.foundation.adaptive.LocalContainerClass
+import com.base.app.core.designsystem.foundation.adaptive.LocalInputTraits
+import com.base.app.core.designsystem.foundation.adaptive.LocalWindowClass
+import com.base.app.core.designsystem.foundation.adaptive.LocalWindowMetrics
+import com.base.app.core.designsystem.foundation.adaptive.LocalWindowPosture
+import com.base.app.core.designsystem.foundation.adaptive.SizeClass
+import com.base.app.core.designsystem.foundation.adaptive.WindowPosture
+import com.base.app.core.designsystem.foundation.adaptive.rememberWindowClass
+import com.base.app.core.designsystem.foundation.adaptive.rememberWindowMetrics
 import com.base.app.core.designsystem.foundation.content.LocalContentColor
 import com.base.app.core.designsystem.foundation.content.LocalTextStyle
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
@@ -62,7 +69,8 @@ class AppThemeDefaults internal constructor(
  * is [NoIndication], and each control states its feedback through `Modifier.pressable`.
  *
  * [reduceMotion] overrides the system's "Remove animations" setting, for previews and the catalog;
- * left null, the setting is followed as it changes.
+ * left null, the setting is followed as it changes. [posture] and [input] come from the activity,
+ * which watches the window for them; a nested theme keeps its parent's.
  */
 @Composable
 fun AppTheme(
@@ -73,6 +81,8 @@ fun AppTheme(
     colors: AppColors? = null,
     fonts: AppFonts = themeFonts(),
     reduceMotion: Boolean? = null,
+    posture: WindowPosture = AppTheme.posture,
+    input: InputTraits = AppTheme.input,
     content: @Composable () -> Unit,
 ) {
     val style = remember(designStyle) { designStyle.style() }
@@ -93,13 +103,16 @@ fun AppTheme(
     val reduceMotionState: State<Boolean> =
         if (reduceMotion == null) systemReduceMotion else remember(reduceMotion) { mutableStateOf(reduceMotion) }
 
-    val windowSize = rememberAppWindowSize()
-    val layout = remember(windowSize) { AppLayout.forWindow(windowSize) }
-    // The gutter every screen already uses follows the window, so margins grow on large screens
+    val outermost = LocalOverlayHost.current == null
+    val windowClass = rememberWindowClass()
+    val windowMetrics = rememberWindowMetrics()
+    // A theme nested inside a pane keeps the pane's class: its content is still laid out in the pane.
+    val containerClass = if (outermost) windowClass else LocalContainerClass.current
+    val layout = remember(containerClass) { AppLayout.forClass(containerClass) }
+    // The gutter every screen already uses follows the pane, so margins grow on large screens
     // without any screen asking.
     val spacing = remember(layout) { AppSpacing(gutter = layout.gutter) }
 
-    val outermost = LocalOverlayHost.current == null
     val bottomChrome = if (outermost) remember { ChromeInset() } else LocalBottomChrome.current
     val scope = rememberCoroutineScope()
     val shimmer = if (outermost) remember { ShimmerClock(scope) } else LocalShimmer.current
@@ -108,7 +121,11 @@ fun AppTheme(
         LocalAppColors provides resolved,
         LocalAppTypography provides typography,
         LocalAppSpacing provides spacing,
-        LocalAppWindowSize provides windowSize,
+        LocalWindowClass provides windowClass,
+        LocalContainerClass provides containerClass,
+        LocalWindowMetrics provides windowMetrics,
+        LocalWindowPosture provides posture,
+        LocalInputTraits provides input,
         LocalAppLayout provides layout,
         LocalAppShapes provides style.shapes,
         LocalAppStyle provides style,
@@ -186,13 +203,35 @@ object AppTheme {
         @ReadOnlyComposable
         get() = LocalAppStyle.current
 
-    /** The window's size classes. Decide layout from this, never from orientation or device. */
-    val windowSize: AppWindowSize
+    /**
+     * The window's size classes, for the shell: which navigation chrome, how many panes. Screens and
+     * components read [containerClass] instead. Decide layout from these, never from orientation or
+     * device.
+     */
+    val windowClass: SizeClass
         @Composable
         @ReadOnlyComposable
-        get() = LocalAppWindowSize.current
+        get() = LocalWindowClass.current
 
-    /** Measurements that follow the window: gutters, pane widths, maximum content widths. */
+    /** The size classes of the pane this is laid out in: the window's, unless a pane narrows it. */
+    val containerClass: SizeClass
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalContainerClass.current
+
+    /** How a foldable is held, and where its hinge is. */
+    val posture: WindowPosture
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalWindowPosture.current
+
+    /** The pointer and keyboard the person has right now. */
+    val input: InputTraits
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalInputTraits.current
+
+    /** Measurements that follow the pane: gutters, pane widths, maximum content widths. */
     val layout: AppLayout
         @Composable
         @ReadOnlyComposable

@@ -75,7 +75,7 @@ internal class ListDetailSceneStrategy(
 
 @Composable
 internal fun rememberListDetailSceneStrategy(): SceneStrategy<AppNavKey> {
-    val twoPanes = AppTheme.windowSize.hasRoomForTwoPanes
+    val twoPanes = AppTheme.windowClass.hasRoomForTwoPanes
     val listPaneWidth = AppTheme.layout.listPaneWidth
     return remember(twoPanes, listPaneWidth) { ListDetailSceneStrategy(twoPanes, listPaneWidth) }
 }

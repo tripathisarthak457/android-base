@@ -70,7 +70,7 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
             val index: @Composable () -> Unit = {
                 SectionIndex(environment = environment, onEnvironment = { environment = it }, selected = section, onSelect = { section = it })
             }
-            if (AppTheme.windowSize.hasRoomForTwoPanes) {
+            if (AppTheme.containerClass.hasRoomForTwoPanes) {
                 val shown = section ?: CatalogSection.entries.first()
                 Row(Modifier.fillMaxSize()) {
                     Box(Modifier.width(AppTheme.layout.listPaneWidth).fillMaxHeight()) { index() }

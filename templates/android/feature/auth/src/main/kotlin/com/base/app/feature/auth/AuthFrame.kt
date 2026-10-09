@@ -59,7 +59,7 @@ internal fun AuthFrame(
             val formCutout = if (twoPanes) WindowInsetsSides.End else WindowInsetsSides.Horizontal
             // On a phone the form starts at the top, under the thumb; with room to spare it sits in
             // the middle of the window, where a short form on a tall screen looks placed, not lost.
-            val centred = AppTheme.windowSize.width >= WindowWidth.Medium
+            val centred = AppTheme.containerClass.width >= WindowWidth.Medium
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(1f)
