@@ -1,5 +1,6 @@
 // Package generate runs the Python generator and hands back a zip. The generator is not
-// reimplemented here.
+// reimplemented here: the spec is passed through as the bytes the client sent, and Python is the
+// authority on what is valid. The contract is in generator/genkit/core/headless.py.
 package generate
 
 import (
@@ -11,208 +12,284 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
+	"strings"
 	"time"
+
+	"github.com/base-android/generator-api/internal/telemetry"
 )
 
-// Request is the subset of the generator's spec a browser is allowed to set. The field names are
-// the Python ones, because this struct is serialised straight to the subprocess's stdin.
-type Request struct {
-	AppName        string            `json:"app_name"`
-	PackageName    string            `json:"package_name"`
-	MinSDK         int               `json:"min_sdk,omitempty"`
-	TargetSDK      int               `json:"target_sdk,omitempty"`
-	CompileSDK     int               `json:"compile_sdk,omitempty"`
-	VersionName    string            `json:"version_name,omitempty"`
-	VersionCode    int               `json:"version_code,omitempty"`
-	Features       []string          `json:"features"`
-	FeatureModules []string          `json:"feature_modules"`
-	APIBaseURLs    map[string]string `json:"api_base_urls,omitempty"`
-	WebSocketURLs  map[string]string `json:"web_socket_urls,omitempty"`
-	DeeplinkScheme string            `json:"deeplink_scheme,omitempty"`
-	DeeplinkHost   string            `json:"deeplink_host,omitempty"`
-	FontName       string            `json:"font_name,omitempty"`
-	MonoFontName   string            `json:"mono_font_name,omitempty"`
-	AccentColour   string            `json:"accent_colour,omitempty"`
-	// Blank is meaningful: the generator works a supporting colour out from the primary rather
-	// than leaving the template's. omitempty is what sends it as blank rather than as null.
-	SecondaryColour string     `json:"secondary_colour,omitempty"`
-	TertiaryColour  string     `json:"tertiary_colour,omitempty"`
-	MotionStyle     string     `json:"motion_style,omitempty"`
-	DesignStyle     string     `json:"design_style,omitempty"`
-	HapticsEnabled  *bool      `json:"haptics_enabled,omitempty"`
-	Languages       []string   `json:"languages,omitempty"`
-	Keystores       []Keystore `json:"keystores,omitempty"`
+// Options configure every target's generator.
+type Options struct {
+	PythonBin    string
+	GeneratorDir string
+	// WorkRoot holds one directory per running generation and is removed at shutdown.
+	WorkRoot string
+	// Timeout bounds one generation from spawn to exit; queueing does not count.
+	Timeout time.Duration
+	// Concurrency is per target, so a slow target cannot starve another.
+	Concurrency int
+	// CatalogueFile is the catalogue precomputed at image build. Empty asks the generator at boot.
+	CatalogueFile string
 }
 
-// Keystore asks the generator to create one signing key. These fields carry passwords.
-type Keystore struct {
-	Name          string `json:"name"`
-	Alias         string `json:"alias"`
-	StorePassword string `json:"store_password"`
-	KeyPassword   string `json:"key_password"`
-	CommonName    string `json:"common_name,omitempty"`
-	Organisation  string `json:"organisation,omitempty"`
-	Country       string `json:"country,omitempty"`
-	ValidityDays  int    `json:"validity_days,omitempty"`
-}
-
-// Result is what the generator reports on success.
-type Result struct {
-	ProjectName    string   `json:"projectName"`
-	PackageName    string   `json:"packageName"`
-	Features       []string `json:"features"`
-	FeatureModules []string `json:"featureModules"`
-	// Which keys keytool actually produced. A name in Skipped means the project is complete but
-	// that variant falls back to debug signing, which the visitor has to be told.
-	KeystoresGenerated []string `json:"keystoresGenerated"`
-	KeystoresSkipped   []string `json:"keystoresSkipped"`
-	ZipPath            string   `json:"zipPath"`
-	ZipBytes           int64    `json:"zipBytes"`
-	ElapsedMillis      int      `json:"elapsedMillis"`
-	Warnings           []string `json:"warnings"`
-	IgnoredFields      []string `json:"ignoredFields"`
-}
-
-// InvalidRequestError is a rejection by the generator's own validation — a bad package name, an
-// unknown feature. It is the caller's fault, so it becomes a 400 rather than a 500.
-type InvalidRequestError struct{ Message string }
-
-func (e *InvalidRequestError) Error() string { return e.Message }
-
-// Generator runs one Python process per request, bounded by a semaphore.
+// Generator runs one Python process per request for one target, bounded by its own semaphore.
 type Generator struct {
-	pythonBin  string
-	scriptDir  string
-	timeout    time.Duration
-	concurrent chan struct{}
+	Target TargetEntry
+	Rules  Rules
+
+	pythonBin string
+	scriptDir string
+	// sourceDir is scriptDir with symlinks resolved, which is how Python names the files in a
+	// traceback.
+	sourceDir string
+	workRoot  string
+	timeout   time.Duration
+	slots     chan struct{}
+	// stopping is cancelled at shutdown, so children still running are killed rather than orphaned.
+	stopping context.Context
 }
 
-func New(pythonBin, generatorDir string, timeout time.Duration, maxConcurrent int) (*Generator, error) {
-	absolute, err := filepath.Abs(generatorDir)
+// New makes the generator for one catalogue target. stopping ends every generation still running
+// when it is cancelled.
+func New(stopping context.Context, opts Options, target TargetEntry, rules Rules) (*Generator, error) {
+	dir, err := filepath.Abs(opts.GeneratorDir)
 	if err != nil {
 		return nil, fmt.Errorf("resolving the generator directory: %w", err)
 	}
-	script := filepath.Join(absolute, "generate_headless.py")
-	if _, err := os.Stat(script); err != nil {
-		return nil, fmt.Errorf("generate_headless.py not found at %s: %w", script, err)
+	if _, err := os.Stat(filepath.Join(dir, "generate_headless.py")); err != nil {
+		return nil, fmt.Errorf("generate_headless.py not found in %s: %w", dir, err)
+	}
+	source, err := filepath.EvalSymlinks(dir)
+	if err != nil {
+		return nil, fmt.Errorf("resolving the generator directory: %w", err)
 	}
 	return &Generator{
-		pythonBin:  pythonBin,
-		scriptDir:  absolute,
-		timeout:    timeout,
-		concurrent: make(chan struct{}, maxConcurrent),
+		Target:    target,
+		Rules:     rules,
+		pythonBin: opts.PythonBin,
+		scriptDir: dir,
+		sourceDir: source,
+		workRoot:  opts.WorkRoot,
+		timeout:   opts.Timeout,
+		slots:     make(chan struct{}, max(opts.Concurrency, 1)),
+		stopping:  stopping,
 	}, nil
 }
 
-// Run generates a project and returns the path to a zip and a cleanup function. The caller must
-// call cleanup once it has finished streaming the file, whether or not it succeeded.
-func (g *Generator) Run(ctx context.Context, request Request) (Result, func(), error) {
-	noop := func() {}
+// Result is the generator's success report.
+type Result struct {
+	ProjectName      string   `json:"project_name"`
+	ElapsedMs        int      `json:"elapsed_ms"`
+	ZipBytes         int64    `json:"zip_bytes"`
+	ResolvedFeatures []string `json:"resolved_features"`
+	Notes            []string `json:"notes"`
+	Warnings         []string `json:"warnings"`
+	IgnoredFields    []string `json:"ignored_fields"`
+	GeneratorCommit  string   `json:"generator_commit"`
+	// Keys that were asked for and not produced: no JDK on this host, or keytool refused them.
+	// Optional: generate_headless.py does not report it yet.
+	KeystoresSkipped []string `json:"keystores_skipped"`
+}
 
+// Output is a finished project. Close removes it and everything else the generator wrote.
+type Output struct {
+	Result
+	ZipPath   string
+	QueueTime time.Duration
+	RunTime   time.Duration
+	dir       string
+}
+
+func (o *Output) Close() error { return os.RemoveAll(o.dir) }
+
+// Failure says why a generation produced no zip. Message is safe to show only for Invalid; Detail
+// (a traceback or stderr) is for the error list and never reaches the visitor.
+type Failure struct {
+	Outcome telemetry.Outcome
+	Message string
+	Field   string
+	Detail  string
+	// Signature tells apart the bugs behind internal failures that share a Message: the exception
+	// and the frame it was raised in, or the last thing a crashed child wrote. Empty when Message
+	// is all there is to go on.
+	Signature string
+	QueueTime time.Duration
+	RunTime   time.Duration
+}
+
+func (f *Failure) Error() string {
+	if f.Message == "" {
+		return string(f.Outcome)
+	}
+	return string(f.Outcome) + ": " + f.Message
+}
+
+// headlessReply is the one JSON object generate_headless.py prints, success or failure.
+type headlessReply struct {
+	Result
+	OK     bool   `json:"ok"`
+	Kind   string `json:"kind"`
+	Error  string `json:"error"`
+	Field  string `json:"field"`
+	Detail string `json:"detail"`
+}
+
+// Run generates a project from spec, which is passed to the generator unchanged. Every failure is
+// a *Failure. On success the caller must Close the output once it has streamed the zip.
+func (g *Generator) Run(ctx context.Context, spec []byte) (*Output, error) {
+	queued := time.Now()
 	// Queue before doing any work, so a burst waits rather than starting fifty interpreters. The
-	// request's own context still applies, so a visitor who gives up frees their slot.
+	// request's own context still applies, so a visitor who gives up frees their place.
 	select {
-	case g.concurrent <- struct{}{}:
-		defer func() { <-g.concurrent }()
+	case g.slots <- struct{}{}:
 	case <-ctx.Done():
-		return Result{}, noop, ctx.Err()
+		return nil, &Failure{Outcome: telemetry.AbandonedQueue, QueueTime: time.Since(queued)}
 	}
+	defer func() { <-g.slots }()
+	queue := time.Since(queued)
 
-	body, err := json.Marshal(request)
+	dir, err := os.MkdirTemp(g.workRoot, g.Target.Key+"-")
 	if err != nil {
-		return Result{}, noop, fmt.Errorf("encoding the request: %w", err)
+		return nil, &Failure{Outcome: telemetry.InternalError, Message: "could not create a working directory",
+			Detail: err.Error(), QueueTime: queue}
 	}
-
-	workDir, err := os.MkdirTemp("", "androidgen-out-")
-	if err != nil {
-		return Result{}, noop, fmt.Errorf("creating a working directory: %w", err)
+	output, failure := g.run(ctx, dir, spec)
+	if failure != nil {
+		_ = os.RemoveAll(dir)
+		failure.QueueTime = queue
+		return nil, failure
 	}
-	cleanup := func() { _ = os.RemoveAll(workDir) }
+	output.QueueTime = queue
+	return output, nil
+}
 
-	output := filepath.Join(workDir, "project.zip")
+func (g *Generator) run(ctx context.Context, dir string, spec []byte) (*Output, *Failure) {
+	zipPath := filepath.Join(dir, "project.zip")
 
 	runCtx, cancel := context.WithTimeout(ctx, g.timeout)
 	defer cancel()
+	stopRun := context.AfterFunc(g.stopping, cancel)
+	defer stopRun()
 
-	cmd := exec.CommandContext(runCtx, g.pythonBin, "generate_headless.py", output)
+	cmd := exec.CommandContext(runCtx, g.pythonBin, "generate_headless.py", "--target", g.Target.Key, zipPath)
 	cmd.Dir = g.scriptDir
-	cmd.Stdin = bytes.NewReader(body)
-	// Unbuffered, so a crash's traceback is not lost in a pipe that never flushes.
-	cmd.Env = append(os.Environ(), "PYTHONUNBUFFERED=1", "PYTHONIOENCODING=utf-8")
+	cmd.Stdin = bytes.NewReader(spec)
+	cmd.Env = childEnv(dir)
 	ownProcessGroup(cmd)
 	// A child that outlives the kill still holds the output pipes open; stop waiting on them.
 	cmd.WaitDelay = 5 * time.Second
 
 	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
+	cmd.Stdout = &capped{limit: 1 << 20, buf: &stdout}
+	cmd.Stderr = &capped{limit: 64 << 10, buf: &stderr}
 
+	started := time.Now()
 	runErr := cmd.Run()
-
-	// The generator reports both success and rejection as JSON on stdout, so parse before
-	// looking at the exit code: a non-zero exit with a parseable body is a validation failure,
-	// and a non-zero exit without one is a crash.
-	var failure struct {
-		Error  string `json:"error"`
-		Detail string `json:"detail"`
-	}
-	if json.Unmarshal(stdout.Bytes(), &failure) == nil && failure.Error != "" {
-		cleanup()
-		return Result{}, noop, &InvalidRequestError{Message: failure.Error}
-	}
+	ran := time.Since(started)
 
 	if runErr != nil {
-		cleanup()
-		if errors.Is(runCtx.Err(), context.DeadlineExceeded) {
-			return Result{}, noop, fmt.Errorf("the generator timed out after %s", g.timeout)
+		switch {
+		case ctx.Err() != nil:
+			return nil, &Failure{Outcome: telemetry.AbandonedRunning, RunTime: ran}
+		case errors.Is(runCtx.Err(), context.DeadlineExceeded):
+			return nil, &Failure{Outcome: telemetry.Timeout, Message: fmt.Sprintf("the generator ran past %s", g.timeout),
+				Detail: stderr.String(), RunTime: ran}
+		case runCtx.Err() != nil:
+			// The server is shutting down: neither the visitor's spec nor the generator is at fault.
+			return nil, &Failure{Outcome: telemetry.AbandonedRunning, Message: "the server stopped during generation", RunTime: ran}
 		}
-		return Result{}, noop, fmt.Errorf(
-			"the generator failed: %w; stderr: %s", runErr, truncate(stderr.String(), 2000),
-		)
 	}
 
-	var result Result
-	if err := json.Unmarshal(stdout.Bytes(), &result); err != nil {
-		cleanup()
-		return Result{}, noop, fmt.Errorf(
-			"could not read the generator's output: %w; got: %s",
-			err, truncate(stdout.String(), 500),
-		)
-	}
-	if result.ZipPath == "" {
-		cleanup()
-		return Result{}, noop, errors.New("the generator reported success but produced no zip")
+	var reply headlessReply
+	if err := json.Unmarshal(stdout.Bytes(), &reply); err != nil {
+		return nil, &Failure{Outcome: telemetry.InternalError, Message: "the generator's reply was not JSON",
+			Detail: describeExit(runErr, &stdout, &stderr), Signature: g.crashSignature(runErr, &stderr), RunTime: ran}
 	}
 
-	return result, cleanup, nil
+	if !reply.OK {
+		if reply.Kind == "invalid" {
+			return nil, &Failure{Outcome: telemetry.Invalid, Message: reply.Error, Field: reply.Field, RunTime: ran}
+		}
+		detail, signature := reply.Detail, g.signature(reply.Detail)
+		if detail == "" {
+			detail, signature = describeExit(runErr, &stdout, &stderr), g.crashSignature(runErr, &stderr)
+		}
+		message := reply.Error
+		if message == "" {
+			message = "the generator failed"
+		}
+		return nil, &Failure{Outcome: telemetry.InternalError, Message: message, Detail: detail, Signature: signature,
+			RunTime: ran}
+	}
+
+	info, err := os.Stat(zipPath)
+	if runErr != nil || err != nil || info.Size() == 0 {
+		return nil, &Failure{Outcome: telemetry.InternalError, Message: "the generator reported success without a zip",
+			Detail: describeExit(runErr, &stdout, &stderr), RunTime: ran}
+	}
+	reply.ZipBytes = info.Size()
+	return &Output{Result: reply.Result, ZipPath: zipPath, RunTime: ran, dir: dir}, nil
 }
 
-// Catalogue asks the generator for its own option list. Called once at boot and cached, so the
-// site's form and the generator's rules can never disagree.
-func (g *Generator) Catalogue(ctx context.Context) (json.RawMessage, error) {
-	runCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
-	defer cancel()
-
-	cmd := exec.CommandContext(runCtx, g.pythonBin, "-m", "genkit.catalogue")
-	cmd.Dir = g.scriptDir
-	cmd.Env = append(os.Environ(), "PYTHONUNBUFFERED=1", "PYTHONIOENCODING=utf-8")
-
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	if err := cmd.Run(); err != nil {
-		return nil, fmt.Errorf("reading the catalogue: %w; stderr: %s", err, truncate(stderr.String(), 1000))
+func describeExit(runErr error, stdout, stderr *bytes.Buffer) string {
+	status := "exit 0"
+	if runErr != nil {
+		status = runErr.Error()
 	}
-	if !json.Valid(stdout.Bytes()) {
-		return nil, errors.New("the catalogue was not valid JSON")
-	}
-	return json.RawMessage(bytes.TrimSpace(stdout.Bytes())), nil
+	return fmt.Sprintf("%s\nstdout:\n%s\nstderr:\n%s", status, stdout.String(), stderr.String())
 }
 
-func truncate(s string, limit int) string {
-	if len(s) <= limit {
-		return s
+// childEnv is the whole environment the generator gets. Nothing is inherited: the server's own
+// environment holds the database URL and the admin token. HOME and TMPDIR point into the work
+// directory, so everything Python and keytool write (staging trees, keystores and their passwords)
+// is under the one directory that is removed, whatever signal ends the process.
+func childEnv(dir string) []string {
+	env := []string{
+		"PATH=" + os.Getenv("PATH"),
+		"HOME=" + dir,
+		"TMPDIR=" + dir,
+		"LANG=C.UTF-8",
+		"PYTHONUNBUFFERED=1",
+		"PYTHONIOENCODING=utf-8",
+		"PYTHONDONTWRITEBYTECODE=1",
 	}
-	return s[:limit] + "… (truncated)"
+	if javaHome := os.Getenv("JAVA_HOME"); javaHome != "" {
+		env = append(env, "JAVA_HOME="+javaHome)
+	}
+	// Python on Windows cannot initialise without SYSTEMROOT.
+	if runtime.GOOS == "windows" {
+		env = append(env, "SYSTEMROOT="+os.Getenv("SYSTEMROOT"))
+	}
+	return env
+}
+
+// capped keeps the first limit bytes and discards the rest, so a runaway child cannot grow the
+// server's memory.
+type capped struct {
+	limit int
+	buf   *bytes.Buffer
+}
+
+func (c *capped) Write(p []byte) (int, error) {
+	if room := c.limit - c.buf.Len(); room > 0 {
+		c.buf.Write(p[:min(room, len(p))])
+	}
+	return len(p), nil
+}
+
+// ProjectFileName is the download's file name, reduced to characters that are safe in a
+// Content-Disposition header whatever the generator reported.
+func ProjectFileName(projectName string) string {
+	name := strings.Map(func(r rune) rune {
+		switch {
+		case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z', r >= '0' && r <= '9', r == '-', r == '_':
+			return r
+		}
+		return -1
+	}, projectName)
+	if name == "" {
+		name = "project"
+	}
+	return name + ".zip"
 }

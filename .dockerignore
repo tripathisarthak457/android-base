@@ -1,21 +1,28 @@
-# The build context is the repository root, and most of the repository has no business in the
-# image. `templates/android/` alone carries 2.7GB of Gradle output on a machine that has ever built it;
-# what the generator actually needs from it is about 1.5MB.
+# The build context is the repository root, and the image needs four directories of it. Everything
+# else is excluded by default, so a new folder at the root does not quietly end up in the image.
+*
+!generator/
+!templates/
+!tokens/
+!web/api/
 
+# Build output and tool state inside those four: Gradle's alone is gigabytes on a machine that has
+# built the templates.
 **/build/
 **/.gradle/
 **/.kotlin/
+**/.cxx/
 **/.idea/
+**/captures/
 **/__pycache__/
+**/DerivedData/
+**/.build/
+**/xcuserdata/
+**/.swiftpm/
+**/kotlin-js-store/
 **/node_modules/
-**/.next/
-**/.vercel/
-**/*.tsbuildinfo
-
-.git/
-.github/
-web/frontend/
-web/deploy/
+**/*.zip
+generator/tests/
 
 # Never, under any circumstances, in an image that gets pushed somewhere.
 **/local.properties
