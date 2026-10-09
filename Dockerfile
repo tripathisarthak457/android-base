@@ -36,8 +36,8 @@ COPY templates/ /app/templates/
 COPY tokens/ /app/tokens/
 
 # The base image deletes the standard library's bytecode and the server runs as nobody, who cannot
-# write it back, so without this every generation recompiled the stdlib and genkit (about 150 ms
-# each). The catalogue is computed here once rather than by Python at every cold start.
+# write it back, so without this every generation would recompile the stdlib and genkit before
+# doing any work. The catalogue is computed here once rather than by Python at every cold start.
 RUN python -m compileall -q -j 0 /usr/local/lib/python3.12 /app/generator \
  && cd /app/generator \
  && python -m genkit.core.catalogue --json > /app/catalogue.json
