@@ -1,4 +1,3 @@
-// <opt:deeplink>
 package com.base.app.deeplink
 
 import org.junit.Assert.assertEquals
@@ -52,4 +51,3 @@ class LinkEntryManifestTest {
         const val ANDROID = "http://schemas.android.com/apk/res/android"
     }
 }
-// </opt:deeplink>

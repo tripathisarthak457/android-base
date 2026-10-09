@@ -113,6 +113,6 @@ include(":feature:onboarding")
 // <generated:feature-modules>
 
 // ── tooling ──────────────────────────────────────────────────────────────────
-// <opt:baselineprofile>
+// <opt:performance>
 include(":benchmark")
-// </opt:baselineprofile>
+// </opt:performance>
