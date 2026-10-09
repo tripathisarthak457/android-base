@@ -157,8 +157,9 @@ def _validate_motion(motion: dict[str, Any]) -> None:
     navigation = _table("motion", "navigation", motion.get("navigation"), ("parallax", "scrimAlpha", "edgeShadow"))
     _number("motion", "navigation.parallax", navigation["parallax"], 0)
     _number("motion", "navigation.edgeShadow", navigation["edgeShadow"], 0)
+    scrim = _table("motion", "navigation.scrimAlpha", navigation["scrimAlpha"], THEMES)
     for theme in THEMES:
-        _number("motion", f"navigation.scrimAlpha.{theme}", _table("motion", "navigation.scrimAlpha", navigation["scrimAlpha"], THEMES)[theme], 0)
+        _number("motion", f"navigation.scrimAlpha.{theme}", scrim[theme], 0)
 
 
 def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
