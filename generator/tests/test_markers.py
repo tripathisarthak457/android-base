@@ -90,6 +90,9 @@ class GeneratedTest(unittest.TestCase):
             run("before\n// <generated:modules>\nafter\n", regions={"modules": ['include(":data:a")\n']}),
         )
 
+    def test_a_point_on_a_last_line_with_no_newline_keeps_its_lines_apart(self):
+        self.assertEqual("x\none\ntwo\n", run("x\n// <generated:n>", regions={"n": ["one", "two"]}))
+
     def test_a_region_replaces_its_default_lines(self):
         source = "x\n    // <generated:version>\n    const val V = 1\n    // </generated:version>\ny\n"
         self.assertEqual("x\n    const val V = 2\ny\n", run(source, regions={"version": ["    const val V = 2\n"]}))

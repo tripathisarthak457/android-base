@@ -292,7 +292,9 @@ def render(
                 if not default:
                     removed()
             elif supplied:
-                out.extend((line if line.endswith("\n") else line + ending, True) for line in supplied)
+                # A point on a last line with no newline still has to keep the lines it supplies apart.
+                separator = ending or "\n"
+                out.extend((line if line.endswith("\n") else line + separator, True) for line in supplied)
             else:
                 removed()
         elif patterns.generated_end.match(body):
