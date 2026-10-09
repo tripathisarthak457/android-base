@@ -45,12 +45,16 @@ class BoundaryTest(unittest.TestCase):
             "Lcom/base/app/core/navigation/X;\n"
             "HSPLcom/base/app/BaseAppApplication;->onCreate()V\n"
             "SPLcom/base/app/X;\n"
+            "HSPLcom/base/app/core/designsystem/**->**(**)**\n"
+            "Lcom/base/app/feature/*/api/**;\n"
             "PLandroidx/compose/Foo;\n"
         )
         self.assertEqual(
             "Lcom/acme/field/core/navigation/X;\n"
             "HSPLcom/acme/field/AcmeFieldApplication;->onCreate()V\n"
             "SPLcom/acme/field/X;\n"
+            "HSPLcom/acme/field/core/designsystem/**->**(**)**\n"
+            "Lcom/acme/field/feature/*/api/**;\n"
             "PLandroidx/compose/Foo;\n",
             renamer().rename(rules),
         )
