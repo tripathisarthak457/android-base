@@ -22,8 +22,9 @@ internal fun Transition<EnterExitState>.arrival(motion: ScreenMotion): State<Flo
     }
 
 /**
- * Tells [gate] while this scene's transition is short of settled. A transition being seeked by a
- * back gesture is not "moving" here: the gesture owns it, and its release arrives as one Back.
+ * Tells [gate] while this scene's transition is short of settled. That includes a back swipe in
+ * progress: the swipe stays with the handler that took it (navigationevent finishes a started
+ * gesture on its own handler), and a Back pressed meanwhile is counted rather than applied under it.
  *
  * The threshold is on the distance travelled rather than on play time, which Compose does not
  * expose: at [BackGate.SETTLED_ENOUGH] the arriving screen is within a few pixels of its place, so
@@ -35,7 +36,7 @@ internal fun ReportMotion(transition: Transition<EnterExitState>, arrival: State
     LaunchedEffect(transition, arrival, gate) {
         snapshotFlow {
             val travelled = if (transition.targetState == EnterExitState.Visible) arrival.value else 1f - arrival.value
-            transition.isRunning && !transition.isSeeking && travelled < BackGate.SETTLED_ENOUGH
+            transition.isRunning && travelled < BackGate.SETTLED_ENOUGH
         }.collect { gate.report(reporter, it) }
     }
     DisposableEffect(gate) {

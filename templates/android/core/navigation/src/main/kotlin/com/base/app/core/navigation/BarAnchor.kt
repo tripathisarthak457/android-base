@@ -20,6 +20,7 @@ import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutAwareModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.invalidateDraw
+import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.unit.LayoutDirection
 
 /**
@@ -73,6 +74,10 @@ private data class FollowCoveredElement(
         node.parallax = parallax
         node.scrimAlpha = scrimAlpha
         node.invalidateDraw()
+    }
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "followCovered"
     }
 }
 

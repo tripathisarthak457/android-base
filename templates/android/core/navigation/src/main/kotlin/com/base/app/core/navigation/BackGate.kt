@@ -44,7 +44,7 @@ class BackGate internal constructor(private val maxCoalesced: Int = MAX_COALESCE
     internal var counted = 0
         private set
 
-    internal var lastChange: StackChange? = null
+    internal var lastChange: StackChange? by mutableStateOf(null)
         private set
 
     /** A Back press: pops one entry now, or counts it while the screens move. */

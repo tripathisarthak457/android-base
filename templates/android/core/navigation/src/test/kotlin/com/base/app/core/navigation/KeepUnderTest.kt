@@ -87,4 +87,27 @@ class KeepUnderTest {
         assertEquals(Lifecycle.State.RESUMED, rootLifecycle!!.currentState)
         rule.onNodeWithTagExists(FeedTab)
     }
+
+    @Test
+    fun `a pop does not lay out the screen beneath the one it returns to`() {
+        rule.setContent {
+            AppTheme { StackHost(stack = stack, registry = registry, motion = ScreenMotion()) }
+        }
+        listOf(Post(1), Post(2)).forEach { key ->
+            rule.runOnIdle {
+                stack.apply(NavCommand.Navigate(key))
+                stack.gate.changed(StackChange.Push)
+            }
+            rule.waitForIdle()
+        }
+        val measuresBeforePop = rootMeasures
+
+        rule.runOnIdle { stack.gate.onBack { stack.pop(it) } }
+        rule.waitForIdle()
+
+        // The root sits under Post(1), which arrives opaque over it: laying it out would be a whole
+        // screen of work per frame that nobody sees.
+        assertEquals(listOf(FeedTab, Post(1)), stack.keys)
+        assertEquals("the root was laid out during the pop", measuresBeforePop, rootMeasures)
+    }
 }
