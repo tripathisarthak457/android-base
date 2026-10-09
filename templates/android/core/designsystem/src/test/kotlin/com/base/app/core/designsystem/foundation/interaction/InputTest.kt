@@ -1,0 +1,89 @@
+package com.base.app.core.designsystem.foundation.interaction
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.MouseButton
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.click
+import androidx.compose.ui.test.performMouseInput
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.setThemed
+import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+
+/** Mouse and keyboard on a control: ADAPTIVE-PLAN 9.2. */
+@OptIn(ExperimentalTestApi::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [TEST_SDK])
+class InputTest {
+
+    @get:Rule
+    val rule = createComposeRule()
+
+    private var clicks = 0
+    private var secondary: Offset? = null
+    private var pressStarts = 0
+
+    private fun row() {
+        rule.setThemed {
+            Box(
+                Modifier
+                    .testTag("row")
+                    .pressable(
+                        onClick = { clicks++ },
+                        feedback = PressFeedback.Highlight,
+                        onSecondaryClick = { secondary = it },
+                        onPressStart = { pressStarts++ },
+                    ),
+            ) {
+                Box(Modifier.size(200.dp, 56.dp))
+            }
+        }
+    }
+
+    @Test
+    fun `a right click opens the menu at the pointer and never clicks`() {
+        row()
+        rule.onNodeWithTag("row").performMouseInput {
+            moveTo(Offset(30f, 20f))
+            press(MouseButton.Secondary)
+            release(MouseButton.Secondary)
+        }
+        rule.waitForIdle()
+        assertEquals(0, clicks)
+        assertEquals(Offset(30f, 20f), secondary)
+    }
+
+    @Test
+    fun `a left click is still a click`() {
+        row()
+        rule.onNodeWithTag("row").performMouseInput { click(Offset(30f, 20f)) }
+        rule.waitForIdle()
+        assertEquals(1, clicks)
+        assertEquals(null, secondary)
+    }
+
+    @Test
+    fun `the press-start hook runs as the finger lands, before anything is known about the tap`() {
+        row()
+        rule.mainClock.autoAdvance = false
+        rule.onNodeWithTag("row").performTouchInput { down(center) }
+        rule.mainClock.advanceTimeByFrame()
+        assertEquals(1, pressStarts)
+        assertEquals(0, clicks)
+        rule.onNodeWithTag("row").performTouchInput { up() }
+        rule.mainClock.advanceTimeBy(500)
+        assertEquals(1, clicks)
+    }
+}

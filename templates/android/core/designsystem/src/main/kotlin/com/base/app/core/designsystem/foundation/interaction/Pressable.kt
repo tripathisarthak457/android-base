@@ -24,7 +24,14 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.KeyInputModifierNode
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerEvent
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.PointerInputScope
+import androidx.compose.ui.input.pointer.PointerType
+import androidx.compose.ui.input.pointer.isPrimaryPressed
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.input.pointer.SuspendingPointerInputModifierNode
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
@@ -34,6 +41,7 @@ import androidx.compose.ui.node.DelegatingNode
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.PointerInputModifierNode
 import androidx.compose.ui.node.SemanticsModifierNode
 import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.invalidateDraw
@@ -52,6 +60,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toOffset
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.theme.LocalAppColors
 import com.base.app.core.designsystem.theme.LocalAppSprings
@@ -69,6 +78,12 @@ import kotlinx.coroutines.launch
  * animation is read only where the content is placed, so pressing never recomposes or re-measures.
  * A press is shown after the tap timeout, as a scroll view delays it, so starting a scroll on a row
  * does not flash it; a tap quicker than that still shows the whole dip before the spring back.
+ *
+ * With a mouse or trackpad, a secondary click goes to [onSecondaryClick] (a context menu, at the
+ * pointer's position in the control) and never to [onClick]; a row under the pointer shows half its
+ * highlight, and the pointer turns into a hand. [onPressStart] runs as the finger lands, before the
+ * press shows or the tap is known, so a destination can start loading during the tap: it must be
+ * cheap and must not change what is on screen.
  */
 fun Modifier.pressable(
     onClick: () -> Unit,
@@ -78,8 +93,10 @@ fun Modifier.pressable(
     onClickLabel: String? = null,
     haptic: AppHaptic? = null,
     onLongClick: (() -> Unit)? = null,
+    onSecondaryClick: ((Offset) -> Unit)? = null,
+    onPressStart: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource? = null,
-): Modifier = this then PressableElement(
+): Modifier = (if (enabled) pointerHoverIcon(PointerIcon.Hand) else this) then PressableElement(
     onClick = onClick,
     feedback = feedback,
     enabled = enabled,
@@ -87,6 +104,8 @@ fun Modifier.pressable(
     onClickLabel = onClickLabel,
     haptic = haptic,
     onLongClick = onLongClick,
+    onSecondaryClick = onSecondaryClick,
+    onPressStart = onPressStart,
     interactionSource = interactionSource,
 )
 
@@ -98,13 +117,19 @@ private data class PressableElement(
     val onClickLabel: String?,
     val haptic: AppHaptic?,
     val onLongClick: (() -> Unit)?,
+    val onSecondaryClick: ((Offset) -> Unit)?,
+    val onPressStart: (() -> Unit)?,
     val interactionSource: MutableInteractionSource?,
 ) : ModifierNodeElement<PressableNode>() {
-    override fun create() =
-        PressableNode(onClick, feedback, enabled, role, onClickLabel, haptic, onLongClick, interactionSource)
+    override fun create() = PressableNode(
+        onClick, feedback, enabled, role, onClickLabel, haptic,
+        onLongClick, onSecondaryClick, onPressStart, interactionSource,
+    )
 
-    override fun update(node: PressableNode) =
-        node.update(onClick, feedback, enabled, role, onClickLabel, haptic, onLongClick, interactionSource)
+    override fun update(node: PressableNode) = node.update(
+        onClick, feedback, enabled, role, onClickLabel, haptic,
+        onLongClick, onSecondaryClick, onPressStart, interactionSource,
+    )
 
     override fun InspectorInfo.inspectableProperties() {
         name = "pressable"
@@ -122,6 +147,8 @@ private class PressableNode(
     private var onClickLabel: String?,
     private var haptic: AppHaptic?,
     private var onLongClick: (() -> Unit)?,
+    private var onSecondaryClick: ((Offset) -> Unit)?,
+    private var onPressStart: (() -> Unit)?,
     private var externalSource: MutableInteractionSource?,
 ) : DelegatingNode(),
     LayoutModifierNode,
@@ -137,6 +164,10 @@ private class PressableNode(
     private var keyPressed = false
 
     private var focus: FocusInteraction.Focus? = null
+    private var hovered = false
+
+    /** True from a secondary button's press to its release: those events are the menu's, not a tap's. */
+    private var secondaryPress = false
     private var childOffset = IntOffset.Zero
     private var childSize = IntSize.Zero
     private var scaleTarget = 1f
@@ -149,6 +180,12 @@ private class PressableNode(
 
     private val pointerInput = delegate(SuspendingPointerInputModifierNode { detectTaps() })
 
+    // Its own node: a node that implements a kind itself is the only one of that kind Compose
+    // visits, so implementing pointer input here would silence the tap detector above.
+    init {
+        delegate(PointerExtrasNode(::onPointerExtras, ::onPointerExtrasCancelled))
+    }
+
     fun update(
         onClick: () -> Unit,
         feedback: PressFeedback,
@@ -157,6 +194,8 @@ private class PressableNode(
         onClickLabel: String?,
         haptic: AppHaptic?,
         onLongClick: (() -> Unit)?,
+        onSecondaryClick: ((Offset) -> Unit)?,
+        onPressStart: (() -> Unit)?,
         interactionSource: MutableInteractionSource?,
     ) {
         val gestureChanged = enabled != this.enabled || (onLongClick == null) != (this.onLongClick == null)
@@ -174,6 +213,8 @@ private class PressableNode(
         this.onClickLabel = onClickLabel
         this.haptic = haptic
         this.onLongClick = onLongClick
+        this.onSecondaryClick = onSecondaryClick
+        this.onPressStart = onPressStart
         this.externalSource = interactionSource
 
         focusTarget.focusability = focusabilityFor(enabled)
@@ -189,6 +230,7 @@ private class PressableNode(
         val longClick = onLongClick
         detectTapGestures(
             onPress = { offset ->
+                onPressStart?.invoke()
                 // Shown after the tap timeout, as a scroll view delays it, so a row the finger
                 // lands on while starting a scroll does not flash.
                 var shown = false
@@ -216,6 +258,46 @@ private class PressableNode(
             },
             onTap = { click() },
         )
+    }
+
+    /**
+     * Runs before the tap detector sees each event. A press without the primary button from a mouse
+     * is a secondary click: its events are consumed here, so it never becomes a tap, and its release
+     * opens [onSecondaryClick]. Hover only changes what is drawn.
+     */
+    private fun onPointerExtras(pointerEvent: PointerEvent) {
+        when (pointerEvent.type) {
+            PointerEventType.Enter, PointerEventType.Exit -> {
+                val fine = pointerEvent.changes.any { it.type == PointerType.Mouse || it.type == PointerType.Stylus }
+                val inside = enabled && fine && pointerEvent.type == PointerEventType.Enter
+                if (inside != hovered) {
+                    hovered = inside
+                    invalidateDraw()
+                }
+            }
+            PointerEventType.Press -> {
+                val mouse = pointerEvent.changes.all { it.type == PointerType.Mouse }
+                if (enabled && mouse && !pointerEvent.buttons.isPrimaryPressed) {
+                    secondaryPress = true
+                    pointerEvent.changes.forEach { it.consume() }
+                }
+            }
+            PointerEventType.Release -> if (secondaryPress) {
+                secondaryPress = false
+                pointerEvent.changes.forEach { it.consume() }
+                val change = pointerEvent.changes.firstOrNull()
+                if (change != null) onSecondaryClick?.invoke(change.position - childOffset.toOffset())
+            }
+            else -> if (secondaryPress) pointerEvent.changes.forEach { it.consume() }
+        }
+    }
+
+    private fun onPointerExtrasCancelled() {
+        secondaryPress = false
+        if (hovered) {
+            hovered = false
+            invalidateDraw()
+        }
     }
 
     private fun click() {
@@ -341,7 +423,7 @@ private class PressableNode(
     override fun ContentDrawScope.draw() {
         drawContent()
         if (feedback == PressFeedback.Highlight) {
-            val value = progress.value
+            val value = if (hovered) maxOf(progress.value, HOVER_HIGHLIGHT) else progress.value
             if (value > 0f) drawRect(currentValueOf(LocalAppColors).highlight, alpha = value)
         }
         if (focus == null) return
@@ -401,6 +483,18 @@ private class PressableNode(
     override fun onPreKeyEvent(event: KeyEvent): Boolean = false
 }
 
+/** Sees each pointer event before the tap detector does, for [PressableNode]'s mouse handling. */
+private class PointerExtrasNode(
+    private val onEvent: (PointerEvent) -> Unit,
+    private val onCancel: () -> Unit,
+) : Modifier.Node(), PointerInputModifierNode {
+    override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize) {
+        if (pass == PointerEventPass.Initial) onEvent(pointerEvent)
+    }
+
+    override fun onCancelPointerInput() = onCancel()
+}
+
 private val LargeSurface = 80.dp
 private val CompactControl = 56.dp
 private val FocusRingWidth = 2.dp
@@ -408,5 +502,6 @@ private val FocusRingGap = 3.dp
 private val FocusRingCorner = 14.dp
 private val ClickKeys = setOf(Key.Enter, Key.NumPadEnter, Key.DirectionCenter, Key.Spacebar)
 private const val HALF_PRESSED = 0.5f
+private const val HOVER_HIGHLIGHT = 0.5f
 private const val DIP_MILLIS = 80
 private val TapTimeout: Long = ViewConfiguration.getTapTimeout().toLong()
