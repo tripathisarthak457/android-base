@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"bytes"
 	"encoding/csv"
 	"encoding/json"
 	"errors"
@@ -169,14 +170,12 @@ func featureKeys(targets []generate.TargetEntry) []string {
 	return keys
 }
 
-func (s *Server) handleOverview(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		overview, err := s.store.Overview(r.Context(), f)
-		return struct {
-			window
-			store.Overview
-		}{windowOf(f), overview}, err
-	})(w, r)
+func (s *Server) readOverview(r *http.Request, f store.Filter) (any, error) {
+	overview, err := s.store.Overview(r.Context(), f)
+	return struct {
+		window
+		store.Overview
+	}{windowOf(f), overview}, err
 }
 
 // funnelSteps is the order of a target's funnel, from choosing the platform to the finished
@@ -199,42 +198,38 @@ type targetFunnel struct {
 	Also   map[string]int64 `json:"also"`
 }
 
-func (s *Server) handleFunnel(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		counts, err := s.store.Funnel(r.Context(), f)
-		if err != nil {
-			return nil, err
+func (s *Server) readFunnel(r *http.Request, f store.Filter) (any, error) {
+	counts, err := s.store.Funnel(r.Context(), f)
+	if err != nil {
+		return nil, err
+	}
+	targets := []targetFunnel{}
+	for _, target := range s.scopedTargets(f) {
+		got := counts.Targets[target.Key]
+		funnel := targetFunnel{Target: target.Key, Steps: []funnelStep{}, Also: map[string]int64{}}
+		for _, key := range funnelSteps {
+			funnel.Steps = append(funnel.Steps, funnelStep{Key: key, Sessions: got[key]})
 		}
-		targets := []targetFunnel{}
-		for _, target := range s.scopedTargets(f) {
-			got := counts.Targets[target.Key]
-			funnel := targetFunnel{Target: target.Key, Steps: []funnelStep{}, Also: map[string]int64{}}
-			for _, key := range funnelSteps {
-				funnel.Steps = append(funnel.Steps, funnelStep{Key: key, Sessions: got[key]})
+		for key, n := range got {
+			if !slices.Contains(funnelSteps, key) {
+				funnel.Also[key] = n
 			}
-			for key, n := range got {
-				if !slices.Contains(funnelSteps, key) {
-					funnel.Also[key] = n
-				}
-			}
-			targets = append(targets, funnel)
 		}
-		return struct {
-			window
-			Landed  int64          `json:"landed"`
-			Targets []targetFunnel `json:"targets"`
-		}{windowOf(f), counts.Landed, targets}, nil
-	})(w, r)
+		targets = append(targets, funnel)
+	}
+	return struct {
+		window
+		Landed  int64          `json:"landed"`
+		Targets []targetFunnel `json:"targets"`
+	}{windowOf(f), counts.Landed, targets}, nil
 }
 
-func (s *Server) handleSeries(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		days, err := s.store.Series(r.Context(), f)
-		return struct {
-			window
-			Days []store.SeriesDay `json:"days"`
-		}{windowOf(f), days}, err
-	})(w, r)
+func (s *Server) readSeries(r *http.Request, f store.Filter) (any, error) {
+	days, err := s.store.Series(r.Context(), f)
+	return struct {
+		window
+		Days []store.SeriesDay `json:"days"`
+	}{windowOf(f), days}, err
 }
 
 type featureShare struct {
@@ -251,68 +246,60 @@ type targetAdoption struct {
 	Weekly     []store.Week             `json:"weekly"`
 }
 
-func (s *Server) handleAdoption(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		targets := []targetAdoption{}
-		for _, target := range s.scopedTargets(f) {
-			scoped := f
-			scoped.Target = target.Key
-			adoption, err := s.store.Adoption(r.Context(), scoped, featureKeys([]generate.TargetEntry{target}))
-			if err != nil {
-				return nil, err
-			}
-			titles := map[string]string{}
-			for _, feature := range target.Features {
-				titles[feature.Key] = feature.Title
-			}
-			features := []featureShare{}
-			for _, feature := range adoption.Features {
-				share := 0.0
-				if adoption.Total > 0 {
-					share = float64(feature.N) / float64(adoption.Total)
-				}
-				features = append(features, featureShare{FeatureAdoption: feature, Title: titles[feature.Key], Share: share})
-			}
-			targets = append(targets, targetAdoption{
-				Target: target.Key, Total: adoption.Total, Features: features,
-				Dimensions: adoption.Dimensions, Weekly: adoption.Weekly,
-			})
+func (s *Server) readAdoption(r *http.Request, f store.Filter) (any, error) {
+	targets := []targetAdoption{}
+	for _, target := range s.scopedTargets(f) {
+		scoped := f
+		scoped.Target = target.Key
+		adoption, err := s.store.Adoption(r.Context(), scoped, featureKeys([]generate.TargetEntry{target}))
+		if err != nil {
+			return nil, err
 		}
-		return struct {
-			window
-			Targets []targetAdoption `json:"targets"`
-		}{windowOf(f), targets}, nil
-	})(w, r)
+		titles := map[string]string{}
+		for _, feature := range target.Features {
+			titles[feature.Key] = feature.Title
+		}
+		features := []featureShare{}
+		for _, feature := range adoption.Features {
+			share := 0.0
+			if adoption.Total > 0 {
+				share = float64(feature.N) / float64(adoption.Total)
+			}
+			features = append(features, featureShare{FeatureAdoption: feature, Title: titles[feature.Key], Share: share})
+		}
+		targets = append(targets, targetAdoption{
+			Target: target.Key, Total: adoption.Total, Features: features,
+			Dimensions: adoption.Dimensions, Weekly: adoption.Weekly,
+		})
+	}
+	return struct {
+		window
+		Targets []targetAdoption `json:"targets"`
+	}{windowOf(f), targets}, nil
 }
 
-func (s *Server) handleFailures(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		failures, err := s.store.Failures(r.Context(), f, featureKeys(s.scopedTargets(f)))
-		return struct {
-			window
-			store.Failures
-		}{windowOf(f), failures}, err
-	})(w, r)
+func (s *Server) readFailures(r *http.Request, f store.Filter) (any, error) {
+	failures, err := s.store.Failures(r.Context(), f, featureKeys(s.scopedTargets(f)))
+	return struct {
+		window
+		store.Failures
+	}{windowOf(f), failures}, err
 }
 
-func (s *Server) handleAudience(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		audience, err := s.store.Audience(r.Context(), f)
-		return struct {
-			window
-			store.Audience
-		}{windowOf(f), audience}, err
-	})(w, r)
+func (s *Server) readAudience(r *http.Request, f store.Filter) (any, error) {
+	audience, err := s.store.Audience(r.Context(), f)
+	return struct {
+		window
+		store.Audience
+	}{windowOf(f), audience}, err
 }
 
-func (s *Server) handleDurations(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		durations, err := s.store.Durations(r.Context(), f)
-		return struct {
-			window
-			store.Durations
-		}{windowOf(f), durations}, err
-	})(w, r)
+func (s *Server) readDurations(r *http.Request, f store.Filter) (any, error) {
+	durations, err := s.store.Durations(r.Context(), f)
+	return struct {
+		window
+		store.Durations
+	}{windowOf(f), durations}, err
 }
 
 // page reads `before` and `limit` and fetches one row more than asked, to know whether there is a
@@ -340,22 +327,20 @@ func (s *Server) page(r *http.Request, f store.Filter, fallback, maximum int) ([
 	return rows, next, nil
 }
 
-func (s *Server) handleGenerations(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		rows, next, err := s.page(r, f, 50, 200)
-		if err != nil {
-			return nil, err
-		}
-		var nextBefore *int64
-		if next > 0 {
-			nextBefore = &next
-		}
-		return struct {
-			window
-			Items      []store.GenerationRow `json:"items"`
-			NextBefore *int64                `json:"next_before"`
-		}{windowOf(f), rows, nextBefore}, nil
-	})(w, r)
+func (s *Server) readGenerations(r *http.Request, f store.Filter) (any, error) {
+	rows, next, err := s.page(r, f, 50, 200)
+	if err != nil {
+		return nil, err
+	}
+	var nextBefore *int64
+	if next > 0 {
+		nextBefore = &next
+	}
+	return struct {
+		window
+		Items      []store.GenerationRow `json:"items"`
+		NextBefore *int64                `json:"next_before"`
+	}{windowOf(f), rows, nextBefore}, nil
 }
 
 // csvColumns are the export's columns, in order.
@@ -381,7 +366,7 @@ func (s *Server) handleGenerationsCSV(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var out strings.Builder
+	var out bytes.Buffer
 	writer := csv.NewWriter(&out)
 	_ = writer.Write(csvColumns)
 	for _, g := range rows {
@@ -407,7 +392,7 @@ func (s *Server) handleGenerationsCSV(w http.ResponseWriter, r *http.Request) {
 		f.From.Format("20060102"), f.To.AddDate(0, 0, -1).Format("20060102")))
 	w.Header().Set("Content-Length", strconv.Itoa(out.Len()))
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte(out.String()))
+	_, _ = out.WriteTo(w)
 }
 
 // formulaSafe stops a spreadsheet from running a cell as a formula: app names and failure messages
@@ -429,63 +414,57 @@ func optional[T int | int64 | bool](value *T) string {
 	return fmt.Sprint(*value)
 }
 
-func (s *Server) handleErrors(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		limit, err := intParam(r, "limit", 100, 500)
-		if err != nil {
-			return nil, err
-		}
-		groups, err := s.store.Errors(r.Context(), f, r.URL.Query().Get("resolved") == "true", limit)
-		return struct {
-			window
-			Items []store.ErrorGroup `json:"items"`
-		}{windowOf(f), groups}, err
-	})(w, r)
+func (s *Server) readErrors(r *http.Request, f store.Filter) (any, error) {
+	limit, err := intParam(r, "limit", 100, 500)
+	if err != nil {
+		return nil, err
+	}
+	groups, err := s.store.Errors(r.Context(), f, r.URL.Query().Get("resolved") == "true", limit)
+	return struct {
+		window
+		Items []store.ErrorGroup `json:"items"`
+	}{windowOf(f), groups}, err
 }
 
-func (s *Server) handleFeedbackList(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		status := r.URL.Query().Get("status")
-		if status == "all" {
-			status = ""
-		}
-		if status != "" && !slices.Contains(store.FeedbackStatuses, status) {
-			return nil, &badParam{"status", "Unknown status."}
-		}
-		limit, err := intParam(r, "limit", 100, 500)
-		if err != nil {
-			return nil, err
-		}
-		items, err := s.store.FeedbackList(r.Context(), f, status, limit)
-		if err != nil {
-			return nil, err
-		}
-		counts, err := s.store.FeedbackCounts(r.Context())
-		return struct {
-			window
-			Items  []store.Feedback     `json:"items"`
-			Counts store.FeedbackCounts `json:"counts"`
-		}{windowOf(f), items, counts}, err
-	})(w, r)
+func (s *Server) readFeedback(r *http.Request, f store.Filter) (any, error) {
+	status := r.URL.Query().Get("status")
+	if status == "all" {
+		status = ""
+	}
+	if status != "" && !slices.Contains(store.FeedbackStatuses, status) {
+		return nil, &badParam{"status", "Unknown status."}
+	}
+	limit, err := intParam(r, "limit", 100, 500)
+	if err != nil {
+		return nil, err
+	}
+	items, err := s.store.FeedbackList(r.Context(), f, status, limit)
+	if err != nil {
+		return nil, err
+	}
+	counts, err := s.store.FeedbackCounts(r.Context())
+	return struct {
+		window
+		Items  []store.Feedback     `json:"items"`
+		Counts store.FeedbackCounts `json:"counts"`
+	}{windowOf(f), items, counts}, err
 }
 
-func (s *Server) handleAdminHealth(w http.ResponseWriter, r *http.Request) {
-	s.admin(func(r *http.Request, f store.Filter) (any, error) {
-		routes, err := s.store.RouteHealth(r.Context(), f)
-		// The process's own state is what the admin needs most while the database is still
-		// connecting, so it answers then too, with no routes.
-		if errors.Is(err, store.ErrNotReady) {
-			routes, err = []store.RouteHealth{}, nil
-		}
-		return struct {
-			window
-			Routes    []store.RouteHealth `json:"routes"`
-			Database  string              `json:"database"`
-			Telemetry store.WriterStats   `json:"telemetry"`
-			UptimeS   int                 `json:"uptime_s"`
-			Targets   []string            `json:"targets"`
-		}{windowOf(f), routes, s.databaseState(), s.sink.Stats(), int(time.Since(s.startedAt).Seconds()), s.enabledTargets()}, err
-	})(w, r)
+func (s *Server) readAdminHealth(r *http.Request, f store.Filter) (any, error) {
+	routes, err := s.store.RouteHealth(r.Context(), f)
+	// The process's own state is what the admin needs most while the database is still
+	// connecting, so it answers then too, with no routes.
+	if errors.Is(err, store.ErrNotReady) {
+		routes, err = []store.RouteHealth{}, nil
+	}
+	return struct {
+		window
+		Routes    []store.RouteHealth `json:"routes"`
+		Database  string              `json:"database"`
+		Telemetry store.WriterStats   `json:"telemetry"`
+		UptimeS   int                 `json:"uptime_s"`
+		Targets   []string            `json:"targets"`
+	}{windowOf(f), routes, s.databaseState(), s.sink.Stats(), int(time.Since(s.startedAt).Seconds()), s.enabledTargets()}, err
 }
 
 func (s *Server) handleResolveError(w http.ResponseWriter, r *http.Request) {
