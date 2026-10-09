@@ -22,7 +22,7 @@ dependencies {
 
     // Back and predictive back for sheets, alerts and the image viewer, and the lifecycle a toast's
     // time is counted against. Both are already in every app this module ships in.
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigationevent.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
     // <opt:googlefonts>
@@ -31,5 +31,7 @@ dependencies {
 
     testImplementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.androidx.compose.ui.test.junit4)
+    // A test activity that owns a back dispatcher, as every app's activity does.
+    testImplementation(libs.androidx.activity.compose)
     testImplementation(libs.robolectric)
 }

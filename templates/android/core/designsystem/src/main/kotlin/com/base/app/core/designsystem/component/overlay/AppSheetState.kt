@@ -4,6 +4,8 @@ import androidx.compose.animation.core.animate
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.MutatorMutex
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.annotation.FrequentlyChangingValue
+import androidx.compose.runtime.annotation.RememberInComposition
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +27,7 @@ enum class SheetDetent { Medium, Large }
  * goes once and never takes the screen beneath with it.
  */
 @Stable
-class AppSheetState(
+class AppSheetState @RememberInComposition constructor(
     val detents: Set<SheetDetent> = setOf(SheetDetent.Medium, SheetDetent.Large),
     private val initialDetent: SheetDetent = if (SheetDetent.Medium in detents) SheetDetent.Medium else SheetDetent.Large,
 ) {
@@ -38,6 +40,10 @@ class AppSheetState(
     internal var offset by mutableFloatStateOf(Float.NaN)
     internal var anchors by mutableStateOf<SheetAnchors?>(null)
     internal var spring: AppSpring? = null
+    internal var rubberBand = 0f
+
+    /** How far a system back gesture has gone, 0 to 1; the sheet shrinks toward its bottom edge with it. */
+    internal var backProgress by mutableFloatStateOf(0f)
 
     /** True from the moment the sheet starts to leave. */
     var dismissing by mutableStateOf(false)
@@ -49,12 +55,30 @@ class AppSheetState(
     /** Where the current drag began, so a settle can tell whether it changed detent. */
     private var dragStart = Float.NaN
 
+    /** The finger's travel past the top detent; what is shown of it is rubber-banded. */
+    private var overshoot = 0f
+
     /** The detent the sheet rests nearest, or null while it is hidden. */
     val currentDetent: SheetDetent?
         get() {
             val a = anchors ?: return null
             if (offset.isNaN() || dismissing) return null
             return detents.minByOrNull { abs(a.offsetOf(it) - offset) }
+        }
+
+    /**
+     * How far toward its large detent the sheet is: 0 at the medium detent or anywhere below it, 1 at
+     * the large detent. A presenter reads it to recede behind a large sheet, as iOS's card stack does,
+     * in a layer or draw block: it changes on every frame of a drag.
+     */
+    @get:FrequentlyChangingValue
+    val largeFraction: Float
+        get() {
+            val a = anchors ?: return 0f
+            // A form sheet floats over the screen like an alert; nothing recedes behind it.
+            if (offset.isNaN() || a.form || SheetDetent.Large !in detents) return 0f
+            val from = if (SheetDetent.Medium in detents && a.medium > a.large) a.medium else a.hidden
+            return ((from - offset) / (from - a.large)).coerceIn(0f, 1f)
         }
 
     /** How far the sheet is shown, 0 hidden to 1 at its first detent; drives the scrim. */
@@ -93,23 +117,48 @@ class AppSheetState(
         }
     }
 
+    /**
+     * New anchors after the window changed size: a sheet resting on a detent stays on it, so a
+     * rotation or an unfold never leaves it floating where the old detent was.
+     */
+    internal fun updateAnchors(new: SheetAnchors) {
+        val old = anchors
+        if (old == new) return
+        val detent = if (old != null && !offset.isNaN() && !dismissing) detents.firstOrNull { abs(old.offsetOf(it) - offset) < 0.5f } else null
+        anchors = new
+        if (detent != null) offset = new.offsetOf(detent)
+    }
+
     private suspend fun laidOut(): SheetAnchors = snapshotFlow { anchors }.filterNotNull().first()
 
     internal suspend fun stop() {
         motion.mutate(MutatePriority.UserInput) {}
     }
 
-    /** Follows a drag; past the large detent it resists, and it never goes past hidden. */
+    /**
+     * Follows a drag. Past the top detent the sheet gives less the further it is pulled, on iOS's
+     * rubber band over the window's height, and it never goes past hidden.
+     */
     internal fun dragBy(delta: Float): Float {
         val a = anchors ?: return 0f
         if (offset.isNaN() || dismissing) return 0f
-        if (dragStart.isNaN()) dragStart = offset
+        if (dragStart.isNaN()) {
+            dragStart = offset
+            overshoot = 0f
+        }
         val before = offset
         val top = a.offsetOf(detents.minBy { a.offsetOf(it) })
-        val resisted = if (delta < 0f && offset < top) delta * (1f - ((top - offset) / RUBBER_BAND_LIMIT).coerceIn(0f, 1f)) else delta
-        offset = (offset + resisted).coerceIn(top - RUBBER_BAND_LIMIT, a.hidden)
+        if (overshoot > 0f || offset + delta < top) {
+            val past = overshoot - delta - (offset - top).coerceAtLeast(0f)
+            overshoot = past.coerceAtLeast(0f)
+            offset = if (past > 0f) top - rubberBand(past, a.hidden) else (top - past).coerceAtMost(a.hidden)
+        } else {
+            offset = (offset + delta).coerceIn(top, a.hidden)
+        }
         return offset - before
     }
+
+    private fun rubberBand(travel: Float, range: Float): Float = travel * rubberBand * range / (range + travel * rubberBand)
 
     internal val canExpand: Boolean
         get() {
@@ -131,12 +180,12 @@ class AppSheetState(
         val a = anchors ?: return false
         val from = if (dragStart.isNaN()) null else detents.minBy { abs(a.offsetOf(it) - dragStart) }
         dragStart = Float.NaN
-        val stops = detents.map { a.offsetOf(it) }.sorted() + a.hidden
-        val target = when {
-            velocity > FLING_VELOCITY -> stops.firstOrNull { it > offset + 0.5f } ?: a.hidden
-            velocity < -FLING_VELOCITY -> stops.lastOrNull { it < offset - 0.5f } ?: stops.first()
-            else -> stops.minBy { abs(it - offset) }
-        }
+        overshoot = 0f
+        // The stop nearest to where the release would coast, as iOS picks a detent: a flick carries
+        // the sheet a stop further, a slow release lands where it was let go.
+        val projected = offset + velocity * PROJECTION_SECONDS
+        val stops = detents.map { a.offsetOf(it) } + a.hidden
+        val target = stops.minBy { abs(it - projected) }
         if (target == a.hidden) {
             if (dismissing) return false
             dismissing = true
@@ -147,12 +196,11 @@ class AppSheetState(
         return target == a.hidden
     }
 
-    internal fun predictiveTrack(start: Float, progress: Float) {
-        val a = anchors ?: return
-        offset = start + (a.hidden - start) * progress
+    /** A back gesture the user took back: the sheet grows to its size again. */
+    internal suspend fun cancelBack() {
+        val spec = spring?.unit ?: return run { backProgress = 0f }
+        animate(backProgress, 0f, animationSpec = spec) { value, _ -> backProgress = value }
     }
-
-    internal suspend fun returnTo(target: Float) = animateOffset(target)
 
     private suspend fun animateOffset(target: Float, velocity: Float = 0f) {
         val spec = spring?.pixels
@@ -166,11 +214,12 @@ class AppSheetState(
     }
 
     private companion object {
-        const val FLING_VELOCITY = 1400f
-        const val RUBBER_BAND_LIMIT = 120f
+        /** iOS's paging deceleration (0.99 per ms) coasts `v · 0.99 / (1 − 0.99) / 1000` px: 0.099 s of `v`. */
+        const val PROJECTION_SECONDS = 0.099f
     }
 }
 
-internal class SheetAnchors(val large: Float, val medium: Float, val hidden: Float) {
+/** Where each detent puts the sheet's top edge. A form sheet rests at one place, the centre. */
+internal data class SheetAnchors(val large: Float, val medium: Float, val hidden: Float, val form: Boolean) {
     fun offsetOf(detent: SheetDetent) = if (detent == SheetDetent.Large) large else medium
 }

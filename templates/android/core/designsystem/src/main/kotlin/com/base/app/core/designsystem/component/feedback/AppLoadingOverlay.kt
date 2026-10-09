@@ -1,10 +1,8 @@
 package com.base.app.core.designsystem.component.feedback
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -24,6 +23,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.overlay.HostedOverlay
+import com.base.app.core.designsystem.component.overlay.OverlayBackHandler
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
@@ -42,18 +42,19 @@ fun AppLoadingOverlay(
     val state = remember { MutableTransitionState(false) }
     state.targetState = visible
     if (!state.currentState && !state.targetState) return
+    // Taken and ignored: leaving the screen would not stop what is in flight.
+    OverlayBackHandler(enabled = state.targetState) {}
 
     HostedOverlay(modal = true) {
         val springs = AppTheme.springs
+        val scrim = AppTheme.colors.scrim
         val transition = rememberTransition(state, label = "loadingOverlay")
-        val shown = transition.animateFloat(transitionSpec = { springs.sheet.unit }, label = "loadingShown") { if (it) 1f else 0f }
-        BackHandler(enabled = state.targetState) {}
+        val shown = transition.animateFloat(transitionSpec = { springs.dialog.unit }, label = "loadingShown") { if (it) 1f else 0f }
 
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .graphicsLayer { alpha = shown.value.coerceIn(0f, 1f) }
-                .background(AppTheme.colors.scrim)
+                .drawBehind { drawRect(scrim, alpha = shown.value.coerceIn(0f, 1f)) }
                 .pointerInput(Unit) {
                     awaitPointerEventScope {
                         while (true) awaitPointerEvent(PointerEventPass.Initial).changes.forEach { it.consume() }
@@ -62,6 +63,7 @@ fun AppLoadingOverlay(
             contentAlignment = Alignment.Center,
         ) {
             AppSurface(
+                modifier = Modifier.graphicsLayer { alpha = shown.value.coerceIn(0f, 1f) },
                 shape = AppTheme.shapes.lg,
                 color = AppTheme.colors.surfaceElevated,
                 elevation = AppTheme.elevation.modal,

@@ -1,8 +1,13 @@
 package com.base.app.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.annotation.FrequentlyChangingValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavMetadataKey
 import androidx.navigation3.runtime.get
@@ -36,6 +41,16 @@ data class SheetPresentation(
  */
 class SheetSceneStrategy<T : Any> : SceneStrategy<T> {
     private val states = mutableMapOf<Any, AppSheetState>()
+    internal var shown by mutableStateOf<AppSheetState?>(null)
+
+    /**
+     * How far the sheet on screen is toward its large detent, 0 with none: what the shell reads to
+     * recede behind it, as iOS's card stack does. Read it in a layer or draw block; it changes on
+     * every frame of a drag.
+     */
+    @get:FrequentlyChangingValue
+    val largeFraction: Float
+        get() = shown?.largeFraction ?: 0f
 
     override fun SceneStrategyScope<T>.calculateScene(entries: List<NavEntry<T>>): Scene<T>? {
         val top = entries.lastOrNull()
@@ -48,7 +63,7 @@ class SheetSceneStrategy<T : Any> : SceneStrategy<T> {
         if (below.isEmpty()) return null
         states.keys.retainAll(setOf(top.contentKey))
         val state = states.getOrPut(top.contentKey) { AppSheetState(presentation.detents) }
-        return SheetScene(top, below, state, presentation, onBack)
+        return SheetScene(top, below, state, presentation, onBack, this@SheetSceneStrategy)
     }
 
     companion object {
@@ -69,12 +84,17 @@ private class SheetScene<T : Any>(
     private val state: AppSheetState,
     private val presentation: SheetPresentation,
     private val onBack: () -> Unit,
+    private val strategy: SheetSceneStrategy<T>,
 ) : OverlayScene<T> {
     override val key: Any = entry.contentKey
     override val entries: List<NavEntry<T>> = listOf(entry)
     override val overlaidEntries: List<NavEntry<T>> = previousEntries
 
     override val content: @Composable () -> Unit = {
+        DisposableEffect(state) {
+            strategy.shown = state
+            onDispose { if (strategy.shown === state) strategy.shown = null }
+        }
         AppSheet(state = state, onDismiss = onBack, showCloseButton = presentation.showCloseButton) {
             entry.Content()
         }

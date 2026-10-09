@@ -1,10 +1,8 @@
 package com.base.app.core.designsystem.component.overlay
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -68,18 +67,20 @@ fun AppAlert(
     state.targetState = visible
     if (!state.currentState && !state.targetState) return
     val dismiss by rememberUpdatedState(onDismissRequest)
+    OverlayBackHandler(enabled = state.targetState) { dismiss() }
 
     HostedOverlay(modal = true) {
         val springs = AppTheme.springs
+        val scrim = AppTheme.colors.scrim
         val transition = rememberTransition(state, label = "alert")
-        val shown = transition.animateFloat(transitionSpec = { springs.sheet.unit }, label = "alertShown") { if (it) 1f else 0f }
-        BackHandler(enabled = state.targetState) { dismiss() }
+        val shown = transition.animateFloat(transitionSpec = { springs.dialog.unit }, label = "alertShown") { if (it) 1f else 0f }
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .graphicsLayer { alpha = shown.value.coerceIn(0f, 1f) }
-                .background(AppTheme.colors.scrim)
+                // The dim is one drawn rect: fading a full-screen layer instead would render the
+                // whole window offscreen on every frame of the fade.
+                .drawBehind { drawRect(scrim, alpha = shown.value.coerceIn(0f, 1f)) }
                 // Whatever the alert's own buttons leave goes nowhere; the screen beneath never sees it.
                 .pointerInput(Unit) { awaitPointerEventScope { while (true) awaitPointerEvent().changes.forEach { it.consume() } } },
             contentAlignment = Alignment.Center,
@@ -89,11 +90,13 @@ fun AppAlert(
                     .padding(AppTheme.spacing.xl)
                     .widthIn(max = AlertWidth)
                     .graphicsLayer {
-                        // Arrives from slightly larger, as iOS's does; leaves by fading.
+                        // Arrives from larger as it fades in, as iOS's does; leaves by fading alone.
+                        // The layer is the card's size, so its alpha costs a card, not a screen.
                         val p = shown.value
                         val scale = if (state.targetState) 1f + (1f - p) * ENTER_SCALE else 1f
                         scaleX = scale
                         scaleY = scale
+                        alpha = p.coerceIn(0f, 1f)
                     }
                     .semantics { paneTitle = title },
                 shape = AppTheme.shapes.lg,
@@ -152,4 +155,4 @@ private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () 
 
 private val AlertWidth = 300.dp
 private val ActionHeight = 44.dp
-private const val ENTER_SCALE = 0.12f
+private const val ENTER_SCALE = 0.3f

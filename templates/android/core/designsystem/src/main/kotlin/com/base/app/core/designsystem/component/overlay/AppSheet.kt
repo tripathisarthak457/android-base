@@ -1,6 +1,5 @@
 package com.base.app.core.designsystem.component.overlay
 
-import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -35,7 +34,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -56,13 +57,13 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.adaptive.WindowHeight
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.roundToInt
 
 /**
@@ -88,6 +89,38 @@ fun AppSheet(
     footer: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
+    SheetBack(state, onDismiss)
+    SheetLayout(state, onDismiss, modifier, title, showCloseButton, footer, content)
+}
+
+/**
+ * Back for a sheet. The system gesture shrinks it toward its bottom edge as the finger moves, as
+ * Material's bottom sheets do (iOS has no back gesture to match; dragging the sheet down is still
+ * the touch way to close it), and closes it on release. While it is already leaving, Back is taken
+ * and ignored, so the screen beneath is not popped as well.
+ */
+@Composable
+private fun SheetBack(state: AppSheetState, onDismiss: () -> Unit) {
+    val scope = rememberCoroutineScope()
+    val gone by rememberUpdatedState(onDismiss)
+    OverlayBackHandler(
+        enabled = true,
+        onProgress = { if (!state.dismissing) state.backProgress = it },
+        onCancel = { scope.launch { state.cancelBack() } },
+        onBack = { if (!state.dismissing) scope.launch { state.dismiss(gone) } },
+    )
+}
+
+@Composable
+private fun SheetLayout(
+    state: AppSheetState,
+    onDismiss: () -> Unit,
+    modifier: Modifier,
+    title: String?,
+    showCloseButton: Boolean,
+    footer: (@Composable () -> Unit)?,
+    content: @Composable () -> Unit,
+) {
     val colors = AppTheme.colors
     val springs = AppTheme.springs
     val reduceMotion = AppTheme.reduceMotion
@@ -95,33 +128,21 @@ fun AppSheet(
     val scope = rememberCoroutineScope()
     val gone by rememberUpdatedState(onDismiss)
     val statusBar = WindowInsets.statusBars
-    val maxWidth = AppTheme.layout.sheetMaxWidth
+    val layout = AppTheme.layout
+    val container = AppTheme.containerClass
+    // On a window with room on every side the sheet is a card in the middle, as iPad's form sheet
+    // is; on one too short for two heights it has only one, the tallest.
+    val form = container.width >= WindowWidth.Medium && container.height >= WindowHeight.Medium
+    val oneHeight = container.isShort
     // The sheet's content pads for its own footer, not for the tab bar it covers.
     val bottomChrome = remember { ChromeInset() }
     state.spring = springs.sheet
+    state.rubberBand = springs.rubberBand
 
     LaunchedEffect(state) { state.show(animate = !reduceMotion) }
 
     fun close() {
         scope.launch { state.dismiss(gone) }
-    }
-
-    // Back slides the sheet down with the finger, linearly, as iOS does; while it is already leaving,
-    // Back is taken and ignored so the screen beneath is not popped as well. The slide away runs in
-    // the sheet's own scope: the next Back cancels this handler's, and must not stop it half way.
-    PredictiveBackHandler(enabled = true) { progress ->
-        if (state.dismissing) {
-            progress.collect {}
-            return@PredictiveBackHandler
-        }
-        val start = state.offset
-        try {
-            progress.collect { event -> state.predictiveTrack(start, event.progress) }
-            close()
-        } catch (cancelled: CancellationException) {
-            scope.launch { state.returnTo(start) }
-            throw cancelled
-        }
     }
 
     val connection = remember(state) {
@@ -146,8 +167,8 @@ fun AppSheet(
         Box(
             Modifier
                 .fillMaxSize()
-                .graphicsLayer { alpha = state.progress }
-                .background(colors.scrim)
+                // A drawn rect, so the dim never takes the window offscreen while it fades.
+                .drawBehind { drawRect(colors.scrim, alpha = state.progress) }
                 .pointerInput(state) { detectTapGestures { close() } },
         )
         Layout(
@@ -155,7 +176,15 @@ fun AppSheet(
                 {
                     Column(
                         modifier = modifier
-                            .clip(AppTheme.shapes.sheet)
+                            .graphicsLayer {
+                                val back = state.backProgress
+                                if (back > 0f) {
+                                    transformOrigin = BottomCentre
+                                    scaleX = 1f - BackShrinkX.toPx() * back / size.width
+                                    scaleY = 1f - BackShrinkY.toPx() * back / size.height
+                                }
+                            }
+                            .clip(if (form) AppTheme.shapes.xl else AppTheme.shapes.sheet)
                             .background(colors.surface)
                             .semantics { title?.let { paneTitle = it } }
                             .nestedScroll(connection)
@@ -169,7 +198,7 @@ fun AppSheet(
                                 },
                             ),
                     ) {
-                        SheetHeader(title = title, showCloseButton = showCloseButton, onClose = ::close)
+                        SheetHeader(title = title, showCloseButton = showCloseButton || form, onClose = ::close)
                         Box(
                             Modifier
                                 .fillMaxWidth()
@@ -185,13 +214,22 @@ fun AppSheet(
             ),
         ) { (sheetSlot, footerSlot), constraints ->
             val height = constraints.maxHeight
-            val width = minOf(constraints.maxWidth, maxWidth.roundToPx())
-            val large = (statusBar.getTop(this) + LargeGap.roundToPx()).toFloat()
-            val anchors = state.anchors
-            if (anchors == null || anchors.hidden != height.toFloat() || anchors.large != large) {
-                state.anchors = SheetAnchors(large = large, medium = height * (1f - MEDIUM_FRACTION), hidden = height.toFloat())
+            val sheetHeight: Int
+            val width: Int
+            val anchors: SheetAnchors
+            if (form) {
+                width = minOf(layout.formSheetWidth.roundToPx(), constraints.maxWidth - 2 * layout.gutter.roundToPx())
+                sheetHeight = minOf((height * FORM_HEIGHT_FRACTION).roundToInt(), FormSheetMaxHeight.roundToPx())
+                val centred = ((height - sheetHeight) / 2).toFloat()
+                anchors = SheetAnchors(large = centred, medium = centred, hidden = height.toFloat(), form = true)
+            } else {
+                width = minOf(constraints.maxWidth, layout.sheetMaxWidth.roundToPx())
+                val large = (statusBar.getTop(this) + LargeGap.roundToPx()).toFloat()
+                val medium = if (oneHeight) large else height * (1f - MEDIUM_FRACTION)
+                sheetHeight = (height - large).roundToInt().coerceAtLeast(0)
+                anchors = SheetAnchors(large = large, medium = medium, hidden = height.toFloat(), form = false)
             }
-            val sheetHeight = (height - large).roundToInt().coerceAtLeast(0)
+            state.updateAnchors(anchors)
             val pinned = footerSlot.firstOrNull()?.measure(Constraints(maxWidth = width))
             bottomChrome.value = (pinned?.height ?: 0).toDp()
             val sheet = sheetSlot.first().measure(Constraints.fixed(width, sheetHeight))
@@ -199,7 +237,8 @@ fun AppSheet(
                 val x = (constraints.maxWidth - width) / 2
                 val top = if (state.offset.isNaN()) height.toFloat() else state.offset
                 sheet.place(x, top.roundToInt())
-                pinned?.place(x, maxOf(height - pinned.height, top.roundToInt()))
+                val bottom = if (form) top.roundToInt() + sheetHeight else height
+                pinned?.place(x, maxOf(bottom - pinned.height, top.roundToInt()))
             }
         }
     }
@@ -237,16 +276,9 @@ fun AppSheet(
         }
     }
     if (!mounted) return
+    SheetBack(state, onDismissRequest)
     HostedOverlay(modal = true) {
-        AppSheet(
-            state = state,
-            onDismiss = onDismissRequest,
-            modifier = modifier,
-            title = title,
-            showCloseButton = showCloseButton,
-            footer = footer,
-            content = content,
-        )
+        SheetLayout(state, onDismissRequest, modifier, title, showCloseButton, footer, content)
     }
 }
 
@@ -292,6 +324,13 @@ private fun SheetHeader(title: String?, showCloseButton: Boolean, onClose: () ->
 
 /** How much of the window a sheet covers at its medium detent. */
 private const val MEDIUM_FRACTION = 0.55f
+private const val FORM_HEIGHT_FRACTION = 0.85f
+private val FormSheetMaxHeight = 620.dp
+
+/** How far the system back gesture narrows and lowers the sheet at its end: Material's bottom container. */
+private val BackShrinkX = 48.dp
+private val BackShrinkY = 24.dp
+private val BottomCentre = TransformOrigin(0.5f, 1f)
 private val LargeGap = 10.dp
 private val HandleArea = 20.dp
 private val GrabberWidth = 36.dp
