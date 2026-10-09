@@ -130,7 +130,7 @@ fun AppShell(
         },
     ) {
         Row(Modifier.fillMaxSize()) {
-            if (wide) ShellBar(tabs, state, barState, config, trailingAction = null, accessory = null, parallax = 0f, vertical = true)
+            if (wide) ShellBar(tabs, state, barState, config, trailingAction, accessory, parallax = 0f, vertical = true)
             CompositionLocalProvider(LocalTabBarVisible provides !wide) {
                 TabbedNavHost(
                     state = state,
