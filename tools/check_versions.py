@@ -24,7 +24,6 @@ PLUGINS = "https://plugins.gradle.org/m2/"
 
 #: Where each group publishes, longest prefix first. A group missing here is looked up everywhere.
 REPOSITORIES_BY_GROUP: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("androidx.room3", (GOOGLE,)),
     ("androidx", (GOOGLE,)),
     ("com.android", (GOOGLE,)),
     ("com.google.android", (GOOGLE,)),
