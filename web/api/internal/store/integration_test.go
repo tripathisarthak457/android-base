@@ -539,9 +539,9 @@ func TestIntegrationFeedbackNotesCanBeCleared(t *testing.T) {
 	s := connected(t, testDatabase(t))
 	ctx := context.Background()
 	// Longer than the body's byte budget, in a script where every character is three bytes: a byte
-	// cut would leave invalid UTF-8 and Postgres would refuse the row.
-	id, err := s.SaveFeedback(ctx, Feedback{Kind: "bug", Title: "Broken", Body: strings.Repeat("नमस्ते ", 600),
-		VisitorHash: "h", Target: "android"})
+	// cut would leave invalid UTF-8 and Postgres would refuse the row, as it would a NUL.
+	id, err := s.SaveFeedback(ctx, Feedback{Kind: "bug", Title: "Broken\x00", Body: strings.Repeat("नमस्ते ", 600),
+		Features: []string{"network", "auth\x00"}, VisitorHash: "h", Target: "android"})
 	if err != nil {
 		t.Fatal(err)
 	}

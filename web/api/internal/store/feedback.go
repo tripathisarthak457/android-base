@@ -63,7 +63,7 @@ func (s *Store) SaveFeedback(ctx context.Context, f Feedback) (int64, error) {
 		clip.String(f.Title, 200), clip.String(f.Body, 8000),
 		nullable(clip.String(f.Steps, 4000)), nullable(clip.String(f.Expected, 2000)),
 		nullable(clip.String(f.Actual, 2000)),
-		nullable(clip.String(f.AppName, 120)), nullable(clip.String(f.PackageName, 120)), list(f.Features),
+		nullable(clip.String(f.AppName, 120)), nullable(clip.String(f.PackageName, 120)), clipped(f.Features, 64),
 		nullable(clip.String(f.Preset, 64)), nullableInt(f.MinSDK), nullable(clip.String(f.MotionStyle, 64)),
 		nullable(clip.String(f.FontName, 120)), nullable(clip.String(f.AccentColour, 32)),
 		nullable(clip.String(f.Contact, 200)), nullable(clip.String(f.UserAgent, 500)),

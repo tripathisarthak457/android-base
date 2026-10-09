@@ -29,6 +29,12 @@ func TestStringDropsInvalidBytes(t *testing.T) {
 	}
 }
 
+func TestStringDropsNUL(t *testing.T) {
+	if got := String("Segmentation\x00 fault\x00", 100); got != "Segmentation fault" {
+		t.Fatalf("got %q", got)
+	}
+}
+
 func TestStringLeavesShortTextAlone(t *testing.T) {
 	if got := String("Café", 5); got != "Café" {
 		t.Fatalf("got %q", got)

@@ -251,8 +251,8 @@ func list(values []string) []string {
 	return values
 }
 
-// clipped is a text[] of the generator's free text, each entry clipped to limit bytes: the
-// generator bounds how many entries there are, not how long each is.
+// clipped is a text[] with each entry clipped to limit bytes, for lists whose entries nothing else
+// bounds: what the generator said about a spec, and the features a report names.
 func clipped(values []string, limit int) []string {
 	out := make([]string, len(values))
 	for i, value := range values {
