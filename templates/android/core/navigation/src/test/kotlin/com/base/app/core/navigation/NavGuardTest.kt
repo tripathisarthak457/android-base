@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/** The rules of A3.4a for commands that arrive while their host is moving. */
+/** What happens to a command that arrives while its host is moving. */
 class NavGuardTest {
 
     private val stack = AppBackStack(mutableStateListOf(FeedTab, Post(1)))

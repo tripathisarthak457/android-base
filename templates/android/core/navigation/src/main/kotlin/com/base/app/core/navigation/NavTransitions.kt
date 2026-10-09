@@ -115,7 +115,7 @@ internal object NavTransitions {
  * The same back stack shown by another scene: a fold, an unfold or a resize across the two-pane
  * width. That is a layout change, not navigation, so nothing slides.
  */
-private fun sameStack(initial: Scene<AppNavKey>, target: Scene<AppNavKey>): Boolean =
+internal fun sameStack(initial: Scene<AppNavKey>, target: Scene<AppNavKey>): Boolean =
     initial.stackKeys() == target.stackKeys()
 
 private fun Scene<AppNavKey>.stackKeys(): List<Any> =

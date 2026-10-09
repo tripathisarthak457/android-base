@@ -30,7 +30,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
 
 /**
- * Sheets and covers, above the tab bar (A3.9: content < bar < presented < overlays < toasts). A key
+ * Sheets and covers, above the tab bar (bottom to top: content, bar, presented, overlays, toasts). A key
  * registered with a [Presentation] lands here whoever navigates to it, so a feature never draws a
  * sheet under the bar by presenting it inside its own tab.
  *

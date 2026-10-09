@@ -30,7 +30,7 @@ data class ShellTab(
  * The signed-in shell's navigation state: one back stack per tab, the tab in front, and the
  * presentation stack of sheets and covers shown above the tab bar.
  *
- * Every change goes through here, so the rules of A3.4a hold whoever asks: a root key selects its
+ * Every change goes through here, so the same rules hold whoever asks: a root key selects its
  * tab instead of being pushed, a presented key goes to the presentation stack, and a command that
  * arrives while its host is moving is dropped or waits (see [guard]).
  */
