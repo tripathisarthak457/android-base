@@ -50,9 +50,14 @@ web/api/server
 
 # Agent tooling that installs itself into the working directory. The Vercel marketplace drops
 # vendor documentation here when an integration is added; none of it is part of this project.
+# The skills folders are: they point at the Android skills the templates vendor.
 skills-lock.json
-.claude/
-.agents/
+/.claude/*
+/.agents/*
+!/.claude/skills/
+!/.agents/skills/
+# Upstream skill documentation has its own `build/` folders, which are text, not build output.
+!templates/*/.agents/skills/**/build/
 
 # Editors and OS
 .vscode/

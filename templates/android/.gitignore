@@ -7,6 +7,8 @@ gradle/gradle-daemon-jvm.properties
 .idea/
 .DS_Store
 build/
+# Upstream skill documentation has its own `build/` folders, which are text, not build output.
+!.agents/skills/**/build/
 captures/
 .externalNativeBuild
 .cxx

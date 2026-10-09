@@ -11,5 +11,9 @@ implied_only = false
 owns = [
   "data/auth",
   "feature/auth",
+  ".agents/skills/restore-credentials",
+  ".agents/skills/verified-email",
+  ".claude/skills/restore-credentials",
+  ".claude/skills/verified-email",
 ]
 legacy = []

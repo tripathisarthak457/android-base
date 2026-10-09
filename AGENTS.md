@@ -78,6 +78,15 @@ A new optional feature needs all of:
 A new user-facing string in the template also needs a translation in every file under
 `generator/translations/`. `tests/test_translations.py` names any that are missing.
 
+## Google's Android skills
+
+The Android and Compose Multiplatform templates ship Google's Android skills in `templates/*/.agents/skills/`
+(unmodified, Apache-2.0, `README.md` there gives the version). When you change those templates, read the skill for the
+area first (`.agents/skills/<name>/SKILL.md` and `.claude/skills/<name>/SKILL.md` here point at the Android copy) and
+the differences table in `templates/android/AGENTS.md`. Never edit a vendored file: refresh all of them with
+`python3 tools/update_android_skills.py <checkout>` and review the diff. A skill added to a template needs its row in
+that template's AGENTS.md table; `generator/tests/test_vendored_skills.py` fails otherwise.
+
 ## Keeping dependencies current
 
 Every version lives in `templates/android/gradle/libs.versions.toml`, and only stable releases belong

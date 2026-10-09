@@ -256,7 +256,31 @@ This is what separates a good agent change from a typical one. Follow it exactly
 | Call an API | a `data/` module, through `NetworkClient` |
 | Store something | `core/datastore`: the session store for per-user data (cleared on sign-out), the settings store for the rest |
 
-## 8. Before you say it is done
+## 8. Google's Android skills
+
+`.agents/skills/` holds Google's official Android skills (Apache-2.0, unmodified; `.agents/skills/README.md` says
+which version). Before work in one of these areas, read that skill's `SKILL.md` and follow it. Where it disagrees
+with this file, this file wins; the known differences are in the last column.
+
+| Skill | Read it before you… | This project differs |
+|---|---|---|
+| `navigation-3` | add a destination, scene, deep link or result | register in `navigation/<Feature>Navigation.kt` with `navGraph { entry<K>(pane = …) }`; never call `NavDisplay`, a scene strategy or transition metadata from a feature |
+| `navigation-event` | handle Back anywhere outside a screen pop | `NavigationBackHandler` only, one state per handler, overlays at overlay priority; never `BackHandler` (the build fails) |
+| `adaptive` | build or change any screen | no `NavigationSuiteScaffold` or Material components: the shell's bar, rail and sidebar; panes through `NavPane`; `LazyVerticalGrid`, not `Grid`/`FlexBox` (experimental in Compose 1.12); `AppTheme.containerClass`, `posture` and `input`, not `MediaQuery`; Roborazzi, not `com.android.compose.screenshot`; `AppLargeTitleTopBar`, not M3 scroll behaviours |
+| `edge-to-edge` | touch insets, the keyboard or system bars | pad scrolling content with `chromeContentPadding()` as `contentPadding`, never on the list's parent |
+| `testing-setup` | add tests or test infrastructure | fakes in `testFixtures`; screenshots with Roborazzi at the sizes in `docs/ADAPTIVE.md`; never re-record goldens to make a test pass |
+| `android-profiler` | investigate jank, startup or memory | release builds only, through `tools/perf/perf.sh`; its `trace_processor` script downloads Google's binary on first run |
+| `r8-analyzer` | change keep rules or chase app size | upstream ships no `scripts/`: run `./gradlew :app:analyzeReleaseR8Config`, then follow its manual path |
+| `android-intent-security`, `android-permissions-security` | touch the manifest, deep links, notifications or permissions | links land in `LinkActivity` and become typed keys in a `DeepLinkRoute` |
+| `agp-9-upgrade` | bump AGP or Gradle | the project is already on AGP 9 with built-in Kotlin |
+<!-- <opt:auth> -->
+| `restore-credentials`, `verified-email` | change sign-in or sign-up | flows live in `:feature:auth`, credentials in `:data:auth` |
+<!-- </opt:auth> -->
+
+Not vendored on purpose: `styles` (experimental; the design system stays on stable foundation APIs) and
+`android-cli` (install it yourself if you want it).
+
+## 9. Before you say it is done
 
 1. `./gradlew build` is green, or you have said exactly what fails and why.
 2. Every new screen has loading, empty, error and offline states, and works in dark theme.
@@ -265,7 +289,7 @@ This is what separates a good agent change from a typical one. Follow it exactly
 5. The diff contains only what the task needed, with comments that explain decisions, not the
    change.
 
-## 9. Never
+## 10. Never
 
 - Commit `keystore.properties`, `keys/`, `local.properties` or a real `google-services.json`.
 - Print tokens, passwords or personal data to the log.
