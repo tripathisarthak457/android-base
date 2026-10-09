@@ -90,6 +90,9 @@ export type Generation = {
   target_sdk: number | null;
   glass: boolean | null;
   duration_ms: number;
+  queue_ms: number | null;
+  python_ms: number | null;
+  stream_ms: number | null;
   config_ms: number | null;
   zip_bytes: number | null;
   cold_start: boolean | null;
@@ -99,6 +102,10 @@ export type Generation = {
   failure_reason: string;
   failure_field: string;
   generator_commit: string;
+  // What the generator reported about the spec; empty for a failed run.
+  notes: string[];
+  ignored_fields: string[];
+  warnings: string[];
   spec: unknown;
 };
 

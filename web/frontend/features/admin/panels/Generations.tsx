@@ -2,7 +2,7 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
-import { type Generations as GenerationsData, downloadCsv, useAdminQuery } from "../api.ts";
+import { type Generation, type Generations as GenerationsData, downloadCsv, useAdminQuery } from "../api.ts";
 import { OUTCOME_COLOUR, seconds } from "../charts.tsx";
 import { Panel, type PanelProps } from "../Panel.tsx";
 
@@ -77,6 +77,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                       <td className="py-2 pr-3 whitespace-nowrap">
                         <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: OUTCOME_COLOUR[row.outcome] ?? "gray" }} />
                         {row.outcome}
+                        {remarks(row) && <span className="block text-[10px] text-amber">{remarks(row)}</span>}
                       </td>
                       <td className="max-w-[180px] py-2 pr-3">
                         <span className="block truncate">{row.app_name || "—"}</span>
@@ -116,6 +117,12 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                             {row.config_ms === null ? "—" : seconds(row.config_ms)} · zip {row.zip_bytes === null ? "—" : `${Math.round(row.zip_bytes / 1024)} KB`} ·{" "}
                             {row.cold_start ? "cold start" : "warm"} · {row.generator_commit.slice(0, 7)}
                           </p>
+                          <p className="mb-2 font-mono text-[11px] text-ink-400">
+                            queue {optionalSeconds(row.queue_ms)} · generator {optionalSeconds(row.python_ms)} · stream {optionalSeconds(row.stream_ms)}
+                          </p>
+                          <Remarks title="Warnings" items={row.warnings} className="text-amber" />
+                          <Remarks title="Ignored fields" items={row.ignored_fields} className="font-mono text-ink-300" />
+                          <Remarks title="Notes" items={row.notes} className="text-ink-300" />
                           <pre className="max-h-96 overflow-auto rounded-lg bg-ink-950 p-3 font-mono text-[11px] leading-relaxed text-ink-300">{JSON.stringify(row.spec, null, 2)}</pre>
                         </td>
                       </tr>
@@ -144,5 +151,32 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
         </>
       )}
     </Panel>
+  );
+}
+
+function optionalSeconds(ms: number | null): string {
+  return ms === null ? "—" : seconds(ms);
+}
+
+function remarks(row: Generation): string {
+  const parts: string[] = [];
+  if (row.warnings.length > 0) parts.push(`${row.warnings.length} warning${row.warnings.length === 1 ? "" : "s"}`);
+  if (row.ignored_fields.length > 0) parts.push(`${row.ignored_fields.length} ignored`);
+  return parts.join(" · ");
+}
+
+function Remarks({ title, items, className }: { title: string; items: string[]; className: string }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="mb-2 text-xs">
+      <p className="font-medium text-ink-400">{title}</p>
+      <ul className={`mt-1 list-disc space-y-0.5 pl-4 ${className}`}>
+        {items.map((item, index) => (
+          <li key={index} className="whitespace-pre-wrap break-words">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
