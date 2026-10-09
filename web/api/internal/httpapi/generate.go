@@ -116,8 +116,8 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 	record.Glass = slices.Contains(out.ResolvedFeatures, glassFeature)
 	record.GeneratorCommit = out.GeneratorCommit
 	record.ZipBytes = out.ZipBytes
-	record.QueueMs = store.Milliseconds(out.Queue)
-	record.PythonMs = store.Milliseconds(out.Run)
+	record.QueueMs = store.Milliseconds(out.QueueTime)
+	record.PythonMs = store.Milliseconds(out.RunTime)
 	serverEvent(telemetry.EventGenerated)
 
 	file, err := os.Open(out.ZipPath)
@@ -133,7 +133,7 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 
 	elapsed := out.ElapsedMs
 	if elapsed == 0 {
-		elapsed = int(out.Run.Milliseconds())
+		elapsed = int(out.RunTime.Milliseconds())
 	}
 	name := generate.ProjectFileName(out.ProjectName)
 	w.Header().Set("Content-Type", "application/zip")
@@ -170,9 +170,9 @@ func (s *Server) generationFailed(w http.ResponseWriter, r *http.Request, record
 		failure = &generate.Failure{Outcome: telemetry.InternalError, Message: err.Error()}
 	}
 	record.Outcome = failure.Outcome
-	record.QueueMs = store.Milliseconds(failure.Queue)
+	record.QueueMs = store.Milliseconds(failure.QueueTime)
 	if failure.Outcome != telemetry.AbandonedQueue {
-		record.PythonMs = store.Milliseconds(failure.Run)
+		record.PythonMs = store.Milliseconds(failure.RunTime)
 	}
 
 	switch failure.Outcome {

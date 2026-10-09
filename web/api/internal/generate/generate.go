@@ -94,10 +94,10 @@ type Result struct {
 // Output is a finished project. Close removes it and everything else the generator wrote.
 type Output struct {
 	Result
-	ZipPath string
-	Queue   time.Duration
-	Run     time.Duration
-	dir     string
+	ZipPath   string
+	QueueTime time.Duration
+	RunTime   time.Duration
+	dir       string
 }
 
 func (o *Output) Close() error { return os.RemoveAll(o.dir) }
@@ -113,8 +113,8 @@ type Failure struct {
 	// and the frame it was raised in, or the last thing a crashed child wrote. Empty when Message
 	// is all there is to go on.
 	Signature string
-	Queue     time.Duration
-	Run       time.Duration
+	QueueTime time.Duration
+	RunTime   time.Duration
 }
 
 func (f *Failure) Error() string {
@@ -143,7 +143,7 @@ func (g *Generator) Run(ctx context.Context, spec []byte) (*Output, error) {
 	select {
 	case g.slots <- struct{}{}:
 	case <-ctx.Done():
-		return nil, &Failure{Outcome: telemetry.AbandonedQueue, Queue: time.Since(queued)}
+		return nil, &Failure{Outcome: telemetry.AbandonedQueue, QueueTime: time.Since(queued)}
 	}
 	defer func() { <-g.slots }()
 	queue := time.Since(queued)
@@ -151,15 +151,15 @@ func (g *Generator) Run(ctx context.Context, spec []byte) (*Output, error) {
 	dir, err := os.MkdirTemp(g.workRoot, g.Target.Key+"-")
 	if err != nil {
 		return nil, &Failure{Outcome: telemetry.InternalError, Message: "could not create a working directory",
-			Detail: err.Error(), Queue: queue}
+			Detail: err.Error(), QueueTime: queue}
 	}
 	output, failure := g.run(ctx, dir, spec)
 	if failure != nil {
 		_ = os.RemoveAll(dir)
-		failure.Queue = queue
+		failure.QueueTime = queue
 		return nil, failure
 	}
-	output.Queue = queue
+	output.QueueTime = queue
 	return output, nil
 }
 
@@ -190,24 +190,24 @@ func (g *Generator) run(ctx context.Context, dir string, spec []byte) (*Output, 
 	if runErr != nil {
 		switch {
 		case ctx.Err() != nil:
-			return nil, &Failure{Outcome: telemetry.AbandonedRunning, Run: ran}
+			return nil, &Failure{Outcome: telemetry.AbandonedRunning, RunTime: ran}
 		case errors.Is(runCtx.Err(), context.DeadlineExceeded):
 			return nil, &Failure{Outcome: telemetry.Timeout, Message: fmt.Sprintf("the generator ran past %s", g.timeout),
-				Detail: stderr.String(), Run: ran}
+				Detail: stderr.String(), RunTime: ran}
 		case runCtx.Err() != nil:
-			return nil, &Failure{Outcome: telemetry.InternalError, Message: "the server stopped during generation", Run: ran}
+			return nil, &Failure{Outcome: telemetry.InternalError, Message: "the server stopped during generation", RunTime: ran}
 		}
 	}
 
 	var reply headlessReply
 	if err := json.Unmarshal(stdout.Bytes(), &reply); err != nil {
 		return nil, &Failure{Outcome: telemetry.InternalError, Message: "the generator's reply was not JSON",
-			Detail: describeExit(runErr, &stdout, &stderr), Signature: g.crashSignature(runErr, &stderr), Run: ran}
+			Detail: describeExit(runErr, &stdout, &stderr), Signature: g.crashSignature(runErr, &stderr), RunTime: ran}
 	}
 
 	if !reply.OK {
 		if reply.Kind == "invalid" {
-			return nil, &Failure{Outcome: telemetry.Invalid, Message: reply.Error, Field: reply.Field, Run: ran}
+			return nil, &Failure{Outcome: telemetry.Invalid, Message: reply.Error, Field: reply.Field, RunTime: ran}
 		}
 		detail, signature := reply.Detail, g.signature(reply.Detail)
 		if detail == "" {
@@ -218,16 +218,16 @@ func (g *Generator) run(ctx context.Context, dir string, spec []byte) (*Output, 
 			message = "the generator failed"
 		}
 		return nil, &Failure{Outcome: telemetry.InternalError, Message: message, Detail: detail, Signature: signature,
-			Run: ran}
+			RunTime: ran}
 	}
 
 	info, err := os.Stat(zipPath)
 	if runErr != nil || err != nil || info.Size() == 0 {
 		return nil, &Failure{Outcome: telemetry.InternalError, Message: "the generator reported success without a zip",
-			Detail: describeExit(runErr, &stdout, &stderr), Run: ran}
+			Detail: describeExit(runErr, &stdout, &stderr), RunTime: ran}
 	}
 	reply.ZipBytes = info.Size()
-	return &Output{Result: reply.Result, ZipPath: zipPath, Run: ran, dir: dir}, nil
+	return &Output{Result: reply.Result, ZipPath: zipPath, RunTime: ran, dir: dir}, nil
 }
 
 func describeExit(runErr error, stdout, stderr *bytes.Buffer) string {
