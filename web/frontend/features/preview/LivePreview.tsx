@@ -1,6 +1,6 @@
 "use client";
 
-import { type RefObject, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { type RefObject, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Segmented } from "../../components/primitives.tsx";
 import type { Tokens } from "../catalogue/types.ts";
 import { AppPreview, PHONE_ASPECT, PHONE_WIDTH } from "./AppPreview.tsx";
@@ -56,6 +56,7 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
   const tabs = useMemo(() => planTabs(deferred.features, deferred.modules).tabs, [deferred.features, deferred.modules]);
   const screens = useMemo(() => screensFor(deferred.features, deferred.modules), [deferred.features, deferred.modules]);
   const [chosen, setChosen] = useState<string | null>(null);
+  const screenName = useId();
   const screen: PreviewTab | undefined = screens.find((candidate) => candidate.key === chosen) ?? screens.find((candidate) => candidate.screen !== "signin") ?? screens[0];
   const weights = useMemo(() => weightsFor(deferred.tokens, theme.style.voice), [deferred.tokens, theme.style.voice]);
   useFamily(deferred.font, weights);
@@ -69,18 +70,15 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
           {screens.map((option) => {
             const on = option.key === screen?.key;
             return (
-              <button
+              <label
                 key={option.key}
-                type="button"
-                role="radio"
-                aria-checked={on}
-                onClick={() => setChosen(option.key)}
-                className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
+                className={`shrink-0 cursor-pointer rounded-full px-2.5 py-1 text-xs font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
                   on ? "bg-ink-100 text-ink-950" : "text-ink-400 hover:bg-ink-800 hover:text-ink-100"
                 }`}
               >
+                <input type="radio" name={screenName} checked={on} onChange={() => setChosen(option.key)} className="sr-only" />
                 {option.label}
-              </button>
+              </label>
             );
           })}
         </div>

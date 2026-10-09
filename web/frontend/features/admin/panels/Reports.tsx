@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
 import { type Health as HealthData, type Report, type Reports as ReportsData, adminPost, useAdminQuery } from "../api.ts";
@@ -13,6 +13,7 @@ const KIND_TONE: Record<string, "neutral" | "accent" | "mint" | "amber"> = { bug
 /** Reports from people, filtered by status on the server so an old unread one is never hidden past a page. */
 export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
   const [status, setStatus] = useState<string>("new");
+  const statusName = useId();
   const [edits, setEdits] = useState<Record<number, Partial<Report>>>({});
   const [problem, setProblem] = useState<string | null>(null);
   const result = useAdminQuery<ReportsData>("feedback", token, `${query}&status=${status}&limit=100`, version, onUnauthorized);
@@ -34,16 +35,15 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
       actions={
         <div role="radiogroup" aria-label="Status" className="flex gap-1">
           {[...STATUSES, "all"].map((option) => (
-            <button
+            <label
               key={option}
-              type="button"
-              role="radio"
-              aria-checked={status === option}
-              onClick={() => setStatus(option)}
-              className={`rounded-md px-2.5 py-1 text-xs font-medium capitalize ${status === option ? "bg-ink-700 text-ink-100" : "text-ink-300 hover:bg-ink-800"}`}
+              className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium capitalize has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+                status === option ? "bg-ink-700 text-ink-100" : "text-ink-300 hover:bg-ink-800"
+              }`}
             >
+              <input type="radio" name={statusName} checked={status === option} onChange={() => setStatus(option)} className="sr-only" />
               {option}
-            </button>
+            </label>
           ))}
         </div>
       }

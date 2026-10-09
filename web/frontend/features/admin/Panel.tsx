@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { type ReactNode, useId } from "react";
 import { Spinner } from "../../components/ui.tsx";
 import type { Query, Window } from "./api.ts";
 
@@ -27,11 +27,12 @@ export function Panel<T extends Window>({
   children: (data: T) => ReactNode;
 }) {
   const { data, error, loading } = result;
+  const headingId = useId();
   return (
-    <section aria-labelledby={`panel-${title}`} className={`rounded-xl border border-ink-700 bg-ink-850 p-5 ${className}`}>
+    <section aria-labelledby={headingId} className={`rounded-xl border border-ink-700 bg-ink-850 p-5 ${className}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 id={`panel-${title}`} className="text-sm font-semibold text-ink-100">
+          <h2 id={headingId} className="text-sm font-semibold text-ink-100">
             {title}
           </h2>
           <p className="mt-1 text-xs text-ink-400">
