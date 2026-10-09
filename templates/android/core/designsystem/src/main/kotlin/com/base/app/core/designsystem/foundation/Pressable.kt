@@ -236,15 +236,11 @@ private class PressableNode(
     KeyInputModifierNode,
     CompositionLocalConsumerModifierNode {
 
-    /** 0 at rest, 1 fully pressed. Read only in [layerBlock]. */
+    /** 0 at rest, 1 fully pressed. Read only in [layerBlock] and, for a highlight, in [draw]. */
     private val progress = Animatable(0f)
     private var pressAnimation: Job? = null
     private var press: PressInteraction.Press? = null
     private var keyPressed = false
-
-    // The highlight is an indication fed from a source; a row that was not handed one gets its own.
-    private var highlightSource: MutableInteractionSource? = null
-    private var highlightNode: DelegatableNode? = null
 
     private var focus: FocusInteraction.Focus? = null
     private var childOffset = IntOffset.Zero
@@ -258,10 +254,6 @@ private class PressableNode(
     )
 
     private val pointerInput = delegate(SuspendingPointerInputModifierNode { detectTaps() })
-
-    init {
-        updateHighlight()
-    }
 
     fun update(
         onClick: () -> Unit,
@@ -291,22 +283,12 @@ private class PressableNode(
         this.externalSource = interactionSource
 
         focusTarget.focusability = focusabilityFor(enabled)
-        if (sourceChanged || feedbackChanged) updateHighlight()
+        if (feedbackChanged) invalidateDraw()
         if (gestureChanged) pointerInput.resetPointerInputHandler()
         if (semanticsChanged) invalidateSemantics()
     }
 
     private fun focusabilityFor(enabled: Boolean) = if (enabled) Focusability.SystemDefined else Focusability.Never
-
-    private fun updateHighlight() {
-        highlightNode?.let { undelegate(it) }
-        highlightNode = null
-        highlightSource = null
-        if (feedback != PressFeedback.Highlight) return
-        val source = externalSource ?: MutableInteractionSource()
-        highlightSource = source
-        highlightNode = delegate(RowHighlight.create(source))
-    }
 
     private suspend fun PointerInputScope.detectTaps() {
         if (!enabled) return
@@ -359,8 +341,8 @@ private class PressableNode(
         pressAnimation?.cancel()
         pressAnimation = when (effectiveFeedback()) {
             PressFeedback.Scale -> coroutineScope.launch { progress.animateTo(1f, springs.press.unit) }
-            PressFeedback.Dim -> coroutineScope.launch { progress.snapTo(1f) }
-            else -> null
+            PressFeedback.Dim, PressFeedback.Highlight -> coroutineScope.launch { progress.snapTo(1f) }
+            PressFeedback.None -> null
         }
     }
 
@@ -378,7 +360,12 @@ private class PressableNode(
                 progress.animateTo(0f, springs.release.unit)
             }
             PressFeedback.Dim -> coroutineScope.launch { progress.animateTo(0f, tween(springs.fadeSlow)) }
-            else -> null
+            PressFeedback.Highlight -> coroutineScope.launch {
+                // A tap is shown even when it ends before the press did: the row flashes and fades.
+                if (tapped) progress.snapTo(1f)
+                progress.animateTo(0f, tween(springs.highlightFadeOut))
+            }
+            PressFeedback.None -> null
         }
     }
 
@@ -389,7 +376,6 @@ private class PressableNode(
 
     private fun emit(interaction: Interaction) {
         externalSource?.tryEmit(interaction)
-        highlightSource?.takeIf { it !== externalSource }?.tryEmit(interaction)
     }
 
     /** Scale is motion, so with motion reduced it becomes a dim, which still answers the press. */
@@ -456,8 +442,14 @@ private class PressableNode(
         }
     }
 
+    // The highlight is drawn here rather than by a delegated RowHighlight node: a node that draws
+    // itself is the only draw node Compose visits, so a delegate's draw would never run.
     override fun ContentDrawScope.draw() {
         drawContent()
+        if (feedback == PressFeedback.Highlight) {
+            val value = progress.value
+            if (value > 0f) drawRect(currentValueOf(LocalAppColors).highlight, alpha = value)
+        }
         if (focus == null) return
         val inset = FocusRingGap.toPx()
         val stroke = FocusRingWidth.toPx()
