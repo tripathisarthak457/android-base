@@ -1,4 +1,4 @@
-// Package httpapi is the service's HTTP surface (MASTER-PLAN A10.1). No router dependency.
+// Package httpapi is the service's HTTP surface. No router dependency.
 package httpapi
 
 import (
@@ -287,7 +287,7 @@ func (s *Server) handleFeedback(w http.ResponseWriter, r *http.Request) {
 
 	payload.VisitorHash = s.store.VisitorHash(s.clientKey(r), time.Now())
 	// The browser family is what a report needs to be reproduced; the raw user agent is not stored
-	// anywhere (MASTER-PLAN A10.2).
+	// anywhere.
 	agent := telemetry.ClassifyAgent(r.UserAgent(), r.Header.Get("Sec-CH-UA-Mobile"))
 	payload.UserAgent = agent.Browser + " · " + agent.OS + " · " + agent.DeviceClass
 

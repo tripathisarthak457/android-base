@@ -37,7 +37,7 @@ func clientAddr(r *http.Request, policy config.ProxyPolicy) netip.Addr {
 
 // clientKey is what rate limits and visitor counts are keyed on: an IPv4 address, or the /64 an
 // IPv6 address belongs to. One subscriber gets a whole /64, so keying on the full address gives
-// every client 2^64 allowances (audit web-api M7).
+// every client 2^64 allowances.
 func clientKey(addr netip.Addr) string {
 	switch {
 	case !addr.IsValid():

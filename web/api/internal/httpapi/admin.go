@@ -42,8 +42,8 @@ func windowOf(f store.Filter) window {
 	return window{From: f.From.Format(time.DateOnly), To: f.To.AddDate(0, 0, -1).Format(time.DateOnly)}
 }
 
-// parseFilter reads the global window and filters (MASTER-PLAN A10.3). from and to are inclusive UTC
-// dates; the default is the last 30 days including today.
+// parseFilter reads the global window and filters. from and to are inclusive UTC dates; the
+// default is the last 30 days including today.
 func parseFilter(r *http.Request, now time.Time) (store.Filter, error) {
 	q := r.URL.Query()
 	today := now.UTC().Truncate(24 * time.Hour)

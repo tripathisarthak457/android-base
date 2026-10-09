@@ -1,5 +1,5 @@
 // Package telemetry turns request headers and client events into the closed, anonymous values the
-// store records (MASTER-PLAN A10.2). Nothing here keeps an address or a raw user agent.
+// store records. Nothing here keeps an address or a raw user agent.
 package telemetry
 
 import (

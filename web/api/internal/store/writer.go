@@ -9,7 +9,7 @@ import (
 )
 
 // Writer records batches from one goroutine, so no request ever waits on the database to be
-// answered (audit web-api M1). The queue is bounded: when the database falls behind, new batches
+// answered. The queue is bounded: when the database falls behind, new batches
 // are dropped and counted rather than held in memory without limit.
 type Writer struct {
 	store *Store

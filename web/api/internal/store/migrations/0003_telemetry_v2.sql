@@ -1,4 +1,4 @@
--- Telemetry v2 (MASTER-PLAN A10.2): how each generation ended and where its time went, the browser
+-- Telemetry v2: how each generation ended and where its time went, the browser
 -- session it came from, and a funnel of anonymous events. Still no address, raw user agent or email.
 
 ALTER TABLE generations

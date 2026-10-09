@@ -135,9 +135,9 @@ func (s *Server) cors(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// requireJSON refuses a POST that is not declared as JSON (audit web-api M10). A cross-site page
-// can send a form or text/plain POST without asking; a JSON one needs a preflight, which the CORS
-// allow-list then refuses.
+// requireJSON refuses a POST that is not declared as JSON. A cross-site page can send a form or
+// text/plain POST without asking; a JSON one needs a preflight, which the CORS allow-list then
+// refuses.
 func requireJSON(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))

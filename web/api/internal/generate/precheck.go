@@ -12,7 +12,7 @@ import (
 )
 
 // The precheck's own bounds. The generator enforces the real rules; these only make sure a request
-// that would cost thirty seconds of CPU never reaches it (audit web-api H1).
+// that would cost thirty seconds of CPU never reaches it.
 const (
 	defaultSpecBytes      = 32 << 10
 	defaultFeatures       = 64
@@ -73,8 +73,8 @@ type Spec struct {
 // SpecBytesLimit is the largest body the generate routes read.
 func (r Rules) SpecBytesLimit() int { return positive(r.SpecBytesMax, defaultSpecBytes) }
 
-// Precheck bounds a spec's size and shape before it takes a generator slot (MASTER-PLAN A10.1), and
-// reads the fields the API records.
+// Precheck bounds a spec's size and shape before it takes a generator slot, and reads the fields
+// the API records.
 func Precheck(body []byte, target string, rules Rules) (Spec, error) {
 	if len(body) > rules.SpecBytesLimit() {
 		return Spec{}, ErrTooLarge

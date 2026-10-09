@@ -9,8 +9,8 @@ import (
 	"github.com/base-android/generator-api/internal/telemetry"
 )
 
-// handleEvents records a batch of the website's funnel events (MASTER-PLAN A10.2). A `landed` event
-// also writes the session's visit: how it arrived, roughly from where, on what kind of device.
+// handleEvents records a batch of the website's funnel events. A `landed` event also writes the
+// session's visit: how it arrived, roughly from where, on what kind of device.
 func (s *Server) handleEvents(w http.ResponseWriter, r *http.Request) {
 	body, ok := readBody(w, r, 8<<10)
 	if !ok {

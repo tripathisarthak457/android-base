@@ -1,6 +1,6 @@
 // Package generate runs the Python generator and hands back a zip. The generator is not
 // reimplemented here: the spec is passed through as the bytes the client sent, and Python is the
-// authority on what is valid (MASTER-PLAN A1.8).
+// authority on what is valid. The contract is in generator/genkit/core/headless.py.
 package generate
 
 import (
@@ -69,7 +69,7 @@ func New(stopping context.Context, opts Options, target TargetEntry, rules Rules
 	}, nil
 }
 
-// Result is the generator's success report (MASTER-PLAN A1.8).
+// Result is the generator's success report.
 type Result struct {
 	ProjectName      string   `json:"project_name"`
 	ElapsedMs        int      `json:"elapsed_ms"`

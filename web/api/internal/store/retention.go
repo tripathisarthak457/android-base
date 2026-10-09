@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Retention is how long each kind of row is kept (audit web-api M9).
+// Retention is how long each kind of row is kept.
 type Retention struct {
 	// Requests is per-request route timing, only useful while it is recent.
 	Requests time.Duration

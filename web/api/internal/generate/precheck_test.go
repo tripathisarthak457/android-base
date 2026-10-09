@@ -39,7 +39,7 @@ func TestPrecheckRefusesWhatWouldBeExpensiveOrBroken(t *testing.T) {
 		{"identifier too long", `{"app_name": "` + strings.Repeat("a", 121) + `"}`, "app_name"},
 		{"module name too long", `{"feature_modules": ["` + strings.Repeat("a", 121) + `"]}`, "feature_modules"},
 		{"string too long", `{"android": {"api_base_urls": {"dev": "https://` + strings.Repeat("a", 250) + `"}}}`, "android.api_base_urls.dev"},
-		// A trailing newline passed Python's `$` and broke the generated Kotlin (audit web-api M2).
+		// A trailing newline passes Python's `$` and would break the generated Kotlin.
 		{"newline in a package", `{"package_name": "com.example.app\n"}`, "package_name"},
 		{"NUL in a module", `{"feature_modules": ["orders\u0000"]}`, "feature_modules"},
 		{"too deep", `{"a": {"b": {"c": {"d": {"e": {"f": {}}}}}}}`, "a.b.c.d.e.f"},

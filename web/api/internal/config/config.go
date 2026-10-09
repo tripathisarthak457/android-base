@@ -71,8 +71,8 @@ type Config struct {
 	RetainNames    time.Duration
 }
 
-// ProxyPolicy decides which address is the client's (audit web-api M7). Every proxy that appends to
-// X-Forwarded-For adds the address it received the request from, so with N such proxies in front of
+// ProxyPolicy decides which address is the client's. Every proxy that appends to X-Forwarded-For
+// adds the address it received the request from, so with N such proxies in front of
 // the server the client is the Nth entry from the right; anything further left was written by the
 // client and proves nothing.
 type ProxyPolicy struct {

@@ -12,8 +12,9 @@ import (
 	"time"
 )
 
-// Catalogue is the generator's own description of every target (MASTER-PLAN A1.9). The raw bytes are
-// served to the website unchanged; the parsed fields are the few the API needs itself.
+// Catalogue is what `genkit.core.catalogue --json` prints: the generator's own description of
+// every target. The raw bytes are served to the website unchanged; the parsed fields are the few
+// the API needs itself.
 type Catalogue struct {
 	Raw []byte `json:"-"`
 	// ETag is a strong validator, fixed for the life of the process.

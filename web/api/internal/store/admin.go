@@ -15,8 +15,8 @@ import (
 	"github.com/base-android/generator-api/internal/telemetry"
 )
 
-// Filter is the admin portal's global window and filters (MASTER-PLAN A10.3). The window is
-// half-open: From is the start of the first day, To the start of the day after the last.
+// Filter is the admin portal's global window and filters. The window is half-open: From is the
+// start of the first day, To the start of the day after the last.
 type Filter struct {
 	From        time.Time
 	To          time.Time

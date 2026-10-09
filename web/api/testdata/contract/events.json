@@ -1,5 +1,5 @@
 {
-  "description": "Bodies of POST /api/v1/events (MASTER-PLAN A10.2). 'accepted' bodies are answered 204 and stored; 'refused' bodies are answered 400 and nothing in them is stored. The catalogue assumed here has the targets and presets in 'catalogue'. Read by web/api (internal/telemetry) and by the website's telemetry tests.",
+  "description": "Bodies of POST /api/v1/events. 'accepted' bodies are answered 204 and stored; 'refused' bodies are answered 400 and nothing in them is stored. The catalogue assumed here has the targets and presets in 'catalogue'. Read by web/api (internal/telemetry) and by the website's telemetry tests.",
   "catalogue": {"android": ["lean", "standard", "everything"], "multiplatform": ["standard"]},
   "accepted": [
     {

@@ -1,5 +1,5 @@
 {
-  "description": "Session headers on POST /api/v1/{target}/generate (MASTER-PLAN A10.1). Each case lists request headers and the values the API stores for them. A header that fails its check is ignored, never an error. Read by web/api (internal/telemetry) and by the website's request.ts tests.",
+  "description": "Session headers on POST /api/v1/{target}/generate. Each case lists request headers and the values the API stores for them. A header that fails its check is ignored, never an error. Read by web/api (internal/telemetry) and by the website's request.ts tests.",
   "rules": {
     "X-Session-Id": "UUID v4, whole value, case-insensitive; stored lowercase",
     "X-Config-Ms": "decimal digits only, 0 to 7200000 inclusive",
