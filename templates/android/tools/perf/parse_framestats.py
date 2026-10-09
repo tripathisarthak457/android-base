@@ -81,6 +81,15 @@ def first_frame(rows):
     }
 
 
+def opening_frame(rows, window=3):
+    """The slowest of a tap's first [window] frames: the one that composes what the tap opened.
+
+    A tap's first frame can be its press feedback letting go, with the new screen composed in the
+    frame after; a Back key has no such frame, so a pop is measured with first_frame().
+    """
+    return max(rows[:window], key=ui_ms) if rows else None
+
+
 def max_ui_ms(rows):
     """The slowest UI-thread frame in the dump: where a second transition started mid-dump."""
     return round(max(ui_ms(row) for row in rows), 2) if rows else None

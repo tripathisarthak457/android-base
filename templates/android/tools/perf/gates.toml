@@ -46,13 +46,13 @@ lean = 16.0
 
 [[row]]
 metric = "pushpop.push_first_frame_ms.median"
-label = "Push, first frame median (ms)"
+label = "Push, the frame that composes the screen, median (ms)"
 solid = "ratchet"
 smoke = { add = 2.0 }
 
 [[row]]
 metric = "pushpop.push_first_frame_ms.max"
-label = "Push, first frame max (ms)"
+label = "Push, the frame that composes the screen, max (ms)"
 solid = "ratchet"
 
 [[row]]

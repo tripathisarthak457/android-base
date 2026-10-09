@@ -46,6 +46,8 @@ JOURNEYS = ["tab_switch", "push", "pop", "pushpop", "gesture_pop", "rapid_back",
 PROFILE_RECEIVER = "androidx.profileinstaller.ProfileInstallReceiver"
 PROFILE_ACTION = "androidx.profileinstaller.action.INSTALL_PROFILE"
 MAX_BATTERY_C = 37.0
+# Long enough for a press feedback to settle, short of the 400 ms that makes a press a long press.
+PRESS_SETTLE_S = 0.25
 
 
 class HarnessError(Exception):
@@ -286,6 +288,19 @@ class Run:
         x, y = node.center
         return f"input tap {x} {y}"
 
+    def press(self, node):
+        """Puts a finger down on [node] and returns the shell command that lifts it.
+
+        A measured tap runs only the lift: the frames of the press feedback come before the frame
+        reset, so the first frame measured is the one the tap opens, not a press highlight.
+        """
+        x, y = node.center
+        output = self.device.shell(f"input motionevent DOWN {x} {y}")
+        if "rror" in output or "nknown" in output:
+            return self.tap(node)
+        time.sleep(PRESS_SETTLE_S)
+        return f"input motionevent UP {x} {y}"
+
     def ui(self):
         return self.device.ui()
 
@@ -345,7 +360,7 @@ class Run:
         self.wait_for(lambda t: t.first_row(), "a row of primary_list on the first tab")
         first_visits = []
         for index in range(1, len(self.tabs)):
-            _, frames = self.segment("tab_first_visit", self.tap(self.tabs[index]), 1.5)
+            _, frames = self.segment("tab_first_visit", self.press(self.tabs[index]), 1.5)
             first = parse_framestats.first_frame(frames)
             first_visits.append(first["ui_ms"] if first else None)
         self.record_spread("tab_first_visit.first_frame_ms", first_visits)
@@ -362,7 +377,7 @@ class Run:
         dumps, firsts = [], []
         for _ in range(3):
             for index in order:
-                gfx, frames = self.segment("tabs", self.tap(self.tabs[index]), 0.9)
+                gfx, frames = self.segment("tabs", self.press(self.tabs[index]), 0.9)
                 dumps.append(gfx)
                 first = parse_framestats.first_frame(frames)
                 firsts.append(first["ui_ms"] if first else None)
@@ -377,7 +392,7 @@ class Run:
         firsts = []
         for _ in range(6):
             for index in (1, 0):
-                _, frames = self.segment("tab1", self.tap(self.tabs[index]), 1.6)
+                _, frames = self.segment("tab1", self.press(self.tabs[index]), 1.6)
                 first = parse_framestats.first_frame(frames)
                 firsts.append(first["ui_ms"] if first else None)
         self.record_spread("tab1.first_frame_ms", firsts)
@@ -386,9 +401,10 @@ class Run:
         row = self.at_root(0)
         dumps, pushes, pops = [], [], []
         for _ in range(8):
-            gfx, frames = self.segment("push", self.tap(row), 1.3)
+            gfx, frames = self.segment("push", self.press(row), 1.3)
             dumps.append(gfx)
-            pushes.append((parse_framestats.first_frame(frames) or {}).get("ui_ms"))
+            opening = parse_framestats.opening_frame(frames)
+            pushes.append(round(parse_framestats.ui_ms(opening), 2) if opening else None)
             gfx, frames = self.segment("pop", "input keyevent 4", 1.3)
             dumps.append(gfx)
             pops.append((parse_framestats.first_frame(frames) or {}).get("ui_ms"))

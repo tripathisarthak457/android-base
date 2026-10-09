@@ -111,9 +111,21 @@ class ParseFramestatsTest(unittest.TestCase):
         frames = parse_framestats.load(fixture("framestats_pop.txt"))
         self.assertAlmostEqual(parse_framestats.max_ui_ms(frames), 27.31, places=2)
 
+    def test_a_push_is_measured_by_the_frame_that_composes_it(self):
+        # A light frame (the press letting go), the frame that composes the screen, then the slide.
+        frames = [frame(0, 2.25), frame(1, 12.96), frame(2, 2.47), frame(3, 30.0)]
+        self.assertAlmostEqual(parse_framestats.ui_ms(parse_framestats.opening_frame(frames)), 12.96, places=2)
+
     def test_no_frames(self):
         self.assertIsNone(parse_framestats.first_frame([]))
+        self.assertIsNone(parse_framestats.opening_frame([]))
         self.assertIsNone(parse_framestats.max_ui_ms([]))
+
+
+def frame(index, ui_ms, interval=8_333_333):
+    start = index * interval
+    return {"Flags": 0, "IntendedVsync": start, "AnimationStart": start,
+            "SyncQueued": start + int(ui_ms * 1_000_000), "FrameInterval": interval}
 
 
 def shell_line(tab, stacks, presented=(), roots=None):
