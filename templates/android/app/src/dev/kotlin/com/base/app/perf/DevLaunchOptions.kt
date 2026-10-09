@@ -4,6 +4,7 @@ import android.content.Intent
 import com.base.app.core.datastore.AppSettingsStore
 import com.base.app.core.datastore.AuthTokenStore
 import com.base.app.core.designsystem.component.navigation.BarMinimize
+import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.navigation.ShellConfig
 import com.base.app.ui.LaunchHook
 import com.base.app.ui.ShellConfigOverride
@@ -22,7 +23,8 @@ import javax.inject.Singleton
  * - `perf.skipOnboarding=true` marks onboarding done;
  * - `perf.fakeSession=true` does that too and saves a synthetic session, so sign-in is skipped;
  * - `perf.screenResponse=0.30` sets the screen spring's response, in seconds, to compare candidates;
- * - `perf.barMinimize=OnScrollDown` makes the tab bar minimize while a list scrolls down.
+ * - `perf.barMinimize=OnScrollDown` makes the tab bar minimize while a list scrolls down;
+ * - `perf.barLabels=Selected` (or `Never`) sets which tabs show their label.
  *
  * The token is made up. A dev server that checks tokens answers 401 and the app signs out, so the
  * journeys rely on screens that load without a real session, as the sample feature's public API does.
@@ -35,6 +37,7 @@ class DevLaunchOptions @Inject constructor(
 
     private var screenResponse: Float? = null
     private var barMinimize: BarMinimize? = null
+    private var barLabels: TabLabels? = null
 
     override suspend fun beforeStart(intent: Intent) {
         val fakeSession = intent.isOn(FAKE_SESSION)
@@ -42,11 +45,13 @@ class DevLaunchOptions @Inject constructor(
         if (fakeSession && tokens.accessToken() == null) tokens.save(SYNTHETIC_TOKEN, SYNTHETIC_TOKEN)
         screenResponse = intent.getStringExtra(SCREEN_RESPONSE)?.toFloatOrNull()?.takeIf { it > 0f }
         barMinimize = intent.getStringExtra(BAR_MINIMIZE)?.let { name -> BarMinimize.entries.firstOrNull { it.name == name } }
+        barLabels = intent.getStringExtra(BAR_LABELS)?.let { name -> TabLabels.entries.firstOrNull { it.name == name } }
     }
 
     override fun adjust(config: ShellConfig): ShellConfig = config.copy(
         screenResponse = screenResponse ?: config.screenResponse,
         barMinimize = barMinimize ?: config.barMinimize,
+        barLabels = barLabels ?: config.barLabels,
     )
 
     private fun Intent.isOn(name: String): Boolean = getStringExtra(name).toBoolean()
@@ -56,6 +61,7 @@ class DevLaunchOptions @Inject constructor(
         const val FAKE_SESSION = "perf.fakeSession"
         const val SCREEN_RESPONSE = "perf.screenResponse"
         const val BAR_MINIMIZE = "perf.barMinimize"
+        const val BAR_LABELS = "perf.barLabels"
         const val SYNTHETIC_TOKEN = "perf-session"
     }
 }
