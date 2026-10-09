@@ -56,10 +56,7 @@ NONE = Syntax("none", "", "", False)
 
 _BY_SUFFIX: dict[str, Syntax] = {
     **dict.fromkeys((".kt", ".kts", ".java", ".swift", ".gradle", ".aidl"), SLASH),
-    **dict.fromkeys(
-        (".toml", ".properties", ".yml", ".yaml", ".pro", ".sh", ".cfg", ".gitignore", ".gitattributes"),
-        HASH,
-    ),
+    **dict.fromkeys((".toml", ".properties", ".yml", ".yaml", ".pro", ".sh", ".cfg"), HASH),
     **dict.fromkeys((".xml", ".html", ".plist", ".storyboard", ".xib"), XML),
     ".md": MARKDOWN,
     **dict.fromkeys((".json", ".xcstrings"), NONE),
