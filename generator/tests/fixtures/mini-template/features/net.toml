@@ -1,0 +1,9 @@
+key = "net"
+title = "Networking"
+headline = "Talk to a server"
+description = "A client."
+group = "Core"
+default = true
+requires = []
+owns = []
+legacy = ["network-v0"]

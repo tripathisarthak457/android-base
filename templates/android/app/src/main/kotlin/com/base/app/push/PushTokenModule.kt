@@ -1,6 +1,6 @@
 package com.base.app.push
 
-import com.base.app.core.common.util.AppLogger
+import com.base.app.core.common.log.Log
 import com.base.app.core.notification.PushTokenSink
 import dagger.Module
 import dagger.Provides
@@ -22,6 +22,6 @@ object PushTokenModule {
     @Provides
     @Singleton
     fun providePushTokenSink(): PushTokenSink = PushTokenSink { installationId ->
-        AppLogger.d("FCM installation ID (not yet uploaded): $installationId", tag = "Push")
+        Log.d("FCM installation ID (not yet uploaded): $installationId", tag = "Push")
     }
 }

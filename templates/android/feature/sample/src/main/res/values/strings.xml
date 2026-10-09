@@ -14,8 +14,8 @@
     <string name="sample_reload">Reload</string>
     <string name="sample_refresh_failed">Could not refresh.</string>
     <string name="sample_detail_title">Detail</string>
+    <string name="sample_related">Related</string>
     <string name="sample_title">Samples</string>
     <string name="sample_search_titles">Search titles</string>
-    <string name="sample_showing_cached">Showing saved data. Pull down to refresh.</string>
     <string name="sample_empty_explanation">When there is something to show, it will appear on this screen.</string>
 </resources>

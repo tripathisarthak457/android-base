@@ -10,13 +10,10 @@ the projects generated from this template showed exactly that. These tests name 
 from __future__ import annotations
 
 import re
-import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from genkit.build import TEMPLATE_DIR  # noqa: E402
+from genkit.targets.android.target import TEMPLATE_DIR
 
 DESIGN_SYSTEM = TEMPLATE_DIR / "core" / "designsystem" / "src" / "main" / "kotlin"
 CATALOG = TEMPLATE_DIR / "catalog" / "src" / "main" / "kotlin"

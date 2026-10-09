@@ -41,9 +41,8 @@ include(":catalog")
 // </opt:catalog>
 
 // ── core ─────────────────────────────────────────────────────────────────────
-include(":core:model")
 include(":core:common")
-include(":core:coroutines")
+include(":core:mvi")
 include(":core:datastore")
 include(":core:designsystem")
 include(":core:navigation")

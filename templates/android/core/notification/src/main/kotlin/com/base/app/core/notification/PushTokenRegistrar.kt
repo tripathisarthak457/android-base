@@ -1,6 +1,6 @@
 package com.base.app.core.notification
 
-import com.base.app.core.common.util.AppLogger
+import com.base.app.core.common.log.Log
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
@@ -23,14 +23,14 @@ class PushTokenRegistrar @Inject constructor(
             FirebaseMessaging.getInstance().register().await()
             FirebaseInstallations.getInstance().id.await()
         }.onSuccess { submit(it) }
-            .onFailure { AppLogger.w("FCM registration unavailable", throwable = it, tag = TAG) }
+            .onFailure { Log.w("FCM registration unavailable", throwable = it, tag = TAG) }
     }
 
     suspend fun onRegistered(installationId: String) = submit(installationId)
 
     private suspend fun submit(installationId: String) {
         runCatching { sink.submit(installationId) }
-            .onFailure { AppLogger.w("Could not submit the push installation ID", throwable = it, tag = TAG) }
+            .onFailure { Log.w("Could not submit the push installation ID", throwable = it, tag = TAG) }
     }
 
     private companion object {

@@ -1,0 +1,25 @@
+# Named starting points. Features are listed before `requires` closes over them.
+default = "standard"
+
+[lean]
+title = "Lean"
+description = "Networking, the design system, the catalog and one reference feature."
+features = ["network", "leakcanary", "sample", "catalog"]
+
+[standard]
+title = "Standard"
+description = """
+The lean set plus offline cache, images, auth, onboarding, settings with a language picker, a
+profile tab and media. What most projects want on day one."""
+features = [
+  "network", "leakcanary", "sample", "catalog",
+  "room", "coil", "googlefonts", "forms", "auth", "settings", "onboarding", "media", "deeplink",
+  "flags", "devtools", "profile", "browser", "language",
+]
+
+[everything]
+title = "Everything"
+description = """
+Every feature the template offers, working together. The template's own proof that they coexist;
+delete what you do not need."""
+all = true

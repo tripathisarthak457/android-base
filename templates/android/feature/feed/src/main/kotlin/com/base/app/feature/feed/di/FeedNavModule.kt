@@ -3,8 +3,8 @@ package com.base.app.feature.feed.di
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
-import com.base.app.feature.feed.FeedKey
 import com.base.app.feature.feed.FeedRoute
+import com.base.app.feature.feed.api.FeedKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ import kotlinx.serialization.modules.SerializersModule
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FeedNavModule {
+internal object FeedNavModule {
 
     @Provides
     @IntoSet

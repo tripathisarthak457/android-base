@@ -13,6 +13,5 @@ dependencies {
     // so everything it offers has to reach that module's compile classpath.
     api(libs.junit)
     api(libs.turbine)
-    api(libs.mockk)
     api(libs.kotlinx.coroutines.test)
 }

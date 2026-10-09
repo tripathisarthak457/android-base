@@ -3,12 +3,12 @@ package com.base.app.core.media
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.getOrNull
-import com.base.app.core.common.util.AppLogger
-import com.base.app.core.coroutines.IoDispatcher
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.log.Log
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.common.result.getOrNull
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
@@ -57,17 +57,17 @@ interface VideoTranscoder {
 class PassthroughVideoTranscoder @Inject constructor(
     @ApplicationContext private val context: Context,
     private val probe: VideoProbe,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val dispatchers: AppDispatchers,
 ) : VideoTranscoder {
 
     override suspend fun transcode(
         uri: Uri,
         settings: VideoCompression,
-    ): AppResult<File> = withContext(ioDispatcher) {
+    ): AppResult<File> = withContext(dispatchers.io) {
         runCatching {
             val info = probe.inspect(uri).getOrNull()
             if (info?.needsCompression(settings) == true) {
-                AppLogger.w(
+                Log.w(
                     "Video is ${info.displayWidth}x${info.displayHeight} at ${info.bitRate}bps " +
                         "(${info.sizeBytes / BYTES_PER_KB}KB) and exceeds the requested settings, but no " +
                         "VideoTranscoder is bound — uploading it unchanged. Bind one in your app " +
@@ -83,8 +83,8 @@ class PassthroughVideoTranscoder @Inject constructor(
 
             AppResult.Success(target)
         }.getOrElse { throwable ->
-            AppLogger.e("Video copy failed", throwable, tag = TAG)
-            AppResult.Failure(cause = throwable)
+            Log.e("Video copy failed", throwable, tag = TAG)
+            AppResult.Failure(AppError.Storage(throwable))
         }
     }
 
@@ -98,10 +98,10 @@ class PassthroughVideoTranscoder @Inject constructor(
 @Singleton
 class VideoProbe @Inject constructor(
     @ApplicationContext private val context: Context,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val dispatchers: AppDispatchers,
 ) {
 
-    suspend fun inspect(uri: Uri): AppResult<VideoInfo> = withContext(ioDispatcher) {
+    suspend fun inspect(uri: Uri): AppResult<VideoInfo> = withContext(dispatchers.io) {
         // Released in a `finally` rather than with `use`: MediaMetadataRetriever only became
         // AutoCloseable in API 29, and `use` on an older release fails at verification rather than
         // at the call.
@@ -130,8 +130,8 @@ class VideoProbe @Inject constructor(
                 retriever.release()
             }
         }.getOrElse { throwable ->
-            AppLogger.e("Could not read video metadata", throwable, tag = "VideoProbe")
-            AppResult.Failure(cause = throwable)
+            Log.e("Could not read video metadata", throwable, tag = "VideoProbe")
+            AppResult.Failure(AppError.Storage(throwable))
         }
     }
 }

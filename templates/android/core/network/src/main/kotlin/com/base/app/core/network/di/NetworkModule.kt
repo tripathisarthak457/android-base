@@ -3,6 +3,8 @@ package com.base.app.core.network.di
 // <opt:room>
 import android.content.Context
 // </opt:room>
+import com.base.app.core.common.network.NetworkMonitor
+import com.base.app.core.network.ConnectivityNetworkMonitor
 import com.base.app.core.network.KtorNetworkClient
 import com.base.app.core.network.auth.KtorTokenRefresher
 import com.base.app.core.network.auth.TokenRefresher
@@ -54,6 +56,9 @@ interface NetworkBindings {
 
     @Binds
     fun bindNetworkClient(impl: KtorNetworkClient): NetworkClient
+
+    @Binds
+    fun bindNetworkMonitor(impl: ConnectivityNetworkMonitor): NetworkMonitor
 
     @Binds
     fun bindTokenRefresher(impl: KtorTokenRefresher): TokenRefresher

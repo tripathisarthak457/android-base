@@ -14,14 +14,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.mvi.LoadState
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.result.AppError
 import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.button.AppButton
@@ -40,14 +44,16 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
-import com.base.app.core.ui.asString
-import com.base.app.data.search.SearchResult
+import com.base.app.core.ui.text
+import com.base.app.data.search.api.SearchResult
 
 @Composable
-fun SearchRoute(
+internal fun SearchRoute(
     onOpenResult: (Int) -> Unit,
     viewModel: SearchViewModel = hiltViewModel(),
 ) {
+    LaunchedEffect(Unit) { viewModel.onEvent(SearchEvent.Appeared) }
+
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
@@ -56,13 +62,18 @@ fun SearchRoute(
             }
         },
     ) { state, onEvent ->
-        SearchScreen(state = state, onEvent = onEvent)
+        SearchScreen(state = state, query = viewModel.query, onEvent = onEvent)
     }
 }
 
+/**
+ * The design-system field takes a String: the text is read from the ViewModel's `query` and written
+ * straight back, so nothing is copied into the state.
+ */
 @Composable
-fun SearchScreen(
+internal fun SearchScreen(
     state: SearchState,
+    query: TextFieldState,
     onEvent: (SearchEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,8 +84,8 @@ fun SearchScreen(
             Column {
                 AppLargeTitle(title = stringResource(R.string.search_title))
                 AppSearchField(
-                    value = state.query,
-                    onValueChange = { onEvent(SearchEvent.QueryChanged(it)) },
+                    value = query.text.toString(),
+                    onValueChange = query::setTextAndPlaceCursorAtEnd,
                     placeholder = stringResource(R.string.search_placeholder),
                     onSearch = { onEvent(SearchEvent.Submit) },
                     modifier = Modifier.padding(
@@ -102,8 +113,8 @@ fun SearchScreen(
                 ContentKind.Loading -> LoadingResults()
                 ContentKind.Error -> (state.loadState as? LoadState.Error)?.let {
                     AppErrorState(
-                        message = it.message.asString(),
-                        isOffline = it.isOffline,
+                        message = it.error.text(),
+                        isOffline = it.error == AppError.Offline,
                         onRetry = { onEvent(SearchEvent.Retry) },
                         retryLabel = stringResource(R.string.search_retry),
                     )
@@ -111,7 +122,7 @@ fun SearchScreen(
 
                 ContentKind.Empty -> AppEmptyState(
                     title = stringResource(R.string.search_no_results_title),
-                    message = stringResource(R.string.search_no_results_message, state.query),
+                    message = stringResource(R.string.search_no_results_message, state.searchedFor),
                     icon = AppIcons.Search,
                 )
 
@@ -124,7 +135,7 @@ fun SearchScreen(
 private enum class ContentKind { Start, Loading, Error, Empty, Results }
 
 private fun SearchState.contentKind(): ContentKind = when {
-    query.isBlank() -> ContentKind.Start
+    searchedFor.isBlank() -> ContentKind.Start
     loadState is LoadState.Loading -> ContentKind.Loading
     loadState is LoadState.Error -> ContentKind.Error
     loadState is LoadState.Empty -> ContentKind.Empty

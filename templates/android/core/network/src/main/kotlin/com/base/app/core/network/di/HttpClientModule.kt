@@ -3,7 +3,7 @@ package com.base.app.core.network.di
 import android.content.Context
 import android.util.Log
 import com.base.app.core.common.session.SessionScopedStore
-import com.base.app.core.coroutines.IoDispatcher
+import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.datastore.AuthTokenStore
 // <opt:devtools>
 import com.base.app.core.devtools.DevToolsLog
@@ -37,7 +37,6 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Url
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import okhttp3.Cache
 import okhttp3.CertificatePinner
@@ -165,8 +164,8 @@ object HttpClientModule {
     @IntoSet
     fun provideHttpCacheClearing(
         httpCache: Cache,
-        @IoDispatcher ioDispatcher: CoroutineDispatcher,
-    ): SessionScopedStore = SessionScopedStore { withContext(ioDispatcher) { httpCache.evictAll() } }
+        dispatchers: AppDispatchers,
+    ): SessionScopedStore = SessionScopedStore { withContext(dispatchers.io) { httpCache.evictAll() } }
 
     private fun NetworkConfig.certificatePinner(): CertificatePinner = CertificatePinner.Builder().apply {
         certificatePins.forEach { (host, pins) -> add(host, *pins.toTypedArray()) }

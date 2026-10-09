@@ -1,1 +1,1 @@
-"""Project generation: spec, wizard, renderer, scaffolder."""
+"""Project generation for every target: the engine in core/, one plugin per template in targets/."""

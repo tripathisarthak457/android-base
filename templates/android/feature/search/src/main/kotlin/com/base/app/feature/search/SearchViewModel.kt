@@ -1,28 +1,37 @@
 package com.base.app.feature.search
 
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
-import com.base.app.core.common.AppResult
-import com.base.app.core.common.mvi.LoadState
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
-import com.base.app.data.search.SearchRepository
-import com.base.app.data.search.SearchResult
+import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
+import androidx.lifecycle.viewmodel.compose.saveable
+import com.base.app.core.common.LoadState
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
+import com.base.app.data.search.api.SearchRepository
+import com.base.app.data.search.api.SearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
+/** The field's text is not here: it lives in the ViewModel's `query`. */
 @Immutable
-data class SearchState(
-    val query: String = "",
+internal data class SearchState(
+    /** The query the results answer. It trails the field by the debounce. */
+    val searchedFor: String = "",
     val loadState: LoadState = LoadState.Idle,
     val results: List<SearchResult> = emptyList(),
     val recent: List<String> = emptyList(),
 ) : UiState
 
-sealed interface SearchEvent : UiEvent {
-    data class QueryChanged(val query: String) : SearchEvent
+internal sealed interface SearchEvent : UiEvent {
+    data object Appeared : SearchEvent
     data object Submit : SearchEvent
     data object Retry : SearchEvent
     data class RecentClicked(val query: String) : SearchEvent
@@ -31,81 +40,105 @@ sealed interface SearchEvent : UiEvent {
     data class ResultClicked(val result: SearchResult) : SearchEvent
 }
 
-sealed interface SearchEffect : UiEffect {
+internal sealed interface SearchEffect : UiEffect {
     data class OpenResult(val id: Int) : SearchEffect
 }
 
-/** Search as you type. */
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+internal class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,
     savedStateHandle: SavedStateHandle,
 ) : MviViewModel<SearchState, SearchEvent, SearchEffect>(SearchState()) {
 
+    @OptIn(SavedStateHandleSaveableApi::class)
+    val query: TextFieldState = savedStateHandle.saveable(QUERY, saver = TextFieldState.Saver) { TextFieldState() }
+
+    private var lastRequested: String? = null
+
     init {
-        persistState(
-            handle = savedStateHandle,
-            save = { mapOf("query" to it.query) },
-            restore = { copy(query = it["query"] as? String ?: query) },
-        )
-        launchWork { repository.recent.collect { recent -> updateState { copy(recent = recent) } } }
-        if (currentState.query.isNotBlank()) search(currentState.query, debounce = false)
+        observe(repository.recent) { copy(recent = it) }
     }
 
-    override suspend fun handleEvent(event: SearchEvent) {
+    override fun handleEvent(event: SearchEvent) {
         when (event) {
-            is SearchEvent.QueryChanged -> {
-                updateState { copy(query = event.query) }
-                search(event.query, debounce = true)
+            // Typing has to start a search, a side effect that `observe`'s pure reducer cannot run,
+            // so the watcher lives as long as the ViewModel. Between keystrokes it only checks each
+            // snapshot apply against the one field it reads.
+            SearchEvent.Appeared -> launchExclusive(TYPING) {
+                snapshotFlow { query.text.toString() }.collect { search(it, debounce = true) }
             }
 
             SearchEvent.Submit -> {
-                search(currentState.query, debounce = false)
-                repository.remember(currentState.query)
+                val text = query.text.toString()
+                search(text, debounce = false)
+                remember(text)
             }
 
-            SearchEvent.Retry -> search(currentState.query, debounce = false)
+            SearchEvent.Retry -> search(current.searchedFor, debounce = false)
 
             is SearchEvent.RecentClicked -> {
-                updateState { copy(query = event.query) }
+                query.setTextAndPlaceCursorAtEnd(event.query)
                 search(event.query, debounce = false)
-                repository.remember(event.query)
+                remember(event.query)
             }
 
-            is SearchEvent.RecentRemoved -> repository.forget(event.query)
-            SearchEvent.ClearRecent -> repository.clearRecent()
+            is SearchEvent.RecentRemoved -> launchLatest(FORGET to event.query) { repository.forget(event.query) }
+            SearchEvent.ClearRecent -> launchLatest(CLEAR) { repository.clearRecent() }
 
+            // Navigation first: the tap must not wait for the recent-searches write to reach disk.
             is SearchEvent.ResultClicked -> {
-                repository.remember(currentState.query)
-                emitEffect(SearchEffect.OpenResult(event.result.id))
+                emit(SearchEffect.OpenResult(event.result.id))
+                remember(current.searchedFor)
             }
         }
     }
 
-    private fun search(query: String, debounce: Boolean) {
-        if (query.isBlank()) {
-            launchLatest(SEARCH_JOB) { updateState { copy(loadState = LoadState.Idle, results = emptyList()) } }
+    private fun search(text: String, debounce: Boolean) {
+        // The field echoing back a query that was just searched immediately, after a recent
+        // search was tapped, must not restart it behind a debounce.
+        if (debounce && text == lastRequested) return
+        lastRequested = text
+
+        if (text.isBlank()) {
+            cancel(SEARCH)
+            setState { copy(searchedFor = "", loadState = LoadState.Idle, results = emptyList()) }
             return
         }
-        launchLatest(SEARCH_JOB, debounceMillis = if (debounce) DEBOUNCE_MILLIS else 0L) {
+        launchLatest(SEARCH, debounce = if (debounce) DEBOUNCE else Duration.ZERO) {
             // Keeps the previous results on screen while the next ones load, so typing does not
             // flash the list empty between every keystroke.
-            updateState { copy(loadState = if (results.isEmpty()) LoadState.Loading else LoadState.Refreshing) }
-            when (val result = repository.search(query)) {
-                is AppResult.Success -> updateState {
+            setState {
+                copy(searchedFor = text, loadState = if (results.isEmpty()) LoadState.Loading else LoadState.Refreshing)
+            }
+            when (val result = repository.search(text)) {
+                is AppResult.Success -> setState {
                     copy(
-                        results = result.data,
-                        loadState = if (result.data.isEmpty()) LoadState.Empty else LoadState.Success,
+                        results = result.value,
+                        loadState = if (result.value.isEmpty()) LoadState.Empty else LoadState.Success,
                     )
                 }
 
-                is AppResult.Failure -> updateState { copy(loadState = result.toLoadState(), results = emptyList()) }
+                is AppResult.Failure -> setState {
+                    copy(loadState = LoadState.Error(result.error), results = emptyList())
+                }
             }
         }
     }
 
+    // Keyed by the query, so only a repeat of the same write replaces itself. Under one shared key
+    // the second of two quick writes would cancel the first, and DataStore drops an edit whose
+    // caller is cancelled.
+    private fun remember(text: String) {
+        launchLatest(REMEMBER to text) { repository.remember(text) }
+    }
+
     private companion object {
-        const val SEARCH_JOB = "search"
-        const val DEBOUNCE_MILLIS = 350L
+        const val QUERY = "query"
+        const val TYPING = "typing"
+        const val SEARCH = "search"
+        const val REMEMBER = "remember"
+        const val FORGET = "forget"
+        const val CLEAR = "clear"
+        val DEBOUNCE = 350.milliseconds
     }
 }

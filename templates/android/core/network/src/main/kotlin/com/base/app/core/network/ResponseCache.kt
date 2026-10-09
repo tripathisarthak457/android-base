@@ -8,10 +8,11 @@ import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
-import com.base.app.core.common.AppResult
+import com.base.app.core.common.log.Log
 import com.base.app.core.common.network.NetworkMonitor
+import com.base.app.core.common.result.AppError
+import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.session.SessionScopedStore
-import com.base.app.core.common.util.AppLogger
 import com.base.app.core.network.model.HttpMethodType
 import com.base.app.core.network.model.NetworkRequest
 import com.base.app.core.network.model.NetworkResponse
@@ -231,8 +232,9 @@ class QueuedRequestReplayer @Inject constructor(
             when (val result = client.execute(queued.toRequest())) {
                 is AppResult.Success -> queue.remove(queued.id)
                 is AppResult.Failure -> {
-                    if (result.code !in REFUSED_RANGE) return
-                    AppLogger.w("Dropped queued ${queued.method} ${queued.path}: ${result.code}")
+                    val status = (result.error as? AppError.Http)?.status
+                    if (status !in REFUSED_RANGE) return
+                    Log.w("Dropped queued ${queued.method} ${queued.path}: $status")
                     queue.remove(queued.id)
                 }
             }

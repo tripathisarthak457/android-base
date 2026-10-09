@@ -1,0 +1,15 @@
+key = "search"
+title = "Search screen"
+headline = "Search as you type"
+description = """
+A Search tab: results as you type with a debounce, recent searches kept per user, and the empty,
+no-results and error states already drawn."""
+group = "Screens"
+default = false
+requires = ["network"]
+implied_only = false
+owns = [
+  "data/search",
+  "feature/search",
+]
+legacy = []
