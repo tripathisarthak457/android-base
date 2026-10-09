@@ -225,23 +225,26 @@ func seed(t *testing.T, s *Store) {
 		Errors:   []ErrorRecord{{Kind: "generation", Message: "android: KeyError", Detail: "Traceback", Path: "/api/v1/android/generate"}},
 		Requests: []Request{{Route: "generate", Method: "POST", Status: 200, Duration: 400 * time.Millisecond, Bytes: 1000}},
 	}
-	// Six ok generations with network+auth so the pair clears MinPairSamples, one failure among them.
+	// Six generations with network+auth so the pair clears MinPairSamples, one failure among them.
 	for i := 0; i < 6; i++ {
-		outcome, reason := telemetry.OK, ""
-		if i == 5 {
-			outcome, reason = telemetry.InternalError, "android: KeyError"
-		}
-		batch.Generations = append(batch.Generations, Generation{
-			Target: "android", Outcome: outcome, SessionID: sessionA, VisitorHash: "h", Client: telemetry.ClientWeb,
+		g := Generation{
+			Target: "android", Outcome: telemetry.OK, SessionID: sessionA, VisitorHash: "h", Client: telemetry.ClientWeb,
 			ConfigMs: intp(45_000 + i*1000), AppName: fmt.Sprintf("App %d", i), PackageName: "com.example.app",
 			Preset: "standard", Features: []string{"network", "auth", "settings"}, Added: []string{"auth"},
 			Architecture: "compact", DesignStyle: "Utility", MotionStyle: "Standard", Languages: []string{"hi"},
 			MinSDK: 26, TargetSDK: 37, Spec: []byte(`{"app_name": "App", "package_name": "com.example.app", "ios": {"bundle_id": "x"}}`),
 			QueueMs: intp(5), PythonMs: intp(300 + i), StreamMs: intp(20), Duration: time.Duration(310+i) * time.Millisecond,
 			ZipBytes: 500_000, GeneratorCommit: "99c4edf", Country: "IN", DeviceClass: telemetry.DeviceMobile,
-			FailureReason: reason, Notes: []string{`Moved min_sdk under "android".`}, IgnoredFields: []string{"theme"},
+			Notes: []string{`Moved min_sdk under "android".`}, IgnoredFields: []string{"theme"},
 			Warnings: []string{"Keystore 'release' could not be created: keytool error"},
-		})
+		}
+		if i == 5 {
+			// As the API records a generator bug: described from the spec and the catalogue, with no
+			// zip and nothing the generator said about the spec.
+			g.Outcome, g.FailureReason = telemetry.InternalError, "The generator failed."
+			g.StreamMs, g.ZipBytes, g.Notes, g.IgnoredFields, g.Warnings = nil, 0, nil, nil, nil
+		}
+		batch.Generations = append(batch.Generations, g)
 	}
 	batch.Generations = append(batch.Generations,
 		Generation{Target: "android", Outcome: telemetry.Invalid, VisitorHash: "h", Client: telemetry.ClientCLI,
@@ -347,8 +350,15 @@ func TestIntegrationAdminQueriesReadWhatWasRecorded(t *testing.T) {
 	if len(failures.Pairs) != 3 || failures.Pairs[0].N != 6 || failures.Pairs[0].Failed != 1 {
 		t.Fatalf("pairs %+v", failures.Pairs)
 	}
-	if len(failures.ByMinSDK) == 0 || len(failures.ByCommit) == 0 {
+	if !slices.Contains(failures.ByPreset, GroupFailure{Key: "standard", Rate: Rate{N: 6, Failed: 1}}) ||
+		!slices.Contains(failures.ByCommit, GroupFailure{Key: "99c4edf", Rate: Rate{N: 6, Failed: 1}}) ||
+		len(failures.ByMinSDK) == 0 {
 		t.Fatalf("groups %+v", failures)
+	}
+	standard := android
+	standard.Preset = "standard"
+	if overview, err := s.Overview(ctx, standard); err != nil || overview.Outcomes["internal_error"] != 1 {
+		t.Fatalf("the preset filter hides failures: %+v %v", overview, err)
 	}
 
 	audience, err := s.Audience(ctx, f)

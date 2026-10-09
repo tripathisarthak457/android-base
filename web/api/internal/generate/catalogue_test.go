@@ -9,7 +9,7 @@ const sampleCatalogue = `{
   "version": 2, "generator_commit": "99c4edf",
   "targets": [{
     "key": "android", "title": "Android Native", "status": "available", "summary": "Compose.",
-    "features": [{"key": "network", "title": "Network"}, {"key": "auth", "title": "Sign-in"},
+    "features": [{"key": "network", "title": "Network"}, {"key": "auth", "title": "Sign-in", "implies": ["network"]},
                  {"key": "settings", "title": "Settings"}, {"key": "liquidglass", "title": "Glass"}],
     "presets": [{"key": "lean", "features": ["settings"]},
                 {"key": "standard", "features": ["network", "auth", "settings"]},
@@ -77,6 +77,32 @@ func TestNearestPreset(t *testing.T) {
 			preset, added, removed := android.NearestPreset(c.resolved)
 			if preset != c.preset || !slices.Equal(added, c.added) || !slices.Equal(removed, c.removed) {
 				t.Fatalf("got %s +%v -%v, want %s +%v -%v", preset, added, removed, c.preset, c.added, c.removed)
+			}
+		})
+	}
+}
+
+func TestResolveAddsWhatEachFeatureImplies(t *testing.T) {
+	c, err := ParseCatalogue([]byte(sampleCatalogue))
+	if err != nil {
+		t.Fatal(err)
+	}
+	android := c.Target("android")
+
+	cases := []struct {
+		name      string
+		requested []string
+		want      []string
+	}{
+		{"an implied feature", []string{"auth", "settings"}, []string{"auth", "network", "settings"}},
+		{"asked for as well", []string{"network", "auth"}, []string{"auth", "network"}},
+		{"a key the catalogue does not list", []string{"retired", "liquidglass"}, []string{"liquidglass"}},
+		{"nothing", nil, nil},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if got := android.Resolve(c.requested); !slices.Equal(got, c.want) {
+				t.Fatalf("Resolve(%v) = %v, want %v", c.requested, got, c.want)
 			}
 		})
 	}

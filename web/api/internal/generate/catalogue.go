@@ -7,8 +7,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"maps"
 	"os"
 	"os/exec"
+	"slices"
 	"time"
 )
 
@@ -41,6 +43,8 @@ type TargetEntry struct {
 type FeatureInfo struct {
 	Key   string `json:"key"`
 	Title string `json:"title"`
+	// Implies is everything the feature brings in, transitively.
+	Implies []string `json:"implies"`
 	// ImpliedOnly features are pulled in by others and cannot be asked for directly.
 	ImpliedOnly bool `json:"implied_only"`
 }
@@ -136,6 +140,28 @@ func runCatalogue(ctx context.Context, opts Options) ([]byte, error) {
 		return nil, fmt.Errorf("reading the catalogue: %w; stderr: %s", err, stderr.String())
 	}
 	return stdout.Bytes(), nil
+}
+
+// Resolve is requested plus everything it implies, sorted: the set the generator builds. Keys the
+// catalogue does not list are left out, because only the generator knows which current key an
+// older spec's renamed one stands for.
+func (t *TargetEntry) Resolve(requested []string) []string {
+	implies := make(map[string][]string, len(t.Features))
+	for _, feature := range t.Features {
+		implies[feature.Key] = feature.Implies
+	}
+	resolved := map[string]bool{}
+	for _, key := range requested {
+		more, listed := implies[key]
+		if !listed {
+			continue
+		}
+		resolved[key] = true
+		for _, implied := range more {
+			resolved[implied] = true
+		}
+	}
+	return slices.Sorted(maps.Keys(resolved))
 }
 
 // NearestPreset names the preset whose features differ least from resolved, and the differences:

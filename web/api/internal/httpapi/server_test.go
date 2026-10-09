@@ -24,7 +24,7 @@ const testCatalogue = `{
   "version": 2, "generator_commit": "99c4edf",
   "targets": [{
     "key": "android", "title": "Android Native", "status": "available", "summary": "Compose.",
-    "features": [{"key": "network", "title": "Network"}, {"key": "auth", "title": "Sign-in"},
+    "features": [{"key": "network", "title": "Network"}, {"key": "auth", "title": "Sign-in", "implies": ["network"]},
                  {"key": "settings", "title": "Settings"}, {"key": "liquidglass", "title": "Glass"}],
     "presets": [{"key": "lean", "features": ["settings"]},
                 {"key": "standard", "features": ["network", "auth", "settings"]}],

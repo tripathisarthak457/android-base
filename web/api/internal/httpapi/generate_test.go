@@ -177,6 +177,37 @@ func TestGenerateMapsFailures(t *testing.T) {
 	}
 }
 
+// The admin's failure rates set failed runs against successful ones by feature, preset and
+// generator commit, so a run that never reports them is described from the catalogue.
+func TestAFailedGenerationIsRecordedWithItsFeaturesPresetAndCommit(t *testing.T) {
+	scripts := map[string]string{
+		"generator bug": `echo '{"ok": false, "kind": "internal", "error": "The generator failed.", "detail": "KeyError"}'; exit 1`,
+		"crash":         `exit 139`,
+		"rejected":      `echo '{"ok": false, "kind": "invalid", "error": "The package name is reserved.", "field": "package_name"}'; exit 2`,
+	}
+	spec := `{"schema": 2, "platform": "android", "features": ["auth", "liquidglass", "retired"]}`
+	for name, script := range scripts {
+		t.Run(name, func(t *testing.T) {
+			ts := newTestServer(t, script, nil)
+			if w := ts.do(http.MethodPost, "/api/v1/android/generate", spec, nil); w.Code == http.StatusOK {
+				t.Fatal("the generation succeeded")
+			}
+			g := onlyGeneration(t, ts.sink.last(t))
+			// auth brings network in; a key the catalogue does not list is left out.
+			if !slices.Equal(g.Features, []string{"auth", "liquidglass", "network"}) || !g.Glass {
+				t.Fatalf("features %v glass %v", g.Features, g.Glass)
+			}
+			if g.Preset != "standard" || !slices.Equal(g.Added, []string{"liquidglass"}) ||
+				!slices.Equal(g.Removed, []string{"settings"}) {
+				t.Fatalf("preset %q added %v removed %v", g.Preset, g.Added, g.Removed)
+			}
+			if g.GeneratorCommit != "99c4edf" {
+				t.Fatalf("generator commit %q", g.GeneratorCommit)
+			}
+		})
+	}
+}
+
 func TestGenerateRefusesTargetsItDoesNotServe(t *testing.T) {
 	ts := newTestServer(t, okScript, nil)
 	cases := map[string]string{

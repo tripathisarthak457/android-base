@@ -99,7 +99,7 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 		finish(record.Outcome)
 		return
 	}
-	describe(&record, spec, gen.Target.Defaults)
+	describe(&record, spec, &gen.Target, s.catalogue.GeneratorCommit)
 
 	record.ColdStart = !s.warm.Swap(true)
 	out, err := gen.Run(r.Context(), body)
@@ -111,10 +111,8 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 	}
 	defer func() { _ = out.Close() }()
 
-	record.Features = out.ResolvedFeatures
-	record.Preset, record.Added, record.Removed = gen.Target.NearestPreset(out.ResolvedFeatures)
-	record.Glass = slices.Contains(out.ResolvedFeatures, glassFeature)
-	record.GeneratorCommit = out.GeneratorCommit
+	setFeatures(&record, &gen.Target, out.ResolvedFeatures)
+	record.GeneratorCommit = cmp.Or(out.GeneratorCommit, record.GeneratorCommit)
 	record.Notes, record.IgnoredFields, record.Warnings = out.Notes, out.IgnoredFields, out.Warnings
 	record.ZipBytes = out.ZipBytes
 	record.QueueMs = store.Milliseconds(out.QueueTime)
@@ -204,11 +202,14 @@ func (s *Server) generationFailed(w http.ResponseWriter, r *http.Request, record
 }
 
 // describe copies what the spec says onto the record, with the catalogue's defaults for the fields
-// it left out, so "Utility" is counted whether it was picked or assumed.
-func describe(record *store.Generation, spec generate.Spec, defaults generate.Defaults) {
+// it left out, so "Utility" is counted whether it was picked or assumed. The features are resolved
+// against the catalogue and the commit is the catalogue's: the admin compares failed runs with
+// successful ones by feature, preset and commit, and a run that fails never reports its own.
+func describe(record *store.Generation, spec generate.Spec, target *generate.TargetEntry, commit string) {
 	record.AppName = spec.AppName
 	record.PackageName = spec.PackageName
-	record.Features = spec.Features
+	setFeatures(record, target, target.Resolve(spec.Features))
+	record.GeneratorCommit = commit
 	record.FeatureModules = spec.FeatureModules
 	record.Languages = spec.Languages
 	record.MinSDK = spec.MinSDK
@@ -216,10 +217,16 @@ func describe(record *store.Generation, spec generate.Spec, defaults generate.De
 	record.FontName = spec.FontName
 	record.AccentColour = spec.AccentColour
 	record.Spec = spec.Sanitised
-	record.Architecture = cmp.Or(spec.Architecture, defaults.Architecture)
-	record.DesignStyle = cmp.Or(spec.DesignStyle, defaults.DesignStyle)
-	record.MotionStyle = cmp.Or(spec.MotionStyle, defaults.MotionStyle)
-	record.Glass = slices.Contains(spec.Features, glassFeature)
+	record.Architecture = cmp.Or(spec.Architecture, target.Defaults.Architecture)
+	record.DesignStyle = cmp.Or(spec.DesignStyle, target.Defaults.DesignStyle)
+	record.MotionStyle = cmp.Or(spec.MotionStyle, target.Defaults.MotionStyle)
+}
+
+// setFeatures records a resolved feature set with the preset nearest to it and the differences.
+func setFeatures(record *store.Generation, target *generate.TargetEntry, resolved []string) {
+	record.Features = resolved
+	record.Preset, record.Added, record.Removed = target.NearestPreset(resolved)
+	record.Glass = slices.Contains(resolved, glassFeature)
 }
 
 // refuseTarget answers a target this deployment does not generate.
