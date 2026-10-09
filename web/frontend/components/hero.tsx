@@ -80,7 +80,7 @@ export function Hero() {
             </span>
             <p className="text-sm leading-relaxed text-ink-300">
               <span className="font-medium text-ink-100">This is beta.</span> Every preset and feature combination is generated and
-              built in CI before a change ships, but not many people have used it yet. If something breaks, the report button sends
+              built in CI before a change ships, but not many people have used it yet. If something breaks, "Report a problem" at the top sends
               it straight to whoever can fix it, with what you configured attached.
             </p>
           </div>

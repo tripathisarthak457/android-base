@@ -42,7 +42,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
   const previous = STEPS[stepIndex - 1];
 
   return (
-    <section id="configure" aria-labelledby="configure-title" className="mx-auto max-w-6xl scroll-mt-8 px-4 py-20 sm:px-6">
+    <section id="configure" aria-labelledby="configure-title" className="mx-auto max-w-6xl scroll-mt-16 px-4 py-20 sm:px-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-2xl">
           <h2 id="configure-title" className="font-display text-4xl font-bold text-ink-100">

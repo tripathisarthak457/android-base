@@ -94,8 +94,8 @@ export function Durations({ token, query, version, onUnauthorized }: PanelProps)
                 {data.generation_by_feature_count.map((row) => (
                   <tr key={row.bucket} className="text-ink-200">
                     <td className="py-1.5 pr-3 font-mono">{row.bucket}</td>
-                    <td className="py-1.5 text-right font-mono">{seconds(row.p50_ms)}</td>
-                    <td className="py-1.5 text-right font-mono">{seconds(row.p95_ms)}</td>
+                    <td className="py-1.5 text-right font-mono">{row.n ? seconds(row.p50_ms) : "—"}</td>
+                    <td className="py-1.5 text-right font-mono">{row.n ? seconds(row.p95_ms) : "—"}</td>
                     <td className="py-1.5 text-right font-mono">{row.n}</td>
                   </tr>
                 ))}

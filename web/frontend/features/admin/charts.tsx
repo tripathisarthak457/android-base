@@ -21,7 +21,9 @@ export function percent(value: number, digits = 0): string {
 }
 
 export function seconds(ms: number): string {
-  return ms >= 60_000 ? `${(ms / 60_000).toFixed(1)} min` : `${(ms / 1000).toFixed(1)} s`;
+  if (ms >= 3_600_000) return `${(ms / 3_600_000).toFixed(ms % 3_600_000 === 0 ? 0 : 1)} h`;
+  if (ms >= 60_000) return `${(ms / 60_000).toFixed(ms % 60_000 === 0 ? 0 : 1)} min`;
+  return `${(ms / 1000).toFixed(1)} s`;
 }
 
 export function Legend({ items }: { items: { label: string; colour: string; line?: boolean }[] }) {
@@ -78,11 +80,11 @@ export function DailyChart({ days }: { days: { day: string; outcomes: Record<str
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className="w-full" role="img" aria-label={`${generated} generations and ${visitors} daily visitors from ${days[0]?.day} to ${days.at(-1)?.day}`}>
-      {[0, 0.5, 1].map((fraction) => (
-        <g key={fraction}>
-          <line x1={pad.left} x2={width - pad.right} y1={y(peak * fraction)} y2={y(peak * fraction)} stroke="var(--color-ink-700)" strokeDasharray="2 4" />
-          <text x={4} y={y(peak * fraction) + 3.5} fill="var(--color-ink-400)" fontSize="9" fontFamily="monospace">
-            {Math.round(peak * fraction)}
+      {[...new Set([0, Math.round(peak / 2), peak])].map((tick) => (
+        <g key={tick}>
+          <line x1={pad.left} x2={width - pad.right} y1={y(tick)} y2={y(tick)} stroke="var(--color-ink-700)" strokeDasharray="2 4" />
+          <text x={4} y={y(tick) + 3.5} fill="var(--color-ink-400)" fontSize="9" fontFamily="monospace">
+            {tick}
           </text>
         </g>
       ))}

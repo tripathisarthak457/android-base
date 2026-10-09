@@ -1,3 +1,4 @@
+import { ReportButton } from "../features/feedback/Feedback.tsx";
 import { PRIVACY, REPO, licensedFeatures } from "../lib/catalogue.ts";
 import { ThemeToggle } from "./theme-toggle.tsx";
 import { Badge } from "./ui.tsx";
@@ -16,6 +17,7 @@ export function Nav() {
           </span>
         </a>
         <div className="flex items-center gap-1">
+          <ReportButton />
           <ThemeToggle />
           <a href="#configure" className="hidden rounded-lg px-3 py-2 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100 sm:inline-block">
             Configure

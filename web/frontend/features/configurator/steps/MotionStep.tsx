@@ -26,7 +26,8 @@ function MotionCard({ catalogue, model, styleKey, title, description, name, dark
   const theme = usePreviewTheme({ ...input, motionStyle: styleKey }, dark);
   const springs = catalogue.tokens.motion.styles[styleKey]?.springs;
   const rows: [string, string][] = [
-    ["press", describe(springs?.release)],
+    ["press", describe(springs?.press)],
+    ["release", describe(springs?.release)],
     ["push and pop", describe(springs?.screen)],
     ["selection", describe(springs?.selection)],
   ];

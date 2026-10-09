@@ -6,6 +6,10 @@ import { MAX_TABS, planTabs } from "../../preview/tabs.ts";
 import { lowerName, moduleNames } from "../state.ts";
 import type { Configurator } from "../useConfigurator.ts";
 
+function listed(names: string[]): string {
+  return names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
+}
+
 export function IdentityStep({ model }: { model: Configurator }) {
   const { state, dispatch, errors, target } = model;
   const pascal = state.appName
@@ -69,7 +73,7 @@ export function IdentityStep({ model }: { model: Configurator }) {
           label="Feature modules (optional)"
           hint={
             plan.overflow.length > 0
-              ? `Each module gets a data and a feature module and a tab. The bar holds ${MAX_TABS}: ${plan.overflow.join(", ")} will be screens you link to yourself.`
+              ? `Each module gets a data and a feature module and a tab, but the bar holds ${MAX_TABS}: ${listed(plan.overflow)} ${plan.overflow.length === 1 ? "gets" : "get"} no tab. Link to ${plan.overflow.length === 1 ? "it" : "them"} from another screen.`
               : "Comma-separated. Each gets a data and a feature module with a repository, ViewModel, screen and tests, and a tab."
           }
           error={errors.get("feature_modules")}
@@ -123,8 +127,9 @@ export function IdentityStep({ model }: { model: Configurator }) {
             ["Namespace", state.packageName || "com.example.myapp"],
             ["Deep-link scheme", `${lowerName(state.appName) || "app"}://`],
             ...modules.map((name) => [`Module ${name}`, `:feature:${name}, :data:${name}`]),
-          ].map(([label, value]) => (
-            <div key={label} className="flex items-baseline justify-between gap-3">
+          ].map(([label, value], index) => (
+            // Module names can repeat while being typed, so the label alone is not a unique key.
+            <div key={`${index}-${label}`} className="flex items-baseline justify-between gap-3">
               <dt className="shrink-0 font-sans text-xs text-ink-400">{label}</dt>
               <dd className="truncate text-ink-200">{value}</dd>
             </div>

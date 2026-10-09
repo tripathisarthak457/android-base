@@ -17,7 +17,7 @@ export function Headline({ token, query, version, onUnauthorized }: PanelProps) 
         const generated = count(["ok", "download_interrupted"]);
         const reached = generated + count(FAILED);
         const cards = [
-          { label: "Generations", value: data.generations.toLocaleString(), sub: `${count(["ok"])} downloads finished` },
+          { label: "Generations", value: data.generations.toLocaleString(), sub: `${count(["ok"])} ${count(["ok"]) === 1 ? "download" : "downloads"} finished` },
           {
             label: "Generator success",
             value: reached ? percent(generated / reached, 1) : "—",
@@ -82,7 +82,7 @@ export function Funnel({ token, query, version, onUnauthorized }: PanelProps) {
                           <span className="absolute inset-y-0 left-0 rounded bg-accent/30" style={{ width: `${data.landed ? (row.sessions / data.landed) * 100 : 0}%` }} />
                           <span className="relative px-2 font-mono text-[11px] leading-5 text-ink-100">{row.sessions}</span>
                         </span>
-                        <span className="w-12 shrink-0 text-right font-mono text-[11px] text-ink-400">{index === 0 ? "" : `−${percent(Math.max(drop, 0))}`}</span>
+                        <span className="w-12 shrink-0 text-right font-mono text-[11px] text-ink-400">{index === 0 || drop <= 0 ? "" : `−${percent(drop)}`}</span>
                       </li>
                     );
                   })}

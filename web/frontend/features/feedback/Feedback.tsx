@@ -1,27 +1,15 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Button, Field, TextInput, press } from "../../components/primitives.tsx";
+import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
 import { BUILD, apiError, postJson } from "../../lib/api.ts";
+import { type ReportContext, readReportContext } from "./context.ts";
 
 /**
  * The bug report form. Two things make a report worth having: enough context to reproduce it, and
  * few enough questions that somebody actually finishes it.
  */
-
-export type ReportContext = {
-  target: string;
-  appName: string;
-  packageName: string;
-  features: string[];
-  preset: string;
-  minSdk: number;
-  motionStyle: string;
-  fontName: string;
-  accentColour: string;
-};
 
 type Kind = "bug" | "idea" | "praise" | "question";
 type Severity = "blocks" | "annoying" | "cosmetic";
@@ -77,12 +65,15 @@ function Choices<T extends string>({ legend, options, value, onChange, columns }
 }
 
 /**
- * A native modal dialog: the browser traps focus inside it, closes it on Escape, makes the page
- * behind it inert, and returns focus to the button that opened it.
+ * The report button in the navigation, and its dialog. A native modal dialog: the browser traps
+ * focus inside it, closes it on Escape, makes the page behind it inert, and returns focus to the
+ * button that opened it. It sits in the navigation rather than floating, where it would cover the
+ * configurator's own buttons on a phone.
  */
-export function FeedbackButton({ context }: { context: () => ReportContext }) {
+export function ReportButton() {
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
+  const [context, setContext] = useState<ReportContext | null>(null);
 
   useEffect(() => {
     const element = dialog.current;
@@ -93,17 +84,19 @@ export function FeedbackButton({ context }: { context: () => ReportContext }) {
 
   return (
     <>
-      <motion.button
-        {...press}
+      <button
         type="button"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border border-ink-600 bg-ink-850/95 px-4 py-2.5 text-sm font-medium text-ink-200 shadow-lg backdrop-blur transition-colors hover:border-accent/50 hover:text-ink-100 max-sm:bottom-3 max-sm:right-3 max-sm:p-3"
+        onClick={() => {
+          setContext(readReportContext());
+          setOpen(true);
+        }}
+        className="flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100"
       >
         <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
-          <path d="M8 1.5 9.8 5.6l4.5.4-3.4 3 1 4.4L8 11.1l-3.9 2.3 1-4.4-3.4-3 4.5-.4L8 1.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+          <path d="M3 14V2.5M3 2.5h8.5l-1.5 3 1.5 3H3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <span className="max-sm:sr-only">Report a problem</span>
-      </motion.button>
+      </button>
       <dialog
         ref={dialog}
         aria-labelledby="feedback-title"
@@ -113,13 +106,13 @@ export function FeedbackButton({ context }: { context: () => ReportContext }) {
         }}
         className="m-auto w-[calc(100%-2rem)] max-w-2xl rounded-2xl border border-ink-700 bg-ink-900 p-0 text-ink-100 shadow-2xl"
       >
-        {open && <FeedbackForm context={context()} onClose={() => setOpen(false)} />}
+        {open && <FeedbackForm context={context} onClose={() => setOpen(false)} />}
       </dialog>
     </>
   );
 }
 
-function FeedbackForm({ context, onClose }: { context: ReportContext; onClose: () => void }) {
+function FeedbackForm({ context, onClose }: { context: ReportContext | null; onClose: () => void }) {
   const [kind, setKind] = useState<Kind>("bug");
   const [severity, setSeverity] = useState<Severity>("annoying");
   const [area, setArea] = useState<Area>("website");
@@ -127,7 +120,7 @@ function FeedbackForm({ context, onClose }: { context: ReportContext; onClose: (
   const [body, setBody] = useState("");
   const [steps, setSteps] = useState("");
   const [contact, setContact] = useState("");
-  const [attach, setAttach] = useState(true);
+  const [attach, setAttach] = useState(context !== null);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [sentId, setSentId] = useState<number | null>(null);
@@ -147,9 +140,8 @@ function FeedbackForm({ context, onClose }: { context: ReportContext; onClose: (
         body: body.trim(),
         steps: bug ? steps.trim() : "",
         contact: contact.trim(),
-        pageUrl: `${location.origin}${location.pathname}`,
         appVersion: BUILD,
-        ...(attach ? context : { features: [] }),
+        ...(attach && context ? { ...context, pageUrl: `${location.origin}${location.pathname}` } : { features: [] }),
       });
       if (!response.ok) throw await apiError(response, "That could not be sent.");
       const result = (await response.json()) as { id?: number };
@@ -180,16 +172,18 @@ function FeedbackForm({ context, onClose }: { context: ReportContext; onClose: (
     );
   }
 
-  const attached: [string, string][] = [
-    ["Platform", context.target],
-    ["App name", context.appName],
-    ["Package", context.packageName],
-    ["Preset", context.preset],
-    ["Features", `${context.features.length} selected`],
-    ["Min SDK", context.minSdk ? String(context.minSdk) : "—"],
-    ["Typeface", context.fontName],
-    ["Accent", context.accentColour],
-  ];
+  const attached: [string, string][] = context
+    ? [
+        ["Platform", context.target],
+        ["App name", context.appName],
+        ["Package", context.packageName],
+        ["Preset", context.preset],
+        ["Features", `${context.features.length} selected`],
+        ["Min SDK", context.minSdk ? String(context.minSdk) : "—"],
+        ["Typeface", context.fontName],
+        ["Accent", context.accentColour],
+      ]
+    : [];
 
   return (
     <form
@@ -256,25 +250,27 @@ function FeedbackForm({ context, onClose }: { context: ReportContext; onClose: (
           {(control) => <TextInput {...control} value={contact} onChange={(event) => setContact(event.target.value)} placeholder="you@example.com" type="email" maxLength={200} />}
         </Field>
 
-        <div className="rounded-lg border border-ink-700 bg-ink-850 p-4">
-          <label className="flex items-start justify-between gap-3">
-            <span>
-              <span className="block text-sm font-medium text-ink-200">Attach what you configured</span>
-              <span className="mt-0.5 block text-xs text-ink-400">And this page&apos;s address. It usually saves three emails.</span>
-            </span>
-            <input type="checkbox" checked={attach} onChange={(event) => setAttach(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--color-accent)]" />
-          </label>
-          {attach && (
-            <dl className="mt-3 grid gap-x-4 gap-y-1 border-t border-ink-700 pt-3 text-xs sm:grid-cols-2">
-              {attached.map(([label, value]) => (
-                <div key={label} className="flex justify-between gap-3">
-                  <dt className="text-ink-400">{label}</dt>
-                  <dd className="truncate font-mono text-ink-300">{value || "—"}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-        </div>
+        {context && (
+          <div className="rounded-lg border border-ink-700 bg-ink-850 p-4">
+            <label className="flex items-start justify-between gap-3">
+              <span>
+                <span className="block text-sm font-medium text-ink-200">Attach what you configured</span>
+                <span className="mt-0.5 block text-xs text-ink-400">And this page&apos;s address. It usually saves three emails.</span>
+              </span>
+              <input type="checkbox" checked={attach} onChange={(event) => setAttach(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--color-accent)]" />
+            </label>
+            {attach && (
+              <dl className="mt-3 grid gap-x-4 gap-y-1 border-t border-ink-700 pt-3 text-xs sm:grid-cols-2">
+                {attached.map(([label, value]) => (
+                  <div key={label} className="flex justify-between gap-3">
+                    <dt className="text-ink-400">{label}</dt>
+                    <dd className="truncate font-mono text-ink-300">{value || "—"}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
+        )}
 
         {failure && (
           <p role="alert" className="rounded-lg border border-rose/30 bg-rose/10 p-3 text-xs text-rose">
