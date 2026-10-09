@@ -298,6 +298,20 @@ class ProjectScriptsTest(unittest.TestCase):
         self.assertIn("import com.acme.field.feature.wallet.WalletListKey", text)
         self.assertLess(text.index("WalletListKey, label"), text.index("// Settings sits last"))
 
+    def test_a_tab_list_it_cannot_read_is_left_to_the_user(self):
+        from add_feature import main
+
+        project = self.copy()
+        path = next(project.rglob("AppDestinations.kt"))
+        lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+        opening = next(index for index, line in enumerate(lines) if "val tabs: List<ShellTab> = listOf(" in line)
+        unclosed = lines[: opening + 1] + [line for line in lines[opening + 1 :] if line.strip() != ")"]
+        path.write_text("".join(unclosed), encoding="utf-8")
+        with redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(0, main(["wallet", "--tab", "--project", str(project)]))
+        self.assertIn("add the tabs by hand", out.getvalue())
+        self.assertNotIn("WalletListKey, label", self.destinations(project))
+
     def test_a_new_module_ships_every_language_the_project_does(self):
         from add_feature import main
 
