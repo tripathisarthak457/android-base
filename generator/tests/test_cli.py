@@ -132,6 +132,13 @@ class CliTest(unittest.TestCase):
         for preset in ("lean", "standard", "everything"):
             self.assertIn(preset, answer["error"])
 
+    def test_the_summary_says_when_the_build_desugars(self):
+        self.spec.write_text(json.dumps({**SPEC, "android": {"min_sdk": 24}}), encoding="utf-8")
+        result = run("--spec", str(self.spec), "--dry-run")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn("API 24 · Android 7.0 (Nougat)", result.stdout)
+        self.assertIn("Desugaring  on: java.time below API 26", result.stdout)
+
     def test_list_features_json(self):
         features = json.loads(run("--list-features", "--json").stdout)
         self.assertIn("network", {feature["key"] for feature in features})

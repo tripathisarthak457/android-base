@@ -14,7 +14,7 @@ from typing import Any, TextIO
 
 from .. import brand, tokens
 from ..targets.android import keystores
-from ..targets.android.target import API_LEVELS, MIN_COMPILE_SDK, describe_api_level
+from ..targets.android.target import API_LEVELS, DESUGARING_THRESHOLD, MIN_COMPILE_SDK, describe_api_level
 from . import translations
 from .catalogue import FONT_SUGGESTIONS
 from .spec import (
@@ -510,9 +510,10 @@ def summarise(spec: Spec, stream: TextIO | None = None) -> None:
     if spec.android is not None:
         android = spec.android
         rows += [
-            ("Min SDK", str(android.min_sdk)),
-            ("Target SDK", str(android.target_sdk)),
+            ("Min SDK", describe_api_level(android.min_sdk)),
+            ("Target SDK", describe_api_level(android.target_sdk)),
             ("Version", f"{android.version_name} ({android.version_code})"),
+            ("Desugaring", f"on: java.time below API {DESUGARING_THRESHOLD}" if android.min_sdk < DESUGARING_THRESHOLD else "off"),
         ]
     rows += [
         ("Features", ", ".join(sorted(spec.features)) or "none"),
