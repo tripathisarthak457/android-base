@@ -150,7 +150,8 @@ def _palette(palette: dict[str, Any]) -> list[str]:
                 + ")"
                 for name in statuses
             ]
-            lines.append(",\n".join(arguments))
+            # One argument per line, so the section indent emit() adds reaches every one of them.
+            lines += [f"{argument}," for argument in arguments[:-1]] + arguments[-1:]
             lines.append("        )")
         lines.append("    }")
     lines.append("}")
