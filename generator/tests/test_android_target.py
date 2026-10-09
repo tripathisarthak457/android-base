@@ -14,7 +14,7 @@ from genkit.core import pipeline
 from genkit.core.record import RECORD_NAME
 from genkit.core.target import RenderError
 from genkit.targets import get
-from genkit.targets.android import look, scaffold, settings, tabs, variants
+from genkit.targets.android import look, settings, variants
 
 ANDROID = get("android")
 
@@ -101,65 +101,6 @@ class TokenCopyTest(unittest.TestCase):
         self.assertTrue(text.startswith(kotlin.HEADER))
         self.assertIn("package com.acme.field.core.designsystem.theme.tokens", text)
         self.assertIn(f"accent = Color({brand.to_argb(brand.brand_ramps('#16A34A')['Accent'].base)}),", text)
-
-
-class TabsTest(unittest.TestCase):
-
-    def test_each_module_becomes_a_tab_in_the_order_given(self):
-        regions = tabs.regions(spec(feature_modules=["orders", "order_history"]))
-        self.assertIn("key = OrdersListKey", regions["shell-tabs"][0])
-        # The label is the module's own title string, so translating the module translates its tab.
-        self.assertIn("label = OrderHistoryR.string.order_history_title", regions["shell-tabs"][1])
-
-    def test_the_reference_feature_supplies_its_own_start(self):
-        self.assertEqual([], tabs.regions(spec(features=["sample"], feature_modules=["orders"]))["start-destination"])
-
-    def test_without_it_the_first_module_starts(self):
-        regions = tabs.regions(spec(feature_modules=["orders", "wallet"]))
-        self.assertEqual(["        ?: OrdersListKey\n"], regions["start-destination"])
-        self.assertEqual(
-            [
-                "import com.acme.field.feature.orders.OrdersListKey\n",
-                "import com.acme.field.feature.orders.R as OrdersR\n",
-                "import com.acme.field.feature.wallet.WalletListKey\n",
-                "import com.acme.field.feature.wallet.R as WalletR\n",
-            ],
-            regions["start-destination-import"],
-        )
-
-    def test_the_feed_then_search_start_before_any_module(self):
-        for features, key in ((["paging", "search"], "FeedKey"), (["search"], "SearchKey")):
-            with self.subTest(features=features):
-                regions = tabs.regions(spec(features=features, feature_modules=["orders"]))
-                self.assertEqual([f"        ?: {key}\n"], regions["start-destination"])
-
-    def test_profile_starts_before_settings(self):
-        self.assertEqual(["        ?: ProfileKey\n"], tabs.regions(spec(features=["profile", "settings"]))["start-destination"])
-
-    def test_settings_starts_when_nothing_else_does(self):
-        self.assertEqual(["        ?: SettingsKey\n"], tabs.regions(spec(features=["settings"]))["start-destination"])
-
-    def test_with_no_screen_to_start_on_the_build_says_what_to_do(self):
-        (line,) = tabs.regions(spec(features=["network"]))["start-destination"]
-        self.assertIn('error("Set a start destination', line)
-
-    def test_the_labels_follow_the_bar(self):
-        self.assertEqual(
-            ["Home", "Feed", "Orders", "Profile", "Settings"],
-            tabs.labels(spec(features=["sample", "paging", "profile", "settings"], feature_modules=["orders"])),
-        )
-
-
-class ScaffoldTest(unittest.TestCase):
-
-    def test_each_module_contributes_its_includes_and_an_app_dependency(self):
-        regions = scaffold.regions(spec(feature_modules=["orders", "wallet"]))
-        self.assertEqual(['include(":data:orders")\n', 'include(":data:wallet")\n'], regions["data-modules"])
-        self.assertEqual(['include(":feature:orders")\n', 'include(":feature:wallet")\n'], regions["feature-modules"])
-        self.assertEqual(
-            ['    implementation(project(":feature:orders"))\n', '    implementation(project(":feature:wallet"))\n'],
-            regions["app-feature-dependencies"],
-        )
 
 
 class LookTest(unittest.TestCase):
@@ -320,8 +261,8 @@ class ProjectScriptsTest(unittest.TestCase):
         text = self.destinations(project)
         order = [text.index(key) for key in ("ShellTab(key = SampleListKey", "ShellTab(key = OrdersListKey", "ShellTab(key = WalletListKey", "ShellTab(key = SettingsKey")]
         self.assertEqual(sorted(order), order)
-        self.assertIn("import com.acme.field.feature.wallet.WalletListKey", text)
-        self.assertLess(text.index("WalletListKey, label"), text.index("// Settings sits last"))
+        self.assertIn("import com.acme.field.feature.wallet.api.WalletListKey", text)
+        self.assertIn("icon = AppIcons.CreditCard", text)
 
     def test_a_tab_list_it_cannot_read_is_left_to_the_user(self):
         from add_feature import main

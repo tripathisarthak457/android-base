@@ -108,7 +108,7 @@ class AndroidTarget:
                     "always included.",
                     "languages",
                 )
-        return []
+        return tabs.warnings(spec) + scaffold.notes(spec)
 
     def identity(self, spec: Spec) -> dict[str, str]:
         return {
@@ -149,7 +149,7 @@ class AndroidTarget:
             "modules": [
                 f":{tier}:{name}{half}"
                 for tier in ("data", "feature")
-                for name in spec.feature_modules
+                for name in scaffold.modules(spec)
                 for half in ((":api", ":impl") if spec.architecture == "modular" else ("",))
             ],
             "tabs": tabs.labels(spec),

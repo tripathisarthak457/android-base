@@ -12,6 +12,7 @@ from pathlib import Path
 from ...core import translations
 from ...core.spec import Spec, module_title
 from ...core.translations import Text, TranslationError, module_slug
+from . import scaffold
 
 _RES = "src/main/res"
 
@@ -44,7 +45,7 @@ def write(project: Path, spec: Spec, modules: set[str] | None = None) -> None:
     for tag in spec.languages:
         translation = translations.load("android", tag)
         entries: dict[str, dict[str, Text]] = dict(translation.modules)
-        for name in spec.feature_modules:
+        for name in scaffold.modules(spec):
             texts = {key.replace("{name}", name): value for key, value in translation.scaffold.items()}
             # The feature's name as the user typed it, which is also its tab label: a name, so it
             # reads the same in every language until someone chooses otherwise.

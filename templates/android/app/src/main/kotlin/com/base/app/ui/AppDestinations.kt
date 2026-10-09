@@ -27,22 +27,24 @@ import com.base.app.feature.auth.api.SignInKey
 /** The app's shape, in one file. */
 object AppDestinations {
 
-    /** The bottom-bar tabs, or an empty list for a single-stack app. */
+    /**
+     * The tabs, most visited first: a phone's bar shows five, or four and a More tab holding the
+     * rest, so the order decides what stays one tap away.
+     */
     val tabs: List<ShellTab> = listOf(
         // <opt:sample>
         ShellTab(key = SampleListKey, label = R.string.tab_home, icon = AppIcons.Home),
         // </opt:sample>
+        // <generated:shell-tabs>
         // <opt:paging>
         ShellTab(key = FeedKey, label = R.string.tab_feed, icon = AppIcons.ListView),
         // </opt:paging>
         // <opt:search>
         ShellTab(key = SearchKey, label = R.string.tab_search, icon = AppIcons.Search),
         // </opt:search>
-        // <generated:shell-tabs>
         // <opt:profile>
         ShellTab(key = ProfileKey, label = R.string.tab_profile, icon = AppIcons.User),
         // </opt:profile>
-        // Settings sits last because that is where people look for it.
         // <opt:settings>
         ShellTab(key = SettingsKey, label = R.string.tab_settings, icon = AppIcons.Settings),
         // </opt:settings>

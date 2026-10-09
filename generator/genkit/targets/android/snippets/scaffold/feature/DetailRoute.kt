@@ -1,0 +1,29 @@
+package __PKG__.feature.__NAME__.detail
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import __PKG__.core.navigation.AppNavigator
+import __PKG__.core.ui.MviScreen
+
+@Composable
+internal fun __P__DetailRoute(
+    id: String,
+    navigator: AppNavigator,
+    viewModel: __P__DetailViewModel = hiltViewModel<__P__DetailViewModel, __P__DetailViewModel.Factory>(
+        creationCallback = { factory -> factory.create(id) },
+    ),
+) {
+    LaunchedEffect(Unit) { viewModel.onEvent(__P__DetailEvent.Appeared) }
+
+    MviScreen(
+        viewModel = viewModel,
+        onEffect = { effect ->
+            when (effect) {
+                __P__DetailEffect.NavigateBack -> navigator.navigateUp()
+            }
+        },
+    ) { state, onEvent ->
+        __P__DetailScreen(state = state, onEvent = onEvent)
+    }
+}
