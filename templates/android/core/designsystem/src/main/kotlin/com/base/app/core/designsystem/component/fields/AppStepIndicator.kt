@@ -2,8 +2,6 @@ package com.base.app.core.designsystem.component.fields
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -91,7 +89,7 @@ private fun Connectors(hasBefore: Boolean, hasAfter: Boolean, beforeDone: Boolea
 
 @Composable
 private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier) {
-    val colour by animateColorAsState(
+    val colour = animateColorAsState(
         targetValue = when {
             !visible -> Color.Transparent
             done -> AppTheme.colors.accent
@@ -100,28 +98,32 @@ private fun ConnectorHalf(visible: Boolean, done: Boolean, modifier: Modifier) {
         animationSpec = tween(AppTheme.springs.fadeSlow),
         label = "stepConnector",
     )
-    Box(modifier = modifier.height(2.dp).background(colour))
+    Box(modifier = modifier.height(2.dp).drawBehind { drawRect(colour.value) })
 }
 
 @Composable
 private fun StepNode(number: Int, done: Boolean, active: Boolean) {
     val colors = AppTheme.colors
-    val fill by animateColorAsState(
+    val fill = animateColorAsState(
         targetValue = if (done) colors.accent else colors.surface,
         animationSpec = tween(AppTheme.springs.fadeSlow),
         label = "stepFill",
     )
-    val ring by animateColorAsState(
+    val ring = animateColorAsState(
         targetValue = if (done || active) colors.accent else colors.outline,
         animationSpec = tween(AppTheme.springs.fadeSlow),
         label = "stepRing",
     )
 
+    val ringWidth = if (active) 2.dp else 1.dp
     Box(
         modifier = Modifier
             .size(NodeSize)
-            .background(fill, CircleShape)
-            .border(if (active) 2.dp else 1.dp, ring, CircleShape),
+            .drawBehind {
+                val stroke = ringWidth.toPx()
+                drawCircle(fill.value)
+                drawCircle(ring.value, radius = (size.minDimension - stroke) / 2, style = Stroke(stroke))
+            },
         contentAlignment = Alignment.Center,
     ) {
         if (done) {
