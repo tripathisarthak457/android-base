@@ -1,4 +1,4 @@
-package com.base.app.core.network
+package com.base.app.core.network.client
 
 import com.base.app.core.network.model.HttpMethodType
 import org.junit.Assert.assertEquals
@@ -14,26 +14,26 @@ class RetryPolicyTest {
     @Test
     fun `a repeatable request is retried on a transient status`() {
         listOf(408, 429, 500, 502, 503, 504).forEach { status ->
-            assertTrue("$status", policy.delayBefore(0, HttpMethodType.GET, status, retryAfter = null) != null)
+            assertTrue("$status", policy.delayBefore(0, HttpMethodType.GET, status, retryAfterSeconds = null) != null)
         }
     }
 
     @Test
     fun `a status that will not change is not retried`() {
         listOf(400, 401, 403, 404, 409, 422, 501).forEach { status ->
-            assertNull("$status", policy.delayBefore(0, HttpMethodType.GET, status, retryAfter = null))
+            assertNull("$status", policy.delayBefore(0, HttpMethodType.GET, status, retryAfterSeconds = null))
         }
     }
 
     @Test
     fun `a post or patch is never repeated, because it might be applied twice`() {
-        assertNull(policy.delayBefore(0, HttpMethodType.POST, 503, retryAfter = null))
-        assertNull(policy.delayBefore(0, HttpMethodType.PATCH, statusCode = null, retryAfter = null))
+        assertNull(policy.delayBefore(0, HttpMethodType.POST, 503, retryAfterSeconds = null))
+        assertNull(policy.delayBefore(0, HttpMethodType.PATCH, status = null, retryAfterSeconds = null))
     }
 
     @Test
     fun `no answer at all counts as transient`() {
-        assertTrue(policy.delayBefore(0, HttpMethodType.PUT, statusCode = null, retryAfter = null) != null)
+        assertTrue(policy.delayBefore(0, HttpMethodType.PUT, status = null, retryAfterSeconds = null) != null)
     }
 
     @Test
@@ -54,7 +54,7 @@ class RetryPolicyTest {
 
     @Test
     fun `retry-after is believed, up to the cap`() {
-        assertEquals(3_000L, policy.delayBefore(0, HttpMethodType.GET, 429, retryAfter = "3"))
-        assertEquals(8_000L, policy.delayBefore(0, HttpMethodType.GET, 503, retryAfter = "600"))
+        assertEquals(3_000L, policy.delayBefore(0, HttpMethodType.GET, 429, retryAfterSeconds = 3))
+        assertEquals(8_000L, policy.delayBefore(0, HttpMethodType.GET, 503, retryAfterSeconds = 600))
     }
 }

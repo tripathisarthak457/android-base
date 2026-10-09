@@ -1,18 +1,22 @@
-package com.base.app.core.datastore
+package com.base.app.core.datastore.settings
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.di.SettingsDataStore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** The user's preferences: things they chose, which must survive a sign-out. */
+/** The person's preferences: things they chose, which survive a sign-out. */
 data class AppSettings(
     val themeMode: String = THEME_SYSTEM,
     val dynamicColorEnabled: Boolean = false,
@@ -30,11 +34,13 @@ data class AppSettings(
     }
 }
 
+/** Read once at start-up and kept in memory, so the first frame and the app lock never wait on disk. */
 @Singleton
 class AppSettingsStore @Inject constructor(
     @SettingsDataStore private val dataStore: DataStore<Preferences>,
+    scope: ApplicationScope,
 ) {
-    val settings: Flow<AppSettings> = dataStore.data
+    private val latest: StateFlow<AppSettings?> = dataStore.data
         .map { preferences ->
             AppSettings(
                 themeMode = preferences[THEME_MODE] ?: AppSettings.THEME_SYSTEM,
@@ -47,7 +53,12 @@ class AppSettingsStore @Inject constructor(
                 // </opt:applock>
             )
         }
-        .distinctUntilChanged()
+        .stateIn(scope, SharingStarted.Eagerly, null)
+
+    val settings: Flow<AppSettings> = latest.filterNotNull()
+
+    /** The settings as last read, without suspending. Null only until the first read at start-up lands. */
+    val current: AppSettings? get() = latest.value
 
     suspend fun setThemeMode(mode: String) = put(THEME_MODE, mode)
 

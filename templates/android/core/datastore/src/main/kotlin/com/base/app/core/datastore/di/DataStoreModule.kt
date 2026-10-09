@@ -1,78 +1,51 @@
 package com.base.app.core.datastore.di
 
-import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.preferencesDataStoreFile
-import com.base.app.core.common.session.SessionScopedStore
-import com.base.app.core.common.coroutines.AppDispatchers
-import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.datastore.DataStoreFiles
+import com.base.app.core.datastore.crypto.KeystoreCipher
+import com.base.app.core.datastore.crypto.ValueCipher
+import com.base.app.core.datastore.session.AuthTokenStore
+import com.base.app.core.datastore.session.DataStoreAuthTokenStore
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dagger.multibindings.IntoSet
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.plus
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
-/** The signed-in user's data. Cleared wholesale on sign-out. */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class SessionDataStore
-
-/** Settings that outlive a session — theme, language, onboarding-seen, analytics opt-out. */
+/** Settings that outlive a session: theme, onboarding seen, the analytics opt-out. */
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class SettingsDataStore
 
+/** The session's tokens, in a file of their own. */
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+internal annotation class SessionTokensDataStore
+
 @Module
 @InstallIn(SingletonComponent::class)
-object DataStoreModule {
+internal interface DataStoreModule {
 
-    @Provides
-    @Singleton
-    @SessionDataStore
-    fun provideSessionDataStore(
-        @ApplicationContext context: Context,
-        scope: ApplicationScope,
-        dispatchers: AppDispatchers,
-    ): DataStore<Preferences> = create(context, scope, dispatchers.io, SESSION_FILE)
+    @Binds
+    fun bindAuthTokenStore(impl: DataStoreAuthTokenStore): AuthTokenStore
 
-    /** Any repository can keep per-user data in the session file without registering a store. */
-    @Provides
-    @IntoSet
-    fun provideSessionDataStoreClearing(
-        @SessionDataStore dataStore: DataStore<Preferences>,
-    ): SessionScopedStore = SessionScopedStore { dataStore.edit { it.clear() } }
+    @Binds
+    fun bindValueCipher(impl: KeystoreCipher): ValueCipher
 
-    @Provides
-    @Singleton
-    @SettingsDataStore
-    fun provideSettingsDataStore(
-        @ApplicationContext context: Context,
-        scope: ApplicationScope,
-        dispatchers: AppDispatchers,
-    ): DataStore<Preferences> = create(context, scope, dispatchers.io, SETTINGS_FILE)
+    companion object {
 
-    private fun create(
-        context: Context,
-        scope: ApplicationScope,
-        dispatcher: CoroutineDispatcher,
-        fileName: String,
-    ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
-        // A corrupt file would otherwise throw on every read until the user clears app data.
-        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
-        scope = scope + dispatcher,
-        produceFile = { context.preferencesDataStoreFile(fileName) },
-    )
+        @Provides
+        @Singleton
+        @SettingsDataStore
+        fun provideSettingsDataStore(files: DataStoreFiles): DataStore<Preferences> = files.preferences("settings")
 
-    private const val SESSION_FILE = "session"
-    private const val SETTINGS_FILE = "settings"
+        @Provides
+        @Singleton
+        @SessionTokensDataStore
+        fun provideSessionTokensDataStore(files: DataStoreFiles): DataStore<Preferences> =
+            files.preferences("session_tokens")
+    }
 }
