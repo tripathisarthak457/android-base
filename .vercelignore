@@ -20,11 +20,13 @@
 **/*.tsbuildinfo
 *.zip
 
-# Local working state that is in .gitignore but not, by itself, kept out of an upload.
+# Local working state that is in .gitignore but not, by itself, kept out of an upload. The agent
+# directories are anchored to the root: the templates ship their own `.claude/skills/`, which every
+# generated project needs.
 /out/
 /tools/
-.claude/
-.agents/
+/.claude/
+/.agents/
 .venv/
 venv/
 
