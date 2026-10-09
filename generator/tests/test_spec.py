@@ -101,7 +101,7 @@ class SchemaTwoTest(unittest.TestCase):
 
 
 class TypeTest(unittest.TestCase):
-    """The shapes a hand-written or API spec can get wrong (audit generator-python 4.8)."""
+    """The shapes a hand-written or API spec can get wrong."""
 
     def test_wrong_shapes_name_their_field(self):
         cases = {
@@ -130,9 +130,9 @@ class NameTest(unittest.TestCase):
                 read(minimal(package_name=f"com.example.{segment}"))
 
     def test_python_keywords_and_kotlin_soft_keywords_are_ordinary_segments(self):
-        # Only Kotlin's hard keywords are refused, never Python's: com.global.bank is a valid package
-        # (audit 4.1). Soft keywords such as `value` and `data` are identifiers wherever a package
-        # segment can appear.
+        # Only Kotlin's hard keywords are refused, never Python's: com.global.bank is a valid package.
+        # Soft keywords such as `value` and `data` are identifiers wherever a package segment can
+        # appear.
         for segment in ("global", "pass", "async", "lambda", "value", "data", "get", "field"):
             with self.subTest(segment=segment):
                 read(minimal(package_name=f"com.example.{segment}"))
@@ -149,7 +149,7 @@ class NameTest(unittest.TestCase):
 
     def test_every_pattern_must_match_the_whole_value(self):
         # `$` matches before a trailing newline; a newline in a Kotlin string literal fails the
-        # build (audit web-api M2).
+        # build.
         for raw in (
             minimal(package_name="com.acme.field\n"),
             minimal(font_name="DM Sans\n"),

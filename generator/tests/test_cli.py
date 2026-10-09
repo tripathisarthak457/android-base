@@ -68,7 +68,7 @@ class CliTest(unittest.TestCase):
 
     def test_force_replaces_exactly_the_destination(self):
         # --out names the project itself, never its parent, so --force can delete only that path
-        # and a sibling project is never at risk (audit 4.6).
+        # and a sibling project is never at risk.
         sibling = self.root / "parent" / "Sibling"
         sibling.mkdir(parents=True)
         (sibling / "important.txt").write_text("keep", encoding="utf-8")

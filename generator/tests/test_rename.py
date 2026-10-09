@@ -67,7 +67,7 @@ class BoundaryTest(unittest.TestCase):
 
 
 class HostileNamesTest(unittest.TestCase):
-    """Names that contain a template token, through the whole pipeline (audit generator-python 3.1)."""
+    """Names that contain a template token, through the whole pipeline."""
 
     CASES = (
         ("Trail Notes", "com.example.databaseapp", ["orders"]),

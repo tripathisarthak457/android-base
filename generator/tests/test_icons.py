@@ -22,7 +22,7 @@ class MonochromeTest(unittest.TestCase):
 
     def test_the_rewritten_adaptive_icons_are_valid_xml(self):
         # A substitution that drops its own groups writes `@drawable/… />` as bare text, which fails
-        # resource linking in every project generated with an icon (audit 3.2).
+        # resource linking in every project generated with an icon.
         with tempfile.TemporaryDirectory() as temp:
             project = Path(temp)
             target = project / "app/src/main/res/mipmap-anydpi-v26"
