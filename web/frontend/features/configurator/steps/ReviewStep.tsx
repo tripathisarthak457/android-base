@@ -107,9 +107,9 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
           </div>
         )}
 
-        <div aria-live="polite">
+        <div role="status">
           {outcome?.kind === "done" && (
-            <div role="status" className="mb-4 rounded-xl border border-mint/30 bg-mint/10 p-5">
+            <div className="mb-4 rounded-xl border border-mint/30 bg-mint/10 p-5">
               <p className="text-sm font-semibold text-mint">Downloaded</p>
               <p className="mt-1.5 font-mono text-xs text-ink-300">{outcome.filename}</p>
               <p className="mt-1 text-xs text-ink-400">
@@ -134,20 +134,20 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
               </ol>
             </div>
           )}
-          {outcome?.kind === "failed" && (
-            <p role="alert" className="mb-4 rounded-lg border border-rose/30 bg-rose/10 p-4 text-xs leading-relaxed text-rose">
-              {outcome.message}
-              {outcome.field && (
-                <>
-                  {" "}
-                  <button type="button" onClick={() => goTo(stepOf(outcome.field))} className="font-semibold underline underline-offset-2">
-                    {STEP_NAMES[stepOf(outcome.field)]}
-                  </button>
-                </>
-              )}
-            </p>
-          )}
         </div>
+        {outcome?.kind === "failed" && (
+          <p role="alert" className="mb-4 rounded-lg border border-rose/30 bg-rose/10 p-4 text-xs leading-relaxed text-rose">
+            {outcome.message}
+            {outcome.field && (
+              <>
+                {" "}
+                <button type="button" onClick={() => goTo(stepOf(outcome.field))} className="font-semibold underline underline-offset-2">
+                  {STEP_NAMES[stepOf(outcome.field)]}
+                </button>
+              </>
+            )}
+          </p>
+        )}
 
         <Button size="large" onClick={() => void generate()} disabled={busy || errors.size > 0} className="w-full">
           {busy ? (
