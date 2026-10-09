@@ -267,7 +267,8 @@ internal class StackScene(private val gate: BackGate) {
 
     private companion object {
         val EdgeShadow = 8.dp
-        const val SHADOW_ALPHA = 0.12f
+        /** Faint, as UIKit's: a darker line at the edge reads as a seam, not depth. */
+        const val SHADOW_ALPHA = 0.04f
     }
 }
 

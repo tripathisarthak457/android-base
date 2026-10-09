@@ -20,10 +20,9 @@ import com.base.app.core.common.navigation.AppNavKey
 import kotlin.math.PI
 
 /**
- * The one spring every full-screen move rides: push, pop and covers. Critically damped, because a
- * long travel with any overshoot in it reads as unstable, and short, because a slow settle leaves a
- * sliver of the old screen crawling at the edge. [response] is in seconds, as iOS states springs:
- * stiffness = (2π / response)².
+ * The one spring every full-screen move rides: push, pop, covers and the back card's commit.
+ * Critically damped, because a long travel with any overshoot in it reads as unstable. [response]
+ * is in seconds, as iOS states springs: stiffness = (2π / response)².
  */
 @Immutable
 internal data class ScreenMotion(val response: Float = DEFAULT_RESPONSE, val parallax: Float = PARALLAX) {
@@ -42,11 +41,14 @@ internal data class ScreenMotion(val response: Float = DEFAULT_RESPONSE, val par
     }
 
     companion object {
-        /** Provisional: the user picks between 0.24, 0.30 and 0.36 s from device recordings. */
-        const val DEFAULT_RESPONSE = 0.24f
+        /**
+         * UIKit's push curve (ω₀ 18.26). A stiffer spring covers three quarters of the width in the
+         * first 100 ms, which shoves the screen in rather than sliding it.
+         */
+        const val DEFAULT_RESPONSE = 0.344f
 
-        /** How far the covered screen moves, as a fraction of the one arriving over it. */
-        const val PARALLAX = 0.30f
+        /** How far the covered screen moves, as a fraction of the one arriving over it: UIKit's third. */
+        const val PARALLAX = 0.333f
 
         private const val FRACTION_THRESHOLD = 0.001f
     }
