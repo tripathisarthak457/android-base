@@ -12,6 +12,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 
 /**
  * The top two layers of the window. Layer 4 holds alerts, HUDs and the loading overlay; layer 5 the
@@ -56,8 +58,12 @@ internal fun AppOverlayHost(content: @Composable () -> Unit) {
             ) {
                 content()
             }
-            state.overlays.forEach { entry -> key(entry) { entry.content() } }
-            ToastLayer(state.toasts)
+            // The layers are siblings of the app's root, outside whatever exposes its test tags, so
+            // they expose their own: benchmarks find a sheet's grabber or a toast by resource id.
+            Box(Modifier.semantics { testTagsAsResourceId = true }, propagateMinConstraints = true) {
+                state.overlays.forEach { entry -> key(entry) { entry.content() } }
+                ToastLayer(state.toasts)
+            }
         }
     }
 }
