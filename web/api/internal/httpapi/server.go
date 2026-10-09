@@ -40,7 +40,8 @@ type Server struct {
 	adminToken string
 	known      telemetry.Known
 	startedAt  time.Time
-	// warm is set by the first generation this process runs, which is recorded as a cold start.
+	// warm is set by the first request to reach the generator, which is recorded as a cold start.
+	// Requests refused before it never start Python, so they cannot be cold.
 	warm atomic.Bool
 
 	generateLimit *limiter

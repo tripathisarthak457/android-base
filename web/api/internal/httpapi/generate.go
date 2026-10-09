@@ -40,7 +40,6 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 		SessionID:   session.ID,
 		Client:      session.Client,
 		ConfigMs:    session.ConfigMs,
-		ColdStart:   !s.warm.Swap(true),
 		Country:     s.geo(r).Country,
 		DeviceClass: agent.DeviceClass,
 	}
@@ -102,6 +101,7 @@ func (s *Server) generate(w http.ResponseWriter, r *http.Request, target string)
 	}
 	describe(&record, spec, gen.Target.Defaults)
 
+	record.ColdStart = !s.warm.Swap(true)
 	out, err := gen.Run(r.Context(), body)
 	record.Duration = time.Since(started)
 	if err != nil {

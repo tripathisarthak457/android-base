@@ -260,14 +260,27 @@ func TestTheLegacyRouteGeneratesAndroid(t *testing.T) {
 	}
 }
 
-func TestOnlyTheFirstGenerationIsAColdStart(t *testing.T) {
+func TestOnlyTheFirstRunOfTheGeneratorIsAColdStart(t *testing.T) {
 	ts := newTestServer(t, okScript, nil)
-	ts.do(http.MethodPost, "/api/v1/android/generate", `{}`, nil)
-	first := onlyGeneration(t, ts.sink.last(t)).ColdStart
-	ts.do(http.MethodPost, "/api/v1/android/generate", `{}`, nil)
-	second := onlyGeneration(t, ts.sink.last(t)).ColdStart
-	if !first || second {
-		t.Fatalf("cold start: first %v, second %v", first, second)
+	coldStart := func(body string, status int) bool {
+		t.Helper()
+		if w := ts.do(http.MethodPost, "/api/v1/android/generate", body, nil); w.Code != status {
+			t.Fatalf("got %d, want %d", w.Code, status)
+		}
+		return onlyGeneration(t, ts.sink.last(t)).ColdStart
+	}
+
+	if coldStart(`{"app_name": "`+strings.Repeat("a", 40<<10)+`"}`, http.StatusRequestEntityTooLarge) {
+		t.Fatal("a spec refused for its size was recorded as a cold start")
+	}
+	if coldStart(`{"schema": 2, "platform": "multiplatform"}`, http.StatusBadRequest) {
+		t.Fatal("a spec the precheck refused was recorded as a cold start")
+	}
+	if !coldStart(`{}`, http.StatusOK) {
+		t.Fatal("the first generation was not recorded as a cold start")
+	}
+	if coldStart(`{}`, http.StatusOK) {
+		t.Fatal("the second generation was recorded as a cold start")
 	}
 }
 
