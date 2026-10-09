@@ -22,6 +22,26 @@ label = "First visit to a tab, first frame max (ms)"
 solid = "ratchet"
 
 [[row]]
+metric = "tab_first_visit_warm.first_frame_ms.median"
+label = "First visit to a tab after a restart (warm), first frame median (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "tab_first_visit_warm.first_frame_ms.max"
+label = "First visit to a tab after a restart (warm), first frame max (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "first_push.frame_ms"
+label = "First push after pm clear (cold), the frame that composes the screen (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "first_push_warm.frame_ms"
+label = "First push after a restart (warm), the frame that composes the screen (ms)"
+solid = "ratchet"
+
+[[row]]
 metric = "tabs.janky_pct"
 label = "Tab switch, janky frames (%)"
 solid = 1.0
@@ -43,6 +63,26 @@ label = "Tab switch to a visited tab, first frame max (ms)"
 solid = 16.0
 standard = 16.0
 lean = 16.0
+
+[[row]]
+metric = "tabs.hitch_ms_per_s"
+label = "Tab switch, hitch time per second of motion (ms/s)"
+solid = "ratchet"
+
+[[row]]
+metric = "tabs_tap.janky_pct"
+label = "Tab switch with plain taps, janky frames (%)"
+solid = 1.0
+
+[[row]]
+metric = "tabs_tap.first_frame_ms.median"
+label = "Tab switch with plain taps, first frame median (ms)"
+solid = 8.0
+
+[[row]]
+metric = "tabs_tap.first_frame_ms.max"
+label = "Tab switch with plain taps, first frame max (ms)"
+solid = 16.0
 
 [[row]]
 metric = "pushpop.push_first_frame_ms.median"
@@ -84,9 +124,34 @@ standard = 25.0
 lean = 25.0
 
 [[row]]
+metric = "pushpop.hitch_ms_per_s"
+label = "Push/pop with the Back key, hitch time per second of motion (ms/s)"
+solid = "ratchet"
+
+[[row]]
 metric = "pushpop_gesture.janky_pct"
 label = "Push/pop with the back gesture, janky frames (%)"
 solid = 2.0
+
+[[row]]
+metric = "pushpop_gesture.gesture_first_frame_ms.median"
+label = "Back gesture, slowest of its first three frames, median (ms)"
+solid = 8.0
+
+[[row]]
+metric = "pushpop_gesture.hitch_ms_per_s"
+label = "Push/pop with the back gesture, hitch time per second of motion (ms/s)"
+solid = "ratchet"
+
+[[row]]
+metric = "back_during_push.opaque"
+label = "Back swipe during a push: one opaque card, no double exposure"
+solid = true
+
+[[row]]
+metric = "back_during_push.lands_on_list"
+label = "Back swipe during a push: lands on the list"
+solid = true
 
 [[row]]
 metric = "rapid_back.alive"
@@ -112,6 +177,11 @@ solid = 8.0
 metric = "rapid_back.pop_frame_ms.max"
 label = "Rapid Back, slowest frame of the coalesced pop, max (ms)"
 solid = 16.0
+
+[[row]]
+metric = "rapid_back.hitch_ms_per_s"
+label = "Rapid Back, hitch time per second of motion (ms/s)"
+solid = "ratchet"
 
 [[row]]
 metric = "nav_stress.alive"
@@ -189,3 +259,23 @@ metric = "meminfo.pss_mb"
 label = "PSS after the journey (MB)"
 solid = 70
 standard = 70
+
+[[row]]
+metric = "recompose.tab_switch.max"
+label = "Tab switch, frames that recompose (most in one switch)"
+solid = 2
+
+[[row]]
+metric = "recompose.push.max"
+label = "Push, frames that recompose (most in one push)"
+solid = "ratchet"
+
+[[row]]
+metric = "recompose.pop.max"
+label = "Pop, frames that recompose (most in one pop)"
+solid = 2
+
+[[row]]
+metric = "recompose.back_gesture_progress.max"
+label = "Back gesture, frames that recompose while the card follows the finger"
+solid = 0

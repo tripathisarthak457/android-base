@@ -95,6 +95,68 @@ def max_ui_ms(rows):
     return round(max(ui_ms(row) for row in rows), 2) if rows else None
 
 
+def stages(rows, count=3):
+    """Where each of the first [count] frames spent its time after the UI thread, in milliseconds.
+
+    `issue` is the render thread turning the display list into GPU commands, `gpu` the GPU's own work
+    on them, and `dequeue` the wait for a free buffer: a non-zero dequeue means the GPU or the display
+    was still holding the buffers of earlier frames.
+    """
+
+    def span(row, start, end):
+        if not row.get(start) or not row.get(end) or row[end] < row[start]:
+            return None
+        return round((row[end] - row[start]) / _NS_PER_MS, 2)
+
+    return [
+        {
+            "ui": round(ui_ms(row), 2),
+            "issue": span(row, "IssueDrawCommandsStart", "SwapBuffers"),
+            "gpu": span(row, "CommandSubmissionCompleted", "GpuCompleted"),
+            "dequeue": round(row.get("DequeueBufferDuration", 0) / _NS_PER_MS, 2),
+        }
+        for row in rows[:count]
+    ]
+
+
+# A gap this long between two presented frames is the end of one burst of motion and the start of
+# another (a list settling, then a late image), not a frame the display waited for.
+_MAX_HITCH_INTERVALS = 12
+
+
+def hitch_time(rows):
+    """(hitch ms, time in motion ms) from the display's own present times.
+
+    A frame presented later than one vsync after the frame before it is a hitch, and the time past
+    that vsync is what it cost, which is what the user sees whatever gfxinfo's deadline says. Rows
+    the display never reported (present time 0) are left out, and so are the idle gaps between
+    bursts of motion.
+    """
+    presented = sorted(row["DisplayPresentTime"] for row in rows if row.get("DisplayPresentTime", 0) > 0)
+    if len(presented) < 2:
+        return 0.0, 0.0
+    interval = _interval(rows[0])
+    hitch = motion = 0.0
+    for earlier, later in zip(presented, presented[1:]):
+        gap = later - earlier
+        if gap > _MAX_HITCH_INTERVALS * interval:
+            continue
+        motion += gap
+        if gap > 1.5 * interval:
+            hitch += gap - interval
+    return hitch / _NS_PER_MS, motion / _NS_PER_MS
+
+
+def hitch_ratio(dumps):
+    """Hitch time per second of motion over several dumps (Apple's hitch ratio; good is under 5)."""
+    hitch = span = 0.0
+    for rows in dumps:
+        h, s = hitch_time(rows)
+        hitch += h
+        span += s
+    return round(1000 * hitch / span, 2) if span else None
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit("usage: parse_framestats.py <framestats dump>...")

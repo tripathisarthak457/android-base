@@ -120,6 +120,31 @@ class ParseFramestatsTest(unittest.TestCase):
         self.assertIsNone(parse_framestats.first_frame([]))
         self.assertIsNone(parse_framestats.opening_frame([]))
         self.assertIsNone(parse_framestats.max_ui_ms([]))
+        self.assertIsNone(parse_framestats.hitch_ratio([[]]))
+
+    def test_stages_of_the_first_frames(self):
+        frames = parse_framestats.load(fixture("framestats_pop.txt"))
+        stages = parse_framestats.stages(frames)
+        self.assertEqual(len(stages), 3)
+        self.assertAlmostEqual(stages[0]["ui"], 27.31, places=2)
+        for stage in stages:
+            self.assertGreaterEqual(stage["dequeue"], 0)
+            self.assertTrue(stage["issue"] is None or stage["issue"] >= 0)
+
+    def test_a_late_present_is_a_hitch(self):
+        interval = 8_333_333
+        presents = [(1 + i) * interval for i in range(10)] + [13 * interval, 14 * interval]
+        # A second burst of motion after a second of idle adds motion time, not hitch time.
+        presents += [10**9 + i * interval for i in range(4)]
+        rows = [dict(frame(i, 2.0), DisplayPresentTime=t) for i, t in enumerate(presents)]
+        hitch, motion = parse_framestats.hitch_time(rows)
+        self.assertAlmostEqual(hitch, 2 * interval / 1_000_000, places=3)
+        self.assertAlmostEqual(motion, 16 * interval / 1_000_000, places=3)
+        self.assertAlmostEqual(parse_framestats.hitch_ratio([rows]), 1000 * hitch / motion, places=1)
+
+    def test_frames_the_display_did_not_report_are_left_out(self):
+        rows = [dict(frame(i, 2.0), DisplayPresentTime=0) for i in range(5)]
+        self.assertEqual(parse_framestats.hitch_time(rows), (0.0, 0.0))
 
 
 def frame(index, ui_ms, interval=8_333_333):
@@ -240,6 +265,46 @@ class SummaryTest(unittest.TestCase):
         self.assertIs(metrics["rapid_back.alive"]["value"], False)
         self.assertEqual(metrics["idle.frames"]["value"], 1)
         self.assertEqual(metrics["idle.frames"]["runs"], [0, 2, None])
+
+
+def atrace_line(when, mark, pid=4242, tid=4242):
+    return f"  e.wp04.example-{tid}  ( {pid}) [003] ...1 {when:.6f}: tracing_mark_write: {mark}"
+
+
+def frame_slices(when, recompose=False, pid=4242):
+    lines = [atrace_line(when, f"B|{pid}|Choreographer#doFrame 123")]
+    if recompose:
+        lines += [atrace_line(when + 0.001, f"B|{pid}|Compose:recompose"), atrace_line(when + 0.002, f"E|{pid}")]
+    lines.append(atrace_line(when + 0.004, f"E|{pid}"))
+    return lines
+
+
+class RecomposeTraceTest(unittest.TestCase):
+    def test_frames_that_recompose_are_counted_per_action(self):
+        lines = []
+        # A tap (down and up), then three frames, the first recomposing.
+        for when in (1.000, 1.080):
+            lines += [atrace_line(when, "B|4242|deliverInputEvent src=0x1002"), atrace_line(when + 0.001, "E|4242")]
+        lines += frame_slices(1.1, recompose=True) + frame_slices(1.108) + frame_slices(1.116)
+        # A swipe: five moves, frames in between, one of them recomposing after the third move.
+        for index in range(5):
+            when = 3.0 + index * 0.08
+            lines += [atrace_line(when, "B|4242|deliverInputEvent src=0x1002"), atrace_line(when + 0.001, "E|4242")]
+            lines += frame_slices(when + 0.01, recompose=(index == 3))
+        # Another thread's recomposition is not the main thread's.
+        lines += [atrace_line(3.5, "B|4242|Compose:recompose", tid=4300), atrace_line(3.501, "E|4242", tid=4300)]
+        windows = perf.recomposing_frames("\n".join(lines), 4242)
+        self.assertEqual([window["recomposing"] for window in windows], [1, 1])
+        self.assertEqual(windows[0]["frames"], 3)
+        self.assertEqual(windows[1]["recomposing_while_dragged"], 1)
+
+    def test_a_back_swipe_ends_where_it_lets_go(self):
+        commit = perf.back_swipe(1080, 2400, steps=4)
+        self.assertTrue(commit.startswith("input motionevent DOWN 2 1200"))
+        self.assertTrue(commit.endswith("input motionevent UP 488 1200"))
+        cancel = perf.back_swipe(1080, 2400, edge="right", steps=4, drift=100, cancel=True)
+        self.assertTrue(cancel.startswith("input motionevent DOWN 1077 1200"))
+        self.assertTrue(cancel.endswith("input motionevent UP 1077 1300"))
 
 
 class SplitProfileTest(unittest.TestCase):

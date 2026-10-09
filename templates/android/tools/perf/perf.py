@@ -38,10 +38,14 @@ import parse_gfx  # noqa: E402
 # The order scenarios run in, whatever order they are given: everything that keeps the process
 # alive first, then memory after the journey, then the scenarios that kill or recompile the app.
 SCENARIOS = [
-    "tabs", "tab1", "pushpop", "pushpop_gesture", "rapid_back", "scroll_root", "idle",
-    "nav_stress", "restore", "meminfo", "scroll_minimize", "coldstart", "coldstart_installed",
+    "tabs", "tabs_tap", "tab1", "pushpop", "pushpop_gesture", "back_during_push", "rapid_back",
+    "scroll_root", "idle", "nav_stress", "restore", "meminfo", "scroll_minimize", "recompose", "trace",
+    "coldstart", "coldstart_installed",
 ]
-JOURNEYS = ["tab_switch", "push", "pop", "pushpop", "gesture_pop", "rapid_back", "scroll", "custom"]
+JOURNEYS = [
+    "tab_switch", "push", "pop", "pushpop", "gesture_pop", "rapid_back", "scroll", "back_slow_commit",
+    "back_slow_cancel", "back_fast_flick", "back_y_follow", "back_to_home", "back_during_push", "custom",
+]
 
 PROFILE_RECEIVER = "androidx.profileinstaller.ProfileInstallReceiver"
 PROFILE_ACTION = "androidx.profileinstaller.action.INSTALL_PROFILE"
@@ -341,48 +345,78 @@ class Run:
             self.record(f"{key}.median", round(statistics.median(values), 2))
             self.record(f"{key}.max", round(max(values), 2))
 
-    def record_gfx(self, scenario, dumps):
+    def record_gfx(self, scenario, dumps, frames=None):
         combined = parse_gfx.combine(dumps)
         for name in ("janky_pct", "p50_ms", "p90_ms", "p99_ms", "gpu_p50_ms", "gpu_p90_ms", "gpu_p99_ms", "frames"):
             self.record(f"{scenario}.{name}", combined[name])
+        if frames:
+            self.record_frames(scenario, frames)
+
+    def record_frames(self, scenario, frames):
+        """The hitch ratio and the render-thread, GPU and buffer cost of each transition's first frames."""
+        self.record(f"{scenario}.hitch_ms_per_s", parse_framestats.hitch_ratio(frames))
+        first = [stage for rows in frames for stage in parse_framestats.stages(rows)]
+        self.record_spread(f"{scenario}.first3_issue_ms", [stage["issue"] for stage in first])
+        self.record_spread(f"{scenario}.first3_gpu_ms", [stage["gpu"] for stage in first])
+        self.record_spread(f"{scenario}.first3_dequeue_ms", [stage["dequeue"] for stage in first])
 
     # Start
 
     def start(self, apk):
+        """Installs, then pays every first use twice: cold, right after `pm clear` wiped the shader
+        cache and everything else the app keeps, and warm, after a restart that kept them, which is
+        what a user who has opened the app before sees."""
         self.device.wake()
         self.app.install(apk)
         self.app.clear()
         self.app.compile_with_apk_profile()
         self.device.shell("input keyevent KEYCODE_HOME")
         self.app.launch()
-        tree, tabs = self.wait_for(lambda t: t.tabs(), "the tab bar (tab_0)", timeout=30)
-        self.tabs = tabs
-        self.wait_for(lambda t: t.first_row(), "a row of primary_list on the first tab")
+        self.first_use("")
+        self.app.stop()
+        time.sleep(1.0)
+        self.app.launch()
+        self.first_use("_warm")
+        self.at_root(0)
+
+    def first_use(self, suffix):
+        _, self.tabs = self.wait_for(lambda t: t.tabs(), "the tab bar (tab_0)", timeout=30)
+        _, row = self.wait_for(lambda t: t.first_row(), "a row of primary_list on the first tab")
         first_visits = []
         for index in range(1, len(self.tabs)):
-            _, frames = self.segment("tab_first_visit", self.press(self.tabs[index]), 1.5)
+            _, frames = self.segment(f"tab_first_visit{suffix}", self.press(self.tabs[index]), 1.5)
             first = parse_framestats.first_frame(frames)
             first_visits.append(first["ui_ms"] if first else None)
-        self.record_spread("tab_first_visit.first_frame_ms", first_visits)
-        self.at_root(0)
+        self.record_spread(f"tab_first_visit{suffix}.first_frame_ms", first_visits)
+        row = self.at_root(0)
+        _, frames = self.segment(f"first_push{suffix}", self.press(row), 1.3)
+        opening = parse_framestats.opening_frame(frames)
+        self.record(f"first_push{suffix}.frame_ms", round(parse_framestats.ui_ms(opening), 2) if opening else None)
+        self.device.shell("input keyevent 4")
+        time.sleep(1.3)
 
     # Scenarios
 
-    def tabs_scenario(self):
+    def tabs_scenario(self, scenario="tabs"):
+        """Seven rounds of switches through every tab. `tabs` puts the finger down first and measures
+        from the lift; `tabs_tap` sends plain taps, so whatever the press itself costs is counted."""
         if len(self.tabs) < 2:
-            self.notes.append("tabs skipped: the app has one tab")
+            self.notes.append(f"{scenario} skipped: the app has one tab")
             return
         self.at_root(0)
         order = list(range(1, len(self.tabs))) + [0]
-        dumps, firsts = [], []
+        dumps, firsts, all_frames = [], [], []
         for _ in range(3):
             for index in order:
-                gfx, frames = self.segment("tabs", self.press(self.tabs[index]), 0.9)
+                node = self.tabs[index]
+                command = self.press(node) if scenario == "tabs" else self.tap(node)
+                gfx, frames = self.segment(scenario, command, 0.9)
                 dumps.append(gfx)
+                all_frames.append(frames)
                 first = parse_framestats.first_frame(frames)
                 firsts.append(first["ui_ms"] if first else None)
-        self.record_gfx("tabs", dumps)
-        self.record_spread("tabs.first_frame_ms", firsts)
+        self.record_gfx(scenario, dumps, all_frames)
+        self.record_spread(f"{scenario}.first_frame_ms", firsts)
 
     def tab1(self):
         if len(self.tabs) < 2:
@@ -399,30 +433,93 @@ class Run:
 
     def pushpop(self):
         row = self.at_root(0)
-        dumps, pushes, pops = [], [], []
+        dumps, pushes, pops, all_frames = [], [], [], []
         for _ in range(8):
             gfx, frames = self.segment("push", self.press(row), 1.3)
             dumps.append(gfx)
+            all_frames.append(frames)
             opening = parse_framestats.opening_frame(frames)
             pushes.append(round(parse_framestats.ui_ms(opening), 2) if opening else None)
             gfx, frames = self.segment("pop", "input keyevent 4", 1.3)
             dumps.append(gfx)
+            all_frames.append(frames)
             pops.append((parse_framestats.first_frame(frames) or {}).get("ui_ms"))
-        self.record_gfx("pushpop", dumps)
+        self.record_gfx("pushpop", dumps, all_frames)
         self.record_spread("pushpop.push_first_frame_ms", pushes)
         self.record_spread("pushpop.pop_first_frame_ms", pops)
 
     def pushpop_gesture(self):
+        """Push with a tap, pop with an edge swipe. The swipe's first frames are where the back card
+        starts: the screen beneath must already be laid out, so they cost a layer change."""
         row = self.at_root(0)
         width, height = self.device.size
         swipe = f"input swipe 3 {height // 2} {int(width * 0.7)} {height // 2 + 50} 260"
-        dumps = []
+        dumps, starts, all_frames = [], [], []
         for _ in range(6):
-            gfx, _ = self.segment("gesture_push", self.tap(row), 1.3)
+            gfx, frames = self.segment("gesture_push", self.tap(row), 1.3)
             dumps.append(gfx)
-            gfx, _ = self.segment("gesture_pop", swipe, 1.3)
+            all_frames.append(frames)
+            gfx, frames = self.segment("gesture_pop", swipe, 1.3)
             dumps.append(gfx)
-        self.record_gfx("pushpop_gesture", dumps)
+            all_frames.append(frames)
+            starts.append(parse_framestats.max_ui_ms(frames[:3]))
+        self.record_gfx("pushpop_gesture", dumps, all_frames)
+        self.record_spread("pushpop_gesture.gesture_first_frame_ms", starts)
+
+    def back_during_push(self):
+        """A back swipe that starts while a push is still sliding in, 60 to 120 ms after the tap,
+        from each edge in turn.
+
+        The screenshot taken mid-gesture must show the arriving screen as one opaque card over the
+        list. Two screens blended into each other (double exposure) leave the middle of the window
+        about half as different from the list as the detail screen itself is; an opaque card leaves
+        it as different. The release must land on the list.
+        """
+        shots = os.path.join(self.out, "back_during_push")
+        os.makedirs(shots, exist_ok=True)
+        width, height = self.device.size
+        row = self.at_root(0)
+        rest_list = os.path.join(shots, "list.png")
+        rest_detail = os.path.join(shots, "detail.png")
+        self.device.screenshot(rest_list)
+        self.device.shell(self.tap(row))
+        time.sleep(1.5)
+        self.device.screenshot(rest_detail)
+        self.device.shell("input keyevent 4")
+        time.sleep(1.5)
+        apart = image_difference(rest_detail, rest_list)
+        if apart is None or apart < MIN_SCREEN_DIFFERENCE:
+            self.notes.append(f"back_during_push: the list and the detail look alike ({apart}); nothing to compare")
+            return
+        ratios, landed = [], []
+        y = height // 2
+        for edge in ("left", "right", "left", "right"):
+            row = self.at_root(0)
+            start = 2 if edge == "left" else width - 3
+            step = (1 if edge == "left" else -1) * width * 35 // 100 // 8
+            moves = "; ".join(f"input motionevent MOVE {start + step * i} {y}" for i in range(1, 9))
+            remote = "/sdcard/perf_back_during_push.png"
+            self.device.shell(
+                f"{self.tap(row)}; input motionevent DOWN {start} {y}; {moves}; "
+                f"screencap -p {remote}; input motionevent UP {start + step * 8} {y}"
+            )
+            self.counter += 1
+            mid = os.path.join(shots, f"mid_{self.counter:03d}_{edge}.png")
+            self.device.adb("pull", remote, mid)
+            self.device.shell(f"rm -f {remote}")
+            ratio = image_difference(mid, rest_list)
+            ratios.append(round(ratio / apart, 2) if ratio is not None else None)
+            time.sleep(1.5)
+            self.device.screenshot(os.path.join(shots, f"after_{self.counter:03d}_{edge}.png"))
+            tree = self.ui() if self.app.in_front() else None
+            landed.append(bool(tree and tree.first_row() and tree.find("related_row") is None))
+            if not self.app.in_front():
+                self.app.launch()
+                time.sleep(1.5)
+        measured = [ratio for ratio in ratios if ratio is not None]
+        self.record("back_during_push.difference_ratios", ratios)
+        self.record("back_during_push.opaque", bool(measured) and min(measured) >= OPAQUE_RATIO)
+        self.record("back_during_push.lands_on_list", all(landed))
 
     def push_to_depth(self, row):
         """Pushes the first row, then related rows: depth 4 when the detail has them, else 2."""
@@ -452,12 +549,13 @@ class Run:
     def rapid_back(self):
         row = self.at_root(0)
         pid = self.app.pid()
-        dumps, slowest, landed, alive, depths = [], [], [], [], []
+        dumps, slowest, landed, alive, depths, all_frames = [], [], [], [], [], []
         for _ in range(6):
             depth = self.push_to_depth(row)
             depths.append(depth)
             gfx, frames = self.segment("rapid_back", "input keyevent 4 4 4", 1.8)
             dumps.append(gfx)
+            all_frames.append(frames)
             slowest.append(parse_framestats.max_ui_ms(frames))
             still = self.app.pid() == pid and pid != ""
             alive.append(still)
@@ -473,7 +571,7 @@ class Run:
                 self.notes.append("rapid_back: the process died")
                 pid = self.app.pid()
             row = self.at_root(0)
-        self.record_gfx("rapid_back", dumps)
+        self.record_gfx("rapid_back", dumps, all_frames)
         self.record_spread("rapid_back.pop_frame_ms", slowest)
         self.record("rapid_back.depth", max(depths))
         self.record("rapid_back.alive", all(alive))
@@ -596,6 +694,84 @@ class Run:
         self.record("restore.restored", bool(restored))
         self.record("restore.back_pops", bool(popped))
 
+    def recompose(self):
+        """Frames that recomposed during each transition, from an atrace capture of the app's own
+        trace sections: a `Choreographer#doFrame` with a `Compose:recompose` inside it. Separate from
+        the timing scenarios, because tracing costs time on every frame.
+
+        Each action (a tap, a Back key, a swipe) opens a window that ends at the next action; the
+        windows are matched to the actions in the order they were sent.
+        """
+        row = self.at_root(0)
+        width, height = self.device.size
+        y = height // 2
+        actions = []
+        script = []
+        for index in list(range(1, len(self.tabs))) + [0]:
+            actions.append("tab_switch")
+            script.append(self.tap(self.tabs[index]))
+        for _ in range(3):
+            actions += ["push", "pop"]
+            script += [self.tap(row), "input keyevent 4"]
+        slow = "; ".join(f"input motionevent MOVE {2 + width * 40 // 100 * i // 12} {y}" for i in range(1, 13))
+        for _ in range(2):
+            actions += ["push", "back_gesture"]
+            script += [self.tap(row), f"input motionevent DOWN 2 {y}; {slow}; input motionevent UP {2 + width * 40 // 100} {y}"]
+        package = self.app.package
+        remote = "/data/local/tmp/perf_atrace.txt"
+        self.device.shell(f"atrace --async_stop >/dev/null 2>&1; atrace --async_start -b 32768 -a {package} gfx view input")
+        try:
+            time.sleep(1.0)
+            for command in script:
+                self.device.shell(command)
+                time.sleep(1.5)
+        finally:
+            self.device.shell(f"atrace --async_stop -o {remote}")
+        local = os.path.join(self.out, "recompose_atrace.txt")
+        self.device.adb("pull", remote, local)
+        self.device.shell(f"rm -f {remote}")
+        with open(local, errors="replace") as handle:
+            windows = recomposing_frames(handle.read(), self.app.pid())
+        if len(windows) != len(actions):
+            self.notes.append(f"recompose: {len(windows)} input bursts in the trace for {len(actions)} actions")
+            return
+        by_kind = {}
+        for kind, window in zip(actions, windows):
+            by_kind.setdefault(kind, []).append(window["recomposing"])
+        for kind, counts in by_kind.items():
+            self.record(f"recompose.{kind}.max", max(counts))
+            self.record(f"recompose.{kind}.runs", counts)
+        self.record("recompose.back_gesture_progress.max",
+                    max(window["recomposing_while_dragged"] for kind, window in zip(actions, windows) if kind == "back_gesture"))
+
+    def trace(self):
+        """A Perfetto capture of tab switches, a push and pop and a back swipe, for reading in
+        ui.perfetto.dev: FrameTimeline jank types, GPU and CPU frequency, scheduling. Nothing is
+        computed from it here."""
+        row = self.at_root(0)
+        width, height = self.device.size
+        package = self.app.package
+        config = PERFETTO_CONFIG.replace("PACKAGE", package)
+        remote = "/data/misc/perfetto-traces/perf_trace.perfetto-trace"
+        process = subprocess.Popen(
+            ["adb"] + (["-s", self.device.serial] if self.device.serial else [])
+            + ["shell", f"perfetto --txt -c - -o {remote}"],
+            stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+        )
+        process.stdin.write(config)
+        process.stdin.close()
+        time.sleep(2.0)
+        steps = [self.tap(node) for node in self.tabs[1:]] + [self.tap(self.tabs[0]), self.tap(row), "input keyevent 4",
+                 self.tap(row), f"input swipe 3 {height // 2} {int(width * 0.7)} {height // 2 + 50} 260"]
+        for command in steps:
+            self.device.shell(command)
+            time.sleep(1.2)
+        process.wait(timeout=60)
+        local = os.path.join(self.out, "trace.perfetto-trace")
+        self.device.adb("pull", remote, local, check=False)
+        self.device.shell(f"rm -f {remote}")
+        self.record("trace.captured", os.path.isfile(local) and os.path.getsize(local) > 0)
+
     def meminfo(self):
         output = self.device.shell(f"dumpsys meminfo {self.app.package}")
         self.save("meminfo.txt", output)
@@ -643,6 +819,10 @@ class Run:
     def run(self, scenario):
         handler = {
             "tabs": self.tabs_scenario,
+            "tabs_tap": lambda: self.tabs_scenario("tabs_tap"),
+            "back_during_push": self.back_during_push,
+            "recompose": self.recompose,
+            "trace": self.trace,
             "tab1": self.tab1,
             "pushpop": self.pushpop,
             "pushpop_gesture": self.pushpop_gesture,
@@ -657,6 +837,102 @@ class Run:
             "coldstart_installed": self.coldstart_installed,
         }[scenario]
         handler()
+
+
+# The middle of the window, which the back card covers at any point of a gesture: x from 25 to 75 %,
+# y from 30 to 70 %.
+_MIDDLE = "crop=iw*0.5:ih*0.4:iw*0.25:ih*0.3,format=gray"
+# Below this mean difference (0 to 255) the list and the detail are too alike to tell a blend apart.
+MIN_SCREEN_DIFFERENCE = 6.0
+# Mid-gesture against the list, as a share of the detail against the list: an opaque card stays near
+# 1, a half-and-half blend of the two screens near 0.5.
+OPAQUE_RATIO = 0.75
+
+PERFETTO_CONFIG = """
+buffers { size_kb: 65536 fill_policy: RING_BUFFER }
+data_sources { config { name: "android.surfaceflinger.frametimeline" } }
+data_sources { config { name: "linux.process_stats" target_buffer: 0 } }
+data_sources {
+  config {
+    name: "linux.ftrace"
+    ftrace_config {
+      ftrace_events: "sched/sched_switch"
+      ftrace_events: "power/cpu_frequency"
+      ftrace_events: "power/gpu_frequency"
+      ftrace_events: "power/suspend_resume"
+      atrace_categories: "gfx"
+      atrace_categories: "view"
+      atrace_categories: "input"
+      atrace_apps: "PACKAGE"
+    }
+  }
+}
+duration_ms: 20000
+"""
+
+
+def image_difference(first, second):
+    """The mean absolute grey-level difference (0 to 255) between the middles of two screenshots."""
+    output = subprocess.run(
+        ["ffmpeg", "-v", "error", "-i", first, "-i", second, "-filter_complex",
+         f"[0:v]{_MIDDLE}[a];[1:v]{_MIDDLE}[b];[a][b]blend=all_mode=difference,signalstats,metadata=print:file=-",
+         "-f", "null", "-"],
+        capture_output=True, text=True,
+    ).stdout
+    match = re.search(r"lavfi\.signalstats\.YAVG=([\d.]+)", output)
+    return float(match.group(1)) if match else None
+
+
+_ATRACE_LINE = re.compile(r"-(\d+)\s.*?\s([\d.]+): tracing_mark_write: ([BE])\|(\d+)\|?(.*)$")
+# Inputs closer together than this are one action: a tap's down and up, or a swipe's moves.
+_ACTION_GAP_S = 0.4
+
+
+def recomposing_frames(text, pid):
+    """One window per action in an atrace dump of the app: how many frames recomposed in it.
+
+    Only the main thread is read (its thread id is the process id). An action is a burst of
+    `deliverInputEvent` slices; `recomposing_while_dragged` counts the frames that recomposed
+    between the third input of a burst and its last, which for a back swipe are the frames that
+    only follow the finger.
+    """
+    pid = str(pid)
+    stack, frames, inputs = [], [], []
+    for line in text.splitlines():
+        match = _ATRACE_LINE.search(line)
+        if not match or match.group(1) != pid:
+            continue
+        when, kind, name = float(match.group(2)), match.group(3), match.group(5)
+        if kind == "B":
+            stack.append([name, when, False])
+            if name.startswith("Compose:recompose"):
+                for open_slice in stack:
+                    if open_slice[0].startswith("Choreographer#doFrame"):
+                        open_slice[2] = True
+            elif name.startswith("deliverInputEvent"):
+                inputs.append(when)
+        elif stack:
+            name, start, recomposed = stack.pop()
+            if name.startswith("Choreographer#doFrame") and not any(s[0].startswith("Choreographer#doFrame") for s in stack):
+                frames.append((start, recomposed))
+    bursts = []
+    for when in inputs:
+        if bursts and when - bursts[-1][-1] < _ACTION_GAP_S:
+            bursts[-1].append(when)
+        else:
+            bursts.append([when])
+    windows = []
+    for index, burst in enumerate(bursts):
+        end = bursts[index + 1][0] if index + 1 < len(bursts) else float("inf")
+        inside = [recomposed for start, recomposed in frames if burst[0] <= start < end]
+        dragged_from = burst[2] if len(burst) > 2 else burst[-1]
+        dragged = [recomposed for start, recomposed in frames if dragged_from <= start < burst[-1]]
+        windows.append({
+            "frames": len(inside),
+            "recomposing": sum(inside),
+            "recomposing_while_dragged": sum(dragged),
+        })
+    return windows
 
 
 def combine_runs(runs):
@@ -848,6 +1124,17 @@ def record(args):
         elif args.journey == "scroll":
             x = width // 2
             actions = f"input swipe {x} {int(height * 0.75)} {x} {int(height * 0.29)} 140"
+        elif args.journey == "back_during_push":
+            actions = f"{run.tap(row)}; {back_swipe(width, height, edge='right', share=0.35, steps=8)}"
+        elif args.journey.startswith("back_"):
+            prepare = run.tap(row)
+            actions = {
+                "back_slow_commit": back_swipe(width, height, share=0.45, steps=24, hold=1.0),
+                "back_slow_cancel": back_swipe(width, height, share=0.45, steps=24, hold=1.0, cancel=True),
+                "back_fast_flick": f"input swipe 2 {height // 2} {int(width * 0.6)} {height // 2} 120",
+                "back_y_follow": back_swipe(width, height, share=0.40, steps=24, hold=1.0, drift=height // 4, cancel=True),
+                "back_to_home": f"input keyevent 4; sleep 1.6; {back_swipe(width, height, share=0.40, steps=24, hold=1.0)}",
+            }[args.journey]
     if prepare:
         device.shell(prepare)
         time.sleep(1.6)
@@ -876,6 +1163,31 @@ def record(args):
     print(f"{video}\n{strip}\n{len(report['moving'])} moving frames, "
           f"near-blank frames: {report['blank'][:20]}")
     return 0
+
+
+def back_swipe(width, height, edge="left", share=0.45, steps=24, hold=0.0, drift=0, cancel=False):
+    """Shell commands for a back gesture from one edge, made of single motion events: [share] of the
+    width in [steps] moves, the finger drifting down by [drift] px, held for [hold] s, then let go
+    where it is (a commit) or after returning to the edge at the height it drifted to (a cancel)."""
+    y = height // 2
+    start = 2 if edge == "left" else width - 3
+    direction = 1 if edge == "left" else -1
+    far = int(width * share)
+
+    def at(i):
+        return start + direction * far * i // steps, y + drift * i // steps
+
+    commands = [f"input motionevent DOWN {start} {y}"]
+    commands += [f"input motionevent MOVE {x} {my}" for x, my in map(at, range(1, steps + 1))]
+    if hold:
+        commands.append(f"sleep {hold}")
+    if cancel:
+        commands += [f"input motionevent MOVE {at(i)[0]} {y + drift}" for i in range(steps - 1, -1, -1)]
+        commands.append(f"input motionevent UP {start} {y + drift}")
+    else:
+        x, my = at(steps)
+        commands.append(f"input motionevent UP {x} {my}")
+    return "; ".join(commands)
 
 
 def _ffmpeg_values(video, filters, name):
