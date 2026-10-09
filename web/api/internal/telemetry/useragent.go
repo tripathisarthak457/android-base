@@ -29,9 +29,13 @@ var DeviceClasses = []string{DeviceMobile, DeviceTablet, DeviceDesktop, DeviceUn
 var botPattern = regexp.MustCompile(`(?i)bot\b|bot/|crawl|spider|slurp|facebookexternalhit|embedly|` +
 	`headlesschrome|lighthouse|pagespeed|pingdom|uptime|monitor|phantomjs|selenium|puppeteer|playwright|preview`)
 
+// botBrands are phone makers whose name ends in "bot". Android puts the model, brand included, in
+// the user agent ("Android 10; CUBOT X30"), which botPattern would take for a crawler.
+var botBrands = regexp.MustCompile(`(?i)\bcubot\b`)
+
 // IsBot reports whether a user agent belongs to a crawler or an automated browser.
 func IsBot(userAgent string) bool {
-	return userAgent != "" && botPattern.MatchString(userAgent)
+	return userAgent != "" && botPattern.MatchString(botBrands.ReplaceAllLiteralString(userAgent, ""))
 }
 
 // ClassifyAgent reduces a user agent to browser family, OS family and device class. secCHUAMobile is
