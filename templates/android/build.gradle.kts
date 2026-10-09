@@ -3,6 +3,8 @@
  */
 
 plugins {
+    // The root's own `clean` and `check`; see the end of this file.
+    base
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.android.test) apply false
@@ -108,6 +110,8 @@ dependencyAnalysis {
 }
 // </opt:depsanalysis>
 
-tasks.register<Delete>("clean") {
-    delete(rootProject.layout.buildDirectory)
+// The convention plugins' own tests live in the included build, which `./gradlew check` does not
+// reach by itself.
+tasks.named("check") {
+    dependsOn(gradle.includedBuild("build-logic").task(":convention:check"))
 }

@@ -1,23 +1,17 @@
 package com.base.app.feature.onboarding
 
-import com.base.app.core.navigation.AppNavKey
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.navGraph
 import com.base.app.core.navigation.navKeys
+import com.base.app.feature.onboarding.api.OnboardingDestination
+import com.base.app.feature.onboarding.api.OnboardingKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
-
-@Serializable
-data object OnboardingKey : AppNavKey
-
-/** Where the app goes once onboarding is finished. */
-data class OnboardingDestination(val next: AppNavKey)
 
 /**
  * `resetTo` rather than `navigate`, so Back from the first real screen leaves the app instead of
@@ -25,7 +19,7 @@ data class OnboardingDestination(val next: AppNavKey)
  */
 @Module
 @InstallIn(SingletonComponent::class)
-object OnboardingNavModule {
+internal object OnboardingNavModule {
 
     @Provides
     @IntoSet

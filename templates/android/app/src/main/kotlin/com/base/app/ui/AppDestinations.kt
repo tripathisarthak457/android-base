@@ -1,27 +1,27 @@
 package com.base.app.ui
 
 import com.base.app.R
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.icon.AppIcons
-import com.base.app.core.navigation.AppNavKey
 import com.base.app.core.navigation.ShellTab
 // <generated:start-destination-import>
 // <opt:sample>
-import com.base.app.feature.sample.SampleListKey
+import com.base.app.feature.sample.api.SampleListKey
 // </opt:sample>
 // <opt:paging>
-import com.base.app.feature.feed.FeedKey
+import com.base.app.feature.feed.api.FeedKey
 // </opt:paging>
 // <opt:search>
-import com.base.app.feature.search.SearchKey
+import com.base.app.feature.search.api.SearchKey
 // </opt:search>
 // <opt:profile>
-import com.base.app.feature.profile.ProfileKey
+import com.base.app.feature.profile.api.ProfileKey
 // </opt:profile>
 // <opt:settings>
-import com.base.app.feature.settings.SettingsKey
+import com.base.app.feature.settings.api.SettingsKey
 // </opt:settings>
 // <opt:auth>
-import com.base.app.feature.auth.SignInKey
+import com.base.app.feature.auth.api.SignInKey
 // </opt:auth>
 
 /** The app's shape, in one file. */

@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.component.navigation.AppBottomBar
 import com.base.app.core.designsystem.component.navigation.AppBottomBarDefaults
 import com.base.app.core.designsystem.component.navigation.AppNavigationRail

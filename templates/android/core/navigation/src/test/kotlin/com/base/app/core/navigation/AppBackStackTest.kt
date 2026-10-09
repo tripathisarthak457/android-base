@@ -1,6 +1,7 @@
 package com.base.app.core.navigation
 
 import androidx.compose.runtime.mutableStateListOf
+import com.base.app.core.common.navigation.AppNavKey
 import kotlinx.serialization.Serializable
 import org.junit.Assert.assertEquals
 import org.junit.Test

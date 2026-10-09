@@ -24,10 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.base.app.core.common.mvi.MviViewModel
-import com.base.app.core.common.mvi.UiEffect
-import com.base.app.core.common.mvi.UiEvent
-import com.base.app.core.common.mvi.UiState
+import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.AppSettingsStore
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -41,34 +38,38 @@ import com.base.app.core.designsystem.foundation.centeredMaxWidth
 import com.base.app.core.designsystem.foundation.shouldUseTwoPanes
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.mvi.MviViewModel
+import com.base.app.core.mvi.UiEffect
+import com.base.app.core.mvi.UiEvent
+import com.base.app.core.mvi.UiState
 import com.base.app.core.ui.MviScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/** One onboarding page. Replace the placeholder copy and icons with your own. */
-@Immutable
 /**
- * Resource ids rather than strings, because the list of pages is a top-level `val` and a composable
- * cannot be called from one.
+ * One onboarding page. Replace the placeholder copy and icons with your own. Resource ids rather
+ * than strings, because the list of pages is a top-level `val` and a composable cannot be called
+ * from one.
  */
-data class OnboardingPage(
+@Immutable
+internal data class OnboardingPage(
     @param:StringRes val title: Int,
     @param:StringRes val body: Int,
     val icon: ImageVector,
 )
 
 @Immutable
-data class OnboardingState(
+internal data class OnboardingState(
     val pages: List<OnboardingPage> = DefaultPages,
 ) : UiState
 
-sealed interface OnboardingEvent : UiEvent {
+internal sealed interface OnboardingEvent : UiEvent {
     data object Completed : OnboardingEvent
     data object Skipped : OnboardingEvent
 }
 
-sealed interface OnboardingEffect : UiEffect {
+internal sealed interface OnboardingEffect : UiEffect {
     data object Finished : OnboardingEffect
 }
 
@@ -77,22 +78,25 @@ sealed interface OnboardingEffect : UiEffect {
  * emit the same effect.
  */
 @HiltViewModel
-class OnboardingViewModel @Inject constructor(
+internal class OnboardingViewModel @Inject constructor(
     private val settingsStore: AppSettingsStore,
+    private val appScope: ApplicationScope,
 ) : MviViewModel<OnboardingState, OnboardingEvent, OnboardingEffect>(OnboardingState()) {
 
-    override suspend fun handleEvent(event: OnboardingEvent) {
+    override fun handleEvent(event: OnboardingEvent) {
         when (event) {
             OnboardingEvent.Completed, OnboardingEvent.Skipped -> {
-                settingsStore.setOnboardingCompleted(true)
-                emitEffect(OnboardingEffect.Finished)
+                emit(OnboardingEffect.Finished)
+                // The navigation does not wait for the disk, and the write runs in the application
+                // scope because leaving this screen clears this ViewModel, and its scope with it.
+                appScope.launch { settingsStore.setOnboardingCompleted(true) }
             }
         }
     }
 }
 
 @Composable
-fun OnboardingRoute(
+internal fun OnboardingRoute(
     onFinished: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
@@ -109,7 +113,7 @@ fun OnboardingRoute(
 }
 
 @Composable
-fun OnboardingScreen(
+internal fun OnboardingScreen(
     state: OnboardingState,
     onEvent: (OnboardingEvent) -> Unit,
     modifier: Modifier = Modifier,

@@ -1,21 +1,5 @@
 package com.base.app.core.navigation
 
-/**
- * A navigable destination. Deliberately *not* `androidx.navigation3.runtime.NavKey`.
- *
- * 1. **Annotate it `@Serializable` and register it.** The back stack survives process death by
- *    being serialised whole (see [AppBackStack]), and a key that is not registered in its
- *    feature's [navKeys] block cannot be restored — the stack falls back to the start
- *    destination, which the user experiences as the app forgetting where they were.
- *
- * 2. **Carry ids, not payloads.** A destination takes the id of the thing it shows and fetches it
- *    itself. Parameters that look like content — a name, an image URL — are acceptable only as a
- *    seed, so the screen has something to render before its own fetch resolves, and the screen
- *    must still fetch. A key holding real data goes stale the moment the user backgrounds the app,
- *    and it has to fit in a saved-state bundle.
- */
-interface AppNavKey
-
 /** How a destination arrives and leaves. */
 enum class NavTransitionStyle {
     /** Deeper into a stack, and back out. The overwhelming majority of navigation. */

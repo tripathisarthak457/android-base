@@ -1,6 +1,6 @@
 package com.base.app.core.flags
 
-import com.base.app.core.common.util.AppLogger
+import com.base.app.core.common.log.Log
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.remoteConfig
@@ -35,7 +35,7 @@ class RemoteConfigFeatureFlags @Inject constructor() : FeatureFlags {
     override suspend fun refresh(): Boolean = suspendCancellableCoroutine { continuation ->
         config.fetchAndActivate().addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                AppLogger.w("Remote config fetch failed: ${task.exception?.message}")
+                Log.w("Remote config fetch failed: ${task.exception?.message}")
             }
             continuation.resume(task.isSuccessful && task.result == true)
         }
