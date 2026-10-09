@@ -35,6 +35,7 @@ import com.base.app.core.navigation.back.Verdict
 import com.base.app.core.navigation.back.submit
 import com.base.app.core.navigation.presentation.PresentationHost
 import com.base.app.core.navigation.shell.BottomChromeWriter
+import com.base.app.core.navigation.shell.BottomEdgeFade
 import com.base.app.core.navigation.shell.ShellBar
 import com.base.app.core.navigation.shell.ShellChrome
 import com.base.app.core.navigation.shell.tabs.TabbedNavHost
@@ -116,6 +117,11 @@ fun AppShell(
         modifier = modifier.fillMaxSize(),
         chrome = {
             if (!wide) {
+                BottomEdgeFade(
+                    anchor = state.anchors[state.selectedIndex],
+                    parallax = motion.parallax,
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                )
                 ShellBar(
                     tabs = tabs,
                     state = state,
