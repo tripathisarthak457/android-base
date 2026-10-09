@@ -4,9 +4,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -29,120 +27,94 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.theme.AppMotion
+import androidx.compose.ui.semantics.disabled
+import androidx.compose.ui.semantics.semantics
+import com.base.app.core.designsystem.theme.AppSprings
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 import kotlinx.coroutines.delay
 
-/** The transitions the app animates content with, as named pairs. */
+/**
+ * The transitions content changes with, as named pairs. Anything that moves rides a spring from
+ * [AppSprings], so it can be interrupted and retargeted mid-flight; only opacity uses a fade.
+ */
 class AppTransitions internal constructor(
-    private val motion: AppMotion,
+    private val springs: AppSprings,
     private val reduceMotion: Boolean,
 ) {
-
     /** For content that appears where it is. The default for almost everything. */
     val fadeIn: EnterTransition
-        get() = if (reduceMotion) EnterTransition.None else fadeIn(tween(motion.medium, easing = motion.enter))
+        get() = if (reduceMotion) EnterTransition.None else fadeIn(springs.fadeIn())
 
     val fadeOut: ExitTransition
-        get() = if (reduceMotion) ExitTransition.None else fadeOut(tween(motion.quick, easing = motion.exit))
+        get() = if (reduceMotion) ExitTransition.None else fadeOut(springs.fadeOut())
 
-    /** For a block that opens in place — an accordion, a validation message, an expanding card. */
+    /** For a block that opens in place: an expanded row, a validation message. */
     val expandIn: EnterTransition
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
-            expandVertically(tween(motion.medium, easing = motion.enter)) +
-                fadeIn(tween(motion.quick))
+            expandVertically(springs.layout.size) + fadeIn(tween(springs.fadeQuick))
         }
 
     val collapseOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
-            shrinkVertically(tween(motion.medium, easing = motion.exit)) +
-                fadeOut(tween(motion.instant))
+            shrinkVertically(springs.layout.size) + fadeOut(tween(springs.fadeQuick))
         }
 
-    /** For something arriving from the bottom edge: a sheet, a banner, a toast. */
+    /** For something arriving from the bottom edge: a banner, a bar. */
     val riseIn: EnterTransition
-        get() = if (reduceMotion) {
-            EnterTransition.None
-        } else {
-            slideInVertically(motion.sheet()) { it } + fadeIn(tween(motion.quick))
-        }
+        get() = if (reduceMotion) EnterTransition.None else slideInVertically(springs.sheet.offset) { it }
 
     val sinkOut: ExitTransition
-        get() = if (reduceMotion) {
-            ExitTransition.None
-        } else {
-            slideOutVertically(tween(motion.quick, easing = motion.exit)) { it } +
-                fadeOut(tween(motion.instant))
-        }
+        get() = if (reduceMotion) ExitTransition.None else slideOutVertically(springs.sheet.offset) { it }
 
-    /** For an element that should read as *appearing*, not moving: a badge, a checkmark, a FAB. */
+    /** For an element that should read as appearing, not moving: a badge, a checkmark. */
     val popIn: EnterTransition
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
-            scaleIn(motion.press(), initialScale = 0.85f) + fadeIn(tween(motion.quick))
+            scaleIn(springs.emphasis.unit, initialScale = POP_SCALE) + fadeIn(tween(springs.fadeQuick))
         }
 
     val popOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
-            scaleOut(tween(motion.instant), targetScale = 0.85f) + fadeOut(tween(motion.instant))
+            scaleOut(springs.press.unit, targetScale = POP_SCALE) + fadeOut(tween(springs.fadeQuick))
         }
 
-    /** A lateral move: step 2 of a form replacing step 1. */
+    /** A lateral move inside one screen: step 2 of a form replacing step 1. */
     fun slideIn(forward: Boolean = true): EnterTransition =
         if (reduceMotion) {
             EnterTransition.None
         } else {
-            slideInHorizontally(tween(motion.medium, easing = motion.enter)) { width ->
-                if (forward) width else -width
-            } + fadeIn(tween(motion.quick))
+            slideInHorizontally(springs.screen.offset) { width -> if (forward) width else -width }
         }
 
     fun slideOut(forward: Boolean = true): ExitTransition =
         if (reduceMotion) {
             ExitTransition.None
         } else {
-            slideOutHorizontally(tween(motion.medium, easing = motion.exit)) { width ->
-                if (forward) -width else width
-            } + fadeOut(tween(motion.quick))
+            slideOutHorizontally(springs.screen.offset) { width -> if (forward) -width else width }
         }
-
-    /** The entrance for row [index] of a list that is appearing for the first time. */
-    fun staggeredIn(index: Int): EnterTransition {
-        if (reduceMotion) return EnterTransition.None
-        val delay = (index.coerceAtMost(MAX_STAGGERED_ROWS) * STAGGER_MILLIS)
-        return fadeIn(tween(motion.medium, delayMillis = delay, easing = motion.enter)) +
-            slideInVertically(
-                animationSpec = tween(motion.medium, delayMillis = delay, easing = motion.enter),
-                initialOffsetY = { STAGGER_OFFSET_PX },
-            )
-    }
-
-    internal companion object {
-        const val STAGGER_MILLIS = 28
-        const val MAX_STAGGERED_ROWS = 8
-        const val STAGGER_OFFSET_PX = 24
-    }
 }
+
+private const val POP_SCALE = 0.85f
 
 /** The transition set for the current theme and accessibility settings. */
 @Composable
 fun rememberAppTransitions(): AppTransitions {
-    val motion = AppTheme.motion
-    val reduceMotion = rememberReduceMotion()
-    return remember(motion, reduceMotion) { AppTransitions(motion, reduceMotion) }
+    val springs = AppTheme.springs
+    val reduceMotion = AppTheme.reduceMotion
+    return remember(springs, reduceMotion) { AppTransitions(springs, reduceMotion) }
 }
 
 /** Fades and lifts its content in once, the first time it is shown. */
@@ -152,59 +124,64 @@ fun AppAppear(
     delayMillis: Long = 0,
     content: @Composable () -> Unit,
 ) {
-    val progress = rememberAppearProgress(delayMillis)
-    val lift = with(LocalDensity.current) { APPEAR_OFFSET.toPx() }
-    Box(modifier = modifier.graphicsLayer {
-        alpha = progress.value
-        translationY = (1f - progress.value) * lift
-    }) {
+    val springs = AppTheme.springs
+    val progress = rememberAppearProgress(delayMillis, springs.fadeSlow + springs.staggerMillis)
+    val lift = with(LocalDensity.current) { springs.appearOffset.toPx() }
+    Box(
+        modifier = modifier.graphicsLayer {
+            alpha = progress.value
+            translationY = (1f - progress.value) * lift
+            // A card's shadow sits outside its bounds; an offscreen fade would clip it square.
+            compositingStrategy = CompositingStrategy.ModulateAlpha
+        },
+    ) {
         content()
     }
 }
 
-private val APPEAR_OFFSET = 12.dp
-
 /** Animates a row into place when the list is reordered, filtered or inserted into. */
 @Composable
 fun LazyItemScope.appAnimateItem(modifier: Modifier = Modifier): Modifier {
-    val motion = AppTheme.motion
-    val reduceMotion = rememberReduceMotion()
-    if (reduceMotion) return modifier
+    if (AppTheme.reduceMotion) return modifier
+    val springs = AppTheme.springs
     return modifier.animateItem(
-        fadeInSpec = tween(motion.medium, easing = motion.enter),
-        placementSpec = motion.navigation(),
-        fadeOutSpec = tween(motion.quick, easing = motion.exit),
+        fadeInSpec = tween(springs.fadeSlow, easing = springs.enterEasing),
+        placementSpec = springs.layout.offset,
+        fadeOutSpec = tween(springs.fadeQuick, easing = springs.exitEasing),
     )
 }
 
-/** Applies a staggered entrance to a column of items that all appear at once. */
+/**
+ * A column whose items rise in one after another the first time it is shown: [AppSprings.staggerMillis]
+ * apart, the first [AppSprings.staggerMaxItems] waiting their turn and the rest arriving with the last.
+ */
 @Composable
 fun AppStaggeredColumn(
     itemCount: Int,
     modifier: Modifier = Modifier,
     content: @Composable (index: Int) -> Unit,
 ) {
-    val motion = AppTheme.motion
-    // Linear overall, eased per row: each row eases over its own slice of the timeline, which a
+    val springs = AppTheme.springs
+    val stagger = springs.staggerMillis
+    val span = springs.fadeSlow + stagger
+    val total = (span + stagger * springs.staggerMaxItems).toFloat()
+    // Linear overall, eased per item: each item eases over its own slice of the timeline, which a
     // value that was already eased would distort.
-    val progress = rememberAppearProgress(
-        delayMillis = 0,
-        durationMillis = motion.medium + AppTransitions.STAGGER_MILLIS * AppTransitions.MAX_STAGGERED_ROWS,
-        easing = LinearEasing,
-    )
-    val lift = with(LocalDensity.current) { APPEAR_OFFSET.toPx() }
-    val total = (motion.medium + AppTransitions.STAGGER_MILLIS * AppTransitions.MAX_STAGGERED_ROWS).toFloat()
+    val progress = rememberAppearProgress(delayMillis = 0, durationMillis = total.toInt(), linear = true)
+    val lift = with(LocalDensity.current) { springs.appearOffset.toPx() }
 
     Column(modifier = modifier) {
         repeat(itemCount) { index ->
-            val start = index.coerceAtMost(AppTransitions.MAX_STAGGERED_ROWS) * AppTransitions.STAGGER_MILLIS / total
-            val span = motion.medium / total
-            Box(modifier = Modifier.graphicsLayer {
-                val local = ((progress.value - start) / span).coerceIn(0f, 1f)
-                val eased = motion.enter.transform(local)
-                alpha = eased
-                translationY = (1f - eased) * lift
-            }) {
+            val start = index.coerceAtMost(springs.staggerMaxItems) * stagger / total
+            Box(
+                modifier = Modifier.graphicsLayer {
+                    val local = ((progress.value - start) / (span / total)).coerceIn(0f, 1f)
+                    val eased = springs.enterEasing.transform(local)
+                    alpha = eased
+                    translationY = (1f - eased) * lift
+                    compositingStrategy = CompositingStrategy.ModulateAlpha
+                },
+            ) {
                 content(index)
             }
         }
@@ -215,46 +192,40 @@ fun AppStaggeredColumn(
 @Composable
 private fun rememberAppearProgress(
     delayMillis: Long,
-    durationMillis: Int = AppTheme.motion.medium,
-    easing: Easing = AppTheme.motion.enter,
+    durationMillis: Int,
+    linear: Boolean = false,
 ): Animatable<Float, AnimationVector1D> {
-    val reduceMotion = rememberReduceMotion()
+    val springs = AppTheme.springs
+    val reduceMotion = AppTheme.reduceMotion
     var shown by rememberSaveable { mutableStateOf(false) }
     val progress = remember { Animatable(if (shown || reduceMotion) 1f else 0f) }
 
     LaunchedEffect(Unit) {
         if (progress.value < 1f) {
             if (delayMillis > 0) delay(delayMillis)
-            progress.animateTo(1f, tween(durationMillis, easing = easing))
+            progress.animateTo(1f, tween(durationMillis, easing = if (linear) LinearEasing else springs.enterEasing))
         }
         shown = true
     }
     return progress
 }
 
-/** Dims and blocks its content while [busy]. */
-@Composable
+/**
+ * Dims content and blocks every touch on it while [busy]: a form while it submits. The touch is
+ * taken before children see it, so a button inside cannot fire a second time.
+ */
 fun Modifier.busyOverlay(busy: Boolean): Modifier {
-    val alpha by animateFloatAsState(
-        targetValue = if (busy) BUSY_ALPHA else 1f,
-        animationSpec = tween(AppTheme.motion.quick),
-        label = "busyAlpha",
-    )
+    if (!busy) return this
     return this
-        .alpha(alpha)
-        .then(
-            if (busy) {
-                Modifier.pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            awaitPointerEvent().changes.forEach { it.consume() }
-                        }
-                    }
+        .alpha(BUSY_ALPHA)
+        .semantics { disabled() }
+        .pointerInput(Unit) {
+            awaitPointerEventScope {
+                while (true) {
+                    awaitPointerEvent(PointerEventPass.Initial).changes.forEach { it.consume() }
                 }
-            } else {
-                Modifier
-            },
-        )
+            }
+        }
 }
 
 private const val BUSY_ALPHA = 0.4f
