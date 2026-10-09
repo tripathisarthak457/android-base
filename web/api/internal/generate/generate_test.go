@@ -259,8 +259,8 @@ func TestShutdownStopsRunningGenerations(t *testing.T) {
 		stop()
 	}()
 	_, err := g.Run(context.Background(), []byte(`{}`))
-	if f := failure(t, err); f.Outcome != telemetry.InternalError {
-		t.Fatalf("outcome = %s, want internal_error", f.Outcome)
+	if f := failure(t, err); f.Outcome != telemetry.AbandonedRunning || f.Message == "" {
+		t.Fatalf("outcome = %s (%q), want abandoned_running with a reason", f.Outcome, f.Message)
 	}
 	assertEmpty(t, root)
 }

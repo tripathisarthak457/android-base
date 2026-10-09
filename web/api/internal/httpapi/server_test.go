@@ -82,12 +82,18 @@ type testServer struct {
 	*Server
 	sink    *fakeSink
 	handler http.Handler
+	// generatorDir is where script runs.
+	generatorDir string
+	// stop shuts the generators down, as the server does at exit.
+	stop context.CancelFunc
 }
 
 // newTestServer runs script as every enabled target's generator. The store is real but never
 // connects, so reads answer "not ready" and writes go to the fake sink.
 func newTestServer(t *testing.T, script string, configure func(*config.Config)) *testServer {
 	t.Helper()
+	stopping, stop := context.WithCancel(context.Background())
+	t.Cleanup(stop)
 	dir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(dir, "generate_headless.py"), []byte(script), 0o600); err != nil {
 		t.Fatal(err)
@@ -108,7 +114,7 @@ func newTestServer(t *testing.T, script string, configure func(*config.Config)) 
 	opts := generate.Options{PythonBin: "/bin/sh", GeneratorDir: dir, WorkRoot: t.TempDir(), Timeout: 5 * time.Second, Concurrency: 2}
 	generators := map[string]*generate.Generator{}
 	for _, key := range cfg.EnableTargets {
-		g, err := generate.New(context.Background(), opts, *catalogue.Target(key), catalogue.Rules)
+		g, err := generate.New(stopping, opts, *catalogue.Target(key), catalogue.Rules)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -121,7 +127,7 @@ func newTestServer(t *testing.T, script string, configure func(*config.Config)) 
 	t.Cleanup(st.Close)
 	sink := &fakeSink{}
 	s := New(cfg, catalogue, generators, st, sink, quiet)
-	return &testServer{Server: s, sink: sink, handler: s.Routes()}
+	return &testServer{Server: s, sink: sink, handler: s.Routes(), generatorDir: dir, stop: stop}
 }
 
 func (ts *testServer) do(method, path, body string, headers map[string]string) *httptest.ResponseRecorder {

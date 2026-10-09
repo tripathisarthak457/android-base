@@ -195,7 +195,8 @@ func (g *Generator) run(ctx context.Context, dir string, spec []byte) (*Output, 
 			return nil, &Failure{Outcome: telemetry.Timeout, Message: fmt.Sprintf("the generator ran past %s", g.timeout),
 				Detail: stderr.String(), RunTime: ran}
 		case runCtx.Err() != nil:
-			return nil, &Failure{Outcome: telemetry.InternalError, Message: "the server stopped during generation", RunTime: ran}
+			// The server is shutting down: neither the visitor's spec nor the generator is at fault.
+			return nil, &Failure{Outcome: telemetry.AbandonedRunning, Message: "the server stopped during generation", RunTime: ran}
 		}
 	}
 

@@ -6,9 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/base-android/generator-api/internal/config"
 	"github.com/base-android/generator-api/internal/store"
@@ -205,6 +208,31 @@ func TestAFailedGenerationIsRecordedWithItsFeaturesPresetAndCommit(t *testing.T)
 				t.Fatalf("generator commit %q", g.GeneratorCommit)
 			}
 		})
+	}
+}
+
+func TestAGenerationCutOffByShutdownIsNotAGeneratorBug(t *testing.T) {
+	ts := newTestServer(t, "touch started\nexec sleep 60\n", nil)
+	go func() {
+		for range 500 {
+			if _, err := os.Stat(filepath.Join(ts.generatorDir, "started")); err == nil {
+				ts.stop()
+				return
+			}
+			time.Sleep(10 * time.Millisecond)
+		}
+	}()
+
+	w := ts.do(http.MethodPost, "/api/v1/android/generate", `{}`, nil)
+	if w.Code != http.StatusServiceUnavailable || decodeError(t, w.Body.String()).Code != "unavailable" {
+		t.Fatalf("got %d %s", w.Code, w.Body.String())
+	}
+	batch := ts.sink.last(t)
+	if g := onlyGeneration(t, batch); g.Outcome != telemetry.AbandonedRunning || g.FailureReason == "" {
+		t.Fatalf("recorded %s %q", g.Outcome, g.FailureReason)
+	}
+	if len(batch.Errors) != 0 {
+		t.Fatalf("a shutdown went to the error list: %+v", batch.Errors)
 	}
 }
 

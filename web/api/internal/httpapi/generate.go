@@ -197,7 +197,12 @@ func (s *Server) generationFailed(w http.ResponseWriter, r *http.Request, record
 		writeError(w, http.StatusInternalServerError, code,
 			"The generator failed. This has been logged; the CLI in the repository does the same job.", "")
 	default:
-		// Abandoned: the visitor has gone, so there is nobody to answer.
+		record.FailureReason = failure.Message
+		// Abandoned. Usually the visitor has gone and there is nobody to answer; one still connected
+		// was cut off by a shutdown, and trying again reaches another instance.
+		if r.Context().Err() == nil {
+			writeError(w, http.StatusServiceUnavailable, "unavailable", "The server is restarting. Try again in a moment.", "")
+		}
 	}
 }
 
