@@ -9,6 +9,8 @@
 # Build output and tool state inside those four: Gradle's alone is gigabytes on a machine that has
 # built the templates.
 **/build/
+# Upstream skill documentation in the templates has build/ folders of plain text.
+!templates/*/.agents/skills/**/build/
 **/.gradle/
 **/.kotlin/
 **/.cxx/
