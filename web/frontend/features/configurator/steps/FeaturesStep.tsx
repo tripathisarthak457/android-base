@@ -4,11 +4,26 @@ import { motion } from "framer-motion";
 import { useId } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
+import type { Target } from "../../catalogue/types.ts";
 import { dependentsOf } from "../resolve.ts";
+import type { ToggleHint } from "../state.ts";
 import type { Configurator } from "../useConfigurator.ts";
 
 function titles(keys: string[], byKey: Map<string, string>): string {
   return keys.map((key) => byKey.get(key) ?? key).join(", ");
+}
+
+function hintText(hint: ToggleHint, designStyle: string, target: Target, visible: (keys: string[]) => string[]): string {
+  const titleOf = new Map(target.features.map((feature) => [feature.key, feature.title]));
+  const styleTitle = (key: string) => target.design_styles.find((style) => style.key === key)?.title ?? key;
+  const name = titleOf.get(hint.key) ?? hint.key;
+  if (hint.on) return `Turning on ${name} also turned on what it needs: ${titles(visible(hint.alsoAdded), titleOf)}.`;
+  const removed = visible(hint.alsoRemoved);
+  const sentences = [removed.length > 0 ? `Turning off ${name} also turned off what needs it: ${titles(removed, titleOf)}.` : `${name} is off.`];
+  if (hint.previousStyle !== designStyle) {
+    sentences.push(`The ${styleTitle(hint.previousStyle)} look needs it, so the look is now ${styleTitle(designStyle)}.`);
+  }
+  return sentences.join(" ");
 }
 
 export function FeaturesStep({ model }: { model: Configurator }) {
@@ -19,9 +34,15 @@ export function FeaturesStep({ model }: { model: Configurator }) {
   const offered = target.features.filter((feature) => !feature.implied_only);
   const current = target.presets.find((option) => option.key === preset);
   const hidden = new Set(target.features.filter((feature) => feature.implied_only).map((feature) => feature.key));
-  // Features nobody can tick, like Firebase, come and go with others and are not worth naming.
+  // Firebase and anything else nobody can tick arrive and leave with the features that need them,
+  // so naming them would only list what the visitor cannot change.
   const visible = (keys: string[]) => keys.filter((key) => !hidden.has(key));
-  const hint = state.hint && (visible(state.hint.alsoAdded).length > 0 || visible(state.hint.alsoRemoved).length > 0) ? state.hint : null;
+  const hint =
+    state.hint &&
+    (visible(state.hint.alsoAdded).length > 0 || visible(state.hint.alsoRemoved).length > 0 || state.hint.previousStyle !== state.designStyle)
+      ? state.hint
+      : null;
+  const style = target.design_styles.find((option) => option.key === state.designStyle);
 
   return (
     <div>
@@ -56,11 +77,7 @@ export function FeaturesStep({ model }: { model: Configurator }) {
             animate={{ opacity: 1, y: 0 }}
             className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-ink-600 bg-ink-900 px-4 py-2.5 text-sm text-ink-200"
           >
-            <span>
-              {hint.on
-                ? `Turning on ${titleOf.get(hint.key) ?? hint.key} also turned on what it needs: ${titles(visible(hint.alsoAdded), titleOf)}.`
-                : `Turning off ${titleOf.get(hint.key) ?? hint.key} also turned off what needs it: ${titles(visible(hint.alsoRemoved), titleOf)}.`}
-            </span>
+            <span>{hintText(hint, state.designStyle, target, visible)}</span>
             <button type="button" onClick={() => dispatch({ type: "undoToggle" })} className="font-semibold text-accent hover:text-accent-bright">
               Undo
             </button>
@@ -79,7 +96,8 @@ export function FeaturesStep({ model }: { model: Configurator }) {
               <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
                 {inGroup.map((feature) => {
                   const on = selected.has(feature.key);
-                  const needed = on ? dependentsOf(selected, feature.key, target) : [];
+                  const needed = on ? dependentsOf(selected, feature.key, target).map((key) => titleOf.get(key) ?? key) : [];
+                  if (on && style?.requires.includes(feature.key)) needed.push(`the ${style.title} look`);
                   return (
                     <ChoiceCard key={feature.key} type="checkbox" checked={on} onChange={() => dispatch({ type: "feature", key: feature.key })} className="p-4">
                       <span className="flex items-start gap-3">
@@ -97,7 +115,7 @@ export function FeaturesStep({ model }: { model: Configurator }) {
                           {feature.requires.length > 0 && (
                             <span className="mt-2 block font-mono text-[11px] text-ink-400">needs {titles(feature.requires, titleOf)}</span>
                           )}
-                          {needed.length > 0 && <span className="mt-1 block font-mono text-[11px] text-amber">needed by {titles(needed, titleOf)}</span>}
+                          {needed.length > 0 && <span className="mt-1 block font-mono text-[11px] text-amber">needed by {needed.join(", ")}</span>}
                           {feature.licence && <span className="mt-1 block font-mono text-[11px] text-ink-400">{feature.licence.name}</span>}
                         </span>
                       </span>

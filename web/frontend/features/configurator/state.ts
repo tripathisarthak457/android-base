@@ -1,5 +1,5 @@
 import type { Catalogue, Field, Target } from "../catalogue/types.ts";
-import { closeOver, presetFeatures, toggleFeature } from "./resolve.ts";
+import { presetFeatures, resolveChoices, toggleFeature } from "./resolve.ts";
 
 export const STEPS = ["platform", "identity", "features", "look", "motion", "build", "review"] as const;
 
@@ -23,6 +23,8 @@ export type ToggleHint = {
   alsoAdded: string[];
   alsoRemoved: string[];
   previous: string[];
+  /** The design style before the toggle: unticking a feature the style needs puts the default style back. */
+  previousStyle: string;
 };
 
 export type ConfigState = {
@@ -117,6 +119,15 @@ export function moduleNames(text: string): string[] {
     .filter(Boolean);
 }
 
+/**
+ * `keys` resolved as a visitor's choices, plus what the design style needs, so Glass keeps
+ * liquidglass on through a preset, a platform switch or a restored draft.
+ */
+export function featuresFor(keys: Iterable<string>, target: Target, designStyle: string): string[] {
+  const requires = target.design_styles.find((style) => style.key === designStyle)?.requires ?? [];
+  return [...resolveChoices([...keys, ...requires], target)].sort();
+}
+
 export function initialState(catalogue: Catalogue, targetKey?: string): ConfigState {
   const target = findTarget(catalogue, targetKey ?? "android");
   const defaults = target.defaults;
@@ -157,7 +168,8 @@ function switchTarget(state: ConfigState, catalogue: Catalogue, key: string): Co
   const fresh = initialState(catalogue, to.key);
 
   const untouched = sameSet(state.features, [...presetFeatures(from, from.defaults.preset)]);
-  const kept = [...closeOver(state.features, to)].sort();
+  const designStyle = to.design_styles.some((style) => style.key === state.designStyle) ? state.designStyle : fresh.designStyle;
+  const kept = featuresFor(state.features, to, designStyle);
   const offered = new Set(to.languages.map((language) => language.tag));
   const settings = { ...fresh.settings };
   for (const field of settingFields(to)) {
@@ -168,10 +180,10 @@ function switchTarget(state: ConfigState, catalogue: Catalogue, key: string): Co
   return {
     ...state,
     target: to.key,
-    features: untouched || kept.length === 0 ? fresh.features : kept,
+    features: untouched || kept.length === 0 ? featuresFor(fresh.features, to, designStyle) : kept,
     languages: state.languages.filter((tag) => offered.has(tag)),
     architecture: architecture?.key ?? fresh.architecture,
-    designStyle: to.design_styles.some((style) => style.key === state.designStyle) ? state.designStyle : fresh.designStyle,
+    designStyle,
     motionStyle: to.motion_styles.some((style) => style.key === state.motionStyle) ? state.motionStyle : fresh.motionStyle,
     settings,
     signing: hasKeystores(to) ? state.signing : fresh.signing,
@@ -218,9 +230,13 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
       return edit({ architecture: action.value });
     case "feature": {
       const toggle = toggleFeature(new Set(state.features), action.key, target);
-      const quiet = toggle.alsoAdded.length === 0 && toggle.alsoRemoved.length === 0;
+      // A design style that needs what was unticked goes with it, as a feature that needs it does.
+      const requires = target.design_styles.find((style) => style.key === state.designStyle)?.requires ?? [];
+      const designStyle = requires.every((key) => toggle.next.has(key)) ? state.designStyle : target.defaults.design_style;
+      const quiet = toggle.alsoAdded.length === 0 && toggle.alsoRemoved.length === 0 && designStyle === state.designStyle;
       return edit({
-        features: [...toggle.next].sort(),
+        features: featuresFor(toggle.next, target, designStyle),
+        designStyle,
         hint: quiet
           ? null
           : {
@@ -229,18 +245,18 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
               alsoAdded: toggle.alsoAdded,
               alsoRemoved: toggle.alsoRemoved,
               previous: state.features,
+              previousStyle: state.designStyle,
             },
       });
     }
     case "undoToggle":
-      return state.hint ? edit({ features: state.hint.previous }) : state;
+      return state.hint ? edit({ features: state.hint.previous, designStyle: state.hint.previousStyle }) : state;
     case "preset":
-      return edit({ features: [...presetFeatures(target, action.key)].sort() });
+      return edit({ features: featuresFor(presetFeatures(target, action.key), target, state.designStyle) });
     case "designStyle": {
       const style = target.design_styles.find((option) => option.key === action.value);
       if (!style) return state;
-      // A style that needs a feature (Glass needs liquidglass) turns it on, like ticking it would.
-      return edit({ designStyle: style.key, features: [...closeOver([...state.features, ...style.requires], target)].sort() });
+      return edit({ designStyle: style.key, features: featuresFor(state.features, target, style.key) });
     }
     case "motionStyle":
       return edit({ motionStyle: action.value });

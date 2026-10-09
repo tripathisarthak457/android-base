@@ -1,6 +1,5 @@
 import type { Catalogue } from "../catalogue/types.ts";
-import { closeOver } from "./resolve.ts";
-import { type ConfigState, type Setting, findTarget, initialState, settingFields } from "./state.ts";
+import { type ConfigState, type Setting, featuresFor, findTarget, initialState, settingFields } from "./state.ts";
 
 /**
  * The configurator's answers, kept in `localStorage` so a visitor who comes back finds them again.
@@ -73,7 +72,7 @@ export function parseDraft(text: string | null, catalogue: Catalogue): ConfigSta
     modules: savedText("modules"),
     languages: strings(saved.languages).filter((tag) => offered.has(tag)),
     architecture: architecture?.key ?? state.architecture,
-    features: Array.isArray(saved.features) ? [...closeOver(strings(saved.features), target)].sort() : state.features,
+    features: featuresFor(Array.isArray(saved.features) ? strings(saved.features) : state.features, target, designStyle?.key ?? state.designStyle),
     designStyle: designStyle?.key ?? state.designStyle,
     motionStyle: motionStyle?.key ?? state.motionStyle,
     hapticsEnabled: typeof saved.hapticsEnabled === "boolean" ? saved.hapticsEnabled : state.hapticsEnabled,

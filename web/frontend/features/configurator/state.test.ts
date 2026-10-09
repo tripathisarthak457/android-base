@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { loadCatalogue, threePlatformCatalogue } from "../catalogue/testing.ts";
 import { parseDraft, serializeDraft } from "./draft.ts";
+import { toSpecV2 } from "./request.ts";
 import { presetFeatures } from "./resolve.ts";
 import { type Action, type ConfigState, initialState, moduleNames, reducer, selectableTargets, suggestPackage } from "./state.ts";
 
@@ -90,6 +91,37 @@ test("a design style that needs a feature turns it on", () => {
   assert.equal(state.designStyle, "Glass");
   assert.ok(state.features.includes("coil"));
   assert.equal(reducer(state, { type: "designStyle", value: "Brutal" }, withGlass), state);
+});
+
+test("Firebase is not sent once the feature that brought it is unticked", () => {
+  const tickedAndUnticked = run(initialState(catalogue), { type: "preset", key: "lean" }, { type: "feature", key: "push" }, { type: "feature", key: "push" });
+  const fromEverything = run(initialState(catalogue), { type: "preset", key: "everything" }, { type: "feature", key: "push" });
+  for (const state of [tickedAndUnticked, fromEverything]) {
+    assert.deepEqual((toSpecV2(state, catalogue).features as string[]).filter((key) => key === "push" || key === "firebase"), []);
+  }
+});
+
+test("a draft that kept a hidden feature on its own loses it", () => {
+  const state = parseDraft(JSON.stringify({ version: 1, state: { target: "android", features: ["firebase", "sample"] } }), catalogue);
+  assert.deepEqual(state?.features, ["network", "sample"]);
+});
+
+test("a design style keeps what it needs through a preset and a restored draft, and leaves with it", () => {
+  const withGlass = loadCatalogue();
+  const android = withGlass.targets[0]!;
+  android.design_styles = [...android.design_styles, { key: "Glass", title: "Glass", description: "", requires: ["coil"] }];
+  let state = reducer(initialState(withGlass), { type: "designStyle", value: "Glass" }, withGlass);
+  state = reducer(state, { type: "preset", key: "lean" }, withGlass);
+  assert.ok(state.features.includes("coil"));
+  assert.ok(parseDraft(serializeDraft(state), withGlass)?.features.includes("coil"));
+
+  const unticked = reducer(state, { type: "feature", key: "coil" }, withGlass);
+  assert.equal(unticked.features.includes("coil"), false);
+  assert.equal(unticked.designStyle, android.defaults.design_style);
+  assert.equal(unticked.hint?.previousStyle, "Glass");
+  const undone = reducer(unticked, { type: "undoToggle" }, withGlass);
+  assert.equal(undone.designStyle, "Glass");
+  assert.deepEqual(undone.features, state.features);
 });
 
 test("a draft round-trips without the signing passwords", () => {

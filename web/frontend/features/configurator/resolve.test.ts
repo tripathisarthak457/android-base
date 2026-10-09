@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { androidTarget } from "../catalogue/testing.ts";
-import { closeOver, dependentsOf, derivePreset, presetFeatures, toggleFeature } from "./resolve.ts";
+import { closeOver, dependentsOf, derivePreset, presetFeatures, resolveChoices, toggleFeature } from "./resolve.ts";
 
 const target = androidTarget();
 const everything = presetFeatures(target, "everything");
@@ -33,6 +33,26 @@ test("ticking a feature adds what it needs and says which", () => {
   for (const feature of target.features) {
     assert.ok(isClosed(toggleFeature(new Set(), feature.key, target).next), feature.key);
   }
+});
+
+test("a feature nobody can tick leaves with the last feature that brought it", () => {
+  const lean = presetFeatures(target, "lean");
+  const ticked = toggleFeature(lean, "push", target);
+  assert.ok(ticked.next.has("firebase"));
+  assert.deepEqual(ticked.alsoAdded.sort(), ["analytics", "firebase", "flags"]);
+  const unticked = toggleFeature(ticked.next, "push", target);
+  assert.equal(unticked.next.has("firebase"), false);
+  assert.deepEqual(unticked.alsoRemoved, ["firebase"]);
+  assert.deepEqual([...unticked.next].sort(), [...lean, "analytics", "flags"].sort());
+
+  const fromEverything = toggleFeature(everything, "push", target).next;
+  assert.equal(fromEverything.has("firebase"), false);
+  assert.ok(fromEverything.has("analytics") && fromEverything.has("flags"));
+});
+
+test("a hidden feature is dropped from choices when nothing chosen needs it", () => {
+  assert.deepEqual([...resolveChoices(["firebase", "sample"], target)].sort(), ["network", "sample"]);
+  assert.ok(resolveChoices(["push"], target).has("firebase"));
 });
 
 test("ticking something already needed adds nothing else", () => {
