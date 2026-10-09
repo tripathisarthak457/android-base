@@ -14,6 +14,7 @@ from pathlib import Path
 from unittest import mock
 
 import create_project
+from genkit import targets
 from genkit.core import pipeline
 
 GENERATOR = Path(__file__).resolve().parent.parent
@@ -123,9 +124,44 @@ class CliTest(unittest.TestCase):
         result = run("--spec", str(self.spec), "--preset", "lean", "--dry-run", "--json")
         self.assertEqual(["catalog", "leakcanary", "network", "sample"], json.loads(result.stdout)["enabled"])
 
+    def test_an_unknown_preset_names_the_ones_that_exist(self):
+        result = run("--spec", str(self.spec), "--preset", "massive", "--dry-run", "--json")
+        self.assertEqual(2, result.returncode)
+        answer = json.loads(result.stdout)
+        self.assertEqual("preset", answer["field"])
+        for preset in ("lean", "standard", "everything"):
+            self.assertIn(preset, answer["error"])
+
     def test_list_features_json(self):
         features = json.loads(run("--list-features", "--json").stdout)
         self.assertIn("network", {feature["key"] for feature in features})
+
+
+class SaveSpecTest(unittest.TestCase):
+    """--save-spec then --spec has to produce the same project, keys and look included."""
+
+    def test_every_answer_survives_being_written_and_read_back(self):
+        android = targets.get("android")
+        raw = {
+            **SPEC, "display_name": "Json", "features": ["network", "room"], "feature_modules": ["orders"],
+            "design_style": "Editorial", "motion_style": "Calm", "accent_colour": "#112233",
+            "secondary_colour": "#445566", "font_name": "M PLUS 1p", "haptics_enabled": False, "languages": ["de"],
+            "android": {
+                "min_sdk": 28, "version_name": "2.1.0", "version_code": 7,
+                "api_base_urls": {"dev": "https://dev.example.com/"},
+                "deeplink_scheme": "json", "deeplink_host": "links.example.com",
+                "keystores": [{"name": "prod", "alias": "upload", "store_password": "hunter22", "common_name": "Acme"}],
+            },
+        }
+        original = pipeline.read_spec(raw, android)[0].spec
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "specs" / "app.json"
+            with redirect_stderr(io.StringIO()) as notes:
+                create_project.save_spec(original, path)
+            again = pipeline.read_spec(json.loads(path.read_text(encoding="utf-8")), android)[0].spec
+        self.assertEqual(original, again)
+        self.assertEqual("hunter22", again.android.keystores[0].store_password)
+        self.assertIn("keep it out of version control", notes.getvalue())
 
 
 class FailedReplaceTest(unittest.TestCase):

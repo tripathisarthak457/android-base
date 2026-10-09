@@ -13,7 +13,9 @@ from genkit.core.spec import (
     SpecError,
     Vocabulary,
     apply_overrides,
+    module_title,
     parse,
+    pascal_case,
     to_json,
     upgrade,
 )
@@ -197,6 +199,10 @@ class DerivedNameTest(unittest.TestCase):
 
     def test_the_package_path_uses_directory_separators(self):
         self.assertEqual("com/acme/field", read(minimal()).spec.package_path)
+
+    def test_module_names_become_class_and_title_forms(self):
+        self.assertEqual(("OrderHistory", "Order history"), (pascal_case("order_history"), module_title("order_history")))
+        self.assertEqual(("V2", "V2"), (pascal_case("v2"), module_title("v2")))
 
 
 class OverrideTest(unittest.TestCase):

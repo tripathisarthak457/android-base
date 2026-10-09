@@ -111,6 +111,29 @@
       }
     },
     {
+      "name": "font names as fonts.google.com spells them",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "M PLUS 1p",
+        "mono_font_name": "IBM Plex Mono"
+      }
+    },
+    {
+      "name": "font name of 60",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
       "name": "every motion and design style",
       "valid": true,
       "spec": {
@@ -144,6 +167,34 @@
           },
           "deeplink_scheme": "trail+notes",
           "deeplink_host": "links.example.co.uk"
+        }
+      }
+    },
+    {
+      "name": "an ordinary https url",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "prod": "https://api.example.com/v1/"
+          }
+        }
+      }
+    },
+    {
+      "name": "a scheme with a hyphen, a plus and a digit",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "my-app+v2"
         }
       }
     },
@@ -642,6 +693,42 @@
       }
     },
     {
+      "name": "font with a backslash",
+      "valid": false,
+      "field": "font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "Inter\\"
+      }
+    },
+    {
+      "name": "font over 60",
+      "valid": false,
+      "field": "font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "name": "font with markup",
+      "valid": false,
+      "field": "font_name",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "font_name": "<b>"
+      }
+    },
+    {
       "name": "font with a trailing newline",
       "valid": false,
       "field": "mono_font_name",
@@ -897,6 +984,70 @@
       }
     },
     {
+      "name": "url with a backslash",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "https://x.com/\\path"
+          }
+        }
+      }
+    },
+    {
+      "name": "url with a space",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "https://x.com/a b"
+          }
+        }
+      }
+    },
+    {
+      "name": "ftp url",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "ftp://x.com/"
+          }
+        }
+      }
+    },
+    {
+      "name": "javascript url",
+      "valid": false,
+      "field": "android.api_base_urls",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "api_base_urls": {
+            "dev": "javascript:alert(1)"
+          }
+        }
+      }
+    },
+    {
       "name": "url with a trailing newline",
       "valid": false,
       "field": "android.api_base_urls",
@@ -975,6 +1126,48 @@
       }
     },
     {
+      "name": "uppercase scheme",
+      "valid": false,
+      "field": "android.deeplink_scheme",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "My"
+        }
+      }
+    },
+    {
+      "name": "scheme starting with a digit",
+      "valid": false,
+      "field": "android.deeplink_scheme",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "1app"
+        }
+      }
+    },
+    {
+      "name": "scheme with a space",
+      "valid": false,
+      "field": "android.deeplink_scheme",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_scheme": "a b"
+        }
+      }
+    },
+    {
       "name": "host without a dot",
       "valid": false,
       "field": "android.deeplink_host",
@@ -985,6 +1178,48 @@
         "package_name": "com.example.trail",
         "android": {
           "deeplink_host": "localhost"
+        }
+      }
+    },
+    {
+      "name": "host closing the string",
+      "valid": false,
+      "field": "android.deeplink_host",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_host": "example.com</string>"
+        }
+      }
+    },
+    {
+      "name": "host starting with a hyphen",
+      "valid": false,
+      "field": "android.deeplink_host",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_host": "-x.com"
+        }
+      }
+    },
+    {
+      "name": "host with an empty label",
+      "valid": false,
+      "field": "android.deeplink_host",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "deeplink_host": "a..com"
         }
       }
     },
