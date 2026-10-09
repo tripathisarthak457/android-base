@@ -1,6 +1,6 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.guard
 
-import com.base.app.buildlogic.ApiPurity.Violation
+import com.base.app.buildlogic.guard.ApiPurity.Violation
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

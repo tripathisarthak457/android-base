@@ -1,10 +1,10 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
-import com.base.app.buildlogic.configureAbiSplits
-import com.base.app.buildlogic.configureFlavors
-import com.base.app.buildlogic.configureSigning
-import com.base.app.buildlogic.configureVariants
-import com.base.app.buildlogic.registerDistributionTasks
+import com.base.app.buildlogic.android.registerDistributionTasks
+import com.base.app.buildlogic.config.configureAbiSplits
+import com.base.app.buildlogic.config.configureFlavors
+import com.base.app.buildlogic.config.configureSigning
+import com.base.app.buildlogic.config.configureVariants
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

@@ -10,7 +10,7 @@ default = false
 requires = []
 implied_only = false
 owns = [
-  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/ComposeStability.kt",
+  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/android/ComposeStability.kt",
   "config/compose-stability-baseline.txt",
 ]
 legacy = []

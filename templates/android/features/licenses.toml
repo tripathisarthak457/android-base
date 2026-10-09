@@ -11,6 +11,6 @@ implied_only = false
 owns = [
   "feature/settings/src/main/kotlin/{pkg_path}/feature/settings/Licenses.kt",
   "build-logic/convention/src/main/kotlin/AndroidLicensesConventionPlugin.kt",
-  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/BundleLicensesTask.kt",
+  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/licenses/BundleLicensesTask.kt",
 ]
 legacy = []

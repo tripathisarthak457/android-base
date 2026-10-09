@@ -1,7 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
-import com.base.app.buildlogic.configureCompose
+import com.base.app.buildlogic.android.configureCompose
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project

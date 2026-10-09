@@ -1,4 +1,4 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.guard
 
 import org.gradle.api.GradleException
 import org.gradle.api.Project

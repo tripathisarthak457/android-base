@@ -1,5 +1,5 @@
-import com.base.app.buildlogic.libs
 import com.base.app.buildlogic.library
+import com.base.app.buildlogic.libs
 import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project

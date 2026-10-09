@@ -1,6 +1,9 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.android
 
 import com.android.build.api.dsl.CommonExtension
+import com.base.app.buildlogic.config.AppConfig
+import com.base.app.buildlogic.library
+import com.base.app.buildlogic.libs
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies

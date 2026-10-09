@@ -1,4 +1,4 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.config
 
 import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget

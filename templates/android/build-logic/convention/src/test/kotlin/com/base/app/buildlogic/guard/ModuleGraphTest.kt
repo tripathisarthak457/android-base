@@ -1,4 +1,4 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.guard
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

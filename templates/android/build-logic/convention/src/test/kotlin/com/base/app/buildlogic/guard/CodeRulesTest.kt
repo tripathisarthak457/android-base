@@ -1,6 +1,6 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.guard
 
-import com.base.app.buildlogic.CodeRules.Finding
+import com.base.app.buildlogic.guard.CodeRules.Finding
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

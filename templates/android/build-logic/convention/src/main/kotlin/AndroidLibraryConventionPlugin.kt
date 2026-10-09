@@ -2,11 +2,11 @@ import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.base.app.buildlogic.configureAndroidCommon
-import com.base.app.buildlogic.configureTestDependencies
-import com.base.app.buildlogic.verifyApiPurity
-import com.base.app.buildlogic.verifyCodeRules
-import com.base.app.buildlogic.verifyModuleDependencies
+import com.base.app.buildlogic.android.configureAndroidCommon
+import com.base.app.buildlogic.android.configureTestDependencies
+import com.base.app.buildlogic.guard.verifyApiPurity
+import com.base.app.buildlogic.guard.verifyCodeRules
+import com.base.app.buildlogic.guard.verifyModuleDependencies
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

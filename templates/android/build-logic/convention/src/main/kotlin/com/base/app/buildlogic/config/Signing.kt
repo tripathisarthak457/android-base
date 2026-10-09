@@ -1,4 +1,4 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.config
 
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Project

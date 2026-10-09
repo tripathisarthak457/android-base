@@ -1,8 +1,9 @@
-package com.base.app.buildlogic
+package com.base.app.buildlogic.android
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.BuiltArtifactsLoader
+import com.base.app.buildlogic.config.AppConfig
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Project
