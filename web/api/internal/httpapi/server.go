@@ -146,8 +146,6 @@ func (s *Server) Routes() http.Handler {
 	return mux
 }
 
-// ── Public ───────────────────────────────────────────────────────────────────
-
 func (s *Server) databaseState() string {
 	switch {
 	case s.store == nil:
@@ -375,8 +373,6 @@ func pagePath(raw string) string {
 	}
 	return raw
 }
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
 
 // readBody reads at most limit bytes, answering 413 or 400 itself when it cannot.
 func readBody(w http.ResponseWriter, r *http.Request, limit int64) ([]byte, bool) {

@@ -107,8 +107,6 @@ func (s *Store) queryRow(ctx context.Context, sql string, args []any, into ...an
 	return s.pool.QueryRow(ctx, sql, args...).Scan(into...)
 }
 
-// ── Overview ─────────────────────────────────────────────────────────────────
-
 type Overview struct {
 	Generations    int64            `json:"generations"`
 	Outcomes       map[string]int64 `json:"outcomes"`
@@ -174,8 +172,6 @@ func (s *Store) Overview(ctx context.Context, f Filter) (Overview, error) {
 	return o, nil
 }
 
-// ── Funnel ───────────────────────────────────────────────────────────────────
-
 // Funnel holds the number of sessions that reached each step, per target. A step key is the event
 // name, with `:<step>` for step_viewed.
 type Funnel struct {
@@ -232,8 +228,6 @@ func (s *Store) Funnel(ctx context.Context, f Filter) (Funnel, error) {
 	}
 	return funnel, nil
 }
-
-// ── Series ───────────────────────────────────────────────────────────────────
 
 type SeriesDay struct {
 	Day      string           `json:"day"`
@@ -311,8 +305,6 @@ func (s *Store) Series(ctx context.Context, f Filter) ([]SeriesDay, error) {
 	}
 	return series, nil
 }
-
-// ── Adoption ─────────────────────────────────────────────────────────────────
 
 type FeatureAdoption struct {
 	Key string `json:"key"`
@@ -433,8 +425,6 @@ func (s *Store) Adoption(ctx context.Context, f Filter, featureKeys []string) (A
 	}
 	return adoption, nil
 }
-
-// ── Failures ─────────────────────────────────────────────────────────────────
 
 type Rejection struct {
 	Field  string `json:"field"`
@@ -587,8 +577,6 @@ func (s *Store) Failures(ctx context.Context, f Filter, featureKeys []string) (F
 	return failures, nil
 }
 
-// ── Audience ─────────────────────────────────────────────────────────────────
-
 type Bucket struct {
 	Key       string `json:"key"`
 	Country   string `json:"country,omitempty"`
@@ -705,8 +693,6 @@ func (s *Store) Audience(ctx context.Context, f Filter) (Audience, error) {
 	return audience, nil
 }
 
-// ── Durations ────────────────────────────────────────────────────────────────
-
 type Timing struct {
 	N     int64 `json:"n"`
 	P50Ms int   `json:"p50_ms"`
@@ -812,8 +798,6 @@ func (s *Store) Durations(ctx context.Context, f Filter) (Durations, error) {
 	return d, nil
 }
 
-// ── Generations ──────────────────────────────────────────────────────────────
-
 type GenerationRow struct {
 	ID              int64           `json:"id"`
 	At              time.Time       `json:"at"`
@@ -889,8 +873,6 @@ func (s *Store) Generations(ctx context.Context, f Filter, before int64, limit i
 	}
 	return rows, nil
 }
-
-// ── Errors and route health ──────────────────────────────────────────────────
 
 type ErrorGroup struct {
 	ID          int64     `json:"id"`
