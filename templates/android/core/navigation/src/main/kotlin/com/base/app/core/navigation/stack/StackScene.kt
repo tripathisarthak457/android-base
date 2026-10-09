@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation3.runtime.NavEntry
@@ -21,6 +22,7 @@ import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.back.BackCardState
 import com.base.app.core.navigation.back.BackGate
 import com.base.app.core.navigation.back.StackChange
+import com.base.app.core.navigation.shell.CardCutout
 import com.base.app.core.navigation.transition.ScreenMotion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -69,9 +71,11 @@ internal class StackScene(private val gate: BackGate) {
     var moving by mutableStateOf(false)
         private set
 
-    /** The host's size and direction, written by its layout. */
+    /** The host's size, direction and density, written by its layout. */
     var width by mutableFloatStateOf(0f)
+    var height by mutableFloatStateOf(0f)
     var rtl by mutableStateOf(false)
+    var density: Density = Density(1f)
 
     /** Where each laid-out entry's left edge is in the host, written by its layout. */
     val lefts = HashMap<Any, Float>()
@@ -172,6 +176,29 @@ internal class StackScene(private val gate: BackGate) {
         }
         val revealed = if (card.active && upperHides && !lowerHides) card.reveal else 0f
         return covered * (1f - revealed)
+    }
+
+    /**
+     * While the back card lifts a screen that hides the tab bar off one that shows it, writes the
+     * card's outline into [into], in the host's px (the window's, on the widths with a bar).
+     */
+    fun barCutout(into: CardCutout): Boolean {
+        val subject = card.subject
+        if (!card.active || subject == null || subject !in hidingBar || card.beneath.any { it in hidingBar }) return false
+        val w = width
+        val h = height
+        val scale = card.scale
+        val slide = if (subject in upper) (if (rtl) -1f else 1f) * w * (1f - cover) else 0f
+        val centerX = (lefts[subject] ?: 0f) + w / 2f + slide + with(card) { density.shiftX(w) }
+        val centerY = h / 2f + with(card) { density.shiftY(h) }
+        into.left = centerX - scale * w / 2f
+        into.right = centerX + scale * w / 2f
+        into.top = centerY - scale * h / 2f
+        into.bottom = centerY + scale * h / 2f
+        into.corner = with(card) { density.corner() } * scale
+        into.scrim = card.scrim.value
+        into.opacity = card.contentAlpha.value
+        return true
     }
 
     /** The lifecycle an entry's content may reach: the top resumed, the page under it started, the rest created. */

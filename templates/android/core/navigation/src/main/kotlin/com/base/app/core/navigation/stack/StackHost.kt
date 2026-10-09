@@ -73,7 +73,7 @@ internal fun StackHost(
     if (anchor != null) {
         DisposableEffect(anchor, scene) {
             val follower = scene::barCover
-            anchor.attach(follower)
+            anchor.attach(follower, scene::barCutout)
             onDispose { anchor.detach(follower) }
         }
     }

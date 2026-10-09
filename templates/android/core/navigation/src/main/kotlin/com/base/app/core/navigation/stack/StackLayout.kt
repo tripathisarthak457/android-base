@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.FrameRateCategory
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.focusProperties
@@ -18,9 +19,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.preferredFrameRate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.LifecycleEventObserver
@@ -51,8 +54,12 @@ internal fun StackLayout(
 ) {
     val tab = LocalTabVisible.current
     val isLight = AppTheme.colors.isLight
+    // Slides and the card move layers only, which cast no frame-rate vote of their own: without
+    // one, a phone with an adaptive refresh rate may draw them at 60 Hz. Raised only while they
+    // move, since the vote passes down to every layer of every screen in the stack.
+    val rate = if (scene.moving || scene.card.active) FrameRateCategory.High else FrameRateCategory.Default
     Layout(
-        modifier = modifier,
+        modifier = modifier.preferredFrameRate(rate),
         content = {
             shown.forEach { entry ->
                 key(entry.contentKey) {
@@ -67,7 +74,9 @@ internal fun StackLayout(
         val width = constraints.maxWidth
         val height = constraints.maxHeight
         scene.width = width.toFloat()
+        scene.height = height.toFloat()
         scene.rtl = layoutDirection == LayoutDirection.Rtl
+        if (scene.density.density != density || scene.density.fontScale != fontScale) scene.density = Density(density, fontScale)
         val listWidth = listPaneWidth.roundToPx().coerceAtMost(width)
         val keys = shown.map { it.contentKey } + plan.emptyDetails
         val placeables = measurables.mapIndexed { index, measurable ->

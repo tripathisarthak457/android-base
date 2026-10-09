@@ -1,5 +1,6 @@
 package com.base.app.core.navigation.back
 
+import androidx.collection.MutableIntObjectMap
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearEasing
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.util.VelocityTracker1D
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.navigationevent.NavigationEvent
 import kotlinx.coroutines.CoroutineScope
@@ -176,22 +178,34 @@ internal class BackCardState {
         scrim.snapTo(0f)
     }
 
-    /**
-     * The card's pose on the subject's layer, on top of the slide the layer already has: about the
-     * centre, toward the far edge until [BackCard.EdgeGap] remains, and up to [BackCard.MaxFollowY]
-     * after the finger.
-     */
-    fun GraphicsLayerScope.applyCard() {
-        val q = progress * (1f - unwind.value)
-        val scale = 1f - (1f - BackCard.MIN_SCALE) * q
+    /** How far the card is shrunk, 0 to 1: the eased progress, unwound on commit. */
+    private val pose: Float get() = progress * (1f - unwind.value)
+
+    /** The card's scale about its centre. */
+    val scale: Float get() = 1f - (1f - BackCard.MIN_SCALE) * pose
+
+    /** Toward the far edge until [BackCard.EdgeGap] remains, for a card [width] px wide. */
+    fun Density.shiftX(width: Float): Float {
         val towards = if (fromRightEdge) -1f else 1f
-        val shiftX = max(0f, size.width * (1f - BackCard.MIN_SCALE) / 2f - BackCard.EdgeGap.toPx())
-        val roomY = max(0f, size.height * (1f - scale) / 2f - BackCard.EdgeGap.toPx())
-        val followY = min(BackCard.MaxFollowY.toPx(), roomY) * min(1f, abs(deltaY) / size.height)
+        return towards * max(0f, width * (1f - BackCard.MIN_SCALE) / 2f - BackCard.EdgeGap.toPx()) * pose
+    }
+
+    /** After the finger's vertical drift, up to [BackCard.MaxFollowY] and never off the screen. */
+    fun Density.shiftY(height: Float): Float {
+        val room = max(0f, height * (1f - scale) / 2f - BackCard.EdgeGap.toPx())
+        return sign(deltaY) * min(BackCard.MaxFollowY.toPx(), room) * min(1f, abs(deltaY) / height) * (1f - unwind.value)
+    }
+
+    /** The corner radius in the card's own (unscaled) px. */
+    fun Density.corner(): Float = BackCard.Corner.toPx() * pose
+
+    /** The card's pose on the subject's layer, on top of the slide the layer already has. */
+    fun GraphicsLayerScope.applyCard() {
+        val scale = scale
         scaleX = scale
         scaleY = scale
-        translationX += towards * shiftX * q
-        translationY = sign(deltaY) * followY * (1f - unwind.value)
+        translationX += shiftX(size.width)
+        translationY = shiftY(size.height)
         val alpha = contentAlpha.value
         if (alpha < 1f) {
             this.alpha = alpha
@@ -199,7 +213,7 @@ internal class BackCardState {
             // own, which overlapping draws inside an opaque screen cannot show.
             compositingStrategy = CompositingStrategy.ModulateAlpha
         }
-        val corner = (BackCard.Corner.toPx() * q).roundToInt()
+        val corner = corner().roundToInt()
         if (corner > 0) {
             shape = CardShapes.of(corner)
             clip = true
@@ -209,7 +223,7 @@ internal class BackCardState {
 
 /** One shape per whole-pixel radius, so a gesture allocates none per frame. */
 private object CardShapes {
-    private val shapes = HashMap<Int, Shape>()
+    private val shapes = MutableIntObjectMap<Shape>()
 
     fun of(px: Int): Shape = shapes.getOrPut(px) { RoundedCornerShape(px.toFloat()) }
 }

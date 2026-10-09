@@ -4,14 +4,24 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.GraphicsLayerScope
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.node.LayoutModifierNode
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.ObserverModifierNode
+import androidx.compose.ui.node.SemanticsModifierNode
+import androidx.compose.ui.node.invalidateSemantics
+import androidx.compose.ui.node.observeReads
+import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+import androidx.compose.ui.unit.Constraints
 import com.base.app.core.designsystem.component.navigation.AppTabBar
 import com.base.app.core.designsystem.component.navigation.AppTabBarState
 import com.base.app.core.designsystem.component.navigation.BarActionScope
@@ -40,12 +50,6 @@ internal fun ShellBar(
     val items = remember(tabs, labels) {
         tabs.mapIndexed { index, tab -> TabItem(labels[index], tab.icon, tab.selectedIcon, tab.badgeCount) }
     }
-    // Fully covered by a screen that hides it, the bar stays composed but is not placed: nothing to
-    // draw, touch or read out, and nothing to compose again in the first frame of the pop that
-    // brings it back.
-    val covered by remember(state) {
-        derivedStateOf { state.anchors[state.selectedIndex].progress() >= 1f }
-    }
     val focus = LocalFocusManager.current
     AppTabBar(
         items = items,
@@ -62,7 +66,7 @@ internal fun ShellBar(
             modifier
                 .followCovered(state.anchors[state.selectedIndex], parallax, coverScrimAlpha(AppTheme.colors.isLight))
                 .hideUnderKeyboard()
-                .then(if (covered) Parked else Modifier)
+                .parkWhenCovered(state.anchors[state.selectedIndex])
         },
         orientation = if (vertical) BarOrientation.Vertical else BarOrientation.Horizontal,
         labels = config.barLabels,
@@ -91,10 +95,60 @@ private fun Modifier.hideUnderKeyboard(): Modifier {
     }
 }
 
-/** Measured, so the bar keeps its size, but neither placed nor in the semantics tree. */
-private val Parked = Modifier
-    .clearAndSetSemantics {}
-    .layout { measurable, constraints ->
-        val placeable = measurable.measure(constraints)
-        layout(placeable.width, placeable.height) {}
+/**
+ * Fully covered by a screen that hides it, the bar is parked: still laid out, with its layers, but
+ * drawn at alpha 0 off the window, out of reach of touch and out of the semantics tree. A pop or a
+ * back gesture that brings it back changes two layer properties; nothing is composed, measured
+ * or recorded. All of it follows [anchor] in the layer and semantics phases, so it recomposes
+ * nothing either.
+ */
+private fun Modifier.parkWhenCovered(anchor: BarAnchor): Modifier = this then ParkWhenCoveredElement(anchor)
+
+private data class ParkWhenCoveredElement(val anchor: BarAnchor) : ModifierNodeElement<ParkWhenCoveredNode>() {
+    override fun create() = ParkWhenCoveredNode(anchor)
+
+    override fun update(node: ParkWhenCoveredNode) {
+        node.anchor = anchor
+        node.follow()
     }
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "parkWhenCovered"
+    }
+}
+
+private class ParkWhenCoveredNode(var anchor: BarAnchor) :
+    Modifier.Node(), LayoutModifierNode, SemanticsModifierNode, ObserverModifierNode {
+
+    private var parked = false
+
+    private val layer: GraphicsLayerScope.() -> Unit = {
+        if (anchor.progress() >= 1f) {
+            alpha = 0f
+            translationX = -2f * size.width
+        }
+    }
+
+    override val shouldClearDescendantSemantics: Boolean get() = parked
+
+    override fun SemanticsPropertyReceiver.applySemantics() = Unit
+
+    override fun onAttach() = follow()
+
+    override fun onObservedReadsChanged() = follow()
+
+    fun follow() {
+        observeReads {
+            val covered = anchor.progress() >= 1f
+            if (covered != parked) {
+                parked = covered
+                invalidateSemantics()
+            }
+        }
+    }
+
+    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        val placeable = measurable.measure(constraints)
+        return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0, layerBlock = layer) }
+    }
+}
