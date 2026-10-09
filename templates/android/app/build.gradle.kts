@@ -30,18 +30,17 @@ android {
         generateLocaleConfig = true
     }
     // </opt:language>
+}
 
-    buildTypes {
-        release {
-            // `getDefaultProguardFile` is only reachable from a build script, which is why this one
-            // block stays here rather than in the convention plugin.
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
+// <opt:baselineprofile>
+// Only dev has the benchmark and non-minified build types: the profile it generates is merged into
+// main and ships with every flavour, so the other flavours' missing variants are expected.
+baselineProfile {
+    warnings {
+        disabledVariants = false
     }
 }
+// </opt:baselineprofile>
 
 dependencies {
     implementation(project(":core:common"))
@@ -86,7 +85,6 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.serialization.json)
 
@@ -96,13 +94,11 @@ dependencies {
     ksp(libs.androidx.hilt.compiler)
     // </opt:workmanager>
 
-    // <opt:coil>
-    implementation(libs.coil.compose)
-    implementation(libs.coil.network.okhttp)
-    // </opt:coil>
+    // Hands the baseline profiles the app and its libraries ship to ART when the app is installed
+    // outside Play, so a sideloaded or CI build starts compiled rather than interpreted.
+    implementation(libs.androidx.profileinstaller)
 
     // <opt:baselineprofile>
-    implementation(libs.androidx.profileinstaller)
     baselineProfile(project(":benchmark"))
     // </opt:baselineprofile>
 
@@ -134,8 +130,6 @@ dependencies {
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)
     // </opt:leakcanary>
-
-    testImplementation(project(":core:testing"))
 }
 
 // <opt:licenses>

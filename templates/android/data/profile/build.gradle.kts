@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.base.app.data.profile"
 }
+
+dependencies {
+    implementation(project(":core:datastore"))
+}

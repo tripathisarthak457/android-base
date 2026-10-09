@@ -41,6 +41,7 @@ internal suspend inline fun <reified T> decodeResult(
     result: AppResult<NetworkResponse>,
     unwrapper: ResponseUnwrapper,
 ): AppResult<T> = when (result) {
+    // allow(dispatchers-io): decoding a large body must leave the caller's thread, and the client holds no AppDispatchers
     is AppResult.Success -> withContext(Dispatchers.Default) {
         runCatching {
             val root = NetworkJson.parseToJsonElement(result.value.body)
@@ -57,6 +58,7 @@ suspend fun <T> NetworkClient.request(
     deserializer: KSerializer<T>,
     unwrapper: ResponseUnwrapper,
 ): AppResult<T> = when (val result = execute(request)) {
+    // allow(dispatchers-io): decoding a large body must leave the caller's thread, and the client holds no AppDispatchers
     is AppResult.Success -> withContext(Dispatchers.Default) {
         runCatching {
             val root = NetworkJson.parseToJsonElement(result.value.body)

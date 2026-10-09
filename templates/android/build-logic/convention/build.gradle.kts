@@ -21,18 +21,19 @@ kotlin {
 }
 
 dependencies {
+    // Only plugins whose classes the conventions name. The rest are applied by id, from the
+    // classpath the root build's `apply false` entries give every module.
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
-    compileOnly(libs.kotlin.serialization.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
-    compileOnly(libs.hilt.gradlePlugin)
-    // <opt:firebase>
-    compileOnly(libs.google.services.gradlePlugin)
-    compileOnly(libs.firebase.crashlytics.gradlePlugin)
-    // </opt:firebase>
 
     testImplementation(libs.junit)
+}
+
+tasks.validatePlugins {
+    enableStricterValidation = true
+    failOnWarning = true
 }
 
 gradlePlugin {

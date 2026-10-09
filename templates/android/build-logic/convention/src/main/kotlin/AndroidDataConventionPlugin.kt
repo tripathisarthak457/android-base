@@ -1,13 +1,12 @@
-import com.base.app.buildlogic.libs
-import com.base.app.buildlogic.library
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.project
 
 /**
- * Every `:data:*` module: one business domain end to end — its DTOs, its mappers, its API service
- * and its repository — depending only on `:core:*`.
+ * Every `:data:*` module: one business domain end to end, its DTOs, mappers and repository,
+ * depending only on `:core:*`. A module adds `:core:network`, `:core:datastore` or `:core:database`
+ * itself when it uses them, so a change in one of them recompiles only the domains that need it.
  */
 class AndroidDataConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
@@ -16,15 +15,8 @@ class AndroidDataConventionPlugin : Plugin<Project> {
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
 
         dependencies {
+            // The api package exposes AppResult and AppError, so callers need them too.
             add("api", project(":core:common"))
-            add("implementation", project(":core:datastore"))
-            // <opt:network>
-            add("implementation", project(":core:network"))
-            // </opt:network>
-
-            add("implementation", libs.library("kotlinx-serialization-json"))
-
-            add("testImplementation", project(":core:testing"))
         }
     }
 }

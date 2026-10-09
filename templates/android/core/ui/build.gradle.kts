@@ -1,7 +1,6 @@
 plugins {
     id("com.base.app.android.library")
     id("com.base.app.android.compose")
-    id("com.base.app.android.hilt")
 }
 
 android {
@@ -17,6 +16,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     // <opt:coil>
     implementation(libs.coil.compose)
+    // Coil finds its network fetcher at runtime, through a service loader.
+    runtimeOnly(libs.coil.network.okhttp)
     // </opt:coil>
     // <opt:browser>
     implementation(libs.androidx.browser)

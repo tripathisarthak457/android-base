@@ -2,9 +2,9 @@ package com.base.app.buildlogic
 
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -19,7 +19,6 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
     extension.defaultConfig.apply {
         minSdk = AppConfig.MIN_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
     }
 
     extension.compileOptions.apply {
@@ -28,15 +27,12 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
         isCoreLibraryDesugaringEnabled = AppConfig.NEEDS_CORE_LIBRARY_DESUGARING
     }
 
-    extension.testOptions.unitTests.apply {
-        // android.util.Log throws "not mocked" in unit tests; defaults make it a no-op instead.
-        isReturnDefaultValues = true
-        isIncludeAndroidResources = true
-    }
+    // android.util.Log throws "not mocked" in unit tests; defaults make it a no-op instead.
+    // Android resources stay out of unit tests unless a module runs Robolectric and opts in.
+    extension.testOptions.unitTests.isReturnDefaultValues = true
 
     extension.packaging.resources.apply {
         excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        excludes += "/META-INF/*.version"
         excludes += "/META-INF/*.kotlin_module"
         excludes += "DebugProbesKt.bin"
         excludes += "kotlin-tooling-metadata.json"
@@ -49,11 +45,6 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
         "SourceLockedOrientationActivity",
         "NonResizeableActivity",
     )
-
-    // Gradle 9 fails a test task with no tests, which would fail modules that have none yet.
-    tasks.withType(Test::class.java).configureEach {
-        failOnNoDiscoveredTests.set(false)
-    }
 
     configureKotlinCompiler()
 
@@ -76,6 +67,19 @@ private fun Project.configureKotlinCompiler() {
         // every test that touches a coroutine warns until it opts in.
         if (name.endsWith("UnitTestKotlin") || name.endsWith("AndroidTestKotlin")) {
             compilerOptions.optIn.add("kotlinx.coroutines.ExperimentalCoroutinesApi")
+        }
+    }
+}
+
+/** Test libraries for the test source sets a module actually has. */
+internal fun Project.configureTestDependencies() {
+    dependencies {
+        if (file("src/test").exists() && path != ":core:testing") {
+            add("testImplementation", project(":core:testing"))
+        }
+        if (file("src/androidTest").exists()) {
+            add("androidTestImplementation", libs.library("androidx-test-ext-junit"))
+            add("androidTestImplementation", libs.library("androidx-test-runner"))
         }
     }
 }

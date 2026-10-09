@@ -8,7 +8,5 @@ android {
 
 dependencies {
     api(project(":core:common"))
-    api(libs.androidx.lifecycle.viewmodel.ktx)
-
-    testImplementation(project(":core:testing"))
+    api(libs.androidx.lifecycle.viewmodel)
 }

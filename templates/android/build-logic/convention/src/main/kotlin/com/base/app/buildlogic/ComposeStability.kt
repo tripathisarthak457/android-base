@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
@@ -14,28 +15,20 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.register
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 import java.io.File
 
-/** Reads the Compose compiler's own stability report and fails on a new recomposition cost. */
+/**
+ * Reads the Compose compiler's own stability report and fails on a new recomposition cost. Called
+ * only with `-PcomposeReports`, since the report is what it reads.
+ */
 internal fun Project.configureComposeStability() {
     if (path !in STABILITY_CHECKED_MODULES) return
 
-    // Kept here so the whole stability feature is in one file.
-    extensions.configure<ComposeCompilerGradlePluginExtension> {
-        // reportsDestination names each composable; metricsDestination only gives module totals.
-        reportsDestination.set(layout.buildDirectory.dir("compose_reports"))
-    }
-
     // A file tree rather than the directory itself: the compiler has not written it at
     // configuration time, and Gradle rejects an @InputDirectory that does not exist.
-    val reportsDir = layout.buildDirectory.dir("compose_reports")
+    val reportsDir = layout.buildDirectory.dir(COMPOSE_REPORTS)
 
-    /*
-     * Declared as an output of the compilation that writes it.
-     */
     tasks.matching { it.name == COMPILE_TASK }.configureEach {
         outputs.dir(reportsDir).withPropertyName("composeStabilityReports")
     }
@@ -52,6 +45,7 @@ internal fun Project.configureComposeStability() {
         reports.setFrom(written)
         baselineFile.set(baseline)
         modulePath.set(path)
+        marker.set(layout.buildDirectory.file("guards/checkComposeStability.ok"))
         // The report is a by-product of compiling, so the task that writes it has to have run.
         dependsOn(COMPILE_TASK)
     }
@@ -64,8 +58,7 @@ internal fun Project.configureComposeStability() {
         dependsOn(COMPILE_TASK)
     }
 
-    // Runs with the rest of the verification, rather than on preBuild like the other guards:
-    // there is nothing to read until the module has been compiled.
+    // There is nothing to read until the module has been compiled, so it runs with `check`.
     tasks.matching { it.name == "check" }.configureEach { dependsOn(check) }
 }
 
@@ -113,6 +106,7 @@ private fun offenders(reports: Set<File>): List<String> =
 /** `fun com.base.app.core.designsystem.component.AppButton(` → `AppButton`. */
 private val FUNCTION = Regex("\\bfun\\s+(?:[\\w.]+\\.)?(\\w+)\\s*\\(")
 
+@CacheableTask
 internal abstract class CheckComposeStabilityTask : DefaultTask() {
 
     @get:InputFiles
@@ -126,6 +120,9 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
 
     @get:Input
     abstract val modulePath: Property<String>
+
+    @get:OutputFile
+    abstract val marker: RegularFileProperty
 
     @TaskAction
     fun verify() {
@@ -143,14 +140,17 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
                 "${modulePath.get()}: the Compose compiler wrote no stability report, so this " +
                     "check has nothing to read. That is a build configuration problem rather than " +
                     "a clean result — silence here would be indistinguishable from passing. " +
-                    "Check that reportsDestination is still set in ComposeStability.kt.",
+                    "Check that reportsDestination is still set in Compose.kt.",
             )
         }
 
         val found = offenders(present.toSet())
         val fresh = found - allowed
 
-        if (fresh.isEmpty()) return
+        if (fresh.isEmpty()) {
+            marker.get().asFile.writeText("ok")
+            return
+        }
 
         throw GradleException(
             """
@@ -162,10 +162,10 @@ internal abstract class CheckComposeStabilityTask : DefaultTask() {
             ${fresh.joinToString("\n            ") { "  $it" }}
 
             Read build/compose_reports/*-composables.txt for the parameter that caused it. It is
-            almost always one of three things: a List where a kotlinx.collections.immutable
-            PersistentList would do, a type from a module without the Compose compiler plugin, or
-            a `var` in a class being passed as a parameter. A type this project cannot change —
-            one from a library — goes in config/compose-stability.conf instead.
+            almost always one of three things: a List or Map passed straight in (wrap it in an
+            @Immutable class), a type from a module without the Compose compiler plugin, or a `var`
+            in a class being passed as a parameter. A type this project cannot change, one from a
+            library, goes in config/compose-stability.conf instead.
 
             If it genuinely has to stay, run :${modulePath.get().removePrefix(":")}:recordComposeStability
             to accept it, in a commit that says why.

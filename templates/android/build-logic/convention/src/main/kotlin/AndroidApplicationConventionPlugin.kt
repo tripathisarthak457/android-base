@@ -1,9 +1,13 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.android.build.api.variant.DeviceTestBuilder
+import com.android.build.api.variant.HostTestBuilder
 import com.base.app.buildlogic.AppConfig
 import com.base.app.buildlogic.configureAndroidCommon
+import com.base.app.buildlogic.configureTestDependencies
 import com.base.app.buildlogic.libs
 import com.base.app.buildlogic.library
-import com.base.app.buildlogic.registerComposeGuards
+import com.base.app.buildlogic.verifyCodeRules
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -13,6 +17,9 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.application")
+
+        val hasUnitTests = file("src/test").exists()
+        val hasDeviceTests = file("src/androidTest").exists()
 
         extensions.configure<ApplicationExtension> {
             configureAndroidCommon(this)
@@ -25,27 +32,39 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
             buildFeatures.buildConfig = true
 
+            // Libraries bring translations for languages the app does not speak (AndroidX alone
+            // brings about eighty); a screen half in one language and half in another is worse
+            // than English throughout, and they weigh down resources.arsc.
+            androidResources.localeFilters += AppConfig.LOCALES
+
+            // Licence texts and the Kotlin builtins descriptors are read by nothing at runtime.
+            packaging.resources.excludes += listOf("META-INF/**/LICENSE*", "kotlin/**.kotlin_builtins")
+
             buildTypes.getByName("release").apply {
                 isMinifyEnabled = true
                 isShrinkResources = true
+                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
+        }
 
-            buildTypes.getByName("debug").apply {
-                isMinifyEnabled = false
-                isShrinkResources = false
+        extensions.configure<ApplicationAndroidComponentsExtension> {
+            beforeVariants { variant ->
+                if (!hasUnitTests) variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
+                if (!hasDeviceTests) variant.deviceTests[DeviceTestBuilder.ANDROID_TEST_TYPE]?.enable = false
+            }
+            // Layout Inspector reads the AndroidX version files to recognise Compose, so only
+            // release builds drop them.
+            onVariants(selector().withBuildType("release")) { variant ->
+                variant.packaging.resources.excludes.add("/META-INF/*.version")
             }
         }
 
         dependencies {
             add("implementation", libs.library("androidx-core-ktx"))
             add("implementation", libs.library("kotlinx-coroutines-android"))
-
-            add("testImplementation", libs.library("junit"))
-            add("testImplementation", libs.library("kotlinx-coroutines-test"))
-            add("androidTestImplementation", libs.library("androidx-test-ext-junit"))
-            add("androidTestImplementation", libs.library("androidx-test-runner"))
         }
 
-        registerComposeGuards()
+        configureTestDependencies()
+        verifyCodeRules()
     }
 }

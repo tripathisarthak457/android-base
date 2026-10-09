@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
-    // paging-runtime is not Compose: the data module builds the pager, the screen collects it.
-    api(libs.androidx.paging.runtime)
+    implementation(project(":core:network"))
+    // The repository returns PagingData, so callers see paging-common; paging-compose stays in
+    // the UI, and paging-runtime's RecyclerView adapters are not needed at all.
+    api(libs.androidx.paging.common)
 }
