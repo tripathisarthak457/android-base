@@ -52,9 +52,6 @@ class HarnessError(Exception):
     """The run could not measure what it was asked to; the message says why."""
 
 
-# ── Device ───────────────────────────────────────────────────────────────────
-
-
 class Device:
     def __init__(self, serial):
         self.serial = serial
@@ -184,9 +181,6 @@ class UiTree:
         return None
 
 
-# ── App ──────────────────────────────────────────────────────────────────────
-
-
 class App:
     def __init__(self, device, package, extras):
         self.device = device
@@ -256,9 +250,6 @@ class App:
     def reset_compilation(self):
         self.stop()
         self.device.shell(f"cmd package compile --reset {self.package}", timeout=600)
-
-
-# ── One run ──────────────────────────────────────────────────────────────────
 
 
 class Run:
@@ -554,7 +545,11 @@ class Run:
             second = self.ui().first_row()
             if second is not None:
                 self.device.shell(self.tap(second))
-                time.sleep(1.3)
+            else:
+                # The second tab has no list to push from (empty, or still loading): go back to the
+                # first, so the tab in front has a pushed screen for Back to pop after the restore.
+                self.device.shell(self.tap(self.tabs[0]))
+            time.sleep(1.3)
         # The shell logs its state on every change, so the last line logged is the state now.
         before = check_nav_log.last_state(self.logcat())
         self.device.shell("input keyevent KEYCODE_HOME")
@@ -646,9 +641,6 @@ class Run:
             "coldstart_installed": self.coldstart_installed,
         }[scenario]
         handler()
-
-
-# ── Summary ──────────────────────────────────────────────────────────────────
 
 
 def combine_runs(runs):
@@ -804,9 +796,6 @@ def measure(args):
     return 0
 
 
-# ── Recording ────────────────────────────────────────────────────────────────
-
-
 def record(args):
     """Screen-records one journey on the installed app and writes its frames and a frame strip."""
     device = Device(args.serial)
@@ -923,9 +912,6 @@ def make_strip(frames_dir, report, path, columns=8, width=180, limit=64):
          f"scale={width}:-1,tile={columns}x{rows}:padding=4:color=black", "-frames:v", "1", path],
         check=True,
     )
-
-
-# ── CLI ──────────────────────────────────────────────────────────────────────
 
 
 def main(argv=None):
