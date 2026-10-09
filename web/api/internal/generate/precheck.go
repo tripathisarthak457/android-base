@@ -15,10 +15,10 @@ import (
 // that would cost thirty seconds of CPU never reaches it (audit web-api H1).
 const (
 	defaultSpecBytes      = 32 << 10
+	defaultFeatures       = 64
 	defaultFeatureModules = 12
 	defaultLanguages      = 10
 	defaultKeystores      = 4
-	maxFeatures           = 64
 	maxDepth              = 6
 	maxIdentifierBytes    = 120
 	maxStringBytes        = 256
@@ -98,7 +98,7 @@ func Precheck(body []byte, target string, rules Rules) (Spec, error) {
 	}
 
 	limits := map[string]int{
-		"features":        maxFeatures,
+		"features":        positive(rules.FeaturesMax, defaultFeatures),
 		"feature_modules": positive(rules.FeatureModulesMax, defaultFeatureModules),
 		"languages":       positive(rules.LanguagesMax, defaultLanguages),
 		"keystores":       positive(rules.KeystoresMax, defaultKeystores),

@@ -20,7 +20,7 @@ const sampleCatalogue = `{
     "status_note": "Beta: the iOS app is not yet verified on a Mac", "summary": "Android and iOS.",
     "features": [], "presets": [], "defaults": {}
   }],
-  "rules": {"spec_bytes_max": 32768, "feature_modules_max": 12, "languages_max": 10, "keystores_max": 4}
+  "rules": {"spec_bytes_max": 32768, "features_max": 64, "feature_modules_max": 12, "languages_max": 10, "keystores_max": 4}
 }`
 
 func TestParseCatalogueReadsTargetsAndRules(t *testing.T) {
@@ -28,7 +28,7 @@ func TestParseCatalogueReadsTargetsAndRules(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if c.GeneratorCommit != "99c4edf" || len(c.Targets) != 2 || c.Rules.FeatureModulesMax != 12 {
+	if c.GeneratorCommit != "99c4edf" || len(c.Targets) != 2 || c.Rules.FeatureModulesMax != 12 || c.Rules.FeaturesMax != 64 {
 		t.Fatalf("parsed %+v", c)
 	}
 	if mp := c.Target("multiplatform"); mp == nil || mp.Status != "beta" || mp.StatusNote == "" {

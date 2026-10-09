@@ -61,6 +61,7 @@ type Defaults struct {
 // refuse a spec the generator would accept.
 type Rules struct {
 	SpecBytesMax      int `json:"spec_bytes_max"`
+	FeaturesMax       int `json:"features_max"`
 	FeatureModulesMax int `json:"feature_modules_max"`
 	LanguagesMax      int `json:"languages_max"`
 	KeystoresMax      int `json:"keystores_max"`

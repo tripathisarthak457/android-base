@@ -84,6 +84,10 @@ func TestPrecheckTakesItsLimitsFromTheCatalogue(t *testing.T) {
 	if _, err := Precheck(body, "android", Rules{FeatureModulesMax: 3}); err != nil {
 		t.Fatalf("three modules failed a limit of three: %v", err)
 	}
+	features := []byte(`{"features": ["network", "auth"]}`)
+	if _, err := Precheck(features, "android", Rules{FeaturesMax: 1}); err == nil {
+		t.Fatal("two features passed a limit of one")
+	}
 }
 
 func TestPrecheckAcceptsRealSpecs(t *testing.T) {
