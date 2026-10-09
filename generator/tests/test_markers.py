@@ -7,7 +7,7 @@ from pathlib import Path
 
 from genkit.core import markers
 from genkit.core.markers import HASH, MARKDOWN, NONE, SLASH, XML, TemplateError, render
-from genkit.core.pipeline import template_region_names
+from genkit.core.pipeline import is_hollow_kotlin, template_region_names
 from genkit.targets import REGISTRY
 
 KNOWN = frozenset({"push", "firebase", "crashlytics", "analytics", "room", "workmanager", "a", "b", "c"})
@@ -170,6 +170,24 @@ class CollapseTest(unittest.TestCase):
     def test_markdown_is_never_collapsed(self):
         source = "a\n\n<!-- <opt:a> -->\nb\n<!-- </opt:a> -->\n\nc\n"
         self.assertEqual("a\n\n\nc\n", run(source, syntax=MARKDOWN))
+
+
+class HollowFileTest(unittest.TestCase):
+    """A Kotlin file the markers leave with nothing to declare is dropped rather than written."""
+
+    def test_a_file_left_with_only_a_package_and_imports_is_hollow(self):
+        # The app module's FeatureBindingsModule with none of settings, auth or onboarding on: an
+        # empty Hilt module and unused imports, which detekt fails the build over.
+        self.assertTrue(is_hollow_kotlin("\n".join(["package a.b", "", "import c.D", "import c.E", ""])))
+
+    def test_comments_alone_do_not_save_a_file(self):
+        self.assertTrue(is_hollow_kotlin("\n".join(["package a.b", "", "/**", " * Why this exists.", " */", ""])))
+
+    def test_one_surviving_declaration_keeps_it(self):
+        self.assertFalse(is_hollow_kotlin("\n".join(["package a.b", "", "import c.D", "", "object X", ""])))
+
+    def test_an_empty_file_is_hollow(self):
+        self.assertTrue(is_hollow_kotlin(""))
 
 
 class SyntaxTableTest(unittest.TestCase):

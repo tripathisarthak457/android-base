@@ -173,6 +173,31 @@ class NameTest(unittest.TestCase):
                 read(raw)
 
 
+class DerivedNameTest(unittest.TestCase):
+
+    def test_spaces_and_punctuation_become_a_pascal_name(self):
+        self.assertEqual("MyGreatApp", read(minimal(app_name="My Great App")).spec.pascal_name)
+        self.assertEqual("MyGreatApp", read(minimal(app_name="my-great_app")).spec.pascal_name)
+
+    def test_the_snake_form_splits_on_case_boundaries(self):
+        # The Keystore alias is the snake form, so these are pinned exactly, capitals included: an
+        # app regenerated under a different alias can no longer decrypt what it stored.
+        for app_name, snake in (
+            ("My Great App", "my_great_app"),
+            ("NASA Tracker", "n_a_s_a_tracker"),
+            ("iPhone Notes", "i_phone_notes"),
+            ("Acme 2 Go", "acme2_go"),
+        ):
+            with self.subTest(app_name=app_name):
+                self.assertEqual(snake, read(minimal(app_name=app_name)).spec.snake_name)
+
+    def test_the_lower_form_has_no_separators(self):
+        self.assertEqual("mygreatapp", read(minimal(app_name="My Great App")).spec.lower_name)
+
+    def test_the_package_path_uses_directory_separators(self):
+        self.assertEqual("com/acme/field", read(minimal()).spec.package_path)
+
+
 class OverrideTest(unittest.TestCase):
 
     def test_dotted_and_flat_keys(self):
