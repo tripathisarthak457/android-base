@@ -26,9 +26,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppHaptic
-import com.base.app.core.designsystem.foundation.minimumTouchTarget
-import com.base.app.core.designsystem.foundation.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
+import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 

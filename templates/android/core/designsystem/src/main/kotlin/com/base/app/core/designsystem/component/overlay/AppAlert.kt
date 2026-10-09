@@ -17,9 +17,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,11 +34,11 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppSurface
-import com.base.app.core.designsystem.foundation.HairlineEdge
-import com.base.app.core.designsystem.foundation.PressFeedback
-import com.base.app.core.designsystem.foundation.hairline
-import com.base.app.core.designsystem.foundation.pressable
+import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.foundation.draw.HairlineEdge
+import com.base.app.core.designsystem.foundation.draw.hairline
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**

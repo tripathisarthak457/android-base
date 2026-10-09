@@ -43,10 +43,10 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.ACTIVITY_SPOKES
 import com.base.app.core.designsystem.component.feedback.drawActivitySpokes
-import com.base.app.core.designsystem.foundation.AppHaptic
-import com.base.app.core.designsystem.foundation.LocalHapticsEnabled
 import com.base.app.core.designsystem.foundation.LocalTopChrome
-import com.base.app.core.designsystem.foundation.constant
+import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
+import com.base.app.core.designsystem.foundation.interaction.constant
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.LocalReduceMotion

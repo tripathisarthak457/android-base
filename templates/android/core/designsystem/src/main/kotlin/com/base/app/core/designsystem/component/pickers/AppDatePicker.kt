@@ -33,13 +33,14 @@ import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppHaptic
-import com.base.app.core.designsystem.foundation.PressFeedback
-import com.base.app.core.designsystem.foundation.pressable
-import com.base.app.core.designsystem.foundation.rememberAppHaptics
-import com.base.app.core.designsystem.foundation.rememberCurrentLocale
+import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
+import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -47,7 +48,6 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
-import kotlinx.coroutines.launch
 
 /**
  * A month calendar. Swipe sideways or use the arrows to change month; the week starts on the

@@ -36,8 +36,8 @@ import com.base.app.core.designsystem.component.navigation.AppBottomBar
 import com.base.app.core.designsystem.component.navigation.AppBottomBarDefaults
 import com.base.app.core.designsystem.component.navigation.AppNavigationRail
 import com.base.app.core.designsystem.component.navigation.BottomNavItem
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.WindowWidth
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
 

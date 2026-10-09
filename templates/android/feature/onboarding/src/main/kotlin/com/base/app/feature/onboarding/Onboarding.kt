@@ -32,10 +32,10 @@ import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.navigation.AppPager
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppSurface
-import com.base.app.core.designsystem.foundation.AppTwoPane
-import com.base.app.core.designsystem.foundation.centeredMaxWidth
-import com.base.app.core.designsystem.foundation.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.adaptive.AppTwoPane
+import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
+import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel

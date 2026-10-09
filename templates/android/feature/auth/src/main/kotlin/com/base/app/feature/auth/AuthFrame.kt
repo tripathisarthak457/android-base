@@ -30,9 +30,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
+import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.WindowWidth
 
 /**
  * The frame the sign-in, sign-up and reset screens share.

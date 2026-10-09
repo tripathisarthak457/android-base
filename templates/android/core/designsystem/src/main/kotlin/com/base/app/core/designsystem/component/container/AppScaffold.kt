@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.Dp
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.LocalTopChrome
-import com.base.app.core.designsystem.foundation.centeredMaxWidth
+import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**

@@ -36,8 +36,8 @@ import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.text.AppFiguresText
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppOverscroll
-import com.base.app.core.designsystem.foundation.bleed
+import com.base.app.core.designsystem.foundation.draw.bleed
+import com.base.app.core.designsystem.foundation.scroll.AppOverscroll
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 

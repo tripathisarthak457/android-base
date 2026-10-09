@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.base.app.core.designsystem.foundation.HairlineEdge
-import com.base.app.core.designsystem.foundation.hairline
+import com.base.app.core.designsystem.foundation.draw.HairlineEdge
+import com.base.app.core.designsystem.foundation.draw.hairline
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**

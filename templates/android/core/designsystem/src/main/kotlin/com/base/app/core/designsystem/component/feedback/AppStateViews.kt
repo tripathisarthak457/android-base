@@ -27,7 +27,7 @@ import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppSurface
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 

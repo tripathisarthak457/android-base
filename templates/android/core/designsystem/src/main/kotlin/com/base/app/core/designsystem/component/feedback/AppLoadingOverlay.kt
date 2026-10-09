@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.overlay.HostedOverlay
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppSurface
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**

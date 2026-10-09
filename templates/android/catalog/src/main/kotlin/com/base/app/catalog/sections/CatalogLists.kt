@@ -29,9 +29,9 @@ import com.base.app.core.designsystem.component.list.SwipeAction
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.HairlineEdge
-import com.base.app.core.designsystem.foundation.groupItem
-import com.base.app.core.designsystem.foundation.hairline
+import com.base.app.core.designsystem.foundation.draw.HairlineEdge
+import com.base.app.core.designsystem.foundation.draw.groupItem
+import com.base.app.core.designsystem.foundation.draw.hairline
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay

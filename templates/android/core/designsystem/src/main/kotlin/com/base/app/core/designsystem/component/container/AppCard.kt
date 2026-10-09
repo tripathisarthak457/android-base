@@ -12,11 +12,11 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.foundation.AppSurface
-import com.base.app.core.designsystem.foundation.PressFeedback
-import com.base.app.core.designsystem.foundation.disabledAlpha
-import com.base.app.core.designsystem.foundation.offsetShadow
-import com.base.app.core.designsystem.foundation.pressable
+import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.foundation.draw.disabledAlpha
+import com.base.app.core.designsystem.foundation.draw.offsetShadow
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.CardTreatment
 

@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonSize
-import com.base.app.core.designsystem.foundation.disabledAlpha
+import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 

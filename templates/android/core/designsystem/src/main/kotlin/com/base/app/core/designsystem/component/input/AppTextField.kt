@@ -42,7 +42,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.disabledAlpha
+import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.FieldTreatment
 

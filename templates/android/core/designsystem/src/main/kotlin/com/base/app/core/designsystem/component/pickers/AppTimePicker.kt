@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.rememberCurrentLocale
+import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
 import com.base.app.core.designsystem.theme.AppTheme
 import java.text.DateFormatSymbols
 import java.time.LocalTime

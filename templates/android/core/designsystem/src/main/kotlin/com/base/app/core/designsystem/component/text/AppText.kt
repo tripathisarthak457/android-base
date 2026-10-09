@@ -12,8 +12,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import com.base.app.core.designsystem.foundation.LocalContentColor
-import com.base.app.core.designsystem.foundation.LocalTextStyle
+import com.base.app.core.designsystem.foundation.content.LocalContentColor
+import com.base.app.core.designsystem.foundation.content.LocalTextStyle
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**

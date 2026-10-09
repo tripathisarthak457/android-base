@@ -22,9 +22,9 @@ import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppSurface
-import com.base.app.core.designsystem.foundation.AppTwoPane
+import com.base.app.core.designsystem.foundation.adaptive.AppTwoPane
 import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable

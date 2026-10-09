@@ -18,10 +18,15 @@ import com.base.app.core.designsystem.component.overlay.AppOverlayHost
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
-import com.base.app.core.designsystem.foundation.LocalContentColor
-import com.base.app.core.designsystem.foundation.LocalHapticsEnabled
-import com.base.app.core.designsystem.foundation.LocalTextStyle
-import com.base.app.core.designsystem.foundation.NoIndication
+import com.base.app.core.designsystem.foundation.adaptive.AppLayout
+import com.base.app.core.designsystem.foundation.adaptive.AppWindowSize
+import com.base.app.core.designsystem.foundation.adaptive.LocalAppLayout
+import com.base.app.core.designsystem.foundation.adaptive.LocalAppWindowSize
+import com.base.app.core.designsystem.foundation.adaptive.rememberAppWindowSize
+import com.base.app.core.designsystem.foundation.content.LocalContentColor
+import com.base.app.core.designsystem.foundation.content.LocalTextStyle
+import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
+import com.base.app.core.designsystem.foundation.interaction.NoIndication
 
 /** Which palette to render with. [System] follows the device; the other two override it. */
 enum class ThemeMode {

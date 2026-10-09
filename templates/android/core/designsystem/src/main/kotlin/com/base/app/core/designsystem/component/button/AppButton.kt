@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.em
 import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.PressFeedback
-import com.base.app.core.designsystem.foundation.ProvideContentColor
-import com.base.app.core.designsystem.foundation.disabledAlpha
-import com.base.app.core.designsystem.foundation.offsetShadow
-import com.base.app.core.designsystem.foundation.pressable
+import com.base.app.core.designsystem.foundation.content.ProvideContentColor
+import com.base.app.core.designsystem.foundation.draw.disabledAlpha
+import com.base.app.core.designsystem.foundation.draw.offsetShadow
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**

@@ -14,17 +14,17 @@ import com.base.app.catalog.CatalogGroup
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
-import com.base.app.core.designsystem.component.data.AppAnimatedCounter
-import com.base.app.core.designsystem.component.data.AppBarChart
-import com.base.app.core.designsystem.component.data.AppColumnType
-import com.base.app.core.designsystem.component.data.AppDataTable
-import com.base.app.core.designsystem.component.data.AppKeyValueGrid
-import com.base.app.core.designsystem.component.data.AppRating
-import com.base.app.core.designsystem.component.data.AppSparkline
-import com.base.app.core.designsystem.component.data.AppStatTile
-import com.base.app.core.designsystem.component.data.AppTableColumn
-import com.base.app.core.designsystem.component.data.AppTimeline
-import com.base.app.core.designsystem.component.data.TimelineStep
+import com.base.app.core.designsystem.component.datadisplay.AppAnimatedCounter
+import com.base.app.core.designsystem.component.datadisplay.AppBarChart
+import com.base.app.core.designsystem.component.datadisplay.AppColumnType
+import com.base.app.core.designsystem.component.datadisplay.AppDataTable
+import com.base.app.core.designsystem.component.datadisplay.AppKeyValueGrid
+import com.base.app.core.designsystem.component.datadisplay.AppRating
+import com.base.app.core.designsystem.component.datadisplay.AppSparkline
+import com.base.app.core.designsystem.component.datadisplay.AppStatTile
+import com.base.app.core.designsystem.component.datadisplay.AppTableColumn
+import com.base.app.core.designsystem.component.datadisplay.AppTimeline
+import com.base.app.core.designsystem.component.datadisplay.TimelineStep
 
 @Composable
 fun DataSection() {

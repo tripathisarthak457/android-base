@@ -8,15 +8,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.base.app.catalog.CatalogGroup
-import com.base.app.core.designsystem.component.fields.AppDecimalField
-import com.base.app.core.designsystem.component.fields.AppMoneyField
-import com.base.app.core.designsystem.component.fields.AppOtpField
-import com.base.app.core.designsystem.component.fields.AppPhoneField
-import com.base.app.core.designsystem.component.fields.AppRangeSlider
-import com.base.app.core.designsystem.component.fields.AppSelectField
-import com.base.app.core.designsystem.component.fields.AppStepIndicator
-import com.base.app.core.designsystem.component.fields.AppStepper
-import com.base.app.core.designsystem.component.fields.AppTagField
+import com.base.app.core.designsystem.component.formfields.AppDecimalField
+import com.base.app.core.designsystem.component.formfields.AppMoneyField
+import com.base.app.core.designsystem.component.formfields.AppOtpField
+import com.base.app.core.designsystem.component.formfields.AppPhoneField
+import com.base.app.core.designsystem.component.formfields.AppRangeSlider
+import com.base.app.core.designsystem.component.formfields.AppSelectField
+import com.base.app.core.designsystem.component.formfields.AppStepIndicator
+import com.base.app.core.designsystem.component.formfields.AppStepper
+import com.base.app.core.designsystem.component.formfields.AppTagField
 import com.base.app.core.designsystem.component.text.AppFiguresText
 import com.base.app.core.designsystem.theme.AppTheme
 

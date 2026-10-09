@@ -39,7 +39,7 @@ import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppSurface
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 
