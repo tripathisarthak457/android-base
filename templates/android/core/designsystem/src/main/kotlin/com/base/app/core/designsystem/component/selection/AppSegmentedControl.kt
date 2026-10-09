@@ -8,7 +8,6 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -33,6 +32,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -85,13 +85,14 @@ fun AppSegmentedControl(
             .padding(ThumbInset),
     ) {
         val segmentPx = with(density) { maxWidth.toPx() } / options.size
+        // Sized to the segments beside it, which set the height; the thumb is one segment wide and
+        // placed across the whole width, so it mirrors with the segments in right-to-left layouts.
         Box(
             Modifier
-                .fillMaxHeight()
+                .matchParentSize()
                 .layout { measurable, constraints ->
-                    val width = segmentPx.roundToInt()
-                    val placeable = measurable.measure(constraints.copy(minWidth = width, maxWidth = width))
-                    layout(width, placeable.height) {
+                    val placeable = measurable.measure(Constraints.fixed(segmentPx.roundToInt(), constraints.maxHeight))
+                    layout(constraints.maxWidth, constraints.maxHeight) {
                         val x = ((drag ?: position.value) * segmentPx).roundToInt()
                         placeable.placeRelative(x, 0)
                     }
