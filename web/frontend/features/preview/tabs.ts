@@ -8,7 +8,7 @@ export const MAX_TABS = 5;
 
 export type TabIcon = "home" | "list" | "search" | "user" | "settings" | "grid" | "bag" | "star" | "inbox" | "chart" | "bookmark";
 
-export type Screen = "signin" | "home" | "feed" | "search" | "profile" | "settings" | "module" | "empty";
+export type Screen = "signin" | "home" | "feed" | "search" | "profile" | "settings" | "module";
 
 export type PreviewTab = {
   key: string;
@@ -47,7 +47,7 @@ export function planTabs(features: ReadonlySet<string>, modules: readonly string
     candidates.push({ key: `module:${name}`, label: moduleTitle(name), icon: MODULE_ICONS[index % MODULE_ICONS.length] ?? "grid", screen: "module" });
   });
   if (candidates.length === 0) {
-    return { tabs: [{ key: "module:home", label: "Home", icon: "home", screen: "empty" }], overflow: [], scaffoldedHome: true };
+    return { tabs: [{ key: "module:home", label: "Home", icon: "home", screen: "module" }], overflow: [], scaffoldedHome: true };
   }
   return {
     tabs: candidates.slice(0, MAX_TABS),

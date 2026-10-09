@@ -1,9 +1,6 @@
-"use client";
-
 /** Who wrote this, and how to reach them. Deliberately at the bottom and deliberately small. */
 
-import { motion } from "framer-motion";
-import { Card, press } from "./primitives";
+import { Card } from "./ui.tsx";
 
 const GITHUB_USER = "tripathisarthak457";
 const EMAIL = "tripathisarthak457@gmail.com";
@@ -39,8 +36,8 @@ const LINKS = [
 export function Creator() {
   return (
     <section className="border-t border-ink-800">
-      <div className="mx-auto max-w-4xl px-6 py-16">
-        <p className="text-xs font-medium uppercase tracking-widest text-ink-500">
+      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
+        <p className="text-xs font-medium uppercase tracking-widest text-ink-400">
           Who made this
         </p>
 
@@ -58,13 +55,12 @@ export function Creator() {
 
             <div className="flex shrink-0 flex-col gap-2">
               {LINKS.map((link) => (
-                <motion.a
+                <a
                   key={link.label}
                   href={link.href}
                   {...(link.href.startsWith("mailto:")
                     ? {}
                     : { target: "_blank", rel: "noopener noreferrer" })}
-                  {...press}
                   className="flex items-center gap-2.5 rounded-lg border border-ink-700 bg-ink-850 px-3.5 py-2.5 text-sm text-ink-200 transition-colors hover:border-ink-600 hover:text-ink-100"
                 >
                   <svg
@@ -78,8 +74,8 @@ export function Creator() {
                     {link.icon}
                   </svg>
                   <span className="font-medium">{link.label}</span>
-                  <span className="truncate font-mono text-xs text-ink-500">{link.handle}</span>
-                </motion.a>
+                  <span className="truncate font-mono text-xs text-ink-400">{link.handle}</span>
+                </a>
               ))}
             </div>
           </div>

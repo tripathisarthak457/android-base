@@ -3,17 +3,12 @@
 /** The handful of controls the site is built from. */
 
 import { motion, type HTMLMotionProps } from "framer-motion";
-import type { ReactNode } from "react";
+import { type InputHTMLAttributes, type ReactNode, useId } from "react";
 
-/**
- * The press feel: the app's Standard motion style, 0.96 at a stiffness of 1400 and a damping ratio
- * of 0.6, converted for framer-motion. Hover barely lifts, so a page of cards does not swim under
- * the cursor.
- */
+/** A press that answers like the template's Scale feedback: down under the finger, back on a spring. */
 export const press = {
-  whileHover: { scale: 1.01 },
   whileTap: { scale: 0.97 },
-  transition: { type: "spring" as const, stiffness: 1400, damping: 45 },
+  transition: { type: "spring" as const, stiffness: 1400, damping: 60 },
 };
 
 export function Button({
@@ -28,10 +23,8 @@ export function Button({
   size?: "small" | "medium" | "large";
 } & HTMLMotionProps<"button">) {
   const variants = {
-    primary:
-      "bg-accent text-on-accent font-bold hover:bg-accent-bright disabled:bg-ink-700 disabled:text-ink-400",
-    secondary:
-      "bg-ink-800 text-ink-100 border border-ink-600 hover:border-ink-500 hover:bg-ink-700",
+    primary: "bg-accent text-on-accent font-bold hover:bg-accent-bright disabled:bg-ink-700 disabled:text-ink-400",
+    secondary: "bg-ink-800 text-ink-100 border border-ink-600 hover:border-ink-500 hover:bg-ink-700",
     ghost: "text-ink-300 hover:text-ink-100 hover:bg-ink-800",
   };
   const sizes = {
@@ -42,6 +35,7 @@ export function Button({
 
   return (
     <motion.button
+      type="button"
       {...press}
       className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
       {...rest}
@@ -51,42 +45,50 @@ export function Button({
   );
 }
 
+export type ControlProps = { id: string; "aria-invalid"?: true; "aria-describedby"?: string };
+
+/**
+ * A label, its control, and the hint and error under it. The hint stays when an error appears:
+ * a field that loses its instructions the moment you get it wrong has removed them exactly when
+ * they became relevant. The control is wired to both through `aria-describedby`.
+ */
 export function Field({
   label,
   hint,
   error,
   children,
 }: {
-  label: string;
-  hint?: string;
+  label: ReactNode;
+  hint?: ReactNode;
   error?: string;
-  children: ReactNode;
+  children: (control: ControlProps) => ReactNode;
 }) {
+  const id = useId();
+  const described = [hint ? `${id}-hint` : "", error ? `${id}-error` : ""].filter(Boolean).join(" ");
   return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-ink-200">{label}</span>
-      {children}
-      {/*
-        The hint stays put when an error appears rather than being replaced by it. A field whose
-        helper text vanishes the moment you get it wrong has taken away the instructions at
-        exactly the point they became relevant.
-      */}
-      {hint && !error && <span className="mt-1.5 block text-xs text-ink-400">{hint}</span>}
-      {error && <span className="mt-1.5 block text-xs text-rose">{error}</span>}
-    </label>
+    <div>
+      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-ink-200">
+        {label}
+      </label>
+      {children({ id, ...(error ? { "aria-invalid": true } : {}), ...(described ? { "aria-describedby": described } : {}) })}
+      {hint && (
+        <p id={`${id}-hint`} className="mt-1.5 text-xs text-ink-400">
+          {hint}
+        </p>
+      )}
+      {error && (
+        <p id={`${id}-error`} className="mt-1 text-xs text-rose">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
 
-export function TextInput({
-  invalid,
-  className = "",
-  ...rest
-}: { invalid?: boolean } & React.InputHTMLAttributes<HTMLInputElement>) {
+export function TextInput({ className = "", ...rest }: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
-      className={`h-11 w-full rounded-lg border bg-ink-900 px-3.5 text-[15px] text-ink-100 placeholder:text-ink-500 transition-colors focus:border-accent focus:outline-none ${
-        invalid ? "border-rose" : "border-ink-600 hover:border-ink-500"
-      } ${className}`}
+      className={`h-11 w-full rounded-lg border border-ink-600 bg-ink-900 px-3.5 text-[15px] text-ink-100 transition-colors placeholder:text-ink-500 hover:border-ink-500 focus:border-accent focus:outline-none aria-invalid:border-rose ${className}`}
       {...rest}
     />
   );
@@ -111,114 +113,87 @@ export function Toggle({
       aria-label={label}
       disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-40 ${
-        checked ? "bg-accent" : "bg-ink-600"
-      }`}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-40 ${checked ? "bg-accent" : "bg-ink-600"}`}
     >
       <motion.span
-        layout
-        transition={{ type: "spring", stiffness: 620, damping: 32 }}
-        className="absolute top-0.5 h-5 w-5 rounded-full bg-ink-850 shadow"
-        style={{ left: checked ? 22 : 2 }}
+        animate={{ x: checked ? 20 : 0 }}
+        transition={{ type: "spring", stiffness: 620, damping: 40 }}
+        className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-ink-850 shadow"
       />
     </button>
   );
 }
 
+/**
+ * A radio group drawn as one pill per option. Native radios underneath, so arrow keys move the
+ * selection and assistive tech announces the group and its state.
+ */
 export function Segmented<T extends string>({
+  label,
   options,
   value,
   onChange,
-  layoutId = "segment-pill",
 }: {
+  label: string;
   options: { value: T; label: string }[];
   value: T;
   onChange: (next: T) => void;
-  /** Distinct per control on the page, or two pills animate towards each other. */
-  layoutId?: string;
 }) {
+  const name = useId();
   return (
-    <div className="inline-flex rounded-lg border border-ink-600 bg-ink-900 p-1">
+    <div role="radiogroup" aria-label={label} className="inline-flex rounded-lg border border-ink-600 bg-ink-900 p-1">
       {options.map((option) => (
-        <button
+        <label
           key={option.value}
-          type="button"
-          onClick={() => onChange(option.value)}
-          className="relative rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors"
+          className={`relative cursor-pointer rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+            value === option.value ? "bg-ink-700 text-ink-100" : "text-ink-400 hover:text-ink-200"
+          }`}
         >
-          {/*
-            One shared `layoutId` is what makes the pill slide between segments instead of
-            fading out in one place and in at another.
-          */}
-          {value === option.value && (
-            <motion.span
-              layoutId={layoutId}
-              className="absolute inset-0 rounded-md bg-ink-700"
-              transition={{ type: "spring", stiffness: 500, damping: 34 }}
-            />
-          )}
-          <span
-            className={`relative z-10 ${value === option.value ? "text-ink-100" : "text-ink-400"}`}
-          >
-            {option.label}
-          </span>
-        </button>
+          <input
+            type="radio"
+            name={name}
+            value={option.value}
+            checked={value === option.value}
+            onChange={() => onChange(option.value)}
+            className="sr-only"
+          />
+          {option.label}
+        </label>
       ))}
     </div>
   );
 }
 
-export function Card({
-  children,
+/** A selectable card: a native radio or checkbox under a styled label. */
+export function ChoiceCard({
+  type,
+  name,
+  checked,
+  disabled,
+  onChange,
   className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={`rounded-xl border border-ink-700 bg-ink-850 ${className}`}>{children}</div>
-  );
-}
-
-export function Badge({
   children,
-  tone = "neutral",
 }: {
+  type: "radio" | "checkbox";
+  name?: string;
+  checked: boolean;
+  disabled?: boolean;
+  onChange: () => void;
+  className?: string;
   children: ReactNode;
-  tone?: "neutral" | "accent" | "mint" | "amber";
 }) {
-  const tones = {
-    neutral: "bg-ink-800 text-ink-300 border-ink-600",
-    accent: "bg-accent-dim text-accent-bright border-accent/30",
-    mint: "bg-mint/10 text-mint border-mint/25",
-    amber: "bg-amber/10 text-amber border-amber/25",
-  };
   return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${tones[tone]}`}
+    <label
+      className={`block rounded-xl border text-left transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
+        disabled
+          ? "cursor-not-allowed border-ink-700 bg-ink-900 opacity-60"
+          : checked
+            ? "cursor-pointer border-accent/60 bg-accent-dim/50"
+            : "cursor-pointer border-ink-700 bg-ink-900 hover:border-ink-600"
+      } ${className}`}
     >
+      <input type={type} name={name} checked={checked} disabled={disabled} onChange={onChange} className="sr-only" />
       {children}
-    </span>
-  );
-}
-
-export function Spinner({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={`animate-spin ${className}`}
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden
-    >
-      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2" />
-      <path
-        d="M14.5 8A6.5 6.5 0 0 0 8 1.5"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
+    </label>
   );
 }

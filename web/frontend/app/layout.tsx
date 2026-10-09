@@ -1,17 +1,23 @@
 import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { SiteMotion } from "../components/site-motion";
 import "./globals.css";
+
+// Self-hosted at build time: no render-blocking request to Google, no layout shift, and no
+// visitor's address sent to a third party just to draw the page.
+const display = Bricolage_Grotesque({ subsets: ["latin"], axes: ["opsz"], variable: "--font-bricolage", display: "swap" });
+const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-instrument", display: "swap" });
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Android base — a project generator",
   description:
-    "A multi-module Jetpack Compose starter with no Material dependency, generated with your " +
-    "package name, your colours, one of four design styles and only the features you ticked. " +
-    "Downloads as a zip that compiles.",
+    "A multi-module Jetpack Compose starter with no Material components, generated with your package name, " +
+    "your colours, a design style and only the features you ticked. Downloads as a zip that compiles.",
   metadataBase: new URL("https://android-base.vercel.app"),
   openGraph: {
     title: "Android base — a project generator",
-    description:
-      "Multi-module Compose, MVI, Hilt, Ktor. Pick your features and a look, get a zip that builds.",
+    description: "Multi-module Compose, MVI, Navigation 3. Pick your platform, features and a look; get a zip that builds.",
     type: "website",
   },
   robots: { index: true, follow: true },
@@ -39,17 +45,13 @@ try {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${sans.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <SiteMotion>{children}</SiteMotion>
+      </body>
     </html>
   );
 }

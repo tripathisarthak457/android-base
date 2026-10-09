@@ -1,0 +1,148 @@
+"use client";
+
+import { Fragment, useEffect, useState } from "react";
+import { Button } from "../../../components/primitives.tsx";
+import { type Generations as GenerationsData, downloadCsv, useAdminQuery } from "../api.ts";
+import { OUTCOME_COLOUR, seconds } from "../charts.tsx";
+import { Panel, type PanelProps } from "../Panel.tsx";
+
+const PAGE = 50;
+const CSV_ROWS = 10_000;
+
+/** Every generation in the window, newest first, a page at a time; a row opens its sanitised spec. */
+export function Generations({ token, query, version, onUnauthorized }: PanelProps) {
+  const [cursors, setCursors] = useState<number[]>([]);
+  const [open, setOpen] = useState<number | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const [problem, setProblem] = useState<string | null>(null);
+  const before = cursors.at(-1);
+  const result = useAdminQuery<GenerationsData>("generations", token, `${query}&limit=${PAGE}${before ? `&before=${before}` : ""}`, version, onUnauthorized);
+
+  // A new filter starts again from the newest row.
+  useEffect(() => setCursors([]), [query]);
+
+  async function exportCsv() {
+    setExporting(true);
+    setProblem(null);
+    try {
+      await downloadCsv(token, `${query}&limit=${CSV_ROWS}`);
+    } catch (error) {
+      setProblem(error instanceof Error ? error.message : "The export failed.");
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  return (
+    <Panel
+      title="Generations"
+      note={`page ${cursors.length + 1}`}
+      result={result}
+      actions={
+        <Button variant="secondary" size="small" onClick={() => void exportCsv()} disabled={exporting}>
+          {exporting ? "Exporting…" : `CSV (up to ${CSV_ROWS.toLocaleString()})`}
+        </Button>
+      }
+    >
+      {(data) => (
+        <>
+          {problem && <p className="mb-3 text-xs text-rose">{problem}</p>}
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] text-left text-xs">
+              <thead>
+                <tr className="text-ink-400">
+                  {["When", "Outcome", "App", "Target", "Preset", "Features", "Style", "SDK", "Time", "Where"].map((cell) => (
+                    <th key={cell} scope="col" className="pb-2 pr-3 font-medium">
+                      {cell}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ink-800">
+                {data.items.length === 0 && (
+                  <tr>
+                    <td colSpan={10} className="py-3 text-ink-400">
+                      Nothing in this window.
+                    </td>
+                  </tr>
+                )}
+                {data.items.map((row) => (
+                  <Fragment key={row.id}>
+                    <tr className="cursor-pointer text-ink-200 hover:bg-ink-900" onClick={() => setOpen(open === row.id ? null : row.id)}>
+                      <td className="py-2 pr-3 font-mono text-[11px] whitespace-nowrap">
+                        <button type="button" aria-expanded={open === row.id} className="text-left">
+                          {new Date(row.at).toLocaleString()}
+                        </button>
+                      </td>
+                      <td className="py-2 pr-3 whitespace-nowrap">
+                        <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: OUTCOME_COLOUR[row.outcome] ?? "gray" }} />
+                        {row.outcome}
+                      </td>
+                      <td className="max-w-[180px] py-2 pr-3">
+                        <span className="block truncate">{row.app_name || "—"}</span>
+                        <span className="block truncate font-mono text-[11px] text-ink-400">{row.package_name}</span>
+                      </td>
+                      <td className="py-2 pr-3 font-mono">{row.target}</td>
+                      <td className="py-2 pr-3">
+                        {row.preset}
+                        {(row.added.length > 0 || row.removed.length > 0) && (
+                          <span className="block font-mono text-[10px] text-ink-400">
+                            {row.added.length > 0 && `+${row.added.length}`} {row.removed.length > 0 && `−${row.removed.length}`}
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-2 pr-3 font-mono">{row.features.length}</td>
+                      <td className="py-2 pr-3 whitespace-nowrap">
+                        {row.design_style} · {row.motion_style}
+                        {row.glass ? " · glass" : ""}
+                      </td>
+                      <td className="py-2 pr-3 font-mono">{row.min_sdk ?? "—"}</td>
+                      <td className="py-2 pr-3 font-mono whitespace-nowrap">{seconds(row.duration_ms)}</td>
+                      <td className="py-2 font-mono text-[11px] whitespace-nowrap">
+                        {row.country || "—"} · {row.device_class || "—"} · {row.client}
+                      </td>
+                    </tr>
+                    {open === row.id && (
+                      <tr>
+                        <td colSpan={10} className="bg-ink-900 p-3">
+                          {row.failure_reason && (
+                            <p className="mb-2 text-xs text-rose">
+                              {row.failure_field && <span className="font-mono">{row.failure_field}: </span>}
+                              {row.failure_reason}
+                            </p>
+                          )}
+                          <p className="mb-2 font-mono text-[11px] text-ink-400">
+                            #{row.id} · {row.architecture} · {row.languages.join(", ") || "en"} · modules {row.feature_modules.join(", ") || "none"} · config{" "}
+                            {row.config_ms === null ? "—" : seconds(row.config_ms)} · zip {row.zip_bytes === null ? "—" : `${Math.round(row.zip_bytes / 1024)} KB`} ·{" "}
+                            {row.cold_start ? "cold start" : "warm"} · {row.generator_commit.slice(0, 7)}
+                          </p>
+                          <pre className="max-h-96 overflow-auto rounded-lg bg-ink-950 p-3 font-mono text-[11px] leading-relaxed text-ink-300">{JSON.stringify(row.spec, null, 2)}</pre>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-3 flex justify-between">
+            <Button variant="ghost" size="small" onClick={() => setCursors((current) => current.slice(0, -1))} disabled={cursors.length === 0}>
+              Newer
+            </Button>
+            <Button
+              variant="ghost"
+              size="small"
+              onClick={() => {
+                const next = data.next_before;
+                if (next !== null) setCursors((current) => [...current, next]);
+              }}
+              disabled={data.next_before === null}
+            >
+              Older
+            </Button>
+          </div>
+        </>
+      )}
+    </Panel>
+  );
+}

@@ -1,0 +1,94 @@
+"use client";
+
+import { useId } from "react";
+import { ChoiceCard, Toggle } from "../../../components/primitives.tsx";
+import type { Catalogue, Spring } from "../../catalogue/types.ts";
+import { LivePreview, usePreviewTheme } from "../../preview/LivePreview.tsx";
+import { MotionPreview } from "../../preview/MotionPreview.tsx";
+import type { Configurator } from "../useConfigurator.ts";
+import { usePreviewInput } from "./LookStep.tsx";
+
+function describe(spring: Spring | undefined): string {
+  if (!spring) return "";
+  return `${spring.response.toFixed(2)} s${spring.bounce > 0 ? ` · bounce ${spring.bounce.toFixed(2)}` : ""}`;
+}
+
+function MotionCard({ catalogue, model, styleKey, title, description, name, dark }: {
+  catalogue: Catalogue;
+  model: Configurator;
+  styleKey: string;
+  title: string;
+  description: string;
+  name: string;
+  dark: boolean;
+}) {
+  const input = usePreviewInput(catalogue, model);
+  const theme = usePreviewTheme({ ...input, motionStyle: styleKey }, dark);
+  const springs = catalogue.tokens.motion.styles[styleKey]?.springs;
+  const rows: [string, string][] = [
+    ["press", describe(springs?.release)],
+    ["push and pop", describe(springs?.screen)],
+    ["selection", describe(springs?.selection)],
+  ];
+  return (
+    <ChoiceCard
+      type="radio"
+      name={name}
+      checked={model.state.motionStyle === styleKey}
+      onChange={() => model.dispatch({ type: "motionStyle", value: styleKey })}
+      className="flex gap-4 p-4"
+    >
+      <MotionPreview theme={theme} tokens={catalogue.tokens} font={input.font} />
+      <span className="min-w-0">
+        <span className="block font-display text-base font-bold text-ink-100">{title}</span>
+        <span className="mt-1 block text-xs leading-relaxed text-ink-400">{description}</span>
+        <span className="mt-3 block space-y-0.5 font-mono text-[10.5px]">
+          {rows.map(([label, value]) => (
+            <span key={label} className="flex gap-2">
+              <span className="w-[86px] shrink-0 text-ink-400">{label}</span>
+              <span className="text-ink-300">{value}</span>
+            </span>
+          ))}
+        </span>
+      </span>
+    </ChoiceCard>
+  );
+}
+
+export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: Configurator; dark: boolean; onDark: (dark: boolean) => void }) {
+  const { state, dispatch, target } = model;
+  const input = usePreviewInput(catalogue, model);
+  const name = useId();
+  return (
+    <div className="grid gap-10 lg:grid-cols-[1fr_300px]">
+      <div className="min-w-0 space-y-6">
+        <div>
+          <p className="text-sm font-medium text-ink-200">How it moves</p>
+          <p className="mt-1 text-xs leading-relaxed text-ink-400">
+            Each loop runs the style&apos;s own springs from the design tokens: a press and its release, a screen pushed and popped,
+            a tab switch. Hold the button to feel the press. Every spring is interruptible and keeps its velocity in the app.
+          </p>
+        </div>
+        <fieldset className="grid gap-3 sm:grid-cols-2">
+          <legend className="sr-only">Motion style</legend>
+          {target.motion_styles.map((style) => (
+            <MotionCard key={style.key} catalogue={catalogue} model={model} styleKey={style.key} title={style.title} description={style.description} name={name} dark={dark} />
+          ))}
+        </fieldset>
+
+        <div className="flex items-start gap-3 rounded-xl border border-ink-700 bg-ink-900 p-4">
+          <Toggle checked={state.hapticsEnabled} onChange={(value) => dispatch({ type: "haptics", value })} label="Haptics on by default" />
+          <div>
+            <p className="text-sm font-medium text-ink-100">Haptics on by default</p>
+            <p className="mt-0.5 text-xs leading-relaxed text-ink-400">
+              A light tick when a selection changes, a switch flips or a pull reaches its threshold, as iOS does; never on an
+              ordinary tap. The phone&apos;s own setting still applies on top.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <LivePreview input={input} dark={dark} onDark={onDark} />
+    </div>
+  );
+}

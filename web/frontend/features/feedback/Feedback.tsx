@@ -1,0 +1,299 @@
+"use client";
+
+import { useEffect, useId, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { Button, Field, TextInput, press } from "../../components/primitives.tsx";
+import { Spinner } from "../../components/ui.tsx";
+import { BUILD, apiError, postJson } from "../../lib/api.ts";
+
+/**
+ * The bug report form. Two things make a report worth having: enough context to reproduce it, and
+ * few enough questions that somebody actually finishes it.
+ */
+
+export type ReportContext = {
+  target: string;
+  appName: string;
+  packageName: string;
+  features: string[];
+  preset: string;
+  minSdk: number;
+  motionStyle: string;
+  fontName: string;
+  accentColour: string;
+};
+
+type Kind = "bug" | "idea" | "praise" | "question";
+type Severity = "blocks" | "annoying" | "cosmetic";
+type Area = "website" | "generated-project" | "cli" | "docs";
+
+const KINDS: { value: Kind; label: string; blurb: string }[] = [
+  { value: "bug", label: "Something is broken", blurb: "It did the wrong thing, or nothing" },
+  { value: "idea", label: "Suggestion", blurb: "Something that would make this better" },
+  { value: "question", label: "Question", blurb: "The docs did not answer it" },
+  { value: "praise", label: "It worked", blurb: "Useful to know too" },
+];
+
+const SEVERITIES: { value: Severity; label: string; blurb: string }[] = [
+  { value: "blocks", label: "Blocks me", blurb: "I cannot get a working project" },
+  { value: "annoying", label: "Annoying", blurb: "There is a way round it" },
+  { value: "cosmetic", label: "Cosmetic", blurb: "It looks wrong but works" },
+];
+
+const AREAS: { value: Area; label: string }[] = [
+  { value: "website", label: "This website" },
+  { value: "generated-project", label: "The project I downloaded" },
+  { value: "cli", label: "The command line tool" },
+  { value: "docs", label: "The documentation" },
+];
+
+function Choices<T extends string>({ legend, options, value, onChange, columns }: {
+  legend: string;
+  options: { value: T; label: string; blurb?: string }[];
+  value: T;
+  onChange: (next: T) => void;
+  columns: string;
+}) {
+  const name = useId();
+  return (
+    <fieldset>
+      <legend className="mb-2 text-sm font-medium text-ink-200">{legend}</legend>
+      <div className={`grid gap-2 ${columns}`}>
+        {options.map((option) => (
+          <label
+            key={option.value}
+            className={`cursor-pointer rounded-lg border p-3 text-left transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+              value === option.value ? "border-accent/50 bg-accent-dim/50" : "border-ink-700 bg-ink-850 hover:border-ink-600"
+            }`}
+          >
+            <input type="radio" name={name} checked={value === option.value} onChange={() => onChange(option.value)} className="sr-only" />
+            <span className="block text-sm font-semibold text-ink-100">{option.label}</span>
+            {option.blurb && <span className="mt-0.5 block text-xs text-ink-400">{option.blurb}</span>}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+/**
+ * A native modal dialog: the browser traps focus inside it, closes it on Escape, makes the page
+ * behind it inert, and returns focus to the button that opened it.
+ */
+export function FeedbackButton({ context }: { context: () => ReportContext }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const element = dialog.current;
+    if (!element) return;
+    if (open && !element.open) element.showModal();
+    if (!open && element.open) element.close();
+  }, [open]);
+
+  return (
+    <>
+      <motion.button
+        {...press}
+        type="button"
+        onClick={() => setOpen(true)}
+        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border border-ink-600 bg-ink-850/95 px-4 py-2.5 text-sm font-medium text-ink-200 shadow-lg backdrop-blur transition-colors hover:border-accent/50 hover:text-ink-100 max-sm:bottom-3 max-sm:right-3 max-sm:p-3"
+      >
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
+          <path d="M8 1.5 9.8 5.6l4.5.4-3.4 3 1 4.4L8 11.1l-3.9 2.3 1-4.4-3.4-3 4.5-.4L8 1.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+        </svg>
+        <span className="max-sm:sr-only">Report a problem</span>
+      </motion.button>
+      <dialog
+        ref={dialog}
+        aria-labelledby="feedback-title"
+        onClose={() => setOpen(false)}
+        onClick={(event) => {
+          if (event.target === dialog.current) setOpen(false);
+        }}
+        className="m-auto w-[calc(100%-2rem)] max-w-2xl rounded-2xl border border-ink-700 bg-ink-900 p-0 text-ink-100 shadow-2xl"
+      >
+        {open && <FeedbackForm context={context()} onClose={() => setOpen(false)} />}
+      </dialog>
+    </>
+  );
+}
+
+function FeedbackForm({ context, onClose }: { context: ReportContext; onClose: () => void }) {
+  const [kind, setKind] = useState<Kind>("bug");
+  const [severity, setSeverity] = useState<Severity>("annoying");
+  const [area, setArea] = useState<Area>("website");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [steps, setSteps] = useState("");
+  const [contact, setContact] = useState("");
+  const [attach, setAttach] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [failure, setFailure] = useState<string | null>(null);
+  const [sentId, setSentId] = useState<number | null>(null);
+
+  const bug = kind === "bug";
+  const canSend = title.trim().length >= 4 && body.trim().length >= 10 && !busy;
+
+  async function send() {
+    setBusy(true);
+    setFailure(null);
+    try {
+      const response = await postJson("/api/v1/feedback", {
+        kind,
+        severity: bug ? severity : "",
+        area,
+        title: title.trim(),
+        body: body.trim(),
+        steps: bug ? steps.trim() : "",
+        contact: contact.trim(),
+        pageUrl: `${location.origin}${location.pathname}`,
+        appVersion: BUILD,
+        ...(attach ? context : { features: [] }),
+      });
+      if (!response.ok) throw await apiError(response, "That could not be sent.");
+      const result = (await response.json()) as { id?: number };
+      setSentId(result.id ?? 0);
+    } catch (error) {
+      setFailure(error instanceof Error ? error.message : "Could not reach the server. GitHub issues work even when this does not.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (sentId !== null) {
+    return (
+      <div className="px-6 py-10 text-center" role="status">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-mint/15 text-2xl text-mint" aria-hidden>
+          ✓
+        </div>
+        <h2 id="feedback-title" className="mt-5 text-lg font-semibold text-ink-100">
+          Got it
+        </h2>
+        <p className="mx-auto mt-2 max-w-sm text-sm text-ink-400">
+          Report <span className="font-mono text-ink-300">#{sentId}</span>. If you left an email you will hear back when there is something to say.
+        </p>
+        <Button variant="secondary" className="mt-6" onClick={onClose}>
+          Close
+        </Button>
+      </div>
+    );
+  }
+
+  const attached: [string, string][] = [
+    ["Platform", context.target],
+    ["App name", context.appName],
+    ["Package", context.packageName],
+    ["Preset", context.preset],
+    ["Features", `${context.features.length} selected`],
+    ["Min SDK", context.minSdk ? String(context.minSdk) : "—"],
+    ["Typeface", context.fontName],
+    ["Accent", context.accentColour],
+  ];
+
+  return (
+    <form
+      method="dialog"
+      onSubmit={(event) => {
+        event.preventDefault();
+        if (canSend) void send();
+      }}
+    >
+      <header className="flex items-start justify-between gap-4 border-b border-ink-800 px-6 py-5">
+        <div>
+          <h2 id="feedback-title" className="text-lg font-semibold text-ink-100">
+            Tell us what happened
+          </h2>
+          <p className="mt-1 text-sm text-ink-400">Reports go straight to the person who can fix it.</p>
+        </div>
+        <button type="button" onClick={onClose} aria-label="Close" className="rounded-lg px-2 py-1 text-ink-400 transition-colors hover:bg-ink-800 hover:text-ink-100">
+          ✕
+        </button>
+      </header>
+
+      <div className="max-h-[65vh] space-y-5 overflow-y-auto px-6 py-5">
+        <Choices legend="What kind of report is this?" options={KINDS} value={kind} onChange={setKind} columns="sm:grid-cols-2" />
+        <Choices legend="Where?" options={AREAS} value={area} onChange={setArea} columns="grid-cols-2" />
+        {bug && <Choices legend="How bad is it?" options={SEVERITIES} value={severity} onChange={setSeverity} columns="sm:grid-cols-3" />}
+
+        <Field label="One-line summary">
+          {(control) => (
+            <TextInput {...control} value={title} onChange={(event) => setTitle(event.target.value)} placeholder={bug ? "The zip has no gradlew" : "Let me pick a starting screen"} maxLength={200} autoFocus />
+          )}
+        </Field>
+
+        <Field label={bug ? "What happened?" : "Tell us more"} hint="As much detail as you have. Error messages word for word help most.">
+          {(control) => (
+            <textarea
+              {...control}
+              value={body}
+              onChange={(event) => setBody(event.target.value)}
+              rows={4}
+              maxLength={8000}
+              className="w-full rounded-lg border border-ink-600 bg-ink-900 p-3 text-sm text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none"
+              placeholder={bug ? "I picked the standard preset, ran ./gradlew build and got…" : "It would help if…"}
+            />
+          )}
+        </Field>
+
+        {bug && (
+          <Field label="Steps to reproduce (optional)">
+            {(control) => (
+              <textarea
+                {...control}
+                value={steps}
+                onChange={(event) => setSteps(event.target.value)}
+                rows={3}
+                maxLength={4000}
+                className="w-full rounded-lg border border-ink-600 bg-ink-900 p-3 font-mono text-xs text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none"
+                placeholder={"1. Pick the lean preset\n2. Generate\n3. Run ./gradlew build"}
+              />
+            )}
+          </Field>
+        )}
+
+        <Field label="Email (optional)" hint="Only used to ask a follow-up question.">
+          {(control) => <TextInput {...control} value={contact} onChange={(event) => setContact(event.target.value)} placeholder="you@example.com" type="email" maxLength={200} />}
+        </Field>
+
+        <div className="rounded-lg border border-ink-700 bg-ink-850 p-4">
+          <label className="flex items-start justify-between gap-3">
+            <span>
+              <span className="block text-sm font-medium text-ink-200">Attach what you configured</span>
+              <span className="mt-0.5 block text-xs text-ink-400">And this page&apos;s address. It usually saves three emails.</span>
+            </span>
+            <input type="checkbox" checked={attach} onChange={(event) => setAttach(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--color-accent)]" />
+          </label>
+          {attach && (
+            <dl className="mt-3 grid gap-x-4 gap-y-1 border-t border-ink-700 pt-3 text-xs sm:grid-cols-2">
+              {attached.map(([label, value]) => (
+                <div key={label} className="flex justify-between gap-3">
+                  <dt className="text-ink-400">{label}</dt>
+                  <dd className="truncate font-mono text-ink-300">{value || "—"}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </div>
+
+        {failure && (
+          <p role="alert" className="rounded-lg border border-rose/30 bg-rose/10 p-3 text-xs text-rose">
+            {failure}
+          </p>
+        )}
+      </div>
+
+      <footer className="flex items-center justify-between gap-4 border-t border-ink-800 px-6 py-4">
+        <p className="text-xs text-ink-400">No account, no cookie. Your IP is never stored.</p>
+        <div className="flex gap-2">
+          <Button variant="ghost" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={!canSend}>
+            {busy ? <Spinner /> : "Send report"}
+          </Button>
+        </div>
+      </footer>
+    </form>
+  );
+}

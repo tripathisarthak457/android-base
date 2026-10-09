@@ -71,8 +71,8 @@ test("scaffolded modules get distinct icons", () => {
 test("with no tab source the generator's home module is the one tab", () => {
   const plan = planTabs(new Set(["network", "auth"]), []);
   assert.equal(plan.scaffoldedHome, true);
-  assert.deepEqual(plan.tabs.map((tab) => tab.screen), ["empty"]);
-  assert.deepEqual(screensFor(new Set(["auth"]), []).map((tab) => tab.screen), ["signin", "empty"]);
+  assert.deepEqual(plan.tabs.map((tab) => [tab.screen, tab.label]), [["module", "Home"]]);
+  assert.deepEqual(screensFor(new Set(["auth"]), []).map((tab) => tab.screen), ["signin", "module"]);
 });
 
 test("module titles read like the scaffolded screen's", () => {

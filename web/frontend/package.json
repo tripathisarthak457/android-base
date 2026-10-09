@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"features/**/*.test.ts\"",
+    "catalogue": "cd ../../generator && python3 -m genkit.core.catalogue --write"
   },
   "dependencies": {
     "framer-motion": "^13.2.0",

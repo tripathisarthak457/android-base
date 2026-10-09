@@ -1,0 +1,135 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "../../components/primitives.tsx";
+import type { Catalogue } from "../catalogue/types.ts";
+import { STEPS, type Step } from "./state.ts";
+import { BuildStep } from "./steps/BuildStep.tsx";
+import { FeaturesStep } from "./steps/FeaturesStep.tsx";
+import { IdentityStep } from "./steps/IdentityStep.tsx";
+import { LookStep } from "./steps/LookStep.tsx";
+import { MotionStep } from "./steps/MotionStep.tsx";
+import { PlatformStep } from "./steps/PlatformStep.tsx";
+import { ReviewStep } from "./steps/ReviewStep.tsx";
+import type { Configurator as Model } from "./useConfigurator.ts";
+
+const LABELS: Record<Step, string> = {
+  platform: "Platform",
+  identity: "Project",
+  features: "Features",
+  look: "Look",
+  motion: "Motion",
+  build: "Build",
+  review: "Review",
+};
+
+export function Configurator({ catalogue, model }: { catalogue: Catalogue; model: Model }) {
+  const { step, stepIndex, goTo, identityValid } = model;
+  const [previewDark, setPreviewDark] = useState(false);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const moved = useRef(false);
+
+  // After a step change the focus moves to the new panel's heading, so a keyboard or screen reader
+  // user lands on what changed rather than staying on the Next button.
+  useEffect(() => {
+    if (moved.current) heading.current?.focus();
+    moved.current = true;
+  }, [step]);
+
+  const reachable = (index: number) => index <= 1 || identityValid;
+  const next = STEPS[stepIndex + 1];
+  const previous = STEPS[stepIndex - 1];
+
+  return (
+    <section id="configure" aria-labelledby="configure-title" className="mx-auto max-w-6xl scroll-mt-8 px-4 py-20 sm:px-6">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-2xl">
+          <h2 id="configure-title" className="font-display text-4xl font-bold text-ink-100">
+            Configure your project
+          </h2>
+          <p className="mt-3 text-ink-300">
+            Seven short steps. Everything has a working default, so you can jump to Review and download something sensible
+            right now. Your answers stay in this browser until you start over.
+          </p>
+        </div>
+        <Button variant="ghost" size="small" onClick={model.startOver}>
+          Start over
+        </Button>
+      </div>
+
+      <nav aria-label="Steps" className="no-scrollbar mt-8 overflow-x-auto pb-1">
+        <ol className="flex gap-2">
+          {STEPS.map((id, index) => {
+            const active = id === step;
+            const done = index < stepIndex;
+            return (
+              <li key={id} className="shrink-0">
+                <button
+                  type="button"
+                  disabled={!reachable(index)}
+                  aria-current={active ? "step" : undefined}
+                  onClick={() => goTo(id)}
+                  className={`rounded-lg border px-4 py-2.5 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+                    active ? "border-accent/50 bg-accent-dim" : done ? "border-ink-600 bg-ink-850" : "border-ink-700 bg-ink-900"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span
+                      aria-hidden
+                      className={`flex h-5 w-5 items-center justify-center rounded-full font-mono text-[11px] ${
+                        done ? "bg-mint/20 text-mint" : active ? "bg-accent text-on-accent" : "bg-ink-700 text-ink-300"
+                      }`}
+                    >
+                      {done ? "✓" : index + 1}
+                    </span>
+                    <span className={`text-sm font-medium ${active ? "text-ink-100" : "text-ink-300"}`}>{LABELS[id]}</span>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+
+      {/* overflow-clip rather than overflow-hidden: it clips the step slide without becoming the
+          scroll container, which would stop the live preview from sticking. */}
+      <div className="mt-6 overflow-clip rounded-xl border border-ink-700 bg-ink-850">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: 22 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+          className="p-4 sm:p-6 md:p-8"
+        >
+          <h3 ref={heading} tabIndex={-1} className="sr-only">
+            {`Step ${stepIndex + 1} of ${STEPS.length}: ${LABELS[step]}`}
+          </h3>
+          {step === "platform" && <PlatformStep catalogue={catalogue} model={model} />}
+          {step === "identity" && <IdentityStep model={model} />}
+          {step === "features" && <FeaturesStep model={model} />}
+          {step === "look" && <LookStep catalogue={catalogue} model={model} dark={previewDark} onDark={setPreviewDark} />}
+          {step === "motion" && <MotionStep catalogue={catalogue} model={model} dark={previewDark} onDark={setPreviewDark} />}
+          {step === "build" && <BuildStep catalogue={catalogue} model={model} />}
+          {step === "review" && <ReviewStep catalogue={catalogue} model={model} dark={previewDark} />}
+        </motion.div>
+
+        <div className="flex items-center justify-between border-t border-ink-700 bg-ink-900/60 px-4 py-4 sm:px-6">
+          <Button variant="ghost" onClick={() => previous && goTo(previous)} disabled={!previous}>
+            Back
+          </Button>
+          <span className="font-mono text-xs text-ink-400">
+            {stepIndex + 1} / {STEPS.length}
+          </span>
+          {next ? (
+            <Button onClick={() => goTo(next)} disabled={!reachable(stepIndex + 1)}>
+              Next
+            </Button>
+          ) : (
+            <span className="w-[76px]" />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
