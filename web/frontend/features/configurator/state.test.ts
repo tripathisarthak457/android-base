@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { loadCatalogue, threePlatformCatalogue } from "../catalogue/testing.ts";
-import { parseDraft, serializeDraft } from "./draft.ts";
+import { draftToStore, parseDraft, serializeDraft } from "./draft.ts";
 import { toSpecV2 } from "./request.ts";
 import { presetFeatures } from "./resolve.ts";
 import { type Action, type ConfigState, initialState, moduleNames, reducer, selectableTargets, suggestPackage } from "./state.ts";
@@ -122,6 +122,16 @@ test("a design style keeps what it needs through a preset and a restored draft, 
   const undone = reducer(unticked, { type: "undoToggle" }, withGlass);
   assert.equal(undone.designStyle, "Glass");
   assert.deepEqual(undone.features, state.features);
+});
+
+test("only answers that differ from the defaults are stored", () => {
+  const fresh = initialState(catalogue);
+  assert.equal(draftToStore(fresh, catalogue), null, "a visit that only looks stores nothing");
+  const edited = run(fresh, { type: "appName", value: "Trail Notes" });
+  assert.equal(draftToStore(edited, catalogue), serializeDraft(edited));
+  const startedOver = run(edited, { type: "reset", catalogue });
+  assert.equal(draftToStore(startedOver, catalogue), null, "Start over leaves the key removed");
+  assert.equal(draftToStore(run(edited, { type: "appName", value: "My App" }), catalogue), null);
 });
 
 test("a draft round-trips without the signing passwords", () => {

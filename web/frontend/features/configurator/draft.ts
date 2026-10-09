@@ -17,6 +17,16 @@ export function serializeDraft(state: ConfigState): string {
   return JSON.stringify({ version: VERSION, state: saved satisfies Saved });
 }
 
+/**
+ * What storage should hold for `state`: its draft, or null to remove the key. Answers nobody has
+ * changed from the defaults are not kept, so a visit that only looks, or ends with Start over,
+ * leaves nothing behind and does not count as returning next time.
+ */
+export function draftToStore(state: ConfigState, catalogue: Catalogue): string | null {
+  const text = serializeDraft(state);
+  return text === serializeDraft(initialState(catalogue)) ? null : text;
+}
+
 type Json = Record<string, unknown>;
 
 function isObject(value: unknown): value is Json {

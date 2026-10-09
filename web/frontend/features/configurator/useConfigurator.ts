@@ -6,7 +6,7 @@ import { canMakeKeystores, parseCatalogue } from "../catalogue/guard.ts";
 import type { Catalogue } from "../catalogue/types.ts";
 import { flushOnHide, reportErrors, sessionId, track, trackLanding } from "../telemetry/client.ts";
 import { landed } from "../telemetry/events.ts";
-import { DRAFT_KEY, parseDraft, serializeDraft } from "./draft.ts";
+import { DRAFT_KEY, draftToStore, parseDraft } from "./draft.ts";
 import { derivePreset } from "./resolve.ts";
 import { sessionHeaders, toSpecV2 } from "./request.ts";
 import { type Action, type ConfigState, STEPS, type Step, findTarget, initialState, reducer } from "./state.ts";
@@ -151,9 +151,9 @@ export function useConfigurator(catalogue: Catalogue) {
 
   useEffect(() => {
     if (!restored) return;
-    const timer = setTimeout(() => writeDraft(serializeDraft(state)), 300);
+    const timer = setTimeout(() => writeDraft(draftToStore(state, catalogue)), 300);
     return () => clearTimeout(timer);
-  }, [state, restored]);
+  }, [state, restored, catalogue]);
 
   const lastViewed = useRef<string | null>(null);
   useEffect(() => {
