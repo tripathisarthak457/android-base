@@ -94,8 +94,7 @@ func (s *Server) observe(route string, next http.HandlerFunc) http.HandlerFunc {
 		if s.sink == nil {
 			return
 		}
-		// The admin's own reads would otherwise fill the route health it is reading.
-		if !strings.HasPrefix(route, "admin.") {
+		if recordsTimings(route) {
 			batch.Requests = append(batch.Requests, store.Request{
 				Route: route, Method: r.Method, Status: rec.status, Duration: duration, Bytes: rec.bytes,
 			})
@@ -117,6 +116,13 @@ func (s *Server) observe(route string, next http.HandlerFunc) http.HandlerFunc {
 		case <-timer.C:
 		}
 	}
+}
+
+// recordsTimings reports whether a route's requests count in the route health. The admin's own
+// reads would fill the health it is reading, and probes polling health every few seconds would
+// fill the table with rows that say nothing about visitors.
+func recordsTimings(route string) bool {
+	return !strings.HasPrefix(route, "admin.") && route != "health" && route != "legacy.health"
 }
 
 // cors answers the browser. An explicit allow-list rather than `*`: the generate endpoint is a POST

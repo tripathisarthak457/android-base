@@ -197,3 +197,18 @@ func TestRequestsDoNotWaitForTelemetryBeforeTheDatabaseConnects(t *testing.T) {
 		t.Fatalf("the request row was not queued: %+v", batch)
 	}
 }
+
+func TestHealthIsNeitherLimitedNorRecorded(t *testing.T) {
+	ts := newTestServer(t, okScript, nil)
+	for i := range 1300 {
+		if w := ts.do(http.MethodGet, "/api/v1/health", "", nil); w.Code != http.StatusOK {
+			t.Fatalf("probe %d: got %d", i+1, w.Code)
+		}
+	}
+	if w := ts.do(http.MethodGet, "/api/health", "", nil); w.Code != http.StatusOK {
+		t.Fatalf("legacy probe: got %d", w.Code)
+	}
+	if n := len(ts.sink.batches); n != 0 {
+		t.Fatalf("health probes recorded %d batches", n)
+	}
+}

@@ -108,7 +108,9 @@ func (s *Server) Routes() http.Handler {
 		handle(http.MethodPost, pattern, route, handler)
 	}
 
-	get("/api/v1/health", "health", s.limit(s.readLimit, s.handleHealth))
+	// Health is not limited: platform probes and uptime monitors poll it from one address, and
+	// answering costs no more than refusing.
+	get("/api/v1/health", "health", s.handleHealth)
 	get("/api/v1/targets", "targets", s.limit(s.readLimit, s.handleTargets))
 	get("/api/v1/catalogue", "catalogue", s.limit(s.readLimit, s.handleCatalogue))
 	post("/api/v1/{target}/generate", "generate", func(w http.ResponseWriter, r *http.Request) {
@@ -120,7 +122,7 @@ func (s *Server) Routes() http.Handler {
 
 	// The routes before v1, kept for one release so a page or a script from the previous deploy
 	// keeps working. They mean Android.
-	get("/api/health", "legacy.health", s.limit(s.readLimit, s.handleHealth))
+	get("/api/health", "legacy.health", s.handleHealth)
 	get("/api/options", "legacy.options", s.limit(s.readLimit, s.handleCatalogue))
 	post("/api/generate", "legacy.generate", func(w http.ResponseWriter, r *http.Request) { s.generate(w, r, "android") })
 	post("/api/track", "legacy.track", s.limit(s.eventLimit, s.handleTrack))
