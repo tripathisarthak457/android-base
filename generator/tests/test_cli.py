@@ -86,6 +86,21 @@ class CliTest(unittest.TestCase):
         self.assertTrue((destination / "settings.gradle.kts").is_file())
         self.assertTrue((sibling / "important.txt").exists())
 
+    def test_force_replaces_a_link_and_not_the_directory_it_points_at(self):
+        real = self.root / "real"
+        real.mkdir()
+        (real / "precious.txt").write_text("keep", encoding="utf-8")
+        link = self.root / "link"
+        link.symlink_to(real, target_is_directory=True)
+
+        result = run("--spec", str(self.spec), "--out", str(link), "--no-zip", "--force", "--json")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(str(link), json.loads(result.stdout)["path"])
+        self.assertFalse(link.is_symlink())
+        self.assertTrue((link / "settings.gradle.kts").is_file())
+        self.assertEqual(["precious.txt"], [path.name for path in real.iterdir()])
+        self.assertEqual("keep", (real / "precious.txt").read_text(encoding="utf-8"))
+
     def test_force_never_deletes_the_current_directory(self):
         working = self.root / "work"
         working.mkdir()

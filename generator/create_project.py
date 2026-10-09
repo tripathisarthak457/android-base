@@ -243,7 +243,7 @@ def describe_plan(parsed, target, warnings: list[str], as_json: bool) -> None:
 
 def resolve_destination(project_name: str, args: argparse.Namespace) -> Path | None:
     if args.out is not None:
-        out = args.out.expanduser().resolve()
+        out = absolute(args.out)
         if not args.no_zip and out.suffix.lower() != ".zip":
             raise SpecError(f"--out {args.out} must end in .zip, or add --no-zip to write a directory.", "out")
         return out
@@ -271,14 +271,27 @@ def confirm_replace(destination: Path, force: bool, unattended: bool) -> bool:
     return True
 
 
+def absolute(path: Path) -> Path:
+    """
+    `path` made absolute with its directories resolved but not its last part, so that a symbolic
+    link given as the destination is what gets replaced, never the directory it points at.
+    """
+    path = path.expanduser().absolute()
+    if path.name in ("", ".."):
+        return path.resolve()
+    return path.parent.resolve() / path.name
+
+
 def _unsafe_to_delete(destination: Path) -> str | None:
-    resolved = destination.resolve()
-    if resolved == Path(resolved.anchor):
+    # Only the link itself is ever deleted, but a link that stands in for the home directory is
+    # checked as that directory too: refusing it costs nothing, and losing the way home costs a lot.
+    paths = {destination, destination.resolve()}
+    if any(path == Path(path.anchor) for path in paths):
         return "it is a filesystem root"
     for name, place in (("your home directory", Path.home()), ("the current directory", Path.cwd()), ("the generator", HERE)):
-        place = place.resolve()
-        if resolved == place or resolved in place.parents:
-            return f"it is or contains {name}"
+        for form in {place, place.resolve()}:
+            if any(path == form or path in form.parents for path in paths):
+                return f"it is or contains {name}"
     return None
 
 
@@ -307,7 +320,7 @@ def ask_save_location(default_name: str, zip_output: bool) -> Path | None:
     except Exception:  # noqa: BLE001 - no display, no Tk: fall back to typing a path
         prompts.heading("Where should it go?")
         answer = prompts.ask("  Path", str(Path.cwd() / default_name))
-        return Path(answer).expanduser().resolve()
+        return absolute(Path(answer))
 
 
 def report(spec, warnings: list[str], summary: list[str], destination: Path, zip_output: bool) -> None:
