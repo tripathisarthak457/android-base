@@ -16,6 +16,9 @@ android {
 
     buildTypes {
         release {
+            // The catalog never ships, and a release build is the only one whose motion and frame
+            // times mean anything, so it is signed with the debug key and installs directly.
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
