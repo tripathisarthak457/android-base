@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.catalog.CatalogGroup
 import com.base.app.core.designsystem.component.feedback.AppAvatar
 import com.base.app.core.designsystem.component.feedback.AppTone
+import com.base.app.core.designsystem.component.list.AppChoiceRow
 import com.base.app.core.designsystem.component.list.AppDisclosure
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.list.AppSection
@@ -49,6 +51,14 @@ fun ListsSection() {
                 AppRow(title = "Plain row")
                 AppRow(title = "Disabled", onClick = {}, enabled = false)
                 AppRow(title = "Sign out", destructive = true, onClick = {})
+            }
+        }
+    }
+    CatalogGroup("Choice rows", caption = "One of several, as Settings lists a language or a sort order: the chosen row carries the checkmark.") {
+        var choice by remember { mutableIntStateOf(0) }
+        AppSection {
+            listOf("Automatic", "Light", "Dark").forEachIndexed { index, label ->
+                AppChoiceRow(title = label, selected = choice == index, onSelect = { choice = index })
             }
         }
     }

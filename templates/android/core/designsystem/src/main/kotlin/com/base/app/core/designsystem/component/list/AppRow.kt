@@ -10,8 +10,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.constrainHeight
@@ -129,6 +132,41 @@ fun AppToggleRow(
     )
 }
 
+/**
+ * One choice of several, as iOS Settings lists them: the chosen row carries a checkmark in the
+ * accent colour. The whole row is the target, and a screen reader hears a radio button named by the
+ * title, selected or not. The checkmark's room is kept on every row, so choosing never reflows text.
+ */
+@Composable
+fun AppChoiceRow(
+    title: String,
+    selected: Boolean,
+    onSelect: () -> Unit,
+    modifier: Modifier = Modifier,
+    subtitle: String? = null,
+    enabled: Boolean = true,
+    leading: (@Composable () -> Unit)? = null,
+) {
+    val colors = AppTheme.colors
+    RowLayout(
+        modifier = modifier
+            .semantics { this.selected = selected }
+            .pressable(onClick = onSelect, feedback = PressFeedback.Highlight, enabled = enabled, role = Role.RadioButton)
+            .disabledAlpha(enabled),
+        leading = leading,
+        text = { RowText(title = title, subtitle = subtitle, titleColor = colors.contentPrimary) },
+        trailing = {
+            AppIcon(
+                imageVector = AppIcons.Check,
+                contentDescription = null,
+                modifier = Modifier.graphicsLayer { alpha = if (selected) 1f else 0f },
+                tint = colors.accentContent,
+                size = CheckSize,
+            )
+        },
+    )
+}
+
 @Composable
 private fun RowText(title: String, subtitle: String?, titleColor: Color) {
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -206,3 +244,4 @@ private fun RowLayout(
 
 private val RowVerticalPadding = 11.dp
 private val ChevronSize = 16.dp
+private val CheckSize = 20.dp
