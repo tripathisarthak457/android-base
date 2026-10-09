@@ -9,13 +9,20 @@ import androidx.navigationevent.compose.rememberNavigationEventState
 import kotlinx.coroutines.delay
 
 /**
- * Registered after the display, so it is asked first: while the screens move, Back is counted here
- * and a back swipe gets no half-seeked scene; its release counts as one press.
+ * For a host drawn by `NavDisplay` (the presentation host): registered after the display, so it is
+ * asked first while the screens move. Back is counted here, and a back swipe gets no half-seeked
+ * scene; its release counts as one press.
  */
 @Composable
 internal fun GateEffects(gate: BackGate, pop: (Int) -> Int) {
     val idle = rememberNavigationEventState(NavigationEventInfo.None)
     NavigationBackHandler(state = idle, isBackEnabled = gate.moving, onBackCompleted = { gate.onBack(pop) })
+    GateSettle(gate, pop)
+}
+
+/** Applies the presses [gate] counted, as one pop, once the screens stop. */
+@Composable
+internal fun GateSettle(gate: BackGate, pop: (Int) -> Int) {
     LaunchedEffect(gate) {
         snapshotFlow { gate.moving }.collect { moving -> if (!moving) gate.settle(pop) }
     }

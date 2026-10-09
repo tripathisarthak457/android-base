@@ -1,7 +1,6 @@
 package com.base.app.core.navigation.transition
 
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.navigation3.scene.Scene
 import com.base.app.core.common.navigation.AppNavKey
 import kotlin.math.PI
-import kotlin.math.roundToInt
 
 /**
  * The one spring every full-screen move rides: push, pop and covers. Critically damped, because a
@@ -57,40 +55,10 @@ internal data class ScreenMotion(val response: Float = DEFAULT_RESPONSE, val par
 private typealias SceneTransform = AnimatedContentTransitionScope<Scene<AppNavKey>>.() -> ContentTransform
 
 /**
- * Screen-to-screen transitions. Screens only slide: no alpha and no scale, because either renders
- * the whole screen offscreen on every frame. Depth comes from the scrim the arriving screen draws
- * over the one it covers ([coverScrim]).
+ * Transitions of the presentation host, which `NavDisplay` draws. Covers only slide: no alpha and
+ * no scale, because either renders the whole screen offscreen on every frame.
  */
 internal object NavTransitions {
-
-    fun push(motion: ScreenMotion): SceneTransform = {
-        if (sameStack(initialState, targetState)) {
-            none
-        } else {
-            slideIntoContainer(SlideDirection.Start, motion.offset) togetherWith
-                slideOutOfContainer(SlideDirection.Start, motion.offset, targetOffset = { (it * motion.parallax).roundToInt() })
-        }
-    }
-
-    fun pop(motion: ScreenMotion): SceneTransform = {
-        if (sameStack(initialState, targetState)) {
-            none
-        } else {
-            slideIntoContainer(SlideDirection.End, motion.offset, initialOffset = { (it * motion.parallax).roundToInt() }) togetherWith
-                slideOutOfContainer(SlideDirection.End, motion.offset)
-        }
-    }
-
-    /**
-     * Navigation 3 seeks a predictive back by gesture progress, mapping it onto the transition's
-     * play time, so the track has to be linear or the screen runs ahead of the finger. [durationMs]
-     * is the screen spring's settle time, so a released swipe finishes at the pace of a Back press.
-     */
-    fun predictivePop(motion: ScreenMotion, durationMs: Int): AnimatedContentTransitionScope<Scene<AppNavKey>>.(Int) -> ContentTransform = {
-        val track = tween<IntOffset>(durationMs, easing = LinearEasing)
-        slideIntoContainer(SlideDirection.End, track, initialOffset = { (it * motion.parallax).roundToInt() }) togetherWith
-            slideOutOfContainer(SlideDirection.End, track)
-    }
 
     /** A cover rises over whatever is presented beneath it, which stays where it is. */
     fun present(motion: ScreenMotion): SceneTransform = {
@@ -111,13 +79,3 @@ internal object NavTransitions {
 
     val noneDuringPredictive: AnimatedContentTransitionScope<Scene<AppNavKey>>.(Int) -> ContentTransform = { none }
 }
-
-/**
- * The same back stack shown by another scene: a fold, an unfold or a resize across the two-pane
- * width. That is a layout change, not navigation, so nothing slides.
- */
-internal fun sameStack(initial: Scene<AppNavKey>, target: Scene<AppNavKey>): Boolean =
-    initial.stackKeys() == target.stackKeys()
-
-private fun Scene<AppNavKey>.stackKeys(): List<Any> =
-    previousEntries.map { it.contentKey } + entries.last().contentKey

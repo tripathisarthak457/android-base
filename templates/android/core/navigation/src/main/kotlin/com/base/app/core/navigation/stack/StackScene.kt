@@ -1,0 +1,275 @@
+package com.base.app.core.navigation.stack
+
+import androidx.compose.animation.core.animate
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.GraphicsLayerScope
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigationevent.NavigationEvent
+import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.navigation.back.BackCardState
+import com.base.app.core.navigation.back.BackGate
+import com.base.app.core.navigation.back.StackChange
+import com.base.app.core.navigation.transition.ScreenMotion
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
+/**
+ * Everything a stack host shows, in one parent that never changes, as iOS keeps a navigation
+ * controller's views: the page on top, the page beneath it and two more under that stay composed,
+ * measured and placed, and are parked (drawn at alpha 0, off the window, out of the semantics tree)
+ * while covered. Showing one again changes two layer properties: nothing is composed, measured or
+ * recorded on the first frame of a pop or a back gesture.
+ *
+ * Moving an entry between parents would detach it, dropping every layer it had, and unplacing it
+ * would do the same; both are what made a pop's first frame cost as much as composing the screen.
+ *
+ * The slide is one value, [cover] (how far the upper page covers the lower one), animated after the
+ * frame that composes a new screen, so that heavy frame shows nothing moving. Every pose is read in
+ * layer and draw blocks.
+ */
+@Stable
+internal class StackScene(private val gate: BackGate) {
+
+    val card = BackCardState()
+
+    var upper: Map<Any, Slot> by mutableStateOf(emptyMap())
+        private set
+
+    var lower: Map<Any, Slot> by mutableStateOf(emptyMap())
+        private set
+
+    /** The shown entries of the page on top, after the last change. */
+    var top: Set<Any> by mutableStateOf(emptySet())
+        private set
+
+    var beneath: Set<Any> by mutableStateOf(emptySet())
+        private set
+
+    /** Content keys of the entries that hide the tab bar. */
+    var hidingBar: Set<Any> by mutableStateOf(emptySet())
+        private set
+
+    /** 0: the upper page off the window, 1: in place over the lower one. */
+    var cover by mutableFloatStateOf(1f)
+        private set
+
+    var moving by mutableStateOf(false)
+        private set
+
+    /** The host's size and direction, written by its layout. */
+    var width by mutableFloatStateOf(0f)
+    var rtl by mutableStateOf(false)
+
+    /** Where each laid-out entry's left edge is in the host, written by its layout. */
+    val lefts = HashMap<Any, Float>()
+
+    var motion = ScreenMotion()
+
+    /** The plan on screen: what composition diffs the next change against. */
+    var applied: StackPlan? = null
+        private set
+
+    /**
+     * The last plan whose slide has ended. Read in composition, so the frame that ends a slide is
+     * the one that lets go of the entries it carried off the stack.
+     */
+    var settled: StackPlan? by mutableStateOf(null)
+        private set
+
+    /** The entries of [applied], with those it slides off the stack, so they can be drawn while they leave. */
+    private var appliedEntries: Map<Any, NavEntry<AppNavKey>> = emptyMap()
+
+    private var velocity = 0f
+    private var job: Job? = null
+    private val shadowBrushes = HashMap<Int, Brush>()
+
+    /**
+     * The entries [plan] slides that are no longer on the stack: a popped page sliding out, or the
+     * page a replace slides over. Empty once the slide has ended.
+     */
+    fun departing(plan: StackPlan, keys: Set<Any>): List<NavEntry<AppNavKey>> {
+        if (plan.slide == Slide.None || settled === plan) return emptyList()
+        return (plan.upper.keys + plan.lower.keys).mapNotNull { key -> if (key in keys) null else appliedEntries[key] }
+    }
+
+    fun appliedEntry(key: Any): NavEntry<AppNavKey>? = appliedEntries[key]
+
+    /** Makes [plan] the one on screen. Called after the composition that drew it, once per plan. */
+    fun apply(plan: StackPlan, entries: List<NavEntry<AppNavKey>>, hiding: Set<Any>, scope: CoroutineScope) {
+        if (plan === applied) return
+        job?.cancel()
+        val current = entries.associateBy { it.contentKey }
+        appliedEntries = current + departing(plan, current.keys).associateBy { it.contentKey }
+        applied = plan
+        hidingBar = hiding
+        top = plan.top.shown.keys
+        beneath = plan.beneath?.shown?.keys.orEmpty()
+        upper = plan.upper
+        lower = plan.lower
+        velocity = 0f
+        when (plan.slide) {
+            Slide.None -> {
+                cover = 1f
+                moving = false
+                gate.noMotion()
+            }
+            Slide.Push -> {
+                cover = 0f
+                job = scope.launch { slideTo(1f) }
+            }
+            Slide.Pop -> {
+                cover = 1f
+                job = scope.launch { slideTo(0f) }
+            }
+        }
+    }
+
+    // Launched after the composition that changed the stack, so the first frame of the slide is the
+    // one after the frame that composed the arriving screen.
+    private suspend fun slideTo(target: Float) {
+        moving = true
+        gate.report(this, true)
+        try {
+            animate(cover, target, velocity, motion.fraction) { value, speed ->
+                cover = value
+                velocity = speed
+                val travelled = if (target == 1f) value else 1f - value
+                if (travelled >= BackGate.SETTLED_ENOUGH) gate.report(this, false)
+            }
+            val plan = applied ?: return
+            upper = plan.top.shown
+            lower = plan.beneath?.shown.orEmpty()
+            cover = 1f
+            moving = false
+            settled = plan
+        } finally {
+            gate.report(this, false)
+        }
+    }
+
+    /** How far the screen that hides the tab bar covers the last one that shows it, for [BarAnchor]. */
+    fun barCover(): Float {
+        val upperHides = upper.keys.any { it in hidingBar }
+        val lowerHides = lower.keys.any { it in hidingBar }
+        val covered = when {
+            upperHides && lowerHides -> 1f
+            upperHides -> cover
+            lowerHides -> 1f - cover
+            else -> 0f
+        }
+        val revealed = if (card.active && upperHides && !lowerHides) card.reveal else 0f
+        return covered * (1f - revealed)
+    }
+
+    /** The lifecycle an entry's content may reach: the top resumed, the page under it started, the rest created. */
+    fun capOf(key: Any): Lifecycle.State = when {
+        key in top -> Lifecycle.State.RESUMED
+        // Raised only once the screens stop, so a pop never restarts the collectors of a screen
+        // that is still out of sight in the frame that starts it.
+        key in beneath && (!moving || key in lower) -> Lifecycle.State.STARTED
+        else -> Lifecycle.State.CREATED
+    }
+
+    /** Whether the back card may start: the top page is one entry, and nothing but a push is moving. */
+    fun canStartCard(): Boolean =
+        !card.active && top.size == 1 && beneath.isNotEmpty() && (!moving || applied?.slide == Slide.Push)
+
+    fun startCard(event: NavigationEvent, scope: CoroutineScope) {
+        card.start(event, subject = top.single(), beneath = beneath, midPush = moving, scope = scope)
+    }
+
+    suspend fun cancelCard() {
+        card.cancel(midPush = moving)
+    }
+
+    /** The card's commit: it fades, the stack pops with no slide, and Back pressed meanwhile is counted. */
+    suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope) {
+        gate.hold {
+            card.commit(motion.fraction, scope)
+            if (pop(1) > 0) gate.changed(StackChange.GesturePop)
+        }
+        card.finish()
+    }
+
+    fun GraphicsLayerScope.pose(key: Any) {
+        val w = width
+        val toward = if (rtl) -1f else 1f
+        when {
+            key in upper -> {
+                translationX = toward * w * (1f - cover)
+                if (card.active && key == card.subject) with(card) { applyCard() }
+            }
+            card.active && key in card.beneath ->
+                translationX = -toward * motion.parallax * w * cover * (1f - card.reveal)
+            key in lower && cover < 1f ->
+                translationX = -toward * motion.parallax * w * cover
+            else -> {
+                alpha = 0f
+                translationX = -2f * w
+            }
+        }
+    }
+
+    /**
+     * Over a lower entry: the scrim on the part the upper page has not reached yet and the shadow
+     * its leading edge casts there, and the back card's scrim over all of it. Each is one rectangle,
+     * with no layer: dimming the covered screen through its alpha would render all of it offscreen
+     * on every frame.
+     */
+    fun ContentDrawScope.drawOver(key: Any, isLight: Boolean) {
+        drawContent()
+        val revealing = card.active && key in card.beneath
+        if (key !in lower && !revealing) return
+        val c = cover
+        if (c > 0f && c < 1f && key in lower) {
+            val w = width
+            val left = lefts[key] ?: 0f
+            // The upper page's leading edge, in this entry's coordinates.
+            val shift = if (revealing) 1f - card.reveal else 1f
+            val offset = -(if (rtl) -1f else 1f) * motion.parallax * w * c * shift
+            val edge = if (rtl) w * c - left - offset else w * (1f - c) - left - offset
+            val from = if (rtl) edge.coerceAtLeast(0f) else 0f
+            val to = if (rtl) size.width else edge.coerceAtMost(size.width)
+            if (to > from) {
+                drawRect(Color.Black, Offset(from, 0f), Size(to - from, size.height), alpha = coverScrimAlpha(isLight) * c)
+            }
+            val shadow = EdgeShadow.toPx()
+            val brush = shadowBrushes.getOrPut(shadow.toInt() * if (rtl) -1 else 1) {
+                val dark = Color.Black.copy(alpha = SHADOW_ALPHA)
+                Brush.horizontalGradient(
+                    colors = if (rtl) listOf(dark, Color.Transparent) else listOf(Color.Transparent, dark),
+                    startX = 0f,
+                    endX = shadow,
+                )
+            }
+            translate(left = if (rtl) edge else edge - shadow) {
+                drawRect(brush, size = Size(shadow, size.height), alpha = c)
+            }
+        }
+        if (revealing) {
+            val alpha = card.scrim.value
+            if (alpha > 0f) drawRect(Color.Black, alpha = alpha)
+        }
+    }
+
+    private companion object {
+        val EdgeShadow = 8.dp
+        const val SHADOW_ALPHA = 0.12f
+    }
+}
+
+/** How dark the covered screen gets at the start of a push: lighter on a light theme, where black reads heavier. */
+internal fun coverScrimAlpha(isLight: Boolean): Float = if (isLight) 0.10f else 0.24f

@@ -104,22 +104,21 @@ internal fun rememberTabLifecycle(active: Boolean): LifecycleOwner {
         }
     }
     SideEffect {
-        owner.active = active
+        owner.cap = if (active) Lifecycle.State.RESUMED else Lifecycle.State.CREATED
         owner.follow(parent.lifecycle.currentState)
     }
     return owner
 }
 
-/** Its parent's lifecycle, but never past CREATED while [active] is false. */
+/** Its parent's lifecycle, but never past [cap]. */
 internal class CappedLifecycle : LifecycleOwner {
     private val registry = LifecycleRegistry(this)
     override val lifecycle: Lifecycle get() = registry
 
-    var active = false
+    var cap = Lifecycle.State.CREATED
 
     fun follow(parent: Lifecycle.State) {
         if (registry.currentState == Lifecycle.State.DESTROYED) return
-        val cap = if (active) Lifecycle.State.RESUMED else Lifecycle.State.CREATED
         val target = minOf(parent, cap)
         // A lifecycle cannot be destroyed before it was created; the parent reports DESTROYED only
         // on its way out, and end() takes care of that.

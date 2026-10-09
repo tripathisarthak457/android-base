@@ -78,6 +78,20 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
         awaitingMotion = false
     }
 
+    /**
+     * Holds the gate for [block], as a running transition does: presses meanwhile are counted, and
+     * applied once it returns. The back card's commit runs inside it.
+     */
+    internal suspend fun hold(block: suspend () -> Unit) {
+        val holder = Any()
+        report(holder, true)
+        try {
+            block()
+        } finally {
+            report(holder, false)
+        }
+    }
+
     /** The screens have stopped: the presses counted meanwhile become one pop. */
     internal fun settle(pop: (Int) -> Int) {
         if (counted == 0) return
@@ -96,4 +110,5 @@ internal class BackGate(private val maxCoalesced: Int = MAX_COALESCED) {
     }
 }
 
-internal enum class StackChange { Push, Pop, Replace }
+/** What the last stack change was. A [GesturePop] has been shown by the back card, so it slides nothing. */
+internal enum class StackChange { Push, Pop, Replace, GesturePop }

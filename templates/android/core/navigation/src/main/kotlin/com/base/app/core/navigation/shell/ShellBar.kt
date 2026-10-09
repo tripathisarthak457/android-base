@@ -21,7 +21,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.ShellConfig
 import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.ShellTab
-import com.base.app.core.navigation.transition.coverScrimAlpha
+import com.base.app.core.navigation.stack.coverScrimAlpha
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
