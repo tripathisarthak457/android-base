@@ -1,6 +1,8 @@
 package com.base.app.catalog.sections
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -8,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -20,6 +23,7 @@ import com.base.app.catalog.CatalogGroup
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
+import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.navigation.AppBottomBar
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
@@ -32,36 +36,60 @@ import com.base.app.core.designsystem.component.navigation.BottomNavItem
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.chromeContentPadding
-import com.base.app.core.designsystem.foundation.scroll.scrollEdgeFade
+import com.base.app.core.designsystem.foundation.scroll.edgeProtection
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
 fun BarsSection() {
     CatalogGroup("Inline top bar", caption = "The title takes what the buttons leave, so it never runs under a second action.") {
-        AppTopBar(title = "Messages", onBack = {}) {
+        AppTopBar(title = "Messages", onBack = {}, windowInsets = WindowInsets(0)) {
             AppIconButton(AppIcons.Search, contentDescription = "Search", onClick = {})
             AppIconButton(AppIcons.Edit, contentDescription = "Compose", onClick = {})
         }
-        AppTopBar(title = "A title that is far too long for the room it has", subtitle = "And a subtitle", centerTitle = false) {
+        AppTopBar(
+            title = "A title that is far too long for the room it has",
+            subtitle = "And a subtitle",
+            centerTitle = false,
+            windowInsets = WindowInsets(0),
+        ) {
             AppIconButton(AppIcons.MoreHorizontal, contentDescription = "More", onClick = {})
         }
     }
-    CatalogGroup("Large title", caption = "Scroll the list: the title rises into the bar and the bar's surface appears under it. Only drawing changes.") {
+    CatalogGroup(
+        "Large title",
+        caption = "Scroll the list: the title and its search field rise into the bar, the small title fades in and the bar's " +
+            "surface appears under it. Only drawing changes.",
+    ) {
         val list = rememberLazyListState()
-        Box(Modifier.fillMaxWidth().height(360.dp)) {
-            AppScaffold(topBar = { AppLargeTitleTopBar(title = "Inbox", scrolled = { list.scrolledFromTop() }) { AppIconButton(AppIcons.Edit, contentDescription = "Compose", onClick = {}) } }) {
+        val search = rememberTextFieldState()
+        Box(Modifier.fillMaxWidth().height(420.dp)) {
+            AppScaffold(
+                topBar = {
+                    AppLargeTitleTopBar(
+                        title = "Inbox",
+                        scrolled = { list.scrolledFromTop() },
+                        windowInsets = WindowInsets(0),
+                        accessory = { AppSearchField(state = search) },
+                    ) { AppIconButton(AppIcons.Edit, contentDescription = "Compose", onClick = {}) }
+                },
+            ) {
                 LazyColumn(state = list, modifier = Modifier.fillMaxSize(), contentPadding = chromeContentPadding()) {
                     items((1..30).toList(), key = { it }) { AppRow(title = "Message $it", subtitle = "Preview of the message", onClick = {}) }
                 }
             }
         }
     }
-    CatalogGroup("Scroll edge fade", caption = "Content fades out under a clear bar, so the bar needs no background. One small offscreen strip per frame.") {
+    CatalogGroup(
+        "Edge protection",
+        caption = "Content fades out under a clear bar, so the bar needs no background: the page colour drawn over it as a " +
+            "gradient, with no offscreen layer. Over glass or an image, scrollEdgeFade fades the content itself.",
+    ) {
         val list = rememberLazyListState()
         val barHeight = 48.dp
-        Box(Modifier.fillMaxWidth().height(240.dp)) {
-            LazyColumn(state = list, modifier = Modifier.fillMaxSize().scrollEdgeFade { barHeight }) {
+        val background = AppTheme.colors.background
+        Box(Modifier.fillMaxWidth().height(240.dp).background(background)) {
+            LazyColumn(state = list, modifier = Modifier.fillMaxSize().edgeProtection({ background }, top = { barHeight })) {
                 items((1..30).toList(), key = { it }) { AppRow(title = "Row $it") }
             }
             Box(Modifier.fillMaxWidth().height(barHeight), contentAlignment = Alignment.Center) {

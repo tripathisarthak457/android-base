@@ -80,25 +80,21 @@ internal fun SearchScreen(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
-            Column {
-                AppLargeTitleTopBar(
-                    title = stringResource(R.string.search_title),
-                    scrolled = { if (kind == ContentKind.Results) resultsList.scrolledFromTop() else 0 },
-                    actions = {
-                        // Results stay readable while they refresh; the bar says it is happening.
-                        if (state.loadState is LoadState.Refreshing) AppActivityIndicator()
-                    },
-                )
-                AppSearchField(
-                    state = query,
-                    placeholder = stringResource(R.string.search_placeholder),
-                    onSearch = { onEvent(SearchEvent.Submit) },
-                    modifier = Modifier.padding(
-                        horizontal = AppTheme.spacing.gutter,
-                        vertical = AppTheme.spacing.sm,
-                    ),
-                )
-            }
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.search_title),
+                scrolled = { if (kind == ContentKind.Results) resultsList.scrolledFromTop() else 0 },
+                accessory = {
+                    AppSearchField(
+                        state = query,
+                        placeholder = stringResource(R.string.search_placeholder),
+                        onSearch = { onEvent(SearchEvent.Submit) },
+                    )
+                },
+                actions = {
+                    // Results stay readable while they refresh; the bar says it is happening.
+                    if (state.loadState is LoadState.Refreshing) AppActivityIndicator()
+                },
+            )
         },
     ) {
         val transitions = rememberAppTransitions()

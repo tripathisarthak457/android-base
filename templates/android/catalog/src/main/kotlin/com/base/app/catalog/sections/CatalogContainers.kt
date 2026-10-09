@@ -2,6 +2,7 @@ package com.base.app.catalog.sections
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -56,7 +57,7 @@ fun ContainersSection() {
     CatalogGroup("Scaffold", caption = "Content runs under the top bar and above the bottom action bar; the list pads itself with chromeContentPadding().") {
         Box(Modifier.fillMaxWidth().height(320.dp)) {
             AppScaffold(
-                topBar = { AppTopBar(title = "Checkout", onBack = {}) },
+                topBar = { AppTopBar(title = "Checkout", onBack = {}, windowInsets = WindowInsets(0)) },
                 bottomBar = { AppBottomActionBar { AppButton(text = "Pay $24.00", onClick = {}, fillWidth = true) } },
             ) {
                 LazyColumn(Modifier.fillMaxSize(), contentPadding = chromeContentPadding()) {

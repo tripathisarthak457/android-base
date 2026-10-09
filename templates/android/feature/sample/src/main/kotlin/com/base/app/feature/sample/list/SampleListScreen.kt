@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -29,6 +28,7 @@ import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
+import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -53,21 +53,14 @@ internal fun SampleListScreen(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
-            Column {
-                AppLargeTitleTopBar(
-                    title = stringResource(R.string.sample_title),
-                    scrolled = { listState.scrolledFromTop() },
-                    subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
-                )
-                AppSearchField(
-                    state = query,
-                    placeholder = stringResource(R.string.sample_search_titles),
-                    modifier = Modifier.padding(
-                        horizontal = AppTheme.spacing.gutter,
-                        vertical = AppTheme.spacing.sm,
-                    ),
-                )
-            }
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.sample_title),
+                scrolled = { listState.scrolledFromTop() },
+                subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
+                accessory = {
+                    AppSearchField(state = query, placeholder = stringResource(R.string.sample_search_titles))
+                },
+            )
         },
     ) {
         when {
@@ -121,7 +114,7 @@ private fun Content(
                     .fillMaxSize()
                     .testTag("primary_list"),
                 state = listState,
-                contentPadding = PaddingValues(AppTheme.spacing.gutter),
+                contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {
                 // Keyed on the id so inserts keep scroll position and animations.

@@ -1,5 +1,7 @@
 package com.base.app.core.designsystem.component.navigation
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,12 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -21,6 +29,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -31,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -48,7 +58,9 @@ fun LazyListState.scrolledFromTop(): Int =
  *
  * Content runs under the bar. With [scrolled], the bar is clear at the top of the content and its
  * surface and hairline fade in as content scrolls under it; without, it is always solid. Either way
- * it writes its height to the screen's top inset, which `chromeContentPadding()` reads.
+ * it writes its height to the screen's top inset, which `chromeContentPadding()` reads. A bar that
+ * is not at the top of the window (inside a pane, a sheet or a demo) passes `WindowInsets(0)` as
+ * [windowInsets], so it does not reserve the status bar's height.
  */
 @Composable
 fun AppTopBar(
@@ -58,6 +70,7 @@ fun AppTopBar(
     onBack: (() -> Unit)? = null,
     centerTitle: Boolean = true,
     scrolled: (() -> Int)? = null,
+    windowInsets: WindowInsets = WindowInsets.statusBars,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val colors = AppTheme.colors
@@ -66,11 +79,7 @@ fun AppTopBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(constraints)
-                topChrome.value = placeable.height.toDp()
-                layout(placeable.width, placeable.height) { placeable.place(0, 0) }
-            }
+            .writeHeightTo(topChrome)
             .drawBehind {
                 val shown = scrolled?.let { (it() / fadeDistance.toPx()).coerceIn(0f, 1f) } ?: 1f
                 if (shown > 0f) {
@@ -78,7 +87,7 @@ fun AppTopBar(
                     drawLine(colors.separator, Offset(0f, size.height - 0.5f), Offset(size.width, size.height - 0.5f), 1f, alpha = shown)
                 }
             }
-            .windowInsetsPadding(WindowInsets.statusBars),
+            .windowInsetsPadding(windowInsets),
     ) {
         InlineBar(
             onBack = onBack,
@@ -91,9 +100,16 @@ fun AppTopBar(
 
 /**
  * The large-title bar of a root screen: the title sits large under the bar and scrolls up into it,
- * handing over to a small centred title, as iOS's does. Collapsing changes only what is drawn: the
- * bar keeps its expanded size and writes it to the screen's top inset once, so scrolling recomposes
- * and re-measures nothing. Pass the list's position as [scrolled], `{ listState.scrolledFromTop() }`.
+ * as iOS's does. When it has gone, a small centred title fades in and the bar's surface appears
+ * over the next few points of scroll. Pass the list's position as [scrolled],
+ * `{ listState.scrolledFromTop() }`.
+ *
+ * An [accessory], usually a search field, sits under the large title and scrolls away with it. The
+ * bar keeps its expanded size and writes it to the screen's top inset, so content starts below the
+ * accessory, and collapsing changes only what is drawn: scrolling recomposes nothing and re-measures
+ * nothing, apart from the one moment the small title is told to fade in or out.
+ *
+ * In a window too short for a large title (a phone held sideways), the bar is inline from the start.
  */
 @Composable
 fun AppLargeTitleTopBar(
@@ -102,28 +118,38 @@ fun AppLargeTitleTopBar(
     modifier: Modifier = Modifier,
     subtitle: String? = null,
     onBack: (() -> Unit)? = null,
+    windowInsets: WindowInsets = WindowInsets.statusBars,
+    accessory: (@Composable () -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val colors = AppTheme.colors
     val topChrome = LocalTopChrome.current
+    val large = !AppTheme.containerClass.isShort
+    // How far the content scrolls before the large title and the accessory have gone: their height.
+    var collapseDistance by remember { mutableIntStateOf(0) }
+    val collapsed by remember(large) {
+        derivedStateOf { !large || (collapseDistance > 0 && scrolled() >= collapseDistance) }
+    }
+    val inlineTitle = remember { Animatable(if (collapsed) 1f else 0f) }
+    val fade = AppTheme.springs.fadeQuick
+    LaunchedEffect(collapsed) { inlineTitle.animateTo(if (collapsed) 1f else 0f, tween(fade)) }
+    val surfaceFade = SurfaceFadeDistance
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(constraints)
-                topChrome.value = placeable.height.toDp()
-                layout(placeable.width, placeable.height) { placeable.place(0, 0) }
-            }
+            .writeHeightTo(topChrome)
             .drawBehind {
-                // Once the large title has gone, content is under the small bar: show its surface.
-                val area = LargeTitleArea.toPx().coerceAtMost(size.height)
-                val statusAndInline = size.height - area
-                if (scrolled() >= area) {
-                    drawRect(colors.surface, size = Size(size.width, statusAndInline))
-                    drawLine(colors.separator, Offset(0f, statusAndInline - 0.5f), Offset(size.width, statusAndInline - 0.5f), 1f)
+                // The surface comes in over the last few points of the collapse, under the small bar only.
+                val inline = size.height - collapseDistance
+                val fadeFrom = collapseDistance - surfaceFade.toPx()
+                val shown = if (!large) 1f else ((scrolled() - fadeFrom) / surfaceFade.toPx()).coerceIn(0f, 1f)
+                if (shown > 0f) {
+                    drawRect(colors.surface, size = Size(size.width, inline), alpha = shown)
+                    drawLine(colors.separator, Offset(0f, inline - 0.5f), Offset(size.width, inline - 0.5f), 1f, alpha = shown)
                 }
             }
-            .windowInsetsPadding(WindowInsets.statusBars),
+            .windowInsetsPadding(windowInsets),
     ) {
         InlineBar(
             onBack = onBack,
@@ -132,11 +158,7 @@ fun AppLargeTitleTopBar(
             title = {
                 AppText(
                     text = title,
-                    modifier = Modifier.graphicsLayer {
-                        // Appears as the large title finishes leaving.
-                        val area = LargeTitleArea.toPx()
-                        alpha = ((scrolled() - area * 0.7f) / (area * 0.3f)).coerceIn(0f, 1f)
-                    },
+                    modifier = Modifier.graphicsLayer { alpha = inlineTitle.value },
                     style = AppTheme.typography.headline,
                     color = colors.contentPrimary,
                     maxLines = 1,
@@ -144,33 +166,51 @@ fun AppLargeTitleTopBar(
                 )
             },
         )
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = LargeTitleArea)
+                .onSizeChanged { collapseDistance = it.height }
                 .graphicsLayer { clip = true },
-            contentAlignment = Alignment.BottomStart,
         ) {
             Column(
-                modifier = Modifier
-                    .padding(horizontal = AppTheme.spacing.gutter)
-                    .padding(bottom = AppTheme.spacing.sm)
-                    .graphicsLayer { translationY = -scrolled().coerceAtMost(size.height.toInt() + 1).toFloat() },
+                modifier = Modifier.graphicsLayer {
+                    translationY = -scrolled().coerceAtMost(collapseDistance + 1).toFloat()
+                },
             ) {
-                AppText(
-                    text = title,
-                    modifier = Modifier.semantics { heading() },
-                    style = AppTheme.typography.largeTitle,
-                    color = colors.contentPrimary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                subtitle?.let {
-                    AppText(text = it, style = AppTheme.typography.subheadline, color = colors.contentSecondary)
+                if (large) {
+                    Column(
+                        modifier = Modifier
+                            .heightIn(min = LargeTitleArea)
+                            .padding(horizontal = AppTheme.spacing.gutter)
+                            .padding(bottom = AppTheme.spacing.sm),
+                        verticalArrangement = Arrangement.Bottom,
+                    ) {
+                        AppText(
+                            text = title,
+                            modifier = Modifier.semantics { heading() },
+                            style = AppTheme.typography.largeTitle,
+                            color = colors.contentPrimary,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        subtitle?.let {
+                            AppText(text = it, style = AppTheme.typography.subheadline, color = colors.contentSecondary)
+                        }
+                    }
+                }
+                accessory?.let {
+                    Box(Modifier.padding(horizontal = AppTheme.spacing.gutter).padding(bottom = AppTheme.spacing.sm)) { it() }
                 }
             }
         }
     }
+}
+
+/** Writes this bar's measured height to the screen's top inset, before the content is laid out. */
+private fun Modifier.writeHeightTo(topChrome: ChromeInset): Modifier = layout { measurable, constraints ->
+    val placeable = measurable.measure(constraints)
+    topChrome.value = placeable.height.toDp()
+    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
 }
 
 @Composable
@@ -257,3 +297,6 @@ private val ScrollFadeDistance = 24.dp
 
 /** The room the large title takes under the small bar. */
 private val LargeTitleArea = 52.dp
+
+/** How much scroll the large-title bar's surface takes to fade in once the title has gone. */
+private val SurfaceFadeDistance = 10.dp

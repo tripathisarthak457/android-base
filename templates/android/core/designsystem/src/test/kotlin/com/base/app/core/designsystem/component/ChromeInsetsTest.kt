@@ -28,10 +28,12 @@ import org.robolectric.annotation.Config
 
 /**
  * Two screens are composed at once during a push or pop. Each scaffold's top inset must be its own
- * bar's height, from the first frame, and a change in one must not recompose the other.
+ * bar's height, from the first frame, and a change in one must not recompose the other. The window
+ * is a phone held upright: Robolectric's default is short enough to count as a phone held sideways,
+ * where a large title renders inline.
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK])
+@Config(sdk = [TEST_SDK], qualifiers = "w411dp-h891dp")
 class ChromeInsetsTest {
 
     @get:Rule
