@@ -5,12 +5,14 @@ import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -80,15 +82,18 @@ internal fun Project.verifyApiPurity() {
         group = "verification"
         description = "Fails if an api package imports Android, Compose, DI or another module's internals."
         sources.from(fileTree("src/main") { include("**/*.kt") })
+        projectDirectory.set(layout.projectDirectory)
         marker.set(layout.buildDirectory.file("guards/verifyApiPurity.ok"))
     }
     hookIntoBuild(task.name)
 }
 
+// By name, so only these tasks are realized rather than every task in the module.
 private fun Project.hookIntoBuild(taskName: String) {
-    tasks.matching { it.name == "preBuild" || it.name == "compileKotlin" || it.name == "check" }
-        .configureEach { dependsOn(taskName) }
+    tasks.named { it in HOOKED_TASKS }.configureEach { dependsOn(taskName) }
 }
+
+private val HOOKED_TASKS = setOf("preBuild", "compileKotlin", "check")
 
 /** `implementation`, `api`, `compileOnly`, `runtimeOnly`, and every variant and test form of them. */
 private val CHECKED_CONFIGURATIONS = listOf("api", "implementation", "compileOnly", "runtimeOnly")
@@ -233,15 +238,23 @@ internal abstract class VerifyApiPurityTask : DefaultTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val sources: ConfigurableFileCollection
 
+    /** Only names the files in the failure. Not an input, so the cache key stays machine-independent. */
+    @get:Internal
+    abstract val projectDirectory: DirectoryProperty
+
     @get:OutputFile
     abstract val marker: RegularFileProperty
 
     @TaskAction
     fun verify() {
+        val base = projectDirectory.get().asFile
         val violations = sources.files
             .filter { it.isFile }
             .sortedBy { it.path }
-            .flatMap { file -> ApiPurity.violations(file.readText()).map { "${file.name}:${it.line}: ${it.import}" } }
+            .flatMap { file ->
+                val name = file.relativeTo(base).invariantSeparatorsPath
+                ApiPurity.violations(file.readText()).map { "$name:${it.line}: ${it.import}" }
+            }
 
         if (violations.isNotEmpty()) {
             throw GradleException(
