@@ -4,7 +4,7 @@ title = "Android Native"
 status = "available"                        # available | beta | coming_soon | hidden; `beta` carries `status_note`
 summary = "Jetpack Compose, Navigation 3, Hilt, Ktor. Compact or modular."
 
-[identity]                                  # longest first; boundaries are enforced by the renamer
+[identity]                                  # any order: the renamer tries longer tokens first and enforces boundaries
 tokens = [
   { from = "com.base.app", to = "{package}",      boundary = "dotted" },
   { from = "com/base/app", to = "{package_path}", boundary = "path" },

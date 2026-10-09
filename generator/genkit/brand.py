@@ -47,9 +47,9 @@ def _channel(value: float) -> int:
     return round(max(0.0, min(1.0, value)) * 255)
 
 
-def to_argb(rgb: Rgb, alpha: float = 1.0) -> str:
+def to_argb(rgb: Rgb) -> str:
     """`0xFFRRGGBB`, as Kotlin's `Color(…)` takes it."""
-    return f"0x{_channel(alpha):02X}" + "".join(f"{_channel(c):02X}" for c in rgb)
+    return "0xFF" + "".join(f"{_channel(c):02X}" for c in rgb)
 
 
 def to_hex(rgb: Rgb) -> str:

@@ -22,7 +22,7 @@ GOOGLE = "https://dl.google.com/android/maven2/"
 CENTRAL = "https://repo1.maven.org/maven2/"
 PLUGINS = "https://plugins.gradle.org/m2/"
 
-#: Where each group publishes, longest prefix first. A group missing here is looked up everywhere.
+#: Where each group publishes, by group prefix. A group missing here is looked up everywhere.
 REPOSITORIES_BY_GROUP: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("androidx", (GOOGLE,)),
     ("com.android", (GOOGLE,)),
@@ -55,10 +55,11 @@ def _ordering(version: str) -> list[tuple[int, int | str]]:
 
 
 def repositories(group: str) -> tuple[str, ...]:
-    for prefix, found in REPOSITORIES_BY_GROUP:
-        if group == prefix or group.startswith(prefix + "."):
-            return found
-    return _EVERYWHERE
+    """The repositories under the longest prefix that covers `group`, so a narrower entry wins wherever it sits."""
+    matches = [
+        (prefix, found) for prefix, found in REPOSITORIES_BY_GROUP if group == prefix or group.startswith(prefix + ".")
+    ]
+    return max(matches, key=lambda match: len(match[0]))[1] if matches else _EVERYWHERE
 
 
 def catalogues() -> list[Path]:
