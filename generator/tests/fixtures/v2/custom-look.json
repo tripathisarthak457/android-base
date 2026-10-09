@@ -1,0 +1,14 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Look",
+  "package_name": "com.example.wp03.look",
+  "architecture": "compact",
+  "features": ["catalog", "googlefonts", "network", "sample", "pickers", "formfields", "datadisplay", "collections"],
+  "feature_modules": [],
+  "languages": [],
+  "design_style": "Editorial",
+  "motion_style": "Calm",
+  "accent_colour": "#8E3B46",
+  "font_name": "Plus Jakarta Sans"
+}

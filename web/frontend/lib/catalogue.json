@@ -1,5 +1,5 @@
 {
-  "generator_commit": "a8333b0c0bb8",
+  "generator_commit": "974d089d8c8b",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -654,6 +654,45 @@
           "title": "Component catalog app"
         },
         {
+          "default": false,
+          "description": "A paging carousel that peeks at its neighbours, a list whose rows lift and reorder under the finger or with accessibility actions, and a full-screen image viewer with pinch zoom and swipe to dismiss.",
+          "group": "design",
+          "headline": "Carousels, drag to reorder, zoomable images",
+          "implied_only": false,
+          "implies": [],
+          "key": "collections",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Carousel, reorderable list and image viewer"
+        },
+        {
+          "default": false,
+          "description": "Stat tiles with a trend, a sparkline and a bar chart drawn in one pass each, key-value grids, a timeline, a data table with sticky totals and measured column widths, an animated counter and a star rating.",
+          "group": "design",
+          "headline": "Show numbers, charts and tables",
+          "implied_only": false,
+          "implies": [],
+          "key": "datadisplay",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Data display"
+        },
+        {
+          "default": false,
+          "description": "A one-time-code field, decimal and money fields that keep the caret where the user typed, a phone field with a dial code, a stepper, a tag field, a select field, a range slider and a step indicator for multi-page forms.",
+          "group": "design",
+          "headline": "Fields for codes, money and more",
+          "implied_only": false,
+          "implies": [],
+          "key": "formfields",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Specialised form fields"
+        },
+        {
           "default": true,
           "description": "Inter and JetBrains Mono through the Play Services font provider — a real file per weight, which bundled variable fonts do not get on every OEM build.",
           "group": "design",
@@ -678,6 +717,19 @@
           "platforms": [],
           "requires": [],
           "title": "Lottie animations"
+        },
+        {
+          "default": false,
+          "description": "An inline month calendar with limits and disabled days, iOS-style wheel pickers for any list, a time picker built from wheels, and compact date and time pills that open them in a sheet.",
+          "group": "design",
+          "headline": "Pick dates and times inline",
+          "implied_only": false,
+          "implies": [],
+          "key": "pickers",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Date and time pickers"
         },
         {
           "default": false,
@@ -1293,14 +1345,17 @@
             "browser",
             "catalog",
             "coil",
+            "collections",
             "composemetrics",
             "coverage",
             "database",
+            "datadisplay",
             "deeplink",
             "depsanalysis",
             "devtools",
             "firebase",
             "flags",
+            "formfields",
             "forms",
             "googlefonts",
             "googlesignin",
@@ -1312,6 +1367,7 @@
             "network",
             "onboarding",
             "paging",
+            "pickers",
             "playstore",
             "profile",
             "push",

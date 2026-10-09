@@ -1,0 +1,16 @@
+key = "collections"
+title = "Carousel, reorderable list and image viewer"
+headline = "Carousels, drag to reorder, zoomable images"
+description = """
+A paging carousel that peeks at its neighbours, a list whose rows lift and reorder under the
+finger or with accessibility actions, and a full-screen image viewer with pinch zoom and
+swipe to dismiss."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/component/collections",
+  "catalog/src/main/kotlin/{pkg_path}/catalog/sections/CatalogCollections.kt",
+]
+legacy = []

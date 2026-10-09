@@ -1,0 +1,17 @@
+key = "formfields"
+title = "Specialised form fields"
+headline = "Fields for codes, money and more"
+description = """
+A one-time-code field, decimal and money fields that keep the caret where the user typed, a
+phone field with a dial code, a stepper, a tag field, a select field, a range slider and a
+step indicator for multi-page forms."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/component/formfields",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/component/formfields",
+  "catalog/src/main/kotlin/{pkg_path}/catalog/sections/CatalogFields.kt",
+]
+legacy = []

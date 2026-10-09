@@ -28,8 +28,11 @@
     </plurals>
     <string name="designsystem_nothing_selected">Nothing selected</string>
     <string name="designsystem_nothing_selected_message">Choose something from the list to see it here.</string>
+    <!-- <opt:pickers> -->
     <string name="designsystem_previous_month">Previous month</string>
     <string name="designsystem_next_month">Next month</string>
+    <!-- </opt:pickers> -->
+    <!-- <opt:formfields> -->
     <string name="designsystem_decrease">Decrease</string>
     <string name="designsystem_increase">Increase</string>
     <string name="designsystem_select">Select</string>
@@ -39,11 +42,16 @@
     <string name="designsystem_step_of">Step %1$d of %2$d: %3$s</string>
     <string name="designsystem_range_start">Minimum</string>
     <string name="designsystem_range_end">Maximum</string>
+    <!-- </opt:formfields> -->
+    <!-- <opt:datadisplay> -->
     <string name="designsystem_trend_up">Up</string>
     <string name="designsystem_trend_down">Down</string>
     <string name="designsystem_rating">%1$.1f out of %2$d</string>
     <string name="designsystem_total">Total</string>
     <string name="designsystem_table_cell" translatable="false">%1$s %2$s</string>
+    <!-- </opt:datadisplay> -->
+    <!-- <opt:collections> -->
     <string name="designsystem_move_up">Move up</string>
     <string name="designsystem_move_down">Move down</string>
+    <!-- </opt:collections> -->
 </resources>

@@ -7,18 +7,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.base.app.catalog.sections.BarsSection
 import com.base.app.catalog.sections.ButtonsSection
+// <opt:collections>
 import com.base.app.catalog.sections.CollectionsSection
+// </opt:collections>
 import com.base.app.catalog.sections.ContainersSection
+// <opt:datadisplay>
 import com.base.app.catalog.sections.DataSection
+// </opt:datadisplay>
 import com.base.app.catalog.sections.FeedbackSection
 import com.base.app.catalog.sections.FeelSection
+// <opt:formfields>
 import com.base.app.catalog.sections.FieldsSection
+// </opt:formfields>
 import com.base.app.catalog.sections.FoundationsSection
 import com.base.app.catalog.sections.InputsSection
 import com.base.app.catalog.sections.ListsSection
 import com.base.app.catalog.sections.MotionSection
 import com.base.app.catalog.sections.OverlaysSection
+// <opt:pickers>
 import com.base.app.catalog.sections.PickersSection
+// </opt:pickers>
 import com.base.app.catalog.sections.SelectionSection
 import com.base.app.catalog.sections.TextSection
 import com.base.app.core.designsystem.component.list.AppSectionHeader
@@ -39,10 +47,18 @@ enum class CatalogSection(val title: String, val summary: String) {
     Overlays("Overlays", "Alert, action sheet, sheet with detents, menu, toast, loading"),
     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
     Motion("Animation", "Transitions, first appearance, list placement, emphasis, rubber band"),
+    // <opt:pickers>
     Pickers("Pickers", "Calendar, wheels, time, compact date and time pills"),
+    // </opt:pickers>
+    // <opt:formfields>
     Fields("Form fields", "Code, decimal, money, phone, stepper, tags, select, range, steps"),
+    // </opt:formfields>
+    // <opt:datadisplay>
     Data("Data display", "Stats, charts, key values, timeline, table, counter, rating"),
+    // </opt:datadisplay>
+    // <opt:collections>
     Collections("Collections", "Carousel, reorderable list, image viewer"),
+    // </opt:collections>
 }
 
 @Composable
@@ -60,10 +76,18 @@ fun CatalogSection.Content() {
         CatalogSection.Overlays -> OverlaysSection()
         CatalogSection.Feedback -> FeedbackSection()
         CatalogSection.Motion -> MotionSection()
+        // <opt:pickers>
         CatalogSection.Pickers -> PickersSection()
+        // </opt:pickers>
+        // <opt:formfields>
         CatalogSection.Fields -> FieldsSection()
+        // </opt:formfields>
+        // <opt:datadisplay>
         CatalogSection.Data -> DataSection()
+        // </opt:datadisplay>
+        // <opt:collections>
         CatalogSection.Collections -> CollectionsSection()
+        // </opt:collections>
     }
 }
 
