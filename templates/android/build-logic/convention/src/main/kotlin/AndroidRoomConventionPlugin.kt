@@ -1,26 +1,29 @@
+import androidx.room3.gradle.RoomExtension
 import com.base.app.buildlogic.libs
 import com.base.app.buildlogic.library
-import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
-/** Room, with its schemas exported to a directory that is meant to be committed. */
+/**
+ * Room 3, with each version's schema exported to `schemas/` beside the module. Commit that
+ * directory: a migration test reads the old version's schema from it, and without it there is
+ * nothing to migrate from.
+ */
 class AndroidRoomConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.google.devtools.ksp")
+        pluginManager.apply("androidx.room3")
 
-        extensions.configure<KspExtension> {
-            arg("room.schemaLocation", "${projectDir}/schemas")
-            arg("room.generateKotlin", "true")
+        extensions.configure<RoomExtension> {
+            schemaDirectory("$projectDir/schemas")
         }
 
         dependencies {
-            add("implementation", libs.library("androidx-room-runtime"))
-            add("implementation", libs.library("androidx-room-ktx"))
-            add("ksp", libs.library("androidx-room-compiler"))
-            add("testImplementation", libs.library("androidx-room-testing"))
+            add("implementation", libs.library("androidx-room3-runtime"))
+            add("implementation", libs.library("androidx-sqlite-framework"))
+            add("ksp", libs.library("androidx-room3-compiler"))
         }
     }
 }
