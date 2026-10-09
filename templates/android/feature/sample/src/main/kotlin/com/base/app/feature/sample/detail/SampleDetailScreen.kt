@@ -14,9 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppErrorState
 import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
-import com.base.app.core.designsystem.component.navigation.AppBackTopBar
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.feedback.StateKind
+import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
@@ -35,17 +36,17 @@ internal fun SampleDetailScreen(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
-            AppBackTopBar(
+            AppTopBar(
                 title = state.item?.title ?: stringResource(R.string.sample_detail_title),
                 onBack = { onEvent(SampleDetailEvent.BackClicked) },
             )
         },
     ) {
         when (val loadState = state.loadState) {
-            is LoadState.Error -> AppErrorState(
+            is LoadState.Error -> AppStateView(
                 message = loadState.error.text(),
-                isOffline = loadState.error == AppError.Offline,
-                onRetry = { onEvent(SampleDetailEvent.Retry) },
+                kind = if (loadState.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                onAction = { onEvent(SampleDetailEvent.Retry) },
             )
 
             else -> Column(
@@ -72,13 +73,13 @@ internal fun SampleDetailScreen(
                 AppText(
                     text = item.title,
                     modifier = Modifier.padding(top = AppTheme.spacing.sm),
-                    style = AppTheme.typography.displaySmall,
+                    style = AppTheme.typography.title2,
                     color = AppTheme.colors.contentPrimary,
                 )
                 AppText(
                     text = item.body,
                     modifier = Modifier.padding(top = AppTheme.spacing.lg),
-                    style = AppTheme.typography.bodyLarge,
+                    style = AppTheme.typography.body,
                     color = AppTheme.colors.contentSecondary,
                 )
                 Related(state.related, onEvent)
@@ -98,7 +99,7 @@ private fun Related(items: List<SampleItem>, onEvent: (SampleDetailEvent) -> Uni
     ) {
         AppText(
             text = stringResource(R.string.sample_related),
-            style = AppTheme.typography.titleSmall,
+            style = AppTheme.typography.footnote,
             color = AppTheme.colors.contentSecondary,
         )
         items.forEach { item ->

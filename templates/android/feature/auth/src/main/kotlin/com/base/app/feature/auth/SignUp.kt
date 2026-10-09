@@ -3,11 +3,9 @@ package com.base.app.feature.auth
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.snapshotFlow
@@ -29,9 +27,9 @@ import com.base.app.core.designsystem.animation.busyOverlay
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppTone
-import com.base.app.core.designsystem.component.input.AppPasswordField
+import com.base.app.core.designsystem.component.input.AppSecureField
 import com.base.app.core.designsystem.component.input.AppTextField
-import com.base.app.core.designsystem.component.navigation.AppBackTopBar
+import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
@@ -230,7 +228,7 @@ internal fun SignUpScreen(
     AuthFrame(
         modifier = modifier,
         topBar = {
-            AppBackTopBar(
+            AppTopBar(
                 title = stringResource(R.string.auth_create_account),
                 onBack = { onEvent(SignUpEvent.BackClicked) },
             )
@@ -245,15 +243,13 @@ internal fun SignUpScreen(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
             AppTextField(
-                value = name.text.toString(),
-                onValueChange = name::setTextAndPlaceCursorAtEnd,
+                state = name,
                 label = stringResource(R.string.auth_name),
                 error = state.nameError?.asString(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             )
             AppTextField(
-                value = email.text.toString(),
-                onValueChange = email::setTextAndPlaceCursorAtEnd,
+                state = email,
                 label = stringResource(R.string.auth_email),
                 placeholder = stringResource(R.string.auth_email_placeholder),
                 error = state.emailError?.asString(),
@@ -262,20 +258,18 @@ internal fun SignUpScreen(
                     imeAction = ImeAction.Next,
                 ),
             )
-            AppPasswordField(
-                value = password.text.toString(),
-                onValueChange = password::setTextAndPlaceCursorAtEnd,
+            AppSecureField(
+                state = password,
                 label = stringResource(R.string.auth_password),
                 helper = stringResource(R.string.auth_password_rules),
                 error = state.passwordError?.asString(),
                 imeAction = ImeAction.Next,
             )
-            AppPasswordField(
-                value = confirm.text.toString(),
-                onValueChange = confirm::setTextAndPlaceCursorAtEnd,
+            AppSecureField(
+                state = confirm,
                 label = stringResource(R.string.auth_confirm_password),
                 error = state.confirmError?.asString(),
-                keyboardActions = KeyboardActions(onDone = { onEvent(SignUpEvent.Submit) }),
+                onKeyboardAction = { onEvent(SignUpEvent.Submit) },
             )
         }
 

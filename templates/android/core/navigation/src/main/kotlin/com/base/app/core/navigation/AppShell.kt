@@ -3,7 +3,6 @@ package com.base.app.core.navigation
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -175,7 +174,7 @@ fun AppShell(
 
     val onRoot = state.current.size == 1
     val showBar = alwaysShowBar || onRoot
-    val motion = AppTheme.motion
+    val motion = AppTheme.springs
 
     BackHandler(enabled = onRoot && state.selectedIndex != 0) {
         state.handleBack(onExitRequested)
@@ -228,9 +227,8 @@ fun AppShell(
         AnimatedVisibility(
             visible = showBar,
             modifier = Modifier.align(Alignment.BottomCenter),
-            enter = slideInVertically(motion.sheet()) { it } + fadeIn(tween(motion.quick)),
-            exit = slideOutVertically(tween(motion.medium, easing = motion.exit)) { it } +
-                fadeOut(tween(motion.medium, easing = motion.exit)),
+            enter = slideInVertically(motion.sheet.offset) { it } + fadeIn(motion.fadeIn()),
+            exit = slideOutVertically(motion.sheet.offset) { it } + fadeOut(motion.fadeOut()),
         ) {
             AppBottomBar(
                 items = items,

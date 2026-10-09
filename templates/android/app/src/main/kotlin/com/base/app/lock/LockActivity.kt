@@ -96,7 +96,7 @@ private fun LockScreen(onUnlock: () -> Unit) {
         )
         AppText(
             text = stringResource(R.string.app_lock_title),
-            style = AppTheme.typography.headingMedium,
+            style = AppTheme.typography.headline,
             color = AppTheme.colors.contentPrimary,
             modifier = Modifier.padding(top = AppTheme.spacing.lg),
         )

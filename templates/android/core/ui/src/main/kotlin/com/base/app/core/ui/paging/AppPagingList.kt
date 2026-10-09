@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +21,7 @@ import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
-import com.base.app.core.designsystem.component.feedback.AppCircularProgress
+import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
@@ -35,6 +36,8 @@ import com.base.app.core.designsystem.theme.AppTheme
  * - The next page failed: a short line and a retry under the last row, keeping every row already
  *   loaded. Replacing a long list with a full-screen error because page seven failed is the
  *   most irritating thing a feed can do.
+ *
+ * Hoist [state] to drive a large title from the list: `scrolled = { state.scrolledFromTop() }`.
  */
 @Composable
 fun <T : Any> AppPagingList(
@@ -43,6 +46,7 @@ fun <T : Any> AppPagingList(
     loadMoreFailedLabel: String,
     retryLabel: String,
     modifier: Modifier = Modifier,
+    state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PaddingValues(AppTheme.spacing.gutter),
     loading: @Composable () -> Unit = {},
     failed: @Composable (error: Throwable, retry: () -> Unit) -> Unit = { _, _ -> },
@@ -63,7 +67,7 @@ fun <T : Any> AppPagingList(
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                state = rememberLazyListState(),
+                state = state,
                 contentPadding = contentPadding,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {
@@ -102,7 +106,7 @@ private fun AppendFooter(
                 .padding(vertical = AppTheme.spacing.lg),
             contentAlignment = Alignment.Center,
         ) {
-            AppCircularProgress(size = AppTheme.sizes.iconLarge)
+            AppActivityIndicator(size = AppTheme.sizes.iconLarge)
         }
 
         failed -> Row(
@@ -114,14 +118,14 @@ private fun AppendFooter(
         ) {
             AppText(
                 text = failedLabel,
-                style = AppTheme.typography.bodySmall,
+                style = AppTheme.typography.subheadline,
                 color = AppTheme.colors.contentSecondary,
                 modifier = Modifier.weight(1f),
             )
             AppButton(
                 text = retryLabel,
                 onClick = onRetry,
-                variant = ButtonVariant.Secondary,
+                variant = ButtonVariant.Tinted,
                 size = ButtonSize.Small,
             )
         }

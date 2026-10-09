@@ -8,10 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
-import com.base.app.core.designsystem.component.feedback.AppAvatar
 import com.base.app.core.designsystem.component.feedback.AppSkeleton
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.icon.AppIcons
@@ -41,32 +38,10 @@ fun AppNetworkImage(
     )
 }
 
-/** A person's picture, falling back to their initials. */
-@Composable
-fun AppUserAvatar(
-    name: String,
-    imageUrl: String?,
-    modifier: Modifier = Modifier,
-    size: Dp = 40.dp,
-) {
-    if (imageUrl.isNullOrBlank()) {
-        AppAvatar(name = name, modifier = modifier, size = size)
-        return
-    }
-
-    AppAvatar(name = name, modifier = modifier, size = size) {
-        AppNetworkImage(
-            url = imageUrl,
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
-
 @Composable
 private fun ImageFallback(modifier: Modifier, icon: ImageVector) {
     Box(
-        modifier = modifier.background(AppTheme.colors.surfaceVariant),
+        modifier = modifier.background(AppTheme.colors.fill),
         contentAlignment = Alignment.Center,
     ) {
         AppIcon(icon, contentDescription = null, tint = AppTheme.colors.contentTertiary)

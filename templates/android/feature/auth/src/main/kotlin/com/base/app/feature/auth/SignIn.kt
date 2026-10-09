@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.snapshotFlow
@@ -36,7 +34,7 @@ import com.base.app.core.designsystem.component.container.AppDivider
 // </opt:googlesignin>
 import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppTone
-import com.base.app.core.designsystem.component.input.AppPasswordField
+import com.base.app.core.designsystem.component.input.AppSecureField
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
@@ -214,7 +212,7 @@ internal fun SignInScreen(
         AppText(
             text = stringResource(R.string.auth_welcome_back),
             modifier = Modifier.padding(top = AppTheme.spacing.xxl),
-            style = AppTheme.typography.displaySmall,
+            style = AppTheme.typography.title2,
             color = AppTheme.colors.contentPrimary,
         )
 
@@ -227,8 +225,7 @@ internal fun SignInScreen(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
             AppTextField(
-                value = email.text.toString(),
-                onValueChange = email::setTextAndPlaceCursorAtEnd,
+                state = email,
                 label = stringResource(R.string.auth_email),
                 placeholder = stringResource(R.string.auth_email_placeholder),
                 error = state.emailError?.asString(),
@@ -237,12 +234,11 @@ internal fun SignInScreen(
                     imeAction = ImeAction.Next,
                 ),
             )
-            AppPasswordField(
-                value = password.text.toString(),
-                onValueChange = password::setTextAndPlaceCursorAtEnd,
+            AppSecureField(
+                state = password,
                 label = stringResource(R.string.auth_password),
                 error = state.passwordError?.asString(),
-                keyboardActions = KeyboardActions(onDone = { onEvent(SignInEvent.Submit) }),
+                onKeyboardAction = { onEvent(SignInEvent.Submit) },
             )
         }
 
@@ -271,12 +267,12 @@ internal fun SignInScreen(
             AppButton(
                 text = stringResource(R.string.auth_create_account),
                 onClick = { onEvent(SignInEvent.CreateAccountClicked) },
-                variant = ButtonVariant.Ghost,
+                variant = ButtonVariant.Plain,
             )
             AppButton(
                 text = stringResource(R.string.auth_forgot_password),
                 onClick = { onEvent(SignInEvent.ForgotPasswordClicked) },
-                variant = ButtonVariant.Ghost,
+                variant = ButtonVariant.Plain,
             )
         }
     }
@@ -293,7 +289,7 @@ private fun OrDivider() {
         AppDivider(modifier = Modifier.weight(1f))
         AppText(
             text = stringResource(R.string.auth_or),
-            style = AppTheme.typography.caption,
+            style = AppTheme.typography.caption1,
             color = AppTheme.colors.contentTertiary,
         )
         AppDivider(modifier = Modifier.weight(1f))

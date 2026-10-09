@@ -141,13 +141,13 @@ fun AppSkeletonCircle(
 
 /** A placeholder shaped like a list row with a leading avatar and two lines. */
 @Composable
-fun AppSkeletonListItem(modifier: Modifier = Modifier) {
+fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = true) {
     Row(
         modifier = modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.lg, vertical = AppTheme.spacing.md),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AppSkeletonCircle()
+        if (showLeading) AppSkeletonCircle()
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             AppSkeletonLine(widthFraction = 0.6f)
             AppSkeletonLine(widthFraction = 0.9f, height = 12.dp)

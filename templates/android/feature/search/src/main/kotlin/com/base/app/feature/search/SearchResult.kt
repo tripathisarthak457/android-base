@@ -17,9 +17,10 @@ import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.designsystem.animation.AppAppear
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppErrorState
 import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
-import com.base.app.core.designsystem.component.navigation.AppBackTopBar
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.feedback.StateKind
+import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
@@ -96,15 +97,15 @@ internal fun SearchResultRoute(
         AppScaffold(
             contentMaxWidth = AppTheme.layout.readableMaxWidth,
             topBar = {
-                AppBackTopBar(title = stringResource(R.string.search_title), onBack = navigator::navigateUp)
+                AppTopBar(title = stringResource(R.string.search_title), onBack = navigator::navigateUp)
             },
         ) {
             when (val loadState = state.loadState) {
-                is LoadState.Error -> AppErrorState(
+                is LoadState.Error -> AppStateView(
                     message = loadState.error.text(),
-                    isOffline = loadState.error == AppError.Offline,
-                    onRetry = { onEvent(SearchResultEvent.Retry) },
-                    retryLabel = stringResource(R.string.search_retry),
+                    kind = if (loadState.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                    onAction = { onEvent(SearchResultEvent.Retry) },
+                    actionLabel = stringResource(R.string.search_retry),
                 )
 
                 else -> Column(
@@ -124,12 +125,12 @@ internal fun SearchResultRoute(
                             Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
                                 AppText(
                                     text = result.title,
-                                    style = AppTheme.typography.headingMedium,
+                                    style = AppTheme.typography.headline,
                                     color = AppTheme.colors.contentPrimary,
                                 )
                                 AppText(
                                     text = result.snippet,
-                                    style = AppTheme.typography.bodyLarge,
+                                    style = AppTheme.typography.body,
                                     color = AppTheme.colors.contentSecondary,
                                 )
                             }

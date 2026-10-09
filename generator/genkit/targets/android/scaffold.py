@@ -230,6 +230,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -237,10 +238,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import {pkg}.core.common.mvi.LoadState
 import {pkg}.core.designsystem.component.container.AppCard
 import {pkg}.core.designsystem.component.container.AppScaffold
-import {pkg}.core.designsystem.component.feedback.AppEmptyState
-import {pkg}.core.designsystem.component.feedback.AppErrorState
 import {pkg}.core.designsystem.component.feedback.AppSkeletonListItem
-import {pkg}.core.designsystem.component.navigation.AppLargeTitle
+import {pkg}.core.designsystem.component.feedback.AppStateView
+import {pkg}.core.designsystem.component.feedback.StateKind
+import {pkg}.core.designsystem.component.navigation.AppLargeTitleTopBar
+import {pkg}.core.designsystem.component.navigation.scrolledFromTop
 import {pkg}.core.designsystem.component.text.AppText
 import {pkg}.core.designsystem.theme.AppTheme
 import {pkg}.core.ui.asString
@@ -253,19 +255,25 @@ fun {class_name}Screen(
     onEvent: ({class_name}Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {{
+    val listState = rememberLazyListState()
     AppScaffold(
         modifier = modifier,
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
-        topBar = {{ AppLargeTitle(title = stringResource(R.string.{name}_title)) }},
+        topBar = {{
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.{name}_title),
+                scrolled = {{ listState.scrolledFromTop() }},
+            )
+        }},
     ) {{
         when (val loadState = state.loadState) {{
-            is LoadState.Error -> AppErrorState(
+            is LoadState.Error -> AppStateView(
+                kind = if (loadState.isOffline) StateKind.Offline else StateKind.Error,
                 message = loadState.message.asString(),
-                isOffline = loadState.isOffline,
-                onRetry = {{ onEvent({class_name}Event.Retry) }},
+                onAction = {{ onEvent({class_name}Event.Retry) }},
             )
 
-            LoadState.Empty -> AppEmptyState(
+            LoadState.Empty -> AppStateView(
                 title = stringResource(R.string.{name}_empty_title),
                 message = stringResource(R.string.{name}_empty_message),
                 actionLabel = stringResource(R.string.{name}_reload),
@@ -282,6 +290,7 @@ fun {class_name}Screen(
 
             else -> LazyColumn(
                 modifier = Modifier.fillMaxSize(),
+                state = listState,
                 contentPadding = PaddingValues(AppTheme.spacing.gutter),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {{
@@ -293,7 +302,7 @@ fun {class_name}Screen(
                     ) {{
                         AppText(
                             text = item.title,
-                            style = AppTheme.typography.titleLarge,
+                            style = AppTheme.typography.headline,
                             color = AppTheme.colors.contentPrimary,
                         )
                     }}

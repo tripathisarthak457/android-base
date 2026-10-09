@@ -21,9 +21,8 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.SinglePaneSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.designsystem.theme.AppMotion
+import com.base.app.core.designsystem.theme.AppSprings
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 
 /**
  * The display, and nothing else. This is the *only* file in the project that names Navigation 3.
@@ -78,8 +77,8 @@ internal fun TabbedNavHost(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val motion = AppTheme.motion
-    val reduceMotion = rememberReduceMotion()
+    val motion = AppTheme.springs
+    val reduceMotion = AppTheme.reduceMotion
     // Read through state rather than captured: entries are built once per stack change, and the
     // inset changes without one — rotating the phone moves the navigation bar to the side.
     val inset by rememberUpdatedState(rootBottomInset)
@@ -113,8 +112,8 @@ private fun StackDisplay(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val motion = AppTheme.motion
-    val reduceMotion = rememberReduceMotion()
+    val motion = AppTheme.springs
+    val reduceMotion = AppTheme.reduceMotion
 
     NavDisplay(
         entries = entries,
@@ -142,8 +141,8 @@ private fun rememberEntryProvider(
     registry: NavRegistry,
     bottomInsetFor: (AppNavKey) -> Dp = { 0.dp },
 ): (AppNavKey) -> NavEntry<AppNavKey> {
-    val motion = AppTheme.motion
-    val reduceMotion = rememberReduceMotion()
+    val motion = AppTheme.springs
+    val reduceMotion = AppTheme.reduceMotion
 
     return { key ->
         val destination = registry.destinationFor(key)
@@ -175,7 +174,7 @@ private fun rememberEntryProvider(
 /** Turns this module's [NavTransitionStyle] into the metadata map Navigation 3 reads. */
 private fun metadataFor(
     style: NavTransitionStyle,
-    motion: AppMotion,
+    motion: AppSprings,
     reduceMotion: Boolean,
 ): Map<String, Any> {
     if (style == NavTransitionStyle.Push && !reduceMotion) return emptyMap()

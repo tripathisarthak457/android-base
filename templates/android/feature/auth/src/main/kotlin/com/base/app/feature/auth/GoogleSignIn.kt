@@ -56,7 +56,7 @@ internal fun GoogleSignInButton(
             }
         },
         modifier = modifier,
-        variant = ButtonVariant.Secondary,
+        variant = ButtonVariant.Tinted,
         enabled = enabled,
         loading = busy,
         fillWidth = true,

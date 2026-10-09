@@ -3,26 +3,24 @@ package com.base.app.feature.search
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
@@ -33,12 +31,13 @@ import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
-import com.base.app.core.designsystem.component.feedback.AppErrorState
-import com.base.app.core.designsystem.component.feedback.AppLinearProgress
+import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.input.AppSearchField
-import com.base.app.core.designsystem.component.navigation.AppLargeTitle
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
@@ -66,10 +65,7 @@ internal fun SearchRoute(
     }
 }
 
-/**
- * The design-system field takes a String: the text is read from the ViewModel's `query` and written
- * straight back, so nothing is copied into the state.
- */
+/** The field edits the ViewModel's `query` directly, so nothing is copied into the state. */
 @Composable
 internal fun SearchScreen(
     state: SearchState,
@@ -77,15 +73,24 @@ internal fun SearchScreen(
     onEvent: (SearchEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val kind = state.contentKind()
+    // A new search starts at the top of its results.
+    val resultsList = remember(state.searchedFor) { LazyListState() }
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
             Column {
-                AppLargeTitle(title = stringResource(R.string.search_title))
+                AppLargeTitleTopBar(
+                    title = stringResource(R.string.search_title),
+                    scrolled = { if (kind == ContentKind.Results) resultsList.scrolledFromTop() else 0 },
+                    actions = {
+                        // Results stay readable while they refresh; the bar says it is happening.
+                        if (state.loadState is LoadState.Refreshing) AppActivityIndicator()
+                    },
+                )
                 AppSearchField(
-                    value = query.text.toString(),
-                    onValueChange = query::setTextAndPlaceCursorAtEnd,
+                    state = query,
                     placeholder = stringResource(R.string.search_placeholder),
                     onSearch = { onEvent(SearchEvent.Submit) },
                     modifier = Modifier.padding(
@@ -93,18 +98,12 @@ internal fun SearchScreen(
                         vertical = AppTheme.spacing.sm,
                     ),
                 )
-                // A thin line so results stay readable while loading; its space is always reserved.
-                Box(modifier = Modifier.fillMaxWidth().height(2.dp)) {
-                    if (state.loadState is LoadState.Refreshing) {
-                        AppLinearProgress(modifier = Modifier.fillMaxWidth(), height = 2.dp)
-                    }
-                }
             }
         },
     ) {
         val transitions = rememberAppTransitions()
         AnimatedContent(
-            targetState = state.contentKind(),
+            targetState = kind,
             transitionSpec = { transitions.fadeIn togetherWith transitions.fadeOut },
             label = "searchContent",
         ) { kind ->
@@ -112,21 +111,21 @@ internal fun SearchScreen(
                 ContentKind.Start -> StartContent(state.recent, onEvent)
                 ContentKind.Loading -> LoadingResults()
                 ContentKind.Error -> (state.loadState as? LoadState.Error)?.let {
-                    AppErrorState(
+                    AppStateView(
                         message = it.error.text(),
-                        isOffline = it.error == AppError.Offline,
-                        onRetry = { onEvent(SearchEvent.Retry) },
-                        retryLabel = stringResource(R.string.search_retry),
+                        kind = if (it.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                        onAction = { onEvent(SearchEvent.Retry) },
+                        actionLabel = stringResource(R.string.search_retry),
                     )
                 }
 
-                ContentKind.Empty -> AppEmptyState(
+                ContentKind.Empty -> AppStateView(
                     title = stringResource(R.string.search_no_results_title),
                     message = stringResource(R.string.search_no_results_message, state.searchedFor),
                     icon = AppIcons.Search,
                 )
 
-                ContentKind.Results -> Results(state.results, onEvent)
+                ContentKind.Results -> Results(state.results, resultsList, onEvent)
             }
         }
     }
@@ -145,7 +144,7 @@ private fun SearchState.contentKind(): ContentKind = when {
 @Composable
 private fun StartContent(recent: List<String>, onEvent: (SearchEvent) -> Unit) {
     if (recent.isEmpty()) {
-        AppEmptyState(
+        AppStateView(
             title = stringResource(R.string.search_start_title),
             message = stringResource(R.string.search_start_message),
             icon = AppIcons.Search,
@@ -165,13 +164,13 @@ private fun StartContent(recent: List<String>, onEvent: (SearchEvent) -> Unit) {
         ) {
             AppText(
                 text = stringResource(R.string.search_recent),
-                style = AppTheme.typography.titleSmall,
+                style = AppTheme.typography.footnote,
                 color = AppTheme.colors.contentSecondary,
             )
             AppButton(
                 text = stringResource(R.string.search_clear_recent),
                 onClick = { onEvent(SearchEvent.ClearRecent) },
-                variant = ButtonVariant.Ghost,
+                variant = ButtonVariant.Plain,
                 size = ButtonSize.Small,
             )
         }
@@ -192,9 +191,10 @@ private fun StartContent(recent: List<String>, onEvent: (SearchEvent) -> Unit) {
 }
 
 @Composable
-private fun Results(results: List<SearchResult>, onEvent: (SearchEvent) -> Unit) {
+private fun Results(results: List<SearchResult>, listState: LazyListState, onEvent: (SearchEvent) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        state = listState,
         contentPadding = PaddingValues(AppTheme.spacing.gutter),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
     ) {
@@ -205,7 +205,7 @@ private fun Results(results: List<SearchResult>, onEvent: (SearchEvent) -> Unit)
             ) {
                 AppText(
                     text = result.title,
-                    style = AppTheme.typography.titleMedium,
+                    style = AppTheme.typography.subheadline,
                     color = AppTheme.colors.contentPrimary,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -213,7 +213,7 @@ private fun Results(results: List<SearchResult>, onEvent: (SearchEvent) -> Unit)
                 AppText(
                     text = result.snippet,
                     modifier = Modifier.padding(top = AppTheme.spacing.xs),
-                    style = AppTheme.typography.bodySmall,
+                    style = AppTheme.typography.subheadline,
                     color = AppTheme.colors.contentTertiary,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,

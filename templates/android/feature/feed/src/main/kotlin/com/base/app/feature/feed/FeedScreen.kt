@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,10 +24,11 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppAvatar
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
-import com.base.app.core.designsystem.component.feedback.AppErrorState
 import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
-import com.base.app.core.designsystem.component.navigation.AppLargeTitle
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.feedback.StateKind
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -52,12 +54,14 @@ internal fun FeedScreen(
     onEvent: (FeedEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val listState = rememberLazyListState()
     AppScaffold(
         modifier = modifier,
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = {
-            AppLargeTitle(
+            AppLargeTitleTopBar(
                 title = stringResource(R.string.feed_title),
+                scrolled = { listState.scrolledFromTop() },
                 subtitle = stringResource(R.string.feed_subtitle),
             )
         },
@@ -65,21 +69,22 @@ internal fun FeedScreen(
         AppPagingList(
             items = posts,
             key = FeedPost::id,
+            state = listState,
             loadMoreFailedLabel = stringResource(R.string.feed_load_more_failed),
             retryLabel = stringResource(R.string.feed_retry),
             loading = { LoadingFeed() },
             failed = { throwable, retry ->
                 val error = (throwable as? FeedLoadException)?.error
-                AppErrorState(
+                AppStateView(
                     message = error?.text(UiText.of(R.string.feed_load_failed))
                         ?: stringResource(R.string.feed_load_failed),
-                    isOffline = error == AppError.Offline,
-                    onRetry = retry,
-                    retryLabel = stringResource(R.string.feed_retry),
+                    kind = if (error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                    onAction = retry,
+                    actionLabel = stringResource(R.string.feed_retry),
                 )
             },
             empty = {
-                AppEmptyState(
+                AppStateView(
                     title = stringResource(R.string.feed_empty_title),
                     message = stringResource(R.string.feed_empty_message),
                     icon = AppIcons.ListView,
@@ -104,7 +109,7 @@ private fun FeedCard(
     val author = stringResource(R.string.feed_author, post.authorId)
     AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier.animateContentSize(AppTheme.motion.sheet()),
+            modifier = Modifier.animateContentSize(AppTheme.springs.layout.size),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
         ) {
             Row(
@@ -114,18 +119,18 @@ private fun FeedCard(
                 AppAvatar(name = author)
                 AppText(
                     text = author,
-                    style = AppTheme.typography.titleSmall,
+                    style = AppTheme.typography.footnote,
                     color = AppTheme.colors.contentSecondary,
                 )
             }
             AppText(
                 text = post.title,
-                style = AppTheme.typography.titleLarge,
+                style = AppTheme.typography.headline,
                 color = AppTheme.colors.contentPrimary,
             )
             AppText(
                 text = post.body,
-                style = AppTheme.typography.bodyMedium,
+                style = AppTheme.typography.callout,
                 color = AppTheme.colors.contentSecondary,
                 maxLines = if (expanded) Int.MAX_VALUE else 2,
                 overflow = TextOverflow.Ellipsis,
@@ -133,7 +138,7 @@ private fun FeedCard(
             AppButton(
                 text = stringResource(if (expanded) R.string.feed_show_less else R.string.feed_show_more),
                 onClick = onToggle,
-                variant = ButtonVariant.Tertiary,
+                variant = ButtonVariant.Plain,
                 size = ButtonSize.Small,
             )
         }

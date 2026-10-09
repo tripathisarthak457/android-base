@@ -110,7 +110,7 @@ private fun BrandPanel(modifier: Modifier) {
     ) {
         AppText(
             text = appName,
-            style = AppTheme.typography.displayMedium,
+            style = AppTheme.typography.title1,
             color = AppTheme.colors.onAccent,
         )
     }

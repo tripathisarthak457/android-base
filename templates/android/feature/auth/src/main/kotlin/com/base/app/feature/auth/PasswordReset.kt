@@ -1,10 +1,8 @@
 package com.base.app.feature.auth
 
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.snapshotFlow
@@ -24,7 +22,7 @@ import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.feedback.AppBanner
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.input.AppTextField
-import com.base.app.core.designsystem.component.navigation.AppBackTopBar
+import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
@@ -160,7 +158,7 @@ internal fun PasswordResetScreen(
     AuthFrame(
         modifier = modifier,
         topBar = {
-            AppBackTopBar(
+            AppTopBar(
                 title = stringResource(R.string.auth_reset_password),
                 onBack = { onEvent(PasswordResetEvent.BackClicked) },
             )
@@ -186,7 +184,7 @@ internal fun PasswordResetScreen(
 
         AppText(
             text = stringResource(R.string.auth_reset_explanation),
-            style = AppTheme.typography.bodyMedium,
+            style = AppTheme.typography.callout,
             color = AppTheme.colors.contentSecondary,
         )
 
@@ -195,8 +193,7 @@ internal fun PasswordResetScreen(
         }
 
         AppTextField(
-            value = email.text.toString(),
-            onValueChange = email::setTextAndPlaceCursorAtEnd,
+            state = email,
             label = stringResource(R.string.auth_email),
             placeholder = stringResource(R.string.auth_email_placeholder),
             error = state.emailError?.asString(),
@@ -204,9 +201,7 @@ internal fun PasswordResetScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done,
             ),
-            keyboardActions = KeyboardActions(
-                onDone = { onEvent(PasswordResetEvent.Submit) },
-            ),
+            onKeyboardAction = { onEvent(PasswordResetEvent.Submit) },
         )
 
         AppButton(

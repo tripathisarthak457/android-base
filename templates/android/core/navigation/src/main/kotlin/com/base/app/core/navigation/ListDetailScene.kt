@@ -18,7 +18,7 @@ import androidx.navigation3.scene.SceneStrategyScope
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
+import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
@@ -110,7 +110,7 @@ private class ListDetailScene(
 
 @Composable
 private fun NothingSelected() {
-    AppEmptyState(
+    AppStateView(
         title = stringResource(R.string.designsystem_nothing_selected),
         message = stringResource(R.string.designsystem_nothing_selected_message),
         icon = AppIcons.ListView,
