@@ -6,15 +6,13 @@ plugins {
     id("com.base.app.android.application")
     id("com.base.app.android.compose")
 }
+
 android {
     namespace = "com.base.app.catalog"
 
     defaultConfig {
         applicationId = "com.base.app.catalog"
-        versionCode = 1
-        versionName = "1.0.0"
     }
-
 
     buildTypes {
         release {
@@ -29,7 +27,6 @@ android {
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(libs.androidx.activity.compose)
+    // lifecycleScope, which holds the first frame until the fonts are in.
     implementation(libs.androidx.lifecycle.runtime.compose)
-
 }
-

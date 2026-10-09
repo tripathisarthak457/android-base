@@ -1,0 +1,98 @@
+package com.base.app.catalog.sections
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.base.app.catalog.CatalogGroup
+import com.base.app.core.designsystem.component.button.AppIconButton
+import com.base.app.core.designsystem.component.container.AppCard
+import com.base.app.core.designsystem.component.container.AppScaffold
+import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.navigation.AppBottomBar
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.base.app.core.designsystem.component.navigation.AppNavigationRail
+import com.base.app.core.designsystem.component.navigation.AppPageControl
+import com.base.app.core.designsystem.component.navigation.AppPager
+import com.base.app.core.designsystem.component.navigation.AppTabRow
+import com.base.app.core.designsystem.component.navigation.AppTopBar
+import com.base.app.core.designsystem.component.navigation.BottomNavItem
+import com.base.app.core.designsystem.component.navigation.scrolledFromTop
+import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scrollEdgeFade
+import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.theme.AppTheme
+
+@Composable
+fun BarsSection() {
+    CatalogGroup("Inline top bar", caption = "The title takes what the buttons leave, so it never runs under a second action.") {
+        AppTopBar(title = "Messages", onBack = {}) {
+            AppIconButton(AppIcons.Search, contentDescription = "Search", onClick = {})
+            AppIconButton(AppIcons.Edit, contentDescription = "Compose", onClick = {})
+        }
+        AppTopBar(title = "A title that is far too long for the room it has", subtitle = "And a subtitle", centerTitle = false) {
+            AppIconButton(AppIcons.MoreHorizontal, contentDescription = "More", onClick = {})
+        }
+    }
+    CatalogGroup("Large title", caption = "Scroll the list: the title rises into the bar and the bar's surface appears under it. Only drawing changes.") {
+        val list = rememberLazyListState()
+        Box(Modifier.fillMaxWidth().height(360.dp)) {
+            AppScaffold(topBar = { AppLargeTitleTopBar(title = "Inbox", scrolled = { list.scrolledFromTop() }) { AppIconButton(AppIcons.Edit, contentDescription = "Compose", onClick = {}) } }) {
+                LazyColumn(state = list, modifier = Modifier.fillMaxSize(), contentPadding = chromeContentPadding()) {
+                    items((1..30).toList(), key = { it }) { AppRow(title = "Message $it", subtitle = "Preview of the message", onClick = {}) }
+                }
+            }
+        }
+    }
+    CatalogGroup("Scroll edge fade", caption = "Content fades out under a clear bar, so the bar needs no background. One small offscreen strip per frame.") {
+        val list = rememberLazyListState()
+        val barHeight = 48.dp
+        Box(Modifier.fillMaxWidth().height(240.dp)) {
+            LazyColumn(state = list, modifier = Modifier.fillMaxSize().scrollEdgeFade { barHeight }) {
+                items((1..30).toList(), key = { it }) { AppRow(title = "Row $it") }
+            }
+            Box(Modifier.fillMaxWidth().height(barHeight), contentAlignment = Alignment.Center) {
+                AppText(text = "Clear bar", style = AppTheme.typography.headline)
+            }
+        }
+    }
+    CatalogGroup("Tab row", caption = "Labels share the width while they fit, and take what they need when they do not.") {
+        var tab by remember { mutableIntStateOf(0) }
+        AppTabRow(tabs = listOf("Overview", "Activity", "Settings"), selected = tab, onSelect = { tab = it })
+        var long by remember { mutableIntStateOf(0) }
+        AppTabRow(tabs = listOf("All", "Exceptions 12", "Pending", "Done"), selected = long, onSelect = { long = it })
+    }
+    CatalogGroup("Pager and page control", caption = "Tap a side of the dots to step, or drag along them to scrub.") {
+        AppPager(pageCount = 4, modifier = Modifier.height(160.dp)) { page ->
+            AppCard(modifier = Modifier.fillMaxSize()) { AppText(text = "Page ${page + 1}", style = AppTheme.typography.title3) }
+        }
+        val pager = rememberPagerState { 6 }
+        AppPageControl(pageCount = 6, selected = { pager.currentPage })
+    }
+    CatalogGroup("Tab bar and rail", caption = "The same destinations at the bottom of a phone and down the side of a wider window, drawn the way the style says.") {
+        val destinations = listOf(
+            BottomNavItem("Home", AppIcons.Home, AppIcons.HomeFilled),
+            BottomNavItem("Search", AppIcons.Search, AppIcons.SearchFilled),
+            BottomNavItem("Inbox", AppIcons.Bell, AppIcons.BellFilled, badgeCount = 3),
+            BottomNavItem("Profile", AppIcons.User, AppIcons.UserFilled),
+        )
+        var selected by remember { mutableIntStateOf(0) }
+        AppBottomBar(items = destinations, selectedIndex = selected, onItemSelected = { selected = it })
+        Box(Modifier.height(320.dp)) {
+            AppNavigationRail(items = destinations, selectedIndex = selected, onItemSelected = { selected = it })
+        }
+    }
+}

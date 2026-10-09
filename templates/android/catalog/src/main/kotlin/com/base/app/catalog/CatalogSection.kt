@@ -3,55 +3,73 @@ package com.base.app.catalog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.component.container.AppDivider
+import com.base.app.catalog.sections.BarsSection
+import com.base.app.catalog.sections.ButtonsSection
+import com.base.app.catalog.sections.CollectionsSection
+import com.base.app.catalog.sections.ContainersSection
+import com.base.app.catalog.sections.DataSection
+import com.base.app.catalog.sections.FeedbackSection
+import com.base.app.catalog.sections.FeelSection
+import com.base.app.catalog.sections.FieldsSection
+import com.base.app.catalog.sections.FoundationsSection
+import com.base.app.catalog.sections.InputsSection
+import com.base.app.catalog.sections.ListsSection
+import com.base.app.catalog.sections.MotionSection
+import com.base.app.catalog.sections.OverlaysSection
+import com.base.app.catalog.sections.PickersSection
+import com.base.app.catalog.sections.SelectionSection
+import com.base.app.catalog.sections.TextSection
+import com.base.app.core.designsystem.component.list.AppSectionHeader
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 
-/** The catalog's pages. */
+/** The catalog's pages. The name is what `--es section` takes. */
 enum class CatalogSection(val title: String, val summary: String) {
-    Foundations("Foundations", "Colour, type, spacing, elevation, motion"),
-    Buttons("Buttons", "Five variants, three sizes, loading, disabled, floating"),
-    Inputs("Inputs", "Text, password, search, numeric, multi-line"),
-    Fields("Specialised fields", "OTP, stepper, select, phone, currency, tags"),
-    Selection("Selection", "Checkbox, radio, switch, sliders, chips, segments"),
-    Containers("Containers", "Cards, list rows, dividers, bars"),
-    Lists("Lists & gestures", "Swipe, accordion, pull-to-refresh, pager, timeline"),
-    Data("Data display", "Counters, expandable text, stats, ratings, charts"),
-    Feedback("Feedback", "Progress, steps, skeletons, badges, banners, empty"),
-    Overlays("Overlays", "Dialogs, sheets, menus, tooltips, snackbars"),
-    Motion("Animation", "The transition set, running, including list animation"),
-    Feel("Motion & haptics", "Press feedback, motion styles, the haptic vocabulary"),
-    DateTime("Date & time", "Calendar, wheels, pickers"),
-    Icons("Icons", "The whole set, at a glance"),
+    Foundations("Foundations", "Colour roles, type scale, spacing, shapes, sizes, springs"),
+    Feel("Press and motion", "Press feedback side by side, motion styles, the haptic vocabulary"),
+    Text("Text and icons", "Text, figures, expandable text, the icon set"),
+    Buttons("Buttons", "Filled, tinted, plain, destructive; sizes, icons, loading, links"),
+    Inputs("Inputs", "Text fields, secure field, search with scopes"),
+    Selection("Selection", "Switch, checkbox, radio, segmented control, chips, slider"),
+    Lists("Lists", "Grouped sections, rows, toggle rows, disclosure, swipe actions, refresh"),
+    Containers("Containers", "Cards, surfaces, dividers, scaffold, bottom action bar"),
+    Bars("Bars and pages", "Inline and large-title top bars, tab row, pager and page control"),
+    Overlays("Overlays", "Alert, action sheet, sheet with detents, menu, toast, loading"),
+    Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
+    Motion("Animation", "Transitions, first appearance, list placement, emphasis, rubber band"),
+    Pickers("Pickers", "Calendar, wheels, time, compact date and time pills"),
+    Fields("Form fields", "Code, decimal, money, phone, stepper, tags, select, range, steps"),
+    Data("Data display", "Stats, charts, key values, timeline, table, counter, rating"),
+    Collections("Collections", "Carousel, reorderable list, image viewer"),
 }
 
 @Composable
 fun CatalogSection.Content() {
     when (this) {
         CatalogSection.Foundations -> FoundationsSection()
+        CatalogSection.Feel -> FeelSection()
+        CatalogSection.Text -> TextSection()
         CatalogSection.Buttons -> ButtonsSection()
         CatalogSection.Inputs -> InputsSection()
-        CatalogSection.Fields -> FieldsSection()
         CatalogSection.Selection -> SelectionSection()
-        CatalogSection.Containers -> ContainersSection()
         CatalogSection.Lists -> ListsSection()
-        CatalogSection.Data -> DataSection()
-        CatalogSection.Feedback -> FeedbackSection()
+        CatalogSection.Containers -> ContainersSection()
+        CatalogSection.Bars -> BarsSection()
         CatalogSection.Overlays -> OverlaysSection()
+        CatalogSection.Feedback -> FeedbackSection()
         CatalogSection.Motion -> MotionSection()
-        CatalogSection.Feel -> FeelSection()
-        CatalogSection.DateTime -> DateTimeSection()
-        CatalogSection.Icons -> IconsSection()
+        CatalogSection.Pickers -> PickersSection()
+        CatalogSection.Fields -> FieldsSection()
+        CatalogSection.Data -> DataSection()
+        CatalogSection.Collections -> CollectionsSection()
     }
 }
 
 /**
- * A labelled group. Every example on every page sits in one of these, so the pages stay readable as
- * they grow and nobody has to invent a heading style per section.
+ * A labelled group. Every example on every page sits in one, so pages stay readable as they grow
+ * and nobody invents a heading style per section.
  */
 @Composable
 fun CatalogGroup(
@@ -60,30 +78,11 @@ fun CatalogGroup(
     caption: String? = null,
     content: @Composable () -> Unit,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-            AppText(
-                text = title,
-                style = AppTheme.typography.headingSmall,
-                color = AppTheme.colors.contentPrimary,
-            )
-            caption?.let {
-                AppText(
-                    text = it,
-                    style = AppTheme.typography.caption,
-                    color = AppTheme.colors.contentTertiary,
-                )
-            }
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
+        Column {
+            AppSectionHeader(title = title)
+            caption?.let { AppText(text = it, style = AppTheme.typography.footnote, color = AppTheme.colors.contentSecondary) }
         }
-        AppDivider()
-        Column(
-            modifier = Modifier.padding(top = AppTheme.spacing.xs),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
-        ) {
-            content()
-        }
+        content()
     }
 }
