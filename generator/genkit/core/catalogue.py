@@ -216,7 +216,12 @@ def _rules(own_by_target: dict[str, dict[str, Any]]) -> dict[str, Any]:
     }
     for key, own in own_by_target.items():
         rules["template_module_names"][key] = own["reserved_module_names"]
-        rules.update(own.get("rules", {}))
+        for name, value in own.get("rules", {}).items():
+            # The website reads one flat table, so a second target giving a rule a different value
+            # would leave the first validating against the second's.
+            if name in rules and rules[name] != value:
+                raise ValueError(f"The {key} target's catalogue rule '{name}' clashes with one already set.")
+            rules[name] = value
     return rules
 
 
