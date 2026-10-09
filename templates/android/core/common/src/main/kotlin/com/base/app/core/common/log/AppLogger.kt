@@ -1,5 +1,7 @@
 package com.base.app.core.common.log
 
+import kotlin.concurrent.Volatile
+
 /** Where log lines go. The app installs the platform backend at startup; until then [Log] is silent. */
 fun interface AppLogger {
     fun log(level: LogLevel, tag: String, message: String, throwable: Throwable?)
@@ -23,7 +25,7 @@ object Log {
         logger?.log(LogLevel.Info, tag, message, null)
     }
 
-    fun w(message: String, tag: String = DEFAULT_TAG, throwable: Throwable? = null) {
+    fun w(message: String, throwable: Throwable? = null, tag: String = DEFAULT_TAG) {
         logger?.log(LogLevel.Warn, tag, message, throwable)
     }
 

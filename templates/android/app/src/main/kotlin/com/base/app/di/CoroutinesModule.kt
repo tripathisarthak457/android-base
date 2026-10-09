@@ -13,7 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
-/** The one place `Dispatchers.*` is named; every class gets them injected as [AppDispatchers]. */
+/**
+ * Classes get their dispatchers injected as [AppDispatchers] instead of naming `Dispatchers.*`, so a
+ * test can run all of them on its own scheduler.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object CoroutinesModule {
