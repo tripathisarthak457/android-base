@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
+import io
 import json
 import subprocess
 import sys
 import tempfile
 import unittest
 import zipfile
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest import mock
+
+import create_project
+from genkit.core import pipeline
 
 GENERATOR = Path(__file__).resolve().parent.parent
 SPEC = {"schema": 2, "platform": "android", "app_name": "Json Check", "package_name": "com.example.jsoncheck"}
@@ -17,7 +23,7 @@ SPEC = {"schema": 2, "platform": "android", "app_name": "Json Check", "package_n
 def run(*arguments: str, cwd: Path | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, str(GENERATOR / "create_project.py"), *arguments],
-        capture_output=True, text=True, check=False, cwd=cwd or GENERATOR,
+        capture_output=True, text=True, check=False, cwd=cwd or GENERATOR, stdin=subprocess.DEVNULL,
     )
 
 
@@ -49,6 +55,11 @@ class CliTest(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stderr)
         with zipfile.ZipFile(self.root / "app.zip") as archive:
             self.assertIn("JsonCheck/settings.gradle.kts", archive.namelist())
+
+    def test_json_without_out_is_refused_rather_than_asked(self):
+        result = run("--spec", str(self.spec), "--json")
+        self.assertEqual(2, result.returncode)
+        self.assertEqual("out", json.loads(result.stdout)["field"])
 
     def test_a_zip_path_must_say_zip(self):
         result = run("--spec", str(self.spec), "--out", str(self.root / "app"), "--json")
@@ -100,6 +111,54 @@ class CliTest(unittest.TestCase):
     def test_list_features_json(self):
         features = json.loads(run("--list-features", "--json").stdout)
         self.assertIn("network", {feature["key"] for feature in features})
+
+
+class FailedReplaceTest(unittest.TestCase):
+    """--force deletes the old output only once the new one is complete."""
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+        self.spec = self.root / "spec.json"
+        self.spec.write_text(json.dumps(SPEC), encoding="utf-8")
+
+    def generate(self, destination: Path, *arguments: str) -> tuple[int, dict]:
+        with redirect_stdout(io.StringIO()) as out, redirect_stderr(io.StringIO()):
+            code = create_project.main(["--spec", str(self.spec), "--out", str(destination), "--force", "--json", *arguments])
+        return code, json.loads(out.getvalue())
+
+    def test_a_failed_regenerate_keeps_the_old_project(self):
+        destination = self.root / "Mine"
+        destination.mkdir()
+        (destination / "old.txt").write_text("keep", encoding="utf-8")
+        with mock.patch.object(pipeline.record, "write", side_effect=OSError("disk full")):
+            code, answer = self.generate(destination, "--no-zip")
+        self.assertEqual((1, "internal"), (code, answer["kind"]))
+        self.assertTrue((destination / "old.txt").exists())
+        self.assertEqual(["Mine", "spec.json"], sorted(path.name for path in self.root.iterdir()))
+
+    def test_a_failed_zip_keeps_the_old_zip(self):
+        destination = self.root / "app.zip"
+        destination.write_bytes(b"old")
+
+        def half_written(project, path, executable):
+            path.write_bytes(b"half")
+            raise OSError("disk full")
+
+        with mock.patch.object(pipeline.package, "zip_project", side_effect=half_written):
+            code, answer = self.generate(destination)
+        self.assertEqual((1, "internal"), (code, answer["kind"]))
+        self.assertEqual(b"old", destination.read_bytes())
+        self.assertEqual(["app.zip", "spec.json"], sorted(path.name for path in self.root.iterdir()))
+
+    def test_a_forced_regenerate_replaces_a_zip(self):
+        destination = self.root / "app.zip"
+        destination.write_bytes(b"old")
+        code, answer = self.generate(destination)
+        self.assertEqual(0, code, answer)
+        with zipfile.ZipFile(destination) as archive:
+            self.assertIn("JsonCheck/settings.gradle.kts", archive.namelist())
 
 
 if __name__ == "__main__":

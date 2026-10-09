@@ -59,11 +59,15 @@ def build(
     icon_source: Path | None = None,
     git_init: bool = False,
     commit: str | None = None,
+    replace: bool = False,
 ) -> Generated:
-    """Generates `spec` into `destination`: a zip file, or a project directory that must not exist yet."""
-    if not zip_output and destination.exists():
+    """
+    Generates `spec` into `destination`: a zip file, or a project directory that must not exist yet.
+    With `replace`, whatever is at `destination` is deleted, but only once the new project is complete.
+    """
+    if not replace and not zip_output and destination.exists():
         raise RenderError(f"{destination} already exists.")
-    if zip_output and destination.is_dir():
+    if not replace and zip_output and destination.is_dir():
         raise RenderError(f"{destination} is a directory, not a path for the zip.")
 
     manifest = target.manifest
@@ -81,16 +85,27 @@ def build(
             )
 
         destination.parent.mkdir(parents=True, exist_ok=True)
-        if zip_output:
-            # Written beside the destination and moved over it, so a failure never leaves half a zip
-            # where a caller expects a whole one.
-            partial = destination.with_name(destination.name + ".partial")
-            package.zip_project(project, partial, manifest.executable)
-            os.replace(partial, destination)
-        else:
-            shutil.move(str(project), str(destination))
+        # The result is finished beside the destination and renamed over it, so a failure never
+        # leaves half a project where a caller expects a whole one, nor costs the one it replaces.
+        with tempfile.TemporaryDirectory(prefix=f".{destination.name}.", dir=destination.parent) as beside:
+            finished = Path(beside) / destination.name
+            if zip_output:
+                package.zip_project(project, finished, manifest.executable)
+            else:
+                shutil.move(str(project), str(finished))
+            if replace:
+                _remove(destination)
+            os.replace(finished, destination)
 
     return Generated(destination, spec.pascal_name, warnings, context.summary)
+
+
+def _remove(path: Path) -> None:
+    """Deletes `path` itself: a symbolic link is unlinked, never followed."""
+    if path.is_dir() and not path.is_symlink():
+        shutil.rmtree(path)
+    elif path.exists() or path.is_symlink():
+        path.unlink()
 
 
 def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str]:
