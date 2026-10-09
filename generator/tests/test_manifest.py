@@ -146,6 +146,18 @@ class BrokenManifestTest(unittest.TestCase):
         self.write("removed.toml", 'net = "gone"\n')
         self.assertBroken("both removed and a current feature")
 
+    def test_a_removed_key_that_is_also_a_plain_legacy_key(self):
+        self.write("features/bad.toml", self.feature(legacy='["gone"]'))
+        self.write("removed.toml", 'gone = "gone"\n')
+        self.assertBroken("both removed and a legacy key without a schema")
+
+    def test_a_removed_key_may_still_map_for_an_older_schema(self):
+        self.write("features/bad.toml", self.feature(legacy='[{ key = "gone", schema = 1 }]'))
+        self.write("removed.toml", 'gone = "gone"\n')
+        manifest = TemplateManifest.load(self.root)
+        self.assertEqual(["bad"], manifest.upgrade_keys(["gone"], 1)[0])
+        self.assertEqual(([], ["gone"], []), manifest.upgrade_keys(["gone"], 2))
+
     def test_a_plain_legacy_key_that_is_current(self):
         self.write("features/bad.toml", self.feature(legacy='["net"]'))
         self.assertBroken("is a current feature")

@@ -368,4 +368,7 @@ def _load_removed(path: Path, features: dict[str, Feature]) -> dict[str, str]:
             raise TemplateError(path, None, f"'{key}' must map to the note an old spec receives")
         if key in features:
             raise TemplateError(path, None, f"'{key}' is both removed and a current feature")
+        # A legacy key without a schema always maps first, so its removal note could never be read.
+        if any(legacy == LegacyKey(key) for feature in features.values() for legacy in feature.legacy):
+            raise TemplateError(path, None, f"'{key}' is both removed and a legacy key without a schema")
     return dict(removed)
