@@ -7,18 +7,9 @@ import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { planTabs } from "../../preview/tabs.ts";
-import { moduleNames } from "../state.ts";
+import { STEP_LABELS, moduleNames } from "../state.ts";
 import { stepOf, type Configurator } from "../useConfigurator.ts";
 import { usePreviewInput } from "./LookStep.tsx";
-
-const STEP_NAMES: Record<string, string> = {
-  platform: "Platform",
-  identity: "Project",
-  features: "Features",
-  look: "Look",
-  motion: "Motion",
-  build: "Build",
-};
 
 export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; model: Configurator; dark: boolean }) {
   const { state, target, errors, busy, outcome, generate, goTo, preset } = model;
@@ -99,7 +90,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
                 <li key={field}>
                   {message}{" "}
                   <button type="button" onClick={() => goTo(stepOf(field))} className="font-semibold underline underline-offset-2">
-                    {STEP_NAMES[stepOf(field)] ?? "Go there"}
+                    {STEP_LABELS[stepOf(field)]}
                   </button>
                 </li>
               ))}
@@ -142,7 +133,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
               <>
                 {" "}
                 <button type="button" onClick={() => goTo(stepOf(outcome.field))} className="font-semibold underline underline-offset-2">
-                  {STEP_NAMES[stepOf(outcome.field)]}
+                  {STEP_LABELS[stepOf(outcome.field)]}
                 </button>
               </>
             )}

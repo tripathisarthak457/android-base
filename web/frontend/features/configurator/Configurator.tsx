@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../components/primitives.tsx";
 import type { Catalogue } from "../catalogue/types.ts";
-import { STEPS, type Step } from "./state.ts";
+import { STEP_LABELS, STEPS } from "./state.ts";
 import { BuildStep } from "./steps/BuildStep.tsx";
 import { FeaturesStep } from "./steps/FeaturesStep.tsx";
 import { IdentityStep } from "./steps/IdentityStep.tsx";
@@ -13,16 +13,6 @@ import { MotionStep } from "./steps/MotionStep.tsx";
 import { PlatformStep } from "./steps/PlatformStep.tsx";
 import { ReviewStep } from "./steps/ReviewStep.tsx";
 import type { Configurator as Model } from "./useConfigurator.ts";
-
-const LABELS: Record<Step, string> = {
-  platform: "Platform",
-  identity: "Project",
-  features: "Features",
-  look: "Look",
-  motion: "Motion",
-  build: "Build",
-  review: "Review",
-};
 
 export function Configurator({ catalogue, model }: { catalogue: Catalogue; model: Model }) {
   const { step, stepIndex, goTo, identityValid } = model;
@@ -42,7 +32,8 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
     const current = nav?.querySelector<HTMLElement>('[aria-current="step"]');
     if (nav && current) {
       const offset = current.getBoundingClientRect().left - nav.getBoundingClientRect().left + nav.scrollLeft;
-      nav.scrollTo({ left: offset - (nav.clientWidth - current.clientWidth) / 2, behavior: "smooth" });
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      nav.scrollTo({ left: offset - (nav.clientWidth - current.clientWidth) / 2, behavior: reduce ? "auto" : "smooth" });
     }
   }, [step]);
 
@@ -92,7 +83,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
                     >
                       {done ? "✓" : index + 1}
                     </span>
-                    <span className={`text-sm font-medium ${active ? "text-ink-100" : "text-ink-300"}`}>{LABELS[id]}</span>
+                    <span className={`text-sm font-medium ${active ? "text-ink-100" : "text-ink-300"}`}>{STEP_LABELS[id]}</span>
                   </span>
                 </button>
               </li>
@@ -112,7 +103,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
           className="p-4 sm:p-6 md:p-8"
         >
           <h3 ref={heading} tabIndex={-1} className="sr-only">
-            {`Step ${stepIndex + 1} of ${STEPS.length}: ${LABELS[step]}`}
+            {`Step ${stepIndex + 1} of ${STEPS.length}: ${STEP_LABELS[step]}`}
           </h3>
           {step === "platform" && <PlatformStep catalogue={catalogue} model={model} />}
           {step === "identity" && <IdentityStep model={model} />}

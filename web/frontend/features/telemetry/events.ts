@@ -3,7 +3,7 @@
  * names and fields and refuses a batch with anything else, so this union is the whole vocabulary.
  */
 
-export type StepName = "platform" | "identity" | "features" | "look" | "motion" | "build" | "review";
+import type { Step } from "../configurator/state.ts";
 
 export type Viewport = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -19,7 +19,7 @@ export type Landed = {
 
 export type ClientEvent =
   | Landed
-  | { name: "step_viewed"; target: string; step: StepName }
+  | { name: "step_viewed"; target: string; step: Step }
   | { name: "platform_selected"; target: string }
   | { name: "preset_chosen"; target: string; preset: string }
   | { name: "generate_clicked"; target: string }

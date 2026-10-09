@@ -21,6 +21,7 @@ export function IdentityStep({ model }: { model: Configurator }) {
   const modules = moduleNames(state.modules);
   const plan = useMemo(() => planTabs(new Set(state.features), moduleNames(state.modules)), [state.features, state.modules]);
   const displayLength = [...state.displayName].length;
+  const displayMax = target.fields.find((field) => field.key === "display_name")?.max;
   const placeholderPackage = !errors.has("package_name") && /^com\.example(\.|$)/.test(state.packageName);
 
   return (
@@ -34,7 +35,7 @@ export function IdentityStep({ model }: { model: Configurator }) {
 
         <Field
           label="Name on the home screen (optional)"
-          hint={`Any characters, emoji included: "Café", "मेरा ऐप". Empty uses the app name. ${displayLength} of 30.`}
+          hint={`Any characters, emoji included: "Café", "मेरा ऐप". Empty uses the app name.${displayMax ? ` ${displayLength} of ${displayMax}.` : ""}`}
           error={errors.get("display_name")}
         >
           {(control) => (

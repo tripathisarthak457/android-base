@@ -5,6 +5,16 @@ export const STEPS = ["platform", "identity", "features", "look", "motion", "bui
 
 export type Step = (typeof STEPS)[number];
 
+export const STEP_LABELS: Record<Step, string> = {
+  platform: "Platform",
+  identity: "Project",
+  features: "Features",
+  look: "Look",
+  motion: "Motion",
+  build: "Build",
+  review: "Review",
+};
+
 /** A value of one dotted field (`android.min_sdk`, `android.api_base_urls`). */
 export type Setting = string | number | Record<string, string>;
 

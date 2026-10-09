@@ -20,7 +20,7 @@ const SCHEMA = 2;
 const NOT_PRINTABLE = /[\p{Cc}\p{Cf}\p{Cs}\p{Co}\p{Cn}\p{Zl}\p{Zp}]|(?! )\p{Zs}/u;
 
 /** What a display name may not contain: line breaks and controls, but format characters stay (Persian needs ZWNJ). */
-const NOT_IN_DISPLAY_NAME = /[\p{Cc}\p{Cs}\p{Zl}\p{Zp}￾￿]/u;
+const NOT_IN_DISPLAY_NAME = /[\p{Cc}\p{Cs}\p{Zl}\p{Zp}\uFFFE\uFFFF]/u;
 
 class Checker {
   readonly errors: SpecErrors = new Map();
@@ -468,7 +468,8 @@ function checkAndroid(check: Checker, data: Json, fields: Field[], rules: Rules)
     check.fail("android.version_code", `versionCode must be between 1 and ${rules.version_code_max}.`);
     return;
   }
-  const versionName = typeof data.version_name === "string" && data.version_name ? data.version_name : "1.0.0";
+  const versionName =
+    typeof data.version_name === "string" && data.version_name ? data.version_name : String(fieldDefault(fields, "android.version_name"));
   if (!matches(rules.version_name, versionName)) {
     check.fail("android.version_name", "versionName must look like 1.0.0.");
     return;

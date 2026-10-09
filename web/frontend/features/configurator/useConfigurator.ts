@@ -12,10 +12,12 @@ import { sessionHeaders, toSpecV2 } from "./request.ts";
 import { type Action, type ConfigState, STEPS, type Step, findTarget, initialState, reducer } from "./state.ts";
 import { type SpecErrors, validateSpec } from "./validate.ts";
 
+const IDENTITY_FIELDS = ["app_name", "display_name", "package_name", "feature_modules", "languages"];
+
 /** Which step owns each spec field, so an error can send the visitor to where it is fixed. */
 export function stepOf(field: string): Step {
   if (field === "platform" || field === "schema") return "platform";
-  if (["app_name", "display_name", "package_name", "feature_modules", "languages"].includes(field)) return "identity";
+  if (IDENTITY_FIELDS.includes(field)) return "identity";
   if (field === "features") return "features";
   if (["design_style", "accent_colour", "secondary_colour", "tertiary_colour", "font_name", "mono_font_name"].includes(field)) return "look";
   if (field === "motion_style" || field === "haptics_enabled") return "motion";
@@ -235,7 +237,7 @@ export function useConfigurator(catalogue: Catalogue) {
   }, [errors, busy, state.revision, state.target, spec]);
 
   const stepIndex = STEPS.indexOf(step);
-  const identityValid = !["app_name", "display_name", "package_name", "feature_modules", "languages"].some((field) => errors.has(field));
+  const identityValid = !IDENTITY_FIELDS.some((field) => errors.has(field));
 
   return {
     state,
