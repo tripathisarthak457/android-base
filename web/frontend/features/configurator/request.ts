@@ -122,8 +122,8 @@ export function clientHeader(build: string): string {
 }
 
 /**
- * The headers that tie a generation to its visit (MASTER-PLAN A10.1). Each is sent only when the
- * API would store it: a value it would ignore is left out rather than sent malformed.
+ * The headers that tie a generation to its visit. Each is sent only when the API would store it:
+ * a value it would ignore is left out rather than sent malformed.
  */
 export function sessionHeaders(session: { id: string | null; configMs: number | null; build: string }): Record<string, string> {
   const headers: Record<string, string> = { "X-Client": clientHeader(session.build) };

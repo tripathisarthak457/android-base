@@ -8,7 +8,7 @@ import { type BrandName, type Rgb, brandColours, brandRamp, parseHex, readableSh
  */
 
 /** A 360 dp phone drawn 280 px wide. */
-export const DP = 280 / 360;
+const DP = 280 / 360;
 
 export const dp = (value: number) => value * DP;
 

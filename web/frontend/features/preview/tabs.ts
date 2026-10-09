@@ -1,7 +1,7 @@
 /**
- * The tabs a generated app's bar shows, by MASTER-PLAN A5.3: the template's tab sources in a fixed
- * order, then scaffolded modules in the order they were typed, at most five. With no tab source the
- * generator scaffolds a `home` module. Each scaffolded tab gets its own icon.
+ * The tabs a generated app's bar shows: the template's tab sources in a fixed order, then
+ * scaffolded modules in the order they were typed, at most five. With no tab source the generator
+ * scaffolds a `home` module. Each scaffolded tab gets its own icon.
  */
 
 export const MAX_TABS = 5;

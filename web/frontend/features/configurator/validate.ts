@@ -55,7 +55,7 @@ function codePoints(value: string): number {
   return [...value].length;
 }
 
-export function pascalCase(name: string): string {
+function pascalCase(name: string): string {
   return name
     .split("_")
     .filter(Boolean)
@@ -339,7 +339,7 @@ function checkDisplayName(check: Checker, name: string, rules: Rules): void {
 }
 
 /** Problems with a package name, or undefined when the generator would accept it. */
-export function packageProblem(name: string, rules: Rules): string | undefined {
+function packageProblem(name: string, rules: Rules): string | undefined {
   if (!name) return "A package name is required, like com.example.myapp.";
   if (name.length > rules.package_max) return `The package name can be at most ${rules.package_max} characters.`;
   const segments = name.split(".");
@@ -521,7 +521,7 @@ function checkAndroid(check: Checker, data: Json, fields: Field[], rules: Rules)
 }
 
 /** Why the generator would refuse to make this signing key, or undefined. */
-export function keystoreProblem(keystore: Json, rules: Rules): string | undefined {
+function keystoreProblem(keystore: Json, rules: Rules): string | undefined {
   const text = (key: string, fallback: string) =>
     typeof keystore[key] === "string" && keystore[key] !== "" ? (keystore[key] as string) : fallback;
   const name = text("name", "");

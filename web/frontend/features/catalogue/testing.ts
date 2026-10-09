@@ -20,10 +20,9 @@ export function androidTarget(catalogue: Catalogue = loadCatalogue()): Target {
 }
 
 /**
- * The checked-in catalogue plus the two targets the platform step is built for, shaped like
- * MASTER-PLAN A7.3 and A8: a beta multiplatform target with a smaller feature set and no signing
- * keys, and an iOS target that is coming soon. Until WP07 and WP08 add them to the generator, the
- * platform logic is tested against these.
+ * The checked-in catalogue plus the two targets the platform step is built for: a beta
+ * multiplatform target with a smaller feature set and no signing keys, and an iOS target that is
+ * coming soon. The generator ships only Android so far, so the platform logic is tested on these.
  */
 export function threePlatformCatalogue(): Catalogue {
   const catalogue = loadCatalogue();

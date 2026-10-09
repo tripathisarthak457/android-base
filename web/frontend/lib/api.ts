@@ -6,7 +6,7 @@ export const API_BASE =
 /** The deployed commit, short. Sent as `X-Client` so the API can tell the site from scripts. */
 export const BUILD = process.env.NEXT_PUBLIC_BUILD ?? "dev";
 
-/** An error answer from the API: `{error, code, field}` (WP09), or a status with no body. */
+/** An error answer from the API: `{error, code, field}`, or a status with no body. */
 export class ApiError extends Error {
   readonly status: number;
   readonly code: string;

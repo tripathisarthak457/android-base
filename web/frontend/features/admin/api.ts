@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { API_BASE, ApiError, apiError } from "../../lib/api.ts";
 
-/** The admin API's answers (`/api/v1/admin/*`, WP09). Every one starts with its window. */
+/** The admin API's answers (`/api/v1/admin/*`). Every one starts with its window. */
 
 export type Window = { from: string; to: string };
 

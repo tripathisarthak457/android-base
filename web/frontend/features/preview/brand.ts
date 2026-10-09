@@ -87,12 +87,12 @@ function rotateHue(rgb: Rgb, degrees: number): Rgb {
   return hlsToRgb(pyMod(hue + degrees / 360, 1), lightness, saturation);
 }
 
-export function relativeLuminance(rgb: Rgb): number {
+function relativeLuminance(rgb: Rgb): number {
   const [r, g, b] = rgb.map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)) as Rgb;
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-export function contrast(a: Rgb, b: Rgb): number {
+function contrast(a: Rgb, b: Rgb): number {
   const [light, dark] = [relativeLuminance(a), relativeLuminance(b)].sort((x, y) => y - x) as [number, number];
   return (light + 0.05) / (dark + 0.05);
 }

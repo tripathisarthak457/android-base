@@ -150,7 +150,7 @@ export function initialState(catalogue: Catalogue, targetKey?: string): ConfigSt
  * left exactly at the old platform's default preset becomes the new platform's default preset, since
  * the visitor never chose it.
  */
-export function switchTarget(state: ConfigState, catalogue: Catalogue, key: string): ConfigState {
+function switchTarget(state: ConfigState, catalogue: Catalogue, key: string): ConfigState {
   if (key === state.target) return state;
   const from = findTarget(catalogue, state.target);
   const to = findTarget(catalogue, key);

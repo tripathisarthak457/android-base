@@ -1,7 +1,6 @@
 /**
- * The anonymous funnel events the site sends to `/api/v1/events` (MASTER-PLAN A10.2). The API
- * accepts exactly these names and fields and refuses a batch with anything else, so this union is
- * the whole vocabulary.
+ * The anonymous funnel events the site sends to `/api/v1/events`. The API accepts exactly these
+ * names and fields and refuses a batch with anything else, so this union is the whole vocabulary.
  */
 
 export type StepName = "platform" | "identity" | "features" | "look" | "motion" | "build" | "review";

@@ -26,7 +26,7 @@ export function Spinner({ className = "" }: { className?: string }) {
   );
 }
 
-/** A link styled as a button, for the places the old site opened windows from a click handler. */
+/** A link that looks like a button, so it keeps middle-click, copy link and a link's semantics. */
 export function LinkButton({
   href,
   children,

@@ -1,4 +1,4 @@
-/** The admin's one date range and filters, applied to every panel (MASTER-PLAN A10.3). */
+/** The admin's one date range and filters, applied to every panel. */
 
 export type Range = "today" | "7d" | "30d" | "90d" | "custom";
 
@@ -29,11 +29,11 @@ export const OUTCOMES = [
 export const DEVICE_CLASSES = ["mobile", "tablet", "desktop", "unknown"] as const;
 
 /** The API's longest window. */
-export const MAX_DAYS = 400;
+const MAX_DAYS = 400;
 
 const DAYS: Record<Exclude<Range, "custom">, number> = { today: 1, "7d": 7, "30d": 30, "90d": 90 };
 
-export function utcDate(date: Date): string {
+function utcDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 

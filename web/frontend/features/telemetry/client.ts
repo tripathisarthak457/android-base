@@ -58,7 +58,7 @@ export function track(event: ClientEvent): void {
 }
 
 /** Sends what is queued. `keepalive` lets the last batch outlive the page it was sent from. */
-export function flush(): void {
+function flush(): void {
   if (timer) clearTimeout(timer);
   timer = null;
   if (queue.length === 0) return;
