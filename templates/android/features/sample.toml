@@ -5,7 +5,7 @@ description = """
 A working list + detail feature against a live public API, with its tests. Proves every wire on
 first run; delete it once your own first feature exists."""
 group = "Screens"
-default = true
+default = false
 requires = ["network"]
 implied_only = false
 owns = [

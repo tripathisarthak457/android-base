@@ -3,9 +3,9 @@ title = "Dependency health report"
 headline = "See which dependencies nobody uses"
 description = """
 Names every module declaring a dependency it never uses, or using one it only gets transitively —
-the second being the failure that surfaces months later as an unrelated module breaking. Printed
-on every pull request; a report rather than a gate, because two of this template's own decisions
-produce advice it is right to ignore."""
+the second being the failure that surfaces months later as an unrelated module breaking.
+`./gradlew buildHealth` writes the report; it is advice rather than a gate, because two of this
+template's own decisions produce advice it is right to ignore."""
 group = "Build and quality"
 default = false
 requires = []

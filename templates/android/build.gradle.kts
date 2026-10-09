@@ -28,7 +28,27 @@ plugins {
     // <opt:depsanalysis>
     alias(libs.plugins.dependency.analysis)
     // </opt:depsanalysis>
+    // <opt:formatting>
+    alias(libs.plugins.spotless)
+    // </opt:formatting>
 }
+
+// <opt:formatting>
+/*
+ * Formatting: `./gradlew spotlessApply` fixes it and `check` fails on what it would change. The
+ * rules are ktlint's Android Studio style, read from .editorconfig, so the IDE formats the same way.
+ */
+spotless {
+    kotlin {
+        target("**/src/**/*.kt")
+        ktlint(libs.versions.ktlint.get())
+    }
+    kotlinGradle {
+        target("*.gradle.kts", "*/**/*.gradle.kts")
+        ktlint(libs.versions.ktlint.get())
+    }
+}
+// </opt:formatting>
 
 // <opt:coverage>
 /*

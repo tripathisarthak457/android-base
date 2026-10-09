@@ -58,11 +58,11 @@ class SchemaOneTest(unittest.TestCase):
         self.assertEqual(("existing_path",), parsed.ignored_fields)
 
     def test_legacy_feature_keys_map_across_with_a_note(self):
-        parsed = read({"app_name": "Acme", "package_name": "com.acme.x", "features": ["crashlytics", "ci", "network"]})
+        parsed = read({"app_name": "Acme", "package_name": "com.acme.x", "features": ["crashlytics", "staticanalysis", "network"]})
         self.assertIn("firebase", parsed.spec.features)
-        self.assertNotIn("ci", parsed.spec.features)
+        self.assertNotIn("staticanalysis", parsed.spec.features)
         self.assertIn("'crashlytics' is now part of 'firebase'.", parsed.notes)
-        self.assertIn("'ci' is no longer a feature and was left out.", parsed.notes)
+        self.assertIn("'staticanalysis' is no longer a feature and was left out.", parsed.notes)
 
     def test_the_record_is_schema_two_and_reads_back_as_the_same_spec(self):
         raw = json.loads((FIXTURES / "v1" / "periflow.json").read_text(encoding="utf-8"))

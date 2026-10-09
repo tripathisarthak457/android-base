@@ -1,0 +1,15 @@
+key = "ci"
+title = "Continuous integration"
+headline = "Build and test every push on GitHub"
+description = """
+A GitHub Actions workflow that runs `check` (unit tests, lint, the code rules, the module graph
+and the Compose stability gate) and assembles the debug and release builds on every push and pull
+request, uploading the reports when something fails."""
+group = "Build and quality"
+default = true
+requires = []
+implied_only = false
+owns = [
+  ".github",
+]
+legacy = []

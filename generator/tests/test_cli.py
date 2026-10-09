@@ -122,7 +122,9 @@ class CliTest(unittest.TestCase):
 
     def test_a_preset_replaces_a_specs_features(self):
         result = run("--spec", str(self.spec), "--preset", "lean", "--dry-run", "--json")
-        self.assertEqual(["catalog", "leakcanary", "network", "sample"], json.loads(result.stdout)["enabled"])
+        self.assertEqual(
+            ["ci", "coil", "deeplink", "googlefonts", "leakcanary", "network"], json.loads(result.stdout)["enabled"]
+        )
 
     def test_an_unknown_preset_names_the_ones_that_exist(self):
         result = run("--spec", str(self.spec), "--preset", "massive", "--dry-run", "--json")

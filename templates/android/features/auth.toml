@@ -5,7 +5,7 @@ description = """
 Three screens against your auth endpoints, writing the encrypted token store — with server-side
 field errors mapped back onto the inputs that caused them."""
 group = "Sign-in and account"
-default = true
+default = false
 requires = ["network", "forms"]
 implied_only = false
 owns = [

@@ -3,18 +3,20 @@ default = "standard"
 
 [lean]
 title = "Lean"
-description = "Networking, the design system, the catalog and one reference feature."
-features = ["network", "leakcanary", "sample", "catalog"]
+description = """
+The design system, the navigation shell and one home screen, with networking, images and CI. The
+smallest app that still looks and moves like the rest."""
+features = ["network", "coil", "googlefonts", "leakcanary", "deeplink", "ci"]
 
 [standard]
 title = "Standard"
 description = """
-The lean set plus offline cache, images, auth, onboarding, settings with a language picker, a
-profile tab and media. What most projects want on day one."""
+The lean set plus sign-in, onboarding, settings with a language picker, the in-app browser, feature
+flags, the developer panel, a local database and the reference list-detail feature to copy. What
+most products want on day one."""
 features = [
-  "network", "leakcanary", "sample", "catalog",
-  "room", "coil", "googlefonts", "forms", "auth", "settings", "onboarding", "media", "deeplink",
-  "flags", "devtools", "profile", "browser", "language",
+  "network", "coil", "googlefonts", "leakcanary", "deeplink", "ci",
+  "catalog", "auth", "settings", "onboarding", "language", "browser", "flags", "devtools", "database", "sample",
 ]
 
 [everything]

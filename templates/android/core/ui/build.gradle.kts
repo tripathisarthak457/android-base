@@ -22,9 +22,6 @@ dependencies {
     // <opt:browser>
     implementation(libs.androidx.browser)
     // </opt:browser>
-    // <opt:lottie>
-    implementation(libs.lottie.compose)
-    // </opt:lottie>
     // <opt:paging>
     api(libs.androidx.paging.compose)
     // </opt:paging>

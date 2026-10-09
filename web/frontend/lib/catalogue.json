@@ -1,5 +1,5 @@
 {
-  "generator_commit": "6bc38e9e7358",
+  "generator_commit": "ef0814c4fbcd",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -164,7 +164,7 @@
           "title": "Compact"
         },
         {
-          "available": false,
+          "available": true,
           "description": "Each feature and data module split into :api and :impl, for larger teams.",
           "key": "modular",
           "title": "Modular"
@@ -341,7 +341,7 @@
           "title": "Biometric app lock"
         },
         {
-          "default": true,
+          "default": false,
           "description": "Three screens against your auth endpoints, writing the encrypted token store — with server-side field errors mapped back onto the inputs that caused them.",
           "group": "sign-in-and-account",
           "headline": "Sign in, sign up, reset password",
@@ -392,8 +392,8 @@
           "title": "Profile screen"
         },
         {
-          "default": true,
-          "description": "Composable validators, per-field touched/error state, and server-side errors mapped back onto the fields that caused them.",
+          "default": false,
+          "description": "Each field's text lives in a TextFieldState the ViewModel owns, so typing never waits on a state update and survives process death; validators return error codes the screen turns into copy, and server-side errors map back onto the fields that caused them.",
           "group": "screens",
           "headline": "Validate forms properly",
           "implied_only": false,
@@ -439,7 +439,7 @@
           "title": "Open source licences screen"
         },
         {
-          "default": true,
+          "default": false,
           "description": "A paged walkthrough shown once, recorded in the preference store. Skipping counts as finishing, so it never comes back on the next launch.",
           "group": "screens",
           "headline": "A first-run walkthrough",
@@ -452,7 +452,7 @@
           "title": "Onboarding flow"
         },
         {
-          "default": true,
+          "default": false,
           "description": "A working list + detail feature against a live public API, with its tests. Proves every wire on first run; delete it once your own first feature exists.",
           "group": "screens",
           "headline": "A working screen to learn from",
@@ -486,7 +486,7 @@
           "title": "Search screen"
         },
         {
-          "default": true,
+          "default": false,
           "description": "Theme switch, analytics opt-out, sign-out with confirmation and the build version — wired to the preference store and the session.",
           "group": "screens",
           "headline": "A settings screen",
@@ -668,19 +668,6 @@
         },
         {
           "default": false,
-          "description": "An AppLottie component for raw, asset and URL animations, tintable to the theme and held on its last frame when the system's animations are off, with a success animation that plays when a password-reset link is sent.",
-          "group": "design",
-          "headline": "Play Lottie animations",
-          "implied_only": false,
-          "implies": [],
-          "key": "lottie",
-          "licence": null,
-          "platforms": [],
-          "requires": [],
-          "title": "Lottie animations"
-        },
-        {
-          "default": false,
           "description": "A profile generator and a macrobenchmark that measures cold start with and without it. Typically a 20-30% cut in cold start for no code change.",
           "group": "build-and-quality",
           "headline": "Cut cold-start time",
@@ -693,17 +680,17 @@
           "title": "Baseline profile and startup benchmark"
         },
         {
-          "default": false,
-          "description": "Reads the Compose compiler's own report and fails on a design-system composable that restarts without being able to skip. A baseline holds what is already there, so it starts green and cannot get worse.",
+          "default": true,
+          "description": "A GitHub Actions workflow that runs `check` (unit tests, lint, the code rules, the module graph and the Compose stability gate) and assembles the debug and release builds on every push and pull request, uploading the reports when something fails.",
           "group": "build-and-quality",
-          "headline": "Catch a component that cannot skip",
+          "headline": "Build and test every push on GitHub",
           "implied_only": false,
           "implies": [],
-          "key": "composemetrics",
+          "key": "ci",
           "licence": null,
           "platforms": [],
           "requires": [],
-          "title": "Compose stability check"
+          "title": "Continuous integration"
         },
         {
           "default": false,
@@ -720,7 +707,7 @@
         },
         {
           "default": false,
-          "description": "Names every module declaring a dependency it never uses, or using one it only gets transitively — the second being the failure that surfaces months later as an unrelated module breaking. Printed on every pull request; a report rather than a gate, because two of this template's own decisions produce advice it is right to ignore.",
+          "description": "Names every module declaring a dependency it never uses, or using one it only gets transitively — the second being the failure that surfaces months later as an unrelated module breaking. `./gradlew buildHealth` writes the report; it is advice rather than a gate, because two of this template's own decisions produce advice it is right to ignore.",
           "group": "build-and-quality",
           "headline": "See which dependencies nobody uses",
           "implied_only": false,
@@ -730,6 +717,19 @@
           "platforms": [],
           "requires": [],
           "title": "Dependency health report"
+        },
+        {
+          "default": false,
+          "description": "Spotless runs ktlint's Android Studio style over every Kotlin and Gradle file: `check` fails on a file that is not formatted and `spotlessApply` fixes it. The rules live in .editorconfig, which Android Studio reads too.",
+          "group": "build-and-quality",
+          "headline": "One code style, checked on every build",
+          "implied_only": false,
+          "implies": [],
+          "key": "formatting",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Formatting (Spotless + ktlint)"
         },
         {
           "default": true,
@@ -1246,24 +1246,28 @@
       "presets": [
         {
           "default": false,
-          "description": "Networking, the design system, the catalog and one reference feature.",
+          "description": "The design system, the navigation shell and one home screen, with networking, images and CI. The\nsmallest app that still looks and moves like the rest.",
           "features": [
-            "catalog",
+            "ci",
+            "coil",
+            "deeplink",
+            "googlefonts",
             "leakcanary",
-            "network",
-            "sample"
+            "network"
           ],
           "key": "lean",
           "title": "Lean"
         },
         {
           "default": true,
-          "description": "The lean set plus offline cache, images, auth, onboarding, settings with a language picker, a\nprofile tab and media. What most projects want on day one.",
+          "description": "The lean set plus sign-in, onboarding, settings with a language picker, the in-app browser, feature\nflags, the developer panel, a local database and the reference list-detail feature to copy. What\nmost products want on day one.",
           "features": [
             "auth",
             "browser",
             "catalog",
+            "ci",
             "coil",
+            "database",
             "deeplink",
             "devtools",
             "flags",
@@ -1271,10 +1275,8 @@
             "googlefonts",
             "language",
             "leakcanary",
-            "media",
             "network",
             "onboarding",
-            "profile",
             "room",
             "sample",
             "settings"
@@ -1292,8 +1294,8 @@
             "baselineprofile",
             "browser",
             "catalog",
+            "ci",
             "coil",
-            "composemetrics",
             "coverage",
             "database",
             "deeplink",
@@ -1301,13 +1303,13 @@
             "devtools",
             "firebase",
             "flags",
+            "formatting",
             "forms",
             "googlefonts",
             "googlesignin",
             "language",
             "leakcanary",
             "licenses",
-            "lottie",
             "media",
             "network",
             "onboarding",

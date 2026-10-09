@@ -2,10 +2,11 @@ key = "forms"
 title = "Form state and validation"
 headline = "Validate forms properly"
 description = """
-Composable validators, per-field touched/error state, and server-side errors mapped back onto the
-fields that caused them."""
+Each field's text lives in a TextFieldState the ViewModel owns, so typing never waits on a state
+update and survives process death; validators return error codes the screen turns into copy, and
+server-side errors map back onto the fields that caused them."""
 group = "Screens"
-default = true
+default = false
 requires = []
 implied_only = false
 owns = [

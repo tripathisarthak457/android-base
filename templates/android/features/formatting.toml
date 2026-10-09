@@ -1,0 +1,13 @@
+key = "formatting"
+title = "Formatting (Spotless + ktlint)"
+headline = "One code style, checked on every build"
+description = """
+Spotless runs ktlint's Android Studio style over every Kotlin and Gradle file: `check` fails on a
+file that is not formatted and `spotlessApply` fixes it. The rules live in .editorconfig, which
+Android Studio reads too."""
+group = "Build and quality"
+default = false
+requires = []
+implied_only = false
+owns = []
+legacy = []
