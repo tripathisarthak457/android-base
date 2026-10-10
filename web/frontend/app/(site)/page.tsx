@@ -8,15 +8,17 @@ import { ConfigureIsland } from "./configure-island.tsx";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <>
       <Nav />
-      <Hero />
-      <StylesShowcase />
-      <Included />
-      <ConfigureIsland />
-      <Faq />
-      <Creator />
+      <main className="min-h-screen">
+        <Hero />
+        <StylesShowcase />
+        <Included />
+        <ConfigureIsland />
+        <Faq />
+        <Creator />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
