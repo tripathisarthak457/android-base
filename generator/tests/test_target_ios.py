@@ -617,6 +617,11 @@ class ValidationTest(unittest.TestCase):
         self.assertEqual(["Home"], tabs.labels(parsed.spec))
         self.assertEqual([], read(features=["network", "sample"])[1])
 
+    def test_the_language_shortcut_without_a_second_language_is_flagged(self):
+        features = ["network", "sample", "settings", "language"]
+        self.assertRegex(" ".join(read(features=features)[1]), "ships more than one")
+        self.assertEqual([], read(features=features, languages=["de"])[1])
+
 
 class TemplateTest(unittest.TestCase):
     """The template as checked in: it is itself a project with every feature on."""

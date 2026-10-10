@@ -130,12 +130,18 @@ class IosTarget:
         if "$(" in spec.label or "${" in spec.label:
             raise SpecError("The display name cannot contain $( or ${ on iOS: Xcode reads them as build settings.", "display_name")
 
+        warnings = []
         if tabs.tab_modules(spec) != spec.feature_modules:
-            return [
+            warnings.append(
                 f"No feature gives the app a tab, so a '{tabs.FALLBACK_MODULE}' module was scaffolded "
                 "as its first one."
-            ]
-        return []
+            )
+        if spec.has("language") and not spec.languages:
+            warnings.append(
+                "The language shortcut opens the app's page in Settings, which offers a language only "
+                "when the app ships more than one. Add a language, or leave the feature out."
+            )
+        return warnings
 
     def identity(self, spec: Spec) -> dict[str, str]:
         return {
