@@ -2,7 +2,7 @@
 
     perf.sh --package <applicationId> (--apk <path> | --variant devBenchmarkRelease|devRelease)
             [--runs 3] [--out DIR] [--extra key=value]... [--gate <column> [--gates FILE]
-            [--baseline summary.json]] [--seed N] [--serial ID] <scenario>...
+            [--baseline summary.json]] [--seed N] [--compile speed-profile|speed] [--serial ID] <scenario>...
 
 One invocation measures only an app it installed itself. Each run installs the APK, clears the app,
 installs its baseline profile and compiles it the way Play does, launches it with the dev launch
@@ -200,9 +200,10 @@ class UiTree:
 
 
 class App:
-    def __init__(self, device, package, extras):
+    def __init__(self, device, package, extras, compile_mode="speed-profile"):
         self.device = device
         self.package = package
+        self.compile_mode = compile_mode
         self.extras = dict(extras)
         self.extras.setdefault("perf.fakeSession", "true")
         self._activity = None
@@ -259,11 +260,11 @@ class App:
             f"am broadcast -a {PROFILE_ACTION} -n {self.package}/{PROFILE_RECEIVER}"
         )
         self.stop()
-        self.device.shell(f"cmd package compile -f -m speed-profile {self.package}", timeout=600)
+        self.device.shell(f"cmd package compile -f -m {self.compile_mode} {self.package}", timeout=600)
 
     def compile_with_runtime_profile(self):
         self.stop()
-        self.device.shell(f"cmd package compile -f -m speed-profile {self.package}", timeout=600)
+        self.device.shell(f"cmd package compile -f -m {self.compile_mode} {self.package}", timeout=600)
 
     def reset_compilation(self):
         self.stop()
@@ -1051,7 +1052,8 @@ def write_summary(out, info, metrics, notes, gate_results):
         f"- APK: `{info['apk']}`",
         f"- Device: {info['device']['model']} ({info['device']['serial']}), "
         f"battery {info['device']['battery_c']} °C at the start",
-        f"- Runs: {info['runs']}, seed {info['seed']}, extras {json.dumps(info['extras'])}",
+        f"- Runs: {info['runs']}, seed {info['seed']}, extras {json.dumps(info['extras'])}, "
+        f"compiled `{info.get('compile', 'speed-profile')}`",
         f"- Scenarios: {', '.join(info['scenarios'])}",
         "",
         "| Metric | Median | Runs |",
@@ -1124,7 +1126,7 @@ def measure(args):
     seed = args.seed if args.seed is not None else random.randrange(1_000_000)
     os.makedirs(args.out, exist_ok=True)
 
-    app = App(device, args.package, parse_extras(args.extra))
+    app = App(device, args.package, parse_extras(args.extra), compile_mode=args.compile)
     info = {
         "package": args.package,
         "apk": os.path.abspath(apk),
@@ -1132,6 +1134,7 @@ def measure(args):
         "runs": args.runs,
         "seed": seed,
         "extras": app.extras,
+        "compile": args.compile,
         "scenarios": scenarios,
         "gate": args.gate,
         "gates_file": os.path.abspath(args.gates),
@@ -1360,6 +1363,9 @@ def main(argv=None):
         parser.add_argument("--gates", default=check_gates.DEFAULT_GATES)
         parser.add_argument("--baseline")
         parser.add_argument("--seed", type=int)
+        # speed compiles every method ahead of time: the most a baseline profile could give, so a run
+        # against the default tells what is still interpreted or JIT-compiled on the measured paths.
+        parser.add_argument("--compile", choices=["speed-profile", "speed"], default="speed-profile")
         parser.add_argument("--serial", default=os.environ.get("ANDROID_SERIAL"))
         parser.add_argument("scenarios", nargs="+")
         args = parser.parse_args(argv)
