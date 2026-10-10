@@ -1,5 +1,7 @@
 {
   "Nothing here yet": "Rien pour l’instant",
   "When there is something to show, it will appear on this screen.": "Quand il y aura quelque chose à afficher, cela apparaîtra sur cet écran.",
-  "Reload": "Recharger"
+  "Reload": "Recharger",
+  "Nothing selected": "Aucune sélection",
+  "Choose something from the list to see it here.": "Choisissez un élément dans la liste pour l’afficher ici."
 }

@@ -389,6 +389,9 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
     with case.subTest(check="folders are concepts, stores sit beside their views"):
         check_folders(case, project)
 
+    with case.subTest(check="list-detail features are split views on the router's selection"):
+        check_list_detail(case, project)
+
     with case.subTest(check="the tokens carry the spec's choices"):
         emitted = (project / swift.RELATIVE_PATH).read_text(encoding="utf-8")
         case.assertIn(f"static let designStyle = AppDesignStyle.{spec.design_style[0].lower()}{spec.design_style[1:]}\n", emitted)
@@ -505,6 +508,26 @@ def check_catalogs(case: unittest.TestCase, project: Path, spec) -> None:
 
     app_catalog = catalogs[project / spec.pascal_name / "Localizable.xcstrings"]
     case.assertEqual(set(tabs.app_strings(spec)), app_catalog)
+
+
+def check_list_detail(case: unittest.TestCase, project: Path) -> None:
+    """
+    A feature with a list and a detail is a `NavigationSplitView` whose list selection is the tab
+    router's, so a wide window shows both columns and a deep link or a tap on the tab reaches it,
+    and its detail loads by id (ADAPTIVE-PLAN §14.2).
+    """
+    sources = project / "Packages" / "Features" / "Sources"
+    for target in sorted(sources.glob("*Feature")):
+        if not ((target / "List").is_dir() and (target / "Detail").is_dir()):
+            continue
+        name = target.name.removesuffix("Feature")
+        root, _ = lex(target / f"{name}RootView.swift")
+        relative = f"{target.name}/{name}RootView.swift"
+        case.assertIn("NavigationSplitView {", root, f"{relative} is not a split view")
+        case.assertRegex(root, r"router\.selection\b", f"{relative} does not select through the router")
+        case.assertRegex(root, rf"{name}DetailView\(id:", f"{relative} does not open its detail by id")
+        list_view, _ = lex(target / "List" / f"{name}ListView.swift")
+        case.assertIn("List(selection: $selection)", list_view, f"{target.name}'s list does not select")
 
 
 _FEATURE_FOLDERS_BANNED = {
@@ -661,7 +684,11 @@ class TemplateTest(unittest.TestCase):
                 self.assertEqual(set(catalogs), set(translation.modules))
                 for identity, keys in catalogs.items():
                     self.assertEqual(keys, set(translation.modules[identity]), identity)
-                self.assertEqual(set(scaffold._LIST_STRINGS), set(translation.scaffold))
+                self.assertEqual(set(scaffold.STRINGS), set(translation.scaffold))
+
+    def test_scaffolded_tests_wait_as_the_templates_do(self):
+        waiting = TEMPLATE / "Packages/Features/Tests/SampleFeatureTests/WaitUntil.swift"
+        self.assertEqual(waiting.read_text(encoding="utf-8"), scaffold.WAIT_UNTIL)
 
     def test_the_offered_languages_match_android(self):
         self.assertEqual(translations.available("android"), translations.available("ios"))
@@ -727,7 +754,7 @@ class GeneratedProjectsTest(unittest.TestCase):
     def test_nothing_but_a_scaffolded_module_without_networking(self):
         project, _ = self.check("bare", raw_spec(features=[], feature_modules=["field_notes"], languages=["hi"]))
         repository = project / "Packages/Features/Sources/FieldNotesData/DefaultFieldNotesRepository.swift"
-        self.assertIn(".success([])", repository.read_text(encoding="utf-8"))
+        self.assertIn("public init(items: [FieldNotesItem] = [])", repository.read_text(encoding="utf-8"))
         self.assertNotIn("Networking", (project / "Packages/Core/Package.swift").read_text(encoding="utf-8"))
 
     def test_with_no_tab_feature_a_home_module_is_the_tab(self):
@@ -830,6 +857,11 @@ class ViolationsTest(unittest.TestCase):
                 "has no iPad #Preview",
                 "Packages/Features/Sources/SampleFeature/List/SampleListView.swift",
                 replacing('#Preview("iPad", traits: .fixedLayout(width: 1194, height: 834))', '#Preview("Wide")'),
+            ),
+            (
+                "is not a split view",
+                "Packages/Features/Sources/SampleFeature/SampleRootView.swift",
+                replacing("NavigationSplitView {", "NavigationStack {"),
             ),
             ("opts out of resizable windows", "project.yml", replacing("UILaunchScreen: {}", "UILaunchScreen: {}\n        UIRequiresFullScreen: true")),
             ("CADisableMinimumFrameDurationOnPhone", "project.yml", replacing("FrameDurationOnPhone: true", "FrameDurationOnPhone: false")),
