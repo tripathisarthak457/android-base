@@ -78,6 +78,9 @@ class OrphanedTestTest(unittest.TestCase):
     def test_no_test_outlives_the_main_source_it_tests(self):
         for target in REGISTRY.values():
             manifest, template = target.manifest, target.template_dir
+            if not (template / "settings.gradle.kts").is_file():
+                # A Swift template's test targets are checked by test_target_ios, per feature.
+                continue
             tests = []
             for directory, subdirectories, filenames in os.walk(template):
                 subdirectories[:] = [name for name in subdirectories if name not in SKIP_DIRS]

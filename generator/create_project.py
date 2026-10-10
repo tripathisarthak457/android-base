@@ -38,7 +38,9 @@ EXIT_CANCELLED = 130
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="create_project", description="Generate a project from a template.")
-    parser.add_argument("--target", default="android", help="Which template: android (default).")
+    parser.add_argument(
+        "--target", help="Which template: android or ios. Defaults to the spec's platform, then android."
+    )
     parser.add_argument("--all", action="store_true", help="Every optional feature on.")
     parser.add_argument("--preset", help="Use a named feature preset: lean, standard or everything.")
     parser.add_argument("--icon", type=Path, help="A square image (1024 px or larger) for the launcher icons.")
@@ -60,7 +62,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        target = targets.get(args.target)
+        spec_file = read_spec_file(args.spec) if args.spec is not None else None
+        target = targets.get(args.target or platform_of(spec_file))
         if args.list_features:
             list_features(target, as_json=args.json)
             return EXIT_OK
@@ -72,7 +75,7 @@ def main(argv: list[str] | None = None) -> int:
             # Asking where to write would put a prompt on stdout, or wait on a script that cannot answer.
             raise SpecError("--json needs --out: the project's directory, or the .zip to write.", "out")
         overrides = [parse_override(item) for item in args.set]
-        raw = load_raw(args, target)
+        raw = load_raw(args, target, spec_file)
         parsed, warnings = pipeline.read_spec(raw, target, overrides)
     except SpecError as error:
         return fail(args.json, invalid(error), str(error), EXIT_INVALID)
@@ -167,17 +170,26 @@ def parse_override(item: str) -> tuple[str, Any]:
         return key.strip(), text
 
 
-def load_raw(args: argparse.Namespace, target) -> object:
+def read_spec_file(path: Path) -> object:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        raise SpecError(f"No spec file at {path}.") from None
+    except json.JSONDecodeError as error:
+        raise SpecError(f"{path} is not valid JSON: {error}.") from None
+
+
+def platform_of(raw: object) -> str:
+    """The target a spec names, so `--spec ios-app.json` needs no `--target`. A v1 spec is Android."""
+    platform = raw.get("platform") if isinstance(raw, dict) else None
+    return platform if isinstance(platform, str) else "android"
+
+
+def load_raw(args: argparse.Namespace, target, raw: object) -> object:
     if args.spec is None:
         # With --json, stdout carries the result alone, so the questions go to stderr.
         with redirect_stdout(sys.stderr if args.json else sys.stdout):
             return prompts.run_wizard(target, select_all=args.all, preset=args.preset)
-    try:
-        raw = json.loads(args.spec.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        raise SpecError(f"No spec file at {args.spec}.") from None
-    except json.JSONDecodeError as error:
-        raise SpecError(f"{args.spec} is not valid JSON: {error}.") from None
     if isinstance(raw, dict) and (args.all or args.preset):
         manifest = target.manifest
         chosen = (
@@ -337,8 +349,12 @@ def report(spec, warnings: list[str], summary: list[str], destination: Path, zip
             print(prompts.yellow(f"  ! {line}"))
     print()
     print(prompts.bold("  Next"))
-    print("    1. Unzip it and open the folder in Android Studio." if zip_output else f"    1. cd {destination} and open it in Android Studio.")
-    print("    2. ./gradlew :app:installDevDebug")
+    if spec.platform == "ios":
+        print("    1. Unzip it on a Mac." if zip_output else f"    1. cd {destination} on a Mac.")
+        print(f"    2. xcodegen generate && open {spec.pascal_name}.xcodeproj")
+    else:
+        print("    1. Unzip it and open the folder in Android Studio." if zip_output else f"    1. cd {destination} and open it in Android Studio.")
+        print("    2. ./gradlew :app:installDevDebug")
     if spec.has("firebase"):
         print(prompts.yellow("    3. Replace app/google-services.json: the included one is a placeholder."))
     print()

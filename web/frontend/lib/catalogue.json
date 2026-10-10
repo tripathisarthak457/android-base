@@ -1,5 +1,5 @@
 {
-  "generator_commit": "6bc38e9e7358",
+  "generator_commit": "faf69d0a7f0d",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -16,6 +16,16 @@
     "hex": "^#?[0-9A-Fa-f]{6}$",
     "host": "^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$",
     "http_url": "^https?://[A-Za-z0-9._~:/?#\\[\\]@!&'()*+,;=%-]+$",
+    "ios_bundle_id": "^[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$",
+    "ios_bundle_id_max": 155,
+    "ios_deployment_target": "^\\d{2}\\.\\d$",
+    "ios_team_id": "^[A-Z0-9]{10}$",
+    "ios_versions": [
+      17,
+      18,
+      26,
+      27
+    ],
     "keystore_alias": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
     "keystore_country": "^[A-Za-z]{2}$",
     "keystore_dname_forbidden": ",=+<>#;\\\"",
@@ -133,6 +143,68 @@
     "segment_max": 30,
     "socket_url": "^wss?://[A-Za-z0-9._~:/?#\\[\\]@!&'()*+,;=%-]+$",
     "spec_bytes_max": 32768,
+    "swift_reserved_words": [
+      "Any",
+      "Protocol",
+      "Self",
+      "Type",
+      "actor",
+      "as",
+      "associatedtype",
+      "async",
+      "await",
+      "break",
+      "case",
+      "catch",
+      "class",
+      "continue",
+      "default",
+      "defer",
+      "deinit",
+      "do",
+      "else",
+      "enum",
+      "extension",
+      "fallthrough",
+      "false",
+      "fileprivate",
+      "for",
+      "func",
+      "guard",
+      "if",
+      "import",
+      "in",
+      "init",
+      "inout",
+      "internal",
+      "is",
+      "let",
+      "nil",
+      "open",
+      "operator",
+      "precedencegroup",
+      "private",
+      "protocol",
+      "public",
+      "repeat",
+      "rethrows",
+      "return",
+      "self",
+      "some",
+      "static",
+      "struct",
+      "subscript",
+      "super",
+      "switch",
+      "throw",
+      "throws",
+      "true",
+      "try",
+      "typealias",
+      "var",
+      "where",
+      "while"
+    ],
     "template_module_names": {
       "android": [
         "app",
@@ -149,6 +221,14 @@
         "sample",
         "search",
         "settings"
+      ],
+      "ios": [
+        "core",
+        "onboarding",
+        "sample",
+        "settings",
+        "swift",
+        "tabular"
       ]
     },
     "version_code_max": 2100000000,
@@ -1331,6 +1411,425 @@
       "status_note": "",
       "summary": "Jetpack Compose, Navigation 3, Hilt, Ktor. Compact or modular.",
       "title": "Android Native"
+    },
+    {
+      "architectures": [
+        {
+          "available": true,
+          "description": "Core and Features Swift packages, with a data and a feature target per feature.",
+          "key": "compact",
+          "title": "Local packages"
+        }
+      ],
+      "defaults": {
+        "accent_colour": "#2C6BED",
+        "architecture": "compact",
+        "design_style": "Utility",
+        "font_name": "DM Sans",
+        "haptics_enabled": true,
+        "ios": {
+          "deployment_target": "17.0"
+        },
+        "languages": [],
+        "mono_font_name": "JetBrains Mono",
+        "motion_style": "Standard",
+        "preset": "standard"
+      },
+      "design_styles": [
+        {
+          "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
+          "key": "Utility",
+          "requires": [],
+          "title": "Utility"
+        },
+        {
+          "description": "Brand-tinted surfaces, pill buttons, heavier headlines, a floating tab bar. Feeds and chat.",
+          "key": "Social",
+          "requires": [],
+          "title": "Social"
+        },
+        {
+          "description": "Warm paper and ink, large tight display type, underlined fields. Reading and news.",
+          "key": "Editorial",
+          "requires": [],
+          "title": "Editorial"
+        },
+        {
+          "description": "Cream surfaces, extra-bold type, thick outlines and offset shadows. Games and kids.",
+          "key": "Playful",
+          "requires": [],
+          "title": "Playful"
+        }
+      ],
+      "features": [
+        {
+          "default": false,
+          "description": "SwiftData with one model actor per data domain, so reads and writes never run on the main actor. The reference feature becomes offline-first: it shows what it saved, refreshes when stale, and falls back to the saved list when the network is gone.",
+          "group": "networking-and-data",
+          "headline": "Keep data on the device",
+          "implied_only": false,
+          "implies": [],
+          "key": "database",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "App database (SwiftData)"
+        },
+        {
+          "default": true,
+          "description": "An APIClient over URLSession with async/await, typed endpoints, JSON decoded off the main actor, classified failures, and one shared connectivity monitor that never blocks a request.",
+          "group": "networking-and-data",
+          "headline": "Talk to a REST API",
+          "implied_only": false,
+          "implies": [],
+          "key": "network",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "REST networking (URLSession)"
+        },
+        {
+          "default": false,
+          "description": "A Language row in settings that opens the app's page in the Settings app, where iOS offers every language the app ships. iOS keeps the per-app choice itself, so the app stores nothing.",
+          "group": "screens",
+          "headline": "Let people pick the app's language",
+          "implied_only": false,
+          "implies": [
+            "settings"
+          ],
+          "key": "language",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "settings"
+          ],
+          "title": "Language shortcut"
+        },
+        {
+          "default": true,
+          "description": "A paged walkthrough shown once, recorded in the settings store. Skipping counts as finishing, so it never comes back on the next launch.",
+          "group": "screens",
+          "headline": "A first-run walkthrough",
+          "implied_only": false,
+          "implies": [],
+          "key": "onboarding",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Onboarding flow"
+        },
+        {
+          "default": true,
+          "description": "A list beside its detail against a live public API, with search, pull to refresh, every load state and its tests. On a phone the detail is pushed; on an iPad both columns show. Delete it once your own first feature exists.",
+          "group": "screens",
+          "headline": "A working screen to learn from",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "sample",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Reference feature"
+        },
+        {
+          "default": true,
+          "description": "Appearance, haptics and the app's version in an inset-grouped list, written to the settings store that the whole app observes.",
+          "group": "screens",
+          "headline": "A settings screen",
+          "implied_only": false,
+          "implies": [],
+          "key": "settings",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Settings screen"
+        },
+        {
+          "default": false,
+          "description": "The system bars, sheets and tab bar are glass on iOS 26 whatever you choose. This adds the same glass to the design system's own floating pieces, such as toasts, through one modifier: Liquid Glass on iOS 26, a material below it, and a solid surface when Reduce Transparency is on.",
+          "group": "design",
+          "headline": "Glass on the app's own floating chrome",
+          "implied_only": false,
+          "implies": [],
+          "key": "liquidglass",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Liquid Glass chrome"
+        }
+      ],
+      "fields": [
+        {
+          "key": "app_name",
+          "required": true,
+          "rule": "app_name",
+          "type": "string"
+        },
+        {
+          "key": "display_name",
+          "max": 30,
+          "type": "string"
+        },
+        {
+          "key": "package_name",
+          "required": true,
+          "rule": "package",
+          "type": "string"
+        },
+        {
+          "key": "architecture",
+          "type": "choice"
+        },
+        {
+          "key": "features",
+          "max": 64,
+          "type": "features"
+        },
+        {
+          "key": "feature_modules",
+          "max": 12,
+          "rule": "module_name",
+          "type": "list"
+        },
+        {
+          "default": "Utility",
+          "key": "design_style",
+          "type": "choice"
+        },
+        {
+          "default": "Standard",
+          "key": "motion_style",
+          "type": "choice"
+        },
+        {
+          "key": "accent_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "key": "secondary_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "key": "tertiary_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "default": "DM Sans",
+          "key": "font_name",
+          "rule": "font",
+          "suggestions": [
+            {
+              "note": "geometric, large x-height, reads well from 11sp to 32sp",
+              "value": "DM Sans"
+            },
+            {
+              "note": "the safe choice; designed for screens, very neutral",
+              "value": "Inter"
+            },
+            {
+              "note": "a little more character, good for consumer apps",
+              "value": "Plus Jakarta Sans"
+            },
+            {
+              "note": "rounder and friendlier, slightly less good at small sizes",
+              "value": "Manrope"
+            },
+            {
+              "note": "warm and open; strong at display sizes",
+              "value": "Figtree"
+            },
+            {
+              "note": "geometric and clean, at its best in headlines",
+              "value": "Outfit"
+            },
+            {
+              "note": "technical, with quirky details",
+              "value": "Space Grotesk"
+            },
+            {
+              "note": "soft and rounded",
+              "value": "Nunito"
+            },
+            {
+              "note": "wide and modern",
+              "value": "Sora"
+            },
+            {
+              "note": "a soft serif with personality",
+              "value": "Fraunces"
+            },
+            {
+              "note": "a classic book serif",
+              "value": "Libre Baskerville"
+            },
+            {
+              "note": "corporate and very legible",
+              "value": "IBM Plex Sans"
+            }
+          ],
+          "type": "string"
+        },
+        {
+          "default": "JetBrains Mono",
+          "key": "mono_font_name",
+          "rule": "font",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "key": "haptics_enabled",
+          "type": "bool"
+        },
+        {
+          "key": "languages",
+          "max": 10,
+          "type": "list"
+        },
+        {
+          "key": "ios.bundle_id",
+          "max": 155,
+          "rule": "ios_bundle_id",
+          "type": "string"
+        },
+        {
+          "choices": [
+            {
+              "label": "iOS 17",
+              "value": "17.0"
+            },
+            {
+              "label": "iOS 18",
+              "value": "18.0"
+            },
+            {
+              "label": "iOS 26",
+              "value": "26.0"
+            },
+            {
+              "label": "iOS 27",
+              "value": "27.0"
+            }
+          ],
+          "default": "17.0",
+          "key": "ios.deployment_target",
+          "type": "string"
+        },
+        {
+          "key": "ios.team_id",
+          "rule": "ios_team_id",
+          "type": "string"
+        }
+      ],
+      "groups": [
+        {
+          "key": "networking-and-data",
+          "title": "Networking and data"
+        },
+        {
+          "key": "screens",
+          "title": "Screens"
+        },
+        {
+          "key": "design",
+          "title": "Design"
+        }
+      ],
+      "key": "ios",
+      "languages": [
+        {
+          "name": "Deutsch",
+          "tag": "de"
+        },
+        {
+          "name": "Español",
+          "tag": "es"
+        },
+        {
+          "name": "Français",
+          "tag": "fr"
+        },
+        {
+          "name": "हिन्दी",
+          "tag": "hi"
+        },
+        {
+          "name": "Português (Brasil)",
+          "tag": "pt-BR"
+        }
+      ],
+      "motion_styles": [
+        {
+          "description": "Crisp, a trace of overshoot. Lively without asking for attention.",
+          "key": "Standard",
+          "title": "Standard"
+        },
+        {
+          "description": "Springy, with a visible overshoot. Playful; wrong for anything financial.",
+          "key": "Bouncy",
+          "title": "Bouncy"
+        },
+        {
+          "description": "No overshoot, slightly longer. For dense, professional interfaces.",
+          "key": "Calm",
+          "title": "Calm"
+        },
+        {
+          "description": "The shortest response that still reads as motion. For utilities.",
+          "key": "Snappy",
+          "title": "Snappy"
+        }
+      ],
+      "presets": [
+        {
+          "default": false,
+          "description": "Networking, the design system and one reference feature.",
+          "features": [
+            "network",
+            "sample"
+          ],
+          "key": "lean",
+          "title": "Lean"
+        },
+        {
+          "default": true,
+          "description": "The lean set plus onboarding and a settings screen with the language shortcut. What most projects\nwant on day one.",
+          "features": [
+            "language",
+            "network",
+            "onboarding",
+            "sample",
+            "settings"
+          ],
+          "key": "standard",
+          "title": "Standard"
+        },
+        {
+          "default": false,
+          "description": "Every feature the template offers, working together. The template's own proof that they coexist;\ndelete what you do not need.",
+          "features": [
+            "database",
+            "language",
+            "liquidglass",
+            "network",
+            "onboarding",
+            "sample",
+            "settings"
+          ],
+          "key": "everything",
+          "title": "Everything"
+        }
+      ],
+      "status": "coming_soon",
+      "status_note": "",
+      "summary": "SwiftUI with @Observable stores, local Swift packages and XcodeGen. iOS 17 and later.",
+      "title": "Swift"
     }
   ],
   "tokens": {

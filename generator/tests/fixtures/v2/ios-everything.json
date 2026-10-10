@@ -1,0 +1,17 @@
+{
+  "schema": 2,
+  "platform": "ios",
+  "app_name": "Everything",
+  "display_name": "Everything ✨",
+  "package_name": "com.example.ioseverything",
+  "features": ["database", "language", "liquidglass", "network", "onboarding", "sample", "settings"],
+  "feature_modules": [],
+  "design_style": "Social",
+  "motion_style": "Calm",
+  "accent_colour": "#1F7A5C",
+  "languages": ["de", "es", "fr", "hi", "pt-BR"],
+  "ios": {
+    "deployment_target": "18.0",
+    "team_id": "ABCDE12345"
+  }
+}
