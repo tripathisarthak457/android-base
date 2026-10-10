@@ -1,0 +1,56 @@
+# Code this template shares with templates/android, and every way the two copies may differ.
+#
+# tools/sync_check.py compares each pair with import lines left out, and fails on any other line
+# that differs, on a file present on one side only, and on an allowance below that no longer
+# matches anything. A change to one side is ported to the other, or recorded here with its reason.
+# Paths are relative to each template. Never copied into a generated project.
+
+[[pair]]
+name = "core/common"
+android = "core/common/src/main/kotlin/com/base/app/core/common"
+multiplatform = "core/common/src/commonMain/kotlin/com/base/app/core/common"
+
+[[pair]]
+name = "core/mvi"
+android = "core/mvi/src/main/kotlin/com/base/app/core/mvi"
+multiplatform = "core/mvi/src/commonMain/kotlin/com/base/app/core/mvi"
+
+[[pair.difference]]
+file = "UiMessage.kt"
+reason = """
+Kotlin/Native has no java.util.concurrent. The id counter is kotlin.concurrent.atomics' AtomicLong,
+which takes its start value and names the increment after the value it returns."""
+android = [
+  "    val id: Long = ids.incrementAndGet(),",
+  "        private val ids = AtomicLong()",
+]
+multiplatform = [
+  "@OptIn(ExperimentalAtomicApi::class)",
+  "    val id: Long = ids.incrementAndFetch(),",
+  "        private val ids = AtomicLong(0)",
+]
+
+[[pair.difference]]
+file = "UiText.kt"
+reason = """
+Strings are Compose resources here, typed StringResource and PluralStringResource rather than
+Android resource ids, and core/ui resolves them in composition. Android's Context-based resolve()
+has no counterpart: shared code never holds a Context."""
+android = [
+  "        @param:StringRes val id: Int,",
+  "        @param:PluralsRes val id: Int,",
+  "    fun resolve(context: Context): String = when (this) {",
+  "        is Dynamic -> value",
+  "        is Resource -> context.getString(id, *args.toTypedArray())",
+  "        is Plural -> context.resources.getQuantityString(id, count, *args.toTypedArray())",
+  "    }",
+  "",
+  "        fun of(@StringRes id: Int, vararg args: Any): UiText = Resource(id, args.toList())",
+  "        fun plural(@PluralsRes id: Int, count: Int): UiText = Plural(id, count)",
+]
+multiplatform = [
+  "        val id: StringResource,",
+  "        val id: PluralStringResource,",
+  "        fun of(id: StringResource, vararg args: Any): UiText = Resource(id, args.toList())",
+  "        fun plural(id: PluralStringResource, count: Int): UiText = Plural(id, count)",
+]
