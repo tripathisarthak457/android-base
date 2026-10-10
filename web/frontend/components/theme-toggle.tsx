@@ -40,7 +40,7 @@ export function ThemeToggle() {
       onClick={() => apply(next)}
       aria-label={`${LABEL[choice]}. Switch to ${next}.`}
       title={LABEL[choice]}
-      className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100"
+      className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100 not-supports-[color:light-dark(#000,#fff)]:hidden"
     >
       <svg
         width="17"

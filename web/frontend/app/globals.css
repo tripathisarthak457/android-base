@@ -56,6 +56,38 @@
   color-scheme: dark;
 }
 
+/*
+ * light-dark() arrived in Safari 17.5, and Tailwind's own floor is Safari 16.4. Where it is missing
+ * every token above is invalid and the page loses its colours, so those browsers get the light
+ * palette alone, and the theme toggle hides itself there.
+ */
+@supports not (color: light-dark(#000, #fff)) {
+  :root,
+  :root[data-theme] {
+    color-scheme: light;
+    --color-ink-950: #f2ece2;
+    --color-ink-900: #f8f4ed;
+    --color-ink-850: #fffcf6;
+    --color-ink-800: #ece4d6;
+    --color-ink-700: #e0d6c4;
+    --color-ink-600: #cdc0a9;
+    --color-ink-500: #706556;
+    --color-ink-400: #635a4c;
+    --color-ink-300: #5a5145;
+    --color-ink-200: #3c352c;
+    --color-ink-100: #1c1915;
+
+    --color-accent: #bb3d19;
+    --color-accent-bright: #a63515;
+    --color-accent-dim: #f8dfd2;
+    --color-on-accent: #fff8f1;
+
+    --color-mint: #2b7247;
+    --color-amber: #8a5a0e;
+    --color-rose: #b8352a;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
