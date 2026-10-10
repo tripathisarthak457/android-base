@@ -21,7 +21,10 @@ struct AppWindow: View {
             .preferredColorScheme(model.settings.appearance.colorScheme)
             .toastHost(model.toasts)
             .measuresWindowWidth()
-            .frame(minWidth: AppLayout.minimumWindowWidth, minHeight: AppLayout.minimumWindowHeight)
+            // Width only: this frame sets the window's minimum size but also constrains layout,
+            // and the height the root gets in iPhone landscape or above the keyboard is shorter
+            // than any useful minimum, so a minimum height would push the content off screen.
+            .frame(minWidth: AppLayout.minimumWindowWidth)
             .focusedSceneValue(\.appModel, model)
             .task { await model.followSettings() }
             .onOpenURL { model.open($0) }

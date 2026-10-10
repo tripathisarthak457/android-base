@@ -10,9 +10,6 @@ public nonisolated enum AppLayout {
     /// Anything that must fit every window, such as a context menu's preview, fits in this.
     public static let minimumWindowWidth: CGFloat = 320
 
-    /// The shortest window the layouts are designed for.
-    public static let minimumWindowHeight: CGFloat = 400
-
     /// The widest a column of running text gets. Longer lines are hard to follow back to their start.
     public static let readableMaxWidth: CGFloat = 720
 
