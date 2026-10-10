@@ -1,6 +1,6 @@
 package __PKG__.feature.__NAME__
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToIndex
 import __PKG__.core.common.LoadState
