@@ -5,12 +5,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.test.DeviceConfigurationOverride
+import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.navigationevent.DirectNavigationEventInput
 import androidx.navigationevent.NavigationEvent
 import com.base.app.core.common.navigation.AppNavKey
@@ -27,6 +34,7 @@ import com.base.app.core.navigation.testRegistry
 import com.base.app.core.navigation.testSerialization
 import com.base.app.core.navigation.testTabs
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -51,13 +59,17 @@ class ShellRecompositionTest {
     private lateinit var state: ShellState
     private val input = DirectNavigationEventInput()
 
+    private var windowSize by mutableStateOf(DpSize(411.dp, 891.dp))
+
     private fun showShell() {
         val registry = testRegistry { key -> ProbeScreen(key) }
         rule.setContent {
-            AppTheme {
-                val shell = rememberShellState(testTabs, registry, testSerialization, generation = 1)
-                state = shell
-                AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+            DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(windowSize)) {
+                AppTheme {
+                    val shell = rememberShellState(testTabs, registry, testSerialization, generation = 1)
+                    state = shell
+                    AppShell(tabs = testTabs, state = shell, registry = registry, navigator = AppNavigator())
+                }
             }
         }
         rule.runOnIdle { rule.activity.navigationEventDispatcher.addInput(input) }
@@ -153,6 +165,51 @@ class ShellRecompositionTest {
         rule.runOnIdle { assertEquals(listOf(testTabs[0].key), state.current.keys) }
     }
 
+    @Test
+    fun `an idle shell composes nothing on any tab`() {
+        showShell()
+        for (tab in testTabs.indices) {
+            rule.onNodeWithTag("tab_$tab").performSemanticsAction(SemanticsActions.OnClick)
+            rule.waitForIdle()
+
+            val frames = idle(IDLE_MILLIS)
+
+            assertEquals("tab $tab", emptyList<Map<String, Int>>(), frames.filter { it.isNotEmpty() })
+        }
+    }
+
+    @Test
+    fun `a resize within one width class lays the screens out again without composing them`() {
+        windowSize = DpSize(900.dp, 800.dp)
+        showShell()
+        rule.runOnIdle { state.submit(NavCommand.Navigate(Post(1))) }
+        rule.waitForIdle()
+
+        val frames = journey {
+            windowSize = DpSize(1000.dp, 800.dp)
+        } + journey {
+            windowSize = DpSize(1100.dp, 800.dp)
+        }
+
+        assertEquals(0, frames.sumOf { it.count("ProbeScreen") })
+        assertTrue(frames.sumOf { it.count("ShellBar") } <= 2)
+    }
+
+    /** Steps [millis] of frames with nothing happening, and returns what executed in each. */
+    private fun idle(millis: Long): List<Map<String, Int>> {
+        rule.mainClock.autoAdvance = false
+        counter.reset()
+        val frames = ArrayList<Map<String, Int>>()
+        val end = rule.mainClock.currentTime + millis
+        while (rule.mainClock.currentTime < end) {
+            val before = counter.snapshot()
+            rule.mainClock.advanceTimeByFrame()
+            frames += counter.snapshot().filter { (name, n) -> n > (before[name] ?: 0) }
+        }
+        rule.mainClock.autoAdvance = true
+        return frames
+    }
+
     private fun Map<String, Int>.count(name: String): Int =
         entries.sumOf { (fq, n) -> if (fq == name || fq.endsWith(".$name")) n else 0 }
 
@@ -173,3 +230,5 @@ private fun ProbeScreen(key: AppNavKey) {
 
 /** Past the tab warm-up's wait for the first tab to settle, with room for its slices. */
 private const val WARM_UP_WAIT_MILLIS = 2_000L
+
+private const val IDLE_MILLIS = 5_000L
