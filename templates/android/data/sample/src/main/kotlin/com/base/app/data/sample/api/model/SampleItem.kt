@@ -1,4 +1,4 @@
-package com.base.app.data.sample.api
+package com.base.app.data.sample.api.model
 
 /** The domain model: what the app knows about a sample, with no trace of the wire format. */
 data class SampleItem(

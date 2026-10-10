@@ -1,4 +1,4 @@
-package com.base.app.data.auth.remote
+package com.base.app.data.auth.remote.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,6 +12,8 @@ internal data class TokenResponseDto(
     @SerialName("access_token") val accessToken: String,
     @SerialName("refresh_token") val refreshToken: String,
     @SerialName("expires_in") val expiresIn: Long? = null,
+    /** Who signed in. When the server sends it, signing back in after a session ends keeps this person's queued work. */
+    @SerialName("user_id") val userId: String? = null,
 )
 
 @Serializable

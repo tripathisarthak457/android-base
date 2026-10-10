@@ -1,4 +1,4 @@
-package com.base.app.data.search
+package com.base.app.data.search.recent
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -9,6 +9,11 @@ class RecentSearchesTest {
     fun `newest goes first and a repeat moves rather than duplicates`() {
         val list = RecentSearches.add(listOf("cats", "dogs"), "Dogs")
         assertEquals(listOf("Dogs", "cats"), list)
+    }
+
+    @Test
+    fun `forgetting matches the way remembering does, without regard to case`() {
+        assertEquals(listOf("cats"), RecentSearches.remove(listOf("Dogs", "cats"), "dogs"))
     }
 
     @Test

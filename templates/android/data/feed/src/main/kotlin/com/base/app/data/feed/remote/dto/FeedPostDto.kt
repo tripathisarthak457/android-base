@@ -1,6 +1,5 @@
-package com.base.app.data.feed.remote
+package com.base.app.data.feed.remote.dto
 
-import com.base.app.data.feed.api.FeedPost
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,11 +9,4 @@ internal data class FeedPostDto(
     @SerialName("userId") val userId: Int = 0,
     @SerialName("title") val title: String = "",
     @SerialName("body") val body: String = "",
-)
-
-internal fun FeedPostDto.toDomain(): FeedPost = FeedPost(
-    id = id,
-    authorId = userId,
-    title = title.trim().replaceFirstChar { it.uppercase() },
-    body = body.trim(),
 )

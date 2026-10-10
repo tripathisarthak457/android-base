@@ -1,19 +1,18 @@
-package com.base.app.data.sample
+package com.base.app.data.sample.remote
 
-import com.base.app.data.sample.remote.SampleDto
-import com.base.app.data.sample.remote.toDomain
+import com.base.app.data.sample.remote.dto.SampleDto
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /** The mapper, which is where wire-format surprises become app-level bugs. */
-class SampleMapperTest {
+class SampleDtoMappersTest {
 
     @Test
-    fun `a blank title becomes a placeholder rather than an empty row`() {
+    fun `a blank title stays blank rather than gaining English copy in the data layer`() {
         val item = SampleDto(id = 1, title = "   ", body = "body").toDomain()
 
-        assertEquals("Untitled", item.title)
+        assertEquals("", item.title)
     }
 
     @Test
@@ -29,7 +28,7 @@ class SampleMapperTest {
         val item = SampleDto(id = 7).toDomain()
 
         assertEquals(7, item.id)
-        assertEquals("Untitled", item.title)
+        assertEquals("", item.title)
         assertEquals("", item.body)
     }
 

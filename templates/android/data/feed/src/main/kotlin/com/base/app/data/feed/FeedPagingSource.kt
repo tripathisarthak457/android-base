@@ -1,47 +1,14 @@
 package com.base.app.data.feed
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.base.app.core.common.result.AppResult
-import com.base.app.core.network.NetworkClient
-import com.base.app.core.network.get
+import com.base.app.core.network.client.NetworkClient
+import com.base.app.core.network.client.get
 import com.base.app.data.feed.api.FeedLoadException
-import com.base.app.data.feed.api.FeedPost
-import com.base.app.data.feed.api.FeedRepository
-import com.base.app.data.feed.remote.FeedPostDto
+import com.base.app.data.feed.api.model.FeedPost
+import com.base.app.data.feed.remote.dto.FeedPostDto
 import com.base.app.data.feed.remote.toDomain
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
-
-/**
- * Pages through the same public API the reference feature reads, ten posts at a time. Point
- * [FeedPagingSource.load] at your endpoint; a cursor-based API uses a `String` key instead.
- */
-@Singleton
-internal class DefaultFeedRepository @Inject constructor(
-    private val networkClient: NetworkClient,
-) : FeedRepository {
-
-    override fun posts(): Flow<PagingData<FeedPost>> = Pager(
-        config = PagingConfig(
-            pageSize = PAGE_SIZE,
-            initialLoadSize = PAGE_SIZE,
-            // Three rows before the end rather than a whole page: the next page is on screen
-            // before the user reaches the footer, without fetching pages nobody scrolls to.
-            prefetchDistance = 3,
-            enablePlaceholders = false,
-        ),
-        pagingSourceFactory = { FeedPagingSource(networkClient) },
-    ).flow
-
-    internal companion object {
-        const val PAGE_SIZE = 10
-    }
-}
 
 internal class FeedPagingSource(
     private val networkClient: NetworkClient,
@@ -50,7 +17,7 @@ internal class FeedPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, FeedPost> {
         val page = params.key ?: FIRST_PAGE
         val result = networkClient.get<List<FeedPostDto>>(
-            path = "posts",
+            path = POSTS_PATH,
             query = mapOf("_page" to page, "_limit" to params.loadSize),
             requiresAuth = false,
         )
@@ -74,6 +41,9 @@ internal class FeedPagingSource(
 
     internal companion object {
         const val FIRST_PAGE = 1
+
+        // A public demo API, so the reference feed works on first run; a full URL never gets the token.
+        private const val POSTS_PATH = "https://jsonplaceholder.typicode.com/posts"
 
         /** A short page is the last one. Asking again would only return an empty list. */
         fun nextPage(page: Int, loaded: Int, requested: Int): Int? =
