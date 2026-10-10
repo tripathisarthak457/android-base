@@ -17,7 +17,7 @@ import sys
 from collections.abc import Callable
 from pathlib import Path
 
-from . import kotlin, resolve, swift
+from . import kotlin, kotlin_common, resolve, swift
 
 TEMPLATES = Path(__file__).resolve().parents[3] / "templates"
 
@@ -31,6 +31,12 @@ def emissions() -> dict[str, tuple[Path, Callable[[], str]]]:
         "android": (
             TEMPLATES / "android" / kotlin.RELATIVE_PATH.format(package_path=TEMPLATE_PACKAGE.replace(".", "/")),
             lambda: kotlin.emit(resolve(None, "android"), TEMPLATE_PACKAGE),
+        ),
+        "multiplatform": (
+            TEMPLATES / "multiplatform" / kotlin_common.RELATIVE_PATH.format(
+                package_path=TEMPLATE_PACKAGE.replace(".", "/"),
+            ),
+            lambda: kotlin_common.emit(resolve(None, kotlin_common.PLATFORM), TEMPLATE_PACKAGE),
         ),
         "ios": (
             TEMPLATES / "ios" / swift.RELATIVE_PATH,
