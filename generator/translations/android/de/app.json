@@ -3,10 +3,5 @@
   "tab_feed": "Feed",
   "tab_search": "Suche",
   "tab_profile": "Profil",
-  "tab_settings": "Einstellungen",
-  "app_lock_title": "Zum Fortfahren entsperren",
-  "app_lock_subtitle": "Mit Fingerabdruck, Gesicht oder Displaysperre.",
-  "app_lock_action": "Entsperren",
-  "widget_default_headline": "Zum Öffnen tippen",
-  "widget_description": "Deine App auf einen Blick"
+  "tab_settings": "Einstellungen"
 }

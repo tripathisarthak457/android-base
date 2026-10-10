@@ -1,13 +1,13 @@
 key = "database"
-title = "App database (Room)"
-headline = "Store your own data, not just a cache"
+title = "App database (Room 3)"
+headline = "Keep the app's own data on the device"
 description = """
-A database for the app's own data, separate from the network cache: an entity, a DAO returning
-flows, a hand-written migration and a test that replays it against a database that really was at
-the older version."""
+A Room 3 database with a table per domain, emptied when the person signs out. With the reference
+feature, its list is offline-first: what was fetched last is on screen at once, and a refresh
+writes the server's answer into the table."""
 group = "Networking and data"
 default = false
-requires = ["room"]
+requires = []
 implied_only = false
-owns = ["core/database"]
+owns = ["core/database", "build-logic/convention/src/main/kotlin/AndroidRoomConventionPlugin.kt"]
 legacy = []

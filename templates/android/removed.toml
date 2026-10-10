@@ -5,3 +5,6 @@ architecturetests = "'architecturetests' is no longer a feature and was left out
 screenshottests = "'screenshottests' is no longer a feature and was left out."
 staticanalysis = "'staticanalysis' is no longer a feature and was left out."
 ci = "'ci' is no longer a feature and was left out."
+widget = "'widget' was removed: its Glance runtime started WorkManager and a database at every launch to show one line of text."
+workmanager = "'workmanager' is no longer a feature: WorkManager arrives with 'offlinequeue', which has a worker to run."
+room = "'room' was removed: the HTTP cache keeps GET responses, the app's own data belongs in 'database', and writes made offline in 'offlinequeue'."
