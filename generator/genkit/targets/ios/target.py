@@ -113,8 +113,7 @@ class IosTarget:
                 )
 
         for name in spec.feature_modules:
-            case = tabs.tab_case(name)
-            if case in SWIFT_KEYWORDS or name in SWIFT_KEYWORDS:
+            if tabs.tab_case(name) in SWIFT_KEYWORDS:
                 raise SpecError(f"Module name '{name}' is a Swift keyword, so its tab would not compile.", "feature_modules")
 
         taken = _PROJECT_MODULES | _SYSTEM_MODULES | _APP_TYPES | {

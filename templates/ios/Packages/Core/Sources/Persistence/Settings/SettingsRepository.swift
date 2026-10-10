@@ -7,7 +7,7 @@ import os
 /// write is sent to every `changes()` stream, so a toggle in Settings reaches the app's root
 /// without the two knowing about each other.
 public final class SettingsRepository: Sendable {
-    // UserDefaults is documented as thread-safe but not marked Sendable.
+    // UserDefaults is thread-safe, as Apple documents, but not every SDK marks it Sendable.
     private nonisolated(unsafe) let defaults: UserDefaults
     private let hapticsDefault: Bool
     private let listeners = OSAllocatedUnfairLock(initialState: [UUID: AsyncStream<AppSettings>.Continuation]())
