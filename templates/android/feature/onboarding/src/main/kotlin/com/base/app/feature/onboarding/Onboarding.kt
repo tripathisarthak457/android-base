@@ -25,7 +25,7 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.coroutines.ApplicationScope
-import com.base.app.core.datastore.AppSettingsStore
+import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppScaffold
@@ -44,6 +44,10 @@ import com.base.app.core.mvi.UiEvent
 import com.base.app.core.mvi.UiState
 import com.base.app.core.ui.MviScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+// <opt:push>
+import com.base.app.core.notification.permission.NotificationAccess
+import com.base.app.core.notification.permission.rememberNotificationPermission
+// </opt:push>
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -100,6 +104,11 @@ internal fun OnboardingRoute(
     onFinished: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
+    // <opt:push>
+    // Asked once, at the end, when the person knows what the app is for; whatever they answer,
+    // onboarding finishes. Skip does not ask.
+    val notifications = rememberNotificationPermission { viewModel.onEvent(OnboardingEvent.Completed) }
+    // </opt:push>
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
@@ -108,7 +117,18 @@ internal fun OnboardingRoute(
             }
         },
     ) { state, onEvent ->
-        OnboardingScreen(state = state, onEvent = onEvent)
+        OnboardingScreen(
+            state = state,
+            onEvent = { event ->
+                // <opt:push>
+                if (event == OnboardingEvent.Completed && notifications.access == NotificationAccess.NotGranted) {
+                    notifications.request()
+                    return@OnboardingScreen
+                }
+                // </opt:push>
+                onEvent(event)
+            },
+        )
     }
 }
 

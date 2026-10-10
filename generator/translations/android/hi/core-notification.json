@@ -6,5 +6,6 @@
   "notification_channel_promotions": "ऑफ़र",
   "notification_channel_promotions_description": "डील और प्रॉडक्ट से जुड़ी खबरें।",
   "notification_channel_silent": "बैकग्राउंड",
-  "notification_channel_silent_description": "सिंक और प्रगति से जुड़े अपडेट।"
+  "notification_channel_silent_description": "सिंक और प्रगति से जुड़े अपडेट।",
+  "notification_public_text": "नई सूचना"
 }

@@ -30,5 +30,9 @@
   "settings_language_system": "Wie auf dem Telefon",
   "settings_legal": "Rechtliches",
   "settings_privacy_policy": "Datenschutzerklärung",
-  "settings_terms": "Nutzungsbedingungen"
+  "settings_terms": "Nutzungsbedingungen",
+  "settings_notifications": "Benachrichtigungen",
+  "settings_notifications_on": "An",
+  "settings_notifications_off": "Aus. Tippe, um sie zu erlauben.",
+  "settings_notifications_blocked": "In den Einstellungen deines Telefons deaktiviert. Tippe, um sie zu öffnen."
 }

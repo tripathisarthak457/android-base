@@ -9,4 +9,6 @@
     <string name="notification_channel_promotions_description">Deals and product news.</string>
     <string name="notification_channel_silent">Background</string>
     <string name="notification_channel_silent_description">Sync and progress updates.</string>
+    <!-- What a notification shows on a locked screen in place of its own text. -->
+    <string name="notification_public_text">New notification</string>
 </resources>

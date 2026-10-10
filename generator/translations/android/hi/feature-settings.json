@@ -30,5 +30,9 @@
   "settings_language_system": "फ़ोन की भाषा",
   "settings_legal": "कानूनी जानकारी",
   "settings_privacy_policy": "निजता नीति",
-  "settings_terms": "सेवा की शर्तें"
+  "settings_terms": "सेवा की शर्तें",
+  "settings_notifications": "सूचनाएँ",
+  "settings_notifications_on": "चालू",
+  "settings_notifications_off": "बंद। अनुमति देने के लिए टैप करें।",
+  "settings_notifications_blocked": "आपके फ़ोन की सेटिंग में बंद हैं। खोलने के लिए टैप करें।"
 }

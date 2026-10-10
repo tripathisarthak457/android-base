@@ -2,14 +2,12 @@ key = "push"
 title = "Push notifications (FCM)"
 headline = "Receive push notifications"
 description = """
-Notification channels, the runtime permission check, a messaging service, and token registration
-that re-submits on every launch."""
+Firebase Cloud Messaging alone: notification channels, the permission asked for at the end of
+onboarding and offered again in settings, a tap that opens the app, a lock-screen-safe preview,
+and registration that is renewed only when it changes and removed at sign-out."""
 group = "Platform"
 default = false
 requires = ["firebase"]
 implied_only = false
-owns = [
-  "core/notification",
-  "app/src/main/kotlin/{pkg_path}/push",
-]
+owns = ["core/notification"]
 legacy = []
