@@ -77,6 +77,43 @@ fun MacrobenchmarkScope.edgeSwipeBack() {
     device.swipe(2, y, device.displayWidth * 7 / 10, y, SWIPE_STEPS)
 }
 
+/**
+ * A back swipe made of single touch events, slow enough for the back card to follow the finger
+ * through many frames before it lets go, or comes back to the edge and cancels ([cancel]).
+ */
+fun MacrobenchmarkScope.slowEdgeSwipeBack(cancel: Boolean = false) {
+    val y = device.displayHeight / 2
+    val reach = device.displayWidth * 45 / 100
+    val moves = (1..SLOW_SWIPE_STEPS).map { step -> 2 + reach * step / SLOW_SWIPE_STEPS }
+    val path = if (cancel) moves + moves.reversed().drop(1) + 2 else moves
+    val events = buildList {
+        add("input motionevent DOWN 2 $y")
+        path.forEach { x -> add("input motionevent MOVE $x $y") }
+        add("input motionevent UP ${path.last()} $y")
+    }
+    device.executeShellCommand(events.joinToString("; "))
+    device.waitForIdle()
+}
+
+/** Opens the first row and starts a back swipe while the new screen is still sliding in. */
+fun MacrobenchmarkScope.backSwipeDuringPush() {
+    val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
+    val row = checkNotNull(list.findObject(By.clickable(true))) { "primary_list has no row to open." }
+    val y = device.displayHeight / 2
+    val (x, rowY) = row.visibleCenter.let { it.x to it.y }
+    device.executeShellCommand("input tap $x $rowY; input swipe 2 $y ${device.displayWidth * 6 / 10} $y 160")
+    assertAtRoot()
+}
+
+/** Pulls the primary list down from its top until it refreshes. */
+fun MacrobenchmarkScope.pullToRefresh() {
+    val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
+    val bounds = list.visibleBounds
+    val x = bounds.centerX()
+    device.swipe(x, bounds.top + bounds.height() / 10, x, bounds.top + bounds.height() * 6 / 10, PULL_STEPS)
+    device.waitForIdle()
+}
+
 fun MacrobenchmarkScope.flingPrimaryList() {
     val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
     // Clear of the screen edges, so the fling is not taken for a back gesture.
@@ -109,5 +146,7 @@ private fun MacrobenchmarkScope.findScrolling(selector: BySelector): UiObject2? 
 }
 
 private const val SWIPE_STEPS = 20
+private const val SLOW_SWIPE_STEPS = 24
+private const val PULL_STEPS = 60
 private const val SCROLL_ATTEMPTS = 3
 private const val SHORT_WAIT_MS = 1_000L

@@ -15,7 +15,8 @@ import org.junit.Test
  * ```
  *
  * Startup goes into the startup profile too, which lays out the primary dex; the journeys do not, so
- * that file stays the startup path alone.
+ * that file stays the startup path alone. The journeys cover what a session does in its first
+ * minutes, the back card's track, cancel and commit included, so none of it runs interpreted.
  */
 class BaselineProfileGenerator {
 
@@ -37,9 +38,19 @@ class BaselineProfileGenerator {
         openRelated()
         backToRelatedThenRoot()
         openFirstRow()
+        slowEdgeSwipeBack(cancel = true)
+        slowEdgeSwipeBack()
+        assertAtRoot()
+        openFirstRow()
         edgeSwipeBack()
         assertAtRoot()
+        backSwipeDuringPush()
+        openFirstRow()
+        openRelated()
+        pressBackBurst(3)
+        assertAtRoot()
         flingPrimaryList()
+        pullToRefresh()
     }
 
     private fun MacrobenchmarkScope.backToRelatedThenRoot() {
