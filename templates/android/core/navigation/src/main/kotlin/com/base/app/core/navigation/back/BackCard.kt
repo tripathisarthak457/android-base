@@ -221,6 +221,23 @@ internal class BackCardState {
     }
 }
 
+/**
+ * The commit of [BackCardState.commit] on a host's stack: the card fades while [gate] holds Back,
+ * then the stack pops with no slide, and the presses counted meanwhile are applied after it.
+ */
+internal suspend fun BackCardState.commitPop(
+    gate: BackGate,
+    spring: SpringSpec<Float>,
+    pop: (Int) -> Int,
+    scope: CoroutineScope,
+) {
+    gate.hold {
+        commit(spring, scope)
+        if (pop(1) > 0) gate.changed(StackChange.GesturePop)
+    }
+    finish()
+}
+
 /** One shape per whole-pixel radius, so a gesture allocates none per frame. */
 private object CardShapes {
     private val shapes = MutableIntObjectMap<Shape>()

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,12 +15,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberDecoratedNavEntries
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.SceneStrategy
+import androidx.navigation3.scene.rememberNavigationEventState
+import androidx.navigation3.scene.rememberSceneState
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import com.base.app.core.common.navigation.AppNavKey
@@ -33,8 +38,11 @@ import com.base.app.core.navigation.Destination
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.Presentation
 import com.base.app.core.navigation.ShellState
+import com.base.app.core.navigation.back.BackCardState
 import com.base.app.core.navigation.back.BackGate
-import com.base.app.core.navigation.back.GateEffects
+import com.base.app.core.navigation.back.GateSettle
+import com.base.app.core.navigation.back.StackBackHandler
+import com.base.app.core.navigation.back.StackChange
 import com.base.app.core.navigation.stack.ScreenBars
 import com.base.app.core.navigation.transition.NavTransitions
 import com.base.app.core.navigation.transition.ReportMotion
@@ -48,7 +56,8 @@ import com.base.app.core.navigation.transition.arrival
  *
  * Composed only while something is presented or leaving: with nothing up there is no host to
  * intercept a touch or cost a frame. Registered after the tab hosts, its Back handler is asked first
- * while anything is presented.
+ * while anything is presented, and a back gesture shrinks a cover into the back card
+ * ([PresentationCard]).
  *
  * A sheet is drawn by [sheetStrategy]; without one, a sheet key is presented as a cover.
  */
@@ -61,7 +70,14 @@ internal fun PresentationHost(
 ) {
     val presented = state.presented
     var live by remember { mutableIntStateOf(0) }
-    if (presented.size == 0 && live == 0) return
+    val host = remember(presented, registry, sheetStrategy) {
+        PresentationCard(presented) { key ->
+            sheetStrategy == null || registry.presentationOf(key) == Presentation.Cover
+        }
+    }
+    // A committed card fades out over the shell after its cover has gone.
+    if (presented.size == 0 && live == 0 && !host.card.active) return
+    SideEffect { host.motion = motion }
 
     // The host starts with only its empty base, so the first presentation slides in rather than
     // appearing with the host.
@@ -78,14 +94,21 @@ internal fun PresentationHost(
     val entries = rememberDecoratedNavEntries(
         backStack = shown,
         entryDecorators = decorators,
-        entryProvider = remember(registry, motion, state) {
+        entryProvider = remember(registry, motion, state, host) {
             { key ->
                 if (key == PresentationBase) {
                     NavEntry(key) { Box(Modifier.fillMaxSize()) }
                 } else {
                     val destination = registry.destinationFor(key)
                     NavEntry(key = key, metadata = destinationMetadata(destination)) { shownKey ->
-                        PresentedFrame(shownKey, motion, gate, state.presentedBars, onLive = { live += it }) {
+                        PresentedFrame(
+                            key = shownKey,
+                            motion = motion,
+                            gate = gate,
+                            card = host.card,
+                            screenBars = state.presentedBars,
+                            onLive = { live += it },
+                        ) {
                             destination.content(shownKey)
                         }
                     }
@@ -94,30 +117,49 @@ internal fun PresentationHost(
         },
     )
     val reduceMotion = rememberReduceMotion()
-    val height = LocalWindowInfo.current.containerSize.height
-    val predictiveMillis = remember(motion, height) { motion.settleMillis(height.toFloat()) }
     val strategies = remember(sheetStrategy) { listOfNotNull(sheetStrategy) }
-    NavDisplay(
-        entries = entries,
-        sceneStrategies = strategies,
-        transitionSpec = if (reduceMotion) NavTransitions.noneSpec else remember(motion) { NavTransitions.present(motion) },
-        popTransitionSpec = if (reduceMotion) NavTransitions.noneSpec else remember(motion) { NavTransitions.dismiss(motion) },
-        predictivePopTransitionSpec = if (reduceMotion) {
-            NavTransitions.noneDuringPredictive
-        } else {
-            remember(predictiveMillis) { NavTransitions.predictiveDismiss(predictiveMillis) }
-        },
-        onBack = { gate.onBack(pop) },
-    )
-    GateEffects(gate, pop)
+    val sceneState = rememberSceneState(entries, strategies, emptyList(), null, onBack = { gate.onBack(pop) })
+    // Bound to no handler, so NavDisplay never seeks a predictive pop of its own: the back card
+    // takes the gesture (StackBackHandler below).
+    val inert = rememberNavigationEventState(sceneState)
+    Box(
+        Modifier
+            .fillMaxSize()
+            .drawBehind {
+                val scrim = host.card.scrim.value
+                if (scrim > 0f) drawRect(Color.Black, alpha = scrim)
+            },
+    ) {
+        NavDisplay(
+            sceneState = sceneState,
+            navigationEventState = inert,
+            transitionSpec = if (reduceMotion) {
+                NavTransitions.noneSpec
+            } else {
+                remember(motion) { NavTransitions.present(motion) }
+            },
+            popTransitionSpec = if (reduceMotion) {
+                NavTransitions.noneSpec
+            } else {
+                remember(motion, gate) { NavTransitions.dismiss(motion) { gate.lastChange == StackChange.GesturePop } }
+            },
+            predictivePopTransitionSpec = NavTransitions.noneDuringPredictive,
+        )
+    }
+    StackBackHandler(presented, host, pop, cardEnabled = !reduceMotion)
+    GateSettle(gate, pop)
 }
 
-/** A presented screen: opaque, with no tab bar under it, reporting its motion to the gate. */
+/**
+ * A presented screen: opaque, with no tab bar under it, reporting its motion to the gate, and the
+ * back card while a gesture shrinks it.
+ */
 @Composable
 private fun PresentedFrame(
     key: AppNavKey,
     motion: ScreenMotion,
     gate: BackGate,
+    card: BackCardState,
     screenBars: ScreenBars,
     onLive: (Int) -> Unit,
     content: @Composable () -> Unit,
@@ -138,7 +180,14 @@ private fun PresentedFrame(
         LocalTabBarVisible provides false,
         LocalBottomChrome provides remember { ChromeInset() },
     ) {
-        Box(Modifier.fillMaxSize().background(AppTheme.colors.background)) { content() }
+        Box(
+            Modifier
+                .fillMaxSize()
+                .graphicsLayer { if (card.active && card.subject == key) with(card) { applyCard() } }
+                .background(AppTheme.colors.background),
+        ) {
+            content()
+        }
     }
 }
 

@@ -13,8 +13,22 @@ import androidx.navigationevent.NavigationEventTransitionState
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.navigation.AppBackStack
-import com.base.app.core.navigation.stack.StackScene
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+
+/** What draws a host's [BackCard], and decides when the screen on top may become one. */
+internal interface BackCardHost {
+    val card: BackCardState
+
+    fun canStartCard(): Boolean
+
+    fun startCard(event: NavigationEvent, scope: CoroutineScope)
+
+    suspend fun cancelCard()
+
+    /** The card's commit: it fades, the stack pops with no slide, and Back pressed meanwhile is counted. */
+    suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope)
+}
 
 /**
  * The one Back handler of a stack host. A back gesture over a settled stack, or over a push still
@@ -28,15 +42,15 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun StackBackHandler(
     stack: AppBackStack,
-    scene: StackScene,
+    host: BackCardHost,
     pop: (Int) -> Int,
     cardEnabled: Boolean,
 ) {
     val gate = stack.gate
-    val card = scene.card
+    val card = host.card
     val state = rememberNavigationEventState(NavigationEventInfo.None)
     val scope = rememberCoroutineScope()
-    LaunchedEffect(state, scene, cardEnabled) {
+    LaunchedEffect(state, host, cardEnabled) {
         if (!cardEnabled) return@LaunchedEffect
         snapshotFlow { state.transitionState }.collect { transition ->
             if (transition !is NavigationEventTransitionState.InProgress) return@collect
@@ -45,7 +59,7 @@ internal fun StackBackHandler(
                 BackCardState.Phase.Tracking -> card.track(event)
                 // A button press can arrive as progress animated by the system: it never shrinks the screen.
                 BackCardState.Phase.Idle ->
-                    if (event.swipeEdge != NavigationEvent.EDGE_NONE && scene.canStartCard()) scene.startCard(event, scope)
+                    if (event.swipeEdge != NavigationEvent.EDGE_NONE && host.canStartCard()) host.startCard(event, scope)
                 BackCardState.Phase.Settling -> Unit
             }
         }
@@ -55,11 +69,11 @@ internal fun StackBackHandler(
         state = state,
         isBackEnabled = enabled,
         onBackCancelled = {
-            if (card.phase == BackCardState.Phase.Tracking) scope.launch { scene.cancelCard() }
+            if (card.phase == BackCardState.Phase.Tracking) scope.launch { host.cancelCard() }
         },
         onBackCompleted = {
             if (card.phase == BackCardState.Phase.Tracking) {
-                scope.launch { scene.commitCard(pop, scope) }
+                scope.launch { host.commitCard(pop, scope) }
             } else {
                 gate.onBack(pop)
             }

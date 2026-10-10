@@ -19,9 +19,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigationevent.NavigationEvent
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.navigation.back.BackCardHost
 import com.base.app.core.navigation.back.BackCardState
 import com.base.app.core.navigation.back.BackGate
-import com.base.app.core.navigation.back.StackChange
+import com.base.app.core.navigation.back.commitPop
 import com.base.app.core.navigation.shell.CardCutout
 import com.base.app.core.navigation.transition.ScreenMotion
 import kotlinx.coroutines.CoroutineScope
@@ -43,9 +44,9 @@ import kotlinx.coroutines.launch
  * layer and draw blocks.
  */
 @Stable
-internal class StackScene(private val gate: BackGate) {
+internal class StackScene(private val gate: BackGate) : BackCardHost {
 
-    val card = BackCardState()
+    override val card = BackCardState()
 
     var upper: Map<Any, Slot> by mutableStateOf(emptyMap())
         private set
@@ -211,24 +212,19 @@ internal class StackScene(private val gate: BackGate) {
     }
 
     /** Whether the back card may start: the top page is one entry, and nothing but a push is moving. */
-    fun canStartCard(): Boolean =
+    override fun canStartCard(): Boolean =
         !card.active && top.size == 1 && beneath.isNotEmpty() && (!moving || applied?.slide == Slide.Push)
 
-    fun startCard(event: NavigationEvent, scope: CoroutineScope) {
+    override fun startCard(event: NavigationEvent, scope: CoroutineScope) {
         card.start(event, subject = top.single(), beneath = beneath, midPush = moving, scope = scope)
     }
 
-    suspend fun cancelCard() {
+    override suspend fun cancelCard() {
         card.cancel(midPush = moving)
     }
 
-    /** The card's commit: it fades, the stack pops with no slide, and Back pressed meanwhile is counted. */
-    suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope) {
-        gate.hold {
-            card.commit(motion.fraction, scope)
-            if (pop(1) > 0) gate.changed(StackChange.GesturePop)
-        }
-        card.finish()
+    override suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope) {
+        card.commitPop(gate, motion.fraction, pop, scope)
     }
 
     fun GraphicsLayerScope.pose(key: Any) {

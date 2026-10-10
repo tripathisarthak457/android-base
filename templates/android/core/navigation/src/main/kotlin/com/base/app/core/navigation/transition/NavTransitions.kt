@@ -4,12 +4,9 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.FloatSpringSpec
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -32,13 +29,6 @@ internal data class ScreenMotion(val response: Float = DEFAULT_RESPONSE, val par
 
     /** The same spring for a 0 to 1 progress, so a scrim or a follower moves in step with the slide. */
     val fraction: SpringSpec<Float> = spring(1f, stiffness, visibilityThreshold = FRACTION_THRESHOLD)
-
-    /** How long the spring takes to bring [distancePx] of travel to rest, to within a pixel. */
-    fun settleMillis(distancePx: Float): Int {
-        val nanos = FloatSpringSpec(1f, stiffness, visibilityThreshold = 1f)
-            .getDurationNanos(initialValue = distancePx, targetValue = 0f, initialVelocity = 0f)
-        return (nanos / 1_000_000).toInt().coerceAtLeast(1)
-    }
 
     companion object {
         /**
@@ -67,12 +57,9 @@ internal object NavTransitions {
         slideInVertically(motion.offset) { it } togetherWith ExitTransition.KeepUntilTransitionsFinished
     }
 
-    fun dismiss(motion: ScreenMotion): SceneTransform = {
-        EnterTransition.None togetherWith slideOutVertically(motion.offset) { it }
-    }
-
-    fun predictiveDismiss(durationMs: Int): AnimatedContentTransitionScope<Scene<AppNavKey>>.(Int) -> ContentTransform = {
-        EnterTransition.None togetherWith slideOutVertically(tween(durationMs, easing = LinearEasing)) { it }
+    /** A cover sinks off the bottom edge, unless the back card already showed it leaving ([shownByCard]). */
+    fun dismiss(motion: ScreenMotion, shownByCard: () -> Boolean): SceneTransform = {
+        if (shownByCard()) none else EnterTransition.None togetherWith slideOutVertically(motion.offset) { it }
     }
 
     val none: ContentTransform = EnterTransition.None togetherWith ExitTransition.None
