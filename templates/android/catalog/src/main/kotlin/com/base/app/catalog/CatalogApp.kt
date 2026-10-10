@@ -47,6 +47,8 @@ import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
 import com.base.app.core.designsystem.theme.AppDesignStyle
 import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
@@ -122,7 +124,8 @@ private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
             spacing = AppTheme.spacing.section,
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scroll)
+                .appScrollIndicator(scroll)
+                .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                 .padding(chrome)
                 .padding(bottom = navigationBar),
         ) {
@@ -146,7 +149,8 @@ private fun SectionIndex(
         val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         LazyColumn(
             state = list,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().appScrollIndicator(list),
+            flingBehavior = AppScrollDefaults.flingBehavior(),
             contentPadding = chromeContentPadding(PaddingValues(bottom = navigationBar + AppTheme.spacing.xl)),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
         ) {

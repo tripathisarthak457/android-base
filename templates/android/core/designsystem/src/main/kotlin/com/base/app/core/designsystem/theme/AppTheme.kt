@@ -1,6 +1,7 @@
 package com.base.app.core.designsystem.theme
 
 import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -34,6 +35,7 @@ import com.base.app.core.designsystem.foundation.content.LocalContentColor
 import com.base.app.core.designsystem.foundation.content.LocalTextStyle
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
 import com.base.app.core.designsystem.foundation.interaction.NoIndication
+import com.base.app.core.designsystem.foundation.scroll.AppOverscroll
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /** Which palette to render with. [System] follows the device; the other two override it. */
@@ -67,7 +69,8 @@ class AppThemeDefaults internal constructor(
  * installs the window's overlay host and bottom-chrome holder, which nested themes share.
  *
  * Nothing in the app draws a press overlay unless a component asks for one: the default indication
- * is [NoIndication], and each control states its feedback through `Modifier.pressable`.
+ * is [NoIndication], and each control states its feedback through `Modifier.pressable`. Scrolling
+ * containers get iOS's rubber-band edge ([AppOverscroll]).
  *
  * [colors] default to the palette of [designStyle]'s surface tone in the mode's theme.
  * [reduceMotion] overrides the system's "Remove animations" setting, for previews and the catalog;
@@ -136,7 +139,13 @@ fun AppTheme(
         LocalBottomChrome provides bottomChrome,
         LocalShimmer provides shimmer,
     ) {
-        if (outermost) AppOverlayHost(content) else content()
+        if (outermost) {
+            // Only the outermost theme sets the edge, so a screen that chose Android's stretch keeps
+            // it inside a nested theme.
+            CompositionLocalProvider(LocalOverscrollFactory provides AppOverscroll) { AppOverlayHost(content) }
+        } else {
+            content()
+        }
     }
 }
 

@@ -47,6 +47,8 @@ import com.base.app.core.designsystem.foundation.draw.HairlineEdge
 import com.base.app.core.designsystem.foundation.draw.hairline
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** How a column's values read and line up. Figures keep one width per digit so they align. */
@@ -115,7 +117,13 @@ fun <T> AppDataTable(
             fittedWidths(widenedToFit(columns.map { it.width }, needed), maxWidth)
         }
 
-        LazyColumn(state = listState, contentPadding = contentPadding, modifier = Modifier.fillMaxSize()) {
+        val fling = AppScrollDefaults.flingBehavior()
+        LazyColumn(
+            state = listState,
+            contentPadding = contentPadding,
+            flingBehavior = fling,
+            modifier = Modifier.fillMaxSize().appScrollIndicator(listState),
+        ) {
             leading?.invoke(this)
             stickyHeader(key = HEADER_KEY, contentType = HEADER_KEY) {
                 Row(
@@ -123,7 +131,7 @@ fun <T> AppDataTable(
                         .fillMaxWidth()
                         .background(colors.backgroundGrouped)
                         .overflowFade(horizontal, colors.backgroundGrouped, fadeWidth)
-                        .horizontalScroll(horizontal)
+                        .horizontalScroll(horizontal, flingBehavior = fling)
                         .defaultMinSize(minHeight = AppTheme.sizes.minTouchTarget)
                         .semantics { heading() },
                     verticalAlignment = Alignment.CenterVertically,
@@ -154,7 +162,7 @@ fun <T> AppDataTable(
                             },
                         )
                         .overflowFade(horizontal, background, fadeWidth)
-                        .horizontalScroll(horizontal)
+                        .horizontalScroll(horizontal, flingBehavior = fling)
                         .defaultMinSize(minHeight = AppTheme.sizes.minTouchTarget)
                         .clearAndSetSemantics { contentDescription = spoken },
                     verticalAlignment = Alignment.CenterVertically,
@@ -179,7 +187,7 @@ fun <T> AppDataTable(
                             .background(colors.surface)
                             .hairline(HairlineEdge.Top)
                             .overflowFade(horizontal, colors.surface, fadeWidth)
-                            .horizontalScroll(horizontal)
+                            .horizontalScroll(horizontal, flingBehavior = fling)
                             .defaultMinSize(minHeight = AppTheme.sizes.minTouchTarget),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {

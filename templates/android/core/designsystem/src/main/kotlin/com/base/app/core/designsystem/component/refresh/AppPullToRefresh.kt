@@ -57,6 +57,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.roundToInt
 
 /**
  * Pull to refresh over any scrolling content, as iOS's refresh control behaves. The content follows
@@ -356,7 +357,9 @@ private class PullToRefreshNode(
         trigger = Trigger.toPx()
         rest = Rest.toPx()
         return layout(placeable.width, placeable.height) {
-            placeable.placeWithLayer(0, 0) { translationY = gap }
+            // Moved by placement rather than by the layer's translation: a moved layer is what makes
+            // Compose ask an adaptive-refresh display for its high rate while the content follows the finger.
+            placeable.placeWithLayer(0, gap.roundToInt())
         }
     }
 

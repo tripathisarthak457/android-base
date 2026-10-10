@@ -33,6 +33,8 @@ import androidx.compose.ui.zIndex
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -68,7 +70,8 @@ fun <T> AppReorderableList(
     LazyColumn(
         state = state,
         contentPadding = contentPadding,
-        modifier = modifier.pointerInput(state) {
+        flingBehavior = AppScrollDefaults.flingBehavior(),
+        modifier = modifier.appScrollIndicator(state).pointerInput(state) {
             detectDragGesturesAfterLongPress(
                 onDragStart = { offset ->
                     val hit = state.layoutInfo.visibleItemsInfo.firstOrNull { offset.y.toInt() in it.offset..(it.offset + it.size) }

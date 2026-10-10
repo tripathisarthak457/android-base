@@ -17,9 +17,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.navigation.AppPageControl
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlin.math.abs
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 /**
  * Cards that snap one at a time with the next one peeking in, and a page control beneath. Pages
@@ -41,6 +42,7 @@ fun AppCarousel(
         HorizontalPager(
             state = state,
             modifier = Modifier.fillMaxWidth(),
+            flingBehavior = AppScrollDefaults.pagerFlingBehavior(state),
             contentPadding = PaddingValues(horizontal = AppTheme.spacing.gutter + peek),
             pageSpacing = pageSpacing,
             key = { it },

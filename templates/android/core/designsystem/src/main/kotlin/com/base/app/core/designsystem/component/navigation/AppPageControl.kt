@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -54,6 +55,7 @@ fun AppPager(
             state = state,
             modifier = Modifier.fillMaxWidth(),
             contentPadding = contentPadding,
+            flingBehavior = AppScrollDefaults.pagerFlingBehavior(state),
             pageSpacing = pageSpacing,
         ) { page -> content(page) }
 
