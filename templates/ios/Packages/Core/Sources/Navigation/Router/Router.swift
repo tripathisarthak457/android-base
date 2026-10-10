@@ -4,9 +4,9 @@ import SwiftUI
 /// The navigation state of one tab: the screens pushed on its stack, and the item its list-detail
 /// root shows.
 ///
-/// Each tab owns one, so switching tabs keeps every tab where it was. Stores receive the router at
-/// init and navigate through it; views bind `path` to the tab's `NavigationStack` and
-/// `selection` to a split view's list.
+/// Each tab owns one, so switching tabs keeps every tab where it was. Views bind `path` to the
+/// tab's `NavigationStack` and `selection` to a split view's list. A store whose own work decides
+/// where to go next, such as opening what it has just saved, receives the router at init.
 @MainActor
 @Observable
 public final class Router {

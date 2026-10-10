@@ -11,11 +11,12 @@ import SwiftData
 /// in a wide window, and the sample pushed over the list on a phone.
 ///
 /// What is selected lives in the tab's `Router`, so a deep link can select a sample, and tapping
-/// the tab again goes back to the list.
+/// the tab again goes back to the list. The selection alone decides what a phone shows: the
+/// sample while one is selected, the list when none is. Binding `preferredCompactColumn` as well
+/// would leave the phone on whichever column it last showed when the router changes the selection.
 public struct SampleRootView: View {
     @Environment(Router.self) private var router
     @State private var listStore: SampleListStore
-    @State private var compactColumn = NavigationSplitViewColumn.sidebar
     private let repository: any SampleRepository
 
     // <opt:database>
@@ -51,7 +52,7 @@ public struct SampleRootView: View {
 
     public var body: some View {
         @Bindable var router = router
-        NavigationSplitView(preferredCompactColumn: $compactColumn) {
+        NavigationSplitView {
             SampleListView(store: listStore, selection: selection)
         } detail: {
             NavigationStack(path: $router.path) {
