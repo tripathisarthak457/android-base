@@ -21,6 +21,7 @@ from ..targets.android.target import (
     MIN_COMPILE_SDK,
     describe_api_level,
 )
+from ..targets.multiplatform import target as multiplatform
 from . import translations
 from .catalogue import FONT_SUGGESTIONS
 from .spec import (
@@ -37,6 +38,7 @@ from .spec import (
     SCHEME_PATTERN,
     SOCKET_URL_PATTERN,
     VERSION_NAME_PATTERN,
+    IosSettings,
     KeystoreSpec,
     Spec,
     SpecError,
@@ -352,7 +354,26 @@ def ask_languages(target: Target) -> list[str]:
             return tags
 
 
-def ask_android(features: frozenset[str], app_name: str) -> dict[str, Any]:
+#: The Android template's flavours, which get a URL each; playstore always shares prod's.
+ANDROID_FLAVOURS: tuple[str, ...] = ("dev", "staging", "prod")
+_STORE_FLAVOUR = "playstore"
+_URL_DEFAULTS = {
+    "dev": "https://dev.example.com/api/",
+    "staging": "https://staging.example.com/api/",
+    "prod": "https://api.example.com/api/",
+}
+
+
+def ask_android(
+    features: frozenset[str],
+    app_name: str,
+    flavours: tuple[str, ...] = ANDROID_FLAVOURS,
+    signing: bool = True,
+) -> dict[str, Any]:
+    """
+    The Android settings. A template with other `flavours` is asked for a URL for each of those and
+    has no playstore copy; one without `signing` is not asked for keystores.
+    """
     heading("Android versions")
     print(dim("  Anything below API 26 turns on core-library desugaring automatically."))
     print()
@@ -394,15 +415,12 @@ def ask_android(features: frozenset[str], app_name: str) -> dict[str, Any]:
         print(dim("  a variant switch, with no code change."))
         print()
         http = _pattern_check(HTTP_URL_PATTERN, "Like https://api.example.com/, without quotes, spaces or $.", "android.api_base_urls")
-        defaults = {
-            "dev": "https://dev.example.com/api/",
-            "staging": "https://staging.example.com/api/",
-            "prod": "https://api.example.com/api/",
-        }
+        defaults = {flavour: _URL_DEFAULTS[flavour] for flavour in flavours}
         api = {flavour: ask_valid(f"  {flavour} API base URL", http, default) for flavour, default in defaults.items()}
         # Play Store builds hit the same backend as production; a separate URL there is a
         # misconfiguration waiting to happen.
-        api["playstore"] = api["prod"]
+        if flavours == ANDROID_FLAVOURS:
+            api[_STORE_FLAVOUR] = api["prod"]
         settings["api_base_urls"] = api
         if "websocket" in features:
             print()
@@ -411,7 +429,8 @@ def ask_android(features: frozenset[str], app_name: str) -> dict[str, Any]:
             for flavour in defaults:
                 guess = api[flavour].replace("https://", "wss://").replace("http://", "ws://").rstrip("/") + "/ws"
                 sockets[flavour] = ask_valid(f"  {flavour} WebSocket URL", socket, guess)
-            sockets["playstore"] = sockets["prod"]
+            if flavours == ANDROID_FLAVOURS:
+                sockets[_STORE_FLAVOUR] = sockets["prod"]
             settings["web_socket_urls"] = sockets
 
     if "deeplink" in features:
@@ -430,8 +449,30 @@ def ask_android(features: frozenset[str], app_name: str) -> dict[str, Any]:
             "example.com",
         )
 
-    settings["keystores"] = ask_keystores(app_name)
+    if signing:
+        settings["keystores"] = ask_keystores(app_name)
     return settings
+
+
+def ask_ios(package_name: str) -> dict[str, Any]:
+    """The iOS app's identity and oldest supported release, checked as the target checks them."""
+    heading("iOS")
+    print(dim("  Xcode signs the app with your team; leave the team blank to choose it in Xcode."))
+    print()
+
+    def checked(field: str) -> Callable[[str], None]:
+        def check(value: str) -> None:
+            multiplatform.validate_ios(IosSettings(**{field: value}), package_name)
+
+        return check
+
+    return {
+        "bundle_id": ask_valid("  Bundle id", checked("bundle_id"), package_name.replace("_", "-")),
+        "deployment_target": ask_valid(
+            "  Oldest iOS release", checked("deployment_target"), IosSettings().deployment_target
+        ),
+        "team_id": ask_valid("  Team id", checked("team_id"), "", allow_empty=True),
+    }
 
 
 def ask_keystores(app_name: str) -> list[dict[str, Any]]:
@@ -498,8 +539,11 @@ def run_wizard(target: Target, select_all: bool = False, preset: str | None = No
     features = target.manifest.resolve(requested)
     raw["features"] = sorted(requested)
     raw["architecture"] = ask_architecture(target)
-    if target.key in ("android", "multiplatform"):
+    if target.key == "android":
         raw["android"] = ask_android(features, raw["app_name"])
+    elif target.key == "multiplatform":
+        raw["android"] = ask_android(features, raw["app_name"], flavours=multiplatform.FLAVOURS, signing=False)
+        raw["ios"] = ask_ios(raw["package_name"])
     raw.update(ask_fonts(features))
     raw.update(ask_look(features))
     raw["feature_modules"] = ask_feature_modules(target)

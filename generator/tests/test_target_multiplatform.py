@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import io
 import plistlib
 import re
 import tempfile
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
+from unittest import mock
 
-from genkit.core import catalogue, pipeline
+from genkit.core import catalogue, pipeline, prompts
 from genkit.core.spec import SpecError
 from genkit.targets import get
 from genkit.targets.multiplatform import modules, settings
@@ -294,6 +297,37 @@ class ValidationTest(unittest.TestCase):
         regions = settings.ios_regions(spec(android={"api_base_urls": {"dev": "https://dev.acme.com/v1/"}}), "x")
         self.assertEqual(["API_BASE_URL = https:/$()/dev.acme.com/v1/\n"], regions["ios-api-url-dev"])
         self.assertIsNone(regions["ios-api-url-prod"])
+
+
+class WizardTest(unittest.TestCase):
+
+    def answers(self, given: dict[str, str]):
+        """Answers each question by its prompt's start, and takes the default for any other."""
+        asked: list[str] = []
+
+        def fake_input(prompt: str) -> str:
+            asked.append(prompt)
+            self.assertLess(len(asked), 100, "the wizard keeps asking")
+            return next((answer for start, answer in given.items() if prompt.strip().startswith(start)), "")
+
+        return asked, fake_input
+
+    def test_the_default_answers_make_a_spec_this_target_accepts(self):
+        asked, fake_input = self.answers({"Package name": "com.acme.trail_notes"})
+        with mock.patch("builtins.input", fake_input), redirect_stdout(io.StringIO()):
+            raw = prompts.run_wizard(MULTIPLATFORM, preset="standard")
+
+        parsed = pipeline.read_spec(raw, MULTIPLATFORM)[0].spec
+        self.assertEqual("com.acme.trail-notes", parsed.ios.bundle_id)
+        self.assertEqual({"dev", "prod"}, set(parsed.android.api_base_urls))
+        self.assertFalse(any(prompt.strip().startswith(("Set up signing", "  staging")) for prompt in asked))
+
+    def test_an_ios_answer_the_target_refuses_is_asked_again(self):
+        answers = iter(["com.acme.trail_notes", "com.acme.trail", "14.0", "16.0", "TEAM", "ABCDE12345"])
+        with mock.patch("builtins.input", lambda prompt: next(answers)), redirect_stdout(io.StringIO()):
+            ios = prompts.ask_ios("com.acme.trail")
+
+        self.assertEqual({"bundle_id": "com.acme.trail", "deployment_target": "16.0", "team_id": "ABCDE12345"}, ios)
 
 
 class CatalogueTest(unittest.TestCase):
