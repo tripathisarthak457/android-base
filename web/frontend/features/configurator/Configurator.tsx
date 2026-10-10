@@ -18,16 +18,18 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
   const { step, stepIndex, goTo, identityValid } = model;
   const [previewDark, setPreviewDark] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);
-  const moved = useRef(false);
+  const shown = useRef(step);
 
   const bar = useRef<HTMLElement>(null);
 
   // After a step change the focus moves to the new panel's heading, so a keyboard or screen reader
-  // user lands on what changed rather than staying on the Next button. On a narrow screen the step
-  // bar scrolls sideways, so the current step is brought to its middle.
+  // user lands on what changed rather than staying on the Next button. It compares with the step
+  // last shown, not a first-run flag: Strict Mode runs the effect twice on mount, and a focus then
+  // scrolls the page down to here on load. On a narrow screen the step bar scrolls sideways, so
+  // the current step is brought to its middle.
   useEffect(() => {
-    if (moved.current) heading.current?.focus();
-    moved.current = true;
+    if (shown.current !== step) heading.current?.focus();
+    shown.current = step;
     const nav = bar.current;
     const current = nav?.querySelector<HTMLElement>('[aria-current="step"]');
     if (nav && current) {
