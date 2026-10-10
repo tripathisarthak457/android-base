@@ -21,7 +21,6 @@ export type PreviewTheme = {
   style: StyleTokens;
   type: (role: string) => TextStyle;
   spring: (name: SpringName) => FramerSpring;
-  styleKey: string;
 };
 
 export type PreviewChoices = {
@@ -104,7 +103,7 @@ export function previewTheme(tokens: Tokens, choices: PreviewChoices): PreviewTh
     return { type: "spring", stiffness: value.stiffness, damping: value.dampingRatio * 2 * Math.sqrt(value.stiffness), mass: 1 };
   };
 
-  return { dark: choices.dark, colour, status, style, type, spring, styleKey };
+  return { dark: choices.dark, colour, status, style, type, spring };
 }
 
 /** A corner radius in preview pixels; "pill" is half the height, which 999 always reaches. */

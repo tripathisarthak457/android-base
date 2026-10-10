@@ -19,7 +19,9 @@ test("roles come from the style's palette, brand roles from the visitor's colour
 
 test("a style or motion style this build does not know falls back instead of throwing", () => {
   const theme = previewTheme(tokens, { ...choices, designStyle: "Brutal", motionStyle: "Wobbly" });
-  assert.equal(theme.styleKey, tokens.defaults.designStyle);
+  const fallback = String(tokens.defaults.designStyle);
+  assert.equal(theme.style, tokens.styles[fallback]);
+  assert.equal(theme.colour("background"), css(String(tokens.palette[fallback]?.light.background)));
   assert.ok(theme.spring("screen").stiffness > 0);
   assert.equal(theme.type("noSuchRole").fontSize, dp(17));
 });
