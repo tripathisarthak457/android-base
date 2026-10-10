@@ -79,7 +79,8 @@ class OrphanedTestTest(unittest.TestCase):
         for target in REGISTRY.values():
             manifest, template = target.manifest, target.template_dir
             if not (template / "settings.gradle.kts").is_file():
-                # A Swift template's test targets are checked by test_target_ios, per feature.
+                # This reads Kotlin source sets. test_target_ios runs the same check on the Swift
+                # template's test targets (TemplateTest.test_no_test_outlives_the_source_it_tests).
                 continue
             tests = []
             for directory, subdirectories, filenames in os.walk(template):
