@@ -5,7 +5,7 @@ import com.base.app.core.common.LoadState
 import com.base.app.core.mvi.UiEffect
 import com.base.app.core.mvi.UiEvent
 import com.base.app.core.mvi.UiState
-import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.model.SampleItem
 
 @Immutable
 internal data class SampleDetailState(

@@ -8,6 +8,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 import com.base.app.core.common.result.AppError
+// <opt:media>
+import com.base.app.core.common.result.errorOrNull
+// </opt:media>
 import com.base.app.core.mvi.MessageKind
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
@@ -15,7 +18,7 @@ import com.base.app.core.mvi.UiEvent
 import com.base.app.core.mvi.UiState
 import com.base.app.core.mvi.UiText
 import com.base.app.core.ui.toUiText
-import com.base.app.data.profile.api.Profile
+import com.base.app.data.profile.api.model.Profile
 import com.base.app.data.profile.api.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
@@ -34,7 +37,9 @@ internal data class ProfileState(
 internal sealed interface ProfileEvent : UiEvent {
     data object Appeared : ProfileEvent
     data object Save : ProfileEvent
+    // <opt:media>
     data class PhotoPicked(val uri: String?) : ProfileEvent
+    // </opt:media>
 }
 
 internal sealed interface ProfileEffect : UiEffect
@@ -71,9 +76,21 @@ internal class ProfileViewModel @Inject constructor(
         when (event) {
             ProfileEvent.Appeared -> if (!current.loaded) launchExclusive(FILL) { fillFields() }
             ProfileEvent.Save -> save()
-            is ProfileEvent.PhotoPicked -> launchLatest(PHOTO) { repository.setPhoto(event.uri) }
+            // <opt:media>
+            is ProfileEvent.PhotoPicked -> setPhoto(event.uri)
+            // </opt:media>
         }
     }
+    // <opt:media>
+
+    private fun setPhoto(uri: String?) {
+        launchLatest(PHOTO) {
+            repository.setPhoto(uri).errorOrNull()?.let { error ->
+                showMessage(text = error.toUiText(), kind = MessageKind.Error)
+            }
+        }
+    }
+    // </opt:media>
 
     /**
      * The stored profile goes into the fields once. After process death the fields come back with
@@ -117,6 +134,8 @@ internal class ProfileViewModel @Inject constructor(
         private const val FILLED = "filled"
         private const val FILL = "fill"
         private const val SAVE = "save"
+        // <opt:media>
         private const val PHOTO = "photo"
+        // </opt:media>
     }
 }

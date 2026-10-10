@@ -34,7 +34,7 @@ import com.base.app.core.ui.AppNetworkImage
 // <opt:media>
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
-import com.base.app.core.media.rememberMediaPicker
+import com.base.app.core.media.picker.rememberMediaPicker
 // </opt:media>
 
 @Composable

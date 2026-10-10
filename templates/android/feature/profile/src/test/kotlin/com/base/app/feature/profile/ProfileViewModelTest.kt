@@ -5,8 +5,11 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.lifecycle.SavedStateHandle
 import com.base.app.core.mvi.MessageKind
 import com.base.app.core.testing.MainDispatcherRule
-import com.base.app.data.profile.api.Profile
+import com.base.app.data.profile.api.model.Profile
 import com.base.app.data.profile.api.ProfileRepository
+// <opt:media>
+import com.base.app.core.common.result.AppResult
+// </opt:media>
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -111,7 +114,11 @@ private class FakeProfileRepository(
         state.value = state.value.copy(name = name.trim(), bio = bio.trim())
     }
 
-    override suspend fun setPhoto(uri: String?) {
-        state.value = state.value.copy(photoUri = uri)
+    // <opt:media>
+
+    override suspend fun setPhoto(picked: String?): AppResult<Unit> {
+        state.value = state.value.copy(photoUri = picked)
+        return AppResult.Success(Unit)
     }
+    // </opt:media>
 }

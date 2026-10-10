@@ -2,14 +2,14 @@ package com.base.app.feature.sample.detail
 
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppResult
-import com.base.app.core.common.result.onSuccess
 import com.base.app.core.mvi.MviViewModel
-import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.data.sample.api.SampleRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 
 /** The item id arrives through assisted injection, at construction, from the navigation key. */
 @HiltViewModel(assistedFactory = SampleDetailViewModel.Factory::class)
@@ -43,9 +43,13 @@ internal class SampleDetailViewModel @AssistedInject constructor(
                     return@launchLatest
                 }
             }
-            // The list is cached, so this costs no request after the list screen has loaded. A
-            // failure only means no related rows: the item itself is already on screen.
-            repository.items().onSuccess { all -> setState { copy(related = all.relatedTo(itemId)) } }
+            // The list is already stored once the list screen has loaded, so this costs no request
+            // then. A failure only means no related rows: the item itself is already on screen.
+            val all = repository.items.first().ifEmpty {
+                repository.refresh()
+                repository.items.first()
+            }
+            setState { copy(related = all.relatedTo(itemId)) }
         }
     }
 

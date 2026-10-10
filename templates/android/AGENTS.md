@@ -145,18 +145,24 @@ screen to read an id from.
 <!-- <opt:search> -->
   `SearchViewModel` shows it.
 <!-- </opt:search> -->
-- **Data that belongs to the signed-in user:** the `@SessionDataStore` store, which sign-out
-  clears. Settings that outlive a session go in `@SettingsDataStore`.
+- **Data that belongs to the signed-in user:** a table in `:core:database`, or a preferences file
+  of its own from `DataStoreFiles.preferences("name")`, with a `SessionScopedStore` bound
+  `@IntoSet` that empties it, so sign-out clears it. Settings that outlive a session go in
+  `@SettingsDataStore`.
 <!-- <opt:paging> -->
 - **A paged list:** return `Flow<PagingData<T>>` from the repository, `cachedIn(viewModelScope)` in
   the ViewModel, and render it with `AppPagingList`, which already draws loading, error, empty
   and the load-more footer. `feature/feed` is the example.
 <!-- </opt:paging> -->
 <!-- <opt:network> -->
-- **Show saved data at once, then the latest:** `networkClient.getStream<T>(path, cache =
-  CachePolicy.Enabled(key, maxAge))` emits the saved copy and then the network's answer. For a plain
-  call, `forceRefresh = true` on the policy is what pull-to-refresh passes: it still saves the answer
-  and still falls back to the saved copy offline.
+<!-- <opt:database> -->
+- **Show saved data at once, then the latest:** make the database the source of truth. The
+  repository exposes the table as a `Flow`, and `refresh()` writes the server's answer into it.
+  GETs are otherwise cached by the HTTP cache, as the server's headers say.
+<!-- <opt:sample> -->
+  `OfflineFirstSampleRepository` is the example.
+<!-- </opt:sample> -->
+<!-- </opt:database> -->
 - **Show a failure:** `failure.userMessage(UiText.of(R.string.x))`. `Failure.message` is the server's
   own text only; the app's wording comes from resources so it can be translated.
 <!-- </opt:network> -->
@@ -254,7 +260,7 @@ This is what separates a good agent change from a typical one. Follow it exactly
 | Change the look app-wide | `core/designsystem/…/theme/` and the `AppTheme(…)` call in `app/…/ui/AppRoot.kt` |
 | Add an icon | `core/designsystem/…/icon/AppIcons.kt` |
 | Call an API | a `data/` module, through `NetworkClient` |
-| Store something | `core/datastore`: the session store for per-user data (cleared on sign-out), the settings store for the rest |
+| Store something | `core/database` for the app's data, `core/datastore` for preferences: a file per concern, cleared on sign-out through `SessionScopedStore` when it belongs to the person |
 
 ## 8. Before you say it is done
 

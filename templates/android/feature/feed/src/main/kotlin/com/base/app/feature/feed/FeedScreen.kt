@@ -35,7 +35,7 @@ import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.paging.AppPagingList
 import com.base.app.core.ui.text
 import com.base.app.data.feed.api.FeedLoadException
-import com.base.app.data.feed.api.FeedPost
+import com.base.app.data.feed.api.model.FeedPost
 
 @Composable
 internal fun FeedRoute(viewModel: FeedViewModel = hiltViewModel()) {

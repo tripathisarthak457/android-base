@@ -14,7 +14,7 @@ import com.base.app.core.mvi.UiEffect
 import com.base.app.core.mvi.UiEvent
 import com.base.app.core.mvi.UiState
 import com.base.app.data.search.api.SearchRepository
-import com.base.app.data.search.api.SearchResult
+import com.base.app.data.search.api.model.SearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.time.Duration

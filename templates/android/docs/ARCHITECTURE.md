@@ -364,53 +364,42 @@ a field does not break older app versions.
 
 ### Auth and token refresh
 
-The authenticated client uses Ktor's bearer-auth plugin. It loads tokens from `AuthTokenStore`, and
-on a 401 calls `TokenRefresher` once, no matter how many requests got the 401. The refresher uses a
-separate plain client, so a refresh request cannot trigger another refresh.
+Every request reads the session's tokens from `AuthTokenStore` as it is sent, through an `HttpSend`
+interceptor; there is no token cache in the client to outlive a session. On a 401, `SessionTokens`
+refreshes once, however many requests got the 401 at the same time, and each of them is sent again
+with the new token. The refresher uses a plain client of its own, so a refresh cannot trigger
+another refresh.
 
-A failed refresh ends the session only when the server rejected it with a 4xx. A refresh that got
-no answer (offline, timeout) leaves the session in place: the refresh token is probably still
-valid, and signing the user out because they went through a tunnel would be wrong. When the session
-does end, `SessionEvents.expired` fires and `SessionCoordinator` takes the same path as a manual
-sign-out.
+Only a refresh the server refuses with 401 ends the session. A refresh that got no answer, a 408,
+a 429 or a 5xx leaves it in place: the refresh token is still good, and signing someone out because
+they went through a tunnel would be wrong. A refresh that finishes after a sign-out, or after
+someone else signed in, changes nothing, because the store swaps tokens only if they are still the
+ones the refresh started from. When the session does end, `SessionEvents.expired` fires and
+`SessionCoordinator` takes the same path as a manual sign-out.
 
-Requests marked `requiresAuth = false` (sign in, register, refresh) are sent without a token, so an
-old token is never attached to them.
+Requests marked `requiresAuth = false` (sign in, register, refresh) are sent without a token, and a
+full URL to another host never receives one.
 
-<!-- <opt:room> -->
-### Response cache and offline queue
+### Caching
 
-The app's own cache is for data the app decides about, whatever the headers say. A request opts in
-with `CachePolicy.Enabled(key, maxAgeMillis, staleOnFailure, forceRefresh)`:
+GET responses are cached by OkHttp's HTTP cache, as the server's `Cache-Control` headers say; there
+is no second cache in the app. Data the app must show offline, or keep across launches whatever the
+headers say, belongs in a repository backed by the database.
 
-1. A cached response younger than `maxAgeMillis` is returned without a network call, unless
-   `forceRefresh` is set — which is what pull-to-refresh passes.
-2. Otherwise the network is called and a successful response is stored.
-3. If the call fails and `staleOnFailure` is set, the cached copy of any age is returned instead.
+<!-- <opt:offlinequeue> -->
+### Offline queue
 
-The policy is set per call site, because only the repository knows how stale its data can be.
+A mutation can ask to be queued when it cannot be sent. It goes to `queue.db`, a database of its
+own that survives sign-out, tagged with the account that made it, and is sent only with that
+account's session. It carries an `Idempotency-Key` from the first attempt, so a backend that honours
+the header applies it once even if the first attempt arrived before the connection dropped.
 
-When a screen should never wait on a spinner if it has something to show, `NetworkClient.stream`
-(or `getStream<T>` for a decoded type) emits the saved copy at once and then the network's answer,
-so the screen shows something immediately and always ends on the latest. If the refresh fails
-after the saved copy was shown, the failure is emitted too, so the screen can keep what it has and
-say the refresh failed.
-
-A mutation can opt in to `enqueueOnFailure`. If it fails for lack of connectivity, it is written to
-the `RequestQueue` and the caller gets a failure marked `queued`. It carries an `Idempotency-Key`
-header from the first attempt, so a backend that honours the header applies it once even if the
-first attempt did arrive before the connection dropped. Only requests with a
-JSON body are queued; multipart requests carry file contents and are not. `QueuedRequestReplayer`
-runs in the application scope and sends the queue in order each time the device comes back online,
-after a random wait of up to fifteen seconds: after an outage every device reconnects at once, and
-a backend that has just come back should not take all of their queues in the same second.
-A request the server rejects with a 4xx is removed, since sending it again would get the same
-answer. Any other failure stops the pass and keeps the remaining requests in order.
-
-Both the cache and the queue are session-scoped and are cleared on sign-out. The database behind
-them holds only cached and replayable data, so it is rebuilt from scratch on a schema change and
-needs no migrations.
-<!-- </opt:room> -->
+One WorkManager worker sends the queue, oldest first, when the device has a network. A refusal is
+kept with the server's answer, so a screen can show what was refused and why; 401, 408, 426 and 429
+are momentary and retried later, on a timer that grows. Entries too old or tried too often are
+given up. WorkManager starts the first time something is queued, not at every launch: the manifest
+removes its start-up initializer and the application supplies its configuration.
+<!-- </opt:offlinequeue> -->
 
 <!-- <opt:websocket> -->
 ### WebSocket
@@ -423,39 +412,43 @@ same second after a server restart.
 <!-- <opt:devtools> -->
 ### Network inspector
 
-In builds where dev tools are visible (debug builds, and release builds of dev and staging),
-`NetworkRecording` sends each exchange to `DevToolsLog`, which the in-app inspector reads. Headers
-such as `Authorization` and `Cookie` are redacted when an exchange is recorded, not when it is
-shown, so a token never sits in memory in the log. Bodies are truncated and the log keeps a fixed
-number of entries. In production the recorder is not installed at all.
+In builds where dev tools are visible (debug builds, and release builds of dev and staging), the
+app binds a `NetworkObserver` that hands each exchange to `DevToolsLog`, which the in-app inspector
+reads; `:core:network` knows only the observer interface. Headers such as `Authorization` and
+`Cookie`, and token and password fields in JSON bodies, are redacted when an exchange is recorded,
+not when it is shown, so a token never sits in memory in the log; the bodies of sign-in and
+refresh calls are not kept at all. Bodies are truncated and the log keeps a fixed number of
+entries. In production no observer is installed.
 <!-- </opt:devtools> -->
 <!-- </opt:network> -->
 
 ## Storage and the session
 
-`:core:datastore` provides two Preferences DataStores in separate files:
-
-- `@SettingsDataStore` holds data that belongs to the device and outlives any account: theme,
-  language, onboarding progress.
-- `@SessionDataStore` holds data that belongs to the signed-in user. The whole file is cleared on
-  sign-out, so a repository can keep per-user data here without any extra wiring.
+`:core:datastore` keeps one Preferences file per concern rather than one shared file, because every
+write rewrites the whole file: a recent search would otherwise wait behind a token refresh.
+`DataStoreFiles.preferences(name)` makes one; call it once per file, from a `@Singleton` provider.
+`@SettingsDataStore` holds what belongs to the device and outlives any account: theme, onboarding
+progress, the analytics choice.
 
 Tokens are encrypted before they reach disk. `KeystoreCipher` uses AES-GCM with a key held in the
 Android Keystore and stores the IV at the start of each value. If decryption fails, for example
 after a backup was restored to a different device and the key no longer matches, it returns null.
-The app then treats the user as signed out and does not crash.
+The app then treats the person as signed out, clears what the last session left, and does not
+crash.
 
-### Sign-out clears everything that belongs to the user
+### Sign-out clears everything that belongs to the person
 
 Any class holding per-user data implements `SessionScopedStore` and binds itself into the set with
-`@IntoSet`. `SessionCoordinator` clears every store in that set on sign-out, including the token
-store, the session DataStore and, when present, the network cache and the offline queue. A new store only needs the
-binding and is cleared from then on. One store failing to clear is logged and does not stop the
-others.
+`@IntoSet`: the database, the HTTP cache, in-flight shared requests, the push registration, the
+WebSocket, flag overrides and the analytics user id among them. `SessionCoordinator` clears every
+store in that set once per session end, however it ended, and two sign-outs at once clear each
+store once. It also remembers whose data is on the device across launches, so a new person signing
+in over a session that never signed out finds nothing of the last one; the same person signing back
+in keeps their data. One store failing to clear is logged and does not stop the others.
 
 The coordinator runs in the application scope, so leaving the screen that started a sign-out does
-not cancel it halfway. It emits `signedOut` only after every store is cleared, and the navigation
-host resets the back stack on that signal.
+not cancel it halfway. Its `state` moves to a new `SignedIn` generation with every new owner, and
+the navigation host resets its back stacks when the session ends.
 
 ## App-wide services
 
@@ -463,30 +456,35 @@ host resets the back stack on that signal.
 ### Feature flags
 
 A flag is declared once as a `Flag` subclass with its key and default value. Code reads it with
-`featureFlags[Flag.X]` and never with a string key. `FeatureFlags` has two operations: reading is
-synchronous and always returns a value, and `refresh()` fetches new values. A slow or failed fetch
-therefore never blocks a screen. The local implementation returns defaults and allows overrides in
-debug builds.
-<!-- <opt:firebase> -->
+`featureFlags[Flag.X]`, or follows it with `featureFlags.observe(Flag.X)`, and never with a string
+key. Reading is synchronous and always returns a value, and `refresh()`, called once at start-up,
+fetches new values, so a slow or failed fetch never blocks a screen. Overrides set in the
+inspector's Flags tab win over every source until sign-out.
+<!-- <opt:remoteconfig> -->
 The Remote Config implementation starts from the same defaults, so the app behaves the same before
-the first fetch and when a fetch fails.
-<!-- </opt:firebase> -->
+the first fetch and when a fetch fails. It activates changes the console publishes while the app is
+open, and a debuggable build fetches on every start.
+<!-- </opt:remoteconfig> -->
 <!-- </opt:flags> -->
 
 <!-- <opt:push> -->
 ### Notifications
 
 Notification channels are declared as the `NotificationChannelSpec` enum and created when the app
-starts, before any notification arrives. Users can see and mute each category in system settings
-before the first message in it. The push token is registered on each launch, and again whenever
-Firebase reports a new one.
+starts, off the main thread, before any notification arrives. People can see and mute each category
+in system settings before the first message in it. The permission is asked for at the end of
+onboarding and offered again in settings (`rememberNotificationPermission()`). The installation id
+is handed to `PushTokenSink` only when it changes, and sign-out unregisters, so the next person on
+the phone never receives the last one's notifications. A tap opens the link the push carries, or
+the app as it was left; on the lock screen a notification shows only the app's name.
 <!-- </opt:push> -->
 
 ### Connectivity
 
-`NetworkMonitor.isOnline` tracks the set of networks that have `NET_CAPABILITY_VALIDATED`, not
-just a single "connected" flag. A captive portal or a network without internet access reads as
-offline, and losing one of two networks (Wi-Fi while on mobile data) does not report offline.
+`NetworkMonitor.isOnline` is one shared registration with the system, whatever the number of
+screens and requests asking, and counts networks that claim internet access
+(`NET_CAPABILITY_INTERNET`). It is a hint for the UI and a trigger for the offline queue, never a
+gate: every request is attempted, and a failure is classified from what actually happened.
 
 ## The design system
 

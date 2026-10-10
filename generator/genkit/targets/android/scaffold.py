@@ -53,8 +53,8 @@ class Default{class_name}Repository @Inject constructor(
     }}
 }}"""
         imports = f"""import {pkg}.core.common.AppResult
-import {pkg}.core.network.NetworkClient
-import {pkg}.core.network.get
+import {pkg}.core.network.client.NetworkClient
+import {pkg}.core.network.client.get
 import javax.inject.Inject
 import javax.inject.Singleton"""
     else:

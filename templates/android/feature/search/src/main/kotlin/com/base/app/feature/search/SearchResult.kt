@@ -30,7 +30,7 @@ import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.text
 import com.base.app.data.search.api.SearchRepository
-import com.base.app.data.search.api.SearchResult
+import com.base.app.data.search.api.model.SearchResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

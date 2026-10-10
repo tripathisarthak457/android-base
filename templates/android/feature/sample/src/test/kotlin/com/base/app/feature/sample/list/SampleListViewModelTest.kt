@@ -8,8 +8,10 @@ import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
-import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.data.sample.api.SampleRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -88,6 +90,20 @@ class SampleListViewModelTest {
     }
 
     @Test
+    fun `rows already stored are shown when the refresh at launch fails`() = runTest {
+        val repository = FakeSampleRepository(AppResult.Success(items))
+        repository.refresh()
+        repository.result = AppResult.Failure(AppError.Offline)
+        val viewModel = SampleListViewModel(repository, SavedStateHandle())
+
+        viewModel.onEvent(SampleListEvent.Appeared)
+        advanceUntilIdle()
+
+        assertEquals(LoadState.Success, viewModel.state.value.loadState)
+        assertEquals(items, viewModel.state.value.visibleItems)
+    }
+
+    @Test
     fun `typing filters without touching the loaded list`() = runTest {
         val viewModel = SampleListViewModel(FakeSampleRepository(AppResult.Success(items)), SavedStateHandle())
         viewModel.state.launchIn(backgroundScope)
@@ -122,18 +138,24 @@ private class FakeSampleRepository(
     var result: AppResult<List<SampleItem>>,
 ) : SampleRepository {
     var loads = 0
+    private val stored = MutableStateFlow<List<SampleItem>>(emptyList())
 
-    override suspend fun items(forceRefresh: Boolean): AppResult<List<SampleItem>> {
+    override val items: Flow<List<SampleItem>> = stored
+
+    override suspend fun refresh(): AppResult<Unit> {
         loads++
-        return result
-    }
-
-    override suspend fun item(id: Int): AppResult<SampleItem> =
-        when (val current = result) {
-            is AppResult.Success -> current.value.firstOrNull { it.id == id }
-                ?.let { AppResult.Success(it) }
-                ?: AppResult.Failure(AppError.Http(status = 404))
+        return when (val current = result) {
+            is AppResult.Success -> {
+                stored.value = current.value
+                AppResult.Success(Unit)
+            }
 
             is AppResult.Failure -> current
         }
+    }
+
+    override fun peek(id: Int): SampleItem? = stored.value.firstOrNull { it.id == id }
+
+    override suspend fun item(id: Int): AppResult<SampleItem> =
+        peek(id)?.let { AppResult.Success(it) } ?: AppResult.Failure(AppError.Http(status = 404))
 }
