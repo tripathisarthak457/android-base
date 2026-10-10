@@ -91,6 +91,12 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
   const [changed, setChanged] = useState<Record<number, boolean>>({});
   const save = useAdminAction(onUnauthorized);
   const result = useAdminQuery<ErrorsData>("errors", token, `${query}&resolved=${resolved}&limit=100`, version, onUnauthorized);
+  // A reload is the server's word, which already holds this tab's changes and may hold another admin's.
+  const [changedFor, setChangedFor] = useState(result.data);
+  if (changedFor !== result.data) {
+    setChangedFor(result.data);
+    setChanged({});
+  }
 
   async function toggle(group: ErrorGroup, next: boolean) {
     if (await save.run(() => adminPost("errors/resolve", token, { id: group.id, resolved: next }))) {

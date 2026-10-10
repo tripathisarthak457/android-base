@@ -17,6 +17,12 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
   const [edits, setEdits] = useState<Record<number, Partial<Report>>>({});
   const save = useAdminAction(onUnauthorized);
   const result = useAdminQuery<ReportsData>("feedback", token, `${query}&status=${status}&limit=100`, version, onUnauthorized);
+  // A reload is the server's word, which already holds this tab's changes and may hold another admin's.
+  const [editsFor, setEditsFor] = useState(result.data);
+  if (editsFor !== result.data) {
+    setEditsFor(result.data);
+    setEdits({});
+  }
 
   async function update(id: number, change: { status?: string; notes?: string }) {
     if (await save.run(() => adminPost("feedback/update", token, { id, ...change }))) {
@@ -117,7 +123,7 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
                               ))}
                           </dl>
                         </div>
-                        <NoteBox current={item.notes} busy={save.busy} onSave={(notes) => void update(item.id, { notes })} />
+                        <NoteBox key={item.notes} current={item.notes} busy={save.busy} onSave={(notes) => void update(item.id, { notes })} />
                       </details>
                       <select
                         value={item.status}
@@ -144,6 +150,7 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
   );
 }
 
+/** Holds the draft of a note. Keyed on the stored note, so a save or a reload replaces the draft. */
 function NoteBox({ current, busy, onSave }: { current: string; busy: boolean; onSave: (notes: string) => void }) {
   const [value, setValue] = useState(current);
   return (
