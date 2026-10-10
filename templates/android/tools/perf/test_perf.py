@@ -349,7 +349,7 @@ class MeminfoTest(unittest.TestCase):
 
 
 class SplitProfileTest(unittest.TestCase):
-    def test_rules_follow_the_module_that_declares_the_package_and_keep_the_wildcards(self):
+    def test_library_rules_join_their_wildcards_and_the_app_takes_the_rest_of_the_project(self):
         with tempfile.TemporaryDirectory() as project:
             sources = {
                 "core/navigation/src/main/kotlin/com/acme/core/navigation/AppShell.kt": "package com.acme.core.navigation",
@@ -370,10 +370,8 @@ class SplitProfileTest(unittest.TestCase):
                     "HSPLcom/acme/core/ui/ScreenKt;->Screen()V",
                     "HSPLandroidx/compose/runtime/ComposerImpl;->startGroup()V",
                     "HSPLcom/acme/MainActivity;->onCreate(Landroid/os/Bundle;)V",
+                    "HSPLcom/acme/feature/sample/DetailScreenKt;->DetailScreen()V",
                 ]) + "\n")
-            with open(os.path.join(generated, "startup-prof.txt"), "w") as handle:
-                handle.write("HSPLcom/acme/MainActivity;->onCreate(Landroid/os/Bundle;)V\n"
-                             "HSPLcom/acme/core/ui/ScreenKt;->Screen()V\n")
             safety_net = ["HSPLcom/acme/core/navigation/**->**(**)**", "Lcom/acme/core/navigation/**;"]
             with open(os.path.join(project, "core/navigation/src/main/baseline-prof.txt"), "w") as handle:
                 handle.write("\n".join(safety_net + ["HSPLcom/acme/core/navigation/Stale;->gone()V"]) + "\n")
@@ -387,7 +385,10 @@ class SplitProfileTest(unittest.TestCase):
             self.assertEqual(rules("core/navigation")[:2], safety_net)
             self.assertEqual(len(rules("core/navigation")), 4)
             self.assertEqual(rules("core/ui"), ["HSPLcom/acme/core/ui/ScreenKt;->Screen()V"])
-            self.assertEqual(rules("app"), ["HSPLcom/acme/MainActivity;->onCreate(Landroid/os/Bundle;)V"])
+            self.assertEqual(rules("app"), [
+                "HSPLcom/acme/MainActivity;->onCreate(Landroid/os/Bundle;)V",
+                "HSPLcom/acme/feature/sample/DetailScreenKt;->DetailScreen()V",
+            ])
 
 
 if __name__ == "__main__":

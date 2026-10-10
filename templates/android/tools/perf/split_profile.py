@@ -5,9 +5,11 @@
 
 `:app:generateBaselineProfile` records one profile for the whole app from the benchmark journeys. Every
 preset ships these rules, including presets without the benchmark module, so they are copied into
-`src/main/baseline-prof.txt` of the modules they belong to: a library module's rules (shell, design
-system, shared UI) go into that library, and the app module gets the startup rules for its own
-classes. A rule belongs to the module whose sources declare its class's package. Wildcard rules already
+`src/main/baseline-prof.txt` of the modules they belong to: a listed library module's rules (shell,
+design system, shared UI) go into that library, and the app module gets the rest of the project's own
+code (the app's classes, the features' screens, the data layer), whichever module declares it, since an
+app's profile applies to every class in its APK. A rule belongs to the module whose sources declare its
+class's package. Wildcard rules already
 in a module's profile are written by hand (the safety net that covers code no journey reaches), so a
 split keeps them at the top and adds the generated rules under them.
 """
@@ -71,6 +73,12 @@ def write(path, rules):
         handle.write("\n".join(rules) + ("\n" if rules else ""))
 
 
+def own_packages(app_packages):
+    """Whether a package is the project's own code: the app's root package or one under it."""
+    root = min(app_packages, key=len) if app_packages else None
+    return lambda package: root is not None and (package == root or package.startswith(root + "/"))
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--project", default=".")
@@ -81,22 +89,25 @@ def main(argv=None):
 
     generated = os.path.join(args.project, args.generated)
     profile = os.path.join(generated, "baseline-prof.txt")
-    startup = os.path.join(generated, "startup-prof.txt")
     if not os.path.isfile(profile):
         sys.exit(f"{profile} does not exist: run ./gradlew :app:generateBaselineProfile first")
     rules = read_lines(profile)
-    startup_rules = read_lines(startup) if os.path.isfile(startup) else rules
 
+    claimed = set()
     for module in args.modules or DEFAULT_MODULES:
         module_dir = os.path.join(args.project, module)
-        chosen = select(rules, module_packages(module_dir))
+        packages = module_packages(module_dir)
+        claimed |= packages
+        chosen = select(rules, packages)
         write(os.path.join(module_dir, "src/main/baseline-prof.txt"), chosen)
         print(f"{module}: {len(chosen)} rules")
 
     app_dir = os.path.join(args.project, args.app)
-    chosen = select(startup_rules, module_packages(app_dir))
+    own = own_packages(module_packages(app_dir))
+    packages = {rule_package(line) for line in rules} - {None}
+    chosen = select(rules, {package for package in packages if own(package) and package not in claimed})
     write(os.path.join(app_dir, "src/main/baseline-prof.txt"), chosen)
-    print(f"{args.app}: {len(chosen)} startup rules")
+    print(f"{args.app}: {len(chosen)} rules")
     return 0
 
 
