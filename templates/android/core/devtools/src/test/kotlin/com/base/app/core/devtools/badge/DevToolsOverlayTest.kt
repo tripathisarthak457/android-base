@@ -18,6 +18,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 import kotlin.math.abs
 // <opt:flags>
 import com.base.app.core.flags.FlagOverrides
@@ -25,6 +26,7 @@ import com.base.app.core.flags.LocalFeatureFlags
 // </opt:flags>
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [ROBOLECTRIC_SDK])
 class DevToolsOverlayTest {
 
     @get:Rule
@@ -67,3 +69,6 @@ class DevToolsOverlayTest {
     private fun assertNear(actual: Dp, expected: Dp, tolerance: Dp) =
         assertTrue("Moved $actual, expected about $expected.", abs((actual - expected).value) <= tolerance.value)
 }
+
+// Robolectric refuses SDK 36 and above on a Java 17 toolchain, which is what this project builds with.
+private const val ROBOLECTRIC_SDK = 35

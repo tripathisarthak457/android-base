@@ -71,9 +71,15 @@ internal class SampleListViewModel @Inject constructor(
                     )
                 }
 
-                // A failed refresh keeps the list on screen; one the person asked for says so.
+                // A failed refresh keeps the stored list on screen; one the person asked for says so.
                 is AppResult.Failure -> if (stored.isNotEmpty()) {
-                    setState { copy(loadState = LoadState.Success) }
+                    setState {
+                        copy(
+                            loadState = LoadState.Success,
+                            items = stored,
+                            visibleItems = stored.matching(query.text.toString()),
+                        )
+                    }
                     if (refreshing) {
                         showMessage(
                             text = result.error.toUiText(UiText.of(R.string.sample_refresh_failed)),
