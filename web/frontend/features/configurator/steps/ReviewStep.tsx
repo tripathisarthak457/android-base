@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Spinner } from "../../../components/ui.tsx";
+import { selectableFeatures } from "../../catalogue/features.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { usePreviewTheme } from "../../preview/LivePreview.tsx";
@@ -18,7 +19,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
   const tabs = useMemo(() => planTabs(input.features, input.modules).tabs, [input.features, input.modules]);
   const options = useMemo(() => ({ features: input.features, haptics: input.haptics }), [input.features, input.haptics]);
   const modules = moduleNames(state.modules);
-  const chosen = target.features.filter((feature) => state.features.includes(feature.key) && !feature.implied_only);
+  const chosen = selectableFeatures(target).filter((feature) => state.features.includes(feature.key));
   const android = (key: string) => state.settings[`android.${key}`];
   const sdk = android("min_sdk") !== undefined ? `${android("min_sdk")} / ${Math.max(Number(android("target_sdk")), Number(android("min_sdk")))}` : null;
   const presetTitle = target.presets.find((option) => option.key === preset)?.title ?? "Your own";

@@ -17,13 +17,3 @@ export function android(): Target {
   if (!target) throw new Error("The checked-in catalogue has no targets.");
   return target;
 }
-
-/** Features a visitor can switch on or off: everything not reached only through another. */
-export function selectableFeatures(target: Target = android()) {
-  return target.features.filter((feature) => !feature.implied_only);
-}
-
-/** Optional features that bring third-party code under its own licence. */
-export function licensedFeatures() {
-  return CATALOGUE.targets.flatMap((target) => target.features).filter((feature, index, all) => feature.licence && all.findIndex((other) => other.key === feature.key) === index);
-}

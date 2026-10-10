@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useId } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
+import { selectableFeatures } from "../../catalogue/features.ts";
 import type { Target } from "../../catalogue/types.ts";
 import { dependentsOf } from "../resolve.ts";
 import type { ToggleHint } from "../state.ts";
@@ -31,12 +32,13 @@ export function FeaturesStep({ model }: { model: Configurator }) {
   const presetName = useId();
   const selected = new Set(state.features);
   const titleOf = new Map(target.features.map((feature) => [feature.key, feature.title]));
-  const offered = target.features.filter((feature) => !feature.implied_only);
+  const offered = selectableFeatures(target);
   const current = target.presets.find((option) => option.key === preset);
-  const hidden = new Set(target.features.filter((feature) => feature.implied_only).map((feature) => feature.key));
+  const shown = new Set(offered.map((feature) => feature.key));
   // Firebase and anything else nobody can tick arrive and leave with the features that need them,
-  // so naming them would only list what the visitor cannot change.
-  const visible = (keys: string[]) => keys.filter((key) => !hidden.has(key));
+  // so naming or counting them would only describe what the visitor cannot change. Review counts
+  // the same way.
+  const visible = (keys: string[]) => keys.filter((key) => shown.has(key));
   const hint =
     state.hint &&
     (visible(state.hint.alsoAdded).length > 0 || visible(state.hint.alsoRemoved).length > 0 || state.hint.previousStyle !== state.designStyle)
@@ -60,11 +62,11 @@ export function FeaturesStep({ model }: { model: Configurator }) {
             >
               <input type="radio" name={presetName} checked={on} onChange={() => dispatch({ type: "preset", key: option.key })} className="sr-only" />
               {option.title}
-              <span className="ml-1.5 font-mono text-xs opacity-70">{option.features.length}</span>
+              <span className="ml-1.5 font-mono text-xs opacity-70">{visible(option.features).length}</span>
             </label>
           );
         })}
-        {!current && <Badge tone="accent">Your own · {state.features.length}</Badge>}
+        {!current && <Badge tone="accent">Your own · {visible(state.features).length}</Badge>}
       </div>
       <p className="mt-3 text-sm text-ink-400">{current?.description ?? "Your own selection. Ticking a feature also ticks what it needs."}</p>
 

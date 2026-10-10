@@ -1,5 +1,6 @@
+import { licensedFeatures } from "../features/catalogue/features.ts";
 import { ReportButton } from "../features/feedback/Feedback.tsx";
-import { PRIVACY, REPO, licensedFeatures } from "../lib/catalogue.ts";
+import { CATALOGUE, PRIVACY, REPO } from "../lib/catalogue.ts";
 import { ThemeToggle } from "./theme-toggle.tsx";
 import { Badge } from "./ui.tsx";
 
@@ -32,7 +33,7 @@ export function Nav() {
 }
 
 export function Footer() {
-  const licence = licensedFeatures().length === 0 ? "MIT licensed." : "MIT licensed, except the third-party code some optional features bring.";
+  const licence = licensedFeatures(CATALOGUE).length === 0 ? "MIT licensed." : "MIT licensed, except the third-party code some optional features bring.";
   const links = [
     { href: "https://github.com/tripathisarthak457", label: "@tripathisarthak457" },
     { href: REPO, label: "Source" },

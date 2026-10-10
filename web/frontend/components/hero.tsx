@@ -1,4 +1,5 @@
-import { CATALOGUE, PRIVACY, REPO, android, selectableFeatures } from "../lib/catalogue.ts";
+import { selectableFeatures } from "../features/catalogue/features.ts";
+import { CATALOGUE, PRIVACY, REPO, android } from "../lib/catalogue.ts";
 import { Badge, LinkButton } from "./ui.tsx";
 
 /**
@@ -9,7 +10,7 @@ export function Hero() {
   const target = android();
   const platforms = CATALOGUE.targets.filter((candidate) => candidate.status !== "hidden");
   const stats = [
-    { value: String(selectableFeatures().length), label: "features you can switch off", detail: "Each one removes its modules, not just its code" },
+    { value: String(selectableFeatures(target).length), label: "features you can switch off", detail: "Each one removes its modules, not just its code" },
     { value: String(target.design_styles.length), label: "design styles", detail: target.design_styles.map((style) => style.title).join(", ") },
     { value: String(target.motion_styles.length), label: "motion styles", detail: "Spring presets for every press, push and tab" },
     { value: "7", label: "build variants", detail: "dev, staging, prod and playstore, debug and release" },

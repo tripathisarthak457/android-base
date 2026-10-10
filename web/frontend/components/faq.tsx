@@ -1,7 +1,8 @@
-import { CATALOGUE, PRIVACY, licensedFeatures } from "../lib/catalogue.ts";
+import { licensedFeatures } from "../features/catalogue/features.ts";
+import { CATALOGUE, PRIVACY } from "../lib/catalogue.ts";
 
 function licenceAnswer(): string {
-  const licensed = licensedFeatures();
+  const licensed = licensedFeatures(CATALOGUE);
   const base =
     "All of it. The generator is a Python script with no dependencies, the API is one Go binary, and this site is a Next.js app.";
   if (licensed.length === 0) return `${base} Everything is MIT.`;
