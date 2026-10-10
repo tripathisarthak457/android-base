@@ -13,6 +13,7 @@ import json
 import re
 import tempfile
 import unittest
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -357,8 +358,8 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
                 case.assertNotRegex(code, pattern, f"{relative} uses {name}")
             if relative.startswith("Packages/Features/Sources/"):
                 case.assertNotRegex(code, r"\buserInterfaceIdiom\b", f"{relative} decides layout by device")
-                for width in re.findall(r"\.frame\(\s*width:\s*(\d+)", code):
-                    case.assertLess(int(width), 320, f"{relative} fixes a width a window can be narrower than")
+                for width in re.findall(r"\.frame\(\s*(?:width|minWidth):\s*(\d+)", code):
+                    case.assertLess(int(width), 320, f"{relative} sets a width a window can be narrower than")
 
     with case.subTest(check="the XcodeGen project"):
         check_project_yml(case, project, spec, features)
@@ -400,6 +401,7 @@ def check_project_yml(case: unittest.TestCase, project: Path, spec, features: Pa
     text = (project / "project.yml").read_text(encoding="utf-8")
     # Without it, ProMotion iPhones hold custom SwiftUI animations to 60 Hz.
     case.assertRegex(text, r"(?m)^\s+CADisableMinimumFrameDurationOnPhone: true$")
+    case.assertIsNone(re.search(r"(?m)^\s*UIRequiresFullScreen:", text), "project.yml opts out of resizable windows")
     if yaml is None:
         print("PyYAML is not installed: project.yml was checked as text only.")
         return
@@ -697,6 +699,114 @@ class GeneratedProjectsTest(unittest.TestCase):
         self.assertEqual(0, code, result)
         self.assertEqual("ios", result["target"])
         self.assertEqual("TrailNotes", result["project_name"])
+
+
+def replacing(old: str, new: str) -> Callable[[str], str]:
+    """An edit that swaps the one occurrence of `old` for `new`."""
+
+    def edit(text: str) -> str:
+        if text.count(old) != 1:
+            raise AssertionError(f"expected {old!r} once, found it {text.count(old)} times")
+        return text.replace(old, new)
+
+    return edit
+
+
+class ViolationsTest(unittest.TestCase):
+    """Each check fails on a project that breaks its rule, so no check can quietly stop firing."""
+
+    ROW = "Packages/Features/Sources/SampleFeature/Components/SampleRow.swift"
+    ROW_PADDING = ".padding(.vertical, AppSpacing.xxs)"
+    FEATURES = "Packages/Features/Package.swift"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        cls.project, cls.spec = generate(Path(cls.temp.name), raw_spec(features=sorted(IOS.manifest.features)))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temp.cleanup()
+
+    def assertCaught(self, message: str, path: str, edit: Callable[[str], str]) -> None:
+        """Applies `edit` to `path` (to empty text for a file that does not exist), checks the
+        project, expects a failure matching `message`, and puts the project back."""
+        file = self.project / path
+        original = file.read_text(encoding="utf-8") if file.exists() else None
+        created = [parent for parent in reversed(file.parents) if not parent.exists()]
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text(edit(original or ""), encoding="utf-8")
+        try:
+            # Outside a running test, a sub-test's failure is raised rather than recorded.
+            with self.assertRaisesRegex(AssertionError, message):
+                check_project(unittest.TestCase(), self.project, self.spec)
+        finally:
+            if original is None:
+                file.unlink()
+                for folder in reversed(created):
+                    folder.rmdir()
+            else:
+                file.write_text(original, encoding="utf-8")
+
+    def test_the_unchanged_project_passes(self):
+        check_project(self, self.project, self.spec)
+
+    def test_layout_rules(self):
+        padded = self.ROW_PADDING
+        for message, path, edit in (
+            ("sets a width", self.ROW, replacing(padded, f"{padded}\n        .frame(width: 400)")),
+            ("sets a width", self.ROW, replacing(padded, f"{padded}\n        .frame(minWidth: 375)")),
+            (
+                "decides layout by device",
+                self.ROW,
+                replacing(padded, ".padding(.vertical, UIDevice.current.userInterfaceIdiom == .pad ? AppSpacing.xs : AppSpacing.xxs)"),
+            ),
+            (
+                "has no iPad #Preview",
+                "Packages/Features/Sources/SampleFeature/List/SampleListView.swift",
+                replacing('#Preview("iPad", traits: .fixedLayout(width: 1194, height: 834))', '#Preview("Wide")'),
+            ),
+            ("opts out of resizable windows", "project.yml", replacing("UILaunchScreen: {}", "UILaunchScreen: {}\n        UIRequiresFullScreen: true")),
+            ("CADisableMinimumFrameDurationOnPhone", "project.yml", replacing("FrameDurationOnPhone: true", "FrameDurationOnPhone: false")),
+        ):
+            with self.subTest(rule=message, edit=path):
+                self.assertCaught(message, path, edit)
+
+    def test_every_ipad_orientation_stays(self):
+        if yaml is None:
+            self.skipTest("PyYAML is not installed")
+        self.assertCaught(
+            "UIInterfaceOrientationPortraitUpsideDown",
+            "project.yml",
+            replacing("          - UIInterfaceOrientationPortraitUpsideDown\n", ""),
+        )
+
+    def test_graph_and_isolation_rules(self):
+        for message, path, edit in (
+            ("SampleFeature depends on", self.FEATURES, replacing('name: "SampleFeature",\n            dependencies: [\n', 'name: "SampleFeature",\n            dependencies: [\n                "SettingsFeature",\n')),
+            (r"imports \['SettingsFeature'\]", self.ROW, replacing("import SwiftUI\n", "import SettingsFeature\nimport SwiftUI\n")),
+            ("SampleAPI.swift", "Packages/Features/Sources/SampleData/Remote/SampleAPI.swift", replacing("struct SampleAPI", "@MainActor\nstruct SampleAPI")),
+            (
+                "False != True : SampleData$",
+                self.FEATURES,
+                lambda text: text.replace("swiftSettings: dataSettings", "swiftSettings: featureSettings", 1),
+            ),
+        ):
+            with self.subTest(rule=message):
+                self.assertCaught(message, path, edit)
+
+    def test_code_rules(self):
+        store = "Packages/Features/Sources/SampleFeature/List/SampleListStore.swift"
+        for message, path, edit in (
+            ("uses ObservableObject", store, replacing("final class SampleListStore {", "final class SampleListStore: ObservableObject {")),
+            (r"uses print\(", store, replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        print(event)\n")),
+            ("is not in Localizable.xcstrings", self.ROW, replacing(f"{self.ROW_PADDING}\n", f"{self.ROW_PADDING}\n        .help(Text(\"Words no catalog has\", bundle: .module))\n")),
+            ("declares 2 public types", "Packages/Features/Sources/SampleData/API/SampleItem.swift", lambda text: text + "\npublic struct SampleTag: Sendable {}\n"),
+            ("'Views'", "Packages/Features/Sources/SampleFeature/Views/SampleBadge.swift", lambda _: "struct SampleBadge {}\n"),
+            ("has no view beside it", "Packages/Features/Sources/SampleFeature/Detail/SampleShareStore.swift", lambda _: "final class SampleShareStore {}\n"),
+        ):
+            with self.subTest(rule=message):
+                self.assertCaught(message, path, edit)
 
 
 if __name__ == "__main__":
