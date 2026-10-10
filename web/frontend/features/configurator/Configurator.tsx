@@ -49,8 +49,8 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
             Configure your project
           </h2>
           <p className="mt-3 text-ink-300">
-            Seven short steps. Everything has a working default, so you can jump to Review and download something sensible
-            right now. Your answers stay in this browser until you start over.
+            Every step has a working default, so you can jump to Review and download something sensible right now. Your
+            answers stay in this browser until you start over.
           </p>
         </div>
         <Button variant="ghost" size="small" onClick={model.startOver}>

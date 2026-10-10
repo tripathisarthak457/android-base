@@ -344,7 +344,7 @@ function packageProblem(name: string, rules: Rules): string | undefined {
   if (name.length > rules.package_max) return `The package name can be at most ${rules.package_max} characters.`;
   const segments = name.split(".");
   if (segments.length < rules.package_segments_min) {
-    return "The package name needs at least two segments, like com.example.myapp: Play rejects a single-segment application id.";
+    return `The package name needs at least ${rules.package_segments_min} segments, like com.example.myapp: Play rejects a single-segment application id.`;
   }
   if (segments.length > rules.package_segments_max) {
     return `The package name can have at most ${rules.package_segments_max} segments.`;
