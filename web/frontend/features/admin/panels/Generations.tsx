@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
-import { type Generation, type Generations as GenerationsData, downloadCsv, useAdminQuery } from "../api.ts";
+import { type Generation, type Generations as GenerationsData, downloadCsv, useAdminAction, useAdminQuery } from "../api.ts";
 import { OUTCOME_COLOUR, seconds } from "../charts.tsx";
 import { Panel, type PanelProps } from "../Panel.tsx";
 
@@ -15,22 +15,9 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
   const [paging, setPaging] = useState<{ query: string; cursors: number[] }>({ query, cursors: [] });
   const cursors = paging.query === query ? paging.cursors : [];
   const [open, setOpen] = useState<number | null>(null);
-  const [exporting, setExporting] = useState(false);
-  const [problem, setProblem] = useState<string | null>(null);
+  const csv = useAdminAction(onUnauthorized);
   const before = cursors.at(-1);
   const result = useAdminQuery<GenerationsData>("generations", token, `${query}&limit=${PAGE}${before ? `&before=${before}` : ""}`, version, onUnauthorized);
-
-  async function exportCsv() {
-    setExporting(true);
-    setProblem(null);
-    try {
-      await downloadCsv(token, `${query}&limit=${CSV_ROWS}`);
-    } catch (error) {
-      setProblem(error instanceof Error ? error.message : "The export failed.");
-    } finally {
-      setExporting(false);
-    }
-  }
 
   return (
     <Panel
@@ -38,14 +25,14 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
       note={`page ${cursors.length + 1}`}
       result={result}
       actions={
-        <Button variant="secondary" size="small" onClick={() => void exportCsv()} disabled={exporting}>
-          {exporting ? "Exporting…" : `CSV (up to ${CSV_ROWS.toLocaleString()})`}
+        <Button variant="secondary" size="small" onClick={() => void csv.run(() => downloadCsv(token, `${query}&limit=${CSV_ROWS}`))} disabled={csv.busy}>
+          {csv.busy ? "Exporting…" : `CSV (up to ${CSV_ROWS.toLocaleString()})`}
         </Button>
       }
     >
       {(data) => (
         <>
-          {problem && <p className="mb-3 text-xs text-rose">{problem}</p>}
+          {csv.problem && <p className="mb-3 text-xs text-rose">{csv.problem}</p>}
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-left text-xs">
               <thead>

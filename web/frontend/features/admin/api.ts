@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { API_BASE, ApiError, apiError } from "../../lib/api.ts";
+import { parseCatalogue } from "../catalogue/guard.ts";
 
 /** The admin API's answers (`/api/v1/admin/*`). Every one starts with its window. */
 
@@ -218,4 +219,60 @@ export function useAdminQuery<T>(path: string, token: string, query: string, ver
     return () => controller.abort();
   }, [path, token, query, version, onUnauthorized]);
   return state;
+}
+
+export type AdminAction = { busy: boolean; problem: string | null; run: (work: () => Promise<void>) => Promise<boolean> };
+
+/**
+ * One admin write or export at a time. A failure is kept to show beside the panel, except a 401,
+ * which signs out, as it does for a read.
+ */
+export function useAdminAction(onUnauthorized: () => void): AdminAction {
+  const [busy, setBusy] = useState(false);
+  const [problem, setProblem] = useState<string | null>(null);
+  const run = useCallback(
+    async (work: () => Promise<void>) => {
+      setBusy(true);
+      setProblem(null);
+      try {
+        await work();
+        return true;
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 401) onUnauthorized();
+        else setProblem(error instanceof Error ? error.message : String(error));
+        return false;
+      } finally {
+        setBusy(false);
+      }
+    },
+    [onUnauthorized],
+  );
+  return { busy, problem, run };
+}
+
+export type FilterChoices = { targets: string[]; presets: string[] };
+
+/**
+ * The targets and presets to filter by, from the catalogue of the API being administered: its
+ * generations were made with that one, and bundling the checked-in copy would add a hundred
+ * kilobytes to this page for two lists of keys.
+ */
+export function useFilterChoices(): FilterChoices {
+  const [choices, setChoices] = useState<FilterChoices>({ targets: [], presets: [] });
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(`${API_BASE}/api/v1/catalogue`, { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((value: unknown) => {
+        const catalogue = parseCatalogue(value);
+        if (!catalogue) return;
+        setChoices({
+          targets: catalogue.targets.map((target) => target.key),
+          presets: [...new Set(catalogue.targets.flatMap((target) => target.presets.map((preset) => preset.key)))],
+        });
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
+  return choices;
 }

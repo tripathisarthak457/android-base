@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
-import { type Health as HealthData, type Report, type Reports as ReportsData, adminPost, useAdminQuery } from "../api.ts";
+import { type Health as HealthData, type Report, type Reports as ReportsData, adminPost, useAdminAction, useAdminQuery } from "../api.ts";
 import { percent } from "../charts.tsx";
 import { Panel, type PanelProps, Table } from "../Panel.tsx";
 
@@ -15,16 +15,12 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
   const [status, setStatus] = useState<string>("new");
   const statusName = useId();
   const [edits, setEdits] = useState<Record<number, Partial<Report>>>({});
-  const [problem, setProblem] = useState<string | null>(null);
+  const save = useAdminAction(onUnauthorized);
   const result = useAdminQuery<ReportsData>("feedback", token, `${query}&status=${status}&limit=100`, version, onUnauthorized);
 
   async function update(id: number, change: { status?: string; notes?: string }) {
-    setProblem(null);
-    try {
-      await adminPost("feedback/update", token, { id, ...change });
+    if (await save.run(() => adminPost("feedback/update", token, { id, ...change }))) {
       setEdits((current) => ({ ...current, [id]: { ...current[id], ...change } }));
-    } catch (error) {
-      setProblem(error instanceof Error ? error.message : "That did not save.");
     }
   }
 
@@ -53,7 +49,7 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
           <p className="mb-3 text-xs text-ink-400">
             {data.counts.new} new · {data.counts.blocking} blocking · {data.counts.last7Days} this week · {data.counts.total} all time
           </p>
-          {problem && <p className="mb-3 text-xs text-rose">{problem}</p>}
+          {save.problem && <p className="mb-3 text-xs text-rose">{save.problem}</p>}
           {data.items.length === 0 ? (
             <p className="rounded-lg border border-ink-700 bg-ink-900 p-4 text-sm text-ink-400">Nothing {status === "all" ? "in this window" : `marked ${status}`}.</p>
           ) : (

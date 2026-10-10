@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
 import { ApiError } from "../../lib/api.ts";
-import { CATALOGUE } from "../../lib/catalogue.ts";
-import { adminGet } from "./api.ts";
+import { adminGet, useFilterChoices } from "./api.ts";
 import { DEVICE_CLASSES, type Filters, OUTCOMES, type Range, defaultFilters, query, windowProblem } from "./filters.ts";
 import { Adoption } from "./panels/Adoption.tsx";
 import { Audience, Durations } from "./panels/Audience.tsx";
@@ -114,21 +113,26 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
 function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void }) {
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [applied, setApplied] = useState<Filters>(defaultFilters);
+  // The window ends on the day of the last Apply or Refresh, so a panel does not refetch while a
+  // date is half typed, and a tab left open past midnight UTC moves "Today" on when refreshed.
+  const [asOf, setAsOf] = useState(() => new Date());
   const [version, setVersion] = useState(0);
   const problem = windowProblem(filters);
-  // The query is fixed when it is applied, so a panel does not refetch while a date is half typed.
-  const shared = useMemo(() => query(applied, new Date()), [applied]);
-  const props = { token, query: shared, version, onUnauthorized: onSignOut };
+  const props = { token, query: query(applied, asOf), version, onUnauthorized: onSignOut };
   const set = (patch: Partial<Filters>) => setFilters((current) => ({ ...current, ...patch }));
-  const targets = CATALOGUE.targets.map((target) => target.key);
-  const presets = [...new Set(CATALOGUE.targets.flatMap((target) => target.presets.map((preset) => preset.key)))];
+  const { targets, presets } = useFilterChoices();
+
+  function refresh() {
+    setAsOf(new Date());
+    setVersion((current) => current + 1);
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-ink-100">Generator admin</h1>
         <div className="flex items-center gap-2">
-          <Button variant="secondary" size="small" onClick={() => setVersion((current) => current + 1)}>
+          <Button variant="secondary" size="small" onClick={refresh}>
             Refresh
           </Button>
           <Button variant="ghost" size="small" onClick={onSignOut}>
@@ -142,7 +146,9 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
         className="sticky top-0 z-10 mt-6 flex flex-wrap items-end gap-3 rounded-xl border border-ink-700 bg-ink-900/95 p-4 backdrop-blur"
         onSubmit={(event) => {
           event.preventDefault();
-          if (!problem) setApplied(filters);
+          if (problem) return;
+          setApplied(filters);
+          setAsOf(new Date());
         }}
       >
         <fieldset className="flex flex-wrap gap-1">

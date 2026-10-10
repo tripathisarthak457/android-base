@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
-import { type ErrorGroup, type Errors as ErrorsData, type Failures as FailuresData, type Rate, adminPost, useAdminQuery } from "../api.ts";
+import { type ErrorGroup, type Errors as ErrorsData, type Failures as FailuresData, type Rate, adminPost, useAdminAction, useAdminQuery } from "../api.ts";
 import { percent } from "../charts.tsx";
 import { Panel, type PanelProps, Table } from "../Panel.tsx";
 
@@ -89,16 +89,12 @@ export function Failures({ token, query, version, onUnauthorized }: PanelProps) 
 export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
   const [resolved, setResolved] = useState(false);
   const [changed, setChanged] = useState<Record<number, boolean>>({});
-  const [problem, setProblem] = useState<string | null>(null);
+  const save = useAdminAction(onUnauthorized);
   const result = useAdminQuery<ErrorsData>("errors", token, `${query}&resolved=${resolved}&limit=100`, version, onUnauthorized);
 
   async function toggle(group: ErrorGroup, next: boolean) {
-    setProblem(null);
-    try {
-      await adminPost("errors/resolve", token, { id: group.id, resolved: next });
+    if (await save.run(() => adminPost("errors/resolve", token, { id: group.id, resolved: next }))) {
       setChanged((current) => ({ ...current, [group.id]: next }));
-    } catch (error) {
-      setProblem(error instanceof Error ? error.message : "That did not save.");
     }
   }
 
@@ -115,7 +111,7 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
     >
       {(data) => (
         <>
-          {problem && <p className="mb-3 text-xs text-rose">{problem}</p>}
+          {save.problem && <p className="mb-3 text-xs text-rose">{save.problem}</p>}
           {data.items.length === 0 ? (
             <p className="rounded-lg border border-mint/25 bg-mint/5 p-4 text-sm text-mint">Nothing broken.</p>
           ) : (
