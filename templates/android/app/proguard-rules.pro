@@ -17,23 +17,6 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# ── Data transfer objects ───────────────────────────────────────────────────
-# Serializer lookup for a generic type argument goes through reflection on the type parameter,
-# which R8 cannot follow. Keeping the generated serializers is enough; the classes themselves can
-# still be shrunk and renamed.
--keepclassmembers @kotlinx.serialization.Serializable class ** {
-    *** Companion;
-    *** INSTANCE;
-    kotlinx.serialization.KSerializer serializer(...);
-}
-
-# ── Enum entries ────────────────────────────────────────────────────────────
-# `enumValues`/`valueOf` are used by the settings store to round-trip an enum through a string.
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
-
 # ── Crash reports that can be read ──────────────────────────────────────────
 # Without these, a stack trace has no line numbers and every frame reads as `Unknown Source`.
 # SourceFile is renamed rather than kept, so the mapping file is still required to deobfuscate.
