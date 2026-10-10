@@ -4,7 +4,7 @@ import { type InputHTMLAttributes, useId, useState } from "react";
 import { ChoiceCard, Field, TextInput, Toggle } from "../../../components/primitives.tsx";
 import type { Catalogue, Field as CatalogueField } from "../../catalogue/types.ts";
 import { offersSigning } from "../request.ts";
-import { lowerName, settingFields } from "../state.ts";
+import { choiceValue, lowerName, settingFields } from "../state.ts";
 import type { Configurator } from "../useConfigurator.ts";
 
 /** The API level from which glass blurs; below it the template draws frosted glass. */
@@ -104,7 +104,7 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
     const minSdk = state.settings["android.min_sdk"];
     const choices =
       field.key === "android.target_sdk" && typeof minSdk === "number"
-        ? field.choices.filter((choice) => Number(choice.value) >= minSdk)
+        ? field.choices.filter((choice) => typeof choice.value !== "number" || choice.value >= minSdk)
         : field.choices;
     const chosen = field.choices.find((choice) => choice.value === value);
     const shown = field.key === "android.target_sdk" && typeof minSdk === "number" && typeof value === "number" ? Math.max(value, minSdk) : value;
@@ -115,7 +115,10 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
           <select
             {...control}
             value={String(shown ?? "")}
-            onChange={(event) => set(Number(event.target.value))}
+            onChange={(event) => {
+              const picked = choiceValue(field, event.target.value);
+              if (picked !== undefined) set(picked);
+            }}
             className="h-11 w-full rounded-lg border border-ink-600 bg-ink-900 px-3 text-[15px] text-ink-100 hover:border-ink-500 focus:border-accent focus:outline-none"
           >
             {choices.map((choice) => (

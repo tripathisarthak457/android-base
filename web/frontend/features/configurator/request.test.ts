@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { CLIENT_PREFIX, clientHeader } from "../../lib/api.ts";
 import { loadCatalogue, readJson, threePlatformCatalogue } from "../catalogue/testing.ts";
 import { CONFIG_MS_MAX, SESSION_ID, sessionHeaders, toSpecV2 } from "./request.ts";
-import { type Action, type ConfigState, initialState, reducer } from "./state.ts";
+import { type Action, type ConfigState, choiceValue, initialState, reducer } from "./state.ts";
 import { validateSpec } from "./validation/validate.ts";
 
 const catalogue = loadCatalogue();
@@ -85,6 +85,27 @@ test("a multiplatform spec carries both settings blocks", () => {
   assert.equal(spec.platform, "multiplatform");
   assert.deepEqual(spec.ios, { deployment_target: "17.0" });
   assert.equal(typeof spec.android, "object");
+  assert.deepEqual([...validateSpec(spec, three, "multiplatform")], []);
+});
+
+test("a picked choice keeps its type, so iOS 18 is sent as the string the generator checks for", () => {
+  const three = threePlatformCatalogue();
+  const fields = three.targets.find((target) => target.key === "multiplatform")?.fields ?? [];
+  const deploymentTarget = fields.find((field) => field.key === "ios.deployment_target");
+  const minSdk = fields.find((field) => field.key === "android.min_sdk");
+  assert.ok(deploymentTarget && minSdk);
+  const ios18 = choiceValue(deploymentTarget, "18.0");
+  const api33 = choiceValue(minSdk, "33");
+  assert.equal(ios18, "18.0");
+  assert.equal(api33, 33);
+  assert.equal(choiceValue(deploymentTarget, "19.0"), undefined);
+
+  let state = reducer(initialState(three), { type: "target", target: "multiplatform" }, three);
+  state = reducer(state, { type: "setting", key: "ios.deployment_target", value: ios18 }, three);
+  state = reducer(state, { type: "setting", key: "android.min_sdk", value: api33 }, three);
+  const spec = toSpecV2(state, three);
+  assert.deepEqual(spec.ios, { deployment_target: "18.0" });
+  assert.equal((spec.android as Record<string, unknown>).min_sdk, 33);
   assert.deepEqual([...validateSpec(spec, three, "multiplatform")], []);
 });
 

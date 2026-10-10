@@ -117,6 +117,14 @@ export function settingFields(target: Target): Field[] {
   return target.fields.filter((field) => field.key.includes("."));
 }
 
+/**
+ * The value a choice field's option stands for, in the type the catalogue gives it: iOS "18.0"
+ * stays a string and API 35 stays a number, as the generator checks each.
+ */
+export function choiceValue(field: Field, option: string): string | number | undefined {
+  return field.choices?.find((choice) => String(choice.value) === option)?.value;
+}
+
 function defaultSettings(target: Target): Record<string, Setting> {
   const settings: Record<string, Setting> = {};
   for (const field of settingFields(target)) {

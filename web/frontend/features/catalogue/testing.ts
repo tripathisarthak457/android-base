@@ -41,7 +41,12 @@ export function threePlatformCatalogue(): Catalogue {
     fields: [
       ...android.fields.filter((field) => field.type !== "keystores"),
       { key: "ios.bundle_id", type: "string" },
-      { key: "ios.deployment_target", type: "string", default: "17.0" },
+      {
+        key: "ios.deployment_target",
+        type: "string",
+        default: "17.0",
+        choices: ["17", "18", "26"].map((major) => ({ value: `${major}.0`, label: `iOS ${major}` })),
+      },
     ],
     languages: android.languages.filter((language) => language.tag !== "hi"),
   };
