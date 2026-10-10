@@ -66,6 +66,19 @@ export function landed(page: {
   return event;
 }
 
+/**
+ * A random UUID v4, the form of session id the API stores. Built on `getRandomValues` because
+ * `crypto.randomUUID` exists only in secure contexts, and a phone testing `next dev` over plain
+ * http on the LAN is not one.
+ */
+export function randomSessionId(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6]! & 0x0f) | 0x40;
+  bytes[8] = (bytes[8]! & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
 /** `events` split into bodies the API accepts: at most 20 events and 8 KB each. */
 export function batches(sessionId: string, events: ClientEvent[]): string[] {
   const bodies: string[] = [];

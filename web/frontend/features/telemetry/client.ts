@@ -1,5 +1,5 @@
 import { API_BASE, BUILD, clientHeader } from "../../lib/api.ts";
-import { type ClientEvent, batches } from "./events.ts";
+import { type ClientEvent, batches, randomSessionId } from "./events.ts";
 
 // The browser half of the funnel: one random session id per tab, events queued and sent in
 // batches, and uncaught errors reported. Nothing here outlives the tab: the id lives in
@@ -23,7 +23,7 @@ function readSession(): Session {
   } catch {
     // Storage blocked or the entry unreadable: a fresh id for this page is the honest fallback.
   }
-  memory ??= { id: crypto.randomUUID(), landed: false };
+  memory ??= { id: randomSessionId(), landed: false };
   writeSession(memory);
   return memory;
 }

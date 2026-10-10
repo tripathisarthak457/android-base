@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { readJson } from "../catalogue/testing.ts";
-import { BATCH_MAX_BYTES, BATCH_MAX_EVENTS, type ClientEvent, batches, landed, referrerOrigin, viewport } from "./events.ts";
+import { SESSION_ID } from "../configurator/request.ts";
+import { BATCH_MAX_BYTES, BATCH_MAX_EVENTS, type ClientEvent, batches, landed, randomSessionId, referrerOrigin, viewport } from "./events.ts";
 
 type Accepted = {
   name: string;
@@ -82,4 +83,10 @@ test("a long queue is split into batches the API accepts", () => {
   );
   assert.ok(bodies.every((body) => body.length <= BATCH_MAX_BYTES));
   assert.deepEqual(batches("x", []), []);
+});
+
+test("session ids are random UUID v4s, the form the generate headers pass on", () => {
+  const ids = new Set(Array.from({ length: 200 }, () => randomSessionId()));
+  assert.equal(ids.size, 200);
+  for (const id of ids) assert.match(id, SESSION_ID);
 });
