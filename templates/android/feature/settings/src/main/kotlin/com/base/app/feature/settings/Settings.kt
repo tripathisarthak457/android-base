@@ -166,6 +166,7 @@ internal fun SettingsRoute(
 
     MviScreen(
         viewModel = viewModel,
+        // <opt:language|licenses>
         onEffect = { effect ->
             when (effect) {
                 // <opt:language>
@@ -176,6 +177,7 @@ internal fun SettingsRoute(
                 // </opt:licenses>
             }
         },
+        // </opt:language|licenses>
     ) { state, onEvent ->
         SettingsScreen(state = state, onEvent = onEvent)
     }

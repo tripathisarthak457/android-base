@@ -399,4 +399,10 @@ def _hollow(root: Path, project: Project) -> list[str]:
     for path in project.gradle:
         for match in re.finditer(r"\b(dependencies|plugins|android)\s*\{\s*\}", project.code[path]):
             issues.append(f"EMPTY-BLOCK {project.relative(path)}: {match.group(1)} {{}}")
+    # Every branch fenced out of a `when` over a sealed type leaves `when (x) {}`, which Kotlin
+    # rejects as not exhaustive.
+    for path in project.kotlin:
+        for match in re.finditer(r"\bwhen\s*\((?:[^()]|\([^()]*\))*\)\s*\{\s*\}", project.code[path]):
+            line = project.code[path].count("\n", 0, match.start()) + 1
+            issues.append(f"EMPTY-WHEN {project.relative(path)}:{line}")
     return issues
