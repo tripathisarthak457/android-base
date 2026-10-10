@@ -87,7 +87,7 @@ final class SampleListStore {
     }
 
     private func followConnectivity() {
-        tasks.latest(Self.connectivity) { [weak self, monitor] in
+        tasks.exclusive(Self.connectivity) { [weak self, monitor] in
             for await isOnline in monitor.updates() {
                 guard let self else { return }
                 let reconnected = isOnline && !state.isOnline

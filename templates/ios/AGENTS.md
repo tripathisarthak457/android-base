@@ -85,7 +85,8 @@ final class OrdersStore {
 ```
 
 - Work starts only through `TaskBag`: `latest` for loads and searches (a new one cancels the old),
-  `exclusive` for submits and payments (a second tap is ignored while one runs).
+  `exclusive` for submits and payments (a second tap is ignored while one runs) and for a stream a
+  screen follows, so appearing again does not subscribe twice.
 - Repositories return `AppResult`; stores switch over every case. Never `try!`, never `print`.
 - No `ObservableObject`, no `@Published`, no `DispatchQueue.main.async`.
 - Navigate through the tab's `Router`; show transient messages through `ToastCenter`.
