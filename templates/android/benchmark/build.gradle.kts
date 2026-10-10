@@ -1,8 +1,9 @@
 import com.base.app.buildlogic.AppConfig
 
 /*
- * Macrobenchmarks (startup, tab switch, push and pop, predictive back, rapid Back, scroll) and the
- * baseline profile generator. They run against the dev flavour's benchmarkRelease build: R8 on,
+ * Macrobenchmarks (startup, tab switch, push and pop, predictive back, rapid Back, scroll, and the
+ * recompositions of the shell's journeys), one package per journey, and the baseline profile
+ * generator. They run against the dev flavour's benchmarkRelease build: R8 on,
  * profileable, signed with the debug key, installed beside a real copy of the app.
  *
  *   ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest     every benchmark, on a connected phone
