@@ -1,11 +1,18 @@
 package com.base.app.core.designsystem.component.formfields
 
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
@@ -22,10 +29,14 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
- * A quantity stepper: minus, the value, plus, each button a 48dp target. The value's digits keep
- * one width, so it does not jog as it changes. A screen reader can step it from the actions menu.
+ * A quantity stepper: minus, the value, plus, each button a 48dp target. Holding a button repeats
+ * it after half a second, faster the longer it is held, as iOS's does. The value's digits keep one
+ * width, so it does not jog as it changes. A screen reader can step it from the actions menu.
  */
 @Composable
 fun AppStepper(
@@ -37,13 +48,15 @@ fun AppStepper(
     enabled: Boolean = true,
 ) {
     val haptics = rememberAppHaptics()
+    val current by rememberUpdatedState(value)
     val decreaseLabel = stringResource(R.string.designsystem_decrease)
     val increaseLabel = stringResource(R.string.designsystem_increase)
+    val onChange by rememberUpdatedState(onValueChange)
     fun change(to: Int) {
         val next = to.coerceIn(range)
-        if (next == value) return
+        if (next == current) return
         haptics.perform(AppHaptic.Selection)
-        onValueChange(next)
+        onChange(next)
     }
     Row(
         modifier = modifier.semantics {
@@ -59,7 +72,8 @@ fun AppStepper(
         AppIconButton(
             icon = AppIcons.Minus,
             contentDescription = decreaseLabel,
-            onClick = { change(value - step) },
+            onClick = { change(current - step) },
+            modifier = Modifier.repeatWhileHeld(enabled && value > range.first) { change(current - step) },
             variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
             enabled = enabled && value > range.first,
@@ -74,10 +88,47 @@ fun AppStepper(
         AppIconButton(
             icon = AppIcons.Plus,
             contentDescription = increaseLabel,
-            onClick = { change(value + step) },
+            onClick = { change(current + step) },
+            modifier = Modifier.repeatWhileHeld(enabled && value < range.last) { change(current + step) },
             variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
             enabled = enabled && value < range.last,
         )
     }
 }
+
+/**
+ * Runs [onRepeat] while the button is held: first after [RepeatDelayMillis], then ever faster. A
+ * press that repeated does not also click when it lifts.
+ */
+private fun Modifier.repeatWhileHeld(enabled: Boolean, onRepeat: () -> Unit): Modifier =
+    if (!enabled) {
+        this
+    } else {
+        pointerInput(Unit) {
+            coroutineScope {
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                    var repeated = false
+                    val repeating = launch {
+                        delay(RepeatDelayMillis)
+                        var interval = RepeatStartMillis
+                        while (true) {
+                            repeated = true
+                            onRepeat()
+                            delay(interval)
+                            interval = (interval * RepeatAcceleration).toLong().coerceAtLeast(RepeatFastestMillis)
+                        }
+                    }
+                    val up = waitForUpOrCancellation(PointerEventPass.Initial)
+                    repeating.cancel()
+                    if (repeated) up?.consume()
+                }
+            }
+        }
+    }
+
+private const val RepeatDelayMillis = 500L
+private const val RepeatStartMillis = 150L
+private const val RepeatFastestMillis = 40L
+private const val RepeatAcceleration = 0.85f

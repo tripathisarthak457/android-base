@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
@@ -39,10 +41,12 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.collectHeld
 import com.base.app.core.designsystem.foundation.interaction.minimumTouchTarget
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /**
  * A segmented control, as iOS draws it: a raised thumb with a soft shadow on a sunken track. Tap a
@@ -65,13 +69,26 @@ fun AppSegmentedControl(
     val onSelectNow by rememberUpdatedState(onSelect)
     val position = remember { Animatable(selected.toFloat()) }
     var drag by remember { mutableStateOf<Float?>(null) }
+    val pressScale = remember { Animatable(1f) }
+    val thumbInteractions = remember { MutableInteractionSource() }
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val density = LocalDensity.current
     LaunchedEffect(selected) { position.animateTo(selected.toFloat(), springs.thumb.unit) }
+    // Held, or dragged from anywhere, the thumb shrinks a little, so it reads as picked up.
+    LaunchedEffect(thumbInteractions, springs) {
+        thumbInteractions.collectHeld { held ->
+            launch {
+                pressScale.animateTo(
+                    if (held) PressedThumbScale else 1f,
+                    if (held) springs.press.unit else springs.release.unit,
+                )
+            }
+        }
+    }
 
-    fun choose(index: Int) {
+    fun choose(index: Int, tick: Boolean = true) {
         if (index == selected) return
-        haptics.perform(AppHaptic.Selection)
+        if (tick) haptics.perform(AppHaptic.Selection)
         onSelectNow(index)
     }
 
@@ -97,6 +114,10 @@ fun AppSegmentedControl(
                         placeable.placeRelative(x, 0)
                     }
                 }
+                .graphicsLayer {
+                    scaleX = pressScale.value
+                    scaleY = pressScale.value
+                }
                 .dropShadow(ThumbShape, ThumbShadow)
                 .background(colors.segmentThumb, ThumbShape),
         )
@@ -110,14 +131,22 @@ fun AppSegmentedControl(
                             state = rememberDraggableState { delta ->
                                 val start = drag ?: position.value
                                 val step = (if (rtl) -delta else delta) / segmentPx
-                                drag = (start + step).coerceIn(0f, (options.size - 1).toFloat())
+                                val now = (start + step).coerceIn(0f, (options.size - 1).toFloat())
+                                // Each segment the thumb is dragged over ticks, as iOS's does.
+                                if (now.roundToInt() != start.roundToInt()) haptics.perform(AppHaptic.Selection)
+                                drag = now
                             },
                             orientation = Orientation.Horizontal,
-                            onDragStopped = {
-                                val landed = (drag ?: position.value).roundToInt()
-                                position.snapTo(drag ?: position.value)
+                            interactionSource = thumbInteractions,
+                            onDragStopped = { velocity ->
+                                val released = drag ?: position.value
+                                val speed = (if (rtl) -velocity else velocity) / segmentPx
+                                val landed = (released + speed * ProjectionSeconds).roundToInt().coerceIn(0, options.lastIndex)
+                                position.snapTo(released)
                                 drag = null
-                                if (landed != selected) choose(landed) else position.animateTo(selected.toFloat(), springs.thumb.unit)
+                                // The drag already ticked for the segment it ended over.
+                                choose(landed, tick = landed != released.roundToInt())
+                                position.animateTo(landed.toFloat(), springs.thumb.unit, initialVelocity = speed)
                             },
                         )
                     } else {
@@ -137,7 +166,7 @@ fun AppSegmentedControl(
                             enabled = enabled,
                             role = Role.Tab,
                             indication = null,
-                            interactionSource = null,
+                            interactionSource = if (isSelected) thumbInteractions else null,
                             onClick = { choose(index) },
                         ),
                     contentAlignment = Alignment.Center,
@@ -162,3 +191,7 @@ private val ThumbInset = 2.dp
 private val TrackShape = RoundedCornerShape(9.dp)
 private val ThumbShape = RoundedCornerShape(7.dp)
 private val ThumbShadow = Shadow(radius = 4.dp, offset = DpOffset(0.dp, 1.dp), alpha = 0.12f)
+private const val PressedThumbScale = 0.95f
+
+// How far ahead a release looks for where the thumb was thrown (iOS's 0.99 projection).
+private const val ProjectionSeconds = 0.099f

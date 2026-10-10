@@ -59,7 +59,7 @@ fun FeedbackSection() {
             AppActivityIndicator()
             AppActivityIndicator(size = 32.dp, color = AppTheme.colors.accent)
         }
-        AppLinearProgress(progress = progress)
+        AppLinearProgress(progress = { progress })
         AppButton(text = "Advance", onClick = { progress = if (progress >= 1f) 0f else progress + 0.2f }, variant = ButtonVariant.Tinted, size = ButtonSize.Small)
     }
     CatalogGroup("Badges and pills") {

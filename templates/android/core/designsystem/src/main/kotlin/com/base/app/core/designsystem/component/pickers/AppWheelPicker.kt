@@ -1,11 +1,13 @@
 package com.base.app.core.designsystem.component.pickers
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
+import androidx.compose.foundation.gestures.snapping.snapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,17 +23,24 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.flow.drop
+import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.asin
+import kotlin.math.cos
+import kotlin.math.sin
 
 /**
  * A wheel that snaps to whichever item is centred, as iOS's picker does: one font throughout, the
@@ -54,12 +63,14 @@ fun <T> AppWheelPicker(
     if (items.isEmpty()) return
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = selectedIndex.coerceIn(0, items.lastIndex))
-    val flingBehavior = rememberSnapFlingBehavior(listState)
+    val springs = AppTheme.springs
+    val flingBehavior = remember(listState, springs) {
+        snapFlingBehavior(SnapLayoutInfoProvider(listState), springs.flingFast, springs.thumb.pixels)
+    }
     val haptics = rememberAppHaptics()
     val density = LocalDensity.current
     val style = AppTheme.typography.body
     val rowHeight = if (itemHeight != Dp.Unspecified) itemHeight else maxOf(44.dp, with(density) { style.lineHeight.toDp() } + 16.dp)
-    val edgeItems = visibleCount / 2
     val current by rememberUpdatedState(selectedIndex)
     val onChange by rememberUpdatedState(onSelectedChange)
 
@@ -93,9 +104,18 @@ fun <T> AppWheelPicker(
     }
 
     val rowPx = with(density) { rowHeight.toPx() }
-    val edgeSpan = edgeItems.toFloat().coerceAtLeast(1f)
+    val visiblePx = rowPx * visibleCount
+    // The list is laid out flat over more rows than are visible; bending it onto the drum pulls the
+    // outer rows in, so the extra rows are what fills the wheel's top and bottom edges.
+    val laidOutRows = visibleCount * Squeeze
+    val cameraPx = with(density) { PerspectiveDistance.toPx() }
 
-    Box(modifier = modifier.height(rowHeight * visibleCount), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = modifier
+            .height(rowHeight * visibleCount)
+            .clipToBounds(),
+        contentAlignment = Alignment.Center,
+    ) {
         Box(
             Modifier
                 .fillMaxWidth()
@@ -106,8 +126,11 @@ fun <T> AppWheelPicker(
         LazyColumn(
             state = listState,
             flingBehavior = flingBehavior,
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(vertical = rowHeight * edgeItems),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(unbounded = true)
+                .height(rowHeight * laidOutRows),
+            contentPadding = PaddingValues(vertical = rowHeight * (laidOutRows - 1) / 2),
         ) {
             items(count = items.size, key = { it }) { index ->
                 Box(
@@ -115,15 +138,24 @@ fun <T> AppWheelPicker(
                         .fillMaxWidth()
                         .height(rowHeight)
                         .graphicsLayer {
-                            // Driven by the row's fractional offset, so fade and lean follow the finger.
-                            val steps = (centreOffset(listState, index) / rowPx).coerceIn(-edgeSpan, edgeSpan)
-                            val magnitude = abs(steps)
-                            alpha = (1f - magnitude * FADE_PER_STEP).coerceIn(MIN_ALPHA, 1f)
-                            val shrink = 1f - magnitude * (1f - SHRUNK_SCALE) / edgeSpan
-                            scaleX = shrink
-                            scaleY = shrink
-                            rotationX = steps * TILT_PER_STEP
-                            cameraDistance = CAMERA_DISTANCE.dp.toPx()
+                            // Driven by the row's offset in the flat list, so the drum turns under the finger.
+                            val flat = centreOffset(listState, index)
+                            val angle = flat / visiblePx * 2f * MaxVisibleAngle / Squeeze
+                            if (abs(angle) >= HalfTurn) {
+                                alpha = 0f
+                                return@graphicsLayer
+                            }
+                            val radius = visiblePx * DiameterRatio / 2f
+                            val depth = radius * (1f - cos(angle))
+                            val perspective = 1f / (1f + depth / cameraPx)
+                            translationY = radius * sin(angle) * perspective - flat
+                            scaleX = perspective
+                            scaleY = perspective
+                            rotationX = Math.toDegrees(angle.toDouble()).toFloat()
+                            cameraDistance = cameraPx / CameraUnitPx
+                            alpha = lerp(1f, OffCentreAlpha, (abs(flat) / rowPx).coerceAtMost(1f))
+                            // One line of text: fading each draw is exact and needs no offscreen buffer.
+                            compositingStrategy = CompositingStrategy.ModulateAlpha
                         },
                     contentAlignment = Alignment.Center,
                 ) {
@@ -154,10 +186,14 @@ private fun centreOffset(state: LazyListState, index: Int): Float {
     return (item.offset + item.size / 2f) - centre
 }
 
-private const val FADE_PER_STEP = 0.30f
-private const val MIN_ALPHA = 0.22f
-private const val SHRUNK_SCALE = 0.86f
+// The drum of iOS's picker, as UIKit draws it: a cylinder slightly wider than the wheel is tall,
+// seen from a fixed distance, with rows packed closer than a flat list and dimmed off the centre.
+private const val DiameterRatio = 1.07f
+private const val Squeeze = 1.45f
+private const val OffCentreAlpha = 0.447f
+private val PerspectiveDistance = 333.dp
+private val MaxVisibleAngle = asin(1f / DiameterRatio)
+private const val HalfTurn = (PI / 2).toFloat()
 
-/** Degrees of lean per item away from the centre: enough to curve, not enough to read as broken. */
-private const val TILT_PER_STEP = 26f
-private const val CAMERA_DISTANCE = 24f
+/** The unit `graphicsLayer`'s camera distance is given in: 72 pixels, as Skia's camera counts them. */
+private const val CameraUnitPx = 72f

@@ -1,6 +1,6 @@
 package com.base.app.core.designsystem.component.feedback
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -8,10 +8,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -30,6 +34,8 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.foundation.LocalTabVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlin.math.roundToInt
 
 /**
  * iOS's activity indicator: eight spokes, the brightest stepping round. It steps rather than spins,
@@ -99,16 +105,26 @@ internal const val ACTIVITY_SPOKES = 8
 /** Newest to oldest, as iOS fades the trail behind the brightest spoke. */
 private val SpokeAlphas = floatArrayOf(147f, 122f, 97f, 72f, 47f, 47f, 47f, 47f).map { it / 255f }.toFloatArray()
 
-/** A determinate bar. The fill glides to each new [progress] on the layout spring, read while drawing. */
+/**
+ * A determinate bar. The fill glides to each new value of [progress] on the layout spring. The
+ * value is read as a lambda, so a download moving the bar on every frame redraws it without
+ * recomposing anything; a screen reader hears it in steps of five percent.
+ */
 @Composable
 fun AppLinearProgress(
-    progress: Float,
+    progress: () -> Float,
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.accent,
     trackColor: Color = AppTheme.colors.fill,
 ) {
-    val shown = animateFloatAsState(progress.coerceIn(0f, 1f), AppTheme.springs.layout.unit, label = "linearProgress")
-    Canvas(modifier.fillMaxWidth().height(4.dp).progressSemantics(progress.coerceIn(0f, 1f))) {
+    val springs = AppTheme.springs
+    val current by rememberUpdatedState(progress)
+    val shown = remember { Animatable(Snapshot.withoutReadObservation { current().coerceIn(0f, 1f) }) }
+    LaunchedEffect(shown, springs) {
+        snapshotFlow { current().coerceIn(0f, 1f) }.collectLatest { shown.animateTo(it, springs.layout.unit) }
+    }
+    val announced by remember { derivedStateOf { (current().coerceIn(0f, 1f) * AnnouncedSteps).roundToInt() / AnnouncedSteps } }
+    Canvas(modifier.fillMaxWidth().height(4.dp).progressSemantics(announced)) {
         val radius = CornerRadius(size.height / 2f)
         drawRoundRect(trackColor, cornerRadius = radius)
         val width = size.width * shown.value
@@ -119,4 +135,5 @@ fun AppLinearProgress(
     }
 }
 
+private const val AnnouncedSteps = 20f
 private const val STEP_MILLIS = 125L

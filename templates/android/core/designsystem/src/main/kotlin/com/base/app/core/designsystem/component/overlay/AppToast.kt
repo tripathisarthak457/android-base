@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
@@ -196,8 +197,8 @@ internal fun ToastLayer(queue: ToastQueue) {
         var left = showing.durationMillis
         while (left > 0) {
             lifecycle.currentStateFlow.first { it.isAtLeast(Lifecycle.State.STARTED) }
-            delay(TICK)
-            left -= TICK
+            delay(Tick)
+            left -= Tick
         }
         if (queue.current === showing) queue.dismiss()
     }
@@ -219,7 +220,7 @@ internal fun ToastLayer(queue: ToastQueue) {
                     message = shown,
                     modifier = Modifier
                         .animateEnterExit(
-                            enter = fadeIn(springs.fadeIn()) + scaleIn(springs.emphasis.unit, initialScale = HUD_START_SCALE),
+                            enter = fadeIn(springs.fadeIn()) + scaleIn(springs.emphasis.unit, initialScale = HudStartScale),
                             exit = fadeOut(springs.fadeOut()),
                         )
                         .semantics { liveRegion = LiveRegionMode.Polite },
@@ -259,20 +260,25 @@ private fun Modifier.aboveBottomChrome(chrome: ChromeInset, navigationBars: Wind
         layout(placeable.width, placeable.height + lift) { placeable.place(0, 0) }
     }
 
-/** A vertical drag moves the content as a plain float; let go far enough down and it leaves. */
+/**
+ * A vertical drag moves the content as a plain float. A release that would coast far enough down
+ * dismisses it, so a flick goes even from close to where it rests; anything else springs back at
+ * the finger's speed.
+ */
 @Composable
 private fun SwipeAway(onGone: () -> Unit, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     val scope = rememberCoroutineScope()
     var drag by remember { mutableFloatStateOf(0f) }
     val spring = AppTheme.springs.sheet.pixels
+    val dismissAt = with(LocalDensity.current) { DismissDistance.toPx() }
     Box(
         modifier = modifier
             .graphicsLayer { translationY = drag.coerceAtLeast(0f) }
             .draggable(
-                state = rememberDraggableState { delta -> drag = (drag + delta).coerceAtLeast(-RESISTED) },
+                state = rememberDraggableState { delta -> drag = (drag + delta).coerceAtLeast(-Resisted) },
                 orientation = Orientation.Vertical,
                 onDragStopped = { velocity ->
-                    if (drag > DISMISS_DISTANCE || velocity > DISMISS_VELOCITY) {
+                    if (drag + velocity * ProjectionSeconds > dismissAt) {
                         onGone()
                     } else {
                         scope.launch { animate(drag, 0f, velocity, spring) { value, _ -> drag = value } }
@@ -284,10 +290,12 @@ private fun SwipeAway(onGone: () -> Unit, modifier: Modifier = Modifier, content
     }
 }
 
-private const val TICK = 100L
-private const val DISMISS_DISTANCE = 60f
-private const val DISMISS_VELOCITY = 900f
-private const val RESISTED = 12f
+private const val Tick = 100L
+private val DismissDistance = 48.dp
+
+// How far ahead of the toast a release looks for where it was thrown (iOS's 0.99 projection).
+private const val ProjectionSeconds = 0.099f
+private const val Resisted = 12f
 private val ToastGap = 12.dp
 private val HudSize = 140.dp
-private const val HUD_START_SCALE = 0.9f
+private const val HudStartScale = 0.9f

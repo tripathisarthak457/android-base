@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberPlatformOverscrollFactory
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -24,11 +25,13 @@ import androidx.compose.ui.unit.dp
 import com.base.app.catalog.CatalogGroup
 import com.base.app.core.designsystem.animation.AppAppear
 import com.base.app.core.designsystem.animation.AppStaggeredColumn
+import com.base.app.core.designsystem.animation.AppSymbolReplace
 import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.animation.busyOverlay
 import com.base.app.core.designsystem.animation.popWhenOn
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.animation.rememberCountUp
+import com.base.app.core.designsystem.animation.symbolBounce
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -37,7 +40,6 @@ import com.base.app.core.designsystem.component.text.AppFiguresText
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.layout.bleed
-import com.base.app.core.designsystem.foundation.scroll.AppOverscroll
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
@@ -92,8 +94,16 @@ fun MotionSection() {
         AppFiguresText(text = rememberCountUp(count).toString(), style = AppTheme.typography.title2)
         AppButton(text = "Add 500", onClick = { count += 500 }, variant = ButtonVariant.Tinted, size = ButtonSize.Small)
     }
-    CatalogGroup("Rubber band", caption = "AppOverscroll, opt-in: pull past the end and it resists, then springs back.") {
-        CompositionLocalProvider(LocalOverscrollFactory provides AppOverscroll) {
+    CatalogGroup("Symbol effects", caption = "symbolBounce dips a glyph and springs it back when its value changes; AppSymbolReplace swaps one glyph for another.") {
+        var alerts by remember { mutableIntStateOf(0) }
+        var dark by remember { mutableStateOf(false) }
+        AppIcon(AppIcons.Bell, contentDescription = "Notifications", size = 32.dp, modifier = Modifier.symbolBounce(alerts))
+        AppButton(text = "Notify", onClick = { alerts++ }, variant = ButtonVariant.Tinted, size = ButtonSize.Small)
+        AppSymbolReplace(icon = if (dark) AppIcons.Moon else AppIcons.Sun, contentDescription = if (dark) "Dark" else "Light", size = 32.dp)
+        AppButton(text = if (dark) "Light" else "Dark", onClick = { dark = !dark }, variant = ButtonVariant.Tinted, size = ButtonSize.Small)
+    }
+    CatalogGroup("Edges", caption = "Every list rubber-bands at its ends, as on iOS. This one asks for Android's stretch instead.") {
+        CompositionLocalProvider(LocalOverscrollFactory provides rememberPlatformOverscrollFactory()) {
             LazyColumn(Modifier.fillMaxWidth().height(200.dp)) {
                 items((1..8).toList(), key = { it }) { AppRow(title = "Pull past me $it") }
             }
