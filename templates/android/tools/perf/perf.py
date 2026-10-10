@@ -1189,15 +1189,21 @@ def record(args):
             x = width // 2
             actions = f"input swipe {x} {int(height * 0.75)} {x} {int(height * 0.29)} 140"
         elif args.journey == "back_during_push":
-            actions = f"{run.tap(row)}; {back_swipe(width, height, edge='right', share=0.35, steps=8)}"
+            edge = args.edge or "right"
+            actions = f"{run.tap(row)}; {back_swipe(width, height, edge=edge, share=0.35, steps=8)}"
         elif args.journey.startswith("back_"):
+            edge = args.edge or "left"
+            start, far = (2, int(width * 0.6)) if edge == "left" else (width - 3, int(width * 0.4))
             prepare = run.tap(row)
             actions = {
-                "back_slow_commit": back_swipe(width, height, share=0.45, steps=24, hold=1.0),
-                "back_slow_cancel": back_swipe(width, height, share=0.45, steps=24, hold=1.0, cancel=True),
-                "back_fast_flick": f"input swipe 2 {height // 2} {int(width * 0.6)} {height // 2} 120",
-                "back_y_follow": back_swipe(width, height, share=0.40, steps=24, hold=1.0, drift=height // 4, cancel=True),
-                "back_to_home": f"input keyevent 4; sleep 1.6; {back_swipe(width, height, share=0.40, steps=24, hold=1.0)}",
+                "back_slow_commit": back_swipe(width, height, edge=edge, share=0.45, steps=24, hold=1.0),
+                "back_slow_cancel": back_swipe(width, height, edge=edge, share=0.45, steps=24, hold=1.0, cancel=True),
+                "back_fast_flick": f"input swipe {start} {height // 2} {far} {height // 2} 120",
+                "back_y_follow": back_swipe(
+                    width, height, edge=edge, share=0.40, steps=24, hold=1.0, drift=height // 4, cancel=True,
+                ),
+                "back_to_home": f"input keyevent 4; sleep 1.6; "
+                                f"{back_swipe(width, height, edge=edge, share=0.40, steps=24, hold=1.0)}",
             }[args.journey]
     if prepare:
         device.shell(prepare)
@@ -1318,6 +1324,8 @@ def main(argv=None):
         parser.add_argument("--seconds", type=int, default=8)
         parser.add_argument("--prepare", help="shell commands run before recording (custom journey)")
         parser.add_argument("--actions", help="shell commands recorded (custom journey)")
+        parser.add_argument("--edge", choices=["left", "right"],
+                            help="the edge a back_* journey swipes from (back_during_push: right, others: left)")
         args = parser.parse_args(argv[1:])
         handler = record
     else:
