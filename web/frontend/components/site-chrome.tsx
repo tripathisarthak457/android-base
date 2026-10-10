@@ -8,7 +8,7 @@ const NAV_LINK = "rounded-lg px-3 py-2 text-sm text-ink-300 transition-colors ho
 
 export function Nav() {
   return (
-    <nav aria-label="Site" className="sticky top-0 z-50 border-b border-ink-800 bg-ink-950/85 backdrop-blur">
+    <nav aria-label="Site" className="sticky top-0 z-50 border-b border-ink-800 bg-ink-950">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
         <a href="#" className="flex items-center gap-2.5">
           <span aria-hidden className="flex h-7 w-7 items-center justify-center rounded-md bg-ink-100 font-display text-sm font-bold text-ink-950">
