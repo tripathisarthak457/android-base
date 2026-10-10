@@ -1,4 +1,4 @@
-package com.base.app.ui
+package com.base.app.startup
 
 import android.content.Intent
 import androidx.lifecycle.SavedStateHandle

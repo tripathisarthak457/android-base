@@ -40,6 +40,9 @@ import com.base.app.core.navigation.PendingDeepLink
 import com.base.app.core.navigation.ShellConfig
 import com.base.app.core.navigation.rememberAppBackStack
 import com.base.app.core.navigation.rememberShellState
+import com.base.app.startup.EntryIdentity
+import com.base.app.startup.ShellObserver
+import com.base.app.startup.Startup
 import kotlinx.coroutines.launch
 
 /** Everything above the navigation hosts: the theme, the system bars, and which app is showing. */

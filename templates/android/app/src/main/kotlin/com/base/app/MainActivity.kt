@@ -19,10 +19,10 @@ import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.PendingDeepLink
 import com.base.app.core.navigation.ShellConfig
+import com.base.app.startup.ShellConfigOverride
+import com.base.app.startup.ShellObserver
+import com.base.app.startup.StartupViewModel
 import com.base.app.ui.AppRoot
-import com.base.app.ui.ShellConfigOverride
-import com.base.app.ui.ShellObserver
-import com.base.app.ui.StartupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

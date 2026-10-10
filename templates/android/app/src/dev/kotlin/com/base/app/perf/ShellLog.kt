@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.ShellState
-import com.base.app.ui.ShellObserver
+import com.base.app.startup.ShellObserver
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
 import javax.inject.Inject
