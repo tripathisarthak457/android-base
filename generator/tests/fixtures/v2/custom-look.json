@@ -2,7 +2,7 @@
   "schema": 2,
   "platform": "android",
   "app_name": "Look",
-  "package_name": "com.example.wp03.look",
+  "package_name": "com.example.customlook",
   "architecture": "compact",
   "features": ["catalog", "googlefonts", "network", "sample", "pickers", "formfields", "datadisplay", "collections"],
   "feature_modules": [],

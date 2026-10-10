@@ -42,5 +42,6 @@
   "designsystem_move_up": "Monter",
   "designsystem_move_down": "Descendre",
   "designsystem_refresh": "Actualiser",
-  "designsystem_refreshing": "Actualisation"
+  "designsystem_refreshing": "Actualisation",
+  "designsystem_show_menu": "Afficher le menu"
 }

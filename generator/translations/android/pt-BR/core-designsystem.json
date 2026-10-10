@@ -42,5 +42,6 @@
   "designsystem_move_up": "Mover para cima",
   "designsystem_move_down": "Mover para baixo",
   "designsystem_refresh": "Atualizar",
-  "designsystem_refreshing": "Atualizando"
+  "designsystem_refreshing": "Atualizando",
+  "designsystem_show_menu": "Mostrar menu"
 }

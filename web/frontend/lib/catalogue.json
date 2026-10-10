@@ -1,5 +1,5 @@
 {
-  "generator_commit": "974d089d8c8b",
+  "generator_commit": "e68bbfa2a915",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -642,7 +642,7 @@
         },
         {
           "default": true,
-          "description": "A second installable app showing every component in both themes. Depends on the design system alone, so design work rebuilds two modules instead of the whole graph.",
+          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system alone, so design work rebuilds two modules.",
           "group": "design",
           "headline": "A second app showing every component",
           "implied_only": false,
@@ -694,7 +694,7 @@
         },
         {
           "default": true,
-          "description": "Inter and JetBrains Mono through the Play Services font provider — a real file per weight, which bundled variable fonts do not get on every OEM build.",
+          "description": "The typefaces the spec names (DM Sans and JetBrains Mono unless you choose others), downloaded through the Play Services font provider in exactly the weights the design style draws with. They are fetched while the splash is up; a launch where they take longer than 150 ms draws in the platform font throughout, so text never swaps under the reader.",
           "group": "design",
           "headline": "Use any Google Font",
           "implied_only": false,
