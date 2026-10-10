@@ -11,11 +11,16 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from pathlib import Path
 
+from genkit.core.copy import is_verbatim
+from genkit.targets import get
+
 from .project import IMPORT, Project
 
 MARKER = re.compile(r"</?(?:opt|opt-else|generated):")
 IDENTITY = re.compile(r"(?<![\w.])com\.base\.app(?!\w)|com/base/app(?!\w)|(?<!\w)BaseApp|(?<![A-Za-z0-9])base_?app(?![A-Za-z0-9])")
 BINARY = {".jar", ".png", ".jpg", ".jpeg", ".webp", ".jks", ".ttf", ".otf", ".ico"}
+#: Upstream files the template vendors byte for byte; their text is not the template's to rename.
+VERBATIM = get("android").manifest.verbatim
 
 #: Operator and delegate names a Kotlin import provides without the name appearing in the code.
 _IMPLICIT = {
@@ -50,6 +55,8 @@ def _leftovers(root: Path, identity: bool) -> list[str]:
         if path.is_dir() or path.suffix in BINARY:
             continue
         relative = path.relative_to(root).as_posix()
+        if is_verbatim(relative, VERBATIM):
+            continue
         if identity and IDENTITY.search(relative):
             issues.append(f"IDENTITY-PATH {relative}")
         try:

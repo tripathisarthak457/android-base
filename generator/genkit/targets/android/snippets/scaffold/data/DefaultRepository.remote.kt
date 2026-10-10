@@ -2,7 +2,7 @@ package __PKG__.data.__NAME__
 
 import __PKG__.core.common.result.AppResult
 import __PKG__.core.common.result.map
-import __PKG__.core.network.CachePolicy
+import __PKG__.core.network.model.CachePolicy
 import __PKG__.core.network.NetworkClient
 import __PKG__.core.network.get
 import __PKG__.data.__NAME__.api.__P__Item
