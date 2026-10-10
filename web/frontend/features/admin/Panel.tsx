@@ -2,7 +2,7 @@
 
 import { type ReactNode, useId } from "react";
 import { Spinner } from "../../components/ui.tsx";
-import type { Query, Window } from "./api.ts";
+import type { DateWindow, Query } from "./api.ts";
 
 /** What every panel is given: the token, the shared query, and a counter that forces a refetch. */
 export type PanelProps = { token: string; query: string; version: number; onUnauthorized: () => void };
@@ -11,7 +11,7 @@ export type PanelProps = { token: string; query: string; version: number; onUnau
  * One admin card. It states the window its numbers cover, and when a refetch fails it keeps
  * the last numbers on screen under the error instead of going blank.
  */
-export function Panel<T extends Window>({
+export function Panel<T extends DateWindow>({
   title,
   note,
   result,

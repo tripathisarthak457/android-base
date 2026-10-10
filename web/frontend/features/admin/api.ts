@@ -6,11 +6,11 @@ import { parseCatalogue } from "../catalogue/guard.ts";
 
 // The admin API's answers (`/api/v1/admin/*`). Every one starts with its window.
 
-export type Window = { from: string; to: string };
+export type DateWindow = { from: string; to: string };
 
 export type Outcomes = Record<string, number>;
 
-export type Overview = Window & {
+export type Overview = DateWindow & {
   generations: number;
   outcomes: Outcomes;
   median_ms: number;
@@ -22,16 +22,16 @@ export type Overview = Window & {
   new_feedback: number;
 };
 
-export type Funnel = Window & {
+export type Funnel = DateWindow & {
   landed: number;
   targets: { target: string; steps: { key: string; sessions: number }[]; also: Record<string, number> }[];
 };
 
-export type Series = Window & { days: { day: string; outcomes: Outcomes; visitors: number; sessions: number }[] };
+export type Series = DateWindow & { days: { day: string; outcomes: Outcomes; visitors: number; sessions: number }[] };
 
 export type Count = { key: string; n: number };
 
-export type Adoption = Window & {
+export type Adoption = DateWindow & {
   targets: {
     target: string;
     total: number;
@@ -43,7 +43,7 @@ export type Adoption = Window & {
 
 export type Rate = { n: number; failed: number };
 
-export type Failures = Window & {
+export type Failures = DateWindow & {
   rejections: { field: string; reason: string; n: number }[];
   by_feature: { key: string; on: Rate; off: Rate }[];
   pairs: { a: string; b: string; n: number; failed: number }[];
@@ -54,7 +54,7 @@ export type Failures = Window & {
 
 export type Bucket = { key: string; country?: string; sessions: number; generated: number };
 
-export type Audience = Window & {
+export type Audience = DateWindow & {
   sessions: number;
   buckets: Record<string, Bucket[]>;
   campaigns: { source: string; medium: string; campaign: string; sessions: number; generated: number }[];
@@ -63,7 +63,7 @@ export type Audience = Window & {
 
 export type Timing = { n: number; p50_ms: number; p95_ms: number };
 
-export type Durations = Window & {
+export type Durations = DateWindow & {
   config: Timing;
   config_buckets: { up_to_ms: number; n: number }[];
   generation_by_feature_count: ({ bucket: string } & Timing)[];
@@ -110,7 +110,7 @@ export type Generation = {
   spec: unknown;
 };
 
-export type Generations = Window & { items: Generation[]; next_before: number | null };
+export type Generations = DateWindow & { items: Generation[]; next_before: number | null };
 
 export type ErrorGroup = {
   id: number;
@@ -125,7 +125,7 @@ export type ErrorGroup = {
   resolved: boolean;
 };
 
-export type Errors = Window & { items: ErrorGroup[] };
+export type Errors = DateWindow & { items: ErrorGroup[] };
 
 export type Report = {
   id: number;
@@ -155,9 +155,9 @@ export type Report = {
   notes: string;
 };
 
-export type Reports = Window & { items: Report[]; counts: { new: number; blocking: number; total: number; last7Days: number } };
+export type Reports = DateWindow & { items: Report[]; counts: { new: number; blocking: number; total: number; last7Days: number } };
 
-export type Health = Window & {
+export type Health = DateWindow & {
   routes: { route: string; requests: number; error_rate: number; median_ms: number; p95_ms: number }[];
   database: string;
   telemetry?: { queued: number; written: number; dropped: number; failed: number };
