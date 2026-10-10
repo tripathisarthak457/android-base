@@ -123,13 +123,10 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
           <span className="font-mono text-xs text-ink-400">
             {stepIndex + 1} / {STEPS.length}
           </span>
-          {next ? (
-            <Button onClick={() => goTo(next)} disabled={!reachable(stepIndex + 1)}>
-              Next
-            </Button>
-          ) : (
-            <span className="w-[76px]" />
-          )}
+          {/* Kept, invisible, on the last step so the counter stays centred. */}
+          <Button onClick={() => next && goTo(next)} disabled={!next || !reachable(stepIndex + 1)} className={next ? "" : "invisible"}>
+            Next
+          </Button>
         </div>
       </div>
     </section>
