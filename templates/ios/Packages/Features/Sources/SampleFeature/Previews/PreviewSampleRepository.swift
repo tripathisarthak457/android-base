@@ -1,6 +1,5 @@
 import AppCore
 import DesignSystem
-import Networking
 import SampleData
 
 /// Samples for previews, answered at once and without the network.
@@ -38,7 +37,8 @@ nonisolated struct PreviewSampleRepository: SampleRepository {
 }
 
 extension SampleListStore {
+    /// A store for previews, online and never told otherwise.
     static func preview(_ repository: any SampleRepository = PreviewSampleRepository()) -> SampleListStore {
-        SampleListStore(repository: repository, monitor: NetworkMonitor(), toasts: ToastCenter())
+        SampleListStore(repository: repository, connectivity: { AsyncStream { _ in } }, toasts: ToastCenter())
     }
 }

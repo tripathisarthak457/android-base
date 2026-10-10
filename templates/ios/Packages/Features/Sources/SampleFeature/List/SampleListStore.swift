@@ -1,7 +1,6 @@
 import AppCore
 import DesignSystem
 import Foundation
-import Networking
 import Observation
 import SampleData
 
@@ -28,13 +27,19 @@ final class SampleListStore {
     private(set) var state = State()
 
     private let repository: any SampleRepository
-    private let monitor: NetworkMonitor
+    private let connectivity: @Sendable () -> AsyncStream<Bool>
     private let toasts: ToastCenter
     private let tasks = TaskBag()
 
-    init(repository: any SampleRepository, monitor: NetworkMonitor, toasts: ToastCenter) {
+    /// - Parameter connectivity: whether the device is online, now and after every change, such as
+    ///   `NetworkMonitor.updates()`. A closure rather than the monitor, so tests drive it.
+    init(
+        repository: any SampleRepository,
+        connectivity: @escaping @Sendable () -> AsyncStream<Bool>,
+        toasts: ToastCenter
+    ) {
         self.repository = repository
-        self.monitor = monitor
+        self.connectivity = connectivity
         self.toasts = toasts
     }
 
@@ -87,8 +92,8 @@ final class SampleListStore {
     }
 
     private func followConnectivity() {
-        tasks.exclusive(Self.connectivity) { [weak self, monitor] in
-            for await isOnline in monitor.updates() {
+        tasks.exclusive(Self.following) { [weak self, connectivity] in
+            for await isOnline in connectivity() {
                 guard let self else { return }
                 let reconnected = isOnline && !state.isOnline
                 state.isOnline = isOnline
@@ -105,5 +110,5 @@ final class SampleListStore {
     }
 
     private static let loading = "load"
-    private static let connectivity = "connectivity"
+    private static let following = "connectivity"
 }

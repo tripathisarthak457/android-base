@@ -77,7 +77,6 @@ let package = Package(
                 "SampleData",
                 .product(name: "AppCore", package: "Core"),
                 .product(name: "DesignSystem", package: "Core"),
-                .product(name: "Networking", package: "Core"),
             ],
             swiftSettings: featureSettings
         ),

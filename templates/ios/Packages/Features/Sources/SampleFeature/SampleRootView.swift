@@ -1,4 +1,3 @@
-import AppCore
 import DesignSystem
 import Navigation
 import Networking
@@ -36,7 +35,11 @@ public struct SampleRootView: View {
 
     init(repository: any SampleRepository, monitor: NetworkMonitor, toasts: ToastCenter) {
         self.repository = repository
-        _listStore = State(initialValue: SampleListStore(repository: repository, monitor: monitor, toasts: toasts))
+        _listStore = State(initialValue: SampleListStore(
+            repository: repository,
+            connectivity: { monitor.updates() },
+            toasts: toasts
+        ))
     }
     // <opt:database>
 
