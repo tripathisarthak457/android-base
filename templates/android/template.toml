@@ -28,7 +28,7 @@ required = [
 [files]
 template_only = ["catalog/src/test/screenshots", "template.toml", "presets.toml", "removed.toml", "features"]
 binary_suffixes = [".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".jks", ".keystore", ".ico"]
-executable = ["gradlew", "tools/perf/*.sh"]
+executable = ["gradlew", "tools/adaptive/*.sh", "tools/perf/*.sh"]
 
 [groups]                                    # display order of catalogue groups
 order = ["Networking and data", "Sign-in and account", "Screens", "Platform", "Observability", "Design", "Build and quality"]

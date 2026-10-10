@@ -3,12 +3,13 @@ title = "Performance harness"
 headline = "Measure smoothness on a real phone"
 description = """
 A macrobenchmark module (cold and warm start, tab switch, push and pop, predictive back, rapid
-Back, scroll) that runs against the dev flavour, the baseline profile generator, and tools/perf:
-one command that installs a release build, measures every journey on a connected phone and fails
-on the frame-time gates. Every project ships the checked-in baseline profiles without it."""
+Back, scroll) that runs against the dev flavour, the baseline profile generator, tools/perf (one
+command that installs a release build, measures every journey on a connected phone and fails on the
+frame-time gates) and tools/adaptive (the app across window sizes, folds, a second window and the
+keyboard on an emulator). Every project ships the checked-in baseline profiles without it."""
 group = "Build and quality"
 default = false
 requires = []
 implied_only = false
-owns = ["benchmark", "tools/perf"]
+owns = ["benchmark", "tools/adaptive", "tools/perf"]
 legacy = ["baselineprofile"]

@@ -1,5 +1,5 @@
 {
-  "generator_commit": "75690f01e606",
+  "generator_commit": "004f28e525ac",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -733,7 +733,7 @@
         },
         {
           "default": false,
-          "description": "A macrobenchmark module (cold and warm start, tab switch, push and pop, predictive back, rapid Back, scroll) that runs against the dev flavour, the baseline profile generator, and tools/perf: one command that installs a release build, measures every journey on a connected phone and fails on the frame-time gates. Every project ships the checked-in baseline profiles without it.",
+          "description": "A macrobenchmark module (cold and warm start, tab switch, push and pop, predictive back, rapid Back, scroll) that runs against the dev flavour, the baseline profile generator, tools/perf (one command that installs a release build, measures every journey on a connected phone and fails on the frame-time gates) and tools/adaptive (the app across window sizes, folds, a second window and the keyboard on an emulator). Every project ships the checked-in baseline profiles without it.",
           "group": "build-and-quality",
           "headline": "Measure smoothness on a real phone",
           "implied_only": false,
