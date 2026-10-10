@@ -162,6 +162,12 @@ class PresetTest(unittest.TestCase):
         self.assertTrue((project / "iosApp" / "TrailNotes" / "TrailNotesApp.swift").is_file())
         self.assertIn("struct TrailNotesApp: App", (project / "iosApp" / "TrailNotes" / "TrailNotesApp.swift").read_text())
 
+    def test_a_chosen_font_is_left_to_the_developer_with_a_note(self):
+        nowhere = Path(self.directory.name) / "nothing-to-rewrite"
+        notes = MULTIPLATFORM.finish(nowhere, spec(font_name="Inter"), None)
+        self.assertTrue(any("To use Inter, put the font files in" in note for note in notes))
+        self.assertFalse(any("font files" in note for note in MULTIPLATFORM.finish(nowhere, spec(), None)))
+
     def test_the_token_copy_carries_the_projects_choices(self):
         project = Path(self.directory.name)
         styled = generate(project, "styled", design_style="Social", motion_style="Calm")

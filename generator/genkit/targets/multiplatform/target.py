@@ -10,7 +10,7 @@ from typing import Any
 from ... import tokens
 from ...core import translations
 from ...core.manifest import TemplateManifest
-from ...core.spec import AndroidSettings, IosSettings, Spec, SpecError, Vocabulary
+from ...core.spec import DEFAULT_FONT, DEFAULT_MONO_FONT, AndroidSettings, IosSettings, Spec, SpecError, Vocabulary
 from ...core.target import BuildContext
 from ...tokens import kotlin_common
 from ..android.target import API_LEVELS, MAX_VERSION_CODE, MIN_COMPILE_SDK, describe_api_level, validate_android
@@ -137,7 +137,7 @@ class MultiplatformTarget:
                 encoding="utf-8",
             )
         strings.write(project, spec)
-        return modules.notes(spec)
+        return modules.notes(spec) + _font_notes(spec)
 
     def outline(self, spec: Spec) -> dict[str, list[str]]:
         return {
@@ -203,6 +203,19 @@ class MultiplatformTarget:
                 "multiplatform_ios_versions": list(IOS_VERSIONS),
             },
         }
+
+
+def _font_notes(spec: Spec) -> list[str]:
+    """The template draws text in each platform's own face; a chosen font needs its files added by hand."""
+    chosen = [name for name, default in ((spec.font_name, DEFAULT_FONT), (spec.mono_font_name, DEFAULT_MONO_FONT))
+              if name != default]
+    if not chosen:
+        return []
+    return [
+        f"Text is drawn in the platform's typeface (Roboto, SF). To use {' and '.join(chosen)}, put the font "
+        "files in core/designsystem/src/commonMain/composeResources/font/ and name the family in "
+        "theme/AppTypography.kt."
+    ]
 
 
 def validate_android_settings(android: AndroidSettings) -> None:
