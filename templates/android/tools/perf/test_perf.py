@@ -234,6 +234,13 @@ class GatesTest(unittest.TestCase):
         }}
         self.assertTrue(check_gates.passed(check_gates.evaluate(summary, gate_rows(), "lean")))
 
+    def test_the_large_column_gates_only_scenarios_that_need_a_large_window(self):
+        def scenarios(column):
+            return {row["metric"].split(".")[0] for row in gate_rows() if column in row}
+
+        self.assertEqual(scenarios("large"), perf.LARGE_SCENARIOS)
+        self.assertFalse(scenarios("solid") & perf.LARGE_SCENARIOS)
+
     def test_a_failed_check_fails(self):
         summary = clean_summary()
         summary["metrics"]["rapid_back.final_screen"] = {"value": False}
@@ -283,6 +290,22 @@ def frame_slices(when, recompose=False, pid=4242):
         lines += [atrace_line(when + 0.001, f"B|{pid}|Compose:recompose"), atrace_line(when + 0.002, f"E|{pid}")]
     lines.append(atrace_line(when + 0.004, f"E|{pid}"))
     return lines
+
+
+class UiTreeTest(unittest.TestCase):
+    XML = """<hierarchy><node resource-id="primary_list" bounds="[0,200][600,1000]" clickable="false">
+      <node resource-id="" bounds="[0,150][600,260]" clickable="true"/>
+      <node resource-id="" bounds="[0,260][600,400]" clickable="true"/>
+      <node resource-id="" bounds="[0,400][600,420]" clickable="true"/>
+      <node resource-id="" bounds="[0,420][600,560]" clickable="true"/>
+      <node resource-id="" bounds="[0,900][600,1080]" clickable="true"/>
+    </node></hierarchy>"""
+
+    def test_rows_are_the_clickable_ones_wholly_inside_the_list(self):
+        tree = perf.UiTree(self.XML)
+        self.assertEqual([row.bounds[1] for row in tree.rows()], [260, 420])
+        self.assertEqual(tree.first_row().bounds[1], 260)
+        self.assertEqual(tree.rows("missing_list"), [])
 
 
 class RecomposeTraceTest(unittest.TestCase):

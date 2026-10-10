@@ -2,7 +2,10 @@
 # non-zero on any failing row, including a row of that column the invocation did not measure.
 #
 # Columns: `solid` (the everything preset, solid chrome), `standard` and `lean` (their presets, only
-# the rows that apply to them), `smoke` (a tolerance against a reference run given with --baseline).
+# the rows that apply to them), `smoke` (a tolerance against a reference run given with --baseline),
+# `large` (the large-window scenarios, on a window of Expanded width or more: a tablet, or the phone
+# with its display overridden, which only the phone's owner may agree to; an emulator's numbers are
+# relative evidence, never a gate).
 #
 # A limit is a number (the metric must be at or under it), `true` (a check that must pass in every
 # run) or "ratchet" (reported, not yet gated: the first measured value plus 10 % goes here). A smoke
@@ -279,3 +282,63 @@ solid = 2
 metric = "recompose.back_gesture_progress.max"
 label = "Back gesture, frames that recompose while the card follows the finger"
 solid = 0
+
+[[row]]
+metric = "tabs_large.janky_pct"
+label = "Large window: tab switch beside the rail or sidebar, janky frames (%)"
+large = 1.0
+
+[[row]]
+metric = "tabs_large.first_frame_ms.median"
+label = "Large window: tab switch to a visited tab, first frame median (ms)"
+large = 8.0
+
+[[row]]
+metric = "tabs_large.first_frame_ms.max"
+label = "Large window: tab switch to a visited tab, first frame max (ms)"
+large = 16.0
+
+[[row]]
+metric = "listdetail_select.janky_pct"
+label = "Large window: a row opens its detail beside the list, janky frames (%)"
+large = 1.0
+
+[[row]]
+metric = "listdetail_select.first_frame_ms.median"
+label = "Large window: the detail swaps in place, first frame median (ms)"
+large = 12.0
+
+[[row]]
+metric = "listdetail_select.first_frame_ms.max"
+label = "Large window: the detail swaps in place, first frame max (ms)"
+large = 20.0
+
+[[row]]
+metric = "pushpop_large.janky_pct"
+label = "Large window: open and close a detail, janky frames (%)"
+large = 2.0
+
+[[row]]
+metric = "pushpop_large.pop_first_frame_ms.median"
+label = "Large window: close a detail with Back, first frame median (ms)"
+large = 8.0
+
+[[row]]
+metric = "pushpop_large.pop_first_frame_ms.max"
+label = "Large window: close a detail with Back, first frame max (ms)"
+large = 16.0
+
+[[row]]
+metric = "scroll_large.janky_pct"
+label = "Large window: scroll the list pane, janky frames (%)"
+large = 0.5
+
+[[row]]
+metric = "scroll_large.gpu_p90_ms"
+label = "Large window: scroll the list pane, GPU p90 (ms)"
+large = 7.0
+
+[[row]]
+metric = "sidebar_toggle.janky_pct"
+label = "Large window: fold and open the sidebar, janky frames (%)"
+large = 0.5

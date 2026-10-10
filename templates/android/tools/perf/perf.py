@@ -39,9 +39,15 @@ import parse_gfx  # noqa: E402
 # alive first, then memory after the journey, then the scenarios that kill or recompile the app.
 SCENARIOS = [
     "tabs", "tabs_tap", "tab1", "pushpop", "pushpop_gesture", "back_during_push", "rapid_back",
-    "scroll_root", "idle", "nav_stress", "restore", "meminfo", "scroll_minimize", "recompose", "trace",
+    "scroll_root", "tabs_large", "pushpop_large", "listdetail_select", "scroll_large", "sidebar_toggle",
+    "idle", "nav_stress", "restore", "meminfo", "scroll_minimize", "recompose", "trace",
     "coldstart", "coldstart_installed",
 ]
+# Scenarios that measure the large-window layouts. They need a window of at least Expanded width, where
+# the shell shows a rail or the sidebar and a list has its detail beside it.
+LARGE_SCENARIOS = {"tabs_large", "pushpop_large", "listdetail_select", "scroll_large", "sidebar_toggle"}
+WIDTH_CLASSES = ["Compact", "Medium", "Expanded", "Large", "ExtraLarge"]
+LARGE_MIN_WIDTH = "Expanded"
 JOURNEYS = [
     "tab_switch", "push", "pop", "pushpop", "gesture_pop", "rapid_back", "scroll", "back_slow_commit",
     "back_slow_cancel", "back_fast_flick", "back_y_follow", "back_to_home", "back_during_push", "custom",
@@ -167,24 +173,30 @@ class UiTree:
                 found[int(match.group(1))] = node
         return [found[index] for index in sorted(found)]
 
-    def first_row(self, list_id="primary_list"):
-        """The first clickable row wholly inside the list, or None."""
+    def rows(self, list_id="primary_list"):
+        """The clickable rows wholly inside the list, top to bottom."""
         holder = None
         for element in self.root.iter("node"):
             if element.get("resource-id") == list_id:
                 holder = element
                 break
         if holder is None:
-            return None
+            return []
         bounds = Node(holder).bounds
+        rows = []
         for element in holder.iter("node"):
             if element is holder:
                 continue
             node = Node(element)
             inside = node.bounds[1] >= bounds[1] and node.bounds[3] <= bounds[3]
             if node.clickable and inside and node.height > 40:
-                return node
-        return None
+                rows.append(node)
+        return rows
+
+    def first_row(self, list_id="primary_list"):
+        """The first clickable row wholly inside the list, or None."""
+        rows = self.rows(list_id)
+        return rows[0] if rows else None
 
 
 class App:
@@ -409,7 +421,7 @@ class Run:
         for _ in range(3):
             for index in order:
                 node = self.tabs[index]
-                command = self.press(node) if scenario == "tabs" else self.tap(node)
+                command = self.tap(node) if scenario == "tabs_tap" else self.press(node)
                 gfx, frames = self.segment(scenario, command, 0.9)
                 dumps.append(gfx)
                 all_frames.append(frames)
@@ -431,7 +443,9 @@ class Run:
                 firsts.append(first["ui_ms"] if first else None)
         self.record_spread("tab1.first_frame_ms", firsts)
 
-    def pushpop(self):
+    def pushpop(self, scenario="pushpop"):
+        """Eight pushes of the first row, each popped with the Back key. In a window with room for two
+        panes the row opens its detail beside the list, and Back closes it again."""
         row = self.at_root(0)
         dumps, pushes, pops, all_frames = [], [], [], []
         for _ in range(8):
@@ -444,9 +458,9 @@ class Run:
             dumps.append(gfx)
             all_frames.append(frames)
             pops.append((parse_framestats.first_frame(frames) or {}).get("ui_ms"))
-        self.record_gfx("pushpop", dumps, all_frames)
-        self.record_spread("pushpop.push_first_frame_ms", pushes)
-        self.record_spread("pushpop.pop_first_frame_ms", pops)
+        self.record_gfx(scenario, dumps, all_frames)
+        self.record_spread(f"{scenario}.push_first_frame_ms", pushes)
+        self.record_spread(f"{scenario}.pop_first_frame_ms", pops)
 
     def pushpop_gesture(self):
         """Push with a tap, pop with an edge swipe. The swipe's first frames are where the back card
@@ -587,6 +601,49 @@ class Run:
         )
         gfx, _ = self.segment(scenario, command, 1.0)
         self.record_gfx(scenario, [gfx])
+
+    def require_window(self, scenario):
+        """Stops [scenario] unless the shell is laid out for a window at least as wide as it needs: on a
+        phone-sized window it would measure the phone layout under a large layout's name."""
+        state = check_nav_log.last_state(self.device.shell("logcat -d -s perf.shell:I").splitlines())
+        size_class = (state or {}).get("class") or ""
+        width = size_class.split("x")[0]
+        if width not in WIDTH_CLASSES or WIDTH_CLASSES.index(width) < WIDTH_CLASSES.index(LARGE_MIN_WIDTH):
+            window = (state or {}).get("window") or "unknown"
+            raise HarnessError(
+                f"{scenario} needs a window of {LARGE_MIN_WIDTH} width or wider; the shell is laid out for "
+                f"{size_class or 'an unknown class'} ({window}). Run it on a tablet or a resized emulator.")
+        self.notes.append(f"{scenario}: {size_class} window ({state.get('window')}), {state.get('chrome')}")
+
+    def listdetail_select(self):
+        """Opens each visible row of the list in turn: with room for two panes, every tap swaps the
+        detail beside the list in place, which must cost about what a visited tab does."""
+        self.at_root(0)
+        _, rows = self.wait_for(lambda t: t.rows(), "rows of primary_list")
+        dumps, firsts, all_frames = [], [], []
+        for _ in range(2):
+            for row in rows[:10]:
+                gfx, frames = self.segment("listdetail_select", self.press(row), 0.9)
+                dumps.append(gfx)
+                all_frames.append(frames)
+                first = parse_framestats.first_frame(frames)
+                firsts.append(first["ui_ms"] if first else None)
+        self.record_gfx("listdetail_select", dumps, all_frames)
+        self.record_spread("listdetail_select.first_frame_ms", firsts)
+        self.device.shell("input keyevent 4")
+        time.sleep(1.0)
+
+    def sidebar_toggle(self):
+        """Ten folds and openings of the sidebar with Ctrl+Shift+S: only transforms move, so nothing
+        but the chrome's own frames should run."""
+        self.at_root(0)
+        toggle = "input keycombination KEYCODE_CTRL_LEFT KEYCODE_SHIFT_LEFT KEYCODE_S"
+        dumps, all_frames = [], []
+        for _ in range(10):
+            gfx, frames = self.segment("sidebar_toggle", toggle, 0.9)
+            dumps.append(gfx)
+            all_frames.append(frames)
+        self.record_gfx("sidebar_toggle", dumps, all_frames)
 
     def idle(self):
         frames = []
@@ -828,6 +885,11 @@ class Run:
             "pushpop_gesture": self.pushpop_gesture,
             "rapid_back": self.rapid_back,
             "scroll_root": lambda: self.scroll("scroll_root"),
+            "tabs_large": lambda: self.tabs_scenario("tabs_large"),
+            "pushpop_large": lambda: self.pushpop("pushpop_large"),
+            "listdetail_select": self.listdetail_select,
+            "scroll_large": lambda: self.scroll("scroll_large"),
+            "sidebar_toggle": self.sidebar_toggle,
             "scroll_minimize": self.scroll_minimize,
             "idle": self.idle,
             "nav_stress": self.nav_stress,
@@ -836,6 +898,8 @@ class Run:
             "coldstart": self.coldstart,
             "coldstart_installed": self.coldstart_installed,
         }[scenario]
+        if scenario in LARGE_SCENARIOS:
+            self.require_window(scenario)
         handler()
 
 
