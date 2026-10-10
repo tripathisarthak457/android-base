@@ -1,6 +1,8 @@
 package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.theme.AppTheme
@@ -62,7 +65,13 @@ internal fun TabRail(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (header != null) {
-                Box(Modifier.padding(bottom = AppTheme.spacing.md)) { BarActions(look).header() }
+                Column(
+                    modifier = Modifier.padding(bottom = AppTheme.spacing.md),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    BarActions(look).header()
+                }
             }
             Box(
                 Modifier
@@ -74,6 +83,8 @@ internal fun TabRail(
                         layout(placeable.width, placeable.height) { placeable.place(0, 0) }
                     }
                     .verticalScroll(rememberScrollState())
+                    .focusRestorer()
+                    .focusGroup()
                     .selectableGroup()
                     .drawBehind { drawIndicator(pill.fill, measure, edges, look, vertical = true, collapse = 0f) },
             ) {

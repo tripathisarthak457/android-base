@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
@@ -62,13 +64,17 @@ import com.base.app.core.designsystem.theme.rememberReduceMotion
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-/** One tab: [selectedIcon] is the filled glyph, [icon] the outlined one. */
+/**
+ * One tab: [selectedIcon] is the filled glyph, [icon] the outlined one. [section] is the heading it
+ * is grouped under in a sidebar.
+ */
 @Immutable
 data class TabItem(
     val label: String,
     val icon: ImageVector,
     val selectedIcon: ImageVector = icon,
     val badgeCount: Int = 0,
+    val section: String? = null,
 )
 
 /** The bar along the bottom edge, or stood on its side as a rail beside wide windows. */
@@ -214,6 +220,10 @@ object AppTabBarDefaults {
 
     /** The rail's width, cutout padding aside. */
     val RailWidth: Dp = 88.dp
+
+    /** The surface the rail and the sidebar are drawn on. */
+    @Composable
+    fun sideSurface(treatment: BarTreatment = AppTheme.style.bar): Color = barLook(treatment).surface
 }
 
 /** What a treatment decides: whether the bar floats as a capsule, its colours and its indicator. */
@@ -233,7 +243,7 @@ internal class BarLook(
 )
 
 @Composable
-private fun barLook(treatment: BarTreatment): BarLook {
+internal fun barLook(treatment: BarTreatment): BarLook {
     val colors = AppTheme.colors
     val shape = AppTheme.shapes.pill
     val uppercase = AppTheme.style.uppercaseLabels
@@ -321,6 +331,8 @@ private fun TabRow(
     Box(
         Modifier
             .shrinking(state)
+            .focusRestorer()
+            .focusGroup()
             .selectableGroup()
             .drawBehind { drawIndicator(pill.fill, measure, edges, look, vertical = false, collapse = state.collapse) },
     ) {

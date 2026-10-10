@@ -19,63 +19,128 @@ import androidx.compose.ui.node.invalidateSemantics
 import androidx.compose.ui.node.observeReads
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
+import com.base.app.core.designsystem.component.navigation.AppSidebar
+import com.base.app.core.designsystem.component.navigation.AppSidebarDefaults
 import com.base.app.core.designsystem.component.navigation.AppTabBar
 import com.base.app.core.designsystem.component.navigation.AppTabBarState
 import com.base.app.core.designsystem.component.navigation.BarActionScope
 import com.base.app.core.designsystem.component.navigation.BarOrientation
 import com.base.app.core.designsystem.component.navigation.TabItem
+import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.WindowWidth
+import com.base.app.core.navigation.NavigationChrome
+import com.base.app.core.navigation.R
 import com.base.app.core.navigation.ShellConfig
 import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.stack.coverScrimAlpha
 
+/**
+ * The tabs in the window's chrome: the floating bar, the rail or the sidebar. When the chrome has
+ * no room for every tab, the last place is More, which is shown selected while its list or a tab it
+ * lists is in front.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ShellBar(
+    chrome: NavigationChrome,
     tabs: List<ShellTab>,
+    labels: List<String>,
     state: ShellState,
     barState: AppTabBarState,
     config: ShellConfig,
     trailingAction: (@Composable BarActionScope.() -> Unit)?,
     accessory: (@Composable () -> Unit)?,
     parallax: Float,
+    onToggleSidebar: (() -> Unit)?,
     modifier: Modifier = Modifier,
-    vertical: Boolean = false,
 ) {
-    val labels = tabs.map { stringResource(it.label) }
-    val items = remember(tabs, labels) {
-        tabs.mapIndexed { index, tab -> TabItem(labels[index], tab.icon, tab.selectedIcon, tab.badgeCount) }
-    }
-    val focus = LocalFocusManager.current
-    AppTabBar(
-        items = items,
-        selected = state.selectedIndex,
-        onSelect = { index ->
-            // A field focused in the tab being left would keep the keyboard up over the next one.
-            focus.clearFocus()
-            state.select(index)
-        },
-        onReselect = state::select,
-        modifier = if (vertical) {
-            modifier
+    val shown = chrome.tabsShown(tabs.size)
+    val hasMore = shown < tabs.size
+    val sections = tabs.map { tab -> tab.section?.let { stringResource(it) } }
+    val moreLabel = stringResource(R.string.navigation_more)
+    val items = remember(tabs, labels, sections, shown, moreLabel) {
+        val visible = tabs.take(shown).mapIndexed { index, tab ->
+            TabItem(labels[index], tab.icon, tab.selectedIcon, tab.badgeCount, sections[index])
+        }
+        if (hasMore) {
+            visible + TabItem(moreLabel, AppIcons.MoreHorizontal, badgeCount = tabs.drop(shown).sumOf { it.badgeCount })
         } else {
-            modifier
-                .followCovered(state.anchors[state.selectedIndex], parallax, coverScrimAlpha(AppTheme.colors.isLight))
+            visible
+        }
+    }
+    val selected = if (hasMore && (state.moreShown || state.selectedIndex >= shown)) shown else state.selectedIndex
+    val focus = LocalFocusManager.current
+    val onSelect: (Int) -> Unit = { index ->
+        // A field focused in the tab being left would keep the keyboard up over the next one.
+        focus.clearFocus()
+        if (hasMore && index == shown) state.showMore() else state.select(index)
+    }
+    val onReselect: (Int) -> Unit = { index -> if (hasMore && index == shown) state.showMore() else state.select(index) }
+    val sideHeader: (@Composable BarActionScope.() -> Unit)? =
+        if (onToggleSidebar == null && trailingAction == null) {
+            null
+        } else {
+            {
+                if (onToggleSidebar != null) {
+                    val label = if (chrome == NavigationChrome.Sidebar) R.string.navigation_hide_sidebar else R.string.navigation_show_sidebar
+                    Action(AppIcons.Menu, stringResource(label), onToggleSidebar, tag = "sidebar_toggle")
+                }
+                trailingAction?.invoke(this)
+            }
+        }
+    when (chrome) {
+        NavigationChrome.Bar -> AppTabBar(
+            items = items,
+            selected = selected,
+            onSelect = onSelect,
+            onReselect = onReselect,
+            modifier = modifier
+                .testTag("tab_bar")
+                .followCovered(state.barAnchor, parallax, coverScrimAlpha(AppTheme.colors.isLight))
                 .hideUnderKeyboard()
-                .parkWhenCovered(state.anchors[state.selectedIndex])
-        },
-        orientation = if (vertical) BarOrientation.Vertical else BarOrientation.Horizontal,
-        labels = config.barLabels,
-        minimize = config.barMinimize,
-        state = barState,
-        trailingAction = trailingAction,
-        accessory = accessory,
-    )
+                .parkWhenCovered(state.barAnchor),
+            labels = config.barLabels,
+            minimize = config.barMinimize,
+            state = barState,
+            trailingAction = trailingAction,
+            accessory = accessory,
+        )
+        NavigationChrome.Rail -> AppTabBar(
+            items = items,
+            selected = selected,
+            onSelect = onSelect,
+            onReselect = onReselect,
+            modifier = modifier.testTag("rail"),
+            orientation = BarOrientation.Vertical,
+            labels = config.barLabels,
+            state = barState,
+            trailingAction = sideHeader,
+            accessory = accessory,
+        )
+        NavigationChrome.Sidebar -> AppSidebar(
+            items = items,
+            selected = selected,
+            onSelect = onSelect,
+            onReselect = onReselect,
+            modifier = modifier.testTag("sidebar"),
+            width = sidebarWidth(),
+            header = sideHeader,
+            footer = accessory,
+        )
+    }
 }
+
+/** The sidebar's width for the window: wider on the widest windows. */
+@Composable
+internal fun sidebarWidth(): Dp =
+    if (AppTheme.windowSize.width == WindowWidth.ExtraLarge) AppSidebarDefaults.WideWidth else AppSidebarDefaults.Width
 
 /**
  * The keyboard rises over the bar: the bar moves down with it in the layout phase and is

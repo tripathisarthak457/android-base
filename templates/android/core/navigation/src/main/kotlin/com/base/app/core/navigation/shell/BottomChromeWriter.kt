@@ -33,7 +33,7 @@ internal fun BottomChromeWriter(state: ShellState, barState: AppTabBarState, wid
                     bottomChrome(
                         presented = state.presentedKeys.lastOrNull()?.let { state.presentedBars.heights[it]?.value },
                         keyboard = keyboard.getBottom(this).toDp(),
-                        screenBar = state.current.current.takeIf { state.anchors[state.selectedIndex].progress() >= 1f }
+                        screenBar = state.current.current.takeIf { state.barAnchor.progress() >= 1f }
                             ?.let { state.screenBars[state.selectedIndex].heights[it]?.value },
                         bar = if (wide) 0.dp else barState.settledHeight.toDp(),
                     )

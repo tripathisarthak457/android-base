@@ -51,11 +51,12 @@ internal class TabReveal(selected: Int) {
 
     private var shown = selected
 
-    fun switchTo(selected: Int, animate: Boolean) {
+    /** [position] is where a tab sits along the chrome, which the nudge follows. */
+    fun switchTo(selected: Int, animate: Boolean, position: (Int) -> Int) {
         if (selected == shown) return
         if (animate) {
             index = selected
-            direction = sign((selected - shown).toFloat())
+            direction = sign((position(selected) - position(shown)).toFloat())
             progress = 0f
         } else {
             index = -1

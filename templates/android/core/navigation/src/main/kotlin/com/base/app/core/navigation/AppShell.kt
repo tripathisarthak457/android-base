@@ -13,12 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation3.scene.SceneStrategy
 import com.base.app.core.common.navigation.AppNavKey
@@ -29,7 +31,6 @@ import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.designsystem.component.navigation.rememberAppTabBarState
 import com.base.app.core.designsystem.foundation.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.WindowWidth
 import com.base.app.core.navigation.back.ShellRootBack
 import com.base.app.core.navigation.back.Verdict
 import com.base.app.core.navigation.back.submit
@@ -38,6 +39,12 @@ import com.base.app.core.navigation.shell.BottomChromeWriter
 import com.base.app.core.navigation.shell.BottomEdgeFade
 import com.base.app.core.navigation.shell.ShellBar
 import com.base.app.core.navigation.shell.ShellChrome
+import com.base.app.core.navigation.shell.ShellShortcuts
+import com.base.app.core.navigation.shell.chromeFor
+import com.base.app.core.navigation.shell.fillGap
+import com.base.app.core.navigation.shell.followSlide
+import com.base.app.core.navigation.shell.rememberChromeSlide
+import com.base.app.core.navigation.shell.sidebarAvailable
 import com.base.app.core.navigation.shell.tabs.TabbedNavHost
 import com.base.app.core.navigation.transition.ScreenMotion
 import kotlinx.coroutines.flow.first
@@ -62,12 +69,13 @@ data class ShellConfig(
 }
 
 /**
- * The signed-in app: every tab's stack, the tab bar along the bottom of compact windows or a rail
- * beside wide ones, and the presentation host above both.
+ * The signed-in app: every tab's stack, the navigation chrome for the window (the floating tab bar
+ * on compact widths, a rail on wider or short windows, a sidebar on large ones; see
+ * [NavigationChrome]), the window's keyboard shortcuts, and the presentation host above it all.
  *
  * The tab host is called from exactly one place whatever the window: a call from another branch
  * would be another composition, and a fold, a rotation or a resize would rebuild every tab's
- * screens and clear their ViewModels. The width class changes only the chrome.
+ * screens and clear their ViewModels. The size class changes only the chrome.
  *
  * The shell is the only writer of [LocalBottomChrome]: the bar's settled height, the keyboard while
  * it is up, or the screen-level bar of a screen that hides the tab bar, written only once the
@@ -106,39 +114,65 @@ fun AppShell(
     val hidesBar = remember(config.hideBarOnPush, state) {
         { key: AppNavKey -> key is FullScreenKey || (config.hideBarOnPush && key !in state.rootKeys) }
     }
-    val wide = AppTheme.windowSize.width >= WindowWidth.Medium
+    val window = AppTheme.windowSize
+    val chrome = chromeFor(window.width, window.height, state.sidebarOpen)
+    SideEffect { state.useChrome(chrome) }
+    val labels = tabs.map { stringResource(it.label) }
     val barState = rememberAppTabBarState()
-    val minimizes = !wide && config.barMinimize == BarMinimize.OnScrollDown
+    val bar = chrome == NavigationChrome.Bar
+    val minimizes = bar && config.barMinimize == BarMinimize.OnScrollDown
+    val slide = rememberChromeSlide()
+    val toggleSidebar = if (sidebarAvailable(window.width, window.height)) slide.toggle(state, chrome) else null
 
     ShellRootBack(state)
-    BottomChromeWriter(state, barState, wide)
+    BottomChromeWriter(state, barState, wide = !bar)
+    ShellShortcuts(labels, state, toggleSidebar)
 
     ShellChrome(
         modifier = modifier.fillMaxSize(),
         chrome = {
-            if (!wide) {
+            if (bar) {
                 BottomEdgeFade(
-                    anchor = state.anchors[state.selectedIndex],
+                    anchor = state.barAnchor,
                     parallax = motion.parallax,
                     modifier = Modifier.align(Alignment.BottomCenter),
                 )
                 ShellBar(
+                    chrome = chrome,
                     tabs = tabs,
+                    labels = labels,
                     state = state,
                     barState = barState,
                     config = config,
                     trailingAction = trailingAction,
                     accessory = accessory,
                     parallax = motion.parallax,
+                    onToggleSidebar = null,
                     modifier = Modifier.align(Alignment.BottomCenter),
                 )
             }
         },
     ) {
         Row(Modifier.fillMaxSize()) {
-            if (wide) ShellBar(tabs, state, barState, config, trailingAction, accessory, parallax = 0f, vertical = true)
-            CompositionLocalProvider(LocalTabBarVisible provides !wide) {
+            if (!bar) {
+                ShellBar(
+                    chrome = chrome,
+                    tabs = tabs,
+                    labels = labels,
+                    state = state,
+                    barState = barState,
+                    config = config,
+                    trailingAction = trailingAction,
+                    accessory = accessory,
+                    parallax = 0f,
+                    onToggleSidebar = toggleSidebar,
+                    modifier = Modifier.fillGap(slide),
+                )
+            }
+            CompositionLocalProvider(LocalTabBarVisible provides bar) {
                 TabbedNavHost(
+                    tabs = tabs,
+                    labels = labels,
                     state = state,
                     registry = registry,
                     motion = motion,
@@ -146,13 +180,16 @@ fun AppShell(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight()
-                        // Beside a rail a sliding screen must not draw over it; the rail also already
-                        // clears the cutout on its side.
+                        // Beside a rail or a sidebar a sliding screen must not draw over it, and
+                        // the chrome already clears the cutout on its side.
                         .then(
-                            if (wide) {
-                                Modifier.clipToBounds().consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Start))
+                            if (bar) {
+                                Modifier
                             } else {
                                 Modifier
+                                    .followSlide(slide)
+                                    .clipToBounds()
+                                    .consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Start))
                             },
                         )
                         .then(if (minimizes) Modifier.nestedScroll(barState.nestedScrollConnection) else Modifier),

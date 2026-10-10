@@ -53,7 +53,7 @@ private val ACTION_BAR = 72.dp
  * every touch and every Back while they are up, and the bottom chrome is written by the shell alone.
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [ROBOLECTRIC_SDK])
+@Config(sdk = [ROBOLECTRIC_SDK], qualifiers = "w411dp-h891dp")
 class ChromeLayeringTest {
 
     @get:Rule

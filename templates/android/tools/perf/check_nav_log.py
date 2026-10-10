@@ -2,7 +2,7 @@
 
 Dev builds log one line after every change to the shell state (see `app/src/dev/.../perf`):
 
-    perf.shell: generation=1 tab=0 stacks=[["HomeKey","DetailKey(id=3)"],["FeedKey"]] presented=[] roots=["HomeKey","FeedKey"]
+    perf.shell: generation=1 tab=0 stacks=[["HomeKey","DetailKey(id=3)"],["FeedKey"]] presented=[] roots=["HomeKey","FeedKey"] more=false chrome=Bar
 
 The lists are JSON. Every line must satisfy:
 
@@ -52,6 +52,8 @@ def parse_line(line):
             "stacks": fields["stacks"],
             "presented": fields.get("presented", []),
             "roots": fields["roots"],
+            "more": fields.get("more") == "true",
+            "chrome": fields.get("chrome"),
         }
     except (KeyError, ValueError):
         return {"unreadable": line.strip()}

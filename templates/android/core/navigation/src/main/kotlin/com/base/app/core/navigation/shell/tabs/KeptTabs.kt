@@ -49,6 +49,7 @@ import com.base.app.core.designsystem.theme.rememberReduceMotion
  *
  * @param revealSwitch whether the switch to [selected] is one the user made, which gets the reveal;
  *   a deep link or a programmatic switch shows the tab at once.
+ * @param positionOf where a tab sits along the chrome, which decides the side its reveal comes from.
  */
 @Composable
 internal fun KeptTabs(
@@ -56,6 +57,7 @@ internal fun KeptTabs(
     generation: Int,
     modifier: Modifier = Modifier,
     revealSwitch: () -> Boolean = { false },
+    positionOf: (index: Int) -> Int = { it },
     content: @Composable (index: Int) -> Unit,
 ) {
     // Grows only when [selected] changes, which recomposes this anyway; written after composition so
@@ -68,7 +70,7 @@ internal fun KeptTabs(
     val reduceMotion = rememberReduceMotion()
     // Applied with the composition that switches, before that frame is laid out and drawn, so the
     // first frame of the incoming tab is already nudged and veiled.
-    SideEffect { reveal.switchTo(selected, animate = revealSwitch() && !reduceMotion) }
+    SideEffect { reveal.switchTo(selected, animate = revealSwitch() && !reduceMotion, position = positionOf) }
     LaunchedEffect(reveal, selected) { reveal.run(selected) }
     val veil = AppTheme.colors.background
 
