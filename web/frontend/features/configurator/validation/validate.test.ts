@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { loadCatalogue, readJson } from "../catalogue/testing.ts";
+import { loadCatalogue, readJson } from "../../catalogue/testing.ts";
 import { validateSpec } from "./validate.ts";
 
 type Case = { name: string; valid: boolean; field?: string; spec: Record<string, unknown> };

@@ -4,7 +4,7 @@ import { CLIENT_PREFIX, clientHeader } from "../../lib/api.ts";
 import { loadCatalogue, readJson, threePlatformCatalogue } from "../catalogue/testing.ts";
 import { CONFIG_MS_MAX, SESSION_ID, sessionHeaders, toSpecV2 } from "./request.ts";
 import { type Action, type ConfigState, initialState, reducer } from "./state.ts";
-import { validateSpec } from "./validate.ts";
+import { validateSpec } from "./validation/validate.ts";
 
 const catalogue = loadCatalogue();
 

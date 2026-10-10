@@ -10,7 +10,7 @@ import { DRAFT_KEY, draftToStore, parseDraft } from "./draft.ts";
 import { derivePreset } from "./resolve.ts";
 import { sessionHeaders, toSpecV2 } from "./request.ts";
 import { type Action, type ConfigState, IDENTITY_FIELDS, STEPS, type Step, findTarget, initialState, reducer } from "./state.ts";
-import { type SpecErrors, validateSpec } from "./validate.ts";
+import { type SpecErrors, validateSpec } from "./validation/validate.ts";
 
 export type Outcome =
   | { kind: "done"; revision: number; filename: string; bytes: number; elapsedMs: number; keystoresSkipped: string[] }
