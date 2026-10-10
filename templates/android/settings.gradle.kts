@@ -69,6 +69,12 @@ include(":core:devtools")
 // <opt:database>
 include(":core:database")
 // </opt:database>
+// <opt:applock>
+include(":core:applock")
+// </opt:applock>
+// <opt:playstore>
+include(":core:playstore")
+// </opt:playstore>
 
 // ── data ─────────────────────────────────────────────────────────────────────
 // <opt:auth>

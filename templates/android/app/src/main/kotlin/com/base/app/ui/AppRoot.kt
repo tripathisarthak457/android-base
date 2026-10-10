@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.datastore.AppSettings
+import com.base.app.core.common.session.SessionState
+import com.base.app.core.datastore.settings.AppSettings
 // <opt:devtools>
-import com.base.app.core.devtools.DevEnvironment
-import com.base.app.core.devtools.DevToolsOverlay
-import com.base.app.core.devtools.DevToolsLog
+import com.base.app.core.devtools.DevTools
+import com.base.app.core.devtools.badge.DevToolsOverlay
 // </opt:devtools>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
@@ -24,6 +24,22 @@ import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.rememberAppBackStack
 import com.base.app.core.navigation.rememberShellState
 import com.base.app.session.SessionCoordinator
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
+// <opt:applock>
+import com.base.app.core.applock.AppLock
+import com.base.app.core.applock.AppLockGate
+// </opt:applock>
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.ApiSignals
+import com.base.app.core.ui.appstatus.AppStatusGate
+// </opt:appstatus>
+// <opt:playstore>
+import com.base.app.core.playstore.PlayStorePrompts
+import com.base.app.core.playstore.review.ReviewPrompt
+import com.base.app.core.playstore.update.AppUpdates
+// </opt:playstore>
 
 /**
  * Everything above the navigation host: the theme, the back stack, and the two app-wide reactions
@@ -41,19 +57,28 @@ fun AppRoot(
     signInKey: AppNavKey = startKey,
     onExitRequested: () -> Unit = {},
     // <opt:devtools>
-    devEnvironment: DevEnvironment,
-    devToolsLog: DevToolsLog,
+    devTools: DevTools,
     // </opt:devtools>
+    // <opt:applock>
+    appLock: AppLock,
+    // </opt:applock>
+    // <opt:appstatus>
+    apiSignals: ApiSignals,
+    // </opt:appstatus>
+    // <opt:playstore>
+    appUpdates: AppUpdates,
+    reviewPrompt: ReviewPrompt,
+    // </opt:playstore>
 ) {
     val themeMode = settings.themeMode()
 
-    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
+    val screens: @Composable () -> Unit = {
         Box(modifier = Modifier.fillMaxSize()) {
             if (tabs.isEmpty()) {
                 val backStack = rememberAppBackStack(startKey = startKey, serialization = serialization)
 
                 LaunchedEffect(sessionCoordinator, backStack) {
-                    sessionCoordinator.signedOut.collect {
+                    sessionCoordinator.endedSessions().collect {
                         backStack.apply(NavCommand.ResetTo(signInKey))
                     }
                 }
@@ -68,7 +93,7 @@ fun AppRoot(
                 val shellState = rememberShellState(tabs = tabs, serialization = serialization)
 
                 LaunchedEffect(sessionCoordinator, shellState) {
-                    sessionCoordinator.signedOut.collect {
+                    sessionCoordinator.endedSessions().collect {
                         // Every tab, not just the visible one: the next person to sign in on this
                         // device must not find the previous one's screens behind a tab.
                         shellState.resetAll(tabs.map { it.key })
@@ -85,13 +110,35 @@ fun AppRoot(
                 )
             }
 
+            // <opt:appstatus>
+            AppStatusGate(signals = apiSignals)
+            // </opt:appstatus>
+
+            // <opt:playstore>
+            PlayStorePrompts(updates = appUpdates, review = reviewPrompt)
+            // </opt:playstore>
+
             // <opt:devtools>
             // Last in the Box so the badge floats over every screen; a no-op in production builds.
-            DevToolsOverlay(environment = devEnvironment, log = devToolsLog)
+            DevToolsOverlay(devTools)
             // </opt:devtools>
         }
     }
+
+    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
+        // <opt:applock>
+        // Over the inspector too: what the app sent is as private as what it shows.
+        AppLockGate(lock = appLock, modifier = Modifier.fillMaxSize(), content = screens)
+        // </opt:applock>
+        // <opt-else:applock>
+        //~ screens()
+        // </opt-else:applock>
+    }
 }
+
+/** Each end of a session after this point, whoever ended it. */
+private fun SessionCoordinator.endedSessions(): Flow<SessionState> =
+    state.drop(1).filter { it == SessionState.SignedOut }
 
 /** The stored preference as the design system's own type. */
 fun AppSettings.themeMode(): ThemeMode = when (themeMode) {

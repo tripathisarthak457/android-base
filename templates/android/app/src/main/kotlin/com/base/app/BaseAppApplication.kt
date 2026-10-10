@@ -5,93 +5,120 @@ import com.base.app.core.common.log.AppLogger
 import com.base.app.core.common.log.Log
 import com.base.app.core.common.log.LogLevel
 import dagger.hilt.android.HiltAndroidApp
-// <opt:analytics|push|workmanager|room>
+// <opt:analytics|push|flags|offlinequeue|websocket>
 // Shared by several optional blocks below. Repeating it inside each would duplicate it when two
 // are on, which is what the `a|b` marker form avoids.
 import javax.inject.Inject
-// </opt:analytics|push|workmanager|room>
-// <opt:analytics>
-import com.base.app.core.analytics.CrashReporter
-// </opt:analytics>
-// <opt:push|room>
+// </opt:analytics|push|flags|offlinequeue|websocket>
+// <opt:analytics|push|flags>
 import com.base.app.core.common.coroutines.ApplicationScope
 import kotlinx.coroutines.launch
-// </opt:push|room>
+// </opt:analytics|push|flags>
+// <opt:analytics>
+import com.base.app.core.analytics.AnalyticsTracker
+import com.base.app.core.analytics.CrashReporter
+import com.base.app.core.datastore.settings.AppSettingsStore
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+// </opt:analytics>
 // <opt:push>
-import com.base.app.core.notification.AppNotifications
-import com.base.app.core.notification.PushTokenRegistrar
+import com.base.app.core.notification.channel.NotificationChannels
+import com.base.app.core.notification.push.PushRegistration
 // </opt:push>
-// <opt:room>
-import com.base.app.core.network.QueuedRequestReplayer
-// </opt:room>
-// <opt:workmanager>
-import androidx.hilt.work.HiltWorkerFactory
+// <opt:flags>
+import com.base.app.core.flags.FeatureFlags
+// </opt:flags>
+// <opt:offlinequeue>
 import androidx.work.Configuration
-// </opt:workmanager>
+import com.base.app.core.network.queue.OfflineQueueWorkerFactory
+// </opt:offlinequeue>
+// <opt:websocket>
+import com.base.app.core.network.websocket.RealtimeLifecycle
+// </opt:websocket>
 
 /** The composition root. Deliberately thin. */
-// <opt:workmanager>
 @HiltAndroidApp
+// <opt:offlinequeue>
 class BaseAppApplication : Application(), Configuration.Provider {
-// </opt:workmanager>
-// <opt:!workmanager>@HiltAndroidApp
-// <opt:!workmanager>class BaseAppApplication : Application() {
+// </opt:offlinequeue>
+// <opt:!offlinequeue>class BaseAppApplication : Application() {
 
-    // <opt:workmanager>
+    // <opt:offlinequeue>
     @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+    lateinit var workerFactory: OfflineQueueWorkerFactory
 
+    // Read by WorkManager the first time something asks for it, not at start-up: the manifest
+    // removes its App Startup initializer, so a launch that queues nothing never opens its database.
     override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
-    // </opt:workmanager>
+        get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
+    // </opt:offlinequeue>
+
+    // <opt:analytics|push|flags>
+    @Inject
+    lateinit var appScope: ApplicationScope
+    // </opt:analytics|push|flags>
 
     // <opt:analytics>
     @Inject
     lateinit var crashReporter: CrashReporter
+
+    @Inject
+    lateinit var analytics: AnalyticsTracker
+
+    @Inject
+    lateinit var settings: AppSettingsStore
     // </opt:analytics>
 
     // <opt:push>
     @Inject
-    lateinit var notifications: AppNotifications
+    lateinit var notificationChannels: NotificationChannels
 
     @Inject
-    lateinit var pushRegistrar: PushTokenRegistrar
+    lateinit var pushRegistration: PushRegistration
     // </opt:push>
 
-    // <opt:room>
+    // <opt:flags>
     @Inject
-    lateinit var queuedRequestReplayer: QueuedRequestReplayer
-    // </opt:room>
+    lateinit var featureFlags: FeatureFlags
+    // </opt:flags>
 
-    // <opt:push|room>
+    // <opt:websocket>
     @Inject
-    lateinit var appScope: ApplicationScope
-    // </opt:push|room>
+    lateinit var realtime: RealtimeLifecycle
+    // </opt:websocket>
 
     override fun onCreate() {
         super.onCreate()
 
         // <opt:analytics>
-        // Every error the app already logs becomes a breadcrumb on the next crash, without a
-        // second call at each site.
-        Log.logger = AndroidLogger(verbose = BuildConfig.DEBUG) { message, throwable ->
-            if (throwable != null) crashReporter.recordException(throwable, message) else crashReporter.log(message)
+        // Every error the app logs becomes a breadcrumb on the next crash report, without a second
+        // call at each site. Only what nothing handled is recorded as an error of its own.
+        Log.logger = AndroidLogger(verbose = BuildConfig.DEBUG) { message -> crashReporter.log(message) }
+
+        // The choice in settings reaches both collectors before anything is sent, and follows every
+        // change after.
+        appScope.launch {
+            settings.settings.map { it.analyticsEnabled }.distinctUntilChanged().collect { enabled ->
+                analytics.setEnabled(enabled)
+                crashReporter.setEnabled(enabled)
+            }
         }
         // </opt:analytics>
         // <opt:!analytics>        Log.logger = AndroidLogger(verbose = BuildConfig.DEBUG)
 
         // <opt:push>
-        // Channels must exist before a notification arrives, or the user cannot mute a category in
-        // advance.
-        notifications.createChannels()
-        appScope.launch { pushRegistrar.registerOnLaunch() }
+        // Channels exist before the first notification arrives, so each can be muted in advance.
+        appScope.launch { notificationChannels.create() }
+        pushRegistration.start()
         // </opt:push>
 
-        // <opt:room>
-        appScope.launch { queuedRequestReplayer.replayWhenOnline() }
-        // </opt:room>
+        // <opt:flags>
+        appScope.launch { featureFlags.refresh() }
+        // </opt:flags>
+
+        // <opt:websocket>
+        realtime.start()
+        // </opt:websocket>
     }
 }
 
@@ -101,7 +128,7 @@ class BaseAppApplication : Application(), Configuration.Provider {
  */
 private class AndroidLogger(
     private val verbose: Boolean,
-    private val onError: ((message: String, throwable: Throwable?) -> Unit)? = null,
+    private val onError: ((message: String) -> Unit)? = null,
 ) : AppLogger {
     override fun log(level: LogLevel, tag: String, message: String, throwable: Throwable?) {
         when (level) {
@@ -110,7 +137,7 @@ private class AndroidLogger(
             LogLevel.Warn -> if (verbose) android.util.Log.w(tag, message, throwable)
             LogLevel.Error -> {
                 android.util.Log.e(tag, message, throwable)
-                onError?.invoke("$tag: $message", throwable)
+                onError?.invoke(if (throwable == null) "$tag: $message" else "$tag: $message: $throwable")
             }
         }
     }

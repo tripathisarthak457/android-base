@@ -1,7 +1,6 @@
 package com.base.app
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
@@ -9,9 +8,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.datastore.AppSettings
-import com.base.app.core.datastore.AppSettingsStore
-import com.base.app.core.datastore.AuthTokenStore
+import com.base.app.core.datastore.settings.AppSettings
+import com.base.app.core.datastore.settings.AppSettingsStore
+import com.base.app.core.datastore.session.AuthTokenStore
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
@@ -31,34 +30,43 @@ import com.base.app.deeplink.DeepLinkResolver
 import com.base.app.feature.onboarding.api.OnboardingKey
 // </opt:onboarding>
 // <opt:devtools>
-import com.base.app.core.devtools.DevEnvironment
-import com.base.app.core.devtools.DevToolsLog
+import com.base.app.core.devtools.DevTools
 // </opt:devtools>
 // <opt:applock>
 import android.view.WindowManager
-import com.base.app.lock.AppLock
-import com.base.app.lock.LockActivity
+import androidx.fragment.app.FragmentActivity
+import com.base.app.core.applock.AppLock
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 // </opt:applock>
-// <opt:applock|deeplink>
+// <opt-else:applock>
+//~ import androidx.activity.ComponentActivity
+// </opt-else:applock>
+// <opt:deeplink>
 import android.content.Intent
-// </opt:applock|deeplink>
+// </opt:deeplink>
 // <opt:language>
 import android.content.Context
 import com.base.app.core.ui.locale.AppLocales
 // </opt:language>
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.ApiSignals
+// </opt:appstatus>
 // <opt:playstore>
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
-import com.base.app.playstore.AppUpdates
-import com.base.app.playstore.ReviewPrompt
-import com.google.android.play.core.ktx.AppUpdateResult
+import com.base.app.core.playstore.review.ReviewPrompt
+import com.base.app.core.playstore.update.AppUpdates
 // </opt:playstore>
+// <opt:analytics>
+import com.base.app.core.analytics.jank.FrameJankRecorder
+// </opt:analytics>
 
 /** The only Activity. */
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+// <opt:applock>
+// A FragmentActivity only because BiometricPrompt runs in one.
+class MainActivity : FragmentActivity() {
+// </opt:applock>
+// <opt:!applock>class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navigator: AppNavigator
@@ -90,11 +98,13 @@ class MainActivity : ComponentActivity() {
 
     // <opt:devtools>
     @Inject
-    lateinit var devEnvironment: DevEnvironment
-
-    @Inject
-    lateinit var devToolsLog: DevToolsLog
+    lateinit var devTools: DevTools
     // </opt:devtools>
+
+    // <opt:appstatus>
+    @Inject
+    lateinit var apiSignals: ApiSignals
+    // </opt:appstatus>
 
     // <opt:playstore>
     @Inject
@@ -103,6 +113,11 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var reviewPrompt: ReviewPrompt
     // </opt:playstore>
+
+    // <opt:analytics>
+    @Inject
+    lateinit var frameJank: FrameJankRecorder
+    // </opt:analytics>
 
     private val startup = MutableStateFlow<Startup?>(null)
 
@@ -119,6 +134,9 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // <opt:analytics>
+        frameJank.track(window, lifecycle)
+        // </opt:analytics>
 
         lifecycleScope.launch {
             combine(
@@ -159,22 +177,20 @@ class MainActivity : ComponentActivity() {
                 signInKey = AppDestinations.signIn,
                 onExitRequested = { finish() },
                 // <opt:devtools>
-                devEnvironment = devEnvironment,
-                devToolsLog = devToolsLog,
+                devTools = devTools,
                 // </opt:devtools>
+                // <opt:applock>
+                appLock = appLock,
+                // </opt:applock>
+                // <opt:appstatus>
+                apiSignals = apiSignals,
+                // </opt:appstatus>
+                // <opt:playstore>
+                appUpdates = appUpdates,
+                reviewPrompt = reviewPrompt,
+                // </opt:playstore>
             )
         }
-
-        // <opt:playstore>
-        // On resume rather than onCreate: Play drops a review sheet launched against a stopped
-        // Activity.
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                launch { appUpdates.updates().collect(::onUpdate) }
-                launch { reviewPrompt.onLaunch(this@MainActivity) }
-            }
-        }
-        // </opt:playstore>
 
         // <opt:deeplink>
         // Handled after the host exists, so the link lands on top of the start destination and Back
@@ -182,38 +198,6 @@ class MainActivity : ComponentActivity() {
         handleDeepLink(intent)
         // </opt:deeplink>
     }
-
-    // <opt:playstore>
-    private suspend fun onUpdate(result: AppUpdateResult) {
-        when (result) {
-            is AppUpdateResult.Available -> appUpdates.start(result, this)
-            // Downloaded and waiting for a restart. Asking rather than restarting under the
-            // user: an app that relaunches itself mid-sentence loses whatever they were doing.
-            is AppUpdateResult.Downloaded -> appUpdates.install(result)
-            is AppUpdateResult.InProgress, AppUpdateResult.NotAvailable -> Unit
-        }
-    }
-    // </opt:playstore>
-
-    // <opt:applock>
-    /**
-     * The lock is decided in `onStart`, before the window is drawn, so the app's own content is
-     * never on screen — even for a frame — while it is meant to be covered.
-     */
-    override fun onStart() {
-        super.onStart()
-        lifecycleScope.launch {
-            if (appLock.shouldLock()) {
-                startActivity(Intent(this@MainActivity, LockActivity::class.java))
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        appLock.onHidden()
-    }
-    // </opt:applock>
 
     // <opt:deeplink>
     override fun onNewIntent(intent: Intent) {
