@@ -15,7 +15,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.setThemed
 import org.junit.Assert.assertEquals
@@ -27,7 +27,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK])
+@Config(sdk = [TestSdk])
 class SwipeActionsTest {
 
     @get:Rule

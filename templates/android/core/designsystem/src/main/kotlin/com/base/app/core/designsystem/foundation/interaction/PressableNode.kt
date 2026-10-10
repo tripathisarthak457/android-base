@@ -264,7 +264,7 @@ internal class PressableNode(
             PressFeedback.Scale -> coroutineScope.launch {
                 // A quick tap is over before the press has shown. Finish the dip first, briefly, so
                 // the tap is felt; a held press has already arrived and goes straight to the bounce.
-                if (tapped && progress.value < HALF_PRESSED) progress.animateTo(1f, tween(DIP_MILLIS))
+                if (tapped && progress.value < HalfPressed) progress.animateTo(1f, tween(DipMillis))
                 progress.animateTo(0f, springs.release.unit)
             }
             PressFeedback.Dim -> coroutineScope.launch { progress.animateTo(0f, tween(springs.fadeSlow)) }
@@ -370,7 +370,7 @@ internal class PressableNode(
     override fun ContentDrawScope.draw() {
         drawContent()
         if (feedback == PressFeedback.Highlight) {
-            val value = if (hovered) maxOf(progress.value, HOVER_HIGHLIGHT) else progress.value
+            val value = if (hovered) maxOf(progress.value, HoverHighlight) else progress.value
             if (value > 0f) drawRect(currentValueOf(LocalAppColors).highlight, alpha = value)
         }
         if (focus == null) return
@@ -458,7 +458,7 @@ private val FocusRingWidth = 2.dp
 private val FocusRingGap = 3.dp
 private val FocusRingCorner = 14.dp
 private val ClickKeys = setOf(Key.Enter, Key.NumPadEnter, Key.DirectionCenter, Key.Spacebar)
-private const val HALF_PRESSED = 0.5f
-private const val HOVER_HIGHLIGHT = 0.5f
-private const val DIP_MILLIS = 80
+private const val HalfPressed = 0.5f
+private const val HoverHighlight = 0.5f
+private const val DipMillis = 80
 private val TapTimeout: Long = ViewConfiguration.getTapTimeout().toLong()

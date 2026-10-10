@@ -21,24 +21,24 @@ class PaletteContrastTest {
     @Test
     fun `text roles read on every background`() = palettes.forEach { (name, colors) ->
         colors.backgrounds.forEach { background ->
-            assertAtLeast("$name contentPrimary", colors.contentPrimary, background, AA_TEXT)
-            assertAtLeast("$name contentSecondary", colors.contentSecondary, background, AA_TEXT)
-            assertAtLeast("$name contentTertiary", colors.contentTertiary, background, AA_TEXT)
+            assertAtLeast("$name contentPrimary", colors.contentPrimary, background, AaText)
+            assertAtLeast("$name contentSecondary", colors.contentSecondary, background, AaText)
+            assertAtLeast("$name contentTertiary", colors.contentTertiary, background, AaText)
         }
     }
 
     @Test
     fun `the accent as text reads on every background and on its own tint`() = palettes.forEach { (name, colors) ->
         (colors.backgrounds + colors.accentSubtle).forEach { background ->
-            assertAtLeast("$name accentContent", colors.accentContent, background, AA_TEXT)
+            assertAtLeast("$name accentContent", colors.accentContent, background, AaText)
         }
     }
 
     @Test
     fun `text on brand fills reads`() = palettes.forEach { (name, colors) ->
-        assertAtLeast("$name onAccent on accent", colors.onAccent, colors.accent, AA_TEXT)
-        assertAtLeast("$name onSecondary on secondary", colors.onSecondary, colors.secondary, AA_TEXT)
-        assertAtLeast("$name onTertiary on tertiary", colors.onTertiary, colors.tertiary, AA_TEXT)
+        assertAtLeast("$name onAccent on accent", colors.onAccent, colors.accent, AaText)
+        assertAtLeast("$name onSecondary on secondary", colors.onSecondary, colors.secondary, AaText)
+        assertAtLeast("$name onTertiary on tertiary", colors.onTertiary, colors.tertiary, AaText)
     }
 
     @Test
@@ -46,17 +46,17 @@ class PaletteContrastTest {
         listOf("success" to colors.success, "warning" to colors.warning, "danger" to colors.danger, "info" to colors.info)
             .forEach { (meaning, status) ->
                 (colors.backgrounds + status.subtle).forEach { background ->
-                    assertAtLeast("$name $meaning content", status.content, background, AA_TEXT)
+                    assertAtLeast("$name $meaning content", status.content, background, AaText)
                 }
-                assertAtLeast("$name $meaning on its base", status.on, status.base, AA_TEXT)
+                assertAtLeast("$name $meaning on its base", status.on, status.base, AaText)
             }
     }
 
     @Test
     fun `controls that must be seen stand out at 3 to 1`() = palettes.forEach { (name, colors) ->
         colors.backgrounds.forEach { background ->
-            assertAtLeast("$name outline (checkbox ring, field edge, off switch)", colors.outline, background, AA_NON_TEXT)
-            assertAtLeast("$name accent as a control", colors.accent, background, AA_NON_TEXT)
+            assertAtLeast("$name outline (checkbox ring, field edge, off switch)", colors.outline, background, AaNonText)
+            assertAtLeast("$name accent as a control", colors.accent, background, AaNonText)
         }
     }
 
@@ -65,11 +65,11 @@ class PaletteContrastTest {
         if (colors.isLight) {
             // iOS's own pairing: the lightest surface on a track a step darker, lifted by its shadow.
             assertTrue("$name thumb is the lighter of the two", colors.segmentThumb.luminance() > colors.fill.luminance())
-            assertAtLeast("$name thumb on track", colors.segmentThumb, colors.fill, LIGHT_THUMB_ON_TRACK)
+            assertAtLeast("$name thumb on track", colors.segmentThumb, colors.fill, LightThumbOnTrack)
         } else {
-            assertAtLeast("$name thumb on track", colors.segmentThumb, colors.fill, THUMB_ON_TRACK)
+            assertAtLeast("$name thumb on track", colors.segmentThumb, colors.fill, ThumbOnTrack)
         }
-        assertAtLeast("$name label on the thumb", colors.contentPrimary, colors.segmentThumb, AA_TEXT)
+        assertAtLeast("$name label on the thumb", colors.contentPrimary, colors.segmentThumb, AaText)
     }
 
     @Test
@@ -82,10 +82,10 @@ class PaletteContrastTest {
                 val bar = barSurface(style.bar, colors)
                 when (style.indicator) {
                     BarIndicator.Pill -> {
-                        assertAtLeast("$name barIndicator against the bar", colors.barIndicator, bar, AA_NON_TEXT)
-                        assertAtLeast("$name onAccent on the indicator", colors.onAccent, colors.barIndicator, AA_TEXT)
+                        assertAtLeast("$name barIndicator against the bar", colors.barIndicator, bar, AaNonText)
+                        assertAtLeast("$name onAccent on the indicator", colors.onAccent, colors.barIndicator, AaText)
                     }
-                    BarIndicator.Subtle -> assertAtLeast("$name selected glyph on the bar", colors.accentContent, bar, AA_TEXT)
+                    BarIndicator.Subtle -> assertAtLeast("$name selected glyph on the bar", colors.accentContent, bar, AaText)
                 }
             }
         }
@@ -119,9 +119,9 @@ class PaletteContrastTest {
     }
 
     private companion object {
-        const val AA_TEXT = 4.5f
-        const val AA_NON_TEXT = 3f
-        const val THUMB_ON_TRACK = 1.5f
-        const val LIGHT_THUMB_ON_TRACK = 1.15f
+        const val AaText = 4.5f
+        const val AaNonText = 3f
+        const val ThumbOnTrack = 1.5f
+        const val LightThumbOnTrack = 1.15f
     }
 }

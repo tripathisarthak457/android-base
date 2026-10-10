@@ -50,7 +50,7 @@ fun AppCarousel(
             Box(
                 Modifier.graphicsLayer {
                     val distance = abs((state.currentPage - page) + state.currentPageOffsetFraction).coerceIn(0f, 1f)
-                    val scale = lerp(1f, SIDE_SCALE, distance)
+                    val scale = lerp(1f, SideScale, distance)
                     scaleX = scale
                     scaleY = scale
                 },
@@ -68,4 +68,4 @@ fun AppCarousel(
     }
 }
 
-private const val SIDE_SCALE = 0.92f
+private const val SideScale = 0.92f

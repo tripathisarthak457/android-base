@@ -72,7 +72,7 @@ fun AppSparkline(
             drawPath(
                 path = area,
                 brush = Brush.verticalGradient(
-                    listOf(color.copy(alpha = FILL_ALPHA), Color.Transparent),
+                    listOf(color.copy(alpha = FillAlpha), Color.Transparent),
                 ),
             )
         }
@@ -89,4 +89,4 @@ fun AppSparkline(
     }
 }
 
-private const val FILL_ALPHA = 0.22f
+private const val FillAlpha = 0.22f

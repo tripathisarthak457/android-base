@@ -22,7 +22,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.setThemed
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -33,7 +33,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK])
+@Config(sdk = [TestSdk])
 class PullToRefreshTest {
 
     @get:Rule
@@ -80,7 +80,7 @@ class PullToRefreshTest {
     private fun pullFarWithoutLifting() {
         rule.onNodeWithTag("list").performTouchInput {
             down(Offset(centerX, top + 10f))
-            repeat(PULL_STEPS) { moveBy(Offset(0f, PULL_STEP)) }
+            repeat(PullSteps) { moveBy(Offset(0f, PullStep)) }
         }
     }
 
@@ -120,7 +120,7 @@ class PullToRefreshTest {
         rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
         rule.mainClock.advanceTimeBy(1_000)
         rule.waitForIdle()
-        assertEquals(top + REST_PX, firstRowTop(), 1f)
+        assertEquals(top + RestPx, firstRowTop(), 1f)
 
         refreshing = false
         rule.mainClock.advanceTimeBy(2_000)
@@ -139,15 +139,15 @@ class PullToRefreshTest {
         rule.onNodeWithTag("list").performTouchInput {
             down(center)
             moveBy(Offset(0f, -viewConfiguration.touchSlop - 1f))
-            moveBy(Offset(0f, -REST_PX / 2f))
+            moveBy(Offset(0f, -RestPx / 2f))
         }
         rule.waitForIdle()
         assertEquals(0, list.firstVisibleItemIndex)
         assertEquals(0, list.firstVisibleItemScrollOffset)
-        assertTrue(firstRowTop() < top + REST_PX)
+        assertTrue(firstRowTop() < top + RestPx)
 
         rule.onNodeWithTag("list").performTouchInput {
-            moveBy(Offset(0f, -REST_PX))
+            moveBy(Offset(0f, -RestPx))
             up()
         }
         rule.waitForIdle()
@@ -176,7 +176,7 @@ class PullToRefreshTest {
     fun `a fling that reaches the top never refreshes`() {
         setList()
         // Far enough down that the drag alone cannot reach the top: only its fling does.
-        rule.runOnIdle { list.requestScrollToItem(FLING_FROM_ROW) }
+        rule.runOnIdle { list.requestScrollToItem(FlingFromRow) }
         rule.waitForIdle()
         rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 80) }
         rule.mainClock.advanceTimeBy(3_000)
@@ -194,9 +194,9 @@ class PullToRefreshTest {
             rule.onNodeWithTag("list").performTouchInput {
                 down(Offset(centerX, this.top + 10f))
                 moveBy(Offset(0f, viewConfiguration.touchSlop + 1f))
-                repeat(SHORT_PULL_STEPS) { moveBy(Offset(0f, PULL_STEP), delayMillis = 8) }
+                repeat(ShortPullSteps) { moveBy(Offset(0f, PullStep), delayMillis = 8) }
                 if (pauseBeforeLift) {
-                    repeat(SETTLE_PAUSE_STEPS) { moveBy(Offset.Zero, delayMillis = 40) }
+                    repeat(SettlePauseSteps) { moveBy(Offset.Zero, delayMillis = 40) }
                 }
                 up()
             }
@@ -232,13 +232,13 @@ class PullToRefreshTest {
 
     private companion object {
         val RowHeight = 60.dp
-        const val PULL_STEPS = 40
-        const val SHORT_PULL_STEPS = 8
-        const val FLING_FROM_ROW = 15
-        const val SETTLE_PAUSE_STEPS = 6
-        const val PULL_STEP = 20f
+        const val PullSteps = 40
+        const val ShortPullSteps = 8
+        const val FlingFromRow = 15
+        const val SettlePauseSteps = 6
+        const val PullStep = 20f
 
         /** The resting gap, 60dp, at Robolectric's default density of 1. */
-        const val REST_PX = 60f
+        const val RestPx = 60f
     }
 }

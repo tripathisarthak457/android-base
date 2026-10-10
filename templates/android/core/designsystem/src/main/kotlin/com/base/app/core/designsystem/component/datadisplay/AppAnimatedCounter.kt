@@ -24,7 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
-import com.base.app.core.designsystem.component.text.TABULAR_FIGURES
+import com.base.app.core.designsystem.component.text.TabularFigures
 import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
 import com.base.app.core.designsystem.theme.AppTheme
 import java.text.NumberFormat
@@ -51,7 +51,7 @@ fun AppAnimatedCounter(
     val reduceMotion = AppTheme.reduceMotion
     val measurer = rememberTextMeasurer()
     val figures = remember(style, color) {
-        style.copy(fontFeatureSettings = TABULAR_FIGURES, color = if (color.isSpecified) color else style.color)
+        style.copy(fontFeatureSettings = TabularFigures, color = if (color.isSpecified) color else style.color)
     }
     val text = format.format(count)
     val textLayout = remember(text, figures, measurer) { measurer.measure(text, figures, maxLines = 1, softWrap = false) }

@@ -224,7 +224,7 @@ private fun SheetLayout(
             val anchors: SheetAnchors
             if (form) {
                 width = minOf(layout.formSheetWidth.roundToPx(), constraints.maxWidth - 2 * layout.gutter.roundToPx())
-                sheetHeight = minOf((height * FORM_HEIGHT_FRACTION).roundToInt(), FormSheetMaxHeight.roundToPx())
+                sheetHeight = minOf((height * FormHeightFraction).roundToInt(), FormSheetMaxHeight.roundToPx())
                 val centred = ((height - sheetHeight) / 2).toFloat()
                 anchors = SheetAnchors(large = centred, medium = centred, hidden = height.toFloat(), form = true)
             } else {
@@ -233,7 +233,7 @@ private fun SheetLayout(
                 val medium = when {
                     oneHeight -> large
                     fold != null -> fold.bottom.coerceIn(large, height.toFloat())
-                    else -> height * (1f - MEDIUM_FRACTION)
+                    else -> height * (1f - MediumFraction)
                 }
                 sheetHeight = (height - large).roundToInt().coerceAtLeast(0)
                 anchors = SheetAnchors(large = large, medium = medium, hidden = height.toFloat(), form = false)
@@ -332,8 +332,8 @@ private fun SheetHeader(title: String?, showCloseButton: Boolean, onClose: () ->
 }
 
 /** How much of the window a sheet covers at its medium detent. */
-private const val MEDIUM_FRACTION = 0.55f
-private const val FORM_HEIGHT_FRACTION = 0.85f
+private const val MediumFraction = 0.55f
+private const val FormHeightFraction = 0.85f
 private val FormSheetMaxHeight = 620.dp
 
 /** How far the system back gesture narrows and lowers the sheet at its end: Material's bottom container. */

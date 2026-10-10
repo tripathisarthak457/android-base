@@ -118,7 +118,7 @@ fun AppTabRow(
                     val fraction = at - from
                     val tabStart = starts[from] + (starts[to] - starts[from]) * fraction
                     val tabWidth = widths[from] + (widths[to] - widths[from]) * fraction
-                    val indicatorWidth = (tabWidth * INDICATOR_WIDTH_FRACTION).roundToInt()
+                    val indicatorWidth = (tabWidth * IndicatorWidthFraction).roundToInt()
                     val placeable = measurable.measure(constraints.copy(minWidth = indicatorWidth, maxWidth = indicatorWidth))
                     layout(constraints.maxWidth, placeable.height) {
                         placeable.placeRelative((tabStart + (tabWidth - indicatorWidth) / 2f).roundToInt(), 0)
@@ -132,4 +132,4 @@ fun AppTabRow(
 
 private val TabHeight = 44.dp
 private val IndicatorHeight = 3.dp
-private const val INDICATOR_WIDTH_FRACTION = 0.6f
+private const val IndicatorWidthFraction = 0.6f

@@ -13,7 +13,7 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.setThemed
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -27,7 +27,7 @@ import org.robolectric.annotation.Config
  * the other's current value, not the value it had when the wheel was first composed.
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK])
+@Config(sdk = [TestSdk])
 class WheelPickerTest {
 
     @get:Rule

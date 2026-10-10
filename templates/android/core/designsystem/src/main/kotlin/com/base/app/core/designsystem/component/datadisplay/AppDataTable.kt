@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.component.text.TABULAR_FIGURES
+import com.base.app.core.designsystem.component.text.TabularFigures
 import com.base.app.core.designsystem.foundation.draw.HairlineEdge
 import com.base.app.core.designsystem.foundation.draw.hairline
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
@@ -101,7 +101,7 @@ fun <T> AppDataTable(
     val hasTotals = columns.any { it.total != null }
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
-    val figureStyle = AppTheme.typography.subheadline.copy(fontFeatureSettings = TABULAR_FIGURES)
+    val figureStyle = AppTheme.typography.subheadline.copy(fontFeatureSettings = TabularFigures)
     val cellPadding = AppTheme.spacing.md * 2
     val fadeWidth = AppTheme.spacing.xxxl
     val colors = AppTheme.colors
@@ -125,7 +125,7 @@ fun <T> AppDataTable(
             modifier = Modifier.fillMaxSize().appScrollIndicator(listState),
         ) {
             leading?.invoke(this)
-            stickyHeader(key = HEADER_KEY, contentType = HEADER_KEY) {
+            stickyHeader(key = HeaderKey, contentType = HeaderKey) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -144,7 +144,7 @@ fun <T> AppDataTable(
             itemsIndexed(
                 items = rows,
                 key = rowKey?.let { key -> { _: Int, row: T -> key(row) } },
-                contentType = { _, _ -> ROW_TYPE },
+                contentType = { _, _ -> RowType },
             ) { index, row ->
                 val background = if (zebra && index % 2 == 1) colors.backgroundGrouped else colors.surface
                 val values = columns.map { it.value(row) }
@@ -180,7 +180,7 @@ fun <T> AppDataTable(
                 }
             }
             if (hasTotals) {
-                item(key = TOTALS_KEY, contentType = TOTALS_KEY) {
+                item(key = TotalsKey, contentType = TotalsKey) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -267,6 +267,6 @@ internal fun fittedWidths(widths: List<Dp>, available: Dp): List<Dp> {
     return widths.map { it * scale }
 }
 
-private const val HEADER_KEY = "app-data-table-header"
-private const val TOTALS_KEY = "app-data-table-totals"
-private const val ROW_TYPE = "app-data-table-row"
+private const val HeaderKey = "app-data-table-header"
+private const val TotalsKey = "app-data-table-totals"
+private const val RowType = "app-data-table-row"

@@ -6,7 +6,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 
 /** Robolectric's SDK for these tests: it refuses the newest levels on the JDKs it supports. */
-const val TEST_SDK = 35
+const val TestSdk = 35
 
 /** [content] in the app theme with motion on, as on a device with default settings. */
 fun ComposeContentTestRule.setThemed(content: @Composable () -> Unit) {

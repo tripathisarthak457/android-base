@@ -12,7 +12,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.setThemed
 import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppTheme
@@ -26,7 +26,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK])
+@Config(sdk = [TestSdk])
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class RowHighlightTest {
 

@@ -10,8 +10,8 @@ internal object FilledGlyphs {
         stroke { moveTo(3.5f, 10.4f); lineTo(12f, 3.4f); lineTo(20.5f, 10.4f); lineTo(20.5f, 20.4f); lineTo(3.5f, 20.4f); close() }
     }
     val SearchFilled by icon("SearchFilled") {
-        stroke(BOLD_STROKE_WIDTH) { circle(10.5f, 10.5f, 6.4f) }
-        stroke(BOLD_STROKE_WIDTH) { moveTo(15.4f, 15.4f); lineTo(20.3f, 20.3f) }
+        stroke(BoldStrokeWidth) { circle(10.5f, 10.5f, 6.4f) }
+        stroke(BoldStrokeWidth) { moveTo(15.4f, 15.4f); lineTo(20.3f, 20.3f) }
     }
     val UserFilled by icon("UserFilled") {
         fill { circle(12f, 8f, 4.4f) }
@@ -137,7 +137,7 @@ internal object FilledGlyphs {
         }
     }
     val ListViewFilled by icon("ListViewFilled") {
-        stroke(BOLD_STROKE_WIDTH) { moveTo(9f, 6.5f); lineTo(20f, 6.5f); moveTo(9f, 12f); lineTo(20f, 12f); moveTo(9f, 17.5f); lineTo(20f, 17.5f) }
+        stroke(BoldStrokeWidth) { moveTo(9f, 6.5f); lineTo(20f, 6.5f); moveTo(9f, 12f); lineTo(20f, 12f); moveTo(9f, 17.5f); lineTo(20f, 17.5f) }
         fill { circle(4.6f, 6.5f, 1.7f); circle(4.6f, 12f, 1.7f); circle(4.6f, 17.5f, 1.7f) }
     }
     val CalendarFilled by icon("CalendarFilled") {
@@ -211,9 +211,9 @@ internal object FilledGlyphs {
         }
     }
     val GlobeFilled by icon("GlobeFilled") {
-        stroke(BOLD_STROKE_WIDTH) { circle(12f, 12f, 8.8f) }
-        stroke(BOLD_STROKE_WIDTH) { moveTo(3.2f, 12f); lineTo(20.8f, 12f) }
-        stroke(BOLD_STROKE_WIDTH) {
+        stroke(BoldStrokeWidth) { circle(12f, 12f, 8.8f) }
+        stroke(BoldStrokeWidth) { moveTo(3.2f, 12f); lineTo(20.8f, 12f) }
+        stroke(BoldStrokeWidth) {
             moveTo(12f, 3.2f)
             curveTo(14.4f, 5.6f, 15.6f, 8.8f, 15.6f, 12f)
             curveTo(15.6f, 15.2f, 14.4f, 18.4f, 12f, 20.8f)

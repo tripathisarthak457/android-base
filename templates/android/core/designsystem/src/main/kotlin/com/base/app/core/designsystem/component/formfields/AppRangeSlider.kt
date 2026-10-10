@@ -65,12 +65,12 @@ fun AppRangeSlider(
     val colors = AppTheme.colors
     val haptics = rememberAppHaptics()
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    val thumbInsetPx = with(LocalDensity.current) { THUMB_RADIUS_DRAGGED.dp.toPx() }
+    val thumbInsetPx = with(LocalDensity.current) { ThumbRadiusDragged.dp.toPx() }
     val touchTargetPx = with(LocalDensity.current) { AppTheme.sizes.minTouchTarget.toPx() }
 
     var trackWidth by remember { mutableFloatStateOf(0f) }
-    // Which thumb a finger is on: START, END, or NONE between gestures.
-    var dragging by remember { mutableIntStateOf(NONE) }
+    // Which thumb a finger is on: StartThumb, EndThumb, or NoThumb between gestures.
+    var dragging by remember { mutableIntStateOf(NoThumb) }
     var lastSnapped by remember { mutableFloatStateOf(Float.NaN) }
     val current by rememberUpdatedState(value)
     val currentOnValueChange by rememberUpdatedState(onValueChange)
@@ -93,7 +93,7 @@ fun AppRangeSlider(
         val moved = valueRange.start + snapped * span
         val now = current
         currentOnValueChange(
-            if (thumb == START) {
+            if (thumb == StartThumb) {
                 moved.coerceAtMost(now.endInclusive)..now.endInclusive
             } else {
                 now.start..moved.coerceAtLeast(now.start)
@@ -113,12 +113,12 @@ fun AppRangeSlider(
     val startFraction = fractionOf(value.start)
     val endFraction = fractionOf(value.endInclusive)
     val startRadius by animateFloatAsState(
-        targetValue = if (dragging == START) THUMB_RADIUS_DRAGGED else THUMB_RADIUS,
+        targetValue = if (dragging == StartThumb) ThumbRadiusDragged else ThumbRadius,
         animationSpec = AppTheme.springs.press.unit,
         label = "startThumb",
     )
     val endRadius by animateFloatAsState(
-        targetValue = if (dragging == END) THUMB_RADIUS_DRAGGED else THUMB_RADIUS,
+        targetValue = if (dragging == EndThumb) ThumbRadiusDragged else ThumbRadius,
         animationSpec = AppTheme.springs.press.unit,
         label = "endThumb",
     )
@@ -137,10 +137,10 @@ fun AppRangeSlider(
                     val start = fractionOf(current.start)
                     val end = fractionOf(current.endInclusive)
                     val thumb = when {
-                        at <= start -> START
-                        at >= end -> END
-                        at - start < end - at -> START
-                        else -> END
+                        at <= start -> StartThumb
+                        at >= end -> EndThumb
+                        at - start < end - at -> StartThumb
+                        else -> EndThumb
                     }
                     dragging = thumb
                     move(thumb, at)
@@ -148,13 +148,13 @@ fun AppRangeSlider(
                         move(thumb, fractionAt(change.position.x))
                         change.consume()
                     }
-                    dragging = NONE
+                    dragging = NoThumb
                     currentOnFinished?.invoke()
                 }
             }
             .drawBehind {
                 val centerY = size.height / 2f
-                val trackHeight = TRACK_HEIGHT.toPx()
+                val trackHeight = TrackHeight.toPx()
                 val radius = CornerRadius(trackHeight / 2f)
                 val startX = thumbX(startFraction)
                 val endX = thumbX(endFraction)
@@ -184,7 +184,7 @@ fun AppRangeSlider(
             centerX = { thumbX(startFraction) },
             touchTargetPx = touchTargetPx,
             onSet = { target ->
-                move(START, fractionOf(target))
+                move(StartThumb, fractionOf(target))
                 currentOnFinished?.invoke()
             },
         )
@@ -197,7 +197,7 @@ fun AppRangeSlider(
             centerX = { thumbX(endFraction) },
             touchTargetPx = touchTargetPx,
             onSet = { target ->
-                move(END, fractionOf(target))
+                move(EndThumb, fractionOf(target))
                 currentOnFinished?.invoke()
             },
         )
@@ -238,9 +238,9 @@ private fun DrawScope.drawThumb(center: Offset, radius: Float, fill: Color, ring
     drawCircle(color = ring, radius = radius.dp.toPx(), center = center, style = Stroke(width = 2.5.dp.toPx()))
 }
 
-private const val NONE = -1
-private const val START = 0
-private const val END = 1
-private const val THUMB_RADIUS = 10f
-private const val THUMB_RADIUS_DRAGGED = 12f
-private val TRACK_HEIGHT = 6.dp
+private const val NoThumb = -1
+private const val StartThumb = 0
+private const val EndThumb = 1
+private const val ThumbRadius = 10f
+private const val ThumbRadiusDragged = 12f
+private val TrackHeight = 6.dp

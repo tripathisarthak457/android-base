@@ -20,7 +20,7 @@ import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.withKeyDown
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.foundation.adaptive.InputTraits
 import com.base.app.core.designsystem.setThemed
@@ -36,7 +36,7 @@ import org.robolectric.annotation.Config
 /** Mouse and keyboard on a control: ADAPTIVE-PLAN 9.2. */
 @OptIn(ExperimentalTestApi::class)
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK])
+@Config(sdk = [TestSdk])
 class InputTest {
 
     @get:Rule

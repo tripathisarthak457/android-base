@@ -17,7 +17,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performMouseInput
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.setThemed
@@ -30,7 +30,7 @@ import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalTestApi::class)
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK], qualifiers = "w411dp-h891dp")
+@Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
 class ContextMenuTest {
 
     @get:Rule

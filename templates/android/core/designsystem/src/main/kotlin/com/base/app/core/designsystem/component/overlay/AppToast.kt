@@ -71,7 +71,7 @@ class ToastMessage(
     val tone: AppTone = AppTone.Neutral,
     val actionLabel: String? = null,
     val onAction: (() -> Unit)? = null,
-    val durationMillis: Long = if (actionLabel != null) ACTION_DURATION else DEFAULT_DURATION,
+    val durationMillis: Long = if (actionLabel != null) ActionDuration else DefaultDuration,
     val hud: Boolean = false,
 ) {
     /** The same message, shown again: it restarts the one on screen rather than queueing a copy. */
@@ -79,8 +79,8 @@ class ToastMessage(
         text == other.text && title == other.title && tone == other.tone && actionLabel == other.actionLabel && hud == other.hud
 
     private companion object {
-        const val DEFAULT_DURATION = 2_500L
-        const val ACTION_DURATION = 4_500L
+        const val DefaultDuration = 2_500L
+        const val ActionDuration = 4_500L
     }
 }
 

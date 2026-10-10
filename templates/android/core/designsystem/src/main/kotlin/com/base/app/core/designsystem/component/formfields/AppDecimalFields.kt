@@ -109,7 +109,7 @@ fun AppMoneyField(
         error = error,
         enabled = enabled,
         maxDecimals = digits,
-        maxIntegerDigits = MONEY_INTEGER_DIGITS,
+        maxIntegerDigits = MoneyIntegerDigits,
         prefix = currency.getSymbol(locale),
         imeAction = imeAction,
     )
@@ -122,28 +122,28 @@ object DecimalInput {
      * locale's [decimalSeparator] (a `,` in German) is stored as `.`; anything else that is not a
      * digit is dropped, so a pasted "1,234.50" lands as "1234.50"; a second point is refused.
      */
-    fun accept(candidate: String, maxDecimals: Int, maxIntegerDigits: Int, decimalSeparator: Char = POINT): String? {
+    fun accept(candidate: String, maxDecimals: Int, maxIntegerDigits: Int, decimalSeparator: Char = DecimalPoint): String? {
         val cleaned = buildString {
             candidate.forEach { c ->
                 when {
                     c.isDigit() -> append(c)
-                    c == POINT || c == decimalSeparator -> append(POINT)
+                    c == DecimalPoint || c == decimalSeparator -> append(DecimalPoint)
                 }
             }
         }
-        if (cleaned.count { it == POINT } > 1) return null
-        if (maxDecimals == 0 && POINT in cleaned) return null
-        val whole = cleaned.substringBefore(POINT)
-        val fraction = cleaned.substringAfter(POINT, "")
+        if (cleaned.count { it == DecimalPoint } > 1) return null
+        if (maxDecimals == 0 && DecimalPoint in cleaned) return null
+        val whole = cleaned.substringBefore(DecimalPoint)
+        val fraction = cleaned.substringAfter(DecimalPoint, "")
         if (whole.length > maxIntegerDigits || fraction.length > maxDecimals) return null
         return cleaned
     }
 
     /** `"99.5"` with 2 digits is 9950; null for an empty or point-only field. */
     fun toMinor(text: String, digits: Int): Long? {
-        if (text.isEmpty() || text == POINT.toString()) return null
-        val whole = text.substringBefore(POINT).ifEmpty { "0" }.toLongOrNull() ?: return null
-        val fraction = text.substringAfter(POINT, "").padEnd(digits, '0').take(digits).ifEmpty { "0" }.toLongOrNull() ?: return null
+        if (text.isEmpty() || text == DecimalPoint.toString()) return null
+        val whole = text.substringBefore(DecimalPoint).ifEmpty { "0" }.toLongOrNull() ?: return null
+        val fraction = text.substringAfter(DecimalPoint, "").padEnd(digits, '0').take(digits).ifEmpty { "0" }.toLongOrNull() ?: return null
         return whole * pow10(digits) + fraction
     }
 
@@ -152,16 +152,16 @@ object DecimalInput {
         val unit = pow10(digits)
         val whole = minor / unit
         val rest = minor % unit
-        return if (rest == 0L) whole.toString() else whole.toString() + POINT + rest.toString().padStart(digits, '0')
+        return if (rest == 0L) whole.toString() else whole.toString() + DecimalPoint + rest.toString().padStart(digits, '0')
     }
 
     /** Where grouping separators go in a whole part of [length] digits: every three from the right. */
-    fun groupingPositions(length: Int): List<Int> = (length - GROUP downTo 1 step GROUP).toList()
+    fun groupingPositions(length: Int): List<Int> = (length - GroupSize downTo 1 step GroupSize).toList()
 
     private fun pow10(digits: Int): Long = (1..digits).fold(1L) { acc, _ -> acc * 10 }
 
-    internal const val POINT = '.'
-    private const val GROUP = 3
+    internal const val DecimalPoint = '.'
+    private const val GroupSize = 3
 }
 
 private class DecimalInputTransformation(
@@ -184,8 +184,8 @@ private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean)
 
     override fun TextFieldBuffer.transformOutput() {
         val text = asCharSequence().toString()
-        val point = text.indexOf(DecimalInput.POINT)
-        if (point >= 0 && symbols.decimalSeparator != DecimalInput.POINT) {
+        val point = text.indexOf(DecimalInput.Point)
+        if (point >= 0 && symbols.decimalSeparator != DecimalInput.Point) {
             replace(point, point + 1, symbols.decimalSeparator.toString())
         }
         if (!grouping) return
@@ -195,4 +195,4 @@ private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean)
     }
 }
 
-private const val MONEY_INTEGER_DIGITS = 12
+private const val MoneyIntegerDigits = 12

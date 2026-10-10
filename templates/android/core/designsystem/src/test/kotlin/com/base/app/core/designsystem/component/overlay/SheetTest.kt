@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -26,7 +26,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 // A phone held upright: tall enough for both detents, too narrow for a form sheet.
-@Config(sdk = [TEST_SDK], qualifiers = "w411dp-h891dp")
+@Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
 class SheetTest {
 
     @get:Rule

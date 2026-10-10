@@ -97,7 +97,7 @@ fun AppAvatarGroup(
         },
     ) { measurables, constraints ->
         val placeables = measurables.map { it.measure(constraints.copy(minWidth = 0, minHeight = 0)) }
-        val step = (size * OVERLAP_STEP).roundToPx()
+        val step = (size * OverlapStep).roundToPx()
         val width = if (placeables.isEmpty()) 0 else step * (placeables.size - 1) + placeables.last().width
         val height = placeables.maxOfOrNull { it.height } ?: 0
         layout(width, height) {
@@ -138,6 +138,6 @@ private fun avatarTint(name: String, colors: AppColors): Color {
     return if (colors.isLight) subtle else lerp(colors.surface, base, DarkTintFraction)
 }
 
-private const val OVERLAP_STEP = 0.7f
+private const val OverlapStep = 0.7f
 private const val InitialsFraction = 0.4f
 private const val DarkTintFraction = 0.42f

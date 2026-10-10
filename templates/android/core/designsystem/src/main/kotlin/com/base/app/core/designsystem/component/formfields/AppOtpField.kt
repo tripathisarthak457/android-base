@@ -152,7 +152,7 @@ private fun Caret() {
         rememberInfiniteTransition(label = "otpCaret").animateFloat(
             initialValue = 1f,
             targetValue = 0f,
-            animationSpec = infiniteRepeatable(tween(CARET_MILLIS, easing = LinearEasing), RepeatMode.Reverse),
+            animationSpec = infiniteRepeatable(tween(CaretMillis, easing = LinearEasing), RepeatMode.Reverse),
             label = "otpCaretAlpha",
         )
     } else {
@@ -168,4 +168,4 @@ private fun Caret() {
 }
 
 private val BoxHeight = 48.dp
-private const val CARET_MILLIS = 550
+private const val CaretMillis = 550

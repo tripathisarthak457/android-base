@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
-import com.base.app.core.designsystem.component.feedback.ACTIVITY_SPOKES
+import com.base.app.core.designsystem.component.feedback.ActivitySpokes
 import com.base.app.core.designsystem.component.feedback.drawActivitySpokes
 import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
@@ -283,7 +283,7 @@ private class PullToRefreshNode(
     private fun slope(): Float {
         if (raw <= linear) return 1f
         val range = (viewport - linear).coerceAtLeast(1f)
-        return RESISTANCE * (1f - (gap - linear) / range).coerceAtLeast(0f).pow(2)
+        return Resistance * (1f - (gap - linear) / range).coerceAtLeast(0f).pow(2)
     }
 
     private fun activate() {
@@ -303,7 +303,7 @@ private class PullToRefreshNode(
         finish?.cancel()
         finish = coroutineScope.launch {
             val shown = SystemClock.uptimeMillis() - activeSince
-            if (shown < MIN_VISIBLE_MILLIS) delay(MIN_VISIBLE_MILLIS - shown)
+            if (shown < MinVisibleMillis) delay(MinVisibleMillis - shown)
             if (refreshing) return@launch
             active = false
             retracting = true
@@ -330,9 +330,9 @@ private class PullToRefreshNode(
         spin = coroutineScope.launch {
             // iOS steps the spinner rather than turning it, so it redraws eight times a turn, not every frame.
             while (isActive) {
-                val step = if (currentValueOf(LocalReduceMotion).value) SPIN_STEP_MILLIS * 2 else SPIN_STEP_MILLIS
+                val step = if (currentValueOf(LocalReduceMotion).value) SpinStepMillis * 2 else SpinStepMillis
                 delay(step)
-                head = (head + 1) % ACTIVITY_SPOKES
+                head = (head + 1) % ActivitySpokes
                 invalidateDraw()
             }
         }
@@ -377,8 +377,8 @@ private class PullToRefreshNode(
                     radius = if (retracting) radius * (shown / rest).coerceIn(0f, 1f) else radius,
                     color = spokeColor(),
                     head = if (spinning) head else null,
-                    revealed = if (spinning) ACTIVITY_SPOKES else ceil(ACTIVITY_SPOKES * pulled).toInt(),
-                    alpha = if (spinning) 1f else FastOutSlowInEasing.transform((pulled / FADE_IN_FRACTION).coerceAtMost(1f)),
+                    revealed = if (spinning) ActivitySpokes else ceil(ActivitySpokes * pulled).toInt(),
+                    alpha = if (spinning) 1f else FastOutSlowInEasing.transform((pulled / FadeInFraction).coerceAtMost(1f)),
                 )
             }
         }
@@ -405,21 +405,21 @@ private class PullToRefreshNode(
 /** iOS's rubber band: `y = c·x·d / (d + c·x)`, so the further it is pulled the less it gives. */
 private fun rubberBand(travel: Float, range: Float): Float {
     val d = range.coerceAtLeast(1f)
-    return travel * RESISTANCE * d / (d + travel * RESISTANCE)
+    return travel * Resistance * d / (d + travel * Resistance)
 }
 
 private fun rubberBandInverse(visible: Float, range: Float): Float {
     val d = range.coerceAtLeast(1f)
     val y = visible.coerceAtMost(d * 0.999f)
-    return d * y / (RESISTANCE * (d - y))
+    return d * y / (Resistance * (d - y))
 }
 
-private const val RESISTANCE = 0.55f
-private const val SPIN_STEP_MILLIS = 125L
-private const val MIN_VISIBLE_MILLIS = 400L
+private const val Resistance = 0.55f
+private const val SpinStepMillis = 125L
+private const val MinVisibleMillis = 400L
 
 /** The spinner fades in over the first part of the pull, then the spokes alone show progress. */
-private const val FADE_IN_FRACTION = 0.35f
+private const val FadeInFraction = 0.35f
 private val Trigger = 100.dp
 private val Rest = 60.dp
 private val SpinnerRadius = 14.dp

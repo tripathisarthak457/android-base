@@ -50,12 +50,12 @@ fun AppActivityIndicator(
 ) {
     var head by remember { mutableIntStateOf(0) }
     val visible = LocalTabVisible.current
-    val step = if (AppTheme.reduceMotion) STEP_MILLIS * 2 else STEP_MILLIS
+    val step = if (AppTheme.reduceMotion) StepMillis * 2 else StepMillis
     if (visible) {
         LaunchedEffect(step) {
             while (true) {
                 delay(step)
-                head = (head + 1) % ACTIVITY_SPOKES
+                head = (head + 1) % ActivitySpokes
             }
         }
     }
@@ -81,13 +81,13 @@ internal fun DrawScope.drawActivitySpokes(
     radius: Float,
     color: Color,
     head: Int?,
-    revealed: Int = ACTIVITY_SPOKES,
+    revealed: Int = ActivitySpokes,
     alpha: Float = 1f,
 ) {
     val width = radius / 5f
-    for (i in 0 until revealed.coerceAtMost(ACTIVITY_SPOKES)) {
-        val spokeAlpha = if (head == null) SpokeAlphas[0] else SpokeAlphas[(head - i).mod(ACTIVITY_SPOKES)]
-        rotate(degrees = i * 360f / ACTIVITY_SPOKES, pivot = center) {
+    for (i in 0 until revealed.coerceAtMost(ActivitySpokes)) {
+        val spokeAlpha = if (head == null) SpokeAlphas[0] else SpokeAlphas[(head - i).mod(ActivitySpokes)]
+        rotate(degrees = i * 360f / ActivitySpokes, pivot = center) {
             drawLine(
                 color = color,
                 start = Offset(center.x, center.y - radius / 3f - width / 2f),
@@ -100,7 +100,7 @@ internal fun DrawScope.drawActivitySpokes(
     }
 }
 
-internal const val ACTIVITY_SPOKES = 8
+internal const val ActivitySpokes = 8
 
 /** Newest to oldest, as iOS fades the trail behind the brightest spoke. */
 private val SpokeAlphas = floatArrayOf(147f, 122f, 97f, 72f, 47f, 47f, 47f, 47f).map { it / 255f }.toFloatArray()
@@ -136,4 +136,4 @@ fun AppLinearProgress(
 }
 
 private const val AnnouncedSteps = 20f
-private const val STEP_MILLIS = 125L
+private const val StepMillis = 125L

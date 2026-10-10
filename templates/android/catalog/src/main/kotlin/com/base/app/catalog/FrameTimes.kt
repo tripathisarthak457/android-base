@@ -33,7 +33,7 @@ class FrameTimes(private val activity: Activity) {
         private set
 
     private val main = Handler(Looper.getMainLooper())
-    private val durations = LongArray(WINDOW)
+    private val durations = LongArray(WindowFrames)
     private var count = 0
     private var sinceShown = 0
     private val budgetNanos = (1_000_000_000L / refreshRate(activity)).toLong()
@@ -52,14 +52,14 @@ class FrameTimes(private val activity: Activity) {
 
     private fun record(metrics: FrameMetrics) {
         if (metrics.getMetric(FrameMetrics.FIRST_DRAW_FRAME) == 1L) return
-        durations[count % WINDOW] = metrics.getMetric(FrameMetrics.TOTAL_DURATION)
+        durations[count % WindowFrames] = metrics.getMetric(FrameMetrics.TOTAL_DURATION)
         count++
         sinceShown++
-        if (sinceShown < MIN_NEW_FRAMES) return
+        if (sinceShown < MinNewFrames) return
         sinceShown = 0
-        val recent = durations.take(minOf(count, WINDOW)).sorted()
-        val p50 = recent[recent.size / 2] / NANOS_PER_MILLI
-        val p90 = recent[(recent.size * 9) / 10] / NANOS_PER_MILLI
+        val recent = durations.take(minOf(count, WindowFrames)).sorted()
+        val p50 = recent[recent.size / 2] / NanosPerMilli
+        val p90 = recent[(recent.size * 9) / 10] / NanosPerMilli
         val missed = recent.count { it > budgetNanos } * 100f / recent.size
         val text = "%.1f / %.1f ms  %.0f%%".format(p50, p90, missed)
         main.post { summary = text }
@@ -68,16 +68,16 @@ class FrameTimes(private val activity: Activity) {
     private companion object {
         fun refreshRate(activity: Activity): Float =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                activity.display?.refreshRate ?: DEFAULT_RATE
+                activity.display?.refreshRate ?: DefaultRate
             } else {
                 @Suppress("DEPRECATION")
                 activity.windowManager.defaultDisplay.refreshRate
             }
 
-        const val DEFAULT_RATE = 60f
-        const val WINDOW = 240
-        const val MIN_NEW_FRAMES = 20
-        const val NANOS_PER_MILLI = 1_000_000.0
+        const val DefaultRate = 60f
+        const val WindowFrames = 240
+        const val MinNewFrames = 20
+        const val NanosPerMilli = 1_000_000.0
     }
 }
 

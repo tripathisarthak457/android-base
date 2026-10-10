@@ -122,7 +122,7 @@ fun AppPhoneField(
             helper = helper,
             error = error,
             enabled = enabled,
-            maxLength = MAX_NUMBER_LENGTH,
+            maxLength = MaxNumberLength,
             inputTransformation = DigitsOnly,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Done),
         )
@@ -138,4 +138,4 @@ val DigitsOnly = InputTransformation {
 val DefaultDialCodes: List<String> = listOf("+1", "+44", "+61", "+65", "+91", "+971")
 
 private val DialCodeWidth = 108.dp
-private const val MAX_NUMBER_LENGTH = 15
+private const val MaxNumberLength = 15

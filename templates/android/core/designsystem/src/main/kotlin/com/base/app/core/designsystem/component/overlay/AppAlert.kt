@@ -93,7 +93,7 @@ fun AppAlert(
                         // Arrives from larger as it fades in, as iOS's does; leaves by fading alone.
                         // The layer is the card's size, so its alpha costs a card, not a screen.
                         val p = shown.value
-                        val scale = if (state.targetState) 1f + (1f - p) * ENTER_SCALE else 1f
+                        val scale = if (state.targetState) 1f + (1f - p) * EnterScale else 1f
                         scaleX = scale
                         scaleY = scale
                         alpha = p.coerceIn(0f, 1f)
@@ -155,4 +155,4 @@ private fun AlertAction(label: String, color: Color, bold: Boolean, onClick: () 
 
 private val AlertWidth = 300.dp
 private val ActionHeight = 44.dp
-private const val ENTER_SCALE = 0.3f
+private const val EnterScale = 0.3f

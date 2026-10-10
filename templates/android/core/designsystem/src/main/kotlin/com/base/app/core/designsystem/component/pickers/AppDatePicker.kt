@@ -70,8 +70,8 @@ fun AppDatePicker(
     val haptics = rememberAppHaptics()
     val scope = rememberCoroutineScope()
     val anchor = remember { YearMonth.from(selectedDate ?: today) }
-    val pager = rememberPagerState(initialPage = MONTHS_EACH_WAY) { MONTHS_EACH_WAY * 2 + 1 }
-    val month = anchor.plusMonths((pager.currentPage - MONTHS_EACH_WAY).toLong())
+    val pager = rememberPagerState(initialPage = MonthsEachWay) { MonthsEachWay * 2 + 1 }
+    val month = anchor.plusMonths((pager.currentPage - MonthsEachWay).toLong())
     val firstDayOfWeek = remember(locale) { WeekFields.of(locale).firstDayOfWeek }
     val weekdays = remember(firstDayOfWeek, locale) {
         (0..6).map { firstDayOfWeek.plus(it.toLong()).getDisplayName(TextStyle.NARROW, locale) }
@@ -120,7 +120,7 @@ fun AppDatePicker(
             flingBehavior = AppScrollDefaults.pagerFlingBehavior(pager),
         ) { page ->
             MonthGrid(
-                month = anchor.plusMonths((page - MONTHS_EACH_WAY).toLong()),
+                month = anchor.plusMonths((page - MonthsEachWay).toLong()),
                 firstDayOfWeek = firstDayOfWeek,
                 today = today,
                 selectedDate = selectedDate,
@@ -197,14 +197,14 @@ private fun MonthGrid(
 ) {
     // Blank cells before the 1st. Adding 7 before the modulo keeps it non-negative for every
     // locale's first day, which a bare subtraction does not.
-    val leadingBlanks = (month.atDay(1).dayOfWeek.value - firstDayOfWeek.value + DAYS_IN_WEEK) % DAYS_IN_WEEK
+    val leadingBlanks = (month.atDay(1).dayOfWeek.value - firstDayOfWeek.value + DaysInWeek) % DaysInWeek
     val dayCount = month.lengthOfMonth()
     // Always six rows, so a month with five does not make the pager's height jump.
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        repeat(MAX_ROWS) { row ->
+        repeat(MaxRows) { row ->
             Row(modifier = Modifier.fillMaxWidth()) {
-                repeat(DAYS_IN_WEEK) { column ->
-                    val day = row * DAYS_IN_WEEK + column - leadingBlanks + 1
+                repeat(DaysInWeek) { column ->
+                    val day = row * DaysInWeek + column - leadingBlanks + 1
                     Box(modifier = Modifier.weight(1f).aspectRatio(1f), contentAlignment = Alignment.Center) {
                         if (day in 1..dayCount) {
                             val date = month.atDay(day)
@@ -262,8 +262,8 @@ private fun DayCell(
     }
 }
 
-private const val DAYS_IN_WEEK = 7
-private const val MAX_ROWS = 6
+private const val DaysInWeek = 7
+private const val MaxRows = 6
 
 /** How far the calendar pages either way from the month it opened on: a century. */
-private const val MONTHS_EACH_WAY = 1200
+private const val MonthsEachWay = 1200

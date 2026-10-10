@@ -12,7 +12,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.setThemed
@@ -25,7 +25,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK], qualifiers = "w411dp-h891dp")
+@Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
 class LargeTitleTopBarTest {
 
     @get:Rule

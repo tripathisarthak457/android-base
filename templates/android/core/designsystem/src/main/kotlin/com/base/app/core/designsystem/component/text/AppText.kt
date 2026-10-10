@@ -167,11 +167,11 @@ fun AppFiguresText(
         text = text,
         modifier = modifier,
         color = color,
-        style = style.copy(fontFeatureSettings = TABULAR_FIGURES),
+        style = style.copy(fontFeatureSettings = TabularFigures),
         textAlign = textAlign,
         maxLines = maxLines,
         overflow = overflow,
     )
 }
 
-internal const val TABULAR_FIGURES = "tnum"
+internal const val TabularFigures = "tnum"

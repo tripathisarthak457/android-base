@@ -48,8 +48,8 @@ fun Modifier.edgeProtection(
 /** Opaque under the chrome, a trace of content at its edge, clear by the end of the tail. */
 private fun protection(color: Color, edge: Float, end: Float, startY: Float, endY: Float): Brush = Brush.verticalGradient(
     0f to color,
-    edge * FADE_FROM / end to color,
-    edge / end to color.copy(alpha = color.alpha * (1f - TRACE_ALPHA)),
+    edge * FadeFrom / end to color,
+    edge / end to color.copy(alpha = color.alpha * (1f - TraceAlpha)),
     1f to color.copy(alpha = 0f),
     startY = startY,
     endY = endY,
@@ -75,8 +75,8 @@ fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
     val strip = obtainGraphicsLayer().apply { compositingStrategy = CompositingStrategy.Offscreen }
     val mask = Brush.verticalGradient(
         0f to Color.Transparent,
-        edgePx * FADE_FROM / end to Color.Transparent,
-        edgePx / end to Color.Black.copy(alpha = TRACE_ALPHA),
+        edgePx * FadeFrom / end to Color.Transparent,
+        edgePx / end to Color.Black.copy(alpha = TraceAlpha),
         1f to Color.Black,
         endY = end,
     )
@@ -95,5 +95,5 @@ fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
 private val FadeTail = 32.dp
 
 // Content starts to show this far down the bar, and only faintly by its end.
-private const val FADE_FROM = 0.7f
-private const val TRACE_ALPHA = 0.12f
+private const val FadeFrom = 0.7f
+private const val TraceAlpha = 0.12f

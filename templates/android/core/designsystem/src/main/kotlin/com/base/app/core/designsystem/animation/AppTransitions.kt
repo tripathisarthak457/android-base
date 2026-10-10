@@ -81,14 +81,14 @@ class AppTransitions internal constructor(
         get() = if (reduceMotion) {
             EnterTransition.None
         } else {
-            scaleIn(springs.emphasis.unit, initialScale = POP_SCALE) + fadeIn(tween(springs.fadeQuick))
+            scaleIn(springs.emphasis.unit, initialScale = PopScale) + fadeIn(tween(springs.fadeQuick))
         }
 
     val popOut: ExitTransition
         get() = if (reduceMotion) {
             ExitTransition.None
         } else {
-            scaleOut(springs.press.unit, targetScale = POP_SCALE) + fadeOut(tween(springs.fadeQuick))
+            scaleOut(springs.press.unit, targetScale = PopScale) + fadeOut(tween(springs.fadeQuick))
         }
 
     /** A lateral move inside one screen: step 2 of a form replacing step 1. */
@@ -107,7 +107,7 @@ class AppTransitions internal constructor(
         }
 }
 
-private const val POP_SCALE = 0.85f
+private const val PopScale = 0.85f
 
 /** The transition set for the current theme and accessibility settings. */
 @Composable
@@ -217,7 +217,7 @@ private fun rememberAppearProgress(
 fun Modifier.busyOverlay(busy: Boolean): Modifier {
     if (!busy) return this
     return this
-        .alpha(BUSY_ALPHA)
+        .alpha(BusyAlpha)
         .semantics { disabled() }
         .pointerInput(Unit) {
             awaitPointerEventScope {
@@ -228,4 +228,4 @@ fun Modifier.busyOverlay(busy: Boolean): Modifier {
         }
 }
 
-private const val BUSY_ALPHA = 0.4f
+private const val BusyAlpha = 0.4f

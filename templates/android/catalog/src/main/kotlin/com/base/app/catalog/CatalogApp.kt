@@ -101,7 +101,7 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
                     label = "catalogPage",
                 ) { current ->
                     Box(Modifier.fillMaxSize().background(AppTheme.colors.background)) {
-                        saved.SaveableStateProvider(current?.name ?: INDEX_KEY) {
+                        saved.SaveableStateProvider(current?.name ?: IndexKey) {
                             if (current == null) index() else SectionPage(current, onBack = { section = null })
                         }
                     }
@@ -206,4 +206,4 @@ private fun EnvironmentBar(environment: CatalogEnvironment, onChange: (CatalogEn
 }
 
 private val GroupMinWidth = 340.dp
-private const val INDEX_KEY = "index"
+private const val IndexKey = "index"

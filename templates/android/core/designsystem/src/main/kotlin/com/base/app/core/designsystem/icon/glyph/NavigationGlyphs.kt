@@ -41,7 +41,7 @@ internal object NavigationGlyphs {
     }
     val ListView by icon("ListView") {
         stroke { moveTo(8.5f, 6.5f); lineTo(20f, 6.5f); moveTo(8.5f, 12f); lineTo(20f, 12f); moveTo(8.5f, 17.5f); lineTo(20f, 17.5f) }
-        stroke(DOT_WIDTH) { dot(4.5f, 6.5f); dot(4.5f, 12f); dot(4.5f, 17.5f) }
+        stroke(DotWidth) { dot(4.5f, 6.5f); dot(4.5f, 12f); dot(4.5f, 17.5f) }
     }
     val Search by icon("Search") {
         stroke { circle(10.5f, 10.5f, 6.6f) }

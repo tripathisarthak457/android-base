@@ -183,7 +183,7 @@ class AppSheetState @RememberInComposition constructor(
         overshoot = 0f
         // The stop nearest to where the release would coast, as iOS picks a detent: a flick carries
         // the sheet a stop further, a slow release lands where it was let go.
-        val projected = offset + velocity * PROJECTION_SECONDS
+        val projected = offset + velocity * ProjectionSeconds
         val stops = detents.map { a.offsetOf(it) } + a.hidden
         val target = stops.minBy { abs(it - projected) }
         if (target == a.hidden) {
@@ -215,7 +215,7 @@ class AppSheetState @RememberInComposition constructor(
 
     private companion object {
         /** iOS's paging deceleration (0.99 per ms) coasts `v · 0.99 / (1 − 0.99) / 1000` px: 0.099 s of `v`. */
-        const val PROJECTION_SECONDS = 0.099f
+        const val ProjectionSeconds = 0.099f
     }
 }
 

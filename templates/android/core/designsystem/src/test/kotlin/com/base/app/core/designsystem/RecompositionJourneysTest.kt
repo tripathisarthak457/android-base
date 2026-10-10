@@ -52,7 +52,7 @@ import org.robolectric.annotation.Config
  * took, or something recomposes every frame.
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK], qualifiers = "w411dp-h891dp")
+@Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
 class RecompositionJourneysTest {
 
     @get:Rule

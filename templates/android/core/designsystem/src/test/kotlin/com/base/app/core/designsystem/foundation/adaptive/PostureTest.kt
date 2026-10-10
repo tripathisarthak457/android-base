@@ -9,7 +9,7 @@ import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.TEST_SDK
+import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.collections.AppImageViewer
 import com.base.app.core.designsystem.component.overlay.AppSheet
 import com.base.app.core.designsystem.theme.AppTheme
@@ -23,7 +23,7 @@ import org.robolectric.annotation.Config
 
 /** A half-open foldable: ADAPTIVE-PLAN 7. At mdpi a pixel is a dp, so the hinge reads in either. */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [TEST_SDK], qualifiers = "w800dp-h840dp-mdpi")
+@Config(sdk = [TestSdk], qualifiers = "w800dp-h840dp-mdpi")
 class PostureTest {
 
     @get:Rule

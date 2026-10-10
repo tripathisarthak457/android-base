@@ -54,7 +54,7 @@ internal class ShimmerClock(private val scope: CoroutineScope) {
         if (job == null) {
             job = scope.launch {
                 while (true) {
-                    withFrameMillis { time -> progress = (time % PERIOD_MILLIS) / PERIOD_MILLIS.toFloat() }
+                    withFrameMillis { time -> progress = (time % PeriodMillis) / PeriodMillis.toFloat() }
                 }
             }
         }
@@ -69,7 +69,7 @@ internal class ShimmerClock(private val scope: CoroutineScope) {
     }
 
     private companion object {
-        const val PERIOD_MILLIS = 1_400L
+        const val PeriodMillis = 1_400L
     }
 }
 
@@ -99,7 +99,7 @@ fun AppSkeleton(
             .drawWithCache {
                 val outline = shape.createOutline(size, layoutDirection, this)
                 val clip = Path().apply { addOutline(outline) }
-                val band = size.width * BAND_FRACTION
+                val band = size.width * BandFraction
                 // Built once per size; each frame only moves it.
                 val brush = Brush.horizontalGradient(
                     0f to Color.Transparent,
@@ -155,4 +155,4 @@ fun AppSkeletonListItem(modifier: Modifier = Modifier, showLeading: Boolean = tr
     }
 }
 
-private const val BAND_FRACTION = 0.6f
+private const val BandFraction = 0.6f

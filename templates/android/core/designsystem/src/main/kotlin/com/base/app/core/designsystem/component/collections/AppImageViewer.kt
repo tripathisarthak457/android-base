@@ -109,7 +109,7 @@ fun AppImageViewer(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .drawBehind { drawRect(Color.Black, alpha = 1f - (abs(pull) / DISMISS_FADE).coerceIn(0f, MAX_FADE)) },
+            .drawBehind { drawRect(Color.Black, alpha = 1f - (abs(pull) / DismissFade).coerceIn(0f, MaxFade)) },
     ) {
         Box(
             modifier = Modifier
@@ -122,7 +122,7 @@ fun AppImageViewer(
                 )
                 .onSizeChanged { size = it }
                 .pointerInput(Unit) {
-                    detectTapGestures(onDoubleTap = { at -> settleZoom(if (scale > 1.01f) 1f else DOUBLE_TAP_ZOOM, at) })
+                    detectTapGestures(onDoubleTap = { at -> settleZoom(if (scale > 1.01f) 1f else DoubleTapZoom, at) })
                 }
                 .pointerInput(Unit) {
                     // Ctrl and the mouse wheel or a trackpad zoom about the pointer, as desktop viewers do.
@@ -131,7 +131,7 @@ fun AppImageViewer(
                             val event = awaitPointerEvent()
                             if (event.type != PointerEventType.Scroll || !event.keyboardModifiers.isCtrlPressed) continue
                             val change = event.changes.first()
-                            val target = (scale * WHEEL_ZOOM_STEP.pow(-change.scrollDelta.y)).coerceIn(1f, MAX_ZOOM)
+                            val target = (scale * WheelZoomStep.pow(-change.scrollDelta.y)).coerceIn(1f, MaxZoom)
                             val centre = Offset(size.width / 2f, size.height / 2f)
                             pan = bounded((pan - (change.position - centre)) * (target / scale) + (change.position - centre), target)
                             scale = target
@@ -151,7 +151,7 @@ fun AppImageViewer(
                             val zoomChange = event.calculateZoom()
                             val panChange = event.calculatePan()
                             if (event.changes.size > 1 || scale > 1f) {
-                                scale = (scale * zoomChange).coerceIn(1f, MAX_ZOOM)
+                                scale = (scale * zoomChange).coerceIn(1f, MaxZoom)
                                 pan = bounded(pan + panChange, scale)
                                 event.changes.forEach { if (it.positionChanged()) it.consume() }
                             } else if (panChange.y != 0f && (pulling || abs(panChange.y) > abs(panChange.x))) {
@@ -163,7 +163,7 @@ fun AppImageViewer(
                         if (pulling) {
                             // Where the flick would carry the picture, not where the finger let go.
                             val speed = velocity.calculateVelocity().y
-                            if (abs(pull + speed * PROJECTION_SECONDS) > DISMISS_DISTANCE) {
+                            if (abs(pull + speed * ProjectionSeconds) > DismissDistance) {
                                 dismiss()
                             } else {
                                 scope.launch { animate(pull, 0f, speed, springs.sheet.pixels) { value, _ -> pull = value } }
@@ -200,20 +200,20 @@ fun AppImageViewer(
                     },
                 )
                 .padding(AppTheme.spacing.sm)
-                .background(Color.Black.copy(alpha = CLOSE_BACKING_ALPHA), CircleShape),
+                .background(Color.Black.copy(alpha = CloseBackingAlpha), CircleShape),
             variant = ButtonVariant.Plain,
             colors = AppButtonDefaults.iconButtonColors(content = Color.White),
         )
     }
 }
 
-private const val MAX_ZOOM = 5f
-private const val DOUBLE_TAP_ZOOM = 2.5f
-private const val DISMISS_DISTANCE = 220f
-private const val DISMISS_FADE = 600f
-private const val MAX_FADE = 0.85f
-private const val WHEEL_ZOOM_STEP = 1.25f
-private const val CLOSE_BACKING_ALPHA = 0.5f
+private const val MaxZoom = 5f
+private const val DoubleTapZoom = 2.5f
+private const val DismissDistance = 220f
+private const val DismissFade = 600f
+private const val MaxFade = 0.85f
+private const val WheelZoomStep = 1.25f
+private const val CloseBackingAlpha = 0.5f
 
 /** How far ahead a release is projected: the distance a flick at this speed would still travel. */
-private const val PROJECTION_SECONDS = 0.1f
+private const val ProjectionSeconds = 0.1f

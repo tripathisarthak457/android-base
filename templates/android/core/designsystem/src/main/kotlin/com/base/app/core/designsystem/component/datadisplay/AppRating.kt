@@ -51,13 +51,13 @@ fun AppRating(
                     .then(tapModifier),
             ) {
                 AppIcon(
-                    imageVector = if (fill >= FULL_STAR) AppIcons.StarFilled else AppIcons.Star,
+                    imageVector = if (fill >= FullStar) AppIcons.StarFilled else AppIcons.Star,
                     contentDescription = null,
-                    tint = if (fill >= FULL_STAR) colors.warning.content else colors.outline,
+                    tint = if (fill >= FullStar) colors.warning.content else colors.outline,
                     size = starSize,
                 )
 
-                if (fill >= HALF_STAR && fill < FULL_STAR) {
+                if (fill >= HalfStar && fill < FullStar) {
                     AppIcon(
                         imageVector = AppIcons.StarFilled,
                         contentDescription = null,
@@ -74,5 +74,5 @@ fun AppRating(
 }
 
 /** Above this much of a star is filled, it reads as whole; above half, as a half. */
-private const val FULL_STAR = 0.75f
-private const val HALF_STAR = 0.25f
+private const val FullStar = 0.75f
+private const val HalfStar = 0.25f
