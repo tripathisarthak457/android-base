@@ -50,7 +50,9 @@ final class AppModel {
 
     /// Follows the settings store for as long as the window is open.
     func followSettings() async {
-        for await settings in services.settings.changes() {
+        // The stream starts with the value the window already has, and an assignment evaluates
+        // every view that reads the settings again even when nothing changed.
+        for await settings in services.settings.changes() where settings != self.settings {
             self.settings = settings
         }
     }
