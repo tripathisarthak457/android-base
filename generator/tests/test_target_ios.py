@@ -24,6 +24,7 @@ from genkit.core.spec import SpecError
 from genkit.targets import get
 from genkit.targets.ios import scaffold, tabs
 from genkit.targets.ios.target import bundle_id
+from genkit.tokens import swift
 
 try:
     import yaml
@@ -388,9 +389,11 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
         check_folders(case, project)
 
     with case.subTest(check="the tokens carry the spec's choices"):
-        emitted = (project / "Packages/Core/Sources/DesignSystem/Tokens/DesignTokens.swift").read_text(encoding="utf-8")
+        emitted = (project / swift.RELATIVE_PATH).read_text(encoding="utf-8")
         case.assertIn(f"static let designStyle = AppDesignStyle.{spec.design_style[0].lower()}{spec.design_style[1:]}\n", emitted)
         case.assertIn(f"static let motionStyle = AppMotionStyle.{spec.motion_style[0].lower()}{spec.motion_style[1:]}\n", emitted)
+        accent = (project / app / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")
+        case.assertEqual(swift.accent_colorset(tokens.resolve(spec, "ios")), accent, "the asset catalog's AccentColor")
 
     app_code = "\n".join(lex(path)[0] for path in swift_files(project / app))
     case.assertIn(f"struct {app}App: App", app_code)
@@ -633,6 +636,14 @@ class TemplateTest(unittest.TestCase):
             cases = set(re.findall(r'case \w+ = "(\w+)"', (theme / f"{enum}.swift").read_text(encoding="utf-8")))
             with self.subTest(enum=enum):
                 self.assertTrue({style[key] for style in data["styles"].values()} <= cases)
+
+    def test_the_accent_colour_is_emitted_from_the_tokens(self):
+        checked_in = (TEMPLATE / "BaseApp" / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")
+        self.assertEqual(swift.accent_colorset(tokens.resolve(None, "ios")), checked_in)
+        brand = json.loads(swift.accent_colorset(tokens.resolve(read(accent_colour="#1F7A5C")[0].spec, "ios")))
+        light = brand["colors"][0]["color"]["components"]
+        self.assertEqual(("0.122", "0.478", "0.361"), (light["red"], light["green"], light["blue"]))
+        self.assertEqual([{"appearance": "luminosity", "value": "dark"}], brand["colors"][1]["appearances"])
 
     def test_every_language_translates_exactly_the_templates_keys(self):
         from genkit.targets.ios import strings

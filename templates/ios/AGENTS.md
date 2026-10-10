@@ -37,6 +37,8 @@ Packages/Features/Sources/
   `Utils/`, `Helpers/`, `Common/`. A store sits beside its view (`SampleListStore.swift` next to
   `SampleListView.swift`). One public type per file.
 - `Tokens/DesignTokens.swift` is generated from the generator's `tokens/*.json`. Never edit it.
+  `BaseApp/Assets.xcassets/AccentColor` is generated with it: the same accent, as the app's
+  default tint for whatever the theme does not reach. A new brand colour changes both.
 
 ## Concurrency (Swift 6)
 

@@ -8,6 +8,7 @@ read from nonisolated code such as environment defaults and geometry callbacks.
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 
@@ -19,6 +20,9 @@ HEADER = (
 )
 
 RELATIVE_PATH = "Packages/Core/Sources/DesignSystem/Tokens/DesignTokens.swift"
+
+#: The asset catalog's accent colour, relative to the app target's folder.
+ACCENT_COLOR_PATH = "Assets.xcassets/AccentColor.colorset/Contents.json"
 
 #: The motion constants the SwiftUI design system reads, as (Swift name, Swift type, group and key
 #: in motion.json, divisor). Milliseconds become seconds, as SwiftUI takes them.
@@ -64,6 +68,29 @@ def emit(tokens: dict[str, Any]) -> str:
         lines.extend(f"    {line}" if line else "" for line in section)
     lines.append("}")
     return "\n".join(lines) + "\n"
+
+
+def accent_colorset(tokens: dict[str, Any]) -> str:
+    """
+    The asset catalog's `AccentColor`, in light and dark: the accent of the design style the project
+    was generated with. Xcode makes it the app's default tint, so what is drawn outside the themed
+    SwiftUI root carries the brand colour too.
+    """
+    tone = tokens["palette"]["tones"][tokens["styles"][tokens["defaults"]["designStyle"]]["surfaces"]]
+    colors = []
+    for theme in ("light", "dark"):
+        digits = tone[theme]["accent"].lstrip("#")
+        alpha, red, green, blue = (int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4, 6))
+        entry: dict[str, Any] = {}
+        if theme == "dark":
+            entry["appearances"] = [{"appearance": "luminosity", "value": "dark"}]
+        components = {"alpha": alpha, "blue": blue, "green": green, "red": red}
+        entry["color"] = {"color-space": "srgb", "components": {key: f"{value:.3f}" for key, value in components.items()}}
+        entry["idiom"] = "universal"
+        colors.append(entry)
+    catalog = {"colors": colors, "info": {"author": "xcode", "version": 1}}
+    # The layout Xcode writes asset catalogs in.
+    return json.dumps(catalog, indent=2, separators=(",", " : ")) + "\n"
 
 
 def case_name(token: str) -> str:

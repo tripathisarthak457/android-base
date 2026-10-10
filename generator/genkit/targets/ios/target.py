@@ -165,9 +165,13 @@ class IosTarget:
     def finish(self, project_dir: Path, spec: Spec, context: BuildContext) -> list[str]:
         # The template ships its token copy emitted for its own defaults; the project's carries
         # the user's brand and choices.
+        resolved = tokens.resolve(spec, "ios")
         design_tokens = project_dir / swift.RELATIVE_PATH
         if design_tokens.is_file():
-            design_tokens.write_text(swift.emit(tokens.resolve(spec, "ios")), encoding="utf-8")
+            design_tokens.write_text(swift.emit(resolved), encoding="utf-8")
+        (project_dir / spec.pascal_name / swift.ACCENT_COLOR_PATH).write_text(
+            swift.accent_colorset(resolved), encoding="utf-8"
+        )
         strings.translate(
             project_dir, spec, scaffold.user_names(spec), scaffolded=frozenset(scaffold.feature_targets(spec))
         )
