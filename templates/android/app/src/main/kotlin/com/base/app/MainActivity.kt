@@ -5,6 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.KeyboardShortcutGroup
+import android.view.Menu
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.base.app.core.datastore.AppSettings
 import com.base.app.core.datastore.AppSettingsStore
 import com.base.app.core.navigation.AppNavigator
+import com.base.app.core.navigation.AppShortcuts
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.PendingDeepLink
@@ -98,6 +102,8 @@ class MainActivity : ComponentActivity() {
 
     private val startupViewModel: StartupViewModel by viewModels()
 
+    private val shortcuts = AppShortcuts()
+
     // <opt:language>
     // Below Android 13 the app's own language is applied here, before any resource is read.
     override fun attachBaseContext(newBase: Context) {
@@ -140,6 +146,7 @@ class MainActivity : ComponentActivity() {
                 pendingDeepLink = pendingDeepLink,
                 shellConfig = shellConfigOverrides.fold(ShellConfig()) { config, override -> override.adjust(config) },
                 shellObservers = shellObservers,
+                shortcuts = shortcuts,
                 // <opt:devtools>
                 devEnvironment = devEnvironment,
                 devToolsLog = devToolsLog,
@@ -215,6 +222,15 @@ class MainActivity : ComponentActivity() {
         appLock.onHidden()
     }
     // </opt:applock>
+
+    /** Keyboard shortcuts first, whatever has focus: Ctrl+1 must work while a text field has it. */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean = shortcuts.handle(event) || super.dispatchKeyEvent(event)
+
+    /** What the system's Shortcuts Helper (Meta+/) lists for the app. */
+    override fun onProvideKeyboardShortcuts(data: MutableList<KeyboardShortcutGroup>, menu: Menu?, deviceId: Int) {
+        super.onProvideKeyboardShortcuts(data, menu, deviceId)
+        data += shortcuts.group(getString(R.string.app_name))
+    }
 
     /** singleTop: a link or a notification tapped while the app is running arrives here. */
     override fun onNewIntent(intent: Intent) {

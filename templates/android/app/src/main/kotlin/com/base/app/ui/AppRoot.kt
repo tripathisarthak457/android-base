@@ -14,6 +14,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
@@ -32,7 +33,9 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import com.base.app.core.navigation.AppNavigationHost
 import com.base.app.core.navigation.AppNavigator
+import com.base.app.core.navigation.AppShortcuts
 import com.base.app.core.navigation.AppShell
+import com.base.app.core.navigation.LocalAppShortcuts
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.OpenDeepLinks
@@ -55,6 +58,7 @@ fun AppRoot(
     pendingDeepLink: PendingDeepLink,
     shellConfig: ShellConfig,
     shellObservers: Set<ShellObserver>,
+    shortcuts: AppShortcuts,
     // <opt:devtools>
     devEnvironment: DevEnvironment,
     devToolsLog: DevToolsLog,
@@ -67,15 +71,17 @@ fun AppRoot(
         SystemBarIcons(dark = !AppTheme.colors.isLight)
         // Test tags become resource ids, which is how benchmarks and tools/perf find tabs and lists.
         Box(modifier = Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
-            EntryHost(
-                identity = startup.identity,
-                navigator = navigator,
-                registry = registry,
-                serialization = serialization,
-                pendingDeepLink = pendingDeepLink,
-                shellConfig = shellConfig,
-                shellObservers = shellObservers,
-            )
+            CompositionLocalProvider(LocalAppShortcuts provides shortcuts) {
+                EntryHost(
+                    identity = startup.identity,
+                    navigator = navigator,
+                    registry = registry,
+                    serialization = serialization,
+                    pendingDeepLink = pendingDeepLink,
+                    shellConfig = shellConfig,
+                    shellObservers = shellObservers,
+                )
+            }
 
             // <opt:devtools>
             // Last in the Box so the badge floats over every screen; a no-op in production builds.

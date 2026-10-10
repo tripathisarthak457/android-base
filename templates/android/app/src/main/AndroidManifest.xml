@@ -17,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BaseApp">
 
+        <!-- Lets the system offer "New window" (taskbar, desktop mode) on Android 15 and later. -->
+        <property
+            android:name="android.window.PROPERTY_SUPPORTS_MULTI_INSTANCE_SYSTEM_UI"
+            android:value="true" />
+
         <!-- <opt:workmanager> -->
         <!--
           WorkManager must not self-initialise.
@@ -48,12 +53,26 @@
           window opened on purpose (multi-instance, desktop mode) is a task of its own, with its
           own navigator and back stacks.
         -->
+        <!--
+          configChanges: a resize, a fold, a rotation or a keyboard attached is a new window size,
+          which Compose lays out again in place. Recreating the activity for it would rebuild every
+          tab and replay its first frames. Density, night mode, locale and font scale still
+          recreate: resources have to load again for those.
+        -->
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/Theme.BaseApp.Starting"
             android:windowSoftInputMode="adjustResize">
+
+            <!-- The window a desktop opens the app in, and the smallest it may be resized to. -->
+            <layout
+                android:defaultHeight="720dp"
+                android:defaultWidth="1024dp"
+                android:minHeight="400dp"
+                android:minWidth="320dp" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
