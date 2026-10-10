@@ -22,7 +22,8 @@ export function androidTarget(catalogue: Catalogue = loadCatalogue()): Target {
 /**
  * The checked-in catalogue plus the two targets the platform step is built for: a beta
  * multiplatform target with a smaller feature set and no signing keys, and an iOS target that is
- * coming soon. The generator ships only Android so far, so the platform logic is tested on these.
+ * coming soon. Their `ios` fields and rules are the ones the iOS generator declares. The generator
+ * ships only Android so far, so the platform logic is tested on these.
  */
 export function threePlatformCatalogue(): Catalogue {
   const catalogue = loadCatalogue();
@@ -40,16 +41,18 @@ export function threePlatformCatalogue(): Catalogue {
     defaults: { ...android.defaults, preset: "standard" },
     fields: [
       ...android.fields.filter((field) => field.type !== "keystores"),
-      { key: "ios.bundle_id", type: "string" },
+      { key: "ios.bundle_id", type: "string", rule: "ios_bundle_id", max: 155 },
       {
         key: "ios.deployment_target",
         type: "string",
         default: "17.0",
         choices: ["17", "18", "26"].map((major) => ({ value: `${major}.0`, label: `iOS ${major}` })),
       },
+      { key: "ios.team_id", type: "string", rule: "ios_team_id" },
     ],
     languages: android.languages.filter((language) => language.tag !== "hi"),
   };
   const ios: Target = { ...multiplatform, key: "ios", title: "Swift", status: "coming_soon", status_note: "" };
-  return { ...catalogue, targets: [android, multiplatform, ios] };
+  const rules = Object.assign({}, catalogue.rules, { ios_bundle_id: "^[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$", ios_team_id: "^[A-Z0-9]{10}$" });
+  return { ...catalogue, rules, targets: [android, multiplatform, ios] };
 }

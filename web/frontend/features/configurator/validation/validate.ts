@@ -1,7 +1,7 @@
 import type { Catalogue, Field, Rules, Target } from "../../catalogue/types.ts";
 import { closeOver } from "../resolve.ts";
 import { checkAndroid } from "./android.ts";
-import { Checker, isObject, isStringList, matches, withoutNulls } from "./check.ts";
+import { Checker, type Json, isObject, isStringList, matches, withoutNulls } from "./check.ts";
 import { checkKeystoreShape } from "./keystores.ts";
 import { checkAppName, checkDisplayName, checkModules, checkPackage } from "./names.ts";
 
@@ -206,7 +206,11 @@ export function validateSpec(raw: unknown, catalogue: Catalogue, targetKey: stri
     if (value && !matches(rules.hex, value)) check.fail(key, `The ${label} colour must be a six-digit hex, like #2C6BED.`);
   }
 
-  if (blocks.has("android")) checkAndroid(check, isObject(data.android) ? data.android : {}, blocks.get("android") ?? [], rules);
+  for (const [block, fields] of blocks) {
+    const values = isObject(data[block]) ? data[block] : {};
+    if (block === "android") checkAndroid(check, values, fields, rules);
+    else checkByRule(check, values, block, fields, rules);
+  }
 
   const offered = new Set(target.languages.map((language) => language.tag));
   if (check.ok("languages")) {
@@ -222,6 +226,25 @@ export function validateSpec(raw: unknown, catalogue: Catalogue, targetKey: stri
     check.fail("architecture", `${architecture} is not available yet; generate ${target.defaults.architecture} for now.`);
   }
   return check.errors;
+}
+
+/**
+ * A settings block with no rule module of its own, such as `ios`: each text field is held to its
+ * `max` and to the pattern its `rule` names, which is how the catalogue states the generator's
+ * checks for it.
+ */
+function checkByRule(check: Checker, data: Json, block: string, fields: Field[], rules: Rules): void {
+  const patterns: Record<string, unknown> = rules;
+  for (const field of fields) {
+    const value = data[field.key.slice(block.length + 1)];
+    if (typeof value !== "string" || value === "") continue;
+    const pattern = field.rule === undefined ? undefined : patterns[field.rule];
+    if (field.max !== undefined && [...value].length > field.max) {
+      check.fail(field.key, `\`${field.key}\` can be at most ${field.max} characters.`);
+    } else if (typeof pattern === "string" && !matches(pattern, value)) {
+      check.fail(field.key, `\`${field.key}\` is not in the form the generator accepts.`);
+    }
+  }
 }
 
 function checkBlock(check: Checker, raw: unknown, block: string, fields: Field[], rules: Rules): boolean {

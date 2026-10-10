@@ -19,8 +19,12 @@ const LABELS: Record<string, { label: string; hint?: string }> = {
   "android.web_socket_urls": { label: "WebSocket URLs", hint: "Per build flavour. Empty keeps the template's placeholder." },
   "android.deeplink_scheme": { label: "Deep-link scheme", hint: "Links like scheme://sample/42 open the app." },
   "android.deeplink_host": { label: "App Links host", hint: "The verified https host. Empty keeps example.com, which you will want to change." },
-  "ios.bundle_id": { label: "iOS bundle id", hint: "Empty uses the package name with underscores as hyphens." },
+  "ios.bundle_id": {
+    label: "iOS bundle id",
+    hint: "Letters, digits and hyphens between dots. Empty uses the package name with underscores as hyphens.",
+  },
   "ios.deployment_target": { label: "iOS deployment target" },
+  "ios.team_id": { label: "Apple team id", hint: "The 10 capital letters and digits Apple shows under Membership." },
 };
 
 function labelOf(key: string): { label: string; hint?: string } {
