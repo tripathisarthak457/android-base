@@ -1,0 +1,17 @@
+*.iml
+.gradle/
+.kotlin/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+*.hprof
+*.apk
+*.aab
+
+# Xcode: the project is generated from iosApp/project.yml by XcodeGen.
+iosApp/*.xcodeproj/
+iosApp/*.xcworkspace/
+xcuserdata/
+DerivedData/
