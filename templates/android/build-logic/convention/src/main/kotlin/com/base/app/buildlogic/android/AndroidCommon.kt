@@ -53,6 +53,9 @@ internal fun Project.configureAndroidCommon(extension: CommonExtension) {
         "LockedOrientationActivity",
         "SourceLockedOrientationActivity",
         "NonResizeableActivity",
+        // A resource without its module's prefix (set by the library convention) can silently
+        // replace another module's resource of the same name when the app merges them.
+        "ResourceName",
     )
 
     configureKotlinCompiler()

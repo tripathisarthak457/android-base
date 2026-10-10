@@ -1,18 +1,18 @@
 {
-  "common_error_generic": "Algo deu errado. Tente de novo.",
-  "validation_required": "Campo obrigatório.",
-  "validation_email": "Informe um e-mail válido.",
-  "validation_mismatch": "Não confere.",
-  "validation_password_letter": "Inclua pelo menos uma letra.",
-  "validation_password_digit": "Inclua pelo menos um número.",
-  "validation_min_length": {
+  "ui_error_generic": "Algo deu errado. Tente de novo.",
+  "ui_validation_required": "Campo obrigatório.",
+  "ui_validation_email": "Informe um e-mail válido.",
+  "ui_validation_mismatch": "Não confere.",
+  "ui_validation_password_letter": "Inclua pelo menos uma letra.",
+  "ui_validation_password_digit": "Inclua pelo menos um número.",
+  "ui_validation_min_length": {
     "one": "Deve ter pelo menos %1$d caractere.",
     "other": "Deve ter pelo menos %1$d caracteres."
   },
-  "validation_password_length": {
+  "ui_validation_password_length": {
     "one": "Use pelo menos %1$d caractere.",
     "other": "Use pelo menos %1$d caracteres."
   },
-  "common_error_offline": "Você está off-line. Verifique a conexão e tente de novo.",
-  "common_error_unreachable": "Não foi possível falar com o servidor. Tente de novo daqui a pouco."
+  "ui_error_offline": "Você está off-line. Verifique a conexão e tente de novo.",
+  "ui_error_unreachable": "Não foi possível falar com o servidor. Tente de novo daqui a pouco."
 }

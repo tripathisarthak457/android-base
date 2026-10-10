@@ -1,18 +1,18 @@
 {
-  "common_error_generic": "Algo salió mal. Inténtalo de nuevo.",
-  "validation_required": "Este campo es obligatorio.",
-  "validation_email": "Introduce un correo electrónico válido.",
-  "validation_mismatch": "No coincide.",
-  "validation_password_letter": "Incluye al menos una letra.",
-  "validation_password_digit": "Incluye al menos un número.",
-  "validation_min_length": {
+  "ui_error_generic": "Algo salió mal. Inténtalo de nuevo.",
+  "ui_validation_required": "Este campo es obligatorio.",
+  "ui_validation_email": "Introduce un correo electrónico válido.",
+  "ui_validation_mismatch": "No coincide.",
+  "ui_validation_password_letter": "Incluye al menos una letra.",
+  "ui_validation_password_digit": "Incluye al menos un número.",
+  "ui_validation_min_length": {
     "one": "Debe tener al menos %1$d carácter.",
     "other": "Debe tener al menos %1$d caracteres."
   },
-  "validation_password_length": {
+  "ui_validation_password_length": {
     "one": "Usa al menos %1$d carácter.",
     "other": "Usa al menos %1$d caracteres."
   },
-  "common_error_offline": "Sin conexión. Revisa tu conexión e inténtalo de nuevo.",
-  "common_error_unreachable": "No se pudo conectar con el servidor. Inténtalo de nuevo en un momento."
+  "ui_error_offline": "Sin conexión. Revisa tu conexión e inténtalo de nuevo.",
+  "ui_error_unreachable": "No se pudo conectar con el servidor. Inténtalo de nuevo en un momento."
 }

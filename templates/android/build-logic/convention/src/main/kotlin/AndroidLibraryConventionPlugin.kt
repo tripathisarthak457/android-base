@@ -31,6 +31,15 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         }
 
         extensions.configure<LibraryAndroidComponentsExtension> {
+            // Resource names share one namespace across the app, so each module prefixes its own
+            // with its name (`orders_title`), and lint's ResourceName holds it to that. The
+            // namespace is set by the module's build file, after this convention has run.
+            if (hasResources) {
+                finalizeDsl { library ->
+                    library.resourcePrefix = checkNotNull(library.namespace) { "$path sets no namespace" }
+                        .substringAfterLast('.') + "_"
+                }
+            }
             beforeVariants { variant ->
                 // Release compiles the same sources as debug, so its unit tests would only run them twice.
                 variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = hasUnitTests && variant.buildType == "debug"

@@ -1,18 +1,18 @@
 {
-  "common_error_generic": "Un problème est survenu. Veuillez réessayer.",
-  "validation_required": "Ce champ est obligatoire.",
-  "validation_email": "Saisissez une adresse e-mail valide.",
-  "validation_mismatch": "Ne correspond pas.",
-  "validation_password_letter": "Ajoutez au moins une lettre.",
-  "validation_password_digit": "Ajoutez au moins un chiffre.",
-  "validation_min_length": {
+  "ui_error_generic": "Un problème est survenu. Veuillez réessayer.",
+  "ui_validation_required": "Ce champ est obligatoire.",
+  "ui_validation_email": "Saisissez une adresse e-mail valide.",
+  "ui_validation_mismatch": "Ne correspond pas.",
+  "ui_validation_password_letter": "Ajoutez au moins une lettre.",
+  "ui_validation_password_digit": "Ajoutez au moins un chiffre.",
+  "ui_validation_min_length": {
     "one": "Doit contenir au moins %1$d caractère.",
     "other": "Doit contenir au moins %1$d caractères."
   },
-  "validation_password_length": {
+  "ui_validation_password_length": {
     "one": "Utilisez au moins %1$d caractère.",
     "other": "Utilisez au moins %1$d caractères."
   },
-  "common_error_offline": "Vous êtes hors ligne. Vérifiez votre connexion et réessayez.",
-  "common_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant."
+  "ui_error_offline": "Vous êtes hors ligne. Vérifiez votre connexion et réessayez.",
+  "ui_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant."
 }

@@ -119,7 +119,7 @@ class SignInViewModelTest {
         viewModel.onEvent(SignInEvent.Submit)
         advanceUntilIdle()
 
-        assertEquals(UiText.of(UiR.string.validation_email), viewModel.state.value.emailError)
+        assertEquals(UiText.of(UiR.string.ui_validation_email), viewModel.state.value.emailError)
         assertEquals(emptyList<Pair<String, String>>(), repository.signIns)
     }
 
