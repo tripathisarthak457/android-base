@@ -39,9 +39,12 @@
   --animate-rise: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/*
+ * No fade: text that starts transparent does not count as painted until it shows, which would hold
+ * back LCP by the length of the animation.
+ */
 @keyframes rise {
   from {
-    opacity: 0;
     transform: translateY(16px);
   }
 }
