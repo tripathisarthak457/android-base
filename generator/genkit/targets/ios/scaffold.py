@@ -393,8 +393,9 @@ struct {pascal}DetailView: View {{
                 .font(theme.typography.title2)
                 .foregroundStyle(theme.colors.contentPrimary)
                 .textSelection(.enabled)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: AppLayout.readableMaxWidth, alignment: .leading)
                 .padding(AppSpacing.gutter)
+                .frame(maxWidth: .infinity)
         }}
         .background(theme.colors.background)
         .navigationTitle(Text(item.title))

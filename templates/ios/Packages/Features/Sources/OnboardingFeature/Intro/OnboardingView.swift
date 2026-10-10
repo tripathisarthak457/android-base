@@ -42,7 +42,7 @@ public struct OnboardingView: View {
             .padding(.horizontal, AppSpacing.gutter)
             .padding(.bottom, AppSpacing.lg)
         }
-        .frame(maxWidth: 560)
+        .frame(maxWidth: AppLayout.formMaxWidth)
         .frame(maxWidth: .infinity)
         .background(theme.colors.background)
         .overlay(alignment: .topTrailing) {

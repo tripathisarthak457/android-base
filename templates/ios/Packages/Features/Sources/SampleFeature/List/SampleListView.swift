@@ -130,7 +130,7 @@ private struct SamplePreviewCard: View {
                 .foregroundStyle(theme.colors.contentSecondary)
         }
         .padding(AppSpacing.lg)
-        .frame(idealWidth: 320, alignment: .leading)
+        .frame(idealWidth: AppLayout.minimumWindowWidth, alignment: .leading)
         .background(theme.colors.surfaceElevated)
     }
 }

@@ -82,6 +82,8 @@ private struct SampleArticle: View {
                 }
             }
             .padding(AppSpacing.gutter)
+            .frame(maxWidth: AppLayout.readableMaxWidth)
+            .frame(maxWidth: .infinity)
         }
         .background(theme.colors.background)
     }

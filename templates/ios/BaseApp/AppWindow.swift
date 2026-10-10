@@ -21,8 +21,7 @@ struct AppWindow: View {
             .preferredColorScheme(model.settings.appearance.colorScheme)
             .toastHost(model.toasts)
             .measuresWindowWidth()
-            // The smallest window the layouts are designed for, on iPad and Mac.
-            .frame(minWidth: 320, minHeight: 400)
+            .frame(minWidth: AppLayout.minimumWindowWidth, minHeight: AppLayout.minimumWindowHeight)
             .focusedSceneValue(\.appModel, model)
             .task { await model.followSettings() }
             .onOpenURL { model.open($0) }
