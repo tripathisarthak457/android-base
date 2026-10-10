@@ -56,7 +56,7 @@ private struct AppGate: View {
 
     private var tabs: some View {
         @Bindable var model = model
-        return TabShell(selection: $model.selection, tabs: AppTab.allCases, onReselect: model.reselect) { tab in
+        return TabShell(selection: $model.selection, tabs: AppTab.allCases, onReselect: { model.reselect($0) }) { tab in
             tab.root(in: model)
                 .environment(model.router(for: tab))
         }
