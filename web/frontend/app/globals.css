@@ -100,6 +100,22 @@ body {
   }
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink-900);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-600);
+  border-radius: 6px;
+  border: 2px solid var(--color-ink-900);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-500);
+}
+
 /* The ruled paper behind the hero: one repeating line, faded out towards the edges. */
 .paper-backdrop {
   background-image: linear-gradient(to bottom, var(--color-ink-700) 1px, transparent 1px);
@@ -118,17 +134,4 @@ body {
 dialog::backdrop {
   background: color-mix(in oklab, var(--color-ink-950) 85%, transparent);
   backdrop-filter: blur(4px);
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-ink-900);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-ink-600);
-  border-radius: 6px;
-  border: 2px solid var(--color-ink-900);
 }
