@@ -1,9 +1,7 @@
-/**
- * `generator/genkit/brand.py` in TypeScript: the three brand ramps a project's palette draws from,
- * and the text colour that reads on each shade. The previews must agree with the generator to the
- * last digit, so this follows the Python step for step, down to `colorsys` and Python's rounding;
- * `brand.test.ts` compares both on the generator's 200 seeded accents.
- */
+// `generator/genkit/brand.py` in TypeScript: the three brand ramps a project's palette draws from,
+// and the text colour that reads on each shade. The previews must agree with the generator to the
+// last digit, so this follows the Python step for step, down to `colorsys` and Python's rounding;
+// `brand.test.ts` compares both on the generator's 200 seeded accents.
 
 export type Rgb = [number, number, number];
 

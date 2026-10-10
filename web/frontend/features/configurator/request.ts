@@ -2,11 +2,9 @@ import { clientHeader } from "../../lib/api.ts";
 import type { Catalogue, Field, Target } from "../catalogue/types.ts";
 import { type ConfigState, findTarget, hasKeystores, lowerName, moduleNames, settingFields } from "./state.ts";
 
-/**
- * The generate request: the schema-2 spec built from the configurator's answers, and the session
- * headers that tie a generation to the visit it came from. The spec stays free of telemetry,
- * because the generator refuses unknown fields.
- */
+// The generate request: the schema-2 spec built from the configurator's answers, and the session
+// headers that tie a generation to the visit it came from. The spec stays free of telemetry,
+// because the generator refuses unknown fields.
 
 export type Spec = Record<string, unknown>;
 

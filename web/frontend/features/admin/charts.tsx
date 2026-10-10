@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { OUTCOMES } from "./filters.ts";
 
-/** Hand-drawn SVG and bar charts, in the admin chunk only: no charting library for a few small multiples. */
+// Hand-drawn SVG and bar charts, in the admin chunk only: no charting library for a few small multiples.
 
 export const OUTCOME_COLOUR: Record<string, string> = {
   ok: "var(--color-mint)",

@@ -5,7 +5,7 @@ import { Avatar, Button, Chip, Column, Divider, Group, InputField, LargeTitle, R
 import type { PreviewTab } from "./tabs.ts";
 import { dp } from "./theme.ts";
 
-/** Every screen here is one the template ships, with its copy, laid out with its tokens. */
+// Every screen here is one the template ships, with its copy, laid out with its tokens.
 
 const POSTS = [
   { title: "Sunt aut facere repellat provident", body: "Quia et suscipit suscipit recusandae consequuntur expedita et cum reprehenderit…" },

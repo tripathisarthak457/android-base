@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-/**
- * Google Fonts for the previews: one stylesheet per family the visitor picks, with only the
- * weights its type voice uses, and one small subset request for the suggestion chips.
- */
+// Google Fonts for the previews: one stylesheet per family the visitor picks, with only the
+// weights its type voice uses, and one small subset request for the suggestion chips.
 
 const GOOGLE = "https://fonts.googleapis.com/css2";
 

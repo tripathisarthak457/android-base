@@ -2,7 +2,7 @@ import type { Field, Rules } from "../../catalogue/types.ts";
 import { type Checker, type Json, isObject, matches } from "./check.ts";
 import { keystoreProblem } from "./keystores.ts";
 
-/** The `android` block: SDK levels, version, flavour URLs, deep links and signing keys, in the generator's order. */
+// The `android` block: SDK levels, version, flavour URLs, deep links and signing keys, in the generator's order.
 
 function fieldDefault(fields: Field[], key: string): unknown {
   return fields.find((field) => field.key === key)?.default;

@@ -4,7 +4,7 @@ import { type CSSProperties, type ReactNode, createContext, useContext } from "r
 import { Icon, type IconName } from "./icons.tsx";
 import { type PreviewTheme, dp, radius } from "./theme.ts";
 
-/** The design-system pieces the preview screens are made of, one per template component. */
+// The design-system pieces the preview screens are made of, one per template component.
 
 export const ThemeContext = createContext<PreviewTheme | null>(null);
 

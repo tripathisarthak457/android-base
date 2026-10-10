@@ -1,4 +1,4 @@
-/** Who wrote this, and how to reach them. Deliberately at the bottom and deliberately small. */
+// Who wrote this, and how to reach them. Deliberately at the bottom and deliberately small.
 
 import { Card } from "./ui.tsx";
 

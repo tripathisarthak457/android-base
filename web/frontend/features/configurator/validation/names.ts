@@ -1,7 +1,7 @@
 import type { Rules } from "../../catalogue/types.ts";
 import { type Checker, matches } from "./check.ts";
 
-/** The names a visitor types on the identity step: app, display, package and feature modules. */
+// The names a visitor types on the identity step: app, display, package and feature modules.
 
 /** What a display name may not contain: line breaks and controls, but format characters stay (Persian needs ZWNJ). */
 const NOT_IN_DISPLAY_NAME = /[\p{Cc}\p{Cs}\p{Zl}\p{Zp}\uFFFE\uFFFF]/u;

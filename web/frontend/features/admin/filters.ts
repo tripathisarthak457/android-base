@@ -1,4 +1,4 @@
-/** The admin's one date range and filters, applied to every panel. */
+// The admin's one date range and filters, applied to every panel.
 
 export type Range = "today" | "7d" | "30d" | "90d" | "custom";
 

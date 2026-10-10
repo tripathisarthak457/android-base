@@ -1,6 +1,6 @@
 "use client";
 
-/** The handful of controls the site is built from. */
+// The handful of controls the site is built from.
 
 import { motion, type HTMLMotionProps } from "framer-motion";
 import { type InputHTMLAttributes, type ReactNode, useId } from "react";

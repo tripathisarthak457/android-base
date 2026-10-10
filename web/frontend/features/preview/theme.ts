@@ -1,11 +1,9 @@
 import type { ArgbHex, Roles, SpringName, StyleTokens, Tokens, TypeRole } from "../catalogue/types.ts";
 import { type BrandName, type Rgb, brandColours, brandRamp, parseHex, readableShade, toHex } from "./brand.ts";
 
-/**
- * What a preview draws with: the catalogue's resolved roles for one design style and theme, with
- * the brand roles recomputed from the visitor's colours, the style's shapes, the type scale in its
- * voice, and the motion style's springs.
- */
+// What a preview draws with: the catalogue's resolved roles for one design style and theme, with
+// the brand roles recomputed from the visitor's colours, the style's shapes, the type scale in its
+// voice, and the motion style's springs.
 
 /** A 360 dp phone drawn 280 px wide. */
 const DP = 280 / 360;

@@ -1,4 +1,4 @@
-/** Static building blocks, safe to render on the server. */
+// Static building blocks, safe to render on the server.
 
 import type { ReactNode } from "react";
 

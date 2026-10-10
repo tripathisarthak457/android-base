@@ -1,8 +1,6 @@
-/**
- * Catalogue v2, as `python3 -m genkit.core.catalogue` emits it. The site imports the checked-in
- * copy (`lib/catalogue.json`) and reads the live one from `/api/v1/catalogue` only for what differs
- * per deployment.
- */
+// Catalogue v2, as `python3 -m genkit.core.catalogue` emits it. The site imports the checked-in
+// copy (`lib/catalogue.json`) and reads the live one from `/api/v1/catalogue` only for what differs
+// per deployment.
 
 export type TargetStatus = "available" | "beta" | "coming_soon" | "hidden";
 

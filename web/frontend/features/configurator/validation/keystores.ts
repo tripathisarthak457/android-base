@@ -1,7 +1,7 @@
 import type { Rules } from "../../catalogue/types.ts";
 import { type Checker, type Json, isObject, matches, withoutNulls } from "./check.ts";
 
-/** Signing keys: the shape of each entry in `android.keystores`, then what keytool would refuse. */
+// Signing keys: the shape of each entry in `android.keystores`, then what keytool would refuse.
 
 /** Python's `str.isprintable()`: no control, format, private-use, unassigned or separator characters except the space. */
 const NOT_PRINTABLE = /[\p{Cc}\p{Cf}\p{Cs}\p{Co}\p{Cn}\p{Zl}\p{Zp}]|(?! )\p{Zs}/u;

@@ -6,10 +6,8 @@ import { Spinner } from "../../components/ui.tsx";
 import { API_BASE, BUILD, apiError } from "../../lib/api.ts";
 import { type ReportContext, readReportContext } from "./context.ts";
 
-/**
- * The bug report form. Two things make a report worth having: enough context to reproduce it, and
- * few enough questions that somebody actually finishes it.
- */
+// The bug report form. Two things make a report worth having: enough context to reproduce it, and
+// few enough questions that somebody actually finishes it.
 
 type Kind = "bug" | "idea" | "praise" | "question";
 type Severity = "blocks" | "annoying" | "cosmetic";

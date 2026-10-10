@@ -5,14 +5,12 @@ import { Checker, type Json, isObject, isStringList, matches, withoutNulls } fro
 import { checkKeystoreShape } from "./keystores.ts";
 import { checkAppName, checkDisplayName, checkModules, checkPackage } from "./names.ts";
 
-/**
- * The generator's spec rules, run in the browser so a mistake is caught where it was typed rather
- * than as a 400 after the round trip. They read their patterns and limits from the catalogue, and
- * a test runs every case of `generator/tests/fixtures/validation_cases.json` through both sides.
- *
- * The checks run in the generator's order and stop at the first problem in each field, so the
- * first error reported is the one the generator would report.
- */
+// The generator's spec rules, run in the browser so a mistake is caught where it was typed rather
+// than as a 400 after the round trip. They read their patterns and limits from the catalogue, and
+// a test runs every case of `generator/tests/fixtures/validation_cases.json` through both sides.
+//
+// The checks run in the generator's order and stop at the first problem in each field, so the
+// first error reported is the one the generator would report.
 
 export type SpecErrors = Map<string, string>;
 
