@@ -1,0 +1,17 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "A small vibration when a control responds." : {},
+    "About" : {},
+    "Appearance" : {},
+    "Dark" : {},
+    "Haptic feedback" : {},
+    "Light" : {},
+    "Settings" : {},
+    "System" : {},
+    "System follows your device setting." : {},
+    "Theme" : {},
+    "Version" : {}
+  },
+  "version" : "1.0"
+}

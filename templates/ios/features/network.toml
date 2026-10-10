@@ -1,0 +1,15 @@
+key = "network"
+title = "REST networking (URLSession)"
+headline = "Talk to a REST API"
+description = """
+An APIClient over URLSession with async/await, typed endpoints, JSON decoded off the main actor,
+classified failures, and one shared connectivity monitor that never blocks a request."""
+group = "Networking and data"
+default = true
+requires = []
+implied_only = false
+owns = [
+  "Packages/Core/Sources/Networking",
+  "Packages/Core/Tests/NetworkingTests",
+]
+legacy = []

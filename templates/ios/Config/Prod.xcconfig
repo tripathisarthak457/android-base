@@ -1,0 +1,3 @@
+// Release builds, including TestFlight and the App Store, talk to the production backend.
+// `//` starts a comment in an xcconfig file, so `$()` keeps the URL's two slashes apart.
+API_BASE_URL = https:/$()/api.example.com/

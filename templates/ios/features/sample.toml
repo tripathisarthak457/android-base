@@ -1,0 +1,18 @@
+key = "sample"
+title = "Reference feature"
+headline = "A working screen to learn from"
+description = """
+A list beside its detail against a live public API, with search, pull to refresh, every load
+state and its tests. On a phone the detail is pushed; on an iPad both columns show. Delete it once
+your own first feature exists."""
+group = "Screens"
+default = true
+requires = ["network"]
+implied_only = false
+owns = [
+  "Packages/Features/Sources/SampleData",
+  "Packages/Features/Sources/SampleFeature",
+  "Packages/Features/Tests/SampleDataTests",
+  "Packages/Features/Tests/SampleFeatureTests",
+]
+legacy = []
