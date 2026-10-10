@@ -832,10 +832,11 @@ class Run:
     def meminfo(self):
         output = self.device.shell(f"dumpsys meminfo {self.app.package}")
         self.save("meminfo.txt", output)
-        match = re.search(r"TOTAL PSS:\s+(\d+)", output) or re.search(r"^\s+TOTAL\s+(\d+)", output, re.MULTILINE)
-        if not match:
+        memory = parse_meminfo(output)
+        if memory is None:
             self.fail("dumpsys meminfo has no TOTAL PSS line")
-        self.record("meminfo.pss_mb", round(int(match.group(1)) / 1024, 1))
+        for name, value in memory.items():
+            self.record(f"meminfo.{name}", value)
 
     def coldstarts(self, scenario):
         times = []
@@ -933,6 +934,24 @@ data_sources {
 }
 duration_ms: 20000
 """
+
+
+def parse_meminfo(text):
+    """TOTAL PSS from `dumpsys meminfo <package>`, and how much of it is graphics, in MB.
+
+    Graphics is mostly the window's own buffers (EGL mtrack), whose size follows the panel and the
+    buffer count, not the app: the same on any build of any app on one phone. `pss_app_mb` is the
+    rest, the part the app's code decides.
+    """
+    total = re.search(r"TOTAL PSS:\s+(\d+)", text) or re.search(r"^\s+TOTAL\s+(\d+)", text, re.MULTILINE)
+    if not total:
+        return None
+    graphics = re.search(r"^\s*Graphics:\s+(\d+)", text, re.MULTILINE)
+    memory = {"pss_mb": round(int(total.group(1)) / 1024, 1)}
+    if graphics:
+        memory["graphics_mb"] = round(int(graphics.group(1)) / 1024, 1)
+        memory["pss_app_mb"] = round((int(total.group(1)) - int(graphics.group(1))) / 1024, 1)
+    return memory
 
 
 def image_difference(first, second):

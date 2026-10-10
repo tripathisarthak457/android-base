@@ -336,6 +336,18 @@ class RecomposeTraceTest(unittest.TestCase):
         self.assertTrue(cancel.endswith("input motionevent UP 1077 1300"))
 
 
+class MeminfoTest(unittest.TestCase):
+    def test_graphics_is_split_from_what_the_app_holds(self):
+        memory = perf.parse_meminfo(fixture("meminfo.txt"))
+
+        self.assertEqual(memory["pss_mb"], 94.0)
+        self.assertEqual(memory["graphics_mb"], 53.1)
+        self.assertEqual(memory["pss_app_mb"], 40.8)
+
+    def test_a_dump_without_totals_is_not_read(self):
+        self.assertIsNone(perf.parse_meminfo("No process found for: com.example"))
+
+
 class SplitProfileTest(unittest.TestCase):
     def test_rules_follow_the_module_that_declares_the_package_and_keep_the_wildcards(self):
         with tempfile.TemporaryDirectory() as project:
