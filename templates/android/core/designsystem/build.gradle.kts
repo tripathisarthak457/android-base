@@ -1,6 +1,7 @@
 plugins {
     id("com.base.app.android.library")
     id("com.base.app.android.compose")
+    id("com.base.app.android.screenshots")
 }
 
 android {

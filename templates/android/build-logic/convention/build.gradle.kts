@@ -27,6 +27,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.roborazzi.gradlePlugin)
 
     testImplementation(libs.junit)
 }
@@ -57,6 +58,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "com.base.app.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
+        }
+        register("androidScreenshots") {
+            id = "com.base.app.android.screenshots"
+            implementationClass = "AndroidScreenshotsConventionPlugin"
         }
         register("androidFeature") {
             id = "com.base.app.android.feature"

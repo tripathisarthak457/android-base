@@ -8,6 +8,4 @@ android {
 
 dependencies {
     implementation(project(":data:__NAME__"))
-
-    testImplementation(project(":core:testing:compose"))
 }

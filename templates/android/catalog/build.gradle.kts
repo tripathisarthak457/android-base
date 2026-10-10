@@ -5,6 +5,7 @@
 plugins {
     id("com.base.app.android.application")
     id("com.base.app.android.compose")
+    id("com.base.app.android.screenshots")
 }
 android {
     namespace = "com.base.app.catalog"
