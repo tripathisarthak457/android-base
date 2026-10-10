@@ -1,6 +1,7 @@
 package com.base.app.perf
 
 import android.content.Intent
+import com.base.app.core.datastore.AppSettings
 import com.base.app.core.datastore.AppSettingsStore
 import com.base.app.core.datastore.AuthTokenStore
 import com.base.app.core.designsystem.component.navigation.BarMinimize
@@ -24,7 +25,9 @@ import javax.inject.Singleton
  * - `perf.fakeSession=true` does that too and saves a synthetic session, so sign-in is skipped;
  * - `perf.screenResponse=0.30` sets the screen spring's response, in seconds, to compare candidates;
  * - `perf.barMinimize=OnScrollDown` makes the tab bar minimize while a list scrolls down;
- * - `perf.barLabels=Selected` (or `Never`) sets which tabs show their label.
+ * - `perf.barLabels=Selected` (or `Never`) sets which tabs show their label;
+ * - `perf.theme=dark` (or `light`, `system`) saves the app's theme, as the settings screen does, so
+ *   a recording can be made in either without touching the phone's own setting.
  *
  * The token is made up. A dev server that checks tokens answers 401 and the app signs out, so the
  * journeys rely on screens that load without a real session, as the sample feature's public API does.
@@ -43,6 +46,7 @@ class DevLaunchOptions @Inject constructor(
         val fakeSession = intent.isOn(FAKE_SESSION)
         if (fakeSession || intent.isOn(SKIP_ONBOARDING)) settings.setOnboardingCompleted(true)
         if (fakeSession && tokens.accessToken() == null) tokens.save(SYNTHETIC_TOKEN, SYNTHETIC_TOKEN)
+        intent.getStringExtra(THEME)?.takeIf { it in THEMES }?.let { settings.setThemeMode(it) }
         screenResponse = intent.getStringExtra(SCREEN_RESPONSE)?.toFloatOrNull()?.takeIf { it > 0f }
         barMinimize = intent.getStringExtra(BAR_MINIMIZE)?.let { name -> BarMinimize.entries.firstOrNull { it.name == name } }
         barLabels = intent.getStringExtra(BAR_LABELS)?.let { name -> TabLabels.entries.firstOrNull { it.name == name } }
@@ -62,6 +66,8 @@ class DevLaunchOptions @Inject constructor(
         const val SCREEN_RESPONSE = "perf.screenResponse"
         const val BAR_MINIMIZE = "perf.barMinimize"
         const val BAR_LABELS = "perf.barLabels"
+        const val THEME = "perf.theme"
+        val THEMES = setOf(AppSettings.THEME_SYSTEM, AppSettings.THEME_LIGHT, AppSettings.THEME_DARK)
         const val SYNTHETIC_TOKEN = "perf-session"
     }
 }
