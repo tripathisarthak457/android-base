@@ -6,7 +6,7 @@ import type { Catalogue, Spring } from "../../catalogue/types.ts";
 import { LivePreview, usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
 import type { Configurator } from "../useConfigurator.ts";
-import { usePreviewInput } from "./LookStep.tsx";
+import { usePreviewInput } from "../usePreviewInput.ts";
 
 function describe(spring: Spring | undefined): string {
   if (!spring) return "";
@@ -22,7 +22,7 @@ function MotionCard({ catalogue, model, styleKey, title, description, name, dark
   name: string;
   dark: boolean;
 }) {
-  const input = usePreviewInput(catalogue, model);
+  const input = usePreviewInput(catalogue, model.state);
   const theme = usePreviewTheme({ ...input, motionStyle: styleKey }, dark);
   const springs = catalogue.tokens.motion.styles[styleKey]?.springs;
   const rows: [string, string][] = [
@@ -58,7 +58,7 @@ function MotionCard({ catalogue, model, styleKey, title, description, name, dark
 
 export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: Configurator; dark: boolean; onDark: (dark: boolean) => void }) {
   const { state, dispatch, target } = model;
-  const input = usePreviewInput(catalogue, model);
+  const input = usePreviewInput(catalogue, state);
   const name = useId();
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">

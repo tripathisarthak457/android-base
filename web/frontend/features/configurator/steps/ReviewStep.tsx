@@ -8,17 +8,16 @@ import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { planTabs } from "../../preview/tabs.ts";
-import { STEP_LABELS, moduleNames } from "../state.ts";
+import { STEP_LABELS } from "../state.ts";
 import { stepOf, type Configurator } from "../useConfigurator.ts";
-import { usePreviewInput } from "./LookStep.tsx";
+import { usePreviewInput } from "../usePreviewInput.ts";
 
 export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; model: Configurator; dark: boolean }) {
   const { state, target, errors, busy, outcome, generate, goTo, preset } = model;
-  const input = usePreviewInput(catalogue, model);
+  const input = usePreviewInput(catalogue, state);
   const theme = usePreviewTheme(input, dark);
   const tabs = useMemo(() => planTabs(input.features, input.modules).tabs, [input.features, input.modules]);
   const options = useMemo(() => ({ features: input.features, haptics: input.haptics }), [input.features, input.haptics]);
-  const modules = moduleNames(state.modules);
   const chosen = selectableFeatures(target).filter((feature) => state.features.includes(feature.key));
   const android = (key: string) => state.settings[`android.${key}`];
   const sdk = android("min_sdk") !== undefined ? `${android("min_sdk")} / ${Math.max(Number(android("target_sdk")), Number(android("min_sdk")))}` : null;
@@ -33,7 +32,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
     ["Design style", state.designStyle],
     ["Motion", `${state.motionStyle}, haptics ${state.hapticsEnabled ? "on" : "off"}`],
     ["Typeface", state.fontName],
-    ["Modules", modules.length ? modules.join(", ") : "none"],
+    ["Modules", input.modules.length ? input.modules.join(", ") : "none"],
     ["Languages", ["English", ...target.languages.filter((language) => state.languages.includes(language.tag)).map((language) => language.name)].join(", ")],
     ["Signing keys", state.signing.enabled ? "generated here" : "debug key only"],
   ];

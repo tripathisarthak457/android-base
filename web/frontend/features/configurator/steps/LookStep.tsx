@@ -10,29 +10,8 @@ import { LivePreview, type PreviewInput, usePreviewTheme } from "../../preview/L
 import { type PreviewTab, planTabs } from "../../preview/tabs.ts";
 import { weightsFor } from "../../preview/theme.ts";
 import { traits } from "../../preview/traits.ts";
-import { moduleNames } from "../state.ts";
 import type { Configurator } from "../useConfigurator.ts";
-
-export function usePreviewInput(catalogue: Catalogue, model: Configurator): PreviewInput {
-  const { state } = model;
-  const features = useMemo(() => new Set(state.features), [state.features]);
-  const modules = useMemo(() => moduleNames(state.modules), [state.modules]);
-  return useMemo(
-    () => ({
-      tokens: catalogue.tokens,
-      designStyle: state.designStyle,
-      motionStyle: state.motionStyle,
-      accent: state.accent,
-      secondary: state.secondary,
-      tertiary: state.tertiary,
-      font: state.fontName,
-      features,
-      modules,
-      haptics: state.hapticsEnabled,
-    }),
-    [catalogue.tokens, state.designStyle, state.motionStyle, state.accent, state.secondary, state.tertiary, state.fontName, features, modules, state.hapticsEnabled],
-  );
-}
+import { usePreviewInput } from "../usePreviewInput.ts";
 
 /** The screen that shows most of a style at once. */
 function thumbnailScreen(tabs: PreviewTab[]): PreviewTab | undefined {
@@ -50,7 +29,7 @@ const StyleThumbnail = memo(function StyleThumbnail({ input, styleKey, dark }: {
 
 export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: Configurator; dark: boolean; onDark: (dark: boolean) => void }) {
   const { state, dispatch, target, errors } = model;
-  const input = usePreviewInput(catalogue, model);
+  const input = usePreviewInput(catalogue, state);
   // Four thumbnails redraw on every colour-picker move or keystroke, so they wait, as the live preview does.
   const thumbnailInput = useDeferredValue(input);
   const styleName = useId();
