@@ -1,5 +1,4 @@
-import { API_BASE, BUILD } from "../../lib/api.ts";
-import { clientHeader } from "../configurator/request.ts";
+import { API_BASE, BUILD, clientHeader } from "../../lib/api.ts";
 import { type ClientEvent, batches } from "./events.ts";
 
 /**
@@ -74,23 +73,18 @@ function flush(): void {
 }
 
 /** Flushes when the page is hidden, which is the last moment a browser reliably runs script. */
-export function flushOnHide(): () => void {
-  const onHide = () => {
+export function flushOnHide(): void {
+  document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") flush();
-  };
-  document.addEventListener("visibilitychange", onHide);
+  });
   window.addEventListener("pagehide", flush);
-  return () => {
-    document.removeEventListener("visibilitychange", onHide);
-    window.removeEventListener("pagehide", flush);
-  };
 }
 
 /**
  * Sends uncaught errors and rejections to `/api/v1/client-error`, where they are grouped by
  * fingerprint, so a crash shows up in the admin within minutes instead of in a bug report.
  */
-export function reportErrors(): () => void {
+export function reportErrors(): void {
   const sent = new Set<string>();
   const report = (message: string, stack: string) => {
     if (!message || sent.has(message) || sent.size >= ERROR_REPORTS_PER_PAGE) return;
@@ -108,16 +102,10 @@ export function reportErrors(): () => void {
       keepalive: true,
     }).catch(() => undefined);
   };
-  const onError = (event: ErrorEvent) => report(event.message, event.error instanceof Error ? (event.error.stack ?? "") : "");
-  const onRejection = (event: PromiseRejectionEvent) => {
+  window.addEventListener("error", (event) => report(event.message, event.error instanceof Error ? (event.error.stack ?? "") : ""));
+  window.addEventListener("unhandledrejection", (event) => {
     const reason: unknown = event.reason;
     if (reason instanceof Error) report(reason.message, reason.stack ?? "");
     else report(String(reason), "");
-  };
-  window.addEventListener("error", onError);
-  window.addEventListener("unhandledrejection", onRejection);
-  return () => {
-    window.removeEventListener("error", onError);
-    window.removeEventListener("unhandledrejection", onRejection);
-  };
+  });
 }

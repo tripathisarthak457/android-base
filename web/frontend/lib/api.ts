@@ -6,6 +6,16 @@ export const API_BASE =
 /** The deployed commit, short. Sent as `X-Client` so the API can tell the site from scripts. */
 export const BUILD = process.env.NEXT_PUBLIC_BUILD ?? "dev";
 
+/** `X-Client` is at most 64 printable ASCII characters. */
+const CLIENT_MAX = 64;
+
+export const CLIENT_PREFIX = "android-base-web/";
+
+export function clientHeader(build: string): string {
+  const safe = build.replace(/[^\x21-\x7e]/g, "") || "dev";
+  return `${CLIENT_PREFIX}${safe}`.slice(0, CLIENT_MAX);
+}
+
 /** An error answer from the API: `{error, code, field}`, or a status with no body. */
 export class ApiError extends Error {
   readonly status: number;

@@ -1,3 +1,4 @@
+import { clientHeader } from "../../lib/api.ts";
 import type { Catalogue, Field, Target } from "../catalogue/types.ts";
 import { type ConfigState, findTarget, hasKeystores, lowerName, moduleNames, settingFields } from "./state.ts";
 
@@ -110,16 +111,6 @@ export const SESSION_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{
 
 /** Two hours: the API ignores a longer configurator time rather than capping it. */
 export const CONFIG_MS_MAX = 7_200_000;
-
-/** `X-Client` is at most 64 printable ASCII characters. */
-const CLIENT_MAX = 64;
-
-export const CLIENT_PREFIX = "android-base-web/";
-
-export function clientHeader(build: string): string {
-  const safe = build.replace(/[^\x21-\x7e]/g, "") || "dev";
-  return `${CLIENT_PREFIX}${safe}`.slice(0, CLIENT_MAX);
-}
 
 /**
  * The headers that tie a generation to its visit. Each is sent only when the API would store it:
