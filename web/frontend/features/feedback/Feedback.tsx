@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
-import { API_BASE, BUILD, apiError } from "../../lib/api.ts";
+import { API_BASE, ApiError, BUILD, apiError, clientHeader } from "../../lib/api.ts";
 import { type ReportContext, readReportContext } from "./context.ts";
 
 // The bug report form. Two things make a report worth having: enough context to reproduce it, and
@@ -134,7 +134,7 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
     try {
       const response = await fetch(`${API_BASE}/api/v1/feedback`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "X-Client": clientHeader(BUILD) },
         body: JSON.stringify({
           kind,
           severity: bug ? severity : "",
@@ -151,7 +151,9 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
       const result = (await response.json()) as { id?: number };
       setSentId(result.id ?? 0);
     } catch (error) {
-      setFailure(error instanceof Error ? error.message : "Could not reach the server. GitHub issues work even when this does not.");
+      // fetch rejects with a TypeError when the request never got an answer; its message is the
+      // browser's ("Failed to fetch"), which tells the visitor nothing they can act on.
+      setFailure(error instanceof ApiError ? error.message : "Could not reach the server. GitHub issues work even when this does not.");
     } finally {
       setBusy(false);
     }

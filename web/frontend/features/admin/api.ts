@@ -198,6 +198,9 @@ export async function downloadCsv(token: string, query: string): Promise<void> {
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
+// What a failed fetch says instead of the browser's own "Failed to fetch": the request got no answer.
+const UNREACHABLE = "Could not reach the API.";
+
 export type Query<T> = { data: T | null; error: ApiError | Error | null; loading: boolean };
 
 /**
@@ -214,7 +217,7 @@ export function useAdminQuery<T>(path: string, token: string, query: string, ver
       .catch((error: unknown) => {
         if (controller.signal.aborted) return;
         if (error instanceof ApiError && error.status === 401) onUnauthorized();
-        setState((current) => ({ ...current, error: error instanceof Error ? error : new Error(String(error)), loading: false }));
+        setState((current) => ({ ...current, error: error instanceof ApiError ? error : new Error(UNREACHABLE), loading: false }));
       });
     return () => controller.abort();
   }, [path, token, query, version, onUnauthorized]);
@@ -243,7 +246,7 @@ export function useAdminAction(onUnauthorized: () => void): AdminAction {
         return true;
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) onUnauthorized();
-        else setProblem(error instanceof Error ? error.message : String(error));
+        else setProblem(error instanceof ApiError ? error.message : UNREACHABLE);
         return false;
       } finally {
         running.current = false;
