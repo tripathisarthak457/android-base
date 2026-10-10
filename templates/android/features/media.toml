@@ -1,11 +1,11 @@
 key = "media"
-title = "Media picker, permissions and compression"
-headline = "Pick and compress photos and video"
+title = "Photo picker, camera and compression"
+headline = "Pick, take and shrink photos"
 description = """
-Photo/video/document/camera pickers on the modern APIs, a permission state that can tell 'denied'
-from 'denied for good', and tunable image and video compression."""
+The system photo picker and the camera app, with no permissions to ask for, and one image
+compressor that turns a picked photo upright, scales it and writes a copy the app owns."""
 group = "Platform"
-default = true
+default = false
 requires = []
 implied_only = false
 owns = ["core/media"]

@@ -10,11 +10,8 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:designsystem"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.exifinterface)
-
-    testImplementation(project(":core:testing"))
 }

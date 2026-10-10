@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Only the two cache directories captures and compressed images are written to.
-
-  Deliberately not <external-path path="."> — that shares the whole of external storage with
-  whichever app receives the URI, which is far more than a camera intent needs and is exactly the
-  over-share these providers exist to prevent.
+  Only the two directories camera captures and compressed uploads are written to. Never the whole
+  cache directory: it also holds the HTTP cache of signed-in responses and the image cache, and a
+  URI granted to another app would reach all of it.
 -->
 <paths>
     <cache-path name="captures" path="captures/" />
-    <cache-path name="uploads" path="." />
+    <cache-path name="uploads" path="uploads/" />
 </paths>
