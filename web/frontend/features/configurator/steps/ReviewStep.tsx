@@ -8,19 +8,21 @@ import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { planTabs } from "../../preview/tabs.ts";
+import type { Spec } from "../request.ts";
 import { STEP_LABELS, stepOf } from "../state.ts";
 import type { Configurator } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
 export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; model: Configurator; dark: boolean }) {
-  const { state, target, errors, busy, outcome, generate, goTo, preset } = model;
+  const { state, target, spec, errors, busy, outcome, generate, goTo, preset } = model;
   const input = usePreviewInput(catalogue, state);
   const theme = usePreviewTheme(input, dark);
   const tabs = useMemo(() => planTabs(input.features, input.modules).tabs, [input.features, input.modules]);
   const options = useMemo(() => ({ features: input.features, haptics: input.haptics }), [input.features, input.haptics]);
   const chosen = selectableFeatures(target).filter((feature) => state.features.includes(feature.key));
-  const android = (key: string) => state.settings[`android.${key}`];
-  const sdk = android("min_sdk") !== undefined ? `${android("min_sdk")} / ${Math.max(Number(android("target_sdk")), Number(android("min_sdk")))}` : null;
+  // The SDKs as they are sent: the request builder raises targetSdk to minSdk.
+  const { min_sdk: minSdk, target_sdk: targetSdk } = (spec.android ?? {}) as Spec;
+  const sdk = typeof minSdk === "number" && typeof targetSdk === "number" ? `${minSdk} / ${targetSdk}` : null;
   const presetTitle = target.presets.find((option) => option.key === preset)?.title ?? "Your own";
 
   const rows: [string, string][] = [

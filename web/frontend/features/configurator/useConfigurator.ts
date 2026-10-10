@@ -232,6 +232,7 @@ export function useConfigurator(catalogue: Catalogue) {
     state,
     dispatch,
     target,
+    spec,
     step,
     stepIndex,
     goTo,
