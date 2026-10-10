@@ -154,7 +154,7 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
 
       <form
         aria-label="Filters"
-        className="sticky top-0 z-10 mt-6 flex flex-wrap items-end gap-3 rounded-xl border border-ink-700 bg-ink-900/95 p-4 backdrop-blur"
+        className="sticky top-0 z-10 mt-6 flex flex-wrap items-end gap-3 rounded-xl border border-ink-700 bg-ink-900 p-4"
         onSubmit={(event) => {
           event.preventDefault();
           if (problem) return;
