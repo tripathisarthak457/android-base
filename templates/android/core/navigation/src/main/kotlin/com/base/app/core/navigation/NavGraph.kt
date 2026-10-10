@@ -114,8 +114,26 @@ class NavRegistry(graphs: Set<NavGraphEntry>) {
 }
 
 /**
- * Which half of a list-detail pair a destination is. A [List] and the [Detail] opened from it sit
- * side by side when the window has room, and stack as two screens when it does not — the same
- * back stack, the same keys, nothing in the feature knowing which.
+ * Which pane of a canonical layout a destination is. Panes opened over each other sit side by side
+ * when the window has room, and stack as screens when it does not: the same back stack, the same
+ * keys, nothing in the feature knowing which.
  */
-enum class NavPane { Single, List, Detail }
+enum class NavPane {
+    /** A screen of its own. */
+    Single,
+
+    /** A list whose rows open a [Detail] beside it from medium widths on. */
+    List,
+
+    /** What a [List] row opens: beside the list when there is room, over it when not. */
+    Detail,
+
+    /** More about a [Detail] (its history, its attachments): a third column from large widths on. */
+    Extra,
+
+    /** A screen that a [Supporting] pane accompanies from expanded widths on: a map and its places. */
+    Main,
+
+    /** Beside its [Main] from expanded widths on, pushed over it below them. */
+    Supporting,
+}

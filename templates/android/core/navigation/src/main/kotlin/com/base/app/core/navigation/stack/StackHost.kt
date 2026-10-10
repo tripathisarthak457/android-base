@@ -16,6 +16,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.WindowWidth
 import com.base.app.core.designsystem.theme.rememberReduceMotion
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.NavPane
@@ -54,12 +55,17 @@ internal fun StackHost(
         entryProvider = rememberEntryProvider(registry, hidesBar, screenBars),
     )
     val scene = remember(stack) { StackScene(gate) }
-    val twoPanes = AppTheme.windowSize.hasRoomForTwoPanes
+    val window = AppTheme.windowSize
+    val columns = when {
+        window.width >= WindowWidth.Large -> 3
+        window.hasRoomForTwoPanes -> 2
+        else -> 1
+    }
     val reduceMotion = rememberReduceMotion()
     val keys = entries.map { it.contentKey }
-    val plan = remember(keys, twoPanes, reduceMotion) {
+    val plan = remember(keys, columns, reduceMotion) {
         val gestured = gate.lastChange == StackChange.GesturePop
-        planChange(scene.applied, keys, entries.map { it.pane }, twoPanes) { key ->
+        planChange(scene.applied, keys, entries.map { it.pane }, columns) { key ->
             !reduceMotion && !gestured && scene.slidesOf(key, entries)
         }
     }

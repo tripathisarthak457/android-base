@@ -33,10 +33,14 @@ import androidx.navigation3.runtime.NavEntry
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
+import com.base.app.core.designsystem.foundation.LocalPaneContext
 import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.PaneContext
+import com.base.app.core.designsystem.foundation.PaneRole
 import com.base.app.core.designsystem.foundation.TabVisibility
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.shell.tabs.CappedLifecycle
 
 /**
@@ -60,16 +64,25 @@ internal fun StackLayout(
     // what changes on a transition's first and last frames anyway, so it adds no composition.
     val sliding = plan.slide != Slide.None && scene.settled !== plan
     val rate = if (sliding || scene.card.active) FrameRateCategory.High else FrameRateCategory.Default
+    val panes = remember(plan, shown) { paneContexts(plan, shown) }
     Layout(
         modifier = modifier.preferredFrameRate(rate),
         content = {
             shown.forEach { entry ->
                 key(entry.contentKey) {
-                    EntrySlot(entry, scene, plan, onTop = entry.contentKey in plan.top.shown, tab, isLight)
+                    EntrySlot(
+                        entry = entry,
+                        scene = scene,
+                        plan = plan,
+                        onTop = entry.contentKey in plan.top.shown,
+                        pane = panes[entry.contentKey] ?: SinglePane,
+                        tab = tab,
+                        isLight = isLight,
+                    )
                 }
             }
             plan.emptyDetails.forEach { empty ->
-                key(empty) { EmptyDetailSlot(empty, scene, isLight) }
+                key(empty) { EmptyDetailSlot(empty, scene, plan, isLight) }
             }
         },
     ) { measurables, constraints ->
@@ -79,19 +92,15 @@ internal fun StackLayout(
         scene.height = height.toFloat()
         scene.rtl = layoutDirection == LayoutDirection.Rtl
         if (scene.density.density != density || scene.density.fontScale != fontScale) scene.density = Density(density, fontScale)
-        val listWidth = listPaneWidth.roundToPx().coerceAtMost(width)
+        val pane = listPaneWidth.roundToPx()
         val keys = shown.map { it.contentKey } + plan.emptyDetails
+        val bounds = keys.map { plan.boundsOf(it, width, pane) }
         val placeables = measurables.mapIndexed { index, measurable ->
-            val paneWidth = when (plan.slotOf(keys[index])) {
-                Slot.Full -> width
-                Slot.List -> listWidth
-                Slot.Detail -> width - listWidth
-            }
-            measurable.measure(Constraints.fixed(paneWidth, height))
+            measurable.measure(Constraints.fixed(bounds[index].width, height))
         }
         layout(width, height) {
             placeables.forEachIndexed { index, placeable ->
-                val x = if (plan.slotOf(keys[index]) == Slot.Detail) listWidth else 0
+                val x = bounds[index].left
                 scene.lefts[keys[index]] = (if (scene.rtl) width - x - placeable.width else x).toFloat()
                 placeable.placeRelative(x, 0)
             }
@@ -105,39 +114,42 @@ private fun EntrySlot(
     scene: StackScene,
     plan: StackPlan,
     onTop: Boolean,
+    pane: PaneContext,
     tab: TabVisibility,
     isLight: Boolean,
 ) {
     val key = entry.contentKey
     val lifecycle = rememberEntryLifecycle(scene, key)
     val visibility = remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
-    val detailPane = plan.slotOf(key) == Slot.Detail
+    val divided = plan.followsAnotherPane(key)
     val divider = AppTheme.colors.divider
-    val draw = remember(scene, key, isLight, detailPane, divider) {
+    val draw = remember(scene, key, isLight, divided, divider) {
         Modifier
             .graphicsLayer { with(scene) { pose(key) } }
             .drawWithContent {
                 with(scene) { drawOver(key, isLight) }
-                if (detailPane) drawPaneDivider(divider)
+                if (divided) drawPaneDivider(divider)
             }
     }
     CompositionLocalProvider(
         LocalLifecycleOwner provides lifecycle,
         LocalTabVisible provides visibility,
+        LocalPaneContext provides pane,
     ) {
         Box(draw.then(if (onTop) Modifier else Covered)) { entry.Content() }
     }
 }
 
 @Composable
-private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, isLight: Boolean) {
+private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan, isLight: Boolean) {
     val divider = AppTheme.colors.divider
-    val draw = remember(scene, key, isLight, divider) {
+    val divided = plan.followsAnotherPane(key)
+    val draw = remember(scene, key, isLight, divided, divider) {
         Modifier
             .graphicsLayer { with(scene) { pose(key) } }
             .drawWithContent {
                 with(scene) { drawOver(key, isLight) }
-                drawPaneDivider(divider)
+                if (divided) drawPaneDivider(divider)
             }
     }
     Box(draw) {
@@ -154,6 +166,44 @@ private fun DrawScope.drawPaneDivider(color: Color) {
     val x = if (layoutDirection == LayoutDirection.Ltr) 0f else size.width - width
     drawRect(color, Offset(x, 0f), Size(width, size.height))
 }
+
+/**
+ * Each shown entry's pane: its role, whether another pane of its page shares the window, how many
+ * details deep it is, and, for a list, the key of the detail open beside it.
+ */
+private fun paneContexts(plan: StackPlan, shown: List<NavEntry<AppNavKey>>): Map<Any, PaneContext> {
+    val entries = shown.associateBy { it.contentKey }
+    val contexts = HashMap<Any, PaneContext>(shown.size)
+    for (page in plan.pages) {
+        val beside = !page.single
+        val selected = page.shown.entries.firstOrNull { it.value == Slot.Detail }?.key?.let { entries[it]?.navKey }
+        var details = 0
+        for (key in page.members) {
+            val entry = entries[key] ?: continue
+            val role = entry.pane.role
+            if (role == PaneRole.Detail) details++
+            contexts[key] = PaneContext(
+                role = role,
+                beside = beside && key in page.shown,
+                detailDepth = if (role == PaneRole.Detail) details else 0,
+                selectedKey = if (role == PaneRole.List) selected else null,
+            )
+        }
+    }
+    return contexts
+}
+
+private val NavPane.role: PaneRole
+    get() = when (this) {
+        NavPane.Single -> PaneRole.Single
+        NavPane.List -> PaneRole.List
+        NavPane.Detail -> PaneRole.Detail
+        NavPane.Extra -> PaneRole.Extra
+        NavPane.Main -> PaneRole.Main
+        NavPane.Supporting -> PaneRole.Supporting
+    }
+
+private val SinglePane = PaneContext()
 
 /**
  * A covered or leaving screen: out of what accessibility reads, and out of keyboard focus. Its

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -66,6 +67,26 @@ val LocalTabBarVisible = compositionLocalOf { false }
  * height through [LocalBottomChrome], so toasts stay above the action bar.
  */
 val LocalScreenBottomBar = staticCompositionLocalOf { ChromeInset() }
+
+/** Which pane of its navigation page a screen is shown in (the shell's `NavPane`). */
+enum class PaneRole { Single, List, Detail, Extra, Main, Supporting }
+
+/**
+ * The pane a screen is shown in. [beside] is true while another pane of its page shares the window
+ * with it: a detail beside its list needs no Back arrow for the first level, since Back on the list's
+ * side already leaves it, and a list marks the row of [selectedKey], the navigation key of the detail
+ * open beside it. [detailDepth] counts the details opened in the pane, 1 for the first.
+ */
+@Immutable
+data class PaneContext(
+    val role: PaneRole = PaneRole.Single,
+    val beside: Boolean = false,
+    val detailDepth: Int = 0,
+    val selectedKey: Any? = null,
+)
+
+/** Provided to every screen of a navigation stack; the default is a screen on its own. */
+val LocalPaneContext = staticCompositionLocalOf { PaneContext() }
 
 /** [base] plus the chrome at both ends, for a scrolling container's contentPadding. */
 @Composable
