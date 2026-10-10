@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
-import { SiteMotion } from "../components/site-motion";
+import { SiteMotion } from "../components/site-motion.tsx";
 import "./globals.css";
 
 // Self-hosted at build time: no render-blocking request to Google, no layout shift, and no
