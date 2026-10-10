@@ -65,7 +65,9 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
   const options = useMemo(() => ({ features: deferred.features, haptics: deferred.haptics }), [deferred.features, deferred.haptics]);
 
   return (
-    <div className="min-w-0 lg:sticky lg:top-24">
+    // self-start: a grid item stretches to its row by default, and a sticky box as tall as its
+    // container has no room to move.
+    <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div role="radiogroup" aria-label="Screen" className="no-scrollbar flex gap-1 overflow-x-auto">
           {screens.map((option) => {
