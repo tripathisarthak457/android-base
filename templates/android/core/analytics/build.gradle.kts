@@ -10,11 +10,18 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    // <opt:firebase>
+    implementation(libs.androidx.metrics.performance)
+    implementation(libs.androidx.lifecycle.process)
+
+    // <opt:firebaseanalytics|crashlytics>
     implementation(platform(libs.firebase.bom))
+    // </opt:firebaseanalytics|crashlytics>
+    // <opt:firebaseanalytics>
     implementation(libs.firebase.analytics)
+    // </opt:firebaseanalytics>
+    // <opt:crashlytics>
     implementation(libs.firebase.crashlytics)
-    // </opt:firebase>
+    // </opt:crashlytics>
 
     testImplementation(project(":core:testing"))
 }

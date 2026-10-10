@@ -18,8 +18,10 @@ plugins {
     // </opt:database>
     // <opt:firebase>
     alias(libs.plugins.google.services) apply false
-    alias(libs.plugins.firebase.crashlytics) apply false
     // </opt:firebase>
+    // <opt:crashlytics>
+    alias(libs.plugins.firebase.crashlytics) apply false
+    // </opt:crashlytics>
     // <opt:baselineprofile>
     alias(libs.plugins.baselineprofile) apply false
     // </opt:baselineprofile>

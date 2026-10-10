@@ -25,14 +25,14 @@ interface AnalyticsTracker {
 
     fun setUserProperty(name: String, value: String?)
 
-    /** Honours the user's opt-out. Called from settings, and respected by every implementation. */
+    /**
+     * Honours the person's choice in settings. The application applies it at start-up and on every
+     * change, so nothing is collected after they turn it off.
+     */
     fun setEnabled(enabled: Boolean)
 }
 
-/**
- * Records nothing. The binding used in debug builds and in tests, and the one that keeps the rest
- * of the app unaware of whether analytics exist at all.
- */
+/** Records nothing: the binding until a vendor is chosen, and in tests. */
 class NoOpAnalyticsTracker : AnalyticsTracker {
     override fun track(event: AnalyticsEvent) = Unit
     override fun setUserId(userId: String?) = Unit
@@ -40,21 +40,30 @@ class NoOpAnalyticsTracker : AnalyticsTracker {
     override fun setEnabled(enabled: Boolean) = Unit
 }
 
-/** Where crashes and non-fatal errors go. */
+/**
+ * Where crashes and non-fatal errors go. Every error the app logs becomes a breadcrumb through
+ * [log]; [recordException] is for the unexpected ones only, such as an exception nothing caught.
+ * Recording every handled failure buries the real problems under thousands of expected ones.
+ */
 interface CrashReporter {
 
     fun recordException(throwable: Throwable, message: String? = null)
 
     fun log(message: String)
 
+    /** Honours the person's choice in settings, like [AnalyticsTracker.setEnabled]. */
+    fun setEnabled(enabled: Boolean)
+
     fun setUserId(userId: String?)
 
     fun setCustomKey(key: String, value: String)
 }
 
+/** Reports nothing: the binding until a vendor is chosen, and in tests. */
 class NoOpCrashReporter : CrashReporter {
     override fun recordException(throwable: Throwable, message: String?) = Unit
     override fun log(message: String) = Unit
+    override fun setEnabled(enabled: Boolean) = Unit
     override fun setUserId(userId: String?) = Unit
     override fun setCustomKey(key: String, value: String) = Unit
 }

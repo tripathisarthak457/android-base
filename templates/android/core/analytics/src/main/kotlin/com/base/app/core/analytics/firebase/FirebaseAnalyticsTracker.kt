@@ -1,5 +1,7 @@
-package com.base.app.core.analytics
+package com.base.app.core.analytics.firebase
 
+import com.base.app.core.analytics.AnalyticsEvent
+import com.base.app.core.analytics.AnalyticsTracker
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
 import javax.inject.Inject
