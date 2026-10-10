@@ -132,6 +132,13 @@ test("only answers that differ from the defaults are stored", () => {
   const startedOver = run(edited, { type: "reset" });
   assert.equal(draftToStore(startedOver, catalogue), null, "Start over leaves the key removed");
   assert.equal(draftToStore(run(edited, { type: "appName", value: "My App" }), catalogue), null);
+  const typedAndCleared = run(
+    fresh,
+    { type: "setting", key: "android.api_base_urls", value: { dev: "h" } },
+    { type: "setting", key: "android.api_base_urls", value: { dev: "" } },
+  );
+  assert.deepEqual(typedAndCleared.settings["android.api_base_urls"], {});
+  assert.equal(draftToStore(typedAndCleared, catalogue), null, "a flavour URL typed and cleared is not an answer");
 });
 
 test("a draft round-trips without the signing passwords", () => {
