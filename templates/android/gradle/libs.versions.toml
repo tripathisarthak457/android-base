@@ -66,6 +66,10 @@ kover = "0.9.9"
 dependencyAnalysis = "3.19.2"
 profileinstaller = "1.4.1"
 uiautomator = "2.4.0"
+# <opt:liquidglass>
+kyantBackdrop = "2.0.1"
+kyantShapes = "1.2.1"
+# </opt:liquidglass>
 
 [libraries]
 
@@ -153,6 +157,10 @@ lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", versio
 androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+# <opt:liquidglass>
+kyant-backdrop = { group = "io.github.kyant0", name = "backdrop", version.ref = "kyantBackdrop" }
+kyant-shapes = { group = "io.github.kyant0", name = "shapes", version.ref = "kyantShapes" }
+# </opt:liquidglass>
 
 # ── Firebase ─────────────────────────────────────────────────────────────────
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
