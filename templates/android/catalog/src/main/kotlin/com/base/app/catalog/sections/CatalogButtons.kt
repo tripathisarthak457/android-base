@@ -2,11 +2,13 @@ package com.base.app.catalog.sections
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import com.base.app.catalog.CatalogGroup
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.AppIconButton
@@ -34,7 +36,7 @@ fun ButtonsSection() {
                 AppButton(text = "Next", onClick = {}, size = size, variant = ButtonVariant.Plain, trailingIcon = AppIcons.ChevronRight)
             }
         }
-        AppButton(text = "Full width", onClick = {}, fillWidth = true)
+        AppButton(text = "Full width", onClick = {}, modifier = Modifier.fillMaxWidth())
     }
     CatalogGroup("Loading", caption = "The label keeps its space, so the button does not change size.") {
         var loading by remember { mutableStateOf(true) }

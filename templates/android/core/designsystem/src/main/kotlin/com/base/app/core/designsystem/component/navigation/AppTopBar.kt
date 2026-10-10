@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.button.AppButtonDefaults
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.ChromeInset
@@ -258,7 +259,7 @@ private fun InlineBar(
                         icon = AppIcons.ChevronLeft,
                         contentDescription = stringResource(R.string.designsystem_navigate_back),
                         onClick = onBack,
-                        tint = AppTheme.colors.accentContent,
+                        colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
                     )
                 }
             },

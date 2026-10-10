@@ -247,7 +247,7 @@ internal fun SignInScreen(
             onClick = { onEvent(SignInEvent.Submit) },
             enabled = state.canSubmit,
             loading = state.submitting,
-            fillWidth = true,
+            modifier = Modifier.fillMaxWidth(),
         )
         // <opt:googlesignin>
 

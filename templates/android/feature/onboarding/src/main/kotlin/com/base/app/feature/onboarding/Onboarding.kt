@@ -169,10 +169,10 @@ internal fun OnboardingScreen(
                         scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
                     }
                 },
-                fillWidth = true,
                 modifier = Modifier
                     .centeredMaxWidth(AppTheme.layout.formMaxWidth)
-                    .padding(vertical = AppTheme.spacing.lg),
+                    .padding(vertical = AppTheme.spacing.lg)
+                    .fillMaxWidth(),
             )
         }
     }

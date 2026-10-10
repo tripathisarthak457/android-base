@@ -3,6 +3,7 @@ package com.base.app.feature.auth
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -278,7 +279,7 @@ internal fun SignUpScreen(
             onClick = { onEvent(SignUpEvent.Submit) },
             enabled = state.canSubmit,
             loading = state.submitting,
-            fillWidth = true,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

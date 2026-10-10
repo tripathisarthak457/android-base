@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.animation.rememberAppTransitions
+import com.base.app.core.designsystem.component.button.AppButtonDefaults
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.text.AppText
@@ -38,6 +39,7 @@ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.launch
@@ -90,14 +92,14 @@ fun AppDatePicker(
                 contentDescription = stringResource(R.string.designsystem_previous_month),
                 onClick = { scope.launch { pager.animateScrollToPage(pager.currentPage - 1) } },
                 size = ButtonSize.Small,
-                tint = AppTheme.colors.accentContent,
+                colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
             )
             AppIconButton(
                 icon = AppIcons.ChevronRight,
                 contentDescription = stringResource(R.string.designsystem_next_month),
                 onClick = { scope.launch { pager.animateScrollToPage(pager.currentPage + 1) } },
                 size = ButtonSize.Small,
-                tint = AppTheme.colors.accentContent,
+                colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
             )
         }
         Row(modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.sm)) {
@@ -111,7 +113,12 @@ fun AppDatePicker(
                 )
             }
         }
-        HorizontalPager(state = pager, modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) { page ->
+        HorizontalPager(
+            state = pager,
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Top,
+            flingBehavior = AppScrollDefaults.pagerFlingBehavior(pager),
+        ) { page ->
             MonthGrid(
                 month = anchor.plusMonths((page - MONTHS_EACH_WAY).toLong()),
                 firstDayOfWeek = firstDayOfWeek,

@@ -1,5 +1,6 @@
 package com.base.app.feature.auth
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -209,7 +210,7 @@ internal fun PasswordResetScreen(
             onClick = { onEvent(PasswordResetEvent.Submit) },
             enabled = state.canSubmit,
             loading = state.submitting,
-            fillWidth = true,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

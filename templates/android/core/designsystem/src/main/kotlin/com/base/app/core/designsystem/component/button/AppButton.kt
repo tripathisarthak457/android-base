@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
@@ -32,7 +32,6 @@ import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.ProvideContentColor
-import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.draw.offsetShadow
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
@@ -61,7 +60,8 @@ enum class ButtonSize { Small, Medium, Large }
 /**
  * The app's button. Filled, tinted and destructive buttons shrink under the finger; a plain one
  * dims. While [loading], the label keeps its space at zero alpha and a spinner sits over it, so the
- * button never changes size.
+ * button never changes size. A disabled button is drawn in grey rather than faded, so its label
+ * stays legible. For a button as wide as its column, pass `Modifier.fillMaxWidth()`.
  */
 @Composable
 fun AppButton(
@@ -74,25 +74,23 @@ fun AppButton(
     loading: Boolean = false,
     leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
-    fillWidth: Boolean = false,
     shape: Shape = AppTheme.style.buttonShape,
+    colors: ButtonColors = AppButtonDefaults.colors(variant),
 ) {
-    val colors = AppButtonDefaults.colors(variant)
     val metrics = AppButtonDefaults.metrics(size)
     val style = AppTheme.style
     val outlined = style.offsetShadow > 0.dp && variant != ButtonVariant.Plain
     val label = if (style.uppercaseLabels) text.uppercase() else text
 
+    val content = colors.content(enabled)
     Box(
         modifier = modifier
-            .then(if (fillWidth) Modifier.fillMaxWidth() else Modifier)
             .pressable(
                 onClick = onClick,
                 feedback = if (variant == ButtonVariant.Plain) PressFeedback.Dim else PressFeedback.Scale,
                 enabled = enabled && !loading,
                 role = Role.Button,
             )
-            .disabledAlpha(enabled)
             .then(
                 if (outlined) {
                     Modifier
@@ -102,12 +100,12 @@ fun AppButton(
                     Modifier
                 },
             )
-            .background(colors.container, shape)
+            .background(colors.container(enabled), shape)
             .heightIn(min = metrics.height)
             .padding(metrics.padding),
         contentAlignment = Alignment.Center,
     ) {
-        ProvideContentColor(colors.content) {
+        ProvideContentColor(content) {
             Row(
                 modifier = if (loading) Modifier.alpha(0f) else Modifier,
                 horizontalArrangement = Arrangement.spacedBy(metrics.gap, Alignment.CenterHorizontally),
@@ -122,7 +120,7 @@ fun AppButton(
                 )
                 trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
             }
-            if (loading) AppActivityIndicator(size = metrics.iconSize, color = colors.content)
+            if (loading) AppActivityIndicator(size = metrics.iconSize, color = content)
         }
     }
 }
@@ -140,10 +138,10 @@ fun AppIconButton(
     variant: ButtonVariant = ButtonVariant.Plain,
     size: ButtonSize = ButtonSize.Medium,
     enabled: Boolean = true,
-    tint: Color = if (variant == ButtonVariant.Plain) AppTheme.colors.contentSecondary else AppButtonDefaults.colors(variant).content,
+    colors: ButtonColors = AppButtonDefaults.iconButtonColors(variant),
 ) {
-    val colors = AppButtonDefaults.colors(variant)
     val diameter = AppButtonDefaults.iconButtonSize(size)
+    val container = colors.container(enabled)
     Box(
         modifier = modifier
             .pressable(
@@ -152,12 +150,11 @@ fun AppIconButton(
                 enabled = enabled,
                 role = Role.Button,
             )
-            .disabledAlpha(enabled)
             .size(diameter)
-            .then(if (variant == ButtonVariant.Plain) Modifier else Modifier.background(colors.container, CircleShape)),
+            .then(if (container.alpha == 0f) Modifier else Modifier.background(container, CircleShape)),
         contentAlignment = Alignment.Center,
     ) {
-        AppIcon(icon, contentDescription = contentDescription, tint = tint, size = AppButtonDefaults.metrics(size).iconSize)
+        AppIcon(icon, contentDescription = contentDescription, tint = colors.content(enabled), size = AppButtonDefaults.metrics(size).iconSize)
     }
 }
 
@@ -172,19 +169,48 @@ fun AppLinkButton(
 ) {
     AppText(
         text = text,
-        modifier = modifier
-            .pressable(onClick = onClick, feedback = PressFeedback.Dim, enabled = enabled, role = Role.Button)
-            .disabledAlpha(enabled),
+        modifier = modifier.pressable(onClick = onClick, feedback = PressFeedback.Dim, enabled = enabled, role = Role.Button),
         style = style,
-        color = AppTheme.colors.accentContent,
+        color = if (enabled) AppTheme.colors.accentContent else AppTheme.colors.contentDisabled,
     )
+}
+
+/**
+ * A button's colours, enabled and disabled. Build one from [AppButtonDefaults.colors] to change a
+ * single button; change the theme's roles to change them all.
+ */
+@Immutable
+class ButtonColors(
+    val container: Color,
+    val content: Color,
+    val disabledContainer: Color,
+    val disabledContent: Color,
+) {
+    fun copy(
+        container: Color = this.container,
+        content: Color = this.content,
+        disabledContainer: Color = this.disabledContainer,
+        disabledContent: Color = this.disabledContent,
+    ) = ButtonColors(container, content, disabledContainer, disabledContent)
+
+    internal fun container(enabled: Boolean) = if (enabled) container else disabledContainer
+
+    internal fun content(enabled: Boolean) = if (enabled) content else disabledContent
+
+    override fun equals(other: Any?): Boolean = other is ButtonColors &&
+        container == other.container && content == other.content &&
+        disabledContainer == other.disabledContainer && disabledContent == other.disabledContent
+
+    override fun hashCode(): Int {
+        var result = container.hashCode()
+        result = 31 * result + content.hashCode()
+        result = 31 * result + disabledContainer.hashCode()
+        return 31 * result + disabledContent.hashCode()
+    }
 }
 
 /** What a button looks like when the caller does not say, so a glass or branded variant can reuse it. */
 object AppButtonDefaults {
-
-    @Immutable
-    class Colors(val container: Color, val content: Color)
 
     @Immutable
     class Metrics(
@@ -195,17 +221,34 @@ object AppButtonDefaults {
         val textStyle: TextStyle,
     )
 
+    /** A [variant]'s colours. Disabled, every variant goes grey, so a disabled label never fades. */
     @Composable
-    fun colors(variant: ButtonVariant): Colors {
+    fun colors(variant: ButtonVariant): ButtonColors {
         val colors = AppTheme.colors
         return remember(variant, colors) {
+            val disabledContainer = if (variant == ButtonVariant.Plain) Color.Transparent else colors.fill
             when (variant) {
-                ButtonVariant.Filled -> Colors(colors.accent, colors.onAccent)
-                ButtonVariant.Tinted -> Colors(colors.accentSubtle, colors.accentContent)
-                ButtonVariant.Plain -> Colors(Color.Transparent, colors.accentContent)
-                ButtonVariant.Destructive -> Colors(colors.danger.subtle, colors.danger.content)
+                ButtonVariant.Filled -> ButtonColors(colors.accent, colors.onAccent, disabledContainer, colors.contentDisabled)
+                ButtonVariant.Tinted -> ButtonColors(colors.accentSubtle, colors.accentContent, disabledContainer, colors.contentDisabled)
+                ButtonVariant.Plain -> ButtonColors(Color.Transparent, colors.accentContent, disabledContainer, colors.contentDisabled)
+                ButtonVariant.Destructive -> ButtonColors(colors.danger.subtle, colors.danger.content, disabledContainer, colors.contentDisabled)
             }
         }
+    }
+
+    /**
+     * An icon button's colours: as [colors], except that a plain glyph is secondary text rather than
+     * the accent. [content] overrides the glyph's colour when it is specified.
+     */
+    @Composable
+    fun iconButtonColors(variant: ButtonVariant = ButtonVariant.Plain, content: Color = Color.Unspecified): ButtonColors {
+        val colors = colors(variant)
+        val glyph = when {
+            content.isSpecified -> content
+            variant == ButtonVariant.Plain -> AppTheme.colors.contentSecondary
+            else -> return colors
+        }
+        return remember(colors, glyph) { colors.copy(content = glyph) }
     }
 
     @Composable

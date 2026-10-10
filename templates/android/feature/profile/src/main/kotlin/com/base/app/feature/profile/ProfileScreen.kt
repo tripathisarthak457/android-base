@@ -122,7 +122,7 @@ internal fun ProfileScreen(
                     text = stringResource(R.string.profile_save),
                     onClick = { onEvent(ProfileEvent.Save) },
                     enabled = state.isDirty,
-                    fillWidth = true,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }

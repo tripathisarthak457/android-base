@@ -169,8 +169,7 @@ private fun RequestList(
                 text = "Clear",
                 onClick = onClear,
                 variant = ButtonVariant.Tinted,
-                fillWidth = true,
-                modifier = Modifier.padding(top = AppTheme.spacing.md),
+                modifier = Modifier.padding(top = AppTheme.spacing.md).fillMaxWidth(),
             )
         }
     }

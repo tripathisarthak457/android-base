@@ -58,7 +58,7 @@ fun ContainersSection() {
         Box(Modifier.fillMaxWidth().height(320.dp)) {
             AppScaffold(
                 topBar = { AppTopBar(title = "Checkout", onBack = {}, windowInsets = WindowInsets(0)) },
-                bottomBar = { AppBottomActionBar { AppButton(text = "Pay $24.00", onClick = {}, fillWidth = true) } },
+                bottomBar = { AppBottomActionBar { AppButton(text = "Pay $24.00", onClick = {}, modifier = Modifier.fillMaxWidth()) } },
             ) {
                 LazyColumn(Modifier.fillMaxSize(), contentPadding = chromeContentPadding()) {
                     items((1..12).toList(), key = { it }) { AppRow(title = "Line item $it", value = "$2.00") }
