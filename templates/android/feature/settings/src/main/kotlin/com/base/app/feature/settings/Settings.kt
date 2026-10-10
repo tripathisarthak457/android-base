@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,9 +45,11 @@ import com.base.app.core.ui.MviScreen
 // <opt:licenses>
 import com.base.app.feature.settings.api.LicensesKey
 // </opt:licenses>
+import com.base.app.feature.settings.api.SettingsAppInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 // <opt:language>
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import com.base.app.core.designsystem.component.overlay.AppActionSheet
 import com.base.app.core.designsystem.component.overlay.SheetAction
@@ -60,24 +61,17 @@ import com.base.app.core.ui.browser.rememberInAppBrowser
 
 @Immutable
 internal data class SettingsState(
+    val appVersion: String,
     val settings: AppSettings = AppSettings(),
-    val appVersion: String = "",
     // <opt:language>
     /** Null while the app follows the phone's language. */
     val languageTag: String? = null,
     // </opt:language>
-) : UiState {
-
-    val themeIndex: Int
-        get() = when (settings.themeMode) {
-            AppSettings.THEME_LIGHT -> 1
-            AppSettings.THEME_DARK -> 2
-            else -> 0
-        }
-}
+) : UiState
 
 internal sealed interface SettingsEvent : UiEvent {
-    data class ThemeSelected(val index: Int) : SettingsEvent
+    /** [mode] is one of the `AppSettings.THEME_*` values. */
+    data class ThemeSelected(val mode: String) : SettingsEvent
     data class AnalyticsToggled(val enabled: Boolean) : SettingsEvent
     data class HapticsToggled(val enabled: Boolean) : SettingsEvent
 
@@ -88,19 +82,17 @@ internal sealed interface SettingsEvent : UiEvent {
     data object SignOutConfirmed : SettingsEvent
 
     // <opt:language>
+    /** The language lives in the platform rather than the store, so the route reads it. */
+    data class LanguageRead(val tag: String?) : SettingsEvent
     data class LanguagePicked(val tag: String?) : SettingsEvent
     // </opt:language>
 
     // <opt:licenses>
     data object LicensesClicked : SettingsEvent
     // </opt:licenses>
-
-    data object BackClicked : SettingsEvent
 }
 
 internal sealed interface SettingsEffect : UiEffect {
-    data object NavigateBack : SettingsEffect
-
     // <opt:language>
     data class ApplyLanguage(val tag: String?) : SettingsEffect
     // </opt:language>
@@ -115,7 +107,8 @@ internal sealed interface SettingsEffect : UiEffect {
 internal class SettingsViewModel @Inject constructor(
     private val settingsStore: AppSettingsStore,
     private val sessionController: SessionController,
-) : MviViewModel<SettingsState, SettingsEvent, SettingsEffect>(SettingsState()) {
+    appInfo: SettingsAppInfo,
+) : MviViewModel<SettingsState, SettingsEvent, SettingsEffect>(SettingsState(appVersion = appInfo.versionName)) {
 
     init {
         observe(settingsStore.settings) { copy(settings = it) }
@@ -124,15 +117,7 @@ internal class SettingsViewModel @Inject constructor(
     // Each write sets an absolute value, so a newer tap cancelling an older write loses nothing.
     override fun handleEvent(event: SettingsEvent) {
         when (event) {
-            is SettingsEvent.ThemeSelected -> launchLatest(THEME) {
-                settingsStore.setThemeMode(
-                    when (event.index) {
-                        1 -> AppSettings.THEME_LIGHT
-                        2 -> AppSettings.THEME_DARK
-                        else -> AppSettings.THEME_SYSTEM
-                    },
-                )
-            }
+            is SettingsEvent.ThemeSelected -> launchLatest(THEME) { settingsStore.setThemeMode(event.mode) }
 
             is SettingsEvent.AnalyticsToggled -> launchLatest(ANALYTICS) { settingsStore.setAnalyticsEnabled(event.enabled) }
 
@@ -145,6 +130,8 @@ internal class SettingsViewModel @Inject constructor(
             SettingsEvent.SignOutConfirmed -> sessionController.signOut()
 
             // <opt:language>
+            is SettingsEvent.LanguageRead -> setState { copy(languageTag = event.tag) }
+
             is SettingsEvent.LanguagePicked -> {
                 setState { copy(languageTag = event.tag) }
                 emit(SettingsEffect.ApplyLanguage(event.tag))
@@ -154,21 +141,8 @@ internal class SettingsViewModel @Inject constructor(
             // <opt:licenses>
             SettingsEvent.LicensesClicked -> emit(SettingsEffect.OpenLicenses)
             // </opt:licenses>
-
-            SettingsEvent.BackClicked -> emit(SettingsEffect.NavigateBack)
         }
     }
-
-    fun setAppVersion(version: String) {
-        setState { copy(appVersion = version) }
-    }
-    // <opt:language>
-
-    /** The language lives in the platform rather than the store, so the route reads it. */
-    fun setLanguage(tag: String?) {
-        setState { copy(languageTag = tag) }
-    }
-    // </opt:language>
 
     private companion object {
         const val THEME = "theme"
@@ -183,20 +157,17 @@ internal class SettingsViewModel @Inject constructor(
 @Composable
 internal fun SettingsRoute(
     navigator: AppNavigator,
-    appVersion: String,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(appVersion) { viewModel.setAppVersion(appVersion) }
     // <opt:language>
     val context = LocalContext.current
-    LaunchedEffect(Unit) { viewModel.setLanguage(AppLocales.current(context)) }
+    LaunchedEffect(Unit) { viewModel.onEvent(SettingsEvent.LanguageRead(AppLocales.current(context))) }
     // </opt:language>
 
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
-                SettingsEffect.NavigateBack -> navigator.navigateUp()
                 // <opt:language>
                 is SettingsEffect.ApplyLanguage -> AppLocales.set(context, effect.tag)
                 // </opt:language>
@@ -256,8 +227,8 @@ internal fun SettingsScreen(
                         stringResource(R.string.settings_theme_light),
                         stringResource(R.string.settings_theme_dark),
                     ),
-                    selectedIndex = state.themeIndex,
-                    onSelect = { onEvent(SettingsEvent.ThemeSelected(it)) },
+                    selectedIndex = THEME_MODES.indexOf(state.settings.themeMode).coerceAtLeast(0),
+                    onSelect = { onEvent(SettingsEvent.ThemeSelected(THEME_MODES[it])) },
                 )
             }
 
@@ -450,6 +421,9 @@ internal fun SettingsScreen(
         )
     }
 }
+
+/** The theme picker's segments, in order. */
+private val THEME_MODES = listOf(AppSettings.THEME_SYSTEM, AppSettings.THEME_LIGHT, AppSettings.THEME_DARK)
 
 @Preview(showBackground = true)
 @Composable
