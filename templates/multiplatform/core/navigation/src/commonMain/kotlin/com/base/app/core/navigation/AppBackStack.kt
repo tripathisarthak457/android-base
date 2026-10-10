@@ -113,12 +113,12 @@ private val stackSerializer = ListSerializer(PolymorphicSerializer(AppNavKey::cl
 
 internal fun NavKeySerialization.encodeStack(keys: List<AppNavKey>): String? =
     runCatching { json.encodeToString(stackSerializer, keys) }
-        .onFailure { Log.e("Back stack not saved", it, NAV_LOG_TAG) }
+        .onFailure { Log.e("Back stack not saved", it, NavLogTag) }
         .getOrNull()
 
 internal fun NavKeySerialization.decodeStack(encoded: String): List<AppNavKey>? =
     runCatching { json.decodeFromString(stackSerializer, encoded) }
-        .onFailure { Log.e("Back stack not restored", it, NAV_LOG_TAG) }
+        .onFailure { Log.e("Back stack not restored", it, NavLogTag) }
         .getOrNull()
 
-internal const val NAV_LOG_TAG = "Navigation"
+internal const val NavLogTag = "Navigation"

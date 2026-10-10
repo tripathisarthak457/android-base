@@ -67,10 +67,10 @@ private fun Content(state: SampleDetailState, onEvent: (SampleDetailEvent) -> Un
     ) {
         val item = state.item
         if (item == null) {
-            repeat(SKELETON_LINES) {
+            repeat(SkeletonLines) {
                 AppSkeletonLine(
                     modifier = Modifier.padding(bottom = AppTheme.spacing.sm),
-                    widthFraction = if (it == SKELETON_LINES - 1) 0.5f else 1f,
+                    widthFraction = if (it == SkeletonLines - 1) 0.5f else 1f,
                 )
             }
             return@Column
@@ -117,7 +117,7 @@ private fun Related(items: List<SampleItem>, onEvent: (SampleDetailEvent) -> Uni
     }
 }
 
-private const val SKELETON_LINES = 5
+private const val SkeletonLines = 5
 
 @Preview
 @Composable

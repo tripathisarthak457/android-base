@@ -166,7 +166,7 @@ internal object ContentGlyphs {
             moveTo(11.2f, 3.2f); lineTo(20.8f, 12.8f); lineTo(12.8f, 20.8f); lineTo(3.2f, 11.2f)
             lineTo(3.2f, 3.2f); close()
         }
-        stroke(DOT_WIDTH) { dot(7.4f, 7.4f) }
+        stroke(DotWidth) { dot(7.4f, 7.4f) }
     }
     val Package by icon("Package") {
         stroke { moveTo(12f, 3.2f); lineTo(20.8f, 7.6f); lineTo(20.8f, 16.4f); lineTo(12f, 20.8f); lineTo(3.2f, 16.4f); lineTo(3.2f, 7.6f); close() }
@@ -200,14 +200,14 @@ internal object ContentGlyphs {
         stroke { moveTo(2.4f, 8.6f); curveTo(8f, 3.8f, 16f, 3.8f, 21.6f, 8.6f) }
         stroke { moveTo(5.8f, 12.4f); curveTo(9.5f, 9.3f, 14.5f, 9.3f, 18.2f, 12.4f) }
         stroke { moveTo(9.2f, 16.2f); curveTo(10.9f, 14.8f, 13.1f, 14.8f, 14.8f, 16.2f) }
-        stroke(DOT_WIDTH) { dot(12f, 19.6f) }
+        stroke(DotWidth) { dot(12f, 19.6f) }
     }
     val WifiOff by icon("WifiOff") {
         stroke { moveTo(3.5f, 3.5f); lineTo(20.5f, 20.5f) }
         stroke { moveTo(9.2f, 16.2f); curveTo(10.9f, 14.8f, 13.1f, 14.8f, 14.8f, 16.2f) }
         stroke { moveTo(2.4f, 8.6f); curveTo(4f, 7.2f, 5.8f, 6.2f, 7.7f, 5.6f) }
         stroke { moveTo(13.4f, 5.1f); curveTo(16.5f, 5.4f, 19.4f, 6.6f, 21.6f, 8.6f) }
-        stroke(DOT_WIDTH) { dot(12f, 19.6f) }
+        stroke(DotWidth) { dot(12f, 19.6f) }
     }
 
     val Sun by icon("Sun") {

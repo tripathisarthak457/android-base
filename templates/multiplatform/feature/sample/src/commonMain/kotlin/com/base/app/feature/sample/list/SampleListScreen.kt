@@ -90,7 +90,7 @@ internal fun SampleListScreen(
 
             // Idle is the first frame, before the route's Appeared has started the load.
             else -> AppSkeletonRows(
-                count = SKELETON_ROWS,
+                count = SkeletonRows,
                 modifier = placeholder.padding(top = AppTheme.spacing.xl),
             )
         }
@@ -142,7 +142,7 @@ private fun LazyListScope.rows(
     }
 }
 
-private const val SKELETON_ROWS = 6
+private const val SkeletonRows = 6
 
 @Preview
 @Composable

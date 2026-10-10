@@ -10,11 +10,11 @@ import androidx.compose.ui.graphics.vector.PathBuilder
 import androidx.compose.ui.graphics.vector.PathData
 import androidx.compose.ui.unit.dp
 
-internal const val STROKE_WIDTH = 1.8f
-internal const val BOLD_STROKE_WIDTH = 2.6f
+internal const val StrokeWidth = 1.8f
+internal const val BoldStrokeWidth = 2.6f
 
 /** Dots are drawn as a zero-length round-capped stroke, so the width *is* the diameter. */
-internal const val DOT_WIDTH = 2.4f
+internal const val DotWidth = 2.4f
 
 /**
  * Built the first time something draws it, not when the set is first touched: building all of them
@@ -37,7 +37,7 @@ internal fun icon(
 }
 
 internal fun ImageVector.Builder.stroke(
-    width: Float = STROKE_WIDTH,
+    width: Float = StrokeWidth,
     path: PathBuilder.() -> Unit,
 ): ImageVector.Builder = addPath(
     pathData = PathData(path),

@@ -489,12 +489,12 @@ internal fun {p}ListScreen(
                 onAction = {{ onEvent({p}ListEvent.Retry) }},
             )
 
-            else -> AppSkeletonRows(count = SKELETON_ROWS, modifier = placeholder.padding(top = AppTheme.spacing.xl))
+            else -> AppSkeletonRows(count = SkeletonRows, modifier = placeholder.padding(top = AppTheme.spacing.xl))
         }}
     }}
 }}
 
-private const val SKELETON_ROWS = 6
+private const val SkeletonRows = 6
 
 @Preview
 @Composable

@@ -18,10 +18,10 @@ internal object ActionsGlyphs {
         stroke { moveTo(4f, 6.5f); lineTo(20f, 6.5f); moveTo(4f, 12f); lineTo(20f, 12f); moveTo(4f, 17.5f); lineTo(20f, 17.5f) }
     }
     val MoreVertical by icon("MoreVertical") {
-        stroke(DOT_WIDTH) { dot(12f, 5.5f); dot(12f, 12f); dot(12f, 18.5f) }
+        stroke(DotWidth) { dot(12f, 5.5f); dot(12f, 12f); dot(12f, 18.5f) }
     }
     val MoreHorizontal by icon("MoreHorizontal") {
-        stroke(DOT_WIDTH) { dot(5.5f, 12f); dot(12f, 12f); dot(18.5f, 12f) }
+        stroke(DotWidth) { dot(5.5f, 12f); dot(12f, 12f); dot(18.5f, 12f) }
     }
 
     val Heart by icon("Heart") {
