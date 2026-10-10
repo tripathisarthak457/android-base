@@ -35,6 +35,8 @@ const AREAS: { value: Area; label: string }[] = [
   { value: "docs", label: "The documentation" },
 ];
 
+const TEXT_AREA = "w-full rounded-lg border border-ink-600 bg-ink-900 p-3 text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none";
+
 function Choices<T extends string>({ legend, options, value, onChange, columns }: {
   legend: string;
   options: { value: T; label: string; blurb?: string }[];
@@ -204,7 +206,12 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
           </h2>
           <p className="mt-1 text-sm text-ink-400">Reports go straight to the person who can fix it.</p>
         </div>
-        <button type="button" onClick={onClose} aria-label="Close" className="rounded-lg px-2 py-1 text-ink-400 transition-colors hover:bg-ink-800 hover:text-ink-100">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="rounded-lg px-2 py-1 text-ink-400 transition-colors hover:bg-ink-800 hover:text-ink-100"
+        >
           ✕
         </button>
       </header>
@@ -216,7 +223,14 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
 
         <Field label="One-line summary">
           {(control) => (
-            <TextInput {...control} value={title} onChange={(event) => setTitle(event.target.value)} placeholder={bug ? "The zip has no gradlew" : "Let me pick a starting screen"} maxLength={200} autoFocus />
+            <TextInput
+              {...control}
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              placeholder={bug ? "The zip has no gradlew" : "Let me pick a starting screen"}
+              maxLength={200}
+              autoFocus
+            />
           )}
         </Field>
 
@@ -228,7 +242,7 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
               onChange={(event) => setBody(event.target.value)}
               rows={4}
               maxLength={8000}
-              className="w-full rounded-lg border border-ink-600 bg-ink-900 p-3 text-sm text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none"
+              className={`${TEXT_AREA} text-sm`}
               placeholder={bug ? "I picked the standard preset, ran ./gradlew build and got…" : "It would help if…"}
             />
           )}
@@ -243,7 +257,7 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
                 onChange={(event) => setSteps(event.target.value)}
                 rows={3}
                 maxLength={4000}
-                className="w-full rounded-lg border border-ink-600 bg-ink-900 p-3 font-mono text-xs text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none"
+                className={`${TEXT_AREA} font-mono text-xs`}
                 placeholder={"1. Pick the lean preset\n2. Generate\n3. Run ./gradlew build"}
               />
             )}
@@ -251,7 +265,16 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
         )}
 
         <Field label="Email (optional)" hint="Only used to ask a follow-up question.">
-          {(control) => <TextInput {...control} value={contact} onChange={(event) => setContact(event.target.value)} placeholder="you@example.com" type="email" maxLength={200} />}
+          {(control) => (
+            <TextInput
+              {...control}
+              value={contact}
+              onChange={(event) => setContact(event.target.value)}
+              placeholder="you@example.com"
+              type="email"
+              maxLength={200}
+            />
+          )}
         </Field>
 
         {context && (
@@ -261,7 +284,12 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
                 <span className="block text-sm font-medium text-ink-200">Attach what you configured</span>
                 <span className="mt-0.5 block text-xs text-ink-400">And this page&apos;s address. It usually saves three emails.</span>
               </span>
-              <input type="checkbox" checked={attach} onChange={(event) => setAttach(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--color-accent)]" />
+              <input
+                type="checkbox"
+                checked={attach}
+                onChange={(event) => setAttach(event.target.checked)}
+                className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
+              />
             </label>
             {attach && (
               <dl className="mt-3 grid gap-x-4 gap-y-1 border-t border-ink-700 pt-3 text-xs sm:grid-cols-2">

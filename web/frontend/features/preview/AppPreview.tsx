@@ -58,7 +58,10 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-0"
-            style={{ height: dp(barReach(bar) + 20), background: `linear-gradient(to top, ${background} 35%, color-mix(in srgb, ${background} 0%, transparent))` }}
+            style={{
+              height: dp(barReach(bar) + 20),
+              background: `linear-gradient(to top, ${background} 35%, color-mix(in srgb, ${background} 0%, transparent))`,
+            }}
           />
         )}
         {showBar && <TabBar tabs={tabs} selected={Math.max(selected, 0)} onSelect={onSelectTab} live={live} />}

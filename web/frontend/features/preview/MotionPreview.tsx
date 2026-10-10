@@ -145,8 +145,15 @@ export function MotionPreview({ theme, tokens, font }: { theme: PreviewTheme; to
           <div className="mt-3 h-12 rounded-md" style={{ background: theme.colour("accentSubtle") }} />
         </div>
       </div>
-      <div className="absolute inset-x-1.5 bottom-1.5 flex h-[22px] items-center rounded-full px-0.5" style={{ background: surface, border: `1px solid ${theme.colour("separator")}` }}>
-        <span data-part="indicator" className="absolute inset-y-[3px] left-0.5 w-[calc((100%-4px)/3)] rounded-full" style={{ background: theme.colour("accentSubtle") }} />
+      <div
+        className="absolute inset-x-1.5 bottom-1.5 flex h-[22px] items-center rounded-full px-0.5"
+        style={{ background: surface, border: `1px solid ${theme.colour("separator")}` }}
+      >
+        <span
+          data-part="indicator"
+          className="absolute inset-y-[3px] left-0.5 w-[calc((100%-4px)/3)] rounded-full"
+          style={{ background: theme.colour("accentSubtle") }}
+        />
         {[0, 1, 2].map((tab) => (
           <span key={tab} className="relative z-10 flex flex-1 justify-center">
             <span className="h-2 w-2 rounded-full" style={{ background: tab === 2 ? line : theme.colour("accentContent") }} />

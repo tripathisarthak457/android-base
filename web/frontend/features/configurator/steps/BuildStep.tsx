@@ -102,15 +102,15 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
 
   if (field.choices) {
     const minSdk = state.settings["android.min_sdk"];
-    const choices = field.key === "android.target_sdk" && typeof minSdk === "number" ? field.choices.filter((choice) => Number(choice.value) >= minSdk) : field.choices;
+    const choices =
+      field.key === "android.target_sdk" && typeof minSdk === "number"
+        ? field.choices.filter((choice) => Number(choice.value) >= minSdk)
+        : field.choices;
     const chosen = field.choices.find((choice) => choice.value === value);
     const shown = field.key === "android.target_sdk" && typeof minSdk === "number" && typeof value === "number" ? Math.max(value, minSdk) : value;
+    const desugared = field.key === "android.min_sdk" && chosen?.needs_desugaring;
     return (
-      <Field
-        label={label}
-        hint={field.key === "android.min_sdk" && chosen?.needs_desugaring ? "Below API 26, so core-library desugaring is turned on and java.time keeps working." : hint}
-        error={error}
-      >
+      <Field label={label} hint={desugared ? "Below API 26, so core-library desugaring is turned on and java.time keeps working." : hint} error={error}>
         {(control) => (
           <select
             {...control}
@@ -142,7 +142,9 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
                 value={map[key] ?? ""}
                 aria-invalid={error ? true : undefined}
                 onChange={(event) => set({ ...map, [key]: event.target.value })}
-                placeholder={field.rule === "socket_url" ? (FLAVOUR_EXAMPLE[key] ?? "").replace("https://", "wss://").replace("/api/", "/ws") : FLAVOUR_EXAMPLE[key]}
+                placeholder={
+                  field.rule === "socket_url" ? (FLAVOUR_EXAMPLE[key] ?? "").replace("https://", "wss://").replace("/api/", "/ws") : FLAVOUR_EXAMPLE[key]
+                }
                 className="h-10 font-mono text-xs"
                 spellCheck={false}
               />
@@ -288,7 +290,12 @@ function SigningPanel({ model, names, available }: { model: Configurator; names:
             <div className="col-span-2">
               <Field label="Organisation">
                 {(control) => (
-                  <TextInput {...control} value={signing.organisation} onChange={(event) => dispatch({ type: "signing", value: { organisation: event.target.value } })} placeholder="Acme Ltd" />
+                  <TextInput
+                    {...control}
+                    value={signing.organisation}
+                    onChange={(event) => dispatch({ type: "signing", value: { organisation: event.target.value } })}
+                    placeholder="Acme Ltd"
+                  />
                 )}
               </Field>
             </div>

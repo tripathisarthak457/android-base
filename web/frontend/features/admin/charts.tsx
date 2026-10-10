@@ -40,7 +40,15 @@ export function Legend({ items }: { items: { label: string; colour: string; line
 }
 
 /** Horizontal bars, one per row, scaled to the largest. */
-export function BarList({ rows, format = String, empty = "Nothing in this window." }: { rows: { label: ReactNode; value: number; note?: string; key: string }[]; format?: (value: number) => string; empty?: string }) {
+export function BarList({
+  rows,
+  format = String,
+  empty = "Nothing in this window.",
+}: {
+  rows: { label: ReactNode; value: number; note?: string; key: string }[];
+  format?: (value: number) => string;
+  empty?: string;
+}) {
   if (rows.length === 0) return <p className="text-sm text-ink-400">{empty}</p>;
   const top = Math.max(1, ...rows.map((row) => row.value));
   return (
@@ -77,9 +85,14 @@ export function DailyChart({ days }: { days: { day: string; outcomes: Record<str
   const line = days.map((day, index) => `${index === 0 ? "M" : "L"}${(pad.left + (index + 0.5) * slot).toFixed(1)},${y(day.visitors).toFixed(1)}`).join(" ");
   const generated = totals.reduce((sum, value) => sum + value, 0);
   const visitors = days.reduce((sum, day) => sum + day.visitors, 0);
+  const summary = `${generated} generations and ${visitors} daily visitors from ${days[0]?.day} to ${days.at(-1)?.day}`;
+  const describe = (day: (typeof days)[number]) => {
+    const outcomes = OUTCOMES.filter((key) => day.outcomes[key]).map((key) => `${day.outcomes[key]} ${key}`);
+    return `${day.day}: ${outcomes.join(", ") || "no generations"}; ${day.visitors} visitors`;
+  };
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full" role="img" aria-label={`${generated} generations and ${visitors} daily visitors from ${days[0]?.day} to ${days.at(-1)?.day}`}>
+    <svg viewBox={`0 0 ${width} ${height}`} className="w-full" role="img" aria-label={summary}>
       {[...new Set([0, Math.round(peak / 2), peak])].map((tick) => (
         <g key={tick}>
           <line x1={pad.left} x2={width - pad.right} y1={y(tick)} y2={y(tick)} stroke="var(--color-ink-700)" strokeDasharray="2 4" />
@@ -92,7 +105,7 @@ export function DailyChart({ days }: { days: { day: string; outcomes: Record<str
         let base = 0;
         return (
           <g key={day.day}>
-            <title>{`${day.day}: ${OUTCOMES.filter((key) => day.outcomes[key]).map((key) => `${day.outcomes[key]} ${key}`).join(", ") || "no generations"}; ${day.visitors} visitors`}</title>
+            <title>{describe(day)}</title>
             {OUTCOMES.map((key) => {
               const value = day.outcomes[key] ?? 0;
               if (value === 0) return null;
@@ -107,7 +120,15 @@ export function DailyChart({ days }: { days: { day: string; outcomes: Record<str
       <path d={line} fill="none" stroke="var(--color-accent)" strokeWidth="1.75" />
       {[days[0], days.at(-1)].map((day, index) =>
         day ? (
-          <text key={`${day.day}-${index}`} x={index === 0 ? pad.left : width - pad.right} y={height - 6} textAnchor={index === 0 ? "start" : "end"} fill="var(--color-ink-400)" fontSize="9" fontFamily="monospace">
+          <text
+            key={`${day.day}-${index}`}
+            x={index === 0 ? pad.left : width - pad.right}
+            y={height - 6}
+            textAnchor={index === 0 ? "start" : "end"}
+            fill="var(--color-ink-400)"
+            fontSize="9"
+            fontFamily="monospace"
+          >
             {day.day.slice(5)}
           </text>
         ) : null,
@@ -117,7 +138,17 @@ export function DailyChart({ days }: { days: { day: string; outcomes: Record<str
 }
 
 /** Rows by columns, each cell shaded by its share; the numbers are in each cell's title. */
-export function Heatmap({ rows, columns, share, count }: { rows: { key: string; label: string }[]; columns: string[]; share: (row: string, column: string) => number; count: (row: string, column: string) => number }) {
+export function Heatmap({
+  rows,
+  columns,
+  share,
+  count,
+}: {
+  rows: { key: string; label: string }[];
+  columns: string[];
+  share: (row: string, column: string) => number;
+  count: (row: string, column: string) => number;
+}) {
   if (rows.length === 0 || columns.length === 0) return <p className="text-sm text-ink-400">Nothing in this window.</p>;
   const cell = 16;
   const label = 130;
@@ -141,7 +172,15 @@ export function Heatmap({ rows, columns, share, count }: { rows: { key: string; 
             {columns.map((column, index) => {
               const value = share(row.key, column);
               return (
-                <rect key={column} x={label + index * (cell + 2)} width={cell} height={cell} rx={2} fill="var(--color-accent)" fillOpacity={value === 0 ? 0.06 : 0.15 + value * 0.85}>
+                <rect
+                  key={column}
+                  x={label + index * (cell + 2)}
+                  width={cell}
+                  height={cell}
+                  rx={2}
+                  fill="var(--color-accent)"
+                  fillOpacity={value === 0 ? 0.06 : 0.15 + value * 0.85}
+                >
                   <title>{`${row.label}, week of ${column}: ${count(row.key, column)} (${percent(value)})`}</title>
                 </rect>
               );

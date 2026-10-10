@@ -36,9 +36,16 @@ export function Column({ children, gap = 12 }: { children: ReactNode; gap?: numb
   return <div style={{ display: "flex", flexDirection: "column", gap: dp(gap), padding: `0 ${dp(16)}px` }}>{children}</div>;
 }
 
+/** Playful's drawn edge: a content-coloured border and a hard shadow offset down and to the right. */
+function offsetEdge(t: PreviewTheme): CSSProperties {
+  const { borderWidth, offsetShadow } = t.style;
+  const ink = t.colour("contentPrimary");
+  return { border: `${borderWidth}px solid ${ink}`, boxShadow: `${dp(offsetShadow)}px ${dp(offsetShadow)}px 0 ${ink}` };
+}
+
 export function Surface({ children, style }: { children: ReactNode; style?: CSSProperties }) {
   const t = useTheme();
-  const { card, radii, borderWidth, offsetShadow } = t.style;
+  const { card, radii, borderWidth } = t.style;
   const base: CSSProperties = { borderRadius: dp(radii.md), background: t.colour("surface"), padding: dp(16) };
   const treatment: CSSProperties =
     card === "Raised"
@@ -46,12 +53,22 @@ export function Surface({ children, style }: { children: ReactNode; style?: CSSP
         ? { border: `1px solid ${t.colour("border")}` }
         : { boxShadow: "0 2px 6px rgba(11,15,26,0.08), 0 1px 2px rgba(11,15,26,0.06)" }
       : card === "Offset"
-        ? { border: `${borderWidth}px solid ${t.colour("contentPrimary")}`, boxShadow: `${dp(offsetShadow)}px ${dp(offsetShadow)}px 0 ${t.colour("contentPrimary")}` }
+        ? offsetEdge(t)
         : { border: `${borderWidth}px solid ${t.colour("border")}` };
   return <div style={{ ...base, ...treatment, ...style }}>{children}</div>;
 }
 
-export function Button({ label, variant = "primary", small, full }: { label: string; variant?: "primary" | "secondary" | "plain"; small?: boolean; full?: boolean }) {
+export function Button({
+  label,
+  variant = "primary",
+  small,
+  full,
+}: {
+  label: string;
+  variant?: "primary" | "secondary" | "plain";
+  small?: boolean;
+  full?: boolean;
+}) {
   const t = useTheme();
   const { offsetShadow, borderWidth, uppercaseLabels, buttonRadius } = t.style;
   const offset = offsetShadow > 0 && variant !== "plain";
@@ -65,9 +82,7 @@ export function Button({ label, variant = "primary", small, full }: { label: str
       style={{
         ...t.type(small ? "subheadline" : "headline"),
         ...look[variant],
-        ...(offset
-          ? { border: `${borderWidth}px solid ${t.colour("contentPrimary")}`, boxShadow: `${dp(offsetShadow)}px ${dp(offsetShadow)}px 0 ${t.colour("contentPrimary")}` }
-          : {}),
+        ...(offset ? offsetEdge(t) : {}),
         textTransform: uppercaseLabels ? "uppercase" : undefined,
         letterSpacing: uppercaseLabels ? "0.08em" : undefined,
         borderRadius: radius(buttonRadius),
@@ -85,7 +100,21 @@ export function Button({ label, variant = "primary", small, full }: { label: str
   );
 }
 
-export function InputField({ label, placeholder, value, focused, icon, tall }: { label?: string; placeholder?: string; value?: string; focused?: boolean; icon?: IconName; tall?: boolean }) {
+export function InputField({
+  label,
+  placeholder,
+  value,
+  focused,
+  icon,
+  tall,
+}: {
+  label?: string;
+  placeholder?: string;
+  value?: string;
+  focused?: boolean;
+  icon?: IconName;
+  tall?: boolean;
+}) {
   const t = useTheme();
   const { field, borderWidth, borderWidthStrong, radii, uppercaseLabels } = t.style;
   const width = focused ? borderWidthStrong : borderWidth;
@@ -103,7 +132,16 @@ export function InputField({ label, placeholder, value, focused, icon, tall }: {
           {label}
         </Text>
       )}
-      <div style={{ ...box, minHeight: dp(tall ? 84 : 48), display: "flex", alignItems: tall ? "flex-start" : "center", paddingTop: tall ? dp(12) : undefined, gap: dp(8) }}>
+      <div
+        style={{
+          ...box,
+          minHeight: dp(tall ? 84 : 48),
+          display: "flex",
+          alignItems: tall ? "flex-start" : "center",
+          paddingTop: tall ? dp(12) : undefined,
+          gap: dp(8),
+        }}
+      >
         {icon && <Icon name={icon} size={dp(18)} colour={t.colour("contentTertiary")} />}
         <span style={{ ...t.type("body"), color: value ? t.colour("contentPrimary") : t.colour("contentTertiary") }}>{value ?? placeholder}</span>
       </div>
@@ -165,7 +203,19 @@ export function Avatar({ name, size = 40 }: { name: string; size?: number }) {
   );
 }
 
-export function Row({ title, supporting, icon, trailing, danger }: { title: string; supporting?: string; icon: IconName; trailing?: ReactNode; danger?: boolean }) {
+export function Row({
+  title,
+  supporting,
+  icon,
+  trailing,
+  danger,
+}: {
+  title: string;
+  supporting?: string;
+  icon: IconName;
+  trailing?: ReactNode;
+  danger?: boolean;
+}) {
   const t = useTheme();
   const tint = danger ? t.status("danger").content : t.colour("contentPrimary");
   return (
@@ -193,8 +243,19 @@ export function Group({ children }: { children: ReactNode }) {
 export function Switch({ on }: { on: boolean }) {
   const t = useTheme();
   return (
-    <span style={{ width: dp(44), height: dp(26), borderRadius: 999, background: on ? t.colour("accent") : t.colour("borderStrong"), position: "relative", flexShrink: 0 }}>
-      <span style={{ position: "absolute", top: dp(3), left: on ? dp(21) : dp(3), width: dp(20), height: dp(20), borderRadius: 999, background: "#ffffff" }} />
+    <span
+      style={{
+        width: dp(44),
+        height: dp(26),
+        borderRadius: 999,
+        background: on ? t.colour("accent") : t.colour("borderStrong"),
+        position: "relative",
+        flexShrink: 0,
+      }}
+    >
+      <span
+        style={{ position: "absolute", top: dp(3), left: on ? dp(21) : dp(3), width: dp(20), height: dp(20), borderRadius: 999, background: "#ffffff" }}
+      />
     </span>
   );
 }
@@ -202,7 +263,15 @@ export function Switch({ on }: { on: boolean }) {
 export function SectionHeader({ title }: { title: string }) {
   const t = useTheme();
   return (
-    <div style={{ ...t.type("footnote"), color: t.colour("contentTertiary"), textTransform: "uppercase", letterSpacing: "0.04em", padding: `${dp(10)}px ${dp(4)}px ${dp(2)}px` }}>
+    <div
+      style={{
+        ...t.type("footnote"),
+        color: t.colour("contentTertiary"),
+        textTransform: "uppercase",
+        letterSpacing: "0.04em",
+        padding: `${dp(10)}px ${dp(4)}px ${dp(2)}px`,
+      }}
+    >
       {title}
     </div>
   );

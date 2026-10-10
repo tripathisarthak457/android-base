@@ -85,7 +85,9 @@ export function previewTheme(tokens: Tokens, choices: PreviewChoices): PreviewTh
 
   const status = (name: string) => {
     const value = roles[name];
-    if (typeof value !== "object") return { base: colour("contentSecondary"), content: colour("contentSecondary"), subtle: colour("fill"), on: colour("surface") };
+    if (typeof value !== "object") {
+      return { base: colour("contentSecondary"), content: colour("contentSecondary"), subtle: colour("fill"), on: colour("surface") };
+    }
     return { base: css(value.base), content: css(value.content), subtle: css(value.subtle), on: css(value.on) };
   };
 

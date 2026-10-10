@@ -16,6 +16,8 @@ import { Health, Reports } from "./panels/Reports.tsx";
 /** The token lives for the tab only: sessionStorage, never localStorage. */
 const TOKEN_KEY = "android-base.admin-token";
 
+const CONTROL = "h-8 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100 placeholder:text-ink-500";
+
 const RANGES: { value: Range; label: string }[] = [
   { value: "today", label: "Today" },
   { value: "7d", label: "7 days" },
@@ -99,7 +101,16 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
         </p>
         <div className="mt-5">
           <Field label="Token" error={problem}>
-            {(control) => <TextInput {...control} type="password" value={value} onChange={(event) => setValue(event.target.value)} autoComplete="current-password" autoFocus />}
+            {(control) => (
+              <TextInput
+                {...control}
+                type="password"
+                value={value}
+                onChange={(event) => setValue(event.target.value)}
+                autoComplete="current-password"
+                autoFocus
+              />
+            )}
           </Field>
         </div>
         <Button type="submit" className="mt-4 w-full" disabled={busy || value.length < 8}>
@@ -154,7 +165,12 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
         <fieldset className="flex flex-wrap gap-1">
           <legend className="sr-only">Window</legend>
           {RANGES.map((range) => (
-            <label key={range.value} className={`cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-medium ${filters.range === range.value ? "bg-ink-700 text-ink-100" : "text-ink-300 hover:bg-ink-800"}`}>
+            <label
+              key={range.value}
+              className={`cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-medium has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+                filters.range === range.value ? "bg-ink-700 text-ink-100" : "text-ink-300 hover:bg-ink-800"
+              }`}
+            >
               <input type="radio" name="range" className="sr-only" checked={filters.range === range.value} onChange={() => set({ range: range.value })} />
               {range.label}
             </label>
@@ -162,16 +178,29 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
         </fieldset>
         {filters.range === "custom" && (
           <>
-            <input type="date" aria-label="From" value={filters.from} onChange={(event) => set({ from: event.target.value })} className="h-8 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100" />
-            <input type="date" aria-label="To" value={filters.to} onChange={(event) => set({ to: event.target.value })} className="h-8 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100" />
+            <input type="date" aria-label="From" value={filters.from} onChange={(event) => set({ from: event.target.value })} className={CONTROL} />
+            <input type="date" aria-label="To" value={filters.to} onChange={(event) => set({ to: event.target.value })} className={CONTROL} />
           </>
         )}
         <Select label="Target" value={filters.target} options={targets} onChange={(value) => set({ target: value })} />
         <Select label="Preset" value={filters.preset} options={presets} onChange={(value) => set({ preset: value })} />
         <Select label="Outcome" value={filters.outcome} options={[...OUTCOMES]} onChange={(value) => set({ outcome: value })} />
         <Select label="Device" value={filters.device_class} options={[...DEVICE_CLASSES]} onChange={(value) => set({ device_class: value })} />
-        <input aria-label="Country" placeholder="Country" maxLength={2} value={filters.country} onChange={(event) => set({ country: event.target.value })} className="h-8 w-20 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs uppercase text-ink-100 placeholder:normal-case placeholder:text-ink-500" />
-        <input aria-label="Source" placeholder="Source" value={filters.source} onChange={(event) => set({ source: event.target.value })} className="h-8 w-32 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100 placeholder:text-ink-500" />
+        <input
+          aria-label="Country"
+          placeholder="Country"
+          maxLength={2}
+          value={filters.country}
+          onChange={(event) => set({ country: event.target.value })}
+          className={`${CONTROL} w-20 uppercase placeholder:normal-case`}
+        />
+        <input
+          aria-label="Source"
+          placeholder="Source"
+          value={filters.source}
+          onChange={(event) => set({ source: event.target.value })}
+          className={`${CONTROL} w-32`}
+        />
         <Button type="submit" size="small" disabled={Boolean(problem)}>
           Apply
         </Button>
@@ -199,7 +228,7 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
 
 function Select({ label, value, options, onChange }: { label: string; value: string; options: string[]; onChange: (value: string) => void }) {
   return (
-    <select aria-label={label} value={value} onChange={(event) => onChange(event.target.value)} className="h-8 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100">
+    <select aria-label={label} value={value} onChange={(event) => onChange(event.target.value)} className={CONTROL}>
       <option value="">{`Any ${label.toLowerCase()}`}</option>
       {options.map((option) => (
         <option key={option} value={option}>

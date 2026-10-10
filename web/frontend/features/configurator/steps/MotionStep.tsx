@@ -73,7 +73,16 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
         <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <legend className="sr-only">Motion style</legend>
           {target.motion_styles.map((style) => (
-            <MotionCard key={style.key} catalogue={catalogue} model={model} styleKey={style.key} title={style.title} description={style.description} name={name} dark={dark} />
+            <MotionCard
+              key={style.key}
+              catalogue={catalogue}
+              model={model}
+              styleKey={style.key}
+              title={style.title}
+              description={style.description}
+              name={name}
+              dark={dark}
+            />
           ))}
         </fieldset>
 

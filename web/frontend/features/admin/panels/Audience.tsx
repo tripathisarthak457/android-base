@@ -86,7 +86,9 @@ export function Durations({ token, query, version, onUnauthorized }: PanelProps)
             </dl>
             <div>
               <h3 className="mb-2 text-xs font-medium text-ink-300">Time in the configurator</h3>
-              <BarList rows={data.config_buckets.map((bucket) => ({ key: String(bucket.up_to_ms), label: `< ${seconds(bucket.up_to_ms)}`, value: bucket.n }))} />
+              <BarList
+                rows={data.config_buckets.map((bucket) => ({ key: String(bucket.up_to_ms), label: `< ${seconds(bucket.up_to_ms)}`, value: bucket.n }))}
+              />
             </div>
             <div>
               <h3 className="mb-2 text-xs font-medium text-ink-300">Generation time by feature count</h3>

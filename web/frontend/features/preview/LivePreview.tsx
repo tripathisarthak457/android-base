@@ -57,7 +57,8 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
   const screens = useMemo(() => screensFor(deferred.features, deferred.modules), [deferred.features, deferred.modules]);
   const [chosen, setChosen] = useState<string | null>(null);
   const screenName = useId();
-  const screen: PreviewTab | undefined = screens.find((candidate) => candidate.key === chosen) ?? screens.find((candidate) => candidate.screen !== "signin") ?? screens[0];
+  const screen: PreviewTab | undefined =
+    screens.find((candidate) => candidate.key === chosen) ?? screens.find((candidate) => candidate.screen !== "signin") ?? screens[0];
   const weights = useMemo(() => weightsFor(deferred.tokens, theme.style.voice), [deferred.tokens, theme.style.voice]);
   useFamily(deferred.font, weights);
   const [fitRef, scale] = useFitScale();

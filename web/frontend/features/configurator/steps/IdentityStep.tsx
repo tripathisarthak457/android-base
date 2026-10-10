@@ -27,7 +27,11 @@ export function IdentityStep({ model }: { model: Configurator }) {
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <div className="min-w-0 space-y-5">
-        <Field label="App name" hint="A letter, then letters, digits, spaces, dots, hyphens or underscores. It names the project and its classes." error={errors.get("app_name")}>
+        <Field
+          label="App name"
+          hint="A letter, then letters, digits, spaces, dots, hyphens or underscores. It names the project and its classes."
+          error={errors.get("app_name")}
+        >
           {(control) => (
             <TextInput {...control} value={state.appName} onChange={(event) => dispatch({ type: "appName", value: event.target.value })} placeholder="My App" />
           )}

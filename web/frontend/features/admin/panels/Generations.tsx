@@ -61,7 +61,11 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                         </button>
                       </td>
                       <td className="py-2 pr-3 whitespace-nowrap">
-                        <span aria-hidden className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: OUTCOME_COLOUR[row.outcome] ?? "gray" }} />
+                        <span
+                          aria-hidden
+                          className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full"
+                          style={{ background: OUTCOME_COLOUR[row.outcome] ?? "gray" }}
+                        />
                         {row.outcome}
                         {remarks(row) && <span className="block text-[10px] text-amber">{remarks(row)}</span>}
                       </td>
@@ -98,18 +102,16 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                               {row.failure_reason}
                             </p>
                           )}
-                          <p className="mb-2 font-mono text-[11px] text-ink-400">
-                            #{row.id} · {row.architecture} · {row.languages.join(", ") || "en"} · modules {row.feature_modules.join(", ") || "none"} · config{" "}
-                            {row.config_ms === null ? "—" : seconds(row.config_ms)} · zip {row.zip_bytes === null ? "—" : `${Math.round(row.zip_bytes / 1024)} KB`} ·{" "}
-                            {row.cold_start ? "cold start" : "warm"} · {row.generator_commit.slice(0, 7)}
-                          </p>
+                          <p className="mb-2 font-mono text-[11px] text-ink-400">{facts(row).join(" · ")}</p>
                           <p className="mb-2 font-mono text-[11px] text-ink-400">
                             queue {optionalSeconds(row.queue_ms)} · generator {optionalSeconds(row.python_ms)} · stream {optionalSeconds(row.stream_ms)}
                           </p>
                           <Remarks title="Warnings" items={row.warnings} className="text-amber" />
                           <Remarks title="Ignored fields" items={row.ignored_fields} className="font-mono text-ink-300" />
                           <Remarks title="Notes" items={row.notes} className="text-ink-300" />
-                          <pre className="max-h-96 overflow-auto rounded-lg bg-ink-950 p-3 font-mono text-[11px] leading-relaxed text-ink-300">{JSON.stringify(row.spec, null, 2)}</pre>
+                          <pre className="max-h-96 overflow-auto rounded-lg bg-ink-950 p-3 font-mono text-[11px] leading-relaxed text-ink-300">
+                            {JSON.stringify(row.spec, null, 2)}
+                          </pre>
                         </td>
                       </tr>
                     )}
@@ -142,6 +144,19 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
 
 function optionalSeconds(ms: number | null): string {
   return ms === null ? "—" : seconds(ms);
+}
+
+function facts(row: Generation): string[] {
+  return [
+    `#${row.id}`,
+    row.architecture,
+    row.languages.join(", ") || "en",
+    `modules ${row.feature_modules.join(", ") || "none"}`,
+    `config ${optionalSeconds(row.config_ms)}`,
+    `zip ${row.zip_bytes === null ? "—" : `${Math.round(row.zip_bytes / 1024)} KB`}`,
+    row.cold_start ? "cold start" : "warm",
+    row.generator_commit.slice(0, 7),
+  ];
 }
 
 function remarks(row: Generation): string {

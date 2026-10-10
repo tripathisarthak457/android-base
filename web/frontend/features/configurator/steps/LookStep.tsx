@@ -90,7 +90,13 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
             empty and they are worked out from the primary.
           </p>
           <div className="mt-3 space-y-2.5">
-            <ColourRow label="Primary" value={state.accent} shown={state.accent} error={errors.get("accent_colour")} onCommit={(value) => dispatch({ type: "colour", which: "accent", value })} />
+            <ColourRow
+              label="Primary"
+              value={state.accent}
+              shown={state.accent}
+              error={errors.get("accent_colour")}
+              onCommit={(value) => dispatch({ type: "colour", which: "accent", value })}
+            />
             <ColourRow
               label="Secondary"
               value={state.secondary}
@@ -200,7 +206,11 @@ function FontPicker({ model, weights }: { model: Configurator; weights: number[]
   const status: FontStatus = useFamily(state.fontName, weights);
   const groupName = useId();
   const family = `"${state.fontName}", var(--font-sans)`;
-  const problem = errors.get("font_name") ?? (status === "missing" ? "Google Fonts does not know this family. Check the spelling on fonts.google.com; the app would fall back to the system font." : undefined);
+  const problem =
+    errors.get("font_name") ??
+    (status === "missing"
+      ? "Google Fonts does not know this family. Check the spelling on fonts.google.com; the app would fall back to the system font."
+      : undefined);
 
   return (
     <div>

@@ -126,7 +126,14 @@ export function TabBar({
           <motion.span
             aria-hidden
             className="absolute"
-            style={{ top: dp(8), bottom: dp(8), left: pad, width: `calc((100% - ${2 * pad}px) / ${count})`, borderRadius: 999, background: t.colour("accentSubtle") }}
+            style={{
+              top: dp(8),
+              bottom: dp(8),
+              left: pad,
+              width: `calc((100% - ${2 * pad}px) / ${count})`,
+              borderRadius: 999,
+              background: t.colour("accentSubtle"),
+            }}
             initial={false}
             animate={{ x: `${selected * 100}%` }}
             transition={spring}

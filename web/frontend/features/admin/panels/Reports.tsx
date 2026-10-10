@@ -51,7 +51,9 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
           </p>
           {save.problem && <p className="mb-3 text-xs text-rose">{save.problem}</p>}
           {data.items.length === 0 ? (
-            <p className="rounded-lg border border-ink-700 bg-ink-900 p-4 text-sm text-ink-400">Nothing {status === "all" ? "in this window" : `marked ${status}`}.</p>
+            <p className="rounded-lg border border-ink-700 bg-ink-900 p-4 text-sm text-ink-400">
+              Nothing {status === "all" ? "in this window" : `marked ${status}`}.
+            </p>
           ) : (
             <ul className="divide-y divide-ink-800">
               {data.items.map((original) => {

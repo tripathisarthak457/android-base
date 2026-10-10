@@ -4,6 +4,8 @@ import { CATALOGUE, PRIVACY, REPO } from "../lib/catalogue.ts";
 import { ThemeToggle } from "./theme-toggle.tsx";
 import { Badge } from "./ui.tsx";
 
+const NAV_LINK = "rounded-lg px-3 py-2 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100";
+
 export function Nav() {
   return (
     <nav aria-label="Site" className="sticky top-0 z-50 border-b border-ink-800 bg-ink-950/85 backdrop-blur">
@@ -20,10 +22,10 @@ export function Nav() {
         <div className="flex items-center gap-1">
           <ReportButton />
           <ThemeToggle />
-          <a href="#configure" className="hidden rounded-lg px-3 py-2 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100 sm:inline-block">
+          <a href="#configure" className={`hidden sm:inline-block ${NAV_LINK}`}>
             Configure
           </a>
-          <a href={REPO} target="_blank" rel="noopener noreferrer" className="rounded-lg px-3 py-2 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100">
+          <a href={REPO} target="_blank" rel="noopener noreferrer" className={NAV_LINK}>
             GitHub
           </a>
         </div>

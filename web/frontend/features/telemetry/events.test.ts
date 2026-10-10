@@ -45,9 +45,10 @@ test("every other event the site sends has the shape of an accepted one", () => 
     { name: "download_started", target: "android" },
   ];
   const accepted = contract.accepted.flatMap((entry) => entry.body.events);
+  const fields = (event: object) => JSON.stringify(Object.keys(event).sort());
   for (const event of sent) {
     assert.ok(
-      accepted.some((candidate) => JSON.stringify(Object.keys(candidate).sort()) === JSON.stringify(Object.keys(event).sort()) && candidate.name === event.name),
+      accepted.some((candidate) => candidate.name === event.name && fields(candidate) === fields(event)),
       `${event.name} has no accepted counterpart with the same fields`,
     );
   }

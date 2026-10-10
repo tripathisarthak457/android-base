@@ -126,7 +126,8 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
                         <summary className="cursor-pointer list-none">
                           <span className={`block truncate text-sm ${isResolved ? "text-ink-400 line-through" : "text-ink-100"}`}>{group.message}</span>
                           <span className="mt-0.5 block font-mono text-[11px] text-ink-400">
-                            ×{group.occurrences} · last {new Date(group.last_seen).toLocaleString()} · {group.path || "—"} · {group.fingerprint.slice(0, 8)}
+                            ×{group.occurrences} · last {new Date(group.last_seen).toLocaleString()} · {group.path || "—"} ·{" "}
+                            {group.fingerprint.slice(0, 8)}
                           </span>
                         </summary>
                         <pre className="mt-3 max-h-80 overflow-auto whitespace-pre-wrap rounded-lg bg-ink-900 p-3 font-mono text-[11px] leading-relaxed text-ink-300">

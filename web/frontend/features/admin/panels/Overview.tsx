@@ -17,7 +17,11 @@ export function Headline({ token, query, version, onUnauthorized }: PanelProps) 
         const generated = count(["ok", "download_interrupted"]);
         const reached = generated + count(FAILED);
         const cards = [
-          { label: "Generations", value: data.generations.toLocaleString(), sub: `${count(["ok"])} ${count(["ok"]) === 1 ? "download" : "downloads"} finished` },
+          {
+            label: "Generations",
+            value: data.generations.toLocaleString(),
+            sub: `${count(["ok"])} ${count(["ok"]) === 1 ? "download" : "downloads"} finished`,
+          },
           {
             label: "Generator success",
             value: reached ? percent(generated / reached, 1) : "—",
@@ -28,7 +32,12 @@ export function Headline({ token, query, version, onUnauthorized }: PanelProps) 
           { label: "Generation time", value: seconds(data.median_ms), sub: `p95 ${seconds(data.p95_ms)}` },
           { label: "Visitors", value: data.visitors.toLocaleString(), sub: `${data.sessions.toLocaleString()} sessions` },
           { label: "Returning", value: percent(data.returning_share), sub: "sessions with a saved draft" },
-          { label: "Open errors", value: data.open_errors.toLocaleString(), sub: data.open_errors ? "need a look" : "nothing broken", tone: data.open_errors ? "bad" : "good" },
+          {
+            label: "Open errors",
+            value: data.open_errors.toLocaleString(),
+            sub: data.open_errors ? "need a look" : "nothing broken",
+            tone: data.open_errors ? "bad" : "good",
+          },
           { label: "New reports", value: data.new_feedback.toLocaleString(), sub: "waiting for triage" },
         ];
         return (
@@ -36,7 +45,9 @@ export function Headline({ token, query, version, onUnauthorized }: PanelProps) 
             {cards.map((card) => (
               <div key={card.label} className="rounded-lg border border-ink-700 bg-ink-900 p-4">
                 <dt className="text-xs text-ink-400">{card.label}</dt>
-                <dd className={`mt-1 font-mono text-2xl font-bold ${card.tone === "bad" ? "text-rose" : card.tone === "good" ? "text-mint" : "text-ink-100"}`}>{card.value}</dd>
+                <dd className={`mt-1 font-mono text-2xl font-bold ${card.tone === "bad" ? "text-rose" : card.tone === "good" ? "text-mint" : "text-ink-100"}`}>
+                  {card.value}
+                </dd>
                 <dd className="mt-0.5 text-xs text-ink-400">{card.sub}</dd>
               </div>
             ))}
@@ -79,10 +90,15 @@ export function Funnel({ token, query, version, onUnauthorized }: PanelProps) {
                       <li key={row.key} className="flex items-center gap-2.5">
                         <span className="w-28 shrink-0 text-xs text-ink-300">{row.key === "landed" ? "Landed (all)" : (STEP_LABEL[row.key] ?? row.key)}</span>
                         <span className="relative h-5 flex-1 overflow-hidden rounded bg-ink-800">
-                          <span className="absolute inset-y-0 left-0 rounded bg-accent/30" style={{ width: `${data.landed ? (row.sessions / data.landed) * 100 : 0}%` }} />
+                          <span
+                            className="absolute inset-y-0 left-0 rounded bg-accent/30"
+                            style={{ width: `${data.landed ? (row.sessions / data.landed) * 100 : 0}%` }}
+                          />
                           <span className="relative px-2 font-mono text-[11px] leading-5 text-ink-100">{row.sessions}</span>
                         </span>
-                        <span className="w-12 shrink-0 text-right font-mono text-[11px] text-ink-400">{index === 0 || drop <= 0 ? "" : `−${percent(drop)}`}</span>
+                        <span className="w-12 shrink-0 text-right font-mono text-[11px] text-ink-400">
+                          {index === 0 || drop <= 0 ? "" : `−${percent(drop)}`}
+                        </span>
                       </li>
                     );
                   })}
@@ -109,7 +125,12 @@ export function Daily({ token, query, version, onUnauthorized }: PanelProps) {
     <Panel title="Every day" result={result}>
       {(data) => (
         <>
-          <Legend items={[...OUTCOMES.map((key) => ({ label: key, colour: OUTCOME_COLOUR[key] ?? "gray" })), { label: "visitors", colour: "var(--color-accent)", line: true }]} />
+          <Legend
+            items={[
+              ...OUTCOMES.map((key) => ({ label: key, colour: OUTCOME_COLOUR[key] ?? "gray" })),
+              { label: "visitors", colour: "var(--color-accent)", line: true },
+            ]}
+          />
           <div className="mt-3">
             <DailyChart days={data.days} />
           </div>
