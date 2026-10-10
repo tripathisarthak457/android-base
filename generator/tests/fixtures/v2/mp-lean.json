@@ -1,0 +1,13 @@
+{
+  "schema": 2,
+  "platform": "multiplatform",
+  "app_name": "Mp Lean",
+  "package_name": "com.example.mplean",
+  "architecture": "compact",
+  "features": [
+    "coil",
+    "network"
+  ],
+  "feature_modules": [],
+  "languages": []
+}

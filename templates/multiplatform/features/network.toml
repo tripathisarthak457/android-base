@@ -1,0 +1,12 @@
+key = "network"
+title = "REST networking (Ktor)"
+headline = "Talk to a REST API"
+description = """
+A NetworkClient on Ktor (OkHttp on Android, NSURLSession on iOS) with typed helpers, classified
+failures, a pluggable response-envelope unwrapper and a connectivity monitor on each platform."""
+group = "Networking and data"
+default = true
+requires = []
+implied_only = false
+owns = ["core/network"]
+legacy = []

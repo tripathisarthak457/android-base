@@ -1,5 +1,5 @@
 {
-  "generator_commit": "6bc38e9e7358",
+  "generator_commit": "8672003e1062",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -16,6 +16,10 @@
     "hex": "^#?[0-9A-Fa-f]{6}$",
     "host": "^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$",
     "http_url": "^https?://[A-Za-z0-9._~:/?#\\[\\]@!&'()*+,;=%-]+$",
+    "ios_bundle_id": "^[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$",
+    "ios_bundle_id_max": 155,
+    "ios_deployment_target": "^\\d{2}\\.\\d$",
+    "ios_team_id": "^[A-Z0-9]{10}$",
     "keystore_alias": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
     "keystore_country": "^[A-Za-z]{2}$",
     "keystore_dname_forbidden": ",=+<>#;\\\"",
@@ -32,6 +36,14 @@
     "min_compile_sdk": 37,
     "module_name": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$",
     "module_name_max": 30,
+    "multiplatform_ios_versions": [
+      15,
+      16,
+      17,
+      18,
+      26,
+      27
+    ],
     "package_first_segment_forbidden": [
       "java",
       "javax",
@@ -149,6 +161,18 @@
         "sample",
         "search",
         "settings"
+      ],
+      "multiplatform": [
+        "build",
+        "core",
+        "data",
+        "feature",
+        "home",
+        "onboarding",
+        "resources",
+        "sample",
+        "settings",
+        "shared"
       ]
     },
     "version_code_max": 2100000000,
@@ -1331,6 +1355,662 @@
       "status_note": "",
       "summary": "Jetpack Compose, Navigation 3, Hilt, Ktor. Compact or modular.",
       "title": "Android Native"
+    },
+    {
+      "architectures": [
+        {
+          "available": true,
+          "description": "One module per feature and per data source, shared by the Android and iOS apps.",
+          "key": "compact",
+          "title": "Compact"
+        }
+      ],
+      "defaults": {
+        "accent_colour": "#2C6BED",
+        "android": {
+          "compile_sdk": 37,
+          "min_sdk": 26,
+          "target_sdk": 37,
+          "version_code": 1,
+          "version_name": "1.0.0"
+        },
+        "architecture": "compact",
+        "design_style": "Utility",
+        "font_name": "DM Sans",
+        "haptics_enabled": true,
+        "ios": {
+          "deployment_target": "17.0"
+        },
+        "languages": [],
+        "mono_font_name": "JetBrains Mono",
+        "motion_style": "Standard",
+        "preset": "standard"
+      },
+      "design_styles": [
+        {
+          "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
+          "key": "Utility",
+          "requires": [],
+          "title": "Utility"
+        },
+        {
+          "description": "Brand-tinted surfaces, pill buttons, heavier headlines, a floating tab bar. Feeds and chat.",
+          "key": "Social",
+          "requires": [],
+          "title": "Social"
+        },
+        {
+          "description": "Warm paper and ink, large tight display type, underlined fields. Reading and news.",
+          "key": "Editorial",
+          "requires": [],
+          "title": "Editorial"
+        },
+        {
+          "description": "Cream surfaces, extra-bold type, thick outlines and offset shadows. Games and kids.",
+          "key": "Playful",
+          "requires": [],
+          "title": "Playful"
+        }
+      ],
+      "features": [
+        {
+          "default": true,
+          "description": "Remote images on both platforms through Coil 3 on the app's Ktor engines, over a placeholder fill and with a glyph when one fails to load.",
+          "group": "networking-and-data",
+          "headline": "Load images from URLs",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "coil",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Image loading (Coil)"
+        },
+        {
+          "default": false,
+          "description": "Room 3 on the SQLite that ships with the app, so both platforms run the same engine: an entity, a DAO returning flows, and the reference feature reading offline-first from it.",
+          "group": "networking-and-data",
+          "headline": "Store your own data on the device",
+          "implied_only": false,
+          "implies": [],
+          "key": "database",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "App database (Room)"
+        },
+        {
+          "default": true,
+          "description": "A NetworkClient on Ktor (OkHttp on Android, NSURLSession on iOS) with typed helpers, classified failures, a pluggable response-envelope unwrapper and a connectivity monitor on each platform.",
+          "group": "networking-and-data",
+          "headline": "Talk to a REST API",
+          "implied_only": false,
+          "implies": [],
+          "key": "network",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "REST networking (Ktor)"
+        },
+        {
+          "default": false,
+          "description": "A Language row in settings that opens the system's per-app language page: Android 13 and later, and the app's page in iOS Settings. The strings follow it without a restart.",
+          "group": "screens",
+          "headline": "Let people pick the app's language",
+          "implied_only": false,
+          "implies": [
+            "settings"
+          ],
+          "key": "language",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "settings"
+          ],
+          "title": "In-app language picker"
+        },
+        {
+          "default": true,
+          "description": "A paged walkthrough shown once, recorded in the preference store. Skipping counts as finishing, so it never comes back on the next launch.",
+          "group": "screens",
+          "headline": "A first-run walkthrough",
+          "implied_only": false,
+          "implies": [],
+          "key": "onboarding",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Onboarding flow"
+        },
+        {
+          "default": true,
+          "description": "A list and detail feature against a live public API, with its tests. Proves every wire on first run on both platforms; delete it once your own first feature exists.",
+          "group": "screens",
+          "headline": "A working screen to learn from",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "sample",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Reference feature"
+        },
+        {
+          "default": true,
+          "description": "Theme switch and the build version, wired to the preference store the whole app follows.",
+          "group": "screens",
+          "headline": "A settings screen",
+          "implied_only": false,
+          "implies": [],
+          "key": "settings",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Settings screen"
+        }
+      ],
+      "fields": [
+        {
+          "key": "app_name",
+          "required": true,
+          "rule": "app_name",
+          "type": "string"
+        },
+        {
+          "key": "display_name",
+          "max": 30,
+          "type": "string"
+        },
+        {
+          "key": "package_name",
+          "required": true,
+          "rule": "package",
+          "type": "string"
+        },
+        {
+          "key": "architecture",
+          "type": "choice"
+        },
+        {
+          "key": "features",
+          "max": 64,
+          "type": "features"
+        },
+        {
+          "key": "feature_modules",
+          "max": 12,
+          "rule": "module_name",
+          "type": "list"
+        },
+        {
+          "default": "Utility",
+          "key": "design_style",
+          "type": "choice"
+        },
+        {
+          "default": "Standard",
+          "key": "motion_style",
+          "type": "choice"
+        },
+        {
+          "key": "accent_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "key": "secondary_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "key": "tertiary_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "default": "DM Sans",
+          "key": "font_name",
+          "rule": "font",
+          "suggestions": [
+            {
+              "note": "geometric, large x-height, reads well from 11sp to 32sp",
+              "value": "DM Sans"
+            },
+            {
+              "note": "the safe choice; designed for screens, very neutral",
+              "value": "Inter"
+            },
+            {
+              "note": "a little more character, good for consumer apps",
+              "value": "Plus Jakarta Sans"
+            },
+            {
+              "note": "rounder and friendlier, slightly less good at small sizes",
+              "value": "Manrope"
+            },
+            {
+              "note": "warm and open; strong at display sizes",
+              "value": "Figtree"
+            },
+            {
+              "note": "geometric and clean, at its best in headlines",
+              "value": "Outfit"
+            },
+            {
+              "note": "technical, with quirky details",
+              "value": "Space Grotesk"
+            },
+            {
+              "note": "soft and rounded",
+              "value": "Nunito"
+            },
+            {
+              "note": "wide and modern",
+              "value": "Sora"
+            },
+            {
+              "note": "a soft serif with personality",
+              "value": "Fraunces"
+            },
+            {
+              "note": "a classic book serif",
+              "value": "Libre Baskerville"
+            },
+            {
+              "note": "corporate and very legible",
+              "value": "IBM Plex Sans"
+            }
+          ],
+          "type": "string"
+        },
+        {
+          "default": "JetBrains Mono",
+          "key": "mono_font_name",
+          "rule": "font",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "key": "haptics_enabled",
+          "type": "bool"
+        },
+        {
+          "key": "languages",
+          "max": 10,
+          "type": "list"
+        },
+        {
+          "choices": [
+            {
+              "codename": "Nougat",
+              "label": "API 24 · Android 7.0 (Nougat)",
+              "value": 24,
+              "version": "7.0"
+            },
+            {
+              "codename": "Nougat",
+              "label": "API 25 · Android 7.1 (Nougat)",
+              "value": 25,
+              "version": "7.1"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 26 · Android 8.0 (Oreo)",
+              "value": 26,
+              "version": "8.0"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 27 · Android 8.1 (Oreo)",
+              "value": 27,
+              "version": "8.1"
+            },
+            {
+              "codename": "Pie",
+              "label": "API 28 · Android 9 (Pie)",
+              "value": 28,
+              "version": "9"
+            },
+            {
+              "codename": "Quince Tart",
+              "label": "API 29 · Android 10 (Quince Tart)",
+              "value": 29,
+              "version": "10"
+            },
+            {
+              "codename": "Red Velvet Cake",
+              "label": "API 30 · Android 11 (Red Velvet Cake)",
+              "value": 30,
+              "version": "11"
+            },
+            {
+              "codename": "Snow Cone",
+              "label": "API 31 · Android 12 (Snow Cone)",
+              "value": 31,
+              "version": "12"
+            },
+            {
+              "codename": "Snow Cone v2",
+              "label": "API 32 · Android 12L (Snow Cone v2)",
+              "value": 32,
+              "version": "12L"
+            },
+            {
+              "codename": "Tiramisu",
+              "label": "API 33 · Android 13 (Tiramisu)",
+              "value": 33,
+              "version": "13"
+            },
+            {
+              "codename": "Upside Down Cake",
+              "label": "API 34 · Android 14 (Upside Down Cake)",
+              "value": 34,
+              "version": "14"
+            },
+            {
+              "codename": "Vanilla Ice Cream",
+              "label": "API 35 · Android 15 (Vanilla Ice Cream)",
+              "value": 35,
+              "version": "15"
+            },
+            {
+              "codename": "Baklava",
+              "label": "API 36 · Android 16 (Baklava)",
+              "value": 36,
+              "version": "16"
+            },
+            {
+              "codename": "Cinnamon Bun",
+              "label": "API 37 · Android 17 (Cinnamon Bun)",
+              "value": 37,
+              "version": "17"
+            }
+          ],
+          "default": 26,
+          "key": "android.min_sdk",
+          "type": "int"
+        },
+        {
+          "choices": [
+            {
+              "codename": "Nougat",
+              "label": "API 24 · Android 7.0 (Nougat)",
+              "value": 24,
+              "version": "7.0"
+            },
+            {
+              "codename": "Nougat",
+              "label": "API 25 · Android 7.1 (Nougat)",
+              "value": 25,
+              "version": "7.1"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 26 · Android 8.0 (Oreo)",
+              "value": 26,
+              "version": "8.0"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 27 · Android 8.1 (Oreo)",
+              "value": 27,
+              "version": "8.1"
+            },
+            {
+              "codename": "Pie",
+              "label": "API 28 · Android 9 (Pie)",
+              "value": 28,
+              "version": "9"
+            },
+            {
+              "codename": "Quince Tart",
+              "label": "API 29 · Android 10 (Quince Tart)",
+              "value": 29,
+              "version": "10"
+            },
+            {
+              "codename": "Red Velvet Cake",
+              "label": "API 30 · Android 11 (Red Velvet Cake)",
+              "value": 30,
+              "version": "11"
+            },
+            {
+              "codename": "Snow Cone",
+              "label": "API 31 · Android 12 (Snow Cone)",
+              "value": 31,
+              "version": "12"
+            },
+            {
+              "codename": "Snow Cone v2",
+              "label": "API 32 · Android 12L (Snow Cone v2)",
+              "value": 32,
+              "version": "12L"
+            },
+            {
+              "codename": "Tiramisu",
+              "label": "API 33 · Android 13 (Tiramisu)",
+              "value": 33,
+              "version": "13"
+            },
+            {
+              "codename": "Upside Down Cake",
+              "label": "API 34 · Android 14 (Upside Down Cake)",
+              "value": 34,
+              "version": "14"
+            },
+            {
+              "codename": "Vanilla Ice Cream",
+              "label": "API 35 · Android 15 (Vanilla Ice Cream)",
+              "value": 35,
+              "version": "15"
+            },
+            {
+              "codename": "Baklava",
+              "label": "API 36 · Android 16 (Baklava)",
+              "value": 36,
+              "version": "16"
+            },
+            {
+              "codename": "Cinnamon Bun",
+              "label": "API 37 · Android 17 (Cinnamon Bun)",
+              "value": 37,
+              "version": "17"
+            }
+          ],
+          "default": 37,
+          "key": "android.target_sdk",
+          "type": "int"
+        },
+        {
+          "choices": [
+            {
+              "codename": "Cinnamon Bun",
+              "label": "API 37 · Android 17 (Cinnamon Bun)",
+              "value": 37,
+              "version": "17"
+            }
+          ],
+          "default": 37,
+          "key": "android.compile_sdk",
+          "type": "int"
+        },
+        {
+          "default": "1.0.0",
+          "key": "android.version_name",
+          "rule": "version_name",
+          "type": "string"
+        },
+        {
+          "default": 1,
+          "key": "android.version_code",
+          "max": 2100000000,
+          "min": 1,
+          "type": "int"
+        },
+        {
+          "key": "android.api_base_urls",
+          "keys": [
+            "dev",
+            "prod"
+          ],
+          "requires": [
+            "network"
+          ],
+          "rule": "http_url",
+          "type": "map"
+        },
+        {
+          "key": "ios.bundle_id",
+          "max": 155,
+          "rule": "ios_bundle_id",
+          "type": "string"
+        },
+        {
+          "choices": [
+            {
+              "label": "iOS 15",
+              "value": "15.0"
+            },
+            {
+              "label": "iOS 16",
+              "value": "16.0"
+            },
+            {
+              "label": "iOS 17",
+              "value": "17.0"
+            },
+            {
+              "label": "iOS 18",
+              "value": "18.0"
+            },
+            {
+              "label": "iOS 26",
+              "value": "26.0"
+            },
+            {
+              "label": "iOS 27",
+              "value": "27.0"
+            }
+          ],
+          "default": "17.0",
+          "key": "ios.deployment_target",
+          "type": "string"
+        },
+        {
+          "key": "ios.team_id",
+          "rule": "ios_team_id",
+          "type": "string"
+        }
+      ],
+      "groups": [
+        {
+          "key": "networking-and-data",
+          "title": "Networking and data"
+        },
+        {
+          "key": "screens",
+          "title": "Screens"
+        }
+      ],
+      "key": "multiplatform",
+      "languages": [
+        {
+          "name": "Deutsch",
+          "tag": "de"
+        },
+        {
+          "name": "Español",
+          "tag": "es"
+        },
+        {
+          "name": "Français",
+          "tag": "fr"
+        },
+        {
+          "name": "हिन्दी",
+          "tag": "hi"
+        },
+        {
+          "name": "Português (Brasil)",
+          "tag": "pt-BR"
+        }
+      ],
+      "motion_styles": [
+        {
+          "description": "Crisp, a trace of overshoot. Lively without asking for attention.",
+          "key": "Standard",
+          "title": "Standard"
+        },
+        {
+          "description": "Springy, with a visible overshoot. Playful; wrong for anything financial.",
+          "key": "Bouncy",
+          "title": "Bouncy"
+        },
+        {
+          "description": "No overshoot, slightly longer. For dense, professional interfaces.",
+          "key": "Calm",
+          "title": "Calm"
+        },
+        {
+          "description": "The shortest response that still reads as motion. For utilities.",
+          "key": "Snappy",
+          "title": "Snappy"
+        }
+      ],
+      "presets": [
+        {
+          "default": false,
+          "description": "Networking, image loading and the design system, with one home screen to start from.",
+          "features": [
+            "coil",
+            "network"
+          ],
+          "key": "lean",
+          "title": "Lean"
+        },
+        {
+          "default": true,
+          "description": "The lean set plus an offline-first reference feature on a database, settings with a language\npicker, and onboarding. What most projects want on day one.",
+          "features": [
+            "coil",
+            "database",
+            "language",
+            "network",
+            "onboarding",
+            "sample",
+            "settings"
+          ],
+          "key": "standard",
+          "title": "Standard"
+        },
+        {
+          "default": false,
+          "description": "Every feature the template offers, working together on both platforms. Delete what you do not\nneed.",
+          "features": [
+            "coil",
+            "database",
+            "language",
+            "network",
+            "onboarding",
+            "sample",
+            "settings"
+          ],
+          "key": "everything",
+          "title": "Everything"
+        }
+      ],
+      "status": "beta",
+      "status_note": "Beta: the iOS app is not yet verified on a Mac",
+      "summary": "One Compose UI for Android and iOS: Navigation 3, Koin, Ktor, Room.",
+      "title": "Compose Multiplatform"
     }
   ],
   "tokens": {

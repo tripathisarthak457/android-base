@@ -271,7 +271,8 @@ class FixtureTest(unittest.TestCase):
                         read(raw)
                     self.assertEqual("modular is not available yet; generate compact for now.", str(caught.exception))
                 else:
-                    self.assertEqual(f"com.example.{path.stem.replace('-', '')}", read(raw).spec.package_name)
+                    parsed = pipeline.read_spec(raw, get(raw.get("platform", "android")))[0]
+                    self.assertEqual(f"com.example.{path.stem.replace('-', '')}", parsed.spec.package_name)
 
 
 if __name__ == "__main__":

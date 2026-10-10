@@ -1,0 +1,12 @@
+key = "coil"
+title = "Image loading (Coil)"
+headline = "Load images from URLs"
+description = """
+Remote images on both platforms through Coil 3 on the app's Ktor engines, over a placeholder fill
+and with a glyph when one fails to load."""
+group = "Networking and data"
+default = true
+requires = ["network"]
+implied_only = false
+owns = ["core/ui/src/commonMain/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt"]
+legacy = []

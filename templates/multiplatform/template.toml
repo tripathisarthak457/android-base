@@ -1,0 +1,33 @@
+[target]
+key = "multiplatform"
+title = "Compose Multiplatform"
+status = "beta"                             # available once the macOS CI job builds the iOS app (A7.5)
+status_note = "Beta: the iOS app is not yet verified on a Mac"
+summary = "One Compose UI for Android and iOS: Navigation 3, Koin, Ktor, Room."
+
+[identity]                                  # any order: the renamer tries longer tokens first and enforces boundaries
+tokens = [
+  { from = "com.base.app", to = "{package}",      boundary = "dotted" },
+  { from = "com/base/app", to = "{package_path}", boundary = "path" },
+  { from = "BaseApp",      to = "{pascal}",       boundary = "prefix" },   # BaseAppApp.swift → TrailNotesApp.swift
+  { from = "baseapp",      to = "{lower}",        boundary = "snake" },
+]
+
+[regions]                                   # every point and region the target fills
+required = [
+  "app-config", "app-version", "api-url-dev", "api-url-prod",                    # build-logic config
+  "app-name", "launcher-background", "supported-locales",                        # androidApp resources
+  "settings-includes-data", "settings-includes-feature", "shared-dependencies",
+  "koin-imports", "koin-modules", "shell-tab-imports", "shell-tabs", "shell-tab-strings",
+  "ios-deployment-target", "ios-config", "ios-api-url-dev", "ios-api-url-prod",
+  "ios-display-name", "ios-localizations",
+]
+
+[files]
+template_only = ["template.toml", "presets.toml", "features", "sync.toml"]
+binary_suffixes = [".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".ico"]
+executable = ["gradlew"]
+syntax = { ".xcconfig" = "//" }
+
+[groups]                                    # display order of catalogue groups
+order = ["Networking and data", "Screens"]

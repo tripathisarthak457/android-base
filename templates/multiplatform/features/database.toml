@@ -1,0 +1,12 @@
+key = "database"
+title = "App database (Room)"
+headline = "Store your own data on the device"
+description = """
+Room 3 on the SQLite that ships with the app, so both platforms run the same engine: an entity, a
+DAO returning flows, and the reference feature reading offline-first from it."""
+group = "Networking and data"
+default = false
+requires = []
+implied_only = false
+owns = ["core/database"]
+legacy = []
