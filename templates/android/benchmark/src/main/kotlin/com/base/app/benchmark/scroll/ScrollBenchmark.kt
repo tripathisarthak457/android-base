@@ -1,9 +1,12 @@
-package com.base.app.benchmark
+package com.base.app.benchmark.scroll
 
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
+import com.base.app.benchmark.TARGET_APP_ID
+import com.base.app.benchmark.flingPrimaryList
+import com.base.app.benchmark.startToShell
 import org.junit.Rule
 import org.junit.Test
 

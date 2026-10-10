@@ -1,35 +1,40 @@
-package com.base.app.benchmark
+package com.base.app.benchmark.tabs
 
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
+import com.base.app.benchmark.TARGET_APP_ID
+import com.base.app.benchmark.startToShell
+import com.base.app.benchmark.tabCount
+import com.base.app.benchmark.tapTab
 import org.junit.Rule
 import org.junit.Test
 
-/** Open the first row of the first tab and go back with the Back key, five times. */
-class PushPopBenchmark {
+/** Every tab, twice round, after each has been visited once. */
+class TabSwitchBenchmark {
 
     @get:Rule
     val rule = MacrobenchmarkRule()
 
     @Test
-    fun pushAndPop() = rule.measureRepeated(
+    fun switchTabs() = rule.measureRepeated(
         packageName = TARGET_APP_ID,
         metrics = listOf(FrameTimingMetric()),
         iterations = ITERATIONS,
         startupMode = StartupMode.WARM,
         compilationMode = CompilationMode.Partial(),
-        setupBlock = { startToShell() },
+        setupBlock = {
+            startToShell()
+            (1 until tabCount()).forEach(::tapTab)
+            tapTab(0)
+        },
     ) {
-        repeat(PUSHES) {
-            openFirstRow()
-            backToRoot()
-        }
+        val tabs = tabCount()
+        repeat(2) { (1 until tabs).forEach(::tapTab); tapTab(0) }
     }
 
     private companion object {
         const val ITERATIONS = 5
-        const val PUSHES = 5
     }
 }
