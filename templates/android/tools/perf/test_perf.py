@@ -337,7 +337,7 @@ class RecomposeTraceTest(unittest.TestCase):
 
 
 class SplitProfileTest(unittest.TestCase):
-    def test_rules_follow_the_module_that_declares_the_package(self):
+    def test_rules_follow_the_module_that_declares_the_package_and_keep_the_wildcards(self):
         with tempfile.TemporaryDirectory() as project:
             sources = {
                 "core/navigation/src/main/kotlin/com/acme/core/navigation/AppShell.kt": "package com.acme.core.navigation",
@@ -362,6 +362,9 @@ class SplitProfileTest(unittest.TestCase):
             with open(os.path.join(generated, "startup-prof.txt"), "w") as handle:
                 handle.write("HSPLcom/acme/MainActivity;->onCreate(Landroid/os/Bundle;)V\n"
                              "HSPLcom/acme/core/ui/ScreenKt;->Screen()V\n")
+            safety_net = ["HSPLcom/acme/core/navigation/**->**(**)**", "Lcom/acme/core/navigation/**;"]
+            with open(os.path.join(project, "core/navigation/src/main/baseline-prof.txt"), "w") as handle:
+                handle.write("\n".join(safety_net + ["HSPLcom/acme/core/navigation/Stale;->gone()V"]) + "\n")
             with contextlib.redirect_stdout(io.StringIO()):
                 split_profile.main(["--project", project, "--module", "core/navigation", "--module", "core/ui"])
 
@@ -369,7 +372,8 @@ class SplitProfileTest(unittest.TestCase):
                 with open(os.path.join(project, module, "src/main/baseline-prof.txt")) as handle:
                     return handle.read().splitlines()
 
-            self.assertEqual(len(rules("core/navigation")), 2)
+            self.assertEqual(rules("core/navigation")[:2], safety_net)
+            self.assertEqual(len(rules("core/navigation")), 4)
             self.assertEqual(rules("core/ui"), ["HSPLcom/acme/core/ui/ScreenKt;->Screen()V"])
             self.assertEqual(rules("app"), ["HSPLcom/acme/MainActivity;->onCreate(Landroid/os/Bundle;)V"])
 

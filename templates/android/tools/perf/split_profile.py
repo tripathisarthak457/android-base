@@ -7,7 +7,9 @@
 preset ships these rules, including presets without the benchmark module, so they are copied into
 `src/main/baseline-prof.txt` of the modules they belong to: a library module's rules (shell, design
 system, shared UI) go into that library, and the app module gets the startup rules for its own
-classes. A rule belongs to the module whose sources declare its class's package.
+classes. A rule belongs to the module whose sources declare its class's package. Wildcard rules already
+in a module's profile are written by hand (the safety net that covers code no journey reaches), so a
+split keeps them at the top and adds the generated rules under them.
 """
 
 import argparse
@@ -54,7 +56,16 @@ def read_lines(path):
         return handle.read().splitlines()
 
 
+def hand_written(path):
+    """The wildcard rules in [path]: a generated profile never has one."""
+    if not os.path.isfile(path):
+        return []
+    return [line.strip() for line in read_lines(path) if "*" in line]
+
+
 def write(path, rules):
+    kept = hand_written(path)
+    rules = kept + [rule for rule in rules if rule not in kept]
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as handle:
         handle.write("\n".join(rules) + ("\n" if rules else ""))
