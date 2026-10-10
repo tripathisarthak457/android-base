@@ -49,16 +49,19 @@ export async function loadFamily(name: string, weights: number[]): Promise<boole
 
 export type FontStatus = "checking" | "ok" | "missing";
 
-/** Loads the chosen family after typing settles, and says whether Google knows it. */
+/**
+ * Loads the chosen family after typing settles, and says whether Google knows it. The answer is
+ * kept with the request it answers, so a new name reads as checking without another render.
+ */
 export function useFamily(name: string, weights: number[]): FontStatus {
-  const [status, setStatus] = useState<FontStatus>("checking");
   const key = weights.join(";");
+  const request = `${name}|${key}`;
+  const [answer, setAnswer] = useState<{ request: string; ok: boolean } | null>(null);
   useEffect(() => {
     let current = true;
-    setStatus("checking");
     const timer = setTimeout(() => {
       void loadFamily(name, key.split(";").map(Number)).then((ok) => {
-        if (current) setStatus(ok ? "ok" : "missing");
+        if (current) setAnswer({ request: `${name}|${key}`, ok });
       });
     }, 400);
     return () => {
@@ -66,7 +69,8 @@ export function useFamily(name: string, weights: number[]): FontStatus {
       clearTimeout(timer);
     };
   }, [name, key]);
-  return status;
+  if (answer?.request !== request) return "checking";
+  return answer.ok ? "ok" : "missing";
 }
 
 /** The suggestion chips: every family in one request, subset to the glyphs of their own names. */
