@@ -20,6 +20,7 @@ from pathlib import Path
 
 from genkit import tokens
 from genkit.core import pipeline, translations
+from genkit.core.copy import is_under
 from genkit.core.spec import SpecError
 from genkit.targets import get
 from genkit.targets.ios import scaffold, tabs
@@ -664,6 +665,29 @@ class TemplateTest(unittest.TestCase):
 
     def test_the_offered_languages_match_android(self):
         self.assertEqual(translations.available("android"), translations.available("ios"))
+
+    def test_no_test_outlives_the_source_it_tests(self):
+        """
+        A feature that removes a source file has to take its tests with it: `<Name>Tests.swift` in
+        `Tests/<Target>Tests/` tests `<Name>.swift` anywhere in `Sources/<Target>/`. Nothing here
+        compiles a generated project, so a test left behind would first fail on the Mac.
+        """
+        manifest = IOS.manifest
+        tests = []
+        for path in sorted(TEMPLATE.glob("Packages/*/Tests/*Tests/**/*Tests.swift")):
+            _, package, _, folder, *_ = path.relative_to(TEMPLATE).parts
+            sources = TEMPLATE / "Packages" / package / "Sources" / folder.removesuffix("Tests")
+            tested = [sources, *sources.rglob(path.name.removesuffix("Tests.swift") + ".swift")]
+            tests.append((path.relative_to(TEMPLATE).as_posix(), [item.relative_to(TEMPLATE).as_posix() for item in tested]))
+        self.assertTrue(tests)
+        for key in manifest.features:
+            enabled = frozenset(other for other in manifest.features if key not in manifest.resolve({other}))
+            owned = manifest.owned_paths(enabled)
+            for test, tested in tests:
+                if is_under(test, owned):
+                    continue
+                with self.subTest(feature=key, test=test):
+                    self.assertEqual([], [path for path in tested if is_under(path, owned)], f"'{key}' removes what this test reads")
 
 
 class GeneratedProjectsTest(unittest.TestCase):
