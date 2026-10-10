@@ -18,8 +18,8 @@ export function IdentityStep({ model }: { model: Configurator }) {
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join("");
   const derived = pascal || "MyApp";
-  const modules = moduleNames(state.modules);
-  const plan = useMemo(() => planTabs(new Set(state.features), moduleNames(state.modules)), [state.features, state.modules]);
+  const modules = useMemo(() => moduleNames(state.modules), [state.modules]);
+  const plan = useMemo(() => planTabs(new Set(state.features), modules), [state.features, modules]);
   const displayLength = [...state.displayName].length;
   const displayMax = target.fields.find((field) => field.key === "display_name")?.max;
   const placeholderPackage = !errors.has("package_name") && /^com\.example(\.|$)/.test(state.packageName);
