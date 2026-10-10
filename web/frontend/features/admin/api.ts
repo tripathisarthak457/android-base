@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { API_BASE, ApiError, apiError } from "../../lib/api.ts";
 import { parseCatalogue } from "../catalogue/guard.ts";
 
@@ -224,14 +224,18 @@ export function useAdminQuery<T>(path: string, token: string, query: string, ver
 export type AdminAction = { busy: boolean; problem: string | null; run: (work: () => Promise<void>) => Promise<boolean> };
 
 /**
- * One admin write or export at a time. A failure is kept to show beside the panel, except a 401,
- * which signs out, as it does for a read.
+ * One admin write or export at a time: a second `run` while one is in flight does nothing, and
+ * `busy` lets the panel disable its controls meanwhile. A failure is kept to show beside the
+ * panel, except a 401, which signs out, as it does for a read.
  */
 export function useAdminAction(onUnauthorized: () => void): AdminAction {
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
+  const running = useRef(false);
   const run = useCallback(
     async (work: () => Promise<void>) => {
+      if (running.current) return false;
+      running.current = true;
       setBusy(true);
       setProblem(null);
       try {
@@ -242,6 +246,7 @@ export function useAdminAction(onUnauthorized: () => void): AdminAction {
         else setProblem(error instanceof Error ? error.message : String(error));
         return false;
       } finally {
+        running.current = false;
         setBusy(false);
       }
     },

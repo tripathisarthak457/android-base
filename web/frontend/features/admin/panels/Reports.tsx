@@ -117,11 +117,12 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
                               ))}
                           </dl>
                         </div>
-                        <NoteBox current={item.notes} onSave={(notes) => void update(item.id, { notes })} />
+                        <NoteBox current={item.notes} busy={save.busy} onSave={(notes) => void update(item.id, { notes })} />
                       </details>
                       <select
                         value={item.status}
                         onChange={(event) => void update(item.id, { status: event.target.value })}
+                        disabled={save.busy}
                         aria-label={`Status of report ${item.id}`}
                         className="shrink-0 rounded-md border border-ink-600 bg-ink-900 px-2 py-1 text-xs text-ink-200"
                       >
@@ -143,7 +144,7 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
   );
 }
 
-function NoteBox({ current, onSave }: { current: string; onSave: (notes: string) => void }) {
+function NoteBox({ current, busy, onSave }: { current: string; busy: boolean; onSave: (notes: string) => void }) {
   const [value, setValue] = useState(current);
   return (
     <div className="mt-3 flex gap-2">
@@ -154,7 +155,7 @@ function NoteBox({ current, onSave }: { current: string; onSave: (notes: string)
         placeholder="Triage note: what you found, what you did"
         className="h-9 flex-1 rounded-lg border border-ink-600 bg-ink-900 px-3 text-xs text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none"
       />
-      <Button variant="secondary" size="small" onClick={() => onSave(value.trim())} disabled={value.trim() === current}>
+      <Button variant="secondary" size="small" onClick={() => onSave(value.trim())} disabled={busy || value.trim() === current}>
         {value.trim() === "" && current ? "Clear note" : "Save note"}
       </Button>
     </div>

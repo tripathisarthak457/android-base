@@ -134,7 +134,7 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
                           {group.detail || "No traceback was recorded."}
                         </pre>
                       </details>
-                      <Button variant="ghost" size="small" onClick={() => void toggle(group, !isResolved)}>
+                      <Button variant="ghost" size="small" onClick={() => void toggle(group, !isResolved)} disabled={save.busy}>
                         {isResolved ? "Reopen" : "Resolve"}
                       </Button>
                     </div>
