@@ -24,6 +24,7 @@ import com.base.app.core.designsystem.foundation.layout.TabVisibility
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.FeedTab
+import com.base.app.core.navigation.LocalNavigationSettled
 import com.base.app.core.navigation.NavCommand
 import com.base.app.core.navigation.Post
 import com.base.app.core.navigation.ROBOLECTRIC_SDK
@@ -64,10 +65,12 @@ class StackSceneTest {
             rootVisible = LocalTabVisible.current
             Box(Modifier.fillMaxSize().testTag(FeedTab.toString()).then(ProbeElement(probe)))
         } else {
+            settled[key] = LocalNavigationSettled.current
             DisposableEffect(key) { onDispose { disposed += key } }
             Screen(key)
         }
     }
+    private val settled = HashMap<AppNavKey, () -> Boolean>()
     private val disposed = mutableListOf<AppNavKey>()
 
     private fun show() {
@@ -130,6 +133,24 @@ class StackSceneTest {
 
         assertEquals(listOf<AppNavKey>(Post(1)), disposed)
         rule.onNodeWithTag(Post(1).toString(), useUnmergedTree = true).assertDoesNotExist()
+    }
+
+    @Test
+    fun `a pushed screen is told when its slide has settled`() {
+        show()
+        rule.mainClock.autoAdvance = false
+        rule.runOnIdle {
+            stack.apply(NavCommand.Navigate(Post(1)))
+            stack.gate.changed(StackChange.Push)
+        }
+        rule.mainClock.advanceTimeByFrame()
+        rule.mainClock.advanceTimeByFrame()
+
+        assertFalse("settled in the middle of the slide", settled.getValue(Post(1))())
+
+        rule.mainClock.autoAdvance = true
+        rule.waitForIdle()
+        assertTrue(settled.getValue(Post(1))())
     }
 
     @Test

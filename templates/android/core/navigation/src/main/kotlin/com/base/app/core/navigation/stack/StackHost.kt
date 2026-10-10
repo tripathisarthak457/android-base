@@ -1,6 +1,7 @@
 package com.base.app.core.navigation.stack
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
@@ -19,6 +20,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.WindowWidth
 import com.base.app.core.designsystem.theme.rememberReduceMotion
 import com.base.app.core.navigation.AppBackStack
+import com.base.app.core.navigation.LocalNavigationSettled
 import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.NavTransitionStyle
@@ -84,7 +86,10 @@ internal fun StackHost(
         }
     }
 
-    StackLayout(scene, plan, shown, AppTheme.layout.listPaneWidth, modifier)
+    val settled = remember(gate) { { !gate.moving } }
+    CompositionLocalProvider(LocalNavigationSettled provides settled) {
+        StackLayout(scene, plan, shown, AppTheme.layout.listPaneWidth, modifier)
+    }
     StackBackHandler(stack, scene, pop, cardEnabled = !reduceMotion)
     GateSettle(gate, pop)
 }

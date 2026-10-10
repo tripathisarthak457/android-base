@@ -35,6 +35,7 @@ import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
 import com.base.app.core.navigation.Destination
+import com.base.app.core.navigation.LocalNavigationSettled
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.Presentation
 import com.base.app.core.navigation.ShellState
@@ -130,21 +131,24 @@ internal fun PresentationHost(
                 if (scrim > 0f) drawRect(Color.Black, alpha = scrim)
             },
     ) {
-        NavDisplay(
-            sceneState = sceneState,
-            navigationEventState = inert,
-            transitionSpec = if (reduceMotion) {
-                NavTransitions.noneSpec
-            } else {
-                remember(motion) { NavTransitions.present(motion) }
-            },
-            popTransitionSpec = if (reduceMotion) {
-                NavTransitions.noneSpec
-            } else {
-                remember(motion, gate) { NavTransitions.dismiss(motion) { gate.lastChange == StackChange.GesturePop } }
-            },
-            predictivePopTransitionSpec = NavTransitions.noneDuringPredictive,
-        )
+        val settled = remember(gate) { { !gate.moving } }
+        CompositionLocalProvider(LocalNavigationSettled provides settled) {
+            NavDisplay(
+                sceneState = sceneState,
+                navigationEventState = inert,
+                transitionSpec = if (reduceMotion) {
+                    NavTransitions.noneSpec
+                } else {
+                    remember(motion) { NavTransitions.present(motion) }
+                },
+                popTransitionSpec = if (reduceMotion) {
+                    NavTransitions.noneSpec
+                } else {
+                    remember(motion, gate) { NavTransitions.dismiss(motion) { gate.lastChange == StackChange.GesturePop } }
+                },
+                predictivePopTransitionSpec = NavTransitions.noneDuringPredictive,
+            )
+        }
     }
     StackBackHandler(presented, host, pop, cardEnabled = !reduceMotion)
     GateSettle(gate, pop)
