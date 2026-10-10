@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.designsystem.foundation.LocalTabVisible
-import com.base.app.core.designsystem.foundation.TabVisibility
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.TabVisibility
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.FeedTab

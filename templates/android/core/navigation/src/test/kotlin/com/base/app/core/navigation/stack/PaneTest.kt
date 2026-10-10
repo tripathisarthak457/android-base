@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.designsystem.foundation.LocalPaneContext
-import com.base.app.core.designsystem.foundation.PaneContext
-import com.base.app.core.designsystem.foundation.PaneRole
+import com.base.app.core.designsystem.foundation.layout.LocalPaneContext
+import com.base.app.core.designsystem.foundation.layout.PaneContext
+import com.base.app.core.designsystem.foundation.layout.PaneRole
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.NavPane

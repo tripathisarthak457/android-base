@@ -14,7 +14,7 @@ import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.rememberDecoratedNavEntries
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.designsystem.foundation.ChromeInset
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.WindowWidth
 import com.base.app.core.designsystem.theme.rememberReduceMotion

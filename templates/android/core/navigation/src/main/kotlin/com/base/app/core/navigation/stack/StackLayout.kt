@@ -33,11 +33,11 @@ import androidx.navigation3.runtime.NavEntry
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
-import com.base.app.core.designsystem.foundation.LocalPaneContext
-import com.base.app.core.designsystem.foundation.LocalTabVisible
-import com.base.app.core.designsystem.foundation.PaneContext
-import com.base.app.core.designsystem.foundation.PaneRole
-import com.base.app.core.designsystem.foundation.TabVisibility
+import com.base.app.core.designsystem.foundation.layout.LocalPaneContext
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.PaneContext
+import com.base.app.core.designsystem.foundation.layout.PaneRole
+import com.base.app.core.designsystem.foundation.layout.TabVisibility
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.NavPane

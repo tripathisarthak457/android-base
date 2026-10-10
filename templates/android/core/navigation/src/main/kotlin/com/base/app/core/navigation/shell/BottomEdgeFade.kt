@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.foundation.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.stack.coverScrimAlpha
 

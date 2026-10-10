@@ -1,4 +1,4 @@
-package com.base.app.core.designsystem.foundation
+package com.base.app.core.designsystem.foundation.layout
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding

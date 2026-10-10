@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.navigation.AppTabBarState
-import com.base.app.core.designsystem.foundation.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.navigation.ShellState
 
 @OptIn(ExperimentalLayoutApi::class)

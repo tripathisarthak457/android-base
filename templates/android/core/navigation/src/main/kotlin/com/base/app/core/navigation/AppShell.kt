@@ -29,7 +29,7 @@ import com.base.app.core.designsystem.component.navigation.BarActionScope
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.designsystem.component.navigation.rememberAppTabBarState
-import com.base.app.core.designsystem.foundation.LocalTabBarVisible
+import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.back.ShellRootBack
 import com.base.app.core.navigation.back.Verdict
