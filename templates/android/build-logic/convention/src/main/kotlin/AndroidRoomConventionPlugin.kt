@@ -21,7 +21,9 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
         }
 
         dependencies {
-            add("implementation", libs.library("androidx-room3-runtime"))
+            // `api`: the database class extends RoomDatabase, so a data module that asks it for a
+            // DAO compiles against Room too.
+            add("api", libs.library("androidx-room3-runtime"))
             add("implementation", libs.library("androidx-sqlite-framework"))
             add("ksp", libs.library("androidx-room3-compiler"))
         }

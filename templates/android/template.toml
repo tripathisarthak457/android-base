@@ -20,6 +20,7 @@ required = [
   "socket-url-dev", "socket-url-staging", "socket-url-prod", "socket-url-playstore",
   "app-name", "deeplink-strings", "launcher-background", "supported-locales",
   "data-modules", "feature-modules", "app-feature-dependencies",
+  "database-imports", "database-entities", "database-daos",                       # AppDatabase.kt
   "shell-tabs", "start-destination", "start-destination-import",
   "readme-title", "readme-styles", "readme-theme-call", "readme-version", "readme-modules",
   "readme-signing-generated", "readme-signing-manual", "readme-features",

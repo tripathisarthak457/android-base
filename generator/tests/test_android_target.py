@@ -14,7 +14,7 @@ from genkit.core import pipeline
 from genkit.core.record import RECORD_NAME
 from genkit.core.target import RenderError
 from genkit.targets import get
-from genkit.targets.android import look, scaffold, settings, tabs, variants
+from genkit.targets.android import database, look, scaffold, settings, tabs, variants
 
 ANDROID = get("android")
 
@@ -162,6 +162,36 @@ class ScaffoldTest(unittest.TestCase):
         )
 
 
+class DatabaseTest(unittest.TestCase):
+
+    def test_each_scaffolded_module_gets_a_table(self):
+        regions = database.regions(spec(features=["database"], feature_modules=["order_history"]))
+        self.assertEqual(
+            [
+                "import com.acme.field.core.database.order_history.OrderHistoryDao\n",
+                "import com.acme.field.core.database.order_history.OrderHistoryEntity\n",
+            ],
+            regions["database-imports"],
+        )
+        self.assertEqual(["        OrderHistoryEntity::class,\n"], regions["database-entities"])
+        self.assertEqual(["    abstract fun orderHistory(): OrderHistoryDao\n"], regions["database-daos"])
+
+    def test_a_database_with_no_other_table_gets_the_starter_one(self):
+        regions = database.regions(spec(features=["database"]))
+        self.assertEqual(["        NoteEntity::class,\n"], regions["database-entities"])
+
+    def test_the_reference_feature_table_is_enough(self):
+        regions = database.regions(spec(features=["database", "sample"]))
+        self.assertEqual([], regions["database-entities"])
+
+    def test_without_the_database_nothing_is_added(self):
+        regions = database.regions(spec(feature_modules=["orders"]))
+        self.assertEqual({"database-imports": [], "database-entities": [], "database-daos": []}, regions)
+
+    def test_a_module_cannot_take_a_name_the_database_already_uses(self):
+        self.assertTrue({"queue", "note", "sample"} <= ANDROID.reserved_module_names)
+
+
 class LookTest(unittest.TestCase):
     """The legacy appliers fail loudly when the template line they rewrite is gone."""
 
@@ -273,11 +303,14 @@ class ProjectTest(unittest.TestCase):
         self.assertIn("core/ui/src/main/kotlin/com/acme/field/core/ui/AppNetworkImage.kt", plan["removed_paths"])
         self.assertEqual([":data:orders", ":feature:orders"], plan["modules"])
 
-    def test_a_firebase_off_variant_never_recreates_a_module_that_is_also_off(self):
+    def test_a_seam_without_its_vendor_binds_the_no_op(self):
         project = generate(self.root, features=["analytics"])
-        self.assertTrue(any(project.rglob("AnalyticsModule.kt")))
-        self.assertFalse(any(project.rglob("FlagsModule.kt")))
-        self.assertEqual({"firebase", "googlefonts"}, set(variants.VARIANTS))
+        modules = {path.name: path.read_text(encoding="utf-8") for path in project.rglob("*Module.kt")}
+        self.assertIn("NoOpAnalyticsTracker()", modules["AnalyticsModule.kt"])
+        self.assertIn("NoOpCrashReporter()", modules["CrashModule.kt"])
+        self.assertNotIn("FlagsModule.kt", modules)
+        self.assertFalse(any(project.rglob("firebase")))
+        self.assertEqual({"googlefonts"}, set(variants.VARIANTS))
 
     def test_a_module_name_that_is_a_template_token_stays_itself(self):
         project = generate(self.root, app_name="Store", feature_modules=["database_app"])
