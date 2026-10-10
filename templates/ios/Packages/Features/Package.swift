@@ -43,9 +43,6 @@ let package = Package(
             dependencies: [
                 .product(name: "AppCore", package: "Core"),
                 .product(name: "Networking", package: "Core"),
-                // <opt:database>
-                .product(name: "Persistence", package: "Core"),
-                // </opt:database>
             ],
             swiftSettings: dataSettings
         ),
@@ -80,7 +77,6 @@ let package = Package(
                 "SampleData",
                 .product(name: "AppCore", package: "Core"),
                 .product(name: "DesignSystem", package: "Core"),
-                .product(name: "Navigation", package: "Core"),
                 .product(name: "Networking", package: "Core"),
             ],
             swiftSettings: featureSettings

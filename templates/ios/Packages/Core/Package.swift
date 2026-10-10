@@ -51,7 +51,6 @@ let package = Package(
         // </opt:network>
         .target(
             name: "Persistence",
-            dependencies: ["AppCore"],
             swiftSettings: backgroundSettings
         ),
         .testTarget(

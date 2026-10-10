@@ -4,12 +4,3 @@ import Foundation
 public protocol AppClock: Sendable {
     var now: Date { get }
 }
-
-/// The device's clock.
-public struct SystemClock: AppClock {
-    public init() {}
-
-    public var now: Date {
-        .now
-    }
-}
