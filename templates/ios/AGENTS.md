@@ -180,6 +180,14 @@ The type is the system font (SF Pro) at the design style's weights; a custom typ
 file in the app target and a `Font.custom(_:size:relativeTo:)` in `AppTypography`, so Dynamic Type
 still scales it.
 
+## Privacy manifest
+
+`BaseApp/PrivacyInfo.xcprivacy` declares every required-reason API the app's code calls: today
+`UserDefaults` and `@AppStorage`, with reason `CA92.1`. App Store Connect refuses a build that calls
+one without declaring it, so code that starts using another category (file timestamps, system boot
+time, disk space, active keyboards) adds the category and Apple's reason code there in the same
+change. Data the app collects goes under `NSPrivacyCollectedDataTypes` in the same file.
+
 ## Checklists
 
 **New screen:** loading, empty, failure and offline states; dark appearance; the largest Dynamic Type

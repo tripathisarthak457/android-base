@@ -10,6 +10,7 @@ macOS CI job compiles the same projects; these checks catch what goes wrong betw
 from __future__ import annotations
 
 import json
+import plistlib
 import re
 import tempfile
 import unittest
@@ -38,6 +39,13 @@ SYSTEM_MODULES = frozenset({
     "Accessibility", "CoreGraphics", "Foundation", "Network", "OSLog", "Observation", "SwiftData", "SwiftUI", "Testing",
     "UIKit", "os",
 })
+
+#: Apple's required-reason API categories the template's code uses, how each shows in Swift, and the
+#: reason that matches that use. App Store Connect refuses a build that uses one of these APIs
+#: without the category and a reason in the app's privacy manifest.
+REQUIRED_REASON_APIS = {
+    "NSPrivacyAccessedAPICategoryUserDefaults": (r"\bUserDefaults\b|@AppStorage\b", "CA92.1"),
+}
 
 #: Targets whose sources are interface code: main actor by default.
 CORE_UI_TARGETS = frozenset({"DesignSystem", "Navigation"})
@@ -364,6 +372,9 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
     with case.subTest(check="the XcodeGen project"):
         check_project_yml(case, project, spec, features)
 
+    with case.subTest(check="the privacy manifest"):
+        check_privacy_manifest(case, project, app)
+
     with case.subTest(check="String Catalogs"):
         check_catalogs(case, project, spec)
 
@@ -439,6 +450,20 @@ def check_project_yml(case: unittest.TestCase, project: Path, spec, features: Pa
     case.assertTrue(set(linked["Features"]) <= set(features.products))
     case.assertEqual("Networking" in linked["Core"], spec.has("network"))
     case.assertEqual([{"target": app}], data["targets"][f"{app}Tests"]["dependencies"])
+
+
+def check_privacy_manifest(case: unittest.TestCase, project: Path, app: str) -> None:
+    manifest = plistlib.loads((project / app / "PrivacyInfo.xcprivacy").read_bytes())
+    case.assertIs(False, manifest["NSPrivacyTracking"])
+    declared = {
+        entry["NSPrivacyAccessedAPIType"]: entry["NSPrivacyAccessedAPITypeReasons"]
+        for entry in manifest["NSPrivacyAccessedAPITypes"]
+    }
+    shipped = [project / app, project / "Packages" / "Core" / "Sources", project / "Packages" / "Features" / "Sources"]
+    code = "\n".join(lex(path)[0] for folder in shipped for path in swift_files(folder))
+    for category, (pattern, reason) in REQUIRED_REASON_APIS.items():
+        if re.search(pattern, code):
+            case.assertIn(reason, declared.get(category, []), f"the privacy manifest does not declare {category}")
 
 
 def catalog_keys_used(code: str, literals: list[str]) -> set[tuple[str, str]]:
@@ -768,6 +793,11 @@ class ViolationsTest(unittest.TestCase):
             ),
             ("opts out of resizable windows", "project.yml", replacing("UILaunchScreen: {}", "UILaunchScreen: {}\n        UIRequiresFullScreen: true")),
             ("CADisableMinimumFrameDurationOnPhone", "project.yml", replacing("FrameDurationOnPhone: true", "FrameDurationOnPhone: false")),
+            (
+                "does not declare NSPrivacyAccessedAPICategoryUserDefaults",
+                "TrailNotes/PrivacyInfo.xcprivacy",
+                replacing("NSPrivacyAccessedAPICategoryUserDefaults", "NSPrivacyAccessedAPICategoryDiskSpace"),
+            ),
         ):
             with self.subTest(rule=message, edit=path):
                 self.assertCaught(message, path, edit)
