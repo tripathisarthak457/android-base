@@ -101,8 +101,13 @@ export type Action =
   | { type: "restore"; state: ConfigState }
   | { type: "reset" };
 
+/**
+ * The target `key` names when a visitor can pick it, otherwise the first one they can: a draft or a
+ * link may name a target that has since been hidden or put back to coming soon.
+ */
 export function findTarget(catalogue: Catalogue, key: string): Target {
-  const target = catalogue.targets.find((candidate) => candidate.key === key) ?? selectableTargets(catalogue)[0];
+  const selectable = selectableTargets(catalogue);
+  const target = selectable.find((candidate) => candidate.key === key) ?? selectable[0];
   if (!target) throw new Error("The catalogue has no target this site can generate.");
   return target;
 }
@@ -110,6 +115,15 @@ export function findTarget(catalogue: Catalogue, key: string): Target {
 /** Targets a visitor can pick: not hidden and not announced as coming soon. */
 export function selectableTargets(catalogue: Catalogue): Target[] {
   return catalogue.targets.filter((target) => target.status === "available" || target.status === "beta");
+}
+
+/**
+ * The target to answer for once the server has said which it generates: `current`, unless the
+ * server turned it off, then the first selectable one it has not.
+ */
+export function enabledTarget(catalogue: Catalogue, current: string, enabled: Record<string, boolean> | null): string {
+  if (enabled === null || enabled[current] !== false) return current;
+  return selectableTargets(catalogue).find((target) => enabled[target.key] !== false)?.key ?? current;
 }
 
 /** Settings fields: the dotted ones, which live under a platform block in the spec. */
@@ -195,9 +209,9 @@ export function initialState(catalogue: Catalogue, targetKey?: string): ConfigSt
  * the visitor never chose it.
  */
 function switchTarget(state: ConfigState, catalogue: Catalogue, key: string): ConfigState {
-  if (key === state.target) return state;
+  const to = selectableTargets(catalogue).find((target) => target.key === key);
+  if (!to || to.key === state.target) return state;
   const from = findTarget(catalogue, state.target);
-  const to = findTarget(catalogue, key);
   const fresh = initialState(catalogue, to.key);
 
   const untouched = sameSet(state.features, [...presetFeatures(from, from.defaults.preset)]);

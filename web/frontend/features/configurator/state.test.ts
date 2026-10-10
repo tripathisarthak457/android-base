@@ -4,7 +4,18 @@ import { loadCatalogue, threePlatformCatalogue } from "../catalogue/testing.ts";
 import { draftToStore, parseDraft, serializeDraft } from "./draft.ts";
 import { toSpecV2 } from "./request.ts";
 import { presetFeatures } from "./resolve.ts";
-import { type Action, type ConfigState, type Step, initialState, moduleNames, reducer, selectableTargets, stepOf, suggestPackage } from "./state.ts";
+import {
+  type Action,
+  type ConfigState,
+  type Step,
+  enabledTarget,
+  initialState,
+  moduleNames,
+  reducer,
+  selectableTargets,
+  stepOf,
+  suggestPackage,
+} from "./state.ts";
 
 const catalogue = loadCatalogue();
 
@@ -55,7 +66,20 @@ test("module names are normalised the way they will be generated", () => {
 });
 
 test("only available and beta targets can be picked", () => {
-  assert.deepEqual(selectableTargets(threePlatformCatalogue()).map((target) => target.key), ["android", "multiplatform"]);
+  const three = threePlatformCatalogue();
+  assert.deepEqual(selectableTargets(three).map((target) => target.key), ["android", "multiplatform"]);
+  const onMultiplatform = reducer(initialState(three), { type: "target", target: "multiplatform" }, three);
+  assert.equal(reducer(onMultiplatform, { type: "target", target: "ios" }, three), onMultiplatform, "a coming-soon target is not switched to");
+  assert.equal(parseDraft(JSON.stringify({ version: 1, state: { target: "ios", appName: "Trail" } }), three)?.target, "android");
+});
+
+test("a target the server turned off gives way to one it generates", () => {
+  const three = threePlatformCatalogue();
+  assert.equal(enabledTarget(three, "multiplatform", null), "multiplatform", "nothing is known before the server answers");
+  assert.equal(enabledTarget(three, "multiplatform", { android: true, multiplatform: true }), "multiplatform");
+  assert.equal(enabledTarget(three, "multiplatform", { android: true, multiplatform: false }), "android");
+  assert.equal(enabledTarget(three, "android", { android: false, multiplatform: true }), "multiplatform");
+  assert.equal(enabledTarget(three, "android", { android: false, multiplatform: false }), "android", "with nothing to move to, it stays");
 });
 
 test("switching platform keeps compatible answers and drops the rest", () => {

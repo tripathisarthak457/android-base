@@ -9,7 +9,7 @@ import { landed } from "../telemetry/events.ts";
 import { DRAFT_KEY, draftToStore, parseDraft } from "./draft.ts";
 import { derivePreset } from "./resolve.ts";
 import { sessionHeaders, toSpecV2 } from "./request.ts";
-import { type Action, type ConfigState, IDENTITY_FIELDS, STEPS, type Step, findTarget, initialState, reducer } from "./state.ts";
+import { type Action, type ConfigState, IDENTITY_FIELDS, STEPS, type Step, enabledTarget, findTarget, initialState, reducer } from "./state.ts";
 import { type SpecErrors, validateSpec } from "./validation/validate.ts";
 
 export type Outcome =
@@ -115,6 +115,10 @@ export function useConfigurator(catalogue: Catalogue) {
   const [restored, setRestored] = useState(false);
   const identityAt = useRef<number | null>(null);
   const live = useLive(catalogue, step);
+  // A restored draft for a target this server has turned off moves to one it generates, rather than
+  // leaving the visitor on a card they cannot select.
+  const usable = enabledTarget(catalogue, state.target, live.enabled);
+  if (usable !== state.target) dispatchRaw({ type: "target", target: usable });
   const target = findTarget(catalogue, state.target);
 
   useEffect(() => {
@@ -140,14 +144,15 @@ export function useConfigurator(catalogue: Catalogue) {
   }, [state, restored, catalogue]);
 
   // Keyed on the step alone: picking another platform card, or a restored draft for another
-  // target, is not another view of the step.
+  // target, is not another view of the step. The first view waits for the draft, so it names the
+  // target the visitor is shown.
   const lastViewed = useRef<Step | null>(null);
   useEffect(() => {
-    if (lastViewed.current === step) return;
+    if (!restored || lastViewed.current === step) return;
     lastViewed.current = step;
     if (step === "identity" && identityAt.current === null) identityAt.current = performance.now();
     track({ name: "step_viewed", target: state.target, step });
-  }, [step, state.target]);
+  }, [restored, step, state.target]);
 
   const dispatch = useCallback((action: Action) => {
     if (action.type === "preset") track({ name: "preset_chosen", target: state.target, preset: action.key });
