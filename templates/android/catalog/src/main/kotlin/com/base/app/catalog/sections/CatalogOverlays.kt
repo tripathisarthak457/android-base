@@ -1,6 +1,7 @@
 package com.base.app.catalog.sections
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +21,7 @@ import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.list.AppSection
 import com.base.app.core.designsystem.component.overlay.AppActionSheet
 import com.base.app.core.designsystem.component.overlay.AppAlert
+import com.base.app.core.designsystem.component.overlay.AppContextMenu
 import com.base.app.core.designsystem.component.overlay.AppMenu
 import com.base.app.core.designsystem.component.overlay.AppMenuDivider
 import com.base.app.core.designsystem.component.overlay.AppMenuItem
@@ -30,8 +32,6 @@ import com.base.app.core.designsystem.component.overlay.SheetAction
 import com.base.app.core.designsystem.component.overlay.SheetDetent
 import com.base.app.core.designsystem.component.overlay.ToastMessage
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.interaction.PressFeedback
-import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
@@ -85,7 +85,7 @@ fun OverlaysSection() {
             onDismissRequest = { medium = false },
             title = "Filters",
             showCloseButton = true,
-            footer = { AppBottomActionBar { AppButton(text = "Show 24 results", onClick = { medium = false }, fillWidth = true) } },
+            footer = { AppBottomActionBar { AppButton(text = "Show 24 results", onClick = { medium = false }, modifier = Modifier.fillMaxWidth()) } },
         ) {
             AppSection { repeat(16) { AppRow(title = "Option ${it + 1}", onClick = {}) } }
         }
@@ -97,30 +97,31 @@ fun OverlaysSection() {
             )
         }
     }
-    CatalogGroup("Menu", caption = "A pull-down from a button, or a context menu from a long press. It grows out of its anchor and keeps off the edges.") {
+    CatalogGroup("Menu", caption = "A pull-down from a button. It grows out of its anchor, keeps off the edges, and closes when an item is chosen.") {
         var pullDown by remember { mutableStateOf(false) }
-        var context by remember { mutableStateOf(false) }
-        Wrap {
-            Box {
-                AppIconButton(AppIcons.MoreHorizontal, contentDescription = "More", onClick = { pullDown = true }, variant = ButtonVariant.Tinted)
-                AppMenu(expanded = pullDown, onDismissRequest = { pullDown = false }) {
-                    AppMenuItem(text = "Rename", icon = AppIcons.Edit, onClick = { pullDown = false })
-                    AppMenuItem(text = "Duplicate", icon = AppIcons.Copy, onClick = { pullDown = false })
-                    AppMenuDivider()
-                    AppMenuItem(text = "Delete", icon = AppIcons.Trash, destructive = true, onClick = { pullDown = false })
-                }
+        Box {
+            AppIconButton(AppIcons.MoreHorizontal, contentDescription = "More", onClick = { pullDown = true }, variant = ButtonVariant.Tinted)
+            AppMenu(expanded = pullDown, onDismissRequest = { pullDown = false }) {
+                AppMenuItem(text = "Rename", icon = AppIcons.Edit, onClick = {})
+                AppMenuItem(text = "Duplicate", icon = AppIcons.Copy, onClick = {})
+                AppMenuDivider()
+                AppMenuItem(text = "Delete", icon = AppIcons.Trash, destructive = true, onClick = {})
+                AppMenuItem(text = "Unavailable", onClick = {}, enabled = false)
             }
-            Box {
-                AppText(
-                    text = "Long-press me",
-                    modifier = Modifier.pressable(onClick = {}, feedback = PressFeedback.Scale, onLongClick = { context = true }),
-                    style = AppTheme.typography.body,
-                    color = AppTheme.colors.accentContent,
-                )
-                AppMenu(expanded = context, onDismissRequest = { context = false }) {
-                    AppMenuItem(text = "Copy", icon = AppIcons.Copy, onClick = { context = false })
-                    AppMenuItem(text = "Share", icon = AppIcons.Share, onClick = { context = false })
-                    AppMenuItem(text = "Unavailable", onClick = {}, enabled = false)
+        }
+    }
+    CatalogGroup("Context menu", caption = "Long-press a row: it lifts, the page dims and the menu opens beside it. A right click opens it at the pointer.") {
+        AppSection {
+            listOf("Weekly report", "Invoice 0142", "Holiday photos").forEach { name ->
+                AppContextMenu(
+                    menu = {
+                        AppMenuItem(text = "Share", icon = AppIcons.Share, onClick = {})
+                        AppMenuItem(text = "Duplicate", icon = AppIcons.Copy, onClick = {})
+                        AppMenuDivider()
+                        AppMenuItem(text = "Delete", icon = AppIcons.Trash, destructive = true, onClick = {})
+                    },
+                ) {
+                    AppRow(title = name, subtitle = "Edited today", onClick = {})
                 }
             }
         }

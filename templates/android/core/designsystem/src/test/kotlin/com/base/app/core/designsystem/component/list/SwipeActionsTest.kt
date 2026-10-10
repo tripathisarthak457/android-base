@@ -45,8 +45,9 @@ class SwipeActionsTest {
                 }
             }
         }
+        // A row with no click of its own is merged into the swipe container's node.
         assertEquals(
-            rule.onNodeWithTag("row").getUnclippedBoundsInRoot().height,
+            rule.onNodeWithTag("row", useUnmergedTree = true).getUnclippedBoundsInRoot().height,
             rule.onNodeWithTag("swipe").getUnclippedBoundsInRoot().height,
         )
     }
@@ -86,10 +87,24 @@ class SwipeActionsTest {
                 AppRow(title = "Message")
             }
         }
-        rule.onNodeWithTag("swipe").assert(
-            SemanticsMatcher("has a Delete action") { node ->
-                node.config.getOrNull(SemanticsActions.CustomActions)?.any { it.label == "Delete" } == true
-            },
-        )
+        rule.onNodeWithTag("swipe").assert(hasDeleteAction)
+    }
+
+    @Test
+    fun `a clickable row carries the hidden actions itself, so a screen reader stops on it once`() {
+        rule.setThemed {
+            AppSwipeActions(
+                trailing = listOf(SwipeAction("Delete", AppIcons.Trash, onClick = {}, destructive = true)),
+                modifier = Modifier.testTag("swipe"),
+            ) {
+                AppRow(title = "Message", onClick = {}, modifier = Modifier.testTag("row"))
+            }
+        }
+        rule.onNodeWithTag("row").assert(hasDeleteAction)
+        rule.onNodeWithTag("swipe", useUnmergedTree = true).assert(!hasDeleteAction)
+    }
+
+    private val hasDeleteAction = SemanticsMatcher("has a Delete action") { node ->
+        node.config.getOrNull(SemanticsActions.CustomActions)?.any { it.label == "Delete" } == true
     }
 }

@@ -1,6 +1,9 @@
 package com.base.app.core.designsystem.component.list
 
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animate
+import androidx.compose.foundation.MutatePriority
+import androidx.compose.foundation.MutatorMutex
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -14,15 +17,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.annotation.FrequentlyChangingValue
+import androidx.compose.runtime.annotation.RememberInComposition
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
@@ -33,7 +40,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -43,22 +49,29 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.feedback.AppTone
+import com.base.app.core.designsystem.component.overlay.AppContextMenu
+import com.base.app.core.designsystem.component.overlay.AppMenuItem
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.ContainerActions
+import com.base.app.core.designsystem.foundation.interaction.LocalContainerActions
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
-import kotlinx.coroutines.Job
+import com.base.app.core.designsystem.theme.springs
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+import kotlin.math.roundToInt
+import kotlin.math.sign
 
 /**
  * One action a swipe reveals. A [destructive] action is red; otherwise [tone] picks the colour, the
@@ -74,18 +87,65 @@ class SwipeAction(
 )
 
 /**
+ * Whether a swipe row is open, and how far. Hoist it to close the row from outside, for example
+ * when the list's data changes under it:
+ *
+ * ```
+ * val swipe = rememberAppSwipeActionsState()
+ * LaunchedEffect(items) { swipe.close() }
+ * ```
+ */
+@Stable
+class AppSwipeActionsState @RememberInComposition constructor() {
+    /**
+     * How far the row has moved, in pixels: positive reveals the leading actions, negative the
+     * trailing ones, whatever the layout direction. Read it in layout or draw, never in composition.
+     */
+    @get:FrequentlyChangingValue
+    var offset: Float by mutableFloatStateOf(0f)
+        internal set
+
+    /** Whether any action shows. Changes only when the row opens or closes, not while it moves. */
+    val isOpen: Boolean by derivedStateOf { offset != 0f }
+
+    internal val mutex = MutatorMutex()
+    internal var spring: SpringSpec<Float> = AppMotionStyle.Standard.springs().thumb.pixels
+
+    /** Finger travel the offset stands for, while a drag past the last action stretches. */
+    internal var travel = 0f
+
+    /** Slides the row closed, unless a finger has it. */
+    suspend fun close() = settleTo(0f, 0f)
+
+    internal suspend fun settleTo(target: Float, velocity: Float) = mutex.mutate {
+        animate(offset, target, velocity, spring) { value, _ -> offset = value }
+    }
+
+    /** Stops a settle so a new drag takes the row from where it is. */
+    internal suspend fun stop() = mutex.mutate(MutatePriority.UserInput) {}
+}
+
+@Composable
+fun rememberAppSwipeActionsState(): AppSwipeActionsState = remember { AppSwipeActionsState() }
+
+/**
  * A row with actions behind it: [leading] revealed by swiping towards the trailing edge, [trailing]
  * by swiping the other way, each list ordered from the outer edge in. A short swipe rests the row
  * open; with [allowFullSwipe], swiping past most of the width performs the outermost action, with a
- * haptic as the finger crosses that point. Tapping an open row closes it rather than opening the
- * row. Screen-reader users get every action in the row's actions menu.
+ * haptic as the finger crosses that point. Without it the row stretches past its last action and
+ * springs back. Tapping an open row closes it rather than opening the row.
+ *
+ * The same actions are in the row's context menu, behind a long press or a right click, for anyone
+ * not swiping: a mouse, a keyboard, a screen reader.
  *
  * The row is drawn on [background], which has to be opaque to cover the actions. The finger moves a
- * plain float, so a drag allocates nothing per event; only the settle animates.
+ * plain float, so a drag allocates nothing per event; only the settle animates, from the finger's
+ * speed, to the stop the swipe would have coasted to.
  */
 @Composable
 fun AppSwipeActions(
     modifier: Modifier = Modifier,
+    state: AppSwipeActionsState = rememberAppSwipeActionsState(),
     leading: List<SwipeAction> = emptyList(),
     trailing: List<SwipeAction> = emptyList(),
     enabled: Boolean = true,
@@ -93,35 +153,62 @@ fun AppSwipeActions(
     shape: Shape = RectangleShape,
     background: Color = AppTheme.colors.surface,
     actionWidth: Dp = 74.dp,
-    resetKey: Any? = null,
     content: @Composable () -> Unit,
 ) {
     val density = LocalDensity.current
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
     val haptics = rememberAppHaptics()
     val scope = rememberCoroutineScope()
-    val spring = AppTheme.springs.sheet.pixels
     val touchSlop = LocalViewConfiguration.current.touchSlop
     val currentLeading by rememberUpdatedState(leading)
     val currentTrailing by rememberUpdatedState(trailing)
+    val spring = AppTheme.springs.thumb.pixels
+    SideEffect { state.spring = spring }
 
-    // Logical: positive reveals the leading actions, whatever the layout direction.
-    var offset by remember { mutableFloatStateOf(0f) }
     var width by remember { mutableIntStateOf(0) }
-    var settling by remember { mutableStateOf<Job?>(null) }
-    val open by remember { derivedStateOf { offset != 0f } }
     val actionPx = with(density) { actionWidth.toPx() }
+    // Offered to a screen reader on the row itself, beside the context menu that lists them too.
+    val spokenActions = remember(leading, trailing) {
+        val actions = (leading + trailing).map { action ->
+            CustomAccessibilityAction(action.label) {
+                action.onClick()
+                true
+            }
+        }
+        ContainerActions(menuLabel = null, openMenu = null, actions = actions)
+    }
 
     fun revealOf(actions: List<SwipeAction>) = actionPx * actions.size
-    fun fullSwipeAt() = width * FULL_SWIPE_FRACTION
-    fun bound(actions: List<SwipeAction>) =
-        if (actions.isEmpty()) 0f else if (allowFullSwipe) width.toFloat() else revealOf(actions)
+    fun fullSwipeAt() = width * FullSwipeFraction
+
+    /** Where the row shows for a finger at [travel]: free up to the actions, then on a rubber band. */
+    fun shown(travel: Float): Float {
+        val actions = if (travel > 0f) currentLeading else currentTrailing
+        if (actions.isEmpty()) return 0f
+        val sign = if (travel > 0f) 1f else -1f
+        val distance = abs(travel)
+        if (allowFullSwipe) return sign * distance.coerceAtMost(width.toFloat())
+        val reveal = revealOf(actions)
+        if (distance <= reveal) return travel
+        val range = (width - reveal).coerceAtLeast(1f)
+        val past = (distance - reveal) * RubberBand
+        return sign * (reveal + past * range / (range + past))
+    }
+
+    /** The finger travel that shows the row at [offset]: [shown] undone, so a drag resumes in place. */
+    fun travelFor(offset: Float): Float {
+        if (allowFullSwipe || offset == 0f) return offset
+        val reveal = revealOf(if (offset > 0f) currentLeading else currentTrailing)
+        val distance = abs(offset)
+        if (distance <= reveal) return offset
+        val range = (width - reveal).coerceAtLeast(1f)
+        val stretched = (distance - reveal).coerceAtMost(range * 0.999f)
+        val past = stretched * range / (range - stretched)
+        return sign(offset) * (reveal + past / RubberBand)
+    }
 
     fun settleTo(target: Float, velocity: Float = 0f) {
-        settling?.cancel()
-        settling = scope.launch {
-            animate(offset, target, velocity, spring) { value, _ -> offset = value }
-        }
+        scope.launch { state.settleTo(target, velocity) }
     }
 
     fun perform(action: SwipeAction) {
@@ -129,87 +216,98 @@ fun AppSwipeActions(
         action.onClick()
     }
 
-    LaunchedEffect(resetKey) { offset = 0f }
-
     val dragState = rememberDraggableState { delta ->
-        val before = offset
-        val logical = if (rtl) -delta else delta
-        offset = (offset + logical).coerceIn(-bound(currentTrailing), bound(currentLeading))
+        val before = state.offset
+        state.travel += if (rtl) -delta else delta
+        state.offset = shown(state.travel)
         val threshold = fullSwipeAt()
-        if (allowFullSwipe && (abs(before) < threshold) != (abs(offset) < threshold)) haptics.perform(AppHaptic.Threshold)
+        if (allowFullSwipe && (abs(before) < threshold) != (abs(state.offset) < threshold)) haptics.perform(AppHaptic.Threshold)
     }
 
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape)
-            .onSizeChanged { width = it.width }
-            .semantics {
-                customActions = (leading + trailing).map { action ->
-                    CustomAccessibilityAction(action.label) {
-                        action.onClick()
-                        true
-                    }
+    CompositionLocalProvider(LocalContainerActions provides spokenActions) {
+        AppContextMenu(
+            enabled = enabled && (leading.isNotEmpty() || trailing.isNotEmpty()),
+            menu = {
+                (leading + trailing).forEach { action ->
+                    AppMenuItem(text = action.label, onClick = action.onClick, icon = action.icon, destructive = action.destructive)
                 }
             },
-    ) {
-        if (leading.isNotEmpty()) ActionPanel(leading, start = true, actionWidth, { offset.coerceAtLeast(0f) }, ::perform)
-        if (trailing.isNotEmpty()) ActionPanel(trailing, start = false, actionWidth, { (-offset).coerceAtLeast(0f) }, ::perform)
+            modifier = modifier,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(shape)
+                    .onSizeChanged { width = it.width },
+            ) {
+                // The buttons behind the row are its actions, not controls the actions belong to.
+                CompositionLocalProvider(LocalContainerActions provides null) {
+                    if (leading.isNotEmpty()) ActionPanel(leading, start = true, actionWidth, { state.offset.coerceAtLeast(0f) }, ::perform)
+                    if (trailing.isNotEmpty()) ActionPanel(trailing, start = false, actionWidth, { (-state.offset).coerceAtLeast(0f) }, ::perform)
+                }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .graphicsLayer { translationX = if (rtl) -offset else offset }
-                .background(background)
-                .draggable(
-                    state = dragState,
-                    orientation = Orientation.Horizontal,
-                    enabled = enabled && (leading.isNotEmpty() || trailing.isNotEmpty()),
-                    onDragStarted = { settling?.cancel() },
-                    onDragStopped = { velocity ->
-                        val logicalVelocity = if (rtl) -velocity else velocity
-                        val revealed = abs(offset)
-                        val side = if (offset > 0f) currentLeading else currentTrailing
-                        val sign = if (offset > 0f) 1f else -1f
-                        when {
-                            side.isEmpty() || offset == 0f -> settleTo(0f, logicalVelocity)
-                            allowFullSwipe && revealed > fullSwipeAt() -> {
-                                settleTo(sign * width, logicalVelocity)
-                                side.first().onClick()
-                            }
-                            revealed > revealOf(side) * REST_FRACTION || abs(logicalVelocity) > FLING_VELOCITY && logicalVelocity * sign > 0 ->
-                                settleTo(sign * revealOf(side), logicalVelocity)
-                            else -> settleTo(0f, logicalVelocity)
-                        }
-                    },
-                )
-                .then(
-                    if (open) {
-                        // Taken before the row's own click sees it: a tap on an open row closes it.
-                        Modifier.pointerInput(Unit) {
-                            awaitEachGesture {
-                                val down = awaitFirstDown(pass = PointerEventPass.Initial)
-                                var moved = 0f
-                                while (true) {
-                                    val event = awaitPointerEvent(PointerEventPass.Initial)
-                                    val change = event.changes.firstOrNull { it.id == down.id } ?: break
-                                    moved += abs(change.position.x - change.previousPosition.x)
-                                    if (!change.pressed) {
-                                        if (moved < touchSlop) {
-                                            change.consume()
-                                            settleTo(0f)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        // Placed on its own layer rather than translated: a layer that moves is what makes
+                        // Compose ask an adaptive-refresh display for its high rate while the row moves.
+                        .offset { IntOffset(state.offset.roundToInt(), 0) }
+                        .background(background)
+                        .draggable(
+                            state = dragState,
+                            orientation = Orientation.Horizontal,
+                            enabled = enabled && (leading.isNotEmpty() || trailing.isNotEmpty()),
+                            onDragStarted = {
+                                state.stop()
+                                state.travel = travelFor(state.offset)
+                            },
+                            onDragStopped = { velocity ->
+                                val logicalVelocity = if (rtl) -velocity else velocity
+                                val offset = state.offset
+                                val side = if (offset > 0f) currentLeading else currentTrailing
+                                val sign = if (offset > 0f) 1f else -1f
+                                // Where the row would coast to, as iOS projects a release before it snaps.
+                                val coast = offset + logicalVelocity * ProjectionSeconds
+                                when {
+                                    side.isEmpty() || offset == 0f -> settleTo(0f, logicalVelocity)
+                                    allowFullSwipe && abs(offset) > fullSwipeAt() -> {
+                                        settleTo(sign * width, logicalVelocity)
+                                        side.first().onClick()
+                                    }
+                                    coast * sign > revealOf(side) * RestFraction -> settleTo(sign * revealOf(side), logicalVelocity)
+                                    else -> settleTo(0f, logicalVelocity)
+                                }
+                            },
+                        )
+                        .then(
+                            if (state.isOpen) {
+                                // Taken before the row's own click sees it: a tap on an open row closes it.
+                                Modifier.pointerInput(Unit) {
+                                    awaitEachGesture {
+                                        val down = awaitFirstDown(pass = PointerEventPass.Initial)
+                                        var moved = 0f
+                                        while (true) {
+                                            val event = awaitPointerEvent(PointerEventPass.Initial)
+                                            val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                                            moved += abs(change.position.x - change.previousPosition.x)
+                                            if (!change.pressed) {
+                                                if (moved < touchSlop) {
+                                                    change.consume()
+                                                    settleTo(0f)
+                                                }
+                                                break
+                                            }
                                         }
-                                        break
                                     }
                                 }
-                            }
-                        }
-                    } else {
-                        Modifier
-                    },
-                ),
-        ) {
-            content()
+                            } else {
+                                Modifier
+                            },
+                        ),
+                ) {
+                    content()
+                }
+            }
         }
     }
 }
@@ -271,6 +369,9 @@ private fun actionColors(action: SwipeAction): Pair<Color, Color> {
     }
 }
 
-private const val FULL_SWIPE_FRACTION = 0.55f
-private const val REST_FRACTION = 0.5f
-private const val FLING_VELOCITY = 800f
+private const val FullSwipeFraction = 0.55f
+private const val RestFraction = 0.5f
+private val RubberBand = DesignTokens.Motion.rubberBand
+
+// How far ahead of the row a release looks for where it was thrown (iOS's 0.99 projection).
+private const val ProjectionSeconds = 0.099f

@@ -3,25 +3,35 @@ package com.base.app.core.designsystem.component.overlay
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -30,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
-import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.AppSurface
@@ -40,16 +49,17 @@ import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * A menu anchored to whatever composes it: a pull-down from a button, or a context menu from a long
- * press (`Modifier.pressable(onLongClick = { open = true }, …)`). It grows out of its anchor, keeps
- * the screen's gutter rather than touching an edge, and opens upward when there is no room below.
- * It is its own window, so it sits over everything, and it animates out before it goes.
+ * A menu anchored to whatever composes it, such as a pull-down from a button. It grows out of its
+ * anchor, keeps the screen's gutter rather than touching an edge, and opens upward when there is no
+ * room below. It is its own window, so it sits over everything, and it animates out before it goes.
+ * Choosing an item asks for it to close through [onDismissRequest]. For a menu behind a long press
+ * or a right click, use [AppContextMenu].
  *
  * ```
  * Box {
  *     AppIconButton(AppIcons.MoreHorizontal, more, onClick = { open = true })
  *     AppMenu(expanded = open, onDismissRequest = { open = false }) {
- *         AppMenuItem(rename, onClick = { open = false; onRename() })
+ *         AppMenuItem(rename, onClick = onRename)
  *     }
  * }
  * ```
@@ -70,34 +80,33 @@ fun AppMenu(
         MenuPosition(margin = with(density) { 16.dp.roundToPx() }, gap = with(density) { 6.dp.roundToPx() })
     }
     val springs = AppTheme.springs
+    val dismiss by rememberUpdatedState(onDismissRequest)
     Popup(
         popupPositionProvider = position,
         onDismissRequest = onDismissRequest,
         properties = PopupProperties(focusable = true),
     ) {
         val transition = rememberTransition(state, label = "menu")
-        val shown = transition.animateFloat(transitionSpec = { springs.sheet.unit }, label = "menuShown") { if (it) 1f else 0f }
-        AppSurface(
-            modifier = modifier
-                .widthIn(min = MinWidth, max = MaxWidth)
-                .graphicsLayer {
-                    val p = shown.value
-                    alpha = p.coerceIn(0f, 1f)
-                    scaleX = START_SCALE + (1f - START_SCALE) * p
-                    scaleY = scaleX
-                    transformOrigin = position.origin
-                },
-            shape = AppTheme.shapes.md,
-            color = AppTheme.colors.surfaceElevated,
-            elevation = AppTheme.elevation.overlay,
-            clipContent = true,
-        ) {
-            Column(modifier = Modifier.padding(vertical = AppTheme.spacing.xs)) { content() }
-        }
+        val shown = transition.animateFloat(transitionSpec = { springs.dialog.unit }, label = "menuShown") { if (it) 1f else 0f }
+        MenuPanel(
+            modifier = modifier.graphicsLayer {
+                // The panel's own layer: its alpha costs the menu's size, never the window's.
+                val p = shown.value
+                alpha = p.coerceIn(0f, 1f)
+                scaleX = MenuStartScale + (1f - MenuStartScale) * p
+                scaleY = scaleX
+                transformOrigin = position.origin
+            },
+            onItemChosen = { dismiss() },
+            content = content,
+        )
     }
 }
 
-/** A row in a menu. A [destructive] row is red, glyph and all. It highlights under the finger. */
+/**
+ * A row in a menu. A [destructive] row is red, glyph and all. It highlights under the finger, and
+ * choosing it runs [onClick], then closes the menu it is in.
+ */
 @Composable
 fun AppMenuItem(
     text: String,
@@ -108,9 +117,17 @@ fun AppMenuItem(
     destructive: Boolean = false,
 ) {
     val tint = if (destructive) AppTheme.colors.danger.content else AppTheme.colors.contentPrimary
+    val chosen = LocalMenuItemChosen.current
     Row(
         modifier = modifier
-            .pressable(onClick = onClick, feedback = PressFeedback.Highlight, enabled = enabled)
+            .pressable(
+                onClick = {
+                    onClick()
+                    chosen()
+                },
+                feedback = PressFeedback.Highlight,
+                enabled = enabled,
+            )
             .disabledAlpha(enabled)
             .heightIn(min = AppTheme.sizes.rowHeight)
             .padding(horizontal = AppTheme.spacing.lg),
@@ -129,9 +146,81 @@ fun AppMenuItem(
     }
 }
 
+/** Ends a group of items: the gap iOS leaves between groups, where items have a hairline. */
 @Composable
 fun AppMenuDivider(modifier: Modifier = Modifier) {
-    AppDivider(modifier = modifier.padding(vertical = AppTheme.spacing.xs))
+    Box(
+        modifier = modifier
+            .then(GroupGap)
+            .fillMaxWidth()
+            .height(GroupGapHeight)
+            .background(AppTheme.colors.fill),
+    )
+}
+
+/** What choosing an item does besides its own action: closing the menu it sits in. */
+internal val LocalMenuItemChosen = staticCompositionLocalOf<() -> Unit> { {} }
+
+/** The menu's card: items edge to edge, a hairline between neighbours, a gap between groups. */
+@Composable
+internal fun MenuPanel(
+    onItemChosen: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    AppSurface(
+        modifier = modifier.widthIn(min = MenuMinWidth, max = MenuMaxWidth),
+        shape = AppTheme.shapes.md,
+        color = AppTheme.colors.surfaceElevated,
+        elevation = AppTheme.elevation.overlay,
+        clipContent = true,
+    ) {
+        CompositionLocalProvider(LocalMenuItemChosen provides onItemChosen) {
+            MenuColumn(content)
+        }
+    }
+}
+
+/**
+ * Stacks the items and draws a hairline between two neighbouring items, never next to a group gap
+ * nor at the ends, so items need not know where they sit.
+ */
+@Composable
+private fun MenuColumn(content: @Composable () -> Unit) {
+    val separator = AppTheme.colors.separator
+    var placedEdges by remember { mutableStateOf(IntArray(0)) }
+    Layout(
+        content = content,
+        modifier = Modifier.drawBehind {
+            val edges = placedEdges
+            for (y in edges) drawLine(separator, Offset(0f, y - 0.5f), Offset(size.width, y - 0.5f), strokeWidth = 1f)
+        },
+    ) { measurables, constraints ->
+        val placeables = measurables.map { it.measure(constraints.copy(minHeight = 0)) }
+        val width = placeables.maxOfOrNull { it.width }?.coerceIn(constraints.minWidth, constraints.maxWidth) ?: constraints.minWidth
+        val gaps = measurables.map { it.parentData === GroupGap }
+        val edges = IntArray(placeables.size)
+        var count = 0
+        var y = 0
+        placeables.forEachIndexed { index, placeable ->
+            if (index > 0 && !gaps[index] && !gaps[index - 1]) edges[count++] = y
+            y += placeable.height
+        }
+        val separators = edges.copyOf(count)
+        if (!separators.contentEquals(placedEdges)) placedEdges = separators
+        layout(width, y.coerceIn(constraints.minHeight, constraints.maxHeight)) {
+            var top = 0
+            placeables.forEach { placeable ->
+                placeable.placeRelative(0, top)
+                top += placeable.height
+            }
+        }
+    }
+}
+
+/** Marks a child of the menu as a group gap. */
+private object GroupGap : ParentDataModifier {
+    override fun Density.modifyParentData(parentData: Any?): Any = GroupGap
 }
 
 /**
@@ -162,6 +251,7 @@ private class MenuPosition(private val margin: Int, private val gap: Int) : Popu
     }
 }
 
-private val MinWidth = 200.dp
-private val MaxWidth = 300.dp
-private const val START_SCALE = 0.85f
+internal val MenuMinWidth = 200.dp
+internal val MenuMaxWidth = 280.dp
+internal const val MenuStartScale = 0.85f
+private val GroupGapHeight = 8.dp

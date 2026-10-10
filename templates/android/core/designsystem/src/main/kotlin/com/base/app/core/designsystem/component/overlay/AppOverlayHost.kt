@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import com.base.app.core.designsystem.foundation.interaction.LocalContainerActions
 
 /**
  * The top two layers of the window. Layer 4 holds alerts, HUDs and the loading overlay; layer 5 the
@@ -71,6 +73,10 @@ internal fun AppOverlayHost(content: @Composable () -> Unit) {
 /**
  * Draws [content] in the window's overlay layer for as long as this is composed, or in place when
  * there is no host. [modal] hides everything beneath from screen readers while it is up.
+ *
+ * The content keeps the caller's composition locals although it is drawn at the window's root: a
+ * sheet opened from a screen gets that screen's ViewModels, lifecycle and saved state, and a
+ * nested theme or a right-to-left page reaches it too.
  */
 @Composable
 internal fun HostedOverlay(modal: Boolean, content: @Composable () -> Unit) {
@@ -80,8 +86,14 @@ internal fun HostedOverlay(modal: Boolean, content: @Composable () -> Unit) {
         return
     }
     val latest = rememberUpdatedState(content)
+    val locals = rememberUpdatedState(currentCompositionLocalContext)
     DisposableEffect(host, modal) {
-        val entry = OverlayEntry(modal) { latest.value() }
+        val entry = OverlayEntry(modal) {
+            CompositionLocalProvider(locals.value) {
+                // An overlay is not inside the row that opened it: its controls carry no row actions.
+                CompositionLocalProvider(LocalContainerActions provides null) { latest.value() }
+            }
+        }
         host.overlays.add(entry)
         onDispose { host.overlays.remove(entry) }
     }

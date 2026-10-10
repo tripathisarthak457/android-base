@@ -22,6 +22,7 @@
     <string name="designsystem_loading">Loading</string>
     <string name="designsystem_refresh">Refresh</string>
     <string name="designsystem_refreshing">Refreshing</string>
+    <string name="designsystem_show_menu">Show menu</string>
     <plurals name="designsystem_people_count">
         <item quantity="one">%1$d person</item>
         <item quantity="other">%1$d people</item>
