@@ -12,6 +12,11 @@ dependencies {
     api(project(":core:mvi"))
     api(project(":core:designsystem"))
     implementation(project(":core:navigation"))
+    // <opt:appstatus>
+    implementation(project(":core:network"))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigationevent.compose)
+    // </opt:appstatus>
 
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

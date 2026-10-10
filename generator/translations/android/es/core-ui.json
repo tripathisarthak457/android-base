@@ -14,5 +14,11 @@
     "other": "Usa al menos %1$d caracteres."
   },
   "common_error_offline": "Sin conexión. Revisa tu conexión e inténtalo de nuevo.",
-  "common_error_unreachable": "No se pudo conectar con el servidor. Inténtalo de nuevo en un momento."
+  "common_error_unreachable": "No se pudo conectar con el servidor. Inténtalo de nuevo en un momento.",
+  "appstatus_update_title": "Actualización necesaria",
+  "appstatus_update_message": "Esta versión ya no es compatible. Actualiza la app para seguir usándola.",
+  "appstatus_update_action": "Actualizar",
+  "appstatus_maintenance_title": "En mantenimiento",
+  "appstatus_maintenance_message": "Estamos trabajando en el servicio. Vuelve a intentarlo en unos minutos.",
+  "appstatus_maintenance_action": "Reintentar"
 }

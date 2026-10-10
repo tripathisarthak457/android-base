@@ -14,5 +14,11 @@
     "other": "Utilisez au moins %1$d caractères."
   },
   "common_error_offline": "Vous êtes hors ligne. Vérifiez votre connexion et réessayez.",
-  "common_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant."
+  "common_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant.",
+  "appstatus_update_title": "Mise à jour requise",
+  "appstatus_update_message": "Cette version n'est plus prise en charge. Mettez l'application à jour pour continuer à l'utiliser.",
+  "appstatus_update_action": "Mettre à jour",
+  "appstatus_maintenance_title": "Maintenance en cours",
+  "appstatus_maintenance_message": "Nous intervenons sur le service. Réessayez dans quelques minutes.",
+  "appstatus_maintenance_action": "Réessayer"
 }

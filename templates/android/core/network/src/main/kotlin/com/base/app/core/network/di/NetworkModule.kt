@@ -24,6 +24,9 @@ import javax.inject.Singleton
 // <opt:websocket>
 import com.base.app.core.network.websocket.AppWebSocket
 // </opt:websocket>
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.AppStatusRules
+// </opt:appstatus>
 // <opt:offlinequeue>
 import com.base.app.core.network.queue.OfflineQueue
 import com.base.app.core.network.queue.RequestQueue
@@ -74,5 +77,12 @@ internal interface NetworkModule {
         @Provides
         @Singleton
         fun provideRetryPolicy(config: NetworkConfig): RetryPolicy = RetryPolicy(maxRetries = config.maxRetries)
+        // <opt:appstatus>
+
+        /** HTTP's own signals. A backend that says "update" or "maintenance" with a code in its body lists the code here. */
+        @Provides
+        @Singleton
+        fun provideAppStatusRules(): AppStatusRules = AppStatusRules()
+        // </opt:appstatus>
     }
 }

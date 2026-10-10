@@ -14,5 +14,11 @@
     "other": "कम से कम %1$d वर्ण इस्तेमाल करें।"
   },
   "common_error_offline": "आप ऑफ़लाइन हैं। अपना कनेक्शन जांचें और फिर से कोशिश करें।",
-  "common_error_unreachable": "सर्वर से कनेक्ट नहीं हो सका। थोड़ी देर में फिर से कोशिश करें।"
+  "common_error_unreachable": "सर्वर से कनेक्ट नहीं हो सका। थोड़ी देर में फिर से कोशिश करें।",
+  "appstatus_update_title": "अपडेट ज़रूरी है",
+  "appstatus_update_message": "यह वर्शन अब समर्थित नहीं है। ऐप का उपयोग जारी रखने के लिए इसे अपडेट करें।",
+  "appstatus_update_action": "अपडेट करें",
+  "appstatus_maintenance_title": "रखरखाव जारी है",
+  "appstatus_maintenance_message": "हम सेवा पर काम कर रहे हैं। कुछ मिनट बाद फिर से कोशिश करें।",
+  "appstatus_maintenance_action": "फिर से कोशिश करें"
 }
