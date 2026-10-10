@@ -8,8 +8,8 @@ import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { planTabs } from "../../preview/tabs.ts";
-import { STEP_LABELS } from "../state.ts";
-import { stepOf, type Configurator } from "../useConfigurator.ts";
+import { STEP_LABELS, stepOf } from "../state.ts";
+import type { Configurator } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
 export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; model: Configurator; dark: boolean }) {

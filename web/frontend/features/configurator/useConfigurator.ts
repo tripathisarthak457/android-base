@@ -9,20 +9,8 @@ import { landed } from "../telemetry/events.ts";
 import { DRAFT_KEY, draftToStore, parseDraft } from "./draft.ts";
 import { derivePreset } from "./resolve.ts";
 import { sessionHeaders, toSpecV2 } from "./request.ts";
-import { type Action, type ConfigState, STEPS, type Step, findTarget, initialState, reducer } from "./state.ts";
+import { type Action, type ConfigState, IDENTITY_FIELDS, STEPS, type Step, findTarget, initialState, reducer } from "./state.ts";
 import { type SpecErrors, validateSpec } from "./validate.ts";
-
-const IDENTITY_FIELDS = ["app_name", "display_name", "package_name", "feature_modules", "languages"];
-
-/** Which step owns each spec field, so an error can send the visitor to where it is fixed. */
-export function stepOf(field: string): Step {
-  if (field === "platform" || field === "schema") return "platform";
-  if (IDENTITY_FIELDS.includes(field)) return "identity";
-  if (field === "features") return "features";
-  if (["design_style", "accent_colour", "secondary_colour", "tertiary_colour", "font_name", "mono_font_name"].includes(field)) return "look";
-  if (field === "motion_style" || field === "haptics_enabled") return "motion";
-  return "build";
-}
 
 export type Outcome =
   | { kind: "done"; revision: number; filename: string; bytes: number; elapsedMs: number; keystoresSkipped: string[] }

@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { loadCatalogue } from "../catalogue/testing.ts";
 import { MAX_TABS, moduleTitle, planTabs, screensFor } from "./tabs.ts";
 import { css, dp, previewTheme, weightsFor } from "./theme.ts";
+import { traits } from "./traits.ts";
 
 const { tokens } = loadCatalogue();
 
@@ -77,4 +78,25 @@ test("with no tab source the generator's home module is the one tab", () => {
 
 test("module titles read like the scaffolded screen's", () => {
   assert.equal(moduleTitle("order_history"), "Order history");
+});
+
+test("a style describes itself from its tokens, so a new one needs no copy", () => {
+  const style = {
+    ...tokens.styles.Utility!,
+    surfaces: "BrandTint",
+    voice: "Bold",
+    buttonRadius: "pill" as const,
+    card: "Raised",
+    field: "Filled",
+    uppercaseLabels: false,
+    bar: "Floating",
+  };
+  assert.deepEqual(traits(style), ["Brand tint surfaces, bold type", "Pill buttons, raised cards", "Filled fields", "Floating tab bar"]);
+});
+
+test("buttons read square up to 4 dp of radius and rounded above it", () => {
+  const base = { ...tokens.styles.Utility!, uppercaseLabels: true };
+  assert.match(traits({ ...base, buttonRadius: 4 })[1] ?? "", /^Square buttons/);
+  assert.match(traits({ ...base, buttonRadius: 5 })[1] ?? "", /^Rounded buttons/);
+  assert.match(traits(base)[2] ?? "", /, uppercase labels$/);
 });

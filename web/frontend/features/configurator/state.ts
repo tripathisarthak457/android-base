@@ -15,6 +15,21 @@ export const STEP_LABELS: Record<Step, string> = {
   review: "Review",
 };
 
+/** The spec fields the identity step edits; the later steps open only once they are valid. */
+export const IDENTITY_FIELDS = ["app_name", "display_name", "package_name", "feature_modules", "languages"];
+
+const LOOK_FIELDS = ["design_style", "accent_colour", "secondary_colour", "tertiary_colour", "font_name", "mono_font_name"];
+
+/** Which step edits each spec field, so an error can send the visitor to where it is fixed. */
+export function stepOf(field: string): Step {
+  if (field === "platform" || field === "schema") return "platform";
+  if (IDENTITY_FIELDS.includes(field)) return "identity";
+  if (field === "features") return "features";
+  if (LOOK_FIELDS.includes(field)) return "look";
+  if (field === "motion_style" || field === "haptics_enabled") return "motion";
+  return "build";
+}
+
 /** A value of one dotted field (`android.min_sdk`, `android.api_base_urls`). */
 export type Setting = string | number | Record<string, string>;
 

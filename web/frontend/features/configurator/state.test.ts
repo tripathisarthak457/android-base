@@ -4,7 +4,7 @@ import { loadCatalogue, threePlatformCatalogue } from "../catalogue/testing.ts";
 import { draftToStore, parseDraft, serializeDraft } from "./draft.ts";
 import { toSpecV2 } from "./request.ts";
 import { presetFeatures } from "./resolve.ts";
-import { type Action, type ConfigState, initialState, moduleNames, reducer, selectableTargets, suggestPackage } from "./state.ts";
+import { type Action, type ConfigState, type Step, initialState, moduleNames, reducer, selectableTargets, stepOf, suggestPackage } from "./state.ts";
 
 const catalogue = loadCatalogue();
 
@@ -184,5 +184,32 @@ test("a draft from an older catalogue loses only what no longer exists", () => {
 test("anything that is not a draft reads as none", () => {
   for (const text of [null, "", "{", "[]", JSON.stringify({ version: 2, state: {} }), JSON.stringify({ version: 1 })]) {
     assert.equal(parseDraft(text, catalogue), null, String(text));
+  }
+});
+
+test("an error sends the visitor to the step that edits its field", () => {
+  const expected: Record<string, Step> = {
+    platform: "platform",
+    schema: "platform",
+    app_name: "identity",
+    display_name: "identity",
+    package_name: "identity",
+    feature_modules: "identity",
+    languages: "identity",
+    features: "features",
+    design_style: "look",
+    accent_colour: "look",
+    secondary_colour: "look",
+    tertiary_colour: "look",
+    font_name: "look",
+    mono_font_name: "look",
+    motion_style: "motion",
+    haptics_enabled: "motion",
+    architecture: "build",
+  };
+  for (const [field, step] of Object.entries(expected)) assert.equal(stepOf(field), step, field);
+  for (const field of catalogue.targets[0]!.fields) {
+    if (field.key.includes(".")) assert.equal(stepOf(field.key), "build", field.key);
+    else assert.ok(field.key in expected, `${field.key} is a new top-level field: say which step edits it`);
   }
 });
