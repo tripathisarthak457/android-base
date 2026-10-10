@@ -31,7 +31,7 @@ export function keystoreProblem(keystore: Json, rules: Rules): string | undefine
     typeof keystore[key] === "string" && keystore[key] !== "" ? (keystore[key] as string) : fallback;
   const name = text("name", "");
   if (!rules.keystore_names.includes(name)) {
-    return `Unknown signing key '${name}'. The build has four: ${rules.keystore_names.join(", ")}.`;
+    return `Unknown signing key '${name}'. Choose from: ${rules.keystore_names.join(", ")}.`;
   }
   if (!matches(rules.keystore_alias, text("alias", ""))) {
     return `The ${name} key alias must be letters, digits, dots, hyphens or underscores, and start with a letter or digit.`;

@@ -52,7 +52,7 @@ export function Faq() {
       q: "Can it make my signing keys?",
       a:
         "Yes, if you ask; it is off by default. Keys made here are created on a server you do not control, which is fine for " +
-        "dev and staging and a real trade for a Play upload key. The CLI makes all four on your own machine, and every " +
+        "dev and staging and a real trade for a Play upload key. The CLI makes them on your own machine, and every " +
         "project's README has the keytool commands.",
     },
     {
