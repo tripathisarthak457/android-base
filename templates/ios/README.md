@@ -29,7 +29,7 @@ xcodebuild -project BaseApp.xcodeproj -scheme BaseApp \
 ```
 project.yml               the Xcode project, as XcodeGen reads it
 Config/                   Dev.xcconfig (Debug) and Prod.xcconfig (Release): API_BASE_URL
-BaseApp/                  the app target: composition root, window, tabs, commands
+BaseApp/                  the app target: composition root, window, tabs, commands, privacy manifest
 BaseAppTests/             app-level tests
 Packages/Core/            AppCore, DesignSystem, Navigation, Networking, Persistence
 Packages/Features/        per feature: <Name>Data (repository, DTOs) and <Name>Feature (views, stores)
