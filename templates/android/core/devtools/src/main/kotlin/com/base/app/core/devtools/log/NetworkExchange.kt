@@ -1,4 +1,4 @@
-package com.base.app.core.devtools
+package com.base.app.core.devtools.log
 
 /** One request and what came back, as the inspector shows it. */
 data class NetworkExchange(
@@ -13,13 +13,12 @@ data class NetworkExchange(
     val responseHeaders: Map<String, String>,
     val requestBody: String?,
     val responseBody: String?,
+    /** Counted from the decoded body: a gzip or chunked answer has no length of its own. */
     val responseBytes: Long,
     val failure: String?,
 ) {
     val path: String
-        get() = runCatching { url.substringAfter("://").substringAfter('/').substringBefore('?') }
-            .getOrDefault(url)
-            .let { if (it.isBlank()) "/" else "/$it" }
+        get() = "/" + url.substringAfter("://").substringAfter('/', missingDelimiterValue = "").substringBefore('?')
 
     val isFailure: Boolean get() = failure != null || (status ?: 0) >= HTTP_ERROR_FLOOR
 
