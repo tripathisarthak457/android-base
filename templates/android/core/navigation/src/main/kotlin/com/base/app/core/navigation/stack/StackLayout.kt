@@ -56,8 +56,10 @@ internal fun StackLayout(
     val isLight = AppTheme.colors.isLight
     // Slides and the card move layers only, which cast no frame-rate vote of their own: without
     // one, a phone with an adaptive refresh rate may draw them at 60 Hz. Raised only while they
-    // move, since the vote passes down to every layer of every screen in the stack.
-    val rate = if (scene.moving || scene.card.active) FrameRateCategory.High else FrameRateCategory.Default
+    // move, since the vote passes down to every layer of every screen in the stack, and read from
+    // what changes on a transition's first and last frames anyway, so it adds no composition.
+    val sliding = plan.slide != Slide.None && scene.settled !== plan
+    val rate = if (sliding || scene.card.active) FrameRateCategory.High else FrameRateCategory.Default
     Layout(
         modifier = modifier.preferredFrameRate(rate),
         content = {
