@@ -4,6 +4,10 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -13,6 +17,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import com.base.app.core.common.navigation.AppNavKey
@@ -20,12 +25,14 @@ import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.layout.LocalScreenBottomBar
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell
 import com.base.app.core.navigation.Compose
 import com.base.app.core.navigation.FeedTab
 import com.base.app.core.navigation.NavCommand
+import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.Player
 import com.base.app.core.navigation.Post
 import com.base.app.core.navigation.ProfileTab
@@ -47,6 +54,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 private val ACTION_BAR = 72.dp
+private const val FEED_LIST = "feed_list"
 
 /**
  * The layering contract: content < tab bar < presented sheets and covers. Presented screens win
@@ -79,7 +87,7 @@ class ChromeLayeringTest {
         }
     }
 
-    private fun showShell(state: ShellState, config: ShellConfig = ShellConfig()) {
+    private fun showShell(state: ShellState, config: ShellConfig = ShellConfig(), registry: NavRegistry = this.registry) {
         rule.setContent {
             AppTheme {
                 CompositionLocalProvider(LocalBottomChrome provides bottomChrome) {
@@ -118,6 +126,26 @@ class ChromeLayeringTest {
         assertEquals(emptyList<AppNavKey>(), state.presentedKeys)
         assertEquals(listOf(FeedTab, Post(1)), state.current.keys)
         rule.onNodeWithTag(Compose.toString()).assertDoesNotExist()
+    }
+
+    @Test
+    fun `a root list scrolls under the floating bar, and its last row comes to rest above it`() {
+        val rows = testRegistry { key ->
+            if (key == FeedTab) {
+                LazyColumn(Modifier.fillMaxSize().testTag(FEED_LIST), contentPadding = chromeContentPadding()) {
+                    items(count = 40, key = { it }) { BasicText("Row $it", Modifier.fillMaxWidth().height(56.dp).testTag("row_$it")) }
+                }
+            } else {
+                Screen(key)
+            }
+        }
+        showShell(shell(), registry = rows)
+        val bar = bounds("tab_bar")
+
+        assertTrue("the list runs on under the bar", bounds(FEED_LIST).bottom >= bar.bottom)
+
+        rule.onNodeWithTag(FEED_LIST).performScrollToIndex(39)
+        assertTrue("the last row ends above the bar", bounds("row_39").bottom <= bar.top)
     }
 
     @Test
@@ -165,4 +193,6 @@ class ChromeLayeringTest {
         assertEquals(72.dp, bottomChrome(presented = null, keyboard = 0.dp, screenBar = 72.dp, bar = 96.dp))
         assertEquals(96.dp, bottomChrome(presented = null, keyboard = 0.dp, screenBar = null, bar = 96.dp))
     }
+
+    private fun bounds(tag: String) = rule.onNodeWithTag(tag, useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
 }
