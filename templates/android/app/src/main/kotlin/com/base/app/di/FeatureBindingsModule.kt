@@ -16,7 +16,9 @@ import com.base.app.feature.onboarding.api.OnboardingDestination
 // <opt:auth>
 import com.base.app.feature.auth.api.AuthDestination
 // </opt:auth>
+// <opt:onboarding|auth>
 import com.base.app.ui.AppDestinations
+// </opt:onboarding|auth>
 
 /** The handful of facts features need that only the application module can know. */
 @Module

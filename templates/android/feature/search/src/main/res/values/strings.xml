@@ -9,5 +9,4 @@
     <string name="search_no_results_title">No results</string>
     <string name="search_no_results_message">Nothing matches “%1$s”. Try fewer or different words.</string>
     <string name="search_retry">Try again</string>
-    <string name="search_remove_recent">Remove %1$s</string>
 </resources>
