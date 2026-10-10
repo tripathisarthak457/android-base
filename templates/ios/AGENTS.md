@@ -47,6 +47,10 @@ Packages/Features/Sources/
   anything heavy is `@concurrent` (see `APIClient.decode`); database work goes through a
   `@ModelActor` per domain, never a `ModelContext` on the main actor.
 - A value type that crosses actors declares `Sendable` in its own declaration.
+- In a main-actor target, a value type that nonisolated code reads (an environment key's default,
+  a geometry callback, anything passed where `Sendable` is required) is declared `nonisolated`:
+  `public nonisolated struct AppTheme`. Otherwise its initialisers and conformances belong to the
+  main actor and those callers do not compile.
 
 ## Stores (`@Observable` MVI)
 
@@ -164,7 +168,12 @@ Use the system's own motion; never rebuild it:
 Every string a person reads is in the target's `Resources/Localizable.xcstrings`, looked up with
 `Text("…", bundle: .module)` or `String(localized: "…", bundle: .module)` inside a package, and with
 a plain literal in the app target. Text from the server is shown as is: `Text(verbatim:)` or
-`Text(someString)`.
+`Text(someString)`. A new key needs a translation for every language in `CFBundleLocalizations`
+(`project.yml`); Xcode's catalog editor shows which are missing.
+
+The type is the system font (SF Pro) at the design style's weights; a custom typeface is a font
+file in the app target and a `Font.custom(_:size:relativeTo:)` in `AppTypography`, so Dynamic Type
+still scales it.
 
 ## Checklists
 

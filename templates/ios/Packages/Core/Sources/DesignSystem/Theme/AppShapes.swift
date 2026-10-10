@@ -39,6 +39,10 @@ public nonisolated struct AppShapes: Sendable {
     }
 
     /// The shape of a button: rounded by the style's button radius, or a capsule.
+    ///
+    /// Main-actor, unlike the rest of the struct, because SwiftUI's shapes are views and are made
+    /// where views are.
+    @MainActor
     public var button: AnyShape {
         buttonRadius.map { AnyShape(RoundedRectangle(cornerRadius: $0, style: .continuous)) } ?? AnyShape(Capsule())
     }
