@@ -34,7 +34,10 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
 
   return (
     <ThemeContext.Provider value={theme}>
+      {/* A picture for pointers only: its sample copy means nothing read aloud, and the controls
+          beside the live phone are the accessible way to drive it. Hence no tab stops inside. */}
       <div
+        aria-hidden
         className="relative shrink-0 overflow-hidden rounded-[34px] border-[5px] shadow-[0_24px_60px_-20px_rgba(40,30,15,0.45)]"
         style={{
           width: PHONE_WIDTH,
@@ -46,6 +49,7 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
         }}
       >
         <div
+          tabIndex={live ? -1 : undefined}
           className={`no-scrollbar absolute inset-0 ${live ? "overflow-y-auto overscroll-contain" : "overflow-hidden"}`}
           style={{ paddingTop: dp(28), paddingBottom: showBar ? dp(barReach(bar) + 12) : dp(NAV_INSET + 12) }}
         >
@@ -56,7 +60,6 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
 
         {showBar && isFloating(bar) && (
           <div
-            aria-hidden
             className="pointer-events-none absolute inset-x-0 bottom-0"
             style={{
               height: dp(barReach(bar) + 20),
@@ -66,7 +69,6 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
         )}
         {showBar && <TabBar tabs={tabs} selected={Math.max(selected, 0)} onSelect={onSelectTab} live={live} />}
         <span
-          aria-hidden
           className="absolute left-1/2 -translate-x-1/2 rounded-full"
           style={{ bottom: dp(6), width: dp(108), height: dp(4), background: theme.colour("contentPrimary"), opacity: 0.85 }}
         />
@@ -78,7 +80,6 @@ export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, 
 function StatusBar({ colour, background }: { colour: string; background: string }) {
   return (
     <div
-      aria-hidden
       className="absolute inset-x-0 top-0 flex items-center justify-between font-mono"
       style={{ height: dp(28), padding: `0 ${dp(20)}px`, fontSize: dp(12), color: colour, background }}
     >
@@ -91,7 +92,7 @@ function StatusBar({ colour, background }: { colour: string; background: string 
 /** A phone drawn at full size and scaled down, so a thumbnail keeps the real proportions. */
 export function ScaledPreview({ scale, ...props }: AppPreviewProps & { scale: number }) {
   return (
-    <div style={{ width: PHONE_WIDTH * scale, height: PHONE_WIDTH * PHONE_ASPECT * scale }} className="shrink-0" aria-hidden>
+    <div style={{ width: PHONE_WIDTH * scale, height: PHONE_WIDTH * PHONE_ASPECT * scale }} className="shrink-0">
       <div style={{ transform: `scale(${scale})`, transformOrigin: "top left", width: PHONE_WIDTH }}>
         <AppPreview {...props} />
       </div>

@@ -85,7 +85,7 @@ export function TabBar({
     return (
       <Element
         key={tab.key}
-        {...(onSelect ? { type: "button" as const, onClick: () => onSelect(tab.key), "aria-pressed": on } : {})}
+        {...(onSelect ? { type: "button" as const, tabIndex: -1, onClick: () => onSelect(tab.key) } : {})}
         className="relative z-10 flex min-w-0 flex-1 flex-col items-center justify-center"
         style={{ gap: dp(3), height: "100%", padding: `0 ${dp(4)}px` }}
       >
@@ -124,7 +124,6 @@ export function TabBar({
         <div className="relative flex h-full" style={{ borderRadius: 999, padding: pad, ...capsule(bar, t.colour, t.dark, live) }}>
           {/* The indicator stays clear of the capsule's edges, so the selected label sits inside it. */}
           <motion.span
-            aria-hidden
             className="absolute"
             style={{
               top: dp(8),
@@ -157,7 +156,6 @@ export function TabBar({
       <div className="relative flex h-full">
         {bar === "Minimal" && (
           <motion.span
-            aria-hidden
             className="absolute top-0"
             style={{ left: 0, width: `${100 / count}%`, height: 2, display: "flex", justifyContent: "center" }}
             initial={false}
