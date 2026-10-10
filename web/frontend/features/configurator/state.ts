@@ -229,11 +229,6 @@ export function hasKeystores(target: Target): boolean {
   return target.fields.some((field) => field.type === "keystores");
 }
 
-/** A cleared map entry is no answer, so clearing what was typed brings the answers back to the defaults. */
-function withoutBlanks(value: Setting): Setting {
-  return typeof value === "object" ? Object.fromEntries(Object.entries(value).filter(([, entry]) => entry !== "")) : value;
-}
-
 function sameSet(a: readonly string[], b: readonly string[]): boolean {
   return a.length === b.length && b.every((key) => a.includes(key));
 }
@@ -305,7 +300,7 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
     case "fontName":
       return edit({ fontName: action.value });
     case "setting":
-      return edit({ settings: { ...state.settings, [action.key]: withoutBlanks(action.value) } });
+      return edit({ settings: { ...state.settings, [action.key]: action.value } });
     case "signing":
       return edit({ signing: { ...state.signing, ...action.value } });
     case "restore":

@@ -18,13 +18,32 @@ export function serializeDraft(state: ConfigState): string {
 }
 
 /**
+ * The settings that say something. A blank field or flavour URL, or a value equal to the field's
+ * default, is what the generator assumes anyway, so typing one and clearing it again is no answer.
+ */
+function answered(state: ConfigState, catalogue: Catalogue): Record<string, Setting> {
+  const settings: Record<string, Setting> = {};
+  for (const field of settingFields(findTarget(catalogue, state.target))) {
+    const value = state.settings[field.key];
+    if (value === undefined || value === field.default) continue;
+    if (typeof value === "object") {
+      const entries = Object.entries(value).filter(([, entry]) => entry.trim() !== "");
+      if (entries.length > 0) settings[field.key] = Object.fromEntries(entries);
+    } else if (typeof value === "number" || value.trim() !== "") {
+      settings[field.key] = value;
+    }
+  }
+  return settings;
+}
+
+/**
  * What storage should hold for `state`: its draft, or null to remove the key. Answers nobody has
  * changed from the defaults are not kept, so a visit that only looks, or ends with Start over,
  * leaves nothing behind and does not count as returning next time.
  */
 export function draftToStore(state: ConfigState, catalogue: Catalogue): string | null {
-  const text = serializeDraft(state);
-  return text === serializeDraft(initialState(catalogue)) ? null : text;
+  const plain = (answers: ConfigState) => serializeDraft({ ...answers, settings: answered(answers, catalogue) });
+  return plain(state) === plain(initialState(catalogue)) ? null : serializeDraft(state);
 }
 
 type Json = Record<string, unknown>;

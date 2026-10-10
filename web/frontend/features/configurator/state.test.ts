@@ -137,8 +137,17 @@ test("only answers that differ from the defaults are stored", () => {
     { type: "setting", key: "android.api_base_urls", value: { dev: "h" } },
     { type: "setting", key: "android.api_base_urls", value: { dev: "" } },
   );
-  assert.deepEqual(typedAndCleared.settings["android.api_base_urls"], {});
+  assert.equal("api_base_urls" in (toSpecV2(typedAndCleared, catalogue).android as object), false);
   assert.equal(draftToStore(typedAndCleared, catalogue), null, "a flavour URL typed and cleared is not an answer");
+  for (const [key, typed] of [
+    ["android.deeplink_scheme", "trail"],
+    ["android.deeplink_host", "trail.app"],
+    ["android.version_name", "2.0.0"],
+  ] as const) {
+    const cleared = run(fresh, { type: "setting", key, value: typed }, { type: "setting", key, value: "" });
+    assert.equal(draftToStore(cleared, catalogue), null, `${key} typed and cleared is not an answer`);
+    assert.notEqual(draftToStore(run(fresh, { type: "setting", key, value: typed }), catalogue), null, `${key} typed is an answer`);
+  }
 });
 
 test("a draft round-trips without the signing passwords", () => {
