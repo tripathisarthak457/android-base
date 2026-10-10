@@ -270,7 +270,7 @@ with this file, this file wins; the known differences are in the last column.
 | `edge-to-edge` | touch insets, the keyboard or system bars | pad scrolling content with `chromeContentPadding()` as `contentPadding`, never on the list's parent |
 | `testing-setup` | add tests or test infrastructure | fakes in `testFixtures`; screenshots with Roborazzi at the sizes in `docs/ADAPTIVE.md`; never re-record goldens to make a test pass |
 | `android-profiler` | investigate jank, startup or memory | release builds only, through `tools/perf/perf.sh`; its `trace_processor` script downloads Google's binary on first run |
-| `r8-analyzer` | change keep rules or chase app size | upstream ships no `scripts/`: run `./gradlew :app:analyzeReleaseR8Config`, then follow its manual path |
+| `r8-analyzer` | change keep rules or chase app size | upstream ships no `scripts/`: run `./gradlew :app:analyzeProdReleaseR8Config` (one task per variant; the report is `app/build/reports/r8/`), then follow its manual path |
 | `android-intent-security`, `android-permissions-security` | touch the manifest, deep links, notifications or permissions | links land in `LinkActivity` and become typed keys in a `DeepLinkRoute` |
 | `agp-9-upgrade` | bump AGP or Gradle | the project is already on AGP 9 with built-in Kotlin |
 <!-- <opt:auth> -->
