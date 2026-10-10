@@ -42,8 +42,8 @@ class MediaPicker internal constructor(
 fun rememberMediaPicker(onResult: (List<Uri>) -> Unit): MediaPicker {
     val context = LocalContext.current
     val currentOnResult by rememberUpdatedState(onResult)
-    // Saved: the camera app often pushes this activity, or the whole process, out of memory, and on
-    // return the photo would be dropped for want of knowing where it went.
+    // Saved: the camera app often pushes this activity, or the whole process, out of memory, and
+    // coming back the photo would be dropped for want of knowing where it went.
     var pendingCapture by rememberSaveable { mutableStateOf<Uri?>(null) }
 
     val pickImage = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
