@@ -1,3 +1,4 @@
+import AppCore
 import Observation
 import Persistence
 
@@ -12,6 +13,7 @@ final class SettingsStore {
     }
 
     enum Event: Sendable {
+        case appeared
         case appearanceChanged(Appearance)
         case hapticsChanged(Bool)
     }
@@ -19,6 +21,7 @@ final class SettingsStore {
     private(set) var state: State
 
     private let settings: SettingsRepository
+    private let tasks = TaskBag()
 
     init(settings: SettingsRepository, version: String) {
         self.settings = settings
@@ -28,6 +31,8 @@ final class SettingsStore {
 
     func send(_ event: Event) {
         switch event {
+        case .appeared:
+            followSettings()
         case .appearanceChanged(let appearance):
             state.appearance = appearance
             settings.setAppearance(appearance)
@@ -36,4 +41,23 @@ final class SettingsStore {
             settings.setHapticsEnabled(enabled)
         }
     }
+
+    /// Keeps the screen in step with changes made elsewhere, such as in another window on an iPad.
+    private func followSettings() {
+        tasks.exclusive(Self.following) { [weak self, settings] in
+            for await current in settings.changes() {
+                guard let self else { return }
+                let updated = State(
+                    appearance: current.appearance,
+                    hapticsEnabled: current.hapticsEnabled,
+                    version: state.version
+                )
+                if updated != state {
+                    state = updated
+                }
+            }
+        }
+    }
+
+    private static let following = "settings"
 }

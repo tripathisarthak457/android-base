@@ -86,6 +86,7 @@ let package = Package(
         .target(
             name: "SettingsFeature",
             dependencies: [
+                .product(name: "AppCore", package: "Core"),
                 .product(name: "DesignSystem", package: "Core"),
                 .product(name: "Navigation", package: "Core"),
                 .product(name: "Persistence", package: "Core"),

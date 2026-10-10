@@ -41,6 +41,7 @@ struct SettingsView: View {
         }
         .appGroupedList()
         .navigationTitle(Text("Settings", bundle: .module))
+        .onAppear { store.send(.appeared) }
     }
 
     private var appearance: Binding<Appearance> {

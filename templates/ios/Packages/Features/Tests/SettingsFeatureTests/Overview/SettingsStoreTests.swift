@@ -25,6 +25,20 @@ struct SettingsStoreTests {
         #expect(store.state.appearance == .light)
     }
 
+    @Test func aChangeMadeInAnotherWindowReachesTheScreen() async throws {
+        let settings = try makeSettings()
+        let store = SettingsStore(settings: settings, version: "1.0.0 (1)")
+        store.send(.appeared)
+
+        settings.setHapticsEnabled(false)
+
+        let deadline = ContinuousClock.now + .seconds(2)
+        while store.state.hapticsEnabled, ContinuousClock.now < deadline {
+            try await Task.sleep(for: .milliseconds(5))
+        }
+        #expect(!store.state.hapticsEnabled)
+    }
+
     private func makeSettings() throws -> SettingsRepository {
         let defaults = try #require(UserDefaults(suiteName: suite))
         defaults.removePersistentDomain(forName: suite)
