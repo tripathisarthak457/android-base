@@ -37,7 +37,7 @@ export function LinkButton({ href, children, variant = "secondary" }: { href: st
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-[colors,transform] h-13 px-7 text-base active:scale-[0.97] ${look}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-[color,background-color,border-color,transform] h-13 px-7 text-base active:scale-[0.97] ${look}`}
     >
       {children}
     </a>
