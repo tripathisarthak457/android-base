@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -36,6 +37,12 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -54,6 +61,10 @@ import com.base.app.core.designsystem.theme.FieldTreatment
  * with it and a tap anywhere on them focuses it. [prefix] and [suffix] sit beside the text ("+1",
  * "kg"); an [error] tints the box and replaces the [helper]. [maxLength] refuses input past the
  * limit, a paste included.
+ *
+ * [onSubmit] is what Enter on a hardware keyboard does, as on a desktop: send the message, sign in.
+ * In a multi-line field Shift+Enter still starts a new line. On-screen keyboards keep their own
+ * action key, which [onKeyboardAction] handles.
  */
 @Composable
 fun AppTextField(
@@ -76,9 +87,12 @@ fun AppTextField(
     outputTransformation: OutputTransformation? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onKeyboardAction: KeyboardActionHandler? = null,
+    onSubmit: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource? = null,
 ) {
     val source = interactionSource ?: remember { MutableInteractionSource() }
+    val submit by rememberUpdatedState(onSubmit)
+    val hardwareKeyboard = AppTheme.input.hardwareKeyboard
     val focused by source.collectIsFocusedAsState()
     val limit = maxLength?.let { InputTransformation.maxLength(it) }
     val transformation = when {
@@ -92,6 +106,18 @@ fun AppTextField(
         state = state,
         modifier = modifier
             .fillMaxWidth()
+            .then(
+                if (onSubmit != null && hardwareKeyboard) {
+                    Modifier.onPreviewKeyEvent { event ->
+                        val enter = event.key == Key.Enter || event.key == Key.NumPadEnter
+                        if (!enter || event.isShiftPressed || event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                        submit?.invoke()
+                        true
+                    }
+                } else {
+                    Modifier
+                },
+            )
             .disabledAlpha(enabled)
             .semantics { if (error != null) error(error) },
         enabled = enabled,

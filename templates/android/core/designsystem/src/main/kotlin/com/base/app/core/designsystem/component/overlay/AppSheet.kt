@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.button.AppButtonDefaults
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -58,6 +59,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.adaptive.WindowHeight
+import com.base.app.core.designsystem.foundation.adaptive.WindowPosture
 import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
@@ -131,8 +133,11 @@ private fun SheetLayout(
     val layout = AppTheme.layout
     val container = AppTheme.containerClass
     // On a window with room on every side the sheet is a card in the middle, as iPad's form sheet
-    // is; on one too short for two heights it has only one, the tallest.
-    val form = container.width >= WindowWidth.Medium && container.height >= WindowHeight.Medium
+    // is; on one too short for two heights it has only one, the tallest. On a foldable in tabletop
+    // it rises from the bottom and rests on the fold, rather than as a card across the crease.
+    val posture = AppTheme.posture
+    val fold = posture.hinge?.takeIf { posture.kind == WindowPosture.Kind.Tabletop }
+    val form = container.width >= WindowWidth.Medium && container.height >= WindowHeight.Medium && fold == null
     val oneHeight = container.isShort
     // The sheet's content pads for its own footer, not for the tab bar it covers.
     val bottomChrome = remember { ChromeInset() }
@@ -225,7 +230,11 @@ private fun SheetLayout(
             } else {
                 width = minOf(constraints.maxWidth, layout.sheetMaxWidth.roundToPx())
                 val large = (statusBar.getTop(this) + LargeGap.roundToPx()).toFloat()
-                val medium = if (oneHeight) large else height * (1f - MEDIUM_FRACTION)
+                val medium = when {
+                    oneHeight -> large
+                    fold != null -> fold.bottom.coerceIn(large, height.toFloat())
+                    else -> height * (1f - MEDIUM_FRACTION)
+                }
                 sheetHeight = (height - large).roundToInt().coerceAtLeast(0)
                 anchors = SheetAnchors(large = large, medium = medium, hidden = height.toFloat(), form = false)
             }
@@ -312,7 +321,7 @@ private fun SheetHeader(title: String?, showCloseButton: Boolean, onClose: () ->
                         modifier = Modifier.align(Alignment.CenterEnd),
                         variant = ButtonVariant.Tinted,
                         size = ButtonSize.Small,
-                        tint = AppTheme.colors.contentSecondary,
+                        colors = AppButtonDefaults.iconButtonColors(ButtonVariant.Tinted, content = AppTheme.colors.contentSecondary),
                     )
                 }
             }

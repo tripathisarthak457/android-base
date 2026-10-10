@@ -19,10 +19,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isFinite
 import androidx.compose.ui.unit.offset
 import com.base.app.core.designsystem.component.selection.SwitchTrack
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
@@ -52,7 +54,8 @@ fun AppRow(
 ) {
     val colors = AppTheme.colors
     RowLayout(
-        modifier = modifier
+        modifier = modifier,
+        interaction = Modifier
             .then(
                 if (onClick != null) {
                     Modifier.pressable(onClick = onClick, feedback = PressFeedback.Highlight, enabled = enabled)
@@ -113,7 +116,8 @@ fun AppToggleRow(
     val haptics = rememberAppHaptics()
     val interactionSource = remember { MutableInteractionSource() }
     RowLayout(
-        modifier = modifier
+        modifier = modifier,
+        interaction = Modifier
             .toggleable(
                 value = checked,
                 interactionSource = interactionSource,
@@ -149,7 +153,8 @@ fun AppChoiceRow(
 ) {
     val colors = AppTheme.colors
     RowLayout(
-        modifier = modifier
+        modifier = modifier,
+        interaction = Modifier
             .semantics { this.selected = selected }
             .pressable(onClick = onSelect, feedback = PressFeedback.Highlight, enabled = enabled, role = Role.RadioButton)
             .disabledAlpha(enabled),
@@ -193,10 +198,15 @@ private fun RowText(title: String, subtitle: String?, titleColor: Color) {
  * Leading, text, trailing in one pass. The text takes what the two sides leave, so a long title
  * wraps instead of running under the value, and the row reports where its text starts so a section
  * can begin the hairline above the next row there.
+ *
+ * On a wide pane the row stops at the readable width and centres, inside a list that still spans
+ * the pane, so the list scrolls from anywhere and lines stay short enough to read. [interaction]
+ * goes inside that width, so a highlight covers the row and not the margins.
  */
 @Composable
 private fun RowLayout(
     modifier: Modifier,
+    interaction: Modifier,
     leading: (@Composable () -> Unit)?,
     text: @Composable () -> Unit,
     trailing: (@Composable () -> Unit)?,
@@ -204,9 +214,13 @@ private fun RowLayout(
     val inset = remember { SeparatorInset() }
     val spacing = AppTheme.spacing
     val minHeight = AppTheme.sizes.rowHeight
+    val readable = AppTheme.layout.readableMaxWidth
     Layout(
         contents = listOf(leading ?: {}, text, trailing ?: {}),
-        modifier = modifier.then(inset),
+        modifier = modifier
+            .then(if (readable.isFinite) Modifier.centeredMaxWidth(readable) else Modifier)
+            .then(interaction)
+            .then(inset),
     ) { (leadingSlot, textSlot, trailingSlot), constraints ->
         val horizontal = spacing.lg.roundToPx()
         val vertical = RowVerticalPadding.roundToPx()

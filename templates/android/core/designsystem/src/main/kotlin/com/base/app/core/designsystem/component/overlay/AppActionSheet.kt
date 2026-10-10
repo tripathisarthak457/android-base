@@ -24,6 +24,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.draw.HairlineEdge
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
@@ -57,6 +59,9 @@ class SheetAction(
  * with Cancel apart beneath them. It renders in the window's overlay layer, above the tab bar. A
  * choice runs before the sheet asks to close, so a caller that clears its state on dismiss still has
  * it when the choice runs.
+ *
+ * Where there is room (Medium width and up, as on an iPad) it is a popover instead, anchored to
+ * whatever composes it, so call it beside the button that opens it; tapping outside cancels.
  */
 @Composable
 fun AppActionSheet(
@@ -68,6 +73,21 @@ fun AppActionSheet(
     message: String? = null,
     cancelLabel: String = stringResource(R.string.designsystem_cancel),
 ) {
+    if (AppTheme.containerClass.width >= WindowWidth.Medium) {
+        AppMenu(expanded = visible, onDismissRequest = onDismissRequest, modifier = modifier) {
+            if (title != null || message != null) PopoverHeader(title, message)
+            actions.forEach { action ->
+                AppMenuItem(
+                    text = action.label,
+                    onClick = action.onClick,
+                    icon = action.icon,
+                    enabled = action.enabled,
+                    destructive = action.destructive,
+                )
+            }
+        }
+        return
+    }
     val state = remember { MutableTransitionState(false) }
     state.targetState = visible
     if (!state.currentState && !state.targetState) return
@@ -132,10 +152,23 @@ fun AppActionSheet(
 }
 
 @Composable
+private fun PopoverHeader(title: String?, message: String?) {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(AppTheme.spacing.md),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        val colors = AppTheme.colors
+        title?.let { AppText(text = it, style = AppTheme.typography.footnote.copy(fontWeight = FontWeight.SemiBold), color = colors.contentSecondary, textAlign = TextAlign.Center) }
+        message?.let { AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary, textAlign = TextAlign.Center) }
+    }
+}
+
+@Composable
 private fun ActionRow(
     label: String,
     icon: ImageVector?,
-    color: androidx.compose.ui.graphics.Color,
+    color: Color,
     enabled: Boolean,
     divider: Boolean,
     onClick: () -> Unit,

@@ -11,6 +11,9 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -32,25 +35,31 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isCtrlPressed
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.input.pointer.positionChanged
+import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.button.AppButtonDefaults
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.overlay.OverlayBackHandler
+import com.base.app.core.designsystem.foundation.adaptive.WindowPosture
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.pow
-import kotlinx.coroutines.launch
 
 /**
  * A full-screen picture: pinch or double-tap to zoom, drag to look around the zoomed picture
  * without running off its edges, and at normal size swipe down to close, the background fading as
  * it goes. Show it as a full-screen cover; [content] draws the image (an `AsyncImage`, a painter).
+ *
+ * On a foldable lying in tabletop, the picture fills the half above the fold and the controls sit
+ * in the half below, where a hand reaches them.
  *
  * Every gesture moves plain floats read in the picture's layer, so zooming and panning redraw and
  * never recompose.
@@ -69,6 +78,10 @@ fun AppImageViewer(
     var pan by remember { mutableStateOf(Offset.Zero) }
     var pull by remember { mutableFloatStateOf(0f) }
     val zoom = remember { Animatable(1f) }
+    val posture = AppTheme.posture
+    // The viewer covers the window, so the hinge's window coordinates are its own.
+    val fold = posture.hinge?.takeIf { posture.kind == WindowPosture.Kind.Tabletop }
+    val density = LocalDensity.current
 
     fun bounded(offset: Offset, at: Float): Offset {
         val maxX = (size.width * (at - 1f)) / 2f
@@ -96,12 +109,18 @@ fun AppImageViewer(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .drawBehind { drawRect(Color.Black, alpha = 1f - (abs(pull) / DISMISS_FADE).coerceIn(0f, MAX_FADE)) }
-            .onSizeChanged { size = it },
+            .drawBehind { drawRect(Color.Black, alpha = 1f - (abs(pull) / DISMISS_FADE).coerceIn(0f, MAX_FADE)) },
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .then(
+                    if (fold != null) {
+                        Modifier.fillMaxWidth().height(with(density) { fold.top.toDp() })
+                    } else {
+                        Modifier.fillMaxSize()
+                    },
+                )
+                .onSizeChanged { size = it }
                 .pointerInput(Unit) {
                     detectTapGestures(onDoubleTap = { at -> settleZoom(if (scale > 1.01f) 1f else DOUBLE_TAP_ZOOM, at) })
                 }
@@ -168,12 +187,22 @@ fun AppImageViewer(
             contentDescription = stringResource(R.string.designsystem_close),
             onClick = onDismiss,
             modifier = Modifier
-                .align(Alignment.TopEnd)
-                .windowInsetsPadding(WindowInsets.statusBars)
+                .then(
+                    if (fold != null) {
+                        Modifier
+                            .align(Alignment.BottomCenter)
+                            .windowInsetsPadding(WindowInsets.navigationBars)
+                            .padding(bottom = AppTheme.spacing.xl)
+                    } else {
+                        Modifier
+                            .align(Alignment.TopEnd)
+                            .windowInsetsPadding(WindowInsets.statusBars)
+                    },
+                )
                 .padding(AppTheme.spacing.sm)
                 .background(Color.Black.copy(alpha = CLOSE_BACKING_ALPHA), CircleShape),
             variant = ButtonVariant.Plain,
-            tint = Color.White,
+            colors = AppButtonDefaults.iconButtonColors(content = Color.White),
         )
     }
 }

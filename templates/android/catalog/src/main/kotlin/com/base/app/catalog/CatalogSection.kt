@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.base.app.catalog.sections.AdaptiveSection
 import com.base.app.catalog.sections.BarsSection
 import com.base.app.catalog.sections.ButtonsSection
 // <opt:collections>
@@ -47,6 +48,7 @@ enum class CatalogSection(val title: String, val summary: String) {
     Overlays("Overlays", "Alert, action sheet, sheet with detents, menu, toast, loading"),
     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
     Motion("Animation", "Transitions, first appearance, list placement, emphasis, rubber band"),
+    Adaptive("Adaptive", "Panes of any width, foldable postures, the hardware keyboard"),
     // <opt:pickers>
     Pickers("Pickers", "Calendar, wheels, time, compact date and time pills"),
     // </opt:pickers>
@@ -76,6 +78,7 @@ fun CatalogSection.Content() {
         CatalogSection.Overlays -> OverlaysSection()
         CatalogSection.Feedback -> FeedbackSection()
         CatalogSection.Motion -> MotionSection()
+        CatalogSection.Adaptive -> AdaptiveSection()
         // <opt:pickers>
         CatalogSection.Pickers -> PickersSection()
         // </opt:pickers>

@@ -5,10 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
+import com.base.app.core.designsystem.foundation.adaptive.InputTraits
+import com.base.app.core.designsystem.foundation.adaptive.WindowPosture
 import com.base.app.core.designsystem.theme.AppDesignStyle
 import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
@@ -64,11 +67,23 @@ data class CatalogEnvironment(
     }
 }
 
-/** The theme as [environment] describes it, around [content]. */
+/** The environment the page being shown is in, for a demo that re-themes part of a page. */
+val LocalCatalogEnvironment = staticCompositionLocalOf { CatalogEnvironment() }
+
+/**
+ * The theme as [environment] describes it, around [content]. A demo passes [posture] or [input] to
+ * simulate a foldable or a keyboard for what it holds.
+ */
 @Composable
-fun ProvideEnvironment(environment: CatalogEnvironment, content: @Composable () -> Unit) {
+fun ProvideEnvironment(
+    environment: CatalogEnvironment,
+    posture: WindowPosture = AppTheme.posture,
+    input: InputTraits = AppTheme.input,
+    content: @Composable () -> Unit,
+) {
     val density = LocalDensity.current
     CompositionLocalProvider(
+        LocalCatalogEnvironment provides environment,
         LocalLayoutDirection provides if (environment.rtl) LayoutDirection.Rtl else LayoutDirection.Ltr,
         LocalDensity provides Density(density.density, environment.fontScale),
     ) {
@@ -77,6 +92,8 @@ fun ProvideEnvironment(environment: CatalogEnvironment, content: @Composable () 
             designStyle = environment.designStyle,
             motionStyle = environment.motionStyle,
             reduceMotion = environment.reduceMotion,
+            posture = posture,
+            input = input,
             content = content,
         )
     }
