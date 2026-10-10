@@ -6,7 +6,7 @@ import { motion, type HTMLMotionProps } from "framer-motion";
 import { type InputHTMLAttributes, type ReactNode, useId } from "react";
 
 /** A press that answers like the template's Scale feedback: down under the finger, back on a spring. */
-export const press = {
+const press = {
   whileTap: { scale: 0.97 },
   transition: { type: "spring" as const, stiffness: 1400, damping: 60 },
 };

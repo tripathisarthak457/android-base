@@ -72,13 +72,13 @@ function hlsToRgb(h: number, l: number, s: number): Rgb {
 }
 
 /** Moves a colour along its own hue rather than towards black or white. */
-export function shift(rgb: Rgb, lightness: number, saturation = 1): Rgb {
+function shift(rgb: Rgb, lightness: number, saturation = 1): Rgb {
   const [hue, existing, sat] = rgbToHls(rgb);
   const target = lightness <= 1 ? existing * lightness : 1 - (1 - existing) / lightness;
   return hlsToRgb(hue, Math.max(0, Math.min(1, target)), Math.max(0, Math.min(1, sat * saturation)));
 }
 
-export function mix(rgb: Rgb, other: Rgb, amount: number): Rgb {
+function mix(rgb: Rgb, other: Rgb, amount: number): Rgb {
   return [0, 1, 2].map((i) => rgb[i]! + (other[i]! - rgb[i]!) * amount) as Rgb;
 }
 

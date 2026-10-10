@@ -27,30 +27,17 @@ export function Spinner({ className = "" }: { className?: string }) {
 }
 
 /** A link that looks like a button, so it keeps middle-click, copy link and a link's semantics. */
-export function LinkButton({
-  href,
-  children,
-  variant = "secondary",
-  size = "medium",
-  className = "",
-}: {
-  href: string;
-  children: ReactNode;
-  variant?: "primary" | "secondary";
-  size?: "medium" | "large";
-  className?: string;
-}) {
+export function LinkButton({ href, children, variant = "secondary" }: { href: string; children: ReactNode; variant?: "primary" | "secondary" }) {
   const external = href.startsWith("http");
   const look =
     variant === "primary"
       ? "bg-accent text-on-accent font-bold hover:bg-accent-bright"
       : "bg-ink-800 text-ink-100 border border-ink-600 hover:border-ink-500 hover:bg-ink-700";
-  const height = size === "large" ? "h-13 px-7 text-base" : "h-11 px-5 text-[15px]";
   return (
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-[colors,transform] active:scale-[0.97] ${look} ${height} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-[colors,transform] h-13 px-7 text-base active:scale-[0.97] ${look}`}
     >
       {children}
     </a>
