@@ -38,6 +38,7 @@ public struct OnboardingView: View {
                 .frame(maxWidth: .infinity)
             }
             .buttonStyle(.app(.filled, size: .large))
+            .keyboardShortcut(.defaultAction)
             .padding(.horizontal, AppSpacing.gutter)
             .padding(.bottom, AppSpacing.lg)
         }
