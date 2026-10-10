@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.designsystem.theme.AppWindowSize
 import com.base.app.core.navigation.back.StackChange
 import com.base.app.core.navigation.back.Verdict
 import com.base.app.core.navigation.back.guard
@@ -69,6 +70,10 @@ class ShellState internal constructor(
 
     /** The navigation chrome the window shows now: a bar, a rail or a sidebar. */
     var chrome by mutableStateOf(NavigationChrome.Bar)
+        private set
+
+    /** The window the shell is laid out for, which [chrome] follows. */
+    var window: AppWindowSize? by mutableStateOf(null)
         private set
 
     /** Whether the person opened (true) or folded (false) the sidebar; null until they do. */
@@ -156,8 +161,9 @@ class ShellState internal constructor(
         sidebarOpen = open
     }
 
-    /** The chrome the window shows, and so where tabs start going under More. */
-    internal fun useChrome(chrome: NavigationChrome) {
+    /** The chrome [window] shows, and so where tabs start going under More. */
+    internal fun useChrome(window: AppWindowSize, chrome: NavigationChrome) {
+        this.window = window
         this.chrome = chrome
         overflowFrom = chrome.tabsShown(tabs.size)
         if (overflowFrom >= tabs.size) moreShown = false

@@ -191,6 +191,12 @@ class NavLogTest(unittest.TestCase):
         lines = [shell_line(0, [["Home"]]), shell_line(0, [["Home", "Detail(id=2)"]])]
         self.assertEqual(check_nav_log.last_state(lines)["stacks"], [["Home", "Detail(id=2)"]])
 
+    def test_the_window_and_its_chrome(self):
+        line = shell_line(0, [["Home"]]) + " more=true chrome=Rail window=891x411dp class=ExpandedxCompact"
+        state = check_nav_log.parse_line(line)
+        self.assertTrue(state["more"])
+        self.assertEqual((state["chrome"], state["window"], state["class"]), ("Rail", "891x411dp", "ExpandedxCompact"))
+
 
 class GatesTest(unittest.TestCase):
     def test_a_clean_run_passes_solid(self):
