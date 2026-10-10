@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.common.navigation.AppNavKey
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * A link, normalised: `baseapp://items/12` and `https://baseapp.example.com/items/12` both read as
@@ -56,9 +56,10 @@ fun interface DeepLinkRoute {
  * A link waiting for the app to be able to open it. It is held, not navigated to, when it arrives:
  * pushed onto the sign-in or onboarding stack it would load with no session and be gone by the time
  * the user got in. The signed-in shell takes it once, after the gates and once nothing is moving.
- * A singleton, so a rotation in between keeps it.
+ * One per window, kept across its configuration changes, so a rotation in between keeps it and a
+ * link opens in the window it was sent to.
  */
-@Singleton
+@ActivityRetainedScoped
 class PendingDeepLink @Inject constructor(
     private val routes: Set<@JvmSuppressWildcards DeepLinkRoute>,
 ) {

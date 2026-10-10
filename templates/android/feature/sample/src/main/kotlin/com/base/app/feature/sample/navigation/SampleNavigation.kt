@@ -15,7 +15,7 @@ import com.base.app.feature.sample.list.SampleListRoute
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
@@ -24,7 +24,7 @@ import kotlinx.serialization.modules.SerializersModule
  * serialise the keys so the back stack survives process death, and which links open them.
  */
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 internal object SampleNavigation {
 
     @Provides

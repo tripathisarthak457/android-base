@@ -8,12 +8,12 @@ import com.base.app.feature.profile.api.ProfileKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 internal object ProfileNavModule {
 
     @Provides

@@ -44,8 +44,9 @@
 
         <!--
           singleTop: a link, a notification or the launcher reaches the running instance through
-          onNewIntent instead of stacking a second copy of the app, which would share the navigator
-          with the first and take every other command.
+          onNewIntent instead of stacking a second copy of the app in the same task. A second
+          window opened on purpose (multi-instance, desktop mode) is a task of its own, with its
+          own navigator and back stacks.
         -->
         <activity
             android:name=".MainActivity"

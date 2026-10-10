@@ -2,6 +2,7 @@ package com.base.app
 
 import android.app.UiModeManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -161,7 +162,7 @@ class MainActivity : ComponentActivity() {
         // the stack the link already built, and a launch from Recents replays the original intent:
         // held again, either would open the screen a second time.
         val fromHistory = intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0
-        if (savedInstanceState == null && !fromHistory) pendingDeepLink.hold(intent.data)
+        if (savedInstanceState == null && !fromHistory) pendingDeepLink.hold(intent.link())
     }
 
     /**
@@ -219,6 +220,16 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        pendingDeepLink.hold(intent.data)
+        pendingDeepLink.hold(intent.link())
     }
+
+    // <opt:deeplink>
+    /** A link forwarded by LinkActivity, or the data of an intent sent here directly (a notification). */
+    private fun Intent.link(): Uri? = getStringExtra(EXTRA_LINK)?.let(Uri::parse) ?: data
+
+    companion object {
+        const val EXTRA_LINK = "com.base.app.extra.LINK"
+    }
+    // </opt:deeplink>
+    // <opt:!deeplink>    private fun Intent.link(): Uri? = data
 }

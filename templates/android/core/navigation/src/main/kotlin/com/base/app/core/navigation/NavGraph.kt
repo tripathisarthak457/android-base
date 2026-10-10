@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
  *
  * ```
  * @Module
- * @InstallIn(SingletonComponent::class)
+ * @InstallIn(ActivityRetainedComponent::class)
  * object SampleNavModule {
  *     @Provides
  *     @IntoSet

@@ -10,7 +10,7 @@ import com.base.app.feature.auth.api.SignUpKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
@@ -19,7 +19,7 @@ import kotlinx.serialization.modules.SerializersModule
  * starts on its own stack, so Back can never return to these screens.
  */
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 internal object AuthNavModule {
 
     @Provides

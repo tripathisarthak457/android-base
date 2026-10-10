@@ -7,7 +7,7 @@ import com.base.app.feature.onboarding.api.OnboardingKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
@@ -16,7 +16,7 @@ import kotlinx.serialization.modules.SerializersModule
  * are another host with their own stack, so Back never returns to the walkthrough.
  */
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 internal object OnboardingNavModule {
 
     @Provides
