@@ -155,10 +155,14 @@ Use the system's own motion; never rebuild it:
   < 1200 ≤ large < 1600 ≤ extraLarge points). Do not decide from `horizontalSizeClass` alone, the
   device or the orientation: an iPhone app in a wide iPad window stays compact in size class.
 - Never `UIScreen.main`. Never `UIDevice.current.userInterfaceIdiom` in a feature.
-- No fixed widths of 320 points or more in a feature: use `maxWidth`, stacks and grids.
+- No fixed or minimum widths of 320 points or more in a feature: the narrowest window is 320.
+  Cap content instead and centre it: `.frame(maxWidth: AppLayout.readableMaxWidth)` for running
+  text, `AppLayout.formMaxWidth` for a form or a single flow, then `.frame(maxWidth: .infinity)`.
+  The scroll view around it stays window-wide, so it scrolls from anywhere.
 - List-detail: `NavigationSplitView`. A side panel: `.inspector` (a sheet on a phone).
 - Every screen works with a keyboard: `.keyboardShortcut` on toolbar actions, `.onKeyPress` for
-  screen keys, Esc closes what is open. Custom tappable rows get `.hoverEffect`.
+  screen keys, Esc (`.cancelAction`) closes or skips, Return (`.defaultAction`) confirms or goes on.
+  Custom tappable rows get `.hoverEffect`.
 - Every `…View.swift` in a feature has a `#Preview` at an iPad size:
   `#Preview("iPad", traits: .fixedLayout(width: 1194, height: 834))`.
 - Never add `UIRequiresFullScreen` or remove an orientation from `project.yml`.
