@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -65,7 +66,12 @@ fun ListsSection() {
     CatalogGroup("In a lazy list", caption = "A list too long for one section draws the group from its rows: groupItem shapes and a hairline per row.") {
         val shape = AppTheme.shapes.md
         Column(Modifier.background(AppTheme.colors.backgroundGrouped)) {
-            AppSectionHeader(title = "Recent", actionLabel = "See all", onAction = {})
+            AppSectionHeader(
+                title = "Recent",
+                actionLabel = "See all",
+                onAction = {},
+                modifier = Modifier.padding(horizontal = AppTheme.spacing.lg),
+            )
             val rows = listOf("Groceries", "Rent", "Coffee")
             rows.forEachIndexed { index, title ->
                 Box(

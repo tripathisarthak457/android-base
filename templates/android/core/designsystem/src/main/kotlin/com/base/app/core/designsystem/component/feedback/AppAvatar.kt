@@ -9,7 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -36,6 +38,9 @@ fun AppAvatar(
     val colors = AppTheme.colors
     val initials = remember(name) { name.initials() }
     val tint = remember(name, colors) { avatarTint(name, colors) }
+    // In proportion to the circle, as iOS's contact monogram, and deaf to the font scale: the
+    // circle does not grow with it, so larger letters would only overflow it.
+    val initialsSize = with(LocalDensity.current) { (size * InitialsFraction).toSp() }
     AppSurface(
         modifier = modifier.size(size).clearAndSetSemantics { contentDescription = name },
         shape = AppTheme.shapes.pill,
@@ -46,7 +51,12 @@ fun AppAvatar(
             if (content != null) {
                 content()
             } else {
-                AppText(text = initials, style = AppTheme.typography.footnote, color = colors.contentPrimary)
+                AppText(
+                    text = initials,
+                    style = AppTheme.typography.footnote.copy(fontSize = initialsSize, lineHeight = initialsSize),
+                    color = colors.contentPrimary,
+                    maxLines = 1,
+                )
             }
         }
     }
@@ -98,20 +108,36 @@ fun AppAvatarGroup(
 
 private val Whitespace = Regex("\\s+")
 
-/** The first letter of the first word and of the last, upper-cased. */
+/**
+ * The first letters of the first and the last word that start with a letter, upper-cased: "Ada
+ * Lovelace" is "AL", "Author 10" is "A", a single word one letter.
+ */
 private fun String.initials(): String {
-    val words = trim().split(Whitespace).filter { it.isNotBlank() }
+    val words = trim().split(Whitespace).filter { it.firstOrNull()?.isLetter() == true }
     return when (words.size) {
         0 -> "?"
-        1 -> words[0].take(2).uppercase()
+        1 -> words[0].take(1).uppercase()
         else -> "${words.first().first()}${words.last().first()}".uppercase()
     }
 }
 
-/** One of the tinted fills, always the same one for the same name. */
+/**
+ * One of the tints, always the same one for the same name. In dark the subtle fills sit too close
+ * to the surface to tell apart, so the avatar mixes a mid tone of the same hue instead.
+ */
 private fun avatarTint(name: String, colors: AppColors): Color {
-    val options = listOf(colors.accentSubtle, colors.secondarySubtle, colors.tertiarySubtle, colors.success.subtle, colors.warning.subtle, colors.info.subtle)
-    return options[(name.hashCode().absoluteValue) % options.size]
+    val hues = listOf(
+        colors.accentSubtle to colors.accent,
+        colors.secondarySubtle to colors.secondary,
+        colors.tertiarySubtle to colors.tertiary,
+        colors.success.subtle to colors.success.base,
+        colors.warning.subtle to colors.warning.base,
+        colors.info.subtle to colors.info.base,
+    )
+    val (subtle, base) = hues[name.hashCode().absoluteValue % hues.size]
+    return if (colors.isLight) subtle else lerp(colors.surface, base, DarkTintFraction)
 }
 
 private const val OVERLAP_STEP = 0.7f
+private const val InitialsFraction = 0.4f
+private const val DarkTintFraction = 0.42f

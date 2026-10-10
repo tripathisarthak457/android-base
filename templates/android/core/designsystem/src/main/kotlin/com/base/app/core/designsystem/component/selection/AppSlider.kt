@@ -10,6 +10,7 @@ import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.progressSemantics
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,10 +24,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
@@ -80,6 +85,8 @@ fun AppSlider(
         onChange(next)
     }
 
+    val shadowContext = LocalGraphicsContext.current.shadowContext
+    val thumbShadow = remember(shadowContext) { shadowContext.createDropShadowPainter(CircleShape, ThumbShadow) }
     Canvas(
         modifier = modifier
             .fillMaxWidth()
@@ -144,11 +151,18 @@ fun AppSlider(
         drawRoundRect(colors.fill, topLeft = Offset(inset, y - track / 2f), size = Size(usable, track), cornerRadius = radius)
         val activeStart = if (rtl) x else inset
         drawRoundRect(colors.accent, topLeft = Offset(activeStart, y - track / 2f), size = Size(usable * f, track), cornerRadius = radius)
-        drawCircle(Color.Black.copy(alpha = 0.12f), radius = thumb / 2f, center = Offset(x, y + 1.dp.toPx()))
-        drawCircle(Color.White, radius = thumb / 2f, center = Offset(x, y))
-        drawCircle(colors.separator, radius = thumb / 2f, center = Offset(x, y), style = Stroke(0.5.dp.toPx()))
+        translate(left = x - inset, top = y - inset) {
+            with(thumbShadow) { draw(Size(thumb, thumb)) }
+        }
+        drawCircle(Color.White, radius = inset, center = Offset(x, y))
+        drawCircle(ThumbRing, radius = inset, center = Offset(x, y), style = Stroke(0.5.dp.toPx()))
     }
 }
+
+// iOS's thumb: a soft blur that lifts it off a white page, and a faint ring that still outlines it
+// where the blur is too light to see.
+private val ThumbShadow = Shadow(radius = 2.dp, alpha = 0.15f, offset = DpOffset(0.dp, 1.dp))
+private val ThumbRing = Color.Black.copy(alpha = 0.04f)
 
 private val ThumbSize = 28.dp
 private val TrackHeight = 4.dp

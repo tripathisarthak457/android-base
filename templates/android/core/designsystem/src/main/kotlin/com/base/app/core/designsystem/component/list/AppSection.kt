@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
@@ -19,10 +18,13 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.isFinite
 import androidx.compose.ui.layout.ParentDataModifier
 import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -41,7 +43,7 @@ fun AppSection(
     content: @Composable () -> Unit,
 ) {
     val spacing = AppTheme.spacing
-    Column(modifier = modifier.fillMaxWidth().padding(horizontal = spacing.gutter)) {
+    Column(modifier = modifier.readableWidth(AppTheme.layout.readableMaxWidth).padding(horizontal = spacing.gutter)) {
         header?.let {
             AppSectionHeader(title = it, modifier = Modifier.padding(horizontal = spacing.lg))
         }
@@ -76,18 +78,23 @@ fun AppSectionHeader(
 ) {
     val label = if (AppTheme.style.uppercaseLabels) title.uppercase() else title
     Row(
-        modifier = modifier.fillMaxWidth().padding(top = AppTheme.spacing.lg, bottom = AppTheme.spacing.sm),
+        modifier = modifier.readableWidth(AppTheme.layout.readableMaxWidth).padding(top = AppTheme.spacing.lg, bottom = AppTheme.spacing.sm),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Bottom,
     ) {
+        // On one baseline: the action's 48dp touch target would otherwise lift its text above the title's.
         AppText(
             text = label,
-            modifier = Modifier.weight(1f).semantics { heading() },
+            modifier = Modifier.weight(1f).alignByBaseline().semantics { heading() },
             style = AppTheme.typography.footnote,
             color = AppTheme.colors.contentSecondary,
         )
         if (actionLabel != null && onAction != null) {
-            AppLinkButton(text = actionLabel, onClick = onAction, style = AppTheme.typography.footnote)
+            AppLinkButton(
+                text = actionLabel,
+                onClick = onAction,
+                modifier = Modifier.alignByBaseline(),
+                style = AppTheme.typography.footnote,
+            )
         }
     }
 }
@@ -159,3 +166,7 @@ private class SeparatorLines {
         count++
     }
 }
+
+/** Full width up to the pane's readable width, then centred: a section on a tablet reads as a column. */
+private fun Modifier.readableWidth(readable: Dp): Modifier =
+    if (readable.isFinite) centeredMaxWidth(readable) else fillMaxWidth()
