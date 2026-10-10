@@ -1,10 +1,15 @@
 package com.base.app.core.navigation.shell
 
+import android.os.Build
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.layout.Measurable
@@ -18,6 +23,7 @@ import androidx.compose.ui.node.SemanticsModifierNode
 import androidx.compose.ui.node.invalidateSemantics
 import androidx.compose.ui.node.observeReads
 import androidx.compose.ui.platform.InspectorInfo
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -40,6 +46,8 @@ import com.base.app.core.navigation.ShellConfig
 import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.stack.coverScrimAlpha
+import com.base.app.core.navigation.transition.ScreenMotion
+import kotlin.math.roundToInt
 
 /**
  * The tabs in the window's chrome: the floating bar, the rail or the sidebar. When the chrome has
@@ -57,7 +65,7 @@ internal fun ShellBar(
     config: ShellConfig,
     trailingAction: (@Composable BarActionScope.() -> Unit)?,
     accessory: (@Composable () -> Unit)?,
-    parallax: Float,
+    motion: ScreenMotion,
     onToggleSidebar: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -103,8 +111,8 @@ internal fun ShellBar(
             onReselect = onReselect,
             modifier = modifier
                 .testTag("tab_bar")
-                .followCovered(state.barAnchor, parallax, coverScrimAlpha(AppTheme.colors.isLight))
-                .hideUnderKeyboard()
+                .followCovered(state.barAnchor, motion.parallax, coverScrimAlpha(AppTheme.colors.isLight))
+                .hideUnderKeyboard(motion.fraction)
                 .parkWhenCovered(state.barAnchor),
             labels = config.barLabels,
             minimize = config.barMinimize,
@@ -145,17 +153,34 @@ internal fun sidebarWidth(): Dp =
 /**
  * The keyboard rises over the bar: the bar moves down with it in the layout phase and is
  * transparent once the keyboard covers it, so it never floats above the keyboard's top edge.
+ *
+ * Before Android 11 the system does not animate the keyboard's inset, which jumps to its full
+ * height in one frame; there the bar sinks on [spring] instead of jumping with it.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Modifier.hideUnderKeyboard(): Modifier {
+private fun Modifier.hideUnderKeyboard(spring: AnimationSpec<Float>): Modifier {
     val ime = WindowInsets.ime
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        return layout { measurable, constraints ->
+            val placeable = measurable.measure(constraints)
+            val density = this
+            layout(placeable.width, placeable.height) {
+                val keyboard = ime.getBottom(density).coerceAtMost(placeable.height)
+                placeable.placeWithLayer(0, keyboard) { alpha = if (keyboard >= placeable.height) 0f else 1f }
+            }
+        }
+    }
+    val density = LocalDensity.current
+    val sunk = remember { Animatable(0f) }
+    LaunchedEffect(ime, density, spring) {
+        snapshotFlow { ime.getBottom(density) > 0 }.collect { up -> sunk.animateTo(if (up) 1f else 0f, spring) }
+    }
     return layout { measurable, constraints ->
         val placeable = measurable.measure(constraints)
-        val density = this
         layout(placeable.width, placeable.height) {
-            val keyboard = ime.getBottom(density).coerceAtMost(placeable.height)
-            placeable.placeWithLayer(0, keyboard) { alpha = if (keyboard >= placeable.height) 0f else 1f }
+            val covered = sunk.value
+            placeable.placeWithLayer(0, (placeable.height * covered).roundToInt()) { alpha = if (covered >= 1f) 0f else 1f }
         }
     }
 }

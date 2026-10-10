@@ -116,7 +116,7 @@ fun AppShell(
     }
     val window = AppTheme.windowSize
     val chrome = chromeFor(window.width, window.height, state.sidebarOpen)
-    SideEffect { state.useChrome(chrome) }
+    SideEffect { state.useChrome(window, chrome) }
     val labels = tabs.map { stringResource(it.label) }
     val barState = rememberAppTabBarState()
     val bar = chrome == NavigationChrome.Bar
@@ -146,7 +146,7 @@ fun AppShell(
                     config = config,
                     trailingAction = trailingAction,
                     accessory = accessory,
-                    parallax = motion.parallax,
+                    motion = motion,
                     onToggleSidebar = null,
                     modifier = Modifier.align(Alignment.BottomCenter),
                 )
@@ -164,7 +164,7 @@ fun AppShell(
                     config = config,
                     trailingAction = trailingAction,
                     accessory = accessory,
-                    parallax = 0f,
+                    motion = motion,
                     onToggleSidebar = toggleSidebar,
                     modifier = Modifier.fillGap(slide),
                 )
