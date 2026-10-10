@@ -29,8 +29,11 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
     ["Package", state.packageName],
     ["Architecture", target.architectures.find((option) => option.key === state.architecture)?.title ?? state.architecture],
     ...(sdk ? ([["Min / target SDK", sdk]] as [string, string][]) : []),
-    ["Design style", state.designStyle],
-    ["Motion", `${state.motionStyle}, haptics ${state.hapticsEnabled ? "on" : "off"}`],
+    ["Design style", target.design_styles.find((style) => style.key === state.designStyle)?.title ?? state.designStyle],
+    [
+      "Motion",
+      `${target.motion_styles.find((style) => style.key === state.motionStyle)?.title ?? state.motionStyle}, haptics ${state.hapticsEnabled ? "on" : "off"}`,
+    ],
     ["Typeface", state.fontName],
     ["Modules", input.modules.length ? input.modules.join(", ") : "none"],
     ["Languages", ["English", ...target.languages.filter((language) => state.languages.includes(language.tag)).map((language) => language.name)].join(", ")],
@@ -112,13 +115,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
                 </p>
               )}
               <ol className="mt-4 list-decimal space-y-1.5 pl-4 text-xs text-ink-300">
-                <li>Unzip and open the folder in Android Studio.</li>
-                <li>
-                  <code className="text-ink-200">./gradlew :app:installDevDebug</code>
-                </li>
-                <li>
-                  <code className="text-ink-200">./gradlew build</code> checks everything: compile, tests, lint and the code rules.
-                </li>
+                <NextSteps target={target.key} />
                 <li>
                   Using an AI agent? Point it at <code className="text-ink-200">AGENTS.md</code> first.
                 </li>
@@ -157,4 +154,37 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
       </div>
     </div>
   );
+}
+
+/** What to do with the zip. Each template names its app module differently; one this list does not know points at its README. */
+function NextSteps({ target }: { target: string }) {
+  switch (target) {
+    case "android":
+      return (
+        <>
+          <li>Unzip and open the folder in Android Studio.</li>
+          <li>
+            <code className="text-ink-200">./gradlew :app:installDevDebug</code>
+          </li>
+          <li>
+            <code className="text-ink-200">./gradlew build</code> checks everything: compile, tests, lint and the code rules.
+          </li>
+        </>
+      );
+    case "multiplatform":
+      return (
+        <>
+          <li>Unzip and open the folder in Android Studio.</li>
+          <li>
+            <code className="text-ink-200">./gradlew :androidApp:installDevDebug</code>
+          </li>
+          <li>
+            On a Mac with XcodeGen: <code className="text-ink-200">cd iosApp &amp;&amp; xcodegen generate</code>, then open the Xcode
+            project it writes and run it.
+          </li>
+        </>
+      );
+    default:
+      return <li>Unzip it and follow its README.</li>;
+  }
 }
