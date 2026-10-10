@@ -56,3 +56,10 @@
 # this appears is a release build — which is to say, the day of a release.
 -dontwarn com.google.android.gms.common.annotation.NoNullnessRewrite
 # </opt:playstore>
+
+# <opt:offlinequeue>
+# WorkManager saves the class name of each queued worker and builds the worker from that name in a
+# later process, which after an update runs a newer build. A renamed worker would strand the work
+# queued before the update; the app's own factory builds it, so only the name needs keeping.
+-keepnames class com.base.app.core.network.queue.ReplayWorker
+# </opt:offlinequeue>

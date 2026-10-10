@@ -1,5 +1,6 @@
 package com.base.app.core.network.queue
 
+import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.time.AppClock
 import com.base.app.core.database.queue.QueuedRequestDao
 import com.base.app.core.database.queue.QueuedRequestEntity
@@ -11,8 +12,11 @@ import io.ktor.http.encodeURLParameter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Instant
@@ -40,7 +44,18 @@ class OfflineQueue @Inject internal constructor(
     private val tokenStore: AuthTokenStore,
     private val scheduler: ReplayScheduler,
     private val clock: AppClock,
+    scope: ApplicationScope,
 ) : RequestQueue {
+
+    init {
+        // What someone queued before signing out waits for them. When they sign in again within
+        // this process, nothing new may be queued to set a replay off, so the sign-in does.
+        scope.launch {
+            tokenStore.tokens.map { it?.owner }.distinctUntilChanged().drop(1).filterNotNull().collect { owner ->
+                if (dao.sendable(owner).isNotEmpty()) scheduler.replaySoon()
+            }
+        }
+    }
 
     override suspend fun enqueue(request: NetworkRequest) {
         dao.insert(
