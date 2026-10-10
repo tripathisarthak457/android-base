@@ -84,7 +84,7 @@ export type Action =
   | { type: "setting"; key: string; value: Setting }
   | { type: "signing"; value: Partial<Signing> }
   | { type: "restore"; state: ConfigState }
-  | { type: "reset"; catalogue: Catalogue };
+  | { type: "reset" };
 
 export function findTarget(catalogue: Catalogue, key: string): Target {
   const target = catalogue.targets.find((candidate) => candidate.key === key) ?? selectableTargets(catalogue)[0];
@@ -283,6 +283,6 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
     case "restore":
       return { ...action.state, revision: state.revision + 1 };
     case "reset":
-      return { ...initialState(action.catalogue), revision: state.revision + 1 };
+      return { ...initialState(catalogue), revision: state.revision + 1 };
   }
 }

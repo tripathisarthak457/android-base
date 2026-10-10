@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "r
 import { API_BASE, ApiError, BUILD, apiError } from "../../lib/api.ts";
 import { canMakeKeystores, parseCatalogue } from "../catalogue/guard.ts";
 import type { Catalogue } from "../catalogue/types.ts";
-import { flushOnHide, reportErrors, sessionId, track, trackLanding } from "../telemetry/client.ts";
+import { sessionId, track, trackLanding } from "../telemetry/client.ts";
 import { landed } from "../telemetry/events.ts";
 import { DRAFT_KEY, draftToStore, parseDraft } from "./draft.ts";
 import { derivePreset } from "./resolve.ts";
@@ -143,12 +143,6 @@ export function useConfigurator(catalogue: Catalogue) {
         width: window.innerWidth,
       }),
     );
-    const stopFlushing = flushOnHide();
-    const stopReporting = reportErrors();
-    return () => {
-      stopFlushing();
-      stopReporting();
-    };
   }, [catalogue]);
 
   useEffect(() => {
@@ -157,11 +151,12 @@ export function useConfigurator(catalogue: Catalogue) {
     return () => clearTimeout(timer);
   }, [state, restored, catalogue]);
 
-  const lastViewed = useRef<string | null>(null);
+  // Keyed on the step alone: picking another platform card, or a restored draft for another
+  // target, is not another view of the step.
+  const lastViewed = useRef<Step | null>(null);
   useEffect(() => {
-    const key = `${state.target}:${step}`;
-    if (lastViewed.current === key) return;
-    lastViewed.current = key;
+    if (lastViewed.current === step) return;
+    lastViewed.current = step;
     if (step === "identity" && identityAt.current === null) identityAt.current = performance.now();
     track({ name: "step_viewed", target: state.target, step });
   }, [step, state.target]);
@@ -185,10 +180,11 @@ export function useConfigurator(catalogue: Catalogue) {
 
   const startOver = useCallback(() => {
     writeDraft(null);
-    dispatchRaw({ type: "reset", catalogue });
+    dispatchRaw({ type: "reset" });
     setOutcome(null);
     setStep("platform");
-  }, [catalogue]);
+    identityAt.current = null;
+  }, []);
 
   const generate = useCallback(async () => {
     if (errors.size > 0 || busy) return;

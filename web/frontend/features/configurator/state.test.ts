@@ -129,7 +129,7 @@ test("only answers that differ from the defaults are stored", () => {
   assert.equal(draftToStore(fresh, catalogue), null, "a visit that only looks stores nothing");
   const edited = run(fresh, { type: "appName", value: "Trail Notes" });
   assert.equal(draftToStore(edited, catalogue), serializeDraft(edited));
-  const startedOver = run(edited, { type: "reset", catalogue });
+  const startedOver = run(edited, { type: "reset" });
   assert.equal(draftToStore(startedOver, catalogue), null, "Start over leaves the key removed");
   assert.equal(draftToStore(run(edited, { type: "appName", value: "My App" }), catalogue), null);
 });
