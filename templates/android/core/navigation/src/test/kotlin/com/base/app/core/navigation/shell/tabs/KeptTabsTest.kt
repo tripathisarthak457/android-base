@@ -53,9 +53,9 @@ class KeptTabsTest {
     private var generation by mutableIntStateOf(1)
     private var inset by mutableStateOf(0.dp)
 
-    private fun showTabs() {
+    private fun showTabs(warmUp: List<Int> = emptyList()) {
         rule.setContent {
-            KeptTabs(selected = selected, generation = generation, modifier = Modifier.padding(inset)) { index ->
+            KeptTabs(selected = selected, generation = generation, modifier = Modifier.padding(inset), warmUp = warmUp) { index ->
                 val probe = probes[index]
                 remember { probe.compositions++ }
                 DisposableEffect(Unit) { onDispose { probe.disposals++ } }
@@ -137,5 +137,32 @@ class KeptTabsTest {
         assertEquals(1, probes[1].disposals)
         assertEquals("the new session composes only the tab in front", 1, probes[0].compositions)
         assertEquals(2, probes[1].compositions)
+    }
+
+    @Test
+    fun `a tab to warm up is built while idle, so its first visit builds and lays out nothing`() {
+        showTabs(warmUp = listOf(0, 1))
+        rule.mainClock.advanceTimeBy(WARM_UP_WAIT_MILLIS)
+        rule.waitForIdle()
+        val warmed = probes[1]
+
+        assertEquals("built once, out of sight", 1, warmed.compositions)
+        assertEquals(Lifecycle.State.CREATED, warmed.lifecycle!!.currentState)
+        assertFalse(warmed.visibility!!.isVisible)
+        rule.onNodeWithTag("tab1").assertDoesNotExist()
+        val measures = warmed.measures
+        assertTrue("laid out parked", measures > 0)
+
+        selected = 1
+        rule.waitForIdle()
+
+        assertEquals(1, warmed.compositions)
+        assertEquals(measures, warmed.measures)
+        rule.onNodeWithTag("tab1").assertIsDisplayed()
+    }
+
+    private companion object {
+        /** Past the warm-up's wait for the first tab to settle, with room for its slices. */
+        const val WARM_UP_WAIT_MILLIS = 2_000L
     }
 }

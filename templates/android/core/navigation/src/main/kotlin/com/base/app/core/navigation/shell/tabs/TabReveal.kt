@@ -78,19 +78,25 @@ internal class TabReveal(selected: Int) {
 
 /**
  * One kept tab: parked while hidden (placed, layer at alpha 0 off the window, semantics cleared),
- * and nudged and veiled while [reveal] brings it in. Everything it changes per frame is read in its
- * layer and draw blocks.
+ * drawn in place for the frame [warming] puts it under the tab in front, and nudged and veiled
+ * while [reveal] brings it in. Everything it changes per frame is read in its layer and draw blocks.
  */
-internal fun Modifier.keptTab(parked: Boolean, reveal: TabReveal, index: Int, veil: Color): Modifier =
-    this then KeptTabElement(parked, reveal, index, veil)
+internal fun Modifier.keptTab(
+    parked: Boolean,
+    reveal: TabReveal,
+    warming: TabWarmUp,
+    index: Int,
+    veil: Color,
+): Modifier = this then KeptTabElement(parked, reveal, warming, index, veil)
 
 private data class KeptTabElement(
     val parked: Boolean,
     val reveal: TabReveal,
+    val warming: TabWarmUp,
     val index: Int,
     val veil: Color,
 ) : ModifierNodeElement<KeptTabNode>() {
-    override fun create() = KeptTabNode(parked, reveal, index, veil)
+    override fun create() = KeptTabNode(parked, reveal, warming, index, veil)
 
     override fun update(node: KeptTabNode) {
         if (node.parked != parked) {
@@ -98,6 +104,7 @@ private data class KeptTabElement(
             node.invalidateSemantics()
         }
         node.reveal = reveal
+        node.warming = warming
         node.index = index
         if (node.veil != veil) {
             node.veil = veil
@@ -115,6 +122,7 @@ private data class KeptTabElement(
 private class KeptTabNode(
     parked: Boolean,
     var reveal: TabReveal,
+    var warming: TabWarmUp,
     var index: Int,
     var veil: Color,
 ) : Modifier.Node(), LayoutModifierNode, DrawModifierNode, SemanticsModifierNode {
@@ -131,8 +139,10 @@ private class KeptTabNode(
 
     private val layer: GraphicsLayerScope.() -> Unit = {
         if (parkedState) {
-            alpha = 0f
-            translationX = -2f * size.width
+            if (warming.underneath != index) {
+                alpha = 0f
+                translationX = -2f * size.width
+            }
         } else if (reveal.index == index) {
             translationX = towardEnd * reveal.direction * TabReveal.SHIFT.toPx() * (1f - reveal.progress)
         }

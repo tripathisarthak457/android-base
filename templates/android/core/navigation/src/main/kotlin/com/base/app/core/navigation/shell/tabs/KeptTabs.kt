@@ -8,6 +8,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -15,6 +16,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.layout.SubcomposeLayoutState
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -42,6 +45,9 @@ import com.base.app.core.designsystem.theme.rememberReduceMotion
  * A hidden tab also stops answering Back: its dispatcher is disabled, or a tab left a few screens
  * deep would take the swipe meant for the visible one.
  *
+ * The tabs in [warmUp] that nobody opened yet are built while the app is idle ([TabWarmUp]), so
+ * the first visit to one costs what a switch to a kept tab costs.
+ *
  * The tab coming to the front on a tap is nudged toward the direction of travel and unveiled
  * ([TabReveal]); the one leaving disappears at once, so two screens are never drawn together.
  *
@@ -58,42 +64,78 @@ internal fun KeptTabs(
     modifier: Modifier = Modifier,
     revealSwitch: () -> Boolean = { false },
     positionOf: (index: Int) -> Int = { it },
+    warmUp: List<Int> = emptyList(),
     content: @Composable (index: Int) -> Unit,
 ) {
-    // Grows only when [selected] changes, which recomposes this anyway; written after composition so
-    // composition itself stays free of side effects.
-    val opened = remember(generation) { mutableStateListOf<Int>() }
-    if (selected !in opened) SideEffect { opened += selected }
+    key(generation) {
+        // Grows when [selected] changes or a warmed tab is ready; read in measure, so a change lays
+        // the tabs out again without composing anything.
+        val opened = remember { mutableStateListOf<Int>() }
+        if (selected !in opened) SideEffect { opened += selected }
 
-    val selection = rememberUpdatedState(selected)
-    val reveal = remember(generation) { TabReveal(selected) }
-    val reduceMotion = rememberReduceMotion()
-    // Applied with the composition that switches, before that frame is laid out and drawn, so the
-    // first frame of the incoming tab is already nudged and veiled.
-    SideEffect { reveal.switchTo(selected, animate = revealSwitch() && !reduceMotion, position = positionOf) }
-    LaunchedEffect(reveal, selected) { reveal.run(selected) }
-    val veil = AppTheme.colors.background
+        val selection = rememberUpdatedState(selected)
+        val reveal = remember { TabReveal(selected) }
+        val reduceMotion = rememberReduceMotion()
+        // Applied with the composition that switches, before that frame is laid out and drawn, so
+        // the first frame of the incoming tab is already nudged and veiled.
+        SideEffect { reveal.switchTo(selected, animate = revealSwitch() && !reduceMotion, position = positionOf) }
+        LaunchedEffect(reveal, selected) { reveal.run(selected) }
 
-    Box(modifier) {
-        (opened + selected).distinct().forEach { index ->
-            key(generation, index) {
-                val active = index == selected
-                val visibility = remember { TabVisibility { selection.value == index } }
-                CompositionLocalProvider(
-                    LocalLifecycleOwner provides rememberTabLifecycle(active),
-                    LocalTabVisible provides visibility,
-                    *rememberTabBackDispatcher(active),
-                ) {
-                    Box(
-                        Modifier
-                            .keptTab(parked = !active, reveal = reveal, index = index, veil = veil)
-                            .focusProperties { onEnter = { if (selection.value != index) cancelFocusChange() } }
-                            .focusGroup(),
-                    ) {
-                        content(index)
-                    }
+        val latest = rememberUpdatedState(content)
+        val slots = remember { SubcomposeLayoutState() }
+        val warming = remember { TabWarmUp(slots) }
+        // One content lambda per tab: a measure pass that subcomposes a tab again with the same
+        // lambda leaves its composition alone, and a warmed tab is taken over as it was built.
+        val tabs = remember { HashMap<Int, @Composable () -> Unit>() }
+        val tab = { index: Int ->
+            tabs.getOrPut(index) { { KeptTab(index, selection, reveal, warming) { latest.value(index) } } }
+        }
+        WarmUpTabs(warming, warmUp, opened, tab)
+
+        SubcomposeLayout(slots, modifier) { constraints ->
+            val shown = (opened + selection.value).distinct()
+            val placeables = shown.associateWith { index ->
+                subcompose(index, tab(index)).map { it.measure(constraints) }
+            }
+            layout(constraints.maxWidth, constraints.maxHeight) {
+                // A tab drawn once under the one in front goes first, so the screen in front covers it.
+                shown.sortedBy { it != warming.underneath }.forEach { index ->
+                    placeables.getValue(index).forEach { it.place(0, 0) }
                 }
             }
+        }
+    }
+}
+
+/** One kept tab: its lifecycle, Back dispatcher and visibility follow whether it is in front. */
+@Composable
+private fun KeptTab(
+    index: Int,
+    selection: State<Int>,
+    reveal: TabReveal,
+    warming: TabWarmUp,
+    content: @Composable () -> Unit,
+) {
+    val active = selection.value == index
+    val visibility = remember { TabVisibility { selection.value == index } }
+    CompositionLocalProvider(
+        LocalLifecycleOwner provides rememberTabLifecycle(active),
+        LocalTabVisible provides visibility,
+        *rememberTabBackDispatcher(active),
+    ) {
+        Box(
+            Modifier
+                .keptTab(
+                    parked = !active,
+                    reveal = reveal,
+                    warming = warming,
+                    index = index,
+                    veil = AppTheme.colors.background,
+                )
+                .focusProperties { onEnter = { if (selection.value != index) cancelFocusChange() } }
+                .focusGroup(),
+        ) {
+            content()
         }
     }
 }

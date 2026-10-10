@@ -61,6 +61,8 @@ class ShellRecompositionTest {
             }
         }
         rule.runOnIdle { rule.activity.navigationEventDispatcher.addInput(input) }
+        // The other tabs are built while the shell is idle; journeys start once that is over.
+        rule.mainClock.advanceTimeBy(WARM_UP_WAIT_MILLIS)
         rule.waitForIdle()
     }
 
@@ -81,6 +83,16 @@ class ShellRecompositionTest {
         showShell()
         rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick)
         rule.onNodeWithTag("tab_0").performSemanticsAction(SemanticsActions.OnClick)
+
+        val frames = journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
+
+        frames.assertQuietBetweenEnds()
+        assertEquals(0, frames.sumOf { it.count("ProbeScreen") })
+    }
+
+    @Test
+    fun `a first visit to a tab built while idle composes none of its screens`() {
+        showShell()
 
         val frames = journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
 
@@ -158,3 +170,6 @@ class ShellRecompositionTest {
 private fun ProbeScreen(key: AppNavKey) {
     Box(Modifier.fillMaxSize().testTag(key.toString())) { BasicText(key.toString()) }
 }
+
+/** Past the tab warm-up's wait for the first tab to settle, with room for its slices. */
+private const val WARM_UP_WAIT_MILLIS = 2_000L
