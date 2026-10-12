@@ -114,6 +114,11 @@ def _call(function: str, arguments: list[str]) -> tuple[str, ...]:
     return (f"{function}(", *(f"    {argument}," for argument in arguments[:-1]), f"    {arguments[-1]}", ")")
 
 
+#: What `AppTab` already calls a name: its own members and those of the protocols it adopts. A case
+#: of the same name either fails to compile or hides the member.
+MEMBERS = frozenset({"id", "title", "systemImage", "root", "rawValue", "allCases", "hashValue"})
+
+
 def tab_case(name: str) -> str:
     """`order_history` → `orderHistory`, the tab's case."""
     first, *rest = name.split("_")

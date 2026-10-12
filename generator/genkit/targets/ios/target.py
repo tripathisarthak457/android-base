@@ -113,8 +113,15 @@ class IosTarget:
                 )
 
         for name in spec.feature_modules:
-            if tabs.tab_case(name) in SWIFT_KEYWORDS:
+            case = tabs.tab_case(name)
+            if case in SWIFT_KEYWORDS:
                 raise SpecError(f"Module name '{name}' is a Swift keyword, so its tab would not compile.", "feature_modules")
+            if case in tabs.MEMBERS:
+                raise SpecError(
+                    f"Module name '{name}' would make a tab called {case}, which the app's tab type already "
+                    "uses for something else. Pick another name.",
+                    "feature_modules",
+                )
 
         taken = _PROJECT_MODULES | _SYSTEM_MODULES | _APP_TYPES | {
             f"{pascal_case(name)}{suffix}" for name in spec.feature_modules for suffix in ("Data", "Feature")
@@ -135,6 +142,13 @@ class IosTarget:
             warnings.append(
                 f"No feature gives the app a tab, so a '{tabs.FALLBACK_MODULE}' module was scaffolded "
                 "as its first one."
+            )
+        if spec.has("database") and not spec.has("sample"):
+            warnings.append(
+                "The app database is set up, but nothing keeps data in it yet: the reference feature is "
+                "off, and scaffolded modules read from the network or memory. When a data module needs "
+                "it, give that module a @ModelActor and build the app's ModelContainer in AppServices "
+                "with ModelContainerFactory."
             )
         if spec.has("language") and not spec.languages:
             warnings.append(

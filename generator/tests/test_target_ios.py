@@ -730,6 +730,9 @@ class ValidationTest(unittest.TestCase):
         self.assertRefused("feature_modules", feature_modules=["repeat"])
         self.assertRefused("feature_modules", feature_modules=["core"])
         self.assertRefused("feature_modules", feature_modules=["sample"])
+        for name in ("id", "title", "system_image", "root", "raw_value", "all_cases", "hash_value"):
+            with self.subTest(module=name):
+                self.assertRefused("feature_modules", feature_modules=[name])
         self.assertRefused("app_name", app_name="SwiftUI")
         self.assertRefused("app_name", app_name="Design System")
         self.assertRefused("app_name", app_name="Orders Feature", feature_modules=["orders"])
@@ -746,6 +749,10 @@ class ValidationTest(unittest.TestCase):
         self.assertEqual(("home",), tabs.tab_modules(parsed.spec))
         self.assertEqual(["Home"], tabs.labels(parsed.spec))
         self.assertEqual([], read(features=["network", "sample"])[1])
+
+    def test_a_database_nothing_uses_is_flagged(self):
+        self.assertRegex(" ".join(read(features=["network", "settings", "database"])[1]), "nothing keeps data in it")
+        self.assertEqual([], read(features=["network", "sample", "database"])[1])
 
     def test_the_language_shortcut_without_a_second_language_is_flagged(self):
         features = ["network", "sample", "settings", "language"]
