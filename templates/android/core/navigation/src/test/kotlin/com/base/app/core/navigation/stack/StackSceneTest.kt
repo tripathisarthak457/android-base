@@ -139,13 +139,15 @@ class StackSceneTest {
     fun `a pushed screen is told when its slide has settled`() {
         show()
         rule.mainClock.autoAdvance = false
-        rule.runOnIdle {
+        rule.runOnUiThread {
             stack.apply(NavCommand.Navigate(Post(1)))
             stack.gate.changed(StackChange.Push)
         }
-        rule.mainClock.advanceTimeByFrame()
+        var frames = 0
+        while (Post(1) !in settled && frames++ < MAX_FRAMES) rule.mainClock.advanceTimeByFrame()
         rule.mainClock.advanceTimeByFrame()
 
+        assertTrue("the slide has not started", stack.gate.moving)
         assertFalse("settled in the middle of the slide", settled.getValue(Post(1))())
 
         rule.mainClock.autoAdvance = true
@@ -196,3 +198,5 @@ private class ProbeNode(var probe: Probe) : Modifier.Node(), LayoutModifierNode 
         return layout(placeable.width, placeable.height) { placeable.place(0, 0) }
     }
 }
+
+private const val MAX_FRAMES = 10
