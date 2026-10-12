@@ -7,9 +7,11 @@ import SwiftUI
 /// window, a sheet on a phone.
 struct SampleDetailView: View {
     @State private var store: SampleDetailStore
-    @State private var showsDetails = false
+    /// Whether the person last opened or closed the details; nil until they do.
+    @State private var chosenShowsDetails: Bool?
 
     @Environment(\.appTheme) private var theme
+    @Environment(\.appWindowWidth) private var windowWidth
 
     init(id: SampleItem.ID, repository: any SampleRepository) {
         _store = State(initialValue: SampleDetailStore(id: id, repository: repository))
@@ -22,7 +24,7 @@ struct SampleDetailView: View {
             .toolbar {
                 ToolbarItem {
                     Button {
-                        showsDetails.toggle()
+                        chosenShowsDetails = !showsDetails.wrappedValue
                     } label: {
                         Label { Text("Details", bundle: .module) } icon: { Image(systemName: "info.circle") }
                     }
@@ -30,7 +32,7 @@ struct SampleDetailView: View {
                     .disabled(store.state.item == nil)
                 }
             }
-            .inspector(isPresented: $showsDetails) {
+            .inspector(isPresented: showsDetails) {
                 if let item = store.state.item {
                     // A column beside the article in a wide window, and a sheet on a phone.
                     SampleDetails(item: item)
@@ -43,6 +45,17 @@ struct SampleDetailView: View {
                 }
             }
             .onAppear { store.send(.appeared) }
+    }
+
+    /// Until the person chooses, a large window shows the details beside the article, as the
+    /// Android template shows its supporting pane at that width, and a narrower one leaves the
+    /// article the whole width.
+    private var showsDetails: Binding<Bool> {
+        Binding {
+            store.state.item != nil && (chosenShowsDetails ?? (windowWidth >= .large))
+        } set: { shows in
+            chosenShowsDetails = shows
+        }
     }
 
     @ViewBuilder

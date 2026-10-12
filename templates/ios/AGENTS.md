@@ -190,7 +190,8 @@ Use the system's own motion; never rebuild it:
   Cap content instead and centre it: `.frame(maxWidth: AppLayout.readableMaxWidth)` for running
   text, `AppLayout.formMaxWidth` for a form or a single flow, then `.frame(maxWidth: .infinity)`.
   The scroll view around it stays window-wide, so it scrolls from anywhere.
-- List-detail: `NavigationSplitView`. A side panel: `.inspector` (a sheet on a phone).
+- List-detail: `NavigationSplitView`. A side panel: `.inspector` (a sheet on a phone), open by
+  default from `.large` up until the person opens or closes it.
 - Every screen works with a keyboard: `.keyboardShortcut` on toolbar actions, `.onKeyPress` for
   screen keys, Esc (`.cancelAction`) closes or skips, Return (`.defaultAction`) confirms or goes on.
   Custom tappable rows get `.hoverEffect`.
