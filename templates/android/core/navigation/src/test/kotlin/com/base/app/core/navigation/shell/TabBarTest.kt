@@ -2,6 +2,7 @@ package com.base.app.core.navigation.shell
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -38,7 +39,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-/** The tab bar the shell draws: what accessibility reads, mirroring, the rail in a short window, minimize. */
+/** The tab bar the shell draws: what accessibility reads, mirroring, large text, the rail in a short window, minimize. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [ROBOLECTRIC_SDK])
 class TabBarTest {
@@ -72,6 +73,29 @@ class TabBarTest {
         val first = rule.onNodeWithTag("tab_0").fetchSemanticsNode().boundsInRoot
         val last = rule.onNodeWithTag("tab_4").fetchSemanticsNode().boundsInRoot
         assertTrue(first.left > last.left)
+    }
+
+    @Test
+    fun `at twice the font size every label stays inside its slot's pill`() {
+        val long = five.map { it.copy(label = it.label + " and more") }
+        rule.setContent {
+            val density = LocalDensity.current
+            CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 2f)) {
+                AppTheme {
+                    Box(Modifier.width(360.dp)) { AppTabBar(long, selected = 4, onSelect = {}, onReselect = {}) }
+                }
+            }
+        }
+
+        // The pill keeps 4 dp from the slot's edge and at least 4 dp of padding around the label.
+        val inset = 8 * rule.density.density
+        long.forEachIndexed { index, item ->
+            val cell = rule.onNodeWithTag("tab_$index").fetchSemanticsNode().boundsInRoot
+            rule.onAllNodesWithText(item.label, useUnmergedTree = true).fetchSemanticsNodes().forEach { label ->
+                assertTrue("${item.label} starts outside its pill", label.boundsInRoot.left >= cell.left + inset - 1)
+                assertTrue("${item.label} ends outside its pill", label.boundsInRoot.right <= cell.right - inset + 1)
+            }
+        }
     }
 
     @Test
