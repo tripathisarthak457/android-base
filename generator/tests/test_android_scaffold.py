@@ -75,6 +75,19 @@ class GeneratedModuleTest(unittest.TestCase):
         self.assertTrue((data / "test/resources/orders.json").is_file())
         self.assertIn("NetworkClient", (data / f"main/kotlin/{PKG}/data/orders/DefaultOrdersRepository.kt").read_text())
 
+    def test_the_fake_repository_is_shared_through_the_data_modules_test_fixtures(self):
+        for project in (self.online, self.offline):
+            with self.subTest(project=project.name):
+                fake = project / f"data/orders/src/testFixtures/kotlin/{PKG}/data/orders/api/FakeOrdersRepository.kt"
+                self.assertIn("class FakeOrdersRepository(", fake.read_text())
+                self.assertIn(
+                    'testImplementation(testFixtures(project(":data:orders")))',
+                    (project / "feature/orders/build.gradle.kts").read_text(),
+                )
+                test = project / f"feature/orders/src/test/kotlin/{PKG}/feature/orders/list/OrdersListViewModelTest.kt"
+                self.assertIn("import com.acme.field.data.orders.api.FakeOrdersRepository", test.read_text())
+                self.assertNotIn("class FakeOrdersRepository", test.read_text())
+
     def test_without_a_network_the_repository_has_no_remote_and_says_so(self):
         data = self.offline / "data/orders"
         self.assertFalse((data / f"src/main/kotlin/{PKG}/data/orders/remote").exists())

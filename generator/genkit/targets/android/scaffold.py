@@ -95,6 +95,7 @@ def _write_data_module(project: Path, spec: Spec, name: str, tokens: dict[str, s
     root = project / "data" / name
     source = root / "src/main/kotlin" / spec.package_path / "data" / name
     tests = root / "src/test/kotlin" / spec.package_path / "data" / name
+    fixtures = root / "src/testFixtures/kotlin" / spec.package_path / "data" / name
     remote = spec.has("network") and name != HOME
 
     _render("data/build.remote.gradle.kts" if remote else "data/build.local.gradle.kts", root / "build.gradle.kts", tokens)
@@ -106,6 +107,8 @@ def _write_data_module(project: Path, spec: Spec, name: str, tokens: dict[str, s
         tokens,
     )
     _render("data/DataModule.kt", source / "di" / f"{tokens['__P__']}DataModule.kt", tokens)
+    # Beside the interface it fakes, so a modular split moves it into `:data:<name>:api` with it.
+    _render("data/FakeRepository.kt", fixtures / "api" / f"Fake{tokens['__P__']}Repository.kt", tokens)
     if remote:
         _render("data/Dto.kt", source / "remote" / f"{tokens['__P__']}Dto.kt", tokens)
         _render("data/DtoTest.kt", tests / "remote" / f"{tokens['__P__']}DtoTest.kt", tokens)

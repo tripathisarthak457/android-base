@@ -4,8 +4,8 @@ import __PKG__.core.common.LoadState
 import __PKG__.core.common.result.AppError
 import __PKG__.core.common.result.AppResult
 import __PKG__.core.testing.MainDispatcherRule
+import __PKG__.data.__NAME__.api.Fake__P__Repository
 import __PKG__.data.__NAME__.api.__P__Item
-import __PKG__.data.__NAME__.api.__P__Repository
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -73,21 +73,4 @@ class __P__ListViewModelTest {
         advanceUntilIdle()
         assertEquals(LoadState.Success, viewModel.state.value.loadState)
     }
-}
-
-private class Fake__P__Repository(var result: AppResult<List<__P__Item>>) : __P__Repository {
-
-    var loads = 0
-        private set
-
-    override suspend fun items(forceRefresh: Boolean): AppResult<List<__P__Item>> {
-        loads++
-        return result
-    }
-
-    override suspend fun item(id: String): AppResult<__P__Item> =
-        when (val current = result) {
-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
-            is AppResult.Failure -> current
-        }
 }
