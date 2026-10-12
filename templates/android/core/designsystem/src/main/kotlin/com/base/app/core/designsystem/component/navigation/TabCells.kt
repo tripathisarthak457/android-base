@@ -38,7 +38,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
 import com.base.app.core.designsystem.theme.AppTheme
