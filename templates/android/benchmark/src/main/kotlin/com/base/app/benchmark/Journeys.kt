@@ -1,5 +1,7 @@
 package com.base.app.benchmark
 
+import android.graphics.Point
+import android.os.SystemClock
 import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
@@ -78,30 +80,29 @@ fun MacrobenchmarkScope.edgeSwipeBack() {
 }
 
 /**
- * A back swipe made of single touch events, slow enough for the back card to follow the finger
- * through many frames before it lets go, or comes back to the edge and cancels ([cancel]).
+ * A back swipe slow enough for the back card to follow the finger through many frames before it
+ * lets go, or comes back to the edge and cancels ([cancel]).
  */
 fun MacrobenchmarkScope.slowEdgeSwipeBack(cancel: Boolean = false) {
     val y = device.displayHeight / 2
     val reach = device.displayWidth * 45 / 100
-    val moves = (1..SLOW_SWIPE_STEPS).map { step -> 2 + reach * step / SLOW_SWIPE_STEPS }
-    val path = if (cancel) moves + moves.reversed().drop(1) + 2 else moves
-    val events = buildList {
-        add("input motionevent DOWN 2 $y")
-        path.forEach { x -> add("input motionevent MOVE $x $y") }
-        add("input motionevent UP ${path.last()} $y")
-    }
-    device.executeShellCommand(events.joinToString("; "))
+    val out = (0..SLOW_SWIPE_POINTS).map { step -> Point(2 + reach * step / SLOW_SWIPE_POINTS, y) }
+    val path = if (cancel) out + out.reversed().drop(1) else out
+    check(device.swipe(path.toTypedArray(), SLOW_SWIPE_SEGMENT_STEPS)) { "The back swipe was not delivered." }
     device.waitForIdle()
 }
 
-/** Opens the first row and starts a back swipe while the new screen is still sliding in. */
+/**
+ * Opens the first row and starts a back swipe while the new screen is still sliding in, as a person
+ * who changes their mind does: the swipe begins [SWIPE_AFTER_TAP_MS] after the tap.
+ */
 fun MacrobenchmarkScope.backSwipeDuringPush() {
     val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
     val row = checkNotNull(list.findObject(By.clickable(true))) { "primary_list has no row to open." }
     val y = device.displayHeight / 2
-    val (x, rowY) = row.visibleCenter.let { it.x to it.y }
-    device.executeShellCommand("input tap $x $rowY; input swipe 2 $y ${device.displayWidth * 6 / 10} $y 160")
+    row.click()
+    SystemClock.sleep(SWIPE_AFTER_TAP_MS)
+    device.swipe(2, y, device.displayWidth * 6 / 10, y, DURING_PUSH_SWIPE_STEPS)
     assertAtRoot()
 }
 
@@ -145,8 +146,12 @@ private fun MacrobenchmarkScope.findScrolling(selector: BySelector): UiObject2? 
     return device.findObject(selector)
 }
 
+// UiDevice injects one touch event per step, about 5 ms apart.
 private const val SWIPE_STEPS = 20
-private const val SLOW_SWIPE_STEPS = 24
+private const val SLOW_SWIPE_POINTS = 24
+private const val SLOW_SWIPE_SEGMENT_STEPS = 5
+private const val DURING_PUSH_SWIPE_STEPS = 32
+private const val SWIPE_AFTER_TAP_MS = 80L
 private const val PULL_STEPS = 60
 private const val SCROLL_ATTEMPTS = 3
 private const val SHORT_WAIT_MS = 1_000L
