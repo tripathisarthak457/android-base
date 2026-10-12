@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -60,7 +61,8 @@ fun AppActivityIndicator(
         }
     }
     val description = stringResource(R.string.designsystem_loading)
-    Canvas(modifier.size(size).semantics { contentDescription = description }) {
+    // Its own layer, so each step redraws the indicator and not everything around it.
+    Canvas(modifier.size(size).graphicsLayer().semantics { contentDescription = description }) {
         drawActivitySpokes(
             center = Offset(this.size.width / 2f, this.size.height / 2f),
             radius = this.size.minDimension / 2f,

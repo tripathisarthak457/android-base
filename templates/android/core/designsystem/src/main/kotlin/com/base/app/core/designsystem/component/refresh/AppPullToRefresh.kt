@@ -5,9 +5,14 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -15,21 +20,25 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScrollModifierNode
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.layout.MultiContentMeasurePolicy
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
 import androidx.compose.ui.node.DelegatingNode
 import androidx.compose.ui.node.DrawModifierNode
-import androidx.compose.ui.node.LayoutModifierNode
+import androidx.compose.ui.node.LayoutAwareModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.SemanticsModifierNode
 import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.node.invalidateSemantics
+import androidx.compose.ui.node.requireDensity
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -38,11 +47,14 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.ActivitySpokes
 import com.base.app.core.designsystem.component.feedback.drawActivitySpokes
+import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
@@ -50,6 +62,7 @@ import com.base.app.core.designsystem.foundation.interaction.constant
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.LocalReduceMotion
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -85,34 +98,71 @@ fun AppPullToRefresh(
 ) {
     val colors = AppTheme.colors
     val spokeColor = remember(colors) { ColorProducer { colors.contentSecondary } }
-    Box(
+    val indicator = remember { RefreshIndicator() }
+    val topChrome = LocalTopChrome.current
+    val measurePolicy = remember(topChrome) { RefreshMeasurePolicy(topChrome) }
+    Layout(
+        contents = listOf(
+            { Box(Modifier.offset { IntOffset(0, indicator.gap.roundToInt()) }, content = content) },
+            // Its own layer, so each step of the spinner redraws a few dozen pixels, not the screen.
+            { Spacer(Modifier.graphicsLayer().then(RefreshSpinnerElement(indicator, spokeColor))) },
+        ),
         modifier = modifier.then(
             PullToRefreshElement(
+                indicator = indicator,
                 refreshing = isRefreshing,
                 onRefresh = onRefresh,
                 showExternalRefresh = showExternalRefresh,
-                spokeColor = spokeColor,
                 refreshLabel = stringResource(R.string.designsystem_refresh),
                 refreshingLabel = stringResource(R.string.designsystem_refreshing),
             ),
         ),
-        content = content,
+        measurePolicy = measurePolicy,
     )
 }
 
+/** What the pull shows: how far the content has moved down, and the state of the spinner in the gap. */
+@Stable
+private class RefreshIndicator {
+    var gap by mutableFloatStateOf(0f)
+
+    /** The brightest spoke while the spinner turns. */
+    var head by mutableIntStateOf(0)
+
+    /** A refresh is showing, or a finished one is still closing over its spinner. */
+    var spinning by mutableStateOf(false)
+
+    /** The refresh has ended and the gap is closing; the spinner shrinks with it. */
+    var retracting by mutableStateOf(false)
+}
+
+/** The content as measured, and the spinner centred just below whatever top bar the content runs under. */
+private class RefreshMeasurePolicy(private val topChrome: ChromeInset) : MultiContentMeasurePolicy {
+    override fun MeasureScope.measure(measurables: List<List<Measurable>>, constraints: Constraints): MeasureResult {
+        val (body, spinnerSlot) = measurables
+        val content = body.first().measure(constraints)
+        val diameter = (SpinnerRadius * 2).roundToPx()
+        val spinner = spinnerSlot.first().measure(Constraints.fixed(diameter, diameter))
+        return layout(content.width, content.height) {
+            content.place(0, 0)
+            spinner.place((content.width - diameter) / 2, (topChrome.value + SpinnerTop).roundToPx())
+        }
+    }
+}
+
 private data class PullToRefreshElement(
+    val indicator: RefreshIndicator,
     val refreshing: Boolean,
     val onRefresh: () -> Unit,
     val showExternalRefresh: Boolean,
-    val spokeColor: ColorProducer,
     val refreshLabel: String,
     val refreshingLabel: String,
 ) : ModifierNodeElement<PullToRefreshNode>() {
     override fun create() =
-        PullToRefreshNode(refreshing, onRefresh, showExternalRefresh, spokeColor, refreshLabel, refreshingLabel)
+        PullToRefreshNode(indicator, refreshing, onRefresh, showExternalRefresh, refreshLabel, refreshingLabel)
 
     override fun update(node: PullToRefreshNode) =
-        node.update(refreshing, onRefresh, showExternalRefresh, spokeColor, refreshLabel, refreshingLabel)
+        node.update(refreshing, onRefresh, showExternalRefresh, refreshLabel, refreshingLabel)
 
     override fun InspectorInfo.inspectableProperties() {
         name = "pullToRefresh"
@@ -121,32 +171,35 @@ private data class PullToRefreshElement(
 }
 
 /**
- * The whole control in one node: it is the nested-scroll connection that takes the pull, the layout
- * that moves the content by the gap, and the drawing of the spinner in the gap.
+ * The pull itself: the nested-scroll connection that takes it, the gap the content moves down by,
+ * the refresh it starts and the spinner's state. It draws nothing; the content's offset and the
+ * spinner read [indicator].
  *
  * `raw` is the finger travel the gap stands for. Up to `linear` the gap follows the finger one to
  * one (the resting gap of a running refresh); past it the rubber band applies, so the content never
  * stops dead under the finger.
  */
 private class PullToRefreshNode(
+    private val indicator: RefreshIndicator,
     private var refreshing: Boolean,
     private var onRefresh: () -> Unit,
     private var showExternalRefresh: Boolean,
-    private var spokeColor: ColorProducer,
     private var refreshLabel: String,
     private var refreshingLabel: String,
 ) : DelegatingNode(),
     NestedScrollConnection,
-    LayoutModifierNode,
-    DrawModifierNode,
+    LayoutAwareModifierNode,
     SemanticsModifierNode,
     CompositionLocalConsumerModifierNode {
 
     override val shouldAutoInvalidate: Boolean
         get() = false
 
-    /** The visible gap above the content, in pixels. Read only in the layer block and in draw. */
-    private var gap by mutableFloatStateOf(0f)
+    private var gap: Float
+        get() = indicator.gap
+        set(value) {
+            indicator.gap = value
+        }
     private var raw = 0f
     private var linear = 0f
     private var dragging = false
@@ -156,19 +209,17 @@ private class PullToRefreshNode(
 
     /** Showing a refresh: pulled past the trigger, or an external one shown on request. */
     private var active = false
-
-    /** A finished refresh's spinner, still turning while the gap closes over it. */
-    private var retracting = false
     private var activeSince = 0L
-    private var head = 0
 
     private var settle: Job? = null
     private var spin: Job? = null
     private var finish: Job? = null
 
     private var viewport = 1f
-    private var trigger = 0f
-    private var rest = 0f
+    private val trigger: Float
+        get() = with(requireDensity()) { Trigger.toPx() }
+    private val rest: Float
+        get() = with(requireDensity()) { Rest.toPx() }
 
     init {
         delegate(nestedScrollModifierNode(this, null))
@@ -178,16 +229,11 @@ private class PullToRefreshNode(
         refreshing: Boolean,
         onRefresh: () -> Unit,
         showExternalRefresh: Boolean,
-        spokeColor: ColorProducer,
         refreshLabel: String,
         refreshingLabel: String,
     ) {
         this.onRefresh = onRefresh
         this.showExternalRefresh = showExternalRefresh
-        if (spokeColor != this.spokeColor) {
-            this.spokeColor = spokeColor
-            invalidateDraw()
-        }
         if (refreshLabel != this.refreshLabel || refreshingLabel != this.refreshingLabel) {
             this.refreshLabel = refreshLabel
             this.refreshingLabel = refreshingLabel
@@ -205,6 +251,10 @@ private class PullToRefreshNode(
             finishAfterMinimum()
         }
         invalidateSemantics()
+    }
+
+    override fun onRemeasured(size: IntSize) {
+        viewport = size.height.toFloat().coerceAtLeast(1f)
     }
 
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -288,10 +338,10 @@ private class PullToRefreshNode(
 
     private fun activate() {
         active = true
-        retracting = false
         activeSince = SystemClock.uptimeMillis()
+        indicator.retracting = false
+        indicator.spinning = true
         startSpin()
-        invalidateDraw()
         invalidateSemantics()
     }
 
@@ -306,7 +356,7 @@ private class PullToRefreshNode(
             if (shown < MinVisibleMillis) delay(MinVisibleMillis - shown)
             if (refreshing) return@launch
             active = false
-            retracting = true
+            indicator.retracting = true
             invalidateSemantics()
             if (!dragging) settleTo(0f, velocity = 0f)
         }
@@ -318,9 +368,9 @@ private class PullToRefreshNode(
             val spring = currentValueOf(LocalAppSprings).bounceBack.pixels
             animate(gap, target, velocity, spring) { value, _ -> gap = value.coerceAtLeast(0f) }
             if (gap == 0f && !active) {
-                retracting = false
+                indicator.retracting = false
+                indicator.spinning = false
                 spin?.cancel()
-                invalidateDraw()
             }
         }
     }
@@ -332,8 +382,7 @@ private class PullToRefreshNode(
             while (isActive) {
                 val step = if (currentValueOf(LocalReduceMotion).value) SpinStepMillis * 2 else SpinStepMillis
                 delay(step)
-                head = (head + 1) % ActivitySpokes
-                invalidateDraw()
+                indicator.head = (indicator.head + 1) % ActivitySpokes
             }
         }
     }
@@ -348,41 +397,8 @@ private class PullToRefreshNode(
         dragging = false
         triggeredThisDrag = false
         active = false
-        retracting = false
-    }
-
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
-        val placeable = measurable.measure(constraints)
-        viewport = placeable.height.toFloat().coerceAtLeast(1f)
-        trigger = Trigger.toPx()
-        rest = Rest.toPx()
-        return layout(placeable.width, placeable.height) {
-            // Moved by placement rather than by the layer's translation: a moved layer is what makes
-            // Compose ask an adaptive-refresh display for its high rate while the content follows the finger.
-            placeable.placeWithLayer(0, gap.roundToInt())
-        }
-    }
-
-    override fun ContentDrawScope.draw() {
-        val shown = gap
-        if (shown > 0.5f) {
-            // Content runs under the top bar, so the gap opens just below it.
-            val top = currentValueOf(LocalTopChrome).value.toPx()
-            val radius = SpinnerRadius.toPx()
-            val spinning = active || retracting
-            clipRect(top = top, bottom = top + shown) {
-                val pulled = (shown / trigger).coerceIn(0f, 1f)
-                drawActivitySpokes(
-                    center = Offset(size.width / 2f, top + SpinnerTop.toPx() + radius),
-                    radius = if (retracting) radius * (shown / rest).coerceIn(0f, 1f) else radius,
-                    color = spokeColor(),
-                    head = if (spinning) head else null,
-                    revealed = if (spinning) ActivitySpokes else ceil(ActivitySpokes * pulled).toInt(),
-                    alpha = if (spinning) 1f else FastOutSlowInEasing.transform((pulled / FadeInFraction).coerceAtMost(1f)),
-                )
-            }
-        }
-        drawContent()
+        indicator.spinning = false
+        indicator.retracting = false
     }
 
     override fun SemanticsPropertyReceiver.applySemantics() {
@@ -402,6 +418,56 @@ private class PullToRefreshNode(
     }
 }
 
+private data class RefreshSpinnerElement(
+    val indicator: RefreshIndicator,
+    val color: ColorProducer,
+) : ModifierNodeElement<RefreshSpinnerNode>() {
+    override fun create() = RefreshSpinnerNode(indicator, color)
+
+    override fun update(node: RefreshSpinnerNode) = node.update(color)
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "refreshSpinner"
+    }
+}
+
+/**
+ * The spinner, in the part of the gap below its top edge: its spokes appear one by one as the pull
+ * nears the trigger, then turn while the refresh runs, and shrink as a finished refresh closes.
+ */
+private class RefreshSpinnerNode(
+    private val indicator: RefreshIndicator,
+    private var color: ColorProducer,
+) : Modifier.Node(), DrawModifierNode {
+
+    fun update(color: ColorProducer) {
+        if (color == this.color) return
+        this.color = color
+        invalidateDraw()
+    }
+
+    override fun ContentDrawScope.draw() {
+        val gap = indicator.gap
+        // The gap opens from the top bar down; the spinner starts SpinnerTop below it.
+        val uncovered = gap - SpinnerTop.toPx()
+        if (uncovered <= 0.5f) return
+        val spinning = indicator.spinning
+        val retracting = indicator.retracting
+        val radius = size.minDimension / 2f
+        val pulled = (gap / Trigger.toPx()).coerceIn(0f, 1f)
+        clipRect(bottom = uncovered) {
+            drawActivitySpokes(
+                center = center,
+                radius = if (retracting) radius * (gap / Rest.toPx()).coerceIn(0f, 1f) else radius,
+                color = color(),
+                head = if (spinning) indicator.head else null,
+                revealed = if (spinning) ActivitySpokes else ceil(ActivitySpokes * pulled).toInt(),
+                alpha = if (spinning) 1f else FastOutSlowInEasing.transform((pulled / FadeInFraction).coerceAtMost(1f)),
+            )
+        }
+    }
+}
+
 /** iOS's rubber band: `y = c·x·d / (d + c·x)`, so the further it is pulled the less it gives. */
 private fun rubberBand(travel: Float, range: Float): Float {
     val d = range.coerceAtLeast(1f)
@@ -414,7 +480,7 @@ private fun rubberBandInverse(visible: Float, range: Float): Float {
     return d * y / (Resistance * (d - y))
 }
 
-private const val Resistance = 0.55f
+private const val Resistance = DesignTokens.Motion.rubberBand
 private const val SpinStepMillis = 125L
 private const val MinVisibleMillis = 400L
 
