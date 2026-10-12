@@ -184,8 +184,8 @@ private class LocaleDecimalOutput(locale: Locale, private val grouping: Boolean)
 
     override fun TextFieldBuffer.transformOutput() {
         val text = asCharSequence().toString()
-        val point = text.indexOf(DecimalInput.Point)
-        if (point >= 0 && symbols.decimalSeparator != DecimalInput.Point) {
+        val point = text.indexOf(DecimalInput.DecimalPoint)
+        if (point >= 0 && symbols.decimalSeparator != DecimalInput.DecimalPoint) {
             replace(point, point + 1, symbols.decimalSeparator.toString())
         }
         if (!grouping) return
