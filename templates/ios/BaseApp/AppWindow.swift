@@ -6,8 +6,13 @@ import SwiftUI
 import OnboardingFeature
 // </opt:onboarding>
 
+// <opt:onboarding>
 /// A window's content, under the theme and appearance the person chose: the walkthrough on the
 /// first run, then the tabs.
+// </opt:onboarding>
+// <opt-else:onboarding>
+//~ /// A window's content, under the theme and appearance the person chose.
+// </opt-else:onboarding>
 struct AppWindow: View {
     @State private var model: AppModel
 
