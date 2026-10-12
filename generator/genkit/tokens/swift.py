@@ -44,6 +44,8 @@ def emit(tokens: dict[str, Any]) -> str:
         {name: style["description"] for name, style in tokens["styles"].items()},
     )
     lines.append("")
+    # Resolving keeps a motion style's values and drops its description, which only documents it,
+    # so the description comes from the token files themselves.
     lines += _choice(
         "AppMotionStyle",
         "A motion style: how much the springs overshoot, and how quickly they travel.",
@@ -79,8 +81,7 @@ def accent_colorset(tokens: dict[str, Any]) -> str:
     tone = tokens["palette"]["tones"][tokens["styles"][tokens["defaults"]["designStyle"]]["surfaces"]]
     colors = []
     for theme in ("light", "dark"):
-        digits = tone[theme]["accent"].lstrip("#")
-        alpha, red, green, blue = (int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4, 6))
+        alpha, red, green, blue = _argb(tone[theme]["accent"])
         entry: dict[str, Any] = {}
         if theme == "dark":
             entry["appearances"] = [{"appearance": "luminosity", "value": "dark"}]
@@ -112,9 +113,15 @@ def _sentence(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def _color(hex_argb: str) -> str:
+def _argb(hex_argb: str) -> tuple[float, float, float, float]:
+    """`#AARRGGBB` as alpha, red, green and blue from 0 to 1."""
     digits = hex_argb.lstrip("#")
     alpha, red, green, blue = (int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4, 6))
+    return alpha, red, green, blue
+
+
+def _color(hex_argb: str) -> str:
+    alpha, red, green, blue = _argb(hex_argb)
     return (
         f"Color(.sRGB, red: {red:.4f}, green: {green:.4f}, blue: {blue:.4f}, opacity: {alpha:.4f})"
     )
