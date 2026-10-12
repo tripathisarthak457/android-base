@@ -325,6 +325,7 @@ public struct {pascal}RootView: View {{
     }}
 }}
 
+#if DEBUG
 #Preview("iPhone") {{
     {pascal}RootView(repository: Preview{pascal}Repository())
         .environment(Router())
@@ -336,6 +337,7 @@ public struct {pascal}RootView: View {{
         .environment(Router())
         .appTheme()
 }}
+#endif
 """)
 
     _write(root / "List" / f"{pascal}ListStore.swift", f"""\
@@ -465,6 +467,7 @@ struct {pascal}ListView: View {{
     }}
 }}
 
+#if DEBUG
 #Preview("iPhone") {{
     NavigationStack {{
         {pascal}ListView(store: {pascal}ListStore(repository: Preview{pascal}Repository()), selection: .constant(nil))
@@ -480,6 +483,7 @@ struct {pascal}ListView: View {{
     }}
     .appTheme()
 }}
+#endif
 """)
 
     _write(root / "Detail" / f"{pascal}DetailStore.swift", f"""\
@@ -601,6 +605,7 @@ private struct {pascal}Article: View {{
     }}
 }}
 
+#if DEBUG
 #Preview("iPhone") {{
     NavigationStack {{
         {pascal}DetailView(id: 1, repository: Preview{pascal}Repository())
@@ -614,12 +619,14 @@ private struct {pascal}Article: View {{
     }}
     .appTheme()
 }}
+#endif
 """)
 
     _write(root / "Previews" / f"Preview{pascal}Repository.swift", f"""\
 import AppCore
 import {pascal}Data
 
+#if DEBUG
 /// Items for previews, answered at once and without the network.
 nonisolated struct Preview{pascal}Repository: {pascal}Repository {{
     func items() async -> AppResult<[{pascal}Item]> {{
@@ -639,6 +646,7 @@ nonisolated struct Preview{pascal}Repository: {pascal}Repository {{
         {pascal}Item(id: 3, title: "The third item"),
     ]
 }}
+#endif
 """)
 
     _write(root / "Resources" / "Localizable.xcstrings", strings.render([title, *STRINGS]))

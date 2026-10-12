@@ -390,6 +390,9 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
             widths = [int(width) for width in re.findall(r"#Preview\([^)]*traits:\s*\.fixedLayout\(width:\s*(\d+)", code)]
             case.assertTrue(any(width >= 744 for width in widths), f"{path.relative_to(project)} has no iPad #Preview")
 
+    with case.subTest(check="preview code stays out of release builds"):
+        check_previews(case, project)
+
     with case.subTest(check="folders are concepts, stores sit beside their views"):
         check_folders(case, project)
 
@@ -535,6 +538,42 @@ def check_list_detail(case: unittest.TestCase, project: Path) -> None:
         case.assertRegex(root, rf"{name}DetailView\(id:", f"{relative} does not open its detail by id")
         list_view, _ = lex(target / "List" / f"{name}ListView.swift")
         case.assertIn("List(selection: $selection)", list_view, f"{target.name}'s list does not select")
+
+
+def debug_only(code: str) -> list[bool]:
+    """Per line of `code`, whether it is compiled only when DEBUG is set."""
+    branches: list[bool] = []
+    lines = []
+    for line in code.splitlines():
+        directive = line.strip()
+        if directive.startswith("#if "):
+            branches.append(directive == "#if DEBUG")
+        elif branches and (directive == "#else" or directive.startswith("#elseif ")):
+            branches[-1] = False
+        elif branches and directive == "#endif":
+            branches.pop()
+        lines.append(any(branches))
+    return lines
+
+
+def check_previews(case: unittest.TestCase, project: Path) -> None:
+    """
+    Preview helpers ship in no release build: a feature's `Previews/` files are compiled only under
+    DEBUG, and so is every `#Preview` of a feature that has them, since those previews use them.
+    """
+    for target in sorted((project / "Packages" / "Features" / "Sources").iterdir()):
+        if not (target / "Previews").is_dir():
+            continue
+        for path in swift_files(target):
+            code = lex(path)[0]
+            lines = list(zip(code.splitlines(), debug_only(code)))
+            relative = path.relative_to(project).as_posix()
+            if "Previews" in path.relative_to(target).parts:
+                released = [line for line, only in lines if line.strip() and not only and not re.match(r"(import |#)", line)]
+                case.assertFalse(released, f"{relative} is compiled into release builds")
+            else:
+                for line, only in lines:
+                    case.assertTrue(only or "#Preview" not in line, f"{relative} has a #Preview outside #if DEBUG")
 
 
 def declared_names(root: Path) -> frozenset[str]:
@@ -1028,6 +1067,16 @@ class ViolationsTest(unittest.TestCase):
             ("is not in Localizable.xcstrings", self.ROW, replacing(f"{self.ROW_PADDING}\n", f"{self.ROW_PADDING}\n        .help(Text(\"Words no catalog has\", bundle: .module))\n")),
             ("declares 2 public types", "Packages/Features/Sources/SampleData/API/SampleItem.swift", lambda text: text + "\npublic struct SampleTag: Sendable {}\n"),
             ("'Views'", "Packages/Features/Sources/SampleFeature/Views/SampleBadge.swift", lambda _: "struct SampleBadge {}\n"),
+            (
+                "SampleListView.swift has a #Preview outside #if DEBUG",
+                "Packages/Features/Sources/SampleFeature/List/SampleListView.swift",
+                replacing("#if DEBUG\n", "#if os(iOS)\n"),
+            ),
+            (
+                "PreviewSampleRepository.swift is compiled into release builds",
+                "Packages/Features/Sources/SampleFeature/Previews/PreviewSampleRepository.swift",
+                replacing("#if DEBUG\n", "#if os(iOS)\n"),
+            ),
             ("has no view beside it", "Packages/Features/Sources/SampleFeature/Detail/SampleShareStore.swift", lambda _: "final class SampleShareStore {}\n"),
         ):
             with self.subTest(rule=message):

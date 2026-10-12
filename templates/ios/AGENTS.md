@@ -195,7 +195,9 @@ Use the system's own motion; never rebuild it:
   screen keys, Esc (`.cancelAction`) closes or skips, Return (`.defaultAction`) confirms or goes on.
   Custom tappable rows get `.hoverEffect`.
 - Every `…View.swift` in a feature has a `#Preview` at an iPad size:
-  `#Preview("iPad", traits: .fixedLayout(width: 1194, height: 834))`.
+  `#Preview("iPad", traits: .fixedLayout(width: 1194, height: 834))`. Preview data lives in the
+  feature's `Previews/` folder; that folder and every `#Preview` that uses it sit inside
+  `#if DEBUG`, so a release build carries none of it.
 - Never add `UIRequiresFullScreen` or remove an orientation from `project.yml`.
 
 ## Strings

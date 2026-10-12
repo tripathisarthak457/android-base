@@ -107,6 +107,7 @@ private struct SampleDetails: View {
     }
 }
 
+#if DEBUG
 #Preview("iPhone") {
     NavigationStack {
         SampleDetailView(id: 1, repository: PreviewSampleRepository())
@@ -120,3 +121,4 @@ private struct SampleDetails: View {
     }
     .appTheme(designStyle: .editorial)
 }
+#endif

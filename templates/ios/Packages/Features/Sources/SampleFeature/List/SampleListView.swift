@@ -135,6 +135,7 @@ private struct SamplePreviewCard: View {
     }
 }
 
+#if DEBUG
 #Preview("iPhone") {
     NavigationStack {
         SampleListView(store: .preview(), selection: .constant(nil))
@@ -150,3 +151,4 @@ private struct SamplePreviewCard: View {
     }
     .appTheme()
 }
+#endif

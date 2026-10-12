@@ -2,6 +2,7 @@ import AppCore
 import DesignSystem
 import SampleData
 
+#if DEBUG
 /// Samples for previews, answered at once and without the network.
 nonisolated struct PreviewSampleRepository: SampleRepository {
     var samples = Self.examples
@@ -39,6 +40,17 @@ nonisolated struct PreviewSampleRepository: SampleRepository {
 extension SampleListStore {
     /// A store for previews, online and never told otherwise.
     static func preview(_ repository: any SampleRepository = PreviewSampleRepository()) -> SampleListStore {
-        SampleListStore(repository: repository, connectivity: { AsyncStream { _ in } }, toasts: ToastCenter())
+        SampleListStore(repository: repository, connectivity: alwaysOnline, toasts: ToastCenter())
     }
 }
+
+extension SampleRootView {
+    /// The tab for previews, with the preview samples, online and never told otherwise.
+    static var preview: SampleRootView {
+        SampleRootView(repository: PreviewSampleRepository(), connectivity: alwaysOnline, toasts: ToastCenter())
+    }
+}
+
+/// A connectivity stream that never reports a change, so a preview starts no path monitor.
+private let alwaysOnline: @Sendable () -> AsyncStream<Bool> = { AsyncStream { _ in } }
+#endif

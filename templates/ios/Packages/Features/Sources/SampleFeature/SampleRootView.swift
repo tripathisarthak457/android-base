@@ -23,24 +23,28 @@ public struct SampleRootView: View {
     public init(client: APIClient, modelContainer: ModelContainer, monitor: NetworkMonitor, toasts: ToastCenter) {
         self.init(
             repository: DefaultSampleRepository(client: client, modelContainer: modelContainer),
-            monitor: monitor,
+            connectivity: { monitor.updates() },
             toasts: toasts
         )
     }
     // </opt:database>
     // <opt-else:database>
     //~ public init(client: APIClient, monitor: NetworkMonitor, toasts: ToastCenter) {
-    //~     self.init(repository: DefaultSampleRepository(client: client), monitor: monitor, toasts: toasts)
+    //~     self.init(
+    //~         repository: DefaultSampleRepository(client: client),
+    //~         connectivity: { monitor.updates() },
+    //~         toasts: toasts
+    //~     )
     //~ }
     // </opt-else:database>
 
-    init(repository: any SampleRepository, monitor: NetworkMonitor, toasts: ToastCenter) {
+    init(
+        repository: any SampleRepository,
+        connectivity: @escaping @Sendable () -> AsyncStream<Bool>,
+        toasts: ToastCenter
+    ) {
         self.repository = repository
-        _listStore = State(initialValue: SampleListStore(
-            repository: repository,
-            connectivity: { monitor.updates() },
-            toasts: toasts
-        ))
+        _listStore = State(initialValue: SampleListStore(repository: repository, connectivity: connectivity, toasts: toasts))
     }
     // <opt:database>
 
@@ -83,14 +87,16 @@ public struct SampleRootView: View {
     }
 }
 
+#if DEBUG
 #Preview("iPhone") {
-    SampleRootView(repository: PreviewSampleRepository(), monitor: NetworkMonitor(), toasts: ToastCenter())
+    SampleRootView.preview
         .environment(Router())
         .appTheme()
 }
 
 #Preview("iPad", traits: .fixedLayout(width: 1194, height: 834)) {
-    SampleRootView(repository: PreviewSampleRepository(), monitor: NetworkMonitor(), toasts: ToastCenter())
+    SampleRootView.preview
         .environment(Router())
         .appTheme(designStyle: .social)
 }
+#endif
