@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(projects.shared)
+    implementation(projects.core.common)
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.android)
 

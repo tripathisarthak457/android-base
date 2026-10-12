@@ -34,9 +34,12 @@ class KoinModulesTest {
 /**
  * Types the graph is handed rather than asked for: what a definition builds inline and passes
  * straight to a constructor, the collections the registries are built from, and the
- * `SavedStateHandle` the ViewModel factory supplies.
+ * `SavedStateHandle` the ViewModel factory supplies. `Boolean` is here because the values built
+ * from [AppEnvironment] carry flags, and Koin's own allow-list of plain types stops at numbers and
+ * strings.
  */
 private val HandedIn = listOf(
+    Boolean::class,
     CoroutineDispatcher::class,
     CoroutineScope::class,
     DataStore::class,
