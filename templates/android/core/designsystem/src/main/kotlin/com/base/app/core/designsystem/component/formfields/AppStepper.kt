@@ -48,12 +48,15 @@ fun AppStepper(
     enabled: Boolean = true,
 ) {
     val haptics = rememberAppHaptics()
+    // A held button keeps repeating across recompositions, so everything it reads is the latest.
     val current by rememberUpdatedState(value)
+    val bounds by rememberUpdatedState(range)
+    val increment by rememberUpdatedState(step)
     val decreaseLabel = stringResource(R.string.designsystem_decrease)
     val increaseLabel = stringResource(R.string.designsystem_increase)
     val onChange by rememberUpdatedState(onValueChange)
     fun change(to: Int) {
-        val next = to.coerceIn(range)
+        val next = to.coerceIn(bounds)
         if (next == current) return
         haptics.perform(AppHaptic.Selection)
         onChange(next)
@@ -72,8 +75,8 @@ fun AppStepper(
         AppIconButton(
             icon = AppIcons.Minus,
             contentDescription = decreaseLabel,
-            onClick = { change(current - step) },
-            modifier = Modifier.repeatWhileHeld(enabled && value > range.first) { change(current - step) },
+            onClick = { change(current - increment) },
+            modifier = Modifier.repeatWhileHeld(enabled && value > range.first) { change(current - increment) },
             variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
             enabled = enabled && value > range.first,
@@ -88,8 +91,8 @@ fun AppStepper(
         AppIconButton(
             icon = AppIcons.Plus,
             contentDescription = increaseLabel,
-            onClick = { change(current + step) },
-            modifier = Modifier.repeatWhileHeld(enabled && value < range.last) { change(current + step) },
+            onClick = { change(current + increment) },
+            modifier = Modifier.repeatWhileHeld(enabled && value < range.last) { change(current + increment) },
             variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
             enabled = enabled && value < range.last,
