@@ -3,6 +3,8 @@ package com.base.app.core.applock
 import androidx.activity.compose.LocalActivity
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +23,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -55,9 +60,18 @@ fun AppLockGate(
     val locked by lock.locked.collectAsStateWithLifecycle(initialValue = lock.isLockedNow())
 
     Box(modifier) {
-        // Kept composed underneath, so unlocking returns to exactly where the person was. Hidden
-        // from accessibility services while covered, which would otherwise read it aloud.
-        Box(if (locked) Modifier.clearAndSetSemantics {} else Modifier) {
+        // Kept composed underneath, so unlocking returns to exactly where the person was. While
+        // covered it is hidden from accessibility services, which would read it aloud, and closed
+        // to keyboard focus, which would let Tab and Enter reach it through the cover.
+        val covered = if (locked) {
+            Modifier
+                .clearAndSetSemantics {}
+                .focusProperties { onEnter = { cancelFocusChange() } }
+                .focusGroup()
+        } else {
+            Modifier
+        }
+        Box(covered) {
             content()
         }
         if (locked) UnlockScreen(lock)
@@ -131,6 +145,11 @@ private fun UnlockScreen(lock: AppLock) {
         }
     }
 
+    // Focus moves onto the cover and stays there: a field focused underneath would otherwise keep
+    // the keyboard up and take what is typed.
+    val focus = remember { FocusRequester() }
+    LaunchedEffect(focus) { focus.requestFocus() }
+
     // Back leaves the app as it is rather than going anywhere inside it.
     val back = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)
     NavigationBackHandler(state = back, onBackCompleted = { activity.moveTaskToBack(true) })
@@ -141,6 +160,9 @@ private fun UnlockScreen(lock: AppLock) {
             .background(AppTheme.colors.background)
             // Taps must not reach the app underneath.
             .pointerInput(Unit) {}
+            .focusProperties { onExit = { cancelFocusChange() } }
+            .focusRequester(focus)
+            .focusable()
             .safeDrawingPadding()
             .padding(AppTheme.spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
