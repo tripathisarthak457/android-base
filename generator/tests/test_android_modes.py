@@ -75,6 +75,11 @@ dependencies {{
         write(root, f"feature/{name}/src/main/res/values/strings.xml", "<resources />\n")
     write(root, "data/orders/build.gradle.kts", (root / "data/orders/build.gradle.kts").read_text().replace(
         'implementation(project(":core:network"))', 'implementation(project(":core:network"))\n    api(libs.androidx.paging.common)'))
+    write(root, f"data/orders/src/testFixtures/kotlin/{PKG}/data/orders/api/FakeRepository.kt",
+          "package com.acme.field.data.orders.api\n\nclass FakeRepository : Repository\n")
+    write(root, "feature/orders/build.gradle.kts", (root / "feature/orders/build.gradle.kts").read_text().replace(
+        "implementation(projects.data.orders)",
+        'implementation(projects.data.orders)\n    testImplementation(testFixtures(project(":data:orders")))'))
     write(root, f"core/navigation/src/main/kotlin/{PKG}/feature/orders/api/OrderDetailKey.kt",
           "package com.acme.field.feature.orders.api\n\ndata class OrderDetailKey(val id: String)\n")
     write(root, f"feature/trips/src/main/kotlin/{PKG}/feature/trips/TripScreen.kt",
@@ -122,6 +127,15 @@ class SplitTest(unittest.TestCase):
         self.assertIn('api(project(":feature:trips:api"))', impl)
         self.assertIn("implementation(projects.data.trips.api)", impl)
         self.assertIn('api(project(":data:orders:api"))', self.text("data/orders/impl/build.gradle.kts"))
+
+    def test_fakes_of_the_api_move_with_it_and_their_users_follow(self):
+        fixtures = f"src/testFixtures/kotlin/{PKG}/data/orders/api/FakeRepository.kt"
+        self.assertTrue((self.project / "data/orders/api" / fixtures).is_file())
+        self.assertFalse((self.project / "data/orders/impl/src/testFixtures").exists())
+        self.assertIn(
+            'testImplementation(testFixtures(project(":data:orders:api")))',
+            self.text("feature/orders/impl/build.gradle.kts"),
+        )
 
     def test_a_shared_key_moves_to_its_owner_and_the_importer_depends_on_it(self):
         moved = self.project / f"feature/orders/api/src/main/kotlin/{PKG}/feature/orders/api/OrderDetailKey.kt"

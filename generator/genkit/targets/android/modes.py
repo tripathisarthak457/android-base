@@ -103,7 +103,7 @@ def _split_module(project: Path, package: str, package_path: str, module: Module
     compact_build = (impl / "build.gradle.kts").read_text(encoding="utf-8")
     api = root / "api"
     moved_sources = False
-    for source_set in ("main", "test"):
+    for source_set in ("main", "test", "testFixtures"):
         package_dir = Path("src") / source_set / "kotlin" / package_path / module.tier / module.name / "api"
         if (impl / package_dir).is_dir():
             _move_tree(impl / package_dir, api / package_dir)

@@ -14,8 +14,9 @@ import org.gradle.kotlin.dsl.configure
 /**
  * Every `:core:*`, `:data:*` and `:feature:*` module.
  *
- * Resource processing, unit tests and device tests are switched on only for modules that have the
- * matching source directory: most modules have none of them, and each costs tasks on every build.
+ * Resource processing, unit tests, device tests and test fixtures are switched on only for modules
+ * that have the matching source directory: most modules have none of them, and each costs tasks on
+ * every build.
  */
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
@@ -24,10 +25,13 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         val hasResources = file("src/main/res").exists()
         val hasUnitTests = file("src/test").exists()
         val hasDeviceTests = file("src/androidTest").exists()
+        // Fakes that other modules' tests share through `testFixtures(project(…))`.
+        val hasTestFixtures = file("src/testFixtures").exists()
 
         extensions.configure<LibraryExtension> {
             configureAndroidCommon(this)
             androidResources.enable = hasResources
+            testFixtures.enable = hasTestFixtures
         }
 
         extensions.configure<LibraryAndroidComponentsExtension> {

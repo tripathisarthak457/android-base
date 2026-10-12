@@ -16,6 +16,10 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("org.jetbrains.kotlin.jvm")
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
+        // A modular data domain's fakes sit beside the interfaces they implement, in its `:api`.
+        if (file("src/testFixtures").exists()) {
+            pluginManager.apply("java-test-fixtures")
+        }
 
         extensions.configure<KotlinJvmProjectExtension> {
             compilerOptions {
