@@ -3,19 +3,24 @@ import SwiftUI
 /// A labelled single-line text field drawn with the design style's field treatment, with room for
 /// an error under it.
 ///
-/// The text belongs to the store's state, and edits go back through its events:
+/// The text belongs to the store's state, and edits go back through its events. Focus, the return
+/// key and submitting belong to the form, which applies them to the field as to a `TextField`:
 ///
 ///     AppTextField(
 ///         Text("Email", bundle: .module),
 ///         text: Binding(get: { store.state.email }, set: { store.send(.emailChanged($0)) }),
 ///         error: store.state.emailError.map { Text($0) }
 ///     )
+///     .focused($focusedField, equals: .email)
+///     .submitLabel(.next)
+///     .onSubmit { focusedField = .password }
 public struct AppTextField: View {
     private let label: Text
     @Binding private var text: String
     private let prompt: Text?
     private let error: Text?
 
+    // Only what the field draws; a form's own `.focused(_:equals:)` on the field moves focus.
     @FocusState private var isFocused: Bool
     @Environment(\.appTheme) private var theme
 
@@ -45,10 +50,14 @@ public struct AppTextField: View {
                 FieldBackground(treatment: theme.shapes.field, outline: outline, emphasised: emphasised)
             }
             .animation(.easeOut(duration: DesignTokens.Motion.fadeShort), value: emphasised)
+            // VoiceOver reads the error with the field, where it applies, rather than as a
+            // separate element after it.
+            .accessibilityHint(error ?? Text(verbatim: ""))
             if let error {
                 error
                     .font(theme.typography.footnote)
                     .foregroundStyle(theme.colors.danger.content)
+                    .accessibilityHidden(true)
             }
         }
     }
