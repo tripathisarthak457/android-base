@@ -1,0 +1,18 @@
+key = "liquidglass"
+title = "Liquid glass chrome"
+headline = "Kyant backdrop glass on the tab bar, with automatic fallbacks"
+description = """
+The tab bar blurs and bends the screen scrolling under it, with a lens that follows a drag
+across the tabs. Cards, chips and fields are drawn glass that samples nothing. The device picks
+a tier: live glass with the lens, live glass without it, frosted, or solid when someone turns on
+Reduce transparency. Battery saver, heat and a GPU that falls behind each step it down."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/glass",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/glass",
+]
+legacy = []
+licence = { name = "Kyant backdrop", spdx = "Apache-2.0", url = "https://github.com/Kyant0/AndroidLiquidGlass" }
