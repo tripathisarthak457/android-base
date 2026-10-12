@@ -55,7 +55,9 @@ REQUIRED_REASON_APIS = {
 
 #: Targets whose sources are interface code: main actor by default.
 CORE_UI_TARGETS = frozenset({"DesignSystem", "Navigation"})
-CORE_TARGETS = frozenset({"AppCore", "DesignSystem", "Navigation", "Networking", "Persistence"})
+CORE_TARGETS = frozenset({"AppCore", "AppTesting", "DesignSystem", "Navigation", "Networking", "Persistence"})
+#: Test support, which only test targets may link.
+TEST_SUPPORT = "AppTesting"
 
 
 def raw_spec(**fields) -> dict:
@@ -327,7 +329,7 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
             if target.test:
                 continue
             case.assertFalse(target.products)
-            case.assertTrue(set(target.dependencies) <= CORE_TARGETS, target.name)
+            case.assertTrue(set(target.dependencies) <= CORE_TARGETS - {TEST_SUPPORT}, target.name)
             if target.name not in CORE_UI_TARGETS:
                 case.assertFalse(set(target.dependencies) & CORE_UI_TARGETS, f"{target.name} depends on interface code")
         core_products = set(core.products)
@@ -335,6 +337,7 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
             case.assertTrue(set(target.products) <= core_products, f"{target.name} uses a product Core does not have")
             if target.test:
                 continue
+            case.assertNotIn(TEST_SUPPORT, target.products, f"{target.name} links test support")
             if target.name.endswith("Data"):
                 case.assertEqual([], target.dependencies, f"{target.name} depends on another Features target")
             else:
@@ -479,6 +482,7 @@ def check_project_yml(case: unittest.TestCase, project: Path, spec, features: Pa
     case.assertEqual(scaffold.feature_products(spec), linked["Features"])
     case.assertTrue(set(linked["Features"]) <= set(features.products))
     case.assertEqual("Networking" in linked["Core"], spec.has("network"))
+    case.assertNotIn(TEST_SUPPORT, linked["Core"], "the app links test support")
     case.assertEqual([{"target": app}], data["targets"][f"{app}Tests"]["dependencies"])
 
 
@@ -798,10 +802,6 @@ class TemplateTest(unittest.TestCase):
                 for identity, keys in catalogs.items():
                     self.assertEqual(keys, set(translation.modules[identity]), identity)
                 self.assertEqual(set(scaffold.STRINGS), set(translation.scaffold))
-
-    def test_scaffolded_tests_wait_as_the_templates_do(self):
-        waiting = TEMPLATE / "Packages/Features/Tests/SampleFeatureTests/WaitUntil.swift"
-        self.assertEqual(waiting.read_text(encoding="utf-8"), scaffold.WAIT_UNTIL)
 
     def test_the_offered_languages_match_android(self):
         self.assertEqual(translations.available("android"), translations.available("ios"))

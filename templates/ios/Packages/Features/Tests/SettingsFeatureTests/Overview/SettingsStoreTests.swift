@@ -1,9 +1,11 @@
+import AppTesting
 import Foundation
 import Persistence
 @testable import SettingsFeature
 import Testing
 
 @MainActor
+@Suite(.timeLimit(.minutes(1)))
 struct SettingsStoreTests {
     private let suite = "SettingsStoreTests.\(UUID().uuidString)"
 
@@ -32,11 +34,7 @@ struct SettingsStoreTests {
 
         settings.setHapticsEnabled(false)
 
-        let deadline = ContinuousClock.now + .seconds(2)
-        while store.state.hapticsEnabled, ContinuousClock.now < deadline {
-            try await Task.sleep(for: .milliseconds(5))
-        }
-        #expect(!store.state.hapticsEnabled)
+        await waitUntil { !store.state.hapticsEnabled }
     }
 
     private func makeSettings() throws -> SettingsRepository {

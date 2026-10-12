@@ -32,10 +32,10 @@ Config/                   Dev.xcconfig (Debug) and Prod.xcconfig (Release): API_
 BaseApp/                  the app target: composition root, window, tabs, commands, privacy manifest
 BaseAppTests/             app-level tests
 <!-- <opt:network> -->
-Packages/Core/            AppCore, DesignSystem, Navigation, Networking, Persistence
+Packages/Core/            AppCore, DesignSystem, Navigation, Networking, Persistence, AppTesting (tests only)
 <!-- </opt:network> -->
 <!-- <opt-else:network> -->
-<!--~ Packages/Core/            AppCore, DesignSystem, Navigation, Persistence -->
+<!--~ Packages/Core/            AppCore, DesignSystem, Navigation, Persistence, AppTesting (tests only) -->
 <!-- </opt-else:network> -->
 Packages/Features/        per feature: <Name>Data (repository, DTOs) and <Name>Feature (views, stores)
 ```

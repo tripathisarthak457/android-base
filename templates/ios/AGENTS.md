@@ -36,6 +36,7 @@ Packages/Core/Sources/
 <!-- <opt-else:database> -->
 <!--~   Persistence/                 Settings (SettingsRepository) -->
 <!-- </opt-else:database> -->
+  AppTesting/                  waitUntil, for test targets only; the app never links it
 Packages/Features/Sources/
   <Name>Data/                  API/ (protocol, models), Remote/ (+ DTO/), Local/, Default<Name>Repository.swift
   <Name>Feature/               one folder per screen or flow (List/, Detail/, Overview/, Intro/), Components/, Resources/
@@ -112,6 +113,8 @@ final class OrdersStore {
   Show transient messages through `ToastCenter`.
 - `.refreshable` calls an `async` method that awaits the store's own task (every list store's
   `refresh()`).
+- A store test sends events and waits for the state with `waitUntil` from `AppTesting`, under a
+  suite `.timeLimit`; never `Task.sleep` and a deadline, which fails on a slow machine.
 
 ## Navigation
 

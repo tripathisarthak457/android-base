@@ -1,4 +1,5 @@
 import AppCore
+import AppTesting
 import SampleData
 @testable import SampleFeature
 import Testing

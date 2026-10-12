@@ -31,30 +31,6 @@ STRINGS = (
 )
 
 
-#: Every scaffolded test target's `waitUntil`, the same as `SampleFeatureTests/WaitUntil.swift`:
-#: test targets cannot share a source file, and one helper does not earn a test-support product.
-WAIT_UNTIL = """\
-import Observation
-
-/// Returns once `condition` holds, checking it again each time something it reads changes.
-///
-/// It waits on the store's own changes instead of polling the clock, so a slow machine cannot fail
-/// a test; the suite's time limit ends a wait for a change that never comes.
-@MainActor
-func waitUntil(_ condition: () -> Bool) async {
-    while !condition() {
-        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            withObservationTracking {
-                _ = condition()
-            } onChange: {
-                continuation.resume()
-            }
-        }
-    }
-}
-"""
-
-
 def regions(spec: Spec) -> dict[str, list[str] | None]:
     modules = tab_modules(spec)
     return {
@@ -126,6 +102,7 @@ def _package_targets(spec: Spec, name: str) -> list[str]:
         f'                "{pascal}Feature",',
         f'                "{pascal}Data",',
         _core("AppCore"),
+        _core("AppTesting"),
         "            ],",
         "            swiftSettings: featureSettings",
         "        ),",
@@ -689,10 +666,9 @@ actor Fake{pascal}Repository: {pascal}Repository {{
 }}
 """)
 
-    _write(tests / "WaitUntil.swift", WAIT_UNTIL)
-
     _write(tests / "List" / f"{pascal}ListStoreTests.swift", f"""\
 import AppCore
+import AppTesting
 import {pascal}Data
 @testable import {pascal}Feature
 import Testing
@@ -737,6 +713,7 @@ struct {pascal}ListStoreTests {{
 
     _write(tests / "Detail" / f"{pascal}DetailStoreTests.swift", f"""\
 import AppCore
+import AppTesting
 import {pascal}Data
 @testable import {pascal}Feature
 import Testing

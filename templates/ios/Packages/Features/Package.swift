@@ -76,6 +76,7 @@ let package = Package(
                 "SampleFeature",
                 "SampleData",
                 .product(name: "AppCore", package: "Core"),
+                .product(name: "AppTesting", package: "Core"),
                 .product(name: "DesignSystem", package: "Core"),
             ],
             swiftSettings: featureSettings
@@ -97,6 +98,7 @@ let package = Package(
             name: "SettingsFeatureTests",
             dependencies: [
                 "SettingsFeature",
+                .product(name: "AppTesting", package: "Core"),
                 .product(name: "Persistence", package: "Core"),
             ],
             swiftSettings: featureSettings

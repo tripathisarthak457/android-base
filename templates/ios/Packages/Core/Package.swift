@@ -26,6 +26,8 @@ let package = Package(
         .library(name: "Networking", targets: ["Networking"]),
         // </opt:network>
         .library(name: "Persistence", targets: ["Persistence"]),
+        // For test targets only, as the Android template's core:testing.
+        .library(name: "AppTesting", targets: ["AppTesting"]),
     ],
     targets: [
         .target(
@@ -53,6 +55,10 @@ let package = Package(
             name: "Persistence",
             swiftSettings: backgroundSettings
         ),
+        .target(
+            name: "AppTesting",
+            swiftSettings: backgroundSettings
+        ),
         .testTarget(
             name: "AppCoreTests",
             dependencies: ["AppCore"],
@@ -78,6 +84,11 @@ let package = Package(
         .testTarget(
             name: "PersistenceTests",
             dependencies: ["Persistence"],
+            swiftSettings: backgroundSettings
+        ),
+        .testTarget(
+            name: "AppTestingTests",
+            dependencies: ["AppTesting"],
             swiftSettings: backgroundSettings
         ),
     ]

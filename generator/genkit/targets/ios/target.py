@@ -47,7 +47,7 @@ _FRAMEWORK_COLLISIONS = frozenset({"core", "swift", "tabular"})
 #: Modules every project may contain, besides the scaffolded ones. The app's own target is named
 #: after the app and must not take one of these names, nor a system module's.
 _PROJECT_MODULES = frozenset({
-    "AppCore", "DesignSystem", "Navigation", "Networking", "Persistence", "Core", "Features",
+    "AppCore", "AppTesting", "DesignSystem", "Navigation", "Networking", "Persistence", "Core", "Features",
     "SampleData", "SampleFeature", "SettingsFeature", "OnboardingFeature",
 })
 _SYSTEM_MODULES = frozenset({
