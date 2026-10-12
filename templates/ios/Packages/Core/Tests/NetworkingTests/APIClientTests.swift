@@ -8,7 +8,7 @@ import Testing
 struct APIClientTests {
     @Test func decodesASuccessfulAnswer() async throws {
         let client = StubProtocol.client { _ in
-            (200, [:], #"{"id": 1, "title": "One"}"#)
+            (200, #"{"id": 1, "title": "One"}"#)
         }
         let result = await client.send(Endpoint<Item>.get("items/1"))
         #expect(try result.get() == Item(id: 1, title: "One"))
@@ -16,7 +16,7 @@ struct APIClientTests {
 
     @Test func resolvesPathsAgainstTheBaseURLAndKeepsAbsoluteOnes() async throws {
         let client = StubProtocol.client { request in
-            (200, [:], #"{"url": "\#(request.url?.absoluteString ?? "")"}"#)
+            (200, #"{"url": "\#(request.url?.absoluteString ?? "")"}"#)
         }
         let relative = await client.send(Endpoint<Echo>.get("items", query: [URLQueryItem(name: "page", value: "2")]))
         #expect(try relative.get().url == "https://api.example.com/v1/items?page=2")
@@ -26,16 +26,16 @@ struct APIClientTests {
 
     @Test func turnsAnErrorStatusIntoAnHTTPFailure() async {
         let client = StubProtocol.client { _ in
-            (503, ["Retry-After": "30"], #"{"code": "maintenance", "message": "Back soon"}"#)
+            (503, #"{"code": "maintenance", "message": "Back soon", "errors": {"title": ["Too long"]}}"#)
         }
         let result = await client.send(Endpoint<Item>.get("items/1"))
-        let expected = HTTPFailure(status: 503, code: "maintenance", message: "Back soon", retryAfter: .seconds(30))
+        let expected = HTTPFailure(status: 503, code: "maintenance", message: "Back soon", fieldErrors: ["title": ["Too long"]])
         #expect(result == .failure(.http(expected)))
     }
 
     @Test func reportsABodyItCannotReadAsADecodeFailure() async {
         let client = StubProtocol.client { _ in
-            (200, [:], #"{"name": "no id"}"#)
+            (200, #"{"name": "no id"}"#)
         }
         let result = await client.send(Endpoint<Item>.get("items/1"))
         guard case .failure(.decode) = result else {
@@ -71,7 +71,7 @@ private struct Echo: Decodable, Sendable {
 
 /// Answers every request of the sessions it is installed in with what `handler` returns.
 private final class StubProtocol: URLProtocol {
-    typealias Handler = @Sendable (URLRequest) throws -> (status: Int, headers: [String: String], body: String)
+    typealias Handler = @Sendable (URLRequest) throws -> (status: Int, body: String)
 
     // Written by one test at a time; see the suite's `.serialized` trait.
     nonisolated(unsafe) static var handler: Handler?
@@ -96,7 +96,7 @@ private final class StubProtocol: URLProtocol {
         guard let handler = Self.handler, let url = request.url else { return }
         do {
             let answer = try handler(request)
-            if let response = HTTPURLResponse(url: url, statusCode: answer.status, httpVersion: nil, headerFields: answer.headers) {
+            if let response = HTTPURLResponse(url: url, statusCode: answer.status, httpVersion: nil, headerFields: nil) {
                 client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             }
             client?.urlProtocol(self, didLoad: Data(answer.body.utf8))

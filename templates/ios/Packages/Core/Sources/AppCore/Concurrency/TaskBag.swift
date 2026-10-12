@@ -41,11 +41,6 @@ public final class TaskBag {
         return true
     }
 
-    /// Whether work under `key` is in flight.
-    public func isRunning(_ key: String) -> Bool {
-        running[key] != nil
-    }
-
     public func cancel(_ key: String) {
         running[key] = nil
     }

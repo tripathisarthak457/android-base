@@ -10,20 +10,10 @@ public struct HTTPFailure: Equatable, Sendable {
     /// Messages per field, keyed by the field names the request used.
     public let fieldErrors: [String: [String]]
 
-    /// How long the server asked the app to wait before trying again, from `Retry-After`.
-    public let retryAfter: Duration?
-
-    public init(
-        status: Int,
-        code: String? = nil,
-        message: String? = nil,
-        fieldErrors: [String: [String]] = [:],
-        retryAfter: Duration? = nil
-    ) {
+    public init(status: Int, code: String? = nil, message: String? = nil, fieldErrors: [String: [String]] = [:]) {
         self.status = status
         self.code = code
         self.message = message
         self.fieldErrors = fieldErrors
-        self.retryAfter = retryAfter
     }
 }

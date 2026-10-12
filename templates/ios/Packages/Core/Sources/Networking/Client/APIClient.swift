@@ -36,8 +36,7 @@ public struct APIClient: Sendable {
             return .failure(.unexpected("The response to \(request.url?.absoluteString ?? endpoint.path) was not HTTP."))
         }
         guard (200..<300).contains(http.statusCode) else {
-            let retryAfter = http.value(forHTTPHeaderField: "Retry-After")
-            return .failure(.http(await Self.httpFailure(status: http.statusCode, retryAfter: retryAfter, body: data)))
+            return .failure(.http(await Self.httpFailure(status: http.statusCode, body: data)))
         }
         return await Self.decode(Response.self, from: data)
     }
@@ -54,15 +53,13 @@ public struct APIClient: Sendable {
     }
 
     @concurrent
-    private static func httpFailure(status: Int, retryAfter: String?, body: Data) async -> HTTPFailure {
+    private static func httpFailure(status: Int, body: Data) async -> HTTPFailure {
         let details = try? JSONDecoder().decode(ErrorBody.self, from: body)
         return HTTPFailure(
             status: status,
             code: details?.code,
             message: details?.message,
-            fieldErrors: details?.errors ?? [:],
-            // Only the delay form; a server that sends an HTTP date gets the app's own back-off.
-            retryAfter: retryAfter.flatMap { Int($0) }.map { Duration.seconds($0) }
+            fieldErrors: details?.errors ?? [:]
         )
     }
 

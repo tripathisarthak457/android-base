@@ -16,7 +16,8 @@ struct TaskBagTests {
         await first.value
         await second.value
         #expect(recorder.events.sorted() == ["first cancelled", "second finished"])
-        #expect(!bag.isRunning("load"))
+        // Free again: the run that replaced the first one ended, and the first did not clear it early.
+        #expect(bag.exclusive("load") {})
     }
 
     @Test func debounceDropsARunReplacedBeforeItStarts() async {
@@ -37,7 +38,6 @@ struct TaskBagTests {
         #expect(bag.exclusive("save") { _ = try? await Task.sleep(for: .seconds(10)) })
         #expect(!bag.exclusive("save") {})
         bag.cancel("save")
-        #expect(!bag.isRunning("save"))
         #expect(bag.exclusive("save") {})
     }
 
