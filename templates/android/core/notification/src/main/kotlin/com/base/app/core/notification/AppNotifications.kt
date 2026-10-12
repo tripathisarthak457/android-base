@@ -95,7 +95,11 @@ class AppNotifications @Inject constructor(
         return Intent(Intent.ACTION_VIEW, link)
             .setPackage(context.packageName)
             .setComponent(launch.component)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            // The running activity takes the link in onNewIntent. Without CLEAR_TOP and SINGLE_TOP a
+            // second instance would start on top of it, or on top of a browser tab the app opened.
+            .addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+            )
     }
 
     private companion object {
