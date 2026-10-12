@@ -336,6 +336,48 @@ class RecomposeTraceTest(unittest.TestCase):
         self.assertTrue(cancel.endswith("input motionevent UP 1077 1300"))
 
 
+class UprightTest(unittest.TestCase):
+    class FakeDevice(perf.Device):
+        def __init__(self, settings):
+            super().__init__("fake")
+            self.settings = dict(settings)
+
+        def shell(self, command, timeout=180):
+            for part in command.split("; "):
+                verb, *rest = part.split()[1:]
+                key = " ".join(rest[:2])
+                if verb == "get":
+                    return self.settings.get(key, "null") + "\n"
+                if verb == "put":
+                    self.settings[key] = rest[2]
+                elif verb == "delete":
+                    self.settings.pop(key, None)
+            return ""
+
+    def test_the_owners_rotation_and_screen_timeout_come_back(self):
+        device = self.FakeDevice({"system accelerometer_rotation": "1", "system user_rotation": "1"})
+        with mock_sleep(), device.upright():
+            self.assertEqual(device.settings["system user_rotation"], "0")
+            self.assertEqual(device.settings["system accelerometer_rotation"], "0")
+            self.assertEqual(device.settings["global stay_on_while_plugged_in"], "7")
+        self.assertEqual(device.settings, {"system accelerometer_rotation": "1", "system user_rotation": "1"})
+
+    def test_settings_come_back_when_the_run_fails(self):
+        device = self.FakeDevice({"global stay_on_while_plugged_in": "2"})
+        with self.assertRaises(perf.HarnessError), mock_sleep(), device.upright():
+            raise perf.HarnessError("the phone is locked")
+        self.assertEqual(device.settings, {"global stay_on_while_plugged_in": "2"})
+
+
+@contextlib.contextmanager
+def mock_sleep():
+    sleep, perf.time.sleep = perf.time.sleep, lambda seconds: None
+    try:
+        yield
+    finally:
+        perf.time.sleep = sleep
+
+
 class MeminfoTest(unittest.TestCase):
     def test_graphics_is_split_from_what_the_app_holds(self):
         memory = perf.parse_meminfo(fixture("meminfo.txt"))

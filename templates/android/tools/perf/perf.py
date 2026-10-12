@@ -8,7 +8,8 @@ One invocation measures only an app it installed itself. Each run installs the A
 installs its baseline profile and compiles it the way Play does, launches it with the dev launch
 options (`perf.fakeSession=true` is always passed, so onboarding and sign-in are skipped), visits every
 tab once (recorded as `tab_first_visit`), then runs the scenarios. The median of the runs is what the
-summary reports and what `--gate` checks.
+summary reports and what `--gate` checks. While it runs (and while record.sh records), the display stays in
+its natural rotation and on while plugged in; the owner's settings come back at the end.
 
 UI is found by resource id (`Modifier.testTag` with `testTagsAsResourceId` at the root): `tab_<i>`,
 `primary_list`, `related_row`. Smoothness is only meaningful on release builds compiled with their
@@ -16,6 +17,7 @@ profile, on a real phone; debug builds are an order of magnitude jankier.
 """
 
 import argparse
+import contextlib
 import json
 import os
 import random
@@ -58,6 +60,10 @@ PROFILE_ACTION = "androidx.profileinstaller.action.INSTALL_PROFILE"
 MAX_BATTERY_C = 37.0
 # Long enough for a press feedback to settle, short of the 400 ms that makes a press a long press.
 PRESS_SETTLE_S = 0.25
+
+
+# The settings a run holds while it measures (Device.upright), as `settings get` names them.
+HELD_SETTINGS = ("system accelerometer_rotation", "system user_rotation", "global stay_on_while_plugged_in")
 
 
 class HarnessError(Exception):
@@ -110,6 +116,21 @@ class Device:
         time.sleep(0.5)
         if "isKeyguardShowing=true" in self.shell("dumpsys window | grep -m1 isKeyguardShowing"):
             raise HarnessError("the phone is locked: unlock it (and keep the screen on) before measuring")
+
+    @contextlib.contextmanager
+    def upright(self):
+        """Holds the display in its natural rotation, with the screen on while plugged in, and gives the
+        owner's settings back afterwards. A phone left on its side with auto-rotate on would otherwise
+        measure and record the landscape layout, with taps and swipes aimed at the portrait one."""
+        saved = {key: self.shell(f"settings get {key}").strip() for key in HELD_SETTINGS}
+        try:
+            self.shell("settings put system accelerometer_rotation 0; settings put system user_rotation 0; "
+                       "settings put global stay_on_while_plugged_in 7")
+            time.sleep(0.5)
+            yield
+        finally:
+            for key, value in saved.items():
+                self.shell(f"settings delete {key}" if value in ("", "null") else f"settings put {key} {value}")
 
     def ui(self, attempts=4):
         """The current UI hierarchy. Retried: uiautomator refuses while the screen keeps animating."""
@@ -1113,6 +1134,11 @@ def parse_extras(pairs):
 def measure(args):
     device = Device(args.serial)
     device.check_attached()
+    with device.upright():
+        return measure_on(device, args)
+
+
+def measure_on(device, args):
     rows = check_gates.load_rows(args.gates)
     if args.gate and args.gate not in check_gates.columns(rows):
         raise HarnessError(f"no column '{args.gate}' in {args.gates}")
@@ -1178,6 +1204,11 @@ def record(args):
     """Screen-records one journey on the installed app and writes its frames and a frame strip."""
     device = Device(args.serial)
     device.check_attached()
+    with device.upright():
+        return record_on(device, args)
+
+
+def record_on(device, args):
     app = App(device, args.package, parse_extras(args.extra))
     os.makedirs(args.out, exist_ok=True)
     run = Run(device, app, args.out, 0, 0)
