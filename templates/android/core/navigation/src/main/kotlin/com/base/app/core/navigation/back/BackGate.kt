@@ -14,8 +14,8 @@ import androidx.compose.runtime.setValue
  * retargets to a screen that is not composed yet, the screen that was leaving snaps, and a burst of
  * presses can walk straight out of the app. Replayed one by one, three quick presses become three
  * animations in a row. So presses are counted while the screens move and, once the running
- * transition has all but arrived ([SETTLED_ENOUGH]), popped together: Navigation 3 animates that
- * as one pop from the screen on display to the final one. Presses that would go past the root are
+ * transition has all but arrived ([SETTLED_ENOUGH]), popped together: the host slides that as one
+ * pop from the screen on display to the final one. Presses that would go past the root are
  * dropped, so a burst never leaves the app by accident.
  *
  * One gate per host (each kept tab, the presentation host, a single-stack host). It holds no
