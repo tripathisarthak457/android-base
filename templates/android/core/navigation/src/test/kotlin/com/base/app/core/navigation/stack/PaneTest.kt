@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToIndex
@@ -147,6 +148,8 @@ class PaneTest {
         assertEquals(listOf<AppNavKey>(Inbox), stack.keys)
         rule.onNodeWithTag(Inbox.toString()).assertIsDisplayed()
         assertEquals("the list kept its place", 30, inbox!!.firstVisibleItemIndex)
+        rule.onNodeWithTag(Inbox.toString()).assertWidthIsEqualTo(411.dp)
+        assertFalse("alone on a phone, the list has nothing beside it", contexts.getValue(Inbox).beside)
     }
 
     private fun resize(size: DpSize) {

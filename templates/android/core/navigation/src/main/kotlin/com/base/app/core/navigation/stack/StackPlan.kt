@@ -129,7 +129,9 @@ internal fun pagesOf(keys: List<Any>, panes: List<NavPane>, columns: Int): List<
  */
 private fun shownPanes(members: List<Any>, kinds: List<NavPane>, columns: Int): Map<Any, Slot> {
     val first = members.first()
-    if (members.size == 1 && kinds.first() != NavPane.List) return mapOf(first to Slot.Full)
+    // With one column a list is a screen like any other: an empty detail pane beside it would take
+    // half a phone's width.
+    if (columns < 2 || (members.size == 1 && kinds.first() != NavPane.List)) return mapOf(first to Slot.Full)
     return when (kinds.first()) {
         NavPane.List -> {
             val lastDetail = kinds.lastIndexOf(NavPane.Detail)

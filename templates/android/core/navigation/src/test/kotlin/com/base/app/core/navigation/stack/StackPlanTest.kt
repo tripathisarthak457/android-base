@@ -32,6 +32,16 @@ class StackPlanTest {
     }
 
     @Test
+    fun `with one column a list fills its page, with no empty detail beside it`() {
+        val root = pagesOf(listOf("list"), listOf(NavPane.List), columns = 1)
+        assertEquals(mapOf("list" to Slot.Full), root.single().shown)
+
+        val pushed = pagesOf(listOf("list", "a"), listOf(NavPane.List, NavPane.Detail), columns = 1)
+        assertEquals(listOf(mapOf<Any, Slot>("list" to Slot.Full), mapOf<Any, Slot>("a" to Slot.Full)), pushed.map { it.shown })
+        assertTrue(planChange(null, listOf("list"), listOf(NavPane.List), columns = 1) { true }.emptyDetails.isEmpty())
+    }
+
+    @Test
     fun `an extra joins the page of the detail it was opened from`() {
         val panes = listOf(NavPane.List, NavPane.Detail, NavPane.Extra)
         val keys = listOf("list", "a", "history")
