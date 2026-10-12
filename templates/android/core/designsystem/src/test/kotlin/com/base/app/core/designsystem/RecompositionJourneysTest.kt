@@ -53,9 +53,8 @@ import org.robolectric.annotation.Config
  * The design system's journeys, counted in composables that ran: a press, a drag across a switch, a
  * segmented control or a wheel, a sheet dragged between detents, a pull to refresh, a fling into the
  * end of a list and a context menu opening move layers and redraw, and recompose nothing but the
- * state that really changed. Each runs under
- * a quick and a slow motion style too: the counts must not depend on how many frames the motion
- * took, or something recomposes every frame.
+ * state that really changed. Each runs under a quick and a slow motion style too: the counts must
+ * not depend on how many frames the motion took, or something recomposes every frame.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
