@@ -37,11 +37,12 @@ public final class NetworkMonitor: Sendable {
     public func updates() -> AsyncStream<Bool> {
         AsyncStream { continuation in
             let id = UUID()
-            let current = state.withLock { state in
+            // Yielded under the lock, as changes are, so a change that lands meanwhile reaches the
+            // stream after this snapshot rather than before it, and the last value is the latest.
+            state.withLock { state in
                 state.listeners[id] = continuation
-                return state.isOnline
+                continuation.yield(state.isOnline)
             }
-            continuation.yield(current)
             continuation.onTermination = { [weak self] _ in
                 self?.state.withLock { _ = $0.listeners.removeValue(forKey: id) }
             }
@@ -49,13 +50,12 @@ public final class NetworkMonitor: Sendable {
     }
 
     private func update(isOnline: Bool) {
-        let listeners = state.withLock { state -> [AsyncStream<Bool>.Continuation] in
-            guard state.isOnline != isOnline else { return [] }
+        state.withLock { state in
+            guard state.isOnline != isOnline else { return }
             state.isOnline = isOnline
-            return Array(state.listeners.values)
-        }
-        for listener in listeners {
-            listener.yield(isOnline)
+            for listener in state.listeners.values {
+                listener.yield(isOnline)
+            }
         }
     }
 }

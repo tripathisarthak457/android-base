@@ -32,8 +32,10 @@ public final class SettingsRepository: Sendable {
     public func changes() -> AsyncStream<AppSettings> {
         AsyncStream { continuation in
             let id = UUID()
-            listeners.withLock { $0[id] = continuation }
-            continuation.yield(current)
+            listeners.withLock { listeners in
+                listeners[id] = continuation
+                continuation.yield(current)
+            }
             continuation.onTermination = { [weak self] _ in
                 self?.listeners.withLock { _ = $0.removeValue(forKey: id) }
             }
@@ -55,10 +57,15 @@ public final class SettingsRepository: Sendable {
         broadcast()
     }
 
+    // Settings are read and yielded under the lock, here and for a new stream's first value, so
+    // when two writes race, the broadcast that runs last reads both, and no stream ends on a value
+    // older than what `defaults` holds.
     private func broadcast() {
-        let settings = current
-        for listener in listeners.withLock({ Array($0.values) }) {
-            listener.yield(settings)
+        listeners.withLock { listeners in
+            let settings = current
+            for listener in listeners.values {
+                listener.yield(settings)
+            }
         }
     }
 
