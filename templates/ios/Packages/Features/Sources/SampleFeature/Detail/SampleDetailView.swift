@@ -32,9 +32,13 @@ struct SampleDetailView: View {
             }
             .inspector(isPresented: $showsDetails) {
                 if let item = store.state.item {
+                    // A column beside the article in a wide window, and a sheet on a phone.
                     SampleDetails(item: item)
-                        // Apple's widths for an inspector column; on a phone it is a sheet instead.
-                        .inspectorColumnWidth(min: 280, ideal: 320, max: 412)
+                        .inspectorColumnWidth(
+                            min: AppLayout.supportingPaneMinWidth,
+                            ideal: AppLayout.supportingPaneIdealWidth,
+                            max: AppLayout.supportingPaneMaxWidth
+                        )
                         .presentationDetents([.medium, .large])
                 }
             }

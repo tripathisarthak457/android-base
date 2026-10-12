@@ -72,7 +72,7 @@ private struct OnboardingPageView: View {
     let page: OnboardingPage
 
     @Environment(\.appTheme) private var theme
-    @ScaledMetric(relativeTo: .largeTitle) private var symbolSize: CGFloat = 72
+    @ScaledMetric(relativeTo: .largeTitle) private var symbolSize = AppSizes.heroSymbol
 
     var body: some View {
         VStack(spacing: AppSpacing.lg) {

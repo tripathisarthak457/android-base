@@ -62,7 +62,8 @@ private struct ToastBanner: View {
         }
         .padding(.horizontal, AppSpacing.lg)
         .padding(.vertical, AppSpacing.md)
-        .frame(maxWidth: Self.maxWidth)
+        // No wider than a form, so in a wide window it stays a banner rather than a strip.
+        .frame(maxWidth: AppLayout.formMaxWidth)
         .modifier(ToastSurface())
         .padding(.horizontal, AppSpacing.gutter)
         .padding(.top, AppSpacing.xs)
@@ -72,9 +73,6 @@ private struct ToastBanner: View {
         .accessibilityElement(children: .combine)
         .accessibilityAction(named: Text("Dismiss", bundle: .module), onDismiss)
     }
-
-    /// As wide as a toast on a phone, so it stays a banner in a wide window.
-    private static let maxWidth: CGFloat = 480
 
     private var swipeToDismiss: some Gesture {
         DragGesture(minimumDistance: AppSpacing.xs)

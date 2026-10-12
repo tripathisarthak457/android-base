@@ -11,4 +11,8 @@ public nonisolated enum AppSizes {
     public static let buttonMedium = DesignTokens.Sizes.buttonMedium
     public static let buttonLarge = DesignTokens.Sizes.buttonLarge
     public static let fieldHeight = DesignTokens.Sizes.fieldHeight
+
+    /// The symbol that leads a full-screen page, such as an onboarding step, before Dynamic Type
+    /// scales it. Not a token: only the SwiftUI template draws one.
+    public static let heroSymbol: CGFloat = 72
 }

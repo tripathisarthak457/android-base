@@ -275,6 +275,17 @@ def main_actor_by_default(package: Package, target: PackageTarget) -> bool:
 
 # The checks, over one generated project --------------------------------------------------------
 
+#: Values a feature takes from the design system (AppTheme, AppSpacing, AppSizes, AppLayout), never
+#: writes itself: AGENTS.md's rule, and the Android template's raw-color, raw-dp and raw-tween.
+RAW_VALUES = {
+    "a raw colour": r"\bColor\(",
+    "a raw font size": r"\.system\(size:\s*\d",
+    "a raw spacing": r"\bspacing:\s*[1-9]|\.padding\((?:\.\w+,\s*)?[1-9]",
+    "a raw size": r"\.frame\((?:min|ideal|max)?(?:[wW]idth|[hH]eight):\s*\d",
+    "a raw duration or curve": r"\bduration:\s*\d|\.(?:easeIn|easeOut|easeInOut|linear)\b|\.spring\(",
+}
+
+
 def swift_files(directory: Path) -> list[Path]:
     return sorted(directory.rglob("*.swift")) if directory.is_dir() else []
 
@@ -374,6 +385,8 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
                 case.assertNotRegex(code, r"\buserInterfaceIdiom\b", f"{relative} decides layout by device")
                 for width in re.findall(r"\.frame\(\s*(?:width|minWidth):\s*(\d+)", code):
                     case.assertLess(int(width), 320, f"{relative} sets a width a window can be narrower than")
+                for name, pattern in RAW_VALUES.items():
+                    case.assertNotRegex(code, pattern, f"{relative} uses {name}; take it from the theme")
 
     with case.subTest(check="the XcodeGen project"):
         check_project_yml(case, project, spec, features)
@@ -1067,6 +1080,9 @@ class ViolationsTest(unittest.TestCase):
             ("is not in Localizable.xcstrings", self.ROW, replacing(f"{self.ROW_PADDING}\n", f"{self.ROW_PADDING}\n        .help(Text(\"Words no catalog has\", bundle: .module))\n")),
             ("declares 2 public types", "Packages/Features/Sources/SampleData/API/SampleItem.swift", lambda text: text + "\npublic struct SampleTag: Sendable {}\n"),
             ("'Views'", "Packages/Features/Sources/SampleFeature/Views/SampleBadge.swift", lambda _: "struct SampleBadge {}\n"),
+            ("uses a raw spacing", self.ROW, replacing(self.ROW_PADDING, ".padding(.vertical, 4)")),
+            ("uses a raw colour", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .background(Color(red: 1, green: 0, blue: 0))")),
+            ("uses a raw duration or curve", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .animation(.easeInOut, value: item)")),
             (
                 "SampleListView.swift has a #Preview outside #if DEBUG",
                 "Packages/Features/Sources/SampleFeature/List/SampleListView.swift",
