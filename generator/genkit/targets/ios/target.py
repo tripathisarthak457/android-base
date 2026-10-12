@@ -13,7 +13,7 @@ from ...core.manifest import TemplateManifest
 from ...core.spec import IosSettings, Spec, SpecError, Vocabulary, pascal_case
 from ...core.target import BuildContext
 from ...tokens import swift
-from . import project, scaffold, strings, tabs
+from . import icons, project, scaffold, strings, tabs
 
 TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "ios"
 
@@ -181,7 +181,9 @@ class IosTarget:
         strings.translate(
             project_dir, spec, scaffold.user_names(spec), scaffolded=frozenset(scaffold.feature_targets(spec))
         )
-        return []
+        if context.icon_source is None:
+            return []
+        return icons.write(context.icon_source, project_dir / spec.pascal_name)
 
     def outline(self, spec: Spec) -> dict[str, list[str]]:
         return {

@@ -9,12 +9,15 @@ macOS CI job compiles the same projects; these checks catch what goes wrong betw
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import plistlib
 import re
 import shutil
+import struct
 import tempfile
 import unittest
+import zlib
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -24,7 +27,7 @@ from genkit.core import pipeline, translations
 from genkit.core.copy import is_under
 from genkit.core.spec import SpecError
 from genkit.targets import get
-from genkit.targets.ios import scaffold, tabs
+from genkit.targets.ios import icons, scaffold, tabs
 from genkit.targets.ios.target import bundle_id
 from genkit.tokens import swift
 
@@ -853,6 +856,75 @@ def replacing(old: str, new: str) -> Callable[[str], str]:
         return text.replace(old, new)
 
     return edit
+
+
+def png(width: int, height: int, color_type: int, *chunks: tuple[bytes, bytes]) -> bytes:
+    """A blank PNG of one colour type (0, 2 or 6), with `chunks` placed before its image data."""
+    channels = {0: 1, 2: 3, 6: 4}[color_type]
+    row = b"\x00" + bytes(width * channels)
+
+    def chunk(kind: bytes, body: bytes) -> bytes:
+        return struct.pack(">I", len(body)) + kind + body + struct.pack(">I", zlib.crc32(kind + body))
+
+    header = struct.pack(">IIBBBBB", width, height, 8, color_type, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + b"".join(chunk(kind, body) for kind, body in chunks)
+        + chunk(b"IDAT", zlib.compress(row * height)) + chunk(b"IEND", b"")
+    )
+
+
+class IconTest(unittest.TestCase):
+    """`--icon` replaces the template's placeholder, or says why it could not."""
+
+    ICON = Path("TrailNotes") / icons.ICON_PATH
+
+    def build(self, source: Path, directory: Path) -> tuple[Path, list[str]]:
+        parsed, _ = read()
+        project = directory / "TrailNotes"
+        result = pipeline.build(parsed.spec, IOS, project, zip_output=False, icon_source=source, commit="test")
+        return project, result.warnings
+
+    def test_an_app_store_ready_png_is_used_as_it_is(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "icon.png"
+            source.write_bytes(png(icons.SIZE, icons.SIZE, 2))
+            project, warnings = self.build(source, Path(temp))
+            self.assertEqual([], warnings)
+            self.assertEqual(source.read_bytes(), (project / self.ICON).read_bytes())
+
+    def test_only_an_opaque_png_of_the_right_size_is_ready(self):
+        self.assertTrue(icons.is_app_store_ready(png(1024, 1024, 0)))
+        self.assertFalse(icons.is_app_store_ready(png(1024, 1024, 6)))
+        self.assertFalse(icons.is_app_store_ready(png(1024, 1024, 2, (b"tRNS", bytes(6)))))
+        self.assertFalse(icons.is_app_store_ready(png(512, 512, 2)))
+        self.assertFalse(icons.is_app_store_ready(png(1024, 1023, 2)))
+        self.assertFalse(icons.is_app_store_ready(b"\xff\xd8\xff\xe0 a JPEG"))
+
+    @unittest.skipIf(importlib.util.find_spec("PIL"), "Pillow converts what would otherwise be refused")
+    def test_without_pillow_any_other_image_keeps_the_placeholder_and_says_so(self):
+        placeholder = (TEMPLATE / "BaseApp" / icons.ICON_PATH).read_bytes()
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "icon.png"
+            source.write_bytes(png(icons.SIZE, icons.SIZE, 6))
+            project, warnings = self.build(source, Path(temp))
+            self.assertEqual(placeholder, (project / self.ICON).read_bytes())
+            self.assertEqual(1, len(warnings))
+            self.assertIn("pip install pillow", warnings[0])
+
+    @unittest.skipUnless(importlib.util.find_spec("PIL"), "Pillow is not installed")
+    def test_with_pillow_any_image_becomes_an_opaque_square_of_the_right_size(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "icon.png"
+            source.write_bytes(png(600, 400, 6))
+            project, warnings = self.build(source, Path(temp))
+            self.assertTrue(icons.is_app_store_ready((project / self.ICON).read_bytes()))
+            self.assertEqual(3, len(warnings), warnings)
+
+    def test_a_missing_source_keeps_the_placeholder_and_says_so(self):
+        with tempfile.TemporaryDirectory() as temp:
+            _, warnings = self.build(Path(temp) / "nothing.png", Path(temp))
+            self.assertEqual(1, len(warnings))
+            self.assertIn("not found", warnings[0])
 
 
 class ViolationsTest(unittest.TestCase):
