@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.AppButtonDefaults
 import com.base.app.core.designsystem.component.button.AppIconButton
+import com.base.app.core.designsystem.component.container.LocalScaffoldBackground
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalTopChrome
@@ -135,14 +137,22 @@ fun AppLargeTitleTopBar(
     val fade = AppTheme.springs.fadeQuick
     LaunchedEffect(collapsed) { inlineTitle.animateTo(if (collapsed) 1f else 0f, tween(fade)) }
     val surfaceFade = SurfaceFadeDistance
+    val screen = LocalScaffoldBackground.current.takeOrElse { colors.background }
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .writeHeightTo(topChrome)
             .drawBehind {
-                // The surface comes in over the last few points of the collapse, under the small bar only.
                 val inline = size.height - collapseDistance
+                // What is left of the large title's band stays the screen's colour, so content that
+                // runs ahead of the title (past a short first row, or after a jump) goes under it
+                // rather than across its text.
+                val collapsedBy = scrolled().coerceIn(0, collapseDistance)
+                if (large && collapsedBy < collapseDistance) {
+                    drawRect(screen, topLeft = Offset(0f, inline), size = Size(size.width, (collapseDistance - collapsedBy).toFloat()))
+                }
+                // The surface comes in over the last few points of the collapse, under the small bar only.
                 val fadeFrom = collapseDistance - surfaceFade.toPx()
                 val shown = if (!large) 1f else ((scrolled() - fadeFrom) / surfaceFade.toPx()).coerceIn(0f, 1f)
                 if (shown > 0f) {

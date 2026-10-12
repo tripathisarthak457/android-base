@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
@@ -51,7 +52,7 @@ fun AppScaffold(
     val bottomChrome = if (bottomBar != null) remember { ChromeInset() } else LocalBottomChrome.current
     val width = if (contentMaxWidth == Dp.Unspecified) Modifier else Modifier.centeredMaxWidth(contentMaxWidth)
 
-    CompositionLocalProvider(LocalTopChrome provides topChrome) {
+    CompositionLocalProvider(LocalTopChrome provides topChrome, LocalScaffoldBackground provides background) {
         SubcomposeLayout(
             modifier = modifier
                 .background(background)
@@ -84,3 +85,6 @@ fun AppScaffold(
 }
 
 private enum class ScaffoldSlot { TopBar, BottomBar, Content }
+
+/** The colour the current scaffold paints, for a bar that must cover content in the same colour. */
+internal val LocalScaffoldBackground = staticCompositionLocalOf { Color.Unspecified }
