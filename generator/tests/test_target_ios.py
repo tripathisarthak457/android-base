@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import plistlib
 import re
+import shutil
 import tempfile
 import unittest
 from collections.abc import Callable
@@ -392,6 +393,9 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
     with case.subTest(check="list-detail features are split views on the router's selection"):
         check_list_detail(case, project)
 
+    with case.subTest(check="the docs name only what the project has"):
+        check_docs(case, project)
+
     with case.subTest(check="the tokens carry the spec's choices"):
         emitted = (project / swift.RELATIVE_PATH).read_text(encoding="utf-8")
         case.assertIn(f"static let designStyle = AppDesignStyle.{spec.design_style[0].lower()}{spec.design_style[1:]}\n", emitted)
@@ -528,6 +532,53 @@ def check_list_detail(case: unittest.TestCase, project: Path) -> None:
         case.assertRegex(root, rf"{name}DetailView\(id:", f"{relative} does not open its detail by id")
         list_view, _ = lex(target / "List" / f"{name}ListView.swift")
         case.assertIn("List(selection: $selection)", list_view, f"{target.name}'s list does not select")
+
+
+def declared_names(root: Path) -> frozenset[str]:
+    """
+    What a document can cite by name in a project or in the template: its Swift types, its package
+    targets, Core's folders, and its file names. Feature folders are left out, since `List/` and
+    SwiftUI's `List` share a name.
+    """
+    template_only = set(IOS.manifest.template_only)
+    names: set[str] = set()
+    for path in root.rglob("*"):
+        if path.relative_to(root).parts[0] in template_only:
+            continue
+        if path.is_file():
+            names.add(path.name)
+            if path.suffix == ".swift":
+                names |= set(re.findall(r"\b(?:struct|class|enum|protocol|actor|typealias)\s+(?!(?:func|var|let|subscript)\b)(\w+)", lex(path)[0]))
+    names |= {path.name for path in root.glob("Packages/*/*/*") if path.is_dir()}
+    names |= {path.name for path in (root / "Packages" / "Core" / "Sources").rglob("*") if path.is_dir()}
+    return frozenset(names)
+
+
+def cited_names(markdown: str) -> set[str]:
+    """Every name in a document's code: its fenced blocks and its inline code spans."""
+    blocks = re.findall(r"```.*?```", markdown, re.S)
+    spans = re.findall(r"`([^`\n]+)`", re.sub(r"```.*?```", "", markdown, flags=re.S))
+    return {name for code in (*blocks, *spans) for name in re.findall(r"\w+(?:\.(?:swift|md|yml|xcprivacy|xcstrings|xcconfig))?", code)}
+
+
+_TEMPLATE_NAMES: list[frozenset[str]] = []
+
+
+def check_docs(case: unittest.TestCase, project: Path) -> None:
+    """
+    A document an agent reads names no type, target or file that the template has and this project
+    does not: such a name was left out by a feature, and an agent following it writes code that does
+    not compile (STANDARDS-PLAN §4.5).
+    """
+    if not _TEMPLATE_NAMES:
+        _TEMPLATE_NAMES.append(declared_names(TEMPLATE))
+    missing = _TEMPLATE_NAMES[0] - declared_names(project)
+    absent = {
+        path.name: sorted(cited)
+        for path in sorted(project.glob("*.md"))
+        if (cited := cited_names(path.read_text(encoding="utf-8")) & missing)
+    }
+    case.assertFalse(absent, f"these documents name what this project does not have: {absent}")
 
 
 _FEATURE_FOLDERS_BANNED = {
@@ -909,6 +960,16 @@ class ViolationsTest(unittest.TestCase):
         ):
             with self.subTest(rule=message):
                 self.assertCaught(message, path, edit)
+
+    def test_docs_rules(self):
+        glass = self.project / "Packages/Core/Sources/DesignSystem/Foundation/Glass"
+        with tempfile.TemporaryDirectory() as aside:
+            shutil.move(glass, aside)
+            try:
+                with self.assertRaisesRegex(AssertionError, r"'AGENTS.md': \[[^]]*'AppGlassGroup'"):
+                    check_docs(unittest.TestCase(), self.project)
+            finally:
+                shutil.move(Path(aside) / glass.name, glass)
 
 
 if __name__ == "__main__":

@@ -22,10 +22,20 @@ Hitches templates. Debug builds are many times slower and say nothing about fram
 BaseApp/                       composition root (AppServices), window state (AppModel), tabs, commands
 Packages/Core/Sources/
   AppCore/                     AppResult, AppError, LoadState, TaskBag, AppClock, Log
+<!-- <opt:liquidglass> -->
   DesignSystem/                Tokens (generated), Theme, Foundation/{Interaction,Adaptive,Glass}, Components/<Family>
+<!-- </opt:liquidglass> -->
+<!-- <opt-else:liquidglass> -->
+<!--~   DesignSystem/                Tokens (generated), Theme, Foundation/{Interaction,Adaptive}, Components/<Family> -->
+<!-- </opt-else:liquidglass> -->
   Navigation/                  Router, Shell (TabShell), DeepLinks
-  Networking/                  APIClient, Endpoint, NetworkMonitor
+<!-- <opt:network> -->  Networking/                  APIClient, Endpoint, NetworkMonitor
+<!-- <opt:database> -->
   Persistence/                 Settings (SettingsRepository), Database (SwiftData)
+<!-- </opt:database> -->
+<!-- <opt-else:database> -->
+<!--~   Persistence/                 Settings (SettingsRepository) -->
+<!-- </opt-else:database> -->
 Packages/Features/Sources/
   <Name>Data/                  API/ (protocol, models), Remote/ (+ DTO/), Local/, Default<Name>Repository.swift
   <Name>Feature/               one folder per screen or flow (List/, Detail/, Overview/, Intro/), Components/, Resources/
@@ -34,8 +44,8 @@ Packages/Features/Sources/
 - A feature depends on its own `<Name>Data` and on Core products. Never on another feature.
 - A data target never depends on a feature. Cross-domain rules get their own data target.
 - Folders are named for a screen or a concept, never a layer: no `Views/`, `ViewModels/`, `Stores/`,
-  `Utils/`, `Helpers/`, `Common/`. A store sits beside its view (`SampleListStore.swift` next to
-  `SampleListView.swift`). One public type per file.
+  `Utils/`, `Helpers/`, `Common/`. A store sits beside its view (`List/<Name>ListStore.swift` next to
+  `List/<Name>ListView.swift`). One public type per file.
 - `Tokens/DesignTokens.swift` is generated from the generator's `tokens/*.json`. Never edit it.
   `BaseApp/Assets.xcassets/AccentColor` is generated with it: the same accent, as the app's
   default tint for whatever the theme does not reach. A new brand colour changes both.
@@ -43,11 +53,17 @@ Packages/Features/Sources/
 ## Concurrency (Swift 6)
 
 - UI targets (`DesignSystem`, `Navigation`, every `<Name>Feature`, the app) are main-actor by default.
+<!-- <opt:network> -->
 - `AppCore`, `Networking`, `Persistence` and every `<Name>Data` are nonisolated. Never write
+<!-- </opt:network> -->
+<!-- <opt-else:network> -->
+<!--~ - `AppCore`, `Persistence` and every `<Name>Data` are nonisolated. Never write -->
+<!-- </opt-else:network> -->
   `@MainActor` in them; the generator's checks fail on it.
-- An async function runs on its caller's actor unless it is `@concurrent`. Decoding, parsing and
-  anything heavy is `@concurrent` (see `APIClient.decode`); database work goes through a
-  `@ModelActor` per domain, never a `ModelContext` on the main actor.
+- An async function runs on its caller's actor unless it is `@concurrent`, and a store's caller is
+  the main actor. Decoding, mapping and anything heavy is `@concurrent`; database work goes through
+  a `@ModelActor` per domain, never a `ModelContext` on the main actor.
+<!-- <opt:network> -->  `APIClient.decode` and each data target's `Remote/<Name>API.swift` show it.
 - A value type that crosses actors declares `Sendable` in its own declaration.
 - In a main-actor target, a value type that nonisolated code reads (an environment key's default,
   a geometry callback, anything passed where `Sendable` is required) is declared `nonisolated`:
@@ -60,26 +76,26 @@ Packages/Features/Sources/
 @MainActor
 @Observable
 final class OrdersStore {
-    struct State: Equatable, Sendable { var load: LoadState = .idle; var orders: [Order] = [] }
-    enum Event: Sendable { case appeared, retry, orderTapped(Order.ID) }
+    struct State: Equatable, Sendable { var load: LoadState = .idle; var query = ""; var orders: [Order] = [] }
+    enum Event: Sendable { case appeared, retry, queryChanged(String) }
 
     private(set) var state = State()
     private let repository: any OrdersRepository
-    private let router: Router
     private let tasks = TaskBag()
 
     func send(_ event: Event) {                        // never async: a tap is never held up by I/O
         switch event {
         case .appeared, .retry:
             tasks.latest("load") { [weak self] in await self?.load() }
-        case .orderTapped(let id):
-            router.push(OrderRoute.detail(id))
+        case .queryChanged(let query):
+            state.query = query
+            tasks.latest("load", debounce: .milliseconds(300)) { [weak self] in await self?.load() }
         }
     }
 
     private func load() async {
         state.load = .loading
-        let result = await repository.orders()
+        let result = await repository.orders(matching: state.query)
         guard !Task.isCancelled else { return }
         switch result { case .success(let orders): … case .failure(let error): state.load = .failed(error) }
     }
@@ -91,16 +107,23 @@ final class OrdersStore {
   screen follows, so appearing again does not subscribe twice.
 - Repositories return `AppResult`; stores switch over every case. Never `try!`, never `print`.
 - No `ObservableObject`, no `@Published`, no `DispatchQueue.main.async`.
-- Navigate through the tab's `Router`; show transient messages through `ToastCenter`.
-- `.refreshable` calls an `async` method that awaits the store's own task (see `SampleListStore.refresh()`).
+- Navigation is the view's: a list's selection is bound to the tab's `Router`, and a store takes
+  the `Router` only when its own work decides where to go (push the order a submit created).
+  Show transient messages through `ToastCenter`.
+- `.refreshable` calls an `async` method that awaits the store's own task (every list store's
+  `refresh()`).
 
 ## Navigation
 
 - Each tab has a `Router`: `path` for its `NavigationStack`, `selection` for a list-detail split view.
 - Push with `router.push(route)`, register screens with `.navigationDestination(for:)` in the
   feature's root view. Tapping the selected tab calls `router.popToRoot()`.
-- List-detail screens use `NavigationSplitView` bound to `router.selection`, with a
-  `ContentUnavailableView` placeholder (`SampleRootView` is the reference).
+- List-detail screens use `NavigationSplitView`: the list's selection is `router.selection` (the
+  item's id as a string), the detail column loads the selected id through its own store, and an
+  `AppStateView` (`ContentUnavailableView`) stands in while nothing is selected. On a phone the
+  selection alone decides which column shows; never bind `preferredCompactColumn` to state of
+  your own.
+<!-- <opt:sample> -->  `SampleRootView` is the reference.
 - Deep links are `<scheme>://<tab>/<id>`; `AppModel.open(_:)` selects the tab and the item.
 
 ## Design system
@@ -140,7 +163,12 @@ Use the system's own motion; never rebuild it:
 | Tab bar minimize (iOS 26) | already on in `TabShell` |
 | Symbol effects | `.symbolEffect(.bounce, value:)` |
 | Scroll-linked effects | `.scrollTransition`, `.onScrollGeometryChange` |
+<!-- <opt:liquidglass> -->
 | Glass (iOS 26) | `.appGlass(in:)` inside `AppGlassGroup`, on floating chrome only |
+<!-- </opt:liquidglass> -->
+<!-- <opt-else:liquidglass> -->
+<!--~ | Glass (iOS 26) | the system bars, sheets and tab bar have it already; add none of your own | -->
+<!-- </opt-else:liquidglass> -->
 
 - Every custom animation uses a spring from `theme.springs`. SwiftUI springs retarget from their
   current velocity, so interrupting one never jumps.
