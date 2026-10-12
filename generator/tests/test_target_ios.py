@@ -1084,6 +1084,15 @@ class ViolationsTest(unittest.TestCase):
         for message, path, edit in (
             ("uses ObservableObject", store, replacing("final class SampleListStore {", "final class SampleListStore: ObservableObject {")),
             (r"uses print\(", store, replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        print(event)\n")),
+            ("uses @Published", store, replacing("    private(set) var state = State()\n", "    @Published private(set) var state = State()\n")),
+            ("uses try!", store, replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        try! Task.checkCancellation()\n")),
+            (
+                "uses DispatchQueue.main.async",
+                store,
+                replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        DispatchQueue.main.async {}\n"),
+            ),
+            ("uses AnyView", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .background(AnyView(EmptyView()))")),
+            ("uses UIScreen.main", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .frame(maxWidth: UIScreen.main.bounds.width)")),
             ("is not in Localizable.xcstrings", self.ROW, replacing(f"{self.ROW_PADDING}\n", f"{self.ROW_PADDING}\n        .help(Text(\"Words no catalog has\", bundle: .module))\n")),
             ("declares 2 public types", "Packages/Features/Sources/SampleData/API/SampleItem.swift", lambda text: text + "\npublic struct SampleTag: Sendable {}\n"),
             ("'Views'", "Packages/Features/Sources/SampleFeature/Views/SampleBadge.swift", lambda _: "struct SampleBadge {}\n"),
