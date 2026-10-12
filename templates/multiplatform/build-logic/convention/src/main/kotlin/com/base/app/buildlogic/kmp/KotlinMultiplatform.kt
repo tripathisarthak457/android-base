@@ -55,12 +55,14 @@ internal fun Project.configureKmpPure() {
 /** `kotlin.test` and the coroutine test library in every module's common tests. */
 internal fun Project.addCoroutinesTest() {
     extensions.configure<KotlinMultiplatformExtension> {
-        sourceSets.getByName("commonTest") {
+        sourceSets.getByName("commonTest").dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.library("kotlinx-coroutines-test"))
+        }
+        // A compilation takes its language settings from its own source set, so an opt-in on
+        // commonTest alone does not reach the Android host test that compiles the same files.
+        sourceSets.matching { it.name.endsWith("Test") }.configureEach {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(libs.library("kotlinx-coroutines-test"))
-            }
         }
     }
 
