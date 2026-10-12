@@ -52,7 +52,6 @@ private struct AppButtonBody: View {
 
     @Environment(\.appTheme) private var theme
     @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let shape = theme.shapes.button
@@ -66,9 +65,7 @@ private struct AppButtonBody: View {
             .frame(minWidth: AppSizes.minTouchTarget, minHeight: height)
             .background(background, in: shape)
             .contentShape(shape)
-            .scaleEffect(scaled ? DesignTokens.Motion.pressScale : 1)
-            .opacity(dimmed ? DesignTokens.Motion.pressDimAlpha : 1)
-            .animation(isPressed ? theme.springs.press : theme.springs.release, value: isPressed)
+            .modifier(PressFeedback(kind: feedback, isPressed: isPressed))
             // A small button is drawn shorter than a finger; the padding below is untinted and
             // still takes the touch.
             .padding(.vertical, max(0, (AppSizes.minTouchTarget - height) / 2))
@@ -84,12 +81,10 @@ private struct AppButtonBody: View {
         }
     }
 
-    private var scaled: Bool {
-        isPressed && kind != .plain && !reduceMotion
-    }
-
-    private var dimmed: Bool {
-        isPressed && (kind == .plain || reduceMotion)
+    // The same feedback as `.scalePress` and `.dimPress`, so a plain button feels like any other
+    // plain control.
+    private var feedback: PressFeedback.Kind {
+        kind == .plain ? .dim : .scale(DesignTokens.Motion.pressScale)
     }
 
     private var foreground: Color {
@@ -102,15 +97,12 @@ private struct AppButtonBody: View {
     }
 
     private var background: Color {
-        if kind == .plain {
-            return .clear
-        }
-        guard isEnabled else { return theme.colors.fill }
-        return switch kind {
-        case .filled: theme.colors.accent
-        case .tinted: theme.colors.accentSubtle
-        case .destructive: theme.colors.danger.base
+        switch kind {
         case .plain: .clear
+        case .filled where isEnabled: theme.colors.accent
+        case .tinted where isEnabled: theme.colors.accentSubtle
+        case .destructive where isEnabled: theme.colors.danger.base
+        case .filled, .tinted, .destructive: theme.colors.fill
         }
     }
 }

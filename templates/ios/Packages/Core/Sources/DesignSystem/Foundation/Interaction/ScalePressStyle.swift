@@ -21,7 +21,16 @@ public struct ScalePressStyle: ButtonStyle {
     }
 
     public func makeBody(configuration: Configuration) -> some View {
-        ScalePressBody(label: configuration.label, isPressed: configuration.isPressed, size: size)
+        configuration.label
+            .modifier(PressFeedback(kind: .scale(pressedScale), isPressed: configuration.isPressed))
+    }
+
+    private var pressedScale: CGFloat {
+        switch size {
+        case .regular: DesignTokens.Motion.pressScale
+        case .large: DesignTokens.Motion.pressScaleLarge
+        case .icon: DesignTokens.Motion.pressScaleIcon
+        }
     }
 }
 
@@ -33,29 +42,5 @@ extension ButtonStyle where Self == ScalePressStyle {
 
     public static func scalePress(_ size: ScalePressStyle.Size) -> ScalePressStyle {
         ScalePressStyle(size)
-    }
-}
-
-private struct ScalePressBody: View {
-    let label: ButtonStyleConfiguration.Label
-    let isPressed: Bool
-    let size: ScalePressStyle.Size
-
-    @Environment(\.appTheme) private var theme
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    var body: some View {
-        label
-            .scaleEffect(isPressed && !reduceMotion ? pressedScale : 1)
-            .opacity(isPressed && reduceMotion ? DesignTokens.Motion.pressDimAlpha : 1)
-            .animation(isPressed ? theme.springs.press : theme.springs.release, value: isPressed)
-    }
-
-    private var pressedScale: CGFloat {
-        switch size {
-        case .regular: DesignTokens.Motion.pressScale
-        case .large: DesignTokens.Motion.pressScaleLarge
-        case .icon: DesignTokens.Motion.pressScaleIcon
-        }
     }
 }

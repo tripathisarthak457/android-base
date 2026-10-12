@@ -7,11 +7,7 @@ public struct DimPressStyle: ButtonStyle {
 
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .opacity(configuration.isPressed ? DesignTokens.Motion.pressDimAlpha : 1)
-            .animation(
-                configuration.isPressed ? nil : .easeOut(duration: DesignTokens.Motion.fadeShort),
-                value: configuration.isPressed
-            )
+            .modifier(PressFeedback(kind: .dim, isPressed: configuration.isPressed))
     }
 }
 
