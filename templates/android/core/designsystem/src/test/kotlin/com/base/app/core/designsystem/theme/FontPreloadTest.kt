@@ -2,7 +2,7 @@ package com.base.app.core.designsystem.theme
 
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.text.font.FontFamily
 import com.base.app.core.designsystem.TestSdk
 import kotlin.time.Duration.Companion.milliseconds
