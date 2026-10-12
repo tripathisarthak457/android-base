@@ -58,6 +58,13 @@ struct APIClientTests {
         }
         #expect(await client.send(Endpoint<Item>.get("items/1")) == .failure(.timeout))
     }
+
+    @Test func reportsACancelledRequestAsCancelledRatherThanAsABug() async {
+        let client = StubProtocol.client { _ in
+            throw URLError(.cancelled)
+        }
+        #expect(await client.send(Endpoint<Item>.get("items/1")) == .failure(.cancelled))
+    }
 }
 
 private struct Item: Decodable, Equatable, Sendable {

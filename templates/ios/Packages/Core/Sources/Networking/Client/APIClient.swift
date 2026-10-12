@@ -28,6 +28,8 @@ public struct APIClient: Sendable {
             (data, response) = try await session.data(for: request)
         } catch let error as URLError {
             return .failure(Self.failure(for: error))
+        } catch is CancellationError {
+            return .failure(.cancelled)
         } catch {
             return .failure(.unexpected(String(describing: error)))
         }
@@ -67,6 +69,8 @@ public struct APIClient: Sendable {
         switch error.code {
         case .timedOut:
             .timeout
+        case .cancelled:
+            .cancelled
         case .notConnectedToInternet, .networkConnectionLost, .dataNotAllowed, .internationalRoamingOff,
              .cannotFindHost, .cannotConnectToHost, .dnsLookupFailed:
             .offline

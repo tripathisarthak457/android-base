@@ -19,6 +19,10 @@ public enum AppError: Error, Equatable, Sendable {
     /// The database or the settings store refused a read or a write.
     case storage(String)
 
+    /// Nobody waits for the answer any more: a newer request replaced this one, or the screen that
+    /// asked went away. Nothing failed, so nothing stands in for the answer and nothing is shown.
+    case cancelled
+
     /// A bug: something failed that nothing above it was written to expect.
     case unexpected(String)
 }

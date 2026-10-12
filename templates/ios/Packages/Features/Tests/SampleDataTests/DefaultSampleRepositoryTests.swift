@@ -5,6 +5,7 @@ import Networking
 import Testing
 // <opt:database>
 import Persistence
+import SwiftData
 // </opt:database>
 
 // Serialized: the stub's handler is one static property shared by every request.
@@ -35,31 +36,68 @@ struct DefaultSampleRepositoryTests {
     }
 
     @Test func theSavedListStandsInWhenTheServerCannotBeReached() async throws {
-        let online = RequestCounter()
-        let repository = try makeRepository { _ in
-            online.increment()
-            return online.value == 1
-                ? .answer(#"[{"id": 1, "title": "One", "body": "First"}]"#)
-                : .failure(URLError(.notConnectedToInternet))
+        let later = try await repositoryAfterASave(then: .failure(URLError(.notConnectedToInternet)))
+        #expect(try await later.items(forceRefresh: false).get() == [SampleItem(id: 1, title: "One", body: "First")])
+    }
+
+    @Test func aFailedRefreshReportsItsFailure() async throws {
+        let later = try await repositoryAfterASave(then: .answer("", status: 500))
+        #expect(await later.items(forceRefresh: true) == .failure(.http(HTTPFailure(status: 500))))
+    }
+
+    @Test func aCancelledRequestGetsNoStandIn() async throws {
+        let later = try await repositoryAfterASave(then: .failure(URLError(.cancelled)))
+        #expect(await later.items(forceRefresh: false) == .failure(.cancelled))
+    }
+
+    /// A repository an hour after another one saved a list, whose server now answers `answer`.
+    private func repositoryAfterASave(then answer: StubURLProtocol.Answer) async throws -> DefaultSampleRepository {
+        let requests = RequestCounter()
+        let handler: StubURLProtocol.Handler = { _ in
+            requests.increment()
+            return requests.value == 1 ? .answer(#"[{"id": 1, "title": "One", "body": "First"}]"#) : answer
         }
-        _ = await repository.items(forceRefresh: false)
-        let offline = await repository.items(forceRefresh: true)
-        #expect(try offline.get() == [SampleItem(id: 1, title: "One", body: "First")])
+        let container = try ModelContainerFactory.make(for: SampleStorage.models, inMemory: true)
+        let now = Date.now
+        _ = try await makeRepository(container: container, clock: FixedClock(now: now), handler).items(forceRefresh: false)
+        return try makeRepository(container: container, clock: FixedClock(now: now.addingTimeInterval(60 * 60)), handler)
     }
     // </opt:database>
 
     private func makeRepository(_ handler: @escaping StubURLProtocol.Handler) throws -> DefaultSampleRepository {
+        // <opt:database>
+        try makeRepository(
+            container: ModelContainerFactory.make(for: SampleStorage.models, inMemory: true),
+            clock: SystemClock(),
+            handler
+        )
+        // </opt:database>
+        // <opt-else:database>
+        //~ try DefaultSampleRepository(client: client(handler))
+        // </opt-else:database>
+    }
+    // <opt:database>
+
+    private func makeRepository(
+        container: ModelContainer,
+        clock: any AppClock,
+        _ handler: @escaping StubURLProtocol.Handler
+    ) throws -> DefaultSampleRepository {
+        try DefaultSampleRepository(client: client(handler), modelContainer: container, clock: clock)
+    }
+    // </opt:database>
+
+    private func client(_ handler: @escaping StubURLProtocol.Handler) throws -> APIClient {
         StubURLProtocol.handler = handler
         let configuration = URLSessionConfiguration.ephemeral
         configuration.protocolClasses = [StubURLProtocol.self]
         let baseURL = try #require(URL(string: "https://api.example.com/"))
-        let client = APIClient(baseURL: baseURL, session: URLSession(configuration: configuration))
-        // <opt:database>
-        let container = try ModelContainerFactory.make(for: SampleStorage.models, inMemory: true)
-        return DefaultSampleRepository(client: client, modelContainer: container)
-        // </opt:database>
-        // <opt-else:database>
-        //~ return DefaultSampleRepository(client: client)
-        // </opt-else:database>
+        return APIClient(baseURL: baseURL, session: URLSession(configuration: configuration))
     }
 }
+// <opt:database>
+
+private struct FixedClock: AppClock {
+    let now: Date
+}
+// </opt:database>

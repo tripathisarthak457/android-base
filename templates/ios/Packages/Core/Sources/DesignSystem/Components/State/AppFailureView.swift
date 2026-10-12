@@ -31,7 +31,7 @@ public struct AppFailureView: View {
         case .timeout: Text("No Response", bundle: .module)
         case .http(let failure) where failure.status >= 500: Text("Server Problem", bundle: .module)
         case .http: Text("Request Failed", bundle: .module)
-        case .decode, .storage, .unexpected: Text("Something Went Wrong", bundle: .module)
+        case .decode, .storage, .unexpected, .cancelled: Text("Something Went Wrong", bundle: .module)
         }
     }
 
@@ -53,7 +53,7 @@ public struct AppFailureView: View {
             Text("The app received something it couldn't read.", bundle: .module)
         case .storage:
             Text("Saved data couldn't be read or written.", bundle: .module)
-        case .unexpected:
+        case .unexpected, .cancelled:
             Text("Try again. If it keeps happening, restart the app.", bundle: .module)
         }
     }
@@ -62,7 +62,7 @@ public struct AppFailureView: View {
         switch error {
         case .offline: "wifi.slash"
         case .timeout: "clock.badge.exclamationmark"
-        case .http, .decode, .storage, .unexpected: "exclamationmark.triangle"
+        case .http, .decode, .storage, .unexpected, .cancelled: "exclamationmark.triangle"
         }
     }
 }

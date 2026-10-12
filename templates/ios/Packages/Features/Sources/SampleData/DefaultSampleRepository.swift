@@ -9,8 +9,9 @@ import SwiftData
 // <opt:database>
 /// Samples from the network, kept on the device.
 ///
-/// A saved list younger than five minutes is answered without a request, a refresh always asks the
-/// server, and when the server cannot be reached the saved list of any age stands in for an error.
+/// A saved list younger than five minutes is answered without a request, and when the server cannot
+/// be reached the saved list of any age stands in for an error. A refresh always asks the server and
+/// reports its failure, so the screen can say that what it shows is not newer.
 // </opt:database>
 // <opt-else:database>
 //~ /// Samples from the network. URLSession's cache answers a repeated request while the server's
@@ -51,6 +52,8 @@ public final class DefaultSampleRepository: SampleRepository {
             } catch {
                 Self.log.error("Could not save the samples: \(String(describing: error), privacy: .public)")
             }
+            return result
+        case .failure(let error) where forceRefresh || error == .cancelled:
             return result
         case .failure:
             if let saved = try? await local.items(fetchedAfter: .distantPast), !saved.isEmpty {
