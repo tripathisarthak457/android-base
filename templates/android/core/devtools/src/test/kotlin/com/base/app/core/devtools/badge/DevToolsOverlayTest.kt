@@ -1,6 +1,11 @@
 package com.base.app.core.devtools.badge
 
+import android.view.View
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.toComposeRect
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -50,6 +55,24 @@ class DevToolsOverlayTest {
         assertNear(before.top - after.top, expected = 100.dp, tolerance = 12.dp)
     }
 
+    @Test
+    fun `the system back gesture leaves the badge alone, wherever it is`() {
+        lateinit var view: View
+        compose.setContent {
+            view = LocalView.current
+            AppTheme { DevToolsOverlay(devTools()) }
+        }
+        val badge = compose.onNodeWithTag("devtools_badge")
+        assertExcluded(view, badge)
+
+        badge.performTouchInput {
+            swipe(start = center, end = center + Offset(-200.dp.toPx(), -100.dp.toPx()), durationMillis = 600)
+        }
+        compose.waitForIdle()
+
+        assertExcluded(view, badge)
+    }
+
     private fun devTools() = DevTools(
         environment = DevEnvironment(
             name = "dev",
@@ -65,6 +88,16 @@ class DevToolsOverlayTest {
         flagOverrides = FlagOverrides(),
         // </opt:flags>
     )
+
+    private fun assertExcluded(view: View, badge: SemanticsNodeInteraction) {
+        val bounds = badge.fetchSemanticsNode().boundsInRoot
+        val excluded = view.systemGestureExclusionRects.map { it.toComposeRect() }
+        assertTrue("$bounds is not within the excluded $excluded.", excluded.any { it.covers(bounds) })
+    }
+
+    // The exclusion is in whole pixels.
+    private fun Rect.covers(other: Rect) =
+        left <= other.left + 1 && top <= other.top + 1 && right >= other.right - 1 && bottom >= other.bottom - 1
 
     private fun assertNear(actual: Dp, expected: Dp, tolerance: Dp) =
         assertTrue("Moved $actual, expected about $expected.", abs((actual - expected).value) <= tolerance.value)

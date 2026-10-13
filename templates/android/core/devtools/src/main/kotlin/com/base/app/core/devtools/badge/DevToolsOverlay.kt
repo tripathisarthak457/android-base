@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -126,6 +127,9 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
                 .align(Alignment.TopStart)
                 .offset { position.offset(bounds()) }
                 .onSizeChanged { badge = it }
+                // Docked, the badge lies in the system's back-gesture zone, which would take a drag
+                // that starts on it. Back still works along the rest of the edge.
+                .systemGestureExclusion()
                 .testTag(BadgeTestTag)
                 .pointerInput(position) {
                     val velocity = VelocityTracker()
