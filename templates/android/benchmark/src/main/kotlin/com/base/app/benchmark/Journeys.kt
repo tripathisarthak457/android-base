@@ -1,12 +1,13 @@
 package com.base.app.benchmark
 
 import android.graphics.Point
+import android.graphics.Rect
 import android.os.SystemClock
 import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.BySelector
-import androidx.test.uiautomator.Direction
+import androidx.test.uiautomator.StaleObjectException
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
 
@@ -53,19 +54,23 @@ fun MacrobenchmarkScope.openFirstRow() {
     val row = checkNotNull(list.findObject(By.clickable(true))) { "primary_list has no row to open." }
     row.click()
     check(device.wait(Until.gone(By.res("primary_list")), TIMEOUT_MS)) { "The first row did not open a screen." }
-    device.waitForIdle()
+    awaitTransition()
 }
 
+/** Opens the first related row of the detail screen on top. */
 fun MacrobenchmarkScope.openRelated() {
     val row = findScrolling(By.res("related_row")) ?: error("The detail screen has no related_row to open.")
     row.click()
-    device.waitForIdle()
+    // The screen the row was on is now covered by the one it opened, which takes it out of the
+    // accessibility tree.
+    check(row.awaitGone()) { "The related row did not open a screen." }
+    awaitTransition()
 }
 
 fun MacrobenchmarkScope.backToRoot() {
     device.pressBack()
     waitFor(By.res("primary_list"), "the root list after Back")
-    device.waitForIdle()
+    awaitTransition()
 }
 
 /** n Back presses in one input call, so all but the first arrive while the first pop is running. */
@@ -81,6 +86,7 @@ fun MacrobenchmarkScope.edgeSwipeBack() {
     val y = device.displayHeight / 2
     device.swipe(2, y, device.displayWidth * 7 / 10, y, SWIPE_STEPS)
     assertSwipedBack()
+    awaitTransition()
 }
 
 /**
@@ -94,7 +100,7 @@ fun MacrobenchmarkScope.slowEdgeSwipeBack(cancel: Boolean = false) {
     val path = if (cancel) out + out.reversed().drop(1) else out
     check(device.swipe(path.toTypedArray(), SLOW_SWIPE_SEGMENT_STEPS)) { "The back swipe was not delivered." }
     if (!cancel) assertSwipedBack()
-    device.waitForIdle()
+    awaitTransition()
 }
 
 /**
@@ -109,24 +115,22 @@ fun MacrobenchmarkScope.backSwipeDuringPush() {
     SystemClock.sleep(SWIPE_AFTER_TAP_MS)
     device.swipe(2, y, device.displayWidth * 6 / 10, y, DURING_PUSH_SWIPE_STEPS)
     assertSwipedBack()
+    awaitTransition()
 }
 
-/** Pulls the primary list down from its top until it refreshes. */
+/** Pulls the primary list down until it refreshes; the list must be at its top. */
 fun MacrobenchmarkScope.pullToRefresh() {
-    val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
-    val bounds = list.visibleBounds
-    val x = bounds.centerX()
-    device.swipe(x, bounds.top + bounds.height() / 10, x, bounds.top + bounds.height() * 6 / 10, PULL_STEPS)
+    val area = waitFor(By.res("primary_list"), "the root list (primary_list)").gestureArea()
+    device.swipe(area.centerX(), area.top, area.centerX(), area.top + area.height() / 2, PULL_STEPS)
     device.waitForIdle()
 }
 
+/** Flings the primary list toward its end, then back toward its start. */
 fun MacrobenchmarkScope.flingPrimaryList() {
-    val list = waitFor(By.res("primary_list"), "the root list (primary_list)")
-    // Clear of the screen edges, so the fling is not taken for a back gesture.
-    list.setGestureMargin(device.displayWidth / 5)
-    list.fling(Direction.DOWN)
+    val area = waitFor(By.res("primary_list"), "the root list (primary_list)").gestureArea()
+    device.swipe(area.centerX(), area.bottom, area.centerX(), area.top, FLING_STEPS)
     device.waitForIdle()
-    list.fling(Direction.UP)
+    device.swipe(area.centerX(), area.top, area.centerX(), area.bottom, FLING_STEPS)
     device.waitForIdle()
 }
 
@@ -135,6 +139,7 @@ fun MacrobenchmarkScope.assertAtRoot() {
     check(device.currentPackageName == TARGET_APP_ID) {
         "The app is no longer in front: Back presses past the root left it."
     }
+    awaitTransition()
 }
 
 /*
@@ -155,11 +160,49 @@ private fun MacrobenchmarkScope.waitFor(selector: BySelector, what: String): UiO
 private fun MacrobenchmarkScope.findScrolling(selector: BySelector): UiObject2? {
     repeat(SCROLL_ATTEMPTS) {
         device.wait(Until.findObject(selector), SHORT_WAIT_MS)?.let { return it }
-        val scrollable = device.findObject(By.scrollable(true)) ?: return null
-        scrollable.setGestureMargin(device.displayWidth / 5)
-        scrollable.scroll(Direction.DOWN, 0.8f)
+        val area = device.findObject(By.scrollable(true))?.gestureArea() ?: return null
+        device.swipe(area.centerX(), area.bottom, area.centerX(), area.top, SCROLL_STEPS)
+        device.waitForIdle()
     }
     return device.findObject(selector)
+}
+
+/*
+ * Scrolling content runs under the floating tab bar, and back swipes start at the screen's side
+ * edges, so a gesture on it keeps to its middle: clear of the bar below and of both edges. A
+ * gesture that starts on the bar scrolls nothing.
+ */
+private fun UiObject2.gestureArea(): Rect {
+    val bounds = visibleBounds
+    val side = bounds.width() / 5
+    return Rect(
+        bounds.left + side,
+        bounds.top + bounds.height() / 10,
+        bounds.right - side,
+        bounds.bottom - bounds.height() / 4,
+    )
+}
+
+/*
+ * Every move of the shell rides the screen spring (response 0.344 s, no bounce), which comes to rest
+ * within about half a second of the frame that composes it. A step that starts one waits that long,
+ * so the next step acts on a screen at rest: a push that arrives while a push still moves is
+ * dropped, as two rows tapped within one transition open only the first.
+ */
+private fun awaitTransition() = SystemClock.sleep(TRANSITION_MS)
+
+/** Whether this node leaves the accessibility tree within [TIMEOUT_MS]. */
+private fun UiObject2.awaitGone(): Boolean {
+    val deadline = SystemClock.uptimeMillis() + TIMEOUT_MS
+    while (SystemClock.uptimeMillis() < deadline) {
+        try {
+            visibleBounds
+        } catch (_: StaleObjectException) {
+            return true
+        }
+        SystemClock.sleep(POLL_MS)
+    }
+    return false
 }
 
 // UiDevice injects one touch event per step, about 5 ms apart.
@@ -169,5 +212,9 @@ private const val SLOW_SWIPE_SEGMENT_STEPS = 5
 private const val DURING_PUSH_SWIPE_STEPS = 32
 private const val SWIPE_AFTER_TAP_MS = 80L
 private const val PULL_STEPS = 60
+private const val FLING_STEPS = 8
+private const val SCROLL_STEPS = 40
 private const val SCROLL_ATTEMPTS = 3
 private const val SHORT_WAIT_MS = 1_000L
+private const val POLL_MS = 50L
+private const val TRANSITION_MS = 600L

@@ -49,8 +49,10 @@ class BaselineProfileGenerator {
         openRelated()
         pressBackBurst(3)
         assertAtRoot()
-        flingPrimaryList()
         pullToRefresh()
+        flingPrimaryList()
+        // A tap on the selected tab brings its root list back to the top.
+        tapTab(0)
     }
 
     private fun MacrobenchmarkScope.backToRelatedThenRoot() {
