@@ -10,6 +10,7 @@ struct AppSheetOptionsTests {
         #expect(options.contentInteraction == .automatic)
         #expect(options.dismissible)
         #expect(options.material == .automatic)
+        #expect(options.placement == .automatic)
     }
 
     @Test func theGrabberShowsWhenTheSheetCanBeResized() {

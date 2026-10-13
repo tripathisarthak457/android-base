@@ -207,9 +207,10 @@ style supplies the colours. A feature never calls `.sheet`, `.presentationDetent
 | The sheet | `AppSheetOptions` |
 |---|---|
 | A short choice or confirmation | `detents: [.fitContent]`, content a plain stack with its title in it |
-| Resizable | `detents: [.medium, .large]`; pass `selection:` to read or move the detent |
+| Resizable | `detents: [.medium, .large]`; pass `selection:` to read or move the detent, and move it inside `withAnimation(theme.springs.sheet)` |
 | Part of the screen, like Maps' search | `modality: .nonModal(upThrough: .medium)` (its lists scroll before the sheet grows), `dismissible: false` |
 | Never closed by a swipe | `dismissible: false`; only the sheet's own buttons close it |
+| A panel beside the content in a wide window, like Maps on an iPad | `placement: .leading` with `.nonModal` (iOS 27; earlier versions place it automatically) |
 | Its material | `material: .automatic` (Liquid Glass from iOS 26, the elevated surface before), `.solid`, `.frosted`, `.glass` |
 
 A sheet with unsaved changes asks before they go. Guard the view that owns them; a swipe down or

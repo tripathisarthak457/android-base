@@ -9,7 +9,7 @@ extension View {
     /// iOS 26 sheets take the system's concentric corners.
     ///
     /// - Parameters:
-    ///   - options: the detents, modality, dismissal, material and grabber.
+    ///   - options: the detents, modality, dismissal, material, placement and grabber.
     ///   - selection: the detent the sheet rests at, one of `options.detents`. Dragging the sheet
     ///     changes it, and changing it moves the sheet.
     ///   - onDismiss: called once the sheet has gone, however it was closed.
@@ -81,6 +81,7 @@ private struct AppSheetPresentation: ViewModifier {
             .interactiveDismissDisabled(!options.dismissible)
             .environment(\.isAppSheetDismissible, options.dismissible)
             .modifier(AppSheetSurface(material: options.material))
+            .modifier(AppSheetPlacementModifier(placement: options.placement))
     }
 
     /// `selection` in SwiftUI's terms. A fitted detent is presented at the content's measured
@@ -108,6 +109,34 @@ private struct Detents: ViewModifier {
         } else {
             content.presentationDetents(detents)
         }
+    }
+}
+
+private struct AppSheetPlacementModifier: ViewModifier {
+    let placement: AppSheetPlacement
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        // presentationPlacement exists only in the iOS 27 SDK, so only the Swift that SDK ships
+        // with (6.4) compiles the call; `#available` alone fails to build against an older SDK.
+        #if compiler(>=6.4)
+        if #available(iOS 27, *) {
+            switch placement {
+            case .automatic:
+                content
+            case .center:
+                content.presentationPlacement(.center)
+            case .leading:
+                content.presentationPlacement(.leading)
+            case .trailing:
+                content.presentationPlacement(.trailing)
+            }
+        } else {
+            content
+        }
+        #else
+        content
+        #endif
     }
 }
 

@@ -18,6 +18,8 @@ public nonisolated struct AppSheetOptions: Equatable, Sendable {
 
     public var material: AppSheetMaterial
 
+    public var placement: AppSheetPlacement
+
     /// The grabber at the top edge. `.automatic` shows it when the sheet has more than one detent,
     /// which is when Apple advises one.
     public var grabber: Visibility
@@ -28,6 +30,7 @@ public nonisolated struct AppSheetOptions: Equatable, Sendable {
         contentInteraction: AppSheetContentInteraction = .automatic,
         dismissible: Bool = true,
         material: AppSheetMaterial = .automatic,
+        placement: AppSheetPlacement = .automatic,
         grabber: Visibility = .automatic
     ) {
         self.detents = detents
@@ -35,6 +38,7 @@ public nonisolated struct AppSheetOptions: Equatable, Sendable {
         self.contentInteraction = contentInteraction
         self.dismissible = dismissible
         self.material = material
+        self.placement = placement
         self.grabber = grabber
     }
 
