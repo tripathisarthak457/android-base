@@ -3,7 +3,7 @@
 // The handful of controls the site is built from.
 
 import { motion, type HTMLMotionProps } from "framer-motion";
-import { type InputHTMLAttributes, type ReactNode, useId, useState, useSyncExternalStore } from "react";
+import { type ComponentProps, type ReactNode, useId, useState, useSyncExternalStore } from "react";
 
 /** A press that answers like the template's Scale feedback: down under the finger, back on a spring. */
 const press = {
@@ -15,29 +15,51 @@ export function Button({
   children,
   variant = "primary",
   size = "medium",
+  disabled = false,
+  focusableWhenDisabled = false,
   className = "",
+  onClick,
   ...rest
 }: {
   children: ReactNode;
   variant?: "primary" | "secondary" | "ghost";
   size?: "small" | "medium" | "large";
+  /**
+   * Keeps the button in the tab order while disabled, as `aria-disabled`, ignoring presses. For a
+   * button that disables itself while its own action runs: a focused button that turns `disabled`
+   * drops the focus to the page body, leaving a keyboard or screen reader user nowhere.
+   */
+  focusableWhenDisabled?: boolean;
 } & HTMLMotionProps<"button">) {
   const variants = {
-    primary: "bg-accent text-on-accent font-bold hover:bg-accent-bright disabled:bg-ink-700 disabled:text-ink-400",
+    primary: "bg-accent text-on-accent font-bold hover:bg-accent-bright",
     secondary: "bg-ink-800 text-ink-100 border border-ink-600 hover:border-ink-500 hover:bg-ink-700",
     ghost: "text-ink-300 hover:text-ink-100 hover:bg-ink-800",
+  };
+  const unavailable = {
+    primary: "bg-ink-700 text-ink-400 font-bold",
+    secondary: "bg-ink-800 text-ink-400 border border-ink-700",
+    ghost: "text-ink-400",
   };
   const sizes = {
     small: "h-9 px-3.5 text-sm",
     medium: "h-11 px-5 text-[15px]",
     large: "h-13 px-7 text-base",
   };
+  const inert = disabled && focusableWhenDisabled;
 
   return (
     <motion.button
       type="button"
-      {...press}
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
+      {...(disabled ? {} : press)}
+      disabled={disabled && !focusableWhenDisabled}
+      aria-disabled={inert || undefined}
+      // Cancelling the click also cancels the form submission a submit button would start, by a
+      // press or by Enter in one of the form's fields.
+      onClick={inert ? (event) => event.preventDefault() : onClick}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors ${
+        disabled ? `cursor-not-allowed ${unavailable[variant]}` : variants[variant]
+      } ${sizes[size]} ${className}`}
       {...rest}
     >
       {children}
@@ -123,7 +145,7 @@ export function Field({
   );
 }
 
-export function TextInput({ className = "", ...rest }: InputHTMLAttributes<HTMLInputElement>) {
+export function TextInput({ className = "", ...rest }: ComponentProps<"input">) {
   return (
     <input
       className={`h-11 w-full rounded-lg border border-ink-500 bg-ink-900 px-3.5 text-[15px] text-ink-100 transition-colors placeholder:text-ink-500 hover:border-ink-400 aria-invalid:border-rose ${className}`}

@@ -34,7 +34,15 @@ const AREAS: { value: Area; label: string }[] = [
   { value: "docs", label: "The documentation" },
 ];
 
-const TEXT_AREA = "w-full rounded-lg border border-ink-500 bg-ink-900 p-3 text-ink-100 placeholder:text-ink-500";
+const TEXT_AREA = "w-full rounded-lg border border-ink-500 bg-ink-900 p-3 text-ink-100 placeholder:text-ink-500 aria-invalid:border-rose";
+
+/** The API's minimums, which it counts in code points after trimming. */
+const SUMMARY_MIN = 4;
+const DETAILS_MIN = 10;
+
+function tooShort(value: string, min: number): boolean {
+  return [...value.trim()].length < min;
+}
 
 function Choices<T extends string>({ legend, options, value, onChange, columns }: {
   legend: string;
@@ -145,12 +153,25 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
   const [steps, setSteps] = useState("");
   const [contact, setContact] = useState("");
   const [attach, setAttach] = useState(context !== null);
+  const [tried, setTried] = useState(false);
   const [busy, setBusy] = useState(false);
   const [failure, setFailure] = useState<{ message: string; unreachable: boolean } | null>(null);
   const [sentId, setSentId] = useState<number | null>(null);
+  const titleInput = useRef<HTMLInputElement>(null);
+  const bodyInput = useRef<HTMLTextAreaElement>(null);
 
   const bug = kind === "bug";
-  const canSend = title.trim().length >= 4 && body.trim().length >= 10 && !busy;
+  // Send stays enabled and says what is missing when pressed, rather than staying grey with no clue why.
+  const titleProblem = tried && tooShort(title, SUMMARY_MIN) ? `Write at least ${SUMMARY_MIN} characters.` : undefined;
+  const bodyProblem = tried && tooShort(body, DETAILS_MIN) ? `Write at least ${DETAILS_MIN} characters.` : undefined;
+
+  function submit() {
+    if (busy) return;
+    setTried(true);
+    if (tooShort(title, SUMMARY_MIN)) titleInput.current?.focus();
+    else if (tooShort(body, DETAILS_MIN)) bodyInput.current?.focus();
+    else void send();
+  }
 
   async function send() {
     setBusy(true);
@@ -184,24 +205,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
     }
   }
 
-  if (sentId !== null) {
-    return (
-      <div className="px-6 py-10 text-center" role="status">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-mint/15 text-2xl text-mint" aria-hidden>
-          ✓
-        </div>
-        <h2 id="feedback-title" className="mt-5 text-lg font-semibold text-ink-100">
-          Got it
-        </h2>
-        <p className="mx-auto mt-2 max-w-sm text-sm text-ink-400">
-          Report <span className="font-mono text-ink-300">#{sentId}</span>. If you left an email you will hear back when there is something to say.
-        </p>
-        <Button variant="secondary" className="mt-6" onClick={onClose}>
-          Close
-        </Button>
-      </div>
-    );
-  }
+  if (sentId !== null) return <Sent id={sentId} onClose={onClose} />;
 
   const attached: [string, string][] = context
     ? [
@@ -221,7 +225,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
       method="dialog"
       onSubmit={(event) => {
         event.preventDefault();
-        if (canSend) void send();
+        submit();
       }}
     >
       <div className="flex items-start justify-between gap-4 border-b border-ink-800 px-6 py-5">
@@ -246,10 +250,11 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
         <Choices legend="Where?" options={AREAS} value={area} onChange={setArea} columns="grid-cols-2" />
         {bug && <Choices legend="How bad is it?" options={SEVERITIES} value={severity} onChange={setSeverity} columns="sm:grid-cols-3" />}
 
-        <Field label="One-line summary">
+        <Field label="One-line summary" hint={`At least ${SUMMARY_MIN} characters.`} error={titleProblem}>
           {(control) => (
             <TextInput
               {...control}
+              ref={titleInput}
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               placeholder={bug ? "The zip has no gradlew" : "Let me pick a starting screen"}
@@ -258,10 +263,15 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
           )}
         </Field>
 
-        <Field label={bug ? "What happened?" : "Tell us more"} hint="As much detail as you have. Error messages word for word help most.">
+        <Field
+          label={bug ? "What happened?" : "Tell us more"}
+          hint={`At least ${DETAILS_MIN} characters, and as much detail as you have. Error messages word for word help most.`}
+          error={bodyProblem}
+        >
           {(control) => (
             <textarea
               {...control}
+              ref={bodyInput}
               value={body}
               onChange={(event) => setBody(event.target.value)}
               rows={4}
@@ -350,7 +360,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
           <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={!canSend}>
+          <Button type="submit" disabled={busy} focusableWhenDisabled>
             {busy ? (
               <>
                 <Spinner /> Sending…
@@ -362,5 +372,30 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
         </div>
       </div>
     </form>
+  );
+}
+
+/**
+ * What the dialog shows once a report is in. It takes the focus: the button that sent the report
+ * went with the form, and a status region that mounts already holding its text is not announced.
+ */
+function Sent({ id, onClose }: { id: number; onClose: () => void }) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => heading.current?.focus(), []);
+  return (
+    <div className="px-6 py-10 text-center">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-mint/15 text-2xl text-mint" aria-hidden>
+        ✓
+      </div>
+      <h2 ref={heading} id="feedback-title" tabIndex={-1} className="mt-5 text-lg font-semibold text-ink-100 outline-none">
+        Report sent
+      </h2>
+      <p className="mx-auto mt-2 max-w-sm text-sm text-ink-400">
+        Report <span className="font-mono text-ink-300">#{id}</span>. If you left an email you will hear back when there is something to say.
+      </p>
+      <Button variant="secondary" className="mt-6" onClick={onClose}>
+        Close
+      </Button>
+    </div>
   );
 }
