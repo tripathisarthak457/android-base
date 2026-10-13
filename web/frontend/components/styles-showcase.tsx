@@ -45,10 +45,20 @@ export function StylesShowcase() {
   const styles = android().design_styles;
   const defaults = android().defaults;
 
+  // A hidden tab still runs intervals, throttled, and each tick re-renders all four phones.
   useEffect(() => {
     if (!inView || paused) return;
-    const timer = setInterval(() => setTick((value) => value + 1), 1400);
-    return () => clearInterval(timer);
+    let timer: ReturnType<typeof setInterval> | undefined;
+    const sync = () => {
+      clearInterval(timer);
+      timer = document.hidden ? undefined : setInterval(() => setTick((value) => value + 1), 1400);
+    };
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", sync);
+    };
   }, [inView, paused]);
 
   useEffect(() => {
@@ -88,7 +98,9 @@ export function StylesShowcase() {
           </div>
         </div>
 
-        <ul className="no-scrollbar -mx-4 mt-12 flex gap-6 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0">
+        {/* Only a phone-width window scrolls the phones sideways, where a swipe does it; from sm they
+            wrap, so a mouse or keyboard reaches every style without a horizontal scroll. */}
+        <ul className="-mx-4 mt-12 flex gap-6 overflow-x-auto px-4 pb-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-y-12 sm:overflow-visible sm:px-0 lg:grid-cols-4">
           {styles.map((style, index) => {
             const pairing = PAIRINGS[style.key] ?? { accent: defaults.accent_colour, font: defaults.font_name, blurb: "" };
             const tokens = CATALOGUE.tokens.styles[style.key];
