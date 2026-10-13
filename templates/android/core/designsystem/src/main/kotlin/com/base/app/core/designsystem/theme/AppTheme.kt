@@ -10,11 +10,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import com.base.app.core.designsystem.component.feedback.LocalShimmer
-import com.base.app.core.designsystem.component.feedback.ShimmerClock
+import androidx.compose.runtime.rememberUpdatedState
 import com.base.app.core.designsystem.component.overlay.AppOverlayHost
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.foundation.ChromeInset
@@ -33,6 +32,8 @@ import com.base.app.core.designsystem.foundation.adaptive.rememberWindowClass
 import com.base.app.core.designsystem.foundation.adaptive.rememberWindowMetrics
 import com.base.app.core.designsystem.foundation.content.LocalContentColor
 import com.base.app.core.designsystem.foundation.content.LocalTextStyle
+import com.base.app.core.designsystem.foundation.draw.LocalShimmerClock
+import com.base.app.core.designsystem.foundation.draw.ShimmerClock
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
 import com.base.app.core.designsystem.foundation.interaction.NoIndication
 import com.base.app.core.designsystem.foundation.scroll.AppOverscroll
@@ -100,8 +101,12 @@ fun AppTheme(
         )
     }
     val systemReduceMotion = rememberSystemReduceMotion()
-    val reduceMotionState: State<Boolean> =
-        if (reduceMotion == null) systemReduceMotion else remember(reduceMotion) { mutableStateOf(reduceMotion) }
+    val override = rememberUpdatedState(reduceMotion)
+    // One state for the theme's lifetime, whichever side decides: code that observes it outside
+    // composition (a skeleton choosing whether to sweep) sees a change of the override too.
+    val reduceMotionState: State<Boolean> = remember(systemReduceMotion) {
+        derivedStateOf { override.value ?: systemReduceMotion.value }
+    }
 
     val outermost = LocalOverlayHost.current == null
     val windowClass = rememberWindowClass()
@@ -115,7 +120,8 @@ fun AppTheme(
 
     val bottomChrome = if (outermost) remember { ChromeInset() } else LocalBottomChrome.current
     val scope = rememberCoroutineScope()
-    val shimmer = if (outermost) remember { ShimmerClock(scope) } else LocalShimmer.current
+    val metrics = rememberUpdatedState(windowMetrics)
+    val shimmer = if (outermost) remember { ShimmerClock(scope) { metrics.value.sizeDp } } else LocalShimmerClock.current
 
     CompositionLocalProvider(
         LocalAppColors provides colors,
@@ -137,7 +143,7 @@ fun AppTheme(
         LocalIndication provides NoIndication,
         LocalHapticsEnabled provides hapticsEnabled,
         LocalBottomChrome provides bottomChrome,
-        LocalShimmer provides shimmer,
+        LocalShimmerClock provides shimmer,
     ) {
         if (outermost) {
             // Only the outermost theme sets the edge, so a screen that chose Android's stretch keeps
