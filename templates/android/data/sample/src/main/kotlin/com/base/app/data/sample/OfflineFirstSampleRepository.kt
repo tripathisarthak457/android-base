@@ -42,7 +42,7 @@ internal class OfflineFirstSampleRepository @Inject constructor(
     override val items: Flow<List<SampleItem>> = stored.filterNotNull()
 
     override suspend fun refresh(): AppResult<Unit> = when (val fetched = api.items()) {
-        is AppResult.Success -> stored {
+        is AppResult.Success -> storing {
             dao.replaceAll(fetched.value.mapIndexed { position, dto -> dto.toEntity(position) })
         }
 
@@ -57,7 +57,7 @@ internal class OfflineFirstSampleRepository @Inject constructor(
     }
 
     /** A full disk or a damaged file is a failure to report, not a crash at whoever asked. */
-    private suspend fun stored(write: suspend () -> Unit): AppResult<Unit> = try {
+    private suspend fun storing(write: suspend () -> Unit): AppResult<Unit> = try {
         write()
         AppResult.Success(Unit)
     } catch (cancellation: CancellationException) {
