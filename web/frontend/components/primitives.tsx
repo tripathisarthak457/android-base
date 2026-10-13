@@ -83,7 +83,7 @@ export function usePaused(): [boolean, (paused: boolean) => void] {
   return [chosen ?? reduce, setChosen];
 }
 
-export type ControlProps = { id: string; "aria-invalid"?: true; "aria-describedby"?: string };
+type ControlProps = { id: string; "aria-invalid"?: true; "aria-describedby"?: string };
 
 /**
  * A label, its control, and the hint and error under it. The hint stays when an error appears:

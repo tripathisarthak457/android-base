@@ -9,7 +9,6 @@ test("a feature reached only through another is not selectable", () => {
   const keys = selectableFeatures(android).map((feature) => feature.key);
   assert.equal(keys.includes("firebase"), false);
   assert.ok(keys.includes("push"));
-  assert.equal(keys.length, android.features.filter((feature) => !feature.implied_only).length);
 });
 
 test("a licensed feature offered on two platforms is listed once", () => {

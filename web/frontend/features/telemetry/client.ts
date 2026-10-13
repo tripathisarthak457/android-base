@@ -81,7 +81,7 @@ export function flushOnHide(): void {
 /**
  * A ResizeObserver callback that changes the size of what it observes makes the browser fire an
  * error event, though nothing failed: the rest of the notifications arrive on the next frame. The
- * live preview's fit-to-width and the admin's scroll padding both work that way.
+ * live preview's fit-to-width does that, since the phone it rescales sets its box's height.
  */
 const NOT_A_FAILURE = /^ResizeObserver loop /;
 
