@@ -45,6 +45,24 @@ export function Button({
   );
 }
 
+/**
+ * Stops and restarts the looping previews beside it. They start on their own and run while in view,
+ * so the page itself has to offer a way to stop them (WCAG 2.2.2); reduced motion only decides
+ * whether they start. The label changes with the state rather than using `aria-pressed`, as the
+ * APG carousel's rotation control does.
+ */
+export function PauseButton({ paused, onChange, label }: { paused: boolean; onChange: (paused: boolean) => void; label: string }) {
+  return (
+    <Button variant="secondary" size="small" onClick={() => onChange(!paused)}>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden>
+        {paused ? <path d="M3 1.5v9l7.5-4.5z" /> : <path d="M2.5 1.5H5v9H2.5zM7 1.5h2.5v9H7z" />}
+      </svg>
+      {paused ? "Play" : "Pause"}
+      <span className="sr-only"> {label}</span>
+    </Button>
+  );
+}
+
 export type ControlProps = { id: string; "aria-invalid"?: true; "aria-describedby"?: string };
 
 /**

@@ -1,7 +1,8 @@
 "use client";
 
-import { useId } from "react";
-import { ChoiceCard, Toggle } from "../../../components/primitives.tsx";
+import { useReducedMotion } from "framer-motion";
+import { useId, useState } from "react";
+import { ChoiceCard, PauseButton, Toggle } from "../../../components/primitives.tsx";
 import type { Catalogue, Spring } from "../../catalogue/types.ts";
 import { LivePreview, usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
@@ -13,7 +14,7 @@ function describe(spring: Spring | undefined): string {
   return `${spring.response.toFixed(2)} s${spring.bounce > 0 ? ` · bounce ${spring.bounce.toFixed(2)}` : ""}`;
 }
 
-function MotionCard({ catalogue, model, styleKey, title, description, name, dark }: {
+function MotionCard({ catalogue, model, styleKey, title, description, name, dark, paused }: {
   catalogue: Catalogue;
   model: Configurator;
   styleKey: string;
@@ -21,6 +22,7 @@ function MotionCard({ catalogue, model, styleKey, title, description, name, dark
   description: string;
   name: string;
   dark: boolean;
+  paused: boolean;
 }) {
   const input = usePreviewInput(catalogue, model.state);
   const theme = usePreviewTheme({ ...input, motionStyle: styleKey }, dark);
@@ -39,7 +41,7 @@ function MotionCard({ catalogue, model, styleKey, title, description, name, dark
       onChange={() => model.dispatch({ type: "motionStyle", value: styleKey })}
       className="flex gap-4 p-4"
     >
-      <MotionPreview theme={theme} tokens={catalogue.tokens} font={input.font} />
+      <MotionPreview theme={theme} tokens={catalogue.tokens} font={input.font} paused={paused} />
       <span className="min-w-0">
         <span className="block font-display text-base font-bold text-ink-100">{title}</span>
         <span className="mt-1 block text-xs leading-relaxed text-ink-400">{description}</span>
@@ -60,15 +62,21 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
   const { state, dispatch, target } = model;
   const input = usePreviewInput(catalogue, state);
   const name = useId();
+  const reduce = useReducedMotion();
+  const [pausedByVisitor, setPaused] = useState<boolean | null>(null);
+  const paused = pausedByVisitor ?? Boolean(reduce);
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-6">
-        <div>
-          <p className="text-sm font-medium text-ink-200">How it moves</p>
-          <p className="mt-1 text-xs leading-relaxed text-ink-400">
-            Each loop runs the style&apos;s own springs from the design tokens: a press and its release, a screen pushed and popped,
-            a tab switch. Hold the button to feel the press. Every spring is interruptible and keeps its velocity in the app.
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-ink-200">How it moves</p>
+            <p className="mt-1 text-xs leading-relaxed text-ink-400">
+              Each loop runs the style&apos;s own springs from the design tokens: a press and its release, a screen pushed and popped,
+              a tab switch. Hold the button to feel the press. Every spring is interruptible and keeps its velocity in the app.
+            </p>
+          </div>
+          <PauseButton paused={paused} onChange={setPaused} label="the motion previews" />
         </div>
         <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <legend className="sr-only">Motion style</legend>
@@ -82,6 +90,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
               description={style.description}
               name={name}
               dark={dark}
+              paused={paused}
             />
           ))}
         </fieldset>

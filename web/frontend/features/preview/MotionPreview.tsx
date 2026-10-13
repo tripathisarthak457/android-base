@@ -1,6 +1,6 @@
 "use client";
 
-import { useAnimate, useInView, useReducedMotion } from "framer-motion";
+import { useAnimate, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import type { Tokens } from "../catalogue/types.ts";
 import type { PreviewTheme } from "./theme.ts";
@@ -20,11 +20,11 @@ const REST: [part: string, values: Record<string, string | number>][] = [
  * A few seconds of the app moving in one motion style, on its own springs: a press and release,
  * a push and pop (slide only, the covered screen darkened by a drawn scrim and moving at the
  * parallax fraction), and a tab switch (instant content, the indicator on the selection spring).
+ * It loops while in view and not `paused`; the button answers a press either way.
  */
-export function MotionPreview({ theme, tokens, font }: { theme: PreviewTheme; tokens: Tokens; font: string }) {
+export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewTheme; tokens: Tokens; font: string; paused: boolean }) {
   const [scope, animate] = useAnimate<HTMLDivElement>();
   const inView = useInView(scope, { margin: "-40px" });
-  const reduce = useReducedMotion();
   const pressing = useRef(false);
   const { press, navigation } = tokens.motion;
   const scrim = theme.dark ? navigation.scrimAlpha.dark : navigation.scrimAlpha.light;
@@ -33,10 +33,10 @@ export function MotionPreview({ theme, tokens, font }: { theme: PreviewTheme; to
   const up = () => animate("[data-part=button]", { scale: 1 }, theme.spring("release"));
 
   useEffect(() => {
-    // A run stopped part-way, by scrolling off or a theme or reduced-motion change, leaves the
-    // detail half-pushed or the other tab showing, and React does not restore styles it never changed.
+    // A run stopped part-way, by scrolling off, a pause or a theme change, leaves the detail
+    // half-pushed or the other tab showing, and React does not restore styles it never changed.
     for (const [part, values] of REST) animate(`[data-part=${part}]`, values, { duration: 0 });
-    if (!inView || reduce) return;
+    if (!inView || paused) return;
     let cancelled = false;
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     const screen = theme.spring("screen");
@@ -79,7 +79,7 @@ export function MotionPreview({ theme, tokens, font }: { theme: PreviewTheme; to
       cancelled = true;
     };
     // `down`, `up` and the token values all follow from `theme`, so the loop restarts with it.
-  }, [inView, reduce, theme]);
+  }, [inView, paused, theme]);
 
   const surface = theme.colour("surface");
   const line = theme.colour("borderStrong");

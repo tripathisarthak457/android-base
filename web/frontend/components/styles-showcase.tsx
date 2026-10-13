@@ -9,7 +9,7 @@ import { planTabs } from "../features/preview/tabs.ts";
 import { weightsFor } from "../features/preview/theme.ts";
 import { traits } from "../features/preview/traits.ts";
 import { CATALOGUE, android } from "../lib/catalogue.ts";
-import { Segmented } from "./primitives.tsx";
+import { PauseButton, Segmented } from "./primitives.tsx";
 
 /** A brand colour and typeface that suit each style; a style without one shows the template's. */
 const PAIRINGS: Record<string, { accent: string; font: string; blurb: string }> = {
@@ -42,14 +42,16 @@ export function StylesShowcase() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-120px" });
   const reduce = useReducedMotion();
+  const [pausedByVisitor, setPaused] = useState<boolean | null>(null);
+  const paused = pausedByVisitor ?? Boolean(reduce);
   const styles = android().design_styles;
   const defaults = android().defaults;
 
   useEffect(() => {
-    if (!inView || reduce) return;
+    if (!inView || paused) return;
     const timer = setInterval(() => setTick((value) => value + 1), 1400);
     return () => clearInterval(timer);
-  }, [inView, reduce]);
+  }, [inView, paused]);
 
   useEffect(() => {
     if (!inView) return;
@@ -74,15 +76,18 @@ export function StylesShowcase() {
               here, then make it yours: every component is plain Compose you own.
             </p>
           </div>
-          <Segmented
-            label="Showcase theme"
-            options={[
-              { value: "light", label: "Light" },
-              { value: "dark", label: "Dark" },
-            ]}
-            value={dark ? "dark" : "light"}
-            onChange={(next) => setDark(next === "dark")}
-          />
+          <div className="flex items-center gap-3">
+            <PauseButton paused={paused} onChange={setPaused} label="the style previews" />
+            <Segmented
+              label="Showcase theme"
+              options={[
+                { value: "light", label: "Light" },
+                { value: "dark", label: "Dark" },
+              ]}
+              value={dark ? "dark" : "light"}
+              onChange={(next) => setDark(next === "dark")}
+            />
+          </div>
         </div>
 
         <ul className="no-scrollbar -mx-4 mt-12 flex gap-6 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0">
