@@ -1,6 +1,7 @@
 package __PKG__.feature.__NAME__.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,9 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import __PKG__.core.common.LoadState
 import __PKG__.core.common.isRefreshing
 import __PKG__.core.common.result.AppError
@@ -18,7 +20,7 @@ import __PKG__.core.designsystem.component.container.AppCard
 import __PKG__.core.designsystem.component.container.AppScaffold
 import __PKG__.core.designsystem.component.feedback.AppEmptyState
 import __PKG__.core.designsystem.component.feedback.AppErrorState
-import __PKG__.core.designsystem.component.feedback.AppSkeletonLine
+import __PKG__.core.designsystem.component.feedback.AppSkeleton
 import __PKG__.core.designsystem.component.navigation.AppLargeTitle
 import __PKG__.core.designsystem.component.refresh.AppPullToRefresh
 import __PKG__.core.designsystem.component.text.AppText
@@ -106,17 +108,20 @@ private fun LoadingList() {
 }
 
 /**
- * [__P__Row]'s card around one bone at the title's line height, so the row that replaces
- * it is as tall at any font scale.
+ * [__P__Row]'s card with a bone where the title goes. A transparent line in the title's
+ * style sizes the bone, so the row that replaces it is exactly as tall at any font scale.
  */
 @Composable
 private fun __P__RowPlaceholder() {
-    val lineHeight = AppTheme.typography.titleMedium.lineHeight
     AppCard(modifier = Modifier.fillMaxWidth()) {
-        AppSkeletonLine(
-            height = with(LocalDensity.current) { lineHeight.toDp() },
-            widthFraction = 0.6f,
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .clearAndSetSemantics {},
+        ) {
+            AppText(text = " ", style = AppTheme.typography.titleMedium, color = Color.Transparent)
+            AppSkeleton(modifier = Modifier.matchParentSize(), shape = AppTheme.shapes.xs)
+        }
     }
 }
 

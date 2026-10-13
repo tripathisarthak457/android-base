@@ -128,11 +128,14 @@ class GeneratedModuleTest(unittest.TestCase):
         # The content list and the loading list both, so the rows land where the placeholders were.
         self.assertEqual(2, list_screen.count("contentPadding = chromeContentPadding("))
         self.assertIn(".padding(chromeContentPadding(", detail_screen)
-        # Each bone stands for the text that replaces it, at that style's line height.
-        self.assertIn("style = AppTheme.typography.titleMedium", list_screen)
-        self.assertIn("AppTheme.typography.titleMedium.lineHeight", list_screen)
-        self.assertIn("style = AppTheme.typography.displaySmall", detail_screen)
-        self.assertIn("AppTheme.typography.displaySmall.lineHeight", detail_screen)
+        # Each bone is sized by a transparent line in the style of the text that replaces it.
+        self.assertEqual(2, list_screen.count("style = AppTheme.typography.titleMedium"))
+        self.assertEqual(2, detail_screen.count("style = AppTheme.typography.displaySmall"))
+        for screen in (list_screen, detail_screen):
+            self.assertIn("color = Color.Transparent", screen)
+            self.assertIn(
+                "AppSkeleton(modifier = Modifier.matchParentSize(), shape = AppTheme.shapes.xs)", screen
+            )
         self.assertNotIn("AppSkeletonListItem", list_screen)
 
     def test_the_code_fits_the_formatting_features_line_length_with_a_long_module_name(self):

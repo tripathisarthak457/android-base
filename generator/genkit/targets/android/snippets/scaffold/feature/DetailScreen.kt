@@ -1,20 +1,23 @@
 package __PKG__.feature.__NAME__.detail
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import __PKG__.core.common.LoadState
 import __PKG__.core.common.result.AppError
 import __PKG__.core.designsystem.component.container.AppScaffold
 import __PKG__.core.designsystem.component.feedback.AppErrorState
-import __PKG__.core.designsystem.component.feedback.AppSkeletonLine
+import __PKG__.core.designsystem.component.feedback.AppSkeleton
 import __PKG__.core.designsystem.component.navigation.AppBackTopBar
 import __PKG__.core.designsystem.component.text.AppText
 import __PKG__.core.designsystem.foundation.chromeContentPadding
@@ -58,12 +61,20 @@ internal fun __P__DetailScreen(
         ) {
             val item = state.item
             if (item == null) {
-                // The title's line height: the title replaces the bone without moving anything.
-                val lineHeight = AppTheme.typography.displaySmall.lineHeight
-                AppSkeletonLine(
-                    height = with(LocalDensity.current) { lineHeight.toDp() },
-                    widthFraction = 0.7f,
-                )
+                // A transparent line in the title's style sizes the bone, so the title takes its
+                // place without moving anything.
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .clearAndSetSemantics {},
+                ) {
+                    AppText(
+                        text = " ",
+                        style = AppTheme.typography.displaySmall,
+                        color = Color.Transparent,
+                    )
+                    AppSkeleton(modifier = Modifier.matchParentSize(), shape = AppTheme.shapes.xs)
+                }
             } else {
                 AppText(
                     text = item.title,
