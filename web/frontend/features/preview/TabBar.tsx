@@ -27,8 +27,8 @@ export function barReach(bar: string): number {
 
 /**
  * Glass is real blur only in the one live preview. A thumbnail draws it (tinted body, rim and
- * sheen, nothing sampled), as the template does for content glass: nine stacked backdrop filters
- * inside scaled phones would drop the page's frames.
+ * sheen, nothing sampled), as the template does for content glass: a backdrop filter in every
+ * scaled phone on the page would drop its frames.
  */
 function capsule(bar: string, colour: (role: string) => string, dark: boolean, live: boolean): CSSProperties {
   const shadow = dark ? "0 8px 24px rgba(0,0,0,0.45)" : "0 8px 24px rgba(11,15,26,0.14)";

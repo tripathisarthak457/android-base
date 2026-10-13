@@ -7,8 +7,8 @@ import { provideReportContext } from "../../features/feedback/context.ts";
 import { CATALOGUE } from "../../lib/catalogue.ts";
 
 /**
- * The page's one stateful island. The configurator's answers live here, so a keystroke re-renders
- * the configurator and nothing else on the landing page.
+ * The configurator's answers live in this island, so a keystroke re-renders the configurator and
+ * nothing else on the landing page.
  */
 export function ConfigureIsland() {
   const model = useConfigurator(CATALOGUE);
