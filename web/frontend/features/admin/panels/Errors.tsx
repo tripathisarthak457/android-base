@@ -40,7 +40,9 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
         <>
           {save.problem && <p className="mb-3 text-xs text-rose">{save.problem}</p>}
           {data.items.length === 0 ? (
-            <p className="rounded-lg border border-mint/25 bg-mint/5 p-4 text-sm text-mint">Nothing broken.</p>
+            <p className="rounded-lg border border-mint/25 bg-mint/5 p-4 text-sm text-mint">
+              {resolved ? "No errors in this window, resolved or not." : "Nothing broken."}
+            </p>
           ) : (
             <ul className="divide-y divide-ink-800">
               {data.items.map((group) => {

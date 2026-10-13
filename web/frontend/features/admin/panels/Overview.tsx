@@ -3,7 +3,7 @@
 import { type Funnel as FunnelData, type Overview as OverviewData, type Series, useAdminQuery } from "../api.ts";
 import { DailyChart, Legend, OUTCOME_COLOUR, percent, seconds } from "../charts.tsx";
 import { OUTCOMES } from "../filters.ts";
-import { Panel, type PanelProps } from "../Panel.tsx";
+import { Panel, type PanelProps, Table } from "../Panel.tsx";
 
 const FAILED = ["internal_error", "timeout"];
 const LOST = ["abandoned_queue", "abandoned_running", "rate_limited"];
@@ -119,23 +119,50 @@ export function Funnel({ token, query, version, onUnauthorized }: PanelProps) {
   );
 }
 
+/**
+ * The chart for the shape, and the same numbers as a table: the rarer outcomes are close greys
+ * stacked against each other, and a bar's tooltip only answers a mouse.
+ */
 export function Daily({ token, query, version, onUnauthorized }: PanelProps) {
   const result = useAdminQuery<Series>("series", token, query, version, onUnauthorized);
   return (
     <Panel title="Every day" result={result}>
-      {(data) => (
-        <>
-          <Legend
-            items={[
-              ...OUTCOMES.map((key) => ({ label: key, colour: OUTCOME_COLOUR[key] ?? "gray" })),
-              { label: "visitors", colour: "var(--color-accent)", line: true },
-            ]}
-          />
-          <div className="mt-3">
-            <DailyChart days={data.days} />
-          </div>
-        </>
-      )}
+      {(data) => {
+        const seen = OUTCOMES.filter((key) => data.days.some((day) => day.outcomes[key]));
+        return (
+          <>
+            <Legend
+              items={[
+                ...OUTCOMES.map((key) => ({ label: key, colour: OUTCOME_COLOUR[key] ?? "gray" })),
+                { label: "visitors", colour: "var(--color-accent)", line: true },
+              ]}
+            />
+            <div className="mt-3">
+              <DailyChart days={data.days} />
+            </div>
+            {data.days.length > 0 && (
+              <details className="mt-3">
+                <summary className="cursor-pointer text-xs font-medium text-ink-300 hover:text-ink-100">Numbers per day</summary>
+                <div className="mt-2">
+                  <Table head={["Day", ...seen, "visitors"]}>
+                    {data.days.map((day) => (
+                      <tr key={day.day} className="text-ink-200">
+                        <td className="py-1.5 pr-3 font-mono">{day.day}</td>
+                        {seen.map((key) => (
+                          <td key={key} className="py-1.5 pl-3 text-right font-mono">
+                            {day.outcomes[key] ?? 0}
+                          </td>
+                        ))}
+                        <td className="py-1.5 pl-3 text-right font-mono">{day.visitors}</td>
+                      </tr>
+                    ))}
+                  </Table>
+                </div>
+              </details>
+            )}
+          </>
+        );
+      }}
     </Panel>
   );
 }

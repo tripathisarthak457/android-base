@@ -64,7 +64,7 @@ export function Failures({ token, query, version, onUnauthorized }: PanelProps) 
               ).map(([label, rows]) => (
                 <div key={label}>
                   <h3 className="mb-2 text-xs font-medium text-ink-300">{label}</h3>
-                  <Table head={["", "Failed"]} empty={rows.length === 0}>
+                  <Table head={[<span className="sr-only">{label}</span>, "Failed"]} empty={rows.length === 0}>
                     {rows.map((row) => (
                       <tr key={row.key} className="text-ink-200">
                         <td className="py-1.5 pr-2 font-mono">{row.key.slice(0, 10) || "—"}</td>
