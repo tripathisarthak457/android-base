@@ -21,6 +21,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
   const shown = useRef(step);
 
   const bar = useRef<HTMLElement>(null);
+  const startOver = useRef<HTMLButtonElement>(null);
 
   // After a step change the focus moves to the new panel's heading, so a keyboard or screen reader
   // user lands on what changed rather than staying on the Next button. It compares with the step
@@ -55,9 +56,29 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
             answers stay in this browser until you start over.
           </p>
         </div>
-        <Button variant="ghost" size="small" onClick={model.startOver}>
-          Start over
-        </Button>
+        <div className="flex items-center gap-3">
+          <p aria-live="polite" className="text-sm text-ink-300">
+            {model.canUndoStartOver && (
+              <>
+                Answers cleared.{" "}
+                <button
+                  type="button"
+                  onClick={() => {
+                    model.undoStartOver();
+                    // The Undo button is about to go; a step change then moves focus to its heading.
+                    startOver.current?.focus();
+                  }}
+                  className="font-semibold text-accent hover:text-accent-bright"
+                >
+                  Undo
+                </button>
+              </>
+            )}
+          </p>
+          <Button ref={startOver} variant="ghost" size="small" onClick={model.startOver}>
+            Start over
+          </Button>
+        </div>
       </div>
 
       <nav ref={bar} aria-label="Steps" className="no-scrollbar mt-8 overflow-x-auto pb-1">

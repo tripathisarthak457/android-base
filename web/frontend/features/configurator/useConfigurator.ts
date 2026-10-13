@@ -176,13 +176,27 @@ export function useConfigurator(catalogue: Catalogue) {
     [step, state.target],
   );
 
+  // Start over is one small button beside the answers it erases, so the answers it replaced are
+  // kept in memory and offered back until the next edit.
+  const [beforeReset, setBeforeReset] = useState<{ state: ConfigState; step: Step; identityAt: number | null; revision: number } | null>(null);
+
   const startOver = useCallback(() => {
+    setBeforeReset({ state, step, identityAt: identityAt.current, revision: state.revision + 1 });
     writeDraft(null);
     dispatchRaw({ type: "reset" });
     setOutcome(null);
     setStep("platform");
     identityAt.current = null;
-  }, []);
+  }, [state, step]);
+
+  const canUndoStartOver = beforeReset !== null && beforeReset.revision === state.revision;
+  const undoStartOver = useCallback(() => {
+    if (!beforeReset) return;
+    dispatchRaw({ type: "restore", state: beforeReset.state });
+    setStep(beforeReset.step);
+    identityAt.current = beforeReset.identityAt;
+    setBeforeReset(null);
+  }, [beforeReset]);
 
   const generate = useCallback(async () => {
     if (errors.size > 0 || busy) return;
@@ -250,6 +264,8 @@ export function useConfigurator(catalogue: Catalogue) {
     outcome: outcome && outcome.revision === state.revision ? outcome : null,
     generate,
     startOver,
+    canUndoStartOver,
+    undoStartOver,
   };
 }
 
