@@ -22,6 +22,11 @@ export function isStringList(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 }
 
+/** A length as Python's `len()` counts it, so a character outside the BMP is one, not two. */
+export function codePoints(value: string): number {
+  return [...value].length;
+}
+
 export function withoutNulls(value: Json): Json {
   return Object.fromEntries(Object.entries(value).filter(([, item]) => item !== null && item !== undefined));
 }

@@ -1,5 +1,5 @@
 import type { Rules } from "../../catalogue/types.ts";
-import { type Checker, type Json, isObject, matches, withoutNulls } from "./check.ts";
+import { type Checker, type Json, codePoints, isObject, matches, withoutNulls } from "./check.ts";
 
 // Signing keys: the shape of each entry in `android.keystores`, then what keytool would refuse.
 
@@ -39,7 +39,7 @@ export function keystoreProblem(keystore: Json, rules: Rules): string | undefine
   const passwords: [string, string][] = [["store", text("store_password", "")]];
   if (typeof keystore.existing_path === "string" && keystore.existing_path) passwords.push(["key", text("key_password", "")]);
   for (const [label, password] of passwords) {
-    if (password.length < rules.keystore_password_min) {
+    if (codePoints(password) < rules.keystore_password_min) {
       return `The ${name} ${label} password must be at least ${rules.keystore_password_min} characters: keytool refuses anything shorter.`;
     }
     if (NOT_PRINTABLE.test(password)) return `The ${name} ${label} password cannot contain control characters.`;

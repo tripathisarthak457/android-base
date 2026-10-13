@@ -1,14 +1,10 @@
 import type { Rules } from "../../catalogue/types.ts";
-import { type Checker, matches } from "./check.ts";
+import { type Checker, codePoints, matches } from "./check.ts";
 
 // The names a visitor types on the identity step: app, display, package and feature modules.
 
 /** What a display name may not contain: line breaks and controls, but format characters stay (Persian needs ZWNJ). */
 const NOT_IN_DISPLAY_NAME = /[\p{Cc}\p{Cs}\p{Zl}\p{Zp}\uFFFE\uFFFF]/u;
-
-function codePoints(value: string): number {
-  return [...value].length;
-}
 
 function pascalCase(name: string): string {
   return name
@@ -47,7 +43,7 @@ export function checkDisplayName(check: Checker, name: string, rules: Rules): vo
 /** Problems with a package name, or undefined when the generator would accept it. */
 function packageProblem(name: string, rules: Rules): string | undefined {
   if (!name) return "A package name is required, like com.example.myapp.";
-  if (name.length > rules.package_max) return `The package name can be at most ${rules.package_max} characters.`;
+  if (codePoints(name) > rules.package_max) return `The package name can be at most ${rules.package_max} characters.`;
   const segments = name.split(".");
   if (segments.length < rules.package_segments_min) {
     return `The package name needs at least ${rules.package_segments_min} segments, like com.example.myapp: Play rejects a single-segment application id.`;

@@ -1,7 +1,7 @@
 import type { Catalogue, Field, Rules, Target } from "../../catalogue/types.ts";
 import { closeOver } from "../resolve.ts";
 import { checkAndroid } from "./android.ts";
-import { Checker, type Json, isObject, isStringList, matches, withoutNulls } from "./check.ts";
+import { Checker, type Json, codePoints, isObject, isStringList, matches, withoutNulls } from "./check.ts";
 import { checkKeystoreShape } from "./keystores.ts";
 import { checkAppName, checkDisplayName, checkModules, checkPackage } from "./names.ts";
 
@@ -237,7 +237,7 @@ function checkByRule(check: Checker, data: Json, block: string, fields: Field[],
     const value = data[field.key.slice(block.length + 1)];
     if (typeof value !== "string" || value === "") continue;
     const pattern = field.rule === undefined ? undefined : patterns[field.rule];
-    if (field.max !== undefined && [...value].length > field.max) {
+    if (field.max !== undefined && codePoints(value) > field.max) {
       check.fail(field.key, `\`${field.key}\` can be at most ${field.max} characters.`);
     } else if (typeof pattern === "string" && !matches(pattern, value)) {
       check.fail(field.key, `\`${field.key}\` is not in the form the generator accepts.`);
