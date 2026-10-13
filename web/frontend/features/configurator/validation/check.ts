@@ -26,6 +26,15 @@ export function withoutNulls(value: Json): Json {
   return Object.fromEntries(Object.entries(value).filter(([, item]) => item !== null && item !== undefined));
 }
 
+// validateSpec runs on every keystroke and colour drag, and the catalogue's patterns never change
+// while the page is open, so each is compiled once.
+const compiled = new Map<string, RegExp>();
+
 export function matches(pattern: string, value: string): boolean {
-  return new RegExp(pattern, "u").test(value);
+  let regex = compiled.get(pattern);
+  if (!regex) {
+    regex = new RegExp(pattern, "u");
+    compiled.set(pattern, regex);
+  }
+  return regex.test(value);
 }
