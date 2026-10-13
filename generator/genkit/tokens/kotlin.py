@@ -136,7 +136,7 @@ def _type(type_tokens: dict[str, Any]) -> list[str]:
 
 def _motion(motion: dict[str, Any]) -> list[str]:
     spring_names = list(next(iter(motion["styles"].values()))["springs"])
-    scroll, navigation, tab_bar = motion["scroll"], motion["navigation"], motion["tabBar"]
+    scroll, navigation, tab_bar, skeleton = motion["scroll"], motion["navigation"], motion["tabBar"], motion["skeleton"]
     lines = [
         "/** A spring in iOS's terms: seconds to settle, and how far it overshoots (negative: overdamped). */",
         "class Spring(val response: Float, val bounce: Float)",
@@ -188,6 +188,13 @@ def _motion(motion: dict[str, Any]) -> list[str]:
         f"    const val tabIndicatorSquash: Float = {_float(tab_bar['indicatorSquash'])}",
         f"    const val tabIconBounceScale: Float = {_float(tab_bar['iconBounceScale'])}",
         f"    val tabMinimizeHysteresis: Dp = {_dp(tab_bar['minimizeHysteresis'])}",
+        f"    val skeletonBandWidth: Dp = {_dp(skeleton['bandWidth'])}",
+        f"    const val skeletonTiltDegrees: Float = {_float(skeleton['tiltDegrees'])}",
+        f"    const val skeletonSweepMs: Int = {int(skeleton['sweepMs'])}",
+        f"    const val skeletonPauseMs: Int = {int(skeleton['pauseMs'])}",
+        f"    val skeletonEasing = CubicBezierEasing({', '.join(_float(c) for c in skeleton['easing'])})",
+        f"    val skeletonReferenceTravel: Dp = {_dp(skeleton['referenceTravel'])}",
+        f"    const val skeletonMaxSlowdown: Float = {_float(skeleton['maxSlowdown'])}",
         "}",
     ]
     return lines

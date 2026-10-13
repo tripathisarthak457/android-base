@@ -5,10 +5,12 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.luminance
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlin.math.abs
 
 /**
  * Every pairing the components draw, in every design style and both themes: text at WCAG AA (4.5:1)
- * on every background, controls that must be seen at 3:1, and the tab bar's selection.
+ * on every background, controls that must be seen at 3:1, the tab bar's selection, and skeleton
+ * bones that show on every surface with a band that lifts them by the same step in both themes.
  */
 class PaletteContrastTest {
 
@@ -91,6 +93,28 @@ class PaletteContrastTest {
         }
     }
 
+    @Test
+    fun `a skeleton bone stands apart from every surface it can sit on`() = palettes.forEach { (name, colors) ->
+        colors.backgrounds.forEach { surface ->
+            val step = abs(lightness(colors.skeleton) - lightness(surface))
+            assertTrue("$name skeleton is $step L* from a surface, below $BoneStep", step >= BoneStep)
+        }
+    }
+
+    @Test
+    fun `the shimmer lifts a bone by the same visible step in both themes`() = palettes.forEach { (name, colors) ->
+        val lift = lightness(colors.skeletonHighlight) - lightness(colors.skeleton)
+        assertTrue("$name skeletonHighlight lifts the bone by $lift L*, outside $MinLift to $MaxLift", lift in MinLift..MaxLift)
+    }
+
+    @Test
+    fun `in light theme the band never wipes a bone into its card`() = palettes.filter { it.second.isLight }.forEach { (name, colors) ->
+        colors.backgrounds.forEach { surface ->
+            val step = abs(lightness(colors.skeletonHighlight) - lightness(surface))
+            assertTrue("$name skeletonHighlight is $step L* from a surface, below $HighlightStep", step >= HighlightStep)
+        }
+    }
+
     private fun barSurface(treatment: BarTreatment, colors: AppColors): Color = when (treatment) {
         BarTreatment.Floating -> colors.surfaceElevated
         BarTreatment.Translucent -> colors.surface.copy(alpha = 0.88f).compositeOver(colors.background)
@@ -118,7 +142,20 @@ class PaletteContrastTest {
         return (maxOf(first, second) + 0.05) / (minOf(first, second) + 0.05)
     }
 
+    /** CIELAB L*, the lightness steps the skeleton's colours are specified in. */
+    private fun lightness(color: Color): Double {
+        val y = color.luminance().toDouble()
+        val f = if (y > LabEpsilon) Math.cbrt(y) else (LabKappa * y + 16) / 116
+        return 116 * f - 16
+    }
+
     private companion object {
+        const val BoneStep = 7.0
+        const val MinLift = 4.5
+        const val MaxLift = 6.0
+        const val HighlightStep = 3.0
+        const val LabEpsilon = 216.0 / 24389
+        const val LabKappa = 24389.0 / 27
         const val AaText = 4.5f
         const val AaNonText = 3f
         const val ThumbOnTrack = 1.5f

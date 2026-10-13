@@ -46,5 +46,14 @@
     "indicatorSquash": 0.06,
     "iconBounceScale": 0.84,
     "minimizeHysteresis": 10
+  },
+  "skeleton": {
+    "bandWidth": 240,
+    "tiltDegrees": 20,
+    "sweepMs": 1200,
+    "pauseMs": 800,
+    "easing": [0.3, 0, 0.7, 1],
+    "referenceTravel": 900,
+    "maxSlowdown": 2
   }
 }

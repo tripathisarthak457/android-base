@@ -4,7 +4,8 @@ every emitter (Kotlin, Swift, the website's catalogue) writes out.
 
     foundation.json   spacing, radii, sizes, borders, elevation
     typography.json   the role scale and each voice's weight per role
-    motion.json       springs as (response, bounce), motion styles, scrolling, fades, press, navigation, tab bar
+    motion.json       springs as (response, bounce), motion styles, scrolling, fades, press, navigation, tab bar,
+                      the skeleton's shimmer
     palette.json      ramps, the template brand, status hues, roles per theme, surface tones
     styles.json       design styles: corners, treatments, surface tone, type voice
 
@@ -200,6 +201,22 @@ def _validate_motion(motion: dict[str, Any]) -> None:
     scrim = _table("motion", "navigation.scrimAlpha", navigation["scrimAlpha"], THEMES)
     for theme in THEMES:
         _number("motion", f"navigation.scrimAlpha.{theme}", scrim[theme], 0, 1)
+    skeleton = _table(
+        "motion", "skeleton", motion.get("skeleton"),
+        ("bandWidth", "tiltDegrees", "sweepMs", "pauseMs", "easing", "referenceTravel", "maxSlowdown"),
+    )
+    for key in ("bandWidth", "sweepMs", "referenceTravel"):
+        if _number("motion", f"skeleton.{key}", skeleton[key]) <= 0:
+            raise _fail("motion", f"skeleton.{key}", "must be above 0")
+    _number("motion", "skeleton.pauseMs", skeleton["pauseMs"], 0)
+    # Each bone shifts the band by its travel over the tilt's cosine: a steep tilt races it across a row.
+    if not 0 <= _number("motion", "skeleton.tiltDegrees", skeleton["tiltDegrees"]) < 60:
+        raise _fail("motion", "skeleton.tiltDegrees", "must be at least 0 and below 60")
+    _number("motion", "skeleton.maxSlowdown", skeleton["maxSlowdown"], 1)
+    if not isinstance(skeleton["easing"], list) or len(skeleton["easing"]) != 4:
+        raise _fail("motion", "skeleton.easing", "must be a cubic Bézier's four control values")
+    for index, control in enumerate(skeleton["easing"]):
+        _number("motion", f"skeleton.easing[{index}]", control)
 
 
 def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
@@ -353,7 +370,7 @@ def _motion(motion: dict[str, Any]) -> dict[str, Any]:
         "styles": styles,
         **{
             key: motion[key]
-            for key in ("scroll", "visibilityThreshold", "fades", "stagger", "press", "navigation", "tabBar")
+            for key in ("scroll", "visibilityThreshold", "fades", "stagger", "press", "navigation", "tabBar", "skeleton")
         },
     }
 

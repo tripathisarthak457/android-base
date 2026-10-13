@@ -225,6 +225,13 @@ internal object DesignTokens {
         const val tabIndicatorSquash: Float = 0.06f
         const val tabIconBounceScale: Float = 0.84f
         val tabMinimizeHysteresis: Dp = 10.dp
+        val skeletonBandWidth: Dp = 240.dp
+        const val skeletonTiltDegrees: Float = 20.0f
+        const val skeletonSweepMs: Int = 1200
+        const val skeletonPauseMs: Int = 800
+        val skeletonEasing = CubicBezierEasing(0.3f, 0.0f, 0.7f, 1.0f)
+        val skeletonReferenceTravel: Dp = 900.dp
+        const val skeletonMaxSlowdown: Float = 2.0f
     }
 
     object Palette {
@@ -250,8 +257,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF2C6BED),
                 shadow = Color(0x240B0F1A),
                 barIndicator = Color(0xFF2C6BED),
-                skeleton = Color(0xFFE9ECF1),
-                skeletonHighlight = Color(0xFFF7F8FA),
+                skeleton = Color(0xFFD7DADF),
+                skeletonHighlight = Color(0xFFE5E8ED),
                 accent = Color(0xFF2C6BED),
                 accentPressed = Color(0xFF1F52C4),
                 accentSubtle = Color(0xFFE8EFFD),
@@ -293,8 +300,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF5B8DEF),
                 shadow = Color(0x66000000),
                 barIndicator = Color(0xFF5B8DEF),
-                skeleton = Color(0xFF1D232E),
-                skeletonHighlight = Color(0xFF38414F),
+                skeleton = Color(0xFF2D333E),
+                skeletonHighlight = Color(0xFF393F4B),
                 accent = Color(0xFF5B8DEF),
                 accentPressed = Color(0xFF7BA5F5),
                 accentSubtle = Color(0xFF16233B),
@@ -339,8 +346,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF2C6BED),
                 shadow = Color(0x240B0F1A),
                 barIndicator = Color(0xFF2C6BED),
-                skeleton = Color(0xFFDAE2F2),
-                skeletonHighlight = Color(0xFFF7F8FA),
+                skeleton = Color(0xFFC9D2E1),
+                skeletonHighlight = Color(0xFFD6DFEE),
                 accent = Color(0xFF2C6BED),
                 accentPressed = Color(0xFF1F52C4),
                 accentSubtle = Color(0xFFE8EFFD),
@@ -382,8 +389,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF5B8DEF),
                 shadow = Color(0x66000000),
                 barIndicator = Color(0xFF5B8DEF),
-                skeleton = Color(0xFF222B3B),
-                skeletonHighlight = Color(0xFF38414F),
+                skeleton = Color(0xFF313A4B),
+                skeletonHighlight = Color(0xFF3C4557),
                 accent = Color(0xFF5B8DEF),
                 accentPressed = Color(0xFF7BA5F5),
                 accentSubtle = Color(0xFF16233B),
@@ -428,8 +435,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF2C6BED),
                 shadow = Color(0x240B0F1A),
                 barIndicator = Color(0xFF2C6BED),
-                skeleton = Color(0xFFEAE4DA),
-                skeletonHighlight = Color(0xFFF7F4EE),
+                skeleton = Color(0xFFDAD4CA),
+                skeletonHighlight = Color(0xFFE8E2D8),
                 accent = Color(0xFF2C6BED),
                 accentPressed = Color(0xFF1F52C4),
                 accentSubtle = Color(0xFFE8EFFD),
@@ -471,8 +478,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF5B8DEF),
                 shadow = Color(0x66000000),
                 barIndicator = Color(0xFF5B8DEF),
-                skeleton = Color(0xFF2E2A25),
-                skeletonHighlight = Color(0xFF443F37),
+                skeleton = Color(0xFF37332E),
+                skeletonHighlight = Color(0xFF443F3A),
                 accent = Color(0xFF5B8DEF),
                 accentPressed = Color(0xFF7BA5F5),
                 accentSubtle = Color(0xFF16233B),
@@ -517,8 +524,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF2C6BED),
                 shadow = Color(0x240B0F1A),
                 barIndicator = Color(0xFF2C6BED),
-                skeleton = Color(0xFFF6E8D0),
-                skeletonHighlight = Color(0xFFFFF7EA),
+                skeleton = Color(0xFFE6D8C1),
+                skeletonHighlight = Color(0xFFF5E7CF),
                 accent = Color(0xFF2C6BED),
                 accentPressed = Color(0xFF1F52C4),
                 accentSubtle = Color(0xFFE8EFFD),
@@ -560,8 +567,8 @@ internal object DesignTokens {
                 focusRing = Color(0xFF5B8DEF),
                 shadow = Color(0x66000000),
                 barIndicator = Color(0xFF5B8DEF),
-                skeleton = Color(0xFF332C20),
-                skeletonHighlight = Color(0xFF4A4030),
+                skeleton = Color(0xFF3B3427),
+                skeletonHighlight = Color(0xFF484033),
                 accent = Color(0xFF5B8DEF),
                 accentPressed = Color(0xFF7BA5F5),
                 accentSubtle = Color(0xFF16233B),
