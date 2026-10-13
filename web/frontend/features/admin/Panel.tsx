@@ -29,7 +29,7 @@ export function Panel<T extends DateWindow>({
   const { data, error, loading } = result;
   const headingId = useId();
   return (
-    <section aria-labelledby={headingId} className={`rounded-xl border border-ink-700 bg-ink-850 p-5 ${className}`}>
+    <section aria-labelledby={headingId} className={`min-w-0 rounded-xl border border-ink-700 bg-ink-850 p-5 ${className}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 id={headingId} className="text-sm font-semibold text-ink-100">

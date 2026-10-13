@@ -34,7 +34,7 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
       title="Reports"
       result={result}
       actions={
-        <div role="radiogroup" aria-label="Status" className="flex gap-1">
+        <div role="radiogroup" aria-label="Status" className="flex flex-wrap gap-1">
           {[...STATUSES, "all"].map((option) => (
             <label
               key={option}
