@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -34,9 +34,10 @@ import com.base.app.core.designsystem.theme.AppTheme
  *
  * [contentMaxWidth] stops the content stretching on wide windows and centres it, while the bars
  * and the background still span the window: `formMaxWidth` for a single form, `readableMaxWidth`
- * for text and settings, `contentMaxWidth` for mixed content. The sides clear display cutouts,
- * which a phone held sideways puts at one edge; a screen with a full-bleed panel passes
- * [clearDisplayCutout] false and pads that panel's content itself.
+ * for text and settings, `contentMaxWidth` for mixed content. The sides clear what a phone held
+ * sideways puts at one edge, its display cutout and a three-button navigation bar, so no row ends
+ * under them; a screen with a full-bleed panel passes [clearDisplayCutout] false and pads that
+ * panel's content itself.
  */
 @Composable
 fun AppScaffold(
@@ -58,7 +59,7 @@ fun AppScaffold(
                 .background(background)
                 .then(
                     if (clearDisplayCutout) {
-                        Modifier.windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal))
+                        Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
                     } else {
                         Modifier
                     },

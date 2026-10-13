@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -24,6 +25,7 @@ import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
@@ -35,8 +37,10 @@ enum class StateKind { Empty, Error, Offline }
 /**
  * What a screen shows instead of its content: nothing here yet, it did not load, or there is no
  * connection. An error or offline state has a title and a "Try again" of its own unless told
- * otherwise. [illustration] replaces the glyph with art. The state scrolls when the window is too
- * short for it, so its action is never cut off.
+ * otherwise. [illustration] replaces the glyph with art.
+ *
+ * It centres in the room the screen's chrome leaves (under the top bar, above the tab bar), and
+ * scrolls when that room is too short for it, so neither its top nor its action is ever covered.
  */
 @Composable
 fun AppStateView(
@@ -68,7 +72,7 @@ fun AppStateView(
                 .fillMaxWidth()
                 .heightIn(min = maxHeight)
                 .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
-                .padding(AppTheme.spacing.xl),
+                .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.xl))),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md, Alignment.CenterVertically),
         ) {

@@ -2,8 +2,12 @@ package com.base.app.core.designsystem.component.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -129,6 +133,27 @@ class LargeTitleTopBarTest {
     }
 
     @Test
+    fun `a first row shorter than the title is followed under the bar, not skipped`() {
+        val list = LazyListState()
+        rule.setThemed {
+            LazyColumn(Modifier.fillMaxSize(), state = list, contentPadding = PaddingValues(top = ListTopPadding)) {
+                items(40) { Box(Modifier.fillMaxWidth().height(ShortRow)) }
+            }
+        }
+        val past = with(rule.density) { (ShortRow + 20.dp).roundToPx() }
+        rule.runOnIdle { list.dispatchRawDelta(past.toFloat()) }
+        rule.waitForIdle()
+        // The first visible index has moved on: the row is behind the padding, under the bar.
+        assertEquals(1, list.firstVisibleItemIndex)
+        assertEquals(past, list.scrolledFromTop())
+
+        val gone = with(rule.density) { ListTopPadding.roundToPx() }
+        rule.runOnIdle { list.dispatchRawDelta(gone.toFloat()) }
+        rule.waitForIdle()
+        assertEquals("once the row has left the list, padding included", Int.MAX_VALUE, list.scrolledFromTop())
+    }
+
+    @Test
     @Config(qualifiers = "w891dp-h411dp")
     fun `in a window held sideways the title is inline from the start`() {
         withAccessory = false
@@ -138,6 +163,8 @@ class LargeTitleTopBarTest {
 
     private companion object {
         val AccessoryHeight = 44.dp
+        val ListTopPadding = 200.dp
+        val ShortRow = 60.dp
         val Row = Color(0xFFE5332A)
     }
 }

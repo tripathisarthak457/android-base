@@ -24,6 +24,7 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -37,7 +38,10 @@ import com.base.app.core.designsystem.theme.AppTheme
  *   loaded. Replacing a long list with a full-screen error because page seven failed is the
  *   most irritating thing a feed can do.
  *
- * Hoist [state] to drive a large title from the list: `scrolled = { state.scrolledFromTop() }`.
+ * Hoist [state] to drive a large title from the list: `scrolled = { state.scrolledFromTop() }`, and
+ * give the same state to the [loading] list, so the title reads one list from the first frame.
+ * The list starts under the screen's top bar and ends above its bottom chrome unless
+ * [contentPadding] says otherwise; [modifier] applies to whichever state is showing.
  */
 @Composable
 fun <T : Any> AppPagingList(
@@ -47,7 +51,7 @@ fun <T : Any> AppPagingList(
     retryLabel: String,
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
-    contentPadding: PaddingValues = PaddingValues(AppTheme.spacing.gutter),
+    contentPadding: PaddingValues = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
     loading: @Composable () -> Unit = {},
     failed: @Composable (error: Throwable, retry: () -> Unit) -> Unit = { _, _ -> },
     empty: @Composable () -> Unit = {},
@@ -57,9 +61,11 @@ fun <T : Any> AppPagingList(
     val nothingYet = items.itemCount == 0
 
     when {
-        nothingYet && refresh is LoadState.Loading -> loading()
-        nothingYet && refresh is LoadState.Error -> failed(refresh.error) { items.retry() }
-        nothingYet && refresh is LoadState.NotLoading && items.loadState.append.endOfPaginationReached -> empty()
+        nothingYet && refresh is LoadState.Loading -> StateBox(modifier) { loading() }
+        nothingYet && refresh is LoadState.Error -> StateBox(modifier) { failed(refresh.error) { items.retry() } }
+        nothingYet && refresh is LoadState.NotLoading && items.loadState.append.endOfPaginationReached -> {
+            StateBox(modifier) { empty() }
+        }
         else -> AppPullToRefresh(
             isRefreshing = refresh is LoadState.Loading && !nothingYet,
             onRefresh = items::refresh,
@@ -89,6 +95,11 @@ fun <T : Any> AppPagingList(
             }
         }
     }
+}
+
+@Composable
+private fun StateBox(modifier: Modifier, content: @Composable () -> Unit) {
+    Box(modifier = modifier.fillMaxSize(), propagateMinConstraints = true) { content() }
 }
 
 @Composable

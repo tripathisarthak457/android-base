@@ -49,11 +49,18 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * How far a list has scrolled from its top, in pixels, for a top bar that changes as it does. Past
- * the first item it is "a long way", which is all a bar needs to know.
+ * How far a list has scrolled from its top, in pixels, for a top bar that changes as it does. Once
+ * the first item has scrolled out of the list, padding included, it is "a long way", which is all a
+ * bar needs to know.
+ *
+ * The first item is followed through the list's top padding, where it runs under the bar: the
+ * first visible item index skips it as soon as it is behind the padding, which for a first row
+ * shorter than the large title would snap the title shut part way through its collapse.
  */
-fun LazyListState.scrolledFromTop(): Int =
-    if (firstVisibleItemIndex > 0) Int.MAX_VALUE else firstVisibleItemScrollOffset
+fun LazyListState.scrolledFromTop(): Int {
+    val first = layoutInfo.visibleItemsInfo.firstOrNull() ?: return 0
+    return if (first.index == 0) (-first.offset).coerceAtLeast(0) else Int.MAX_VALUE
+}
 
 /**
  * The inline top bar: a back button, a title, and actions. The title takes what the buttons leave,
