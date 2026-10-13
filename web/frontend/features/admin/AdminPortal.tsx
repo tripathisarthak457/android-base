@@ -117,7 +117,13 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
           </Field>
         </div>
         <Button type="submit" className="mt-4 w-full" disabled={busy || value.length < 8}>
-          {busy ? <Spinner /> : "Sign in"}
+          {busy ? (
+            <>
+              <Spinner /> Signing in…
+            </>
+          ) : (
+            "Sign in"
+          )}
         </Button>
       </form>
     </main>

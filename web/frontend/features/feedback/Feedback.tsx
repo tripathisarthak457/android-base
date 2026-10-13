@@ -340,7 +340,13 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
             Cancel
           </Button>
           <Button type="submit" disabled={!canSend}>
-            {busy ? <Spinner /> : "Send report"}
+            {busy ? (
+              <>
+                <Spinner /> Sending…
+              </>
+            ) : (
+              "Send report"
+            )}
           </Button>
         </div>
       </footer>
