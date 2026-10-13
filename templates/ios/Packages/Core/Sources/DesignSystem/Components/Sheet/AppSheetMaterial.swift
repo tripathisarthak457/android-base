@@ -1,5 +1,5 @@
 /// What a sheet is made of.
-public nonisolated enum AppSheetStyle: Hashable, Sendable {
+public nonisolated enum AppSheetMaterial: Hashable, Sendable {
     /// The platform's sheet in the design style: from iOS 26 Liquid Glass, which turns opaque as the
     /// sheet grows to full height; before it, the elevated surface.
     case automatic

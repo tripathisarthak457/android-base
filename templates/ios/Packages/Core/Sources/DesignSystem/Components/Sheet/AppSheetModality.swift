@@ -5,17 +5,20 @@ public nonisolated enum AppSheetModality: Hashable, Sendable {
     /// The system's presentation: the screen behind is dimmed and takes no touches. Most sheets.
     case modal
 
-    /// The screen behind stays undimmed and usable while the sheet rests at `detent` or a lower
-    /// one, as Maps keeps its search sheet; above it the sheet is modal. Such a sheet is usually
-    /// part of the screen rather than a task on top of it, so it is not `dismissible` either.
-    case nonModal(upThrough: AppSheetDetent)
+    /// The screen behind stays undimmed and usable while the sheet rests at `upThrough` or a lower
+    /// detent, as Maps keeps its search sheet; above it the sheet is modal. Without `upThrough` the
+    /// screen stays usable at every detent. Such a sheet is usually part of the screen rather than a
+    /// task on top of it, so it is not `dismissible` either.
+    case nonModal(upThrough: AppSheetDetent? = nil)
 
     func backgroundInteraction(contentHeight: CGFloat?) -> PresentationBackgroundInteraction {
         switch self {
         case .modal:
             .automatic
-        case .nonModal(let detent):
+        case .nonModal(let detent?):
             .enabled(upThrough: detent.presentationDetent(contentHeight: contentHeight))
+        case .nonModal(nil):
+            .enabled
         }
     }
 }

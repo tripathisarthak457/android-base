@@ -208,16 +208,16 @@ generator's checks fail on both.
 |---|---|
 | A short choice or confirmation | `detents: [.fitContent]`, content a plain stack with its title in it |
 | Resizable | `detents: [.medium, .large]`; pass `selection:` to read or move the detent |
-| Part of the screen, like Maps' search | `modality: .nonModal(upThrough: .medium)`, `dismissible: false`, `contentInteraction: .scrolls` |
+| Part of the screen, like Maps' search | `modality: .nonModal(upThrough: .medium)` (its lists scroll before the sheet grows), `dismissible: false` |
 | Unsaved changes | `dismissible: !store.state.hasChanges`, and Cancel asks with `.confirmationDialog` before closing |
-| Its material | `style: .automatic` (Liquid Glass from iOS 26, the elevated surface before), `.solid`, `.frosted`, `.glass` |
+| Its material | `material: .automatic` (Liquid Glass from iOS 26, the elevated surface before), `.solid`, `.frosted`, `.glass` |
 
 - A header is a `NavigationStack` with Cancel in `.cancellationAction` and Done in
   `.confirmationAction`; sticky actions at the bottom go in `.safeAreaInset(edge: .bottom)`.
 - Content that something else presents as a sheet, such as an `.inspector` on a phone, takes
   `.appSheetPresentation(options)`.
 - No haptics at detents (iOS plays none), no drag gesture of your own on a sheet, and no background
-  of your own: pick a `style`. From iOS 26 any background replaces the system's glass.
+  of your own: pick a `material`. From iOS 26 any background replaces the system's glass.
 - One sheet at a time from the main interface. A sheet presented from a sheet stacks on it; close
   the first when the second replaces its task.
 

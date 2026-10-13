@@ -9,7 +9,7 @@ extension View {
     /// iOS 26 sheets take the system's concentric corners.
     ///
     /// - Parameters:
-    ///   - options: the detents, modality, dismissal, style and grabber.
+    ///   - options: the detents, modality, dismissal, material and grabber.
     ///   - selection: the detent the sheet rests at, one of `options.detents`. Dragging the sheet
     ///     changes it, and changing it moves the sheet.
     ///   - onDismiss: called once the sheet has gone, however it was closed.
@@ -76,10 +76,10 @@ private struct AppSheetPresentation: ViewModifier {
             .presentationBackgroundInteraction(
                 options.modality.backgroundInteraction(contentHeight: contentHeight)
             )
-            .presentationContentInteraction(options.contentInteraction)
+            .presentationContentInteraction(options.presentationContentInteraction)
             .presentationDragIndicator(options.grabberVisibility)
             .interactiveDismissDisabled(!options.dismissible)
-            .modifier(AppSheetSurface(style: options.style))
+            .modifier(AppSheetSurface(material: options.material))
     }
 
     /// `selection` in SwiftUI's terms. A fitted detent is presented at the content's measured
@@ -111,14 +111,14 @@ private struct Detents: ViewModifier {
 }
 
 private struct AppSheetSurface: ViewModifier {
-    let style: AppSheetStyle
+    let material: AppSheetMaterial
 
     @Environment(\.appTheme) private var theme
 
     @ViewBuilder
     func body(content: Content) -> some View {
         if #available(iOS 26, *) {
-            switch style {
+            switch material {
             case .automatic, .glass:
                 // The system's sheet is Liquid Glass and turns opaque as it grows to full height;
                 // a background of the app's own would replace both.
@@ -134,7 +134,7 @@ private struct AppSheetSurface: ViewModifier {
     }
 
     private var background: AnyShapeStyle {
-        switch style {
+        switch material {
         case .automatic, .solid:
             AnyShapeStyle(theme.colors.surfaceElevated)
         case .frosted:
@@ -171,7 +171,7 @@ private struct AppSheetSurface: ViewModifier {
     } label: {
         Text(verbatim: "Show the sheet")
     }
-    .appSheet(isPresented: $isPresented, options: AppSheetOptions(detents: [.fitContent], style: .frosted)) {
+    .appSheet(isPresented: $isPresented, options: AppSheetOptions(detents: [.fitContent], material: .frosted)) {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             Text(verbatim: "Delete this list?")
                 .font(.headline)
@@ -200,7 +200,6 @@ private struct AppSheetSurface: ViewModifier {
         options: AppSheetOptions(
             detents: [.fraction(0.15), .medium, .large],
             modality: .nonModal(upThrough: .medium),
-            contentInteraction: .scrolls,
             dismissible: false
         )
     ) {
