@@ -79,13 +79,20 @@ export function flushOnHide(): void {
 }
 
 /**
+ * A ResizeObserver callback that changes the size of what it observes makes the browser fire an
+ * error event, though nothing failed: the rest of the notifications arrive on the next frame. The
+ * live preview's fit-to-width and the admin's scroll padding both work that way.
+ */
+const NOT_A_FAILURE = /^ResizeObserver loop /;
+
+/**
  * Sends uncaught errors and rejections to `/api/v1/client-error`, where they are grouped by
  * fingerprint, so a crash shows up in the admin within minutes instead of in a bug report.
  */
 export function reportErrors(): void {
   const sent = new Set<string>();
   const report = (message: string, stack: string) => {
-    if (!message || sent.has(message) || sent.size >= ERROR_REPORTS_PER_PAGE) return;
+    if (!message || NOT_A_FAILURE.test(message) || sent.has(message) || sent.size >= ERROR_REPORTS_PER_PAGE) return;
     sent.add(message);
     void fetch(`${API_BASE}/api/v1/client-error`, {
       method: "POST",
