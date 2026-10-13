@@ -1,26 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 type ThemeChoice = "system" | "light" | "dark";
 
 const ORDER: ThemeChoice[] = ["system", "light", "dark"];
 const LABEL: Record<ThemeChoice, string> = { system: "Theme: follows your system", light: "Theme: light", dark: "Theme: dark" };
 
+// The choice lives on <html data-theme>, where the layout's bootstrap script puts it before the
+// first paint, so the toggle reads it from there rather than keeping a copy.
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function readChoice(): ThemeChoice {
+  const saved = document.documentElement.dataset.theme;
+  return saved === "light" || saved === "dark" ? saved : "system";
+}
+
 /**
  * Light, dark, or whatever the OS says. The choice is a per-visitor convenience kept in
  * localStorage; the bootstrap script in the layout applies it before the first paint.
  */
 export function ThemeToggle() {
-  const [choice, setChoice] = useState<ThemeChoice>("system");
-
-  useEffect(() => {
-    const saved = document.documentElement.dataset.theme;
-    if (saved === "light" || saved === "dark") setChoice(saved);
-  }, []);
+  const choice = useSyncExternalStore(subscribe, readChoice, () => "system" as const);
 
   function apply(next: ThemeChoice) {
-    setChoice(next);
     const root = document.documentElement;
     if (next === "system") delete root.dataset.theme;
     else root.dataset.theme = next;
@@ -30,6 +38,7 @@ export function ThemeToggle() {
     } catch {
       // Not remembered across visits, which is fine.
     }
+    for (const listener of listeners) listener();
   }
 
   const next = ORDER[(ORDER.indexOf(choice) + 1) % ORDER.length] ?? "system";
