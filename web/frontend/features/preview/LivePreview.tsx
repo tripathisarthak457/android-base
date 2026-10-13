@@ -47,7 +47,7 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
     // container has no room to move.
     <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <div role="radiogroup" aria-label="Screen" className="no-scrollbar flex gap-1 overflow-x-auto">
+        <div role="radiogroup" aria-label="Screen" className="flex flex-wrap gap-1">
           {screens.map((option) => {
             const on = option.key === screen?.key;
             return (
