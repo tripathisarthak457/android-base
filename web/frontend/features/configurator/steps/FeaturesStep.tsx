@@ -30,6 +30,8 @@ function hintText(hint: ToggleHint, designStyle: string, target: Target, visible
 export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
   const { state, dispatch, target, preset, errors } = model;
   const presetName = useId();
+  const featuresError = errors.get("features");
+  const featuresErrorId = useId();
   const selected = new Set(state.features);
   const titleOf = new Map(target.features.map((feature) => [feature.key, feature.title]));
   const offered = selectableFeatures(target);
@@ -86,14 +88,18 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
           </motion.p>
         )}
       </div>
-      {errors.get("features") && <p className="mt-3 text-sm text-rose">{errors.get("features")}</p>}
+      {featuresError && (
+        <p id={featuresErrorId} className="mt-3 text-sm text-rose">
+          {featuresError}
+        </p>
+      )}
 
       <div className="mt-7 space-y-8">
         {target.groups.map((group) => {
           const inGroup = offered.filter((feature) => feature.group === group.key);
           if (inGroup.length === 0) return null;
           return (
-            <fieldset key={group.key}>
+            <fieldset key={group.key} aria-describedby={featuresError ? featuresErrorId : undefined}>
               <legend className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-200">{group.title}</legend>
               <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
                 {inGroup.map((feature) => {

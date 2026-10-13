@@ -25,6 +25,15 @@ export function checkKeystoreShape(check: Checker, raw: unknown, where: string):
   return true;
 }
 
+/** What keytool would refuse in a store or key password, worded to follow "The prod store password", or undefined. */
+export function passwordProblem(password: string, rules: Rules): string | undefined {
+  if (codePoints(password) < rules.keystore_password_min) {
+    return `must be at least ${rules.keystore_password_min} characters: keytool refuses anything shorter.`;
+  }
+  if (NOT_PRINTABLE.test(password)) return "cannot contain control characters.";
+  return undefined;
+}
+
 /** Why the generator would refuse to make this signing key, or undefined. */
 export function keystoreProblem(keystore: Json, rules: Rules): string | undefined {
   const text = (key: string, fallback: string) =>
@@ -39,10 +48,8 @@ export function keystoreProblem(keystore: Json, rules: Rules): string | undefine
   const passwords: [string, string][] = [["store", text("store_password", "")]];
   if (typeof keystore.existing_path === "string" && keystore.existing_path) passwords.push(["key", text("key_password", "")]);
   for (const [label, password] of passwords) {
-    if (codePoints(password) < rules.keystore_password_min) {
-      return `The ${name} ${label} password must be at least ${rules.keystore_password_min} characters: keytool refuses anything shorter.`;
-    }
-    if (NOT_PRINTABLE.test(password)) return `The ${name} ${label} password cannot contain control characters.`;
+    const problem = passwordProblem(password, rules);
+    if (problem) return `The ${name} ${label} password ${problem}`;
   }
   const subject: [string, string][] = [
     [`${name} common name`, text("common_name", "Unknown")],

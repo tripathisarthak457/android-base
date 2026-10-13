@@ -2,10 +2,11 @@
 
 import { type InputHTMLAttributes, useId, useState } from "react";
 import { ChoiceCard, Field, TextInput, Toggle } from "../../../components/primitives.tsx";
-import type { Catalogue, Field as CatalogueField } from "../../catalogue/types.ts";
+import type { Catalogue, Field as CatalogueField, Rules } from "../../catalogue/types.ts";
 import { offersSigning } from "../request.ts";
 import { choiceValue, lowerName, settingFields } from "../state.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
+import { passwordProblem } from "../validation/keystores.ts";
 
 /** The API level from which glass blurs; below it the template draws frosted glass. */
 const BLUR_FROM_API = 31;
@@ -45,6 +46,7 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
   const { state, dispatch, target, errors, live } = model;
   const features = new Set(state.features);
   const architecture = useId();
+  const architectureError = errors.get("architecture");
   const fields = settingFields(target).filter(
     (field) => field.type !== "keystores" && (field.requires ?? []).every((key) => features.has(key)) && !(field.choices && field.choices.length < 2),
   );
@@ -54,7 +56,7 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
 
   return (
     <div className="space-y-8">
-      <fieldset>
+      <fieldset aria-describedby={architectureError ? `${architecture}-error` : undefined}>
         <legend className="text-sm font-medium text-ink-200">Architecture</legend>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {target.architectures.map((option) => (
@@ -75,7 +77,11 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
             </ChoiceCard>
           ))}
         </div>
-        {errors.get("architecture") && <p className="mt-2 text-xs text-rose">{errors.get("architecture")}</p>}
+        {architectureError && (
+          <p id={`${architecture}-error`} className="mt-2 text-xs text-rose">
+            {architectureError}
+          </p>
+        )}
       </fieldset>
 
       {glass && (
@@ -92,7 +98,9 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
         ))}
       </div>
 
-      {keystores && <SigningPanel model={model} field={keystores} available={offersSigning(target, live.keytool[target.key] ?? true)} />}
+      {keystores && (
+        <SigningPanel model={model} field={keystores} rules={catalogue.rules} available={offersSigning(target, live.keytool[target.key] ?? true)} />
+      )}
     </div>
   );
 }
@@ -250,11 +258,15 @@ function randomPassword(): string {
   return [...bytes].map((value) => alphabet[value % alphabet.length]).join("");
 }
 
-function SigningPanel({ model, field, available }: { model: ConfiguratorModel; field: CatalogueField; available: boolean }) {
+function SigningPanel({ model, field, rules, available }: { model: ConfiguratorModel; field: CatalogueField; rules: Rules; available: boolean }) {
   const { state, dispatch, errors } = model;
   const { signing } = state;
   const names = field.names ?? [];
   const error = errors.get(field.key);
+  const message = useId();
+  // One message serves the whole panel, so every input that can cause it points at it; only a
+  // password can be singled out as the culprit, because the others are shared by every key.
+  const describedByError = error ? { "aria-describedby": message } : {};
 
   if (!available) {
     return (
@@ -312,6 +324,7 @@ function SigningPanel({ model, field, available }: { model: ConfiguratorModel; f
                 {(control) => (
                   <TextInput
                     {...control}
+                    {...describedByError}
                     value={signing.organisation}
                     onChange={(event) => dispatch({ type: "signing", value: { organisation: event.target.value } })}
                     placeholder="Acme Ltd"
@@ -323,6 +336,7 @@ function SigningPanel({ model, field, available }: { model: ConfiguratorModel; f
               {(control) => (
                 <TextInput
                   {...control}
+                  {...describedByError}
                   value={signing.country}
                   maxLength={2}
                   onChange={(event) => dispatch({ type: "signing", value: { country: event.target.value.toUpperCase() } })}
@@ -339,6 +353,8 @@ function SigningPanel({ model, field, available }: { model: ConfiguratorModel; f
                 {/* Not a password input: the value is written to keystore.properties in plain text in the same zip,
                     and it has to be read and saved somewhere before the tab closes. */}
                 <TextInput
+                  aria-describedby={message}
+                  aria-invalid={error !== undefined && passwordProblem(signing.passwords[name] ?? "", rules) !== undefined ? true : undefined}
                   value={signing.passwords[name] ?? ""}
                   onChange={(event) => dispatch({ type: "signing", value: { passwords: { ...signing.passwords, [name]: event.target.value } } })}
                   className="h-9 font-mono text-xs"
@@ -349,9 +365,11 @@ function SigningPanel({ model, field, available }: { model: ConfiguratorModel; f
             ))}
           </fieldset>
           {error ? (
-            <p className="text-xs text-rose">{error}</p>
+            <p id={message} className="text-xs text-rose">
+              {error}
+            </p>
           ) : (
-            <p className="text-xs leading-relaxed text-ink-400">
+            <p id={message} className="text-xs leading-relaxed text-ink-400">
               Copy these into your password manager now. They are in <code className="text-ink-300">keystore.properties</code> in the zip,
               which git ignores, and this page never saves them.
             </p>

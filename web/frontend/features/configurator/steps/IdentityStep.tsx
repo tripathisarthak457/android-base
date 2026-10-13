@@ -1,16 +1,18 @@
 "use client";
 
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import { Field, TextInput } from "../../../components/primitives.tsx";
 import { MAX_TABS, planTabs } from "../../preview/tabs.ts";
+import type { Catalogue } from "../../catalogue/types.ts";
 import { lowerName, moduleNames } from "../state.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
+import { codePoints } from "../validation/check.ts";
 
 function listed(names: string[]): string {
   return names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
 }
 
-export function IdentityStep({ model }: { model: ConfiguratorModel }) {
+export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
   const { state, dispatch, errors, target } = model;
   const pascal = state.appName
     .split(/[^A-Za-z0-9]+/)
@@ -20,8 +22,9 @@ export function IdentityStep({ model }: { model: ConfiguratorModel }) {
   const derived = pascal || "MyApp";
   const modules = useMemo(() => moduleNames(state.modules), [state.modules]);
   const plan = useMemo(() => planTabs(new Set(state.features), modules), [state.features, modules]);
-  const displayLength = [...state.displayName].length;
-  const displayMax = target.fields.find((field) => field.key === "display_name")?.max;
+  const displayMax = catalogue.rules.display_name_max;
+  const languagesId = useId();
+  const languagesError = errors.get("languages");
   const placeholderPackage = !errors.has("package_name") && /^com\.example(\.|$)/.test(state.packageName);
 
   return (
@@ -39,7 +42,7 @@ export function IdentityStep({ model }: { model: ConfiguratorModel }) {
 
         <Field
           label="Name on the home screen (optional)"
-          hint={`Any characters, emoji included: "Café", "मेरा ऐप". Empty uses the app name.${displayMax ? ` ${displayLength} of ${displayMax}.` : ""}`}
+          hint={`Any characters, emoji included: "Café", "मेरा ऐप". Empty uses the app name. ${codePoints(state.displayName)} of ${displayMax}.`}
           error={errors.get("display_name")}
         >
           {(control) => (
@@ -96,7 +99,7 @@ export function IdentityStep({ model }: { model: ConfiguratorModel }) {
         </Field>
 
         {target.languages.length > 0 && (
-          <fieldset>
+          <fieldset aria-describedby={`${languagesId}-hint${languagesError ? ` ${languagesId}-error` : ""}`}>
             <legend className="mb-1.5 text-sm font-medium text-ink-200">Languages</legend>
             <div className="flex flex-wrap gap-2">
               {target.languages.map((language) => {
@@ -117,8 +120,14 @@ export function IdentityStep({ model }: { model: ConfiguratorModel }) {
                 );
               })}
             </div>
-            <p className="mt-1.5 text-xs text-ink-400">English is always included. Each one you pick translates every screen and joins the language picker.</p>
-            {errors.get("languages") && <p className="mt-1 text-xs text-rose">{errors.get("languages")}</p>}
+            <p id={`${languagesId}-hint`} className="mt-1.5 text-xs text-ink-400">
+              English is always included. Each one you pick translates every screen and joins the language picker.
+            </p>
+            {languagesError && (
+              <p id={`${languagesId}-error`} className="mt-1 text-xs text-rose">
+                {languagesError}
+              </p>
+            )}
           </fieldset>
         )}
       </div>

@@ -34,6 +34,7 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
   // Four thumbnails redraw on every colour-picker move or keystroke, so they wait, as the live preview does.
   const thumbnailInput = useDeferredValue(input);
   const styleName = useId();
+  const styleError = errors.get("design_style");
   const featureTitle = new Map(target.features.map((feature) => [feature.key, feature.title]));
   const accent = parseHex(state.accent);
   const derived = accent ? brandColours(accent, null, null) : null;
@@ -41,7 +42,7 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-8">
-        <fieldset>
+        <fieldset aria-describedby={styleError ? `${styleName}-error` : undefined}>
           <legend className="text-sm font-medium text-ink-200">Design style</legend>
           <p className="mt-1 text-xs leading-relaxed text-ink-400">
             Corners, borders, fields, the tab bar and the type voice, chosen together. One argument to{" "}
@@ -81,7 +82,11 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
               );
             })}
           </div>
-          {errors.get("design_style") && <p className="mt-2 text-xs text-rose">{errors.get("design_style")}</p>}
+          {styleError && (
+            <p id={`${styleName}-error`} className="mt-2 text-xs text-rose">
+              {styleError}
+            </p>
+          )}
         </fieldset>
 
         <fieldset>
