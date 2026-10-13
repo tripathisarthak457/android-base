@@ -119,12 +119,14 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
       </nav>
 
       {/* overflow-clip rather than overflow-hidden: it clips the step slide without becoming the
-          scroll container, which would stop the live preview from sticking. */}
+          scroll container, which would stop the live preview from sticking. The step slides in
+          without a fade: opacity below 1 would render the whole panel, live preview included,
+          offscreen on every frame, and cut a glass bar's backdrop off from the page meanwhile. */}
       <div className="mt-6 overflow-clip rounded-xl border border-ink-700 bg-ink-850">
         <motion.div
           key={step}
-          initial={{ opacity: 0, x: 22 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ x: 22 }}
+          animate={{ x: 0 }}
           transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
           className="p-4 sm:p-6 md:p-8"
         >
