@@ -112,6 +112,11 @@ export function TextInput({ className = "", ...rest }: InputHTMLAttributes<HTMLI
   );
 }
 
+/**
+ * The off track is ink-500, not a quieter step: the track's outline and the thumb's position are
+ * what tell on from off, so each needs 3:1 against what is next to it (WCAG 1.4.11). It reads at
+ * 5.2:1 on the ink-900 panels in both themes, and the ink-850 thumb about 5:1 on it.
+ */
 export function Toggle({
   checked,
   onChange,
@@ -131,7 +136,7 @@ export function Toggle({
       aria-label={label}
       disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-40 ${checked ? "bg-accent" : "bg-ink-600"}`}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-40 ${checked ? "bg-accent" : "bg-ink-500"}`}
     >
       <motion.span
         animate={{ x: checked ? 20 : 0 }}
