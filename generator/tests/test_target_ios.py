@@ -386,6 +386,9 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
                 case.assertNotRegex(code, pattern, f"{relative} uses {name}")
             if relative.startswith("Packages/Features/Sources/"):
                 case.assertNotRegex(code, r"\buserInterfaceIdiom\b", f"{relative} decides layout by device")
+                # One sheet system (REQUIREMENTS 33): appSheet, or appSheetPresentation for content
+                # that something else presents, such as an inspector on a phone.
+                case.assertNotRegex(code, r"\.(?:sheet|presentationDetents)\(", f"{relative} presents a sheet without appSheet")
                 for width in re.findall(r"\.frame\(\s*(?:width|minWidth):\s*(\d+)", code):
                     case.assertLess(int(width), 320, f"{relative} sets a width a window can be narrower than")
                 for name, pattern in RAW_VALUES.items():
@@ -1110,6 +1113,16 @@ class ViolationsTest(unittest.TestCase):
                 replacing("#if DEBUG\n", "#if os(iOS)\n"),
             ),
             ("has no view beside it", "Packages/Features/Sources/SampleFeature/Detail/SampleShareStore.swift", lambda _: "final class SampleShareStore {}\n"),
+            (
+                "presents a sheet without appSheet",
+                "Packages/Features/Sources/SampleFeature/Detail/SampleDetailView.swift",
+                replacing(".appSheetPresentation(AppSheetOptions(detents: [.medium, .large]))", ".presentationDetents([.medium, .large])"),
+            ),
+            (
+                "presents a sheet without appSheet",
+                self.ROW,
+                replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .sheet(isPresented: .constant(false)) {{ EmptyView() }}"),
+            ),
         ):
             with self.subTest(rule=message):
                 self.assertCaught(message, path, edit)

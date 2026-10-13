@@ -41,7 +41,7 @@ struct SampleDetailView: View {
                             ideal: AppLayout.supportingPaneIdealWidth,
                             max: AppLayout.supportingPaneMaxWidth
                         )
-                        .presentationDetents([.medium, .large])
+                        .appSheetPresentation(AppSheetOptions(detents: [.medium, .large]))
                 }
             }
             .onAppear { store.send(.appeared) }
