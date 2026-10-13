@@ -1,6 +1,6 @@
 "use client";
 
-import { useInView, useReducedMotion } from "framer-motion";
+import { useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ScaledPreview } from "../features/preview/AppPreview.tsx";
 import { loadFamily } from "../features/preview/fonts.ts";
@@ -9,7 +9,7 @@ import { weightsFor } from "../features/preview/theme.ts";
 import { traits } from "../features/preview/traits.ts";
 import { usePreviewTheme } from "../features/preview/usePreviewTheme.ts";
 import { CATALOGUE, android } from "../lib/catalogue.ts";
-import { PauseButton, Segmented } from "./primitives.tsx";
+import { PauseButton, Segmented, usePaused } from "./primitives.tsx";
 
 /** A brand colour and typeface that suit each style; a style without one shows the template's. */
 const PAIRINGS: Record<string, { accent: string; font: string; blurb: string }> = {
@@ -41,9 +41,7 @@ export function StylesShowcase() {
   const [tick, setTick] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-120px" });
-  const reduce = useReducedMotion();
-  const [pausedByVisitor, setPaused] = useState<boolean | null>(null);
-  const paused = pausedByVisitor ?? Boolean(reduce);
+  const [paused, setPaused] = usePaused();
   const styles = android().design_styles;
   const defaults = android().defaults;
 

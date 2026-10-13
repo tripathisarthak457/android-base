@@ -1,8 +1,7 @@
 "use client";
 
-import { useReducedMotion } from "framer-motion";
-import { useId, useState } from "react";
-import { ChoiceCard, PauseButton, Toggle } from "../../../components/primitives.tsx";
+import { useId } from "react";
+import { ChoiceCard, PauseButton, Toggle, usePaused } from "../../../components/primitives.tsx";
 import type { Catalogue, Spring } from "../../catalogue/types.ts";
 import { LivePreview } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
@@ -62,9 +61,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
   const { state, dispatch, target } = model;
   const input = usePreviewInput(catalogue, state);
   const name = useId();
-  const reduce = useReducedMotion();
-  const [pausedByVisitor, setPaused] = useState<boolean | null>(null);
-  const paused = pausedByVisitor ?? Boolean(reduce);
+  const [paused, setPaused] = usePaused();
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-6">

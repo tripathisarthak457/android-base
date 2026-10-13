@@ -3,7 +3,7 @@
 // The handful of controls the site is built from.
 
 import { motion, type HTMLMotionProps } from "framer-motion";
-import { type InputHTMLAttributes, type ReactNode, useId } from "react";
+import { type InputHTMLAttributes, type ReactNode, useId, useState, useSyncExternalStore } from "react";
 
 /** A press that answers like the template's Scale feedback: down under the finger, back on a spring. */
 const press = {
@@ -61,6 +61,26 @@ export function PauseButton({ paused, onChange, label }: { paused: boolean; onCh
       <span className="sr-only"> {label}</span>
     </Button>
   );
+}
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+function subscribeToReducedMotion(onChange: () => void): () => void {
+  const query = matchMedia(REDUCED_MOTION);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+/**
+ * The state behind a `PauseButton`: the visitor's choice once they have made one, until then their
+ * reduced-motion setting. The server cannot know that setting, so hydration renders it as off and
+ * React re-renders with the real value right after; reading `matchMedia` in the first client render
+ * would make the button's markup differ from the server's and throw the whole page's HTML away.
+ */
+export function usePaused(): [boolean, (paused: boolean) => void] {
+  const reduce = useSyncExternalStore(subscribeToReducedMotion, () => matchMedia(REDUCED_MOTION).matches, () => false);
+  const [chosen, setChosen] = useState<boolean | null>(null);
+  return [chosen ?? reduce, setChosen];
 }
 
 export type ControlProps = { id: string; "aria-invalid"?: true; "aria-describedby"?: string };
