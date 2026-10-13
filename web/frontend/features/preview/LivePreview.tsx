@@ -2,33 +2,11 @@
 
 import { type RefObject, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Segmented } from "../../components/primitives.tsx";
-import type { Tokens } from "../catalogue/types.ts";
 import { AppPreview, PHONE_ASPECT, PHONE_WIDTH } from "./AppPreview.tsx";
 import { useFamily } from "./fonts.ts";
 import { type PreviewTab, planTabs, screensFor } from "./tabs.ts";
-import { type PreviewTheme, previewTheme, weightsFor } from "./theme.ts";
-
-/** Everything a preview is drawn from: the visitor's answers that change how the app looks. */
-export type PreviewInput = {
-  tokens: Tokens;
-  designStyle: string;
-  motionStyle: string;
-  accent: string;
-  secondary: string;
-  tertiary: string;
-  font: string;
-  features: ReadonlySet<string>;
-  modules: string[];
-  haptics: boolean;
-};
-
-export function usePreviewTheme(input: PreviewInput, dark: boolean): PreviewTheme {
-  const { tokens, designStyle, motionStyle, accent, secondary, tertiary } = input;
-  return useMemo(
-    () => previewTheme(tokens, { designStyle, motionStyle, dark, accent, secondary, tertiary }),
-    [tokens, designStyle, motionStyle, dark, accent, secondary, tertiary],
-  );
-}
+import { weightsFor } from "./theme.ts";
+import { type PreviewInput, usePreviewTheme } from "./usePreviewTheme.ts";
 
 /** Scales the phone down to the width it is given, so it is never clipped on a narrow screen. */
 function useFitScale(): [RefObject<HTMLDivElement | null>, number] {

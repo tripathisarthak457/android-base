@@ -8,7 +8,7 @@ import { selectableFeatures } from "../../catalogue/features.ts";
 import type { Target } from "../../catalogue/types.ts";
 import { dependentsOf } from "../resolve.ts";
 import type { ToggleHint } from "../state.ts";
-import type { Configurator } from "../useConfigurator.ts";
+import type { ConfiguratorModel } from "../useConfigurator.ts";
 
 function titles(keys: string[], byKey: Map<string, string>): string {
   return keys.map((key) => byKey.get(key) ?? key).join(", ");
@@ -27,7 +27,7 @@ function hintText(hint: ToggleHint, designStyle: string, target: Target, visible
   return sentences.join(" ");
 }
 
-export function FeaturesStep({ model }: { model: Configurator }) {
+export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
   const { state, dispatch, target, preset, errors } = model;
   const presetName = useId();
   const selected = new Set(state.features);

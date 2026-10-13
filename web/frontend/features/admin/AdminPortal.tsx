@@ -7,11 +7,14 @@ import { ApiError } from "../../lib/api.ts";
 import { adminGet, useFilterChoices } from "./api.ts";
 import { DEVICE_CLASSES, type Filters, OUTCOMES, type Range, defaultFilters, query, windowProblem } from "./filters.ts";
 import { Adoption } from "./panels/Adoption.tsx";
-import { Audience, Durations } from "./panels/Audience.tsx";
-import { Errors, Failures } from "./panels/Failures.tsx";
+import { Audience } from "./panels/Audience.tsx";
+import { Durations } from "./panels/Durations.tsx";
+import { Errors } from "./panels/Errors.tsx";
+import { Failures } from "./panels/Failures.tsx";
 import { Generations } from "./panels/Generations.tsx";
+import { Health } from "./panels/Health.tsx";
 import { Daily, Funnel, Headline } from "./panels/Overview.tsx";
-import { Health, Reports } from "./panels/Reports.tsx";
+import { Reports } from "./panels/Reports.tsx";
 
 /** The token lives for the tab only: sessionStorage, never localStorage. */
 const TOKEN_KEY = "android-base.admin-token";

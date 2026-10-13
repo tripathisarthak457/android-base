@@ -6,14 +6,14 @@ import { Spinner } from "../../../components/ui.tsx";
 import { selectableFeatures } from "../../catalogue/features.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
-import { usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { planTabs } from "../../preview/tabs.ts";
+import { usePreviewTheme } from "../../preview/usePreviewTheme.ts";
 import type { Spec } from "../request.ts";
 import { STEP_LABELS, stepOf } from "../state.ts";
-import type { Configurator } from "../useConfigurator.ts";
+import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
-export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; model: Configurator; dark: boolean }) {
+export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; model: ConfiguratorModel; dark: boolean }) {
   const { state, target, spec, errors, busy, outcome, generate, goTo, preset } = model;
   const input = usePreviewInput(catalogue, state);
   const theme = usePreviewTheme(input, dark);

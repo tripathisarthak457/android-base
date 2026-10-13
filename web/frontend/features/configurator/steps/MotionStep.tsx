@@ -4,9 +4,10 @@ import { useReducedMotion } from "framer-motion";
 import { useId, useState } from "react";
 import { ChoiceCard, PauseButton, Toggle } from "../../../components/primitives.tsx";
 import type { Catalogue, Spring } from "../../catalogue/types.ts";
-import { LivePreview, type PreviewInput, usePreviewTheme } from "../../preview/LivePreview.tsx";
+import { LivePreview } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
-import type { Configurator } from "../useConfigurator.ts";
+import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
+import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
 function describe(spring: Spring | undefined): string {
@@ -16,7 +17,7 @@ function describe(spring: Spring | undefined): string {
 
 function MotionCard({ input, model, styleKey, title, description, name, dark, paused }: {
   input: PreviewInput;
-  model: Configurator;
+  model: ConfiguratorModel;
   styleKey: string;
   title: string;
   description: string;
@@ -57,7 +58,7 @@ function MotionCard({ input, model, styleKey, title, description, name, dark, pa
   );
 }
 
-export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: Configurator; dark: boolean; onDark: (dark: boolean) => void }) {
+export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: ConfiguratorModel; dark: boolean; onDark: (dark: boolean) => void }) {
   const { state, dispatch, target } = model;
   const input = usePreviewInput(catalogue, state);
   const name = useId();

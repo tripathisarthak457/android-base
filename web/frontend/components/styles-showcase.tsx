@@ -4,10 +4,10 @@ import { useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ScaledPreview } from "../features/preview/AppPreview.tsx";
 import { loadFamily } from "../features/preview/fonts.ts";
-import { usePreviewTheme } from "../features/preview/LivePreview.tsx";
 import { planTabs } from "../features/preview/tabs.ts";
 import { weightsFor } from "../features/preview/theme.ts";
 import { traits } from "../features/preview/traits.ts";
+import { usePreviewTheme } from "../features/preview/usePreviewTheme.ts";
 import { CATALOGUE, android } from "../lib/catalogue.ts";
 import { PauseButton, Segmented } from "./primitives.tsx";
 

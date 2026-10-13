@@ -4,7 +4,7 @@ import { useId } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
 import type { Catalogue, Target } from "../../catalogue/types.ts";
-import type { Configurator } from "../useConfigurator.ts";
+import type { ConfiguratorModel } from "../useConfigurator.ts";
 
 /** What another target leaves out that Android offers, by feature, plus any layout it cannot do yet. */
 function notYet(target: Target, android: Target | undefined): string[] {
@@ -15,7 +15,7 @@ function notYet(target: Target, android: Target | undefined): string[] {
   return [...missing, ...layouts];
 }
 
-export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model: Configurator }) {
+export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
   const name = useId();
   const android = catalogue.targets.find((target) => target.key === "android");
   const shown = catalogue.targets.filter((target) => target.status !== "hidden");

@@ -253,4 +253,4 @@ export function useConfigurator(catalogue: Catalogue) {
   };
 }
 
-export type Configurator = ReturnType<typeof useConfigurator>;
+export type ConfiguratorModel = ReturnType<typeof useConfigurator>;

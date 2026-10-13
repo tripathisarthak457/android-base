@@ -6,11 +6,12 @@ import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { brandColours, parseHex, toHex } from "../../preview/brand.ts";
 import { type FontStatus, useFamily, useSuggestionFonts } from "../../preview/fonts.ts";
-import { LivePreview, type PreviewInput, usePreviewTheme } from "../../preview/LivePreview.tsx";
+import { LivePreview } from "../../preview/LivePreview.tsx";
 import { type PreviewTab, planTabs } from "../../preview/tabs.ts";
 import { weightsFor } from "../../preview/theme.ts";
 import { traits } from "../../preview/traits.ts";
-import type { Configurator } from "../useConfigurator.ts";
+import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
+import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
 /** The screen that shows most of a style at once. */
@@ -27,7 +28,7 @@ const StyleThumbnail = memo(function StyleThumbnail({ input, styleKey, dark }: {
   return <ScaledPreview theme={theme} font={input.font} tabs={tabs} screen={screen} options={options} scale={0.4} />;
 });
 
-export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: Configurator; dark: boolean; onDark: (dark: boolean) => void }) {
+export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: ConfiguratorModel; dark: boolean; onDark: (dark: boolean) => void }) {
   const { state, dispatch, target, errors } = model;
   const input = usePreviewInput(catalogue, state);
   // Four thumbnails redraw on every colour-picker move or keystroke, so they wait, as the live preview does.
@@ -198,7 +199,7 @@ function ColourRow({
   );
 }
 
-function FontPicker({ model, weights }: { model: Configurator; weights: number[] }) {
+function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: number[] }) {
   const { state, dispatch, target, errors } = model;
   const suggestions = target.fields.find((field) => field.key === "font_name")?.suggestions ?? [];
   const names = useMemo(() => suggestions.map((suggestion) => suggestion.value), [suggestions]);

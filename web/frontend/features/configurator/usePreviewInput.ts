@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { Catalogue } from "../catalogue/types.ts";
-import type { PreviewInput } from "../preview/LivePreview.tsx";
+import type { PreviewInput } from "../preview/usePreviewTheme.ts";
 import { type ConfigState, moduleNames } from "./state.ts";
 
 /**

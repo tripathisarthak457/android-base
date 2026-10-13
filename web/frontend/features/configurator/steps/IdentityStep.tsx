@@ -4,13 +4,13 @@ import { useMemo } from "react";
 import { Field, TextInput } from "../../../components/primitives.tsx";
 import { MAX_TABS, planTabs } from "../../preview/tabs.ts";
 import { lowerName, moduleNames } from "../state.ts";
-import type { Configurator } from "../useConfigurator.ts";
+import type { ConfiguratorModel } from "../useConfigurator.ts";
 
 function listed(names: string[]): string {
   return names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
 }
 
-export function IdentityStep({ model }: { model: Configurator }) {
+export function IdentityStep({ model }: { model: ConfiguratorModel }) {
   const { state, dispatch, errors, target } = model;
   const pascal = state.appName
     .split(/[^A-Za-z0-9]+/)

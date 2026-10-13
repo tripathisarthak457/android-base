@@ -12,9 +12,9 @@ import { LookStep } from "./steps/LookStep.tsx";
 import { MotionStep } from "./steps/MotionStep.tsx";
 import { PlatformStep } from "./steps/PlatformStep.tsx";
 import { ReviewStep } from "./steps/ReviewStep.tsx";
-import type { Configurator as Model } from "./useConfigurator.ts";
+import type { ConfiguratorModel } from "./useConfigurator.ts";
 
-export function Configurator({ catalogue, model }: { catalogue: Catalogue; model: Model }) {
+export function Configurator({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
   const { step, stepIndex, goTo, identityValid } = model;
   const [previewDark, setPreviewDark] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null);

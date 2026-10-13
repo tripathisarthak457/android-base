@@ -5,7 +5,7 @@ import { ChoiceCard, Field, TextInput, Toggle } from "../../../components/primit
 import type { Catalogue, Field as CatalogueField } from "../../catalogue/types.ts";
 import { offersSigning } from "../request.ts";
 import { choiceValue, lowerName, settingFields } from "../state.ts";
-import type { Configurator } from "../useConfigurator.ts";
+import type { ConfiguratorModel } from "../useConfigurator.ts";
 
 /** The API level from which glass blurs; below it the template draws frosted glass. */
 const BLUR_FROM_API = 31;
@@ -41,7 +41,7 @@ const FLAVOUR_EXAMPLE: Record<string, string> = {
   playstore: "https://api.example.com/api/",
 };
 
-export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: Configurator }) {
+export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
   const { state, dispatch, target, errors, live } = model;
   const features = new Set(state.features);
   const architecture = useId();
@@ -97,7 +97,7 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
   );
 }
 
-function SettingField({ field, model, wide }: { field: CatalogueField; model: Configurator; wide: boolean }) {
+function SettingField({ field, model, wide }: { field: CatalogueField; model: ConfiguratorModel; wide: boolean }) {
   const { state, dispatch, errors } = model;
   const { label, hint } = labelOf(field.key);
   const value = state.settings[field.key];
@@ -239,7 +239,7 @@ function randomPassword(): string {
   return [...bytes].map((value) => alphabet[value % alphabet.length]).join("");
 }
 
-function SigningPanel({ model, field, available }: { model: Configurator; field: CatalogueField; available: boolean }) {
+function SigningPanel({ model, field, available }: { model: ConfiguratorModel; field: CatalogueField; available: boolean }) {
   const { state, dispatch, errors } = model;
   const { signing } = state;
   const names = field.names ?? [];
