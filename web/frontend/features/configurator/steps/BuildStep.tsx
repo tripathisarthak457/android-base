@@ -92,7 +92,7 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
         ))}
       </div>
 
-      {keystores && <SigningPanel model={model} names={keystores.names ?? []} available={offersSigning(target, live.keytool[target.key] ?? true)} />}
+      {keystores && <SigningPanel model={model} field={keystores} available={offersSigning(target, live.keytool[target.key] ?? true)} />}
     </div>
   );
 }
@@ -239,9 +239,11 @@ function randomPassword(): string {
   return [...bytes].map((value) => alphabet[value % alphabet.length]).join("");
 }
 
-function SigningPanel({ model, names, available }: { model: Configurator; names: string[]; available: boolean }) {
+function SigningPanel({ model, field, available }: { model: Configurator; field: CatalogueField; available: boolean }) {
   const { state, dispatch, errors } = model;
   const { signing } = state;
+  const names = field.names ?? [];
+  const error = errors.get(field.key);
 
   if (!available) {
     return (
@@ -334,8 +336,8 @@ function SigningPanel({ model, names, available }: { model: Configurator; names:
               </label>
             ))}
           </div>
-          {errors.get("android.keystores") ? (
-            <p className="text-xs text-rose">{errors.get("android.keystores")}</p>
+          {error ? (
+            <p className="text-xs text-rose">{error}</p>
           ) : (
             <p className="text-xs leading-relaxed text-ink-400">
               Copy these into your password manager now. They are in <code className="text-ink-300">keystore.properties</code> in the zip,

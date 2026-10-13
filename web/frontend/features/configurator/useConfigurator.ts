@@ -119,6 +119,11 @@ export function useConfigurator(catalogue: Catalogue) {
   // leaving the visitor on a card they cannot select.
   const usable = enabledTarget(catalogue, state.target, live.enabled);
   if (usable !== state.target) dispatchRaw({ type: "target", target: usable });
+  // Signing turned on before the live catalogue said this server has no keytool goes off again;
+  // left on, the spec would still ask for keys and Review would say they are made here.
+  if (state.signing.enabled && live.keytool[state.target] === false) {
+    dispatchRaw({ type: "signing", value: { enabled: false, passwords: {} } });
+  }
   const target = findTarget(catalogue, state.target);
 
   useEffect(() => {
