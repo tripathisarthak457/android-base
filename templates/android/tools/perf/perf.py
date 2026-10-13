@@ -344,6 +344,13 @@ class Run:
 
     def fail(self, message):
         stamp = f"run{self.index}_{self.counter:03d}"
+        # What the app logged is kept with the screen: a step that waits on a crashed app, or on one
+        # that Back took to the launcher, fails the same way as a step that waits on a slow screen.
+        self.save(f"failure_{stamp}.log", "\n".join(self.logcat()))
+        if not self.app.pid():
+            message += f" (the app is not running: see the crash in failure_{stamp}.log)"
+        elif not self.app.in_front():
+            message += " (the app is no longer in front)"
         try:
             self.device.screenshot(os.path.join(self.out, f"failure_{stamp}.png"))
             self.save(f"failure_{stamp}.xml", self.device.ui().xml)
