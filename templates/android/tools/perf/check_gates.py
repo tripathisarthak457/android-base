@@ -3,8 +3,10 @@
     check_gates.py --gate solid [--gates gates.toml] [--baseline reference/summary.json] summary.json
 
 Every row that has a limit in the column is checked; a row whose metric the run did not measure
-fails, so a gate cannot pass by skipping a scenario. "ratchet" rows are reported and never fail.
-Exits 1 when any row fails.
+fails, so a gate cannot pass by skipping a scenario. The one exception is a scenario the summary
+lists as inapplicable to the app, with its reason (a tab switch in an app with one tab): its rows
+are reported as not applicable. "ratchet" rows are reported and never fail. Exits 1 when any row
+fails.
 """
 
 import argparse
@@ -34,14 +36,18 @@ def _value(summary, metric):
 def evaluate(summary, rows, column, baseline=None):
     """One result per row of the column: dicts with label, value, limit and status."""
     results = []
+    inapplicable = summary.get("inapplicable", {})
     for row in rows:
         if column not in row:
             continue
         limit = row[column]
         value = _value(summary, row["metric"])
+        scenario = row["metric"].split(".")[0]
         result = {"metric": row["metric"], "label": row["label"], "value": value, "limit": limit}
         if limit == "ratchet":
             result["status"] = "report"
+        elif value is None and scenario in inapplicable:
+            result["status"] = f"not applicable ({inapplicable[scenario]})"
         elif value is None:
             result["status"] = "not measured"
         elif isinstance(limit, bool):
@@ -61,7 +67,8 @@ def evaluate(summary, rows, column, baseline=None):
 
 
 def passed(results):
-    return all(result["status"] in ("pass", "report") for result in results)
+    return all(result["status"] in ("pass", "report") or result["status"].startswith("not applicable")
+               for result in results)
 
 
 def table(results, column):

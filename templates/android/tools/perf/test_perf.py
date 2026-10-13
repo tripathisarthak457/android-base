@@ -219,6 +219,22 @@ class GatesTest(unittest.TestCase):
         self.assertIn(("idle.frames", "not measured"), [(r["metric"], r["status"]) for r in results])
         self.assertFalse(check_gates.passed(results))
 
+    def test_rows_of_an_inapplicable_scenario_are_not_applicable(self):
+        summary = {"metrics": {
+            key: value for key, value in clean_summary()["metrics"].items()
+            if key.split(".")[0] in ("pushpop", "idle", "coldstart", "coldstart_installed")
+        }, "inapplicable": {"tabs": "the app has one tab"}}
+        results = check_gates.evaluate(summary, gate_rows(), "lean")
+        tab_rows = {r["status"] for r in results if r["metric"].startswith("tabs.")}
+        self.assertEqual(tab_rows, {"not applicable (the app has one tab)"})
+        self.assertTrue(check_gates.passed(results))
+
+    def test_a_scenario_only_some_runs_skipped_stays_applicable(self):
+        self.assertEqual(perf.combine_inapplicable([{"tabs": "the app has one tab"}, {}]), {})
+        self.assertEqual(
+            perf.combine_inapplicable([{"tabs": "the app has one tab"}] * 3), {"tabs": "the app has one tab"},
+        )
+
     def test_ratchet_rows_are_reported(self):
         summary = clean_summary()
         summary["metrics"]["pushpop.push_first_frame_ms.median"] = {"value": 99.0}

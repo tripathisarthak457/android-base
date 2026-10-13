@@ -302,6 +302,8 @@ class Run:
         self.seed = seed
         self.metrics = {}
         self.notes = []
+        # Scenarios the app's shape rules out (one tab has no tab switch), with the reason.
+        self.inapplicable = {}
         self.tabs = []
         self.counter = 0
 
@@ -442,7 +444,7 @@ class Run:
         """Seven rounds of switches through every tab. `tabs` puts the finger down first and measures
         from the lift; `tabs_tap` sends plain taps, so whatever the press itself costs is counted."""
         if len(self.tabs) < 2:
-            self.notes.append(f"{scenario} skipped: the app has one tab")
+            self.inapplicable[scenario] = "the app has one tab"
             return
         self.at_root(0)
         order = list(range(1, len(self.tabs))) + [0]
@@ -461,7 +463,7 @@ class Run:
 
     def tab1(self):
         if len(self.tabs) < 2:
-            self.notes.append("tab1 skipped: one tab")
+            self.inapplicable["tab1"] = "the app has one tab"
             return
         self.at_root(0)
         firsts = []
@@ -1066,9 +1068,17 @@ def combine_runs(runs):
     return metrics
 
 
-def write_summary(out, info, metrics, notes, gate_results):
+def combine_inapplicable(runs):
+    """The scenarios every run found inapplicable, with the reason. When any run could measure a
+    scenario, the other runs' skips are a harness problem, so its rows stay gated."""
+    common = set.intersection(*(set(run) for run in runs)) if runs else set()
+    return {scenario: runs[0][scenario] for scenario in sorted(common)}
+
+
+def write_summary(out, info, metrics, notes, gate_results, inapplicable=None):
     summary = dict(info)
     summary["metrics"] = metrics
+    summary["inapplicable"] = inapplicable or {}
     summary["notes"] = notes
     with open(os.path.join(out, "summary.json"), "w") as handle:
         json.dump(summary, handle, indent=2)
@@ -1090,6 +1100,9 @@ def write_summary(out, info, metrics, notes, gate_results):
     for key, entry in metrics.items():
         runs = ", ".join(check_gates._show(value) for value in entry["runs"])
         lines.append(f"| {labels.get(key, key)} | {check_gates._show(entry['value'])} | {runs} |")
+    if inapplicable:
+        lines += ["", "Not applicable to this app:", ""]
+        lines += [f"- {scenario}: {reason}" for scenario, reason in inapplicable.items()]
     if notes:
         lines += ["", "Notes:", ""] + [f"- {note}" for note in notes]
     if gate_results is not None:
@@ -1179,7 +1192,7 @@ def measure_on(device, args):
             "battery_c": device.battery_celsius(),
         },
     }
-    results, notes = [], []
+    results, skipped, notes = [], [], []
     for index in range(1, args.runs + 1):
         wait_until_cool(device)
         run = Run(device, app, args.out, index, seed)
@@ -1189,8 +1202,10 @@ def measure_on(device, args):
             print(f"run {index}/{args.runs}: {scenario}", flush=True)
             run.run(scenario)
         results.append(run.metrics)
+        skipped.append(run.inapplicable)
         notes += [f"run {index}: {note}" for note in run.notes]
     metrics = combine_runs(results)
+    inapplicable = combine_inapplicable(skipped)
 
     gate_results = None
     if args.gate:
@@ -1198,8 +1213,10 @@ def measure_on(device, args):
         if args.baseline:
             with open(args.baseline) as handle:
                 baseline = json.load(handle)
-        gate_results = check_gates.evaluate({"metrics": metrics}, rows, args.gate, baseline)
-    write_summary(args.out, info, metrics, notes, gate_results)
+        gate_results = check_gates.evaluate(
+            {"metrics": metrics, "inapplicable": inapplicable}, rows, args.gate, baseline,
+        )
+    write_summary(args.out, info, metrics, notes, gate_results, inapplicable)
     with open(os.path.join(args.out, "summary.md")) as handle:
         print(handle.read())
     if gate_results is not None and not check_gates.passed(gate_results):
