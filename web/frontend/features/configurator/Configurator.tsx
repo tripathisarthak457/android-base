@@ -93,7 +93,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
                   disabled={!reachable(index)}
                   aria-current={active ? "step" : undefined}
                   onClick={() => goTo(id)}
-                  className={`rounded-lg border px-4 py-2.5 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+                  className={`relative rounded-lg border px-4 py-2.5 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                     active ? "border-accent/50 bg-accent-dim" : done ? "border-ink-600 bg-ink-850" : "border-ink-700 bg-ink-900"
                   }`}
                 >
@@ -107,6 +107,8 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
                       {done ? "✓" : index + 1}
                     </span>
                     <span className={`text-sm font-medium ${active ? "text-ink-100" : "text-ink-300"}`}>{STEP_LABELS[id]}</span>
+                    {/* The button is `relative` so this absolutely placed text stays inside the
+                        scrolling step bar instead of widening the page. */}
                     {done && <span className="sr-only"> (done)</span>}
                   </span>
                 </button>
