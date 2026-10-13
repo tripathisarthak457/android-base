@@ -156,6 +156,10 @@ test("only answers that differ from the defaults are stored", () => {
   const startedOver = run(edited, { type: "reset" });
   assert.equal(draftToStore(startedOver, catalogue), null, "Start over leaves the key removed");
   assert.equal(draftToStore(run(edited, { type: "appName", value: "My App" }), catalogue), null);
+  const typedPackage = run(fresh, { type: "packageName", value: "com.trail.notes" });
+  assert.notEqual(draftToStore(typedPackage, catalogue), null, "a typed package is an answer");
+  const retyped = run(typedPackage, { type: "packageName", value: fresh.packageName });
+  assert.equal(draftToStore(retyped, catalogue), null, "a package typed back to the suggestion is not an answer");
   const typedAndCleared = run(
     fresh,
     { type: "setting", key: "android.api_base_urls", value: { dev: "h" } },
