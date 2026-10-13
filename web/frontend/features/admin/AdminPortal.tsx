@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
 import { ApiError } from "../../lib/api.ts";
@@ -121,6 +121,28 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
   );
 }
 
+/**
+ * A control focused under the sticky filter bar still counts as in view, so the browser would not
+ * scroll and the bar would hide it (WCAG 2.4.11). The page's scroll padding follows the bar's
+ * height, which changes as its controls wrap, while it sticks.
+ */
+function useScrollPaddingBelow(bar: RefObject<HTMLElement | null>): void {
+  useEffect(() => {
+    const element = bar.current;
+    if (!element) return;
+    const root = document.documentElement;
+    const observer = new ResizeObserver(() => {
+      const sticky = getComputedStyle(element).position === "sticky";
+      root.style.scrollPaddingTop = sticky ? `calc(${element.offsetHeight}px + 1rem)` : "1rem";
+    });
+    observer.observe(element);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("scroll-padding-top");
+    };
+  }, [bar]);
+}
+
 function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void }) {
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [applied, setApplied] = useState<Filters>(defaultFilters);
@@ -132,6 +154,8 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
   const props = { token, query: query(applied, asOf), version, onUnauthorized: onSignOut };
   const set = (patch: Partial<Filters>) => setFilters((current) => ({ ...current, ...patch }));
   const { targets, presets } = useFilterChoices();
+  const filterBar = useRef<HTMLFormElement>(null);
+  useScrollPaddingBelow(filterBar);
 
   function refresh() {
     setAsOf(new Date());
@@ -152,9 +176,11 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
         </div>
       </header>
 
+      {/* Sticky only from lg: on a phone the wrapped controls are five rows, a third of the screen. */}
       <form
+        ref={filterBar}
         aria-label="Filters"
-        className="sticky top-0 z-10 mt-6 flex flex-wrap items-end gap-3 rounded-xl border border-ink-700 bg-ink-900 p-4"
+        className="z-10 mt-6 flex flex-wrap items-end gap-3 rounded-xl border border-ink-700 bg-ink-900 p-4 lg:sticky lg:top-0"
         onSubmit={(event) => {
           event.preventDefault();
           if (problem) return;

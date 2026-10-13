@@ -91,8 +91,14 @@
   }
 }
 
+/*
+ * The landing page's nav is sticky and 4rem tall. A control focused under it still counts as in
+ * view, so without the padding the browser would not scroll and the nav would hide it (WCAG
+ * 2.4.11); anchors land below it for the same reason. /admin sets its own while its filters stick.
+ */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
