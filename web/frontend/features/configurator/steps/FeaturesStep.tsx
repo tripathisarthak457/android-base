@@ -98,7 +98,7 @@ export function FeaturesStep({ model }: { model: Configurator }) {
               <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
                 {inGroup.map((feature) => {
                   const on = selected.has(feature.key);
-                  const needed = on ? dependentsOf(selected, feature.key, target).map((key) => titleOf.get(key) ?? key) : [];
+                  const needed = on ? visible(dependentsOf(selected, feature.key, target)).map((key) => titleOf.get(key) ?? key) : [];
                   if (on && style?.requires.includes(feature.key)) needed.push(`the ${style.title} look`);
                   return (
                     <ChoiceCard key={feature.key} type="checkbox" checked={on} onChange={() => dispatch({ type: "feature", key: feature.key })} className="p-4">
