@@ -8,8 +8,10 @@
  * The `ink` scale runs from the page (950) to the strongest text (100) in both themes. Every text
  * step from 400 up reads at WCAG AA on every surface step, 950 to 700; 500 does only on 950 to 850,
  * so it is kept for placeholders, and for the outlines of fields and switches, which need 3:1 and
- * get it on every surface. 600 and lighter are for edges nobody has to find. Each token
- * holds both themes; `color-scheme` on the root picks one, so the theme toggle only has to set that.
+ * get it on every surface. 600 and lighter are for edges nobody has to find. Mint, amber and rose
+ * are text colours too: they read at AA on every surface step as plain text and inside a Badge,
+ * whose 10% tint of the same colour costs some contrast. Each token holds both themes;
+ * `color-scheme` on the root picks one, so the theme toggle only has to set that.
  */
 @theme {
   --color-ink-950: light-dark(#f2ece2, #141311);
@@ -29,9 +31,9 @@
   --color-accent-dim: light-dark(#f8dfd2, #3b2017);
   --color-on-accent: light-dark(#fff8f1, #1d0f09);
 
-  --color-mint: light-dark(#2b7247, #62c98f);
-  --color-amber: light-dark(#8a5a0e, #e6b34e);
-  --color-rose: light-dark(#b8352a, #f07868);
+  --color-mint: light-dark(#21693f, #62c98f);
+  --color-amber: light-dark(#7f540e, #e6b34e);
+  --color-rose: light-dark(#ae2a21, #f07868);
 
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-bricolage), var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
@@ -86,9 +88,9 @@
     --color-accent-dim: #f8dfd2;
     --color-on-accent: #fff8f1;
 
-    --color-mint: #2b7247;
-    --color-amber: #8a5a0e;
-    --color-rose: #b8352a;
+    --color-mint: #21693f;
+    --color-amber: #7f540e;
+    --color-rose: #ae2a21;
   }
 }
 

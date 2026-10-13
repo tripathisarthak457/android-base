@@ -64,7 +64,7 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
             >
               <input type="radio" name={presetName} checked={on} onChange={() => dispatch({ type: "preset", key: option.key })} className="sr-only" />
               {option.title}
-              <span className="ml-1.5 font-mono text-xs opacity-70">{visible(option.features).length}</span>
+              <span className="ml-1.5 font-mono text-xs">{visible(option.features).length}</span>
             </label>
           );
         })}
