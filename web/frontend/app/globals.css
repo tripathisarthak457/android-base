@@ -8,7 +8,7 @@
  * The `ink` scale runs from the page (950) to the strongest text (100) in both themes. Every text
  * step from 400 up reads at WCAG AA on every surface step, 950 to 700; 500 does only on 950 to 850,
  * so it is kept for placeholders, and for the outlines of fields and switches, which need 3:1 and
- * get 3.8:1 or more on every surface. 600 and lighter are for edges nobody has to find. Each token
+ * get it on every surface. 600 and lighter are for edges nobody has to find. Each token
  * holds both themes; `color-scheme` on the root picks one, so the theme toggle only has to set that.
  */
 @theme {

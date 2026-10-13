@@ -262,8 +262,8 @@ export type FilterChoices = { targets: string[]; presets: string[] };
 
 /**
  * The targets and presets to filter by, from the catalogue of the API being administered: its
- * generations were made with that one, and bundling the checked-in copy would add a hundred
- * kilobytes to this page for two lists of keys.
+ * generations were made with that one, and bundling the checked-in copy would add the whole
+ * catalogue to this page for two lists of keys.
  */
 export function useFilterChoices(): FilterChoices {
   const [choices, setChoices] = useState<FilterChoices>({ targets: [], presets: [] });

@@ -43,9 +43,9 @@ function getJson(path: string, signal: AbortSignal): Promise<unknown> {
 }
 
 /**
- * The targets this deployment generates, asked once on load (a few hundred bytes). Whether it can
- * make signing keys comes from the live catalogue, which is a hundred kilobytes, so that is asked
- * only once the visitor reaches the Build step, where the answer is shown.
+ * The targets this deployment generates, a small answer asked once on load. Whether it can make
+ * signing keys comes from the live catalogue, which is large, so that is asked only once the
+ * visitor reaches the Build step, where the answer is shown.
  */
 function useLive(catalogue: Catalogue, step: Step): Live {
   const [enabled, setEnabled] = useState<Record<string, boolean> | null>(null);

@@ -134,8 +134,8 @@ export function TextInput({ className = "", ...rest }: InputHTMLAttributes<HTMLI
 
 /**
  * The off track is ink-500, not a quieter step: the track's outline and the thumb's position are
- * what tell on from off, so each needs 3:1 against what is next to it (WCAG 1.4.11). It reads at
- * 5.2:1 on the ink-900 panels in both themes, and the ink-850 thumb about 5:1 on it.
+ * what tell on from off, so each needs 3:1 against what is next to it (WCAG 1.4.11), on the panels
+ * and under the thumb, in both themes.
  */
 export function Toggle({
   checked,

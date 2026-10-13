@@ -179,7 +179,7 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
         </div>
       </header>
 
-      {/* Sticky only from lg: on a phone the wrapped controls are five rows, a third of the screen. */}
+      {/* Sticky only from lg: on a phone the wrapped controls would hold much of the screen over every panel. */}
       <form
         ref={filterBar}
         aria-label="Filters"
