@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
+import com.base.app.catalog.sections.LoadingScreen
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.list.AppRow
@@ -115,6 +116,11 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
 /** One section's groups, in as many columns as the pane has room for. */
 @Composable
 private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
+    // A screen with its own title and list, as an app has, so it is measured as an app would be.
+    if (section == CatalogSection.Loading) {
+        LoadingScreen(onBack)
+        return
+    }
     val scroll = rememberScrollState()
     AppScaffold(topBar = { AppTopBar(title = section.title, onBack = onBack, scrolled = { scroll.value }) }) {
         val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()

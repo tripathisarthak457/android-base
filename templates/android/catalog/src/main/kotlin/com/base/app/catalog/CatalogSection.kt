@@ -47,6 +47,7 @@ enum class CatalogSection(val title: String, val summary: String) {
     Bars("Bars and pages", "Inline and large-title top bars, tab row, pager and page control"),
     Overlays("Overlays", "Alert, action sheet, sheet with detents, menu, toast, loading"),
     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
+    Loading("Loading screen", "Redacted rows under a large title: one sweep, and the swap to content"),
     Motion("Animation", "Transitions, first appearance, list placement, emphasis, rubber band"),
     Adaptive("Adaptive", "Panes of any width, foldable postures, the hardware keyboard"),
     // <opt:pickers>
@@ -77,6 +78,7 @@ fun CatalogSection.Content() {
         CatalogSection.Bars -> BarsSection()
         CatalogSection.Overlays -> OverlaysSection()
         CatalogSection.Feedback -> FeedbackSection()
+        CatalogSection.Loading -> error("Loading is a whole screen, not a page of groups")
         CatalogSection.Motion -> MotionSection()
         CatalogSection.Adaptive -> AdaptiveSection()
         // <opt:pickers>
