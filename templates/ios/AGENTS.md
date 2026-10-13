@@ -159,7 +159,7 @@ Use the system's own motion; never rebuild it:
 |---|---|
 | Push, pop, interactive back swipe | `NavigationStack` |
 | Zoom into a detail (iOS 18) | `.navigationTransition(.zoom(sourceID:in:))` + `.matchedTransitionSource`, behind `#available` |
-| Sheets with detents and the card stack | `.appSheet(…)` / `.presentationDetents` |
+| Sheets with detents and the card stack | `.appSheet(…)` (see Sheets) |
 | Context menu with a preview | `.contextMenu(menuItems:preview:)` |
 | Pull to refresh, swipe actions | `.refreshable`, `.swipeActions` |
 | List insert, delete, move | `.animation(theme.springs.layout, value: …)` or `withAnimation` around the change |
@@ -182,6 +182,44 @@ Use the system's own motion; never rebuild it:
   custom animations at 60 Hz. Keep it.
 - Never `.blur`, `.shadow` or glass on rows of a scrolling list; never a repeating animation that
   ignores Reduce Motion or keeps running off screen.
+
+## Sheets
+
+Every sheet is `appSheet`. It is the system's sheet, so the card stack, detent motion, rubber band,
+interactive dismissal, keyboard avoidance and VoiceOver behave as in every other app; the design
+style supplies the colours. A feature never calls `.sheet` or `.presentationDetents` itself; the
+generator's checks fail on both.
+
+```swift
+.appSheet(isPresented: $showsFilters, options: AppSheetOptions(detents: [.medium, .large])) {
+    NavigationStack {
+        FiltersView(store: filters)
+            .navigationTitle(Text("Filters", bundle: .module))
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button { showsFilters = false } label: { Text("Done", bundle: .module) }
+                }
+            }
+    }
+}
+```
+
+| The sheet | `AppSheetOptions` |
+|---|---|
+| A short choice or confirmation | `detents: [.fitContent]`, content a plain stack with its title in it |
+| Resizable | `detents: [.medium, .large]`; pass `selection:` to read or move the detent |
+| Part of the screen, like Maps' search | `modality: .nonModal(upThrough: .medium)`, `dismissible: false`, `contentInteraction: .scrolls` |
+| Unsaved changes | `dismissible: !store.state.hasChanges`, and Cancel asks with `.confirmationDialog` before closing |
+| Its material | `style: .automatic` (Liquid Glass from iOS 26, the elevated surface before), `.solid`, `.frosted`, `.glass` |
+
+- A header is a `NavigationStack` with Cancel in `.cancellationAction` and Done in
+  `.confirmationAction`; sticky actions at the bottom go in `.safeAreaInset(edge: .bottom)`.
+- Content that something else presents as a sheet, such as an `.inspector` on a phone, takes
+  `.appSheetPresentation(options)`.
+- No haptics at detents (iOS plays none), no drag gesture of your own on a sheet, and no background
+  of your own: pick a `style`. From iOS 26 any background replaces the system's glass.
+- One sheet at a time from the main interface. A sheet presented from a sheet stacks on it; close
+  the first when the second replaces its task.
 
 ## Adaptive layout (iPhone, iPad, resizable windows)
 
@@ -241,5 +279,5 @@ with Instruments' Animation Hitches template, and the hitch rate in your summary
 
 `ObservableObject` · `@Published` · `try!` · `print(` · `DispatchQueue.main.async` · `AnyView` ·
 `UIScreen.main` · `@MainActor` in a data target · a `ModelContext` on the main actor · a raw colour,
-size or duration in a feature · a custom push or sheet transition · glass inside a scrolling list ·
-editing `DesignTokens.swift` by hand.
+size or duration in a feature · `.sheet` or `.presentationDetents` in a feature · a custom push or
+sheet transition · glass inside a scrolling list · editing `DesignTokens.swift` by hand.
