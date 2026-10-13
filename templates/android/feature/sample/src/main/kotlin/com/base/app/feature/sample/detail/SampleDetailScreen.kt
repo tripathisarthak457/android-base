@@ -2,6 +2,7 @@ package com.base.app.feature.sample.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -13,13 +14,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
+import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
+import com.base.app.core.designsystem.component.feedback.AppRedacted
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.text
 import com.base.app.data.sample.api.SampleItem
@@ -53,38 +56,42 @@ internal fun SampleDetailScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(AppTheme.spacing.gutter),
+                    .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
             ) {
                 val item = state.item
-                if (item == null) {
-                    repeat(SKELETON_LINES) {
-                        AppSkeletonLine(
-                            modifier = Modifier.padding(bottom = AppTheme.spacing.sm),
-                            widthFraction = if (it == SKELETON_LINES - 1) 0.5f else 1f,
-                        )
-                    }
-                    return@Column
+                // The same composables before and after the item arrives: the text takes the place
+                // its placeholder held, and nothing above it moves.
+                AppRedacted(
+                    active = item == null,
+                    contentDescription = stringResource(DesignSystemR.string.designsystem_loading),
+                ) {
+                    Header(item ?: SampleDetailPlaceholder)
                 }
-
-                AppMonoText(
-                    text = "#${item.id}",
-                    color = AppTheme.colors.contentTertiary,
-                )
-                AppText(
-                    text = item.title,
-                    modifier = Modifier.padding(top = AppTheme.spacing.sm),
-                    style = AppTheme.typography.title2,
-                    color = AppTheme.colors.contentPrimary,
-                )
-                AppText(
-                    text = item.body,
-                    modifier = Modifier.padding(top = AppTheme.spacing.lg),
-                    style = AppTheme.typography.body,
-                    color = AppTheme.colors.contentSecondary,
-                )
                 Related(state.related, onEvent)
             }
         }
+    }
+}
+
+@Composable
+private fun Header(item: SampleItem) {
+    Column {
+        AppMonoText(
+            text = "#${item.id}",
+            color = AppTheme.colors.contentTertiary,
+        )
+        AppText(
+            text = item.title,
+            modifier = Modifier.padding(top = AppTheme.spacing.sm),
+            style = AppTheme.typography.title2,
+            color = AppTheme.colors.contentPrimary,
+        )
+        AppText(
+            text = item.body,
+            modifier = Modifier.padding(top = AppTheme.spacing.lg),
+            style = AppTheme.typography.body,
+            color = AppTheme.colors.contentSecondary,
+        )
     }
 }
 
@@ -112,7 +119,14 @@ private fun Related(items: List<SampleItem>, onEvent: (SampleDetailEvent) -> Uni
     }
 }
 
-private const val SKELETON_LINES = 5
+// Never drawn or read out (AppRedacted draws bones in place of its lines), so not a resource: a
+// title on one line and a body of about four, as the samples have.
+private val SampleDetailPlaceholder = SampleItem(
+    10,
+    "Placeholder sample title",
+    "The body of a sample runs to about four lines on a phone, and this placeholder is about as " +
+        "long, so its bones take close to the room the real text will take when it arrives.",
+)
 
 @Preview(showBackground = true)
 @Composable

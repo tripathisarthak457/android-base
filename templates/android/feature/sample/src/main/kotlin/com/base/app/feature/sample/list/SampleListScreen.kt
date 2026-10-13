@@ -14,23 +14,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.hasContent
 import com.base.app.core.common.isRefreshing
 import com.base.app.core.common.result.AppError
+import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.animation.appAnimateItem
-import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
+import com.base.app.core.designsystem.component.feedback.AppRedacted
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
-import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
+import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppScreenPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.text
 import com.base.app.data.sample.api.SampleItem
@@ -65,7 +68,7 @@ internal fun SampleListScreen(
     ) {
         when {
             // Idle is the first frame, before the route's Appeared has started the load.
-            state.loadState == LoadState.Idle || state.loadState == LoadState.Loading -> LoadingList()
+            state.loadState == LoadState.Idle || state.loadState == LoadState.Loading -> LoadingList(listState)
 
             state.loadState is LoadState.Error -> AppStateView(
                 message = state.loadState.error.text(),
@@ -131,23 +134,39 @@ private fun Content(
 }
 
 /**
- * The loading state is shaped like the content it stands in for — see
- * [com.base.app.core.designsystem.component.feedback.AppSkeleton].
+ * The loading state: real rows, redacted, in a list with the loaded list's padding and state. The
+ * first row starts below the large title exactly where the first loaded row will, the title reads
+ * one list throughout, and the swap to content is one frame with nothing moving or fading.
  */
 @Composable
-private fun LoadingList() {
+private fun LoadingList(listState: LazyListState) {
+    val loading = stringResource(DesignSystemR.string.designsystem_loading)
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(AppTheme.spacing.gutter),
+        modifier = Modifier
+            .fillMaxSize()
+            .clearAndSetSemantics { contentDescription = loading },
+        state = listState,
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+        userScrollEnabled = false,
     ) {
-        items(SKELETON_ROWS) {
-            AppCard { AppSkeletonListItem(showLeading = false) }
+        items(PlaceholderRows) {
+            AppRedacted(active = true) { SampleRow(item = SampleRowPlaceholder, onClick = {}) }
         }
     }
 }
 
-private const val SKELETON_ROWS = 6
+/** Enough for the tallest window; a lazy list composes only the rows that show. */
+private const val PlaceholderRows = 12
+
+// Never drawn or read out: AppRedacted draws a bone in place of each line and hides the row from
+// screen readers, so only where these lines break shapes the placeholder. A one-line title and a
+// two-line preview is what most samples show at phone width.
+private val SampleRowPlaceholder = SampleItem(
+    -1,
+    "Placeholder sample title",
+    "The preview of a sample runs to about two lines on a phone, which is what this one is for.",
+)
 
 @Preview(name = "Content", showBackground = true)
 @Composable
@@ -168,16 +187,14 @@ private fun SampleListContentPreview() {
     }
 }
 
-@Preview(name = "Loading", showBackground = true)
+@AppScreenPreviews
 @Composable
 private fun SampleListLoadingPreview() {
-    AppTheme {
-        SampleListScreen(
-            state = SampleListState(loadState = LoadState.Loading),
-            query = rememberTextFieldState(),
-            onEvent = {},
-        )
-    }
+    SampleListScreen(
+        state = SampleListState(loadState = LoadState.Loading),
+        query = rememberTextFieldState(),
+        onEvent = {},
+    )
 }
 
 @Preview(name = "Empty", showBackground = true)

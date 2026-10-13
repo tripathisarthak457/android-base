@@ -8,28 +8,33 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.base.app.core.common.result.AppError
+import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppAvatar
-import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
+import com.base.app.core.designsystem.component.feedback.AppRedacted
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.UiText
@@ -72,7 +77,8 @@ internal fun FeedScreen(
             state = listState,
             loadMoreFailedLabel = stringResource(R.string.feed_load_more_failed),
             retryLabel = stringResource(R.string.feed_retry),
-            loading = { LoadingFeed() },
+            contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+            loading = { LoadingFeed(listState) },
             failed = { throwable, retry ->
                 val error = (throwable as? FeedLoadException)?.error
                 AppStateView(
@@ -145,18 +151,34 @@ private fun FeedCard(
     }
 }
 
+/** Real cards, redacted, in a list with the feed's padding and state, so the first page lands in place. */
 @Composable
-private fun LoadingFeed() {
+private fun LoadingFeed(listState: LazyListState) {
+    val loading = stringResource(DesignSystemR.string.designsystem_loading)
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(AppTheme.spacing.gutter),
+        modifier = Modifier
+            .fillMaxSize()
+            .clearAndSetSemantics { contentDescription = loading },
+        state = listState,
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,
     ) {
-        items(SKELETON_ROWS) {
-            AppCard { AppSkeletonListItem() }
+        items(PlaceholderRows) {
+            AppRedacted(active = true) { FeedCard(post = FeedPlaceholder, expanded = false, onToggle = {}) }
         }
     }
 }
 
-private const val SKELETON_ROWS = 5
+/** Enough for the tallest window; a lazy list composes only the cards that show. */
+private const val PlaceholderRows = 8
+
+// Never drawn or read out: AppRedacted draws a bone in place of each line and hides the card from
+// screen readers, so only where these lines break shapes the placeholder. A one-line title and a
+// body clamped to two lines is what most posts show at phone width.
+private val FeedPlaceholder = FeedPost(
+    -1,
+    1,
+    "Placeholder post title",
+    "The body of a post is clamped to two lines until it is expanded, and this one runs past them.",
+)

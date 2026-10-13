@@ -20,10 +20,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
+import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.button.AppButton
@@ -32,7 +35,7 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
-import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
+import com.base.app.core.designsystem.component.feedback.AppRedacted
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.input.AppSearchField
@@ -40,6 +43,7 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
@@ -191,44 +195,71 @@ private fun Results(results: List<SearchResult>, listState: LazyListState, onEve
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         state = listState,
-        contentPadding = PaddingValues(AppTheme.spacing.gutter),
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
     ) {
         items(results, key = SearchResult::id) { result ->
-            AppCard(
+            ResultCard(
+                result = result,
                 onClick = { onEvent(SearchEvent.ResultClicked(result)) },
                 modifier = appAnimateItem(Modifier.fillMaxWidth()),
-            ) {
-                AppText(
-                    text = result.title,
-                    style = AppTheme.typography.subheadline,
-                    color = AppTheme.colors.contentPrimary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                AppText(
-                    text = result.snippet,
-                    modifier = Modifier.padding(top = AppTheme.spacing.xs),
-                    style = AppTheme.typography.subheadline,
-                    color = AppTheme.colors.contentTertiary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            )
         }
     }
 }
 
 @Composable
-private fun LoadingResults() {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(AppTheme.spacing.gutter),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
-        userScrollEnabled = false,
-    ) {
-        items(SKELETON_ROWS) { AppCard { AppSkeletonListItem(showLeading = false) } }
+private fun ResultCard(result: SearchResult, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppCard(onClick = onClick, modifier = modifier) {
+        AppText(
+            text = result.title,
+            style = AppTheme.typography.subheadline,
+            color = AppTheme.colors.contentPrimary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        AppText(
+            text = result.snippet,
+            modifier = Modifier.padding(top = AppTheme.spacing.xs),
+            style = AppTheme.typography.subheadline,
+            color = AppTheme.colors.contentTertiary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 
-private const val SKELETON_ROWS = 4
+/**
+ * Real result cards, redacted, with the results list's padding. Not its state: the two lists are on
+ * screen together while the content cross-fades, and a list state serves one list at a time.
+ */
+@Composable
+private fun LoadingResults() {
+    val loading = stringResource(DesignSystemR.string.designsystem_loading)
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .clearAndSetSemantics { contentDescription = loading },
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+        userScrollEnabled = false,
+    ) {
+        items(PlaceholderRows) {
+            AppRedacted(active = true) {
+                ResultCard(result = ResultPlaceholder, onClick = {}, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
+/** Enough for the tallest window; a lazy list composes only the cards that show. */
+private const val PlaceholderRows = 12
+
+// Never drawn or read out: AppRedacted draws a bone in place of each line and hides the card from
+// screen readers, so only where these lines break shapes the placeholder. A one-line title and a
+// two-line snippet is what most results show at phone width.
+private val ResultPlaceholder = SearchResult(
+    -1,
+    "Placeholder result title",
+    "A result's snippet is clamped to two lines, and this one runs to them so its card is as tall.",
+)
