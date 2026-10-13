@@ -86,6 +86,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
                       {done ? "✓" : index + 1}
                     </span>
                     <span className={`text-sm font-medium ${active ? "text-ink-100" : "text-ink-300"}`}>{STEP_LABELS[id]}</span>
+                    {done && <span className="sr-only"> (done)</span>}
                   </span>
                 </button>
               </li>

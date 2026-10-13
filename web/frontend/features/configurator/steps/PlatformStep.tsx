@@ -25,7 +25,10 @@ export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model
         Which app to start from. Your answers carry over if you change your mind; anything the other platform does not offer
         is left out.
       </p>
-      <div role="radiogroup" aria-label="Platform" className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+      {/* A fieldset rather than role=radiogroup: each card's "Not in this version" disclosure sits
+          beside its radio, and a radiogroup may hold only radios. */}
+      <fieldset className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <legend className="sr-only">Platform</legend>
         {shown.map((target) => {
           const soon = target.status === "coming_soon";
           const off = model.live.enabled !== null && model.live.enabled[target.key] === false && !soon;
@@ -57,7 +60,7 @@ export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model
             </div>
           );
         })}
-      </div>
+      </fieldset>
     </div>
   );
 }
