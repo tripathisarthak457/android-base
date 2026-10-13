@@ -3,30 +3,9 @@
   Declared by the module that needs them, so a project generated without networking ships without
   either, rather than asking for capabilities it never uses.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- <opt:offlinequeue> -->
-
-    <application>
-        <!--
-          WorkManager starts the first time the offline queue asks for it, through the app's
-          Configuration.Provider, instead of at every launch from App Startup: most launches queue
-          nothing, and its start-up opens a database.
-        -->
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
-    </application>
-    <!-- </opt:offlinequeue> -->
 
 </manifest>
