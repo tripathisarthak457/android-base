@@ -10,6 +10,7 @@ import re
 from pathlib import Path
 
 from ...core.spec import Spec, module_title, pascal_case
+from . import imports
 
 SNIPPETS = Path(__file__).parent / "snippets" / "scaffold"
 TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "android"
@@ -164,7 +165,7 @@ def _render(snippet: str, destination: Path, tokens: dict[str, str], themed: boo
     if leftover:
         raise ValueError(f"{snippet} has an unfilled {leftover.group(0)}")
     if destination.suffix == ".kt":
-        text = sort_imports(text)
+        text = imports.sort(text)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(text, encoding="utf-8")
 
@@ -183,16 +184,3 @@ def _theme_previews(text: str, themed: bool) -> str:
         out.append(line[4:] if inside and not themed and line.startswith("    ") else line)
     return "".join(out)
 
-
-_IMPORT = re.compile(r"^import [\w.]+(?: as \w+)?\n", re.MULTILINE)
-
-
-def sort_imports(text: str) -> str:
-    """Kotlin imports in ASCII order, the Android style guide's and `.editorconfig`'s `*` layout."""
-    found = _IMPORT.findall(text)
-    if not found:
-        return text
-    first = text.index(found[0])
-    last = text.index(found[-1]) + len(found[-1])
-    ordered = sorted(set(found), key=lambda line: line.split()[1])
-    return text[:first] + "".join(ordered) + text[last:]

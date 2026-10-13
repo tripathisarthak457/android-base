@@ -24,7 +24,7 @@ from ...core.spec import (
     Vocabulary,
 )
 from ...core.target import BuildContext
-from . import icons, keystores, look, modes, scaffold, settings, strings, tabs, variants
+from . import icons, imports, keystores, look, modes, scaffold, settings, strings, tabs, variants
 from .settings import FLAVOURS
 
 TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "android"
@@ -139,6 +139,7 @@ class AndroidTarget:
             design_tokens.write_text(kotlin.emit(tokens.resolve(spec), spec.package_name), encoding="utf-8")
         look.apply(project, spec)
         strings.write(project, spec)
+        imports.sort_sources(project)
         warnings = keystores.write(project, (spec.android or AndroidSettings()).keystores, context.summary)
         if context.icon_source is not None:
             warnings += icons.generate(context.icon_source, project, spec)
