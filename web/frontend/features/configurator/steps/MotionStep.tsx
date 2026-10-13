@@ -4,7 +4,7 @@ import { useReducedMotion } from "framer-motion";
 import { useId, useState } from "react";
 import { ChoiceCard, PauseButton, Toggle } from "../../../components/primitives.tsx";
 import type { Catalogue, Spring } from "../../catalogue/types.ts";
-import { LivePreview, usePreviewTheme } from "../../preview/LivePreview.tsx";
+import { LivePreview, type PreviewInput, usePreviewTheme } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
 import type { Configurator } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
@@ -14,8 +14,8 @@ function describe(spring: Spring | undefined): string {
   return `${spring.response.toFixed(2)} s${spring.bounce > 0 ? ` · bounce ${spring.bounce.toFixed(2)}` : ""}`;
 }
 
-function MotionCard({ catalogue, model, styleKey, title, description, name, dark, paused }: {
-  catalogue: Catalogue;
+function MotionCard({ input, model, styleKey, title, description, name, dark, paused }: {
+  input: PreviewInput;
   model: Configurator;
   styleKey: string;
   title: string;
@@ -24,9 +24,8 @@ function MotionCard({ catalogue, model, styleKey, title, description, name, dark
   dark: boolean;
   paused: boolean;
 }) {
-  const input = usePreviewInput(catalogue, model.state);
   const theme = usePreviewTheme({ ...input, motionStyle: styleKey }, dark);
-  const springs = catalogue.tokens.motion.styles[styleKey]?.springs;
+  const springs = input.tokens.motion.styles[styleKey]?.springs;
   const rows: [string, string][] = [
     ["press", describe(springs?.press)],
     ["release", describe(springs?.release)],
@@ -41,7 +40,7 @@ function MotionCard({ catalogue, model, styleKey, title, description, name, dark
       onChange={() => model.dispatch({ type: "motionStyle", value: styleKey })}
       className="flex gap-4 p-4"
     >
-      <MotionPreview theme={theme} tokens={catalogue.tokens} font={input.font} paused={paused} />
+      <MotionPreview theme={theme} tokens={input.tokens} font={input.font} paused={paused} />
       <span className="min-w-0">
         <span className="block font-display text-base font-bold text-ink-100">{title}</span>
         <span className="mt-1 block text-xs leading-relaxed text-ink-400">{description}</span>
@@ -83,7 +82,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
           {target.motion_styles.map((style) => (
             <MotionCard
               key={style.key}
-              catalogue={catalogue}
+              input={input}
               model={model}
               styleKey={style.key}
               title={style.title}
