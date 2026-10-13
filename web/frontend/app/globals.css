@@ -172,7 +172,10 @@ body {
   scrollbar-width: none;
 }
 
+/*
+ * A tint and no blur: the previews behind an open dialog keep moving, and a blur over the whole
+ * viewport would be recomputed on every one of their frames.
+ */
 dialog::backdrop {
   background: color-mix(in oklab, var(--color-ink-950) 85%, transparent);
-  backdrop-filter: blur(4px);
 }
