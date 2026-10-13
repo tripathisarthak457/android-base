@@ -9,11 +9,16 @@ import { Badge, LinkButton } from "./ui.tsx";
 export function Hero() {
   const target = android();
   const platforms = CATALOGUE.targets.filter((candidate) => candidate.status !== "hidden");
+  const flavours = CATALOGUE.rules.flavours;
   const stats = [
     { value: String(selectableFeatures(target).length), label: "features you can switch off", detail: "Each one removes its modules, not just its code" },
     { value: String(target.design_styles.length), label: "design styles", detail: target.design_styles.map((style) => style.title).join(", ") },
     { value: String(target.motion_styles.length), label: "motion styles", detail: "Spring presets for every press, push and tab" },
-    { value: "7", label: "build variants", detail: "dev, staging, prod and playstore, debug and release" },
+    {
+      value: String(flavours.length),
+      label: "build environments",
+      detail: `${new Intl.ListFormat("en-GB", { type: "conjunction" }).format(flavours)}, debug and release`,
+    },
     { value: "0", label: "Material components", detail: "A foundation-only design system; the build refuses Material imports" },
   ];
 
@@ -114,7 +119,7 @@ function Terminal() {
     { text: "BUILD SUCCESSFUL", tone: "ok" },
     { text: "" },
     { text: "$ ./gradlew build", tone: "prompt" },
-    { text: "7 variants · unit tests · android lint · code rules", tone: "dim" },
+    { text: "every variant · unit tests · android lint · code rules", tone: "dim" },
     { text: "BUILD SUCCESSFUL", tone: "ok" },
     { text: "" },
     { text: "$ ./gradlew :app:distDevRelease", tone: "prompt" },
