@@ -1,12 +1,14 @@
 package __PKG__.feature.__NAME__.detail
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import __PKG__.core.common.LoadState
 import __PKG__.core.common.result.AppError
@@ -15,6 +17,7 @@ import __PKG__.core.designsystem.component.feedback.AppErrorState
 import __PKG__.core.designsystem.component.feedback.AppSkeletonLine
 import __PKG__.core.designsystem.component.navigation.AppBackTopBar
 import __PKG__.core.designsystem.component.text.AppText
+import __PKG__.core.designsystem.foundation.chromeContentPadding
 import __PKG__.core.designsystem.theme.AppTheme
 import __PKG__.core.ui.text
 import __PKG__.data.__NAME__.api.__P__Item
@@ -51,11 +54,16 @@ internal fun __P__DetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(AppTheme.spacing.gutter),
+                .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
         ) {
             val item = state.item
             if (item == null) {
-                AppSkeletonLine()
+                // The title's line height: the title replaces the bone without moving anything.
+                val lineHeight = AppTheme.typography.displaySmall.lineHeight
+                AppSkeletonLine(
+                    height = with(LocalDensity.current) { lineHeight.toDp() },
+                    widthFraction = 0.7f,
+                )
             } else {
                 AppText(
                     text = item.title,

@@ -121,6 +121,20 @@ class GeneratedModuleTest(unittest.TestCase):
         self.assertIn("entry<OrdersListKey>(pane = NavPane.List)", navigation)
         self.assertIn("entry<OrdersDetailKey>(pane = NavPane.Detail)", navigation)
 
+    def test_scrolling_content_clears_the_chrome_and_placeholders_take_the_rows_height(self):
+        screens = self.online / f"feature/orders/src/main/kotlin/{PKG}/feature/orders"
+        list_screen = (screens / "list/OrdersListScreen.kt").read_text()
+        detail_screen = (screens / "detail/OrdersDetailScreen.kt").read_text()
+        # The content list and the loading list both, so the rows land where the placeholders were.
+        self.assertEqual(2, list_screen.count("contentPadding = chromeContentPadding("))
+        self.assertIn(".padding(chromeContentPadding(", detail_screen)
+        # Each bone stands for the text that replaces it, at that style's line height.
+        self.assertIn("style = AppTheme.typography.titleMedium", list_screen)
+        self.assertIn("AppTheme.typography.titleMedium.lineHeight", list_screen)
+        self.assertIn("style = AppTheme.typography.displaySmall", detail_screen)
+        self.assertIn("AppTheme.typography.displaySmall.lineHeight", detail_screen)
+        self.assertNotIn("AppSkeletonListItem", list_screen)
+
     def test_the_code_fits_the_formatting_features_line_length_with_a_long_module_name(self):
         with tempfile.TemporaryDirectory() as temp:
             for features in (["network", "sample"], ["settings"]):
