@@ -69,11 +69,17 @@ function Choices<T extends string>({ legend, options, value, onChange, columns }
  * focus inside it, closes it on Escape, makes the page behind it inert, and returns focus to the
  * button that opened it. It sits in the navigation rather than floating, where it would cover the
  * configurator's own buttons on a phone.
+ *
+ * Closing keeps the form and what is typed in it; only closing after a report went out starts the
+ * next one blank. A backdrop click closes it only when the press began on the backdrop too, so a
+ * text selection dragged past the dialog's edge does not throw the report away.
  */
 export function ReportButton() {
   const dialog = useRef<HTMLDialogElement>(null);
+  const pressedBackdrop = useRef(false);
   const [open, setOpen] = useState(false);
   const [context, setContext] = useState<ReportContext | null>(null);
+  const [form, setForm] = useState<{ key: number; sent: boolean } | null>(null);
 
   useEffect(() => {
     const element = dialog.current;
@@ -82,12 +88,18 @@ export function ReportButton() {
     if (!open && element.open) element.close();
   }, [open]);
 
+  function close() {
+    setOpen(false);
+    setForm((current) => (current?.sent ? { key: current.key + 1, sent: false } : current));
+  }
+
   return (
     <>
       <button
         type="button"
         onClick={() => {
           setContext(readReportContext());
+          setForm((current) => current ?? { key: 0, sent: false });
           setOpen(true);
         }}
         className="flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100 max-md:w-9 max-md:justify-center max-md:px-0"
@@ -100,19 +112,29 @@ export function ReportButton() {
       <dialog
         ref={dialog}
         aria-labelledby="feedback-title"
-        onClose={() => setOpen(false)}
+        onClose={close}
+        onPointerDown={(event) => {
+          pressedBackdrop.current = event.target === dialog.current;
+        }}
         onClick={(event) => {
-          if (event.target === dialog.current) setOpen(false);
+          if (pressedBackdrop.current && event.target === dialog.current) close();
         }}
         className="m-auto w-[calc(100%-2rem)] max-w-2xl rounded-2xl border border-ink-700 bg-ink-900 p-0 text-ink-100 shadow-2xl"
       >
-        {open && <FeedbackForm context={context} onClose={() => setOpen(false)} />}
+        {form && (
+          <FeedbackForm
+            key={form.key}
+            context={context}
+            onSent={() => setForm((current) => current && { ...current, sent: true })}
+            onClose={close}
+          />
+        )}
       </dialog>
     </>
   );
 }
 
-function FeedbackForm({ context, onClose }: { context: ReportContext | null; onClose: () => void }) {
+function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | null; onSent: () => void; onClose: () => void }) {
   const [kind, setKind] = useState<Kind>("bug");
   const [severity, setSeverity] = useState<Severity>("annoying");
   const [area, setArea] = useState<Area>("website");
@@ -150,6 +172,7 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
       if (!response.ok) throw await apiError(response, "That could not be sent.");
       const result = (await response.json()) as { id?: number };
       setSentId(result.id ?? 0);
+      onSent();
     } catch (error) {
       // fetch rejects with a TypeError when the request never got an answer; its message is the
       // browser's ("Failed to fetch"), which tells the visitor nothing they can act on.
@@ -229,7 +252,6 @@ function FeedbackForm({ context, onClose }: { context: ReportContext | null; onC
               onChange={(event) => setTitle(event.target.value)}
               placeholder={bug ? "The zip has no gradlew" : "Let me pick a starting screen"}
               maxLength={200}
-              autoFocus
             />
           )}
         </Field>
