@@ -389,6 +389,11 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
                 # One sheet system (REQUIREMENTS 33): appSheet, or appSheetPresentation for content
                 # that something else presents, such as an inspector on a phone.
                 case.assertNotRegex(code, r"\.(?:sheet|presentationDetents)\(", f"{relative} presents a sheet without appSheet")
+                # The sheet sets interactiveDismissDisabled from its options, and SwiftUI documents no
+                # order between nested ones, so a feature's own could be silently overridden.
+                case.assertNotRegex(
+                    code, r"\.interactiveDismissDisabled\(", f"{relative} guards a sheet without appSheetDismissGuard"
+                )
                 for width in re.findall(r"\.frame\(\s*(?:width|minWidth):\s*(\d+)", code):
                     case.assertLess(int(width), 320, f"{relative} sets a width a window can be narrower than")
                 for name, pattern in RAW_VALUES.items():
@@ -1122,6 +1127,11 @@ class ViolationsTest(unittest.TestCase):
                 "presents a sheet without appSheet",
                 self.ROW,
                 replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .sheet(isPresented: .constant(false)) {{ EmptyView() }}"),
+            ),
+            (
+                "guards a sheet without appSheetDismissGuard",
+                self.ROW,
+                replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .interactiveDismissDisabled()"),
             ),
         ):
             with self.subTest(rule=message):

@@ -187,8 +187,8 @@ Use the system's own motion; never rebuild it:
 
 Every sheet is `appSheet`. It is the system's sheet, so the card stack, detent motion, rubber band,
 interactive dismissal, keyboard avoidance and VoiceOver behave as in every other app; the design
-style supplies the colours. A feature never calls `.sheet` or `.presentationDetents` itself; the
-generator's checks fail on both.
+style supplies the colours. A feature never calls `.sheet`, `.presentationDetents` or
+`.interactiveDismissDisabled` itself; the generator's checks fail on each.
 
 ```swift
 .appSheet(isPresented: $showsFilters, options: AppSheetOptions(detents: [.medium, .large])) {
@@ -209,8 +209,19 @@ generator's checks fail on both.
 | A short choice or confirmation | `detents: [.fitContent]`, content a plain stack with its title in it |
 | Resizable | `detents: [.medium, .large]`; pass `selection:` to read or move the detent |
 | Part of the screen, like Maps' search | `modality: .nonModal(upThrough: .medium)` (its lists scroll before the sheet grows), `dismissible: false` |
-| Unsaved changes | `dismissible: !store.state.hasChanges`, and Cancel asks with `.confirmationDialog` before closing |
+| Never closed by a swipe | `dismissible: false`; only the sheet's own buttons close it |
 | Its material | `material: .automatic` (Liquid Glass from iOS 26, the elevated surface before), `.solid`, `.frosted`, `.glass` |
+
+A sheet with unsaved changes asks before they go. Guard the view that owns them; a swipe down or
+a tap outside then springs back and calls `onAttempt`, and Cancel asks the same question:
+
+```swift
+EditNoteView(store: store)
+    .appSheetDismissGuard(enabled: store.state.hasChanges) { asksToDiscard = true }
+    .confirmationDialog(Text("Discard your changes?", bundle: .module), isPresented: $asksToDiscard) {
+        Button(role: .destructive) { dismiss() } label: { Text("Discard Changes", bundle: .module) }
+    }
+```
 
 - A header is a `NavigationStack` with Cancel in `.cancellationAction` and Done in
   `.confirmationAction`; sticky actions at the bottom go in `.safeAreaInset(edge: .bottom)`.
@@ -279,5 +290,6 @@ with Instruments' Animation Hitches template, and the hitch rate in your summary
 
 `ObservableObject` · `@Published` · `try!` · `print(` · `DispatchQueue.main.async` · `AnyView` ·
 `UIScreen.main` · `@MainActor` in a data target · a `ModelContext` on the main actor · a raw colour,
-size or duration in a feature · `.sheet` or `.presentationDetents` in a feature · a custom push or
-sheet transition · glass inside a scrolling list · editing `DesignTokens.swift` by hand.
+size or duration in a feature · `.sheet`, `.presentationDetents` or `.interactiveDismissDisabled` in
+a feature · a custom push or sheet transition · glass inside a scrolling list · editing
+`DesignTokens.swift` by hand.

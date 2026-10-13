@@ -79,6 +79,7 @@ private struct AppSheetPresentation: ViewModifier {
             .presentationContentInteraction(options.presentationContentInteraction)
             .presentationDragIndicator(options.grabberVisibility)
             .interactiveDismissDisabled(!options.dismissible)
+            .environment(\.isAppSheetDismissible, options.dismissible)
             .modifier(AppSheetSurface(material: options.material))
     }
 
