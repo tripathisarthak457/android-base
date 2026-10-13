@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { type Adoption as AdoptionData, useAdminQuery } from "../api.ts";
 import { BarList, Heatmap, percent } from "../charts.tsx";
 import { Panel, type PanelProps, Table } from "../Panel.tsx";
@@ -20,6 +20,7 @@ const DIMENSIONS: [string, string][] = [
 export function Adoption({ token, query, version, onUnauthorized }: PanelProps) {
   const result = useAdminQuery<AdoptionData>("adoption", token, query, version, onUnauthorized);
   const [chosen, setChosen] = useState<string | null>(null);
+  const targetName = useId();
   const [dimension, setDimension] = useState("features");
   return (
     <Panel title="Adoption" note="generated projects only" result={result}>
@@ -37,17 +38,23 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
         return (
           <div className="space-y-6">
             {data.targets.length > 1 && (
-              <div className="flex gap-1">
+              <div role="radiogroup" aria-label="Target" className="flex flex-wrap gap-1">
                 {data.targets.map((entry) => (
-                  <button
+                  <label
                     key={entry.target}
-                    type="button"
-                    aria-pressed={entry.target === target.target}
-                    onClick={() => setChosen(entry.target)}
-                    className={`rounded-md px-2.5 py-1 text-xs font-medium ${entry.target === target.target ? "bg-ink-100 text-ink-950" : "text-ink-300 hover:bg-ink-800"}`}
+                    className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+                      entry.target === target.target ? "bg-ink-100 text-ink-950" : "text-ink-300 hover:bg-ink-800"
+                    }`}
                   >
+                    <input
+                      type="radio"
+                      name={targetName}
+                      checked={entry.target === target.target}
+                      onChange={() => setChosen(entry.target)}
+                      className="sr-only"
+                    />
                     {entry.target} · {entry.total}
-                  </button>
+                  </label>
                 ))}
               </div>
             )}
