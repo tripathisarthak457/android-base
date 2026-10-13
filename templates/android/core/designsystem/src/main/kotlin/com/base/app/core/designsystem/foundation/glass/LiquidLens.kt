@@ -2,17 +2,25 @@ package com.base.app.core.designsystem.foundation.glass
 
 import androidx.compose.animation.core.FloatSpringSpec
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorProducer
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.layout.ScaleFactor
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.theme.rememberReduceMotion
 import com.kyant.backdrop.Backdrop
 import com.kyant.backdrop.BackdropEffectScope
 import com.kyant.backdrop.drawBackdrop
@@ -22,16 +30,51 @@ import com.kyant.backdrop.effects.vibrancy
 import com.kyant.shapes.RoundedRectangularShape
 import kotlinx.coroutines.flow.first
 import kotlin.math.abs
+import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
- * Where the liquid lens is along a row of tabs and how hard it is pressed: the state behind the
+ * Creates a [LiquidLensState] for a bar of [slotCount] tabs showing [selectedSlot], and runs its
+ * motion for as long as it stays in the composition.
+ *
+ * Every change of [selectedSlot] (a tap, the back stack, a deep link) carries the lens there on
+ * [settleSpring]. At [GlassQuality.Live], with animations on, that motion turns the lens to glass
+ * on its way ([LiquidLensState.travel]), and so does a finger on it. At any other tier, and when
+ * the person has turned animations off, the lens is never glass: it moves, and follows a drag, as
+ * a plain indicator. The springs are taken once, when the state is created; a later change to
+ * them does not reach it.
+ */
+@Composable
+internal fun rememberLiquidLensState(
+    selectedSlot: Int,
+    slotCount: Int,
+    trackSpring: SpringSpec<Float>,
+    settleSpring: SpringSpec<Float>,
+    pressSpring: SpringSpec<Float>,
+): LiquidLensState {
+    val state = remember {
+        LiquidLensState(selectedSlot, slotCount, trackSpring, settleSpring, pressSpring)
+    }
+    val refracts = LocalGlassQuality.current.refracts && !rememberReduceMotion()
+    SideEffect {
+        state.slotCount = slotCount
+        state.select(selectedSlot)
+        state.refracts = refracts
+    }
+    LaunchedEffect(state) { state.animate() }
+    return state
+}
+
+/**
+ * Where the liquid lens is along a row of tabs and how much of it is glass: the state behind the
  * glass tab bar's selection.
  *
  * Positions are in slots: 0 is the first tab, 1 the second, fractions lie between. A tap moves the
- * lens with [select] and presses nothing, so the bar is not re-rendered for a press it never had.
- * A drag [press]es it: the lens swells, trails the finger on the track spring, and on [release]
- * settles on the settle spring at the tab its velocity points to.
+ * lens with [select] and presses nothing; the motion alone lifts it into glass ([travel]), which
+ * only the lens's own layer and draw read, so the bar is never re-rendered for it. A drag
+ * [press]es it: the lens swells, trails the finger on the track spring, and on [release] settles on
+ * the settle spring at the tab its velocity points to. Glass, swell and stretch need [refracts];
+ * without it the same motion carries a plain indicator.
  *
  * The motion runs in [animate], one coroutine for the state's lifetime, which integrates the lens
  * frame by frame toward whatever it currently follows. A release or a new selection only changes
@@ -55,6 +98,13 @@ internal class LiquidLensState(
             field = value
         }
 
+    /**
+     * Whether a finger or a selection's motion turns the lens to glass: at [GlassQuality.Live]
+     * with animations on, since Reduce Motion turns elastic glass off. [rememberLiquidLensState]
+     * keeps it current.
+     */
+    var refracts by mutableStateOf(false)
+
     private val track = trackSpring.toFloatSpec(SlotThreshold)
     private val settle = settleSpring.toFloatSpec(SlotThreshold)
     private val swell = pressSpring.toFloatSpec(PressureThreshold)
@@ -63,7 +113,7 @@ internal class LiquidLensState(
     private var restSlot by mutableIntStateOf(initialSlot)
     private var pressureVelocity = 0f
 
-    /** True from [press] to [release]: the lens samples the scene only while this is true. */
+    /** True from [press] to [release] or [cancel]. */
     var pressed by mutableStateOf(false)
         private set
 
@@ -71,13 +121,48 @@ internal class LiquidLensState(
     var position by mutableFloatStateOf(initialSlot.toFloat())
         private set
 
-    /** Slots per second, for the stretch along the direction of travel. Read it in draw. */
+    /** Slots per second. Read it in draw. */
     var velocity by mutableFloatStateOf(0f)
         private set
 
-    /** 0 at rest, 1 fully pressed. Read it in draw or in a layer block. */
+    /**
+     * 0 at rest, 1 fully pressed: how far a finger has swollen the lens into glass. Always 0
+     * unless [refracts]. Read it in draw or in a layer block.
+     */
     var pressure by mutableFloatStateOf(0f)
         private set
+
+    /**
+     * 0 at rest, 1 from six slots per second on: how far the lens's own motion lifts it into
+     * glass. Always 0 unless [refracts].
+     *
+     * It is read off [velocity], so it needs no animation of its own: it rises as the settle
+     * spring pulls the lens away, calms as the spring slows, and is 0 on the frame the lens
+     * settles. Read it in draw or in a layer block.
+     */
+    val travel: Float
+        get() {
+            if (!refracts) return 0f
+            val speed = (abs(velocity) / TravelFullSpeed).coerceAtMost(1f)
+            // Smoothstep: the last slow stretch of a settle, where the lens has all but arrived,
+            // adds next to nothing, so the glass calms with the motion instead of trailing it.
+            return speed * speed * (3f - 2f * speed)
+        }
+
+    /**
+     * How much of the lens is glass rather than the resting selection: the larger of [pressure]
+     * and [travel]. Read it in draw or in a layer block.
+     */
+    val intensity: Float
+        get() = max(pressure, travel)
+
+    /**
+     * Whether the lens shows the scene: while pressed where it [refracts], and until the glass
+     * that a press or a selection's motion brought has calmed. While false the lens draws and
+     * samples nothing.
+     */
+    val samplesBackdrop: Boolean
+        get() = (pressed && refracts) || intensity >= ShownThreshold
 
     private val lastSlot: Int
         get() = slotCount - 1
@@ -85,8 +170,9 @@ internal class LiquidLensState(
     private val target: Float
         get() = if (pressed) finger else restSlot.coerceIn(0, lastSlot).toFloat()
 
+    // A tier that stops refracting under a finger lets the swell recede rather than vanish.
     private val pressureTarget: Float
-        get() = if (pressed) 1f else 0f
+        get() = if (pressed && refracts) 1f else 0f
 
     private val atRest: Boolean
         get() = position == target && velocity == 0f &&
@@ -121,6 +207,23 @@ internal class LiquidLensState(
     /** The gesture was taken by something else: the lens returns to the selected tab. */
     fun cancel() {
         pressed = false
+    }
+
+    /**
+     * The lens's size against the resting selection: swollen by a press, or slightly by
+     * [travel], and stretched along [orientation] as it moves, as a drop of liquid would. Never
+     * below 1 on either axis, so the lens hides the resting indicator beneath it whenever it
+     * shows.
+     */
+    fun scale(orientation: Orientation): ScaleFactor {
+        val travel = travel
+        val swell = 1f + max(PressSwell * pressure, TravelSwell * travel)
+        val along = swell * (1f + StretchAlong * travel)
+        val across = swell * (1f - StretchAcross * travel)
+        return when (orientation) {
+            Orientation.Horizontal -> ScaleFactor(along, across)
+            Orientation.Vertical -> ScaleFactor(across, along)
+        }
     }
 
     /** Runs every motion of the lens until cancelled. Launch it once, for the bar's lifetime. */
@@ -173,19 +276,26 @@ internal class LiquidLensState(
 }
 
 /**
- * The lens itself: the scene, plus whatever [backdrop] combines with it, bent at the edge of
- * [shape]. Only in [GlassQuality.Live], and only while [state] is pressed; at rest the selection
- * is drawn, and nothing samples the scene a second time.
+ * The lens itself: the scene, plus whatever [backdrop] combines with it, magnified and bent at the
+ * edge of [shape]. Only for [GlassQuality.Live].
  *
- * It swells with the press through a layer scale and fades [surface] (the drawn indicator's colour)
- * out as the press arrives, so the glass appears by refraction, never by an alpha over a backdrop.
- * Kyant's lens shader only knows rounded rectangles and throws on any other shape from Tiramisu on,
- * hence the shape's type. Build it inside `remember`, as [rememberGlassChrome] does.
+ * It shows only while [LiquidLensState.samplesBackdrop]: under a finger, and while a selection
+ * carries it. The rest of the time it is skipped whole and samples nothing, and the selection is
+ * the bar's drawn indicator, which the lens covers when it appears. As
+ * [LiquidLensState.intensity] rises, [surface] (the resting selection's colour) fades out over
+ * the sample and the sample is magnified about the lens's centre; the lens swells and stretches
+ * along [orientation] through its own layer ([LiquidLensState.scale]). Nothing outside the lens's
+ * layer and draw reads any of it, and the effect chain is built once: glass appears by
+ * refraction, never by an alpha over a backdrop.
+ *
+ * Kyant's lens shader only knows rounded rectangles and throws on any other shape from Tiramisu
+ * on, hence the shape's type. Build it inside `remember`, as [rememberGlassChrome] does.
  */
 internal fun Modifier.liquidLens(
     backdrop: Backdrop,
     shape: RoundedRectangularShape,
     state: LiquidLensState,
+    orientation: Orientation,
     surface: ColorProducer,
 ): Modifier = drawBackdrop(
     backdrop = backdrop,
@@ -194,11 +304,22 @@ internal fun Modifier.liquidLens(
     highlight = null,
     shadow = null,
     layerBlock = {
-        val scale = 1f + (LensSwell - 1f) * state.pressure
-        scaleX = scale
-        scaleY = scale
+        // The render thread skips a node with zero alpha outright, so a lens at rest costs no
+        // offscreen pass. Only 0 or 1: anything between would composite the sample through an
+        // alpha layer.
+        alpha = if (state.samplesBackdrop) 1f else 0f
+        val factor = state.scale(orientation)
+        scaleX = factor.scaleX
+        scaleY = factor.scaleY
     },
-    onDrawSurface = { drawRect(surface(), alpha = 1f - state.pressure) },
+    onDrawBackdrop = { drawSample ->
+        if (state.samplesBackdrop) {
+            // LensEffects pads nothing (the refraction band is wider than the blur), so the
+            // recording's centre is the lens's.
+            scale(1f + LensMagnification * state.intensity, pivot = center) { drawSample() }
+        }
+    },
+    onDrawSurface = { drawRect(surface(), alpha = 1f - state.intensity) },
 )
 
 private fun SpringSpec<Float>.toFloatSpec(threshold: Float) =
@@ -216,6 +337,12 @@ private const val SlotThreshold = 0.002f
 /** One step of an 8-bit alpha. */
 private const val PressureThreshold = 0.004f
 
+/**
+ * Below this the lens differs from the resting indicator by under 1 % of its colour and half a
+ * pixel of its size, so handing over to the indicator is not seen.
+ */
+private const val ShownThreshold = 0.01f
+
 /** A value is still once it would move less than its threshold in a 60 Hz frame. */
 private const val StillRate = 60f
 
@@ -227,7 +354,18 @@ private const val NoFrame = Long.MIN_VALUE
  */
 private const val ProjectionSeconds = 0.099f
 
-private const val LensSwell = 1.3f
+/**
+ * Slots per second at which [LiquidLensState.travel] is full. On the thumb spring the bar settles
+ * with, a tap to the next tab peaks at about 8 slots per second, so even the shortest tap is
+ * fully glass for a moment, and a longer one stays glass for most of its way.
+ */
+private const val TravelFullSpeed = 6f
+
+private const val PressSwell = 0.3f
+private const val TravelSwell = 0.12f
+private const val StretchAlong = 0.2f
+private const val StretchAcross = 0.08f
+private const val LensMagnification = 0.12f
 private val LensBlur = 2.dp
 private val LensRefractionHeight = 12.dp
 private val LensRefractionAmount = 20.dp

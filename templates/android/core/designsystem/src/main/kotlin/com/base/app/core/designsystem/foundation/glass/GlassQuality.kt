@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalView
  *
  * | Tier | When | Chrome |
  * |---|---|---|
- * | [Live] | API 33+, a healthy device | blur, vibrancy, and a lens while dragged |
+ * | [Live] | API 33+, a healthy device | blur, vibrancy, and a lens while dragged or moving to a tab |
  * | [LiveNoLens] | API 31–32, or a device warming up | blur and vibrancy |
  * | [Frosted] | API < 31, low RAM, battery saver, heat, a GPU behind | drawn, samples nothing |
  * | [Solid] | the person asked to reduce transparency | the style's solid bar |
@@ -42,7 +42,7 @@ enum class GlassQuality {
     val samplesScene: Boolean
         get() = this == Live || this == LiveNoLens
 
-    /** A pressed or dragged selection may refract the scene. */
+    /** A selection under a finger, or on its way to another tab, may refract the scene. */
     val refracts: Boolean
         get() = this == Live
 }

@@ -1,6 +1,7 @@
 package com.base.app.core.designsystem.foundation.glass
 
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.runtime.MonotonicFrameClock
 import androidx.compose.runtime.snapshots.Snapshot
 import kotlinx.coroutines.delay
@@ -14,6 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class LiquidLensStateTest {
@@ -28,6 +30,128 @@ class LiquidLensStateTest {
         assertEquals(2f, state.position)
         assertTrue(pressures.all { it == 0f })
         assertNoMoreFrames(clock)
+    }
+
+    @Test
+    fun `a tap's motion lifts the lens into glass, which calms as the lens settles`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+
+        state.select(2)
+        val travel = framesUntilIdle(clock) { state.travel }
+        val peak = travel.indexOf(travel.max())
+
+        assertTrue("the lens turns fully to glass on its way: $travel", travel[peak] > 0.95f)
+        assertTrue(
+            "and calms without a second lift: $travel",
+            travel.drop(peak).zipWithNext().all { (before, after) -> after <= before },
+        )
+        assertEquals(0f, state.travel)
+        assertEquals(0f, state.intensity)
+        assertEquals(2f, state.position)
+    }
+
+    @Test
+    fun `travel rises with the lens's speed`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+
+        state.select(1)
+        val samples = framesUntilIdle(clock) { abs(state.velocity) to state.travel }
+        val bySpeed = samples.sortedBy { it.first }.map { it.second }
+
+        assertTrue(bySpeed.zipWithNext().all { (slower, faster) -> faster >= slower })
+        assertTrue("some frames lie between rest and full glass", bySpeed.any { it > 0f && it < 1f })
+    }
+
+    @Test
+    fun `a tap samples the scene while it travels and stops before the lens has settled`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        val atRest = state.samplesBackdrop
+
+        state.select(2)
+        val moving = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
+            .dropWhile { (_, position) -> position == 0f }
+        val sampling = moving.map { it.first }
+        val handOver = sampling.indexOf(false)
+
+        assertFalse(atRest)
+        assertTrue("the lens is glass from its first step: $sampling", sampling.first())
+        assertTrue("in one unbroken run: $sampling", sampling.drop(handOver).none { it })
+        assertTrue("which hands over before the last of the motion", moving[handOver].second < 2f)
+        assertFalse(state.samplesBackdrop)
+    }
+
+    @Test
+    fun `a press samples the scene from the touch until its glass has gone`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+
+        state.press(0f)
+        val onTouch = state.samplesBackdrop
+        framesUntilIdle(clock) { state.pressure }
+        val held = state.samplesBackdrop
+        state.release()
+        val afterRelease = framesUntilIdle(clock) { state.samplesBackdrop }
+
+        assertTrue(onTouch)
+        assertTrue("a still, held lens is glass", held)
+        assertTrue("the swell recedes as glass", afterRelease.first())
+        assertFalse(state.samplesBackdrop)
+        assertEquals(0f, state.intensity)
+    }
+
+    @Test
+    fun `without refraction a tap and a drag move a plain indicator`() = runTest {
+        val (state, clock) = startLens(slot = 0, refracts = false)
+
+        state.select(2)
+        val tap = framesUntilIdle(clock) { state.isPlain() }
+        state.press(2f)
+        state.dragBy(-1f)
+        val drag = framesUntilIdle(clock) { state.isPlain() }
+        val held = state.position
+        state.release()
+        val release = framesUntilIdle(clock) { state.isPlain() }
+
+        assertTrue("a tap: $tap", tap.isNotEmpty() && tap.all { it })
+        assertTrue("a drag: $drag", drag.isNotEmpty() && drag.all { it })
+        assertTrue("a release: $release", release.all { it })
+        assertEquals("the indicator still follows the finger", 1f, held)
+    }
+
+    @Test
+    fun `a lens that stops refracting under the finger lets its swell recede`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.press(0f)
+        framesUntilIdle(clock) { state.pressure }
+
+        state.refracts = false
+        val receding = framesUntilIdle(clock) { state.pressure to state.samplesBackdrop }
+
+        assertTrue(
+            "over several frames, as glass: $receding",
+            receding.count { (pressure, samples) -> pressure in 0.01f..0.99f && samples } >= 3,
+        )
+        assertTrue(state.pressed)
+        assertEquals(0f, state.pressure)
+        assertFalse(state.samplesBackdrop)
+    }
+
+    @Test
+    fun `the lens stretches along its travel and never drops below its resting size`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        val resting = state.scale(Orientation.Horizontal)
+
+        state.select(2)
+        val frames = framesUntilIdle(clock) {
+            Triple(state.travel, state.scale(Orientation.Horizontal), state.scale(Orientation.Vertical))
+        }
+        val (_, horizontal, vertical) = frames.maxBy { it.first }
+
+        assertEquals(1f, resting.scaleX)
+        assertEquals(1f, resting.scaleY)
+        assertTrue("a bar's lens stretches across the bar: $horizontal", horizontal.scaleX > horizontal.scaleY)
+        assertTrue("a rail's lens stretches along the rail: $vertical", vertical.scaleY > vertical.scaleX)
+        assertTrue(frames.all { (_, scale, _) -> scale.scaleX >= 1f && scale.scaleY >= 1f })
+        assertEquals(1f, state.scale(Orientation.Horizontal).scaleX)
     }
 
     @Test
@@ -79,6 +203,7 @@ class LiquidLensStateTest {
         assertEquals(target.toFloat(), state.position)
         assertEquals(0f, state.pressure)
         assertFalse(state.pressed)
+        assertFalse(state.samplesBackdrop)
         assertNoMoreFrames(clock)
     }
 
@@ -106,7 +231,15 @@ class LiquidLensStateTest {
         assertEquals(0f, state.pressure)
     }
 
-    private fun TestScope.startLens(slot: Int): Pair<LiquidLensState, FrameClock> {
+    private fun LiquidLensState.isPlain(): Boolean {
+        val scale = scale(Orientation.Horizontal)
+        return intensity == 0f && !samplesBackdrop && scale.scaleX == 1f && scale.scaleY == 1f
+    }
+
+    private fun TestScope.startLens(
+        slot: Int,
+        refracts: Boolean = true,
+    ): Pair<LiquidLensState, FrameClock> {
         val clock = FrameClock(testScheduler)
         val state = LiquidLensState(
             initialSlot = slot,
@@ -115,6 +248,7 @@ class LiquidLensStateTest {
             settleSpring = spring(dampingRatio = 1f, stiffness = 504f),
             pressSpring = spring(dampingRatio = 1f, stiffness = 1542f),
         )
+        state.refracts = refracts
         backgroundScope.launch(clock) { state.animate() }
         runCurrent()
         Snapshot.sendApplyNotifications()
