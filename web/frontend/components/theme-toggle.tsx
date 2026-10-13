@@ -12,13 +12,32 @@ const LABEL: Record<ThemeChoice, string> = { system: "Theme: follows your system
 const listeners = new Set<() => void>();
 
 function subscribe(listener: () => void): () => void {
+  if (listeners.size === 0) window.addEventListener("storage", follow);
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) window.removeEventListener("storage", follow);
+  };
+}
+
+function parseChoice(value: string | null | undefined): ThemeChoice {
+  return value === "light" || value === "dark" ? value : "system";
 }
 
 function readChoice(): ThemeChoice {
-  const saved = document.documentElement.dataset.theme;
-  return saved === "light" || saved === "dark" ? saved : "system";
+  return parseChoice(document.documentElement.dataset.theme);
+}
+
+function show(choice: ThemeChoice) {
+  const root = document.documentElement;
+  if (choice === "system") delete root.dataset.theme;
+  else root.dataset.theme = choice;
+  for (const listener of listeners) listener();
+}
+
+// A choice made in another tab arrives as a storage event; a null key means storage was cleared.
+function follow(event: StorageEvent) {
+  if (event.key === "theme" || event.key === null) show(parseChoice(event.newValue));
 }
 
 /**
@@ -29,16 +48,13 @@ export function ThemeToggle() {
   const choice = useSyncExternalStore(subscribe, readChoice, () => "system" as const);
 
   function apply(next: ThemeChoice) {
-    const root = document.documentElement;
-    if (next === "system") delete root.dataset.theme;
-    else root.dataset.theme = next;
+    show(next);
     try {
       if (next === "system") localStorage.removeItem("theme");
       else localStorage.setItem("theme", next);
     } catch {
       // Not remembered across visits, which is fine.
     }
-    for (const listener of listeners) listener();
   }
 
   const next = ORDER[(ORDER.indexOf(choice) + 1) % ORDER.length] ?? "system";
