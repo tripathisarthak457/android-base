@@ -43,6 +43,7 @@ export function Nav() {
             href={REPO}
             target="_blank"
             rel="noopener noreferrer"
+            title="GitHub"
             className={`flex h-9 items-center gap-2 max-md:w-9 max-md:justify-center max-md:px-0 ${NAV_LINK}`}
           >
             <GitHubMark />

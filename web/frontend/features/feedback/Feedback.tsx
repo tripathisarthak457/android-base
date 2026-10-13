@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
 import { API_BASE, ApiError, BUILD, apiError, clientHeader } from "../../lib/api.ts";
+import { REPO } from "../../lib/catalogue.ts";
 import { type ReportContext, readReportContext } from "./context.ts";
 
 // The bug report form. Two things make a report worth having: enough context to reproduce it, and
@@ -102,6 +103,7 @@ export function ReportButton() {
           setForm((current) => current ?? { key: 0, sent: false });
           setOpen(true);
         }}
+        title="Report a problem"
         className="flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100 max-md:w-9 max-md:justify-center max-md:px-0"
       >
         <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -144,7 +146,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
   const [contact, setContact] = useState("");
   const [attach, setAttach] = useState(context !== null);
   const [busy, setBusy] = useState(false);
-  const [failure, setFailure] = useState<string | null>(null);
+  const [failure, setFailure] = useState<{ message: string; unreachable: boolean } | null>(null);
   const [sentId, setSentId] = useState<number | null>(null);
 
   const bug = kind === "bug";
@@ -176,7 +178,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
     } catch (error) {
       // fetch rejects with a TypeError when the request never got an answer; its message is the
       // browser's ("Failed to fetch"), which tells the visitor nothing they can act on.
-      setFailure(error instanceof ApiError ? error.message : "Could not reach the server. GitHub issues work even when this does not.");
+      setFailure(error instanceof ApiError ? { message: error.message, unreachable: false } : { message: "Could not reach the server.", unreachable: true });
     } finally {
       setBusy(false);
     }
@@ -222,7 +224,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
         if (canSend) void send();
       }}
     >
-      <header className="flex items-start justify-between gap-4 border-b border-ink-800 px-6 py-5">
+      <div className="flex items-start justify-between gap-4 border-b border-ink-800 px-6 py-5">
         <div>
           <h2 id="feedback-title" className="text-lg font-semibold text-ink-100">
             Tell us what happened
@@ -237,7 +239,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
         >
           ✕
         </button>
-      </header>
+      </div>
 
       <div className="max-h-[65vh] space-y-5 overflow-y-auto px-6 py-5">
         <Choices legend="What kind of report is this?" options={KINDS} value={kind} onChange={setKind} columns="sm:grid-cols-2" />
@@ -328,12 +330,21 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
 
         {failure && (
           <p role="alert" className="rounded-lg border border-rose/30 bg-rose/10 p-3 text-xs text-rose">
-            {failure}
+            {failure.message}
+            {failure.unreachable && (
+              <>
+                {" "}
+                <a href={`${REPO}/issues`} target="_blank" rel="noopener noreferrer" className="font-medium underline underline-offset-2">
+                  GitHub issues
+                </a>{" "}
+                work even when this does not.
+              </>
+            )}
           </p>
         )}
       </div>
 
-      <footer className="flex items-center justify-between gap-4 border-t border-ink-800 px-6 py-4">
+      <div className="flex items-center justify-between gap-4 border-t border-ink-800 px-6 py-4">
         <p className="text-xs text-ink-400">No account, no cookie. Your IP is never stored.</p>
         <div className="flex gap-2">
           <Button variant="ghost" onClick={onClose}>
@@ -349,7 +360,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
             )}
           </Button>
         </div>
-      </footer>
+      </div>
     </form>
   );
 }
