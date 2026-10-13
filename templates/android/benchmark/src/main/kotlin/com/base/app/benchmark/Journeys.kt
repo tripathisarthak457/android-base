@@ -73,15 +73,19 @@ fun MacrobenchmarkScope.pressBackBurst(presses: Int) {
     device.executeShellCommand("input keyevent " + "4 ".repeat(presses))
 }
 
-/** A back swipe from the leading edge, which Android turns into a predictive back gesture. */
+/**
+ * A back swipe from the leading edge of a screen opened from the root list, which Android turns into
+ * a predictive back gesture.
+ */
 fun MacrobenchmarkScope.edgeSwipeBack() {
     val y = device.displayHeight / 2
     device.swipe(2, y, device.displayWidth * 7 / 10, y, SWIPE_STEPS)
+    assertSwipedBack()
 }
 
 /**
- * A back swipe slow enough for the back card to follow the finger through many frames before it
- * lets go, or comes back to the edge and cancels ([cancel]).
+ * A back swipe on a screen opened from the root list, slow enough for the back card to follow the
+ * finger through many frames before it lets go, or comes back to the edge and cancels ([cancel]).
  */
 fun MacrobenchmarkScope.slowEdgeSwipeBack(cancel: Boolean = false) {
     val y = device.displayHeight / 2
@@ -89,6 +93,7 @@ fun MacrobenchmarkScope.slowEdgeSwipeBack(cancel: Boolean = false) {
     val out = (0..SLOW_SWIPE_POINTS).map { step -> Point(2 + reach * step / SLOW_SWIPE_POINTS, y) }
     val path = if (cancel) out + out.reversed().drop(1) else out
     check(device.swipe(path.toTypedArray(), SLOW_SWIPE_SEGMENT_STEPS)) { "The back swipe was not delivered." }
+    if (!cancel) assertSwipedBack()
     device.waitForIdle()
 }
 
@@ -103,7 +108,7 @@ fun MacrobenchmarkScope.backSwipeDuringPush() {
     row.click()
     SystemClock.sleep(SWIPE_AFTER_TAP_MS)
     device.swipe(2, y, device.displayWidth * 6 / 10, y, DURING_PUSH_SWIPE_STEPS)
-    assertAtRoot()
+    assertSwipedBack()
 }
 
 /** Pulls the primary list down from its top until it refreshes. */
@@ -129,6 +134,17 @@ fun MacrobenchmarkScope.assertAtRoot() {
     waitFor(By.res("primary_list"), "the root list")
     check(device.currentPackageName == TARGET_APP_ID) {
         "The app is no longer in front: Back presses past the root left it."
+    }
+}
+
+/*
+ * Under 3-button or 2-button navigation an edge swipe is an ordinary drag on the screen, so a swipe
+ * that did not go back names the likely cause instead of leaving the next step to fail.
+ */
+private fun MacrobenchmarkScope.assertSwipedBack() {
+    check(device.wait(Until.hasObject(By.res("primary_list")), TIMEOUT_MS)) {
+        "The back swipe did not return to the root list (primary_list). Back swipes need gesture " +
+            "navigation: Settings > System > Gestures > System navigation."
     }
 }
 
