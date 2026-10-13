@@ -100,6 +100,10 @@ export function StylesShowcase() {
                     <h3 className="font-display text-xl font-bold text-ink-100">{style.title}</h3>
                     <span className="text-xs text-ink-400">{pairing.blurb}</span>
                   </div>
+                  <p className="mt-1 flex items-center gap-1.5 text-xs text-ink-400">
+                    <span aria-hidden className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ background: pairing.accent }} />
+                    {pairing.font} · <span className="font-mono">{pairing.accent}</span>
+                  </p>
                   {tokens && (
                     <ul className="mt-2 space-y-1">
                       {traits(tokens).map((trait) => (
