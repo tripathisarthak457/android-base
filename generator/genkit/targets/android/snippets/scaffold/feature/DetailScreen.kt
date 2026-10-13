@@ -33,12 +33,13 @@ internal fun __P__DetailScreen(
     onEvent: (__P__DetailEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val title = state.item?.title ?: stringResource(R.string.__NAME___title)
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
             AppBackTopBar(
-                title = state.item?.title ?: stringResource(R.string.__NAME___title),
+                title = title,
                 onBack = { onEvent(__P__DetailEvent.BackClicked) },
             )
         },
@@ -92,7 +93,14 @@ private fun __P__DetailScreenPreview() {
         __P__DetailScreen(
             state = __P__DetailState(
                 loadState = LoadState.Success,
+__FIT__
                 item = __P__Item(id = "1", title = "__TITLE__"),
+__ELSE__
+                item = __P__Item(
+                    id = "1",
+                    title = "__TITLE__",
+                ),
+__END_FIT__
             ),
             onEvent = {},
         )

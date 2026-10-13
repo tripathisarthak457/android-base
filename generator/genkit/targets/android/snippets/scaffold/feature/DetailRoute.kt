@@ -11,9 +11,18 @@ internal fun __P__DetailRoute(
     id: String,
     navigator: AppNavigator,
     viewModel: __P__DetailViewModel =
+__FIT__
         hiltViewModel<__P__DetailViewModel, __P__DetailViewModel.Factory>(
             creationCallback = { factory -> factory.create(id) },
         ),
+__ELSE__
+        hiltViewModel<
+            __P__DetailViewModel,
+            __P__DetailViewModel.Factory,
+            >(
+            creationCallback = { factory -> factory.create(id) },
+        ),
+__END_FIT__
 ) {
     LaunchedEffect(Unit) { viewModel.onEvent(__P__DetailEvent.Appeared) }
 

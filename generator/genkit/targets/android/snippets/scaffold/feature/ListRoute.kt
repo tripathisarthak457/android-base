@@ -8,10 +8,14 @@ import __PKG__.core.ui.MviScreen
 import __PKG__.feature.__NAME__.api.__P__DetailKey
 
 @Composable
+__FIT__
+internal fun __P__ListRoute(navigator: AppNavigator, viewModel: __P__ListViewModel = hiltViewModel()) {
+__ELSE__
 internal fun __P__ListRoute(
     navigator: AppNavigator,
     viewModel: __P__ListViewModel = hiltViewModel(),
 ) {
+__END_FIT__
     LaunchedEffect(Unit) { viewModel.onEvent(__P__ListEvent.Appeared) }
 
     MviScreen(

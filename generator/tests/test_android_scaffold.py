@@ -138,17 +138,46 @@ class GeneratedModuleTest(unittest.TestCase):
             )
         self.assertNotIn("AppSkeletonListItem", list_screen)
 
-    def test_the_code_fits_the_formatting_features_line_length_with_a_long_module_name(self):
+    def test_the_code_fits_the_formatting_features_line_length_at_every_module_name_length(self):
+        letters = "abcdefghijklmnopqrstuvwxyzabcd"
+        names = [letters[:length] for length in range(1, len(letters) + 1)]
         with tempfile.TemporaryDirectory() as temp:
             for features in (["network", "sample"], ["settings"]):
-                project = Path(temp) / features[0]
-                scaffold.write_feature_modules(project, spec(features=features, feature_modules=["subscriptions"]))
-                for path in [*project.rglob("*.kt"), *project.rglob("*.kts")]:
-                    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-                        if line.startswith(("import ", "package ")):
-                            continue
-                        with self.subTest(file=path.name, line=number):
-                            self.assertLessEqual(len(line), 100, line)
+                # A spec scaffolds at most 12 modules.
+                for start in range(0, len(names), 10):
+                    project = Path(temp) / f"{features[0]}-{start}"
+                    parsed = spec(features=features, feature_modules=names[start:start + 10])
+                    scaffold.write_feature_modules(project, parsed)
+                    for path in [*project.rglob("*.kt"), *project.rglob("*.kts")]:
+                        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                            if line.startswith(("import ", "package ")):
+                                continue
+                            with self.subTest(file=path.name, line=number):
+                                self.assertLessEqual(len(line), scaffold.MAX_LINE_LENGTH, line)
+
+
+class FitTest(unittest.TestCase):
+
+    def block(self, *layouts: str) -> str:
+        return "__FIT__\n" + "__ELSE__\n".join(layouts) + "__END_FIT__\n"
+
+    def test_the_first_layout_whose_lines_all_fit_is_kept(self):
+        wide = "x" * (scaffold.MAX_LINE_LENGTH + 1)
+        text = "before\n" + self.block(f"{wide}\n", "one\nline\n", "two\n") + "after\n"
+        self.assertEqual("before\none\nline\nafter\n", scaffold._fit(text, "S.kt"))
+
+    def test_a_line_of_exactly_the_limit_fits(self):
+        exact = "x" * scaffold.MAX_LINE_LENGTH
+        self.assertEqual(f"{exact}\n", scaffold._fit(self.block(f"{exact}\n", "short\n"), "S.kt"))
+
+    def test_when_nothing_fits_the_last_layout_is_kept(self):
+        wide = "x" * (scaffold.MAX_LINE_LENGTH + 1)
+        self.assertEqual(f"{wide}b\n", scaffold._fit(self.block(f"{wide}a\n", f"{wide}b\n"), "S.kt"))
+
+    def test_unbalanced_markers_are_refused(self):
+        for text in ("__FIT__\na\n", "a\n__END_FIT__\n", "__ELSE__\n", "__FIT__\n__FIT__\na\n__END_FIT__\n"):
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                scaffold._fit(text, "S.kt")
 
 
 class GeneratedProjectTest(unittest.TestCase):

@@ -38,7 +38,21 @@ internal object __P__Navigation {
     @Provides
     @IntoSet
     fun __CAMEL__NavKeys(): SerializersModule = navKeys {
+__FIT__
         subclass(__P__ListKey::class, __P__ListKey.serializer())
+__ELSE__
+        subclass(
+            __P__ListKey::class,
+            __P__ListKey.serializer(),
+        )
+__END_FIT__
+__FIT__
         subclass(__P__DetailKey::class, __P__DetailKey.serializer())
+__ELSE__
+        subclass(
+            __P__DetailKey::class,
+            __P__DetailKey.serializer(),
+        )
+__END_FIT__
     }
 }

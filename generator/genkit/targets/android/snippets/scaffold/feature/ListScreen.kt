@@ -40,7 +40,13 @@ internal fun __P__ListScreen(
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
+__FIT__
         topBar = { AppLargeTitle(title = stringResource(R.string.__NAME___title)) },
+__ELSE__
+        topBar = {
+            AppLargeTitle(title = stringResource(R.string.__NAME___title))
+        },
+__END_FIT__
     ) {
         when (val loadState = state.loadState) {
             // Idle is the first frame, before the route's Appeared has started the load.
@@ -71,10 +77,29 @@ internal fun __P__ListScreen(
                     contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
                 ) {
+__FIT__
                     items(items = state.items, key = __P__Item::id) { item ->
+__ELSE__
+                    items(
+                        items = state.items,
+                        key = __P__Item::id,
+                    ) { item ->
+__END_FIT__
                         __P__Row(
                             item = item,
+__FIT__
                             onClick = { onEvent(__P__ListEvent.ItemClicked(item.id)) },
+__ELSE__
+                            onClick = {
+                                onEvent(__P__ListEvent.ItemClicked(item.id))
+                            },
+__ELSE__
+                            onClick = {
+                                onEvent(
+                                    __P__ListEvent.ItemClicked(item.id),
+                                )
+                            },
+__END_FIT__
                         )
                     }
                 }
@@ -84,7 +109,14 @@ internal fun __P__ListScreen(
 }
 
 @Composable
+__FIT__
 private fun __P__Row(item: __P__Item, onClick: () -> Unit) {
+__ELSE__
+private fun __P__Row(
+    item: __P__Item,
+    onClick: () -> Unit,
+) {
+__END_FIT__
     AppCard(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
         AppText(
             text = item.title,
@@ -108,8 +140,8 @@ private fun LoadingList() {
 }
 
 /**
- * [__P__Row]'s card with a bone where the title goes. A transparent line in the title's
- * style sizes the bone, so the row that replaces it is exactly as tall at any font scale.
+ * The row's card with a bone where the title goes. A transparent line in the title's style
+ * sizes the bone, so the row that replaces it is exactly as tall at any font scale.
  */
 @Composable
 private fun __P__RowPlaceholder() {
@@ -134,7 +166,14 @@ private fun __P__ListScreenPreview() {
             state = __P__ListState(
                 loadState = LoadState.Success,
                 items = List(4) { index ->
+__FIT__
                     __P__Item(id = "$index", title = "__TITLE__ ${index + 1}")
+__ELSE__
+                    __P__Item(
+                        id = "$index",
+                        title = "__TITLE__ ${index + 1}",
+                    )
+__END_FIT__
                 },
             ),
             onEvent = {},

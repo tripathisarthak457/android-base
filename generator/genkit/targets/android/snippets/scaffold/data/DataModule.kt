@@ -12,5 +12,11 @@ import dagger.hilt.components.SingletonComponent
 internal interface __P__DataModule {
 
     @Binds
+__FIT__
     fun bind__P__Repository(impl: Default__P__Repository): __P__Repository
+__ELSE__
+    fun bind__P__Repository(
+        impl: Default__P__Repository,
+    ): __P__Repository
+__END_FIT__
 }

@@ -36,7 +36,14 @@ class __P__RecompositionTest {
         compose.setContent {
             AppTheme {
                 __P__ListScreen(
+__FIT__
                     state = __P__ListState(loadState = LoadState.Success, items = items),
+__ELSE__
+                    state = __P__ListState(
+                        loadState = LoadState.Success,
+                        items = items,
+                    ),
+__END_FIT__
                     onEvent = {},
                 )
             }

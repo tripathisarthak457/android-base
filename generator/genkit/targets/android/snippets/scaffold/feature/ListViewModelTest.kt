@@ -39,7 +39,12 @@ class __P__ListViewModelTest {
 
     @Test
     fun `an empty answer is Empty, not Success with no rows`() = runTest {
+__FIT__
         val repository = Fake__P__Repository(AppResult.Success(emptyList()))
+__ELSE__
+        val repository =
+            Fake__P__Repository(AppResult.Success(emptyList()))
+__END_FIT__
         val viewModel = __P__ListViewModel(repository)
 
         viewModel.onEvent(__P__ListEvent.Appeared)
@@ -65,7 +70,12 @@ class __P__ListViewModelTest {
 
     @Test
     fun `a failed first load is an error the screen can retry`() = runTest {
+__FIT__
         val repository = Fake__P__Repository(AppResult.Failure(AppError.Offline))
+__ELSE__
+        val repository =
+            Fake__P__Repository(AppResult.Failure(AppError.Offline))
+__END_FIT__
         val viewModel = __P__ListViewModel(repository)
 
         viewModel.onEvent(__P__ListEvent.Appeared)

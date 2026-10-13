@@ -14,7 +14,13 @@ class __P__DtoTest {
 
     @Test
     fun `the list answer decodes, and unknown fields are ignored`() {
+__FIT__
         val dtos = json.decodeFromString<List<__P__Dto>>(resource("__NAME__.json"))
+__ELSE__
+        val dtos = json.decodeFromString<List<__P__Dto>>(
+            resource("__NAME__.json"),
+        )
+__END_FIT__
 
         assertEquals(listOf("1", "2"), dtos.map { it.id })
         assertEquals("Second", dtos[1].toDomain().title)

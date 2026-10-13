@@ -2,6 +2,11 @@
 The feature modules a spec names, each a `:feature:<name>` with a list and a detail screen over its
 own `:data:<name>`, in the shape of the template's sample (STANDARDS-PLAN 2.1). The Kotlin lives in
 `snippets/scaffold/` with `__TOKEN__` placeholders, so it reads as the code it becomes.
+
+A module's name sets the length of most lines, and ktlint (the `formatting` feature) wants a
+signature or call on one line exactly when it fits in 100 columns. So where the layout depends on
+the name, a snippet lists ktlint's layouts from the most compact, between `__FIT__`, `__ELSE__` and
+`__END_FIT__` lines, and the first one whose lines all fit is kept.
 """
 
 from __future__ import annotations
@@ -25,6 +30,9 @@ TEMPLATE_TABS = ("sample", "paging", "search", "profile", "settings")
 _SCREEN_PREVIEWS = TEMPLATE_DIR / "core/designsystem/src/main/kotlin/com/base/app/core/designsystem/preview/AppScreenPreviews.kt"
 
 _BASELINE = "config/code-rules-baseline.txt"
+
+#: ktlint's `max_line_length` in the template's `.editorconfig`.
+MAX_LINE_LENGTH = 100
 
 #: Snippet → path inside the module's package directory, for the feature module.
 _FEATURE_SOURCES = {
@@ -160,7 +168,7 @@ def _render(snippet: str, destination: Path, tokens: dict[str, str], themed: boo
     text = (SNIPPETS / snippet).read_text(encoding="utf-8")
     for token, value in tokens.items():
         text = text.replace(token, value)
-    text = _theme_previews(text, themed)
+    text = _fit(_theme_previews(text, themed), snippet)
     leftover = re.search(r"__[A-Z_]+__", text)
     if leftover:
         raise ValueError(f"{snippet} has an unfilled {leftover.group(0)}")
@@ -168,6 +176,33 @@ def _render(snippet: str, destination: Path, tokens: dict[str, str], themed: boo
         text = imports.sort(text)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(text, encoding="utf-8")
+
+
+def _fit(text: str, snippet: str) -> str:
+    """Keeps, of each `__FIT__` block, the first layout whose lines all fit, or else its last one."""
+    out: list[str] = []
+    layouts: list[list[str]] | None = None
+    for line in text.splitlines(keepends=True):
+        marker = line.strip()
+        if marker == "__FIT__":
+            if layouts is not None:
+                raise ValueError(f"{snippet} opens a __FIT__ block inside another")
+            layouts = [[]]
+        elif layouts is None:
+            if marker in ("__ELSE__", "__END_FIT__"):
+                raise ValueError(f"{snippet} has {marker} outside a __FIT__ block")
+            out.append(line)
+        elif marker == "__ELSE__":
+            layouts.append([])
+        elif marker == "__END_FIT__":
+            fitting = (layout for layout in layouts if all(len(row.rstrip("\n")) <= MAX_LINE_LENGTH for row in layout))
+            out.extend(next(fitting, layouts[-1]))
+            layouts = None
+        else:
+            layouts[-1].append(line)
+    if layouts is not None:
+        raise ValueError(f"{snippet} leaves a __FIT__ block open")
+    return "".join(out)
 
 
 def _theme_previews(text: str, themed: bool) -> str:

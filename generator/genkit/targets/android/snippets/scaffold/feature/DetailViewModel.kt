@@ -14,9 +14,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 internal class __P__DetailViewModel @AssistedInject constructor(
     private val repository: __P__Repository,
     @Assisted private val id: String,
+__FIT__
 ) : MviViewModel<__P__DetailState, __P__DetailEvent, __P__DetailEffect>(
     initial = __P__DetailState(),
 ) {
+__ELSE__
+) : MviViewModel<
+    __P__DetailState,
+    __P__DetailEvent,
+    __P__DetailEffect,
+    >(
+    initial = __P__DetailState(),
+) {
+__END_FIT__
 
     @AssistedFactory
     interface Factory {
@@ -25,9 +35,15 @@ internal class __P__DetailViewModel @AssistedInject constructor(
 
     override fun handleEvent(event: __P__DetailEvent) {
         when (event) {
-            __P__DetailEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
+            __P__DetailEvent.Appeared -> {
+                if (current.loadState == LoadState.Idle) load()
+            }
+
             __P__DetailEvent.Retry -> load()
-            __P__DetailEvent.BackClicked -> emit(__P__DetailEffect.NavigateBack)
+
+            __P__DetailEvent.BackClicked -> {
+                emit(__P__DetailEffect.NavigateBack)
+            }
         }
     }
 
@@ -38,6 +54,7 @@ internal class __P__DetailViewModel @AssistedInject constructor(
                 is AppResult.Success -> setState {
                     copy(loadState = LoadState.Success, item = result.value)
                 }
+
                 is AppResult.Failure -> setState {
                     copy(loadState = LoadState.Error(result.error))
                 }
