@@ -10,7 +10,7 @@ import { type PreviewTheme, dp } from "./theme.ts";
 export const PHONE_WIDTH = 280;
 export const PHONE_ASPECT = 2.05;
 
-export type AppPreviewProps = {
+type AppPreviewProps = {
   theme: PreviewTheme;
   font: string;
   tabs: PreviewTab[];

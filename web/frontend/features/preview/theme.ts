@@ -10,9 +10,9 @@ const DP = 280 / 360;
 
 export const dp = (value: number) => value * DP;
 
-export type TextStyle = { fontSize: number; lineHeight: string; fontWeight: number; letterSpacing: string };
+type TextStyle = { fontSize: number; lineHeight: string; fontWeight: number; letterSpacing: string };
 
-export type FramerSpring = { type: "spring"; stiffness: number; damping: number; mass: 1 };
+type FramerSpring = { type: "spring"; stiffness: number; damping: number; mass: 1 };
 
 export type PreviewTheme = {
   dark: boolean;
@@ -23,7 +23,7 @@ export type PreviewTheme = {
   spring: (name: SpringName) => FramerSpring;
 };
 
-export type PreviewChoices = {
+type PreviewChoices = {
   designStyle: string;
   motionStyle: string;
   dark: boolean;

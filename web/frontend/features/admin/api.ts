@@ -8,7 +8,7 @@ import { parseCatalogue } from "../catalogue/guard.ts";
 
 export type DateWindow = { from: string; to: string };
 
-export type Outcomes = Record<string, number>;
+type Outcomes = Record<string, number>;
 
 export type Overview = DateWindow & {
   generations: number;
@@ -52,7 +52,7 @@ export type Failures = DateWindow & {
   by_commit: ({ key: string } & Rate)[];
 };
 
-export type Bucket = { key: string; country?: string; sessions: number; generated: number };
+type Bucket = { key: string; country?: string; sessions: number; generated: number };
 
 export type Audience = DateWindow & {
   sessions: number;
@@ -61,7 +61,7 @@ export type Audience = DateWindow & {
   clients: Count[];
 };
 
-export type Timing = { n: number; p50_ms: number; p95_ms: number };
+type Timing = { n: number; p50_ms: number; p95_ms: number };
 
 export type Durations = DateWindow & {
   config: Timing;
@@ -224,7 +224,7 @@ export function useAdminQuery<T>(path: string, token: string, query: string, ver
   return state;
 }
 
-export type AdminAction = { busy: boolean; problem: string | null; run: (work: () => Promise<void>) => Promise<boolean> };
+type AdminAction = { busy: boolean; problem: string | null; run: (work: () => Promise<void>) => Promise<boolean> };
 
 /**
  * One admin write or export at a time: a second `run` while one is in flight does nothing, and
@@ -258,7 +258,7 @@ export function useAdminAction(onUnauthorized: () => void): AdminAction {
   return { busy, problem, run };
 }
 
-export type FilterChoices = { targets: string[]; presets: string[] };
+type FilterChoices = { targets: string[]; presets: string[] };
 
 /**
  * The targets and presets to filter by, from the catalogue of the API being administered: its

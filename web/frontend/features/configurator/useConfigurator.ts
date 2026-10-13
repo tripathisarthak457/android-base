@@ -17,7 +17,7 @@ export type Outcome =
   | { kind: "failed"; revision: number; message: string; field: string };
 
 /** What only the server that answered can say: which targets it generates and whether it has keytool. */
-export type Live = { enabled: Record<string, boolean> | null; keytool: Record<string, boolean> };
+type Live = { enabled: Record<string, boolean> | null; keytool: Record<string, boolean> };
 
 const GENERATE_TIMEOUT_MS = 120_000;
 

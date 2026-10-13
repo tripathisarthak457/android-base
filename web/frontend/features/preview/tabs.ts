@@ -31,7 +31,7 @@ export function moduleTitle(name: string): string {
   return words ? words.charAt(0).toUpperCase() + words.slice(1) : name;
 }
 
-export type TabPlan = {
+type TabPlan = {
   tabs: PreviewTab[];
   /** Destinations that exist but are not on the bar, because it holds five. */
   overflow: string[];
