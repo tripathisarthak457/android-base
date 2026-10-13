@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toOffset
 import androidx.compose.ui.util.lerp
+import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.theme.LocalAppColors
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.LocalReduceMotion
@@ -100,6 +101,9 @@ internal class PressableNode(
     private var secondaryPress = false
     /** Actions of the container this control sits in, offered as its own while it owns them. */
     private var containerActions: ContainerActions? = null
+    /** Inside an active `AppRedacted`: a placeholder answers no tap, key or focus, as if disabled. */
+    private var redacted = false
+    private val acceptsInput: Boolean get() = enabled && !redacted
     private var childOffset = IntOffset.Zero
     private var childSize = IntSize.Zero
     private var scaleTarget = 1f
@@ -149,16 +153,17 @@ internal class PressableNode(
         this.onPressStart = onPressStart
         this.externalSource = interactionSource
 
-        focusTarget.focusability = focusabilityFor(enabled)
+        focusTarget.focusability = focusabilityFor(acceptsInput)
         if (feedbackChanged) invalidateDraw()
         if (gestureChanged) pointerInput.resetPointerInputHandler()
         if (semanticsChanged) invalidateSemantics()
     }
 
-    private fun focusabilityFor(enabled: Boolean) = if (enabled) Focusability.SystemDefined else Focusability.Never
+    private fun focusabilityFor(acceptsInput: Boolean) =
+        if (acceptsInput) Focusability.SystemDefined else Focusability.Never
 
     private suspend fun PointerInputScope.detectTaps() {
-        if (!enabled) return
+        if (!acceptsInput) return
         val longClick = onLongClick
         detectTapGestures(
             onPress = { offset ->
@@ -201,7 +206,7 @@ internal class PressableNode(
         when (pointerEvent.type) {
             PointerEventType.Enter, PointerEventType.Exit -> {
                 val fine = pointerEvent.changes.any { it.type == PointerType.Mouse || it.type == PointerType.Stylus }
-                val inside = enabled && fine && pointerEvent.type == PointerEventType.Enter
+                val inside = acceptsInput && fine && pointerEvent.type == PointerEventType.Enter
                 if (inside != hovered) {
                     hovered = inside
                     invalidateDraw()
@@ -209,7 +214,7 @@ internal class PressableNode(
             }
             PointerEventType.Press -> {
                 val mouse = pointerEvent.changes.all { it.type == PointerType.Mouse }
-                if (enabled && mouse && !pointerEvent.buttons.isPrimaryPressed) {
+                if (acceptsInput && mouse && !pointerEvent.buttons.isPrimaryPressed) {
                     secondaryPress = true
                     pointerEvent.changes.forEach { it.consume() }
                 }
@@ -304,11 +309,18 @@ internal class PressableNode(
         invalidateDraw()
     }
 
-    override fun onAttach() = observeContainerActions()
+    override fun onAttach() = observeLocals()
 
-    override fun onObservedReadsChanged() = observeContainerActions()
+    override fun onObservedReadsChanged() = observeLocals()
 
-    private fun observeContainerActions() = observeReads {
+    private fun observeLocals() = observeReads {
+        val redacted = currentValueOf(LocalRedacted)
+        if (redacted != this.redacted) {
+            this.redacted = redacted
+            if (redacted) cancelPress()
+            focusTarget.focusability = focusabilityFor(acceptsInput)
+            pointerInput.resetPointerInputHandler()
+        }
         val actions = currentValueOf(LocalContainerActions)
         if (actions === containerActions) return@observeReads
         containerActions?.release(this)
@@ -416,7 +428,7 @@ internal class PressableNode(
     }
 
     override fun onKeyEvent(event: KeyEvent): Boolean {
-        if (!enabled || event.key !in ClickKeys) return false
+        if (!acceptsInput || event.key !in ClickKeys) return false
         return when (event.type) {
             KeyEventType.KeyDown -> {
                 if (!keyPressed) {

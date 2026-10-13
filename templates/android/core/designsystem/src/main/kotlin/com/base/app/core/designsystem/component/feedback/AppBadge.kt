@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.draw.LocalRedacted
+import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.StatusColors
 
@@ -30,9 +32,11 @@ fun AppBadge(
     maxCount: Int = 99,
 ) {
     val danger = AppTheme.colors.danger
+    val redacted = if (LocalRedacted.current) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
     Box(
         modifier = modifier
             .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp)
+            .then(redacted)
             .background(danger.base, AppTheme.shapes.pill)
             .padding(horizontal = 5.dp),
         contentAlignment = Alignment.Center,
@@ -98,8 +102,10 @@ fun AppStatusPill(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
 ) {
+    val redacted = if (LocalRedacted.current) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
     Row(
         modifier = modifier
+            .then(redacted)
             .background(status.subtle, AppTheme.shapes.pill)
             .padding(horizontal = 10.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp),

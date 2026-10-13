@@ -1,12 +1,19 @@
 package com.base.app.core.designsystem
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -25,7 +32,14 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.container.AppCard
+import com.base.app.core.designsystem.component.container.AppScaffold
+import com.base.app.core.designsystem.component.feedback.AppAvatar
+import com.base.app.core.designsystem.component.feedback.AppRedacted
+import com.base.app.core.designsystem.component.feedback.AppSkeleton
+import com.base.app.core.designsystem.component.feedback.AppSkeletonCircle
 import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.overlay.AppContextMenu
 import com.base.app.core.designsystem.component.overlay.AppMenuItem
 import com.base.app.core.designsystem.component.overlay.AppSheet
@@ -37,11 +51,16 @@ import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.selection.AppSwitch
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.draw.LocalShimmerClock
+import com.base.app.core.designsystem.foundation.draw.ShimmerClock
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -52,9 +71,10 @@ import org.robolectric.annotation.Config
 /**
  * The design system's journeys, counted in composables that ran: a press, a drag across a switch, a
  * segmented control or a wheel, a sheet dragged between detents, a pull to refresh, a fling into the
- * end of a list and a context menu opening move layers and redraw, and recompose nothing but the
- * state that really changed. Each runs under a quick and a slow motion style too: the counts must
- * not depend on how many frames the motion took, or something recomposes every frame.
+ * end of a list, a context menu opening and a skeleton list sweeping move layers and redraw, and
+ * recompose nothing but the state that really changed. Each runs under a quick and a slow motion
+ * style too: the counts must not depend on how many frames the motion took, or something recomposes
+ * every frame.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
@@ -239,9 +259,102 @@ class RecompositionJourneysTest {
         rule.onNodeWithText("Share").assertExists()
         assertEquals("rows recomposed as the menu opened: ${counter.executed()}", 0, counter.count("AppRow"))
     }
+
+    @Test
+    fun `a skeleton list sweeping recomposes nothing, and hiding it recomposes only the provider`() {
+        var clock: ShimmerClock? = null
+        var visible by mutableStateOf(true)
+        rule.mainClock.autoAdvance = false
+        rule.setContent {
+            key(style) {
+                AppTheme(mode = ThemeMode.Light, motionStyle = style, reduceMotion = false) {
+                    clock = LocalShimmerClock.current
+                    CompositionLocalProvider(LocalTabVisible provides visible) { SkeletonJourneyScreen() }
+                }
+            }
+        }
+        for (motion in listOf(AppMotionStyle.Snappy, AppMotionStyle.Calm)) {
+            style = motion
+            settle()
+            counter.reset()
+            assertTrue("the band never moved under $motion", sweptWithin(SkeletonJourneyMillis) { clock })
+            assertNothingRan("a sweep under $motion")
+        }
+
+        visible = false
+        settle()
+        assertFalse("a hidden list kept the band moving", sweptWithin(SkeletonJourneyMillis) { clock })
+        visible = true
+        settle()
+        assertTrue("the band did not come back with the list", sweptWithin(SkeletonJourneyMillis) { clock })
+        for (placeholder in listOf("AppRedacted", "AppText", "AppCard", "AppAvatar", "SkeletonJourneyRow", "AppSkeleton")) {
+            val ran = counter.count(placeholder)
+            assertEquals("$placeholder recomposed as the list hid and showed: ${counter.executed()}", 0, ran)
+        }
+    }
+
+    /**
+     * Lets a state change reach the composition and lays out the frames it causes. With the clock
+     * advanced by hand, nothing else applies a change made while no frame was asked for.
+     */
+    private fun settle() {
+        rule.waitForIdle()
+        repeat(3) { rule.mainClock.advanceTimeByFrame() }
+    }
+
+    /** Whether the shimmer's band showed on any frame of the next [millis]. */
+    private fun sweptWithin(millis: Int, clock: () -> ShimmerClock?): Boolean {
+        var swept = false
+        repeat(millis / FrameMillis) {
+            rule.mainClock.advanceTimeByFrame()
+            if (clock()?.progress?.isNaN() == false) swept = true
+        }
+        return swept
+    }
+
+    private companion object {
+        const val FrameMillis = 16
+        const val SkeletonJourneyMillis = 4_500
+    }
 }
 
 @Composable
 private fun JourneyRow() {
     Box(Modifier.height(56.dp))
+}
+
+/** A screen while its list loads: redacted rows under a large title, a free block and a circle. */
+@Composable
+private fun SkeletonJourneyScreen() {
+    val list = rememberLazyListState()
+    AppScaffold(topBar = { AppLargeTitleTopBar(title = "Inbox", scrolled = { list.scrolledFromTop() }) }) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = list,
+            contentPadding = chromeContentPadding(PaddingValues(16.dp)),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            userScrollEnabled = false,
+        ) {
+            items(8) { AppRedacted(active = true) { SkeletonJourneyRow() } }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    AppSkeletonCircle()
+                    AppSkeleton(Modifier.size(200.dp, 40.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SkeletonJourneyRow() {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            AppAvatar(name = "Ada Lovelace")
+            Column {
+                AppText("Ada Lovelace", style = AppTheme.typography.headline)
+                AppText("Wrote the first program, a century before the machine.", maxLines = 2)
+            }
+        }
+    }
 }

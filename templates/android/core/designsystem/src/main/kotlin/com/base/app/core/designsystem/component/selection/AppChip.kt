@@ -31,7 +31,9 @@ import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
+import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.collectHeld
 import com.base.app.core.designsystem.foundation.interaction.pressable
@@ -59,12 +61,14 @@ fun AppChip(
     val content = if (selected) colors.accentContent else colors.contentPrimary
     val shape = AppTheme.style.chipShape
     val removeInteractions = remember { MutableInteractionSource() }
+    val redacted = if (LocalRedacted.current) Modifier.skeleton(shape) else Modifier
 
     Box(modifier = modifier.disabledAlpha(enabled), contentAlignment = Alignment.CenterEnd) {
         Row(
             modifier = Modifier
                 .pressable(onClick = onClick, feedback = PressFeedback.Scale, enabled = enabled, role = Role.Button)
                 .semantics { this.selected = selected }
+                .then(redacted)
                 .background(container, shape)
                 .heightIn(min = ChipHeight)
                 .padding(start = 12.dp, end = if (onRemove != null) RemoveEndPadding else 12.dp),

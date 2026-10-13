@@ -3,6 +3,7 @@ package com.base.app.core.designsystem.component.text
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorProducer
@@ -14,11 +15,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import com.base.app.core.designsystem.foundation.content.LocalContentColor
 import com.base.app.core.designsystem.foundation.content.LocalTextStyle
+import com.base.app.core.designsystem.foundation.draw.LocalRedacted
+import com.base.app.core.designsystem.foundation.draw.TextBones
+import com.base.app.core.designsystem.foundation.draw.textSkeleton
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * All text in the app. Built on `BasicText`, which is foundation rather than Material and comes
  * with no colour, no style and no notion of a theme. [autoSize] shrinks the text to fit its box.
+ *
+ * Inside an active `AppRedacted` the text is laid out as usual but drawn as one placeholder bone per
+ * line, so a placeholder takes exactly the room the real text will.
  */
 @Composable
 fun AppText(
@@ -35,11 +42,12 @@ fun AppText(
     autoSize: TextAutoSize? = null,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
+    val bones = rememberTextBones()
     BasicText(
         text = text,
-        modifier = modifier,
+        modifier = modifier.redactedAs(bones),
         style = style.resolve(color, textAlign, textDecoration),
-        onTextLayout = onTextLayout,
+        onTextLayout = rememberLayoutListener(bones, onTextLayout),
         overflow = overflow,
         softWrap = softWrap,
         maxLines = maxLines,
@@ -63,11 +71,12 @@ fun AppText(
     autoSize: TextAutoSize? = null,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
+    val bones = rememberTextBones()
     BasicText(
         text = text,
-        modifier = modifier,
+        modifier = modifier.redactedAs(bones),
         style = style.resolve(color, textAlign, textDecoration),
-        onTextLayout = onTextLayout,
+        onTextLayout = rememberLayoutListener(bones, onTextLayout),
         overflow = overflow,
         softWrap = softWrap,
         maxLines = maxLines,
@@ -92,16 +101,39 @@ fun AppText(
     softWrap: Boolean = true,
     autoSize: TextAutoSize? = null,
 ) {
+    val bones = rememberTextBones()
     BasicText(
         text = text,
-        modifier = modifier,
+        modifier = modifier.redactedAs(bones),
         style = if (textAlign == null) style else style.copy(textAlign = textAlign),
+        onTextLayout = rememberLayoutListener(bones, null),
         overflow = overflow,
         softWrap = softWrap,
         maxLines = maxLines,
         color = color,
         autoSize = autoSize,
     )
+}
+
+/** The bones to draw this text as, inside an active `AppRedacted`; null when it draws as text. */
+@Composable
+private fun rememberTextBones(): TextBones? = if (LocalRedacted.current) remember { TextBones() } else null
+
+private fun Modifier.redactedAs(bones: TextBones?): Modifier = if (bones == null) this else textSkeleton(bones)
+
+/** [onTextLayout], also keeping [bones] in step with each layout of the text they stand for. */
+@Composable
+private fun rememberLayoutListener(
+    bones: TextBones?,
+    onTextLayout: ((TextLayoutResult) -> Unit)?,
+): ((TextLayoutResult) -> Unit)? {
+    if (bones == null) return onTextLayout
+    return remember(bones, onTextLayout) {
+        { layout ->
+            bones.update(layout)
+            onTextLayout?.invoke(layout)
+        }
+    }
 }
 
 @Composable

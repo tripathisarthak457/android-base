@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.foundation.draw.LocalRedacted
+import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.absoluteValue
@@ -41,8 +44,9 @@ fun AppAvatar(
     // In proportion to the circle, as iOS's contact monogram, and deaf to the font scale: the
     // circle does not grow with it, so larger letters would only overflow it.
     val initialsSize = with(LocalDensity.current) { (size * InitialsFraction).toSp() }
+    val redacted = if (LocalRedacted.current) Modifier.skeleton(CircleShape) else Modifier
     AppSurface(
-        modifier = modifier.size(size).clearAndSetSemantics { contentDescription = name },
+        modifier = modifier.size(size).clearAndSetSemantics { contentDescription = name }.then(redacted),
         shape = AppTheme.shapes.pill,
         color = tint,
         clipContent = content != null,

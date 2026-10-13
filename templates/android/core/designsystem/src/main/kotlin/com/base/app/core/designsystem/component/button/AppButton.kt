@@ -32,7 +32,9 @@ import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.ProvideContentColor
+import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.offsetShadow
+import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
@@ -83,6 +85,8 @@ fun AppButton(
     val label = if (style.uppercaseLabels) text.uppercase() else text
 
     val content = colors.content(enabled)
+    // A plain button has no container to stand for it: its label and icons redact themselves.
+    val redacted = if (LocalRedacted.current && variant != ButtonVariant.Plain) Modifier.skeleton(shape) else Modifier
     Box(
         modifier = modifier
             .pressable(
@@ -91,6 +95,7 @@ fun AppButton(
                 enabled = enabled && !loading,
                 role = Role.Button,
             )
+            .then(redacted)
             .then(
                 if (outlined) {
                     Modifier
@@ -142,6 +147,7 @@ fun AppIconButton(
 ) {
     val diameter = AppButtonDefaults.iconButtonSize(size)
     val container = colors.container(enabled)
+    val redacted = if (LocalRedacted.current && container.alpha > 0f) Modifier.skeleton(CircleShape) else Modifier
     Box(
         modifier = modifier
             .pressable(
@@ -151,6 +157,7 @@ fun AppIconButton(
                 role = Role.Button,
             )
             .size(diameter)
+            .then(redacted)
             .then(if (container.alpha == 0f) Modifier else Modifier.background(container, CircleShape)),
         contentAlignment = Alignment.Center,
     ) {

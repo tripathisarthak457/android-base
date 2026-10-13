@@ -21,6 +21,8 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import com.base.app.core.designsystem.foundation.content.LocalContentColor
+import com.base.app.core.designsystem.foundation.draw.LocalRedacted
+import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** An icon, tinted to the surrounding content colour unless told otherwise. */
@@ -48,6 +50,7 @@ fun AppIcon(
     size: Dp = AppTheme.sizes.icon,
 ) {
     val painter = rememberVectorPainter(imageVector)
+    val glyph = if (LocalRedacted.current) Modifier.skeleton(AppTheme.shapes.xs) else TintedPainterElement(painter, tint)
     Box(
         modifier = modifier
             .size(size)
@@ -61,7 +64,7 @@ fun AppIcon(
                     Modifier
                 },
             )
-            .then(TintedPainterElement(painter, tint)),
+            .then(glyph),
     )
 }
 
