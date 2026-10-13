@@ -10,31 +10,30 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.network.appstatus.ApiSignals
 import com.base.app.core.network.appstatus.AppStatus
 import com.base.app.core.ui.R
 
 /**
  * Covers the app when the server says this version is no longer supported, or that it is down for
- * maintenance, so no screen has to handle either by itself. Draws nothing otherwise. Place it in
- * the root over the navigation host and under the developer inspector, which stays reachable to
- * see what the server said.
+ * maintenance, so no screen has to handle either by itself. Draws nothing while [status] is
+ * [AppStatus.Available]. Place it in the root over the navigation host and under the developer
+ * inspector, which stays reachable to see what the server said.
+ *
+ * @param status `ApiSignals.status`, the service's state as the last answers showed it.
+ * @param onRetry called when the person asks to try again during maintenance; `ApiSignals.retry`.
  */
 @Composable
-fun AppStatusGate(signals: ApiSignals, modifier: Modifier = Modifier) {
-    val status by signals.status.collectAsStateWithLifecycle()
+fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = Modifier) {
     if (status == AppStatus.Available) return
 
     val context = LocalContext.current
@@ -64,7 +63,7 @@ fun AppStatusGate(signals: ApiSignals, modifier: Modifier = Modifier) {
                 message = stringResource(R.string.appstatus_maintenance_message),
                 icon = AppIcons.Clock,
                 actionLabel = stringResource(R.string.appstatus_maintenance_action),
-                onAction = signals::retry,
+                onAction = onRetry,
             )
 
             AppStatus.Available -> Unit

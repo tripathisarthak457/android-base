@@ -32,6 +32,8 @@ import com.base.app.core.applock.AppLock
 import com.base.app.core.applock.AppLockGate
 // </opt:applock>
 // <opt:appstatus>
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.base.app.core.network.appstatus.ApiSignals
 import com.base.app.core.ui.appstatus.AppStatusGate
 // </opt:appstatus>
@@ -111,7 +113,8 @@ fun AppRoot(
             }
 
             // <opt:appstatus>
-            AppStatusGate(signals = apiSignals)
+            val appStatus by apiSignals.status.collectAsStateWithLifecycle()
+            AppStatusGate(status = appStatus, onRetry = apiSignals::retry)
             // </opt:appstatus>
 
             // <opt:playstore>
