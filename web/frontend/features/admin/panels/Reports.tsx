@@ -159,7 +159,7 @@ function NoteBox({ current, busy, onSave }: { current: string; busy: boolean; on
         onChange={(event) => setValue(event.target.value)}
         aria-label="Triage note"
         placeholder="Triage note: what you found, what you did"
-        className="h-9 flex-1 rounded-lg border border-ink-500 bg-ink-900 px-3 text-xs text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none"
+        className="h-9 flex-1 rounded-lg border border-ink-500 bg-ink-900 px-3 text-xs text-ink-100 placeholder:text-ink-500"
       />
       <Button variant="secondary" size="small" onClick={() => onSave(value.trim())} disabled={busy || value.trim() === current}>
         {value.trim() === "" && current ? "Clear note" : "Save note"}

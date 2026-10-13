@@ -33,7 +33,7 @@ const AREAS: { value: Area; label: string }[] = [
   { value: "docs", label: "The documentation" },
 ];
 
-const TEXT_AREA = "w-full rounded-lg border border-ink-500 bg-ink-900 p-3 text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none";
+const TEXT_AREA = "w-full rounded-lg border border-ink-500 bg-ink-900 p-3 text-ink-100 placeholder:text-ink-500";
 
 function Choices<T extends string>({ legend, options, value, onChange, columns }: {
   legend: string;

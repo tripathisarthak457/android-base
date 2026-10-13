@@ -132,7 +132,7 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
               const picked = choiceValue(field, event.target.value);
               if (picked !== undefined) set(picked);
             }}
-            className="h-11 w-full rounded-lg border border-ink-500 bg-ink-900 px-3 text-[15px] text-ink-100 hover:border-ink-400 focus:border-accent focus:outline-none"
+            className="h-11 w-full rounded-lg border border-ink-500 bg-ink-900 px-3 text-[15px] text-ink-100 hover:border-ink-400"
           >
             {choices.map((choice) => (
               <option key={String(choice.value)} value={String(choice.value)}>

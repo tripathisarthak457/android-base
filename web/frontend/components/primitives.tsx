@@ -126,7 +126,7 @@ export function Field({
 export function TextInput({ className = "", ...rest }: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
-      className={`h-11 w-full rounded-lg border border-ink-500 bg-ink-900 px-3.5 text-[15px] text-ink-100 transition-colors placeholder:text-ink-500 hover:border-ink-400 focus:border-accent focus:outline-none aria-invalid:border-rose ${className}`}
+      className={`h-11 w-full rounded-lg border border-ink-500 bg-ink-900 px-3.5 text-[15px] text-ink-100 transition-colors placeholder:text-ink-500 hover:border-ink-400 aria-invalid:border-rose ${className}`}
       {...rest}
     />
   );
