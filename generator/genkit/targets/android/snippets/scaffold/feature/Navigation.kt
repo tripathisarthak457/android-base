@@ -27,8 +27,12 @@ internal object __P__Navigation {
     @Provides
     @IntoSet
     fun __CAMEL__NavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {
-        entry<__P__ListKey>(pane = NavPane.List) { __P__ListRoute(navigator = navigator) }
-        entry<__P__DetailKey>(pane = NavPane.Detail) { key -> __P__DetailRoute(id = key.id, navigator = navigator) }
+        entry<__P__ListKey>(pane = NavPane.List) {
+            __P__ListRoute(navigator = navigator)
+        }
+        entry<__P__DetailKey>(pane = NavPane.Detail) { key ->
+            __P__DetailRoute(id = key.id, navigator = navigator)
+        }
     }
 
     @Provides

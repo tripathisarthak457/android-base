@@ -11,4 +11,5 @@ internal data class __P__Dto(
     @SerialName("title") val title: String = "",
 )
 
-internal fun __P__Dto.toDomain(): __P__Item = __P__Item(id = id, title = title.trim())
+internal fun __P__Dto.toDomain(): __P__Item =
+    __P__Item(id = id, title = title.trim())

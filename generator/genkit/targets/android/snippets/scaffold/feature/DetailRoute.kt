@@ -10,9 +10,10 @@ import __PKG__.core.ui.MviScreen
 internal fun __P__DetailRoute(
     id: String,
     navigator: AppNavigator,
-    viewModel: __P__DetailViewModel = hiltViewModel<__P__DetailViewModel, __P__DetailViewModel.Factory>(
-        creationCallback = { factory -> factory.create(id) },
-    ),
+    viewModel: __P__DetailViewModel =
+        hiltViewModel<__P__DetailViewModel, __P__DetailViewModel.Factory>(
+            creationCallback = { factory -> factory.create(id) },
+        ),
 ) {
     LaunchedEffect(Unit) { viewModel.onEvent(__P__DetailEvent.Appeared) }
 

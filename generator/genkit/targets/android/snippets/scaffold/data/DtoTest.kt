@@ -4,7 +4,10 @@ import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/** Decodes a real answer, kept in src/test/resources, so a change in the wire format fails here first. */
+/**
+ * Decodes a real answer, kept in src/test/resources, so a change in the wire format fails here
+ * first.
+ */
 class __P__DtoTest {
 
     private val json = Json { ignoreUnknownKeys = true }
@@ -24,6 +27,10 @@ class __P__DtoTest {
         assertEquals("", dto.toDomain().title)
     }
 
-    private fun resource(name: String): String =
-        checkNotNull(javaClass.classLoader?.getResource(name)) { "$name is missing from src/test/resources" }.readText()
+    private fun resource(name: String): String {
+        val url = checkNotNull(javaClass.classLoader?.getResource(name)) {
+            "$name is missing from src/test/resources"
+        }
+        return url.readText()
+    }
 }

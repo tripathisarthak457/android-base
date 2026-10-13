@@ -6,7 +6,9 @@ import __PKG__.core.common.result.AppResult
  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
  * twice. Set [result] between events to script a failure or a recovery.
  */
-class Fake__P__Repository(var result: AppResult<List<__P__Item>>) : __P__Repository {
+class Fake__P__Repository(
+    var result: AppResult<List<__P__Item>>,
+) : __P__Repository {
 
     var loads = 0
         private set

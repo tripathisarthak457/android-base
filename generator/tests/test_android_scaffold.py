@@ -121,6 +121,18 @@ class GeneratedModuleTest(unittest.TestCase):
         self.assertIn("entry<OrdersListKey>(pane = NavPane.List)", navigation)
         self.assertIn("entry<OrdersDetailKey>(pane = NavPane.Detail)", navigation)
 
+    def test_the_code_fits_the_formatting_features_line_length_with_a_long_module_name(self):
+        with tempfile.TemporaryDirectory() as temp:
+            for features in (["network", "sample"], ["settings"]):
+                project = Path(temp) / features[0]
+                scaffold.write_feature_modules(project, spec(features=features, feature_modules=["subscriptions"]))
+                for path in [*project.rglob("*.kt"), *project.rglob("*.kts")]:
+                    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                        if line.startswith(("import ", "package ")):
+                            continue
+                        with self.subTest(file=path.name, line=number):
+                            self.assertLessEqual(len(line), 100, line)
+
 
 class GeneratedProjectTest(unittest.TestCase):
 

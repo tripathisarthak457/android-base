@@ -16,9 +16,13 @@ internal class Default__P__Repository @Inject constructor() : __P__Repository {
 
     private val items = emptyList<__P__Item>()
 
-    override suspend fun items(forceRefresh: Boolean): AppResult<List<__P__Item>> = AppResult.Success(items)
+    override suspend fun items(forceRefresh: Boolean): AppResult<List<__P__Item>> =
+        AppResult.Success(items)
 
-    override suspend fun item(id: String): AppResult<__P__Item> =
-        items.firstOrNull { it.id == id }?.let { AppResult.Success(it) }
-            ?: AppResult.Failure(AppError.Unexpected(NoSuchElementException("No __NAME__ item $id")))
+    override suspend fun item(id: String): AppResult<__P__Item> {
+        val item = items.firstOrNull { it.id == id } ?: return AppResult.Failure(
+            AppError.Unexpected(NoSuchElementException("No __NAME__ item $id")),
+        )
+        return AppResult.Success(item)
+    }
 }

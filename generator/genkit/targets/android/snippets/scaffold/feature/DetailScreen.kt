@@ -71,7 +71,10 @@ __PREVIEW__
 private fun __P__DetailScreenPreview() {
     __THEMED_START__
         __P__DetailScreen(
-            state = __P__DetailState(loadState = LoadState.Success, item = __P__Item(id = "1", title = "__TITLE__")),
+            state = __P__DetailState(
+                loadState = LoadState.Success,
+                item = __P__Item(id = "1", title = "__TITLE__"),
+            ),
             onEvent = {},
         )
     __THEMED_END__

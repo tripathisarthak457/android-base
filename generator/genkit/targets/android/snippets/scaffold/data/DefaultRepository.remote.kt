@@ -21,7 +21,11 @@ internal class Default__P__Repository @Inject constructor(
     override suspend fun items(forceRefresh: Boolean): AppResult<List<__P__Item>> =
         networkClient.get<List<__P__Dto>>(
             path = PATH,
-            cache = CachePolicy.Enabled(key = PATH, maxAgeMillis = CACHE_MAX_AGE_MILLIS, forceRefresh = forceRefresh),
+            cache = CachePolicy.Enabled(
+                key = PATH,
+                maxAgeMillis = CACHE_MAX_AGE_MILLIS,
+                forceRefresh = forceRefresh,
+            ),
         ).map { dtos -> dtos.map(__P__Dto::toDomain) }
 
     override suspend fun item(id: String): AppResult<__P__Item> =

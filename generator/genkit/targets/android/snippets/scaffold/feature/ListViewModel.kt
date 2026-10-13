@@ -12,27 +12,32 @@ import javax.inject.Inject
 @HiltViewModel
 internal class __P__ListViewModel @Inject constructor(
     private val repository: __P__Repository,
-) : MviViewModel<__P__ListState, __P__ListEvent, __P__ListEffect>(__P__ListState()) {
+) : MviViewModel<__P__ListState, __P__ListEvent, __P__ListEffect>(
+    initial = __P__ListState(),
+) {
 
     override fun handleEvent(event: __P__ListEvent) {
         when (event) {
-            __P__ListEvent.Appeared -> if (current.loadState == LoadState.Idle) load(refreshing = false)
+            __P__ListEvent.Appeared -> {
+                if (current.loadState == LoadState.Idle) load(refreshing = false)
+            }
             __P__ListEvent.Refresh -> load(refreshing = true)
             __P__ListEvent.Retry -> load(refreshing = false)
-            is __P__ListEvent.ItemClicked -> emit(__P__ListEffect.OpenDetail(event.id))
+            is __P__ListEvent.ItemClicked -> {
+                emit(__P__ListEffect.OpenDetail(event.id))
+            }
         }
     }
 
     private fun load(refreshing: Boolean) {
         launchLatest(LOAD) {
-            setState { copy(loadState = if (refreshing) LoadState.Refreshing else LoadState.Loading) }
+            val loading = if (refreshing) LoadState.Refreshing else LoadState.Loading
+            setState { copy(loadState = loading) }
 
             when (val result = repository.items(forceRefresh = refreshing)) {
                 is AppResult.Success -> setState {
-                    copy(
-                        loadState = if (result.value.isEmpty()) LoadState.Empty else LoadState.Success,
-                        items = result.value,
-                    )
+                    val loaded = if (result.value.isEmpty()) LoadState.Empty else LoadState.Success
+                    copy(loadState = loaded, items = result.value)
                 }
 
                 // A failed refresh keeps the rows on screen and says so in a message.

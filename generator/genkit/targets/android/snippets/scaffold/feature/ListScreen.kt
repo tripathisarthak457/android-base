@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import __PKG__.core.common.LoadState
-import __PKG__.core.common.hasContent
 import __PKG__.core.common.isRefreshing
 import __PKG__.core.common.result.AppError
 import __PKG__.core.designsystem.component.container.AppCard
@@ -39,25 +38,25 @@ internal fun __P__ListScreen(
         modifier = modifier,
         topBar = { AppLargeTitle(title = stringResource(R.string.__NAME___title)) },
     ) {
-        when {
+        when (val loadState = state.loadState) {
             // Idle is the first frame, before the route's Appeared has started the load.
-            state.loadState == LoadState.Idle || state.loadState == LoadState.Loading -> LoadingList()
+            LoadState.Idle, LoadState.Loading -> LoadingList()
 
-            state.loadState is LoadState.Error -> AppErrorState(
-                message = state.loadState.error.text(),
-                isOffline = state.loadState.error == AppError.Offline,
+            is LoadState.Error -> AppErrorState(
+                message = loadState.error.text(),
+                isOffline = loadState.error == AppError.Offline,
                 onRetry = { onEvent(__P__ListEvent.Retry) },
             )
 
-            state.loadState is LoadState.Empty -> AppEmptyState(
+            LoadState.Empty -> AppEmptyState(
                 title = stringResource(R.string.__NAME___empty_title),
                 message = stringResource(R.string.__NAME___empty_message),
                 actionLabel = stringResource(R.string.__NAME___reload),
                 onAction = { onEvent(__P__ListEvent.Retry) },
             )
 
-            state.loadState.hasContent -> AppPullToRefresh(
-                isRefreshing = state.loadState.isRefreshing,
+            LoadState.Success, LoadState.Refreshing -> AppPullToRefresh(
+                isRefreshing = loadState.isRefreshing,
                 onRefresh = { onEvent(__P__ListEvent.Refresh) },
                 modifier = Modifier.fillMaxSize(),
             ) {
@@ -69,7 +68,10 @@ internal fun __P__ListScreen(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
                 ) {
                     items(items = state.items, key = __P__Item::id) { item ->
-                        __P__Row(item = item, onClick = { onEvent(__P__ListEvent.ItemClicked(item.id)) })
+                        __P__Row(
+                            item = item,
+                            onClick = { onEvent(__P__ListEvent.ItemClicked(item.id)) },
+                        )
                     }
                 }
             }
@@ -108,7 +110,9 @@ private fun __P__ListScreenPreview() {
         __P__ListScreen(
             state = __P__ListState(
                 loadState = LoadState.Success,
-                items = List(4) { __P__Item(id = "$it", title = "__TITLE__ ${it + 1}") },
+                items = List(4) { index ->
+                    __P__Item(id = "$index", title = "__TITLE__ ${index + 1}")
+                },
             ),
             onEvent = {},
         )

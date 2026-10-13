@@ -18,7 +18,9 @@ internal fun __P__ListRoute(
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
-                is __P__ListEffect.OpenDetail -> navigator.navigate(__P__DetailKey(effect.id))
+                is __P__ListEffect.OpenDetail -> {
+                    navigator.navigate(__P__DetailKey(effect.id))
+                }
             }
         },
     ) { state, onEvent ->

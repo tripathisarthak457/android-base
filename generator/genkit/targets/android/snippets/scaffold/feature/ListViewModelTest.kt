@@ -17,7 +17,10 @@ class __P__ListViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val items = listOf(__P__Item(id = "1", title = "One"), __P__Item(id = "2", title = "Two"))
+    private val items = listOf(
+        __P__Item(id = "1", title = "One"),
+        __P__Item(id = "2", title = "Two"),
+    )
 
     @Test
     fun `appearing loads once and lands in Success`() = runTest {
@@ -36,7 +39,8 @@ class __P__ListViewModelTest {
 
     @Test
     fun `an empty answer is Empty, not Success with no rows`() = runTest {
-        val viewModel = __P__ListViewModel(Fake__P__Repository(AppResult.Success(emptyList())))
+        val repository = Fake__P__Repository(AppResult.Success(emptyList()))
+        val viewModel = __P__ListViewModel(repository)
 
         viewModel.onEvent(__P__ListEvent.Appeared)
         advanceUntilIdle()
