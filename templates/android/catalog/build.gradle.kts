@@ -30,6 +30,7 @@ android {
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigationevent.compose)
     // lifecycleScope, which holds the first frame until the fonts are in.
     implementation(libs.androidx.lifecycle.runtime.compose)
 }

@@ -1,6 +1,5 @@
 package com.base.app.catalog
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -37,6 +36,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
 import com.base.app.core.designsystem.component.list.AppRow
@@ -79,7 +81,11 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
                     Box(Modifier.weight(1f).fillMaxHeight()) { key(shown) { SectionPage(shown, onBack = null) } }
                 }
             } else {
-                BackHandler(enabled = section != null) { section = null }
+                NavigationBackHandler(
+                    state = rememberNavigationEventState(NavigationEventInfo.None),
+                    isBackEnabled = section != null,
+                    onBackCompleted = { section = null },
+                )
                 val spring = AppTheme.springs.screen.offset
                 val reduceMotion = AppTheme.reduceMotion
                 val parallax = AppTheme.springs.navigation.parallax
