@@ -257,11 +257,19 @@ solid = 400
 standard = 400
 lean = 400
 
+# The app's own PSS: the total less Graphics, which on this phone is the window's buffers (EGL
+# mtrack, 51-55 MB on every build of every app here). The plan's 70 MB budget was measured with 22 MB
+# of graphics, so the app's part of it is 48 MB; the total is reported.
+[[row]]
+metric = "meminfo.pss_app_mb"
+label = "PSS after the journey, less the window's graphics buffers (MB)"
+solid = 48
+standard = 48
+
 [[row]]
 metric = "meminfo.pss_mb"
 label = "PSS after the journey (MB)"
-solid = 70
-standard = 70
+solid = "ratchet"
 
 [[row]]
 metric = "recompose.tab_switch.max"
