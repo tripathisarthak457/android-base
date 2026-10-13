@@ -52,7 +52,7 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
                     <div className="flex items-start gap-3">
                       <Badge tone={isResolved ? "neutral" : "amber"}>{group.kind}</Badge>
                       <details className="min-w-0 flex-1">
-                        <summary className="cursor-pointer list-none">
+                        <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                           <span className={`block truncate text-sm ${isResolved ? "text-ink-400 line-through" : "text-ink-100"}`}>{group.message}</span>
                           <span className="mt-0.5 block font-mono text-[11px] text-ink-400">
                             ×{group.occurrences} · last {new Date(group.last_seen).toLocaleString()} · {group.path || "—"} ·{" "}

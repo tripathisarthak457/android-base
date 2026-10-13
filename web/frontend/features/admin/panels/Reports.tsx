@@ -69,7 +69,7 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
                       <Badge tone={KIND_TONE[item.kind] ?? "neutral"}>{item.kind}</Badge>
                       {item.severity === "blocks" && <Badge tone="rose">blocks</Badge>}
                       <details className="min-w-0 flex-1">
-                        <summary className="cursor-pointer list-none">
+                        <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                           <span className="block truncate text-sm font-medium text-ink-100">{item.title}</span>
                           <span className="mt-0.5 block font-mono text-[11px] text-ink-400">
                             #{item.id} · {item.target || "—"} · {item.area || "unspecified"} · {new Date(item.createdAt).toLocaleString()}

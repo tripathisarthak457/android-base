@@ -93,7 +93,7 @@ export function Faq() {
         <div className="mt-8 divide-y divide-ink-800">
           {questions.map((item) => (
             <details key={item.q} className="group py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
                 <span className="font-medium text-ink-100">{item.q}</span>
                 <span className="shrink-0 text-ink-400 transition-transform group-open:rotate-45" aria-hidden>
                   +
