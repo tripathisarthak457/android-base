@@ -44,6 +44,17 @@ class SessionTokensTest {
     }
 
     @Test
+    fun `someone else's session is not lent to a request made in the last one`() = runTest {
+        store.save(tokens(access = "B1", refresh = "S1", owner = "grace"))
+
+        val renewed = sessionTokens.refresh(stale = tokens())
+
+        assertNull(renewed)
+        assertEquals(emptyList<String>(), refresher.presented)
+        assertEquals("grace", store.stored?.owner)
+    }
+
+    @Test
     fun `the renewed pair keeps its owner`() = runTest {
         assertEquals("ada", sessionTokens.refresh(stale = tokens())?.owner)
     }
@@ -88,15 +99,15 @@ class SessionTokensTest {
     }
 
     @Test
-    fun `a sign-in during the refresh keeps the new person's tokens`() = runTest {
+    fun `a sign-in during the refresh keeps the new person's tokens to themselves`() = runTest {
         refresher.gate = CompletableDeferred()
         val refreshing = async { sessionTokens.refresh(stale = tokens()) }
         runCurrent()
         store.save(tokens(access = "B1", refresh = "S1", owner = "grace"))
         refresher.gate?.complete(Unit)
 
-        assertEquals("B1", refreshing.await()?.accessToken)
-        assertEquals("grace", store.stored?.owner)
+        assertNull(refreshing.await())
+        assertEquals("B1", store.stored?.accessToken)
     }
 
     @Test

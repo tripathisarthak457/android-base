@@ -100,6 +100,19 @@ class QueuedRequestReplayerTest {
     }
 
     @Test
+    fun `a pass stops when someone else signs in during it`() = runTest {
+        dao.insert(entry("/a"))
+        dao.insert(entry("/b"))
+        client.onSend = { if (it.path == "/a") store.save(tokens(access = "B1", owner = "grace")) }
+
+        val left = replayer.replayPending()
+
+        assertEquals(0, left)
+        assertEquals(listOf("/a"), client.sent.map { it.path })
+        assertEquals(0, dao.rows.value.single().attempts)
+    }
+
+    @Test
     fun `signed out, only public entries are sent`() = runTest {
         store.clear()
         dao.insert(entry("/ada", owner = "ada"))
@@ -151,9 +164,11 @@ class QueuedRequestReplayerTest {
     private class ScriptedClient : NetworkClient {
         val sent = mutableListOf<NetworkRequest>()
         val failures = mutableMapOf<String, AppError>()
+        var onSend: suspend (NetworkRequest) -> Unit = {}
 
         override suspend fun execute(request: NetworkRequest): AppResult<NetworkResponse> {
             sent += request
+            onSend(request)
             return failures[request.path]?.let { AppResult.Failure(it) } ?: AppResult.Success(NetworkResponse(200, "{}"))
         }
 

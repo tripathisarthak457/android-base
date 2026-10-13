@@ -27,7 +27,8 @@ import kotlin.time.Instant
  * not accepted. No answer, a 5xx, or a refusal about the moment rather than the request (an expired
  * session, a timeout, an outdated app, a rate limit) ends the pass and keeps the rest in order for
  * the next one. An entry that has waited [MAX_AGE] or met [MAX_ATTEMPTS] such failures is given up
- * on, and kept the same way.
+ * on, and kept the same way. A pass ends when the session changes under it: requests read the token
+ * as they go, so the rest would be sent in the new session's name.
  */
 @Singleton
 class QueuedRequestReplayer @Inject internal constructor(
@@ -39,10 +40,15 @@ class QueuedRequestReplayer @Inject internal constructor(
     /** One pass at a time, or two could send the same entry. */
     private val passes = Mutex()
 
-    /** One pass. Returns how many entries are still waiting for the next one. */
+    /**
+     * One pass. Returns how many entries are still waiting for the next one, or 0 when the session
+     * changed during the pass: a sign-in schedules a pass of its own, and the entries of whoever
+     * signed out wait for them to sign back in.
+     */
     suspend fun replayPending(): Int = passes.withLock {
         val waiting = dao.sendable(tokenStore.current()?.owner)
         waiting.forEachIndexed { index, entry ->
+            if (entry.owner != null && tokenStore.current()?.owner != entry.owner) return@withLock 0
             val now = clock.now()
             if (now - Instant.fromEpochMilliseconds(entry.createdAtEpochMillis) > MAX_AGE ||
                 entry.attempts >= MAX_ATTEMPTS

@@ -26,14 +26,15 @@ class SessionTokens @Inject constructor(
 
     /**
      * Tokens to replace [stale], the pair a request was refused with, or null when there are none to
-     * send. When someone else has already replaced [stale], the stored pair is the answer and the
-     * server is not asked again.
+     * send: nobody is signed in, or someone other than [stale]'s owner is, and a request made in one
+     * person's session is never sent again with another's. When the same person's session has
+     * already replaced [stale], the stored pair is the answer and the server is not asked again.
      *
      * Only the server refusing the refresh token ends the session. A rate limit, a timeout or a
      * server error says nothing about the session, and the next request tries again.
      */
     suspend fun refresh(stale: AuthTokens): AuthTokens? = lock.withLock {
-        val current = store.current() ?: return@withLock null
+        val current = store.current()?.takeIf { it.owner == stale.owner } ?: return@withLock null
         if (current.refreshToken != stale.refreshToken) return@withLock current
         when (val result = refresher.refresh(current.refreshToken)) {
             is TokenRefreshResult.Success -> {
@@ -44,7 +45,11 @@ class SessionTokens @Inject constructor(
                 )
                 // A sign-out or a new sign-in while the call was out is the session now: the late
                 // answer neither brings the old one back nor overwrites the new one.
-                if (store.replace(expected = current, replacement = renewed)) renewed else store.current()
+                if (store.replace(expected = current, replacement = renewed)) {
+                    renewed
+                } else {
+                    store.current()?.takeIf { it.owner == stale.owner }
+                }
             }
 
             TokenRefreshResult.Refused -> {
