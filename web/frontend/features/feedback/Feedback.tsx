@@ -33,7 +33,7 @@ const AREAS: { value: Area; label: string }[] = [
   { value: "docs", label: "The documentation" },
 ];
 
-const TEXT_AREA = "w-full rounded-lg border border-ink-600 bg-ink-900 p-3 text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none";
+const TEXT_AREA = "w-full rounded-lg border border-ink-500 bg-ink-900 p-3 text-ink-100 placeholder:text-ink-500 focus:border-accent focus:outline-none";
 
 function Choices<T extends string>({ legend, options, value, onChange, columns }: {
   legend: string;
@@ -51,7 +51,7 @@ function Choices<T extends string>({ legend, options, value, onChange, columns }
           <label
             key={option.value}
             className={`cursor-pointer rounded-lg border p-3 text-left transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
-              value === option.value ? "border-accent/50 bg-accent-dim/50" : "border-ink-700 bg-ink-850 hover:border-ink-600"
+              value === option.value ? "border-accent bg-accent-dim/50 ring-1 ring-accent" : "border-ink-700 bg-ink-850 hover:border-ink-600"
             }`}
           >
             <input type="radio" name={name} checked={value === option.value} onChange={() => onChange(option.value)} className="sr-only" />

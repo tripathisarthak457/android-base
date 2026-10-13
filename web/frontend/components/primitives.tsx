@@ -106,7 +106,7 @@ export function Field({
 export function TextInput({ className = "", ...rest }: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
-      className={`h-11 w-full rounded-lg border border-ink-600 bg-ink-900 px-3.5 text-[15px] text-ink-100 transition-colors placeholder:text-ink-500 hover:border-ink-500 focus:border-accent focus:outline-none aria-invalid:border-rose ${className}`}
+      className={`h-11 w-full rounded-lg border border-ink-500 bg-ink-900 px-3.5 text-[15px] text-ink-100 transition-colors placeholder:text-ink-500 hover:border-ink-400 focus:border-accent focus:outline-none aria-invalid:border-rose ${className}`}
       {...rest}
     />
   );
@@ -211,7 +211,7 @@ export function ChoiceCard({
         disabled
           ? "cursor-not-allowed border-ink-700 bg-ink-900 opacity-60"
           : checked
-            ? "cursor-pointer border-accent/60 bg-accent-dim/50"
+            ? "cursor-pointer border-accent bg-accent-dim/50 ring-1 ring-accent"
             : "cursor-pointer border-ink-700 bg-ink-900 hover:border-ink-600"
       } ${className}`}
     >

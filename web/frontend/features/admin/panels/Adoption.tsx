@@ -80,7 +80,7 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
                   aria-label="Weekly share of"
                   value={dimension}
                   onChange={(event) => setDimension(event.target.value)}
-                  className="h-7 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100"
+                  className="h-7 rounded-md border border-ink-500 bg-ink-900 px-2 text-xs text-ink-100"
                 >
                   {[["features", "Features"], ...DIMENSIONS].map(([key, label]) => (
                     <option key={key} value={key}>

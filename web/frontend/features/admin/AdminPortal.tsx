@@ -19,7 +19,7 @@ import { Reports } from "./panels/Reports.tsx";
 /** The token lives for the tab only: sessionStorage, never localStorage. */
 const TOKEN_KEY = "android-base.admin-token";
 
-const CONTROL = "h-8 rounded-md border border-ink-600 bg-ink-900 px-2 text-xs text-ink-100 placeholder:text-ink-500";
+const CONTROL = "h-8 rounded-md border border-ink-500 bg-ink-900 px-2 text-xs text-ink-100 placeholder:text-ink-500";
 
 const RANGES: { value: Range; label: string }[] = [
   { value: "today", label: "Today" },
