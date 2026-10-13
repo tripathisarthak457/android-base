@@ -51,10 +51,11 @@ internal fun StackHost(
 ) {
     val gate = stack.gate
     val pop = remember(stack) { { count: Int -> stack.pop(count) } }
+    val provider = rememberEntryProvider(registry, hidesBar, screenBars)
+    val backStack = stack.entries.toList()
     val entries = rememberDecoratedNavEntries(
-        backStack = stack.entries,
+        entries = remember(backStack, provider) { backStack.toNavEntries(provider) },
         entryDecorators = rememberEntryDecorators(),
-        entryProvider = rememberEntryProvider(registry, hidesBar, screenBars),
     )
     val scene = remember(stack) { StackScene(gate) }
     val window = AppTheme.windowSize
@@ -111,8 +112,8 @@ private fun rememberEntryProvider(
     registry: NavRegistry,
     hidesBar: (AppNavKey) -> Boolean,
     screenBars: ScreenBars?,
-): (AppNavKey) -> NavEntry<AppNavKey> = remember(registry, hidesBar, screenBars) {
-    { key ->
+): (AppNavKey, String) -> NavEntry<AppNavKey> = remember(registry, hidesBar, screenBars) {
+    { key, contentKey ->
         val destination = registry.destinationFor(key)
         val hides = hidesBar(key)
         val metadata = mapOf(
@@ -121,7 +122,7 @@ private fun rememberEntryProvider(
             HIDES_BAR_METADATA to hides,
             TRANSITION_METADATA to destination.transition,
         )
-        NavEntry(key = key, metadata = metadata) { shown ->
+        NavEntry(key = key, contentKey = contentKey, metadata = metadata) { shown ->
             EntryFrame(shown, hides, screenBars) { destination.content(shown) }
         }
     }

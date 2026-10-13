@@ -45,6 +45,7 @@ import com.base.app.core.navigation.back.GateSettle
 import com.base.app.core.navigation.back.StackBackHandler
 import com.base.app.core.navigation.back.StackChange
 import com.base.app.core.navigation.stack.ScreenBars
+import com.base.app.core.navigation.stack.toNavEntries
 import com.base.app.core.navigation.transition.NavTransitions
 import com.base.app.core.navigation.transition.ReportMotion
 import com.base.app.core.navigation.transition.ScreenMotion
@@ -92,30 +93,30 @@ internal fun PresentationHost(
     val saveable = rememberSaveableStateHolderNavEntryDecorator<AppNavKey>()
     val viewModels = rememberViewModelStoreNavEntryDecorator<AppNavKey>()
     val decorators = remember(saveable, viewModels) { listOf(saveable, viewModels) }
-    val entries = rememberDecoratedNavEntries(
-        backStack = shown,
-        entryDecorators = decorators,
-        entryProvider = remember(registry, motion, state, host) {
-            { key ->
-                if (key == PresentationBase) {
-                    NavEntry(key) { Box(Modifier.fillMaxSize()) }
-                } else {
-                    val destination = registry.destinationFor(key)
-                    NavEntry(key = key, metadata = destinationMetadata(destination)) { shownKey ->
-                        PresentedFrame(
-                            key = shownKey,
-                            motion = motion,
-                            gate = gate,
-                            card = host.card,
-                            screenBars = state.presentedBars,
-                            onLive = { live += it },
-                        ) {
-                            destination.content(shownKey)
-                        }
+    val provider = remember(registry, motion, state, host) {
+        { key: AppNavKey, contentKey: String ->
+            if (key == PresentationBase) {
+                NavEntry(key, contentKey) { Box(Modifier.fillMaxSize()) }
+            } else {
+                val destination = registry.destinationFor(key)
+                NavEntry(key = key, contentKey = contentKey, metadata = destinationMetadata(destination)) { shownKey ->
+                    PresentedFrame(
+                        key = shownKey,
+                        motion = motion,
+                        gate = gate,
+                        card = host.card,
+                        screenBars = state.presentedBars,
+                        onLive = { live += it },
+                    ) {
+                        destination.content(shownKey)
                     }
                 }
             }
-        },
+        }
+    }
+    val entries = rememberDecoratedNavEntries(
+        entries = remember(shown, provider) { shown.toNavEntries(provider) },
+        entryDecorators = decorators,
     )
     val reduceMotion = rememberReduceMotion()
     val strategies = remember(sheetStrategy) { listOfNotNull(sheetStrategy) }
