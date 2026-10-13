@@ -109,7 +109,7 @@ export function IdentityStep({ model }: { model: ConfiguratorModel }) {
                     lang={language.tag}
                     onClick={() => dispatch({ type: "language", tag: language.tag })}
                     className={`rounded-md border px-3 py-1.5 text-sm transition-colors ${
-                      on ? "border-accent bg-accent-dim text-ink-100" : "border-ink-600 bg-ink-900 text-ink-300 hover:text-ink-100"
+                      on ? "border-accent bg-accent-dim text-ink-100 ring-1 ring-accent" : "border-ink-600 bg-ink-900 text-ink-300 hover:text-ink-100"
                     }`}
                   >
                     {language.name}

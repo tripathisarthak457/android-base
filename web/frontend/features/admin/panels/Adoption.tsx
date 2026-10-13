@@ -44,7 +44,7 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
                     type="button"
                     aria-pressed={entry.target === target.target}
                     onClick={() => setChosen(entry.target)}
-                    className={`rounded-md px-2.5 py-1 text-xs font-medium ${entry.target === target.target ? "bg-ink-700 text-ink-100" : "text-ink-300 hover:bg-ink-800"}`}
+                    className={`rounded-md px-2.5 py-1 text-xs font-medium ${entry.target === target.target ? "bg-ink-100 text-ink-950" : "text-ink-300 hover:bg-ink-800"}`}
                   >
                     {entry.target} · {entry.total}
                   </button>

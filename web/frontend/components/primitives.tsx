@@ -169,7 +169,8 @@ export function Toggle({
 
 /**
  * A radio group drawn as one pill per option. Native radios underneath, so arrow keys move the
- * selection and assistive tech announces the group and its state.
+ * selection and assistive tech announces the group and its state. The chosen pill is inverted:
+ * a quieter fill on the track, or a darker label alone, stays under the 3:1 a state needs.
  */
 export function Segmented<T extends string>({
   label,
@@ -189,7 +190,7 @@ export function Segmented<T extends string>({
         <label
           key={option.value}
           className={`relative cursor-pointer rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
-            value === option.value ? "bg-ink-700 text-ink-100" : "text-ink-400 hover:text-ink-200"
+            value === option.value ? "bg-ink-100 text-ink-950" : "text-ink-400 hover:text-ink-200"
           }`}
         >
           <input

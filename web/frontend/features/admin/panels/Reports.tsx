@@ -39,7 +39,7 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
             <label
               key={option}
               className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium capitalize has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
-                status === option ? "bg-ink-700 text-ink-100" : "text-ink-300 hover:bg-ink-800"
+                status === option ? "bg-ink-100 text-ink-950" : "text-ink-300 hover:bg-ink-800"
               }`}
             >
               <input type="radio" name={statusName} checked={status === option} onChange={() => setStatus(option)} className="sr-only" />

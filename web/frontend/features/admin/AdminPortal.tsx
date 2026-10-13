@@ -197,7 +197,7 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
             <label
               key={range.value}
               className={`cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-medium has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
-                filters.range === range.value ? "bg-ink-700 text-ink-100" : "text-ink-300 hover:bg-ink-800"
+                filters.range === range.value ? "bg-ink-100 text-ink-950" : "text-ink-300 hover:bg-ink-800"
               }`}
             >
               <input type="radio" name="range" className="sr-only" checked={filters.range === range.value} onChange={() => set({ range: range.value })} />
