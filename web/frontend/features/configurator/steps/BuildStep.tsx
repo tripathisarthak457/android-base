@@ -99,6 +99,7 @@ export function BuildStep({ catalogue, model }: { catalogue: Catalogue; model: C
 
 function SettingField({ field, model, wide }: { field: CatalogueField; model: ConfiguratorModel; wide: boolean }) {
   const { state, dispatch, errors } = model;
+  const id = useId();
   const { label, hint } = labelOf(field.key);
   const value = state.settings[field.key];
   const error = errors.get(field.key);
@@ -138,6 +139,7 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
 
   if (field.type === "map") {
     const map = typeof value === "object" ? value : {};
+    const described = [hint ? `${id}-hint` : "", error ? `${id}-error` : ""].filter(Boolean).join(" ") || undefined;
     return (
       <fieldset className={wide ? "md:col-span-2" : ""}>
         <legend className="mb-1.5 text-sm font-medium text-ink-200">{label}</legend>
@@ -148,6 +150,7 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
               <TextInput
                 value={map[key] ?? ""}
                 aria-invalid={error ? true : undefined}
+                aria-describedby={described}
                 onChange={(event) => set({ ...map, [key]: event.target.value })}
                 placeholder={
                   field.rule === "socket_url" ? (FLAVOUR_EXAMPLE[key] ?? "").replace("https://", "wss://").replace("/api/", "/ws") : FLAVOUR_EXAMPLE[key]
@@ -158,8 +161,16 @@ function SettingField({ field, model, wide }: { field: CatalogueField; model: Co
             </label>
           ))}
         </div>
-        {hint && <p className="mt-1.5 text-xs text-ink-400">{hint}</p>}
-        {error && <p className="mt-1 text-xs text-rose">{error}</p>}
+        {hint && (
+          <p id={`${id}-hint`} className="mt-1.5 text-xs text-ink-400">
+            {hint}
+          </p>
+        )}
+        {error && (
+          <p id={`${id}-error`} className="mt-1 text-xs text-rose">
+            {error}
+          </p>
+        )}
       </fieldset>
     );
   }
@@ -320,7 +331,8 @@ function SigningPanel({ model, field, available }: { model: ConfiguratorModel; f
               )}
             </Field>
           </div>
-          <div className="space-y-2">
+          <fieldset className="space-y-2">
+            <legend className="mb-1.5 text-sm font-medium text-ink-200">Keystore passwords</legend>
             {names.map((name) => (
               <label key={name} className="flex items-center gap-3">
                 <span className="w-20 shrink-0 font-mono text-xs text-ink-400">{name}</span>
@@ -335,7 +347,7 @@ function SigningPanel({ model, field, available }: { model: ConfiguratorModel; f
                 />
               </label>
             ))}
-          </div>
+          </fieldset>
           {error ? (
             <p className="text-xs text-rose">{error}</p>
           ) : (

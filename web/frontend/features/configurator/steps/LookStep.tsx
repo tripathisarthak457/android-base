@@ -157,6 +157,8 @@ function ColourRow({
   }
   const valid = draft === "" ? Boolean(derivable) : parseHex(draft) !== null;
   const swatch = parseHex(shown) ? `#${shown.replace(/^#/, "")}` : "#000000";
+  const errorId = useId();
+  const problem = valid ? error : "A six-digit hex, like #2C6BED.";
 
   return (
     <div>
@@ -173,7 +175,8 @@ function ColourRow({
           value={draft}
           placeholder={derivable ? `${shown} (from primary)` : "#2C6BED"}
           aria-label={`${label} colour as hex`}
-          aria-invalid={!valid || Boolean(error) ? true : undefined}
+          aria-invalid={problem ? true : undefined}
+          aria-describedby={problem ? errorId : undefined}
           onChange={(event) => {
             const next = event.target.value.trim();
             setDraft(next);
@@ -193,8 +196,11 @@ function ColourRow({
           </button>
         )}
       </div>
-      {!valid && <p className="mt-1 pl-[80px] text-xs text-rose">A six-digit hex, like #2C6BED.</p>}
-      {valid && error && <p className="mt-1 pl-[80px] text-xs text-rose">{error}</p>}
+      {problem && (
+        <p id={errorId} className="mt-1 pl-[80px] text-xs text-rose">
+          {problem}
+        </p>
+      )}
     </div>
   );
 }
