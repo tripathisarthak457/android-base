@@ -230,12 +230,7 @@ export function Row({
   );
 }
 
-export function Divider() {
-  const t = useTheme();
-  return <div style={{ height: 1, background: t.colour("separator"), marginLeft: dp(48) }} />;
-}
-
-/** The grouped-list section the settings screens use: rows on one surface, separated by hairlines. */
+/** A card of list rows with no padding of its own, as the template wraps its settings rows in AppCard. */
 export function Group({ children }: { children: ReactNode }) {
   return <Surface style={{ padding: 0, overflow: "hidden" }}>{children}</Surface>;
 }

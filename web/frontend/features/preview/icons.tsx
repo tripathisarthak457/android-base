@@ -1,7 +1,7 @@
 import type { TabIcon } from "./tabs.ts";
 
 /** Drawn like the template's AppIcons: a 24-unit grid with 2 px round strokes. */
-export type IconName = TabIcon | "clock" | "bell" | "globe" | "logout" | "lock" | "chevron" | "doc";
+export type IconName = TabIcon | "clock" | "bell" | "globe" | "logout" | "lock" | "chevron" | "doc" | "info" | "external";
 
 const PATHS: Record<IconName, string> = {
   home: "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z",
@@ -23,6 +23,8 @@ const PATHS: Record<IconName, string> = {
   lock: "M6 11h12v10H6zM8 11V8a4 4 0 0 1 8 0v3",
   chevron: "M9 6l6 6-6 6",
   doc: "M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6",
+  info: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 8h.01",
+  external: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5",
 };
 
 export function Icon({ name, size, colour }: { name: IconName; size: number; colour: string }) {

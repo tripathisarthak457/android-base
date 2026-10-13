@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "./icons.tsx";
-import { Avatar, Button, Chip, Column, Divider, Group, InputField, LargeTitle, Row, SectionHeader, Surface, Switch, Text, useTheme } from "./parts.tsx";
+import { Avatar, Button, Chip, Column, Group, InputField, LargeTitle, Row, SectionHeader, Surface, Switch, Text, useTheme } from "./parts.tsx";
 import type { PreviewTab } from "./tabs.ts";
 import { dp } from "./theme.ts";
 
@@ -152,8 +152,7 @@ function Profile({ media }: { media: boolean }) {
 function Settings({ options }: { options: ScreenOptions }) {
   const t = useTheme();
   const { features, haptics } = options;
-  const account = features.has("auth");
-  const about = features.has("licenses") || features.has("browser");
+  const external = <Icon name="external" size={dp(16)} colour={t.colour("contentTertiary")} />;
   return (
     <>
       <LargeTitle title="Settings" />
@@ -188,34 +187,49 @@ function Settings({ options }: { options: ScreenOptions }) {
         </Surface>
         <Group>
           <Row icon="bell" title="Haptic feedback" supporting="A small vibration when a control responds." trailing={<Switch on={haptics} />} />
-          {features.has("language") && (
-            <>
-              <Divider />
-              <Row icon="globe" title="Language" supporting="Same as your phone" />
-            </>
-          )}
-          {features.has("applock") && (
-            <>
-              <Divider />
-              <Row icon="lock" title="App lock" trailing={<Switch on={false} />} />
-            </>
-          )}
         </Group>
-        {about && (
+        {features.has("language") && (
+          <Group>
+            <Row icon="globe" title="Language" supporting="Same as your phone" />
+          </Group>
+        )}
+        {features.has("applock") && (
+          <Group>
+            <Row
+              icon="lock"
+              title="Require unlock"
+              supporting="Ask for your fingerprint, face or screen lock when the app has been in the background."
+              trailing={<Switch on={false} />}
+            />
+          </Group>
+        )}
+        <SectionHeader title="Privacy" />
+        <Group>
+          <Row
+            icon="info"
+            title="Share usage data"
+            supporting="Helps us find crashes and slow screens. Never includes your content."
+            trailing={<Switch on />}
+          />
+        </Group>
+        <SectionHeader title="Account" />
+        <Group>
+          <Row icon="logout" title="Sign out" danger />
+        </Group>
+        {features.has("licenses") && (
           <>
             <SectionHeader title="About" />
             <Group>
-              {features.has("browser") && <Row icon="doc" title="Privacy policy" />}
-              {features.has("browser") && features.has("licenses") && <Divider />}
-              {features.has("licenses") && <Row icon="doc" title="Open-source licences" />}
+              <Row icon="doc" title="Open source licences" supporting="The libraries this app is built on, and their terms." />
             </Group>
           </>
         )}
-        {account && (
+        {features.has("browser") && (
           <>
-            <SectionHeader title="Account" />
+            <SectionHeader title="Legal" />
             <Group>
-              <Row icon="logout" title="Sign out" danger />
+              <Row icon="lock" title="Privacy policy" trailing={external} />
+              <Row icon="doc" title="Terms of service" trailing={external} />
             </Group>
           </>
         )}
