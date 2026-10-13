@@ -68,7 +68,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="min-w-0 space-y-6">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col items-start gap-3 sm:flex-row sm:justify-between sm:gap-4">
           <div>
             <p className="text-sm font-medium text-ink-200">How it moves</p>
             <p className="mt-1 text-xs leading-relaxed text-ink-400">
