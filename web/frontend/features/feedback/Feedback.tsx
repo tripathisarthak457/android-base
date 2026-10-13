@@ -90,12 +90,12 @@ export function ReportButton() {
           setContext(readReportContext());
           setOpen(true);
         }}
-        className="flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100"
+        className="flex h-9 items-center gap-2 rounded-lg px-3 text-sm text-ink-300 transition-colors hover:bg-ink-800 hover:text-ink-100 max-md:w-9 max-md:justify-center max-md:px-0"
       >
         <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
           <path d="M3 14V2.5M3 2.5h8.5l-1.5 3 1.5 3H3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span className="max-sm:sr-only">Report a problem</span>
+        <span className="max-md:sr-only">Report a problem</span>
       </button>
       <dialog
         ref={dialog}
