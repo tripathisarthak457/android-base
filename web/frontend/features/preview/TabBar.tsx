@@ -97,7 +97,16 @@ export function TabBar({
             background: chunky && on ? t.colour("accent") : "transparent",
           }}
         >
-          <Icon name={tab.icon} size={dp(24)} colour={tint} />
+          {/* As the template's AppBottomBar: an edge bar lifts the selected icon, the floating one
+              does not, since its sliding pill already marks the tab. */}
+          <motion.span
+            className="inline-flex"
+            initial={false}
+            animate={{ scale: on && !floating ? 1.06 : 1 }}
+            transition={t.spring("press")}
+          >
+            <Icon name={tab.icon} size={dp(24)} colour={tint} />
+          </motion.span>
         </span>
         <span
           style={{
