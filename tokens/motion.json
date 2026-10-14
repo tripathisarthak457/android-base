@@ -55,5 +55,34 @@
     "easing": [0.3, 0, 0.7, 1],
     "referenceTravel": 900,
     "maxSlowdown": 2
+  },
+  "sheet": {
+    "detent": { "mediumFraction": 0.5, "largeTopGap": 10, "mediumMinGap": 48, "minHeight": 48 },
+    "release": { "projectionSeconds": 0.099, "detentFlick": 400, "dismissFlick": 2.0, "dismissPosition": 0.48 },
+    "stretch": { "aboveLarge": 0.008 },
+    "grabber": {
+      "width": 36, "height": 5, "top": 5, "touchTarget": 48, "touchBand": 14, "alpha": 0.45, "hoverAlpha": 0.7,
+      "contrastAlpha": 0.7, "contentTop": 15
+    },
+    "header": { "top": 14, "minHeight": 44, "scrollEdgeHeight": 24, "scrollEdgeRamp": 8 },
+    "keyboard": { "dragHidesAfter": 24, "formLiftGap": 16 },
+    "form": { "heightFraction": 0.85, "maxHeight": 620 },
+    "side": { "inset": 16, "backShrink": 24, "backGrow": 12, "backY": 48 },
+    "cardStack": {
+      "scale": 0.9165, "corner": 12, "deviceCornerFactor": 0.9, "deviceCornerMin": 20,
+      "overlayAlpha": 0.1, "overlayColor": { "light": "#000000", "dark": "#C8C8C8" }, "statusBarFlip": 0.5
+    },
+    "stack": { "coveredScale": 0.9165, "coveredLift": 0.005, "peek": 10, "maxCoveredDrawn": 2 },
+    "back": {
+      "shrinkX": 48, "shrinkY": 24, "easing": [0.1, 0.1, 0.0, 1.0], "guardedShare": 0.2, "persistentFollow": 24,
+      "formScale": 0.9
+    },
+    "haptic": { "arrivalShare": 0.02 },
+    "frosted": { "bodyAlpha": { "light": 0.92, "dark": 0.94 } },
+    "glass": { "opaqueAt": 0.5, "blur": 16, "bodyAlpha": { "light": 0.55, "dark": 0.5 } },
+    "rim": { "solidDarkAlpha": 0.08 },
+    "shadow": { "blur": 20, "y": 6, "alpha": 0.1, "faintScrimAlpha": 0.2 },
+    "actionSheet": { "rowHeight": 56, "maxFitFraction": 0.6, "cardWidth": 320 },
+    "choice": { "maxFitFraction": 0.6, "searchFrom": 6 }
   }
 }

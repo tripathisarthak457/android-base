@@ -14,6 +14,7 @@ import com.base.app.core.designsystem.theme.BarIndicator
 import com.base.app.core.designsystem.theme.BarTreatment
 import com.base.app.core.designsystem.theme.CardTreatment
 import com.base.app.core.designsystem.theme.FieldTreatment
+import com.base.app.core.designsystem.theme.SheetMaterial
 import com.base.app.core.designsystem.theme.StatusColors
 import com.base.app.core.designsystem.theme.SurfaceTone
 import com.base.app.core.designsystem.theme.TypeVoice
@@ -232,6 +233,127 @@ internal object DesignTokens {
         val skeletonEasing = CubicBezierEasing(0.3f, 0.0f, 0.7f, 1.0f)
         val skeletonReferenceTravel: Dp = 900.dp
         const val skeletonMaxSlowdown: Float = 2.0f
+    }
+
+    object Sheet {
+        object Detent {
+            const val mediumFraction: Float = 0.5f
+            val largeTopGap: Dp = 10.dp
+            val mediumMinGap: Dp = 48.dp
+            val minHeight: Dp = 48.dp
+        }
+
+        object Release {
+            const val projectionSeconds: Float = 0.099f
+            val detentFlick: Dp = 400.dp
+            const val dismissFlick: Float = 2.0f
+            const val dismissPosition: Float = 0.48f
+        }
+
+        object Stretch {
+            const val aboveLarge: Float = 0.008f
+        }
+
+        object Grabber {
+            val width: Dp = 36.dp
+            val height: Dp = 5.dp
+            val top: Dp = 5.dp
+            val touchTarget: Dp = 48.dp
+            val touchBand: Dp = 14.dp
+            const val alpha: Float = 0.45f
+            const val hoverAlpha: Float = 0.7f
+            const val contrastAlpha: Float = 0.7f
+            val contentTop: Dp = 15.dp
+        }
+
+        object Header {
+            val top: Dp = 14.dp
+            val minHeight: Dp = 44.dp
+            val scrollEdgeHeight: Dp = 24.dp
+            val scrollEdgeRamp: Dp = 8.dp
+        }
+
+        object Keyboard {
+            val dragHidesAfter: Dp = 24.dp
+            val formLiftGap: Dp = 16.dp
+        }
+
+        object Form {
+            const val heightFraction: Float = 0.85f
+            val maxHeight: Dp = 620.dp
+        }
+
+        object Side {
+            val inset: Dp = 16.dp
+            val backShrink: Dp = 24.dp
+            val backGrow: Dp = 12.dp
+            val backY: Dp = 48.dp
+        }
+
+        object CardStack {
+            const val scale: Float = 0.9165f
+            val corner: Dp = 12.dp
+            const val deviceCornerFactor: Float = 0.9f
+            val deviceCornerMin: Dp = 20.dp
+            const val overlayAlpha: Float = 0.1f
+            val overlayColorLight: Color = Color(0xFF000000)
+            val overlayColorDark: Color = Color(0xFFC8C8C8)
+            const val statusBarFlip: Float = 0.5f
+        }
+
+        object Stack {
+            const val coveredScale: Float = 0.9165f
+            const val coveredLift: Float = 0.005f
+            val peek: Dp = 10.dp
+            const val maxCoveredDrawn: Int = 2
+        }
+
+        object Back {
+            val shrinkX: Dp = 48.dp
+            val shrinkY: Dp = 24.dp
+            val easing = CubicBezierEasing(0.1f, 0.1f, 0.0f, 1.0f)
+            const val guardedShare: Float = 0.2f
+            val persistentFollow: Dp = 24.dp
+            const val formScale: Float = 0.9f
+        }
+
+        object Haptic {
+            const val arrivalShare: Float = 0.02f
+        }
+
+        object Frosted {
+            const val bodyAlphaLight: Float = 0.92f
+            const val bodyAlphaDark: Float = 0.94f
+        }
+
+        object Glass {
+            const val opaqueAt: Float = 0.5f
+            val blur: Dp = 16.dp
+            const val bodyAlphaLight: Float = 0.55f
+            const val bodyAlphaDark: Float = 0.5f
+        }
+
+        object Rim {
+            const val solidDarkAlpha: Float = 0.08f
+        }
+
+        object Shadow {
+            val blur: Dp = 20.dp
+            val y: Dp = 6.dp
+            const val alpha: Float = 0.1f
+            const val faintScrimAlpha: Float = 0.2f
+        }
+
+        object ActionSheet {
+            val rowHeight: Dp = 56.dp
+            const val maxFitFraction: Float = 0.6f
+            val cardWidth: Dp = 320.dp
+        }
+
+        object Choice {
+            const val maxFitFraction: Float = 0.6f
+            const val searchFrom: Int = 6
+        }
     }
 
     object Palette {
@@ -610,6 +732,9 @@ internal object DesignTokens {
         val borderWidthStrong: Dp,
         val uppercaseLabels: Boolean,
         val offsetShadow: Dp,
+        /** The gap a sheet floats at, from the sides and bottom, at its partial detents; 0 keeps it attached. */
+        val sheetInset: Dp,
+        val sheetMaterial: SheetMaterial,
         val surfaces: SurfaceTone,
         val voice: TypeVoice,
     )
@@ -632,6 +757,8 @@ internal object DesignTokens {
             borderWidthStrong = 1.5.dp,
             uppercaseLabels = false,
             offsetShadow = 0.dp,
+            sheetInset = 8.dp,
+            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.Cool,
             voice = TypeVoice.Neutral,
         )
@@ -652,6 +779,8 @@ internal object DesignTokens {
             borderWidthStrong = 1.5.dp,
             uppercaseLabels = false,
             offsetShadow = 0.dp,
+            sheetInset = 8.dp,
+            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.BrandTint,
             voice = TypeVoice.Bold,
         )
@@ -672,6 +801,8 @@ internal object DesignTokens {
             borderWidthStrong = 1.5.dp,
             uppercaseLabels = true,
             offsetShadow = 0.dp,
+            sheetInset = 0.dp,
+            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.Paper,
             voice = TypeVoice.Editorial,
         )
@@ -692,6 +823,8 @@ internal object DesignTokens {
             borderWidthStrong = 2.5.dp,
             uppercaseLabels = false,
             offsetShadow = 4.dp,
+            sheetInset = 10.dp,
+            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.Cream,
             voice = TypeVoice.Rounded,
         )

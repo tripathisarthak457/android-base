@@ -41,7 +41,7 @@ def emit(tokens: dict[str, Any], package: str, header: str = HEADER) -> str:
             f"import {theme}.{name}"
             for name in (
                 "AppColors", "AppDesignStyle", "AppMotionStyle", "BarIndicator", "BarTreatment", "CardTreatment",
-                "FieldTreatment", "StatusColors", "SurfaceTone", "TypeVoice",
+                "FieldTreatment", "SheetMaterial", "StatusColors", "SurfaceTone", "TypeVoice",
             )
         ),
         "",
@@ -55,6 +55,7 @@ def emit(tokens: dict[str, Any], package: str, header: str = HEADER) -> str:
         _dp_object("Elevation", tokens["elevation"]),
         _type(tokens["type"]),
         _motion(tokens["motion"]),
+        _sheet(tokens["motion"]["sheet"]),
         _palette(tokens["palette"]),
         _styles(tokens["styles"]),
         _defaults(tokens["defaults"]),
@@ -200,6 +201,54 @@ def _motion(motion: dict[str, Any]) -> list[str]:
     return lines
 
 
+#: Sheet tokens that are lengths (dp), or speeds in dp per second, rather than plain numbers.
+_SHEET_DP = {
+    "detent": ("largeTopGap", "mediumMinGap", "minHeight"),
+    "release": ("detentFlick",),
+    "grabber": ("width", "height", "top", "touchTarget", "touchBand", "contentTop"),
+    "header": ("top", "minHeight", "scrollEdgeHeight", "scrollEdgeRamp"),
+    "keyboard": ("dragHidesAfter", "formLiftGap"),
+    "form": ("maxHeight",),
+    "side": ("inset", "backShrink", "backGrow", "backY"),
+    "cardStack": ("corner", "deviceCornerMin"),
+    "stack": ("peek",),
+    "back": ("shrinkX", "shrinkY", "persistentFollow"),
+    "glass": ("blur",),
+    "shadow": ("blur", "y"),
+    "actionSheet": ("rowHeight", "cardWidth"),
+}
+_SHEET_INT = {"stack": ("maxCoveredDrawn",), "choice": ("searchFrom",)}
+
+
+def _sheet(sheet: dict[str, Any]) -> list[str]:
+    """One object per group of the sheet section, so a value reads as its JSON path: `Sheet.Release.detentFlick`."""
+    lines = ["object Sheet {"]
+    for index, (group, values) in enumerate(sheet.items()):
+        if index:
+            lines.append("")
+        lines.append(f"    object {group[:1].upper()}{group[1:]} {{")
+        for key, value in values.items():
+            if isinstance(value, list):
+                lines.append(f"        val {key} = CubicBezierEasing({', '.join(_float(c) for c in value)})")
+            elif isinstance(value, dict):
+                for theme, themed in value.items():
+                    name = f"{key}{theme.capitalize()}"
+                    if isinstance(themed, str):
+                        opaque = themed if len(themed) == 9 else "#FF" + themed[1:]
+                        lines.append(f"        val {name}: Color = {_color(opaque)}")
+                    else:
+                        lines.append(f"        const val {name}: Float = {_float(themed)}")
+            elif key in _SHEET_DP.get(group, ()):
+                lines.append(f"        val {key}: Dp = {_dp(value)}")
+            elif key in _SHEET_INT.get(group, ()):
+                lines.append(f"        const val {key}: Int = {int(value)}")
+            else:
+                lines.append(f"        const val {key}: Float = {_float(value)}")
+        lines.append("    }")
+    lines.append("}")
+    return lines
+
+
 def _palette(palette: dict[str, Any]) -> list[str]:
     sample = palette["tones"][next(iter(palette["tones"]))]["light"]
     plain = [name for name, value in sample.items() if not isinstance(value, dict)]
@@ -240,6 +289,9 @@ def _styles(styles: dict[str, Any]) -> list[str]:
         "    val borderWidthStrong: Dp,",
         "    val uppercaseLabels: Boolean,",
         "    val offsetShadow: Dp,",
+        "    /** The gap a sheet floats at, from the sides and bottom, at its partial detents; 0 keeps it attached. */",
+        "    val sheetInset: Dp,",
+        "    val sheetMaterial: SheetMaterial,",
         "    val surfaces: SurfaceTone,",
         "    val voice: TypeVoice,",
         ")",
@@ -260,6 +312,8 @@ def _styles(styles: dict[str, Any]) -> list[str]:
             f"        borderWidthStrong = {_dp(style['borderWidthStrong'])},",
             f"        uppercaseLabels = {'true' if style['uppercaseLabels'] else 'false'},",
             f"        offsetShadow = {_dp(style['offsetShadow'])},",
+            f"        sheetInset = {_dp(style['sheetInset'])},",
+            f"        sheetMaterial = SheetMaterial.{style['sheetMaterial']},",
             f"        surfaces = SurfaceTone.{style['surfaces']},",
             f"        voice = TypeVoice.{style['voice']},",
             "    )",

@@ -106,6 +106,16 @@ class SchemaTest(unittest.TestCase):
     def test_a_style_names_its_bar_indicator(self):
         self.assertIn("Social: is missing indicator", self.broken(lambda d: d["styles"]["Social"].pop("indicator")))
 
+    def test_a_sheet_token_out_of_range(self):
+        self.assertIn("sheet.detent.mediumFraction", self.broken(lambda d: d["motion"]["sheet"]["detent"].update(mediumFraction=1.5)))
+        self.assertIn("sheet.release: is missing detentFlick", self.broken(lambda d: d["motion"]["sheet"]["release"].pop("detentFlick")))
+        self.assertIn("sheet.back.easing", self.broken(lambda d: d["motion"]["sheet"]["back"].update(easing=[0.1, 1])))
+        self.assertIn("sheet.cardStack.overlayColor.dark", self.broken(lambda d: d["motion"]["sheet"]["cardStack"]["overlayColor"].update(dark="grey")))
+
+    def test_a_style_names_a_real_sheet_material(self):
+        self.assertIn("Utility.sheetMaterial", self.broken(lambda d: d["styles"]["Utility"].update(sheetMaterial="Automatic")))
+        self.assertIn("Social: is missing sheetInset", self.broken(lambda d: d["styles"]["Social"].pop("sheetInset")))
+
     def test_a_size_missing_a_platform(self):
         self.assertIn("sizes.minTouchTarget.ios", self.broken(lambda d: d["foundation"]["sizes"]["minTouchTarget"].pop("ios")))
 
@@ -285,6 +295,8 @@ class EmitterTest(unittest.TestCase):
             "    object Palette {",
             "        object Cool {",
             "            val light = AppColors(",
+            "    object Sheet {",
+            "        object Release {",
             "    object Styles {",
             "    object Defaults {",
             "        val designStyle: AppDesignStyle = AppDesignStyle.Utility",
@@ -304,6 +316,14 @@ class EmitterTest(unittest.TestCase):
         accent = self.resolved["palette"]["tones"]["Cool"]["light"]["accent"]
         self.assertIn(f"accent = Color(0x{accent[1:]}),", self.kotlin)
         self.assertIn("        buttonRadius = null,", self.kotlin)
+        sheet = tokens.load()["motion"]["sheet"]
+        self.assertIn(f"            val detentFlick: Dp = {kotlin._dp(sheet['release']['detentFlick'])}\n", self.kotlin)
+        self.assertIn(f"            const val maxCoveredDrawn: Int = {sheet['stack']['maxCoveredDrawn']}\n", self.kotlin)
+        self.assertIn(f"            const val bodyAlphaDark: Float = {kotlin._float(sheet['frosted']['bodyAlpha']['dark'])}\n", self.kotlin)
+        self.assertIn("            val overlayColorLight: Color = Color(0xFF000000)\n", self.kotlin)
+        utility = tokens.load()["styles"]["Utility"]
+        self.assertIn(f"        sheetInset = {kotlin._dp(utility['sheetInset'])},", self.kotlin)
+        self.assertIn(f"        sheetMaterial = SheetMaterial.{utility['sheetMaterial']},", self.kotlin)
 
     def test_a_project_copy_says_it_is_the_project_s_own(self):
         project = kotlin.emit(self.resolved, "com.acme.x", kotlin.PROJECT_HEADER)
