@@ -177,10 +177,12 @@
 
   /*
    * A tint and no blur: the previews behind an open dialog keep moving, and a blur over the whole
-   * viewport would be recomputed on every one of their frames.
+   * viewport would be recomputed on every one of their frames. Browsers that do not pass custom
+   * properties into ::backdrop (Chrome before 122, Safari before 17.4) also predate light-dark()
+   * and draw only the light palette, so the fallback is its ink-950.
    */
   dialog::backdrop {
-    background: color-mix(in oklab, var(--color-ink-950) 85%, transparent);
+    background: color-mix(in oklab, var(--color-ink-950, #f2ece2) 85%, transparent);
   }
 }
 
