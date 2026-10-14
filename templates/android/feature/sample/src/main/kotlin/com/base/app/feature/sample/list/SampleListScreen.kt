@@ -68,7 +68,7 @@ internal fun SampleListScreen(
     ) {
         when {
             // Idle is the first frame, before the route's Appeared has started the load.
-            state.loadState == LoadState.Idle || state.loadState == LoadState.Loading -> LoadingList(listState)
+            state.loadState == LoadState.Idle || state.loadState == LoadState.Loading -> LoadingList()
 
             state.loadState is LoadState.Error -> AppStateView(
                 message = state.loadState.error.text(),
@@ -134,18 +134,21 @@ private fun Content(
 }
 
 /**
- * The loading state: real rows, redacted, in a list with the loaded list's padding and state. The
- * first row starts below the large title exactly where the first loaded row will, the title reads
- * one list throughout, and the swap to content is one frame with nothing moving or fading.
+ * The loading state: real rows, redacted, in a list with the loaded list's padding. The first row
+ * starts below the large title exactly where the first loaded row will, and the swap to content is
+ * one frame with nothing moving or fading.
+ *
+ * It keeps a list state of its own. A state's item animations follow the rows it laid out last, so
+ * on a shared one, whenever both lists were on screen, as in a cross-fade, the loaded rows would be
+ * compared with these placeholders and every one would fade in as new.
  */
 @Composable
-private fun LoadingList(listState: LazyListState) {
+private fun LoadingList() {
     val loading = stringResource(DesignSystemR.string.designsystem_loading)
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .clearAndSetSemantics { contentDescription = loading },
-        state = listState,
         contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,

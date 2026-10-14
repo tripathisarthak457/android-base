@@ -38,10 +38,12 @@ import com.base.app.core.designsystem.theme.AppTheme
  *   loaded. Replacing a long list with a full-screen error because page seven failed is the
  *   most irritating thing a feed can do.
  *
- * Hoist [state] to drive a large title from the list: `scrolled = { state.scrolledFromTop() }`, and
- * give the same state to the [loading] list, so the title reads one list from the first frame.
- * The list starts under the screen's top bar and ends above its bottom chrome unless
- * [contentPadding] says otherwise; [modifier] applies to whichever state is showing.
+ * Hoist [state] to drive a large title from the list: `scrolled = { state.scrolledFromTop() }`. A
+ * [loading] list keeps a state of its own, never [state]. A state's item animations follow the rows
+ * it laid out last, so on a shared one, whenever both lists were on screen, as in a cross-fade, the
+ * first page would be compared with the placeholders and every row would fade in as new. The list
+ * starts under the screen's top bar and ends above its bottom chrome unless [contentPadding] says
+ * otherwise; [modifier] applies to whichever state is showing.
  */
 @Composable
 fun <T : Any> AppPagingList(

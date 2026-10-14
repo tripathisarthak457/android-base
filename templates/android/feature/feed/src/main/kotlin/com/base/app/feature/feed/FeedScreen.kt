@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -78,7 +77,7 @@ internal fun FeedScreen(
             loadMoreFailedLabel = stringResource(R.string.feed_load_more_failed),
             retryLabel = stringResource(R.string.feed_retry),
             contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
-            loading = { LoadingFeed(listState) },
+            loading = { LoadingFeed() },
             failed = { throwable, retry ->
                 val error = (throwable as? FeedLoadException)?.error
                 AppStateView(
@@ -151,15 +150,17 @@ private fun FeedCard(
     }
 }
 
-/** Real cards, redacted, in a list with the feed's padding and state, so the first page lands in place. */
+/**
+ * Real cards, redacted, in a list with the feed's padding, so the first page lands in place. It
+ * keeps a list state of its own, as [AppPagingList] asks of its loading list.
+ */
 @Composable
-private fun LoadingFeed(listState: LazyListState) {
+private fun LoadingFeed() {
     val loading = stringResource(DesignSystemR.string.designsystem_loading)
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .clearAndSetSemantics { contentDescription = loading },
-        state = listState,
         contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,

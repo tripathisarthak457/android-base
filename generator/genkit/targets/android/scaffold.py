@@ -229,7 +229,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -285,7 +284,7 @@ fun {class_name}Screen(
                 onAction = {{ onEvent({class_name}Event.Retry) }},
             )
 
-            LoadState.Loading, LoadState.Idle -> LoadingList(listState)
+            LoadState.Loading, LoadState.Idle -> LoadingList()
 
             else -> LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -314,17 +313,20 @@ private fun {class_name}Row(item: {class_name}Item, onClick: () -> Unit) {{
 }}
 
 /**
- * The real rows, redacted, in a list with the loaded list's padding and state: the first row starts
- * where the first loaded row will, and the swap to content moves nothing.
+ * The real rows, redacted, in a list with the loaded list's padding: the first row starts where the
+ * first loaded row will, and the swap to content moves nothing.
+ *
+ * It keeps a list state of its own. A state's item animations follow the rows it laid out last, so
+ * on a shared one, whenever both lists were on screen, as in a cross-fade, the loaded rows would be
+ * compared with these placeholders and every one that animates would fade in as new.
  */
 @Composable
-private fun LoadingList(listState: LazyListState) {{
+private fun LoadingList() {{
     val loading = stringResource(DesignSystemR.string.designsystem_loading)
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .clearAndSetSemantics {{ contentDescription = loading }},
-        state = listState,
         contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,
