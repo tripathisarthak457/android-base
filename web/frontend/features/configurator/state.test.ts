@@ -186,6 +186,7 @@ test("only answers that differ from the defaults are stored", () => {
   assert.notEqual(draftToStore(typedPackage, catalogue), null, "a typed package is an answer");
   const retyped = run(typedPackage, { type: "packageName", value: fresh.packageName });
   assert.equal(draftToStore(retyped, catalogue), null, "a package typed back to the suggestion is not an answer");
+  assert.equal(draftToStore(run(fresh, { type: "fontName", value: "" }), catalogue), null, "an emptied typeface is the default");
   const typedAndCleared = run(
     fresh,
     { type: "setting", key: "android.api_base_urls", value: { dev: "h" } },

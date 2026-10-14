@@ -1,5 +1,5 @@
 import type { Catalogue } from "../catalogue/types.ts";
-import { type ConfigState, type Setting, featuresFor, findTarget, initialState, settingFields, suggestPackage } from "./state.ts";
+import { type ConfigState, type Setting, featuresFor, findTarget, initialState, settingFields, suggestPackage, typeface } from "./state.ts";
 
 /**
  * The configurator's answers, kept in `localStorage` so a visitor who comes back finds them again.
@@ -40,13 +40,14 @@ function answered(state: ConfigState, catalogue: Catalogue): Record<string, Sett
  * What storage should hold for `state`: its draft, or null to remove the key. Answers nobody has
  * changed from the defaults are not kept, so a visit that only looks, or ends with Start over,
  * leaves nothing behind and does not count as returning next time. A package typed back to the one
- * the app name suggests is no answer either.
+ * the app name suggests is no answer either, nor is an emptied typeface, which is the default's.
  */
 export function draftToStore(state: ConfigState, catalogue: Catalogue): string | null {
   const plain = (answers: ConfigState) =>
     serializeDraft({
       ...answers,
       packageEdited: answers.packageEdited && answers.packageName !== suggestPackage(answers.appName, catalogue.rules),
+      fontName: typeface(answers.fontName, findTarget(catalogue, answers.target)),
       settings: answered(answers, catalogue),
     });
   return plain(state) === plain(initialState(catalogue)) ? null : serializeDraft(state);
