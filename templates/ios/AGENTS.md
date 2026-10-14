@@ -151,6 +151,30 @@ final class OrdersStore {
 | A pull or swipe crossing its threshold | `.impact(weight: .light)` |
 | An outcome | `.success` / `.error` (toasts play them for you) |
 
+## Loading placeholders
+
+A first load shows the screen's real layout as placeholders: the rows or the article it will show,
+filled with placeholder values and redacted. Never a spinner over an empty screen, and never a
+lookalike of grey bars, which jumps when the content arrives.
+
+```swift
+List(0..<12, id: \.self) { _ in
+    OrderRow(order: .placeholder)        // a private static in the feature, never shown as text
+        .appRedacted()
+}
+.scrollDisabled(true)
+.appLoadingRegion()                       // VoiceOver hears "Loading" once, not once per row
+```
+
+- The loading list is the loaded list's twin: the same row view, list style and insets. Switch
+  between them in one step, without an animation, and nothing moves when the data arrives.
+- `.appRedacted()` goes on a row's or a card's content: everything it covers is drawn as bone,
+  backgrounds too. Never on a `List`, `ScrollView` or lazy stack, and never `.redacted(reason:)`
+  in a feature; the generator's checks fail on both.
+- One shimmer band crosses every placeholder in the window, then pauses with no frames drawn. It
+  stops off screen and holds still with Reduce Motion. Its width, tilt, timing and colours are
+  tokens (`theme.colors.skeleton`, `theme.colors.skeletonHighlight`).
+
 ## Motion and performance
 
 Use the system's own motion; never rebuild it:
@@ -287,5 +311,6 @@ with Instruments' Animation Hitches template, and the hitch rate in your summary
 `ObservableObject` · `@Published` · `try!` · `print(` · `DispatchQueue.main.async` · `AnyView` ·
 `UIScreen.main` · `@MainActor` in a data target · a `ModelContext` on the main actor · a raw colour,
 size or duration in a feature · `.sheet`, `.presentationDetents` or `.interactiveDismissDisabled` in
-a feature · a custom push or sheet transition · glass inside a scrolling list · editing
-`DesignTokens.swift` by hand.
+a feature · `.redacted(reason:)` in a feature, or `.appRedacted()` on a `List` or `ScrollView` · a
+custom push or sheet transition · glass inside a scrolling list · editing `DesignTokens.swift` by
+hand.
