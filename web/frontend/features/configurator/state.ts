@@ -323,3 +323,14 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
       return { ...initialState(catalogue), revision: state.revision + 1 };
   }
 }
+
+/**
+ * What Start over keeps for its Undo. `revision` is the one the reset gives the answers, so any edit
+ * after it ends the offer. A press while the last reset can still be undone keeps that snapshot:
+ * the answers on screen are then the defaults it put there and the draft went with the first press,
+ * so a new snapshot would leave Undo only the defaults to bring back.
+ */
+export function snapshotForUndo<T extends { state: ConfigState }>(kept: (T & { revision: number }) | null, current: T): T & { revision: number } {
+  const revision = current.state.revision + 1;
+  return kept !== null && kept.revision === current.state.revision ? { ...kept, revision } : { ...current, revision };
+}

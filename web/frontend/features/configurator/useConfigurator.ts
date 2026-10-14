@@ -9,7 +9,18 @@ import { landed } from "../telemetry/events.ts";
 import { DRAFT_KEY, draftToStore, parseDraft } from "./draft.ts";
 import { derivePreset } from "./resolve.ts";
 import { sessionHeaders, toSpecV2 } from "./request.ts";
-import { type Action, type ConfigState, IDENTITY_FIELDS, STEPS, type Step, enabledTarget, findTarget, initialState, reducer } from "./state.ts";
+import {
+  type Action,
+  type ConfigState,
+  IDENTITY_FIELDS,
+  STEPS,
+  type Step,
+  enabledTarget,
+  findTarget,
+  initialState,
+  reducer,
+  snapshotForUndo,
+} from "./state.ts";
 import { type SpecErrors, validateSpec } from "./validation/validate.ts";
 
 export type Outcome =
@@ -181,7 +192,8 @@ export function useConfigurator(catalogue: Catalogue) {
   const [beforeReset, setBeforeReset] = useState<{ state: ConfigState; step: Step; identityAt: number | null; revision: number } | null>(null);
 
   const startOver = useCallback(() => {
-    setBeforeReset({ state, step, identityAt: identityAt.current, revision: state.revision + 1 });
+    const current = { state, step, identityAt: identityAt.current };
+    setBeforeReset((kept) => snapshotForUndo(kept, current));
     writeDraft(null);
     dispatchRaw({ type: "reset" });
     setOutcome(null);

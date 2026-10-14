@@ -13,6 +13,7 @@ import {
   moduleNames,
   reducer,
   selectableTargets,
+  snapshotForUndo,
   stepOf,
   suggestPackage,
 } from "./state.ts";
@@ -249,4 +250,28 @@ test("an error sends the visitor to the step that edits its field", () => {
     if (field.key.includes(".")) assert.equal(stepOf(field.key), "build", field.key);
     else assert.ok(field.key in expected, `${field.key} is a new top-level field: say which step edits it`);
   }
+});
+
+test("Start over pressed twice still undoes to the answers the first press cleared", () => {
+  const answers = run(initialState(catalogue), { type: "appName", value: "Trail Notes" }, { type: "preset", key: "lean" });
+  let kept = snapshotForUndo<{ state: ConfigState; step: Step }>(null, { state: answers, step: "look" });
+  let state = run(answers, { type: "reset" });
+  assert.equal(kept.revision, state.revision, "Undo is offered after the reset");
+  kept = snapshotForUndo(kept, { state, step: "platform" });
+  state = run(state, { type: "reset" });
+  assert.equal(kept.revision, state.revision, "and still after the second");
+  assert.equal(kept.step, "look");
+  state = run(state, { type: "restore", state: kept.state });
+  assert.equal(state.appName, "Trail Notes");
+  assert.deepEqual(state.features, answers.features);
+});
+
+test("an edit after Start over ends its Undo, and the next Start over keeps the new answers", () => {
+  const first = run(initialState(catalogue), { type: "appName", value: "Trail Notes" });
+  let kept = snapshotForUndo(null, { state: first });
+  const edited = run(first, { type: "reset" }, { type: "appName", value: "Ledger" });
+  assert.notEqual(kept.revision, edited.revision, "the edit ends the offer");
+  kept = snapshotForUndo(kept, { state: edited });
+  assert.equal(kept.state.appName, "Ledger");
+  assert.equal(kept.revision, run(edited, { type: "reset" }).revision);
 });
