@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { loadCatalogue, threePlatformCatalogue } from "../catalogue/testing.ts";
-import { draftToStore, parseDraft, serializeDraft } from "./draft.ts";
+import { draftToStore, isUntouched, parseDraft, serializeDraft } from "./draft.ts";
 import { toSpecV2 } from "./request.ts";
 import { presetFeatures } from "./resolve.ts";
 import {
@@ -281,7 +281,7 @@ test("an error sends the visitor to the step that edits its field", () => {
 
 /** What Start over keeps for its Undo, asked for as `useConfigurator` asks. */
 function keepForUndo(kept: StartOverUndo | null, state: ConfigState, step: Step = "identity"): StartOverUndo | null {
-  return snapshotForUndo(kept, { state, step, identityAt: null }, draftToStore(state, catalogue) === null);
+  return snapshotForUndo(kept, { state, step, identityAt: null }, isUntouched(state, catalogue));
 }
 
 test("Start over pressed twice still undoes to the answers the first press cleared", () => {
@@ -313,4 +313,16 @@ test("Start over on answers nobody changed offers no Undo", () => {
   assert.equal(keepForUndo(null, initialState(catalogue), "look"), null);
   const retyped = run(initialState(catalogue), { type: "appName", value: "Ledger" }, { type: "appName", value: "My App" });
   assert.equal(keepForUndo(null, retyped), null, "nor on answers typed back to the defaults");
+});
+
+test("Start over after typing only signing details offers Undo, which brings them back", () => {
+  const signing = { enabled: true, organisation: "Trail Co", country: "DE", passwords: { dev: "s3cret-pass" } };
+  const typed = run(initialState(catalogue), { type: "signing", value: signing });
+  assert.equal(draftToStore(typed, catalogue), null, "the draft never holds signing details");
+  const kept = keepForUndo(null, typed, "build");
+  assert.ok(kept, "so Start over has to keep them itself");
+  const restored = run(typed, { type: "reset" }, { type: "restore", state: kept.state });
+  assert.deepEqual(restored.signing, signing);
+  const cleared = run(typed, { type: "signing", value: { enabled: false, organisation: " ", country: "US", passwords: { dev: "" } } });
+  assert.equal(keepForUndo(null, cleared), null, "signing details cleared by hand are nothing to undo");
 });

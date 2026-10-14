@@ -54,6 +54,21 @@ export function draftToStore(state: ConfigState, catalogue: Catalogue): string |
   return plain(state) === plain(initialState(catalogue)) ? null : serializeDraft(state);
 }
 
+/**
+ * Whether Start over would clear nothing: no answer the draft would keep, and no signing details,
+ * which are never stored but are typed all the same.
+ */
+export function isUntouched(state: ConfigState, catalogue: Catalogue): boolean {
+  const { signing } = state;
+  const fresh = initialState(catalogue).signing;
+  const signingTyped =
+    signing.enabled !== fresh.enabled ||
+    signing.organisation.trim() !== fresh.organisation ||
+    signing.country !== fresh.country ||
+    Object.values(signing.passwords).some((password) => password !== "");
+  return !signingTyped && draftToStore(state, catalogue) === null;
+}
+
 function strings(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 }

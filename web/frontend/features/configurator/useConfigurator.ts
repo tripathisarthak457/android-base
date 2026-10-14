@@ -7,7 +7,7 @@ import { canMakeKeystores, parseCatalogue } from "../catalogue/guard.ts";
 import type { Catalogue } from "../catalogue/types.ts";
 import { sessionId, track, trackLanding } from "../telemetry/client.ts";
 import { landed } from "../telemetry/events.ts";
-import { DRAFT_KEY, draftToStore, parseDraft } from "./draft.ts";
+import { DRAFT_KEY, draftToStore, isUntouched, parseDraft } from "./draft.ts";
 import { derivePreset } from "./resolve.ts";
 import { sessionHeaders, toSpecV2 } from "./request.ts";
 import {
@@ -209,7 +209,7 @@ export function useConfigurator(catalogue: Catalogue) {
 
   const startOver = useCallback(() => {
     const current = { state, step, identityAt: identityAt.current };
-    const untouched = draftToStore(state, catalogue) === null;
+    const untouched = isUntouched(state, catalogue);
     setBeforeReset((kept) => snapshotForUndo(kept, current, untouched));
     writeDraft(null);
     dispatchRaw({ type: "reset" });
