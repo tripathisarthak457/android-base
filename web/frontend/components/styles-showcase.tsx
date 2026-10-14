@@ -1,7 +1,7 @@
 "use client";
 
 import { useInView } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { ScaledPreview } from "../features/preview/AppPreview.tsx";
 import { loadFamily } from "../features/preview/fonts.ts";
 import { planTabs } from "../features/preview/tabs.ts";
@@ -18,6 +18,15 @@ const PAIRINGS: Record<string, { accent: string; font: string; blurb: string }> 
   Editorial: { accent: "#1F4D3A", font: "Fraunces", blurb: "Reading, news, portfolios" },
   Playful: { accent: "#F2A93B", font: "Nunito", blurb: "Games, kids, habit trackers" },
 };
+
+/** From Tailwind's `sm` the phones wrap; below it they scroll sideways. */
+const WRAPS = "(min-width: 40rem)";
+
+function subscribeToWraps(onChange: () => void): () => void {
+  const query = matchMedia(WRAPS);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
 
 const FEATURES: ReadonlySet<string> = new Set(["sample", "paging", "search", "profile", "settings", "language", "media"]);
 const CYCLE = ["home", "feed", "profile", "settings"];
@@ -42,6 +51,7 @@ export function StylesShowcase() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-120px" });
   const [paused, setPaused] = usePaused();
+  const wraps = useSyncExternalStore(subscribeToWraps, () => matchMedia(WRAPS).matches, () => false);
   const styles = android().design_styles;
   const defaults = android().defaults;
 
@@ -99,8 +109,14 @@ export function StylesShowcase() {
         </div>
 
         {/* Only a phone-width window scrolls the phones sideways, where a swipe does it; from sm they
-            wrap, so a mouse or keyboard reaches every style without a horizontal scroll. */}
-        <ul className="-mx-4 mt-12 flex gap-6 overflow-x-auto px-4 pb-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-y-12 sm:overflow-visible sm:px-0 lg:grid-cols-4">
+            wrap, so a mouse or keyboard reaches every style without a horizontal scroll. Nothing in
+            the scroller takes the focus, and Safari, unlike Chrome and Firefox, does not make a
+            scroller a tab stop by itself, so the list is one while it scrolls, for the arrow keys. */}
+        <ul
+          tabIndex={wraps ? undefined : 0}
+          aria-label="Design styles"
+          className="-mx-4 mt-12 flex gap-6 overflow-x-auto px-4 pb-4 focus-visible:outline-offset-[-2px] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-y-12 sm:overflow-visible sm:px-0 lg:grid-cols-4"
+        >
           {styles.map((style, index) => {
             const pairing = PAIRINGS[style.key] ?? { accent: defaults.accent_colour, font: defaults.font_name, blurb: "" };
             const tokens = CATALOGUE.tokens.styles[style.key];
