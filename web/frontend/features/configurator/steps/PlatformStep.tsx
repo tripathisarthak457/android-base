@@ -30,8 +30,9 @@ export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model
       <fieldset className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
         <legend className="sr-only">Platform</legend>
         {shown.map((target) => {
-          const soon = target.status === "coming_soon";
-          const off = model.live.enabled !== null && model.live.enabled[target.key] === false && !soon;
+          // A target this deployment does not generate is, to a visitor, not out yet, whatever its
+          // catalogue status: it reads as coming soon, with nothing to pick.
+          const soon = target.status === "coming_soon" || (model.live.enabled !== null && model.live.enabled[target.key] === false);
           const missing = notYet(target, android);
           return (
             <div key={target.key} className="flex flex-col gap-2">
@@ -39,7 +40,7 @@ export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model
                 type="radio"
                 name={name}
                 checked={model.state.target === target.key}
-                disabled={soon || off}
+                disabled={soon}
                 onChange={() => model.dispatch({ type: "target", target: target.key })}
                 className="flex-1 p-5"
               >
@@ -48,8 +49,7 @@ export function PlatformStep({ catalogue, model }: { catalogue: Catalogue; model
                   {soon ? <Badge>Coming soon</Badge> : target.status === "beta" ? <Badge tone="amber">Beta</Badge> : null}
                 </span>
                 <span className="mt-2 block text-sm leading-relaxed text-ink-300">{target.summary}</span>
-                {target.status === "beta" && target.status_note && <span className="mt-3 block text-xs text-amber">{target.status_note}</span>}
-                {off && <span className="mt-3 block text-xs text-ink-400">This server does not generate it yet.</span>}
+                {!soon && target.status === "beta" && target.status_note && <span className="mt-3 block text-xs text-amber">{target.status_note}</span>}
               </ChoiceCard>
               {!soon && missing.length > 0 && (
                 <details className="px-1 text-xs text-ink-400">
