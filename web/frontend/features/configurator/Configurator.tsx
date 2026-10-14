@@ -131,8 +131,10 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
           transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
           className="p-4 sm:p-6 md:p-8"
         >
-          <h3 ref={heading} tabIndex={-1} className="sr-only">
-            {`Step ${stepIndex + 1} of ${STEPS.length}: ${STEP_LABELS[step]}`}
+          {/* Visible, so the focus a step change puts here shows where a keyboard user now is. */}
+          <h3 ref={heading} tabIndex={-1} className="mb-6 w-fit font-display text-2xl font-bold text-ink-100">
+            <span className="sr-only">{`Step ${stepIndex + 1} of ${STEPS.length}: `}</span>
+            {STEP_LABELS[step]}
           </h3>
           {step === "platform" && <PlatformStep catalogue={catalogue} model={model} />}
           {step === "identity" && <IdentityStep catalogue={catalogue} model={model} />}
