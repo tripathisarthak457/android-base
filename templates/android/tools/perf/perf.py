@@ -398,6 +398,9 @@ class Run:
     def record_frames(self, scenario, frames):
         """The hitch ratio and the render-thread, GPU and buffer cost of each transition's first frames."""
         self.record(f"{scenario}.hitch_ms_per_s", parse_framestats.hitch_ratio(frames))
+        late, transitions = parse_framestats.late_first_frames(frames)
+        self.record(f"{scenario}.late_first_frames", late)
+        self.record(f"{scenario}.transitions", transitions)
         first = [stage for rows in frames for stage in parse_framestats.stages(rows)]
         self.record_spread(f"{scenario}.first3_issue_ms", [stage["issue"] for stage in first])
         self.record_spread(f"{scenario}.first3_gpu_ms", [stage["gpu"] for stage in first])

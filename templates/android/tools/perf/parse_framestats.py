@@ -119,6 +119,22 @@ def stages(rows, count=3):
     ]
 
 
+def missed_deadline(row):
+    """Whether the frame finished after the deadline FrameTimeline gave it, which is what gfxinfo
+    counts as janky. A frame that starts from idle gets the shortest deadline (13.67 ms after its
+    vsync on a 120 Hz Redmi); frames queued behind it get later ones."""
+    deadline = row.get("FrameDeadline")
+    if not deadline:
+        return False
+    return max(row["FrameCompleted"], row.get("GpuCompleted", 0)) > deadline
+
+
+def late_first_frames(dumps):
+    """How many transitions missed the deadline on their first frame, of how many had one."""
+    firsts = [rows[0] for rows in dumps if rows]
+    return sum(1 for row in firsts if missed_deadline(row)), len(firsts)
+
+
 # A gap this long between two presented frames is the end of one burst of motion and the start of
 # another (a list settling, then a late image), not a frame the display waited for.
 _MAX_HITCH_INTERVALS = 12

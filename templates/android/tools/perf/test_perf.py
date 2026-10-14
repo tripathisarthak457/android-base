@@ -142,6 +142,12 @@ class ParseFramestatsTest(unittest.TestCase):
         self.assertAlmostEqual(motion, 16 * interval / 1_000_000, places=3)
         self.assertAlmostEqual(parse_framestats.hitch_ratio([rows]), 1000 * hitch / motion, places=1)
 
+    def test_late_first_frames_are_counted_per_transition(self):
+        on_time = dict(frame(0, 4.0), FrameDeadline=13_666_666, FrameCompleted=10_000_000, GpuCompleted=12_000_000)
+        gpu_late = dict(frame(0, 4.0), FrameDeadline=13_666_666, FrameCompleted=10_000_000, GpuCompleted=19_000_000)
+        later = dict(frame(1, 1.0), FrameDeadline=40_000_000, FrameCompleted=20_000_000, GpuCompleted=30_000_000)
+        self.assertEqual(parse_framestats.late_first_frames([[on_time, later], [gpu_late, later], []]), (1, 2))
+
     def test_frames_the_display_did_not_report_are_left_out(self):
         rows = [dict(frame(i, 2.0), DisplayPresentTime=0) for i in range(5)]
         self.assertEqual(parse_framestats.hitch_time(rows), (0.0, 0.0))
