@@ -28,7 +28,6 @@ import androidx.navigationevent.NavigationEventDispatcherOwner
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.foundation.layout.TabVisibility
-import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
 
 /**
@@ -48,8 +47,8 @@ import com.base.app.core.designsystem.theme.rememberReduceMotion
  * The tabs in [warmUp] that nobody opened yet are built while the app is idle ([TabWarmUp]), so
  * the first visit to one costs what a switch to a kept tab costs.
  *
- * The tab coming to the front on a tap is nudged toward the direction of travel and unveiled
- * ([TabReveal]); the one leaving disappears at once, so two screens are never drawn together.
+ * The tab coming to the front on a tap is nudged toward the direction of travel ([TabReveal]);
+ * the one leaving disappears at once, so two screens are never drawn together.
  *
  * A new [generation] (sign-out, another account) starts with nothing kept.
  *
@@ -77,7 +76,7 @@ internal fun KeptTabs(
         val reveal = remember { TabReveal(selected) }
         val reduceMotion = rememberReduceMotion()
         // Applied with the composition that switches, before that frame is laid out and drawn, so
-        // the first frame of the incoming tab is already nudged and veiled.
+        // the first frame of the incoming tab is already nudged.
         SideEffect { reveal.switchTo(selected, animate = revealSwitch() && !reduceMotion, position = positionOf) }
         LaunchedEffect(reveal, selected) { reveal.run(selected) }
 
@@ -125,13 +124,7 @@ private fun KeptTab(
     ) {
         Box(
             Modifier
-                .keptTab(
-                    parked = !active,
-                    reveal = reveal,
-                    warming = warming,
-                    index = index,
-                    veil = AppTheme.colors.background,
-                )
+                .keptTab(parked = !active, reveal = reveal, warming = warming, index = index)
                 .focusProperties { onEnter = { if (selection.value != index) cancelFocusChange() } }
                 .focusGroup(),
         ) {

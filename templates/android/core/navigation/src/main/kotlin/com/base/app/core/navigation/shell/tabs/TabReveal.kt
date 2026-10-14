@@ -9,17 +9,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.GraphicsLayerScope
-import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.SemanticsModifierNode
-import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.node.invalidateSemantics
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
@@ -29,11 +25,13 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.sign
 
 /**
- * The tab arriving in front after a tap: placed [SHIFT] toward the direction of travel under a
- * veil in the background colour at [VEIL_ALPHA], both springing away on iOS's segmented-thumb
- * spring (two thirds done at 100 ms). Only the incoming tab is drawn, so there is no double
- * exposure, and the veil is one rectangle, not an alpha on the whole screen. A veil that started
- * opaque would put a blank frame on screen at the tap, which reads as a flash.
+ * The tab arriving in front after a tap: placed [SHIFT] toward the direction of travel and sprung
+ * into place on iOS's segmented-thumb spring (two thirds done at 100 ms). Only the incoming tab is
+ * drawn, so there is no double exposure, and the nudge moves its layer, so the switch records
+ * nothing per frame.
+ *
+ * Nothing is drawn over it: a veil would be a full-screen rectangle on the frames that start the
+ * switch, which run while the GPU is still clocked down from idle and can least afford one.
  */
 @Stable
 internal class TabReveal(selected: Int) {
@@ -45,7 +43,7 @@ internal class TabReveal(selected: Int) {
     var direction = 0f
         private set
 
-    /** 0 at the switch, 1 revealed. Read in layer and draw blocks only. */
+    /** 0 at the switch, 1 revealed. Read in layer blocks only. */
     var progress by mutableFloatStateOf(1f)
         private set
 
@@ -72,31 +70,28 @@ internal class TabReveal(selected: Int) {
 
     companion object {
         val SHIFT = 12.dp
-        const val VEIL_ALPHA = 0.6f
     }
 }
 
 /**
  * One kept tab: parked while hidden (placed, layer at alpha 0 off the window, semantics cleared),
- * drawn in place for the frame [warming] puts it under the tab in front, and nudged and veiled
- * while [reveal] brings it in. Everything it changes per frame is read in its layer and draw blocks.
+ * drawn in place for the frame [warming] puts it under the tab in front, and nudged while [reveal]
+ * brings it in. Everything it changes per frame is read in its layer block.
  */
 internal fun Modifier.keptTab(
     parked: Boolean,
     reveal: TabReveal,
     warming: TabWarmUp,
     index: Int,
-    veil: Color,
-): Modifier = this then KeptTabElement(parked, reveal, warming, index, veil)
+): Modifier = this then KeptTabElement(parked, reveal, warming, index)
 
 private data class KeptTabElement(
     val parked: Boolean,
     val reveal: TabReveal,
     val warming: TabWarmUp,
     val index: Int,
-    val veil: Color,
 ) : ModifierNodeElement<KeptTabNode>() {
-    override fun create() = KeptTabNode(parked, reveal, warming, index, veil)
+    override fun create() = KeptTabNode(parked, reveal, warming, index)
 
     override fun update(node: KeptTabNode) {
         if (node.parked != parked) {
@@ -106,10 +101,6 @@ private data class KeptTabElement(
         node.reveal = reveal
         node.warming = warming
         node.index = index
-        if (node.veil != veil) {
-            node.veil = veil
-            node.invalidateDraw()
-        }
     }
 
     override fun InspectorInfo.inspectableProperties() {
@@ -124,8 +115,7 @@ private class KeptTabNode(
     var reveal: TabReveal,
     var warming: TabWarmUp,
     var index: Int,
-    var veil: Color,
-) : Modifier.Node(), LayoutModifierNode, DrawModifierNode, SemanticsModifierNode {
+) : Modifier.Node(), LayoutModifierNode, SemanticsModifierNode {
 
     // State, so the layer block that reads it runs again when it changes, without a new layout.
     private var parkedState by mutableStateOf(parked)
@@ -156,13 +146,6 @@ private class KeptTabNode(
         val placeable = measurable.measure(constraints)
         towardEnd = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
         return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0, layerBlock = layer) }
-    }
-
-    override fun ContentDrawScope.draw() {
-        drawContent()
-        if (parkedState || reveal.index != index) return
-        val alpha = TabReveal.VEIL_ALPHA * (1f - reveal.progress)
-        if (alpha > 0f) drawRect(veil, alpha = alpha)
     }
 }
 
