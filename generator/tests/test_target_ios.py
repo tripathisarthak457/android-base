@@ -210,6 +210,44 @@ def call_arguments(code: str, start: int) -> str:
     raise SwiftSyntaxError("a call is never closed")
 
 
+def chain_root(code: str, dot: int) -> str | None:
+    """
+    The name the modifier chain ending at the `.` at `dot` starts from: `List` for
+    `List { … }.scrollDisabled(true).appRedacted()`. None when the chain starts with no name.
+    """
+    openers = {")": "(", "]": "[", "}": "{"}
+    index = dot
+    while True:
+        index -= 1
+        while index >= 0 and code[index].isspace():
+            index -= 1
+        if index < 0:
+            return None
+        if code[index] in openers:
+            depth = 0
+            while index >= 0:
+                if code[index] in openers:
+                    depth += 1
+                elif code[index] in "([{":
+                    depth -= 1
+                    if depth == 0:
+                        break
+                index -= 1
+            continue
+        if not (code[index].isalnum() or code[index] == "_"):
+            return None
+        end = index + 1
+        while index > 0 and (code[index - 1].isalnum() or code[index - 1] == "_"):
+            index -= 1
+        before = index - 1
+        while before >= 0 and code[before].isspace():
+            before -= 1
+        if before >= 0 and code[before] == ".":
+            index = before
+            continue
+        return code[index:end]
+
+
 # Package.swift ---------------------------------------------------------------------------------
 
 @dataclass
@@ -287,6 +325,13 @@ RAW_VALUES = {
     "a raw size": r"\.frame\((?:min|ideal|max)?(?:[wW]idth|[hH]eight):\s*\d",
     "a raw duration or curve": r"\bduration:\s*\d|\.(?:easeIn|easeOut|easeInOut|linear)\b|\.spring\(",
 }
+
+
+#: Views whose content scrolls or loads lazily. Redacted as a whole, every frame of the shimmer
+#: would draw all of their content again through the shader, rather than each row's own bones.
+SCROLLING_CONTAINERS = frozenset({
+    "List", "ScrollView", "Form", "Table", "LazyVStack", "LazyHStack", "LazyVGrid", "LazyHGrid",
+})
 
 
 def swift_files(directory: Path) -> list[Path]:
@@ -395,6 +440,12 @@ def check_project(case: unittest.TestCase, project: Path, spec) -> None:
                 case.assertNotRegex(
                     code, r"\.interactiveDismissDisabled\(", f"{relative} guards a sheet without appSheetDismissGuard"
                 )
+                # One shimmer band for the window (REQUIREMENTS 34): placeholders go through
+                # appRedacted, on the content of a row or a card.
+                case.assertNotRegex(code, r"\.redacted\(", f"{relative} redacts without appRedacted")
+                for match in re.finditer(r"\.appRedacted\(", code):
+                    root = chain_root(code, match.start())
+                    case.assertNotIn(root, SCROLLING_CONTAINERS, f"{relative} redacts a whole {root}")
                 for width in re.findall(r"\.frame\(\s*(?:width|minWidth):\s*(\d+)", code):
                     case.assertLess(int(width), 320, f"{relative} sets a width a window can be narrower than")
                 for name, pattern in RAW_VALUES.items():
@@ -809,6 +860,23 @@ class TemplateTest(unittest.TestCase):
             style.pop("sheetMaterial", None)
         self.assertEqual(swift.emit(without), emitted)
 
+    def test_the_skeleton_shader_takes_what_the_swift_passes(self):
+        """
+        SwiftUI matches a shader's arguments to its Metal parameters only when it first draws, so a
+        mismatch fails on a device and nowhere before it.
+        """
+        design_system = TEMPLATE / "Packages/Core/Sources/DesignSystem"
+        metal = (design_system / "Resources/AppSkeleton.metal").read_text(encoding="utf-8")
+        signature = re.search(r"\[\[ stitchable \]\] half4 (\w+)\((.*?)\)\s*\{", metal, re.S)
+        self.assertIsNotNone(signature)
+        name, parameters = signature.group(1), [parameter.split()[0] for parameter in signature.group(2).split(",")]
+        code, _ = lex(design_system / "Components/Skeleton/AppRedacted.swift")
+        self.assertIn(f"ShaderLibrary.bundle(.module).{name}\n", code)
+        call = code.index("Shader(function:")
+        passed = re.findall(r"^\s*\.(float2|float|color)\(", call_arguments(code, call + len("Shader")), re.M)
+        metal_types = {"float2": "float2", "float": "float", "color": "half4"}
+        self.assertEqual(["float2", "SwiftUI::Layer", *(metal_types[kind] for kind in passed)], parameters)
+
     def test_the_accent_colour_is_emitted_from_the_tokens(self):
         checked_in = (TEMPLATE / "BaseApp" / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")
         self.assertEqual(swift.accent_colorset(tokens.resolve(None, "ios")), checked_in)
@@ -1107,6 +1175,7 @@ class ViolationsTest(unittest.TestCase):
 
     def test_code_rules(self):
         store = "Packages/Features/Sources/SampleFeature/List/SampleListStore.swift"
+        list_view = "Packages/Features/Sources/SampleFeature/List/SampleListView.swift"
         for message, path, edit in (
             ("uses ObservableObject", store, replacing("final class SampleListStore {", "final class SampleListStore: ObservableObject {")),
             (r"uses print\(", store, replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        print(event)\n")),
@@ -1150,6 +1219,20 @@ class ViolationsTest(unittest.TestCase):
                 "guards a sheet without appSheetDismissGuard",
                 self.ROW,
                 replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .interactiveDismissDisabled()"),
+            ),
+            ("redacts without appRedacted", list_view, replacing(".appRedacted()", ".redacted(reason: .placeholder)")),
+            (
+                "redacts a whole List",
+                list_view,
+                replacing(
+                    "                .appRedacted()\n        }\n        .scrollDisabled(true)\n",
+                    "        }\n        .scrollDisabled(true)\n        .appRedacted()\n",
+                ),
+            ),
+            (
+                "redacts a whole ScrollView",
+                "Packages/Features/Sources/SampleFeature/Detail/SampleDetailView.swift",
+                replacing("        .scrollDisabled(isPlaceholder)\n", "        .scrollDisabled(isPlaceholder)\n        .appRedacted(isPlaceholder)\n"),
             ),
         ):
             with self.subTest(rule=message):
