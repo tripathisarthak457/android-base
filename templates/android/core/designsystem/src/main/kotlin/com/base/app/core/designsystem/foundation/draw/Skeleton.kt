@@ -46,6 +46,9 @@ import com.base.app.core.designsystem.theme.LocalAppColors
 import com.base.app.core.designsystem.theme.LocalAppShapes
 import com.base.app.core.designsystem.theme.LocalReduceMotion
 import com.base.app.core.designsystem.theme.tokens.DesignTokens.Motion
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 /**
  * Draws this element, and everything inside it, as one placeholder bone in [shape].
@@ -157,6 +160,12 @@ internal class TextBones : Bones {
     var lines = FloatArray(0)
         private set
 
+    /** How far down the element [line]'s bone starts. */
+    fun top(line: Int): Float = lines[line * 4 + 1]
+
+    /** How far down the element [line]'s bone ends. */
+    fun bottom(line: Int): Float = lines[line * 4 + 3]
+
     fun update(layout: TextLayoutResult) {
         val count = layout.lineCount
         if (lines.size != count * 4) lines = FloatArray(count * 4)
@@ -181,7 +190,7 @@ internal class TextBones : Bones {
             index += 4
             // An empty line has no bone, and a line the box cuts off is not drawn past its edge.
             if (right <= left || top >= size.height) continue
-            val height = bottom - top
+            val height = minOf(bottom, size.height) - top
             drawRoundRect(brush, Offset(left + dx, top), Size(right - left, height), lineCorner(lineRadius, height))
         }
     }
@@ -205,6 +214,12 @@ internal class TextBones : Bones {
 }
 
 private fun lineCorner(radius: Float, height: Float) = CornerRadius(minOf(radius, height / 2))
+
+private const val TiltRadians = Motion.skeletonTiltDegrees * PI / 180
+
+/** The band's lean, as the cosine and sine that turn a point (x, y) into its phase along the sweep. */
+internal val TiltCos = cos(TiltRadians).toFloat()
+internal val TiltSin = sin(TiltRadians).toFloat()
 
 /**
  * Where the shared band is, for a bone at a given place in the sweep area.

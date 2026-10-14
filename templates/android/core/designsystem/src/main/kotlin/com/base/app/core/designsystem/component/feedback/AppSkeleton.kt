@@ -63,7 +63,7 @@ fun AppSkeletonLine(
             .fillMaxWidth(widthFraction)
             .height(with(LocalDensity.current) { layout.size.height.toDp() })
             .clearAndSetSemantics {}
-            .lineSkeleton(top = bone.lines[1], bottom = bone.lines[3]),
+            .lineSkeleton(top = bone.top(0), bottom = bone.bottom(0)),
     )
 }
 

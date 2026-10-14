@@ -138,8 +138,8 @@ class RedactedGeometryTest {
             val layout = measurer.measure(Paragraph, style, constraints = Constraints(maxWidth = 700))
             val bones = TextBones().apply { update(layout) }
             for (line in 0 until layout.lineCount) {
-                val top = bones.lines[line * 4 + 1]
-                val bottom = bones.lines[line * 4 + 3]
+                val top = bones.top(line)
+                val bottom = bones.bottom(line)
                 val box = "${layout.getLineTop(line)}..${layout.getLineBottom(line)}"
                 val what = "line $line of ${style.fontSize}: bone $top..$bottom in $box"
                 assertTrue(what, top >= layout.getLineTop(line) - 0.5f && bottom <= layout.getLineBottom(line) + 0.5f)

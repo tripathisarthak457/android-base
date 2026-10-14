@@ -1,6 +1,5 @@
 package com.base.app.core.designsystem.foundation.draw
 
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.unit.DpSize
@@ -9,8 +8,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.cos
-import kotlin.math.sin
 
 /**
  * The one sweep every skeleton bone in a window draws: a sweep, eased, then a pause with no frames.
@@ -23,7 +20,6 @@ import kotlin.math.sin
  * @param window the window's size in dp, read once per sweep: a large window sweeps longer, so the
  *   band crosses it at the speed it crosses a phone.
  */
-@Stable
 internal class ShimmerClock(
     private val scope: CoroutineScope,
     private val window: () -> DpSize,
@@ -97,6 +93,3 @@ internal class ShimmerClock(
 
 /** The window's shimmer, provided by the outermost `AppTheme`; null outside one, where bones hold still. */
 internal val LocalShimmerClock = staticCompositionLocalOf<ShimmerClock?> { null }
-
-internal val TiltCos = cos(Math.toRadians(Motion.skeletonTiltDegrees.toDouble())).toFloat()
-internal val TiltSin = sin(Math.toRadians(Motion.skeletonTiltDegrees.toDouble())).toFloat()
