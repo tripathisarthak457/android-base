@@ -6,7 +6,9 @@ import { Spinner } from "../../../components/ui.tsx";
 import { selectableFeatures } from "../../catalogue/features.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
+import { useFamily } from "../../preview/fonts.ts";
 import { planTabs } from "../../preview/tabs.ts";
+import { weightsFor } from "../../preview/theme.ts";
 import { usePreviewTheme } from "../../preview/usePreviewTheme.ts";
 import type { Spec } from "../request.ts";
 import { STEP_LABELS, stepOf } from "../state.ts";
@@ -19,6 +21,9 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
   const theme = usePreviewTheme(input, dark);
   const tabs = useMemo(() => planTabs(input.features, input.modules).tabs, [input.features, input.modules]);
   const options = useMemo(() => ({ features: input.features, haptics: input.haptics }), [input.features, input.haptics]);
+  // The step bar reaches Review without passing the Look step, which would otherwise load the typeface.
+  const weights = useMemo(() => weightsFor(input.tokens, theme.style.voice), [input.tokens, theme.style.voice]);
+  useFamily(input.font, weights);
   const chosen = selectableFeatures(target).filter((feature) => state.features.includes(feature.key));
   // The SDKs as they are sent: the request builder raises targetSdk to minSdk.
   const { min_sdk: minSdk, target_sdk: targetSdk } = (spec.android ?? {}) as Spec;
@@ -83,7 +88,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
       <div className="min-w-0 md:col-span-2">
         {screen && (
           <div className="mb-4 flex justify-center">
-            <ScaledPreview theme={theme} font={state.fontName} tabs={tabs} screen={screen} options={options} scale={0.62} />
+            <ScaledPreview theme={theme} font={input.font} tabs={tabs} screen={screen} options={options} scale={0.62} />
           </div>
         )}
 
