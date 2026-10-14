@@ -43,6 +43,7 @@ import androidx.compose.ui.node.PointerInputModifierNode
 import androidx.compose.ui.node.SemanticsModifierNode
 import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.invalidateDraw
+import androidx.compose.ui.node.invalidateMeasurement
 import androidx.compose.ui.node.invalidateSemantics
 import androidx.compose.ui.node.observeReads
 import androidx.compose.ui.platform.LocalView
@@ -80,6 +81,7 @@ internal class PressableNode(
     private var onSecondaryClick: ((Offset) -> Unit)?,
     private var onPressStart: (() -> Unit)?,
     private var externalSource: MutableInteractionSource?,
+    private var reserveWidth: Boolean,
 ) : DelegatingNode(),
     LayoutModifierNode,
     DrawModifierNode,
@@ -133,6 +135,7 @@ internal class PressableNode(
         onSecondaryClick: ((Offset) -> Unit)?,
         onPressStart: (() -> Unit)?,
         interactionSource: MutableInteractionSource?,
+        reserveWidth: Boolean,
     ) {
         val gestureChanged = enabled != this.enabled || (onLongClick == null) != (this.onLongClick == null)
         val semanticsChanged = enabled != this.enabled || role != this.role ||
@@ -152,6 +155,10 @@ internal class PressableNode(
         this.onSecondaryClick = onSecondaryClick
         this.onPressStart = onPressStart
         this.externalSource = interactionSource
+        if (reserveWidth != this.reserveWidth) {
+            this.reserveWidth = reserveWidth
+            invalidateMeasurement()
+        }
 
         focusTarget.focusability = focusabilityFor(acceptsInput)
         if (feedbackChanged) invalidateDraw()
@@ -357,7 +364,7 @@ internal class PressableNode(
     override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
         val placeable = measurable.measure(constraints)
         val target = MinTouchTarget.roundToPx()
-        val width = constraints.constrainWidth(maxOf(placeable.width, target))
+        val width = if (reserveWidth) constraints.constrainWidth(maxOf(placeable.width, target)) else placeable.width
         val height = constraints.constrainHeight(maxOf(placeable.height, target))
         childOffset = IntOffset((width - placeable.width) / 2, (height - placeable.height) / 2)
         childSize = IntSize(placeable.width, placeable.height)

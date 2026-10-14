@@ -36,6 +36,7 @@ import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.offsetShadow
 import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.inlinePressable
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 
@@ -165,7 +166,10 @@ fun AppIconButton(
     }
 }
 
-/** A link: accent text that dims under the finger, for an action inside or beside running text. */
+/**
+ * A link: accent text that dims under the finger, for an action inside or beside running text. It is
+ * as wide as its label, so it starts on the text column around it; touch still reaches 48dp across.
+ */
 @Composable
 fun AppLinkButton(
     text: String,
@@ -176,7 +180,7 @@ fun AppLinkButton(
 ) {
     AppText(
         text = text,
-        modifier = modifier.pressable(onClick = onClick, feedback = PressFeedback.Dim, enabled = enabled, role = Role.Button),
+        modifier = modifier.inlinePressable(onClick = onClick, feedback = PressFeedback.Dim, enabled = enabled),
         style = style,
         color = if (enabled) AppTheme.colors.accentContent else AppTheme.colors.contentDisabled,
     )

@@ -52,6 +52,30 @@ fun Modifier.pressable(
     interactionSource = interactionSource,
 )
 
+/**
+ * [pressable] for a control that lines up with text, such as a link under a paragraph: it keeps its
+ * label's width, so the label starts on the text column instead of centred in 48dp. Touch still
+ * reaches 48dp across, through the platform's hit test for targets smaller than that.
+ */
+internal fun Modifier.inlinePressable(
+    onClick: () -> Unit,
+    feedback: PressFeedback,
+    enabled: Boolean = true,
+    role: Role? = Role.Button,
+): Modifier = (if (enabled) pointerHoverIcon(PointerIcon.Hand) else this) then PressableElement(
+    onClick = onClick,
+    feedback = feedback,
+    enabled = enabled,
+    role = role,
+    onClickLabel = null,
+    haptic = null,
+    onLongClick = null,
+    onSecondaryClick = null,
+    onPressStart = null,
+    interactionSource = null,
+    reserveWidth = false,
+)
+
 private data class PressableElement(
     val onClick: () -> Unit,
     val feedback: PressFeedback,
@@ -63,15 +87,16 @@ private data class PressableElement(
     val onSecondaryClick: ((Offset) -> Unit)?,
     val onPressStart: (() -> Unit)?,
     val interactionSource: MutableInteractionSource?,
+    val reserveWidth: Boolean = true,
 ) : ModifierNodeElement<PressableNode>() {
     override fun create() = PressableNode(
         onClick, feedback, enabled, role, onClickLabel, haptic,
-        onLongClick, onSecondaryClick, onPressStart, interactionSource,
+        onLongClick, onSecondaryClick, onPressStart, interactionSource, reserveWidth,
     )
 
     override fun update(node: PressableNode) = node.update(
         onClick, feedback, enabled, role, onClickLabel, haptic,
-        onLongClick, onSecondaryClick, onPressStart, interactionSource,
+        onLongClick, onSecondaryClick, onPressStart, interactionSource, reserveWidth,
     )
 
     override fun InspectorInfo.inspectableProperties() {
