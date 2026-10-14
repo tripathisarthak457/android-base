@@ -45,6 +45,16 @@ label = "First push after a restart (warm), the frame that composes the screen (
 solid = "ratchet"
 
 [[row]]
+metric = "first_gesture.janky"
+label = "First back swipe after pm clear (cold), janky frames"
+solid = "ratchet"
+
+[[row]]
+metric = "first_gesture_warm.janky"
+label = "First back swipe after a restart (warm), janky frames"
+solid = "ratchet"
+
+[[row]]
 metric = "tabs.janky_pct"
 label = "Tab switch, janky frames (%)"
 solid = 1.0

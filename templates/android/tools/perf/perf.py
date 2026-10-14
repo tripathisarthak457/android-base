@@ -437,6 +437,15 @@ class Run:
         self.record(f"first_push{suffix}.frame_ms", round(parse_framestats.ui_ms(opening), 2) if opening else None)
         self.device.shell("input keyevent 4")
         time.sleep(1.3)
+        # The back card draws a screen scaled, clipped to round corners and faded, which takes
+        # shaders nothing else draws with; the render thread compiles them on the first swipe after
+        # `pm clear`, for up to 70 ms. Paid here, that is reported as a first use instead of landing
+        # in pushpop_gesture's janky frames.
+        width, height = self.device.size
+        self.device.shell(self.tap(row))
+        time.sleep(1.3)
+        gfx, _ = self.segment(f"first_gesture{suffix}", gesture_swipe(width, height), 1.3)
+        self.record(f"first_gesture{suffix}.janky", gfx["janky"])
 
     # Scenarios
 
@@ -498,7 +507,7 @@ class Run:
         starts: the screen beneath must already be laid out, so they cost a layer change."""
         row = self.at_root(0)
         width, height = self.device.size
-        swipe = f"input swipe 3 {height // 2} {int(width * 0.7)} {height // 2 + 50} 260"
+        swipe = gesture_swipe(width, height)
         dumps, starts, all_frames = [], [], []
         for _ in range(6):
             gfx, frames = self.segment("gesture_push", self.tap(row), 1.3)
@@ -850,7 +859,7 @@ class Run:
         process.stdin.close()
         time.sleep(2.0)
         steps = [self.tap(node) for node in self.tabs[1:]] + [self.tap(self.tabs[0]), self.tap(row), "input keyevent 4",
-                 self.tap(row), f"input swipe 3 {height // 2} {int(width * 0.7)} {height // 2 + 50} 260"]
+                 self.tap(row), gesture_swipe(width, height)]
         for command in steps:
             self.device.shell(command)
             time.sleep(1.2)
@@ -1253,7 +1262,7 @@ def record_on(device, args):
     else:
         _, run.tabs = run.wait_for(lambda t: t.tabs(), "the tab bar (tab_0)", timeout=30)
         row = run.at_root(0)
-        swipe = f"input swipe 3 {height // 2} {int(width * 0.7)} {height // 2 + 50} 260"
+        swipe = gesture_swipe(width, height)
         if args.journey == "tab_switch":
             actions = "; sleep 1.2; ".join([run.tap(node) for node in run.tabs[1:]] + [run.tap(run.tabs[0])])
         elif args.journey == "push":
@@ -1315,6 +1324,11 @@ def record_on(device, args):
     print(f"{video}\n{strip}\n{len(report['moving'])} moving frames, "
           f"near-blank frames: {report['blank'][:20]}")
     return 0
+
+
+def gesture_swipe(width, height):
+    """A quick back swipe from the left edge, as one `input swipe`: the gesture of the timing scenarios."""
+    return f"input swipe 3 {height // 2} {int(width * 0.7)} {height // 2 + 50} 260"
 
 
 def back_swipe(width, height, edge="left", share=0.45, steps=24, hold=0.0, drift=0, cancel=False):
