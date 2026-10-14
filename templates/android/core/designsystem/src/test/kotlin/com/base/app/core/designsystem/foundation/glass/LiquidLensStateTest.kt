@@ -7,6 +7,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.runtime.MonotonicFrameClock
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.MotionDurationScale
+import androidx.compose.ui.layout.ScaleFactor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -23,7 +24,7 @@ import kotlin.math.roundToInt
 class LiquidLensStateTest {
 
     @Test
-    fun `a tap glides the lens to the tab without pressing it, then stops drawing`() = runTest {
+    fun `a tap glides the lens to the tab without pressing it`() = runTest {
         val (state, clock) = startLens(slot = 0)
 
         state.select(2)
@@ -31,6 +32,15 @@ class LiquidLensStateTest {
 
         assertEquals(2f, state.position)
         assertTrue(pressures.all { it == 0f })
+    }
+
+    @Test
+    fun `a lens that has arrived asks for no more frames`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.select(2)
+
+        framesUntilIdle(clock) { state.position }
+
         assertNoMoreFrames(clock)
     }
 
@@ -186,9 +196,8 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `the lens stretches along its travel and never drops below its resting size`() = runTest {
+    fun `a travelling lens stretches along its orientation`() = runTest {
         val (state, clock) = startLens(slot = 0)
-        val resting = state.scale(Orientation.Horizontal)
 
         state.select(2)
         val frames = framesUntilIdle(clock) {
@@ -200,8 +209,6 @@ class LiquidLensStateTest {
         }
         val (_, horizontal, vertical) = frames.maxBy { it.first }
 
-        assertEquals(1f, resting.scaleX)
-        assertEquals(1f, resting.scaleY)
         assertTrue(
             "a bar's lens stretches along the bar: $horizontal",
             horizontal.scaleX > horizontal.scaleY,
@@ -210,8 +217,31 @@ class LiquidLensStateTest {
             "a rail's lens stretches along the rail: $vertical",
             vertical.scaleY > vertical.scaleX,
         )
-        assertTrue(frames.all { (_, scale, _) -> scale.scaleX >= 1f && scale.scaleY >= 1f })
-        assertEquals(1f, state.scale(Orientation.Horizontal).scaleX)
+    }
+
+    @Test
+    fun `a travelling lens never shrinks below its resting size`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+
+        state.select(2)
+        val scales = framesUntilIdle(clock) {
+            listOf(state.scale(Orientation.Horizontal), state.scale(Orientation.Vertical))
+        }.flatten()
+
+        assertTrue("$scales", scales.all { it.scaleX >= 1f && it.scaleY >= 1f })
+    }
+
+    @Test
+    fun `a lens at rest has its resting size`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        val beforeTap = state.scale(Orientation.Horizontal)
+        state.select(2)
+
+        framesUntilIdle(clock) { state.position }
+
+        assertEquals(Resting, beforeTap)
+        assertEquals(Resting, state.scale(Orientation.Horizontal))
+        assertEquals(Resting, state.scale(Orientation.Vertical))
     }
 
     @Test
@@ -291,7 +321,20 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `a press swells the lens and it trails the finger across the bar`() = runTest {
+    fun `a lens held under a still finger swells evenly by the full press`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.press(0f)
+        state.dragBy(1f)
+
+        framesUntilIdle(clock) { state.position }
+
+        assertEquals("the lens has stopped, so it swells by the press alone", 0f, state.travel)
+        assertEquals(FullPress, state.scale(Orientation.Horizontal))
+        assertEquals(FullPress, state.scale(Orientation.Vertical))
+    }
+
+    @Test
+    fun `a pressed lens trails the finger across the bar`() = runTest {
         val (state, clock) = startLens(slot = 0)
 
         state.press(0f)
@@ -299,8 +342,17 @@ class LiquidLensStateTest {
         framesUntilIdle(clock) { state.position }
 
         assertTrue(state.pressed)
-        assertEquals(1f, state.pressure)
         assertEquals(1f, state.position)
+    }
+
+    @Test
+    fun `a lens held still under a finger asks for no frames`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.press(0f)
+        state.dragBy(1f)
+
+        framesUntilIdle(clock) { state.position }
+
         assertNoMoreFrames(clock)
     }
 
@@ -320,7 +372,7 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `a release settles on the tab the velocity points to, carrying the velocity`() = runTest {
+    fun `a release settles on the tab the lens's velocity points to`() = runTest {
         val (state, clock) = startLens(slot = 0)
         state.press(0f)
         state.dragBy(2f)
@@ -329,18 +381,29 @@ class LiquidLensStateTest {
         val velocity = state.velocity
 
         val target = state.release()
-        frame(clock)
-        val firstSettleFrame = state.position
         framesUntilIdle(clock) { state.position }
 
         assertTrue(velocity > 0f)
         assertEquals((position + velocity * 0.099f).roundToInt().coerceIn(0, 2), target)
-        assertTrue("the lens keeps moving after the finger lifts", firstSettleFrame > position)
         assertEquals(target.toFloat(), state.position)
         assertEquals(0f, state.pressure)
         assertFalse(state.pressed)
-        assertFalse(state.samplesBackdrop)
-        assertNoMoreFrames(clock)
+    }
+
+    @Test
+    fun `a released lens keeps the speed the finger gave it`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.press(0f)
+        state.dragBy(2f)
+        repeat(4) { frame(clock) }
+        val thrown = state.velocity
+
+        state.release()
+        frame(clock)
+
+        // Restarted from rest, the settle spring would reach under a fifth of the finger's speed
+        // on this frame.
+        assertTrue("$thrown, then ${state.velocity}", state.velocity > thrown / 2)
     }
 
     @Test
@@ -460,6 +523,8 @@ class LiquidLensStateTest {
         const val Period120HzNanos = 8_333_333L
         const val MaxFrames = 600
         const val Tolerance = 1e-4f
+        val Resting = ScaleFactor(1f, 1f)
+        val FullPress = ScaleFactor(1.3f, 1.3f)
         val TrackSpring: SpringSpec<Float> = spring(dampingRatio = 0.86f, stiffness = 1755f)
         val SettleSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 504f)
         val PressSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 1542f)

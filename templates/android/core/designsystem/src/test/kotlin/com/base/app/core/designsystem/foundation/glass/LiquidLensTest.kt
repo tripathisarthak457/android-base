@@ -32,6 +32,7 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.kyant.backdrop.Backdrop
 import com.kyant.shapes.Capsule
@@ -160,6 +161,26 @@ class LiquidLensTest {
     }
 
     @Test
+    fun `a pressed lens swells past its resting bounds along and across the bar`() {
+        val backdrop = CountingBackdrop(Color.Blue)
+        lateinit var state: LiquidLensState
+        rule.setContent {
+            CompositionLocalProvider(LocalGlassQuality provides GlassQuality.Live) {
+                state = rememberLens(selected = 0)
+                Lens(backdrop, state)
+            }
+        }
+        rule.mainClock.autoAdvance = false
+
+        state.press(0f)
+        framesUntil { state.pressure == 1f }
+        val (along, across) = besideLens(Orientation.Horizontal)
+
+        assertTrue("along the bar: $along", along.isBlue())
+        assertTrue("across the bar: $across", across.isBlue())
+    }
+
+    @Test
     fun `a selection's lens is glass on screen while it travels`() {
         val backdrop = CountingBackdrop(Color.Blue)
         var selected by mutableIntStateOf(0)
@@ -228,9 +249,9 @@ class LiquidLensTest {
 
         selected = 2
         framesUntil { state.travel > 0.95f }
-        val (alongInTransit, acrossInTransit) = besideLens()
+        val (alongInTransit, acrossInTransit) = besideLens(Orientation.Horizontal)
         framesUntil { state.position == 2f && state.velocity == 0f }
-        val (alongSettled, acrossSettled) = besideLens()
+        val (alongSettled, acrossSettled) = besideLens(Orientation.Horizontal)
 
         assertTrue(
             "along the bar the lens reaches past its bounds: $alongInTransit",
@@ -239,6 +260,27 @@ class LiquidLensTest {
         assertEquals("across the bar it stays within a sliver of them", Background, acrossInTransit)
         assertEquals(Background, alongSettled)
         assertEquals(Background, acrossSettled)
+    }
+
+    @Test
+    fun `a travelling lens on a rail stretches along the rail`() {
+        val backdrop = CountingBackdrop(Color.Blue)
+        var selected by mutableIntStateOf(0)
+        lateinit var state: LiquidLensState
+        rule.setContent {
+            CompositionLocalProvider(LocalGlassQuality provides GlassQuality.Live) {
+                state = rememberLens(selected)
+                Lens(backdrop, state, Orientation.Vertical)
+            }
+        }
+        rule.mainClock.autoAdvance = false
+
+        selected = 2
+        framesUntil { state.travel > 0.95f }
+        val (along, across) = besideLens(Orientation.Vertical)
+
+        assertTrue("along the rail the lens reaches past its bounds: $along", along.isBlue())
+        assertEquals("across the rail it stays within a sliver of them", Background, across)
     }
 
     @Test
@@ -305,7 +347,7 @@ class LiquidLensTest {
             state = rememberLens(selected)
             Box(
                 Modifier
-                    .size(LensWidth, LensHeight)
+                    .size(lensSize(Orientation.Horizontal))
                     .background(if (highlighted) Color.Red else Background),
             )
             SideEffect { compositions++ }
@@ -406,19 +448,25 @@ class LiquidLensTest {
     }
 
     /**
-     * The frame's pixels [OutsideGap] beyond the lens's resting bounds: past its trailing end at
-     * mid-height, along the bar, and above its middle, across it.
+     * The frame's pixels [OutsideGap] beyond the resting bounds of a lens laid along
+     * [orientation]: past the middle of its trailing end, along it, and past the middle of its
+     * leading side, across it.
      */
-    private fun besideLens(): Pair<Color, Color> {
+    private fun besideLens(orientation: Orientation): Pair<Color, Color> {
         val pixels = capture(FrameTag)
         with(rule.density) {
             val margin = FrameMargin.roundToPx()
             val gap = OutsideGap.roundToPx()
-            val width = LensWidth.roundToPx()
-            val height = LensHeight.roundToPx()
-            val along = pixels[margin + width + gap, margin + height / 2]
-            val across = pixels[margin + width / 2, margin - gap]
-            return along to across
+            val length = LensLength.roundToPx()
+            val breadth = LensBreadth.roundToPx()
+            return when (orientation) {
+                Orientation.Horizontal ->
+                    pixels[margin + length + gap, margin + breadth / 2] to
+                        pixels[margin + length / 2, margin - gap]
+                Orientation.Vertical ->
+                    pixels[margin + breadth / 2, margin + length + gap] to
+                        pixels[margin - gap, margin + length / 2]
+            }
         }
     }
 
@@ -471,14 +519,20 @@ class LiquidLensTest {
     private fun Lens(
         backdrop: Backdrop,
         state: LiquidLensState,
+        orientation: Orientation = Orientation.Horizontal,
         surface: ColorProducer = ColorProducer { Color.Red },
     ) {
-        val lens = remember(backdrop, state, surface) {
-            Modifier.liquidLens(backdrop, Capsule(), state, Orientation.Horizontal, surface)
+        val lens = remember(backdrop, state, orientation, surface) {
+            Modifier.liquidLens(backdrop, Capsule(), state, orientation, surface)
         }
         Box(Modifier.testTag(FrameTag).background(Background).padding(FrameMargin)) {
-            Box(Modifier.size(LensWidth, LensHeight).testTag(LensTag).then(lens))
+            Box(Modifier.size(lensSize(orientation)).testTag(LensTag).then(lens))
         }
+    }
+
+    private fun lensSize(orientation: Orientation): DpSize = when (orientation) {
+        Orientation.Horizontal -> DpSize(LensLength, LensBreadth)
+        Orientation.Vertical -> DpSize(LensBreadth, LensLength)
     }
 
     /** A backdrop of one colour that counts how often a lens samples it. */
@@ -521,8 +575,8 @@ class LiquidLensTest {
         const val SettleFrames = 60
         const val ToneSplit = 0.25f
         val Background = Color.Green
-        val LensWidth = 120.dp
-        val LensHeight = 48.dp
+        val LensLength = 120.dp
+        val LensBreadth = 48.dp
         val FrameMargin = 24.dp
         val OutsideGap = 4.dp
         val TrackSpring: SpringSpec<Float> = spring(dampingRatio = 0.86f, stiffness = 1755f)
