@@ -13,5 +13,9 @@
   "The app received something it couldn't read.": "L’app a reçu des données qu’elle n’a pas pu lire.",
   "Saved data couldn't be read or written.": "Les données enregistrées n’ont pas pu être lues ou écrites.",
   "Try again. If it keeps happening, restart the app.": "Réessayez. Si le problème persiste, redémarrez l’app.",
-  "Dismiss": "Fermer"
+  "Dismiss": "Fermer",
+  "Close": "Fermer",
+  "Discard changes?": "Ignorer les modifications ?",
+  "Discard": "Ignorer",
+  "Keep Editing": "Continuer à modifier"
 }

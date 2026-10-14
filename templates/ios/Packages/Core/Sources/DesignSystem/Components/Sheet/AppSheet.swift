@@ -60,6 +60,8 @@ private struct AppSheetPresentation: ViewModifier {
     /// Where the sheet rests when it opens at `initialDetent` and no `selection` is passed.
     @State private var restingDetent: AppSheetDetent?
 
+    @State private var guards = AppSheetGuards()
+
     init(options: AppSheetOptions, selection: Binding<AppSheetDetent>?) {
         self.options = options
         self.selection = selection
@@ -89,6 +91,7 @@ private struct AppSheetPresentation: ViewModifier {
             .presentationDragIndicator(options.grabberVisibility)
             .interactiveDismissDisabled(!options.dismissible)
             .environment(\.isAppSheetDismissible, options.dismissible)
+            .environment(\.appSheetGuards, guards)
             .modifier(AppSheetSurface(material: options.material))
             .modifier(AppSheetPlacementModifier(placement: options.placement))
     }

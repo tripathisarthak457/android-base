@@ -6,11 +6,12 @@ extension View {
     /// `enabled`, and calls `onAttempt` each time someone tries, so the sheet can ask before
     /// discarding their changes.
     ///
-    /// The sheet stretches and springs back, as one that is not `dismissible` does. Its own buttons
-    /// still close it, so its Cancel button asks the same question first. Apply it inside the
-    /// sheet's content, on the view that owns the changes.
+    /// The sheet stretches and springs back, as one that is not `dismissible` does. The close button
+    /// of `appSheetHeader` calls `onAttempt` too; buttons of the sheet's own still close it, so a
+    /// Cancel button asks the same question first. Apply it inside the sheet's content, on the view
+    /// that owns the changes.
     public func appSheetDismissGuard(enabled: Bool, onAttempt: @escaping () -> Void) -> some View {
-        modifier(AppSheetDismissGuard(isEnabled: enabled, onAttempt: onAttempt))
+        modifier(AppSheetDismissGuard(isEnabled: enabled, holdsInteractiveDismissal: true, onAttempt: onAttempt))
     }
 }
 
@@ -26,54 +27,78 @@ private nonisolated struct AppSheetDismissibleKey: EnvironmentKey {
     static let defaultValue = true
 }
 
-private struct AppSheetDismissGuard: ViewModifier {
+struct AppSheetDismissGuard: ViewModifier {
     let isEnabled: Bool
+
+    /// Whether a swipe down or a tap outside is held and reported too. Without it only the close
+    /// button of `appSheetHeader` asks, for a sheet whose swipes the system confirms by itself.
+    let holdsInteractiveDismissal: Bool
+
     let onAttempt: () -> Void
 
     @Environment(\.isAppSheetDismissible) private var isDismissible
+    @Environment(\.appSheetGuards) private var guards
 
     func body(content: Content) -> some View {
         content
             // SwiftUI documents no order between nested `interactiveDismissDisabled` modifiers, so
             // this one also carries the sheet's own setting rather than overriding it.
-            .interactiveDismissDisabled(isEnabled || !isDismissible)
+            .interactiveDismissDisabled((holdsInteractiveDismissal && isEnabled) || !isDismissible)
             .background {
-                DismissAttemptObserver(onAttempt: isEnabled ? onAttempt : nil)
-                    .allowsHitTesting(false)
-                    .accessibilityHidden(true)
+                DismissAttemptObserver(
+                    onAttempt: isEnabled ? onAttempt : nil,
+                    guards: guards,
+                    holdsInteractiveDismissal: holdsInteractiveDismissal
+                )
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
             }
     }
 }
 
 /// UIKit reports a refused dismissal only to the presentation controller's delegate, which is
 /// SwiftUI's own. The observer puts a `DismissAttemptForwarder` in front of it for as long as the
-/// guarded view is in the sheet.
+/// guarded view is in the sheet, and registers the guard with the sheet's close button.
 private struct DismissAttemptObserver: UIViewControllerRepresentable {
     let onAttempt: (() -> Void)?
+    let guards: AppSheetGuards?
+    let holdsInteractiveDismissal: Bool
 
     func makeUIViewController(context: Context) -> DismissAttemptController {
         DismissAttemptController()
     }
 
     func updateUIViewController(_ controller: DismissAttemptController, context: Context) {
-        controller.onAttempt = onAttempt
+        controller.update(onAttempt: onAttempt, guards: guards, holdsInteractiveDismissal: holdsInteractiveDismissal)
     }
 
     static func dismantleUIViewController(_ controller: DismissAttemptController, coordinator: Coordinator) {
-        controller.stopForwarding()
+        controller.update(onAttempt: nil, guards: nil, holdsInteractiveDismissal: false)
     }
 }
 
 private final class DismissAttemptController: UIViewController {
-    var onAttempt: (() -> Void)? {
-        didSet {
-            forwarder?.onAttempt = onAttempt
-            startForwarding()
-        }
-    }
-
+    private var onAttempt: (() -> Void)?
+    private var holdsInteractiveDismissal = false
     private var forwarder: DismissAttemptForwarder?
     private weak var presentation: UIPresentationController?
+    private weak var guards: AppSheetGuards?
+
+    func update(onAttempt: (() -> Void)?, guards: AppSheetGuards?, holdsInteractiveDismissal: Bool) {
+        self.onAttempt = onAttempt
+        self.holdsInteractiveDismissal = holdsInteractiveDismissal
+        if guards !== self.guards {
+            self.guards?.setAttempt(nil, for: self)
+            self.guards = guards
+        }
+        guards?.setAttempt(onAttempt, for: self)
+        if holdsInteractiveDismissal {
+            forwarder?.onAttempt = onAttempt
+            startForwarding()
+        } else {
+            stopForwarding()
+        }
+    }
 
     override func loadView() {
         view = UIView()
@@ -82,7 +107,9 @@ private final class DismissAttemptController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        startForwarding()
+        if holdsInteractiveDismissal {
+            startForwarding()
+        }
     }
 
     /// Puts a forwarder in front of the delegate of the presentation this view is in, unless this
@@ -100,7 +127,7 @@ private final class DismissAttemptController: UIViewController {
         self.presentation = presentation
     }
 
-    func stopForwarding() {
+    private func stopForwarding() {
         if let forwarder, let presentation {
             forwarder.uninstall(from: presentation)
         }

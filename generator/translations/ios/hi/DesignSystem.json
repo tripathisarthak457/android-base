@@ -13,5 +13,9 @@
   "The app received something it couldn't read.": "ऐप को कुछ ऐसा मिला जिसे वह पढ़ नहीं सका।",
   "Saved data couldn't be read or written.": "सहेजा गया डेटा पढ़ा या लिखा नहीं जा सका।",
   "Try again. If it keeps happening, restart the app.": "फिर से कोशिश करें। अगर ऐसा होता रहे, तो ऐप को फिर से शुरू करें।",
-  "Dismiss": "बंद करें"
+  "Dismiss": "बंद करें",
+  "Close": "बंद करें",
+  "Discard changes?": "बदलाव छोड़ें?",
+  "Discard": "छोड़ें",
+  "Keep Editing": "संपादन जारी रखें"
 }

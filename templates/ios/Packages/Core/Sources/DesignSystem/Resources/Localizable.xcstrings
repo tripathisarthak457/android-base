@@ -2,7 +2,11 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Check your connection, then try again." : {},
+    "Close" : {},
+    "Discard" : {},
+    "Discard changes?" : {},
     "Dismiss" : {},
+    "Keep Editing" : {},
     "Loading" : {},
     "No Response" : {},
     "Request Failed" : {},
