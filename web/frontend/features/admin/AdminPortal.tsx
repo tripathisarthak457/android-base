@@ -69,8 +69,17 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
   const [value, setValue] = useState("");
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string>();
+  const input = useRef<HTMLInputElement>(null);
 
+  // Sign in stays enabled and says what is missing, as the report form's Send does. Any token
+  // that is there goes to the API, the only side that can judge it.
   async function submit() {
+    if (busy) return;
+    if (!value) {
+      setProblem("Enter the token first.");
+      input.current?.focus();
+      return;
+    }
     setBusy(true);
     setProblem(undefined);
     try {
@@ -108,6 +117,7 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
             {(control) => (
               <TextInput
                 {...control}
+                ref={input}
                 type="password"
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
@@ -117,7 +127,7 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
             )}
           </Field>
         </div>
-        <Button type="submit" className="mt-4 w-full" disabled={busy || value.length < 8} focusableWhenDisabled>
+        <Button type="submit" className="mt-4 w-full" disabled={busy} focusableWhenDisabled>
           {busy ? (
             <>
               <Spinner /> Signing in…
