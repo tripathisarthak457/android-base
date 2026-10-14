@@ -1,5 +1,5 @@
 {
-  "generator_commit": "8ea3985f426b",
+  "generator_commit": "9823262a649c",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -1484,6 +1484,120 @@
         "pagingFriction": 2.393,
         "rubberBand": 0.55
       },
+      "sheet": {
+        "actionSheet": {
+          "cardWidth": 320,
+          "maxFitFraction": 0.6,
+          "rowHeight": 56
+        },
+        "back": {
+          "easing": [
+            0.1,
+            0.1,
+            0.0,
+            1.0
+          ],
+          "formScale": 0.9,
+          "guardedShare": 0.2,
+          "persistentFollow": 24,
+          "shrinkX": 48,
+          "shrinkY": 24
+        },
+        "cardStack": {
+          "corner": 12,
+          "deviceCornerFactor": 0.9,
+          "deviceCornerMin": 20,
+          "overlayAlpha": 0.1,
+          "overlayColor": {
+            "dark": "#C8C8C8",
+            "light": "#000000"
+          },
+          "scale": 0.9165,
+          "statusBarFlip": 0.5
+        },
+        "choice": {
+          "maxFitFraction": 0.6,
+          "searchFrom": 6
+        },
+        "detent": {
+          "largeTopGap": 10,
+          "mediumFraction": 0.5,
+          "mediumMinGap": 48,
+          "minHeight": 48
+        },
+        "form": {
+          "heightFraction": 0.85,
+          "maxHeight": 620
+        },
+        "frosted": {
+          "bodyAlpha": {
+            "dark": 0.94,
+            "light": 0.92
+          }
+        },
+        "glass": {
+          "blur": 16,
+          "bodyAlpha": {
+            "dark": 0.5,
+            "light": 0.55
+          },
+          "opaqueAt": 0.5
+        },
+        "grabber": {
+          "alpha": 0.45,
+          "contentTop": 15,
+          "contrastAlpha": 0.7,
+          "height": 5,
+          "hoverAlpha": 0.7,
+          "top": 5,
+          "touchBand": 14,
+          "touchTarget": 48,
+          "width": 36
+        },
+        "haptic": {
+          "arrivalShare": 0.02
+        },
+        "header": {
+          "minHeight": 44,
+          "scrollEdgeHeight": 24,
+          "scrollEdgeRamp": 8,
+          "top": 14
+        },
+        "keyboard": {
+          "dragHidesAfter": 24,
+          "formLiftGap": 16
+        },
+        "release": {
+          "detentFlick": 400,
+          "dismissFlick": 2.0,
+          "dismissPosition": 0.48,
+          "projectionSeconds": 0.099
+        },
+        "rim": {
+          "solidDarkAlpha": 0.08
+        },
+        "shadow": {
+          "alpha": 0.1,
+          "blur": 20,
+          "faintScrimAlpha": 0.2,
+          "y": 6
+        },
+        "side": {
+          "backGrow": 12,
+          "backShrink": 24,
+          "backY": 48,
+          "inset": 16
+        },
+        "stack": {
+          "coveredLift": 0.005,
+          "coveredScale": 0.9165,
+          "maxCoveredDrawn": 2,
+          "peek": 10
+        },
+        "stretch": {
+          "aboveLarge": 0.008
+        }
+      },
       "skeleton": {
         "bandWidth": 240,
         "easing": [
@@ -2515,6 +2629,8 @@
           "xs": 2
         },
         "requires": [],
+        "sheetInset": 0,
+        "sheetMaterial": "Solid",
         "surfaces": "Paper",
         "uppercaseLabels": true,
         "voice": "Editorial"
@@ -2538,6 +2654,8 @@
           "xs": 8
         },
         "requires": [],
+        "sheetInset": 10,
+        "sheetMaterial": "Solid",
         "surfaces": "Cream",
         "uppercaseLabels": false,
         "voice": "Rounded"
@@ -2561,6 +2679,8 @@
           "xs": 10
         },
         "requires": [],
+        "sheetInset": 8,
+        "sheetMaterial": "Solid",
         "surfaces": "BrandTint",
         "uppercaseLabels": false,
         "voice": "Bold"
@@ -2584,6 +2704,8 @@
           "xs": 6
         },
         "requires": [],
+        "sheetInset": 8,
+        "sheetMaterial": "Solid",
         "surfaces": "Cool",
         "uppercaseLabels": false,
         "voice": "Neutral"

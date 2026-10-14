@@ -68,6 +68,9 @@ private val StylesByDesign = AppDesignStyle.entries.associateWith { design ->
         borderWidthStrong = tokens.borderWidthStrong,
         uppercaseLabels = tokens.uppercaseLabels,
         offsetShadow = tokens.offsetShadow,
+        sheetRadius = tokens.radiusSheet,
+        sheetInset = tokens.sheetInset,
+        sheetMaterial = tokens.sheetMaterial,
         surfaces = tokens.surfaces,
         voice = tokens.voice,
     )
@@ -119,6 +122,24 @@ enum class BarIndicator {
     Subtle,
 }
 
+/** What a sheet's surface is made of. A design style picks one of the last three for its sheets. */
+enum class SheetMaterial {
+    /** The design style's choice: Solid unless the style is made of glass. */
+    Automatic,
+
+    /** The opaque container. The cheapest, and what every material becomes under Reduce transparency. */
+    Solid,
+
+    /** Drawn translucency (the container at 92-94 %, a rim). It samples nothing: a few cached draws. */
+    Frosted,
+
+    /**
+     * Live liquid glass at partial detents on the tiers that sample the scene, opaque by halfway to
+     * the large detent; Frosted on the lower tiers and in projects without liquid glass.
+     */
+    Glass,
+}
+
 /** The neutrals a style sits on. The accent ramps are the brand's and never change here. */
 enum class SurfaceTone {
     /** The template's cool greys. */
@@ -163,6 +184,12 @@ data class AppStyle(
     val borderWidthStrong: Dp,
     val uppercaseLabels: Boolean,
     val offsetShadow: Dp,
+    /** Every corner of a sheet; a sheet keeps one radius whether it floats or is attached. */
+    val sheetRadius: Dp,
+    /** The gap a sheet floats at, from the sides and bottom, at its partial detents; 0 keeps it attached. */
+    val sheetInset: Dp,
+    /** What [SheetMaterial.Automatic] sheets are made of; never Automatic itself. */
+    val sheetMaterial: SheetMaterial,
     val surfaces: SurfaceTone,
     val voice: TypeVoice,
 )

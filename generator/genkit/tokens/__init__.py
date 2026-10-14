@@ -5,9 +5,9 @@ every emitter (Kotlin, Swift, the website's catalogue) writes out.
     foundation.json   spacing, radii, sizes, borders, elevation
     typography.json   the role scale and each voice's weight per role
     motion.json       springs as (response, bounce), motion styles, scrolling, fades, press, navigation, tab bar,
-                      the skeleton's shimmer
+                      the skeleton's shimmer, sheets
     palette.json      ramps, the template brand, status hues, roles per theme, surface tones
-    styles.json       design styles: corners, treatments, surface tone, type voice
+    styles.json       design styles: corners, treatments, surface tone, type voice, sheet inset and material
 
 A palette value is a hex (`#RRGGBB` or `#AARRGGBB`), a ramp step (`grey.50`), another role
 (`@surface`), or `{ "ref": …, "alpha": 0.4 }`.
@@ -38,6 +38,8 @@ BRAND_COLOURS: tuple[str, ...] = ("accent", "secondary", "tertiary")
 _BRAND_FIELDS = ("base", "pressed", "subtleLight", "dark", "darkPressed", "subtleDark", "onLight", "onDark")
 _STYLE_RADII = ("xs", "sm", "md", "lg", "xl", "sheet")
 _STATUS_FIELDS = ("base", "subtle")
+#: What a design style's sheets are made of; `Automatic` is the component's, never a style's.
+SHEET_MATERIALS: tuple[str, ...] = ("Solid", "Frosted", "Glass")
 
 #: What a project without downloadable fonts draws with, named as Android names the families.
 PLATFORM_SANS = "sans-serif"
@@ -211,6 +213,7 @@ def _validate_motion(motion: dict[str, Any]) -> None:
         raise _fail("motion", "skeleton.tiltDegrees", "must be at least 0 and below 60")
     _number("motion", "skeleton.maxSlowdown", skeleton["maxSlowdown"], 1)
     _easing("skeleton.easing", skeleton["easing"])
+    _validate_sheet(_table("motion", "sheet", motion.get("sheet"), tuple(_SHEET_KEYS)))
 
 
 def _easing(where: str, value: object) -> None:
@@ -221,6 +224,62 @@ def _easing(where: str, value: object) -> None:
         # and Compose, SwiftUI and CSS each treat one differently.
         low, high = (0, 1) if index % 2 == 0 else (None, None)
         _number("motion", f"{where}[{index}]", control, low, high)
+
+
+#: The sheet section's groups and keys. Fractions and alphas lie in 0–1; everything else is a length in dp, a speed in
+#: dp/s or a count, and only has to be positive.
+_SHEET_KEYS: dict[str, tuple[str, ...]] = {
+    "detent": ("mediumFraction", "largeTopGap", "mediumMinGap", "minHeight"),
+    "release": ("projectionSeconds", "detentFlick", "dismissFlick", "dismissPosition"),
+    "stretch": ("aboveLarge",),
+    "grabber": (
+        "width", "height", "top", "touchTarget", "touchBand", "alpha", "hoverAlpha", "contrastAlpha", "contentTop",
+    ),
+    "header": ("top", "minHeight", "scrollEdgeHeight", "scrollEdgeRamp"),
+    "keyboard": ("dragHidesAfter", "formLiftGap"),
+    "form": ("heightFraction", "maxHeight"),
+    "side": ("inset", "backShrink", "backGrow", "backY"),
+    "cardStack": (
+        "scale", "corner", "deviceCornerFactor", "deviceCornerMin", "overlayAlpha", "overlayColor", "statusBarFlip",
+    ),
+    "stack": ("coveredScale", "coveredLift", "peek", "maxCoveredDrawn"),
+    "back": ("shrinkX", "shrinkY", "easing", "guardedShare", "persistentFollow", "formScale"),
+    "haptic": ("arrivalShare",),
+    "frosted": ("bodyAlpha",),
+    "glass": ("opaqueAt", "blur", "bodyAlpha"),
+    "rim": ("solidDarkAlpha",),
+    "shadow": ("blur", "y", "alpha", "faintScrimAlpha"),
+    "actionSheet": ("rowHeight", "maxFitFraction", "cardWidth"),
+    "choice": ("maxFitFraction", "searchFrom"),
+}
+_SHEET_FRACTIONS = {
+    "detent.mediumFraction", "release.dismissPosition", "stretch.aboveLarge", "grabber.alpha", "grabber.hoverAlpha",
+    "grabber.contrastAlpha", "form.heightFraction", "cardStack.scale", "cardStack.deviceCornerFactor",
+    "cardStack.overlayAlpha", "cardStack.statusBarFlip", "stack.coveredScale", "stack.coveredLift", "back.guardedShare",
+    "back.formScale", "haptic.arrivalShare", "glass.opaqueAt", "rim.solidDarkAlpha", "shadow.alpha",
+    "shadow.faintScrimAlpha", "actionSheet.maxFitFraction", "choice.maxFitFraction",
+}
+
+
+def _validate_sheet(sheet: dict[str, Any]) -> None:
+    for group, keys in _SHEET_KEYS.items():
+        values = _table("motion", f"sheet.{group}", sheet[group], keys)
+        for key in keys:
+            where = f"sheet.{group}.{key}"
+            value = values[key]
+            if f"{group}.{key}" == "back.easing":
+                _easing(where, value)
+            elif f"{group}.{key}" == "cardStack.overlayColor":
+                for theme in THEMES:
+                    if not _HEX.fullmatch(str(_table("motion", where, value, THEMES)[theme])):
+                        raise _fail("motion", f"{where}.{theme}", "must be a hex colour")
+            elif isinstance(value, dict):
+                for theme in THEMES:
+                    _number("motion", f"{where}.{theme}", _table("motion", where, value, THEMES)[theme], 0, 1)
+            elif f"{group}.{key}" in _SHEET_FRACTIONS:
+                _number("motion", where, value, 0, 1)
+            elif _number("motion", where, value) <= 0:
+                raise _fail("motion", where, "must be above 0")
 
 
 def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
@@ -278,7 +337,8 @@ def _check_role(names: list[str], tone: str, role: str) -> None:
 def _validate_styles(styles: dict[str, Any], tones: tuple[str, ...], voices: tuple[str, ...]) -> None:
     required = (
         "description", "requires", "radii", "buttonRadius", "chipRadius", "card", "field", "bar", "indicator",
-        "borderWidth", "borderWidthStrong", "uppercaseLabels", "offsetShadow", "surfaces", "voice",
+        "borderWidth", "borderWidthStrong", "uppercaseLabels", "offsetShadow", "sheetInset", "sheetMaterial",
+        "surfaces", "voice",
     )
     for name, style in _table("styles", "styles", styles).items():
         if not _IDENTIFIER.fullmatch(name):
@@ -292,8 +352,10 @@ def _validate_styles(styles: dict[str, Any], tones: tuple[str, ...], voices: tup
         for key in ("card", "field", "bar", "indicator"):
             if not _IDENTIFIER.fullmatch(str(style[key])):
                 raise _fail("styles", f"{name}.{key}", "must name a treatment, like Outlined")
-        for key in ("borderWidth", "borderWidthStrong", "offsetShadow"):
+        for key in ("borderWidth", "borderWidthStrong", "offsetShadow", "sheetInset"):
             _number("styles", f"{name}.{key}", style[key], 0)
+        if style["sheetMaterial"] not in SHEET_MATERIALS:
+            raise _fail("styles", f"{name}.sheetMaterial", f"must be one of {', '.join(SHEET_MATERIALS)}")
         if not isinstance(style["uppercaseLabels"], bool):
             raise _fail("styles", f"{name}.uppercaseLabels", "must be true or false")
         if not isinstance(style["requires"], list):
@@ -374,7 +436,9 @@ def _motion(motion: dict[str, Any]) -> dict[str, Any]:
         "styles": styles,
         **{
             key: motion[key]
-            for key in ("scroll", "visibilityThreshold", "fades", "stagger", "press", "navigation", "tabBar", "skeleton")
+            for key in (
+                "scroll", "visibilityThreshold", "fades", "stagger", "press", "navigation", "tabBar", "skeleton", "sheet",
+            )
         },
     }
 

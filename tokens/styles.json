@@ -13,6 +13,8 @@
     "borderWidthStrong": 1.5,
     "uppercaseLabels": false,
     "offsetShadow": 0,
+    "sheetInset": 8,
+    "sheetMaterial": "Solid",
     "surfaces": "Cool",
     "voice": "Neutral"
   },
@@ -30,6 +32,8 @@
     "borderWidthStrong": 1.5,
     "uppercaseLabels": false,
     "offsetShadow": 0,
+    "sheetInset": 8,
+    "sheetMaterial": "Solid",
     "surfaces": "BrandTint",
     "voice": "Bold"
   },
@@ -47,6 +51,8 @@
     "borderWidthStrong": 1.5,
     "uppercaseLabels": true,
     "offsetShadow": 0,
+    "sheetInset": 0,
+    "sheetMaterial": "Solid",
     "surfaces": "Paper",
     "voice": "Editorial"
   },
@@ -64,6 +70,8 @@
     "borderWidthStrong": 2.5,
     "uppercaseLabels": false,
     "offsetShadow": 4,
+    "sheetInset": 10,
+    "sheetMaterial": "Solid",
     "surfaces": "Cream",
     "voice": "Rounded"
   }
