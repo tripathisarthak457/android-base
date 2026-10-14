@@ -833,9 +833,9 @@ class Run:
                     max(window["recomposing_while_dragged"] for kind, window in zip(actions, windows) if kind == "back_gesture"))
 
     def trace(self):
-        """A Perfetto capture of tab switches, a push and pop and a back swipe, for reading in
-        ui.perfetto.dev: FrameTimeline jank types, GPU and CPU frequency, scheduling. Nothing is
-        computed from it here."""
+        """A Perfetto capture of tab switches, a push and pop, a back swipe and a scroll down and
+        back up the root list, for reading in ui.perfetto.dev: FrameTimeline jank types, GPU and CPU
+        frequency, scheduling. Nothing is computed from it here."""
         row = self.at_root(0)
         width, height = self.device.size
         package = self.app.package
@@ -854,6 +854,11 @@ class Run:
         for command in steps:
             self.device.shell(command)
             time.sleep(1.2)
+        self.at_root(0)
+        x, low, high = width // 2, int(height * 0.75), int(height * 0.29)
+        self.device.shell(
+            f"for i in 1 2 3; do input swipe {x} {low} {x} {high} 140; sleep 0.7; done; "
+            f"for i in 1 2 3; do input swipe {x} {high} {x} {low} 140; sleep 0.7; done")
         process.wait(timeout=60)
         local = os.path.join(self.out, "trace.perfetto-trace")
         self.device.adb("pull", remote, local, check=False)
@@ -963,7 +968,7 @@ data_sources {
     }
   }
 }
-duration_ms: 20000
+duration_ms: 32000
 """
 
 
