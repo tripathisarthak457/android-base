@@ -1,10 +1,12 @@
 package com.base.app.core.designsystem.foundation.glass
 
+import androidx.compose.animation.core.FloatSpringSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.runtime.MonotonicFrameClock
 import androidx.compose.runtime.snapshots.Snapshot
+import androidx.compose.ui.MotionDurationScale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScheduler
@@ -14,10 +16,8 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
 class LiquidLensStateTest {
@@ -64,21 +64,6 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `travel rises with the lens's speed`() = runTest {
-        val (state, clock) = startLens(slot = 0)
-
-        state.select(1)
-        val samples = framesUntilIdle(clock) { abs(state.velocity) to state.travel }
-        val bySpeed = samples.sortedBy { it.first }.map { it.second }
-
-        assertTrue(bySpeed.zipWithNext().all { (slower, faster) -> faster >= slower })
-        assertTrue(
-            "some frames lie between rest and full glass",
-            bySpeed.any { it > 0f && it < 1f },
-        )
-    }
-
-    @Test
     fun `a tap samples the scene while it travels and stops before it settles`() = runTest {
         val (state, clock) = startLens(slot = 0)
         val atRest = state.samplesBackdrop
@@ -97,29 +82,79 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `a press samples the scene from the touch until its glass has gone`() = runTest {
+    fun `a selection reversed in flight stays glass until a single hand-over`() = runTest {
+        for ((first, second) in listOf(2 to 0, 1 to 0, 2 to 1)) {
+            for (reversal in 2..20) {
+                val (state, clock) = startLens(slot = 0)
+
+                state.select(first)
+                val outward = List(reversal) {
+                    frame(clock)
+                    state.samplesBackdrop to state.position
+                }
+                state.select(second)
+                val back = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
+
+                val moving = (outward + back).dropWhile { (_, position) -> position == 0f }
+                val sampling = moving.map { it.first }
+                val handOver = sampling.indexOf(false)
+                val case = "to $first, back to $second after $reversal frames: $sampling"
+                assertTrue("glass from the first step, $case", sampling.first())
+                assertTrue("in one unbroken run, $case", sampling.drop(handOver).none { it })
+                assertTrue(
+                    "before the lens arrives, $case",
+                    moving[handOver].second != second.toFloat(),
+                )
+                assertEquals(second.toFloat(), state.position)
+            }
+        }
+    }
+
+    @Test
+    fun `a press samples the scene from the touch while the finger is down`() = runTest {
         val (state, clock) = startLens(slot = 0)
 
         state.press(0f)
         val onTouch = state.samplesBackdrop
-        framesUntilIdle(clock) { state.pressure }
-        val held = state.samplesBackdrop
-        state.release()
-        val afterRelease = framesUntilIdle(clock) { state.samplesBackdrop }
+        val held = framesUntilIdle(clock) { state.samplesBackdrop }
 
         assertTrue(onTouch)
-        assertTrue("a still, held lens is glass", held)
-        assertTrue("the swell recedes as glass", afterRelease.first())
+        assertTrue("a still, held lens is glass: $held", held.all { it } && state.samplesBackdrop)
+    }
+
+    @Test
+    fun `a released press samples the scene until its swell has receded`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.press(0f)
+        framesUntilIdle(clock) { state.pressure }
+
+        state.release()
+        val receding = framesUntilIdle(clock) { state.pressure to state.samplesBackdrop }
+
+        assertTrue(
+            "for as long as the swell shows: $receding",
+            receding.filter { (pressure, _) -> pressure >= 0.01f }.all { (_, samples) -> samples },
+        )
+        assertTrue(receding.first().second)
         assertFalse(state.samplesBackdrop)
         assertEquals(0f, state.intensity)
     }
 
     @Test
-    fun `without refraction a tap and a drag move a plain indicator`() = runTest {
+    fun `without refraction a tap moves a plain indicator`() = runTest {
         val (state, clock) = startLens(slot = 0, refracts = false)
 
         state.select(2)
         val tap = framesUntilIdle(clock) { state.isPlain() }
+
+        assertTrue("$tap", tap.isNotEmpty() && tap.all { it })
+        assertEquals(2f, state.position)
+    }
+
+    @Test
+    fun `without refraction a drag moves a plain indicator that follows the finger`() = runTest {
+        val (state, clock) = startLens(slot = 2, refracts = false)
+
         state.press(2f)
         state.dragBy(-1f)
         val drag = framesUntilIdle(clock) { state.isPlain() }
@@ -127,7 +162,6 @@ class LiquidLensStateTest {
         state.release()
         val release = framesUntilIdle(clock) { state.isPlain() }
 
-        assertTrue("a tap: $tap", tap.isNotEmpty() && tap.all { it })
         assertTrue("a drag: $drag", drag.isNotEmpty() && drag.all { it })
         assertTrue("a release: $release", release.all { it })
         assertEquals("the indicator still follows the finger", 1f, held)
@@ -201,16 +235,59 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `a settle spring that overshoots is refused`() {
-        val bouncy = spring<Float>(dampingRatio = 0.7f, stiffness = 504f)
-        val state = LiquidLensState(0, 3, TrackSpring, SettleSpring, PressSpring)
+    fun `an overshooting settle spring keeps the lens glass through its turnarounds`() = runTest {
+        val bouncy = spring<Float>(dampingRatio = 0.5f, stiffness = 504f)
+        val (state, clock) = startLens(slot = 0, settleSpring = bouncy)
 
-        assertThrows(IllegalArgumentException::class.java) {
-            LiquidLensState(0, 3, TrackSpring, bouncy, PressSpring)
-        }
-        assertThrows(IllegalArgumentException::class.java) {
-            state.setSprings(TrackSpring, bouncy, PressSpring)
-        }
+        state.select(2)
+        val moving = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
+            .dropWhile { (_, position) -> position == 0f }
+        val sampling = moving.map { it.first }
+
+        assertTrue("it overshoots: $moving", moving.maxOf { it.second } > 2.1f)
+        assertTrue("glass from the first step: $sampling", sampling.first())
+        assertTrue("in one unbroken run: $sampling", sampling.dropWhile { it }.none { it })
+    }
+
+    @Test
+    fun `with animations off the lens jumps straight to the tab`() = runTest {
+        val (state, clock) = startLens(slot = 0, durationScale = 0f)
+
+        state.select(2)
+        val frames = framesUntilIdle(clock) { state.position to state.samplesBackdrop }
+
+        assertEquals(listOf(2f to false), frames)
+    }
+
+    @Test
+    fun `a slower animator scale slows the lens by its factor`() = runTest {
+        val (normal, normalClock) = startLens(slot = 0)
+        normal.select(2)
+        repeat(1 + 5) { frame(normalClock) }
+        val atNormalSpeed = normal.position
+
+        val (slow, slowClock) = startLens(slot = 0, durationScale = 2f)
+        slow.select(2)
+        repeat(1 + 10) { frame(slowClock) }
+
+        assertEquals(atNormalSpeed, slow.position, Tolerance)
+    }
+
+    @Test
+    fun `on a 120 Hz display the lens keeps the display's time`() = runTest {
+        val (state, clock) = startLens(slot = 0, framePeriodNanos = Period120HzNanos)
+
+        state.select(2)
+        repeat(1 + 12) { frame(clock) }
+
+        val spentMillis = 12 * Period120HzNanos / 1_000_000
+        val settle = FloatSpringSpec(dampingRatio = 1f, stiffness = 504f)
+        val earliest = settle.getValueFromNanos((spentMillis - 1) * 1_000_000, 0f, 2f, 0f)
+        val latest = settle.getValueFromNanos(spentMillis * 1_000_000, 0f, 2f, 0f)
+        assertTrue(
+            "${state.position} lies within a millisecond of $spentMillis ms of motion: $latest",
+            state.position in (earliest - Tolerance)..(latest + Tolerance),
+        )
     }
 
     @Test
@@ -298,17 +375,20 @@ class LiquidLensStateTest {
     private fun TestScope.startLens(
         slot: Int,
         refracts: Boolean = true,
+        settleSpring: SpringSpec<Float> = SettleSpring,
+        durationScale: Float = 1f,
+        framePeriodNanos: Long = FrameMillis * 1_000_000,
     ): Pair<LiquidLensState, FrameClock> {
-        val clock = FrameClock(testScheduler)
+        val clock = FrameClock(testScheduler, framePeriodNanos)
         val state = LiquidLensState(
             initialSlot = slot,
             slotCount = 3,
             trackSpring = TrackSpring,
-            settleSpring = SettleSpring,
+            settleSpring = settleSpring,
             pressSpring = PressSpring,
         )
         state.refracts = refracts
-        backgroundScope.launch(clock) { state.animate() }
+        backgroundScope.launch(clock + MotionScale(durationScale)) { state.animate() }
         runCurrent()
         Snapshot.sendApplyNotifications()
         return state to clock
@@ -350,10 +430,14 @@ class LiquidLensStateTest {
     }
 
     /**
-     * A display refreshing every [FrameMillis] of the test's virtual time. Everything waiting for a
-     * frame is woken at the same vsync with the same timestamp, as Choreographer does.
+     * A display refreshing every [FrameMillis] of the test's virtual time, whose vsync timestamps
+     * lie [periodNanos] apart, so it can stand in for a display of any rate. Everything waiting
+     * for a frame is woken at the same vsync with the same timestamp, as Choreographer does.
      */
-    private class FrameClock(private val scheduler: TestCoroutineScheduler) : MonotonicFrameClock {
+    private class FrameClock(
+        private val scheduler: TestCoroutineScheduler,
+        private val periodNanos: Long,
+    ) : MonotonicFrameClock {
         var frames = 0
             private set
         private var lastFrame = -1L
@@ -365,13 +449,17 @@ class LiquidLensStateTest {
                 lastFrame = time
                 frames++
             }
-            return onFrame(time * 1_000_000)
+            return onFrame(time / FrameMillis * periodNanos)
         }
     }
 
+    private class MotionScale(override val scaleFactor: Float) : MotionDurationScale
+
     private companion object {
         const val FrameMillis = 8L
+        const val Period120HzNanos = 8_333_333L
         const val MaxFrames = 600
+        const val Tolerance = 1e-4f
         val TrackSpring: SpringSpec<Float> = spring(dampingRatio = 0.86f, stiffness = 1755f)
         val SettleSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 504f)
         val PressSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 1542f)
