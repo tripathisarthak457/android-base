@@ -37,8 +37,9 @@ import org.robolectric.annotation.GraphicsMode
 
 /**
  * Where the shimmer must not move, it does not: with motion reduced, in a hidden tab, in a preview,
- * and outside the theme, a bone is its plain colour on every frame and the clock never runs. A bone
- * that holds still is never redrawn by the clock, so a theme change has to reach it on its own.
+ * and outside the theme, a bone is its plain colour on every frame and the clock never runs; motion
+ * reduced while a sweep runs stops it at once. A bone that holds still is never redrawn by the
+ * clock, so a theme change has to reach it on its own.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
@@ -71,6 +72,49 @@ class SkeletonStillnessTest {
     fun `outside the theme a bone holds still`() = assertStill { content -> content() }
 
     @Test
+    fun `reducing motion mid-sweep stills the bone, and allowing it again resumes the sweep`() {
+        var reduceMotion by mutableStateOf(false)
+        var bone = Color.Unspecified
+        var clock: ShimmerClock? = null
+        rule.mainClock.autoAdvance = false
+        rule.setContent {
+            AppTheme(mode = ThemeMode.Light, reduceMotion = reduceMotion) {
+                bone = LocalAppColors.current.skeleton
+                clock = LocalShimmerClock.current
+                Box(Modifier.testTag("bone")) {
+                    AppSkeleton(Modifier.size(300.dp, 24.dp), shape = RectangleShape)
+                }
+            }
+        }
+        assertTrue("the sweep never started", advanceUntilSweeping { clock })
+
+        // Through the theme's override, as the catalog's switch flips it. The setting reaches a node
+        // through a static local, which the node does not observe: it sees the change only if the
+        // theme keeps one state and changes its value, rather than providing a new one.
+        reduceMotion = true
+        rule.waitForIdle()
+        rule.mainClock.advanceTimeByFrame()
+        assertTrue("the sweep went on", clock?.progress?.isNaN() ?: false)
+        val stilled = rule.onNodeWithTag("bone").captureToImage().toPixelMap()
+        repeat(StillFrames) {
+            rule.mainClock.advanceTimeByFrame()
+            assertTrue("the clock ran with motion reduced", clock?.progress?.isNaN() ?: false)
+        }
+        val later = rule.onNodeWithTag("bone").captureToImage().toPixelMap()
+        val inset = 2
+        for (y in inset until stilled.height - inset) {
+            for (x in inset until stilled.width - inset) {
+                assertEquals("($x, $y)", bone.toArgb(), stilled[x, y].toArgb())
+                assertEquals("($x, $y) moved", stilled[x, y].toArgb(), later[x, y].toArgb())
+            }
+        }
+
+        reduceMotion = false
+        rule.waitForIdle()
+        assertTrue("the sweep did not resume", advanceUntilSweeping { clock })
+    }
+
+    @Test
     fun `with motion reduced a bone takes a new theme's colour on the next frame`() {
         var mode by mutableStateOf(ThemeMode.Light)
         var bone = Color.Unspecified
@@ -100,6 +144,15 @@ class SkeletonStillnessTest {
                 assertEquals("($x, $y)", bone.toArgb(), pixels[x, y].toArgb())
             }
         }
+    }
+
+    /** Advances frame by frame until the clock is mid-sweep; false if no sweep starts in time. */
+    private fun advanceUntilSweeping(clock: () -> ShimmerClock?): Boolean {
+        repeat(StillFrames) {
+            rule.mainClock.advanceTimeByFrame()
+            if (clock()?.progress?.isNaN() == false) return true
+        }
+        return false
     }
 
     private fun assertStill(host: @Composable (content: @Composable () -> Unit) -> Unit) {
