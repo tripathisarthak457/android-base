@@ -264,7 +264,7 @@ function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: num
       <div className="mt-4 overflow-hidden rounded-xl border border-ink-700 bg-ink-900 p-5" style={{ fontFamily: family }}>
         <div className="flex items-end justify-between gap-4">
           <span className="text-[44px] font-bold leading-none text-ink-100">Aa</span>
-          <span className="font-mono text-[11px] text-ink-400" aria-live="polite">
+          <span className="font-mono text-[11px] text-ink-400" aria-hidden>
             {status === "checking" ? "loading…" : status === "ok" ? state.fontName : "not found"}
           </span>
         </div>
@@ -272,6 +272,11 @@ function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: num
         <p className="mt-1 text-[16px] font-semibold text-ink-200">Sunt aut facere repellat</p>
         <p className="mt-1 text-[14px] leading-relaxed text-ink-300">Quia et suscipit recusandae consequuntur expedita et cum reprehenderit molestiae.</p>
       </div>
+      {/* Only a family that is not found is announced: "loading…" and the name after every
+          keystroke would talk over the typing. */}
+      <p aria-live="polite" className="sr-only">
+        {status === "missing" ? `Google Fonts does not know ${state.fontName}.` : ""}
+      </p>
     </div>
   );
 }
