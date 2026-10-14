@@ -30,8 +30,9 @@ internal fun TabbedNavHost(
 ) {
     val more = tabs.size
     val warmUp = remember(state.overflowFrom) { List(minOf(state.overflowFrom, MAX_WARM_TABS)) { it } }
+    val selected = remember(state, more) { { if (state.moreShown) more else state.selectedIndex } }
     KeptTabs(
-        selected = if (state.moreShown) more else state.selectedIndex,
+        selected = selected,
         generation = state.generation,
         modifier = modifier,
         revealSwitch = state::revealSwitch,

@@ -52,13 +52,15 @@ import com.base.app.core.designsystem.theme.rememberReduceMotion
  *
  * A new [generation] (sign-out, another account) starts with nothing kept.
  *
+ * @param selected the tab in front, read where each tab needs it: the tabs that change with a switch
+ *   recompose in the frame of the tap, as the bar does, rather than in the frame after it.
  * @param revealSwitch whether the switch to [selected] is one the user made, which gets the reveal;
  *   a deep link or a programmatic switch shows the tab at once.
  * @param positionOf where a tab sits along the chrome, which decides the side its reveal comes from.
  */
 @Composable
 internal fun KeptTabs(
-    selected: Int,
+    selected: () -> Int,
     generation: Int,
     modifier: Modifier = Modifier,
     revealSwitch: () -> Boolean = { false },
@@ -69,16 +71,17 @@ internal fun KeptTabs(
     key(generation) {
         // Grows when [selected] changes or a warmed tab is ready; read in measure, so a change lays
         // the tabs out again without composing anything.
+        val front = selected()
         val opened = remember { mutableStateListOf<Int>() }
-        if (selected !in opened) SideEffect { opened += selected }
+        if (front !in opened) SideEffect { opened += front }
 
         val selection = rememberUpdatedState(selected)
-        val reveal = remember { TabReveal(selected) }
+        val reveal = remember { TabReveal(front) }
         val reduceMotion = rememberReduceMotion()
         // Applied with the composition that switches, before that frame is laid out and drawn, so
         // the first frame of the incoming tab is already nudged.
-        SideEffect { reveal.switchTo(selected, animate = revealSwitch() && !reduceMotion, position = positionOf) }
-        LaunchedEffect(reveal, selected) { reveal.run(selected) }
+        SideEffect { reveal.switchTo(front, animate = revealSwitch() && !reduceMotion, position = positionOf) }
+        LaunchedEffect(reveal, front) { reveal.run(front) }
 
         val latest = rememberUpdatedState(content)
         val slots = remember { SubcomposeLayoutState() }
@@ -92,7 +95,7 @@ internal fun KeptTabs(
         WarmUpTabs(warming, warmUp, opened, tab)
 
         SubcomposeLayout(slots, modifier) { constraints ->
-            val shown = (opened + selection.value).distinct()
+            val shown = (opened + selection.value()).distinct()
             val placeables = shown.associateWith { index ->
                 subcompose(index, tab(index)).map { it.measure(constraints) }
             }
@@ -110,13 +113,13 @@ internal fun KeptTabs(
 @Composable
 private fun KeptTab(
     index: Int,
-    selection: State<Int>,
+    selection: State<() -> Int>,
     reveal: TabReveal,
     warming: TabWarmUp,
     content: @Composable () -> Unit,
 ) {
-    val active = selection.value == index
-    val visibility = remember { TabVisibility { selection.value == index } }
+    val active = selection.value() == index
+    val visibility = remember { TabVisibility { selection.value() == index } }
     CompositionLocalProvider(
         LocalLifecycleOwner provides rememberTabLifecycle(active),
         LocalTabVisible provides visibility,
@@ -125,7 +128,7 @@ private fun KeptTab(
         Box(
             Modifier
                 .keptTab(parked = !active, reveal = reveal, warming = warming, index = index)
-                .focusProperties { onEnter = { if (selection.value != index) cancelFocusChange() } }
+                .focusProperties { onEnter = { if (selection.value() != index) cancelFocusChange() } }
                 .focusGroup(),
         ) {
             content()

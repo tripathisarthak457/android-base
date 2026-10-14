@@ -91,14 +91,14 @@ class ShellRecompositionTest {
     }
 
     @Test
-    fun `a switch to a visited tab composes neither tab's screens`() {
+    fun `a switch to a visited tab composes neither tab's screens, all in the frame of the tap`() {
         showShell()
         rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick)
         rule.onNodeWithTag("tab_0").performSemanticsAction(SemanticsActions.OnClick)
 
         val frames = journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
 
-        frames.assertQuietBetweenEnds()
+        assertEquals(listOf(0), frames.indices.filter { frames[it].isNotEmpty() })
         assertEquals(0, frames.sumOf { it.count("ProbeScreen") })
     }
 
