@@ -16,11 +16,12 @@ import com.base.app.core.designsystem.foundation.draw.LocalRedactedState
  *
  * Text, icons, avatars, network images, chips, badges, status pills and buttons with a fill draw as
  * bones in their own shape; cards and other containers keep their own look. Controls built on
- * `Modifier.pressable` take no tap, key or focus: buttons, cards, chips, `AppRow`, `AppChoiceRow`
- * and `AppSelectField`. Other controls are not redacted: `AppSwitch`, `AppCheckbox`, `AppRadio`,
- * `AppToggleRow`, `AppSegmentedControl`, `AppSlider`, `AppStepper` and the text fields draw and
- * respond as usual, so keep them out of placeholder content. A custom control reads `LocalRedacted`
- * to draw `Modifier.skeleton` and take no input.
+ * `Modifier.pressable`, such as buttons, cards, chips, `AppRow`, `AppChoiceRow` and
+ * `AppSelectField`, take no tap, key or focus. Controls built any other way are not redacted:
+ * `AppSwitch`, `AppCheckbox`, `AppRadio`, `AppToggleRow`, `AppSegmentedControl`, `AppSlider`,
+ * `AppRangeSlider`, `AppStepper` and the text fields among them draw and respond as usual, so keep
+ * them out of placeholder content. A custom control reads `LocalRedacted` to draw
+ * `Modifier.skeleton` and take no input.
  *
  * The content is hidden from screen readers, which hear [contentDescription] instead: pass it once
  * for a loading region, not for every row. Toggling [active] keeps the content's composition and
