@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalView
  *
  * | Tier | When | Chrome |
  * |---|---|---|
- * | [Live] | API 33+, a healthy device | blur, vibrancy, and a lens while dragged or moving to a tab |
+ * | [Live] | API 33+, a healthy device | blur, vibrancy, a lens while dragged or moving to a tab |
  * | [LiveNoLens] | API 31–32, or a device warming up | blur and vibrancy |
  * | [Frosted] | API < 31, low RAM, battery saver, heat, a GPU behind | drawn, samples nothing |
  * | [Solid] | the person asked to reduce transparency | the style's solid bar |

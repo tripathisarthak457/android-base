@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.foundation.glass
 
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.runtime.MonotonicFrameClock
@@ -13,6 +14,7 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.math.abs
@@ -30,6 +32,17 @@ class LiquidLensStateTest {
         assertEquals(2f, state.position)
         assertTrue(pressures.all { it == 0f })
         assertNoMoreFrames(clock)
+    }
+
+    @Test
+    fun `tapping the tab the lens is on neither moves nor lifts it`() = runTest {
+        val (state, clock) = startLens(slot = 1)
+
+        state.select(1)
+
+        assertNoMoreFrames(clock)
+        assertEquals(1f, state.position)
+        assertFalse(state.samplesBackdrop)
     }
 
     @Test
@@ -59,11 +72,14 @@ class LiquidLensStateTest {
         val bySpeed = samples.sortedBy { it.first }.map { it.second }
 
         assertTrue(bySpeed.zipWithNext().all { (slower, faster) -> faster >= slower })
-        assertTrue("some frames lie between rest and full glass", bySpeed.any { it > 0f && it < 1f })
+        assertTrue(
+            "some frames lie between rest and full glass",
+            bySpeed.any { it > 0f && it < 1f },
+        )
     }
 
     @Test
-    fun `a tap samples the scene while it travels and stops before the lens has settled`() = runTest {
+    fun `a tap samples the scene while it travels and stops before it settles`() = runTest {
         val (state, clock) = startLens(slot = 0)
         val atRest = state.samplesBackdrop
 
@@ -142,16 +158,59 @@ class LiquidLensStateTest {
 
         state.select(2)
         val frames = framesUntilIdle(clock) {
-            Triple(state.travel, state.scale(Orientation.Horizontal), state.scale(Orientation.Vertical))
+            Triple(
+                state.travel,
+                state.scale(Orientation.Horizontal),
+                state.scale(Orientation.Vertical),
+            )
         }
         val (_, horizontal, vertical) = frames.maxBy { it.first }
 
         assertEquals(1f, resting.scaleX)
         assertEquals(1f, resting.scaleY)
-        assertTrue("a bar's lens stretches across the bar: $horizontal", horizontal.scaleX > horizontal.scaleY)
-        assertTrue("a rail's lens stretches along the rail: $vertical", vertical.scaleY > vertical.scaleX)
+        assertTrue(
+            "a bar's lens stretches along the bar: $horizontal",
+            horizontal.scaleX > horizontal.scaleY,
+        )
+        assertTrue(
+            "a rail's lens stretches along the rail: $vertical",
+            vertical.scaleY > vertical.scaleX,
+        )
         assertTrue(frames.all { (_, scale, _) -> scale.scaleX >= 1f && scale.scaleY >= 1f })
         assertEquals(1f, state.scale(Orientation.Horizontal).scaleX)
+    }
+
+    @Test
+    fun `new springs take over a moving lens from where it is`() = runTest {
+        val (steady, steadyClock) = startLens(slot = 0)
+        steady.select(2)
+        val steadyFrames = framesUntilIdle(steadyClock) { steady.position }.size
+
+        val (state, clock) = startLens(slot = 0)
+        state.select(2)
+        repeat(3) { frame(clock) }
+        val before = state.position
+        state.setSprings(TrackSpring, spring(dampingRatio = 1f, stiffness = 2000f), PressSpring)
+        frame(clock)
+        val after = state.position
+        val frames = 4 + framesUntilIdle(clock) { state.position }.size
+
+        assertTrue("it carries on from where it was: $before, $after", after > before && after < 2f)
+        assertTrue("on the new spring: $frames against $steadyFrames frames", frames < steadyFrames)
+        assertEquals(2f, state.position)
+    }
+
+    @Test
+    fun `a settle spring that overshoots is refused`() {
+        val bouncy = spring<Float>(dampingRatio = 0.7f, stiffness = 504f)
+        val state = LiquidLensState(0, 3, TrackSpring, SettleSpring, PressSpring)
+
+        assertThrows(IllegalArgumentException::class.java) {
+            LiquidLensState(0, 3, TrackSpring, bouncy, PressSpring)
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            state.setSprings(TrackSpring, bouncy, PressSpring)
+        }
     }
 
     @Test
@@ -244,9 +303,9 @@ class LiquidLensStateTest {
         val state = LiquidLensState(
             initialSlot = slot,
             slotCount = 3,
-            trackSpring = spring(dampingRatio = 0.86f, stiffness = 1755f),
-            settleSpring = spring(dampingRatio = 1f, stiffness = 504f),
-            pressSpring = spring(dampingRatio = 1f, stiffness = 1542f),
+            trackSpring = TrackSpring,
+            settleSpring = SettleSpring,
+            pressSpring = PressSpring,
         )
         state.refracts = refracts
         backgroundScope.launch(clock) { state.animate() }
@@ -313,5 +372,8 @@ class LiquidLensStateTest {
     private companion object {
         const val FrameMillis = 8L
         const val MaxFrames = 600
+        val TrackSpring: SpringSpec<Float> = spring(dampingRatio = 0.86f, stiffness = 1755f)
+        val SettleSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 504f)
+        val PressSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 1542f)
     }
 }

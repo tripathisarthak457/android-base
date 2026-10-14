@@ -1,6 +1,7 @@
 package com.base.app.core.designsystem.foundation.glass
 
 import android.provider.Settings
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.kyant.backdrop.Backdrop
 import com.kyant.shapes.Capsule
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -57,7 +59,11 @@ class LiquidLensTest {
 
     @Test
     fun `below Live a selection moves the lens without refracting`() {
-        val travel = travelOfSelections(GlassQuality.LiveNoLens, GlassQuality.Frosted, GlassQuality.Solid)
+        val travel = travelOfSelections(
+            GlassQuality.LiveNoLens,
+            GlassQuality.Frosted,
+            GlassQuality.Solid,
+        )
 
         assertTrue("$travel", travel.all { it == 0f })
     }
@@ -138,7 +144,7 @@ class LiquidLensTest {
     }
 
     @Test
-    fun `a selection samples the backdrop while it carries the lens, and nothing once settled`() {
+    fun `a selection carries the lens as glass, and a settled lens samples nothing`() {
         val backdrop = CountingBackdrop(Color.Blue)
         var selected by mutableIntStateOf(0)
         var surface by mutableStateOf(Color.Red)
@@ -156,8 +162,8 @@ class LiquidLensTest {
         rule.mainClock.autoAdvance = false
 
         selected = 2
-        framesUntil { state.travel > 0.5f }
-        lensCentre()
+        framesUntil { state.travel > 0.95f }
+        val inTransit = lensCentre()
         val samplesInTransit = backdrop.samples
         framesUntil { state.position == 2f && state.velocity == 0f }
         backdrop.samples = 0
@@ -165,10 +171,33 @@ class LiquidLensTest {
         surface = Color.Yellow
         val settled = lensCentre()
 
+        // A layer records its content whatever its alpha, so only the pixels show the lens is seen.
+        assertTrue("the travelling lens is glass over its backdrop: $inTransit", inTransit.isBlue())
         assertTrue(samplesInTransit > 0)
         assertTrue("the settled lens is drawn again", surfaceDraws > drawsWhenSettled)
         assertEquals("without sampling", 0, backdrop.samples)
         assertEquals(Background, settled)
+    }
+
+    @Test
+    fun `a new motion style reaches the lens already in the bar`() {
+        var settleSpring by mutableStateOf(SettleSpring)
+        var selected by mutableIntStateOf(0)
+        lateinit var state: LiquidLensState
+        rule.setContent {
+            state = rememberLens(selected, settleSpring)
+        }
+        rule.mainClock.autoAdvance = false
+        val created = state
+
+        selected = 2
+        val onStyle = framesUntil { state.position == 2f && state.velocity == 0f }
+        settleSpring = spring(dampingRatio = 1f, stiffness = 2000f)
+        selected = 0
+        val onNewStyle = framesUntil { state.position == 0f && state.velocity == 0f }
+
+        assertSame("the bar keeps its lens", created, state)
+        assertTrue("$onNewStyle frames against $onStyle", onNewStyle < onStyle)
     }
 
     /** The lens's travel on every frame of a selection made at each of [tiers] in turn. */
@@ -199,13 +228,13 @@ class LiquidLensTest {
      * Runs frames until [done]. The state writes this test makes from outside a composition reach
      * the composition and the lens's snapshotFlow only through apply notifications, which nothing
      * sends while the clock is driven by hand, so each frame sends them first, as Android's frame
-     * does.
+     * does. Returns how many frames that took.
      */
-    private fun framesUntil(done: () -> Boolean) {
-        repeat(MaxFrames) {
+    private fun framesUntil(done: () -> Boolean): Int {
+        repeat(MaxFrames) { frame ->
             Snapshot.sendApplyNotifications()
             rule.mainClock.advanceTimeByFrame()
-            if (done()) return
+            if (done()) return frame + 1
         }
         error("Not done after $MaxFrames frames.")
     }
@@ -226,12 +255,15 @@ class LiquidLensTest {
     private fun Color.isBlue() = blue > 0.8f && red < 0.2f && green < 0.2f
 
     @Composable
-    private fun rememberLens(selected: Int) = rememberLiquidLensState(
+    private fun rememberLens(
+        selected: Int,
+        settleSpring: SpringSpec<Float> = SettleSpring,
+    ): LiquidLensState = rememberLiquidLensState(
         selectedSlot = selected,
         slotCount = 3,
-        trackSpring = spring(dampingRatio = 0.86f, stiffness = 1755f),
-        settleSpring = spring(dampingRatio = 1f, stiffness = 504f),
-        pressSpring = spring(dampingRatio = 1f, stiffness = 1542f),
+        trackSpring = TrackSpring,
+        settleSpring = settleSpring,
+        pressSpring = PressSpring,
     )
 
     @Composable
@@ -271,5 +303,8 @@ class LiquidLensTest {
         val Background = Color.Green
         val LensWidth = 120.dp
         val LensHeight = 48.dp
+        val TrackSpring: SpringSpec<Float> = spring(dampingRatio = 0.86f, stiffness = 1755f)
+        val SettleSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 504f)
+        val PressSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 1542f)
     }
 }

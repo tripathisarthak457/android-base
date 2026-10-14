@@ -41,8 +41,13 @@ import kotlin.math.roundToInt
  * [settleSpring]. At [GlassQuality.Live], with animations on, that motion turns the lens to glass
  * on its way ([LiquidLensState.travel]), and so does a finger on it. At any other tier, and when
  * the person has turned animations off, the lens is never glass: it moves, and follows a drag, as
- * a plain indicator. The springs are taken once, when the state is created; a later change to
- * them does not reach it.
+ * a plain indicator. New springs, such as a newly picked motion style's, take over from the lens's
+ * next frame without interrupting it.
+ *
+ * @param trackSpring the spring the lens trails a finger on.
+ * @param settleSpring the spring that carries the lens to the selected tab. It must not overshoot;
+ *   see [LiquidLensState.setSprings].
+ * @param pressSpring the spring a finger swells the lens on, and the swell recedes on.
  */
 @Composable
 internal fun rememberLiquidLensState(
@@ -55,9 +60,11 @@ internal fun rememberLiquidLensState(
     val state = remember {
         LiquidLensState(selectedSlot, slotCount, trackSpring, settleSpring, pressSpring)
     }
-    val refracts = LocalGlassQuality.current.refracts && !rememberReduceMotion()
+    val reduceMotion = rememberReduceMotion()
+    val refracts = LocalGlassQuality.current.refracts && !reduceMotion
     SideEffect {
         state.slotCount = slotCount
+        state.setSprings(trackSpring, settleSpring, pressSpring)
         state.select(selectedSlot)
         state.refracts = refracts
     }
@@ -105,9 +112,9 @@ internal class LiquidLensState(
      */
     var refracts by mutableStateOf(false)
 
-    private val track = trackSpring.toFloatSpec(SlotThreshold)
-    private val settle = settleSpring.toFloatSpec(SlotThreshold)
-    private val swell = pressSpring.toFloatSpec(PressureThreshold)
+    private var trackSpec = trackSpring.toFloatSpec(SlotThreshold)
+    private var settleSpec = settleSpring.toSettleSpec()
+    private var swellSpec = pressSpring.toFloatSpec(PressureThreshold)
 
     private var finger by mutableFloatStateOf(initialSlot.toFloat())
     private var restSlot by mutableIntStateOf(initialSlot)
@@ -133,8 +140,8 @@ internal class LiquidLensState(
         private set
 
     /**
-     * 0 at rest, 1 from six slots per second on: how far the lens's own motion lifts it into
-     * glass. Always 0 unless [refracts].
+     * 0 at rest, 1 from [TravelFullSpeed] on: how far the lens's own motion lifts it into glass.
+     * Always 0 unless [refracts].
      *
      * It is read off [velocity], so it needs no animation of its own: it rises as the settle
      * spring pulls the lens away, calms as the spring slows, and is 0 on the frame the lens
@@ -177,6 +184,26 @@ internal class LiquidLensState(
     private val atRest: Boolean
         get() = position == target && velocity == 0f &&
             pressure == pressureTarget && pressureVelocity == 0f
+
+    /**
+     * Takes new springs, such as a newly picked motion style's, from the lens's next frame on,
+     * without interrupting it. [rememberLiquidLensState] keeps them current.
+     *
+     * @param trackSpring the spring the lens trails a finger on.
+     * @param settleSpring the spring that carries the lens to the selected tab. It must not
+     *   overshoot (a damping ratio of at least 1): [travel] is read off the lens's speed, so each
+     *   turnaround of an overshoot would drop the glass to nothing and the lens would blink.
+     * @param pressSpring the spring a finger swells the lens on, and the swell recedes on.
+     */
+    fun setSprings(
+        trackSpring: SpringSpec<Float>,
+        settleSpring: SpringSpec<Float>,
+        pressSpring: SpringSpec<Float>,
+    ) {
+        if (!trackSpec.matches(trackSpring)) trackSpec = trackSpring.toFloatSpec(SlotThreshold)
+        if (!settleSpec.matches(settleSpring)) settleSpec = settleSpring.toSettleSpec()
+        if (!swellSpec.matches(pressSpring)) swellSpec = pressSpring.toFloatSpec(PressureThreshold)
+    }
 
     /** Moves the lens to [slot] without pressing it: a tap, or a selection made elsewhere. */
     fun select(slot: Int) {
@@ -245,7 +272,7 @@ internal class LiquidLensState(
 
     private fun step(elapsedNanos: Long) {
         val goal = target
-        val spec = if (pressed) track else settle
+        val spec = if (pressed) trackSpec else settleSpec
         val from = position
         val nextVelocity = spec.getVelocityFromNanos(elapsedNanos, from, goal, velocity)
         val next = spec.getValueFromNanos(elapsedNanos, from, goal, velocity)
@@ -259,10 +286,12 @@ internal class LiquidLensState(
 
         val pressureGoal = pressureTarget
         val pressureFrom = pressure
-        val nextPressureVelocity =
-            swell.getVelocityFromNanos(elapsedNanos, pressureFrom, pressureGoal, pressureVelocity)
-        val nextPressure =
-            swell.getValueFromNanos(elapsedNanos, pressureFrom, pressureGoal, pressureVelocity)
+        val nextPressureVelocity = swellSpec.getVelocityFromNanos(
+            elapsedNanos, pressureFrom, pressureGoal, pressureVelocity,
+        )
+        val nextPressure = swellSpec.getValueFromNanos(
+            elapsedNanos, pressureFrom, pressureGoal, pressureVelocity,
+        )
         if (abs(pressureGoal - nextPressure) < PressureThreshold &&
             abs(nextPressureVelocity) < PressureThreshold * StillRate
         ) {
@@ -324,6 +353,16 @@ internal fun Modifier.liquidLens(
 
 private fun SpringSpec<Float>.toFloatSpec(threshold: Float) =
     FloatSpringSpec(dampingRatio, stiffness, threshold)
+
+private fun FloatSpringSpec.matches(spring: SpringSpec<Float>) =
+    dampingRatio == spring.dampingRatio && stiffness == spring.stiffness
+
+private fun SpringSpec<Float>.toSettleSpec(): FloatSpringSpec {
+    require(dampingRatio >= 1f) {
+        "A lens's settle spring must not overshoot (dampingRatio >= 1), but it is $dampingRatio."
+    }
+    return toFloatSpec(SlotThreshold)
+}
 
 private val LensEffects: BackdropEffectScope.() -> Unit = {
     vibrancy()
