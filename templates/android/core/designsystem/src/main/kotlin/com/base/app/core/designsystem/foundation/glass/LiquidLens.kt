@@ -126,6 +126,11 @@ internal class LiquidLensState(
     private var followedSlot = initialSlot
     private var pressureVelocity = 0f
 
+    // Plain fields: they change only on a frame that writes the lens's position, or while the
+    // lens is still, when its energy, and so travel, is 0 whatever they hold.
+    private var departureOrigin = initialSlot.toFloat()
+    private var departure = 0f
+
     /** True from [press] to [release] or [cancel]. */
     var pressed by mutableStateOf(false)
         private set
@@ -146,27 +151,22 @@ internal class LiquidLensState(
         private set
 
     /**
-     * 0 at rest, 1 from [TravelFullSpeed] on: how far the lens's own motion lifts it into glass.
-     * Always 0 unless [refracts].
+     * 0 at rest, up to 1 while the lens moves: how far its own motion lifts it into glass. Always
+     * 0 unless [refracts].
      *
-     * It is read off the lens's spring, so it needs no animation of its own. It measures the
-     * spring's energy as the top speed that energy could still give the lens, √(v² + k·d²) for a
-     * speed v and a distance d left to go. The energy only drains while the spring carries the
-     * lens to one tab, so the glass lifts as the lens sets off, calms as it settles, and holds
-     * where the speed alone passes through zero: at the turnaround of a selection reversed in
-     * flight, or of an overshoot. A lens that has not moved yet, on the frame of a tap, is still
-     * plain. Read it in draw or in a layer block.
+     * It is read off the lens's spring, so it needs no animation of its own, and two things set
+     * it. One is the spring's energy, as the top speed that energy could still give the lens:
+     * √(v² + k·d²) for a speed v and a distance d left to go, full from [TravelFullSpeed] on. It
+     * only drains while the spring carries the lens to one tab, so the glass calms as the lens
+     * settles and holds where the speed alone passes through zero: at the turnaround of a
+     * selection reversed in flight, or of an overshoot. The other is how far the lens has come
+     * since its spring was last calm, as a running maximum: the glass materializes over the first
+     * [LiftDistance] of the way instead of popping up in one frame, and never falls back on a
+     * turnaround. A lens that has not moved yet, on the frame of a tap, is still plain. Read it
+     * in draw or in a layer block.
      */
     val travel: Float
-        get() {
-            if (!refracts || velocity == 0f) return 0f
-            val distance = target - position
-            val motion = sqrt(velocity * velocity + spec.stiffness * distance * distance)
-            val amount = (motion / TravelFullSpeed).coerceAtMost(1f)
-            // Smoothstep: the last slow stretch of a settle, where the lens has all but arrived,
-            // adds next to nothing, so the glass calms with the motion instead of trailing it.
-            return amount * amount * (3f - 2f * amount)
-        }
+        get() = if (refracts) glassOf(energy) * eased(departure / LiftDistance) else 0f
 
     /**
      * How much of the lens is glass rather than the resting selection: the larger of [pressure]
@@ -195,6 +195,13 @@ internal class LiquidLensState(
     private val spec: FloatSpringSpec
         get() = if (pressed) trackSpec else settleSpec
 
+    /** The top speed, in slots per second, that the spring's energy could still give the lens. */
+    private val energy: Float
+        get() {
+            val distance = target - position
+            return sqrt(velocity * velocity + spec.stiffness * distance * distance)
+        }
+
     // A tier that stops refracting under a finger lets the swell recede rather than vanish.
     private val pressureTarget: Float
         get() = if (pressed && refracts) 1f else 0f
@@ -204,12 +211,9 @@ internal class LiquidLensState(
             pressure == pressureTarget && pressureVelocity == 0f
 
     /**
-     * Takes new springs, such as a newly picked motion style's, from the lens's next frame on,
-     * without interrupting it. [rememberLiquidLensState] keeps them current.
-     *
-     * @param trackSpring the spring the lens trails a finger on.
-     * @param settleSpring the spring that carries the lens to the selected tab.
-     * @param pressSpring the spring a finger swells the lens on, and the swell recedes on.
+     * Takes new springs, each in the role [rememberLiquidLensState] gives it, from the lens's next
+     * frame on without interrupting it: a newly picked motion style's, for instance.
+     * [rememberLiquidLensState] keeps them current.
      */
     fun setSprings(
         trackSpring: SpringSpec<Float>,
@@ -322,6 +326,8 @@ internal class LiquidLensState(
         velocity = 0f
         pressure = pressureTarget
         pressureVelocity = 0f
+        departureOrigin = position
+        departure = 0f
     }
 
     private fun step(elapsedNanos: Long) {
@@ -335,6 +341,14 @@ internal class LiquidLensState(
         } else {
             position = next
             velocity = nextVelocity
+        }
+        // Measured from where the spring last had too little energy to show any glass, so a tap
+        // made while the lens still settles from the last one lifts it gradually again.
+        if (glassOf(energy) < ShownThreshold) {
+            departureOrigin = position
+            departure = 0f
+        } else if (departure < LiftDistance) {
+            departure = max(departure, abs(position - departureOrigin))
         }
 
         val pressureGoal = pressureTarget
@@ -412,6 +426,19 @@ internal fun Modifier.liquidLens(
     },
 )
 
+/** The glass a spring's [energy] (in slots per second) shows, eased so that it calms with it. */
+private fun glassOf(energy: Float): Float = eased(energy / TravelFullSpeed)
+
+/**
+ * Smoothstep of [amount] clamped to 0..1. Flat at both ends: the glass starts without a jump,
+ * and the last slow stretch of a settle, where the lens has all but arrived, adds next to
+ * nothing, so the glass calms with the motion instead of trailing it.
+ */
+private fun eased(amount: Float): Float {
+    val clamped = amount.coerceIn(0f, 1f)
+    return clamped * clamped * (3f - 2f * clamped)
+}
+
 private fun requireSlots(count: Int): Int {
     require(count > 0) { "A lens needs at least one slot." }
     return count
@@ -455,12 +482,18 @@ private const val NanosPerMilli = 1_000_000L
 private const val ProjectionSeconds = 0.099f
 
 /**
- * The motion, in slots per second, at which [LiquidLensState.travel] is full. A selection sets
- * the lens off with √k slots per second of motion for each slot it has to go (22 on the Standard
- * style's thumb spring), so every tap is fully glass from its first moving frame, and the glass
- * calms once the spring has spent all but this much.
+ * The spring energy, in slots per second, from which [LiquidLensState.travel] is full. A
+ * selection gives the lens √k of it for each slot it has to go, k the settle spring's stiffness,
+ * so on any settle spring stiffer than 36 a tap to the next tab is fully glass once lifted, and
+ * the glass calms once the spring has spent all but this much.
  */
 private const val TravelFullSpeed = 6f
+
+/**
+ * How far, in slots, the lens moves while its glass materializes: a fifth of a tab, the first
+ * few frames of a tap.
+ */
+private const val LiftDistance = 0.2f
 
 private const val PressSwell = 0.3f
 private const val TravelSwell = 0.12f

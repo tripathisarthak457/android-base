@@ -63,7 +63,7 @@ class LiquidLensStateTest {
         val travel = framesUntilIdle(clock) { state.travel }
         val peak = travel.indexOf(travel.max())
 
-        assertTrue("the lens turns fully to glass on its way: $travel", travel[peak] > 0.95f)
+        assertTrue("the lens turns fully to glass on its way: $travel", travel[peak] > FullGlass)
         assertTrue(
             "and calms without a second lift: $travel",
             travel.drop(peak).zipWithNext().all { (before, after) -> after <= before },
@@ -74,20 +74,71 @@ class LiquidLensStateTest {
     }
 
     @Test
+    fun `a tap's glass materializes over the lens's first frames`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+
+        state.select(1)
+        val onTap = state.travel
+        val travel = framesUntilIdle(clock) { state.travel }
+        val lift = travel.takeWhile { it < FullGlass }
+
+        assertEquals("the frame of the tap is still plain", 0f, onTap)
+        assertTrue("it rises through several frames: $travel", lift.count { it > 0f } >= 3)
+        assertTrue("without falling back: $lift", lift.zipWithNext().all { (a, b) -> b > a })
+    }
+
+    @Test
+    fun `a tap made while the lens still settles lifts it gradually again`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.select(1)
+        framesUntil(clock) { state.samplesBackdrop }
+        framesUntil(clock) { !state.samplesBackdrop }
+        val settling = state.velocity
+
+        state.select(2)
+        val travel = List(3) {
+            frame(clock)
+            state.travel
+        }
+
+        assertTrue("the lens had not come to rest: $settling", settling != 0f)
+        assertTrue("$travel", travel.first() < 0.5f && travel.zipWithNext().all { (a, b) -> b > a })
+    }
+
+    @Test
+    fun `a lens that jumped with animations off lifts gradually on its next tap`() = runTest {
+        val motion = MotionScale(1f)
+        val (state, clock) = startLens(slot = 0, motion = motion)
+        state.select(2)
+        framesUntil(clock) { state.travel > FullGlass }
+        motion.scaleFactor = 0f
+        frame(clock)
+        motion.scaleFactor = 1f
+
+        state.select(0)
+        val travel = List(3) {
+            frame(clock)
+            state.travel
+        }
+
+        assertTrue("$travel", travel.first() < 0.5f && travel.zipWithNext().all { (a, b) -> b > a })
+    }
+
+    @Test
     fun `a tap samples the scene while it travels and stops before it settles`() = runTest {
         val (state, clock) = startLens(slot = 0)
         val atRest = state.samplesBackdrop
 
         state.select(2)
         val moving = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
-            .dropWhile { (_, position) -> position == 0f }
         val sampling = moving.map { it.first }
-        val handOver = sampling.indexOf(false)
 
         assertFalse(atRest)
-        assertTrue("the lens is glass from its first step: $sampling", sampling.first())
-        assertTrue("in one unbroken run: $sampling", sampling.drop(handOver).none { it })
-        assertTrue("which hands over before the last of the motion", moving[handOver].second < 2f)
+        assertTrue("in one unbroken run: $sampling", isOneRun(sampling))
+        assertTrue(
+            "which hands over before the last of the motion",
+            moving[handOverIn(sampling)].second < 2f,
+        )
         assertFalse(state.samplesBackdrop)
     }
 
@@ -105,15 +156,13 @@ class LiquidLensStateTest {
                 state.select(second)
                 val back = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
 
-                val moving = (outward + back).dropWhile { (_, position) -> position == 0f }
+                val moving = outward + back
                 val sampling = moving.map { it.first }
-                val handOver = sampling.indexOf(false)
                 val case = "to $first, back to $second after $reversal frames: $sampling"
-                assertTrue("glass from the first step, $case", sampling.first())
-                assertTrue("in one unbroken run, $case", sampling.drop(handOver).none { it })
+                assertTrue("in one unbroken run, $case", isOneRun(sampling))
                 assertTrue(
                     "before the lens arrives, $case",
-                    moving[handOver].second != second.toFloat(),
+                    moving[handOverIn(sampling)].second != second.toFloat(),
                 )
                 assertEquals(second.toFloat(), state.position)
             }
@@ -271,17 +320,15 @@ class LiquidLensStateTest {
 
         state.select(2)
         val moving = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
-            .dropWhile { (_, position) -> position == 0f }
         val sampling = moving.map { it.first }
 
         assertTrue("it overshoots: $moving", moving.maxOf { it.second } > 2.1f)
-        assertTrue("glass from the first step: $sampling", sampling.first())
-        assertTrue("in one unbroken run: $sampling", sampling.dropWhile { it }.none { it })
+        assertTrue("in one unbroken run: $sampling", isOneRun(sampling))
     }
 
     @Test
     fun `with animations off the lens jumps straight to the tab`() = runTest {
-        val (state, clock) = startLens(slot = 0, durationScale = 0f)
+        val (state, clock) = startLens(slot = 0, motion = MotionScale(0f))
 
         state.select(2)
         val frames = framesUntilIdle(clock) { state.position to state.samplesBackdrop }
@@ -296,7 +343,7 @@ class LiquidLensStateTest {
         repeat(1 + 5) { frame(normalClock) }
         val atNormalSpeed = normal.position
 
-        val (slow, slowClock) = startLens(slot = 0, durationScale = 2f)
+        val (slow, slowClock) = startLens(slot = 0, motion = MotionScale(2f))
         slow.select(2)
         repeat(1 + 10) { frame(slowClock) }
 
@@ -430,6 +477,18 @@ class LiquidLensStateTest {
         assertEquals(0f, state.pressure)
     }
 
+    /** Whether [sampling] holds one unbroken run of frames that sample, and never one again. */
+    private fun isOneRun(sampling: List<Boolean>): Boolean =
+        sampling.any { it } && sampling.dropWhile { !it }.dropWhile { it }.none { it }
+
+    /** The first frame that no longer samples after some did: where the lens hands over. */
+    private fun handOverIn(sampling: List<Boolean>): Int {
+        val start = sampling.indexOf(true)
+        val end = sampling.drop(start).indexOf(false)
+        check(start >= 0 && end >= 0) { "No hand-over in $sampling." }
+        return start + end
+    }
+
     private fun LiquidLensState.isPlain(): Boolean {
         val scale = scale(Orientation.Horizontal)
         return intensity == 0f && !samplesBackdrop && scale.scaleX == 1f && scale.scaleY == 1f
@@ -439,7 +498,7 @@ class LiquidLensStateTest {
         slot: Int,
         refracts: Boolean = true,
         settleSpring: SpringSpec<Float> = SettleSpring,
-        durationScale: Float = 1f,
+        motion: MotionScale = MotionScale(1f),
         framePeriodNanos: Long = FrameMillis * 1_000_000,
     ): Pair<LiquidLensState, FrameClock> {
         val clock = FrameClock(testScheduler, framePeriodNanos)
@@ -451,7 +510,7 @@ class LiquidLensStateTest {
             pressSpring = PressSpring,
         )
         state.refracts = refracts
-        backgroundScope.launch(clock + MotionScale(durationScale)) { state.animate() }
+        backgroundScope.launch(clock + motion) { state.animate() }
         runCurrent()
         Snapshot.sendApplyNotifications()
         return state to clock
@@ -461,6 +520,14 @@ class LiquidLensStateTest {
         val before = clock.frames
         advance()
         check(clock.frames > before) { "No frame was requested." }
+    }
+
+    private fun TestScope.framesUntil(clock: FrameClock, done: () -> Boolean) {
+        repeat(MaxFrames) {
+            frame(clock)
+            if (done()) return
+        }
+        error("Not done after $MaxFrames frames.")
     }
 
     /** Runs frames until nothing asks for another, recording [sample] after each. */
@@ -516,13 +583,15 @@ class LiquidLensStateTest {
         }
     }
 
-    private class MotionScale(override val scaleFactor: Float) : MotionDurationScale
+    /** The animator duration scale, which a person can change while the lens moves. */
+    private class MotionScale(override var scaleFactor: Float) : MotionDurationScale
 
     private companion object {
         const val FrameMillis = 8L
         const val Period120HzNanos = 8_333_333L
         const val MaxFrames = 600
         const val Tolerance = 1e-4f
+        const val FullGlass = 0.95f
         val Resting = ScaleFactor(1f, 1f)
         val FullPress = ScaleFactor(1.3f, 1.3f)
         val TrackSpring: SpringSpec<Float> = spring(dampingRatio = 0.86f, stiffness = 1755f)
