@@ -109,13 +109,10 @@
     "Cool": {},
     "BrandTint": {
       "mix": {
-        "light": {
-          "background": 0.045, "backgroundGrouped": 0.05, "fill": 0.07, "separator": 0.1, "skeleton": 0.08,
-          "skeletonHighlight": 0.08
-        },
+        "light": { "background": 0.045, "backgroundGrouped": 0.05, "fill": 0.07, "separator": 0.1, "skeleton": 0.08 },
         "dark": {
           "background": 0.045, "backgroundGrouped": 0.05, "surface": 0.05, "surfaceGrouped": 0.05, "surfaceElevated": 0.05,
-          "fill": 0.07, "separator": 0.1, "skeleton": 0.08, "skeletonHighlight": 0.08
+          "fill": 0.07, "separator": 0.1, "skeleton": 0.08
         }
       }
     },

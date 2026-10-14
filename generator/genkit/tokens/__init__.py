@@ -49,8 +49,18 @@ SURFACE_ROLES: tuple[str, ...] = ("background", "backgroundGrouped", "surface", 
 AA_NON_TEXT = 3.0
 #: A dark segmented thumb against its track, where no shadow separates them.
 THUMB_ON_TRACK = 1.5
+#: How far a skeleton bone stands off every surface it can sit on, in CIELAB L*.
+BONE_STEP = 7.0
+#: How much lighter the shimmer's band is than the bone, in CIELAB L*: the step both themes' own pairs
+#: are chosen at, so the band reads the same in light and dark.
+SKELETON_LIFT = 5.0
+#: How far the band stands off every surface in a light palette, where it is the colour nearest them.
+HIGHLIGHT_STEP = 3.0
 _SHADE_STEPS = 30
 _SHADE_STEP = 0.05
+_BISECTIONS = 24
+_LAB_EPSILON = 216 / 24389
+_LAB_KAPPA = 24389 / 27
 
 _HEX = re.compile(r"^#(?:[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$")
 _IDENTIFIER = re.compile(r"^[A-Z][A-Za-z]*$")
@@ -253,6 +263,11 @@ def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:
                 for theme, amounts in _table("palette", f"tones.{tone}.mix", overrides, THEMES).items():
                     for role, amount in amounts.items():
                         _check_role(names, tone, role)
+                        if role == "skeletonHighlight":
+                            raise _fail(
+                                "palette", f"tones.{tone}.mix.{theme}.{role}",
+                                "the band is lifted from the mixed skeleton; mix the skeleton only",
+                            )
                         if not 0 <= _number("palette", f"tones.{tone}.mix.{theme}.{role}", amount) <= 1:
                             raise _fail("palette", f"tones.{tone}.mix.{theme}.{role}", "must be between 0 and 1")
             elif key in THEMES:
@@ -489,7 +504,8 @@ def _resolve_roles(
         role(name, ())
 
     accent = resolved["accent"]
-    for name, amount in tone_table.get("mix", {}).get(theme, {}).items():
+    mix = tone_table.get("mix", {}).get(theme, {})
+    for name, amount in mix.items():
         mixed = brand.lerp_oklab(resolved[name][:3], accent[:3], amount)
         resolved[name] = (*mixed, resolved[name][3])
 
@@ -503,6 +519,12 @@ def _resolve_roles(
         resolved["segmentThumb"] = (
             *_legible_on(resolved["segmentThumb"][:3], [resolved["fill"][:3]], False, THUMB_ON_TRACK), 1.0,
         )
+    if "skeleton" in mix:
+        # Tinting the bone and the band by the same amount narrows the step between them for many
+        # accents, so the band is lifted from wherever the tint left the bone.
+        bone, band = _skeleton(resolved["skeleton"][:3], surfaces, light)
+        resolved["skeleton"] = (*bone, resolved["skeleton"][3])
+        resolved["skeletonHighlight"] = (*band, resolved["skeletonHighlight"][3])
 
     ink = brand.LIGHT_THEME_INK if light else brand.DARK_THEME_INK
     roles: dict[str, Any] = {name: resolved[name] for name in palette["roles"][theme]}
@@ -535,5 +557,60 @@ def _legible_on(colour: brand.Rgb, backgrounds: list[brand.Rgb], light: bool, mi
     for _ in range(_SHADE_STEPS):
         if all(brand.contrast(shade, background) >= minimum for background in backgrounds):
             return shade
-        shade = tuple(round(max(0.0, min(1.0, c)) * 255) / 255 for c in brand.lerp_oklab(shade, toward, _SHADE_STEP))
+        shade = _eight_bit(brand.lerp_oklab(shade, toward, _SHADE_STEP))
     return shade
+
+
+def _skeleton(bone: brand.Rgb, surfaces: list[brand.Rgb], light: bool) -> tuple[brand.Rgb, brand.Rgb]:
+    """
+    A bone and the band that sweeps it: the band `SKELETON_LIFT` lighter than the bone, in its hue.
+    The bone moves away from the surfaces (darker in a light palette, lighter in a dark one) until it
+    stands `BONE_STEP` off each of them and, in a light palette, the band stands `HIGHLIGHT_STEP` off
+    them too: a band too close to a card wipes the bone into it as it passes.
+    """
+    away = -1.0 if light else 1.0
+    shade = _eight_bit(bone)
+    band = _lifted(shade, SKELETON_LIFT)
+    for _ in range(_SHADE_STEPS):
+        if _stands_off(shade, surfaces, BONE_STEP) and (not light or _stands_off(band, surfaces, HIGHLIGHT_STEP)):
+            break
+        shade = _lifted(shade, away)
+        band = _lifted(shade, SKELETON_LIFT)
+    return shade, band
+
+
+def _stands_off(colour: brand.Rgb, surfaces: list[brand.Rgb], step: float) -> bool:
+    lightness = _cielab_lightness(colour)
+    return all(abs(lightness - _cielab_lightness(surface)) >= step for surface in surfaces)
+
+
+def _lifted(colour: brand.Rgb, step: float) -> brand.Rgb:
+    """
+    `colour` `step` CIELAB L* lighter (darker when negative), keeping its Oklab hue and chroma, as
+    the nearest 8-bit colour: the step the skeleton's colours are specified in.
+    """
+    lightness, a, b = brand.to_oklab(colour)
+    target = _cielab_lightness(colour) + step
+    low, high = (lightness, 1.0) if step > 0 else (0.0, lightness)
+    for _ in range(_BISECTIONS):
+        middle = (low + high) / 2
+        if _cielab_lightness(_clamped(brand.from_oklab((middle, a, b)))) < target:
+            low = middle
+        else:
+            high = middle
+    return _eight_bit(brand.from_oklab(((low + high) / 2, a, b)))
+
+
+def _cielab_lightness(colour: brand.Rgb) -> float:
+    luminance = brand.relative_luminance(colour)
+    f = luminance ** (1 / 3) if luminance > _LAB_EPSILON else (_LAB_KAPPA * luminance + 16) / 116
+    return 116 * f - 16
+
+
+def _clamped(colour: brand.Rgb) -> brand.Rgb:
+    return tuple(max(0.0, min(1.0, c)) for c in colour)  # type: ignore[return-value]
+
+
+def _eight_bit(colour: brand.Rgb) -> brand.Rgb:
+    """`colour` as the hex it is emitted as, so a check on it holds for what the app draws."""
+    return tuple(round(c * 255) / 255 for c in _clamped(colour))  # type: ignore[return-value]

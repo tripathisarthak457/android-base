@@ -97,6 +97,12 @@ class SchemaTest(unittest.TestCase):
         self.assertIn("skeleton.easing", self.broken(lambda d: d["motion"]["skeleton"].update(easing=[0.3, 0, 0.7])))
         self.assertIn("missing pauseMs", self.broken(lambda d: d["motion"]["skeleton"].pop("pauseMs")))
 
+    def test_a_tone_tints_the_bone_and_the_band_follows(self):
+        def tint_the_band(data):
+            data["palette"]["tones"]["BrandTint"]["mix"]["light"]["skeletonHighlight"] = 0.08
+
+        self.assertIn("tones.BrandTint.mix.light.skeletonHighlight", self.broken(tint_the_band))
+
     def test_a_style_names_its_bar_indicator(self):
         self.assertIn("Social: is missing indicator", self.broken(lambda d: d["styles"]["Social"].pop("indicator")))
 
@@ -229,6 +235,26 @@ class BrandGoldenTest(unittest.TestCase):
                 actual = [brand.to_hex(getattr(ramps[name], field)) for field in data["fields"]]
                 self.assertEqual(expected, actual, f"{case['accent']} {name}")
 
+    def test_a_skeleton_shows_on_every_surface_for_every_accent(self):
+        # The rules `PaletteContrastTest` holds every generated project to: the bone 7 L* off every
+        # surface, the band 4.5 to 6 L* above the bone, and in light the band 3 L* off every surface.
+        failures = []
+        for case in json.loads((FIXTURES / "brand_golden.json").read_text(encoding="utf-8"))["cases"]:
+            palette = tokens.resolve(spec(accent_colour=case["accent"]))["palette"]["tones"]
+            for tone, themes in palette.items():
+                for theme, roles in themes.items():
+                    bone = _lightness(roles["skeleton"])
+                    band = _lightness(roles["skeletonHighlight"])
+                    surfaces = [_lightness(roles[name]) for name in tokens.SURFACE_ROLES]
+                    where = f"{case['accent']} {tone} {theme}"
+                    if not 4.5 <= band - bone <= 6:
+                        failures.append(f"{where}: the band lifts the bone {band - bone:.2f} L*")
+                    if min(abs(bone - surface) for surface in surfaces) < 7:
+                        failures.append(f"{where}: the bone is within 7 L* of a surface")
+                    if theme == "light" and min(abs(band - surface) for surface in surfaces) < 3:
+                        failures.append(f"{where}: the band is within 3 L* of a surface")
+        self.assertEqual([], failures[:10])
+
     def test_text_on_every_brand_shade_reads_at_aa(self):
         failures = []
         for case in json.loads((FIXTURES / "brand_golden.json").read_text(encoding="utf-8"))["cases"]:
@@ -314,6 +340,13 @@ class EmitterTest(unittest.TestCase):
 def _rgb(argb: str) -> tuple[float, float, float]:
     digits = argb.lstrip("#")[-6:]
     return tuple(int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4))  # type: ignore[return-value]
+
+
+def _lightness(argb: str) -> float:
+    """CIELAB L*, computed here rather than with the generator's own helper."""
+    luminance = brand.relative_luminance(_rgb(argb))
+    f = luminance ** (1 / 3) if luminance > 216 / 24389 else (24389 / 27 * luminance + 16) / 116
+    return 116 * f - 16
 
 
 if __name__ == "__main__":

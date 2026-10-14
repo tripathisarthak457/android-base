@@ -347,7 +347,7 @@ internal object DesignTokens {
                 shadow = Color(0x240B0F1A),
                 barIndicator = Color(0xFF2C6BED),
                 skeleton = Color(0xFFC9D2E1),
-                skeletonHighlight = Color(0xFFD6DFEE),
+                skeletonHighlight = Color(0xFFD7E0EF),
                 accent = Color(0xFF2C6BED),
                 accentPressed = Color(0xFF1F52C4),
                 accentSubtle = Color(0xFFE8EFFD),
