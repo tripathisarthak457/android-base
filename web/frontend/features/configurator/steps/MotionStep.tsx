@@ -80,7 +80,8 @@ export function MotionStep({
             <p className="text-sm font-medium text-ink-200">How it moves</p>
             <p className="mt-1 text-xs leading-relaxed text-ink-400">
               Each loop runs the style&apos;s own springs from the design tokens: a press and its release, a screen pushed and popped,
-              a tab switch. Hold the button to feel the press. Every spring is interruptible and keeps its velocity in the app.
+              a tab switch. Hold a phone&apos;s button down with the mouse or a finger to feel the press. Every spring is interruptible
+              and keeps its velocity in the app.
             </p>
           </div>
           <PauseButton paused={paused} onChange={setPaused} label="the motion previews" />
