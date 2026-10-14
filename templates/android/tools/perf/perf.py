@@ -799,6 +799,11 @@ class Run:
         Each action (a tap, a Back key, a swipe) opens a window that ends at the next action; the
         windows are matched to the actions in the order they were sent.
         """
+        # Its tab switches are switches to visited tabs. A tab not opened since the app last started
+        # (scroll_minimize restarts it) would count what its screen loads on a first visit instead.
+        for node in self.tabs[1:]:
+            self.device.shell(self.tap(node))
+            time.sleep(1.5)
         row = self.at_root(0)
         width, height = self.device.size
         y = height // 2
