@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,8 @@ import com.base.app.core.navigation.transition.ScreenMotion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
+import kotlin.math.floor
 
 /**
  * Everything a stack host shows, in one parent that never changes, as iOS keeps a navigation
@@ -247,45 +251,62 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
     }
 
     /**
-     * Over a lower entry: the scrim on the part the upper page has not reached yet and the shadow
-     * its leading edge casts there, and the back card's scrim over all of it. Each is one rectangle,
-     * with no layer: dimming the covered screen through its alpha would render all of it offscreen
-     * on every frame.
+     * Draws [key]'s entry. Of a lower entry in a slide, only the part the upper page has not reached
+     * yet is drawn, under a scrim and the shadow the upper page's leading edge casts there; beneath
+     * the back card, all of it is drawn under the card's scrim. Each is one rectangle, with no layer:
+     * dimming the covered screen through its alpha would render all of it offscreen on every frame.
+     *
+     * The upper page is opaque, so the part of the lower one it covers is clipped away rather than
+     * drawn and painted over. A transition starts while the GPU is still clocked down from idle, and
+     * the covered part is most of the lower page on a pop's first frames.
      */
     fun ContentDrawScope.drawOver(key: Any, isLight: Boolean) {
-        drawContent()
         val revealing = card.active && key in card.beneath
-        if (key !in lower && !revealing) return
         val c = cover
-        if (c > 0f && c < 1f && key in lower) {
-            val w = width
-            val left = lefts[key] ?: 0f
-            // The upper page's leading edge, in this entry's coordinates.
-            val shift = if (revealing) 1f - card.reveal else 1f
-            val offset = -(if (rtl) -1f else 1f) * motion.parallax * w * c * shift
-            val edge = if (rtl) w * c - left - offset else w * (1f - c) - left - offset
-            val from = if (rtl) edge.coerceAtLeast(0f) else 0f
-            val to = if (rtl) size.width else edge.coerceAtMost(size.width)
-            if (to > from) {
-                drawRect(Color.Black, Offset(from, 0f), Size(to - from, size.height), alpha = coverScrimAlpha(isLight) * c)
-            }
-            val shadow = EdgeShadow.toPx()
-            val brush = shadowBrushes.getOrPut(shadow.toInt() * if (rtl) -1 else 1) {
-                val dark = Color.Black.copy(alpha = SHADOW_ALPHA)
-                Brush.horizontalGradient(
-                    colors = if (rtl) listOf(dark, Color.Transparent) else listOf(Color.Transparent, dark),
-                    startX = 0f,
-                    endX = shadow,
-                )
-            }
-            translate(left = if (rtl) edge else edge - shadow) {
-                drawRect(brush, size = Size(shadow, size.height), alpha = c)
-            }
+        if (key !in lower || c <= 0f || c >= 1f) {
+            drawContent()
+            if (revealing) drawCardScrim()
+            return
         }
-        if (revealing) {
-            val alpha = card.scrim.value
-            if (alpha > 0f) drawRect(Color.Black, alpha = alpha)
+        val w = width
+        val left = lefts[key] ?: 0f
+        // The upper page's leading edge, in this entry's coordinates.
+        val shift = if (revealing) 1f - card.reveal else 1f
+        val offset = -(if (rtl) -1f else 1f) * motion.parallax * w * c * shift
+        val edge = if (rtl) w * c - left - offset else w * (1f - c) - left - offset
+        val from = if (rtl) edge.coerceAtLeast(0f) else 0f
+        val to = if (rtl) size.width else edge.coerceAtMost(size.width)
+        when {
+            // The card shrinks the upper page, so the whole lower page may show around it.
+            revealing -> drawContent()
+            // Whole pixels, so the clip is a scissor, and one more on the covered side, so no
+            // rounding of the upper page's position opens a seam between the two.
+            to > from -> clipRect(
+                left = if (rtl) floor(from) - 1f else from,
+                right = if (rtl) to else ceil(to) + 1f,
+            ) { this@drawOver.drawContent() }
         }
+        if (to > from) {
+            drawRect(Color.Black, Offset(from, 0f), Size(to - from, size.height), alpha = coverScrimAlpha(isLight) * c)
+        }
+        val shadow = EdgeShadow.toPx()
+        val brush = shadowBrushes.getOrPut(shadow.toInt() * if (rtl) -1 else 1) {
+            val dark = Color.Black.copy(alpha = SHADOW_ALPHA)
+            Brush.horizontalGradient(
+                colors = if (rtl) listOf(dark, Color.Transparent) else listOf(Color.Transparent, dark),
+                startX = 0f,
+                endX = shadow,
+            )
+        }
+        translate(left = if (rtl) edge else edge - shadow) {
+            drawRect(brush, size = Size(shadow, size.height), alpha = c)
+        }
+        if (revealing) drawCardScrim()
+    }
+
+    private fun DrawScope.drawCardScrim() {
+        val alpha = card.scrim.value
+        if (alpha > 0f) drawRect(Color.Black, alpha = alpha)
     }
 
     private companion object {
