@@ -28,9 +28,11 @@ export function PlatformStep({ catalogue, platforms, model }: { catalogue: Catal
   return (
     <div>
       <p className="max-w-2xl text-sm text-ink-300">
-        {only
-          ? `${only.title} is the platform this version makes.${platforms.length > 1 ? " The others are not ready yet." : ""}`
-          : "Which app to start from. Your answers carry over if you change your mind; anything the other platform does not offer is left out."}
+        {offered.length === 0
+          ? "This site is not making projects right now. The command line tool in the repository makes the same ones on your own machine."
+          : only
+            ? `${only.title} is the platform this version makes.${platforms.length > 1 ? " The others are not ready yet." : ""}`
+            : "Which app to start from. Your answers carry over if you change your mind; anything the other platform does not offer is left out."}
       </p>
       {/* A fieldset rather than role=radiogroup: each card's "Not in this version" disclosure sits
           beside its radio, and a radiogroup may hold only radios. */}
