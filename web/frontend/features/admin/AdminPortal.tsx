@@ -116,7 +116,7 @@ function SignIn({ onSignedIn }: { onSignedIn: (token: string) => void }) {
             )}
           </Field>
         </div>
-        <Button type="submit" className="mt-4 w-full" disabled={busy || value.length < 8}>
+        <Button type="submit" className="mt-4 w-full" disabled={busy || value.length < 8} focusableWhenDisabled>
           {busy ? (
             <>
               <Spinner /> Signing in…

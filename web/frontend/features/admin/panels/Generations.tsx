@@ -25,7 +25,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
       note={`page ${cursors.length + 1}`}
       result={result}
       actions={
-        <Button variant="secondary" size="small" onClick={() => void csv.run(() => downloadCsv(token, `${query}&limit=${CSV_ROWS}`))} disabled={csv.busy}>
+        <Button variant="secondary" size="small" onClick={() => void csv.run(() => downloadCsv(token, `${query}&limit=${CSV_ROWS}`))} disabled={csv.busy} focusableWhenDisabled>
           {csv.busy ? "Exporting…" : `CSV (up to ${CSV_ROWS.toLocaleString()})`}
         </Button>
       }
@@ -121,7 +121,13 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
             </table>
           </div>
           <div className="mt-3 flex justify-between">
-            <Button variant="ghost" size="small" onClick={() => setPaging({ query, cursors: cursors.slice(0, -1) })} disabled={cursors.length === 0}>
+            <Button
+              variant="ghost"
+              size="small"
+              onClick={() => setPaging({ query, cursors: cursors.slice(0, -1) })}
+              disabled={cursors.length === 0}
+              focusableWhenDisabled
+            >
               Newer
             </Button>
             <Button
@@ -132,6 +138,7 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                 if (next !== null) setPaging({ query, cursors: [...cursors, next] });
               }}
               disabled={data.next_before === null}
+              focusableWhenDisabled
             >
               Older
             </Button>

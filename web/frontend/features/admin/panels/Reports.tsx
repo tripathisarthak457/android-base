@@ -122,14 +122,17 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
                               ))}
                           </dl>
                         </div>
-                        <NoteBox key={item.notes} current={item.notes} busy={save.busy} onSave={(notes) => void update(item.id, { notes })} />
+                        <NoteBox current={item.notes} busy={save.busy} onSave={(notes) => void update(item.id, { notes })} />
                       </details>
                       <select
                         value={item.status}
                         onChange={(event) => void update(item.id, { status: event.target.value })}
-                        disabled={save.busy}
+                        // Not `disabled`: that would drop the focus of the select just changed.
+                        // A change while another write runs is refused, and the select, which
+                        // shows the stored status, goes back to it.
+                        aria-disabled={save.busy || undefined}
                         aria-label={`Status of report ${item.id}`}
-                        className="shrink-0 rounded-md border border-ink-500 bg-ink-900 px-2 py-1 text-xs text-ink-200"
+                        className="shrink-0 rounded-md border border-ink-500 bg-ink-900 px-2 py-1 text-xs text-ink-200 aria-disabled:text-ink-400"
                       >
                         {STATUSES.map((option) => (
                           <option key={option} value={option}>
@@ -149,9 +152,17 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
   );
 }
 
-/** Holds the draft of a note. Keyed on the stored note, so a save or a reload replaces the draft. */
+/**
+ * Holds the draft of a note. A save or a reload replaces the draft with the stored note in place,
+ * rather than by remounting, which would take the focus from the Save button just pressed.
+ */
 function NoteBox({ current, busy, onSave }: { current: string; busy: boolean; onSave: (notes: string) => void }) {
   const [value, setValue] = useState(current);
+  const [stored, setStored] = useState(current);
+  if (stored !== current) {
+    setStored(current);
+    setValue(current);
+  }
   return (
     <div className="mt-3 flex gap-2">
       <input
@@ -161,7 +172,7 @@ function NoteBox({ current, busy, onSave }: { current: string; busy: boolean; on
         placeholder="Triage note: what you found, what you did"
         className="h-9 flex-1 rounded-lg border border-ink-500 bg-ink-900 px-3 text-xs text-ink-100 placeholder:text-ink-500"
       />
-      <Button variant="secondary" size="small" onClick={() => onSave(value.trim())} disabled={busy || value.trim() === current}>
+      <Button variant="secondary" size="small" onClick={() => onSave(value.trim())} disabled={busy || value.trim() === current} focusableWhenDisabled>
         {value.trim() === "" && current ? "Clear note" : "Save note"}
       </Button>
     </div>

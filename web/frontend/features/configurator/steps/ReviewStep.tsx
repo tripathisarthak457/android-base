@@ -139,7 +139,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
           </p>
         )}
 
-        <Button size="large" onClick={() => void generate()} disabled={busy || errors.size > 0} className="w-full">
+        <Button size="large" onClick={() => void generate()} disabled={busy || errors.size > 0} focusableWhenDisabled className="w-full">
           {busy ? (
             <>
               <Spinner /> Generating…

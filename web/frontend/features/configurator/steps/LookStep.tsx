@@ -193,9 +193,11 @@ function ColourRow({
         {derivable && (
           <button
             type="button"
-            onClick={() => onCommit("")}
-            disabled={!value}
-            className="shrink-0 rounded-md border border-ink-600 px-2 py-1.5 text-xs text-ink-300 transition-colors hover:border-ink-500 hover:text-ink-100 disabled:cursor-default disabled:border-ink-700 disabled:text-ink-400"
+            // aria-disabled, not disabled: pressing Derive disables it, and a disabled button
+            // drops the focus to the page.
+            onClick={() => value && onCommit("")}
+            aria-disabled={!value || undefined}
+            className="shrink-0 rounded-md border border-ink-600 px-2 py-1.5 text-xs text-ink-300 transition-colors hover:border-ink-500 hover:text-ink-100 aria-disabled:cursor-default aria-disabled:border-ink-700 aria-disabled:text-ink-400"
           >
             {value ? "Derive" : "Derived"}
           </button>
