@@ -60,21 +60,31 @@ class SkeletonDrawAllocationTest {
         assertNoMoreThanPlain(bones)
     }
 
+    /**
+     * Compares the bytes [Draws] sweep frames allocate with what as many plain frames allocate, in
+     * several rounds, and takes the round where the sweep cost least. Until the JIT has compiled the
+     * drawing code the thread's count includes work that a compiled frame does not do, and that
+     * compilation can land in any round; an object made on every frame shows in every round.
+     */
     private fun assertNoMoreThanPlain(bones: Bones) {
         val canvas = Canvas(ImageBitmap(Width, Height))
+        val extra = LongArray(Rounds)
         CanvasDrawScope().draw(density, LayoutDirection.Ltr, canvas, Size(Width.toFloat(), Height.toFloat())) {
             // The first draws build the outline, the shader and the native objects behind them.
-            repeat(Draws / 4) { index ->
+            repeat(Draws) { index ->
                 drawPlain(bones)
                 drawSweptFrame(bones, index)
             }
-            val plainBytes = allocatedBytes { repeat(Draws) { drawPlain(bones) } }
-            val sweptBytes = allocatedBytes { repeat(Draws) { index -> drawSweptFrame(bones, index) } }
-            assertTrue(
-                "$Draws sweep frames allocated $sweptBytes bytes against $plainBytes for plain bones",
-                sweptBytes - plainBytes <= Slack,
-            )
+            for (round in 0 until Rounds) {
+                val plainBytes = allocatedBytes { repeat(Draws) { drawPlain(bones) } }
+                val sweptBytes = allocatedBytes { repeat(Draws) { index -> drawSweptFrame(bones, index) } }
+                extra[round] = sweptBytes - plainBytes
+            }
         }
+        assertTrue(
+            "$Draws sweep frames allocated more than plain ones in every round: ${extra.joinToString()} bytes",
+            extra.min() <= Slack,
+        )
     }
 
     // The same canvas moves as a sweep frame makes, so only the band's own work is compared.
@@ -103,6 +113,7 @@ class SkeletonDrawAllocationTest {
         const val Width = 900
         const val Height = 200
         const val Draws = 1_000
+        const val Rounds = 5
         const val LineRadius = 16f
 
         /**
