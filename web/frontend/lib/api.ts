@@ -3,8 +3,12 @@ export const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") ??
   (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8080" : "");
 
-/** The deployed commit, short. Sent as `X-Client` so the API can tell the site from scripts. */
-export const BUILD = process.env.NEXT_PUBLIC_BUILD ?? "dev";
+/**
+ * The deployed commit, short: in `X-Client`, so the API can tell the site from scripts, and as the
+ * release a client error or a report is grouped under. Vercel hands its builds the commit; a build
+ * made anywhere else names itself with NEXT_PUBLIC_BUILD.
+ */
+export const BUILD = process.env.NEXT_PUBLIC_BUILD || process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "dev";
 
 /** `X-Client` is at most 64 printable ASCII characters. */
 const CLIENT_MAX = 64;
