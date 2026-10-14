@@ -17,8 +17,18 @@ internal fun <K : Any> List<K>.toNavEntries(provide: (key: K, contentKey: String
     return map { key ->
         val count = below.getOrElse(key) { 0 }
         below[key] = count + 1
-        // The class is part of it, as in Navigation 3's default: keys of two classes can print alike.
-        val contentKey = "$key:${key::class}"
-        provide(key, if (count == 0) contentKey else "$contentKey#$count")
+        provide(key, contentKey(key, count))
     }
+}
+
+/** The content key [toNavEntries] gives the last of these entries, or null for none. */
+internal fun List<Any>.lastContentKey(): String? {
+    val key = lastOrNull() ?: return null
+    return contentKey(key, count { it == key } - 1)
+}
+
+// The class is part of it, as in Navigation 3's default: keys of two classes can print alike.
+private fun contentKey(key: Any, below: Int): String {
+    val first = "$key:${key::class}"
+    return if (below == 0) first else "$first#$below"
 }

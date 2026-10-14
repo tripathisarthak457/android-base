@@ -102,6 +102,7 @@ internal fun PresentationHost(
                 NavEntry(key = key, contentKey = contentKey, metadata = destinationMetadata(destination)) { shownKey ->
                     PresentedFrame(
                         key = shownKey,
+                        contentKey = contentKey,
                         motion = motion,
                         gate = gate,
                         card = host.card,
@@ -162,6 +163,7 @@ internal fun PresentationHost(
 @Composable
 private fun PresentedFrame(
     key: AppNavKey,
+    contentKey: String,
     motion: ScreenMotion,
     gate: BackGate,
     card: BackCardState,
@@ -176,9 +178,9 @@ private fun PresentedFrame(
         onDispose { onLive(-1) }
     }
     val ownBar = remember { ChromeInset() }
-    DisposableEffect(screenBars, key, ownBar) {
-        screenBars.heights[key] = ownBar
-        onDispose { if (screenBars.heights[key] === ownBar) screenBars.heights.remove(key) }
+    DisposableEffect(screenBars, contentKey, ownBar) {
+        screenBars.heights[contentKey] = ownBar
+        onDispose { if (screenBars.heights[contentKey] === ownBar) screenBars.heights.remove(contentKey) }
     }
     CompositionLocalProvider(
         LocalScreenBottomBar provides ownBar,

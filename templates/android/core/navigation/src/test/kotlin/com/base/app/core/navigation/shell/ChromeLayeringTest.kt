@@ -172,6 +172,24 @@ class ChromeLayeringTest {
     }
 
     @Test
+    fun `a screen in the stack twice keeps its bottom bar when the second one is popped`() {
+        val state = shell()
+        showShell(state, ShellConfig(hideBarOnPush = true))
+        listOf(Post(1), Post(2), Post(1)).forEach { key ->
+            rule.runOnIdle { state.submit(NavCommand.Navigate(key)) }
+            rule.waitForIdle()
+        }
+
+        repeat(2) {
+            rule.runOnUiThread { rule.activity.onBackPressedDispatcher.onBackPressed() }
+            rule.waitForIdle()
+        }
+
+        assertEquals(listOf(FeedTab, Post(1)), state.current.keys)
+        assertEquals(ACTION_BAR, bottomChrome.value)
+    }
+
+    @Test
     fun `a full-screen destination hides the bar, even over a pushed screen, and Back brings it back`() {
         val state = shell(stacks = listOf(listOf(FeedTab, Post(1)), listOf(ProfileTab)))
         showShell(state)

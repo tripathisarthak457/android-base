@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.navigation.AppTabBarState
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.navigation.ShellState
+import com.base.app.core.navigation.stack.lastContentKey
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -31,9 +32,9 @@ internal fun BottomChromeWriter(state: ShellState, barState: AppTabBarState, wid
             } else {
                 with(density) {
                     bottomChrome(
-                        presented = state.presentedKeys.lastOrNull()?.let { state.presentedBars.heights[it]?.value },
+                        presented = state.presentedKeys.lastContentKey()?.let { state.presentedBars.heights[it]?.value },
                         keyboard = keyboard.getBottom(this).toDp(),
-                        screenBar = state.current.current.takeIf { state.barAnchor.progress() >= 1f }
+                        screenBar = state.current.keys.lastContentKey()?.takeIf { state.barAnchor.progress() >= 1f }
                             ?.let { state.screenBars[state.selectedIndex].heights[it]?.value },
                         bar = if (wide) 0.dp else barState.settledHeight.toDp(),
                     )

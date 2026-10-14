@@ -123,15 +123,18 @@ private fun rememberEntryProvider(
             TRANSITION_METADATA to destination.transition,
         )
         NavEntry(key = key, contentKey = contentKey, metadata = metadata) { shown ->
-            EntryFrame(shown, hides, screenBars) { destination.content(shown) }
+            EntryFrame(contentKey, hides, screenBars) { destination.content(shown) }
         }
     }
 }
 
-/** The screen-level bottom bars of one host's screens, for the shell to report the one in front. */
+/**
+ * The screen-level bottom bars of one host's screens, by content key, for the shell to report the
+ * one in front: a key in the stack twice is two screens, and each may show its bar.
+ */
 @Stable
 internal class ScreenBars {
-    val heights = mutableStateMapOf<AppNavKey, ChromeInset>()
+    val heights = mutableStateMapOf<String, ChromeInset>()
 }
 
 /**

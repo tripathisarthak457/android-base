@@ -8,7 +8,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.layout.LocalScreenBottomBar
@@ -22,16 +21,16 @@ import com.base.app.core.designsystem.theme.AppTheme
  */
 @Composable
 internal fun EntryFrame(
-    key: AppNavKey,
+    contentKey: String,
     hidesBar: Boolean,
     screenBars: ScreenBars?,
     content: @Composable () -> Unit,
 ) {
     val ownBar = remember { ChromeInset() }
     if (screenBars != null) {
-        DisposableEffect(screenBars, key, ownBar) {
-            screenBars.heights[key] = ownBar
-            onDispose { if (screenBars.heights[key] === ownBar) screenBars.heights.remove(key) }
+        DisposableEffect(screenBars, contentKey, ownBar) {
+            screenBars.heights[contentKey] = ownBar
+            onDispose { if (screenBars.heights[contentKey] === ownBar) screenBars.heights.remove(contentKey) }
         }
     }
     val frame = Modifier.fillMaxSize().background(AppTheme.colors.background)
