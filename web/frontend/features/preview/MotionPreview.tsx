@@ -3,6 +3,7 @@
 import { useAnimate, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import type { Tokens } from "../catalogue/types.ts";
+import { loop } from "./loop.ts";
 import type { PreviewTheme } from "./theme.ts";
 
 /** Where each moving part sits between runs, as the markup first draws it. */
@@ -37,47 +38,37 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
     // half-pushed or the other tab showing, and React does not restore styles it never changed.
     for (const [part, values] of REST) animate(`[data-part=${part}]`, values, { duration: 0 });
     if (!inView || paused) return;
-    let cancelled = false;
-    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     const screen = theme.spring("screen");
     const selection = theme.spring("selection");
 
-    async function loop() {
-      while (!cancelled) {
-        await wait(700);
-        if (cancelled) return;
-        if (!pressing.current) {
-          await down();
-          await wait(80);
-          await up();
-        }
-        await wait(450);
-        if (cancelled) return;
-        animate("[data-part=list]", { x: `${-navigation.parallax * 100}%` }, screen);
-        animate("[data-part=scrim]", { opacity: scrim }, screen);
-        await animate("[data-part=detail]", { x: "0%" }, screen);
-        await wait(900);
-        if (cancelled) return;
-        animate("[data-part=list]", { x: "0%" }, screen);
-        animate("[data-part=scrim]", { opacity: 0 }, screen);
-        await animate("[data-part=detail]", { x: "100%" }, screen);
-        await wait(600);
-        if (cancelled) return;
-        animate("[data-part=page]", { opacity: 0 }, { duration: 0 });
-        animate("[data-part=other]", { opacity: 1 }, { duration: 0 });
-        await animate("[data-part=indicator]", { x: "100%" }, selection);
-        await wait(900);
-        if (cancelled) return;
-        animate("[data-part=other]", { opacity: 0 }, { duration: 0 });
-        animate("[data-part=page]", { opacity: 1 }, { duration: 0 });
-        await animate("[data-part=indicator]", { x: "0%" }, selection);
-        await wait(500);
+    return loop(async ({ settle, wait }) => {
+      await wait(700);
+      // The button's springs are timed, not awaited: a press on it starts animations that stop the
+      // loop's, and framer never settles a stopped animation. A visitor's press is never released
+      // by the loop.
+      if (!pressing.current) {
+        void down();
+        await wait(240);
+        if (!pressing.current) void up();
       }
-    }
-    void loop();
-    return () => {
-      cancelled = true;
-    };
+      await wait(770);
+      animate("[data-part=list]", { x: `${-navigation.parallax * 100}%` }, screen);
+      animate("[data-part=scrim]", { opacity: scrim }, screen);
+      await settle(animate("[data-part=detail]", { x: "0%" }, screen));
+      await wait(900);
+      animate("[data-part=list]", { x: "0%" }, screen);
+      animate("[data-part=scrim]", { opacity: 0 }, screen);
+      await settle(animate("[data-part=detail]", { x: "100%" }, screen));
+      await wait(600);
+      animate("[data-part=page]", { opacity: 0 }, { duration: 0 });
+      animate("[data-part=other]", { opacity: 1 }, { duration: 0 });
+      await settle(animate("[data-part=indicator]", { x: "100%" }, selection));
+      await wait(900);
+      animate("[data-part=other]", { opacity: 0 }, { duration: 0 });
+      animate("[data-part=page]", { opacity: 1 }, { duration: 0 });
+      await settle(animate("[data-part=indicator]", { x: "0%" }, selection));
+      await wait(500);
+    });
     // `down`, `up` and the token values all follow from `theme`, so the loop restarts with it.
   }, [inView, paused, theme]);
 
