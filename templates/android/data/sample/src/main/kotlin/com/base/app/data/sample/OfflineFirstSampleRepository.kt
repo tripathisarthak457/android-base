@@ -1,7 +1,6 @@
 // <opt:database>
 package com.base.app.data.sample
 
-import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.result.map
@@ -14,11 +13,10 @@ import com.base.app.data.sample.remote.SampleApi
 import com.base.app.data.sample.remote.toDomain
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,20 +24,29 @@ import javax.inject.Singleton
  * The database is the source of truth: screens read [items] from it, and [refresh] writes the
  * server's answer into it. What was fetched last is on screen at once, offline included, and the
  * list follows every write.
+ *
+ * Every reader queries the table itself rather than sharing a cached copy, so a list read after
+ * [refresh] returns is the one it wrote. A shared copy is only updated once the database has told
+ * its observer about the write, and until then it hands back the list from before.
  */
 @Singleton
 internal class OfflineFirstSampleRepository @Inject constructor(
     private val api: SampleApi,
     private val dao: SampleDao,
-    scope: ApplicationScope,
 ) : SampleRepository {
 
-    /** Kept while someone reads it and briefly after, so a detail opened from the list can [peek]. */
-    private val stored: StateFlow<List<SampleItem>?> = dao.observeAll()
-        .map { rows -> rows.map { it.toDomain() } }
-        .stateIn(scope, SharingStarted.WhileSubscribed(KEEP_AFTER_LAST_READER_MILLIS), null)
+    private val readLock = Any()
+    private var readers = 0
 
-    override val items: Flow<List<SampleItem>> = stored.filterNotNull()
+    // What the readers of [items] saw last, for [peek]. It goes with the last reader, so rows the
+    // database has dropped since (a sign-out empties it) are never answered from memory.
+    private var lastRead: List<SampleItem>? = null
+
+    override val items: Flow<List<SampleItem>> = dao.observeAll()
+        .map { rows -> rows.map { it.toDomain() } }
+        .onStart { synchronized(readLock) { readers++ } }
+        .onEach { read -> synchronized(readLock) { lastRead = read } }
+        .onCompletion { synchronized(readLock) { if (--readers == 0) lastRead = null } }
 
     override suspend fun refresh(): AppResult<Unit> = when (val fetched = api.items()) {
         is AppResult.Success -> storing {
@@ -49,7 +56,7 @@ internal class OfflineFirstSampleRepository @Inject constructor(
         is AppResult.Failure -> fetched
     }
 
-    override fun peek(id: Int): SampleItem? = stored.value?.firstOrNull { it.id == id }
+    override fun peek(id: Int): SampleItem? = synchronized(readLock) { lastRead }?.firstOrNull { it.id == id }
 
     override suspend fun item(id: Int): AppResult<SampleItem> {
         val saved = dao.byId(id)
@@ -64,10 +71,6 @@ internal class OfflineFirstSampleRepository @Inject constructor(
         throw cancellation
     } catch (failure: Exception) {
         AppResult.Failure(AppError.Storage(failure))
-    }
-
-    private companion object {
-        const val KEEP_AFTER_LAST_READER_MILLIS = 5_000L
     }
 }
 // </opt:database>

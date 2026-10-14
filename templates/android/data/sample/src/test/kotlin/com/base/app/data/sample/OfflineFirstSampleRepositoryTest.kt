@@ -1,7 +1,6 @@
 // <opt:database>
 package com.base.app.data.sample
 
-import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.database.sample.SampleDao
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -25,12 +23,22 @@ class OfflineFirstSampleRepositoryTest {
     private val dao = FakeSampleDao()
     private val client = FakeSampleClient(listOf(SampleDto(2, "Beta"), SampleDto(1, "Alpha")))
 
-    private fun TestScope.repository() =
-        OfflineFirstSampleRepository(SampleApi(client), dao, ApplicationScope(backgroundScope))
+    private fun repository() = OfflineFirstSampleRepository(SampleApi(client), dao)
 
     @Test
     fun `a refresh writes the server's list, in its order, and the list follows`() = runTest {
         val repository = repository()
+
+        repository.refresh()
+
+        assertEquals(listOf(2, 1), repository.items.first().map { it.id })
+    }
+
+    @Test
+    fun `a list read as a refresh returns is the one it wrote, while a screen is already reading`() = runTest {
+        val repository = repository()
+        repository.items.launchIn(backgroundScope)
+        runCurrent()
 
         repository.refresh()
 
@@ -68,6 +76,19 @@ class OfflineFirstSampleRepositoryTest {
         runCurrent()
 
         assertEquals("Alpha", repository.peek(1)?.title)
+    }
+
+    @Test
+    fun `peek forgets the list once nobody reads it`() = runTest {
+        val repository = repository()
+        repository.refresh()
+        val reading = repository.items.launchIn(backgroundScope)
+        runCurrent()
+
+        reading.cancel()
+        runCurrent()
+
+        assertNull(repository.peek(1))
     }
 
     @Test

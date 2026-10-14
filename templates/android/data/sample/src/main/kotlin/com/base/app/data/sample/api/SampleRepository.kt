@@ -18,7 +18,7 @@ interface SampleRepository {
 
     /**
      * The item from what is already in memory, without any I/O, so a screen opened from the list
-     * has its content in its first frame. Null when the list has not been read recently.
+     * has its content in its first frame. Null when the list is not in memory.
      */
     fun peek(id: Int): SampleItem?
 
