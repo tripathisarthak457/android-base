@@ -88,6 +88,63 @@ class LiquidLensStateTest {
     }
 
     @Test
+    fun `a tap's glass eases in as the lens leaves its tab`() = runTest {
+        val travel = travelOfTap(to = 1)
+        val rises = travel.zipWithNext { before, after -> after - before }.filter { it > 0f }
+
+        assertTrue("the first rise is the gentlest by far: $rises", rises.first() < rises.max() / 2)
+    }
+
+    @Test
+    fun `a tap two tabs away lifts its glass no faster than a tap to the next tab`() = runTest {
+        val nextTab = largestRise(travelOfTap(to = 1))
+
+        val twoTabs = largestRise(travelOfTap(to = 2))
+
+        assertTrue("$twoTabs against $nextTab", twoTabs <= nextTab + Tolerance)
+    }
+
+    @Test
+    fun `a new selection never drops the glass the lens shows`() = runTest {
+        for ((first, second) in NewSelections) {
+            for (frames in 1..framesToHandOver(first)) {
+                val (state, clock) = startLens(slot = 0)
+                state.select(first)
+                repeat(frames) { frame(clock) }
+                val before = state.travel
+
+                state.select(second)
+                val after = state.travel
+                val rest = framesUntilIdle(clock) { state.travel }
+
+                val case = "to $first, then $second after $frames frames: $before, $after, $rest"
+                assertTrue("at the selection, $case", after >= before)
+                assertTrue("after it, $case", liftsThenCalmsOnce(listOf(after) + rest))
+            }
+        }
+    }
+
+    @Test
+    fun `a new selection lifts the glass no faster than a tap from rest`() = runTest {
+        val fromRest = largestRise(travelOfTap(to = 1))
+        for ((first, second) in NewSelections) {
+            for (frames in 1..framesToHandOver(first)) {
+                val (state, clock) = startLens(slot = 0)
+                state.select(first)
+                repeat(frames) { frame(clock) }
+                val before = state.travel
+
+                state.select(second)
+                val travel = listOf(before, state.travel) + framesUntilIdle(clock) { state.travel }
+
+                val rise = largestRise(travel)
+                val case = "to $first, then $second after $frames frames: $travel"
+                assertTrue("$rise against $fromRest, $case", rise <= fromRest + Tolerance)
+            }
+        }
+    }
+
+    @Test
     fun `a tap made while the lens still settles lifts it gradually again`() = runTest {
         val (state, clock) = startLens(slot = 0)
         state.select(1)
@@ -224,6 +281,35 @@ class LiquidLensStateTest {
         assertTrue("a drag: $drag", drag.isNotEmpty() && drag.all { it })
         assertTrue("a release: $release", release.all { it })
         assertEquals("the indicator still follows the finger", 1f, held)
+    }
+
+    @Test
+    fun `a lens that stops refracting in flight is plain at once`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.select(2)
+        framesUntil(clock) { state.travel > FullGlass }
+
+        state.refracts = false
+
+        assertEquals(0f, state.intensity)
+        assertEquals(Resting, state.scale(Orientation.Horizontal))
+    }
+
+    @Test
+    fun `glass that returns while the lens travels rises from plain`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+        state.select(2)
+        framesUntil(clock) { state.travel > FullGlass }
+        state.refracts = false
+        frame(clock)
+
+        state.refracts = true
+        val travel = listOf(state.travel) + List(3) {
+            frame(clock)
+            state.travel
+        }
+
+        assertTrue("$travel", travel.first() == 0f && travel.zipWithNext().all { (a, b) -> b > a })
     }
 
     @Test
@@ -477,6 +563,30 @@ class LiquidLensStateTest {
         assertEquals(0f, state.pressure)
     }
 
+    /** Whether [travel] rises, if at all, to its peak, then only falls. */
+    private fun liftsThenCalmsOnce(travel: List<Float>): Boolean {
+        val peak = travel.indexOf(travel.max())
+        return travel.take(peak + 1).zipWithNext().all { (before, after) -> after >= before } &&
+            travel.drop(peak).zipWithNext().all { (before, after) -> after <= before }
+    }
+
+    private fun largestRise(travel: List<Float>): Float =
+        travel.zipWithNext().maxOf { (before, after) -> after - before }
+
+    /** The travel on the frame of a tap from the first tab to [to], then on every frame after. */
+    private fun TestScope.travelOfTap(to: Int): List<Float> {
+        val (state, clock) = startLens(slot = 0)
+        state.select(to)
+        return listOf(state.travel) + framesUntilIdle(clock) { state.travel }
+    }
+
+    /** How many frames a tap from the first tab to [to] takes to hand over to the indicator. */
+    private fun TestScope.framesToHandOver(to: Int): Int {
+        val (state, clock) = startLens(slot = 0)
+        state.select(to)
+        return handOverIn(framesUntilIdle(clock) { state.samplesBackdrop }) + 1
+    }
+
     /** Whether [sampling] holds one unbroken run of frames that sample, and never one again. */
     private fun isOneRun(sampling: List<Boolean>): Boolean =
         sampling.any { it } && sampling.dropWhile { !it }.dropWhile { it }.none { it }
@@ -594,6 +704,12 @@ class LiquidLensStateTest {
         const val FullGlass = 0.95f
         val Resting = ScaleFactor(1f, 1f)
         val FullPress = ScaleFactor(1.3f, 1.3f)
+
+        /**
+         * A first selection from the first tab, then a second: on along the bar, back to the
+         * first tab, and two reversals of a longer tap.
+         */
+        val NewSelections = listOf(1 to 2, 1 to 0, 2 to 0, 2 to 1)
         val TrackSpring: SpringSpec<Float> = spring(dampingRatio = 0.86f, stiffness = 1755f)
         val SettleSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 504f)
         val PressSpring: SpringSpec<Float> = spring(dampingRatio = 1f, stiffness = 1542f)

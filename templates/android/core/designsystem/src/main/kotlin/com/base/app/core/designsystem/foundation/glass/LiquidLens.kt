@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -34,6 +33,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
@@ -126,10 +126,14 @@ internal class LiquidLensState(
     private var followedSlot = initialSlot
     private var pressureVelocity = 0f
 
-    // Plain fields: they change only on a frame that writes the lens's position, or while the
-    // lens is still, when its energy, and so travel, is 0 whatever they hold.
-    private var departureOrigin = initialSlot.toFloat()
-    private var departure = 0f
+    // The glass the last frame showed, which each frame may raise only so far (see travel).
+    private var lift by mutableFloatStateOf(0f)
+
+    // Whether the last frame left glass to see. Only the frame loop writes it, and an unchanged
+    // value notifies no one, so the frames a lens still takes to settle after handing over to the
+    // indicator invalidate nothing that reads only samplesBackdrop. Between frames nothing raises
+    // the glass (only a frame raises lift), so a value a frame old errs only towards showing.
+    private var glassShown by mutableStateOf(false)
 
     /** True from [press] to [release] or [cancel]. */
     var pressed by mutableStateOf(false)
@@ -154,19 +158,19 @@ internal class LiquidLensState(
      * 0 at rest, up to 1 while the lens moves: how far its own motion lifts it into glass. Always
      * 0 unless [refracts].
      *
-     * It is read off the lens's spring, so it needs no animation of its own, and two things set
-     * it. One is the spring's energy, as the top speed that energy could still give the lens:
-     * √(v² + k·d²) for a speed v and a distance d left to go, full from [TravelFullSpeed] on. It
-     * only drains while the spring carries the lens to one tab, so the glass calms as the lens
-     * settles and holds where the speed alone passes through zero: at the turnaround of a
-     * selection reversed in flight, or of an overshoot. The other is how far the lens has come
-     * since its spring was last calm, as a running maximum: the glass materializes over the first
-     * [LiftDistance] of the way instead of popping up in one frame, and never falls back on a
-     * turnaround. A lens that has not moved yet, on the frame of a tap, is still plain. Read it
-     * in draw or in a layer block.
+     * It is read off the lens's spring, so it needs no animation of its own. The spring's energy
+     * caps it, as the top speed that energy could still give the lens: √(v² + k·d²) for a speed v
+     * and a distance d left to go, full from [TravelFullSpeed] on. That energy only drains while
+     * the spring carries the lens to one tab, so the glass calms as the lens settles and holds
+     * where the speed alone passes through zero: at the turnaround of a selection reversed in
+     * flight, or of an overshoot. A new selection raises the energy at once, so the glass does
+     * not follow it up: each frame raises it from what it last showed by no more than the lens
+     * moved, over [LiftDistance], and no more than the frame's time, over [LiftNanos]. A tap made
+     * at rest therefore starts plain and one made while the glass calms starts from that glass,
+     * and either lifts over a few frames. Read it in draw or in a layer block.
      */
     val travel: Float
-        get() = if (refracts) glassOf(energy) * eased(departure / LiftDistance) else 0f
+        get() = if (refracts) min(glassOf(energy), lift) else 0f
 
     /**
      * How much of the lens is glass rather than the resting selection: the larger of [pressure]
@@ -180,11 +184,8 @@ internal class LiquidLensState(
      * that a press or a selection's motion brought has calmed. While false the lens draws and
      * samples nothing.
      */
-    val samplesBackdrop: Boolean by derivedStateOf {
-        // Derived, so that the frames a lens still takes to settle after handing over to the
-        // indicator invalidate nothing that reads only this.
-        (pressed && refracts) || intensity >= ShownThreshold
-    }
+    val samplesBackdrop: Boolean
+        get() = (pressed && refracts) || glassShown
 
     private val lastSlot: Int
         get() = slotCount - 1
@@ -317,6 +318,7 @@ internal class LiquidLensState(
                 unspentNanos -= elapsedMillis * NanosPerMilli
                 step(elapsedMillis * NanosPerMilli)
             }
+            glassShown = intensity >= ShownThreshold
             lastFrameNanos = frameNanos
         }
     }
@@ -326,8 +328,7 @@ internal class LiquidLensState(
         velocity = 0f
         pressure = pressureTarget
         pressureVelocity = 0f
-        departureOrigin = position
-        departure = 0f
+        lift = 0f
     }
 
     private fun step(elapsedNanos: Long) {
@@ -342,14 +343,10 @@ internal class LiquidLensState(
             position = next
             velocity = nextVelocity
         }
-        // Measured from where the spring last had too little energy to show any glass, so a tap
-        // made while the lens still settles from the last one lifts it gradually again.
-        if (glassOf(energy) < ShownThreshold) {
-            departureOrigin = position
-            departure = 0f
-        } else if (departure < LiftDistance) {
-            departure = max(departure, abs(position - departureOrigin))
-        }
+        // A lens that does not refract keeps no lift, so glass that returns mid-flight (the tier
+        // rising back to Live) also rises from plain.
+        val rise = min(abs(position - from) / LiftDistance, elapsedNanos.toFloat() / LiftNanos)
+        lift = if (refracts) min(glassOf(energy), lift + rise) else 0f
 
         val pressureGoal = pressureTarget
         val pressureFrom = pressure
@@ -430,8 +427,8 @@ internal fun Modifier.liquidLens(
 private fun glassOf(energy: Float): Float = eased(energy / TravelFullSpeed)
 
 /**
- * Smoothstep of [amount] clamped to 0..1. Flat at both ends: the glass starts without a jump,
- * and the last slow stretch of a settle, where the lens has all but arrived, adds next to
+ * Smoothstep of [amount] clamped to 0..1. Flat at both ends: the glass leaves full without a
+ * jump, and the last slow stretch of a settle, where the lens has all but arrived, adds next to
  * nothing, so the glass calms with the motion instead of trailing it.
  */
 private fun eased(amount: Float): Float {
@@ -490,10 +487,17 @@ private const val ProjectionSeconds = 0.099f
 private const val TravelFullSpeed = 6f
 
 /**
- * How far, in slots, the lens moves while its glass materializes: a fifth of a tab, the first
- * few frames of a tap.
+ * How far, in slots, the lens moves while its glass rises from plain to full: a fifth of a tab. A
+ * lens leaving a tab covers it slowly at first, so the glass eases in with the motion.
  */
 private const val LiftDistance = 0.2f
+
+/**
+ * The shortest time over which the glass rises from plain to full: four frames of a 120 Hz
+ * display. A lens sent several tabs away covers [LiftDistance] within a frame or two, and its
+ * glass would pop up as it left.
+ */
+private const val LiftNanos = 32 * NanosPerMilli
 
 private const val PressSwell = 0.3f
 private const val TravelSwell = 0.12f
