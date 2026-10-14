@@ -9,6 +9,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -118,7 +120,8 @@ private fun KeptTab(
     warming: TabWarmUp,
     content: @Composable () -> Unit,
 ) {
-    val active = selection.value() == index
+    // Derived, so a switch recomposes only the two tabs it changes.
+    val active by remember { derivedStateOf { selection.value() == index } }
     val visibility = remember { TabVisibility { selection.value() == index } }
     CompositionLocalProvider(
         LocalLifecycleOwner provides rememberTabLifecycle(active),
