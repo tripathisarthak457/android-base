@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigationevent.NavigationEventInfo
@@ -107,7 +108,11 @@ private fun EntryHost(
     shellObservers: Set<ShellObserver>,
 ) {
     val swap = updateTransition(targetState = identity, label = "identity")
+    val background = AppTheme.colors.background
     swap.AnimatedContent(
+        // The window has no background of its own once the app has drawn (MainActivity), and two
+        // hosts half faded in and out would show it through each other.
+        modifier = Modifier.drawBehind { if (swap.isRunning) drawRect(background) },
         transitionSpec = { fadeIn(tween(IDENTITY_FADE_MS)) togetherWith fadeOut(tween(IDENTITY_FADE_MS)) },
     ) { shown ->
         when (shown) {

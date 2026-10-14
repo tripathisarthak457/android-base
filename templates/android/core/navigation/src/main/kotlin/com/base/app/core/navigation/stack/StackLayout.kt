@@ -1,5 +1,6 @@
 package com.base.app.core.navigation.stack
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -143,14 +144,17 @@ private fun EntrySlot(
 @Composable
 private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan, isLight: Boolean) {
     val divider = AppTheme.colors.divider
+    val background = AppTheme.colors.background
     val divided = plan.followsAnotherPane(key)
-    val draw = remember(scene, key, isLight, divided, divider) {
+    // Opaque, as every entry is (EntryFrame): the pane slides with its page over another one.
+    val draw = remember(scene, key, isLight, divided, divider, background) {
         Modifier
             .graphicsLayer { with(scene) { pose(key) } }
             .drawWithContent {
                 with(scene) { drawOver(key, isLight) }
                 if (divided) drawPaneDivider(divider)
             }
+            .background(background)
     }
     Box(draw) {
         AppEmptyState(

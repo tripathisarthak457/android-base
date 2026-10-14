@@ -2,6 +2,8 @@ package com.base.app
 
 import android.app.UiModeManager
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,7 +14,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -138,6 +142,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             val startup by startupViewModel.startup.collectAsStateWithLifecycle()
             val current = startup ?: return@setContent
+            // From its first frame on, the app paints every pixel of the window, so the window's own
+            // background would be one more full-screen fill under every frame the GPU draws. It is
+            // kept until then, as what shows while the app launches. A transparent ColorDrawable draws
+            // nothing; changing its colour, unlike replacing the drawable, requests no layout, and the
+            // mutate() keeps the change out of every other window built from the theme.
+            LaunchedEffect(Unit) {
+                withFrameNanos {}
+                (window.decorView.background?.mutate() as? ColorDrawable)?.color = Color.TRANSPARENT
+            }
             AppRoot(
                 startup = current,
                 navigator = navigator,
