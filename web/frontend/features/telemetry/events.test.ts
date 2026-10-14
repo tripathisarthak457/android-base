@@ -85,6 +85,23 @@ test("a long queue is split into batches the API accepts", () => {
   assert.deepEqual(batches("x", []), []);
 });
 
+test("the size limit is counted in bytes, so text outside ASCII still fits", () => {
+  // 64 Devanagari characters: 64 UTF-16 units, 192 bytes in UTF-8.
+  const campaign = "अभियान".repeat(11).slice(0, 64);
+  const events: ClientEvent[] = Array.from({ length: 20 }, () => ({
+    name: "landed",
+    returning: false,
+    viewport: "md",
+    utm_source: campaign,
+    utm_medium: campaign,
+    utm_campaign: campaign,
+  }));
+  const bodies = batches("3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c", events);
+  assert.ok(bodies.length > 1);
+  assert.ok(bodies.every((body) => Buffer.byteLength(body) <= BATCH_MAX_BYTES));
+  assert.equal(bodies.flatMap((body) => (JSON.parse(body) as { events: unknown[] }).events).length, 20);
+});
+
 test("session ids are random UUID v4s, the form the generate headers pass on", () => {
   const ids = new Set(Array.from({ length: 200 }, () => randomSessionId()));
   assert.equal(ids.size, 200);

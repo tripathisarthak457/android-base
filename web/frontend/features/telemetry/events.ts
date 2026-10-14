@@ -79,14 +79,19 @@ export function randomSessionId(): string {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
-/** `events` split into bodies the API accepts: at most 20 events and 8 KB each. */
+const utf8 = new TextEncoder();
+
+/**
+ * `events` split into bodies the API accepts: at most 20 events and 8 KB each, counted in UTF-8
+ * bytes as the API reads the body, not in the UTF-16 units of `String.length`.
+ */
 export function batches(sessionId: string, events: ClientEvent[]): string[] {
   const bodies: string[] = [];
   let current: ClientEvent[] = [];
   const body = (list: ClientEvent[]) => JSON.stringify({ session_id: sessionId, events: list });
   for (const event of events) {
     const next = [...current, event];
-    if (current.length > 0 && (next.length > BATCH_MAX_EVENTS || body(next).length > BATCH_MAX_BYTES)) {
+    if (current.length > 0 && (next.length > BATCH_MAX_EVENTS || utf8.encode(body(next)).length > BATCH_MAX_BYTES)) {
       bodies.push(body(current));
       current = [event];
     } else {
