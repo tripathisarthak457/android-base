@@ -51,10 +51,10 @@ export function PlatformStep({ catalogue, platforms, model }: { catalogue: Catal
                 className="flex-1 p-5"
               >
                 <span className="flex items-start justify-between gap-3">
-                  <span className="font-display text-lg font-bold text-ink-100">{platform.title}</span>
+                  <span className={`font-display text-lg font-bold ${soon ? "text-ink-300" : "text-ink-100"}`}>{platform.title}</span>
                   {soon ? <Badge>Coming soon</Badge> : platform.status === "beta" ? <Badge tone="amber">Beta</Badge> : null}
                 </span>
-                <span className="mt-2 block text-sm leading-relaxed text-ink-300">{platform.summary}</span>
+                <span className={`mt-2 block text-sm leading-relaxed ${soon ? "text-ink-400" : "text-ink-300"}`}>{platform.summary}</span>
                 {!soon && platform.status === "beta" && platform.status_note && (
                   <span className="mt-3 block text-xs text-amber">{platform.status_note}</span>
                 )}

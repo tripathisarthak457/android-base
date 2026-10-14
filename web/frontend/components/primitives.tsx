@@ -219,7 +219,11 @@ export function Segmented<T extends string>({
   );
 }
 
-/** A selectable card: a native radio or checkbox under a styled label. */
+/**
+ * A selectable card: a native radio or checkbox under a styled label. A disabled card is never
+ * faded, since its text is often the only place saying why it cannot be picked; the dashed edge,
+ * the missing fill and the cursor mark it instead.
+ */
 export function ChoiceCard({
   type,
   name,
@@ -243,7 +247,7 @@ export function ChoiceCard({
     <label
       className={`block rounded-xl border text-left transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
         disabled
-          ? "cursor-not-allowed border-ink-700 bg-ink-900 opacity-60"
+          ? "cursor-not-allowed border-dashed border-ink-600"
           : checked
             ? "cursor-pointer border-accent bg-accent-dim/50 ring-1 ring-accent"
             : "cursor-pointer border-ink-700 bg-ink-900 hover:border-ink-600"
