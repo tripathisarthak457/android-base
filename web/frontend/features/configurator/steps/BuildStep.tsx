@@ -326,6 +326,7 @@ function SigningPanel({ model, field, rules, available }: { model: ConfiguratorM
                     {...control}
                     {...describedByError}
                     value={signing.organisation}
+                    autoComplete="organization"
                     onChange={(event) => dispatch({ type: "signing", value: { organisation: event.target.value } })}
                     placeholder="Acme Ltd"
                   />
@@ -338,6 +339,7 @@ function SigningPanel({ model, field, rules, available }: { model: ConfiguratorM
                   {...control}
                   {...describedByError}
                   value={signing.country}
+                  autoComplete="country"
                   maxLength={2}
                   onChange={(event) => dispatch({ type: "signing", value: { country: event.target.value.toUpperCase() } })}
                   className="font-mono"

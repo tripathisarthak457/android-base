@@ -306,6 +306,7 @@ function FeedbackForm({ context, onSent, onClose }: { context: ReportContext | n
               onChange={(event) => setContact(event.target.value)}
               placeholder="you@example.com"
               type="email"
+              autoComplete="email"
               maxLength={200}
             />
           )}
