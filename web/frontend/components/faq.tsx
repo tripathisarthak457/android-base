@@ -1,5 +1,5 @@
 import { licensedFeatures } from "../features/catalogue/features.ts";
-import { CATALOGUE, PRIVACY } from "../lib/catalogue.ts";
+import { CATALOGUE, PLATFORMS, PRIVACY } from "../lib/catalogue.ts";
 
 function licenceAnswer(): string {
   const licensed = licensedFeatures(CATALOGUE);
@@ -11,13 +11,18 @@ function licenceAnswer(): string {
 }
 
 function platformsAnswer(): string | null {
-  const others = CATALOGUE.targets.filter((target) => target.key !== "android" && target.status !== "hidden");
+  const others = PLATFORMS.filter((platform) => platform.key !== "android");
   if (others.length === 0) return null;
-  const lines = others.map((target) =>
-    target.status === "coming_soon"
-      ? `${target.title} is coming soon.`
-      : `${target.title} is ${target.status === "beta" ? "in beta" : "available"}${target.status_note ? `: ${target.status_note.replace(/^Beta: /, "")}` : ""}.`,
+  const offered = others.filter((platform) => platform.status !== "coming_soon");
+  const soon = others.filter((platform) => platform.status === "coming_soon").map((platform) => platform.title);
+  const lines = offered.map(
+    (platform) =>
+      `${platform.title} is ${platform.status === "beta" ? "in beta" : "available"}${platform.status_note ? `: ${platform.status_note.replace(/^Beta: /, "")}` : ""}.`,
   );
+  if (soon.length > 0) {
+    lines.push(`${new Intl.ListFormat("en-GB", { type: "conjunction" }).format(soon)} ${soon.length === 1 ? "is" : "are"} coming soon.`);
+  }
+  if (offered.length === 0) return `Android, as a native Jetpack Compose project. ${lines.join(" ")}`;
   return `Android Native is the most complete. ${lines.join(" ")} The platform step shows what each one leaves out.`;
 }
 
@@ -37,9 +42,8 @@ export function Faq() {
       q: "Why no Material?",
       a:
         "Material is a brand as much as a toolkit, and a design system built on it inherits both. Owning the components means " +
-        "the theme is the only thing that decides how anything looks, the press feedback can be iOS-like rather than a ripple, " +
-        "and the same components carry over to Compose Multiplatform. Only Material's adaptive layout libraries are used, " +
-        "which depend on no Material component.",
+        "the theme is the only thing that decides how anything looks, and the press feedback can be iOS-like rather than a " +
+        "ripple. Only Material's adaptive layout libraries are used, which depend on no Material component.",
     },
     {
       q: "What if I want a feature I turned off?",

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://android-base.vercel.app"),
   openGraph: {
     title: "Android base — a project generator",
-    description: "Multi-module Compose, MVI, Navigation 3. Pick your platform, features and a look; get a zip that builds.",
+    description: "Multi-module Compose, MVI, Navigation 3. Pick your features and a look; get a zip that builds.",
     type: "website",
   },
   robots: { index: true, follow: true },

@@ -5,7 +5,7 @@ import { Configurator } from "../../features/configurator/Configurator.tsx";
 import { typeface } from "../../features/configurator/state.ts";
 import { useConfigurator } from "../../features/configurator/useConfigurator.ts";
 import { provideReportContext } from "../../features/feedback/context.ts";
-import { CATALOGUE } from "../../lib/catalogue.ts";
+import { CATALOGUE, PLATFORMS } from "../../lib/catalogue.ts";
 
 /**
  * The configurator's answers live in this island, so a keystroke re-renders the configurator and
@@ -39,5 +39,5 @@ export function ConfigureIsland() {
     [],
   );
 
-  return <Configurator catalogue={CATALOGUE} model={model} />;
+  return <Configurator catalogue={CATALOGUE} platforms={PLATFORMS} model={model} />;
 }

@@ -1,5 +1,5 @@
 import { selectableFeatures } from "../features/catalogue/features.ts";
-import { CATALOGUE, PRIVACY, REPO, android } from "../lib/catalogue.ts";
+import { CATALOGUE, PLATFORMS, PRIVACY, REPO, android } from "../lib/catalogue.ts";
 import { Badge, LinkButton } from "./ui.tsx";
 
 /**
@@ -8,7 +8,6 @@ import { Badge, LinkButton } from "./ui.tsx";
  */
 export function Hero() {
   const target = android();
-  const platforms = CATALOGUE.targets.filter((candidate) => candidate.status !== "hidden");
   const flavours = CATALOGUE.rules.flavours;
   const stats = [
     { value: String(selectableFeatures(target).length), label: "features you can switch off", detail: "Each one removes its modules, not just its code" },
@@ -29,7 +28,7 @@ export function Hero() {
       <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-20 sm:px-6 md:pt-28">
         <div className="max-w-3xl animate-rise">
           <ul className="flex flex-wrap items-center gap-2" aria-label="Platforms">
-            {platforms.map((platform) => (
+            {PLATFORMS.map((platform) => (
               <li key={platform.key}>
                 <Badge tone={platform.status === "available" ? "accent" : platform.status === "beta" ? "amber" : "neutral"}>
                   {platform.title}
@@ -51,8 +50,8 @@ export function Hero() {
           </h1>
 
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-300">
-            Multi-module Jetpack Compose with MVI and Navigation 3, four build environments, signed release output, and a design
-            system with no Material components that moves like iOS. Pick a platform, your features and a look, and get a zip that
+            Multi-module Jetpack Compose with MVI and Navigation 3, {flavours.length} build environments, signed release output, and
+            a design system with no Material components that moves like iOS. Pick your features and a look, and get a zip that
             compiles.
           </p>
 

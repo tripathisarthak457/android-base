@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../components/primitives.tsx";
+import type { Platform } from "../catalogue/platforms.ts";
 import type { Catalogue } from "../catalogue/types.ts";
 import type { PreviewView } from "../preview/LivePreview.tsx";
 import { STEP_LABELS, STEPS } from "./state.ts";
@@ -15,7 +16,7 @@ import { PlatformStep } from "./steps/PlatformStep.tsx";
 import { ReviewStep } from "./steps/ReviewStep.tsx";
 import type { ConfiguratorModel } from "./useConfigurator.ts";
 
-export function Configurator({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
+export function Configurator({ catalogue, platforms, model }: { catalogue: Catalogue; platforms: Platform[]; model: ConfiguratorModel }) {
   const { step, stepIndex, goTo, identityValid } = model;
   const [preview, setPreview] = useState<PreviewView>({ dark: false, screen: null });
   const heading = useRef<HTMLHeadingElement>(null);
@@ -136,7 +137,7 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
             <span className="sr-only">{`Step ${stepIndex + 1} of ${STEPS.length}: `}</span>
             {STEP_LABELS[step]}
           </h3>
-          {step === "platform" && <PlatformStep catalogue={catalogue} model={model} />}
+          {step === "platform" && <PlatformStep catalogue={catalogue} platforms={platforms} model={model} />}
           {step === "identity" && <IdentityStep catalogue={catalogue} model={model} />}
           {step === "features" && <FeaturesStep model={model} />}
           {step === "look" && <LookStep catalogue={catalogue} model={model} view={preview} onView={setPreview} />}
