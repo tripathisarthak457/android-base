@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../components/primitives.tsx";
 import type { Catalogue } from "../catalogue/types.ts";
+import type { PreviewView } from "../preview/LivePreview.tsx";
 import { STEP_LABELS, STEPS } from "./state.ts";
 import { BuildStep } from "./steps/BuildStep.tsx";
 import { FeaturesStep } from "./steps/FeaturesStep.tsx";
@@ -16,7 +17,7 @@ import type { ConfiguratorModel } from "./useConfigurator.ts";
 
 export function Configurator({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
   const { step, stepIndex, goTo, identityValid } = model;
-  const [previewDark, setPreviewDark] = useState(false);
+  const [preview, setPreview] = useState<PreviewView>({ dark: false, screen: null });
   const heading = useRef<HTMLHeadingElement>(null);
   const shown = useRef(step);
 
@@ -136,10 +137,10 @@ export function Configurator({ catalogue, model }: { catalogue: Catalogue; model
           {step === "platform" && <PlatformStep catalogue={catalogue} model={model} />}
           {step === "identity" && <IdentityStep catalogue={catalogue} model={model} />}
           {step === "features" && <FeaturesStep model={model} />}
-          {step === "look" && <LookStep catalogue={catalogue} model={model} dark={previewDark} onDark={setPreviewDark} />}
-          {step === "motion" && <MotionStep catalogue={catalogue} model={model} dark={previewDark} onDark={setPreviewDark} />}
+          {step === "look" && <LookStep catalogue={catalogue} model={model} view={preview} onView={setPreview} />}
+          {step === "motion" && <MotionStep catalogue={catalogue} model={model} view={preview} onView={setPreview} />}
           {step === "build" && <BuildStep catalogue={catalogue} model={model} />}
-          {step === "review" && <ReviewStep catalogue={catalogue} model={model} dark={previewDark} />}
+          {step === "review" && <ReviewStep catalogue={catalogue} model={model} dark={preview.dark} />}
         </motion.div>
 
         <div className="flex items-center justify-between border-t border-ink-700 bg-ink-900/60 px-4 py-4 sm:px-6">

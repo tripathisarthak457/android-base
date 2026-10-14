@@ -3,7 +3,7 @@
 import { useId } from "react";
 import { ChoiceCard, PauseButton, Toggle, usePaused } from "../../../components/primitives.tsx";
 import type { Catalogue, Spring } from "../../catalogue/types.ts";
-import { LivePreview } from "../../preview/LivePreview.tsx";
+import { LivePreview, type PreviewView } from "../../preview/LivePreview.tsx";
 import { MotionPreview } from "../../preview/MotionPreview.tsx";
 import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
@@ -57,7 +57,17 @@ function MotionCard({ input, model, styleKey, title, description, name, dark, pa
   );
 }
 
-export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: ConfiguratorModel; dark: boolean; onDark: (dark: boolean) => void }) {
+export function MotionStep({
+  catalogue,
+  model,
+  view,
+  onView,
+}: {
+  catalogue: Catalogue;
+  model: ConfiguratorModel;
+  view: PreviewView;
+  onView: (view: PreviewView) => void;
+}) {
   const { state, dispatch, target } = model;
   const input = usePreviewInput(catalogue, state);
   const name = useId();
@@ -86,7 +96,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
               title={style.title}
               description={style.description}
               name={name}
-              dark={dark}
+              dark={view.dark}
               paused={paused}
             />
           ))}
@@ -104,7 +114,7 @@ export function MotionStep({ catalogue, model, dark, onDark }: { catalogue: Cata
         </div>
       </div>
 
-      <LivePreview input={input} dark={dark} onDark={onDark} />
+      <LivePreview input={input} view={view} onView={onView} />
     </div>
   );
 }

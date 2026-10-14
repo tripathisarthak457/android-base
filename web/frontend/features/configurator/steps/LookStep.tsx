@@ -6,7 +6,7 @@ import type { Catalogue } from "../../catalogue/types.ts";
 import { ScaledPreview } from "../../preview/AppPreview.tsx";
 import { brandColours, parseHex, toHex } from "../../preview/brand.ts";
 import { type FontStatus, useFamily, useSuggestionFonts } from "../../preview/fonts.ts";
-import { LivePreview } from "../../preview/LivePreview.tsx";
+import { LivePreview, type PreviewView } from "../../preview/LivePreview.tsx";
 import { type PreviewTab, planTabs } from "../../preview/tabs.ts";
 import { weightsFor } from "../../preview/theme.ts";
 import { traits } from "../../preview/traits.ts";
@@ -28,7 +28,17 @@ const StyleThumbnail = memo(function StyleThumbnail({ input, styleKey, dark }: {
   return <ScaledPreview theme={theme} font={input.font} tabs={tabs} screen={screen} options={options} scale={0.4} />;
 });
 
-export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalogue; model: ConfiguratorModel; dark: boolean; onDark: (dark: boolean) => void }) {
+export function LookStep({
+  catalogue,
+  model,
+  view,
+  onView,
+}: {
+  catalogue: Catalogue;
+  model: ConfiguratorModel;
+  view: PreviewView;
+  onView: (view: PreviewView) => void;
+}) {
   const { state, dispatch, target, errors } = model;
   const input = usePreviewInput(catalogue, state);
   // Four thumbnails redraw on every colour-picker move or keystroke, so they wait, as the live preview does.
@@ -60,7 +70,7 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
                   onChange={() => dispatch({ type: "designStyle", value: style.key })}
                   className="flex gap-3 overflow-hidden p-3"
                 >
-                  <StyleThumbnail input={thumbnailInput} styleKey={style.key} dark={dark} />
+                  <StyleThumbnail input={thumbnailInput} styleKey={style.key} dark={view.dark} />
                   <span className="min-w-0 py-1">
                     <span className="block font-display text-base font-bold text-ink-100">{style.title}</span>
                     <span className="mt-1 block text-xs leading-relaxed text-ink-400">{style.description}</span>
@@ -128,7 +138,7 @@ export function LookStep({ catalogue, model, dark, onDark }: { catalogue: Catalo
         />
       </div>
 
-      <LivePreview input={input} dark={dark} onDark={onDark} />
+      <LivePreview input={input} view={view} onView={onView} />
     </div>
   );
 }

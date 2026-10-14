@@ -1,6 +1,6 @@
 "use client";
 
-import { type RefObject, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
+import { type RefObject, useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
 import { Segmented } from "../../components/primitives.tsx";
 import { AppPreview, PHONE_ASPECT, PHONE_WIDTH } from "./AppPreview.tsx";
 import { useFamily } from "./fonts.ts";
@@ -24,19 +24,22 @@ function useFitScale(): [RefObject<HTMLDivElement | null>, number] {
   return [ref, scale];
 }
 
+/** What the visitor chose to look at in the live preview, kept across the steps that show it. */
+export type PreviewView = { dark: boolean; screen: string | null };
+
 /**
  * The big phone beside the Look and Motion steps. It reads a deferred copy of the answers, so a
  * colour drag or a keystroke stays responsive while the phone catches up a frame later.
  */
-export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark: boolean; onDark: (dark: boolean) => void }) {
+export function LivePreview({ input, view, onView }: { input: PreviewInput; view: PreviewView; onView: (view: PreviewView) => void }) {
   const deferred = useDeferredValue(input);
-  const theme = usePreviewTheme(deferred, dark);
+  const theme = usePreviewTheme(deferred, view.dark);
   const tabs = useMemo(() => planTabs(deferred.features, deferred.modules).tabs, [deferred.features, deferred.modules]);
   const screens = useMemo(() => screensFor(deferred.features, deferred.modules), [deferred.features, deferred.modules]);
-  const [chosen, setChosen] = useState<string | null>(null);
   const screenName = useId();
   const screen: PreviewTab | undefined =
-    screens.find((candidate) => candidate.key === chosen) ?? screens.find((candidate) => candidate.screen !== "signin") ?? screens[0];
+    screens.find((candidate) => candidate.key === view.screen) ?? screens.find((candidate) => candidate.screen !== "signin") ?? screens[0];
+  const choose = useCallback((key: string) => onView({ ...view, screen: key }), [view, onView]);
   const weights = useMemo(() => weightsFor(deferred.tokens, theme.style.voice), [deferred.tokens, theme.style.voice]);
   useFamily(deferred.font, weights);
   const [fitRef, scale] = useFitScale();
@@ -57,7 +60,7 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
                   on ? "bg-ink-100 text-ink-950" : "text-ink-400 hover:bg-ink-800 hover:text-ink-100"
                 }`}
               >
-                <input type="radio" name={screenName} checked={on} onChange={() => setChosen(option.key)} className="sr-only" />
+                <input type="radio" name={screenName} checked={on} onChange={() => choose(option.key)} className="sr-only" />
                 {option.label}
               </label>
             );
@@ -69,15 +72,15 @@ export function LivePreview({ input, dark, onDark }: { input: PreviewInput; dark
             { value: "light", label: "Light" },
             { value: "dark", label: "Dark" },
           ]}
-          value={dark ? "dark" : "light"}
-          onChange={(next) => onDark(next === "dark")}
+          value={view.dark ? "dark" : "light"}
+          onChange={(next) => onView({ ...view, dark: next === "dark" })}
         />
       </div>
       <div ref={fitRef} className="flex justify-center">
         {screen && (
           <div style={{ width: PHONE_WIDTH * scale, height: PHONE_WIDTH * PHONE_ASPECT * scale }}>
             <div style={{ transform: `scale(${scale})`, transformOrigin: "top left", width: PHONE_WIDTH }}>
-              <AppPreview theme={theme} font={deferred.font} tabs={tabs} screen={screen} options={options} live onSelectTab={setChosen} />
+              <AppPreview theme={theme} font={deferred.font} tabs={tabs} screen={screen} options={options} live onSelectTab={choose} />
             </div>
           </div>
         )}
