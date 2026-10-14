@@ -1,8 +1,9 @@
-import { android } from "../lib/catalogue.ts";
+import { CATALOGUE, android } from "../lib/catalogue.ts";
 
 /** What arrives whatever you tick. */
 function items() {
   const target = android();
+  const flavours = CATALOGUE.rules.flavours;
   return [
     {
       title: "A design system with no Material",
@@ -72,10 +73,10 @@ function items() {
       detail: "AGENTS.md",
     },
     {
-      title: "Seven build variants",
+      title: `${flavours.length} build environments`,
       body:
-        "dev, staging, prod and playstore across debug and release, minus playstoreDebug. Only the app module carries " +
-        "flavours, so switching environment rebuilds nothing in core, data or feature.",
+        `${new Intl.ListFormat("en-GB", { type: "conjunction" }).format(flavours)}, in debug and release. Only the app module ` +
+        "carries flavours, so switching environment rebuilds nothing in core, data or feature.",
       detail: "AppFlavor",
     },
     {
