@@ -159,26 +159,15 @@ export function TextInput({ className = "", ...rest }: ComponentProps<"input">) 
  * what tell on from off, so each needs 3:1 against what is next to it (WCAG 1.4.11), on the panels
  * and under the thumb, in both themes.
  */
-export function Toggle({
-  checked,
-  onChange,
-  label,
-  disabled,
-}: {
-  checked: boolean;
-  onChange: (next: boolean) => void;
-  label: string;
-  disabled?: boolean;
-}) {
+export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (next: boolean) => void; label: string }) {
   return (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
       aria-label={label}
-      disabled={disabled}
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-40 ${checked ? "bg-accent" : "bg-ink-500"}`}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? "bg-accent" : "bg-ink-500"}`}
     >
       <motion.span
         animate={{ x: checked ? 20 : 0 }}
