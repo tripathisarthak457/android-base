@@ -23,3 +23,18 @@ test("a licensed feature offered on two platforms is listed once", () => {
   };
   assert.deepEqual(licensedFeatures(catalogue).map((feature) => feature.key), ["coil"]);
 });
+
+test("a licensed feature only a coming-soon target offers is not named", () => {
+  const licence = { name: "Apache License 2.0", spdx: "Apache-2.0", url: "https://www.apache.org/licenses/LICENSE-2.0" };
+  const base = threePlatformCatalogue();
+  const catalogue: Catalogue = {
+    ...base,
+    targets: base.targets.map((target) =>
+      target.status === "coming_soon"
+        ? { ...target, features: target.features.map((feature) => (feature.key === "room" ? { ...feature, licence } : feature)) }
+        : target,
+    ),
+  };
+  assert.ok(catalogue.targets.some((target) => target.status === "coming_soon"));
+  assert.deepEqual(licensedFeatures(catalogue), []);
+});

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { selectableTargets } from "../catalogue/platforms.ts";
 import { loadCatalogue, threePlatformCatalogue } from "../catalogue/testing.ts";
 import { draftToStore, isUntouched, parseDraft, serializeDraft } from "./draft.ts";
 import { toSpecV2 } from "./request.ts";
@@ -14,7 +15,6 @@ import {
   initialState,
   moduleNames,
   reducer,
-  selectableTargets,
   snapshotForUndo,
   stepOf,
   suggestPackage,

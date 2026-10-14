@@ -1,3 +1,4 @@
+import { selectableTargets } from "../catalogue/platforms.ts";
 import type { Catalogue, Field, Rules, Target } from "../catalogue/types.ts";
 import { presetFeatures, resolveChoices, toggleFeature } from "./resolve.ts";
 import { isReserved } from "./validation/names.ts";
@@ -111,11 +112,6 @@ export function findTarget(catalogue: Catalogue, key: string): Target {
   const target = selectable.find((candidate) => candidate.key === key) ?? selectable[0];
   if (!target) throw new Error("The catalogue has no target this site can generate.");
   return target;
-}
-
-/** Targets a visitor can pick: not hidden and not announced as coming soon. */
-export function selectableTargets(catalogue: Catalogue): Target[] {
-  return catalogue.targets.filter((target) => target.status === "available" || target.status === "beta");
 }
 
 /**

@@ -1,4 +1,4 @@
-import type { Catalogue, TargetStatus } from "./types.ts";
+import type { Catalogue, Target, TargetStatus } from "./types.ts";
 
 /** A platform as the site names it, whether or not the generator has a target for it yet. */
 export type Platform = { key: string; title: string; summary: string; status: TargetStatus; status_note: string };
@@ -18,6 +18,11 @@ export function offerOnly(catalogue: Catalogue, offered: ReadonlySet<string>): C
       offered.has(target.key) || target.status === "hidden" ? target : { ...target, status: "coming_soon" },
     ),
   };
+}
+
+/** Targets a visitor can pick: not hidden and not announced as coming soon. */
+export function selectableTargets(catalogue: Catalogue): Target[] {
+  return catalogue.targets.filter((target) => target.status === "available" || target.status === "beta");
 }
 
 /**

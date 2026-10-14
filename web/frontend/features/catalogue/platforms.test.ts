@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { findTarget, initialState, selectableTargets } from "../configurator/state.ts";
-import { type Announced, offerOnly, platformsOf } from "./platforms.ts";
+import { findTarget, initialState } from "../configurator/state.ts";
+import { type Announced, offerOnly, platformsOf, selectableTargets } from "./platforms.ts";
 import { loadCatalogue, threePlatformCatalogue } from "./testing.ts";
 import type { Catalogue } from "./types.ts";
 
