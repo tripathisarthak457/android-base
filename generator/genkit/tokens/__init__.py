@@ -184,10 +184,7 @@ def _validate_motion(motion: dict[str, Any]) -> None:
     for group in ("visibilityThreshold", "fades", "stagger", "press", "tabBar"):
         for key, value in _table("motion", group, motion.get(group)).items():
             if group == "fades" and key.endswith("Easing"):
-                if not isinstance(value, list) or len(value) != 4:
-                    raise _fail("motion", f"fades.{key}", "must be a cubic Bézier's four control values")
-                for index, control in enumerate(value):
-                    _number("motion", f"fades.{key}[{index}]", control)
+                _easing(f"fades.{key}", value)
             else:
                 _number("motion", f"{group}.{key}", value, 0)
     navigation = _table(
@@ -213,10 +210,17 @@ def _validate_motion(motion: dict[str, Any]) -> None:
     if not 0 <= _number("motion", "skeleton.tiltDegrees", skeleton["tiltDegrees"]) < 60:
         raise _fail("motion", "skeleton.tiltDegrees", "must be at least 0 and below 60")
     _number("motion", "skeleton.maxSlowdown", skeleton["maxSlowdown"], 1)
-    if not isinstance(skeleton["easing"], list) or len(skeleton["easing"]) != 4:
-        raise _fail("motion", "skeleton.easing", "must be a cubic Bézier's four control values")
-    for index, control in enumerate(skeleton["easing"]):
-        _number("motion", f"skeleton.easing[{index}]", control)
+    _easing("skeleton.easing", skeleton["easing"])
+
+
+def _easing(where: str, value: object) -> None:
+    if not isinstance(value, list) or len(value) != 4:
+        raise _fail("motion", where, "must be a cubic Bézier's four control values")
+    for index, control in enumerate(value):
+        # Time runs one way: a control point before the start or after the end is no easing at all,
+        # and Compose, SwiftUI and CSS each treat one differently.
+        low, high = (0, 1) if index % 2 == 0 else (None, None)
+        _number("motion", f"{where}[{index}]", control, low, high)
 
 
 def _validate_palette(palette: dict[str, Any]) -> tuple[str, ...]:

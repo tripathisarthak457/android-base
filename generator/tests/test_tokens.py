@@ -86,6 +86,17 @@ class SchemaTest(unittest.TestCase):
     def test_an_easing_is_four_numbers(self):
         self.assertIn("fades.enterEasing", self.broken(lambda d: d["motion"]["fades"].update(enterEasing=[0, 1])))
 
+    def test_an_easing_keeps_its_time_between_start_and_end(self):
+        self.assertIn("fades.exitEasing[0]", self.broken(lambda d: d["motion"]["fades"].update(exitEasing=[-0.1, 0, 0.8, 0.15])))
+        self.assertIn("skeleton.easing[2]", self.broken(lambda d: d["motion"]["skeleton"].update(easing=[0.3, 0, 1.2, 1])))
+
+    def test_the_shimmer_is_checked(self):
+        self.assertIn("skeleton.bandWidth", self.broken(lambda d: d["motion"]["skeleton"].update(bandWidth=0)))
+        self.assertIn("skeleton.tiltDegrees", self.broken(lambda d: d["motion"]["skeleton"].update(tiltDegrees=60)))
+        self.assertIn("skeleton.maxSlowdown", self.broken(lambda d: d["motion"]["skeleton"].update(maxSlowdown=0.5)))
+        self.assertIn("skeleton.easing", self.broken(lambda d: d["motion"]["skeleton"].update(easing=[0.3, 0, 0.7])))
+        self.assertIn("missing pauseMs", self.broken(lambda d: d["motion"]["skeleton"].pop("pauseMs")))
+
     def test_a_style_names_its_bar_indicator(self):
         self.assertIn("Social: is missing indicator", self.broken(lambda d: d["styles"]["Social"].pop("indicator")))
 
