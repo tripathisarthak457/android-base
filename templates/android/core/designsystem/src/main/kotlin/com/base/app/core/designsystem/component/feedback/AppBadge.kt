@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.animation.rememberAppTransitions
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.draw.ContentUnderBone
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.theme.AppTheme
@@ -32,7 +33,8 @@ fun AppBadge(
     maxCount: Int = 99,
 ) {
     val danger = AppTheme.colors.danger
-    val redacted = if (LocalRedacted.current) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
+    val bone = LocalRedacted.current
+    val redacted = if (bone) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
     Box(
         modifier = modifier
             .defaultMinSize(minWidth = 18.dp, minHeight = 18.dp)
@@ -41,13 +43,15 @@ fun AppBadge(
             .padding(horizontal = 5.dp),
         contentAlignment = Alignment.Center,
     ) {
-        AppText(
-            text = if (count > maxCount) "$maxCount+" else count.toString(),
-            style = AppTheme.typography.caption2,
-            color = danger.on,
-            maxLines = 1,
-            textAlign = TextAlign.Center,
-        )
+        ContentUnderBone(bone) {
+            AppText(
+                text = if (count > maxCount) "$maxCount+" else count.toString(),
+                style = AppTheme.typography.caption2,
+                color = danger.on,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -102,7 +106,8 @@ fun AppStatusPill(
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
 ) {
-    val redacted = if (LocalRedacted.current) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
+    val bone = LocalRedacted.current
+    val redacted = if (bone) Modifier.skeleton(AppTheme.shapes.pill) else Modifier
     Row(
         modifier = modifier
             .then(redacted)
@@ -111,7 +116,9 @@ fun AppStatusPill(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        icon?.let { AppIcon(it, contentDescription = null, tint = status.content, size = 14.dp) }
-        AppText(text = text, style = AppTheme.typography.caption1, color = status.content, maxLines = 1)
+        ContentUnderBone(bone) {
+            icon?.let { AppIcon(it, contentDescription = null, tint = status.content, size = 14.dp) }
+            AppText(text = text, style = AppTheme.typography.caption1, color = status.content, maxLines = 1)
+        }
     }
 }

@@ -31,6 +31,7 @@ import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.draw.ContentUnderBone
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.draw.skeleton
@@ -61,7 +62,8 @@ fun AppChip(
     val content = if (selected) colors.accentContent else colors.contentPrimary
     val shape = AppTheme.style.chipShape
     val removeInteractions = remember { MutableInteractionSource() }
-    val redacted = if (LocalRedacted.current) Modifier.skeleton(shape) else Modifier
+    val bone = LocalRedacted.current
+    val redacted = if (bone) Modifier.skeleton(shape) else Modifier
 
     Box(modifier = modifier.disabledAlpha(enabled), contentAlignment = Alignment.CenterEnd) {
         Row(
@@ -75,27 +77,31 @@ fun AppChip(
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            leadingIcon?.let { AppIcon(it, contentDescription = null, tint = content, size = AppTheme.sizes.iconSmall) }
-            AppText(
-                text = label,
-                style = AppTheme.typography.subheadline,
-                color = content,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            if (onRemove != null) {
-                val held = rememberHeldFraction(removeInteractions)
-                val dimAlpha = AppTheme.springs.pressDimAlpha
-                AppIcon(
-                    AppIcons.Close,
-                    contentDescription = null,
-                    tint = content,
-                    size = RemoveGlyph,
-                    modifier = Modifier.graphicsLayer {
-                        alpha = lerp(1f, dimAlpha, held.value)
-                        compositingStrategy = CompositingStrategy.ModulateAlpha
-                    },
+            ContentUnderBone(bone) {
+                leadingIcon?.let {
+                    AppIcon(it, contentDescription = null, tint = content, size = AppTheme.sizes.iconSmall)
+                }
+                AppText(
+                    text = label,
+                    style = AppTheme.typography.subheadline,
+                    color = content,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
+                if (onRemove != null) {
+                    val held = rememberHeldFraction(removeInteractions)
+                    val dimAlpha = AppTheme.springs.pressDimAlpha
+                    AppIcon(
+                        AppIcons.Close,
+                        contentDescription = null,
+                        tint = content,
+                        size = RemoveGlyph,
+                        modifier = Modifier.graphicsLayer {
+                            alpha = lerp(1f, dimAlpha, held.value)
+                            compositingStrategy = CompositingStrategy.ModulateAlpha
+                        },
+                    )
+                }
             }
         }
         if (onRemove != null) {

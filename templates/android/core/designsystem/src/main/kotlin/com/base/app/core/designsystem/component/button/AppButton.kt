@@ -32,6 +32,7 @@ import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.ProvideContentColor
+import com.base.app.core.designsystem.foundation.draw.ContentUnderBone
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.offsetShadow
 import com.base.app.core.designsystem.foundation.draw.skeleton
@@ -86,7 +87,8 @@ fun AppButton(
 
     val content = colors.content(enabled)
     // A plain button has no container to stand for it: its label and icons redact themselves.
-    val redacted = if (LocalRedacted.current && variant != ButtonVariant.Plain) Modifier.skeleton(shape) else Modifier
+    val bone = LocalRedacted.current && variant != ButtonVariant.Plain
+    val redacted = if (bone) Modifier.skeleton(shape) else Modifier
     Box(
         modifier = modifier
             .pressable(
@@ -110,22 +112,28 @@ fun AppButton(
             .padding(metrics.padding),
         contentAlignment = Alignment.Center,
     ) {
-        ProvideContentColor(content) {
-            Row(
-                modifier = if (loading) Modifier.alpha(0f) else Modifier,
-                horizontalArrangement = Arrangement.spacedBy(metrics.gap, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
-                AppText(
-                    text = label,
-                    style = if (style.uppercaseLabels) metrics.textStyle.copy(letterSpacing = UppercaseTracking) else metrics.textStyle,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
+        ContentUnderBone(bone) {
+            ProvideContentColor(content) {
+                Row(
+                    modifier = if (loading) Modifier.alpha(0f) else Modifier,
+                    horizontalArrangement = Arrangement.spacedBy(metrics.gap, Alignment.CenterHorizontally),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
+                    AppText(
+                        text = label,
+                        style = if (style.uppercaseLabels) {
+                            metrics.textStyle.copy(letterSpacing = UppercaseTracking)
+                        } else {
+                            metrics.textStyle
+                        },
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
+                }
+                if (loading) AppActivityIndicator(size = metrics.iconSize, color = content)
             }
-            if (loading) AppActivityIndicator(size = metrics.iconSize, color = content)
         }
     }
 }
@@ -147,7 +155,8 @@ fun AppIconButton(
 ) {
     val diameter = AppButtonDefaults.iconButtonSize(size)
     val container = colors.container(enabled)
-    val redacted = if (LocalRedacted.current && container.alpha > 0f) Modifier.skeleton(CircleShape) else Modifier
+    val bone = LocalRedacted.current && container.alpha > 0f
+    val redacted = if (bone) Modifier.skeleton(CircleShape) else Modifier
     Box(
         modifier = modifier
             .pressable(
@@ -161,7 +170,14 @@ fun AppIconButton(
             .then(if (container.alpha == 0f) Modifier else Modifier.background(container, CircleShape)),
         contentAlignment = Alignment.Center,
     ) {
-        AppIcon(icon, contentDescription = contentDescription, tint = colors.content(enabled), size = AppButtonDefaults.metrics(size).iconSize)
+        ContentUnderBone(bone) {
+            AppIcon(
+                icon,
+                contentDescription = contentDescription,
+                tint = colors.content(enabled),
+                size = AppButtonDefaults.metrics(size).iconSize,
+            )
+        }
     }
 }
 

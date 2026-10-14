@@ -1,7 +1,9 @@
 package com.base.app.core.designsystem.foundation.draw
 
 import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -66,6 +68,17 @@ internal fun Modifier.lineSkeleton(top: Float, bottom: Float): Modifier =
 
 /** One bone over each line [bones] was last laid out with, in place of the text itself. */
 internal fun Modifier.textSkeleton(bones: TextBones): Modifier = layered(TextSkeletonElement(bones))
+
+/**
+ * Hosts the [content] of a component that draws one bone over itself while [bone] is true, and keeps
+ * that content from drawing bones of its own then: the component's bone never draws what is under
+ * it, so those bones would be redrawn on every frame of a sweep and never seen. The provider stays
+ * in place while [bone] is false, so redacting the component keeps its content's composition.
+ */
+@Composable
+internal fun ContentUnderBone(bone: Boolean, content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalRedactedState provides (!bone && LocalRedactedState.current), content = content)
+}
 
 // A sweep frame redraws only the bone: in its own layer, the card or row around it is not re-recorded.
 private fun Modifier.layered(element: Modifier.Element): Modifier = graphicsLayer() then element

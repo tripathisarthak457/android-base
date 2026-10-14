@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.foundation.draw.ContentUnderBone
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
 import com.base.app.core.designsystem.foundation.draw.skeleton
 import com.base.app.core.designsystem.theme.AppColors
@@ -44,7 +45,8 @@ fun AppAvatar(
     // In proportion to the circle, as iOS's contact monogram, and deaf to the font scale: the
     // circle does not grow with it, so larger letters would only overflow it.
     val initialsSize = with(LocalDensity.current) { (size * InitialsFraction).toSp() }
-    val redacted = if (LocalRedacted.current) Modifier.skeleton(CircleShape) else Modifier
+    val bone = LocalRedacted.current
+    val redacted = if (bone) Modifier.skeleton(CircleShape) else Modifier
     AppSurface(
         modifier = modifier.size(size).clearAndSetSemantics { contentDescription = name }.then(redacted),
         shape = AppTheme.shapes.pill,
@@ -53,14 +55,17 @@ fun AppAvatar(
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             if (content != null) {
+                // Still redacted: told it is not, an image would load only to stay hidden under the bone.
                 content()
             } else {
-                AppText(
-                    text = initials,
-                    style = AppTheme.typography.footnote.copy(fontSize = initialsSize, lineHeight = initialsSize),
-                    color = colors.contentPrimary,
-                    maxLines = 1,
-                )
+                ContentUnderBone(bone) {
+                    AppText(
+                        text = initials,
+                        style = AppTheme.typography.footnote.copy(fontSize = initialsSize, lineHeight = initialsSize),
+                        color = colors.contentPrimary,
+                        maxLines = 1,
+                    )
+                }
             }
         }
     }

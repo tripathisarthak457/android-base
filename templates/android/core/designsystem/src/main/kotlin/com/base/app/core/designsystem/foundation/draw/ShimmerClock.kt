@@ -28,6 +28,9 @@ internal class ShimmerClock(
     var progress = Float.NaN
         private set
 
+    /** How many bones each frame of a sweep redraws. */
+    val boneCount: Int get() = bones.size
+
     private val bones = ArrayList<Bone>()
     private var job: Job? = null
     private var sweepStart = 0L
