@@ -33,6 +33,12 @@ type Live = { enabled: Record<string, boolean> | null; keytool: Record<string, b
 
 const GENERATE_TIMEOUT_MS = 120_000;
 
+/**
+ * The zip's own budget once the generator has answered, so a slow download is not blamed on the
+ * generator and a stalled one does not leave the button busy for good.
+ */
+const DOWNLOAD_TIMEOUT_MS = 120_000;
+
 function readDraft(): string | null {
   try {
     return localStorage.getItem(DRAFT_KEY);
@@ -243,7 +249,8 @@ export function useConfigurator(catalogue: Catalogue) {
     track({ name: "generate_clicked", target: state.target });
     const started = identityAt.current;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), GENERATE_TIMEOUT_MS);
+    let timeout = setTimeout(() => controller.abort(), GENERATE_TIMEOUT_MS);
+    let downloading = false;
     try {
       const response = await fetch(`${API_BASE}/api/v1/${state.target}/generate`, {
         method: "POST",
@@ -256,6 +263,9 @@ export function useConfigurator(catalogue: Catalogue) {
       });
       if (!response.ok) throw await apiError(response, "The generator failed.");
       track({ name: "download_started", target: state.target });
+      clearTimeout(timeout);
+      downloading = true;
+      timeout = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT_MS);
       const blob = await response.blob();
       const filename = filenameOf(response);
       save(blob, filename);
@@ -271,9 +281,11 @@ export function useConfigurator(catalogue: Catalogue) {
       const message =
         error instanceof ApiError
           ? error.message
-          : controller.signal.aborted
-            ? "The generator took too long to answer. Try again; the command line tool does the same job offline."
-            : "Could not reach the generator. It may be restarting; the command line tool in the repository does the same job.";
+          : downloading
+            ? "The download stopped before the zip arrived. Try again."
+            : controller.signal.aborted
+              ? "The generator took too long to answer. Try again; the command line tool does the same job offline."
+              : "Could not reach the generator. It may be restarting; the command line tool in the repository does the same job.";
       setOutcome({ kind: "failed", revision, message, field: error instanceof ApiError ? error.field : "" });
     } finally {
       clearTimeout(timeout);
