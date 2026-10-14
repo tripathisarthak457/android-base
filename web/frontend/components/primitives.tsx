@@ -3,7 +3,7 @@
 // The handful of controls the site is built from.
 
 import { motion, type HTMLMotionProps } from "framer-motion";
-import { type ComponentProps, type ReactNode, useId, useState, useSyncExternalStore } from "react";
+import { type ComponentProps, type ReactNode, type Ref, useId, useState, useSyncExternalStore } from "react";
 
 /** A press that answers like the template's Scale feedback: down under the finger, back on a spring. */
 const press = {
@@ -237,6 +237,7 @@ export function ChoiceCard({
   checked,
   disabled,
   onChange,
+  inputRef,
   className = "",
   children,
 }: {
@@ -245,6 +246,7 @@ export function ChoiceCard({
   checked: boolean;
   disabled?: boolean;
   onChange: () => void;
+  inputRef?: Ref<HTMLInputElement>;
   className?: string;
   children: ReactNode;
 }) {
@@ -258,7 +260,7 @@ export function ChoiceCard({
             : "cursor-pointer border-ink-700 bg-ink-900 hover:border-ink-600"
       } ${className}`}
     >
-      <input type={type} name={name} checked={checked} disabled={disabled} onChange={onChange} className="sr-only" />
+      <input ref={inputRef} type={type} name={name} checked={checked} disabled={disabled} onChange={onChange} className="sr-only" />
       {children}
     </label>
   );

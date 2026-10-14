@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useId } from "react";
+import { useId, useRef } from "react";
 import { ChoiceCard } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
 import { selectableFeatures } from "../../catalogue/features.ts";
@@ -47,6 +47,7 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
       ? state.hint
       : null;
   const style = target.design_styles.find((option) => option.key === state.designStyle);
+  const toggled = useRef<HTMLInputElement>(null);
 
   return (
     <div>
@@ -82,7 +83,15 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
             className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-ink-600 bg-ink-900 px-4 py-2.5 text-sm text-ink-200"
           >
             <span>{hintText(hint, state.designStyle, target, visible)}</span>
-            <button type="button" onClick={() => dispatch({ type: "undoToggle" })} className="font-semibold text-accent hover:text-accent-bright">
+            <button
+              type="button"
+              onClick={() => {
+                // Undo takes the hint, and this button, away; the feature it changes back keeps the focus.
+                toggled.current?.focus();
+                dispatch({ type: "undoToggle" });
+              }}
+              className="font-semibold text-accent hover:text-accent-bright"
+            >
               Undo
             </button>
           </motion.p>
@@ -107,7 +116,14 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
                   const needed = on ? visible(dependentsOf(selected, feature.key, target)).map((key) => titleOf.get(key) ?? key) : [];
                   if (on && style?.requires.includes(feature.key)) needed.push(`the ${style.title} look`);
                   return (
-                    <ChoiceCard key={feature.key} type="checkbox" checked={on} onChange={() => dispatch({ type: "feature", key: feature.key })} className="p-4">
+                    <ChoiceCard
+                      key={feature.key}
+                      type="checkbox"
+                      checked={on}
+                      onChange={() => dispatch({ type: "feature", key: feature.key })}
+                      inputRef={feature.key === hint?.key ? toggled : undefined}
+                      className="p-4"
+                    >
                       <span className="flex items-start gap-3">
                         <span
                           aria-hidden
