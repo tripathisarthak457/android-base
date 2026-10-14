@@ -81,18 +81,25 @@ struct SampleListView: View {
     }
 }
 
+/// The loaded list's own rows in its own insets, so nothing moves when the samples arrive.
 private struct SampleListSkeleton: View {
     var body: some View {
-        AppSkeleton {
-            List(0..<8, id: \.self) { _ in
-                SampleRow(item: SampleItem(
-                    id: 0,
-                    title: "A sample title that runs to a second line",
-                    body: "The first words of its body, as the list shows them under the title."
-                ))
-            }
+        List(0..<12, id: \.self) { _ in
+            SampleRow(item: .placeholder)
+                .appRedacted()
         }
+        .scrollDisabled(true)
+        .appLoadingRegion()
     }
+}
+
+private extension SampleItem {
+    /// A title and a body of the lengths the list usually shows, never read or shown as text.
+    static let placeholder = SampleItem(
+        id: 0,
+        title: "A sample title that runs to a second line",
+        body: "The first words of its body, as the list shows them under the title."
+    )
 }
 
 private struct OfflineBanner: View {

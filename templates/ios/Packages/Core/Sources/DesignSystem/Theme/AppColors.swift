@@ -30,7 +30,10 @@ public nonisolated struct AppColors: Sendable {
     public let scrim: Color
     public let focusRing: Color
     public let shadow: Color
+    /// A placeholder's bones, as `appRedacted(_:)` draws them.
     public let skeleton: Color
+    /// The middle of the shimmer band where it crosses a bone.
+    public let skeletonHighlight: Color
     public let accent: Color
     public let accentPressed: Color
     /// A tinted background in the accent's hue.
@@ -64,6 +67,7 @@ public nonisolated struct AppColors: Sendable {
         focusRing = roles.focusRing
         shadow = roles.shadow
         skeleton = roles.skeleton
+        skeletonHighlight = roles.skeletonHighlight
         accent = roles.accent
         accentPressed = roles.accentPressed
         accentSubtle = roles.accentSubtle

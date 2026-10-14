@@ -2,7 +2,8 @@ import SwiftUI
 
 extension View {
     /// Provides the design system to this view and everything inside it, resolved for the current
-    /// appearance, and tints system controls with the accent.
+    /// appearance, and tints system controls with the accent. The outermost one also keeps the
+    /// window's shimmer clock, which every placeholder inside shares.
     public func appTheme(
         designStyle: AppDesignStyle = AppTheme.defaultDesignStyle,
         motionStyle: AppMotionStyle = AppTheme.defaultMotionStyle,
@@ -28,6 +29,7 @@ private struct AppThemeProvider: ViewModifier {
         )
         content
             .environment(\.appTheme, theme)
+            .modifier(SkeletonClockProvider())
             .tint(theme.colors.accent)
     }
 }

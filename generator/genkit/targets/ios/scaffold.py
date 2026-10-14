@@ -413,11 +413,12 @@ struct {pascal}ListView: View {{
     private var content: some View {{
         switch store.state.load {{
         case .idle, .loading:
-            AppSkeleton {{
-                List(0..<8, id: \\.self) {{ _ in
-                    Text(verbatim: "A title of a typical length")
-                }}
+            List(0..<12, id: \\.self) {{ _ in
+                {pascal}Row(title: "A title of a typical length")
+                    .appRedacted()
             }}
+            .scrollDisabled(true)
+            .appLoadingRegion()
         case .failed(let error):
             AppFailureView(error) {{ store.send(.retry) }}
         case .empty:
@@ -432,15 +433,27 @@ struct {pascal}ListView: View {{
         case .loaded, .refreshing:
             List(selection: $selection) {{
                 ForEach(store.state.items) {{ item in
-                    Text(item.title)
-                        .font(theme.typography.body)
-                        .foregroundStyle(theme.colors.contentPrimary)
+                    {pascal}Row(title: item.title)
                         .tag(item.id)
                 }}
             }}
             .refreshable {{ await store.refresh() }}
             .animation(theme.springs.layout, value: store.state.items)
         }}
+    }}
+}}
+
+/// One item of {title.lower()} in the list. The loading list draws the same row, redacted, so
+/// nothing moves when the items arrive.
+private struct {pascal}Row: View {{
+    let title: String
+
+    @Environment(\\.appTheme) private var theme
+
+    var body: some View {{
+        Text(title)
+            .font(theme.typography.body)
+            .foregroundStyle(theme.colors.contentPrimary)
     }}
 }}
 
@@ -550,9 +563,8 @@ struct {pascal}DetailView: View {{
     private var content: some View {{
         switch store.state.load {{
         case .idle, .loading:
-            AppSkeleton {{
-                {pascal}Article(title: "A title of a typical length")
-            }}
+            {pascal}Article(title: "A title of a typical length", isPlaceholder: true)
+                .appLoadingRegion()
         case .failed(let error):
             AppFailureView(error) {{ store.send(.retry) }}
         case .loaded, .refreshing, .empty:
@@ -563,8 +575,10 @@ struct {pascal}DetailView: View {{
     }}
 }}
 
+/// The item as it reads, or, as a placeholder, its layout with the text drawn as bones.
 private struct {pascal}Article: View {{
     let title: String
+    var isPlaceholder = false
 
     @Environment(\\.appTheme) private var theme
 
@@ -574,10 +588,12 @@ private struct {pascal}Article: View {{
                 .font(theme.typography.title2)
                 .foregroundStyle(theme.colors.contentPrimary)
                 .textSelection(.enabled)
+                .appRedacted(isPlaceholder)
                 .frame(maxWidth: AppLayout.readableMaxWidth, alignment: .leading)
                 .padding(AppSpacing.gutter)
                 .frame(maxWidth: .infinity)
         }}
+        .scrollDisabled(isPlaceholder)
         .background(theme.colors.background)
     }}
 }}

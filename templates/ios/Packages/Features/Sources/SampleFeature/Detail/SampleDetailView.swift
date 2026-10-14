@@ -62,13 +62,8 @@ struct SampleDetailView: View {
     private var content: some View {
         switch store.state.load {
         case .idle, .loading:
-            AppSkeleton {
-                SampleArticle(item: SampleItem(
-                    id: 0,
-                    title: "A sample title that runs to a second line",
-                    body: String(repeating: "A line of the sample's body text. ", count: 6)
-                ))
-            }
+            SampleArticle(item: .placeholder, isPlaceholder: true)
+                .appLoadingRegion()
         case .failed(let error):
             AppFailureView(error) { store.send(.retry) }
         case .loaded, .refreshing, .empty:
@@ -79,8 +74,11 @@ struct SampleDetailView: View {
     }
 }
 
+/// The sample as it reads, or, as a placeholder, its layout with the text drawn as bones. Only
+/// the text is redacted: the card keeps its surface, as the loaded article's does.
 private struct SampleArticle: View {
     let item: SampleItem
+    var isPlaceholder = false
 
     @Environment(\.appTheme) private var theme
 
@@ -91,19 +89,31 @@ private struct SampleArticle: View {
                     .font(theme.typography.title2)
                     .foregroundStyle(theme.colors.contentPrimary)
                     .textSelection(.enabled)
+                    .appRedacted(isPlaceholder)
                 AppCard {
                     Text(item.body)
                         .font(theme.typography.body)
                         .foregroundStyle(theme.colors.contentPrimary)
                         .textSelection(.enabled)
+                        .appRedacted(isPlaceholder)
                 }
             }
             .padding(AppSpacing.gutter)
             .frame(maxWidth: AppLayout.readableMaxWidth)
             .frame(maxWidth: .infinity)
         }
+        .scrollDisabled(isPlaceholder)
         .background(theme.colors.background)
     }
+}
+
+private extension SampleItem {
+    /// A title and a body of typical lengths, never read or shown as text.
+    static let placeholder = SampleItem(
+        id: 0,
+        title: "A sample title that runs to a second line",
+        body: String(repeating: "A line of the sample's body text. ", count: 6)
+    )
 }
 
 private struct SampleDetails: View {
