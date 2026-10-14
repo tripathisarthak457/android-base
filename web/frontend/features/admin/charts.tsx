@@ -137,7 +137,10 @@ export function DailyChart({ days }: { days: { day: string; outcomes: Record<str
   );
 }
 
-/** Rows by columns, each cell shaded by its share; the numbers are in each cell's title. */
+/**
+ * Rows by columns, each cell shaded by its share. A cell's numbers are only in its title, which a
+ * keyboard cannot reach, so the caller lists them in a table as well.
+ */
 export function Heatmap({
   rows,
   columns,

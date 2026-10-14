@@ -13,6 +13,8 @@ const DIMENSIONS: [string, string][] = [
   ["languages", "Languages"],
 ];
 
+const WEEKLY: [string, string][] = [["features", "Features"], ...DIMENSIONS];
+
 /**
  * Every feature of the catalogue, zeros included, from the projects that were generated: how
  * many had it, and how many of those added it on top of their preset rather than getting it with it.
@@ -31,6 +33,12 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
         const total = new Map(target.weekly.map((week) => [week.week, week.total]));
         const weekly = new Map(target.weekly.map((week) => [week.week, week.values[dimension] ?? {}]));
         const features = [...target.features].sort((a, b) => b.n - a.n);
+        const count = (row: string, week: string) => weekly.get(week)?.[row] ?? 0;
+        const share = (row: string, week: string) => {
+          const all = total.get(week) ?? 0;
+          return all ? count(row, week) / all : 0;
+        };
+        const dimensionLabel = WEEKLY.find(([key]) => key === dimension)?.[1] ?? dimension;
         const rows =
           dimension === "features"
             ? features.map((feature) => ({ key: feature.key, label: feature.title || feature.key }))
@@ -89,22 +97,33 @@ export function Adoption({ token, query, version, onUnauthorized }: PanelProps) 
                   onChange={(event) => setDimension(event.target.value)}
                   className="h-7 rounded-md border border-ink-500 bg-ink-900 px-2 text-xs text-ink-100"
                 >
-                  {[["features", "Features"], ...DIMENSIONS].map(([key, label]) => (
+                  {WEEKLY.map(([key, label]) => (
                     <option key={key} value={key}>
                       {label}
                     </option>
                   ))}
                 </select>
               </div>
-              <Heatmap
-                rows={rows}
-                columns={weeks}
-                count={(row, column) => weekly.get(column)?.[row] ?? 0}
-                share={(row, column) => {
-                  const all = total.get(column) ?? 0;
-                  return all ? (weekly.get(column)?.[row] ?? 0) / all : 0;
-                }}
-              />
+              <Heatmap rows={rows} columns={weeks} count={count} share={share} />
+              {rows.length > 0 && weeks.length > 0 && (
+                <details className="mt-3">
+                  <summary className="cursor-pointer text-xs font-medium text-ink-300 hover:text-ink-100">Numbers per week</summary>
+                  <div className="mt-2">
+                    <Table head={[dimensionLabel, ...weeks.map((week) => `Week of ${week}`)]}>
+                      {rows.map((row) => (
+                        <tr key={row.key} className="text-ink-200">
+                          <td className="py-1.5 pr-3">{row.label}</td>
+                          {weeks.map((week) => (
+                            <td key={week} className="whitespace-nowrap py-1.5 pl-3 text-right font-mono">
+                              {count(row.key, week)} <span className="text-ink-400">({percent(share(row.key, week))})</span>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </Table>
+                  </div>
+                </details>
+              )}
             </div>
           </div>
         );
