@@ -38,11 +38,11 @@ import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
- * A screen whose list is loading, built the way an app should build one: the real rows, given
- * placeholder data and redacted, in the list that will show the content, under a large title. One
- * band crosses every row. "Load" swaps the content in place, so the swap can be watched for
- * movement; nothing should move but the text that differs. Opened directly with
- * `--es section Loading`, which is how the phone measurements find it.
+ * A measurement fixture for the shimmer: a list of real rows under a large title, redacted while
+ * "loading", with one band crossing every row. "Load" lifts the redaction in place, on the same list
+ * and data, so the phone measurements can watch the swap for movement: no row should move. Opened
+ * directly with `--es section Loading`. An app does not build a loading screen this way: it shows a
+ * separate placeholder list, with a list state of its own, as the feature screens do.
  */
 @Composable
 fun LoadingScreen(onBack: (() -> Unit)?) {
