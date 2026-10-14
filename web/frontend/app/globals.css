@@ -9,9 +9,9 @@
  * step from 400 up reads at WCAG AA on every surface step, 950 to 700; 500 does only on 950 to 850,
  * so it is kept for placeholders, and for the outlines of fields and switches, which need 3:1 and
  * get it on every surface. 600 and lighter are for edges nobody has to find. Mint, amber and rose
- * are text colours too: they read at AA on every surface step as plain text and inside a Badge,
- * whose 10% tint of the same colour costs some contrast. Each token holds both themes;
- * `color-scheme` on the root picks one, so the theme toggle only has to set that.
+ * are text colours too: as plain text they read at AA on every surface step, and inside a Badge,
+ * whose 10% tint of the same colour costs some contrast, on 950 to 800 only. Each token holds both
+ * themes; `color-scheme` on the root picks one, so the theme toggle only has to set that.
  */
 @theme {
   --color-ink-950: light-dark(#f2ece2, #141311);
