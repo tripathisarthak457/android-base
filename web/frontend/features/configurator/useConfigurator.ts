@@ -159,10 +159,27 @@ export function useConfigurator(catalogue: Catalogue) {
     );
   }, [catalogue]);
 
+  // The write waits for a pause in typing. A tab closed or left within that wait writes at once,
+  // since hiding is the last moment a browser reliably runs script.
   useEffect(() => {
     if (!restored) return;
-    const timer = setTimeout(() => writeDraft(draftToStore(state, catalogue)), 300);
-    return () => clearTimeout(timer);
+    let pending = true;
+    const write = () => {
+      if (!pending) return;
+      pending = false;
+      writeDraft(draftToStore(state, catalogue));
+    };
+    const writeIfHidden = () => {
+      if (document.visibilityState === "hidden") write();
+    };
+    const timer = setTimeout(write, 300);
+    document.addEventListener("visibilitychange", writeIfHidden);
+    window.addEventListener("pagehide", write);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("visibilitychange", writeIfHidden);
+      window.removeEventListener("pagehide", write);
+    };
   }, [state, restored, catalogue]);
 
   // Keyed on the step alone: picking another platform card, or a restored draft for another
