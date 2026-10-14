@@ -1,5 +1,6 @@
-import type { Catalogue, Field, Target } from "../catalogue/types.ts";
+import type { Catalogue, Field, Rules, Target } from "../catalogue/types.ts";
 import { presetFeatures, resolveChoices, toggleFeature } from "./resolve.ts";
+import { isReserved } from "./validation/names.ts";
 
 export const STEPS = ["platform", "identity", "features", "look", "motion", "build", "review"] as const;
 
@@ -153,9 +154,13 @@ export function lowerName(appName: string): string {
   return appName.replace(/[^A-Za-z0-9]+/g, "").toLowerCase();
 }
 
-export function suggestPackage(appName: string): string {
-  const slug = lowerName(appName).replace(/^[0-9]+/, "");
-  return `com.example.${slug || "myapp"}`;
+/**
+ * The package the app name suggests. The visitor never typed it, so it has to pass the generator's
+ * checks as it stands: a long name is cut to a segment's limit, and a keyword gets a suffix.
+ */
+export function suggestPackage(appName: string, rules: Rules): string {
+  const slug = lowerName(appName).replace(/^[0-9]+/, "").slice(0, rules.segment_max) || "myapp";
+  return `com.example.${isReserved(slug, rules) ? `${slug}app` : slug}`;
 }
 
 /** `Orders, wallet-history` → `orders`, `wallet_history`: module names as the generator wants them. */
@@ -191,7 +196,7 @@ export function initialState(catalogue: Catalogue, targetKey?: string): ConfigSt
     target: target.key,
     appName,
     displayName: "",
-    packageName: suggestPackage(appName),
+    packageName: suggestPackage(appName, catalogue.rules),
     packageEdited: false,
     modules: "",
     languages: [...defaults.languages],
@@ -269,7 +274,7 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
     case "appName":
       return edit({
         appName: action.value,
-        packageName: state.packageEdited ? state.packageName : suggestPackage(action.value),
+        packageName: state.packageEdited ? state.packageName : suggestPackage(action.value, catalogue.rules),
       });
     case "displayName":
       return edit({ displayName: action.value });

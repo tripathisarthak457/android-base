@@ -41,7 +41,20 @@ test("the package follows the app name until it is typed", () => {
   assert.equal(state.packageName, "com.example.trailnotes");
   state = run(state, { type: "packageName", value: "io.trail.app" }, { type: "appName", value: "Trail" });
   assert.equal(state.packageName, "io.trail.app");
-  assert.equal(suggestPackage(""), "com.example.myapp");
+  assert.equal(suggestPackage("", catalogue.rules), "com.example.myapp");
+});
+
+test("the package an app name suggests is one the generator accepts", () => {
+  const keywords = Object.values(catalogue.rules.reserved_words)
+    .flat()
+    .filter((word) => /^[a-z]/.test(word))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+  for (const appName of [...keywords, "Abcdefghij".repeat(5), "42 Switch"]) {
+    const state = run(initialState(catalogue), { type: "appName", value: appName });
+    const errors = validateSpec(toSpecV2(state, catalogue), catalogue, "android");
+    assert.equal(errors.get("package_name"), undefined, `${appName} suggests ${state.packageName}`);
+  }
+  assert.equal(suggestPackage("Switch", catalogue.rules), "com.example.switchapp");
 });
 
 test("an untick that takes dependents with it can be undone", () => {

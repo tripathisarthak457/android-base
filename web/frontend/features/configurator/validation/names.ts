@@ -14,7 +14,7 @@ function pascalCase(name: string): string {
     .join("");
 }
 
-function isReserved(word: string, rules: Rules): boolean {
+export function isReserved(word: string, rules: Rules): boolean {
   return Object.values(rules.reserved_words).some((words) => words.includes(word));
 }
 

@@ -46,7 +46,7 @@ export function draftToStore(state: ConfigState, catalogue: Catalogue): string |
   const plain = (answers: ConfigState) =>
     serializeDraft({
       ...answers,
-      packageEdited: answers.packageEdited && answers.packageName !== suggestPackage(answers.appName),
+      packageEdited: answers.packageEdited && answers.packageName !== suggestPackage(answers.appName, catalogue.rules),
       settings: answered(answers, catalogue),
     });
   return plain(state) === plain(initialState(catalogue)) ? null : serializeDraft(state);
