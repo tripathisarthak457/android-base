@@ -110,6 +110,9 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
                 void up();
               }
             }}
+            // The phone sits in a motion style's card, which is a label: feeling a style's press
+            // must not also choose it.
+            onClick={(event) => event.preventDefault()}
             className="mt-3 flex h-6 cursor-pointer select-none items-center justify-center rounded-md text-[8px] font-bold"
             style={{ background: theme.colour("accent"), color: theme.colour("onAccent") }}
           >
