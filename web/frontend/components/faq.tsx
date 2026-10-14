@@ -72,7 +72,9 @@ export function Faq() {
         "For each project generated, the server keeps what it was generated with: the platform, features, styles, SDK levels " +
         "and timings, and the app and package name for 90 days. For each visit it keeps a country, region and city, the " +
         "browser, system and device class, a screen-size bucket, where you came from, whether you have been here before, and " +
-        "a daily-rotating salted hash instead of your IP address. No IP, " +
+        "a daily-rotating salted hash instead of your IP address. A report you send keeps what you wrote, the email if you " +
+        "give one, the page it was sent from, your browser, system and device class, and your configurator answers if you " +
+        "leave them attached; an error the page runs into keeps its message, stack and page path. No IP, " +
         "no user agent string, no cookies, no third-party analytics. Your browser keeps a random id for this tab in " +
         "sessionStorage, your configurator answers in localStorage once you change one, so they are here when you come " +
         "back, and your light or dark choice if you change it. Start over clears the answers. The style previews and the " +
