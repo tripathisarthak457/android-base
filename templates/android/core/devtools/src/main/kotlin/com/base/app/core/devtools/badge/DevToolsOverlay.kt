@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -104,6 +105,12 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
         )
     }
 
+    // The drag outlives recompositions (it restarts only for a new position), so it reads the
+    // latest bounds, direction and settle rather than those of the composition that started it.
+    val currentBounds by rememberUpdatedState(::bounds)
+    val currentRtl by rememberUpdatedState(rtl)
+    val currentSettleSpec by rememberUpdatedState(settleSpec)
+
     // Off while typing: the keyboard leaves no room for it, and it would sit on the field.
     val ime = WindowInsets.ime
     val keyboardUp by remember(ime, density) { derivedStateOf { ime.getBottom(density) > 0 } }
@@ -140,18 +147,21 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
                             // would otherwise keep writing its position under the finger.
                             settle?.cancel()
                             velocity.resetTracking()
-                            position.hold(bounds())
+                            position.hold(currentBounds())
                         },
                         onDrag = { change, drag ->
                             change.consume()
                             velocity.addPointerInputChange(change)
-                            position.moveBy(if (rtl) -drag.x else drag.x, drag.y, bounds())
+                            position.moveBy(if (currentRtl) -drag.x else drag.x, drag.y, currentBounds())
                         },
                         onDragEnd = {
                             val flingX = velocity.calculateVelocity().x
-                            settle = scope.launch { position.settle(bounds(), if (rtl) -flingX else flingX, settleSpec) }
+                            val towardsEnd = if (currentRtl) -flingX else flingX
+                            settle = scope.launch { position.settle(currentBounds(), towardsEnd, currentSettleSpec) }
                         },
-                        onDragCancel = { settle = scope.launch { position.settle(bounds(), 0f, settleSpec) } },
+                        onDragCancel = {
+                            settle = scope.launch { position.settle(currentBounds(), 0f, currentSettleSpec) }
+                        },
                     )
                 }
                 .graphicsLayer { alpha = if (position.held) 1f else RestAlpha }
