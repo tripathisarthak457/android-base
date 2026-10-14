@@ -119,8 +119,8 @@ private fun Related(items: List<SampleItem>, onEvent: (SampleDetailEvent) -> Uni
     }
 }
 
-// Never drawn or read out (AppRedacted draws bones in place of its lines), so not a resource: a
-// title on one line and a body of about four, as the samples have.
+// Never shown (see AppRedacted). A title on one line and a body of about four, as the samples have,
+// and a two-digit id, as most of theirs are, for the `#id` line.
 private val SampleDetailPlaceholder = SampleItem(
     10,
     "Placeholder sample title",

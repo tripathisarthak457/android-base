@@ -152,7 +152,7 @@ private fun FeedCard(
 
 /**
  * Real cards, redacted, in a list with the feed's padding, so the first page lands in place. It
- * keeps a list state of its own, as [AppPagingList] asks of its loading list.
+ * keeps a list state of its own, as `AppRedacted` asks.
  */
 @Composable
 private fun LoadingFeed() {
@@ -174,9 +174,7 @@ private fun LoadingFeed() {
 /** Enough for the tallest window; a lazy list composes only the cards that show. */
 private const val PlaceholderRows = 8
 
-// Never drawn or read out: AppRedacted draws a bone in place of each line and hides the card from
-// screen readers, so only where these lines break shapes the placeholder. A one-line title and a
-// body clamped to two lines is what most posts show at phone width.
+// Never shown (see AppRedacted). A one-line title and a body clamped to two lines, as most posts show.
 private val FeedPlaceholder = FeedPost(
     -1,
     1,

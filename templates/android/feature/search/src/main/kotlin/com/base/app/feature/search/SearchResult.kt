@@ -144,8 +144,7 @@ internal fun SearchResultRoute(
     }
 }
 
-// Never drawn or read out (AppRedacted draws bones in place of its lines), so not a resource: a
-// one-line title and a snippet of about three lines, as results have.
+// Never shown (see AppRedacted). A one-line title and a snippet of about three lines, as results have.
 private val ResultPlaceholder = SearchResult(
     -1,
     "Placeholder result title",

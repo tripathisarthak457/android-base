@@ -255,9 +255,7 @@ private fun LoadingResults() {
 /** Enough for the tallest window; a lazy list composes only the cards that show. */
 private const val PlaceholderRows = 12
 
-// Never drawn or read out: AppRedacted draws a bone in place of each line and hides the card from
-// screen readers, so only where these lines break shapes the placeholder. A one-line title and a
-// two-line snippet is what most results show at phone width.
+// Never shown (see AppRedacted). A one-line title and a two-line snippet, as most results show.
 private val ResultPlaceholder = SearchResult(
     -1,
     "Placeholder result title",

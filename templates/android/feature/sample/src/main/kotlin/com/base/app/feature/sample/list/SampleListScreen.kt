@@ -136,11 +136,7 @@ private fun Content(
 /**
  * The loading state: real rows, redacted, in a list with the loaded list's padding. The first row
  * starts below the large title exactly where the first loaded row will, and the swap to content is
- * one frame with nothing moving or fading.
- *
- * It keeps a list state of its own. A state's item animations follow the rows it laid out last, so
- * on a shared one, whenever both lists were on screen, as in a cross-fade, the loaded rows would be
- * compared with these placeholders and every one would fade in as new.
+ * one frame with nothing moving or fading. It keeps a list state of its own, as `AppRedacted` asks.
  */
 @Composable
 private fun LoadingList() {
@@ -162,9 +158,7 @@ private fun LoadingList() {
 /** Enough for the tallest window; a lazy list composes only the rows that show. */
 private const val PlaceholderRows = 12
 
-// Never drawn or read out: AppRedacted draws a bone in place of each line and hides the row from
-// screen readers, so only where these lines break shapes the placeholder. A one-line title and a
-// two-line preview is what most samples show at phone width.
+// Never shown (see AppRedacted). A one-line title and a two-line preview, as most samples show.
 private val SampleRowPlaceholder = SampleItem(
     -1,
     "Placeholder sample title",

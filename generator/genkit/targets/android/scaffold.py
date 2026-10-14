@@ -314,11 +314,8 @@ private fun {class_name}Row(item: {class_name}Item, onClick: () -> Unit) {{
 
 /**
  * The real rows, redacted, in a list with the loaded list's padding: the first row starts where the
- * first loaded row will, and the swap to content moves nothing.
- *
- * It keeps a list state of its own. A state's item animations follow the rows it laid out last, so
- * on a shared one, whenever both lists were on screen, as in a cross-fade, the loaded rows would be
- * compared with these placeholders and every one that animates would fade in as new.
+ * first loaded row will, and the swap to content moves nothing. It keeps a list state of its own,
+ * as `AppRedacted` asks.
  */
 @Composable
 private fun LoadingList() {{
@@ -340,7 +337,7 @@ private fun LoadingList() {{
 /** Enough for the tallest window; a lazy list composes only the rows that show. */
 private const val PlaceholderRows = 12
 
-// Never drawn or read out: AppRedacted draws a bone in place of the title, so only its length matters.
+// Never shown (see AppRedacted): only its length matters.
 private val Placeholder = {class_name}Item(-1, "Placeholder title")
 
 @Preview(showBackground = true)

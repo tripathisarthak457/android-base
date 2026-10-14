@@ -26,6 +26,15 @@ import com.base.app.core.designsystem.foundation.draw.LocalRedactedState
  * The content is hidden from screen readers, which hear [contentDescription] instead: pass it once
  * for a loading region, not for every row. Toggling [active] keeps the content's composition and
  * state.
+ *
+ * The placeholder data is never drawn or read out, so it is not a string resource. Only where its
+ * lines break shapes the bones: give it the length typical content has at phone width.
+ *
+ * A loading list is a list of its own: the real rows, redacted, with the loaded list's content
+ * padding and a `LazyListState` of its own, replaced by the loaded list in one frame. A list state's
+ * item animations follow the rows it laid out last, so on a shared one, whenever both lists are on
+ * screen, as in a cross-fade, the loaded rows are compared with the placeholders and every one fades
+ * in as new.
  */
 @Composable
 fun AppRedacted(
