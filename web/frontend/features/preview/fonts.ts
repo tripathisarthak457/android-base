@@ -37,7 +37,6 @@ function stylesheet(href: string): Promise<boolean> {
  * every family has, and then at its default, so a rare face still previews instead of falling back.
  */
 export async function loadFamily(name: string, weights: number[]): Promise<boolean> {
-  if (!name.trim()) return false;
   const base = `${GOOGLE}?family=${family(name)}`;
   for (const href of [`${base}:wght@${weights.join(";")}&display=swap`, `${base}:wght@400;700&display=swap`, `${base}&display=swap`]) {
     if (await stylesheet(href)) return true;

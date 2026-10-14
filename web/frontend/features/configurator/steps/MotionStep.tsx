@@ -69,7 +69,7 @@ export function MotionStep({
   onView: (view: PreviewView) => void;
 }) {
   const { state, dispatch, target } = model;
-  const input = usePreviewInput(catalogue, state);
+  const input = usePreviewInput(catalogue, target, state);
   const name = useId();
   const [paused, setPaused] = usePaused();
   return (

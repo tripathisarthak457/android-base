@@ -11,6 +11,7 @@ import { type PreviewTab, planTabs } from "../../preview/tabs.ts";
 import { weightsFor } from "../../preview/theme.ts";
 import { traits } from "../../preview/traits.ts";
 import { type PreviewInput, usePreviewTheme } from "../../preview/usePreviewTheme.ts";
+import { typeface } from "../state.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { usePreviewInput } from "../usePreviewInput.ts";
 
@@ -40,7 +41,7 @@ export function LookStep({
   onView: (view: PreviewView) => void;
 }) {
   const { state, dispatch, target, errors } = model;
-  const input = usePreviewInput(catalogue, state);
+  const input = usePreviewInput(catalogue, target, state);
   // Four thumbnails redraw on every colour-picker move or keystroke, so they wait, as the live preview does.
   const thumbnailInput = useDeferredValue(input);
   const styleName = useId();
@@ -227,9 +228,10 @@ function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: num
   const suggestions = target.fields.find((field) => field.key === "font_name")?.suggestions ?? [];
   const names = useMemo(() => suggestions.map((suggestion) => suggestion.value), [suggestions]);
   useSuggestionFonts(names);
-  const status: FontStatus = useFamily(state.fontName, weights);
+  const font = typeface(state.fontName, target);
+  const status: FontStatus = useFamily(font, weights);
   const groupName = useId();
-  const family = `"${state.fontName}", var(--font-sans)`;
+  const family = `"${font}", var(--font-sans)`;
   const problem =
     errors.get("font_name") ??
     (status === "missing"
@@ -238,14 +240,24 @@ function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: num
 
   return (
     <div>
-      <Field label="Typeface" hint="Any family from fonts.google.com, spelled as on its page. Every text style reads it." error={problem}>
+      <Field
+        label="Typeface"
+        hint={`Any family from fonts.google.com, spelled as on its page. Every text style reads it. Empty uses ${target.defaults.font_name}.`}
+        error={problem}
+      >
         {(control) => (
-          <TextInput {...control} value={state.fontName} onChange={(event) => dispatch({ type: "fontName", value: event.target.value })} spellCheck={false} />
+          <TextInput
+            {...control}
+            value={state.fontName}
+            placeholder={target.defaults.font_name}
+            onChange={(event) => dispatch({ type: "fontName", value: event.target.value })}
+            spellCheck={false}
+          />
         )}
       </Field>
       <div role="radiogroup" aria-label="Suggested typefaces" className="mt-3 flex flex-wrap gap-1.5">
         {suggestions.map((suggestion) => {
-          const on = state.fontName === suggestion.value;
+          const on = font === suggestion.value;
           return (
             <label
               key={suggestion.value}
@@ -265,7 +277,7 @@ function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: num
         <div className="flex items-end justify-between gap-4">
           <span className="text-[44px] font-bold leading-none text-ink-100">Aa</span>
           <span className="font-mono text-[11px] text-ink-400" aria-hidden>
-            {status === "checking" ? "loading…" : status === "ok" ? state.fontName : "not found"}
+            {status === "checking" ? "loading…" : status === "ok" ? font : "not found"}
           </span>
         </div>
         <p className="mt-4 text-[24px] font-bold leading-tight tracking-tight text-ink-100">Welcome back</p>
@@ -275,7 +287,7 @@ function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: num
       {/* Only a family that is not found is announced: "loading…" and the name after every
           keystroke would talk over the typing. */}
       <p aria-live="polite" className="sr-only">
-        {status === "missing" ? `Google Fonts does not know ${state.fontName}.` : ""}
+        {status === "missing" ? `Google Fonts does not know ${font}.` : ""}
       </p>
     </div>
   );

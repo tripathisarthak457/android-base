@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { Configurator } from "../../features/configurator/Configurator.tsx";
+import { typeface } from "../../features/configurator/state.ts";
 import { useConfigurator } from "../../features/configurator/useConfigurator.ts";
 import { provideReportContext } from "../../features/feedback/context.ts";
 import { CATALOGUE } from "../../lib/catalogue.ts";
@@ -21,7 +22,7 @@ export function ConfigureIsland() {
   useEffect(
     () =>
       provideReportContext(() => {
-        const { state, preset } = latest.current;
+        const { state, target, preset } = latest.current;
         const minSdk = state.settings["android.min_sdk"];
         return {
           target: state.target,
@@ -31,7 +32,7 @@ export function ConfigureIsland() {
           preset: preset ?? "custom",
           minSdk: typeof minSdk === "number" ? minSdk : 0,
           motionStyle: state.motionStyle,
-          fontName: state.fontName,
+          fontName: typeface(state.fontName, target),
           accentColour: state.accent,
         };
       }),

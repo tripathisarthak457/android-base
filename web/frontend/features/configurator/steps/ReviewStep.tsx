@@ -17,7 +17,7 @@ import { usePreviewInput } from "../usePreviewInput.ts";
 
 export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; model: ConfiguratorModel; dark: boolean }) {
   const { state, target, spec, errors, busy, outcome, generate, goTo, preset } = model;
-  const input = usePreviewInput(catalogue, state);
+  const input = usePreviewInput(catalogue, target, state);
   const theme = usePreviewTheme(input, dark);
   const tabs = useMemo(() => planTabs(input.features, input.modules).tabs, [input.features, input.modules]);
   const options = useMemo(() => ({ features: input.features, haptics: input.haptics }), [input.features, input.haptics]);
@@ -41,7 +41,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
       "Motion",
       `${target.motion_styles.find((style) => style.key === state.motionStyle)?.title ?? state.motionStyle}, haptics ${state.hapticsEnabled ? "on" : "off"}`,
     ],
-    ["Typeface", state.fontName],
+    ["Typeface", input.font],
     ["Modules", input.modules.length ? input.modules.join(", ") : "none"],
     ["Languages", ["English", ...target.languages.filter((language) => state.languages.includes(language.tag)).map((language) => language.name)].join(", ")],
     ["Signing keys", state.signing.enabled ? "generated here" : "debug key only"],

@@ -167,6 +167,14 @@ export function moduleNames(text: string): string[] {
 }
 
 /**
+ * The typeface the project gets, for the previews and Review to show: the generator reads an empty
+ * answer as the target's default. Spaces alone are drawn the same way while the validator flags them.
+ */
+export function typeface(fontName: string, target: Target): string {
+  return fontName.trim() || target.defaults.font_name;
+}
+
+/**
  * `keys` resolved as a visitor's choices, plus what the design style needs, so Glass keeps
  * liquidglass on through a preset, a platform switch or a restored draft.
  */

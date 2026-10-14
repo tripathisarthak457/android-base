@@ -9,6 +9,7 @@ import {
   type ConfigState,
   type Step,
   enabledTarget,
+  findTarget,
   initialState,
   moduleNames,
   reducer,
@@ -16,7 +17,9 @@ import {
   snapshotForUndo,
   stepOf,
   suggestPackage,
+  typeface,
 } from "./state.ts";
+import { validateSpec } from "./validation/validate.ts";
 
 const catalogue = loadCatalogue();
 
@@ -64,6 +67,15 @@ test("every edit bumps the revision, so a finished download stops describing the
 
 test("module names are normalised the way they will be generated", () => {
   assert.deepEqual(moduleNames(" Orders, wallet-history ,, Trip  plans"), ["orders", "wallet_history", "trip_plans"]);
+});
+
+test("an empty typeface is the target's default, as the generator reads it", () => {
+  const android = findTarget(catalogue, "android");
+  const state = run(initialState(catalogue), { type: "fontName", value: "" });
+  assert.equal(validateSpec(toSpecV2(state, catalogue), catalogue, "android").has("font_name"), false);
+  assert.equal(typeface(state.fontName, android), android.defaults.font_name);
+  assert.equal(typeface("   ", android), android.defaults.font_name);
+  assert.equal(typeface("Inter ", android), "Inter");
 });
 
 test("only available and beta targets can be picked", () => {
