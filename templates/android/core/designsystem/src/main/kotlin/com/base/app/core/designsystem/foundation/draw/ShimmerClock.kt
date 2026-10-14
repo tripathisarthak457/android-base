@@ -34,6 +34,21 @@ internal class ShimmerClock(
 
     private val bones = ArrayList<Bone>()
     private var job: Job? = null
+    private var sweepStart = 0L
+    private var sweepDuration = 0f
+
+    // One callback for every frame of every sweep: a lambda that captured the sweep's start and
+    // length would be a new object on each frame.
+    private val sweepFrame: (Long) -> Boolean = { now ->
+        val elapsed = (now - sweepStart) / NanosPerMilli
+        progress = if (elapsed < sweepDuration) {
+            Motion.skeletonEasing.transform(elapsed / sweepDuration)
+        } else {
+            Float.NaN
+        }
+        for (index in bones.indices) bones[index].onSweepFrame()
+        !progress.isNaN()
+    }
 
     fun add(bone: Bone) {
         bones += bone
@@ -51,22 +66,12 @@ internal class ShimmerClock(
 
     private suspend fun sweep() {
         while (true) {
-            val duration = sweepMillis(window())
+            sweepDuration = sweepMillis(window())
             // The band starts with the first frame after a bone joins, not at whatever phase a
             // previous sweep stopped at, so a bone never shows a band left over from before.
-            val start = withFrameNanos { it }
-            do {
-                val sweeping = withFrameNanos { now ->
-                    val elapsed = (now - start) / NanosPerMilli
-                    progress = if (elapsed < duration) {
-                        Motion.skeletonEasing.transform(elapsed / duration)
-                    } else {
-                        Float.NaN
-                    }
-                    for (index in bones.indices) bones[index].onSweepFrame()
-                    !progress.isNaN()
-                }
-            } while (sweeping)
+            sweepStart = withFrameNanos { it }
+            var sweeping = true
+            while (sweeping) sweeping = withFrameNanos(sweepFrame)
             delay(Motion.skeletonPauseMs.toLong())
         }
     }
