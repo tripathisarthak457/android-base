@@ -40,17 +40,16 @@ final class SkeletonClock {
         }
     }
 
+    // Checks for cancellation before each write: a loop cancelled just as its sleep ended must not
+    // clear the sweep of the loop that a new placeholder has started since.
     private func run() async {
         while !Task.isCancelled {
             let sweep = SkeletonSweep(area: area, start: .now)
             self.sweep = sweep
-            do {
-                try await Task.sleep(for: .seconds(sweep.duration))
-                self.sweep = nil
-                try await Task.sleep(for: .seconds(DesignTokens.Motion.skeletonPause))
-            } catch {
-                return
-            }
+            try? await Task.sleep(for: .seconds(sweep.duration))
+            guard !Task.isCancelled else { return }
+            self.sweep = nil
+            try? await Task.sleep(for: .seconds(DesignTokens.Motion.skeletonPause))
         }
     }
 }
