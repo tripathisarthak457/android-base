@@ -10,16 +10,21 @@ import com.base.app.core.designsystem.foundation.draw.LocalRedactedState
 
 /**
  * Draws [content] as placeholders while [active], as SwiftUI's `redacted(reason: .placeholder)`
- * does: its real layout, with text, icons, avatars, images, chips and filled buttons drawn as bones
- * that the window's shimmer sweeps across. Give it the real composable filled with placeholder data,
- * so the loading row is exactly as tall as the row that replaces it, at every font scale, and
- * nothing moves when the data arrives. Cards and other containers keep their own look.
+ * does: its real layout, drawn as bones that the window's shimmer sweeps across. Give it the real
+ * composable filled with placeholder data, so the loading row is exactly as tall as the row that
+ * replaces it, at every font scale, and nothing moves when the data arrives.
  *
- * While active, the controls in it that are built on `Modifier.pressable`, which every control of
- * the design system is, take no tap, key or focus; a control of another kind reads `LocalRedacted`
- * to do the same. The content is hidden from screen readers, which hear [contentDescription]
- * instead: pass it once for a loading region, not for every row. Toggling [active] keeps the
- * content's composition and state.
+ * Text, icons, avatars, network images, chips, badges, status pills and buttons with a fill draw as
+ * bones in their own shape; cards and other containers keep their own look. Controls built on
+ * `Modifier.pressable` take no tap, key or focus: buttons, cards, chips, `AppRow`, `AppChoiceRow`
+ * and `AppSelectField`. Other controls are not redacted: `AppSwitch`, `AppCheckbox`, `AppRadio`,
+ * `AppToggleRow`, `AppSegmentedControl`, `AppSlider`, `AppStepper` and the text fields draw and
+ * respond as usual, so keep them out of placeholder content. A custom control reads `LocalRedacted`
+ * to draw `Modifier.skeleton` and take no input.
+ *
+ * The content is hidden from screen readers, which hear [contentDescription] instead: pass it once
+ * for a loading region, not for every row. Toggling [active] keeps the content's composition and
+ * state.
  */
 @Composable
 fun AppRedacted(

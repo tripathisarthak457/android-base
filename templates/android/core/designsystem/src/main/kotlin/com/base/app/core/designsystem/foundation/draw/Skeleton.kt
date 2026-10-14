@@ -56,8 +56,8 @@ import kotlin.math.sin
  * The window's shimmer sweeps one band across every bone on screen, so a list of placeholders
  * lights up as one surface rather than as a row of separate flickers. The bone holds still with
  * motion reduced, in a hidden tab, in a preview, and outside `AppTheme`. Inside an `AppRedacted`,
- * the design system's components draw themselves this way; a custom component reads
- * [LocalRedacted] and adds this modifier.
+ * text, icons, avatars, chips, badges and buttons with a fill draw themselves this way; any other
+ * component reads [LocalRedacted] and adds this modifier.
  */
 fun Modifier.skeleton(shape: Shape): Modifier = layered(OutlineSkeletonElement(shape))
 
@@ -69,7 +69,11 @@ fun Modifier.shimmerBounds(): Modifier = this then ShimmerBoundsElement
 
 internal val LocalRedactedState = compositionLocalOf { false }
 
-/** True inside an active `AppRedacted`: a custom component draws [skeleton] in place of its content. */
+/**
+ * True inside an active `AppRedacted`. A component that does not redact itself draws [skeleton] in
+ * place of its content while it is true, and a control that is not built on `Modifier.pressable`
+ * takes no input.
+ */
 val LocalRedacted: CompositionLocal<Boolean> = LocalRedactedState
 
 /** A bone [top] to [bottom] pixels down this element and as wide as it: one line of placeholder text. */
