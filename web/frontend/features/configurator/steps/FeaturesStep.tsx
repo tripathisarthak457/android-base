@@ -51,8 +51,13 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
 
   return (
     <div>
-      <div role="radiogroup" aria-label="Start from a preset" className="flex flex-wrap items-center gap-2">
-        <span className="mr-1 text-sm text-ink-300">Start from</span>
+      {/* A fieldset rather than role=radiogroup, which may hold only radios: the group also shows
+          its lead-in and the "Your own" badge. */}
+      <fieldset className="flex flex-wrap items-center gap-2">
+        <legend className="sr-only">Start from a preset</legend>
+        <span aria-hidden className="mr-1 text-sm text-ink-300">
+          Start from
+        </span>
         {target.presets.map((option) => {
           const on = preset === option.key;
           return (
@@ -60,7 +65,7 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
               key={option.key}
               title={option.description}
               className={`cursor-pointer rounded-full border px-4 py-1.5 text-sm font-medium transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
-                on ? "border-accent bg-accent-dim text-accent-bright" : "border-ink-600 bg-ink-900 text-ink-300 hover:border-ink-500"
+                on ? "border-accent bg-accent-dim text-accent-bright ring-1 ring-accent" : "border-ink-600 bg-ink-900 text-ink-300 hover:border-ink-500"
               }`}
             >
               <input type="radio" name={presetName} checked={on} onChange={() => dispatch({ type: "preset", key: option.key })} className="sr-only" />
@@ -70,7 +75,7 @@ export function FeaturesStep({ model }: { model: ConfiguratorModel }) {
           );
         })}
         {!current && <Badge tone="accent">Your own · {visible(state.features).length}</Badge>}
-      </div>
+      </fieldset>
       <p className="mt-3 text-sm text-ink-400">{current?.description ?? "Your own selection. Ticking a feature also ticks what it needs."}</p>
 
       {/* Re-keyed on each toggle so a new hint replaces the last one instead of stacking under it. */}

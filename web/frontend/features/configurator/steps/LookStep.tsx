@@ -252,7 +252,7 @@ function FontPicker({ model, weights }: { model: ConfiguratorModel; weights: num
               title={suggestion.note}
               style={{ fontFamily: `"${suggestion.value}", var(--font-sans)` }}
               className={`cursor-pointer rounded-full border px-3 py-1 text-[13px] transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
-                on ? "border-accent bg-accent-dim text-accent-bright" : "border-ink-600 text-ink-300 hover:border-ink-500 hover:text-ink-100"
+                on ? "border-accent bg-accent-dim text-accent-bright ring-1 ring-accent" : "border-ink-600 text-ink-300 hover:border-ink-500 hover:text-ink-100"
               }`}
             >
               <input type="radio" name={groupName} checked={on} onChange={() => dispatch({ type: "fontName", value: suggestion.value })} className="sr-only" />
