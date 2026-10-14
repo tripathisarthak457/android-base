@@ -5,6 +5,7 @@ import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
 import { ApiError } from "../../lib/api.ts";
 import { adminGet, useFilterChoices } from "./api.ts";
+import { PanelFailures } from "./Panel.tsx";
 import { DEVICE_CLASSES, type Filters, OUTCOMES, type Range, defaultFilters, query, windowProblem } from "./filters.ts";
 import { Adoption } from "./panels/Adoption.tsx";
 import { Audience } from "./panels/Audience.tsx";
@@ -165,6 +166,16 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
   const { targets, presets } = useFilterChoices();
   const filterBar = useRef<HTMLFormElement>(null);
   useScrollPaddingBelow(filterBar);
+  const [failures, setFailures] = useState<ReadonlyMap<string, string>>(() => new Map());
+  const reportFailure = useCallback((panel: string, message: string | null) => {
+    setFailures((current) => {
+      if ((current.get(panel) ?? null) === message) return current;
+      const next = new Map(current);
+      if (message === null) next.delete(panel);
+      else next.set(panel, message);
+      return next;
+    });
+  }, []);
 
   function refresh() {
     setAsOf(new Date());
@@ -242,21 +253,27 @@ function Dashboard({ token, onSignOut }: { token: string; onSignOut: () => void 
         {problem && <p className="w-full text-xs text-rose">{problem}</p>}
       </form>
 
-      <div className="mt-6 space-y-6">
-        <Headline {...props} />
-        <Funnel {...props} />
-        <Daily {...props} />
-        <Adoption {...props} />
-        <Failures {...props} />
-        <Audience {...props} />
-        <Durations {...props} />
-        <Generations {...props} />
-        <div className="grid gap-6 xl:grid-cols-2">
-          <Reports {...props} />
-          <Errors {...props} />
+      {/* No count: the panels fail one by one, and a changing count would be announced each time. */}
+      <p role="alert" className="sr-only">
+        {failures.size > 0 && `Not every panel loaded. ${[...new Set(failures.values())].join(" ")}`}
+      </p>
+      <PanelFailures value={reportFailure}>
+        <div className="mt-6 space-y-6">
+          <Headline {...props} />
+          <Funnel {...props} />
+          <Daily {...props} />
+          <Adoption {...props} />
+          <Failures {...props} />
+          <Audience {...props} />
+          <Durations {...props} />
+          <Generations {...props} />
+          <div className="grid gap-6 xl:grid-cols-2">
+            <Reports {...props} />
+            <Errors {...props} />
+          </div>
+          <Health {...props} />
         </div>
-        <Health {...props} />
-      </div>
+      </PanelFailures>
     </main>
   );
 }

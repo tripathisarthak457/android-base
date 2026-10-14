@@ -1,11 +1,18 @@
 "use client";
 
-import { type ReactNode, useId } from "react";
+import { type ReactNode, createContext, useContext, useEffect, useId } from "react";
 import { Spinner } from "../../components/ui.tsx";
 import type { DateWindow, Query } from "./api.ts";
 
 /** What every panel is given: the token, the shared query, and a counter that forces a refetch. */
 export type PanelProps = { token: string; query: string; version: number; onUnauthorized: () => void };
+
+/**
+ * Where a panel says its load failed, so the page can announce failures once. When the API is
+ * down every panel fails at the same moment, and an alert in each would read the same sentence
+ * eleven times.
+ */
+export const PanelFailures = createContext<(panel: string, message: string | null) => void>(() => undefined);
 
 /**
  * One admin card. It states the window its numbers cover, and when a refetch fails it keeps
@@ -28,6 +35,12 @@ export function Panel<T extends DateWindow>({
 }) {
   const { data, error, loading } = result;
   const headingId = useId();
+  const report = useContext(PanelFailures);
+  const message = error?.message ?? null;
+  useEffect(() => {
+    report(headingId, message);
+  }, [report, headingId, message]);
+  useEffect(() => () => report(headingId, null), [report, headingId]);
   return (
     <section aria-labelledby={headingId} className={`min-w-0 rounded-xl border border-ink-700 bg-ink-850 p-5 ${className}`}>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -46,7 +59,7 @@ export function Panel<T extends DateWindow>({
         </div>
       </div>
       {error && (
-        <p role="alert" className="mt-3 rounded-lg border border-amber/30 bg-amber/10 px-3 py-2 text-xs text-amber">
+        <p className="mt-3 rounded-lg border border-amber/30 bg-amber/10 px-3 py-2 text-xs text-amber">
           {error.message}
           {data ? " Showing the last numbers that loaded." : ""}
         </p>
