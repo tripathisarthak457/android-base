@@ -249,17 +249,33 @@ class LiquidLensTest {
 
         selected = 2
         framesUntil { state.travel > 0.95f }
-        val (alongInTransit, acrossInTransit) = besideLens(Orientation.Horizontal)
-        framesUntil { state.position == 2f && state.velocity == 0f }
-        val (alongSettled, acrossSettled) = besideLens(Orientation.Horizontal)
+        val (along, across) = besideLens(Orientation.Horizontal)
 
-        assertTrue(
-            "along the bar the lens reaches past its bounds: $alongInTransit",
-            alongInTransit.isBlue(),
-        )
-        assertEquals("across the bar it stays within a sliver of them", Background, acrossInTransit)
-        assertEquals(Background, alongSettled)
-        assertEquals(Background, acrossSettled)
+        assertTrue("along the bar the lens reaches past its bounds: $along", along.isBlue())
+        assertEquals("across the bar it stays within a sliver of them", Background, across)
+    }
+
+    @Test
+    fun `a lens that has settled is back within its resting bounds`() {
+        val backdrop = CountingBackdrop(Color.Blue)
+        var selected by mutableIntStateOf(0)
+        lateinit var state: LiquidLensState
+        rule.setContent {
+            CompositionLocalProvider(LocalGlassQuality provides GlassQuality.Live) {
+                state = rememberLens(selected)
+                Lens(backdrop, state)
+            }
+        }
+        rule.mainClock.autoAdvance = false
+        selected = 2
+        framesUntil { state.travel > 0.95f }
+        besideLens(Orientation.Horizontal)
+
+        framesUntil { state.position == 2f && state.velocity == 0f }
+        val (along, across) = besideLens(Orientation.Horizontal)
+
+        assertEquals(Background, along)
+        assertEquals(Background, across)
     }
 
     @Test

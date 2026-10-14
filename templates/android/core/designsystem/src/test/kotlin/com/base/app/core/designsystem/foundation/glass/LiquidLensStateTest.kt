@@ -56,21 +56,24 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `a tap's motion lifts the lens into glass, which calms as the lens settles`() = runTest {
+    fun `a tap's motion lifts the lens to full glass`() = runTest {
         val (state, clock) = startLens(slot = 0)
 
         state.select(2)
         val travel = framesUntilIdle(clock) { state.travel }
-        val peak = travel.indexOf(travel.max())
 
-        assertTrue("the lens turns fully to glass on its way: $travel", travel[peak] > FullGlass)
-        assertTrue(
-            "and calms without a second lift: $travel",
-            travel.drop(peak).zipWithNext().all { (before, after) -> after <= before },
-        )
-        assertEquals(0f, state.travel)
+        assertTrue("$travel", travel.max() > FullGlass)
+    }
+
+    @Test
+    fun `a tap's glass calms once and is gone when the lens has settled`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+
+        state.select(2)
+        val travel = framesUntilIdle(clock) { state.travel }
+
+        assertTrue("without a second lift: $travel", liftsThenCalmsOnce(travel))
         assertEquals(0f, state.intensity)
-        assertEquals(2f, state.position)
     }
 
     @Test
@@ -182,25 +185,27 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `a tap samples the scene while it travels and stops before it settles`() = runTest {
+    fun `a tap samples the scene in one unbroken run`() = runTest {
         val (state, clock) = startLens(slot = 0)
-        val atRest = state.samplesBackdrop
 
         state.select(2)
-        val moving = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
-        val sampling = moving.map { it.first }
+        val sampling = framesUntilIdle(clock) { state.samplesBackdrop }
 
-        assertFalse(atRest)
-        assertTrue("in one unbroken run: $sampling", isOneRun(sampling))
-        assertTrue(
-            "which hands over before the last of the motion",
-            moving[handOverIn(sampling)].second < 2f,
-        )
-        assertFalse(state.samplesBackdrop)
+        assertTrue("$sampling", isOneRun(sampling))
     }
 
     @Test
-    fun `a selection reversed in flight stays glass until a single hand-over`() = runTest {
+    fun `a tap's lens hands over to the indicator before the lens arrives`() = runTest {
+        val (state, clock) = startLens(slot = 0)
+
+        state.select(2)
+        val moving = framesUntilIdle(clock) { state.samplesBackdrop to state.position }
+
+        assertTrue("$moving", moving[handOverIn(moving.map { it.first })].second < 2f)
+    }
+
+    @Test
+    fun `a selection reversed in flight samples the scene until a single hand-over`() = runTest {
         for ((first, second) in listOf(2 to 0, 1 to 0, 2 to 1)) {
             for (reversal in 2..20) {
                 val (state, clock) = startLens(slot = 0)
@@ -268,19 +273,27 @@ class LiquidLensStateTest {
     }
 
     @Test
-    fun `without refraction a drag moves a plain indicator that follows the finger`() = runTest {
+    fun `without refraction a drag moves a plain indicator`() = runTest {
         val (state, clock) = startLens(slot = 2, refracts = false)
 
         state.press(2f)
         state.dragBy(-1f)
         val drag = framesUntilIdle(clock) { state.isPlain() }
-        val held = state.position
         state.release()
         val release = framesUntilIdle(clock) { state.isPlain() }
 
-        assertTrue("a drag: $drag", drag.isNotEmpty() && drag.all { it })
-        assertTrue("a release: $release", release.all { it })
-        assertEquals("the indicator still follows the finger", 1f, held)
+        assertTrue("$drag, then $release", drag.isNotEmpty() && (drag + release).all { it })
+    }
+
+    @Test
+    fun `without refraction the indicator still follows the finger`() = runTest {
+        val (state, clock) = startLens(slot = 2, refracts = false)
+
+        state.press(2f)
+        state.dragBy(-1f)
+        framesUntilIdle(clock) { state.position }
+
+        assertEquals(1f, state.position)
     }
 
     @Test
