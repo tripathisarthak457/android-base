@@ -14,7 +14,7 @@ export function Badge({ children, tone = "neutral" }: { children: ReactNode; ton
     amber: "bg-amber/10 text-amber border-amber/25",
     rose: "bg-rose/10 text-rose border-rose/25",
   };
-  return <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${tones[tone]}`}>{children}</span>;
+  return <span className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-medium ${tones[tone]}`}>{children}</span>;
 }
 
 export function Spinner({ className = "" }: { className?: string }) {
