@@ -9,6 +9,7 @@ macOS CI job compiles the same projects; these checks catch what goes wrong betw
 
 from __future__ import annotations
 
+import copy
 import importlib.util
 import json
 import plistlib
@@ -790,6 +791,23 @@ class TemplateTest(unittest.TestCase):
             cases = set(re.findall(r'case \w+ = "(\w+)"', (theme / f"{enum}.swift").read_text(encoding="utf-8")))
             with self.subTest(enum=enum):
                 self.assertTrue({style[key] for style in data["styles"].values()} <= cases)
+
+    def test_of_the_sheet_tokens_swift_carries_only_the_spring_and_the_radius(self):
+        """
+        The system's sheet draws its own grabber, detents, card stack and dim, so the template reads
+        only its spring and its corner radius; Android's `sheet` section and each style's sheet inset
+        and material change nothing in Swift (sheet spec §6.2).
+        """
+        resolved = tokens.resolve(None, "ios")
+        emitted = swift.emit(resolved)
+        self.assertIn("let sheet: SpringToken", emitted)
+        self.assertIn("let radiusSheet: CGFloat", emitted)
+        without = copy.deepcopy(resolved)
+        without["motion"].pop("sheet", None)
+        for style in without["styles"].values():
+            style.pop("sheetInset", None)
+            style.pop("sheetMaterial", None)
+        self.assertEqual(swift.emit(without), emitted)
 
     def test_the_accent_colour_is_emitted_from_the_tokens(self):
         checked_in = (TEMPLATE / "BaseApp" / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")
