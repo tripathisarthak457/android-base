@@ -1165,6 +1165,24 @@ def parse_extras(pairs):
     return extras
 
 
+def started_run(device, app, out, index, seed, apk):
+    """A run that has installed the app and paid its first uses.
+
+    The first screens of most presets load from a live API, which now and then does not answer
+    within a step's wait. That is not what a run measures, so a start that fails is made once more
+    from a clean install before the invocation gives up.
+    """
+    try:
+        run = Run(device, app, out, index, seed)
+        run.start(apk)
+        return run
+    except HarnessError as error:
+        print(f"run {index}: the start failed ({error}); starting it again", flush=True)
+    run = Run(device, app, out, index, seed)
+    run.start(apk)
+    return run
+
+
 def measure(args):
     device = Device(args.serial)
     device.check_attached()
@@ -1209,12 +1227,14 @@ def measure_on(device, args):
     results, skipped, notes = [], [], []
     for index in range(1, args.runs + 1):
         wait_until_cool(device)
-        run = Run(device, app, args.out, index, seed)
         print(f"run {index}/{args.runs}: install, profile, warm-up", flush=True)
-        run.start(apk)
+        run = started_run(device, app, args.out, index, seed, apk)
         for scenario in scenarios:
             print(f"run {index}/{args.runs}: {scenario}", flush=True)
             run.run(scenario)
+        # On disk as soon as it is done, so a later run that fails leaves the earlier ones readable.
+        with open(os.path.join(run.out, "metrics.json"), "w") as handle:
+            json.dump({"metrics": run.metrics, "inapplicable": run.inapplicable, "notes": run.notes}, handle, indent=2)
         results.append(run.metrics)
         skipped.append(run.inapplicable)
         notes += [f"run {index}: {note}" for note in run.notes]
