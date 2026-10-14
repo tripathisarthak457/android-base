@@ -1,9 +1,13 @@
 package com.base.app.core.designsystem.foundation.draw
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -22,6 +26,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppColors
 import com.base.app.core.designsystem.theme.ThemeMode
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +37,8 @@ import org.robolectric.annotation.GraphicsMode
 
 /**
  * Where the shimmer must not move, it does not: with motion reduced, in a hidden tab, in a preview,
- * and outside the theme, a bone is its plain colour on every frame and the clock never runs.
+ * and outside the theme, a bone is its plain colour on every frame and the clock never runs. A bone
+ * that holds still is never redrawn by the clock, so a theme change has to reach it on its own.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
@@ -63,6 +69,38 @@ class SkeletonStillnessTest {
 
     @Test
     fun `outside the theme a bone holds still`() = assertStill { content -> content() }
+
+    @Test
+    fun `with motion reduced a bone takes a new theme's colour on the next frame`() {
+        var mode by mutableStateOf(ThemeMode.Light)
+        var bone = Color.Unspecified
+        rule.mainClock.autoAdvance = false
+        rule.setContent {
+            AppTheme(mode = mode, reduceMotion = true) {
+                bone = LocalAppColors.current.skeleton
+                Box(Modifier.testTag("bone")) {
+                    AppSkeleton(Modifier.size(300.dp, 24.dp), shape = RectangleShape)
+                }
+            }
+        }
+        rule.mainClock.advanceTimeByFrame()
+        val light = bone
+        // Drawn once in the light theme, so the bone's layer holds a recording a repaint must replace.
+        assertEquals(light.toArgb(), rule.onNodeWithTag("bone").captureToImage().toPixelMap()[10, 10].toArgb())
+
+        mode = ThemeMode.Dark
+        rule.waitForIdle()
+        rule.mainClock.advanceTimeByFrame()
+        assertNotEquals("the themes share a bone colour", light, bone)
+
+        val pixels = rule.onNodeWithTag("bone").captureToImage().toPixelMap()
+        val inset = 2
+        for (y in inset until pixels.height - inset) {
+            for (x in inset until pixels.width - inset) {
+                assertEquals("($x, $y)", bone.toArgb(), pixels[x, y].toArgb())
+            }
+        }
+    }
 
     private fun assertStill(host: @Composable (content: @Composable () -> Unit) -> Unit) {
         var bone = Color.Unspecified

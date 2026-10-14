@@ -363,8 +363,6 @@ private class SkeletonNode(private var bones: Bones) :
     ObserverModifierNode,
     ShimmerClock.Bone {
 
-    override val shouldAutoInvalidate: Boolean get() = false
-
     private var clock: ShimmerClock? = null
     private var area: ShimmerBoundsNode? = null
     private var root: LayoutCoordinates? = null
