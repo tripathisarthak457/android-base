@@ -1,3 +1,4 @@
+import { isObject } from "../../lib/json.ts";
 import type { Catalogue } from "../catalogue/types.ts";
 import { type ConfigState, type Setting, featuresFor, findTarget, initialState, settingFields, suggestPackage, typeface } from "./state.ts";
 
@@ -51,12 +52,6 @@ export function draftToStore(state: ConfigState, catalogue: Catalogue): string |
       settings: answered(answers, catalogue),
     });
   return plain(state) === plain(initialState(catalogue)) ? null : serializeDraft(state);
-}
-
-type Json = Record<string, unknown>;
-
-function isObject(value: unknown): value is Json {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function strings(value: unknown): string[] {

@@ -1,5 +1,6 @@
+import { type Json, isObject } from "../../../lib/json.ts";
 import type { Field, Rules } from "../../catalogue/types.ts";
-import { type Checker, type Json, isObject, matches } from "./check.ts";
+import { type Checker, matches } from "./check.ts";
 import { keystoreProblem } from "./keystores.ts";
 
 // The `android` block: SDK levels, version, flavour URLs, deep links and signing keys, in the generator's order.

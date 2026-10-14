@@ -1,5 +1,7 @@
+import { type Json, isObject } from "../../../lib/json.ts";
+import { codePoints } from "../../../lib/text.ts";
 import type { Rules } from "../../catalogue/types.ts";
-import { type Checker, type Json, codePoints, isObject, matches, withoutNulls } from "./check.ts";
+import { type Checker, matches, withoutNulls } from "./check.ts";
 
 // Signing keys: the shape of each entry in `android.keystores`, then what keytool would refuse.
 

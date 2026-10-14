@@ -1,4 +1,5 @@
 import { CATALOGUE, android } from "../lib/catalogue.ts";
+import { listed } from "../lib/text.ts";
 
 /** What arrives whatever you tick. */
 function items() {
@@ -75,7 +76,7 @@ function items() {
     {
       title: `${flavours.length} build environments`,
       body:
-        `${new Intl.ListFormat("en-GB", { type: "conjunction" }).format(flavours)}, in debug and release. Only the app module ` +
+        `${listed(flavours)}, in debug and release. Only the app module ` +
         "carries flavours, so switching environment rebuilds nothing in core, data or feature.",
       detail: "AppFlavor",
     },

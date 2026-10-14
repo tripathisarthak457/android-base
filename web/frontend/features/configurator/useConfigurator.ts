@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { API_BASE, ApiError, BUILD, apiError } from "../../lib/api.ts";
+import { saveFile } from "../../lib/download.ts";
 import { canMakeKeystores, parseCatalogue } from "../catalogue/guard.ts";
 import type { Catalogue } from "../catalogue/types.ts";
 import { sessionId, track, trackLanding } from "../telemetry/client.ts";
@@ -110,21 +111,6 @@ function generationMs(response: Response): number | null {
 function filenameOf(response: Response): string {
   const match = /filename="([^"]+)"/.exec(response.headers.get("Content-Disposition") ?? "");
   return match?.[1] ?? "project.zip";
-}
-
-/**
- * Anchor-and-click rather than navigating, so the filename from Content-Disposition is used and
- * the page, with its summary, stays where it is.
- */
-function save(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 export function useConfigurator(catalogue: Catalogue) {
@@ -268,7 +254,7 @@ export function useConfigurator(catalogue: Catalogue) {
       timeout = setTimeout(() => controller.abort(), DOWNLOAD_TIMEOUT_MS);
       const blob = await response.blob();
       const filename = filenameOf(response);
-      save(blob, filename);
+      saveFile(blob, filename);
       setOutcome({
         kind: "done",
         revision,

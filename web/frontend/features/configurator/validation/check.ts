@@ -1,3 +1,5 @@
+import type { Json } from "../../../lib/json.ts";
+
 /** What every rule module writes into: the first problem per field, in the order they are found. */
 export class Checker {
   readonly errors = new Map<string, string>();
@@ -10,21 +12,6 @@ export class Checker {
   ok(field: string): boolean {
     return !this.errors.has(field);
   }
-}
-
-export type Json = Record<string, unknown>;
-
-export function isObject(value: unknown): value is Json {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-export function isStringList(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((item) => typeof item === "string");
-}
-
-/** A length as Python's `len()` counts it, so a character outside the BMP is one, not two. */
-export function codePoints(value: string): number {
-  return [...value].length;
 }
 
 export function withoutNulls(value: Json): Json {

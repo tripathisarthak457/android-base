@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { API_BASE, ApiError, apiError } from "../../lib/api.ts";
+import { saveFile } from "../../lib/download.ts";
 import { parseCatalogue } from "../catalogue/guard.ts";
 
 // The admin API's answers (`/api/v1/admin/*`). Every one starts with its window.
@@ -191,14 +192,8 @@ export async function adminPost(path: string, token: string, body: unknown): Pro
 export async function downloadCsv(token: string, query: string): Promise<void> {
   const response = await fetch(`${API_BASE}/api/v1/admin/generations.csv?${query}`, { headers: headers(token) });
   if (!response.ok) throw await apiError(response, `The API answered ${response.status}.`);
-  const url = URL.createObjectURL(await response.blob());
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = `generations-${new URLSearchParams(query).get("from")}-${new URLSearchParams(query).get("to")}.csv`;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  const range = new URLSearchParams(query);
+  saveFile(await response.blob(), `generations-${range.get("from")}-${range.get("to")}.csv`);
 }
 
 // What a failed fetch says instead of the browser's own "Failed to fetch": the request got no answer.

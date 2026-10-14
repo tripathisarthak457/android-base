@@ -2,16 +2,12 @@
 
 import { useId, useMemo } from "react";
 import { Field, TextInput } from "../../../components/primitives.tsx";
+import { codePoints, listed } from "../../../lib/text.ts";
 import { MAX_TABS, planTabs } from "../../preview/tabs.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
 import { deepLinkScheme } from "../request.ts";
 import { moduleNames } from "../state.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
-import { codePoints } from "../validation/check.ts";
-
-function listed(names: string[]): string {
-  return names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
-}
 
 export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model: ConfiguratorModel }) {
   const { state, dispatch, errors, target } = model;

@@ -5,6 +5,7 @@ import { Button, Field, TextInput } from "../../components/primitives.tsx";
 import { Spinner } from "../../components/ui.tsx";
 import { API_BASE, ApiError, BUILD, apiError, clientHeader } from "../../lib/api.ts";
 import { REPO } from "../../lib/catalogue.ts";
+import { codePoints } from "../../lib/text.ts";
 import { type ReportContext, readReportContext } from "./context.ts";
 
 // The bug report form. Two things make a report worth having: enough context to reproduce it, and
@@ -41,7 +42,7 @@ const SUMMARY_MIN = 4;
 const DETAILS_MIN = 10;
 
 function tooShort(value: string, min: number): boolean {
-  return [...value.trim()].length < min;
+  return codePoints(value.trim()) < min;
 }
 
 function Choices<T extends string>({ legend, options, value, onChange, columns }: {

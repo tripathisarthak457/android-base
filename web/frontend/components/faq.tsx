@@ -1,5 +1,6 @@
 import { licensedFeatures } from "../features/catalogue/features.ts";
 import { CATALOGUE, PLATFORMS, PRIVACY } from "../lib/catalogue.ts";
+import { listed } from "../lib/text.ts";
 
 function licenceAnswer(): string {
   const licensed = licensedFeatures(CATALOGUE);
@@ -20,7 +21,7 @@ function platformsAnswer(): string | null {
       `${platform.title} is ${platform.status === "beta" ? "in beta" : "available"}${platform.status_note ? `: ${platform.status_note.replace(/^Beta: /, "")}` : ""}.`,
   );
   if (soon.length > 0) {
-    lines.push(`${new Intl.ListFormat("en-GB", { type: "conjunction" }).format(soon)} ${soon.length === 1 ? "is" : "are"} coming soon.`);
+    lines.push(`${listed(soon)} ${soon.length === 1 ? "is" : "are"} coming soon.`);
   }
   if (offered.length === 0) return `Android, as a native Jetpack Compose project. ${lines.join(" ")}`;
   return `Android Native is the most complete. ${lines.join(" ")} The platform step shows what each one leaves out.`;

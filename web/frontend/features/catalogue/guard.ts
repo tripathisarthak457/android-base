@@ -1,14 +1,5 @@
+import { type Json, isObject, isStringList } from "../../lib/json.ts";
 import type { Catalogue } from "./types.ts";
-
-type Json = Record<string, unknown>;
-
-function isObject(value: unknown): value is Json {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((item) => typeof item === "string");
-}
 
 function hasStrings(value: Json, keys: string[]): boolean {
   return keys.every((key) => typeof value[key] === "string");
@@ -23,8 +14,8 @@ function isTarget(value: unknown): boolean {
     (feature) =>
       isObject(feature) &&
       hasStrings(feature, ["key", "title", "group"]) &&
-      isStringArray(feature.requires) &&
-      isStringArray(feature.implies),
+      isStringList(feature.requires) &&
+      isStringList(feature.implies),
   );
 }
 

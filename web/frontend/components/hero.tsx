@@ -1,5 +1,6 @@
 import { selectableFeatures } from "../features/catalogue/features.ts";
 import { CATALOGUE, PLATFORMS, PRIVACY, REPO, android } from "../lib/catalogue.ts";
+import { listed } from "../lib/text.ts";
 import { Badge, LinkButton } from "./ui.tsx";
 
 /**
@@ -16,7 +17,7 @@ export function Hero() {
     {
       value: String(flavours.length),
       label: "build environments",
-      detail: `${new Intl.ListFormat("en-GB", { type: "conjunction" }).format(flavours)}, debug and release`,
+      detail: `${listed(flavours)}, debug and release`,
     },
     { value: "0", label: "Material components", detail: "A foundation-only design system; the build refuses Material imports" },
   ];

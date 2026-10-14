@@ -1,5 +1,6 @@
+import { codePoints } from "../../../lib/text.ts";
 import type { Rules } from "../../catalogue/types.ts";
-import { type Checker, codePoints, matches } from "./check.ts";
+import { type Checker, matches } from "./check.ts";
 
 // The names a visitor types on the identity step: app, display, package and feature modules.
 

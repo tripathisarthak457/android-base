@@ -1,7 +1,9 @@
+import { type Json, isObject, isStringList } from "../../../lib/json.ts";
+import { codePoints, listed } from "../../../lib/text.ts";
 import type { Catalogue, Field, Rules, Target } from "../../catalogue/types.ts";
 import { closeOver } from "../resolve.ts";
 import { checkAndroid } from "./android.ts";
-import { Checker, type Json, codePoints, isObject, isStringList, matches, withoutNulls } from "./check.ts";
+import { Checker, matches, withoutNulls } from "./check.ts";
 import { checkKeystoreShape } from "./keystores.ts";
 import { checkAppName, checkDisplayName, checkModules, checkPackage } from "./names.ts";
 
@@ -15,12 +17,6 @@ import { checkAppName, checkDisplayName, checkModules, checkPackage } from "./na
 export type SpecErrors = Map<string, string>;
 
 const SCHEMA = 2;
-
-function joinNames(names: string[]): string {
-  const quoted = names.map((name) => `'${name}'`);
-  const last = quoted.pop() ?? "";
-  return quoted.length > 0 ? `${quoted.join(", ")} and ${last}` : last;
-}
 
 /** The settings blocks a target reads, from the dotted field keys it declares. */
 function blocksOf(target: Target): Map<string, Field[]> {
@@ -173,7 +169,7 @@ export function validateSpec(raw: unknown, catalogue: Catalogue, targetKey: stri
   } else {
     const resolved = closeOver(features, target);
     const missing = style.requires.filter((key) => !resolved.has(key));
-    if (missing.length > 0) check.fail("design_style", `The ${designStyle} design style needs ${joinNames(missing)}.`);
+    if (missing.length > 0) check.fail("design_style", `The ${designStyle} design style needs ${listed(missing.map((name) => `'${name}'`))}.`);
   }
   const motionStyle = text("motion_style", target.defaults.motion_style);
   if (!target.motion_styles.some((option) => option.key === motionStyle)) {
