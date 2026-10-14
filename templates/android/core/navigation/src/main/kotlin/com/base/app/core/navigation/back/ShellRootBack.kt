@@ -1,18 +1,22 @@
 package com.base.app.core.navigation.back
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.navigationevent.NavigationEventHandler
 import androidx.navigationevent.NavigationEventInfo
-import androidx.navigationevent.compose.NavigationBackHandler
-import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.navigation.ShellState
 
 /** Back at the root of another tab selects the first tab; registered first, so asked last. */
 @Composable
 internal fun ShellRootBack(state: ShellState) {
-    val idle = rememberNavigationEventState(NavigationEventInfo.None)
-    val enabled by remember(state) { derivedStateOf { state.canBackAtRoot } }
-    NavigationBackHandler(state = idle, isBackEnabled = enabled, onBackCompleted = { state.backAtRoot() })
+    val handler = remember(state) { RootBack(state) }
+    BackHandlerEffect(handler) { state.canBackAtRoot }
+}
+
+private class RootBack(private val state: ShellState) :
+    NavigationEventHandler<NavigationEventInfo>(NavigationEventInfo.None, isBackEnabled = false) {
+
+    override fun onBackCompleted() {
+        state.backAtRoot()
+    }
 }
