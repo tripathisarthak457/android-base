@@ -171,10 +171,14 @@ function ColourRow({
     setSynced(value);
     setDraft(value);
   }
+  // A hex is wrong only once it is complete or the field is left: every value is invalid while
+  // it is being typed.
+  const [left, setLeft] = useState(false);
   const valid = draft === "" ? Boolean(derivable) : parseHex(draft) !== null;
+  const settled = left || draft.replace(/^#/, "").length >= 6;
   const swatch = parseHex(shown) ? `#${shown.replace(/^#/, "")}` : "#000000";
   const errorId = useId();
-  const problem = valid ? error : "A six-digit hex, like #2C6BED.";
+  const problem = valid ? error : settled ? "A six-digit hex, like #2C6BED." : undefined;
 
   return (
     <div>
@@ -196,8 +200,10 @@ function ColourRow({
           onChange={(event) => {
             const next = event.target.value.trim();
             setDraft(next);
+            setLeft(false);
             if (next === "" ? derivable : parseHex(next)) onCommit(next === "" ? "" : `#${next.replace(/^#/, "").toUpperCase()}`);
           }}
+          onBlur={() => setLeft(true)}
           className="font-mono text-sm uppercase"
           spellCheck={false}
         />
