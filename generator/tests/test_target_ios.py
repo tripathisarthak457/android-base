@@ -215,7 +215,6 @@ def chain_root(code: str, dot: int) -> str | None:
     The name the modifier chain ending at the `.` at `dot` starts from: `List` for
     `List { … }.scrollDisabled(true).appRedacted()`. None when the chain starts with no name.
     """
-    openers = {")": "(", "]": "[", "}": "{"}
     index = dot
     while True:
         index -= 1
@@ -223,10 +222,10 @@ def chain_root(code: str, dot: int) -> str | None:
             index -= 1
         if index < 0:
             return None
-        if code[index] in openers:
+        if code[index] in ")]}":
             depth = 0
             while index >= 0:
-                if code[index] in openers:
+                if code[index] in ")]}":
                     depth += 1
                 elif code[index] in "([{":
                     depth -= 1
