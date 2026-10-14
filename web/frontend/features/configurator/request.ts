@@ -99,6 +99,16 @@ export function toSpecV2(state: ConfigState, catalogue: Catalogue): Spec {
   return spec;
 }
 
+/**
+ * The deep-link scheme a spec gives the project, read as the generator reads it: the one sent,
+ * else the app's lower name.
+ */
+export function deepLinkScheme(spec: Spec, appName: string): string {
+  const android = spec.android;
+  const sent = typeof android === "object" && android !== null ? (android as Spec).deeplink_scheme : undefined;
+  return (typeof sent === "string" && sent) || lowerName(appName) || "app";
+}
+
 /** Whether the Build step should offer signing keys for this target and deployment. */
 export function offersSigning(target: Target, keytool: boolean): boolean {
   return keytool && hasKeystores(target);

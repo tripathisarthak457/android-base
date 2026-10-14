@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { CLIENT_PREFIX, clientHeader } from "../../lib/api.ts";
 import { loadCatalogue, readJson, threePlatformCatalogue } from "../catalogue/testing.ts";
-import { CONFIG_MS_MAX, SESSION_ID, sessionHeaders, toSpecV2 } from "./request.ts";
+import { CONFIG_MS_MAX, SESSION_ID, deepLinkScheme, sessionHeaders, toSpecV2 } from "./request.ts";
 import { type Action, type ConfigState, choiceValue, initialState, reducer } from "./state.ts";
 import { validateSpec } from "./validation/validate.ts";
 
@@ -157,4 +157,14 @@ test("the client header is printable ASCII within 64 characters whatever the bui
     assert.match(header, /^android-base-web\/[\x21-\x7e]+$/);
     assert.ok(header.length <= 64);
   }
+});
+
+test("the deep-link scheme shown is the one the generator will use", () => {
+  const named = run(initialState(catalogue), { type: "appName", value: "Trail Notes" });
+  assert.equal(deepLinkScheme(toSpecV2(named, catalogue), named.appName), "trailnotes", "the lower name while none is typed");
+  const typed = run(named, { type: "setting", key: "android.deeplink_scheme", value: "trail" });
+  const withLinks = typed.features.includes("deeplink") ? typed : run(typed, { type: "feature", key: "deeplink" });
+  assert.equal(deepLinkScheme(toSpecV2(withLinks, catalogue), withLinks.appName), "trail");
+  const withoutLinks = run(withLinks, { type: "feature", key: "deeplink" });
+  assert.equal(deepLinkScheme(toSpecV2(withoutLinks, catalogue), withoutLinks.appName), "trailnotes", "not sent without the feature");
 });

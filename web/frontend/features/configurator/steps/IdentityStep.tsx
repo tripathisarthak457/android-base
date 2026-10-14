@@ -4,7 +4,8 @@ import { useId, useMemo } from "react";
 import { Field, TextInput } from "../../../components/primitives.tsx";
 import { MAX_TABS, planTabs } from "../../preview/tabs.ts";
 import type { Catalogue } from "../../catalogue/types.ts";
-import { lowerName, moduleNames } from "../state.ts";
+import { deepLinkScheme } from "../request.ts";
+import { moduleNames } from "../state.ts";
 import type { ConfiguratorModel } from "../useConfigurator.ts";
 import { codePoints } from "../validation/check.ts";
 
@@ -144,7 +145,7 @@ export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model
             ["Root project", derived],
             ["Application class", `${derived}Application`],
             ["Namespace", state.packageName || "com.example.myapp"],
-            ["Deep-link scheme", `${lowerName(state.appName) || "app"}://`],
+            ["Deep-link scheme", `${deepLinkScheme(model.spec, state.appName)}://`],
             ...modules.map((name) => [`Module ${name}`, `:feature:${name}, :data:${name}`]),
           ].map(([label, value], index) => (
             // Module names can repeat while being typed, so the label alone is not a unique key.
