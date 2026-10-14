@@ -7,6 +7,11 @@ public nonisolated struct AppSheetOptions: Equatable, Sendable {
     /// sheet settles on the one its velocity carries it to.
     public var detents: Set<AppSheetDetent>
 
+    /// The detent the sheet opens at, one of `detents`. Without one the sheet opens at the smallest,
+    /// as SwiftUI's sheets do, while Android's open at the first listed, so a feature built for both
+    /// sets it. A `selection` passed to `appSheet` decides instead.
+    public var initialDetent: AppSheetDetent?
+
     public var modality: AppSheetModality
 
     public var contentInteraction: AppSheetContentInteraction
@@ -26,6 +31,7 @@ public nonisolated struct AppSheetOptions: Equatable, Sendable {
 
     public init(
         detents: Set<AppSheetDetent> = [.large],
+        initialDetent: AppSheetDetent? = nil,
         modality: AppSheetModality = .modal,
         contentInteraction: AppSheetContentInteraction = .automatic,
         dismissible: Bool = true,
@@ -34,12 +40,18 @@ public nonisolated struct AppSheetOptions: Equatable, Sendable {
         grabber: Visibility = .automatic
     ) {
         self.detents = detents
+        self.initialDetent = initialDetent
         self.modality = modality
         self.contentInteraction = contentInteraction
         self.dismissible = dismissible
         self.material = material
         self.placement = placement
         self.grabber = grabber
+    }
+
+    /// `initialDetent` when it is one of `detents`.
+    var openingDetent: AppSheetDetent? {
+        initialDetent.flatMap { detents.contains($0) ? $0 : nil }
     }
 
     var fitsContent: Bool {

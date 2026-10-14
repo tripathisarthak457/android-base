@@ -57,6 +57,15 @@ private struct AppSheetPresentation: ViewModifier {
     /// The content's ideal height, measured only when a detent fits it.
     @State private var contentHeight: CGFloat?
 
+    /// Where the sheet rests when it opens at `initialDetent` and no `selection` is passed.
+    @State private var restingDetent: AppSheetDetent?
+
+    init(options: AppSheetOptions, selection: Binding<AppSheetDetent>?) {
+        self.options = options
+        self.selection = selection
+        _restingDetent = State(initialValue: options.openingDetent)
+    }
+
     func body(content: Content) -> some View {
         content
             .fixedSize(horizontal: false, vertical: options.fitsContent)
@@ -84,15 +93,16 @@ private struct AppSheetPresentation: ViewModifier {
             .modifier(AppSheetPlacementModifier(placement: options.placement))
     }
 
-    /// `selection` in SwiftUI's terms. A fitted detent is presented at the content's measured
+    /// `selection`, or the detent the sheet opened at, in SwiftUI's terms; nil leaves SwiftUI to
+    /// open the sheet at its smallest detent. A fitted detent is presented at the content's measured
     /// height, so the mapping is made again on every read.
     private var presentedSelection: Binding<PresentationDetent>? {
-        guard let selection else { return nil }
+        guard let detent = selection ?? Binding($restingDetent) else { return nil }
         return Binding {
-            selection.wrappedValue.presentationDetent(contentHeight: contentHeight)
+            detent.wrappedValue.presentationDetent(contentHeight: contentHeight)
         } set: { presented in
-            if let detent = options.detent(presentedAs: presented, contentHeight: contentHeight) {
-                selection.wrappedValue = detent
+            if let presentedDetent = options.detent(presentedAs: presented, contentHeight: contentHeight) {
+                detent.wrappedValue = presentedDetent
             }
         }
     }

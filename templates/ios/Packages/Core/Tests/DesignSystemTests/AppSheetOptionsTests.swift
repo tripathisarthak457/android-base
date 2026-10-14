@@ -6,11 +6,18 @@ struct AppSheetOptionsTests {
     @Test func theDefaultsAreApples() {
         let options = AppSheetOptions()
         #expect(options.detents == [.large])
+        #expect(options.initialDetent == nil)
         #expect(options.modality == .modal)
         #expect(options.contentInteraction == .automatic)
         #expect(options.dismissible)
         #expect(options.material == .automatic)
         #expect(options.placement == .automatic)
+    }
+
+    @Test func theSheetOpensAtItsInitialDetentWhenItIsOneOfItsDetents() {
+        #expect(AppSheetOptions(detents: [.medium, .large]).openingDetent == nil)
+        #expect(AppSheetOptions(detents: [.medium, .large], initialDetent: .large).openingDetent == .large)
+        #expect(AppSheetOptions(detents: [.medium, .large], initialDetent: .fitContent).openingDetent == nil)
     }
 
     @Test func theGrabberShowsWhenTheSheetCanBeResized() {
@@ -48,6 +55,7 @@ struct AppSheetOptionsTests {
     @Test func optionsAreEqualWhenEveryOptionIs() {
         #expect(AppSheetOptions(detents: [.medium, .large]) == AppSheetOptions(detents: [.large, .medium]))
         #expect(AppSheetOptions(material: .frosted) != AppSheetOptions())
+        #expect(AppSheetOptions(initialDetent: .large) != AppSheetOptions())
         #expect(AppSheetOptions(modality: .nonModal()) != AppSheetOptions(modality: .nonModal(upThrough: .medium)))
     }
 }
