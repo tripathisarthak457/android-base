@@ -50,7 +50,11 @@ fun AppIcon(
     size: Dp = AppTheme.sizes.icon,
 ) {
     val painter = rememberVectorPainter(imageVector)
-    val glyph = if (LocalRedacted.current) Modifier.skeleton(AppTheme.shapes.xs) else TintedPainterElement(painter, tint)
+    val glyph = if (LocalRedacted.current) {
+        Modifier.skeleton(AppTheme.shapes.xs)
+    } else {
+        TintedPainterElement(painter, tint)
+    }
     Box(
         modifier = modifier
             .size(size)

@@ -104,16 +104,23 @@ class PaletteContrastTest {
     @Test
     fun `the shimmer lifts a bone by the same visible step in both themes`() = palettes.forEach { (name, colors) ->
         val lift = lightness(colors.skeletonHighlight) - lightness(colors.skeleton)
-        assertTrue("$name skeletonHighlight lifts the bone by $lift L*, outside $MinLift to $MaxLift", lift in MinLift..MaxLift)
+        assertTrue(
+            "$name skeletonHighlight lifts the bone by $lift L*, outside $MinLift to $MaxLift",
+            lift in MinLift..MaxLift,
+        )
     }
 
     @Test
-    fun `in light theme the band never wipes a bone into its card`() = palettes.filter { it.second.isLight }.forEach { (name, colors) ->
-        colors.backgrounds.forEach { surface ->
-            val step = abs(lightness(colors.skeletonHighlight) - lightness(surface))
-            assertTrue("$name skeletonHighlight is $step L* from a surface, below $HighlightStep", step >= HighlightStep)
+    fun `in light theme the band never wipes a bone into its card`() =
+        palettes.filter { it.second.isLight }.forEach { (name, colors) ->
+            colors.backgrounds.forEach { surface ->
+                val step = abs(lightness(colors.skeletonHighlight) - lightness(surface))
+                assertTrue(
+                    "$name skeletonHighlight is $step L* from a surface, below $HighlightStep",
+                    step >= HighlightStep,
+                )
+            }
         }
-    }
 
     private fun barSurface(treatment: BarTreatment, colors: AppColors): Color = when (treatment) {
         BarTreatment.Floating -> colors.surfaceElevated

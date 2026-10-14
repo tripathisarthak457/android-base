@@ -121,7 +121,11 @@ fun AppTheme(
     val bottomChrome = if (outermost) remember { ChromeInset() } else LocalBottomChrome.current
     val scope = rememberCoroutineScope()
     val metrics = rememberUpdatedState(windowMetrics)
-    val shimmer = if (outermost) remember { ShimmerClock(scope) { metrics.value.sizeDp } } else LocalShimmerClock.current
+    val shimmer = if (outermost) {
+        remember { ShimmerClock(scope) { metrics.value.sizeDp } }
+    } else {
+        LocalShimmerClock.current
+    }
 
     CompositionLocalProvider(
         LocalAppColors provides colors,

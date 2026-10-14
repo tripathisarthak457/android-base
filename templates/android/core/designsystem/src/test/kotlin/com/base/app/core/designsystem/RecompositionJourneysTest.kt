@@ -287,7 +287,8 @@ class RecompositionJourneysTest {
         visible = true
         settle()
         assertTrue("the band did not come back with the list", sweptWithin(SkeletonJourneyMillis) { clock })
-        for (placeholder in listOf("AppRedacted", "AppText", "AppCard", "AppAvatar", "SkeletonJourneyRow", "AppSkeleton")) {
+        val placeholders = listOf("AppRedacted", "AppText", "AppCard", "AppAvatar", "SkeletonJourneyRow", "AppSkeleton")
+        for (placeholder in placeholders) {
             val ran = counter.count(placeholder)
             assertEquals("$placeholder recomposed as the list hid and showed: ${counter.executed()}", 0, ran)
         }
