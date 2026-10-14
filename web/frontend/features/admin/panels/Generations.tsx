@@ -56,8 +56,11 @@ export function Generations({ token, query, version, onUnauthorized }: PanelProp
                   <Fragment key={row.id}>
                     <tr className="cursor-pointer text-ink-200 hover:bg-ink-900" onClick={() => setOpen(open === row.id ? null : row.id)}>
                       <td className="py-2 pr-3 font-mono text-[11px] whitespace-nowrap">
-                        <button type="button" aria-expanded={open === row.id} className="text-left">
+                        {/* relative: the sr-only name is absolutely placed and must stay inside the
+                            table's sideways scroller. */}
+                        <button type="button" aria-expanded={open === row.id} className="relative text-left">
                           {new Date(row.at).toLocaleString()}
+                          <span className="sr-only">, details of {row.app_name || row.package_name || "this generation"}</span>
                         </button>
                       </td>
                       <td className="py-2 pr-3 whitespace-nowrap">

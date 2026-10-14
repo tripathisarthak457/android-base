@@ -42,7 +42,12 @@ export function IdentityStep({ catalogue, model }: { catalogue: Catalogue; model
 
         <Field
           label="Name on the home screen (optional)"
-          hint={`Any characters, emoji included: "Café", "मेरा ऐप". Empty uses the app name. ${codePoints(state.displayName)} of ${displayMax}.`}
+          hint={
+            <>
+              Any characters, emoji included: &quot;Café&quot;, &quot;<span lang="hi">मेरा ऐप</span>&quot;. Empty uses the app name.{" "}
+              {codePoints(state.displayName)} of {displayMax}.
+            </>
+          }
           error={errors.get("display_name")}
         >
           {(control) => (
