@@ -7,6 +7,7 @@ import { presetFeatures } from "./resolve.ts";
 import {
   type Action,
   type ConfigState,
+  type StartOverUndo,
   type Step,
   enabledTarget,
   findTarget,
@@ -278,14 +279,20 @@ test("an error sends the visitor to the step that edits its field", () => {
   }
 });
 
+/** What Start over keeps for its Undo, asked for as `useConfigurator` asks. */
+function keepForUndo(kept: StartOverUndo | null, state: ConfigState, step: Step = "identity"): StartOverUndo | null {
+  return snapshotForUndo(kept, { state, step, identityAt: null }, draftToStore(state, catalogue) === null);
+}
+
 test("Start over pressed twice still undoes to the answers the first press cleared", () => {
   const answers = run(initialState(catalogue), { type: "appName", value: "Trail Notes" }, { type: "preset", key: "lean" });
-  let kept = snapshotForUndo<{ state: ConfigState; step: Step }>(null, { state: answers, step: "look" });
+  let kept = keepForUndo(null, answers, "look");
   let state = run(answers, { type: "reset" });
-  assert.equal(kept.revision, state.revision, "Undo is offered after the reset");
-  kept = snapshotForUndo(kept, { state, step: "platform" });
+  assert.equal(kept?.revision, state.revision, "Undo is offered after the reset");
+  kept = keepForUndo(kept, state, "platform");
   state = run(state, { type: "reset" });
-  assert.equal(kept.revision, state.revision, "and still after the second");
+  assert.equal(kept?.revision, state.revision, "and still after the second");
+  assert.ok(kept);
   assert.equal(kept.step, "look");
   state = run(state, { type: "restore", state: kept.state });
   assert.equal(state.appName, "Trail Notes");
@@ -294,10 +301,16 @@ test("Start over pressed twice still undoes to the answers the first press clear
 
 test("an edit after Start over ends its Undo, and the next Start over keeps the new answers", () => {
   const first = run(initialState(catalogue), { type: "appName", value: "Trail Notes" });
-  let kept = snapshotForUndo(null, { state: first });
+  let kept = keepForUndo(null, first);
   const edited = run(first, { type: "reset" }, { type: "appName", value: "Ledger" });
-  assert.notEqual(kept.revision, edited.revision, "the edit ends the offer");
-  kept = snapshotForUndo(kept, { state: edited });
-  assert.equal(kept.state.appName, "Ledger");
-  assert.equal(kept.revision, run(edited, { type: "reset" }).revision);
+  assert.notEqual(kept?.revision, edited.revision, "the edit ends the offer");
+  kept = keepForUndo(kept, edited);
+  assert.equal(kept?.state.appName, "Ledger");
+  assert.equal(kept?.revision, run(edited, { type: "reset" }).revision);
+});
+
+test("Start over on answers nobody changed offers no Undo", () => {
+  assert.equal(keepForUndo(null, initialState(catalogue), "look"), null);
+  const retyped = run(initialState(catalogue), { type: "appName", value: "Ledger" }, { type: "appName", value: "My App" });
+  assert.equal(keepForUndo(null, retyped), null, "nor on answers typed back to the defaults");
 });

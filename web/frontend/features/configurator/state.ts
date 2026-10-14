@@ -337,13 +337,18 @@ export function reducer(state: ConfigState, action: Action, catalogue: Catalogue
   }
 }
 
+/** The answers Start over replaced, and where the visitor was, for its Undo. */
+export type StartOverUndo = { state: ConfigState; step: Step; identityAt: number | null; revision: number };
+
 /**
- * What Start over keeps for its Undo. `revision` is the one the reset gives the answers, so any edit
- * after it ends the offer. A press while the last reset can still be undone keeps that snapshot:
- * the answers on screen are then the defaults it put there and the draft went with the first press,
- * so a new snapshot would leave Undo only the defaults to bring back.
+ * What Start over keeps for its Undo, or null when there is nothing to bring back. `revision` is the
+ * one the reset gives the answers, so any edit after it ends the offer. A press while the last reset
+ * can still be undone keeps that snapshot: the answers on screen are then the defaults it put there
+ * and the draft went with the first press. Answers that are `untouched` are those defaults too, so a
+ * snapshot of them would offer an Undo that changes nothing.
  */
-export function snapshotForUndo<T extends { state: ConfigState }>(kept: (T & { revision: number }) | null, current: T): T & { revision: number } {
+export function snapshotForUndo(kept: StartOverUndo | null, current: Omit<StartOverUndo, "revision">, untouched: boolean): StartOverUndo | null {
   const revision = current.state.revision + 1;
-  return kept !== null && kept.revision === current.state.revision ? { ...kept, revision } : { ...current, revision };
+  if (kept !== null && kept.revision === current.state.revision) return { ...kept, revision };
+  return untouched ? null : { ...current, revision };
 }

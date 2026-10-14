@@ -20,6 +20,7 @@ import {
   initialState,
   reducer,
   snapshotForUndo,
+  type StartOverUndo,
 } from "./state.ts";
 import { type SpecErrors, validateSpec } from "./validation/validate.ts";
 
@@ -212,17 +213,18 @@ export function useConfigurator(catalogue: Catalogue) {
 
   // Start over is one small button beside the answers it erases, so the answers it replaced are
   // kept in memory and offered back until the next edit.
-  const [beforeReset, setBeforeReset] = useState<{ state: ConfigState; step: Step; identityAt: number | null; revision: number } | null>(null);
+  const [beforeReset, setBeforeReset] = useState<StartOverUndo | null>(null);
 
   const startOver = useCallback(() => {
     const current = { state, step, identityAt: identityAt.current };
-    setBeforeReset((kept) => snapshotForUndo(kept, current));
+    const untouched = draftToStore(state, catalogue) === null;
+    setBeforeReset((kept) => snapshotForUndo(kept, current, untouched));
     writeDraft(null);
     dispatchRaw({ type: "reset" });
     setOutcome(null);
     setStep("platform");
     identityAt.current = null;
-  }, [state, step]);
+  }, [state, step, catalogue]);
 
   const canUndoStartOver = beforeReset !== null && beforeReset.revision === state.revision;
   const undoStartOver = useCallback(() => {
