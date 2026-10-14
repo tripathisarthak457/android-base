@@ -114,7 +114,7 @@ export function ReviewStep({ catalogue, model, dark }: { catalogue: Catalogue; m
               <p className="text-sm font-semibold text-mint">Downloaded</p>
               <p className="mt-1.5 font-mono text-xs text-ink-300">{outcome.filename}</p>
               <p className="mt-1 text-xs text-ink-400">
-                {(outcome.bytes / 1024).toFixed(0)} KB, built in {(outcome.elapsedMs / 1000).toFixed(1)} s
+                {(outcome.bytes / 1024).toFixed(0)} KB{outcome.elapsedMs !== null && `, built in ${(outcome.elapsedMs / 1000).toFixed(1)} s`}
               </p>
               {outcome.keystoresSkipped.length > 0 && (
                 <p className="mt-3 rounded-lg border border-amber/30 bg-amber/10 p-3 text-xs leading-relaxed text-amber">

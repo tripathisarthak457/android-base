@@ -24,7 +24,7 @@ import {
 import { type SpecErrors, validateSpec } from "./validation/validate.ts";
 
 export type Outcome =
-  | { kind: "done"; revision: number; filename: string; bytes: number; elapsedMs: number; keystoresSkipped: string[] }
+  | { kind: "done"; revision: number; filename: string; bytes: number; elapsedMs: number | null; keystoresSkipped: string[] }
   | { kind: "failed"; revision: number; message: string; field: string };
 
 /** What only the server that answered can say: which targets it generates and whether it has keytool. */
@@ -92,6 +92,12 @@ function useLive(catalogue: Catalogue, step: Step): Live {
   }, [wantsCatalogue, catalogue]);
 
   return { enabled, keytool };
+}
+
+/** The generator's time from `X-Generation-Ms`, or null when the answer carries no whole number of milliseconds. */
+function generationMs(response: Response): number | null {
+  const header = response.headers.get("X-Generation-Ms") ?? "";
+  return /^\d+$/.test(header) ? Number(header) : null;
 }
 
 function filenameOf(response: Response): string {
@@ -239,7 +245,7 @@ export function useConfigurator(catalogue: Catalogue) {
         revision,
         filename,
         bytes: blob.size,
-        elapsedMs: Number(response.headers.get("X-Generation-Ms") ?? 0),
+        elapsedMs: generationMs(response),
         keystoresSkipped: (response.headers.get("X-Keystores-Skipped") ?? "").split(",").filter(Boolean),
       });
     } catch (error) {
