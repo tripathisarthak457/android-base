@@ -119,7 +119,7 @@ internal fun SearchResultRoute(
                 ) {
                     val result = state.result
                     // The same text before and after the result arrives, so it lands where its
-                    // placeholder was instead of fading in over it.
+                    // placeholder was and nothing around it moves.
                     AppRedacted(
                         active = result == null,
                         contentDescription = stringResource(DesignSystemR.string.designsystem_loading),
