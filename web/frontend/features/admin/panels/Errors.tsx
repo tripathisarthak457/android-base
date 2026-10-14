@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
-import { type ErrorGroup, type Errors as ErrorsData, adminPost, useAdminAction, useAdminQuery } from "../api.ts";
+import { type ErrorGroup, type Errors as ErrorsData, LIST_LIMIT, adminPost, useAdminAction, useAdminQuery } from "../api.ts";
 import { Panel, type PanelProps } from "../Panel.tsx";
 
 /** Errors grouped by fingerprint: one bug is one row however often it fired. Tracebacks expand. */
@@ -11,7 +11,7 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
   const [resolved, setResolved] = useState(false);
   const [changed, setChanged] = useState<Record<number, boolean>>({});
   const save = useAdminAction(onUnauthorized);
-  const result = useAdminQuery<ErrorsData>("errors", token, `${query}&resolved=${resolved}&limit=100`, version, onUnauthorized);
+  const result = useAdminQuery<ErrorsData>("errors", token, `${query}&resolved=${resolved}&limit=${LIST_LIMIT}`, version, onUnauthorized);
   // A reload is the server's word, which already holds this tab's changes and may hold another admin's.
   const [changedFor, setChangedFor] = useState(result.data);
   if (changedFor !== result.data) {
@@ -71,6 +71,12 @@ export function Errors({ token, query, version, onUnauthorized }: PanelProps) {
                 );
               })}
             </ul>
+          )}
+          {data.items.length >= LIST_LIMIT && (
+            <p className="mt-3 text-xs text-ink-400">
+              The first {LIST_LIMIT} are listed, {resolved ? "open ones before resolved ones, " : ""}by when each last fired.
+              Choose an earlier window for older ones.
+            </p>
           )}
         </>
       )}

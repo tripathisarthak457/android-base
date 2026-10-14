@@ -127,6 +127,9 @@ export type ErrorGroup = {
 
 export type Errors = DateWindow & { items: ErrorGroup[] };
 
+/** Errors and reports come unpaged, at most this many in the API's order; only generations page. */
+export const LIST_LIMIT = 100;
+
 export type Report = {
   id: number;
   createdAt: string;

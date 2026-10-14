@@ -3,19 +3,21 @@
 import { useId, useState } from "react";
 import { Button } from "../../../components/primitives.tsx";
 import { Badge } from "../../../components/ui.tsx";
-import { type Report, type Reports as ReportsData, adminPost, useAdminAction, useAdminQuery } from "../api.ts";
+import { LIST_LIMIT, type Report, type Reports as ReportsData, adminPost, useAdminAction, useAdminQuery } from "../api.ts";
 import { Panel, type PanelProps } from "../Panel.tsx";
 
 const STATUSES = ["new", "triaged", "fixed", "wontfix"] as const;
 const KIND_TONE: Record<string, "neutral" | "accent" | "mint" | "amber"> = { bug: "amber", idea: "accent", praise: "mint", question: "neutral" };
 
-/** Reports from people, filtered by status on the server so an old unread one is never hidden past a page. */
+/** Reports from people, filtered by status on the server, so unread ones are not buried among those already handled. */
 export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
   const [status, setStatus] = useState<string>("new");
   const statusName = useId();
   const [edits, setEdits] = useState<Record<number, Partial<Report>>>({});
+  // The status a select was just changed to, shown while it is saved rather than the stored one.
+  const [saving, setSaving] = useState<{ id: number; status: string } | null>(null);
   const save = useAdminAction(onUnauthorized);
-  const result = useAdminQuery<ReportsData>("feedback", token, `${query}&status=${status}&limit=100`, version, onUnauthorized);
+  const result = useAdminQuery<ReportsData>("feedback", token, `${query}&status=${status}&limit=${LIST_LIMIT}`, version, onUnauthorized);
   // A reload is the server's word, which already holds this tab's changes and may hold another admin's.
   const [editsFor, setEditsFor] = useState(result.data);
   if (editsFor !== result.data) {
@@ -27,6 +29,13 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
     if (await save.run(() => adminPost("feedback/update", token, { id, ...change }))) {
       setEdits((current) => ({ ...current, [id]: { ...current[id], ...change } }));
     }
+  }
+
+  async function changeStatus(id: number, next: string) {
+    if (save.busy) return;
+    setSaving({ id, status: next });
+    await update(id, { status: next });
+    setSaving(null);
   }
 
   return (
@@ -125,11 +134,11 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
                         <NoteBox current={item.notes} busy={save.busy} onSave={(notes) => void update(item.id, { notes })} />
                       </details>
                       <select
-                        value={item.status}
-                        onChange={(event) => void update(item.id, { status: event.target.value })}
+                        value={saving?.id === item.id ? saving.status : item.status}
+                        onChange={(event) => void changeStatus(item.id, event.target.value)}
                         // Not `disabled`: that would drop the focus of the select just changed.
-                        // A change while another write runs is refused, and the select, which
-                        // shows the stored status, goes back to it.
+                        // A change while another write runs is refused, and the select goes back
+                        // to the stored status, as it does when a save fails.
                         aria-disabled={save.busy || undefined}
                         aria-label={`Status of report ${item.id}`}
                         className="shrink-0 rounded-md border border-ink-500 bg-ink-900 px-2 py-1 text-xs text-ink-200 aria-disabled:text-ink-400"
@@ -145,6 +154,11 @@ export function Reports({ token, query, version, onUnauthorized }: PanelProps) {
                 );
               })}
             </ul>
+          )}
+          {data.items.length >= LIST_LIMIT && (
+            <p className="mt-3 text-xs text-ink-400">
+              The first {LIST_LIMIT} are listed: new blocking reports, then the newest. Choose an earlier window for older ones.
+            </p>
           )}
         </>
       )}
