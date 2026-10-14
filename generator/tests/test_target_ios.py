@@ -641,8 +641,8 @@ def check_docs(case: unittest.TestCase, project: Path) -> None:
         _TEMPLATE_NAMES.append(declared_names(TEMPLATE))
     missing = _TEMPLATE_NAMES[0] - declared_names(project)
     absent = {
-        path.name: sorted(cited)
-        for path in sorted(project.glob("*.md"))
+        path.relative_to(project).as_posix(): sorted(cited)
+        for path in sorted([*project.glob("*.md"), *project.glob("docs/*.md")])
         if (cited := cited_names(path.read_text(encoding="utf-8")) & missing)
     }
     case.assertFalse(absent, f"these documents name what this project does not have: {absent}")
@@ -1138,14 +1138,19 @@ class ViolationsTest(unittest.TestCase):
                 self.assertCaught(message, path, edit)
 
     def test_docs_rules(self):
-        glass = self.project / "Packages/Core/Sources/DesignSystem/Foundation/Glass"
-        with tempfile.TemporaryDirectory() as aside:
-            shutil.move(glass, aside)
-            try:
-                with self.assertRaisesRegex(AssertionError, r"'AGENTS.md': \[[^]]*'AppGlassGroup'"):
-                    check_docs(unittest.TestCase(), self.project)
-            finally:
-                shutil.move(Path(aside) / glass.name, glass)
+        design_system = self.project / "Packages/Core/Sources/DesignSystem"
+        for folder, message in (
+            ("Foundation/Glass", r"'AGENTS.md': \[[^]]*'AppGlassGroup'"),
+            ("Components/Sheet/Presets", r"'docs/SHEETS.md': \[[^]]*'AppSheetAction'"),
+        ):
+            moved = design_system / folder
+            with self.subTest(folder=folder), tempfile.TemporaryDirectory() as aside:
+                shutil.move(moved, aside)
+                try:
+                    with self.assertRaisesRegex(AssertionError, message):
+                        check_docs(unittest.TestCase(), self.project)
+                finally:
+                    shutil.move(Path(aside) / moved.name, moved)
 
 
 if __name__ == "__main__":

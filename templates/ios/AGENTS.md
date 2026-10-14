@@ -188,44 +188,39 @@ Use the system's own motion; never rebuild it:
 Every sheet is `appSheet`. It is the system's sheet, so the card stack, detent motion, rubber band,
 interactive dismissal, keyboard avoidance and VoiceOver behave as in every other app; the design
 style supplies the colours. A feature never calls `.sheet`, `.presentationDetents` or
-`.interactiveDismissDisabled` itself; the generator's checks fail on each.
+`.interactiveDismissDisabled` itself; the generator's checks fail on each. `docs/SHEETS.md` has a
+recipe for every common sheet and what differs from Android.
 
 ```swift
-.appSheet(isPresented: $showsFilters, options: AppSheetOptions(detents: [.medium, .large])) {
-    NavigationStack {
-        FiltersView(store: filters)
-            .navigationTitle(Text("Filters", bundle: .module))
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button { showsFilters = false } label: { Text("Done", bundle: .module) }
-                }
-            }
-    }
+.appSheet(isPresented: $edits, options: AppSheetOptions(detents: [.medium, .large])) {
+    EditListForm(store: store)
+        .appSheetDismissConfirmation(isEnabled: store.state.hasChanges) { edits = false }
+        .appSheetFooter {
+            Button(action: save) { Text("Save", bundle: .module).frame(maxWidth: .infinity) }
+                .buttonStyle(.app(.filled, size: .large))
+        }
+        .appSheetHeader(Text("Edit List", bundle: .module))
 }
 ```
 
-| The sheet | `AppSheetOptions` |
+| The sheet | Use |
 |---|---|
-| A short choice or confirmation | `detents: [.fitContent]`, content a plain stack with its title in it |
-| Resizable | `detents: [.medium, .large]`; pass `selection:` to read or move the detent, and move it inside `withAnimation(theme.springs.sheet)` |
+| A short choice or confirmation | `detents: [.fitContent]`: one plain stack, its title first and its action last, with no header or footer |
+| Resizable | `detents: [.medium, .large]`; `initialDetent:` to open elsewhere than the smallest; pass `selection:` to read or move the detent, and move it inside `withAnimation(theme.springs.sheet)` |
 | Part of the screen, like Maps' search | `modality: .nonModal(upThrough: .medium)` (its lists scroll before the sheet grows), `dismissible: false` |
 | Never closed by a swipe | `dismissible: false`; only the sheet's own buttons close it |
 | A panel beside the content in a wide window, like Maps on an iPad | `placement: .leading` with `.nonModal` (iOS 27; earlier versions place it automatically) |
 | Its material | `material: .automatic` (Liquid Glass from iOS 26, the elevated surface before), `.solid`, `.frosted`, `.glass` |
+| A title and a close button | `.appSheetHeader(Text(…))`, applied last; `.appSheetHeader(Text(…)) { ToolbarItem… }` for Cancel and Done, with `AppSheetCloseButton` |
+| Sticky actions at the bottom | `.appSheetFooter { … }` |
+| Unsaved changes | `.appSheetDismissConfirmation(isEnabled: hasChanges) { close }`: a swipe, a tap outside and the close button ask "Discard changes?"; `.appSheetDismissGuard(enabled:onAttempt:)` for a question of your own |
+| A few actions on one thing | `.appActionSheet(isPresented:title:actions:)` with `AppSheetAction`, applied to the control that opens it |
+| One choice from a list | `.appChoiceSheet(isPresented:title:choices:selection:label:)` |
 
-A sheet with unsaved changes asks before they go. Guard the view that owns them; a swipe down or
-a tap outside then springs back and calls `onAttempt`, and Cancel asks the same question:
-
-```swift
-EditNoteView(store: store)
-    .appSheetDismissGuard(enabled: store.state.hasChanges) { asksToDiscard = true }
-    .confirmationDialog(Text("Discard your changes?", bundle: .module), isPresented: $asksToDiscard) {
-        Button(role: .destructive) { dismiss() } label: { Text("Discard Changes", bundle: .module) }
-    }
-```
-
-- A header is a `NavigationStack` with Cancel in `.cancellationAction` and Done in
-  `.confirmationAction`; sticky actions at the bottom go in `.safeAreaInset(edge: .bottom)`.
+- Titles and labels are `Text("…", bundle: .module)`: a string key handed to the design system is
+  looked up in the app's bundle and never found.
+- Enable a guard or a confirmation only while there is something to lose. Not `dismissible:
+  !hasChanges`, which gives no hook to ask from.
 - Content that something else presents as a sheet, such as an `.inspector` on a phone, takes
   `.appSheetPresentation(options)`.
 - No haptics at detents (iOS plays none), no drag gesture of your own on a sheet, and no background

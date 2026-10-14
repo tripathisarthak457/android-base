@@ -38,6 +38,7 @@ Packages/Core/            AppCore, DesignSystem, Navigation, Networking, Persist
 <!--~ Packages/Core/            AppCore, DesignSystem, Navigation, Persistence, AppTesting (tests only) -->
 <!-- </opt-else:network> -->
 Packages/Features/        per feature: <Name>Data (repository, DTOs) and <Name>Feature (views, stores)
+docs/                     guides: SHEETS.md, every kind of sheet and how it matches Android
 ```
 
 A feature depends on its own data target and on Core. Data never depends on a feature, and
