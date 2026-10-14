@@ -39,8 +39,11 @@ enum class StateKind { Empty, Error, Offline }
  * connection. An error or offline state has a title and a "Try again" of its own unless told
  * otherwise. [illustration] replaces the glyph with art.
  *
- * It centres in the room the screen's chrome leaves (under the top bar, above the tab bar), and
- * scrolls when that room is too short for it, so neither its top nor its action is ever covered.
+ * It centres in the room [contentPadding] leaves, and scrolls when that room is too short for it, so
+ * neither its top nor its action is ever covered. By default that is the room the screen's chrome
+ * leaves (under the top bar, above the tab bar), which is right for a state that is the screen's
+ * content. One inside a card, a pane or a sheet is clear of the chrome already: give it a padding of
+ * its own, such as `PaddingValues(AppTheme.spacing.xl)`.
  */
 @Composable
 fun AppStateView(
@@ -52,6 +55,7 @@ fun AppStateView(
     actionLabel: String? = null,
     onAction: (() -> Unit)? = null,
     illustration: (@Composable () -> Unit)? = null,
+    contentPadding: PaddingValues = chromeContentPadding(PaddingValues(AppTheme.spacing.xl)),
 ) {
     val colors = AppTheme.colors
     val heading = title ?: when (kind) {
@@ -72,7 +76,7 @@ fun AppStateView(
                 .fillMaxWidth()
                 .heightIn(min = maxHeight)
                 .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
-                .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.xl))),
+                .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md, Alignment.CenterVertically),
         ) {

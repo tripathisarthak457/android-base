@@ -3,6 +3,7 @@ package com.base.app.catalog.sections
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,11 +47,34 @@ import com.base.app.core.designsystem.theme.AppTheme
 @Composable
 fun FeedbackSection() {
     CatalogGroup("State view", caption = "Empty, error and offline, each with its action. It scrolls when the window is too short for it.") {
+        // Inside the page, not the page itself: clear of the chrome already, so only a margin.
+        val padding = PaddingValues(AppTheme.spacing.xl)
         Box(Modifier.fillMaxWidth().height(280.dp)) {
-            AppStateView(title = "No messages yet", message = "Start a conversation and it will show here.", icon = AppIcons.Message, actionLabel = "New message", onAction = {})
+            AppStateView(
+                title = "No messages yet",
+                message = "Start a conversation and it will show here.",
+                icon = AppIcons.Message,
+                actionLabel = "New message",
+                onAction = {},
+                contentPadding = padding,
+            )
         }
-        Box(Modifier.fillMaxWidth().height(260.dp)) { AppStateView(kind = StateKind.Error, message = "The server did not answer.", onAction = {}) }
-        Box(Modifier.fillMaxWidth().height(260.dp)) { AppStateView(kind = StateKind.Offline, message = "Showing what was saved last time.", onAction = {}) }
+        Box(Modifier.fillMaxWidth().height(260.dp)) {
+            AppStateView(
+                kind = StateKind.Error,
+                message = "The server did not answer.",
+                onAction = {},
+                contentPadding = padding,
+            )
+        }
+        Box(Modifier.fillMaxWidth().height(260.dp)) {
+            AppStateView(
+                kind = StateKind.Offline,
+                message = "Showing what was saved last time.",
+                onAction = {},
+                contentPadding = padding,
+            )
+        }
     }
     CatalogGroup("Banner") {
         AppBanner(text = "You are offline. Changes will sync later.", tone = AppTone.Warning)
