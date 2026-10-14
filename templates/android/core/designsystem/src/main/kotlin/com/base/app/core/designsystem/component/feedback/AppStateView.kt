@@ -54,8 +54,8 @@ fun AppStateView(
     icon: ImageVector? = null,
     actionLabel: String? = null,
     onAction: (() -> Unit)? = null,
-    illustration: (@Composable () -> Unit)? = null,
     contentPadding: PaddingValues = chromeContentPadding(PaddingValues(AppTheme.spacing.xl)),
+    illustration: (@Composable () -> Unit)? = null,
 ) {
     val colors = AppTheme.colors
     val heading = title ?: when (kind) {
