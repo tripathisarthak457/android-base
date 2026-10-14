@@ -387,7 +387,7 @@ function Sent({ id, onClose }: { id: number; onClose: () => void }) {
       <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-mint/15 text-2xl text-mint" aria-hidden>
         ✓
       </div>
-      <h2 ref={heading} id="feedback-title" tabIndex={-1} className="mt-5 text-lg font-semibold text-ink-100 outline-none">
+      <h2 ref={heading} id="feedback-title" tabIndex={-1} className="mx-auto mt-5 w-fit text-lg font-semibold text-ink-100">
         Report sent
       </h2>
       <p className="mx-auto mt-2 max-w-sm text-sm text-ink-400">
