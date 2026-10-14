@@ -55,8 +55,17 @@ class BoundaryTest(unittest.TestCase):
             renamer().rename(rules),
         )
 
+    def test_a_class_after_primitive_parameters_renames(self):
+        rule = "HSPLcom/base/app/X;-><init>(ZLcom/base/app/Y;IJLcom/base/app/Z;[ZLcom/base/app/W;)V"
+        self.assertEqual(
+            "HSPLcom/acme/field/X;-><init>(ZLcom/acme/field/Y;IJLcom/acme/field/Z;[ZLcom/acme/field/W;)V",
+            renamer().rename(rule),
+        )
+
     def test_a_word_ending_in_l_is_not_a_descriptor(self):
-        self.assertEqual("xLcom/base/app/X", renamer().rename("xLcom/base/app/X"))
+        for text in ("xLcom/base/app/X", "IZLcom/base/app/X", " ZLcom/base/app/X"):
+            with self.subTest(text=text):
+                self.assertEqual(text, renamer().rename(text))
 
     def test_the_replacement_is_never_scanned_again(self):
         # Replacing one token after another rescans its own output and turns com.base.apple into
