@@ -9,6 +9,9 @@ plugins {
 
 android {
     namespace = "com.base.app.core.applock"
+
+    // The gate's test runs under Robolectric, which needs the merged manifest and resources.
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
@@ -26,4 +29,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
 
     testImplementation(project(":core:testing"))
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
 }
