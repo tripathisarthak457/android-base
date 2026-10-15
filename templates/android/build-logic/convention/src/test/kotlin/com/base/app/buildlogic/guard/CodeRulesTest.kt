@@ -28,7 +28,7 @@ class CodeRulesTest {
         Fixture("bare-clickable", FEATURE, "private fun f(m: Modifier) = m.clickable { } /*!*/"),
         Fixture(
             "lazy-key",
-            FEATURE,
+            CORE_UI,
             """
             private fun List() = LazyColumn(modifier = Modifier) {
                 items(rows) { Row(it) } /*!*/
@@ -37,11 +37,20 @@ class CodeRulesTest {
         ),
         Fixture(
             "lazy-content-type",
-            FEATURE,
+            CORE_UI,
             """
             private fun List() = LazyColumn {
                 item(contentType = "header") { Header() }
                 items(rows, key = { it.id }) { Row(it) } /*!*/
+            }
+            """.trimIndent(),
+        ),
+        Fixture(
+            "scroll-chrome",
+            FEATURE,
+            """
+            private fun List() = LazyColumn(modifier = Modifier.fillMaxSize()) { /*!*/
+                items(rows, key = { it.id }) { Row(it) }
             }
             """.trimIndent(),
         ),

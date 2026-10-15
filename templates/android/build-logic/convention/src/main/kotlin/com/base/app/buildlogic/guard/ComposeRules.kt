@@ -91,6 +91,14 @@ internal object ComposeRules {
             lines = { source, _ -> LazyScopes.untyped(source) },
         ),
         Rule(
+            id = "scroll-chrome",
+            advice = "pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: " +
+                "contentPadding = chromeContentPadding(…) on a lazy list, " +
+                ".verticalScroll(…).padding(chromeContentPadding(…)) on a column",
+            applies = { it.inFeature && it.isProduction },
+            lines = { source, _ -> unpaddedScrolls(source) },
+        ),
+        Rule(
             id = "state-param",
             advice = "take a () -> T provider instead of State<T>, so the read happens where it is needed",
             applies = composeApi,
@@ -141,6 +149,10 @@ internal object ComposeRules {
         ),
     )
 
+    private val SCREEN_LIST = Regex("""(?<![\w.])(?:LazyColumn|LazyVerticalGrid|LazyVerticalStaggeredGrid)\s*[({]""")
+    private val CHROME_CONTENT_PADDING = Regex("""\bcontentPadding\s*=\s*(?:chromeContentPadding\s*\(|contentPadding\b)""")
+    private val VERTICAL_SCROLL = Regex("""\.\s*verticalScroll\s*\(""")
+    private val CHROME_PADDING = Regex("""\.\s*padding\s*\(\s*(?:chromeContentPadding\s*\(|contentPadding\s*\))""")
     private val RAW_DP = Regex("""(?<![\w.])(\d+(?:\.\d+)?)[fF]?\s*\.\s*dp\b""")
     private val STATE_TYPE = Regex("""^(?:@\w+\s+)*(?:androidx\.compose\.runtime\.)?(?:Mutable)?State<""")
     private val VIEW_MODEL_TYPE = Regex("""^\w*ViewModel\b""")
@@ -153,6 +165,27 @@ internal object ComposeRules {
             val raw = RAW_DP.findAll(line).any { it.groupValues[1].toDouble() !in setOf(0.0, 1.0) }
             if (raw) index + 1 else null
         }
+
+    /**
+     * Scrolling containers whose content the chrome does not pad: a lazy list without
+     * `contentPadding = chromeContentPadding(…)`, or a `verticalScroll` whose modifier chain does not
+     * go on to `.padding(chromeContentPadding(…))`. Padding outside the scroll would clip the content
+     * at the bars rather than let it run under them. A container that takes its caller's
+     * `contentPadding` leaves the chrome to that caller.
+     */
+    private fun unpaddedScrolls(source: KotlinSource): List<Int> {
+        val code = source.code
+        val lists = SCREEN_LIST.findAll(code).filter { match ->
+            val bracket = match.range.last
+            code[bracket] == '{' ||
+                !CHROME_CONTENT_PADDING.containsMatchIn(code.substring(bracket, Declarations.closing(code, bracket)))
+        }
+        val columns = VERTICAL_SCROLL.findAll(code).filter { match ->
+            val after = minOf(Declarations.closing(code, match.range.last) + 1, code.length)
+            !CHROME_PADDING.containsMatchIn(code.substring(after, minOf(chainEnd(code, after), code.length)))
+        }
+        return (lists + columns).map { source.lineOf(it.range.first) }.distinct().sorted().toList()
+    }
 
     private fun parameters(
         source: KotlinSource,

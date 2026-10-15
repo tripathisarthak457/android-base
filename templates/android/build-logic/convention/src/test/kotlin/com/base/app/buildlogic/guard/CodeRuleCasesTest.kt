@@ -18,7 +18,7 @@ class CodeRuleCasesTest {
             }
         """.trimIndent()
 
-        assertEquals(emptyList<String>(), rules(FEATURE, source))
+        assertEquals(emptyList<String>(), rules(CORE_UI, source))
     }
 
     @Test
@@ -32,7 +32,7 @@ class CodeRuleCasesTest {
             }
         """.trimIndent()
 
-        assertEquals(emptyList<String>(), rules(FEATURE, source))
+        assertEquals(emptyList<String>(), rules(CORE_UI, source))
     }
 
     @Test
@@ -58,7 +58,50 @@ class CodeRuleCasesTest {
             }
         """.trimIndent()
 
+        assertEquals(emptyList<String>(), rules(CORE_UI, source))
+    }
+
+    @Test
+    fun `scrolling content padded by the chrome passes, and so does a row`() {
+        val source = """
+            private fun List() = LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+            ) {
+                item(key = "photos") { LazyRow { items(photos, key = { it.url }) { Photo(it) } } }
+            }
+            private fun Detail() = Column(
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .testTag("detail")
+                    .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
+            ) { }
+            private fun Section(contentPadding: PaddingValues) = LazyVerticalGrid(
+                columns = GridCells.Adaptive(AppTheme.layout.tileMinWidth),
+                contentPadding = contentPadding,
+            ) { }
+        """.trimIndent()
+
         assertEquals(emptyList<String>(), rules(FEATURE, source))
+    }
+
+    @Test
+    fun `padding around a scroll container clips its content at the bars`() {
+        val source = """
+            private fun Detail() = Column(
+                Modifier
+                    .padding(chromeContentPadding())
+                    .verticalScroll(rememberScrollState()),
+            ) { }
+            private fun Grid() = LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.padding(chromeContentPadding()),
+            ) { }
+            private fun Loading() = LazyColumn { }
+        """.trimIndent()
+
+        assertEquals(listOf("4 scroll-chrome", "6 scroll-chrome", "10 scroll-chrome"), rules(FEATURE, source))
     }
 
     @Test
