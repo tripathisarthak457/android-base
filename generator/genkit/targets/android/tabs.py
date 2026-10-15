@@ -16,8 +16,10 @@ from pathlib import Path
 from ...core.spec import Spec, module_title, pascal_case
 from . import scaffold
 
-#: The most tabs the compact bar shows before it moves the rest under More.
+#: The most tabs the shell's bar and rail show before they move the rest under More; a sidebar
+#: shows every tab.
 BAR_LIMIT = 5
+RAIL_LIMIT = 7
 
 #: The template's own tabs, by the feature that brings them, with their bar labels and glyphs.
 _LEADING = (("sample", "Home", "Home"),)
@@ -132,7 +134,11 @@ def warnings(spec: Spec) -> list[str]:
         return []
     shown = ", ".join(tabs[: BAR_LIMIT - 1])
     rest = ", ".join(tabs[BAR_LIMIT - 1 :])
+    if len(tabs) <= RAIL_LIMIT:
+        wider = "a wider window's rail shows them all"
+    else:
+        wider = f"a wider window's rail shows {RAIL_LIMIT - 1} and More, and a large window's sidebar shows them all"
     return [
-        f"The app has {len(tabs)} tabs. A phone's bar shows {shown} and More, which holds {rest}; "
-        "wider windows show them all in the rail. Reorder feature_modules to choose what stays in the bar."
+        f"The app has {len(tabs)} tabs. A phone's bar shows {shown} and More, which holds {rest}; {wider}. "
+        "Reorder feature_modules to choose what stays in the bar."
     ]

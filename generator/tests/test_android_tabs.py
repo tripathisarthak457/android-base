@@ -69,8 +69,17 @@ class MoreTest(unittest.TestCase):
         self.assertIn("7 tabs", warning)
         self.assertIn("Home, Orders, Wallet, Feed and More", warning)
         self.assertIn("holds Search, Profile, Settings", warning)
+        self.assertIn("rail shows them all", warning)
         # The headless JSON and --dry-run carry the target's warnings.
         self.assertIn(warning, pipeline.plan(parsed, ANDROID, ANDROID.validate(parsed.spec))["warnings"])
+
+    def test_past_seven_the_rail_has_a_more_tab_too(self):
+        parsed = spec(
+            features=["sample", "paging", "search", "profile", "settings"], feature_modules=["orders", "wallet", "trips"]
+        )
+        (warning,) = tabs.warnings(parsed.spec)
+        self.assertIn("8 tabs", warning)
+        self.assertIn("rail shows 6 and More, and a large window's sidebar shows them all", warning)
 
 
 class IconTest(unittest.TestCase):
