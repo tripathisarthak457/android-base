@@ -23,9 +23,9 @@ class WindowManifestTest {
     }
 
     @Test
-    fun `a new window size does not recreate the activity`() {
+    fun `a new window size or night mode does not recreate the activity`() {
         val handled = main.androidAttr("configChanges").split("|").toSet()
-        val needed = setOf("orientation", "screenSize", "smallestScreenSize", "screenLayout", "keyboard", "keyboardHidden", "navigation")
+        val needed = setOf("orientation", "screenSize", "smallestScreenSize", "screenLayout", "keyboard", "keyboardHidden", "navigation", "uiMode")
         assertTrue("configChanges lacks ${needed - handled}", handled.containsAll(needed))
     }
 

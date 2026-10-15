@@ -56,12 +56,15 @@
         <!--
           configChanges: a resize, a fold, a rotation or a keyboard attached is a new window size,
           which Compose lays out again in place. Recreating the activity for it would rebuild every
-          tab and replay its first frames. Density, night mode, locale and font scale still
-          recreate: resources have to load again for those.
+          tab and replay its first frames. Night mode is handled the same way: every colour comes
+          from AppTheme, which recomposes, and the app's own night mode (MainActivity sets it from
+          the theme setting, so the splash matches) would otherwise recreate the activity behind a
+          crossfade the moment the setting changes. Density, locale and font scale still recreate:
+          resources have to load again for those.
         -->
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/Theme.BaseApp.Starting"

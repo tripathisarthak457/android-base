@@ -188,6 +188,8 @@ class MainActivity : ComponentActivity() {
     /**
      * The system draws the splash and its own dialogs from the app's night mode, before any of the
      * app runs; told the in-app theme, a person who chose Dark gets a dark splash, not a light flash.
+     * The activity takes the change in place (`uiMode` in the manifest's configChanges), so applying
+     * it, or the person changing the theme, never recreates the screen.
      */
     private fun followThemeOutsideTheApp() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
