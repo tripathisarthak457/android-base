@@ -19,6 +19,7 @@ required = [
   "api-url-dev", "api-url-staging", "api-url-prod", "api-url-playstore",
   "socket-url-dev", "socket-url-staging", "socket-url-prod", "socket-url-playstore",
   "app-name", "deeplink-strings", "launcher-background", "supported-locales",
+  "catalog-name", "catalog-launcher-background",                                 # catalog/res/values
   "data-modules", "feature-modules", "app-feature-dependencies",
   "shell-tabs", "start-destination", "start-destination-import",
   "readme-title", "readme-styles", "readme-theme-call", "readme-version", "readme-modules",

@@ -52,8 +52,8 @@ fun <S : UiState, E : UiEvent, F : UiEffect> MviScreen(
         }
     }
 
+    MessageHost(viewModel.messages)
     Box(modifier = modifier.fillMaxSize()) {
         content(state, viewModel::onEvent)
-        MessageHost(viewModel.messages)
     }
 }

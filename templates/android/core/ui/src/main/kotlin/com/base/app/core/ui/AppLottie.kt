@@ -20,7 +20,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.rememberLottieDynamicProperties
 import com.airbnb.lottie.compose.rememberLottieDynamicProperty
-import com.base.app.core.designsystem.theme.rememberReduceMotion
+import com.base.app.core.designsystem.theme.AppTheme
 
 /** Where a Lottie animation comes from. */
 sealed interface LottieSource {
@@ -61,7 +61,7 @@ fun AppLottie(
     tint: Color? = null,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
-    val reduceMotion = rememberReduceMotion()
+    val reduceMotion = AppTheme.reduceMotion
     val composition by rememberLottieComposition(source.toSpec())
     val progress by animateLottieCompositionAsState(
         composition = composition,

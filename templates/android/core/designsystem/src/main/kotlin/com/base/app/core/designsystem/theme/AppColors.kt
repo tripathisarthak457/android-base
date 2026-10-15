@@ -3,29 +3,63 @@ package com.base.app.core.designsystem.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /**
  * Every colour the app is allowed to use, named for what it means rather than what it looks like.
+ * Read through `AppTheme.colors`.
  */
 @Immutable
 data class AppColors(
+    /** Behind a screen's content. */
     val background: Color,
+    /** Behind inset-grouped sections. */
+    val backgroundGrouped: Color,
+    /** Cards, sheets and docked bars. */
     val surface: Color,
-    val surfaceVariant: Color,
+    /** The rows of an inset-grouped section. */
+    val surfaceGrouped: Color,
+    /**
+     * Floating chrome, menus and popovers. Lighter than [surface] in dark theme, where a shadow
+     * cannot show height.
+     */
+    val surfaceElevated: Color,
+    /** Toasts and anything else drawn in the opposite theme. */
     val surfaceInverse: Color,
+    /** Tracks and wells: a slider's rail, a segmented control's background, the off switch. */
+    val fill: Color,
+    /**
+     * The raised thumb of a segmented control on [fill]. White in light theme, where its shadow
+     * lifts it; in dark theme a step lighter than the track, as iOS draws it, never darker.
+     */
+    val segmentThumb: Color,
+    /** Hairlines between rows and around cards. Decorative, so not held to a contrast ratio. */
+    val separator: Color,
+    /**
+     * The edge of a control that has to be seen to be used (a checkbox ring, a field outline, the
+     * off switch), at 3:1 or more against every surface.
+     */
+    val outline: Color,
 
     val contentPrimary: Color,
     val contentSecondary: Color,
     val contentTertiary: Color,
+    /** Disabled content. Exempt from contrast, as WCAG allows. */
     val contentDisabled: Color,
     val contentInverse: Color,
 
     val accent: Color,
     val accentPressed: Color,
     val accentSubtle: Color,
+    /** Text and icons on [accent]. */
     val onAccent: Color,
+    /**
+     * The accent as text or an icon on a surface: a link, a plain button, a selected tab. At least
+     * 4.5:1 on every background, whatever accent the brand chose.
+     */
+    val accentContent: Color,
 
-    /** Two supporting brand colours, each with the same three roles as the accent. */
+    /** Two supporting brand colours, each with the same roles as the accent. */
     val secondary: Color,
     val secondaryPressed: Color,
     val secondarySubtle: Color,
@@ -36,123 +70,54 @@ data class AppColors(
     val tertiarySubtle: Color,
     val onTertiary: Color,
 
-    val border: Color,
-    val borderStrong: Color,
-    val divider: Color,
-
     val success: StatusColors,
     val warning: StatusColors,
     val danger: StatusColors,
     val info: StatusColors,
     val neutral: StatusColors,
 
-    val skeleton: Color,
+    /** A row under the finger. Translucent, so it reads on whatever surface the row sits on. */
+    val highlight: Color,
     val scrim: Color,
     val focusRing: Color,
+    val shadow: Color,
+    /** The tab bar's selection pill. Content on it uses [onAccent]. */
+    val barIndicator: Color,
+    val skeleton: Color,
+    /** The sweep across a skeleton, a visible step lighter than [skeleton] in both themes. */
+    val skeletonHighlight: Color,
 
-    /** Drives the decisions that cannot be expressed as a token — see `AppSurface`. */
+    /** Drives the decisions that cannot be expressed as a token, such as shadows. */
     val isLight: Boolean,
-)
+) {
+    /** The surfaces text is drawn on, for checks that must hold on all of them. */
+    val backgrounds: List<Color>
+        get() = listOf(background, backgroundGrouped, surface, surfaceGrouped, surfaceElevated)
+}
 
 /**
- * One meaning, three roles: [content] for text and icons, [subtle] for the pill or panel behind
- * them, [border] for the outline when the block needs one.
+ * One meaning in four roles: [base] for a solid fill, [content] for text and icons on a surface,
+ * [subtle] for the panel behind them, [on] for text and icons on [base].
  */
 @Immutable
 data class StatusColors(
+    val base: Color,
     val content: Color,
     val subtle: Color,
-    val border: Color,
+    val on: Color,
 )
 
-val LightColors = AppColors(
-    background = Grey50,
-    surface = White,
-    surfaceVariant = Grey100,
-    surfaceInverse = Grey900,
+/**
+ * The palette a surface tone draws with, light or [dark]. Every role is resolved when the tokens
+ * are emitted, the brand's colours included, and the roles drawn over the surfaces (the accent as
+ * text, status text, outlines, a dark segment thumb) already darkened or lightened until they keep
+ * their contrast on every one of them; `PaletteContrastTest` holds them to it.
+ */
+fun SurfaceTone.colors(dark: Boolean): AppColors = when (this) {
+    SurfaceTone.Cool -> if (dark) DesignTokens.Palette.Cool.dark else DesignTokens.Palette.Cool.light
+    SurfaceTone.BrandTint -> if (dark) DesignTokens.Palette.BrandTint.dark else DesignTokens.Palette.BrandTint.light
+    SurfaceTone.Paper -> if (dark) DesignTokens.Palette.Paper.dark else DesignTokens.Palette.Paper.light
+    SurfaceTone.Cream -> if (dark) DesignTokens.Palette.Cream.dark else DesignTokens.Palette.Cream.light
+}
 
-    contentPrimary = Grey900,
-    contentSecondary = Grey700,
-    contentTertiary = Grey500,
-    contentDisabled = Grey400,
-    contentInverse = White,
-
-    accent = Accent,
-    accentPressed = AccentPressed,
-    accentSubtle = AccentSubtleLight,
-    onAccent = White,
-
-    secondary = Secondary,
-    secondaryPressed = SecondaryPressed,
-    secondarySubtle = SecondarySubtleLight,
-    onSecondary = Ink900,
-
-    tertiary = Tertiary,
-    tertiaryPressed = TertiaryPressed,
-    tertiarySubtle = TertiarySubtleLight,
-    onTertiary = White,
-
-    border = Grey200,
-    borderStrong = Grey300,
-    divider = Grey150,
-
-    success = StatusColors(SuccessLight, SuccessSubtleLight, SuccessBorderLight),
-    warning = StatusColors(WarningLight, WarningSubtleLight, WarningBorderLight),
-    danger = StatusColors(DangerLight, DangerSubtleLight, DangerBorderLight),
-    info = StatusColors(InfoLight, InfoSubtleLight, InfoBorderLight),
-    neutral = StatusColors(Grey600, Grey100, Grey200),
-
-    skeleton = Grey150,
-    scrim = Grey900.copy(alpha = 0.45f),
-    focusRing = Accent.copy(alpha = 0.40f),
-
-    isLight = true,
-)
-
-val DarkColors = AppColors(
-    background = Ink900,
-    surface = Ink800,
-    surfaceVariant = Ink700,
-    surfaceInverse = Ink100,
-
-    contentPrimary = Ink100,
-    contentSecondary = Ink200,
-    contentTertiary = Ink300,
-    contentDisabled = Ink400,
-    contentInverse = Ink900,
-
-    accent = AccentDark,
-    accentPressed = AccentDarkPressed,
-    accentSubtle = AccentSubtleDark,
-    // Whichever of near-black or white reads better on this lighter shade. For a light accent it is
-    // near-black: white on light blue is the most common contrast failure in dark themes.
-    onAccent = Color(0xFF06101F),
-
-    secondary = SecondaryDark,
-    secondaryPressed = SecondaryDarkPressed,
-    secondarySubtle = SecondarySubtleDark,
-    onSecondary = Color(0xFF06101F),
-
-    tertiary = TertiaryDark,
-    tertiaryPressed = TertiaryDarkPressed,
-    tertiarySubtle = TertiarySubtleDark,
-    onTertiary = Color(0xFF06101F),
-
-    border = Ink600,
-    borderStrong = Ink500,
-    divider = Color(0xFF1E2531),
-
-    success = StatusColors(SuccessDark, SuccessSubtleDark, SuccessBorderDark),
-    warning = StatusColors(WarningDark, WarningSubtleDark, WarningBorderDark),
-    danger = StatusColors(DangerDark, DangerSubtleDark, DangerBorderDark),
-    info = StatusColors(InfoDark, InfoSubtleDark, InfoBorderDark),
-    neutral = StatusColors(Ink200, Color(0xFF1A202B), Color(0xFF2C3441)),
-
-    skeleton = Ink700,
-    scrim = Color(0xFF000000).copy(alpha = 0.60f),
-    focusRing = AccentDark.copy(alpha = 0.45f),
-
-    isLight = false,
-)
-
-internal val LocalAppColors = staticCompositionLocalOf { LightColors }
+internal val LocalAppColors = staticCompositionLocalOf { SurfaceTone.Cool.colors(dark = false) }

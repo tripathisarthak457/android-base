@@ -2,52 +2,73 @@ package com.base.app.core.designsystem.component.input
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.KeyboardActionHandler
+import androidx.compose.foundation.text.input.OutputTransformation
+import androidx.compose.foundation.text.input.TextFieldDecorator
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
+import androidx.compose.foundation.text.input.then
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.disabledAlpha
+import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.FieldTreatment
 
-/** A text field. Not a floating label that animates into the border. */
+/**
+ * A text field over a [TextFieldState] the ViewModel owns, so the text survives process death and is
+ * never copied back and forth through UI state (which is what makes a caret jump).
+ *
+ * The label, placeholder and supporting line are part of the field, so a screen reader reads them
+ * with it and a tap anywhere on them focuses it. [prefix] and [suffix] sit beside the text ("+1",
+ * "kg"); an [error] tints the box and replaces the [helper]. [maxLength] refuses input past the
+ * limit, a paste included.
+ *
+ * [onSubmit] is what Enter on a hardware keyboard does, as on a desktop: send the message, sign in.
+ * In a multi-line field Shift+Enter still starts a new line. On-screen keyboards keep their own
+ * action key, which [onKeyboardAction] handles.
+ */
 @Composable
 fun AppTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    state: TextFieldState,
     modifier: Modifier = Modifier,
     label: String? = null,
     placeholder: String? = null,
@@ -55,169 +76,192 @@ fun AppTextField(
     error: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    singleLine: Boolean = true,
-    minLines: Int = 1,
-    maxLines: Int = if (singleLine) 1 else 5,
+    lineLimits: TextFieldLineLimits = TextFieldLineLimits.SingleLine,
     maxLength: Int? = null,
     showCounter: Boolean = false,
+    prefix: String? = null,
+    suffix: String? = null,
     leadingIcon: ImageVector? = null,
-    trailing: @Composable (() -> Unit)? = null,
+    trailing: (@Composable () -> Unit)? = null,
+    inputTransformation: InputTransformation? = null,
+    outputTransformation: OutputTransformation? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onKeyboardAction: KeyboardActionHandler? = null,
+    onSubmit: (() -> Unit)? = null,
+    interactionSource: MutableInteractionSource? = null,
 ) {
+    val source = interactionSource ?: remember { MutableInteractionSource() }
+    val submit by rememberUpdatedState(onSubmit)
+    val hardwareKeyboard = AppTheme.input.hardwareKeyboard
+    val focused by source.collectIsFocusedAsState()
+    val limit = maxLength?.let { InputTransformation.maxLength(it) }
+    val transformation = when {
+        limit == null -> inputTransformation
+        inputTransformation == null -> limit
+        else -> inputTransformation.then(limit)
+    }
+    val colors = AppTheme.colors
+
+    BasicTextField(
+        state = state,
+        modifier = modifier
+            .fillMaxWidth()
+            .then(
+                if (onSubmit != null && hardwareKeyboard) {
+                    Modifier.onPreviewKeyEvent { event ->
+                        val enter = event.key == Key.Enter || event.key == Key.NumPadEnter
+                        if (!enter || event.isShiftPressed || event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                        submit?.invoke()
+                        true
+                    }
+                } else {
+                    Modifier
+                },
+            )
+            .disabledAlpha(enabled)
+            .semantics { if (error != null) error(error) },
+        enabled = enabled,
+        readOnly = readOnly,
+        inputTransformation = transformation,
+        outputTransformation = outputTransformation,
+        textStyle = AppTheme.typography.body.copy(color = colors.contentPrimary),
+        keyboardOptions = keyboardOptions,
+        onKeyboardAction = onKeyboardAction,
+        lineLimits = lineLimits,
+        interactionSource = source,
+        cursorBrush = SolidColor(if (error != null) colors.danger.content else colors.accent),
+        decorator = fieldDecorator(
+            empty = { state.text.isEmpty() },
+            focused = focused,
+            label = label,
+            placeholder = placeholder,
+            supporting = error ?: helper,
+            isError = error != null,
+            counter = if (showCounter && maxLength != null) "${state.text.length}/$maxLength" else null,
+            prefix = prefix,
+            suffix = suffix,
+            leadingIcon = leadingIcon,
+            trailing = trailing,
+            multiline = lineLimits != TextFieldLineLimits.SingleLine,
+        ),
+    )
+}
+
+/**
+ * The box around a field's text, shared by every field in the design system. Colours that change
+ * with focus and error are read while drawing.
+ */
+@Composable
+internal fun fieldDecorator(
+    empty: () -> Boolean,
+    focused: Boolean,
+    label: String?,
+    placeholder: String?,
+    supporting: String?,
+    isError: Boolean,
+    counter: String? = null,
+    prefix: String? = null,
+    suffix: String? = null,
+    leadingIcon: ImageVector? = null,
+    trailing: (@Composable () -> Unit)? = null,
+    textStyle: TextStyle = AppTheme.typography.body,
+    multiline: Boolean = false,
+): TextFieldDecorator {
     val colors = AppTheme.colors
     val spacing = AppTheme.spacing
-    val focused by interactionSource.collectIsFocusedAsState()
-    val hasError = error != null
     val treatment = AppTheme.style.field
-
-    val borderColor by animateColorAsState(
+    val shape = AppTheme.shapes.sm
+    val strokeWidth = if (focused || isError) AppTheme.style.borderWidthStrong else AppTheme.style.borderWidth
+    val edge = animateColorAsState(
         targetValue = when {
-            hasError -> colors.danger.content
+            isError -> colors.danger.content
             focused -> colors.accent
             treatment == FieldTreatment.Filled -> Color.Transparent
-            treatment == FieldTreatment.Underlined -> colors.borderStrong
-            else -> colors.border
+            else -> colors.outline
         },
-        animationSpec = tween(AppTheme.motion.quick),
-        label = "fieldBorder",
+        animationSpec = tween(AppTheme.springs.fadeQuick),
+        label = "fieldEdge",
     )
-    val borderWidth by animateDpAsState(
-        targetValue = if (focused || hasError) AppTheme.sizes.borderWidthStrong else AppTheme.sizes.borderWidth,
-        animationSpec = tween(AppTheme.motion.quick),
-        label = "fieldBorderWidth",
-    )
+    val fill = when {
+        isError && treatment != FieldTreatment.Underlined -> colors.danger.subtle
+        treatment == FieldTreatment.Filled -> colors.fill
+        treatment == FieldTreatment.Outlined -> colors.surface
+        else -> Color.Transparent
+    }
 
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(spacing.sm),
-    ) {
-        label?.let {
-            AppText(
-                text = it,
-                style = AppTheme.typography.titleSmall,
-                color = if (enabled) colors.contentSecondary else colors.contentDisabled,
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .disabledAlpha(enabled)
-                .fieldContainer(treatment, enabled, borderWidth, borderColor)
-                .defaultMinSize(minHeight = AppTheme.sizes.fieldHeight),
-            horizontalArrangement = Arrangement.spacedBy(spacing.sm),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            leadingIcon?.let {
-                AppIcon(it, contentDescription = null, tint = colors.contentTertiary)
+    return TextFieldDecorator { innerTextField ->
+        Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+            label?.let {
+                AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary)
             }
-
-            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-                if (value.isEmpty() && placeholder != null) {
-                    AppText(
-                        text = placeholder,
-                        style = AppTheme.typography.bodyMedium,
-                        color = colors.contentTertiary,
-                        maxLines = 1,
-                    )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = AppTheme.sizes.fieldHeight)
+                    .fieldBox(treatment, shape, fill, edge, strokeWidth.value)
+                    .padding(horizontal = if (treatment == FieldTreatment.Underlined) spacing.xxs else spacing.md),
+                horizontalArrangement = Arrangement.spacedBy(spacing.sm),
+                // A multi-line field grows downwards from its first line, so everything beside the
+                // text lines up with that line rather than with the middle of the box.
+                verticalAlignment = if (multiline) Alignment.Top else Alignment.CenterVertically,
+            ) {
+                val besideText = if (multiline) Modifier.padding(top = spacing.md) else Modifier
+                leadingIcon?.let { AppIcon(it, contentDescription = null, modifier = besideText, tint = colors.contentTertiary) }
+                prefix?.let { AppText(text = it, modifier = besideText, style = textStyle, color = colors.contentSecondary) }
+                Box(
+                    modifier = Modifier.weight(1f).padding(vertical = spacing.md),
+                    contentAlignment = if (multiline) Alignment.TopStart else Alignment.CenterStart,
+                ) {
+                    if (placeholder != null && empty()) {
+                        AppText(
+                            text = placeholder,
+                            style = textStyle,
+                            color = colors.contentTertiary,
+                            maxLines = if (multiline) Int.MAX_VALUE else 1,
+                        )
+                    }
+                    innerTextField()
                 }
-                BasicTextField(
-                    value = value,
-                    onValueChange = { candidate ->
-                        if (maxLength == null || candidate.length <= maxLength) onValueChange(candidate)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = spacing.md)
-                        .semantics { if (error != null) this.error(error) },
-                    enabled = enabled,
-                    readOnly = readOnly,
-                    textStyle = AppTheme.typography.bodyMedium.copy(color = colors.contentPrimary),
-                    keyboardOptions = keyboardOptions,
-                    keyboardActions = keyboardActions,
-                    singleLine = singleLine,
-                    maxLines = maxLines,
-                    minLines = minLines,
-                    visualTransformation = visualTransformation,
-                    interactionSource = interactionSource,
-                    cursorBrush = SolidColor(if (hasError) colors.danger.content else colors.accent),
-                )
+                suffix?.let { AppText(text = it, modifier = besideText, style = textStyle, color = colors.contentSecondary) }
+                trailing?.let { Box(besideText) { it() } }
             }
-
-            trailing?.invoke()
-        }
-
-        SupportingRow(
-            message = error ?: helper,
-            isError = hasError,
-            counter = if (showCounter && maxLength != null) "${value.length}/$maxLength" else null,
-        )
-    }
-}
-
-@Composable
-private fun SupportingRow(
-    message: String?,
-    isError: Boolean,
-    counter: String?,
-) {
-    val colors = AppTheme.colors
-
-    AnimatedVisibility(
-        visible = message != null || counter != null,
-        enter = fadeIn(tween(AppTheme.motion.quick)) + expandVertically(tween(AppTheme.motion.quick)),
-        exit = fadeOut(tween(AppTheme.motion.instant)) + shrinkVertically(tween(AppTheme.motion.instant)),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 2.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top,
-        ) {
-            AppText(
-                text = message.orEmpty(),
-                modifier = Modifier.weight(1f, fill = false),
-                style = AppTheme.typography.caption,
-                color = if (isError) colors.danger.content else colors.contentTertiary,
-            )
-            counter?.let {
-                AppText(
-                    text = it,
-                    style = AppTheme.typography.caption,
-                    color = colors.contentTertiary,
-                )
+            AnimatedVisibility(visible = supporting != null || counter != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    AppText(
+                        text = supporting.orEmpty(),
+                        modifier = Modifier.weight(1f, fill = false),
+                        style = AppTheme.typography.footnote,
+                        color = if (isError) colors.danger.content else colors.contentSecondary,
+                    )
+                    counter?.let { AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary) }
+                }
             }
         }
     }
 }
 
-/** The box around the value, per [FieldTreatment]. The label and supporting row never change. */
-@Composable
-private fun Modifier.fieldContainer(
+private fun Modifier.fieldBox(
     treatment: FieldTreatment,
-    enabled: Boolean,
-    borderWidth: Dp,
-    borderColor: Color,
-): Modifier {
-    val colors = AppTheme.colors
-    val shape = AppTheme.shapes.sm
-    return when (treatment) {
-        FieldTreatment.Outlined -> background(if (enabled) colors.surface else colors.surfaceVariant, shape)
-            .border(borderWidth, borderColor, shape)
-            .padding(horizontal = AppTheme.spacing.md)
-
-        FieldTreatment.Filled -> background(colors.surfaceVariant, shape)
-            .border(borderWidth, borderColor, shape)
-            .padding(horizontal = AppTheme.spacing.md)
-
-        FieldTreatment.Underlined -> drawBehind {
-            val stroke = borderWidth.toPx()
-            val y = size.height - stroke / 2
-            drawLine(borderColor, Offset(0f, y), Offset(size.width, y), stroke)
-        }.padding(horizontal = AppTheme.spacing.xxs)
+    shape: Shape,
+    fill: Color,
+    edge: State<Color>,
+    strokeWidth: Float,
+): Modifier = drawWithCache {
+    val outline = shape.createOutline(size, layoutDirection, this)
+    val stroke = strokeWidth.dp.toPx()
+    onDrawBehind {
+        when (treatment) {
+            FieldTreatment.Underlined -> {
+                val y = size.height - stroke / 2f
+                drawLine(edge.value, Offset(0f, y), Offset(size.width, y), stroke)
+            }
+            else -> {
+                if (fill.alpha > 0f) drawOutline(outline, fill)
+                drawOutline(outline, edge.value, style = Stroke(stroke))
+            }
+        }
     }
 }

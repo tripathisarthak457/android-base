@@ -1,6 +1,7 @@
 """
-The resolved tokens as Kotlin: `internal object DesignTokens` in `:core:designsystem`, plain values
-and small classes, with every spring precomputed per motion style so nothing is derived at runtime.
+The resolved tokens as Kotlin: `internal object DesignTokens` in `:core:designsystem`. Plain values
+and small classes, every spring resolved per motion style, and each palette as the `AppColors` the
+theme draws with, its contrast-derived roles already worked out.
 """
 
 from __future__ import annotations
@@ -14,16 +15,23 @@ HEADER = (
     "Do not edit; run python3 -m genkit.tokens --write."
 )
 
+#: A generated project owns its copy: there is no tokens/*.json behind it to regenerate from.
+PROJECT_HEADER = (
+    "// The look this project was generated with: palette, type scale, springs and design styles.\n"
+    "// Edit the values here to change them app-wide; AppTheme and every component read them."
+)
+
 #: Where the Android copy lives, under the module's source root and the package path.
 RELATIVE_PATH = "core/designsystem/src/main/kotlin/{package_path}/core/designsystem/theme/tokens/DesignTokens.kt"
 
 
-def emit(tokens: dict[str, Any], package: str) -> str:
+def emit(tokens: dict[str, Any], package: str, header: str = HEADER) -> str:
     theme = f"{package}.core.designsystem.theme"
     lines = [
-        HEADER,
+        header,
         f"package {theme}.tokens",
         "",
+        "import androidx.compose.animation.core.CubicBezierEasing",
         "import androidx.compose.ui.graphics.Color",
         "import androidx.compose.ui.unit.Dp",
         "import androidx.compose.ui.unit.TextUnit",
@@ -32,8 +40,8 @@ def emit(tokens: dict[str, Any], package: str) -> str:
         *(
             f"import {theme}.{name}"
             for name in (
-                "AppDesignStyle", "AppMotionStyle", "BarTreatment", "CardTreatment", "FieldTreatment",
-                "SurfaceTone", "TypeVoice",
+                "AppColors", "AppDesignStyle", "AppMotionStyle", "BarIndicator", "BarTreatment", "CardTreatment",
+                "FieldTreatment", "SheetMaterial", "StatusColors", "SurfaceTone", "TypeVoice",
             )
         ),
         "",
@@ -47,6 +55,7 @@ def emit(tokens: dict[str, Any], package: str) -> str:
         _dp_object("Elevation", tokens["elevation"]),
         _type(tokens["type"]),
         _motion(tokens["motion"]),
+        _sheet(tokens["motion"]["sheet"]),
         _palette(tokens["palette"]),
         _styles(tokens["styles"]),
         _defaults(tokens["defaults"]),
@@ -78,6 +87,10 @@ def _sp(value: float) -> str:
 
 def _color(hex_argb: str) -> str:
     return f"Color(0x{hex_argb.lstrip('#')})"
+
+
+def _string(text: str) -> str:
+    return '"' + text.replace("\\", "\\\\").replace('"', '\\"').replace("$", "\\$") + '"'
 
 
 def _const(name: str) -> str:
@@ -124,11 +137,13 @@ def _type(type_tokens: dict[str, Any]) -> list[str]:
 
 def _motion(motion: dict[str, Any]) -> list[str]:
     spring_names = list(next(iter(motion["styles"].values()))["springs"])
+    scroll, navigation, tab_bar, skeleton = motion["scroll"], motion["navigation"], motion["tabBar"], motion["skeleton"]
     lines = [
-        "/** A spring as Compose takes it: mass 1. */",
-        "class Spring(val stiffness: Float, val dampingRatio: Float)",
+        "/** A spring in iOS's terms: seconds to settle, and how far it overshoots (negative: overdamped). */",
+        "class Spring(val response: Float, val bounce: Float)",
         "",
         "class MotionStyle(",
+        "    val summary: String,",
         *(f"    val {name}: Spring," for name in spring_names),
         ")",
         "",
@@ -136,18 +151,26 @@ def _motion(motion: dict[str, Any]) -> list[str]:
     ]
     for style, values in motion["styles"].items():
         lines.append(f"    val {_const(style)} = MotionStyle(")
+        lines.append(f"        summary = {_string(values['description'])},")
         for name, spring in values["springs"].items():
-            lines.append(f"        {name} = Spring({_float(spring['stiffness'])}, {_float(spring['dampingRatio'])}),")
+            lines.append(f"        {name} = Spring({_float(spring['response'])}, {_float(spring['bounce'])}),")
         lines.append("    )")
-    navigation = motion["navigation"]
     lines += [
         "",
+        f"    const val rubberBand: Float = {_float(scroll['rubberBand'])}",
+        f"    const val flingFriction: Float = {_float(scroll['flingFriction'])}",
+        f"    const val pagingFriction: Float = {_float(scroll['pagingFriction'])}",
+        f"    const val overscrollReleaseStiffness: Float = {_float(scroll['overscrollRelease']['stiffness'])}",
+        f"    const val overscrollReleaseDampingRatio: Float = {_float(scroll['overscrollRelease']['dampingRatio'])}",
         f"    const val visibilityThreshold: Float = {_float(motion['visibilityThreshold']['float'])}",
         f"    const val offsetVisibilityThresholdPx: Int = {int(motion['visibilityThreshold']['offsetPx'])}",
         f"    const val fadeShortMs: Int = {int(motion['fades']['shortMs'])}",
         f"    const val fadeLongMs: Int = {int(motion['fades']['longMs'])}",
+        f"    val fadeEnterEasing = CubicBezierEasing({', '.join(_float(c) for c in motion['fades']['enterEasing'])})",
+        f"    val fadeExitEasing = CubicBezierEasing({', '.join(_float(c) for c in motion['fades']['exitEasing'])})",
         f"    const val staggerStepMs: Int = {int(motion['stagger']['stepMs'])}",
         f"    const val staggerMaxItems: Int = {int(motion['stagger']['maxItems'])}",
+        f"    val staggerOffset: Dp = {_dp(motion['stagger']['offset'])}",
         f"    const val pressScale: Float = {_float(motion['press']['scale'])}",
         f"    const val pressScaleLarge: Float = {_float(motion['press']['scaleLarge'])}",
         f"    const val pressScaleIcon: Float = {_float(motion['press']['scaleIcon'])}",
@@ -157,8 +180,72 @@ def _motion(motion: dict[str, Any]) -> list[str]:
         f"    const val navigationScrimAlphaLight: Float = {_float(navigation['scrimAlpha']['light'])}",
         f"    const val navigationScrimAlphaDark: Float = {_float(navigation['scrimAlpha']['dark'])}",
         f"    val navigationEdgeShadow: Dp = {_dp(navigation['edgeShadow'])}",
+        f"    const val navigationEdgeShadowAlpha: Float = {_float(navigation['edgeShadowAlpha'])}",
+        f"    const val navigationBackGateRelease: Float = {_float(navigation['backGateRelease'])}",
+        f"    val tabRevealShift: Dp = {_dp(tab_bar['revealShift'])}",
+        f"    const val tabRevealVeilAlpha: Float = {_float(tab_bar['revealVeilAlpha'])}",
+        f"    val tabIndicatorHeight: Dp = {_dp(tab_bar['indicatorHeight'])}",
+        f"    const val tabIndicatorMaxStretch: Float = {_float(tab_bar['indicatorMaxStretch'])}",
+        f"    const val tabIndicatorSquash: Float = {_float(tab_bar['indicatorSquash'])}",
+        f"    const val tabIconBounceScale: Float = {_float(tab_bar['iconBounceScale'])}",
+        f"    val tabMinimizeHysteresis: Dp = {_dp(tab_bar['minimizeHysteresis'])}",
+        f"    val skeletonBandWidth: Dp = {_dp(skeleton['bandWidth'])}",
+        f"    const val skeletonTiltDegrees: Float = {_float(skeleton['tiltDegrees'])}",
+        f"    const val skeletonSweepMs: Int = {int(skeleton['sweepMs'])}",
+        f"    const val skeletonPauseMs: Int = {int(skeleton['pauseMs'])}",
+        f"    val skeletonEasing = CubicBezierEasing({', '.join(_float(c) for c in skeleton['easing'])})",
+        f"    val skeletonReferenceTravel: Dp = {_dp(skeleton['referenceTravel'])}",
+        f"    const val skeletonMaxSlowdown: Float = {_float(skeleton['maxSlowdown'])}",
         "}",
     ]
+    return lines
+
+
+#: Sheet tokens that are lengths (dp), or speeds in dp per second, rather than plain numbers.
+_SHEET_DP = {
+    "detent": ("largeTopGap", "mediumMinGap", "minHeight"),
+    "release": ("detentFlick",),
+    "grabber": ("width", "height", "top", "touchTarget", "touchBand", "contentTop"),
+    "header": ("top", "minHeight", "scrollEdgeHeight", "scrollEdgeRamp"),
+    "keyboard": ("dragHidesAfter", "formLiftGap"),
+    "form": ("maxHeight",),
+    "side": ("inset", "backShrink", "backGrow", "backY"),
+    "cardStack": ("corner", "deviceCornerMin"),
+    "stack": ("peek",),
+    "back": ("shrinkX", "shrinkY", "persistentFollow"),
+    "glass": ("blur",),
+    "shadow": ("blur", "y"),
+    "actionSheet": ("rowHeight", "cardWidth"),
+}
+_SHEET_INT = {"stack": ("maxCoveredDrawn",), "choice": ("searchFrom",)}
+
+
+def _sheet(sheet: dict[str, Any]) -> list[str]:
+    """One object per group of the sheet section, so a value reads as its JSON path: `Sheet.Release.detentFlick`."""
+    lines = ["object Sheet {"]
+    for index, (group, values) in enumerate(sheet.items()):
+        if index:
+            lines.append("")
+        lines.append(f"    object {group[:1].upper()}{group[1:]} {{")
+        for key, value in values.items():
+            if isinstance(value, list):
+                lines.append(f"        val {key} = CubicBezierEasing({', '.join(_float(c) for c in value)})")
+            elif isinstance(value, dict):
+                for theme, themed in value.items():
+                    name = f"{key}{theme.capitalize()}"
+                    if isinstance(themed, str):
+                        opaque = themed if len(themed) == 9 else "#FF" + themed[1:]
+                        lines.append(f"        val {name}: Color = {_color(opaque)}")
+                    else:
+                        lines.append(f"        const val {name}: Float = {_float(themed)}")
+            elif key in _SHEET_DP.get(group, ()):
+                lines.append(f"        val {key}: Dp = {_dp(value)}")
+            elif key in _SHEET_INT.get(group, ()):
+                lines.append(f"        const val {key}: Int = {int(value)}")
+            else:
+                lines.append(f"        const val {key}: Float = {_float(value)}")
+        lines.append("    }")
+    lines.append("}")
     return lines
 
 
@@ -166,30 +253,20 @@ def _palette(palette: dict[str, Any]) -> list[str]:
     sample = palette["tones"][next(iter(palette["tones"]))]["light"]
     plain = [name for name, value in sample.items() if not isinstance(value, dict)]
     statuses = [name for name, value in sample.items() if isinstance(value, dict)]
-    status_fields = list(sample[statuses[0]]) if statuses else []
 
-    lines = [
-        f"class Status({', '.join(f'val {field}: Color' for field in status_fields)})",
-        "",
-        "class Roles(",
-        *(f"    val {name}: Color," for name in plain),
-        *(f"    val {name}: Status," for name in statuses),
-        ")",
-        "",
-        "object Palette {",
-    ]
-    for ramp, steps in palette["ramps"].items():
-        for step, value in steps.items():
-            lines.append(f"    val {ramp}{step} = {_color(value)}")
-    for tone, themes in palette["tones"].items():
-        lines += ["", f"    object {tone} {{"]
+    lines = ["object Palette {"]
+    for index, (tone, themes) in enumerate(palette["tones"].items()):
+        if index:
+            lines.append("")
+        lines.append(f"    object {tone} {{")
         for theme, roles in themes.items():
-            lines.append(f"        val {theme} = Roles(")
+            lines.append(f"        val {theme} = AppColors(")
             for name in plain:
                 lines.append(f"            {name} = {_color(roles[name])},")
             for name in statuses:
-                values = ", ".join(_color(roles[name][field]) for field in status_fields)
-                lines.append(f"            {name} = Status({values}),")
+                fields = ", ".join(f"{field} = {_color(value)}" for field, value in roles[name].items())
+                lines.append(f"            {name} = StatusColors({fields}),")
+            lines.append(f"            isLight = {'true' if theme == 'light' else 'false'},")
             lines.append("        )")
         lines.append("    }")
     lines.append("}")
@@ -207,10 +284,14 @@ def _styles(styles: dict[str, Any]) -> list[str]:
         "    val card: CardTreatment,",
         "    val field: FieldTreatment,",
         "    val bar: BarTreatment,",
+        "    val indicator: BarIndicator,",
         "    val borderWidth: Dp,",
         "    val borderWidthStrong: Dp,",
         "    val uppercaseLabels: Boolean,",
         "    val offsetShadow: Dp,",
+        "    /** The gap a sheet floats at, from the sides and bottom, at its partial detents; 0 keeps it attached. */",
+        "    val sheetInset: Dp,",
+        "    val sheetMaterial: SheetMaterial,",
         "    val surfaces: SurfaceTone,",
         "    val voice: TypeVoice,",
         ")",
@@ -226,10 +307,13 @@ def _styles(styles: dict[str, Any]) -> list[str]:
             f"        card = CardTreatment.{style['card']},",
             f"        field = FieldTreatment.{style['field']},",
             f"        bar = BarTreatment.{style['bar']},",
+            f"        indicator = BarIndicator.{style['indicator']},",
             f"        borderWidth = {_dp(style['borderWidth'])},",
             f"        borderWidthStrong = {_dp(style['borderWidthStrong'])},",
             f"        uppercaseLabels = {'true' if style['uppercaseLabels'] else 'false'},",
             f"        offsetShadow = {_dp(style['offsetShadow'])},",
+            f"        sheetInset = {_dp(style['sheetInset'])},",
+            f"        sheetMaterial = SheetMaterial.{style['sheetMaterial']},",
             f"        surfaces = SurfaceTone.{style['surfaces']},",
             f"        voice = TypeVoice.{style['voice']},",
             "    )",

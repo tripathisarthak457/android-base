@@ -1,5 +1,6 @@
 package com.base.app.feature.onboarding
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,24 +19,23 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.annotation.StringRes
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.AppSettingsStore
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.list.AppPager
+import com.base.app.core.designsystem.component.navigation.AppPager
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.AppSurface
-import com.base.app.core.designsystem.foundation.AppTwoPane
-import com.base.app.core.designsystem.foundation.centeredMaxWidth
-import com.base.app.core.designsystem.foundation.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.adaptive.AppTwoPane
+import com.base.app.core.designsystem.foundation.adaptive.centeredMaxWidth
+import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
@@ -140,7 +140,7 @@ internal fun OnboardingScreen(
                 AppButton(
                     text = stringResource(R.string.onboarding_skip),
                     onClick = { onEvent(OnboardingEvent.Skipped) },
-                    variant = ButtonVariant.Ghost,
+                    variant = ButtonVariant.Plain,
                 )
             }
 
@@ -168,10 +168,10 @@ internal fun OnboardingScreen(
                         scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
                     }
                 },
-                fillWidth = true,
                 modifier = Modifier
                     .centeredMaxWidth(AppTheme.layout.formMaxWidth)
-                    .padding(vertical = AppTheme.spacing.lg),
+                    .padding(vertical = AppTheme.spacing.lg)
+                    .fillMaxWidth(),
             )
         }
     }
@@ -214,14 +214,14 @@ private fun OnboardingPageContent(page: OnboardingPage, sideBySide: Boolean, mod
                 ) {
                     AppText(
                         text = stringResource(page.title),
-                        style = AppTheme.typography.displaySmall,
+                        style = AppTheme.typography.title2,
                         color = AppTheme.colors.contentPrimary,
                         textAlign = textAlign,
                     )
                     AppText(
                         text = stringResource(page.body),
                         modifier = Modifier.widthIn(max = AppTheme.layout.readableMaxWidth),
-                        style = AppTheme.typography.bodyLarge,
+                        style = AppTheme.typography.body,
                         color = AppTheme.colors.contentTertiary,
                         textAlign = textAlign,
                     )

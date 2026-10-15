@@ -68,7 +68,7 @@ fun AppRoot(
     val settings = startup.settings
     val themeMode = settings.themeMode()
 
-    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
+    AppTheme(mode = themeMode, hapticsEnabled = AppTheme.defaults.hapticsEnabled && settings.hapticsEnabled) {
         SystemBarIcons(dark = !AppTheme.colors.isLight)
         // Test tags become resource ids, which is how benchmarks and tools/perf find tabs and lists.
         Box(modifier = Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {

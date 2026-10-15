@@ -39,7 +39,7 @@ import com.base.app.core.designsystem.component.navigation.BarOrientation
 import com.base.app.core.designsystem.component.navigation.TabItem
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.WindowWidth
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.navigation.NavigationChrome
 import com.base.app.core.navigation.R
 import com.base.app.core.navigation.ShellConfig
@@ -148,7 +148,7 @@ internal fun ShellBar(
 /** The sidebar's width for the window: wider on the widest windows. */
 @Composable
 internal fun sidebarWidth(): Dp =
-    if (AppTheme.windowSize.width == WindowWidth.ExtraLarge) AppSidebarDefaults.WideWidth else AppSidebarDefaults.Width
+    if (AppTheme.windowClass.width == WindowWidth.ExtraLarge) AppSidebarDefaults.WideWidth else AppSidebarDefaults.Width
 
 /**
  * The keyboard rises over the bar: the bar moves down with it in the layout phase and is

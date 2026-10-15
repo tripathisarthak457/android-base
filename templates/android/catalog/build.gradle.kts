@@ -7,18 +7,19 @@ plugins {
     id("com.base.app.android.compose")
     alias(libs.plugins.kotlin.serialization)
 }
+
 android {
     namespace = "com.base.app.catalog"
 
     defaultConfig {
         applicationId = "com.base.app.catalog"
-        versionCode = 1
-        versionName = "1.0.0"
     }
-
 
     buildTypes {
         release {
+            // The catalog never ships, and a release build is the only one whose motion and frame
+            // times mean anything, so it is signed with the debug key and installs directly.
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -32,7 +33,7 @@ dependencies {
     // The Navigation section runs the app's own shell, transitions and back handling.
     implementation(project(":core:navigation"))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigationevent.compose)
+    // lifecycleScope, which holds the first frame until the fonts are in.
     implementation(libs.androidx.lifecycle.runtime.compose)
-
 }
-

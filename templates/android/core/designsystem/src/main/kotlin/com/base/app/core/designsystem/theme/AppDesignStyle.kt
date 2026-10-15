@@ -5,18 +5,19 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /**
- * What the components look like, as one choice. These are starting points: edit [style] to move
- * a style towards your own, and every component still accepts its own `shape` and friends.
+ * What the components look like, as one choice. These are starting points: the values are in
+ * `DesignTokens.Styles`, so changing a style there moves every component with it, and each component
+ * still accepts its own `shape` and friends.
  *
  * ```
  * AppTheme(designStyle = AppDesignStyle.Social) { … }
  * ```
  */
 enum class AppDesignStyle {
-    /** Cool neutrals, hairline outlines, a docked bar. Dense and calm: tools, finance, admin. */
+    /** Cool neutrals, hairline outlines, a docked tab bar. Dense and calm: tools, finance, admin. */
     Utility,
 
     /**
@@ -35,68 +36,48 @@ enum class AppDesignStyle {
     Playful,
     ;
 
-    fun style(): AppStyle = when (this) {
-        Utility -> AppStyle()
+    /** The tokens this style decides, built once per process. */
+    fun style(): AppStyle = StylesByDesign.getValue(this)
 
-        Social -> AppStyle(
-            shapes = AppShapes(
-                xs = RoundedCornerShape(10.dp),
-                sm = RoundedCornerShape(14.dp),
-                md = RoundedCornerShape(20.dp),
-                lg = RoundedCornerShape(26.dp),
-                xl = RoundedCornerShape(32.dp),
-                sheet = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
-            ),
-            buttonShape = RoundedCornerShape(percent = 50),
-            chipShape = RoundedCornerShape(percent = 50),
-            card = CardTreatment.Raised,
-            field = FieldTreatment.Filled,
-            bar = BarTreatment.Floating,
-            surfaces = SurfaceTone.BrandTint,
-            voice = TypeVoice.Bold,
-        )
-
-        Editorial -> AppStyle(
-            shapes = AppShapes(
-                xs = RoundedCornerShape(2.dp),
-                sm = RoundedCornerShape(3.dp),
-                md = RoundedCornerShape(4.dp),
-                lg = RoundedCornerShape(6.dp),
-                xl = RoundedCornerShape(8.dp),
-                sheet = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-            ),
-            buttonShape = RoundedCornerShape(2.dp),
-            chipShape = RoundedCornerShape(2.dp),
-            card = CardTreatment.Outlined,
-            field = FieldTreatment.Underlined,
-            bar = BarTreatment.Minimal,
-            uppercaseLabels = true,
-            surfaces = SurfaceTone.Paper,
-            voice = TypeVoice.Editorial,
-        )
-
-        Playful -> AppStyle(
-            shapes = AppShapes(
-                xs = RoundedCornerShape(8.dp),
-                sm = RoundedCornerShape(12.dp),
-                md = RoundedCornerShape(16.dp),
-                lg = RoundedCornerShape(22.dp),
-                xl = RoundedCornerShape(28.dp),
-                sheet = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-            ),
-            buttonShape = RoundedCornerShape(14.dp),
-            chipShape = RoundedCornerShape(12.dp),
-            card = CardTreatment.Offset,
-            field = FieldTreatment.Outlined,
-            bar = BarTreatment.Chunky,
-            borderWidth = 2.dp,
-            borderWidthStrong = 2.5.dp,
-            offsetShadow = 4.dp,
-            surfaces = SurfaceTone.Cream,
-            voice = TypeVoice.Rounded,
-        )
+    internal fun tokens(): DesignTokens.Style = when (this) {
+        Utility -> DesignTokens.Styles.utility
+        Social -> DesignTokens.Styles.social
+        Editorial -> DesignTokens.Styles.editorial
+        Playful -> DesignTokens.Styles.playful
     }
 }
+
+private val StylesByDesign = AppDesignStyle.entries.associateWith { design ->
+    val tokens = design.tokens()
+    AppStyle(
+        shapes = AppShapes(
+            xs = RoundedCornerShape(tokens.radiusXs),
+            sm = RoundedCornerShape(tokens.radiusSm),
+            md = RoundedCornerShape(tokens.radiusMd),
+            lg = RoundedCornerShape(tokens.radiusLg),
+            xl = RoundedCornerShape(tokens.radiusXl),
+            sheet = RoundedCornerShape(topStart = tokens.radiusSheet, topEnd = tokens.radiusSheet),
+        ),
+        buttonShape = tokens.buttonRadius.shape(),
+        chipShape = tokens.chipRadius.shape(),
+        card = tokens.card,
+        field = tokens.field,
+        bar = tokens.bar,
+        indicator = tokens.indicator,
+        borderWidth = tokens.borderWidth,
+        borderWidthStrong = tokens.borderWidthStrong,
+        uppercaseLabels = tokens.uppercaseLabels,
+        offsetShadow = tokens.offsetShadow,
+        sheetRadius = tokens.radiusSheet,
+        sheetInset = tokens.sheetInset,
+        sheetMaterial = tokens.sheetMaterial,
+        surfaces = tokens.surfaces,
+        voice = tokens.voice,
+    )
+}
+
+/** A null radius is a pill: as round as the component is tall, whatever its width. */
+private fun Dp?.shape(): Shape = if (this == null) RoundedCornerShape(percent = 50) else RoundedCornerShape(this)
 
 enum class CardTreatment {
     /** A hairline outline and no shadow. */
@@ -120,18 +101,43 @@ enum class FieldTreatment {
     Underlined,
 }
 
+/** How the tab bar is drawn. Editing a style's treatment changes the bar app-wide. */
 enum class BarTreatment {
-    /** Full width, a hairline above, icon and label per tab. */
-    Docked,
-
-    /** A rounded capsule lifted off the bottom edge, the selected tab in a tinted pill. */
+    /** A capsule lifted off the bottom edge, on the elevated surface with a hairline and one soft shadow. */
     Floating,
 
-    /** Full width and flat, uppercase labels, a short rule over the selected tab. */
-    Minimal,
+    /** The capsule on the surface at 88 % opacity, so content shows faintly through at no GPU cost. */
+    Translucent,
 
-    /** Full width with a heavy top rule, the selected icon sitting in a solid pill. */
-    Chunky,
+    /** Full width against the bottom edge with a hairline above, as iOS drew it before 26. */
+    Docked,
+}
+
+/** How the bar marks the selected tab. */
+enum class BarIndicator {
+    /** A solid pill in `barIndicator` behind the selected item, its glyph and label in `onAccent`. */
+    Pill,
+
+    /** No pill: the selected glyph turns filled and takes `accentContent`, which carries selection alone. */
+    Subtle,
+}
+
+/** What a sheet's surface is made of. A design style picks one of the last three for its sheets. */
+enum class SheetMaterial {
+    /** The design style's choice: Solid unless the style is made of glass. */
+    Automatic,
+
+    /** The opaque container. The cheapest, and what every material becomes under Reduce transparency. */
+    Solid,
+
+    /** Drawn translucency (the container at 92-94 %, a rim). It samples nothing: a few cached draws. */
+    Frosted,
+
+    /**
+     * Live liquid glass at partial detents on the tiers that sample the scene, opaque by halfway to
+     * the large detent; Frosted on the lower tiers and in projects without liquid glass.
+     */
+    Glass,
 }
 
 /** The neutrals a style sits on. The accent ramps are the brand's and never change here. */
@@ -167,18 +173,25 @@ enum class TypeVoice {
 /** The tokens a design style decides. Read through `AppTheme.style`. */
 @Immutable
 data class AppStyle(
-    val shapes: AppShapes = AppShapes(),
-    val buttonShape: Shape = RoundedCornerShape(10.dp),
-    val chipShape: Shape = RoundedCornerShape(percent = 50),
-    val card: CardTreatment = CardTreatment.Outlined,
-    val field: FieldTreatment = FieldTreatment.Outlined,
-    val bar: BarTreatment = BarTreatment.Docked,
-    val borderWidth: Dp = 1.dp,
-    val borderWidthStrong: Dp = 1.5.dp,
-    val uppercaseLabels: Boolean = false,
-    val offsetShadow: Dp = 0.dp,
-    val surfaces: SurfaceTone = SurfaceTone.Cool,
-    val voice: TypeVoice = TypeVoice.Neutral,
+    val shapes: AppShapes,
+    val buttonShape: Shape,
+    val chipShape: Shape,
+    val card: CardTreatment,
+    val field: FieldTreatment,
+    val bar: BarTreatment,
+    val indicator: BarIndicator,
+    val borderWidth: Dp,
+    val borderWidthStrong: Dp,
+    val uppercaseLabels: Boolean,
+    val offsetShadow: Dp,
+    /** Every corner of a sheet; a sheet keeps one radius whether it floats or is attached. */
+    val sheetRadius: Dp,
+    /** The gap a sheet floats at, from the sides and bottom, at its partial detents; 0 keeps it attached. */
+    val sheetInset: Dp,
+    /** What [SheetMaterial.Automatic] sheets are made of; never Automatic itself. */
+    val sheetMaterial: SheetMaterial,
+    val surfaces: SurfaceTone,
+    val voice: TypeVoice,
 )
 
-internal val LocalAppStyle = staticCompositionLocalOf { AppStyle() }
+internal val LocalAppStyle = staticCompositionLocalOf { AppDesignStyle.Utility.style() }

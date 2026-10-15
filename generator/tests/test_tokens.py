@@ -75,8 +75,40 @@ class SchemaTest(unittest.TestCase):
 
     def test_a_status_colour_missing_a_theme_or_a_field(self):
         self.assertIn("status.success: is missing dark", self.broken(lambda d: d["palette"]["status"]["success"].pop("dark")))
-        self.assertIn("status.danger.light: is missing border", self.broken(lambda d: d["palette"]["status"]["danger"]["light"].pop("border")))
+        self.assertIn("status.danger.light: is missing subtle", self.broken(lambda d: d["palette"]["status"]["danger"]["light"].pop("subtle")))
         self.assertIn("status", self.broken(lambda d: d["palette"].pop("status")))
+
+    def test_a_spring_needs_one_kind_of_bounce(self):
+        self.assertIn("springs.press", self.broken(lambda d: d["motion"]["springs"]["press"].pop("bounceScale")))
+        self.assertIn("springs.press", self.broken(lambda d: d["motion"]["springs"]["press"].update(bounce=0)))
+        self.assertIn("springs.bounceBack.bounce", self.broken(lambda d: d["motion"]["springs"]["bounceBack"].update(bounce=-1)))
+
+    def test_an_easing_is_four_numbers(self):
+        self.assertIn("fades.enterEasing", self.broken(lambda d: d["motion"]["fades"].update(enterEasing=[0, 1])))
+
+    def test_an_easing_keeps_its_time_between_start_and_end(self):
+        self.assertIn("fades.exitEasing[0]", self.broken(lambda d: d["motion"]["fades"].update(exitEasing=[-0.1, 0, 0.8, 0.15])))
+        self.assertIn("skeleton.easing[2]", self.broken(lambda d: d["motion"]["skeleton"].update(easing=[0.3, 0, 1.2, 1])))
+
+    def test_the_shimmer_is_checked(self):
+        self.assertIn("skeleton.bandWidth", self.broken(lambda d: d["motion"]["skeleton"].update(bandWidth=0)))
+        self.assertIn("skeleton.tiltDegrees", self.broken(lambda d: d["motion"]["skeleton"].update(tiltDegrees=60)))
+        self.assertIn("skeleton.maxSlowdown", self.broken(lambda d: d["motion"]["skeleton"].update(maxSlowdown=0.5)))
+        self.assertIn("skeleton.easing", self.broken(lambda d: d["motion"]["skeleton"].update(easing=[0.3, 0, 0.7])))
+        self.assertIn("missing pauseMs", self.broken(lambda d: d["motion"]["skeleton"].pop("pauseMs")))
+
+    def test_a_style_names_its_bar_indicator(self):
+        self.assertIn("Social: is missing indicator", self.broken(lambda d: d["styles"]["Social"].pop("indicator")))
+
+    def test_a_sheet_token_out_of_range(self):
+        self.assertIn("sheet.detent.mediumFraction", self.broken(lambda d: d["motion"]["sheet"]["detent"].update(mediumFraction=1.5)))
+        self.assertIn("sheet.release: is missing detentFlick", self.broken(lambda d: d["motion"]["sheet"]["release"].pop("detentFlick")))
+        self.assertIn("sheet.back.easing", self.broken(lambda d: d["motion"]["sheet"]["back"].update(easing=[0.1, 1])))
+        self.assertIn("sheet.cardStack.overlayColor.dark", self.broken(lambda d: d["motion"]["sheet"]["cardStack"]["overlayColor"].update(dark="grey")))
+
+    def test_a_style_names_a_real_sheet_material(self):
+        self.assertIn("Utility.sheetMaterial", self.broken(lambda d: d["styles"]["Utility"].update(sheetMaterial="Automatic")))
+        self.assertIn("Social: is missing sheetInset", self.broken(lambda d: d["styles"]["Social"].pop("sheetInset")))
 
     def test_a_size_missing_a_platform(self):
         self.assertIn("sizes.minTouchTarget.ios", self.broken(lambda d: d["foundation"]["sizes"]["minTouchTarget"].pop("ios")))
@@ -98,12 +130,35 @@ class ResolveTest(unittest.TestCase):
                     spring = resolved[name]["springs"][key]
                     response = definition["response"] / (style["speed"] if definition["bySpeed"] else 1)
                     self.assertAlmostEqual(response, spring["response"], places=4)
-                    self.assertAlmostEqual(1 - style["bounce"] * definition["bounceScale"], spring["dampingRatio"], places=4)
+                    if "bounceScale" in definition:
+                        bounce = style["bounce"] * definition["bounceScale"]
+                    else:
+                        bounce = definition["bounce"] if style["bounce"] or definition["bounce"] <= 0 else 0
+                    self.assertAlmostEqual(1 - bounce, spring["dampingRatio"], places=4)
 
     def test_full_screen_springs_never_bounce(self):
         for name, style in tokens.resolve()["motion"]["styles"].items():
-            with self.subTest(style=name):
-                self.assertEqual(1.0, style["springs"]["screen"]["dampingRatio"])
+            for key in ("screen", "sheet", "dialog", "thumb"):
+                with self.subTest(style=name, spring=key):
+                    self.assertEqual(1.0, style["springs"][key]["dampingRatio"])
+
+    def test_a_style_without_bounce_overshoots_nowhere(self):
+        calm = tokens.resolve()["motion"]["styles"]["Calm"]["springs"]
+        for key, spring in calm.items():
+            with self.subTest(spring=key):
+                self.assertGreaterEqual(spring["dampingRatio"], 1.0)
+        self.assertGreater(calm["bounceBack"]["dampingRatio"], 1.0)
+
+    def test_the_checkpoint_values(self):
+        # decisions/CP1.md: iOS's push, its segmented thumb, the two-edge indicator and the dialog spring.
+        standard = tokens.resolve()["motion"]["styles"]["Standard"]["springs"]
+        self.assertAlmostEqual(333.6, standard["screen"]["stiffness"], places=0)
+        self.assertAlmostEqual(503.5, standard["thumb"]["stiffness"], places=0)
+        self.assertAlmostEqual(522.0, standard["dialog"]["stiffness"], delta=1)
+        self.assertEqual(0.85, standard["indicatorLead"]["dampingRatio"])
+        self.assertAlmostEqual(1500, standard["iconBounceDown"]["stiffness"], delta=1)
+        self.assertAlmostEqual(0.45, standard["iconBounceUp"]["dampingRatio"])
+        self.assertEqual(0.333, tokens.resolve()["motion"]["navigation"]["parallax"])
 
     def test_without_brand_colours_the_template_palette_stands(self):
         palette = tokens.resolve()["palette"]
@@ -142,6 +197,20 @@ class ResolveTest(unittest.TestCase):
                             ratio = brand.contrast(_rgb(roles["accentContent"]), _rgb(roles[background]))
                             self.assertGreaterEqual(round(ratio, 2), 4.5)
 
+    def test_derived_roles_keep_their_contrast_for_any_accent(self):
+        for hex_value in ("#FFEB3B", "#16A34A", "#0E1A2B", "#FF69B4", "#00FFFF"):
+            palette = tokens.resolve(spec(accent_colour=hex_value))["palette"]["tones"]
+            for tone, themes in palette.items():
+                for theme, roles in themes.items():
+                    surfaces = [_rgb(roles[name]) for name in tokens.SURFACE_ROLES]
+                    with self.subTest(accent=hex_value, tone=tone, theme=theme):
+                        for surface in surfaces:
+                            self.assertGreaterEqual(round(brand.contrast(_rgb(roles["outline"]), surface), 2), 3.0)
+                            for status in ("success", "warning", "danger", "info"):
+                                self.assertGreaterEqual(round(brand.contrast(_rgb(roles[status]["content"]), surface), 2), 4.5)
+                        if theme == "dark":
+                            self.assertGreaterEqual(round(brand.contrast(_rgb(roles["segmentThumb"]), _rgb(roles["fill"])), 2), 1.5)
+
     def test_brand_tint_mixes_in_oklab_and_keeps_alpha(self):
         cool = tokens.resolve()["palette"]["tones"]["Cool"]["light"]
         tinted = tokens.resolve()["palette"]["tones"]["BrandTint"]["light"]
@@ -151,6 +220,12 @@ class ResolveTest(unittest.TestCase):
     def test_defaults_are_the_specs_choices(self):
         defaults = tokens.resolve(spec(design_style="Playful", motion_style="Calm", haptics_enabled=False))["defaults"]
         self.assertEqual(("Playful", "Calm", False), (defaults["designStyle"], defaults["motionStyle"], defaults["hapticsEnabled"]))
+
+    def test_a_typeface_is_named_only_when_the_project_downloads_it(self):
+        chosen = tokens.resolve(spec(font_name="Inter", features=["googlefonts"]))["defaults"]
+        platform = tokens.resolve(spec(font_name="Inter", features=[]))["defaults"]
+        self.assertEqual("Inter", chosen["fontName"])
+        self.assertEqual((tokens.PLATFORM_SANS, tokens.PLATFORM_MONO), (platform["fontName"], platform["monoFontName"]))
 
 
 class BrandGoldenTest(unittest.TestCase):
@@ -193,7 +268,9 @@ class EmitterTest(unittest.TestCase):
             "    class MotionStyle(",
             "    object Palette {",
             "        object Cool {",
-            "            val light = Roles(",
+            "            val light = AppColors(",
+            "    object Sheet {",
+            "        object Release {",
             "    object Styles {",
             "    object Defaults {",
             "        val designStyle: AppDesignStyle = AppDesignStyle.Utility",
@@ -208,11 +285,24 @@ class EmitterTest(unittest.TestCase):
             f"{kotlin._sp(role['tracking'])}, {weights})",
             self.kotlin,
         )
-        press = self.resolved["motion"]["styles"]["Standard"]["springs"]["press"]
-        self.assertIn(f"press = Spring({press['stiffness']}f, {press['dampingRatio']}f),", self.kotlin)
+        release = self.resolved["motion"]["styles"]["Standard"]["springs"]["release"]
+        self.assertIn(f"release = Spring({kotlin._float(release['response'])}, {kotlin._float(release['bounce'])}),", self.kotlin)
         accent = self.resolved["palette"]["tones"]["Cool"]["light"]["accent"]
         self.assertIn(f"accent = Color(0x{accent[1:]}),", self.kotlin)
         self.assertIn("        buttonRadius = null,", self.kotlin)
+        sheet = tokens.load()["motion"]["sheet"]
+        self.assertIn(f"            val detentFlick: Dp = {kotlin._dp(sheet['release']['detentFlick'])}\n", self.kotlin)
+        self.assertIn(f"            const val maxCoveredDrawn: Int = {sheet['stack']['maxCoveredDrawn']}\n", self.kotlin)
+        self.assertIn(f"            const val bodyAlphaDark: Float = {kotlin._float(sheet['frosted']['bodyAlpha']['dark'])}\n", self.kotlin)
+        self.assertIn("            val overlayColorLight: Color = Color(0xFF000000)\n", self.kotlin)
+        utility = tokens.load()["styles"]["Utility"]
+        self.assertIn(f"        sheetInset = {kotlin._dp(utility['sheetInset'])},", self.kotlin)
+        self.assertIn(f"        sheetMaterial = SheetMaterial.{utility['sheetMaterial']},", self.kotlin)
+
+    def test_a_project_copy_says_it_is_the_project_s_own(self):
+        project = kotlin.emit(self.resolved, "com.acme.x", kotlin.PROJECT_HEADER)
+        self.assertTrue(project.startswith(kotlin.PROJECT_HEADER + "\n"))
+        self.assertNotIn("Do not edit", project)
 
     def test_kotlin_literals(self):
         self.assertEqual("(-0.8).sp", kotlin._sp(-0.8))

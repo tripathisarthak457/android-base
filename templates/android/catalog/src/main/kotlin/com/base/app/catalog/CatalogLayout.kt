@@ -7,9 +7,9 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 
 /**
- * Children laid out in as many columns as fit at [minColumnWidth] or wider, each placed in whichever
- * column is shortest so far. One column on a phone; on a tablet a page of groups reads like a
- * spread instead of a strip of short groups down the middle of the window.
+ * Children in as many columns as fit at [minColumnWidth] or wider, each placed in whichever column
+ * is shortest so far. One column on a phone; on a tablet a page reads like a spread. Placed relative
+ * to the layout direction, so a right-to-left page starts on the right.
  */
 @Composable
 fun MasonryColumns(
@@ -24,7 +24,6 @@ fun MasonryColumns(
         val columns = ((width + gap) / (minColumnWidth.roundToPx() + gap)).coerceAtLeast(1)
         val columnWidth = (width - gap * (columns - 1)) / columns
         val heights = IntArray(columns)
-
         val placed = measurables.map { measurable ->
             val placeable = measurable.measure(Constraints(minWidth = columnWidth, maxWidth = columnWidth))
             val column = heights.indices.minBy { heights[it] }
@@ -32,10 +31,9 @@ fun MasonryColumns(
             heights[column] = y + placeable.height + gap
             Triple(placeable, column * (columnWidth + gap), y)
         }
-
         val height = ((heights.maxOrNull() ?: 0) - gap).coerceAtLeast(0)
         layout(width, height) {
-            placed.forEach { (placeable, x, y) -> placeable.place(x, y) }
+            placed.forEach { (placeable, x, y) -> placeable.placeRelative(x, y) }
         }
     }
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="window_background">#FFF7F8FA</color>
+    <!-- <generated:catalog-launcher-background> -->
     <color name="launcher_background">#FF12805C</color>
+    <!-- </generated:catalog-launcher-background> -->
 </resources>

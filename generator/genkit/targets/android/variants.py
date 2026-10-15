@@ -16,7 +16,6 @@ VARIANTS_DIR = Path(__file__).resolve().parents[3] / "variants"
 #: Feature → the variant directory used when it is off.
 VARIANTS: dict[str, str] = {
     "firebase": "firebase-off",
-    "googlefonts": "googlefonts-off",
 }
 
 

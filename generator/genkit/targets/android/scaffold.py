@@ -230,18 +230,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import {pkg}.core.common.mvi.LoadState
+import {pkg}.core.designsystem.R as DesignSystemR
 import {pkg}.core.designsystem.component.container.AppCard
 import {pkg}.core.designsystem.component.container.AppScaffold
-import {pkg}.core.designsystem.component.feedback.AppEmptyState
-import {pkg}.core.designsystem.component.feedback.AppErrorState
-import {pkg}.core.designsystem.component.feedback.AppSkeletonListItem
-import {pkg}.core.designsystem.component.navigation.AppLargeTitle
+import {pkg}.core.designsystem.component.feedback.AppRedacted
+import {pkg}.core.designsystem.component.feedback.AppStateView
+import {pkg}.core.designsystem.component.feedback.StateKind
+import {pkg}.core.designsystem.component.navigation.AppLargeTitleTopBar
+import {pkg}.core.designsystem.component.navigation.scrolledFromTop
 import {pkg}.core.designsystem.component.text.AppText
+import {pkg}.core.designsystem.foundation.chromeContentPadding
 import {pkg}.core.designsystem.theme.AppTheme
 import {pkg}.core.ui.asString
 import {pkg}.data.{name}.{class_name}Item
@@ -253,57 +259,89 @@ fun {class_name}Screen(
     onEvent: ({class_name}Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {{
+    val listState = rememberLazyListState()
     AppScaffold(
         modifier = modifier,
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
-        topBar = {{ AppLargeTitle(title = stringResource(R.string.{name}_title)) }},
+        topBar = {{
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.{name}_title),
+                scrolled = {{ listState.scrolledFromTop() }},
+            )
+        }},
     ) {{
         when (val loadState = state.loadState) {{
-            is LoadState.Error -> AppErrorState(
+            is LoadState.Error -> AppStateView(
+                kind = if (loadState.isOffline) StateKind.Offline else StateKind.Error,
                 message = loadState.message.asString(),
-                isOffline = loadState.isOffline,
-                onRetry = {{ onEvent({class_name}Event.Retry) }},
+                onAction = {{ onEvent({class_name}Event.Retry) }},
             )
 
-            LoadState.Empty -> AppEmptyState(
+            LoadState.Empty -> AppStateView(
                 title = stringResource(R.string.{name}_empty_title),
                 message = stringResource(R.string.{name}_empty_message),
                 actionLabel = stringResource(R.string.{name}_reload),
                 onAction = {{ onEvent({class_name}Event.Retry) }},
             )
 
-            LoadState.Loading, LoadState.Idle -> LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(AppTheme.spacing.gutter),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
-            ) {{
-                items(SKELETON_ROWS) {{ AppCard {{ AppSkeletonListItem(showLeading = false) }} }}
-            }}
+            LoadState.Loading, LoadState.Idle -> LoadingList()
 
             else -> LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(AppTheme.spacing.gutter),
+                state = listState,
+                contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {{
                 // Keyed on the id so inserts keep scroll position.
                 items(items = state.items, key = {class_name}Item::id) {{ item ->
-                    AppCard(
-                        onClick = {{ onEvent({class_name}Event.ItemClicked(item.id)) }},
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {{
-                        AppText(
-                            text = item.title,
-                            style = AppTheme.typography.titleLarge,
-                            color = AppTheme.colors.contentPrimary,
-                        )
-                    }}
+                    {class_name}Row(item = item, onClick = {{ onEvent({class_name}Event.ItemClicked(item.id)) }})
                 }}
             }}
         }}
     }}
 }}
 
-private const val SKELETON_ROWS = 6
+@Composable
+private fun {class_name}Row(item: {class_name}Item, onClick: () -> Unit) {{
+    AppCard(onClick = onClick, modifier = Modifier.fillMaxWidth()) {{
+        AppText(
+            text = item.title,
+            style = AppTheme.typography.headline,
+            color = AppTheme.colors.contentPrimary,
+        )
+    }}
+}}
+
+/**
+ * The real rows, redacted, in a list with the loaded list's padding: the first row starts where the
+ * first loaded row will, and the swap to content moves nothing.
+ *
+ * It keeps a list state of its own. A state's item animations follow the rows it laid out last, so
+ * on a shared one, whenever both lists were on screen, as in a cross-fade, the loaded rows would be
+ * compared with these placeholders and every one that animates would fade in as new.
+ */
+@Composable
+private fun LoadingList() {{
+    val loading = stringResource(DesignSystemR.string.designsystem_loading)
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .clearAndSetSemantics {{ contentDescription = loading }},
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+        userScrollEnabled = false,
+    ) {{
+        items(PlaceholderRows) {{
+            AppRedacted(active = true) {{ {class_name}Row(item = Placeholder, onClick = {{}}) }}
+        }}
+    }}
+}}
+
+/** Enough for the tallest window; a lazy list composes only the rows that show. */
+private const val PlaceholderRows = 12
+
+// Never drawn or read out: AppRedacted draws a bone in place of the title, so only its length matters.
+private val Placeholder = {class_name}Item(-1, "Placeholder title")
 
 @Preview(showBackground = true)
 @Composable

@@ -2,8 +2,10 @@ key = "catalog"
 title = "Component catalog app"
 headline = "A second app showing every component"
 description = """
-A second installable app showing every component in both themes. Depends on the design system
-alone, so design work rebuilds two modules instead of the whole graph."""
+A second installable app showing every component and token, in the project's own design and
+motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion
+live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what
+each interaction costs. Depends on the design system alone, so design work rebuilds two modules."""
 group = "Design"
 default = true
 requires = []

@@ -25,7 +25,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.appClickable
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
 
@@ -84,17 +85,17 @@ private fun DraggableBadge(label: String, onClick: () -> Unit) {
                             .coerceIn(0f, (bounds.height - badge.height).coerceAtLeast(0).toFloat())
                     }
                 }
+                .pressable(onClick = onClick, feedback = PressFeedback.Scale)
                 .background(
                     color = AppTheme.colors.warning.content,
                     shape = RoundedCornerShape(percent = ROUNDED_PERCENT),
                 )
-                .appClickable(onClick = onClick, minTouchTarget = 0.dp)
                 .padding(horizontal = AppTheme.spacing.sm, vertical = AppTheme.spacing.xs)
                 .semantics { contentDescription = "$label build. Opens the developer inspector." },
         ) {
             AppText(
                 text = label,
-                style = AppTheme.typography.labelSmall,
+                style = AppTheme.typography.caption2,
                 color = Color.White,
             )
         }

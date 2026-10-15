@@ -114,7 +114,7 @@ fun AppShell(
     val hidesBar = remember(config.hideBarOnPush, state) {
         { key: AppNavKey -> key is FullScreenKey || (config.hideBarOnPush && key !in state.rootKeys) }
     }
-    val window = AppTheme.windowSize
+    val window = AppTheme.windowClass
     val chrome = chromeFor(window.width, window.height, state.sidebarOpen)
     SideEffect { state.useChrome(window, chrome) }
     val labels = tabs.map { stringResource(it.label) }

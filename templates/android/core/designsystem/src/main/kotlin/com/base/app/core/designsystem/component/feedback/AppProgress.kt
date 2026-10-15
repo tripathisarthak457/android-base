@@ -1,204 +1,141 @@
 package com.base.app.core.designsystem.component.feedback
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
-import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.foundation.LocalContentColor
+import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.theme.AppTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlin.math.roundToInt
 
-/** A spinner: a track ring with a single arc travelling around it. */
+/**
+ * iOS's activity indicator: eight spokes, the brightest stepping round. It steps rather than spins,
+ * so it redraws eight times a revolution, not every frame, and it stops when its screen is hidden.
+ * Its motion is the message, so it keeps turning with motion reduced, at half the pace.
+ */
 @Composable
-fun AppCircularProgress(
+fun AppActivityIndicator(
     modifier: Modifier = Modifier,
     size: Dp = 20.dp,
-    strokeWidth: Dp = 2.dp,
-    color: Color = LocalContentColor.current,
-    trackAlpha: Float = 0.20f,
+    color: Color = AppTheme.colors.contentSecondary,
 ) {
-    val transition = rememberInfiniteTransition(label = "spinner")
-    val angle by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(ROTATION_MILLIS, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart,
-        ),
-        label = "angle",
-    )
-
-    Canvas(modifier = modifier.size(size)) {
-        val stroke = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round)
-        val inset = strokeWidth.toPx() / 2f
-        val arcSize = Size(this.size.width - inset * 2, this.size.height - inset * 2)
-        val topLeft = Offset(inset, inset)
-
-        drawArc(
-            color = color.copy(alpha = trackAlpha),
-            startAngle = 0f,
-            sweepAngle = 360f,
-            useCenter = false,
-            topLeft = topLeft,
-            size = arcSize,
-            style = stroke,
-        )
-        drawArc(
-            color = color,
-            startAngle = angle - 90f,
-            sweepAngle = SWEEP_DEGREES,
-            useCenter = false,
-            topLeft = topLeft,
-            size = arcSize,
-            style = stroke,
-        )
+    var head by remember { mutableIntStateOf(0) }
+    val visible = LocalTabVisible.current
+    val step = if (AppTheme.reduceMotion) StepMillis * 2 else StepMillis
+    if (visible) {
+        LaunchedEffect(step) {
+            while (true) {
+                delay(step)
+                head = (head + 1) % ActivitySpokes
+            }
+        }
     }
-}
-
-/** The same ring, showing a known fraction. [progress] is coerced, so a caller cannot overdraw. */
-@Composable
-fun AppCircularProgress(
-    progress: Float,
-    modifier: Modifier = Modifier,
-    size: Dp = 20.dp,
-    strokeWidth: Dp = 2.dp,
-    color: Color = AppTheme.colors.accent,
-    trackAlpha: Float = 0.20f,
-) {
-    val target = progress.coerceIn(0f, 1f)
-    val animated by animateFloatAsState(
-        targetValue = target,
-        animationSpec = tween(AppTheme.motion.medium),
-        label = "progress",
-    )
-
-    Canvas(
-        modifier = modifier
-            .size(size)
-            .semantics { progressBarRangeInfo = ProgressBarRangeInfo(target, 0f..1f) },
-    ) {
-        val stroke = Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Round)
-        val inset = strokeWidth.toPx() / 2f
-        val arcSize = Size(this.size.width - inset * 2, this.size.height - inset * 2)
-        val topLeft = Offset(inset, inset)
-
-        drawArc(
-            color = color.copy(alpha = trackAlpha),
-            startAngle = 0f,
-            sweepAngle = 360f,
-            useCenter = false,
-            topLeft = topLeft,
-            size = arcSize,
-            style = stroke,
-        )
-        drawArc(
+    val description = stringResource(R.string.designsystem_loading)
+    // Its own layer, so each step redraws the indicator and not everything around it.
+    Canvas(modifier.size(size).graphicsLayer().semantics { contentDescription = description }) {
+        drawActivitySpokes(
+            center = Offset(this.size.width / 2f, this.size.height / 2f),
+            radius = this.size.minDimension / 2f,
             color = color,
-            startAngle = -90f,
-            sweepAngle = 360f * animated,
-            useCenter = false,
-            topLeft = topLeft,
-            size = arcSize,
-            style = stroke,
+            head = head,
         )
     }
 }
 
 /**
- * A determinate bar. Fully rounded at both ends, including at very low progress — a fill that
- * starts as a square sliver and becomes rounded once it is wide enough looks like a rendering bug,
- * so the fill is never drawn narrower than its own height.
+ * The activity indicator's spokes, shared by [AppActivityIndicator] and pull to refresh so the
+ * spinner a pull reveals is the one that then turns. With [head] null the spokes are still, the
+ * first [revealed] of them shown at the brightest spoke's alpha; otherwise they fade behind [head].
+ * The geometry is iOS's: spokes from a third of the radius to its edge, a fifth of it wide.
+ */
+internal fun DrawScope.drawActivitySpokes(
+    center: Offset,
+    radius: Float,
+    color: Color,
+    head: Int?,
+    revealed: Int = ActivitySpokes,
+    alpha: Float = 1f,
+) {
+    val width = radius / 5f
+    for (i in 0 until revealed.coerceAtMost(ActivitySpokes)) {
+        val spokeAlpha = if (head == null) SpokeAlphas[0] else SpokeAlphas[(head - i).mod(ActivitySpokes)]
+        rotate(degrees = i * 360f / ActivitySpokes, pivot = center) {
+            drawLine(
+                color = color,
+                start = Offset(center.x, center.y - radius / 3f - width / 2f),
+                end = Offset(center.x, center.y - radius + width / 2f),
+                strokeWidth = width,
+                cap = StrokeCap.Round,
+                alpha = spokeAlpha * alpha,
+            )
+        }
+    }
+}
+
+internal const val ActivitySpokes = 8
+
+/** Newest to oldest, as iOS fades the trail behind the brightest spoke. */
+private val SpokeAlphas = floatArrayOf(147f, 122f, 97f, 72f, 47f, 47f, 47f, 47f).map { it / 255f }.toFloatArray()
+
+/**
+ * A determinate bar. The fill glides to each new value of [progress] on the layout spring. The
+ * value is read as a lambda, so a download moving the bar on every frame redraws it without
+ * recomposing anything; a screen reader hears it in steps of five percent.
  */
 @Composable
 fun AppLinearProgress(
-    progress: Float,
+    progress: () -> Float,
     modifier: Modifier = Modifier,
-    height: Dp = 6.dp,
     color: Color = AppTheme.colors.accent,
-    trackColor: Color = AppTheme.colors.surfaceVariant,
+    trackColor: Color = AppTheme.colors.fill,
 ) {
-    val target = progress.coerceIn(0f, 1f)
-    val animated by animateFloatAsState(
-        targetValue = target,
-        animationSpec = tween(AppTheme.motion.medium, easing = AppTheme.motion.standard),
-        label = "linearProgress",
-    )
-
-    Canvas(
-        modifier = modifier
-            .height(height)
-            .semantics { progressBarRangeInfo = ProgressBarRangeInfo(target, 0f..1f) },
-    ) {
+    val springs = AppTheme.springs
+    val current by rememberUpdatedState(progress)
+    val shown = remember { Animatable(Snapshot.withoutReadObservation { current().coerceIn(0f, 1f) }) }
+    LaunchedEffect(shown, springs) {
+        snapshotFlow { current().coerceIn(0f, 1f) }.collectLatest { shown.animateTo(it, springs.layout.unit) }
+    }
+    val announced by remember { derivedStateOf { (current().coerceIn(0f, 1f) * AnnouncedSteps).roundToInt() / AnnouncedSteps } }
+    Canvas(modifier.fillMaxWidth().height(4.dp).progressSemantics(announced)) {
         val radius = CornerRadius(size.height / 2f)
-        drawRoundRect(color = trackColor, size = size, cornerRadius = radius)
-        if (animated > 0f) {
-            drawRoundRect(
-                color = color,
-                size = Size(
-                    width = (size.width * animated).coerceAtLeast(size.height),
-                    height = size.height,
-                ),
-                cornerRadius = radius,
-            )
+        drawRoundRect(trackColor, cornerRadius = radius)
+        val width = size.width * shown.value
+        if (width > 0f) {
+            val start = if (layoutDirection == LayoutDirection.Rtl) size.width - width else 0f
+            drawRoundRect(color, topLeft = Offset(start, 0f), size = Size(width, size.height), cornerRadius = radius)
         }
     }
 }
 
-/** An indeterminate bar: a fixed-width segment sweeping the track. */
-@Composable
-fun AppLinearProgress(
-    modifier: Modifier = Modifier,
-    height: Dp = 6.dp,
-    color: Color = AppTheme.colors.accent,
-    trackColor: Color = AppTheme.colors.surfaceVariant,
-) {
-    val transition = rememberInfiniteTransition(label = "linearIndeterminate")
-    val head by transition.animateFloat(
-        initialValue = -SEGMENT_FRACTION,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(SWEEP_MILLIS, easing = AppTheme.motion.standard),
-            repeatMode = RepeatMode.Restart,
-        ),
-        label = "head",
-    )
-
-    Canvas(modifier = modifier.height(height)) {
-        val radius = CornerRadius(size.height / 2f)
-        drawRoundRect(color = trackColor, size = size, cornerRadius = radius)
-
-        val start = (head * size.width).coerceAtLeast(0f)
-        val end = ((head + SEGMENT_FRACTION) * size.width).coerceAtMost(size.width)
-        if (end > start) {
-            drawRoundRect(
-                color = color,
-                topLeft = Offset(start, 0f),
-                size = Size((end - start).coerceAtLeast(size.height), size.height),
-                cornerRadius = radius,
-            )
-        }
-    }
-}
-
-private const val ROTATION_MILLIS = 900
-private const val SWEEP_DEGREES = 110f
-private const val SWEEP_MILLIS = 1200
-private const val SEGMENT_FRACTION = 0.35f
+private const val AnnouncedSteps = 20f
+private const val StepMillis = 125L

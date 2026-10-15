@@ -1,0 +1,17 @@
+key = "datadisplay"
+title = "Data display"
+headline = "Show numbers, charts and tables"
+description = """
+Stat tiles with a trend, a sparkline and a bar chart drawn in one pass each, key-value grids, a
+timeline, a data table with sticky totals and measured column widths, an animated counter and a
+star rating."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/component/datadisplay",
+  "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/component/datadisplay",
+  "catalog/src/main/kotlin/{pkg_path}/catalog/sections/CatalogData.kt",
+]
+legacy = []

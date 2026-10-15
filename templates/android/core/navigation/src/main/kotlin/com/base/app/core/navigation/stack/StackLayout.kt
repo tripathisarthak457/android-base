@@ -33,7 +33,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation3.runtime.NavEntry
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.R
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
+import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.foundation.layout.LocalPaneContext
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.foundation.layout.PaneContext
@@ -157,7 +157,7 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
             .background(background)
     }
     Box(draw) {
-        AppEmptyState(
+        AppStateView(
             title = stringResource(R.string.designsystem_nothing_selected),
             message = stringResource(R.string.designsystem_nothing_selected_message),
             icon = AppIcons.ListView,

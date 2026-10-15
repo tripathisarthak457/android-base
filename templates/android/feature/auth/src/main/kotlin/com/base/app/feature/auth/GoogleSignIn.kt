@@ -1,6 +1,7 @@
 package com.base.app.feature.auth
 
 import android.content.Context
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,11 +56,10 @@ internal fun GoogleSignInButton(
                 busy = false
             }
         },
-        modifier = modifier,
-        variant = ButtonVariant.Secondary,
+        modifier = modifier.fillMaxWidth(),
+        variant = ButtonVariant.Tinted,
         enabled = enabled,
         loading = busy,
-        fillWidth = true,
     )
 }
 

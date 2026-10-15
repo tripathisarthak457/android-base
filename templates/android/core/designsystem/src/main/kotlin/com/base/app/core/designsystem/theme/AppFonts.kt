@@ -1,20 +1,21 @@
 package com.base.app.core.designsystem.theme
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontFamily
+// <opt:googlefonts>
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.theme.tokens.DesignTokens
+// </opt:googlefonts>
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.withTimeoutOrNull
 
 /**
- * The two typefaces the app draws with, chosen by name.
- *
- * ```
- * AppTheme(fontName = "Manrope") { … }
- * ```
+ * The two typefaces the app draws with: a sans for everything and a mono for codes and figures that
+ * are read digit by digit.
  */
 @Immutable
 data class AppFonts(
@@ -22,11 +23,9 @@ data class AppFonts(
     val mono: FontFamily,
 )
 
-/** The defaults. */
-object AppFontNames {
-    const val Sans = "DM Sans"
-    const val Mono = "JetBrains Mono"
-}
+/** What a preview, a test, or a process whose fonts did not arrive in time draws with. */
+val PlatformFonts = AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
+// <opt:googlefonts>
 
 private val Provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
@@ -34,40 +33,78 @@ private val Provider = GoogleFont.Provider(
     certificates = R.array.com_google_android_gms_fonts_certs,
 )
 
-/** The weights [AppTypography] actually asks for. Requesting more downloads files nothing uses. */
-private val SansWeights = listOf(
-    FontWeight.Normal,
-    FontWeight.Medium,
-    FontWeight.SemiBold,
-    FontWeight.Bold,
-    FontWeight.ExtraBold,
-)
-
-private val MonoWeights = listOf(
-    FontWeight.Normal,
-    FontWeight.Medium,
-    FontWeight.SemiBold,
-)
-
-/** A downloadable family. */
 private fun googleFamily(name: String, weights: List<FontWeight>): FontFamily {
     val font = GoogleFont(name, bestEffort = true)
-    return FontFamily(
-        weights.map { weight -> Font(googleFont = font, fontProvider = Provider, weight = weight) },
-    )
+    return FontFamily(weights.map { weight -> Font(googleFont = font, fontProvider = Provider, weight = weight) })
+}
+// </opt:googlefonts>
+
+/**
+ * Decides once per process whether the theme draws with the families it was given.
+ *
+ * A downloaded family renders the platform font first and swaps when the file arrives, reflowing
+ * text someone is already reading. So the families are fetched while the splash is up, and used
+ * only if that finished inside the budget. Otherwise the platform families stay for the whole
+ * process, and the downloaded ones, cached on the device by then, apply from the next cold start.
+ * Main thread only.
+ */
+class FontPreload(private val downloaded: AppFonts) {
+    private var arrived = false
+    private var chosen: AppFonts? = null
+
+    /** Fetches the families, waiting at most [budget]. True when the theme will draw with them. */
+    suspend fun run(resolver: FontFamily.Resolver, budget: Duration = PreloadBudget): Boolean =
+        run(budget) { resolver.preload(it) }
+
+    internal suspend fun run(budget: Duration, load: suspend (FontFamily) -> Unit): Boolean {
+        chosen?.let { return it === downloaded }
+        arrived = withTimeoutOrNull(budget) {
+            load(downloaded.sans)
+            load(downloaded.mono)
+        } != null
+        return arrived
+    }
+
+    /** The families to draw with, fixed the first time anything asks. */
+    val fonts: AppFonts
+        get() = chosen ?: (if (arrived) downloaded else PlatformFonts).also { chosen = it }
 }
 
-/** Resolves the two families for [fontName] and [monoFontName], once per name. */
-@Composable
-fun rememberAppFonts(
-    fontName: String = AppFontNames.Sans,
-    monoFontName: String = AppFontNames.Mono,
-): AppFonts = remember(fontName, monoFontName) {
+/**
+ * The longest the splash waits for fonts. Past this, a slower network costs a launch in the
+ * platform font rather than a blank screen.
+ */
+val PreloadBudget: Duration = 150.milliseconds
+// <opt:googlefonts>
+
+/**
+ * The app's preload: the startup gate runs it, and [AppTheme] draws with its answer. It downloads
+ * exactly the weights the design style's type voice uses.
+ */
+val AppFontPreload = FontPreload(
     AppFonts(
-        sans = googleFamily(fontName, SansWeights),
-        mono = googleFamily(monoFontName, MonoWeights),
-    )
-}
+        sans = googleFamily(DesignTokens.Defaults.fontName, sansWeights(AppTheme.defaults.designStyle.style().voice)),
+        mono = googleFamily(DesignTokens.Defaults.monoFontName, MonoWeights),
+    ),
+)
+// </opt:googlefonts>
+// <opt-else:googlefonts>
+//~
+//~ /**
+//~  * The app's preload: the startup gate runs it, and [AppTheme] draws with its answer. This project
+//~  * draws with the platform's families, so there is nothing to fetch. To bundle a typeface, pass it
+//~  * here and the theme picks it up with the same no-reflow rule:
+//~  *
+//~  * ```
+//~  * val AppFontPreload = FontPreload(
+//~  *     AppFonts(
+//~  *         sans = FontFamily(Font(R.font.brand_regular, FontWeight.Normal), Font(R.font.brand_bold, FontWeight.Bold)),
+//~  *         mono = FontFamily.Monospace,
+//~  *     ),
+//~  * )
+//~  * ```
+//~  */
+//~ val AppFontPreload = FontPreload(PlatformFonts)
+// </opt-else:googlefonts>
 
-/** What a preview, a test, or a first frame draws with before a downloaded family resolves. */
-val PlatformFonts = AppFonts(sans = FontFamily.SansSerif, mono = FontFamily.Monospace)
+internal fun themeFonts(): AppFonts = AppFontPreload.fonts

@@ -32,9 +32,9 @@ import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppDivider
-import com.base.app.core.designsystem.component.container.AppListItem
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
+import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.component.feedback.AppStatusPill
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
@@ -80,7 +80,7 @@ fun DevToolsPanel(
 
             AppSegmentedControl(
                 options = TABS,
-                selectedIndex = tab,
+                selected = tab,
                 onSelect = { tab = it },
                 modifier = Modifier.padding(horizontal = AppTheme.spacing.lg),
             )
@@ -112,13 +112,13 @@ private fun PanelHeader(title: String, onBack: (() -> Unit)?, onClose: () -> Uni
             AppButton(
                 text = "Back",
                 onClick = onBack,
-                variant = ButtonVariant.Ghost,
+                variant = ButtonVariant.Plain,
                 size = ButtonSize.Small,
             )
         }
         AppText(
             text = title,
-            style = AppTheme.typography.headingSmall,
+            style = AppTheme.typography.headline,
             color = AppTheme.colors.contentPrimary,
             modifier = Modifier.weight(1f),
             maxLines = 1,
@@ -127,7 +127,7 @@ private fun PanelHeader(title: String, onBack: (() -> Unit)?, onClose: () -> Uni
         AppButton(
             text = "Close",
             onClick = onClose,
-            variant = ButtonVariant.Secondary,
+            variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
         )
     }
@@ -140,7 +140,7 @@ private fun RequestList(
     onClear: () -> Unit,
 ) {
     if (exchanges.isEmpty()) {
-        AppEmptyState(
+        AppStateView(
             title = "No requests yet",
             message = "Anything the app sends will appear here, newest first.",
         )
@@ -153,9 +153,9 @@ private fun RequestList(
     ) {
         items(exchanges, key = { it.id }) { exchange ->
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = exchange.method + "  " + exchange.path,
-                    supporting = exchange.durationMillis.toString() + " ms  ·  " +
+                    subtitle = exchange.durationMillis.toString() + " ms  ·  " +
                         (exchange.responseBytes / BYTES_PER_KB).toString() + " kB  ·  " +
                         timeOf(exchange.startedAtMillis),
                     onClick = { onSelect(exchange) },
@@ -168,9 +168,8 @@ private fun RequestList(
             AppButton(
                 text = "Clear",
                 onClick = onClear,
-                variant = ButtonVariant.Secondary,
-                fillWidth = true,
-                modifier = Modifier.padding(top = AppTheme.spacing.md),
+                variant = ButtonVariant.Tinted,
+                modifier = Modifier.padding(top = AppTheme.spacing.md).fillMaxWidth(),
             )
         }
     }
@@ -231,7 +230,7 @@ private fun StatRow(label: String, value: String) {
     ) {
         AppText(
             text = label,
-            style = AppTheme.typography.bodyMedium,
+            style = AppTheme.typography.callout,
             color = AppTheme.colors.contentSecondary,
             modifier = Modifier.weight(1f),
         )
@@ -277,7 +276,7 @@ private fun Section(title: String, body: String?) {
     if (body.isNullOrBlank()) return
     AppText(
         text = title,
-        style = AppTheme.typography.labelSmall,
+        style = AppTheme.typography.caption2,
         color = AppTheme.colors.contentTertiary,
     )
     AppMonoText(
