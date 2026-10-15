@@ -65,7 +65,7 @@ internal fun StackLayout(
     // what changes on a transition's first and last frames anyway, so it adds no composition.
     val sliding = plan.slide != Slide.None && scene.settled !== plan
     val rate = if (sliding || scene.card.active) FrameRateCategory.High else FrameRateCategory.Default
-    val panes = remember(plan, shown) { paneContexts(plan, shown) }
+    val panes = rememberPaneContexts(plan, shown)
     Layout(
         modifier = modifier.preferredFrameRate(rate),
         content = {
@@ -172,10 +172,30 @@ private fun DrawScope.drawPaneDivider(color: Color) {
 }
 
 /**
+ * Each shown entry's pane, kept for an entry sliding off the stack: it is no longer in a page, but
+ * [LocalPaneContext] is a static local, and giving it another value would compose the whole leaving
+ * screen again in the first frame of its pop, the frame that has to start the slide.
+ */
+@Composable
+private fun rememberPaneContexts(plan: StackPlan, shown: List<NavEntry<AppNavKey>>): Map<Any, PaneContext> {
+    val kept = remember { HashMap<Any, PaneContext>() }
+    return remember(plan, shown) {
+        val contexts = paneContexts(plan, shown)
+        shown.forEach { entry ->
+            val key = entry.contentKey
+            if (key !in contexts) kept[key]?.let { contexts[key] = it }
+        }
+        kept.clear()
+        kept.putAll(contexts)
+        contexts
+    }
+}
+
+/**
  * Each shown entry's pane: its role, whether another pane of its page shares the window, how many
  * details deep it is, and, for a list, the key of the detail open beside it.
  */
-private fun paneContexts(plan: StackPlan, shown: List<NavEntry<AppNavKey>>): Map<Any, PaneContext> {
+private fun paneContexts(plan: StackPlan, shown: List<NavEntry<AppNavKey>>): HashMap<Any, PaneContext> {
     val entries = shown.associateBy { it.contentKey }
     val contexts = HashMap<Any, PaneContext>(shown.size)
     for (page in plan.pages) {
