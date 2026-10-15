@@ -1349,6 +1349,26 @@
       }
     },
     {
+      "name": "keystore password short in characters, long in UTF-16 units",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "🔑🔑🔑"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "alias that reads as a flag",
       "valid": false,
       "field": "android.keystores",
