@@ -51,7 +51,7 @@ class ResizeContinuityTest {
         // How many times each screen was built: a second build is a screen that lost its state.
         val builds = mutableMapOf<AppNavKey, Int>()
         val registry = testRegistry { key ->
-            remember { builds[key] = (builds[key] ?: 0) + 1 }
+            remember { builds.merge(key, 1, Int::plus) }
             Screen(key)
         }
         lateinit var state: ShellState
