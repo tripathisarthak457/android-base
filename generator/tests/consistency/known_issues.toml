@@ -19,11 +19,6 @@ owner = "WP04"
 why = "the imports sit outside the <opt:> blocks of the tabs that use them"
 
 [[issue]]
-match = "^UNUSED-IMPORT app/src/main/kotlin/\\{pkg\\}/di/FeatureBindingsModule\\.kt: \\{package\\}\\.ui\\.AppDestinations$"
-owner = "WP02"
-why = "only some of the bindings that read AppDestinations survive a given feature set"
-
-[[issue]]
 match = "^UNUSED-IMPORT feature/profile/src/main/kotlin/\\{pkg\\}/feature/profile/ProfileScreen\\.kt: androidx\\.compose\\.foundation\\.layout\\.Row$"
 owner = "WP02"
 why = "Row is used only by the media-picker block"

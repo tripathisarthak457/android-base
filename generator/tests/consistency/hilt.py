@@ -18,7 +18,7 @@ _PROVIDER = re.compile(
     r"@(Provides|Binds)\b((?:\s*@\w+(?:\([^)]*\))?)*)\s*(?:(?:internal|public|abstract|suspend)\s+)*fun\s+(\w+)\s*\("
 )
 _MULTIBINDS = re.compile(r"@Multibinds\s*(?:abstract\s+)?fun\s+\w+\(\)\s*:\s*([\w.<>, ?]+)")
-_FIELD = re.compile(r"@Inject\s+(?:lateinit\s+)?(?:internal\s+)?var\s+\w+\s*:\s*([\w.<>, ?]+)")
+_FIELD = re.compile(r"@Inject\s+(?:lateinit\s+)?(?:internal\s+)?var\s+\w+\s*:\s*([\w.<>, ?@]+)")
 
 
 def _parameters(signature: str) -> list[str]:

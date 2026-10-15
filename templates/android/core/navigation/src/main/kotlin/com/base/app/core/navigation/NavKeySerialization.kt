@@ -1,14 +1,14 @@
 package com.base.app.core.navigation
 
 import com.base.app.core.common.navigation.AppNavKey
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.PolymorphicModuleBuilder
 import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.plus
 import kotlinx.serialization.modules.polymorphic
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Declares a feature's navigation keys so the back stack can be restored after process death.
@@ -28,7 +28,7 @@ fun navKeys(builder: PolymorphicModuleBuilder<AppNavKey>.() -> Unit): Serializer
     }
 
 /** The [Json] the back stack is written with, assembled from every feature's [navKeys]. */
-@Singleton
+@ActivityRetainedScoped
 class NavKeySerialization @Inject constructor(
     modules: Set<@JvmSuppressWildcards SerializersModule>,
 ) {
@@ -38,6 +38,8 @@ class NavKeySerialization @Inject constructor(
         }
         ignoreUnknownKeys = true
         encodeDefaults = true
-        classDiscriminator = "key"
+        // Not a name a key's own property could have: a key with a `key` property made the whole
+        // stack fail to encode, and the app came back from the background without it.
+        classDiscriminator = "#type"
     }
 }

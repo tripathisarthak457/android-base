@@ -23,6 +23,9 @@ import com.base.app.feature.settings.api.SettingsKey
 // <opt:auth>
 import com.base.app.feature.auth.api.SignInKey
 // </opt:auth>
+// <opt:onboarding>
+import com.base.app.feature.onboarding.api.OnboardingKey
+// </opt:onboarding>
 
 /** The app's shape, in one file. */
 object AppDestinations {
@@ -58,16 +61,20 @@ object AppDestinations {
     /** Where an unauthenticated launch lands, and where sign-out returns to. */
     val signIn: AppNavKey = resolveSignIn()
 
-    /**
-     * Where onboarding hands off. The same place: onboarding runs before sign-in, and cannot name
-     * the next screen itself without depending on whichever feature owns it.
-     */
-    val afterOnboarding: AppNavKey get() = signIn
+    /** Where a first launch starts. */
+    val onboarding: AppNavKey = resolveOnboarding()
 
     private fun resolveSignIn(): AppNavKey {
         // <opt:auth>
         return SignInKey
         // </opt:auth>
         // <opt:!auth>        return start
+    }
+
+    private fun resolveOnboarding(): AppNavKey {
+        // <opt:onboarding>
+        return OnboardingKey
+        // </opt:onboarding>
+        // <opt:!onboarding>        return start
     }
 }

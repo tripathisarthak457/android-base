@@ -35,6 +35,7 @@ import com.base.app.core.designsystem.component.selection.AppSwitch
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
@@ -233,7 +234,7 @@ internal fun SettingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = AppTheme.spacing.gutter),
+                .padding(chromeContentPadding(PaddingValues(horizontal = AppTheme.spacing.gutter))),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
             AppSectionHeader(title = stringResource(R.string.settings_appearance))

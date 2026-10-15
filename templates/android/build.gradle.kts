@@ -17,9 +17,9 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     // </opt:firebase>
-    // <opt:baselineprofile>
+    // <opt:performance>
     alias(libs.plugins.baselineprofile) apply false
-    // </opt:baselineprofile>
+    // </opt:performance>
     // <opt:coverage>
     // Applied here rather than `apply false`: the root project is where the merged report is
     // assembled, so it needs the plugin itself and not just the version.

@@ -194,14 +194,14 @@ internal class SignUpViewModel @Inject constructor(
 @Composable
 internal fun SignUpRoute(
     navigator: AppNavigator,
-    onSignedUp: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
-                SignUpEffect.SignedUp -> onSignedUp()
+                // As with sign-in, the new session itself moves the app on.
+                SignUpEffect.SignedUp -> Unit
                 SignUpEffect.NavigateBack -> navigator.navigateUp()
             }
         },

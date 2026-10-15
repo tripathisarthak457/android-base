@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
@@ -28,8 +29,10 @@ import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
 import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.navigation.ScrollToTopOnReselect
 import com.base.app.core.ui.text
 import com.base.app.data.sample.api.SampleItem
 import com.base.app.feature.sample.R
@@ -114,11 +117,14 @@ private fun Content(
                 return@Column
             }
 
+            val listState = rememberLazyListState()
+            ScrollToTopOnReselect(listState)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .testTag("primary_list"),
-                contentPadding = PaddingValues(AppTheme.spacing.gutter),
+                state = listState,
+                contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             ) {
                 // Keyed on the id so inserts keep scroll position and animations.
@@ -142,7 +148,7 @@ private fun Content(
 private fun LoadingList() {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(AppTheme.spacing.gutter),
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
     ) {
         items(SKELETON_ROWS) {

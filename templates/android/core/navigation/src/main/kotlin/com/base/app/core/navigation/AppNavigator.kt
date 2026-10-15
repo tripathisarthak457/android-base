@@ -1,11 +1,13 @@
 package com.base.app.core.navigation
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.base.app.core.common.navigation.AppNavKey
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /** What a ViewModel can ask navigation to do. */
 sealed interface NavCommand {
@@ -34,14 +36,22 @@ sealed interface NavCommand {
     data class PopTo(val key: AppNavKey, val inclusive: Boolean = false) : NavCommand
 }
 
-/** The seam between "a ViewModel decided to navigate" and "the back stack changed". */
-@Singleton
+/**
+ * The seam between "a ViewModel decided to navigate" and "the back stack changed". One per window
+ * (activity), kept across its configuration changes: two windows of the app, side by side or in
+ * desktop mode, each navigate on their own.
+ */
+@ActivityRetainedScoped
 class AppNavigator @Inject constructor() {
 
     private val _commands = Channel<NavCommand>(Channel.BUFFERED)
     val commands: Flow<NavCommand> = _commands.receiveAsFlow()
 
-    /** Not `suspend`, unlike the obvious design. */
+    /*
+     * Not suspending, so a click handler can call these directly. The channel buffers, and the
+     * shell applies commands one at a time, after any transition that is running has settled.
+     */
+
     fun navigate(
         key: AppNavKey,
         popUpTo: AppNavKey? = null,
@@ -61,5 +71,16 @@ class AppNavigator @Inject constructor() {
 
     fun popTo(key: AppNavKey, inclusive: Boolean = false) {
         _commands.trySend(NavCommand.PopTo(key, inclusive))
+    }
+}
+
+/**
+ * Hands the navigator's commands to [apply] while [lifecycle] is started, and keeps them waiting
+ * otherwise, so a command sent while the window is in the background is applied when it returns
+ * instead of moving a stack nobody sees.
+ */
+suspend fun AppNavigator.applyWhileStarted(lifecycle: Lifecycle, apply: suspend (NavCommand) -> Unit) {
+    lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        commands.collect { apply(it) }
     }
 }

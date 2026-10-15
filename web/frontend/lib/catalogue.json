@@ -1,5 +1,5 @@
 {
-  "generator_commit": "d549b2ac9151",
+  "generator_commit": "004f28e525ac",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -513,7 +513,7 @@
         },
         {
           "default": true,
-          "description": "A custom scheme plus verified App Links, resolved through one function, with the onNewIntent handling that is usually missing.",
+          "description": "A custom scheme plus verified App Links. Each feature maps its own links to a screen; a link is held until onboarding, sign-in and the startup checks are done, opens on the tab that owns the screen, and is never replayed from Recents or after rotation.",
           "group": "platform",
           "headline": "Open the app from a link",
           "implied_only": false,
@@ -668,23 +668,6 @@
         },
         {
           "default": false,
-          "description": "The tab bar blurs and bends the screen scrolling under it, with a lens that travels to a newly selected tab as a drop of glass and follows a drag across the tabs. Cards, chips and fields are drawn glass that samples nothing. The device picks a tier: live glass with the lens, live glass without it, frosted, or solid when someone turns on Reduce transparency. Battery saver, heat and a GPU that falls behind each step it down.",
-          "group": "design",
-          "headline": "Kyant backdrop glass on the tab bar, with automatic fallbacks",
-          "implied_only": false,
-          "implies": [],
-          "key": "liquidglass",
-          "licence": {
-            "name": "Kyant backdrop",
-            "spdx": "Apache-2.0",
-            "url": "https://github.com/Kyant0/AndroidLiquidGlass"
-          },
-          "platforms": [],
-          "requires": [],
-          "title": "Liquid glass chrome"
-        },
-        {
-          "default": false,
           "description": "An AppLottie component for raw, asset and URL animations, tintable to the theme and held on its last frame when the system's animations are off, with a success animation that plays when a password-reset link is sent.",
           "group": "design",
           "headline": "Play Lottie animations",
@@ -695,19 +678,6 @@
           "platforms": [],
           "requires": [],
           "title": "Lottie animations"
-        },
-        {
-          "default": false,
-          "description": "A profile generator and a macrobenchmark that measures cold start with and without it. Typically a 20-30% cut in cold start for no code change.",
-          "group": "build-and-quality",
-          "headline": "Cut cold-start time",
-          "implied_only": false,
-          "implies": [],
-          "key": "baselineprofile",
-          "licence": null,
-          "platforms": [],
-          "requires": [],
-          "title": "Baseline profile and startup benchmark"
         },
         {
           "default": false,
@@ -760,6 +730,19 @@
           "platforms": [],
           "requires": [],
           "title": "LeakCanary (debug only)"
+        },
+        {
+          "default": false,
+          "description": "A macrobenchmark module (cold and warm start, tab switch, push and pop, predictive back, rapid Back, scroll) that runs against the dev flavour, the baseline profile generator, tools/perf (one command that installs a release build, measures every journey on a connected phone and fails on the frame-time gates) and tools/adaptive (the app across window sizes, folds, a second window and the keyboard on an emulator). Every project ships the checked-in baseline profiles without it.",
+          "group": "build-and-quality",
+          "headline": "Measure smoothness on a real phone",
+          "implied_only": false,
+          "implies": [],
+          "key": "performance",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Performance harness"
         }
       ],
       "fields": [
@@ -1306,7 +1289,6 @@
             "analytics",
             "applock",
             "auth",
-            "baselineprofile",
             "browser",
             "catalog",
             "coil",
@@ -1324,12 +1306,12 @@
             "language",
             "leakcanary",
             "licenses",
-            "liquidglass",
             "lottie",
             "media",
             "network",
             "onboarding",
             "paging",
+            "performance",
             "playstore",
             "profile",
             "push",
