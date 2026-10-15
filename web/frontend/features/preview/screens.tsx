@@ -33,6 +33,8 @@ export function ScreenBody({ tab, options }: { tab: PreviewTab; options: ScreenO
       return <Settings options={options} />;
     case "module":
       return <Module title={tab.label} />;
+    case "more":
+      return <More listed={tab.listed ?? []} />;
   }
 }
 
@@ -251,6 +253,22 @@ function Module({ title }: { title: string }) {
           When there is something to show, it appears on this screen.
         </Text>
       </div>
+    </>
+  );
+}
+
+/** The shell's More list: the tabs the bar has no room for, each opening in place of the list. */
+function More({ listed }: { listed: readonly PreviewTab[] }) {
+  return (
+    <>
+      <LargeTitle title="More" />
+      <Column>
+        <Group>
+          {listed.map((tab) => (
+            <Row key={tab.key} icon={tab.icon} title={tab.label} />
+          ))}
+        </Group>
+      </Column>
     </>
   );
 }

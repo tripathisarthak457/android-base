@@ -58,11 +58,22 @@ test("colours with alpha are written the CSS way", () => {
   assert.equal(css("#735B8DEF"), "#5b8def73");
 });
 
-test("tabs follow the template's order, then modules, at most five", () => {
-  const plan = planTabs(new Set(["sample", "paging", "search", "profile", "settings"]), ["orders", "wallet"]);
-  assert.deepEqual(plan.tabs.map((tab) => tab.label), ["Home", "Feed", "Search", "Profile", "Settings"]);
-  assert.deepEqual(plan.overflow, ["Orders", "Wallet"]);
+test("tabs follow the generator's order: Home, the modules, then the template's other tabs", () => {
+  const plan = planTabs(new Set(["sample", "paging", "search", "settings"]), ["orders"]);
+  assert.deepEqual(plan.tabs.map((tab) => tab.label), ["Home", "Orders", "Feed", "Search", "Settings"]);
+  assert.deepEqual(plan.overflow, []);
+});
+
+test("past five tabs the bar shows four and More, which lists the rest", () => {
+  const features = new Set(["sample", "paging", "search", "profile", "settings"]);
+  const plan = planTabs(features, ["orders", "wallet"]);
   assert.equal(plan.tabs.length, MAX_TABS);
+  assert.deepEqual(plan.tabs.map((tab) => tab.label), ["Home", "Orders", "Wallet", "Feed", "More"]);
+  assert.deepEqual(plan.overflow.map((tab) => tab.label), ["Search", "Profile", "Settings"]);
+  assert.deepEqual(plan.tabs.at(-1)?.listed, plan.overflow);
+  assert.equal(plan.all.length, 7);
+  // Every listed tab stays a screen the preview can show, after the More list.
+  assert.deepEqual(screensFor(features, ["orders", "wallet"]).map((tab) => tab.key).slice(-4), ["more", "search", "profile", "settings"]);
 });
 
 test("scaffolded modules get distinct icons", () => {
