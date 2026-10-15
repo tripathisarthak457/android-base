@@ -1,19 +1,26 @@
 package com.base.app.core.designsystem.foundation.layout
 
+import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 
 /**
  * Height of floating chrome over one edge. The holder never changes; its value is snapshot state written with
@@ -35,6 +42,13 @@ val LocalBottomChrome = staticCompositionLocalOf { ChromeInset() }
  * screens composed during a push or pop never write the same state.
  */
 val LocalTopChrome = staticCompositionLocalOf { ChromeInset() }
+
+/**
+ * The top bar of the settled screen in front, for the whole window, the way [LocalBottomChrome] publishes the
+ * bottom: an overlay above the navigation hosts (a debug badge, a banner) keeps clear of a large title and its
+ * search field with it. Written only by the shell, from [ScreenChrome.topBar], once the screens have stopped moving.
+ */
+val LocalWindowTopChrome = staticCompositionLocalOf { ChromeInset() }
 
 /**
  * Whether the screen it is provided to is on display: its tab is in front and nothing covers it in its stack. Hidden
@@ -62,11 +76,52 @@ private val AlwaysVisible = TabVisibility { true }
 val LocalTabBarVisible = compositionLocalOf { false }
 
 /**
- * Where a screen's own bottom bar reports its settled height. The shell gives every screen its own
- * holder and, while that screen is the settled one in front with the tab bar hidden, reports this
- * height through [LocalBottomChrome], so toasts stay above the action bar.
+ * What a screen tells the chrome around it. The shell gives every screen in its stacks one of its
+ * own and draws the window's chrome from the screen in front: its own bottom bar becomes the
+ * window's bottom chrome while the tab bar is hidden, its top bar is published as
+ * [LocalWindowTopChrome], the bottom edge fade blends into its [background], and a docked tab bar
+ * shows its surface only while [contentBelow] (iOS's scroll edge appearance).
+ *
+ * The scaffold writes [bottomBar], [topBar] and [background]; the screen's primary list reports
+ * [contentBelow] through [ReportScrollEdge]. Outside a navigation stack nothing reads them.
  */
-val LocalScreenBottomBar = staticCompositionLocalOf { ChromeInset() }
+@Stable
+class ScreenChrome {
+    /** The settled height of the screen's own bottom bar (an AppBottomActionBar); 0 without one. */
+    var bottomBar: Dp by mutableStateOf(0.dp)
+
+    /** The settled height of the screen's top bar, status bar included; 0 without one. */
+    var topBar: Dp by mutableStateOf(0.dp)
+
+    /** The colour the screen paints behind its content; Unspecified is the theme's background. */
+    var background: Color by mutableStateOf(Color.Unspecified)
+
+    internal var scrollEdge: ScrollableState? by mutableStateOf(null)
+
+    /**
+     * Whether the screen's content runs on past its bottom edge, under the chrome there. True for a
+     * screen that reports nothing, so its chrome keeps the look that hides what passes under it.
+     * Read it in an effect or a draw block: it flips as the list reaches or leaves its end.
+     */
+    val contentBelow: Boolean get() = scrollEdge?.canScrollForward ?: true
+}
+
+/** Provided to every screen of a navigation stack; outside one, a holder nobody reads. */
+val LocalScreenChrome = staticCompositionLocalOf { ScreenChrome() }
+
+/**
+ * Reports [state], the screen's primary scrolling container, as what runs under the bottom chrome:
+ * a docked tab bar is clear and the bottom edge fade is gone while the list rests on its end, and
+ * both return as soon as content scrolls under them. Call it once per screen, beside the list.
+ */
+@Composable
+fun ReportScrollEdge(state: ScrollableState) {
+    val screen = LocalScreenChrome.current
+    DisposableEffect(screen, state) {
+        screen.scrollEdge = state
+        onDispose { if (screen.scrollEdge === state) screen.scrollEdge = null }
+    }
+}
 
 /** Which pane of its navigation page a screen is shown in (the shell's `NavPane`). */
 enum class PaneRole { Single, List, Detail, Extra, Main, Supporting }
@@ -88,16 +143,41 @@ data class PaneContext(
 /** Provided to every screen of a navigation stack; the default is a screen on its own. */
 val LocalPaneContext = staticCompositionLocalOf { PaneContext() }
 
-/** [base] plus the chrome at both ends, for a scrolling container's contentPadding. */
+/**
+ * [base] plus the chrome at both ends, for a scrolling container's contentPadding. The bottom is
+ * never less than the navigation bar, so the last row clears the gesture handle and a three-button
+ * bar where no chrome is written: beside a rail, on a screen that hides the tab bar, in a cover.
+ *
+ * The chrome is read when the container measures its padding, as window insets are: a bar settling
+ * or the keyboard rising lays the list out again and recomposes nothing.
+ */
 @Composable
 fun chromeContentPadding(base: PaddingValues = PaddingValues(0.dp)): PaddingValues {
     val top = LocalTopChrome.current
     val bottom = LocalBottomChrome.current
-    val direction = LocalLayoutDirection.current
-    return PaddingValues(
-        start = base.calculateStartPadding(direction),
-        top = base.calculateTopPadding() + top.value,
-        end = base.calculateEndPadding(direction),
-        bottom = base.calculateBottomPadding() + bottom.value,
-    )
+    val navigationBars = WindowInsets.navigationBars
+    val density = LocalDensity.current
+    return remember(base, top, bottom, navigationBars, density) {
+        ChromePadding(base, top, bottom, navigationBars, density)
+    }
+}
+
+@Stable
+private class ChromePadding(
+    private val base: PaddingValues,
+    private val top: ChromeInset,
+    private val bottom: ChromeInset,
+    private val navigationBars: WindowInsets,
+    private val density: Density,
+) : PaddingValues {
+    override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp = base.calculateLeftPadding(layoutDirection)
+
+    override fun calculateRightPadding(layoutDirection: LayoutDirection): Dp = base.calculateRightPadding(layoutDirection)
+
+    override fun calculateTopPadding(): Dp = base.calculateTopPadding() + top.value
+
+    override fun calculateBottomPadding(): Dp {
+        val system = with(density) { navigationBars.getBottom(this).toDp() }
+        return base.calculateBottomPadding() + max(bottom.value, system)
+    }
 }

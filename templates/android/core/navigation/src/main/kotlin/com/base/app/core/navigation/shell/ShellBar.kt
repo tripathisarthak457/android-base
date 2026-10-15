@@ -66,6 +66,7 @@ internal fun ShellBar(
     trailingAction: (@Composable BarActionScope.() -> Unit)?,
     accessory: (@Composable () -> Unit)?,
     motion: ScreenMotion,
+    scrolledUnder: () -> Float,
     onToggleSidebar: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -117,6 +118,7 @@ internal fun ShellBar(
             labels = config.barLabels,
             minimize = config.barMinimize,
             state = barState,
+            scrolledUnder = scrolledUnder,
             trailingAction = trailingAction,
             accessory = accessory,
         )

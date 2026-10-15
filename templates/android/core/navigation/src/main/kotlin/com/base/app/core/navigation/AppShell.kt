@@ -35,15 +35,16 @@ import com.base.app.core.navigation.back.ShellRootBack
 import com.base.app.core.navigation.back.Verdict
 import com.base.app.core.navigation.back.submit
 import com.base.app.core.navigation.presentation.PresentationHost
-import com.base.app.core.navigation.shell.BottomChromeWriter
 import com.base.app.core.navigation.shell.BottomEdgeFade
 import com.base.app.core.navigation.shell.ShellBar
 import com.base.app.core.navigation.shell.ShellChrome
 import com.base.app.core.navigation.shell.ShellShortcuts
+import com.base.app.core.navigation.shell.WindowChromeWriter
 import com.base.app.core.navigation.shell.chromeFor
 import com.base.app.core.navigation.shell.fillGap
 import com.base.app.core.navigation.shell.followSlide
 import com.base.app.core.navigation.shell.rememberChromeSlide
+import com.base.app.core.navigation.shell.rememberScrolledUnder
 import com.base.app.core.navigation.shell.sidebarAvailable
 import com.base.app.core.navigation.shell.tabs.TabbedNavHost
 import com.base.app.core.navigation.transition.ScreenMotion
@@ -77,9 +78,10 @@ data class ShellConfig(
  * would be another composition, and a fold, a rotation or a resize would rebuild every tab's
  * screens and clear their ViewModels. The size class changes only the chrome.
  *
- * The shell is the only writer of [LocalBottomChrome]: the bar's settled height, the keyboard while
- * it is up, or the screen-level bar of a screen that hides the tab bar, written only once the
- * screens have stopped moving.
+ * The shell is the only writer of the window's chrome holders, written only once the screens have
+ * stopped moving: [LocalBottomChrome] (the bar's settled height, the keyboard while it is up, or the
+ * screen-level bar of a screen that hides the tab bar) and [LocalWindowTopChrome] (the top bar of
+ * the screen in front). Every screen reports to it through its own `LocalScreenChrome`.
  *
  * @param sheetStrategy draws sheet presentations (`Presentation.Sheet`); without one they are
  *   presented as covers.
@@ -122,10 +124,11 @@ fun AppShell(
     val bar = chrome == NavigationChrome.Bar
     val minimizes = bar && config.barMinimize == BarMinimize.OnScrollDown
     val slide = rememberChromeSlide()
+    val scrolledUnder = rememberScrolledUnder(state)
     val toggleSidebar = if (sidebarAvailable(window.width, window.height)) slide.toggle(state, chrome) else null
 
     ShellRootBack(state)
-    BottomChromeWriter(state, barState, wide = !bar)
+    WindowChromeWriter(state, barState, wide = !bar)
     ShellShortcuts(labels, state, toggleSidebar)
 
     ShellChrome(
@@ -133,8 +136,9 @@ fun AppShell(
         chrome = {
             if (bar) {
                 BottomEdgeFade(
-                    anchor = state.barAnchor,
+                    state = state,
                     parallax = motion.parallax,
+                    scrolledUnder = scrolledUnder,
                     modifier = Modifier.align(Alignment.BottomCenter),
                 )
                 ShellBar(
@@ -147,6 +151,7 @@ fun AppShell(
                     trailingAction = trailingAction,
                     accessory = accessory,
                     motion = motion,
+                    scrolledUnder = scrolledUnder,
                     onToggleSidebar = null,
                     modifier = Modifier.align(Alignment.BottomCenter),
                 )
@@ -165,6 +170,7 @@ fun AppShell(
                     trailingAction = trailingAction,
                     accessory = accessory,
                     motion = motion,
+                    scrolledUnder = scrolledUnder,
                     onToggleSidebar = toggleSidebar,
                     modifier = Modifier.fillGap(slide),
                 )

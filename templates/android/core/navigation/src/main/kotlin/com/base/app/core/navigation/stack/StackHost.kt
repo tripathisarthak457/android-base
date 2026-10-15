@@ -15,7 +15,7 @@ import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.rememberDecoratedNavEntries
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.designsystem.foundation.layout.ChromeInset
+import com.base.app.core.designsystem.foundation.layout.ScreenChrome
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.WindowWidth
 import com.base.app.core.designsystem.theme.rememberReduceMotion
@@ -47,11 +47,11 @@ internal fun StackHost(
     modifier: Modifier = Modifier,
     hidesBar: (AppNavKey) -> Boolean = NeverHidesBar,
     anchor: BarAnchor? = null,
-    screenBars: ScreenBars? = null,
+    screens: ScreenChromes? = null,
 ) {
     val gate = stack.gate
     val pop = remember(stack) { { count: Int -> stack.pop(count) } }
-    val provider = rememberEntryProvider(registry, hidesBar, screenBars)
+    val provider = rememberEntryProvider(registry, hidesBar, screens)
     val backStack = stack.entries.toList()
     val entries = rememberDecoratedNavEntries(
         entries = remember(backStack, provider) { backStack.toNavEntries(provider) },
@@ -111,8 +111,8 @@ private fun rememberEntryDecorators(): List<NavEntryDecorator<AppNavKey>> {
 private fun rememberEntryProvider(
     registry: NavRegistry,
     hidesBar: (AppNavKey) -> Boolean,
-    screenBars: ScreenBars?,
-): (AppNavKey, String) -> NavEntry<AppNavKey> = remember(registry, hidesBar, screenBars) {
+    screens: ScreenChromes?,
+): (AppNavKey, String) -> NavEntry<AppNavKey> = remember(registry, hidesBar, screens) {
     { key, contentKey ->
         val destination = registry.destinationFor(key)
         val hides = hidesBar(key)
@@ -123,18 +123,41 @@ private fun rememberEntryProvider(
             TRANSITION_METADATA to destination.transition,
         )
         NavEntry(key = key, contentKey = contentKey, metadata = metadata) { shown ->
-            EntryFrame(contentKey, hides, screenBars) { destination.content(shown) }
+            EntryFrame(contentKey, hides, screens) { destination.content(shown) }
         }
     }
 }
 
 /**
- * The screen-level bottom bars of one host's screens, by content key, for the shell to report the
- * one in front: a key in the stack twice is two screens, and each may show its bar.
+ * What the screens of one host report to the shell, by content key, for it to draw the window's
+ * chrome for the one in front: a key in the stack twice is two screens, each with its own report.
  */
 @Stable
-internal class ScreenBars {
-    val heights = mutableStateMapOf<String, ChromeInset>()
+internal class ScreenChromes {
+    private val byContentKey = mutableStateMapOf<String, ScreenChrome>()
+
+    operator fun get(contentKey: String?): ScreenChrome? = contentKey?.let { byContentKey[it] }
+
+    fun register(contentKey: String, screen: ScreenChrome) {
+        byContentKey[contentKey] = screen
+    }
+
+    fun unregister(contentKey: String, screen: ScreenChrome) {
+        if (byContentKey[contentKey] === screen) byContentKey.remove(contentKey)
+    }
+}
+
+/** A report for the screen of [contentKey], registered with [screens] while the screen is composed. */
+@Composable
+internal fun rememberScreenChrome(screens: ScreenChromes?, contentKey: String): ScreenChrome {
+    val own = remember { ScreenChrome() }
+    if (screens != null) {
+        DisposableEffect(screens, contentKey, own) {
+            screens.register(contentKey, own)
+            onDispose { screens.unregister(contentKey, own) }
+        }
+    }
+    return own
 }
 
 /**

@@ -69,7 +69,7 @@ internal fun Modifier.followSlide(slide: ChromeSlide): Modifier {
 /** Paints the chrome's surface into the gap the content leaves while the sidebar folds. */
 @Composable
 internal fun Modifier.fillGap(slide: ChromeSlide): Modifier {
-    val surface = AppTabBarDefaults.sideSurface()
+    val surface = AppTabBarDefaults.surface()
     return drawBehind {
         val gap = slide.offset.value
         if (gap <= 0f) return@drawBehind

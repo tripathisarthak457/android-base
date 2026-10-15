@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -23,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
-import com.base.app.core.designsystem.foundation.layout.LocalScreenBottomBar
+import com.base.app.core.designsystem.foundation.layout.LocalScreenChrome
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
+import com.base.app.core.designsystem.foundation.layout.LocalWindowTopChrome
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppNavigator
@@ -54,6 +57,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 private val ACTION_BAR = 72.dp
+private val TOP_BAR = 104.dp
 private const val FEED_LIST = "feed_list"
 
 /**
@@ -70,6 +74,7 @@ class ChromeLayeringTest {
     private var coverTaps = 0
     private var coverSawBar = true
     private val bottomChrome = ChromeInset()
+    private val windowTopChrome = ChromeInset()
 
     private val registry = testRegistry { key ->
         when (key) {
@@ -77,10 +82,14 @@ class ChromeLayeringTest {
                 coverSawBar = LocalTabBarVisible.current
                 Box(Modifier.fillMaxSize().testTag(key.toString()).clickable { coverTaps++ })
             }
-            // A full-screen detail with its own bottom action bar, as AppBottomActionBar reports it.
+            // A full-screen detail with its own bottom action bar and a top bar, as the scaffold
+            // reports them.
             is Post -> {
-                val ownBar = LocalScreenBottomBar.current
-                SideEffect { ownBar.value = ACTION_BAR }
+                val screen = LocalScreenChrome.current
+                SideEffect {
+                    screen.bottomBar = ACTION_BAR
+                    screen.topBar = TOP_BAR
+                }
                 Screen(key)
             }
             else -> Screen(key)
@@ -90,7 +99,7 @@ class ChromeLayeringTest {
     private fun showShell(state: ShellState, config: ShellConfig = ShellConfig(), registry: NavRegistry = this.registry) {
         rule.setContent {
             AppTheme {
-                CompositionLocalProvider(LocalBottomChrome provides bottomChrome) {
+                CompositionLocalProvider(LocalBottomChrome provides bottomChrome, LocalWindowTopChrome provides windowTopChrome) {
                     AppShell(tabs = testTabs, state = state, registry = registry, navigator = AppNavigator(), config = config)
                 }
             }
@@ -146,6 +155,46 @@ class ChromeLayeringTest {
 
         rule.onNodeWithTag(FEED_LIST).performScrollToIndex(39)
         assertTrue("the last row ends above the bar", bounds("row_39").bottom <= bar.top)
+    }
+
+    @Test
+    fun `a root list reports whether content runs on under the bar, which clears once it rests on its end`() {
+        val rows = testRegistry { key ->
+            if (key == FeedTab) {
+                val list = rememberLazyListState()
+                ReportScrollEdge(list)
+                LazyColumn(Modifier.fillMaxSize().testTag(FEED_LIST), state = list, contentPadding = chromeContentPadding()) {
+                    items(count = 40, key = { it }) { BasicText("Row $it", Modifier.fillMaxWidth().height(56.dp)) }
+                }
+            } else {
+                Screen(key)
+            }
+        }
+        val state = shell()
+        showShell(state, registry = rows)
+        rule.runOnIdle { assertEquals(true, state.tabFront?.contentBelow) }
+
+        rule.onNodeWithTag(FEED_LIST).performScrollToIndex(39)
+        rule.runOnIdle { assertEquals(false, state.tabFront?.contentBelow) }
+
+        // The Profile root reports nothing, so its bar keeps the surface that hides what passes under it.
+        rule.runOnIdle { state.select(1) }
+        rule.runOnIdle { assertEquals(true, state.tabFront?.contentBelow) }
+    }
+
+    @Test
+    fun `the window's top chrome is the top bar of the settled screen in front`() {
+        val state = shell()
+        showShell(state)
+        assertEquals(0.dp, windowTopChrome.value)
+
+        rule.runOnIdle { state.submit(NavCommand.Navigate(Post(1))) }
+        rule.waitForIdle()
+        assertEquals(TOP_BAR, windowTopChrome.value)
+
+        rule.runOnUiThread { rule.activity.onBackPressedDispatcher.onBackPressed() }
+        rule.waitForIdle()
+        assertEquals(0.dp, windowTopChrome.value)
     }
 
     @Test

@@ -107,6 +107,10 @@ interface BarActionScope {
  * [accessory] sits above the bar (a mini-player, an upload in progress) and is part of its height,
  * or at the foot of the rail. [minimize] folds a floating bar to its selected tab while [state]'s
  * scroll connection sees the content read on.
+ *
+ * A docked bar takes iOS's scroll edge appearance: its surface and top rule show in proportion to
+ * [scrolledUnder], 1 while content runs under the bar and 0 once the content rests on its end
+ * above it, so a list at its end is not cut by a hard edge. It is read in draw only.
  */
 @Composable
 fun AppTabBar(
@@ -120,6 +124,7 @@ fun AppTabBar(
     labels: TabLabels = TabLabels.Always,
     minimize: BarMinimize = BarMinimize.Never,
     state: AppTabBarState = rememberAppTabBarState(),
+    scrolledUnder: () -> Float = { 1f },
     trailingAction: (@Composable BarActionScope.() -> Unit)? = null,
     accessory: (@Composable () -> Unit)? = null,
 ) {
@@ -181,11 +186,21 @@ fun AppTabBar(
                 }
             }
         } else {
-            BarSurface(look, Modifier.fillMaxWidth()) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.weight(1f)) { TabRow(items, selected, edges, labels, look, state, bounce, onTap) }
-                    if (trailingAction != null) BarActions(look).trailingAction()
-                }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .drawBehind {
+                        val shown = scrolledUnder()
+                        if (shown > 0f) {
+                            drawRect(look.surface, alpha = shown)
+                            drawRect(look.border, size = Size(size.width, 1.dp.toPx()), alpha = shown)
+                        }
+                    }
+                    .navigationBarsPadding(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(Modifier.weight(1f)) { TabRow(items, selected, edges, labels, look, state, bounce, onTap) }
+                if (trailingAction != null) BarActions(look).trailingAction()
             }
         }
     }
@@ -221,9 +236,9 @@ object AppTabBarDefaults {
     /** The rail's width, cutout padding aside. */
     val RailWidth: Dp = 88.dp
 
-    /** The surface the rail and the sidebar are drawn on. */
+    /** The surface a docked bar, the rail and the sidebar are drawn on. */
     @Composable
-    fun sideSurface(treatment: BarTreatment = AppTheme.style.bar): Color = barLook(treatment).surface
+    fun surface(treatment: BarTreatment = AppTheme.style.bar): Color = barLook(treatment).surface
 }
 
 /** What a treatment decides: whether the bar floats as a capsule, its colours and its indicator. */
@@ -287,7 +302,6 @@ internal fun BarSurface(look: BarLook, modifier: Modifier, content: @Composable 
         modifier
             .background(look.surface)
             .drawBehind { drawRect(look.border, size = Size(size.width, 1.dp.toPx())) }
-            .navigationBarsPadding()
     }
     Box(surface, contentAlignment = Alignment.Center) { content() }
 }
@@ -445,6 +459,7 @@ internal val RailPillInset = 4.dp
 private val RuleHeight = 2.dp
 
 private val BarMargin = 20.dp
+
 private val BarLift = 12.dp
 private val BarMaxWidth = 480.dp
 private val AccessoryGap = 8.dp

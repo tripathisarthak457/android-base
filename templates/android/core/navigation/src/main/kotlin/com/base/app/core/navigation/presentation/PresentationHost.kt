@@ -30,7 +30,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
-import com.base.app.core.designsystem.foundation.layout.LocalScreenBottomBar
+import com.base.app.core.designsystem.foundation.layout.LocalScreenChrome
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.rememberReduceMotion
@@ -44,7 +44,8 @@ import com.base.app.core.navigation.back.BackGate
 import com.base.app.core.navigation.back.GateSettle
 import com.base.app.core.navigation.back.StackBackHandler
 import com.base.app.core.navigation.back.StackChange
-import com.base.app.core.navigation.stack.ScreenBars
+import com.base.app.core.navigation.stack.ScreenChromes
+import com.base.app.core.navigation.stack.rememberScreenChrome
 import com.base.app.core.navigation.stack.toNavEntries
 import com.base.app.core.navigation.transition.NavTransitions
 import com.base.app.core.navigation.transition.ReportMotion
@@ -106,7 +107,7 @@ internal fun PresentationHost(
                         motion = motion,
                         gate = gate,
                         card = host.card,
-                        screenBars = state.presentedBars,
+                        screens = state.presentedScreens,
                         onLive = { live += it },
                     ) {
                         destination.content(shownKey)
@@ -167,7 +168,7 @@ private fun PresentedFrame(
     motion: ScreenMotion,
     gate: BackGate,
     card: BackCardState,
-    screenBars: ScreenBars,
+    screens: ScreenChromes,
     onLive: (Int) -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -177,13 +178,9 @@ private fun PresentedFrame(
         onLive(1)
         onDispose { onLive(-1) }
     }
-    val ownBar = remember { ChromeInset() }
-    DisposableEffect(screenBars, contentKey, ownBar) {
-        screenBars.heights[contentKey] = ownBar
-        onDispose { if (screenBars.heights[contentKey] === ownBar) screenBars.heights.remove(contentKey) }
-    }
+    val screen = rememberScreenChrome(screens, contentKey)
     CompositionLocalProvider(
-        LocalScreenBottomBar provides ownBar,
+        LocalScreenChrome provides screen,
         LocalTabBarVisible provides false,
         LocalBottomChrome provides remember { ChromeInset() },
     ) {

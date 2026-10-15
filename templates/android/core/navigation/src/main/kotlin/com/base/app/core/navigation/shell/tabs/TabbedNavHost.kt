@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.designsystem.foundation.layout.LocalScreenChrome
 import com.base.app.core.navigation.LocalTabReselections
 import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.ShellState
@@ -48,7 +49,9 @@ internal fun TabbedNavHost(
         warmUp = warmUp,
     ) { index ->
         if (index == more) {
-            MoreList(tabs = tabs, labels = labels, from = state.overflowFrom, onSelect = state::select)
+            CompositionLocalProvider(LocalScreenChrome provides state.moreScreen) {
+                MoreList(tabs = tabs, labels = labels, from = state.overflowFrom, onSelect = state::select)
+            }
         } else {
             CompositionLocalProvider(LocalTabReselections provides state.reselections[index]) {
                 StackHost(
@@ -57,7 +60,7 @@ internal fun TabbedNavHost(
                     motion = motion,
                     hidesBar = hidesBar,
                     anchor = state.anchors[index],
-                    screenBars = state.screenBars[index],
+                    screens = state.screens[index],
                 )
             }
         }

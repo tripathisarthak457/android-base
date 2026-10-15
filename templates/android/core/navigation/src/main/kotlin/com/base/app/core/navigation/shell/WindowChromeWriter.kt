@@ -12,35 +12,55 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.navigation.AppTabBarState
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.layout.LocalWindowTopChrome
 import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.stack.lastContentKey
 
+/**
+ * Publishes the chrome of the settled screen in front for the whole window: what covers the bottom
+ * edge ([LocalBottomChrome]) and the screen's top bar ([LocalWindowTopChrome]). Nothing is written
+ * while the screens move, so what reads them is laid out again once per change, not per frame.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun BottomChromeWriter(state: ShellState, barState: AppTabBarState, wide: Boolean) {
-    val chrome = LocalBottomChrome.current
+internal fun WindowChromeWriter(state: ShellState, barState: AppTabBarState, wide: Boolean) {
+    val bottom = LocalBottomChrome.current
+    val top = LocalWindowTopChrome.current
     val density = LocalDensity.current
     val keyboard = WindowInsets.imeAnimationTarget
-    // The holder is the window's: once the shell is gone (signed out), nothing covers the bottom edge.
-    DisposableEffect(chrome) {
-        onDispose { chrome.value = 0.dp }
+    // The holders are the window's: once the shell is gone (signed out), nothing covers either edge.
+    DisposableEffect(bottom, top) {
+        onDispose {
+            bottom.value = 0.dp
+            top.value = 0.dp
+        }
     }
-    LaunchedEffect(state, barState, wide, chrome, density) {
+    LaunchedEffect(state, barState, wide, bottom, density) {
         snapshotFlow {
             if (state.moving) {
                 null
             } else {
                 with(density) {
                     bottomChrome(
-                        presented = state.presentedKeys.lastContentKey()?.let { state.presentedBars.heights[it]?.value },
+                        presented = state.presentedScreens[state.presentedKeys.lastContentKey()]?.bottomBar,
                         keyboard = keyboard.getBottom(this).toDp(),
-                        screenBar = state.current.keys.lastContentKey()?.takeIf { state.barAnchor.progress() >= 1f }
-                            ?.let { state.screenBars[state.selectedIndex].heights[it]?.value },
+                        screenBar = state.tabFront?.takeIf { state.barAnchor.progress() >= 1f }?.bottomBar,
                         bar = if (wide) 0.dp else barState.settledHeight.toDp(),
                     )
                 }
             }
-        }.collect { height -> if (height != null) chrome.value = height }
+        }.collect { height -> if (height != null) bottom.value = height }
+    }
+    LaunchedEffect(state, top) {
+        snapshotFlow {
+            if (state.moving) {
+                null
+            } else {
+                val presented = state.presentedKeys.lastContentKey()
+                val screen = if (presented != null) state.presentedScreens[presented] else state.tabFront
+                screen?.topBar ?: 0.dp
+            }
+        }.collect { height -> if (height != null) top.value = height }
     }
 }
 

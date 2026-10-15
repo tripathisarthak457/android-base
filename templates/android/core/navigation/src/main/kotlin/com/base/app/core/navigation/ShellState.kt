@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.designsystem.foundation.layout.ScreenChrome
 import com.base.app.core.designsystem.theme.AppWindowSize
 import com.base.app.core.navigation.back.StackChange
 import com.base.app.core.navigation.back.Verdict
@@ -21,7 +22,8 @@ import com.base.app.core.navigation.back.guard
 import com.base.app.core.navigation.back.submit
 import com.base.app.core.navigation.shell.BarAnchor
 import com.base.app.core.navigation.shell.tabsShown
-import com.base.app.core.navigation.stack.ScreenBars
+import com.base.app.core.navigation.stack.ScreenChromes
+import com.base.app.core.navigation.stack.lastContentKey
 
 /**
  * One tab. [key] is the tab's root destination and doubles as its identity, so two tabs cannot
@@ -105,9 +107,18 @@ class ShellState internal constructor(
     /** What the bar follows: the screen in front of the selected tab, or the More list. */
     internal val barAnchor: BarAnchor get() = if (moreShown) moreAnchor else anchors[selectedIndex]
 
-    internal val screenBars: List<ScreenBars> = List(tabs.size) { ScreenBars() }
+    internal val screens: List<ScreenChromes> = List(tabs.size) { ScreenChromes() }
 
-    internal val presentedBars = ScreenBars()
+    internal val presentedScreens = ScreenChromes()
+
+    internal val moreScreen = ScreenChrome()
+
+    /**
+     * What the screen in front of the selected tab (or the More list) reports, which the bar and
+     * the bottom edge fade are drawn for. Presented screens cover both, so they are not asked.
+     */
+    internal val tabFront: ScreenChrome?
+        get() = if (moreShown) moreScreen else screens[selectedIndex][current.keys.lastContentKey()]
 
     /** The selected tab's stack. */
     val current: AppBackStack get() = tabs[selectedIndex]
