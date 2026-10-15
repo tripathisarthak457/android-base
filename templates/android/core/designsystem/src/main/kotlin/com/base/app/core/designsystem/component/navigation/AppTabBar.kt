@@ -134,10 +134,14 @@ fun AppTabBar(
     val bounce = remember(items.size) { TabBounce(items.size) }
     val edges = remember { IndicatorEdges(selected) }
     LaunchedEffect(edges, selected) { edges.moveTo(selected) }
+    // Read through state rather than captured: a tap handler that captured the selection would be
+    // a new one on every switch, and every cell of the bar would recompose in the switch's frame to
+    // take it.
+    val current = rememberUpdatedState(selected)
     val onTap: (Int) -> Unit = { index ->
         when {
             state.collapse > 0f -> scope.launch { state.expand() }
-            index == selected -> onReselect(index)
+            index == current.value -> onReselect(index)
             else -> {
                 haptics.perform(HapticEffect.Select)
                 if (!reduceMotion) scope.launch { bounce.play(index) }

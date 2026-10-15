@@ -30,6 +30,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.layout.LocalPaintedBackground
 import com.base.app.core.designsystem.foundation.layout.LocalScreenChrome
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
@@ -179,8 +180,10 @@ private fun PresentedFrame(
         onDispose { onLive(-1) }
     }
     val screen = rememberScreenChrome(screens, contentKey)
+    val background = AppTheme.colors.background
     CompositionLocalProvider(
         LocalScreenChrome provides screen,
+        LocalPaintedBackground provides background,
         LocalTabBarVisible provides false,
         LocalBottomChrome provides remember { ChromeInset() },
     ) {
@@ -188,7 +191,7 @@ private fun PresentedFrame(
             Modifier
                 .fillMaxSize()
                 .graphicsLayer { if (card.active && card.subject == key) with(card) { applyCard() } }
-                .background(AppTheme.colors.background),
+                .background(background),
         ) {
             content()
         }

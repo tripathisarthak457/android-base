@@ -8,14 +8,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.layout.LocalPaintedBackground
 import com.base.app.core.designsystem.foundation.layout.LocalScreenChrome
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * What every screen is drawn in: an opaque background (two screens are drawn at once during a
- * slide, and one would show through the other), and its own report to the shell ([ScreenChromes]).
- * A screen that hides the tab bar gets no bottom chrome.
+ * slide, and one would show through the other), told to the screen so its scaffold does not paint
+ * it a second time, and its own report to the shell ([ScreenChromes]). A screen that hides the tab
+ * bar gets no bottom chrome.
  */
 @Composable
 internal fun EntryFrame(
@@ -25,15 +27,20 @@ internal fun EntryFrame(
     content: @Composable () -> Unit,
 ) {
     val screen = rememberScreenChrome(screens, contentKey)
-    val frame = Modifier.fillMaxSize().background(AppTheme.colors.background)
+    val background = AppTheme.colors.background
+    val frame = Modifier.fillMaxSize().background(background)
     if (hidesBar) {
         CompositionLocalProvider(
             LocalScreenChrome provides screen,
+            LocalPaintedBackground provides background,
             LocalTabBarVisible provides false,
             LocalBottomChrome provides NoChrome,
         ) { Box(frame) { content() } }
     } else {
-        CompositionLocalProvider(LocalScreenChrome provides screen) { Box(frame) { content() } }
+        CompositionLocalProvider(
+            LocalScreenChrome provides screen,
+            LocalPaintedBackground provides background,
+        ) { Box(frame) { content() } }
     }
 }
 

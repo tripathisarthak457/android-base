@@ -18,6 +18,9 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
@@ -410,23 +413,18 @@ internal fun Path.setPill(
 }
 
 /**
- * A capsule built from lines and cubic quarter arcs, so drawing a moving pill allocates nothing
- * per frame (a RoundRect would be a new object each time).
+ * A capsule as a rounded rectangle, not as lines and arcs: a path the renderer recognises as one is
+ * filled and clipped analytically, while an equal path of cubics is a general path, which the two
+ * layers clipped to the pill would have to mask on every frame it moves.
  */
 private fun Path.addCapsule(left: Float, top: Float, right: Float, bottom: Float, round: Boolean) {
     if (right <= left || bottom <= top) return
-    val r = if (round) min(right - left, bottom - top) / 2f else 0f
-    val k = r * KAPPA
-    moveTo(left + r, top)
-    lineTo(right - r, top)
-    cubicTo(right - r + k, top, right, top + r - k, right, top + r)
-    lineTo(right, bottom - r)
-    cubicTo(right, bottom - r + k, right - r + k, bottom, right - r, bottom)
-    lineTo(left + r, bottom)
-    cubicTo(left + r - k, bottom, left, bottom - r + k, left, bottom - r)
-    lineTo(left, top + r)
-    cubicTo(left, top + r - k, left + r - k, top, left + r, top)
-    close()
+    if (!round) {
+        addRect(Rect(left, top, right, bottom))
+        return
+    }
+    val radius = CornerRadius(min(right - left, bottom - top) / 2f)
+    addRoundRect(RoundRect(left, top, right, bottom, radius))
 }
 
 /** Where a cell's content (its label, or its glyph without one) starts, so the pill can fit it. */
@@ -434,8 +432,6 @@ private val ContentStart = VerticalAlignmentLine(::min)
 
 private fun Placeable.contentStart(): Int = get(ContentStart).takeIf { it != AlignmentLine.Unspecified } ?: 0
 
-/** The bezier handle that makes four cubics a circle. */
-private const val KAPPA = 0.5522848f
 private const val MAX_LABEL_SCALE = 1.3f
 
 /** How far a label that does not fit is set below its size, before it is ellipsized. */

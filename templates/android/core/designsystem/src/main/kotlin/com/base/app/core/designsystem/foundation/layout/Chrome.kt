@@ -144,6 +144,14 @@ data class PaneContext(
 val LocalPaneContext = staticCompositionLocalOf { PaneContext() }
 
 /**
+ * The colour the host of the current screen has already painted under it edge to edge (a navigation
+ * entry's frame, a presented sheet's or cover's), or Unspecified where nothing has. A scaffold on
+ * such a screen paints no background of its own: the second fill would cost the GPU a whole window
+ * on every frame of every transition, where it is least affordable.
+ */
+val LocalPaintedBackground = staticCompositionLocalOf { Color.Unspecified }
+
+/**
  * [base] plus the chrome at both ends, for a scrolling container's contentPadding. The bottom is
  * never less than the navigation bar, so the last row clears the gesture handle and a three-button
  * bar where no chrome is written: beside a rail, on a screen that hides the tab bar, in a cover.

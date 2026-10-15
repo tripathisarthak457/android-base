@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigationevent.DirectNavigationEventInput
 import androidx.navigationevent.NavigationEvent
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.designsystem.foundation.layout.LocalPaneContext
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell
@@ -61,8 +62,8 @@ class ShellRecompositionTest {
 
     private var windowSize by mutableStateOf(DpSize(411.dp, 891.dp))
 
-    private fun showShell() {
-        val registry = testRegistry { key -> ProbeScreen(key) }
+    private fun showShell(screen: @Composable (AppNavKey) -> Unit = { key -> ProbeScreen(key) }) {
+        val registry = testRegistry(screen)
         rule.setContent {
             DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(windowSize)) {
                 AppTheme {
@@ -132,6 +133,28 @@ class ShellRecompositionTest {
 
         frames.assertQuietBetweenEnds()
         assertEquals(0, frames.sumOf { it.count("ProbeScreen") })
+    }
+
+    @Test
+    fun `a pop composes nothing of a leaving screen that reads where its pane sits`() {
+        showShell { key -> PaneProbeScreen(key) }
+        rule.runOnIdle { state.submit(NavCommand.Navigate(Post(1))) }
+
+        val frames = journey { rule.activity.onBackPressedDispatcher.onBackPressed() }
+
+        frames.assertQuietBetweenEnds()
+        assertEquals(0, frames.sumOf { it.count("PaneProbeScreen") })
+    }
+
+    @Test
+    fun `a switch recomposes only the two cells of the bar whose selection flips`() {
+        showShell()
+        rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick)
+        rule.onNodeWithTag("tab_0").performSemanticsAction(SemanticsActions.OnClick)
+
+        val frames = journey { rule.onNodeWithTag("tab_1").performSemanticsAction(SemanticsActions.OnClick) }
+
+        assertTrue(frames.sumOf { it.count("TabCell") } <= 2)
     }
 
     @Test
@@ -226,6 +249,13 @@ class ShellRecompositionTest {
 @Composable
 private fun ProbeScreen(key: AppNavKey) {
     Box(Modifier.fillMaxSize().testTag(key.toString())) { BasicText(key.toString()) }
+}
+
+/** A screen that reads its pane, as a scaffold with a Back arrow or a selected row does. */
+@Composable
+private fun PaneProbeScreen(key: AppNavKey) {
+    val pane = LocalPaneContext.current
+    Box(Modifier.fillMaxSize().testTag(key.toString())) { BasicText("$key in ${pane.role}") }
 }
 
 /** Past the tab warm-up's wait for the first tab to settle, with room for its slices. */
