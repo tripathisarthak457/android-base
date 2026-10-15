@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
@@ -41,6 +42,7 @@ import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -194,8 +196,11 @@ private fun StartContent(recent: List<String>, onEvent: (SearchEvent) -> Unit) {
 
 @Composable
 private fun Results(results: List<SearchResult>, onEvent: (SearchEvent) -> Unit) {
+    val listState = rememberLazyListState()
+    ReportScrollEdge(listState)
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        state = listState,
         contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
     ) {

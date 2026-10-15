@@ -35,6 +35,7 @@ import com.base.app.core.designsystem.component.selection.AppSwitch
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -230,10 +231,12 @@ internal fun SettingsScreen(
         modifier = modifier,
         topBar = { AppLargeTitle(title = stringResource(R.string.settings_title)) },
     ) {
+        val scroll = rememberScrollState()
+        ReportScrollEdge(scroll)
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scroll)
                 .padding(chromeContentPadding(PaddingValues(horizontal = AppTheme.spacing.gutter))),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {

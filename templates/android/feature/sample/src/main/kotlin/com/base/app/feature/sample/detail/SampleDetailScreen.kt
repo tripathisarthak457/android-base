@@ -20,6 +20,7 @@ import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.text
@@ -43,6 +44,8 @@ internal fun SampleDetailScreen(
             )
         },
     ) {
+        val scroll = rememberScrollState()
+        ReportScrollEdge(scroll)
         when (val loadState = state.loadState) {
             is LoadState.Error -> AppErrorState(
                 message = loadState.error.text(),
@@ -53,7 +56,7 @@ internal fun SampleDetailScreen(
             else -> Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scroll)
                     .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
             ) {
                 val item = state.item

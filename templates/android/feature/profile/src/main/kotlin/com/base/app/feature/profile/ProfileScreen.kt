@@ -27,6 +27,7 @@ import com.base.app.core.designsystem.component.input.AppTextArea
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
@@ -72,10 +73,12 @@ internal fun ProfileScreen(
         if (!state.loaded) return@AppScaffold
 
         AppAppear {
+            val scroll = rememberScrollState()
+            ReportScrollEdge(scroll)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scroll)
                     .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
             ) {

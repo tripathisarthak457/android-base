@@ -29,6 +29,7 @@ import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
 import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -119,6 +120,7 @@ private fun Content(
 
             val listState = rememberLazyListState()
             ScrollToTopOnReselect(listState)
+            ReportScrollEdge(listState)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
