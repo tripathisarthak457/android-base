@@ -1,198 +1,51 @@
-/**
- * The API client, and the shapes it returns. Every type here mirrors what `genkit/catalogue.py`
- * emits.
- */
-
-/** Where the Go API lives. */
+/** Where the Go API lives: the same origin in production, where Vercel routes /api to it. */
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE?.replace(/\/$/, "") ??
   (process.env.NODE_ENV === "development" ? "http://127.0.0.1:8080" : "");
 
-export type Feature = {
-  key: string;
-  title: string;
-  headline: string;
-  description: string;
-  default: boolean;
-  requires: string[];
-  implies: string[];
-  group: string;
-};
-
-export type Group = { name: string; caption: string };
-
-export type Preset = {
-  key: string;
-  title: string;
-  description: string;
-  features: string[];
-};
-
-export type MotionStyle = { key: string; description: string };
-
-export type DesignStyle = { key: string; description: string };
-
-export type ApiLevel = {
-  level: number;
-  label: string;
-  version: string;
-  codename: string;
-  needsDesugaring: boolean;
-};
-
-export type Language = {
-  /** A BCP 47 tag, as the generator's spec takes it: "es", "pt-BR". */
-  tag: string;
-  /** The language's name for itself, which is how people look for their own. */
-  name: string;
-};
-
-export type Catalogue = {
-  features: Feature[];
-  groups: Group[];
-  presets: Preset[];
-  motionStyles: MotionStyle[];
-  designStyles: DesignStyle[];
-  /** Translations the generator ships. English is always included and is not listed. */
-  languages: Language[];
-  apiLevels: ApiLevel[];
-  defaults: {
-    minSdk: number;
-    targetSdk: number;
-    compileSdk: number;
-    versionName: string;
-    versionCode: number;
-    fontName: string;
-    monoFontName: string;
-    accentColour: string;
-    motionStyle: string;
-    designStyle: string;
-    hapticsEnabled: boolean;
-    preset: string;
-  };
-  keystoreNames: string[];
-  /** Whether the server that answered has a JDK, and so can run `keytool` at all. */
-  keystoresAvailable: boolean;
-  minKeystorePassword: number;
-  /**
-   * Module names the template already occupies. Checked in the form, so a taken name is caught
-   * before the round trip and the site never keeps its own copy of the list.
-   */
-  reservedModuleNames: string[];
-  fontSuggestions: string[];
-};
-
 /**
- * One signing key to create. These carry passwords, which is why they are assembled at submit time
- * and never put in `localStorage`, in a URL, or in the funnel event the page sends alongside.
+ * The deployed commit, short: in `X-Client`, so the API can tell the site from scripts, and as the
+ * release a client error or a report is grouped under. Vercel hands its builds the commit; a build
+ * made anywhere else names itself with NEXT_PUBLIC_BUILD.
  */
-export type Keystore = {
-  name: string;
-  alias: string;
-  store_password: string;
-  key_password: string;
-  common_name: string;
-  organisation: string;
-  country: string;
-};
+export const BUILD = process.env.NEXT_PUBLIC_BUILD || process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "dev";
 
-export type GenerateRequest = {
-  app_name: string;
-  package_name: string;
-  min_sdk: number;
-  target_sdk: number;
-  compile_sdk: number;
-  version_name: string;
-  version_code: number;
-  features: string[];
-  feature_modules: string[];
-  api_base_urls?: Record<string, string>;
-  web_socket_urls?: Record<string, string>;
-  deeplink_scheme?: string;
-  deeplink_host?: string;
-  font_name: string;
-  mono_font_name: string;
-  accent_colour: string;
-  /** Empty means the server derives it from the primary. */
-  secondary_colour?: string;
-  tertiary_colour?: string;
-  motion_style: string;
-  design_style: string;
-  haptics_enabled: boolean;
-  languages: string[];
-  preset?: string;
-  keystores?: Keystore[];
-};
+/** `X-Client` is at most 64 printable ASCII characters. */
+const CLIENT_MAX = 64;
 
+export const CLIENT_PREFIX = "android-base-web/";
+
+export function clientHeader(build: string): string {
+  const safe = build.replace(/[^\x21-\x7e]/g, "") || "dev";
+  return `${CLIENT_PREFIX}${safe}`.slice(0, CLIENT_MAX);
+}
+
+/** An error answer from the API: `{error, code, field}`, or a status with no body. */
 export class ApiError extends Error {
-  constructor(
-    message: string,
-    readonly status: number,
-  ) {
+  readonly status: number;
+  readonly code: string;
+  readonly field: string;
+
+  constructor(message: string, status: number, code = "", field = "") {
     super(message);
     this.name = "ApiError";
+    this.status = status;
+    this.code = code;
+    this.field = field;
   }
 }
 
-export async function fetchCatalogue(signal?: AbortSignal): Promise<Catalogue> {
-  const response = await fetch(`${API_BASE}/api/options`, { signal });
-  if (!response.ok) {
-    throw new ApiError("Could not load the options.", response.status);
-  }
-  const catalogue = (await response.json()) as Catalogue;
-  // A browser can hold the previous deploy's catalogue for the length of its max-age, so a field
-  // added since then may be missing. The page offers less rather than failing to render.
-  return { ...catalogue, languages: catalogue.languages ?? [] };
-}
-
-/** Posts the spec and returns the zip as a Blob. */
-export async function generateProject(
-  request: GenerateRequest,
-  signal?: AbortSignal,
-): Promise<{ blob: Blob; filename: string; elapsedMs: number; keystoresSkipped: string[] }> {
-  const response = await fetch(`${API_BASE}/api/generate`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-    signal,
-  });
-
-  if (!response.ok) {
-    let message = "The generator failed.";
-    try {
-      const body = await response.json();
-      if (typeof body?.error === "string") message = body.error;
-    } catch {
-      // A non-JSON error body means the request never reached the handler — a proxy, a 502.
-      // The default message is closer to the truth than an empty one.
-    }
-    throw new ApiError(message, response.status);
-  }
-
-  const disposition = response.headers.get("Content-Disposition") ?? "";
-  const match = /filename="([^"]+)"/.exec(disposition);
-
-  return {
-    blob: await response.blob(),
-    filename: match?.[1] ?? "project.zip",
-    elapsedMs: Number(response.headers.get("X-Generation-Ms") ?? 0),
-    // Keys that were asked for and not produced. Empty on every request that asked for none.
-    keystoresSkipped: (response.headers.get("X-Keystores-Skipped") ?? "")
-      .split(",")
-      .filter(Boolean),
-  };
-}
-
-/** Records one funnel step. */
-export function track(step: "landed" | "configured" | "downloaded"): void {
+export async function apiError(response: Response, fallback: string): Promise<ApiError> {
   try {
-    void fetch(`${API_BASE}/api/track`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ step }),
-      keepalive: true,
-    }).catch(() => undefined);
+    const body = (await response.json()) as { error?: unknown; code?: unknown; field?: unknown };
+    return new ApiError(
+      typeof body.error === "string" ? body.error : fallback,
+      response.status,
+      typeof body.code === "string" ? body.code : "",
+      typeof body.field === "string" ? body.field : "",
+    );
   } catch {
-    // Ignored on purpose.
+    // No JSON body means the request never reached a handler: a proxy, a cold start, a 502.
+    return new ApiError(fallback, response.status);
   }
 }
