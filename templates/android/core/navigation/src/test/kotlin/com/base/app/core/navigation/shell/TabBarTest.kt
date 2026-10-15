@@ -9,6 +9,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
@@ -18,6 +19,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 import com.base.app.core.navigation.ROBOLECTRIC_SDK
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -97,6 +100,33 @@ class TabBarTest {
             }
         }
     }
+
+    @Test
+    fun `at a large font a docked bar's labels keep clear of the screen's edges and shrink to fit, not cut`() {
+        rule.setContent {
+            val density = LocalDensity.current
+            CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 1.5f)) {
+                AppTheme {
+                    Box(Modifier.width(411.dp)) {
+                        AppTabBar(five, selected = 0, onSelect = {}, onReselect = {}, treatment = BarTreatment.Docked)
+                    }
+                }
+            }
+        }
+
+        // The bar's 8 dp inset, the pill's 4 dp from its slot and 4 dp of padding inside it.
+        val edge = 16 * rule.density.density
+        val width = 411 * rule.density.density
+        assertTrue("Home runs into the leading edge", label("Home").boundsInRoot.left >= edge - 1)
+        assertTrue("Settings runs into the trailing edge", label("Settings").boundsInRoot.right <= width - edge + 1)
+        five.forEach { item ->
+            val layouts = mutableListOf<TextLayoutResult>()
+            label(item.label).config[SemanticsActions.GetTextLayoutResult].action?.invoke(layouts)
+            assertFalse("${item.label} is cut", layouts.single().isLineEllipsized(0))
+        }
+    }
+
+    private fun label(text: String) = rule.onAllNodesWithText(text, useUnmergedTree = true).fetchSemanticsNodes().first()
 
     @Test
     fun `a rail in a short window keeps every tab within reach`() {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
 import com.base.app.core.designsystem.theme.AppTheme
@@ -236,17 +238,25 @@ private fun TabCell(
             }
             if (showLabel) {
                 // The label grows with the font scale, but only so far: past 1.3× it no longer fits
-                // the bar, and the glyph still says which tab it is.
+                // the bar, and the glyph still says which tab it is. A label too long for its slot
+                // at that size (a long word, a long translation) is set a little smaller rather than
+                // cut, as UIKit's tab bar does, and keeps its distance from the pill and the edge.
                 val density = LocalDensity.current
+                val style = AppTheme.typography.labelSmall
                 CompositionLocalProvider(
                     LocalDensity provides Density(density.density, density.fontScale.coerceAtMost(MAX_LABEL_SCALE)),
                 ) {
                     BasicText(
                         text = if (uppercase) item.label.uppercase() else item.label,
-                        style = AppTheme.typography.labelSmall.copy(textAlign = TextAlign.Center),
+                        style = style.copy(textAlign = TextAlign.Center),
                         color = { color },
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = style.fontSize * MIN_LABEL_SHRINK,
+                            maxFontSize = style.fontSize,
+                            stepSize = LabelSizeStep,
+                        ),
                     )
                 }
             }
@@ -427,6 +437,10 @@ private fun Placeable.contentStart(): Int = get(ContentStart).takeIf { it != Ali
 /** The bezier handle that makes four cubics a circle. */
 private const val KAPPA = 0.5522848f
 private const val MAX_LABEL_SCALE = 1.3f
+
+/** How far a label that does not fit is set below its size, before it is ellipsized. */
+private const val MIN_LABEL_SHRINK = 0.85f
+private val LabelSizeStep = 0.25.sp
 
 private val LeadSpring = spring(dampingRatio = 0.85f, stiffness = 815.6f, visibilityThreshold = 0.001f)
 private val TrailSpring = spring(dampingRatio = 1f, stiffness = 385.5f, visibilityThreshold = 0.001f)

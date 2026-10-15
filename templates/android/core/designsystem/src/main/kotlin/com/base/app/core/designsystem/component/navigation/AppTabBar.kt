@@ -196,7 +196,8 @@ fun AppTabBar(
                             drawRect(look.border, size = Size(size.width, 1.dp.toPx()), alpha = shown)
                         }
                     }
-                    .navigationBarsPadding(),
+                    .navigationBarsPadding()
+                    .padding(horizontal = DockedInset),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.weight(1f)) { TabRow(items, selected, edges, labels, look, state, bounce, onTap) }
@@ -460,6 +461,11 @@ private val RuleHeight = 2.dp
 
 private val BarMargin = 20.dp
 
+/**
+ * Between a docked bar's outer tabs and the screen's edges. Labels may fill their slots at the
+ * largest text size, and this keeps the outermost ones off the edge as they sit at the default.
+ */
+private val DockedInset = 8.dp
 private val BarLift = 12.dp
 private val BarMaxWidth = 480.dp
 private val AccessoryGap = 8.dp
