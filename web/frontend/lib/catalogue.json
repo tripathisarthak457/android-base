@@ -1,5 +1,5 @@
 {
-  "generator_commit": "ef0814c4fbcd",
+  "generator_commit": "4150f8b6f394",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -1246,7 +1246,7 @@
       "presets": [
         {
           "default": false,
-          "description": "The design system, the navigation shell and one home screen, with networking, images and CI. The\nsmallest app that still looks and moves like the rest.",
+          "description": "The design system, the navigation shell and one home screen, with networking, images and CI. The smallest app that still looks and moves like the rest.",
           "features": [
             "ci",
             "coil",
@@ -1260,7 +1260,7 @@
         },
         {
           "default": true,
-          "description": "The lean set plus sign-in, onboarding, settings with a language picker, the in-app browser, feature\nflags, the developer panel, a local database and the reference list-detail feature to copy. What\nmost products want on day one.",
+          "description": "The lean set plus sign-in, onboarding, settings with a language picker, the in-app browser, feature flags, the developer panel, a local database and the reference list-detail feature to copy. What most products want on day one.",
           "features": [
             "auth",
             "browser",
@@ -1286,7 +1286,7 @@
         },
         {
           "default": false,
-          "description": "Every feature the template offers, working together. The template's own proof that they coexist;\ndelete what you do not need.",
+          "description": "Every feature the template offers, working together. The template's own proof that they coexist; delete what you do not need.",
           "features": [
             "analytics",
             "applock",

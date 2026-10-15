@@ -358,7 +358,7 @@ def _load_presets(path: Path, features: dict[str, Feature]) -> tuple[dict[str, P
         for feature in listed:
             if feature not in features:
                 raise TemplateError(path, None, f"[{key}] lists unknown feature '{feature}'")
-        presets[key] = Preset(key, table["title"], table["description"].strip(), listed, everything)
+        presets[key] = Preset(key, table["title"], " ".join(table["description"].split()), listed, everything)
     if default not in presets:
         raise TemplateError(path, None, f"default = '{default}' is not a preset")
     return presets, default
