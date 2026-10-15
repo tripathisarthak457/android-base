@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -87,6 +88,14 @@ data class PaneContext(
 
 /** Provided to every screen of a navigation stack; the default is a screen on its own. */
 val LocalPaneContext = staticCompositionLocalOf { PaneContext() }
+
+/**
+ * The colour the host of the current screen has already painted under it edge to edge (a navigation
+ * entry's frame, a presented sheet's or cover's), or Unspecified where nothing has. A scaffold on
+ * such a screen paints no background of its own: the second fill would cost the GPU a whole window
+ * on every frame of every transition, where it is least affordable.
+ */
+val LocalPaintedBackground = staticCompositionLocalOf { Color.Unspecified }
 
 /** [base] plus the chrome at both ends, for a scrolling container's contentPadding. */
 @Composable

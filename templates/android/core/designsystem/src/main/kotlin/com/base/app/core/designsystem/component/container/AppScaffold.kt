@@ -16,9 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.foundation.centeredMaxWidth
+import com.base.app.core.designsystem.foundation.layout.LocalPaintedBackground
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -38,7 +40,7 @@ fun AppScaffold(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floatingAction: @Composable (BoxScope.() -> Unit)? = null,
-    background: Color = AppTheme.colors.background,
+    background: Color = AppScaffoldDefaults.background(),
     contentMaxWidth: Dp = Dp.Unspecified,
     clearDisplayCutout: Boolean = true,
     content: @Composable () -> Unit,
@@ -46,7 +48,7 @@ fun AppScaffold(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(background)
+            .then(if (background.isSpecified) Modifier.background(background) else Modifier)
             .imePadding(),
     ) {
         Column(
@@ -79,5 +81,18 @@ fun AppScaffold(
                 content = action,
             )
         }
+    }
+}
+
+object AppScaffoldDefaults {
+
+    /**
+     * The theme's background, unless the screen's host has painted exactly that under it already
+     * ([LocalPaintedBackground]): then nothing, so a screen is filled once per frame, not twice.
+     */
+    @Composable
+    fun background(): Color {
+        val background = AppTheme.colors.background
+        return if (LocalPaintedBackground.current == background) Color.Unspecified else background
     }
 }
