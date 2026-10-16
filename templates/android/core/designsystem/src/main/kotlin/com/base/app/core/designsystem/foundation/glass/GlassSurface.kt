@@ -13,13 +13,16 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.shadow.DropShadowPainter
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.node.DelegatingNode
+import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.node.requireGraphicsContext
 import androidx.compose.ui.platform.InspectorInfo
 
@@ -41,27 +44,39 @@ fun Modifier.glassSurface(
     shape: Shape,
     colors: GlassColors,
     shadow: Shadow? = null,
-): Modifier = this then GlassSurfaceElement(shape, colors, shadow, drawsBody = true)
+): Modifier = this then GlassSurfaceElement(shape, colors, shadow, drawsBody = true, drawsRim = true)
 
 /**
- * The rim and the outer shadow of [glassSurface] alone, for chrome whose body is the blurred scene
- * it samples: the backdrop is drawn as this modifier's content, between the shadow and the rim.
+ * The outer shadow of [glassSurface] alone, and its rim unless the chrome lights its own edge with
+ * [rimLight], for chrome whose body is the blurred scene it samples: the backdrop is drawn as this
+ * modifier's content, between the shadow and the rim.
  */
 internal fun Modifier.glassEdges(
     shape: Shape,
     colors: GlassColors,
     shadow: Shadow?,
-): Modifier = this then GlassSurfaceElement(shape, colors, shadow, drawsBody = false)
+    rim: Boolean = true,
+): Modifier = this then GlassSurfaceElement(shape, colors, shadow, drawsBody = false, drawsRim = rim)
+
+/**
+ * The outer shadow of a lifted piece of glass, at [alpha] (read in draw): rasterised once per size
+ * through the window's shadow context and composited at the frame's strength, so a lens whose
+ * shadow deepens as it lifts allocates nothing. The body is drawn as content over it, so nothing
+ * cuts the inside away: a lens is opaque.
+ */
+internal fun Modifier.glassShadow(shape: Shape, shadow: Shadow, alpha: () -> Float): Modifier =
+    this then GlassShadowElement(shape, shadow, alpha)
 
 private data class GlassSurfaceElement(
     val shape: Shape,
     val colors: GlassColors,
     val shadow: Shadow?,
     val drawsBody: Boolean,
+    val drawsRim: Boolean,
 ) : ModifierNodeElement<GlassSurfaceNode>() {
-    override fun create() = GlassSurfaceNode(shape, colors, shadow, drawsBody)
+    override fun create() = GlassSurfaceNode(shape, colors, shadow, drawsBody, drawsRim)
 
-    override fun update(node: GlassSurfaceNode) = node.update(shape, colors, shadow, drawsBody)
+    override fun update(node: GlassSurfaceNode) = node.update(shape, colors, shadow, drawsBody, drawsRim)
 
     override fun InspectorInfo.inspectableProperties() {
         name = if (drawsBody) "glassSurface" else "glassEdges"
@@ -76,14 +91,15 @@ private class GlassSurfaceNode(
     private var colors: GlassColors,
     private var shadow: Shadow?,
     private var drawsBody: Boolean,
+    private var drawsRim: Boolean,
 ) : DelegatingNode() {
 
     private var shadowPainter: DropShadowPainter? = null
     private val cache = delegate(CacheDrawModifierNode { buildDrawing() })
 
-    fun update(shape: Shape, colors: GlassColors, shadow: Shadow?, drawsBody: Boolean) {
+    fun update(shape: Shape, colors: GlassColors, shadow: Shadow?, drawsBody: Boolean, drawsRim: Boolean) {
         if (shape == this.shape && colors == this.colors && shadow == this.shadow &&
-            drawsBody == this.drawsBody
+            drawsBody == this.drawsBody && drawsRim == this.drawsRim
         ) {
             return
         }
@@ -92,6 +108,7 @@ private class GlassSurfaceNode(
         this.colors = colors
         this.shadow = shadow
         this.drawsBody = drawsBody
+        this.drawsRim = drawsRim
         cache.invalidateDrawCache()
     }
 
@@ -103,7 +120,7 @@ private class GlassSurfaceNode(
             (size.width - rimWidth).coerceAtLeast(0f),
             (size.height - rimWidth).coerceAtLeast(0f),
         )
-        val rimOutline = shape.createOutline(rimSize, layoutDirection, this)
+        val rimOutline = if (drawsRim) shape.createOutline(rimSize, layoutDirection, this) else null
         val rim = Brush.verticalGradient(
             0f to colors.rim,
             1f to colors.rim.copy(alpha = colors.rim.alpha * RimFade),
@@ -130,8 +147,10 @@ private class GlassSurfaceNode(
                 if (sheen != null) drawOutline(outline, sheen)
             }
             drawContent()
-            translate(rimWidth / 2f, rimWidth / 2f) {
-                drawOutline(rimOutline, rim, style = rimStroke)
+            if (rimOutline != null) {
+                translate(rimWidth / 2f, rimWidth / 2f) {
+                    drawOutline(rimOutline, rim, style = rimStroke)
+                }
             }
         }
     }
@@ -141,6 +160,52 @@ private class GlassSurfaceNode(
         shadowPainter
             ?: requireGraphicsContext().shadowContext.createDropShadowPainter(shape, shadow)
                 .also { shadowPainter = it }
+}
+
+private data class GlassShadowElement(
+    val shape: Shape,
+    val shadow: Shadow,
+    val alpha: () -> Float,
+) : ModifierNodeElement<GlassShadowNode>() {
+    override fun create() = GlassShadowNode(shape, shadow, alpha)
+
+    override fun update(node: GlassShadowNode) = node.update(shape, shadow, alpha)
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "glassShadow"
+        properties["shadow"] = shadow
+    }
+}
+
+private class GlassShadowNode(
+    private var shape: Shape,
+    private var shadow: Shadow,
+    private var alpha: () -> Float,
+) : Modifier.Node(), DrawModifierNode {
+
+    private var painter: DropShadowPainter? = null
+
+    fun update(shape: Shape, shadow: Shadow, alpha: () -> Float) {
+        if (shape != this.shape || shadow != this.shadow) painter = null
+        this.shape = shape
+        this.shadow = shadow
+        this.alpha = alpha
+        invalidateDraw()
+    }
+
+    override fun onDetach() {
+        painter = null
+    }
+
+    override fun ContentDrawScope.draw() {
+        val strength = alpha().coerceIn(0f, 1f)
+        if (strength > 0f) {
+            val painter = painter
+                ?: requireGraphicsContext().shadowContext.createDropShadowPainter(shape, shadow).also { painter = it }
+            with(painter) { draw(size, alpha = strength) }
+        }
+        drawContent()
+    }
 }
 
 /** How much of the rim's strength is left at the bottom edge. */

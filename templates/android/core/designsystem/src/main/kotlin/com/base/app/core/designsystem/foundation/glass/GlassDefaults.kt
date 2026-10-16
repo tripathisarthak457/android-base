@@ -23,11 +23,24 @@ object GlassDefaults {
 
     /**
      * How far chrome blurs the scene. Larger radii read as frosted rather than glass and cost
-     * more.
+     * more; this is the Kyant catalog's bar.
      */
-    val ChromeBlur: Dp = 10.dp
+    val ChromeBlur: Dp = 8.dp
 
-    /** The rim's width, inside the shape's edge. */
+    /**
+     * How far in from its edge the chrome bends the scene, and how far it displaces it there: the
+     * catalog's bar, whose rim visibly refracts what scrolls under it.
+     */
+    val ChromeRefractionHeight: Dp = 24.dp
+    val ChromeRefractionAmount: Dp = 24.dp
+
+    /** The light along the chrome's edge: the catalog's default highlight. */
+    internal val ChromeRim = RimLight()
+
+    /** The light along a lifted lens's edge, which rises with it. */
+    internal val LensRim = RimLight()
+
+    /** The rim's width, inside the shape's edge, for drawn glass. */
     val RimWidth: Dp = 0.75.dp
 
     /** Content glass: a card, a chip, a field, a button over content. */
@@ -79,8 +92,17 @@ object GlassDefaults {
     @ReadOnlyComposable
     fun contentShadow(): Shadow? = if (AppTheme.colors.isLight) ContentShadow else null
 
+    /**
+     * The shadow a lens casts once lifted off the bar, as deep as the catalog's; none in dark
+     * theme.
+     */
+    @Composable
+    @ReadOnlyComposable
+    fun lensShadow(): Shadow? = if (AppTheme.colors.isLight) LensShadow else null
+
     private fun rim(light: Boolean): Color = Color.White.copy(alpha = if (light) 0.85f else 0.20f)
 
     private val ChromeShadow = Shadow(radius = 16.dp, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
     private val ContentShadow = Shadow(radius = 10.dp, offset = DpOffset(0.dp, 3.dp), alpha = 0.08f)
+    private val LensShadow = Shadow(radius = 24.dp, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
 }

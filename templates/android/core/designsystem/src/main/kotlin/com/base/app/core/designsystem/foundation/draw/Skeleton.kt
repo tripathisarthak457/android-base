@@ -406,7 +406,7 @@ private class SkeletonNode(private var bones: Bones) :
     override fun onSweepFrame() = invalidateDraw()
 
     private fun follow() = observeReads {
-        val sweeps = currentValueOf(LocalTabVisible) &&
+        val sweeps = currentValueOf(LocalTabVisible).isVisible &&
             !currentValueOf(LocalReduceMotion).value &&
             !currentValueOf(LocalInspectionMode)
         val next = if (sweeps) currentValueOf(LocalShimmerClock) else null

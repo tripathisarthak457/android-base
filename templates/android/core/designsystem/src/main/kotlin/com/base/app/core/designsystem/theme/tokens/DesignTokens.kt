@@ -828,6 +828,30 @@ internal object DesignTokens {
             surfaces = SurfaceTone.Cream,
             voice = TypeVoice.Rounded,
         )
+        // <opt:liquidglass>
+        val glass = Style(
+            radiusXs = 10.dp,
+            radiusSm = 14.dp,
+            radiusMd = 20.dp,
+            radiusLg = 26.dp,
+            radiusXl = 32.dp,
+            radiusSheet = 30.dp,
+            buttonRadius = null,
+            chipRadius = null,
+            card = CardTreatment.Raised,
+            field = FieldTreatment.Filled,
+            bar = BarTreatment.Glass,
+            indicator = BarIndicator.Subtle,
+            borderWidth = 1.dp,
+            borderWidthStrong = 1.5.dp,
+            uppercaseLabels = false,
+            offsetShadow = 0.dp,
+            sheetInset = 8.dp,
+            sheetMaterial = SheetMaterial.Glass,
+            surfaces = SurfaceTone.BrandTint,
+            voice = TypeVoice.Bold,
+        )
+        // </opt:liquidglass>
     }
 
     /** The project's own choices, which `AppTheme` falls back to. */

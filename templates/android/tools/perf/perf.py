@@ -40,7 +40,7 @@ import parse_gfx  # noqa: E402
 # The order scenarios run in, whatever order they are given: everything that keeps the process
 # alive first, then memory after the journey, then the scenarios that kill or recompile the app.
 SCENARIOS = [
-    "tabs", "tabs_tap", "tab1", "pushpop", "pushpop_gesture", "back_during_push", "rapid_back",
+    "tabs", "tabs_tap", "tab1", "lens_drag", "pushpop", "pushpop_gesture", "back_during_push", "rapid_back",
     "scroll_root", "tabs_large", "pushpop_large", "listdetail_select", "scroll_large", "sidebar_toggle",
     "idle", "nav_stress", "restore", "meminfo", "scroll_minimize", "recompose", "trace",
     "coldstart", "coldstart_installed",
@@ -418,12 +418,37 @@ class Run:
         self.app.compile_with_apk_profile()
         self.device.shell("input keyevent KEYCODE_HOME")
         self.app.launch()
+        self.check_glass_tier()
         self.first_use("")
         self.app.stop()
         time.sleep(1.0)
         self.app.launch()
         self.first_use("_warm")
         self.at_root(0)
+
+    def check_glass_tier(self):
+        """A run that forces a liquid glass tier is only worth keeping on a build whose shell has a
+        glass stage drawing at that tier: dev builds log `perf.glass: tier=<Tier> stage=<true|false>`
+        once the shell is up, and a build without glass would otherwise measure solid chrome under
+        the tier's name."""
+        forced = self.app.extras.get("glass.quality")
+        if not forced:
+            return
+        deadline = time.monotonic() + 30.0
+        line = None
+        while time.monotonic() < deadline:
+            lines = self.device.adb("logcat", "-d", "-v", "brief", "-s", "perf.glass:I", check=False).splitlines()
+            tagged = [l for l in lines if "tier=" in l]
+            if tagged:
+                line = tagged[-1]
+                break
+            time.sleep(0.5)
+        if line is None:
+            raise HarnessError("glass.quality was forced but the shell logged no perf.glass line: not a dev build with glass?")
+        match = re.search(r"tier=(\w+) stage=(true|false)", line)
+        if not match or match.group(2) != "true" or match.group(1) != forced:
+            raise HarnessError(f"glass.quality={forced} was forced but the shell reports '{line.strip()}'")
+        self.notes.append(f"glass: tier {forced} on a glass stage")
 
     def first_use(self, suffix):
         _, self.tabs = self.wait_for(lambda t: t.tabs(), "the tab bar (tab_0)", timeout=30)
@@ -472,6 +497,24 @@ class Run:
                 firsts.append(first["ui_ms"] if first else None)
         self.record_gfx(scenario, dumps, all_frames)
         self.record_spread(f"{scenario}.first_frame_ms", firsts)
+
+    def lens_drag(self):
+        """Three slow drags of the selection across every tab and back: the lens under a finger, let
+        go on the last tab and on the first. The drag's first move passes the touch slop at once,
+        so the whole swipe is spent with the lens pressed."""
+        if len(self.tabs) < 2:
+            self.inapplicable["lens_drag"] = "the app has one tab"
+            return
+        self.at_root(0)
+        (x0, y), (x1, _) = self.tabs[0].center, self.tabs[-1].center
+        command = f"input swipe {x0} {y} {x1} {y} 700; sleep 0.6; input swipe {x1} {y} {x0} {y} 700"
+        dumps, all_frames = [], []
+        for _ in range(3):
+            gfx, frames = self.segment("lens_drag", command, 1.0)
+            dumps.append(gfx)
+            all_frames.append(frames)
+        self.record_gfx("lens_drag", dumps, all_frames)
+        self.at_root(0)
 
     def tab1(self):
         if len(self.tabs) < 2:
@@ -935,6 +978,7 @@ class Run:
             "recompose": self.recompose,
             "trace": self.trace,
             "tab1": self.tab1,
+            "lens_drag": self.lens_drag,
             "pushpop": self.pushpop,
             "pushpop_gesture": self.pushpop_gesture,
             "rapid_back": self.rapid_back,

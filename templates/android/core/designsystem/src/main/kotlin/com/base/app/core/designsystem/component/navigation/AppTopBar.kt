@@ -268,20 +268,30 @@ private fun InlineBar(
 ) {
     val edge = AppTheme.spacing.xs
     val titleStart = AppTheme.spacing.gutter - edge
+    // <opt:liquidglass>
+    // Under the Glass design style the bar's buttons are discs of glass over the content.
+    val glassButtons = AppTheme.style.bar == BarTreatment.Glass
+    // </opt:liquidglass>
     Layout(
         contents = listOf(
             {
                 if (onBack != null) {
-                    AppIconButton(
-                        icon = AppIcons.ChevronLeft,
-                        contentDescription = stringResource(R.string.designsystem_navigate_back),
-                        onClick = onBack,
-                        colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
-                    )
+                    BarButtons(glassButtons) {
+                        AppIconButton(
+                            icon = AppIcons.ChevronLeft,
+                            contentDescription = stringResource(R.string.designsystem_navigate_back),
+                            onClick = onBack,
+                            colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
+                        )
+                    }
                 }
             },
             title,
-            { Row(horizontalArrangement = Arrangement.spacedBy(0.dp), verticalAlignment = Alignment.CenterVertically, content = actions) },
+            {
+                BarButtons(glassButtons) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(0.dp), verticalAlignment = Alignment.CenterVertically, content = actions)
+                }
+            },
         ),
         modifier = Modifier.fillMaxWidth().heightIn(min = AppTheme.sizes.topBarHeight).padding(horizontal = edge),
     ) { (leadingSlot, titleSlot, actionSlot), constraints ->
@@ -308,6 +318,18 @@ private fun InlineBar(
             text.placeRelative(x, (height - text.height) / 2)
         }
     }
+}
+
+/** The bar's buttons, told whether they are glass. Without the feature, plain. */
+@Composable
+private fun BarButtons(glass: Boolean, content: @Composable () -> Unit) {
+    // <opt:liquidglass>
+    if (glass) {
+        CompositionLocalProvider(LocalGlassButtons provides true, content = content)
+        return
+    }
+    // </opt:liquidglass>
+    content()
 }
 
 /** How far content scrolls under a clear bar before the bar is fully solid. */

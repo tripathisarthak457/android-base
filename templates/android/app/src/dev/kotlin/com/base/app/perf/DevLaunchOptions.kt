@@ -6,6 +6,9 @@ import com.base.app.core.datastore.AppSettingsStore
 import com.base.app.core.datastore.AuthTokenStore
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.TabLabels
+// <opt:liquidglass>
+import com.base.app.core.designsystem.foundation.glass.GlassQuality
+// </opt:liquidglass>
 import com.base.app.core.navigation.ShellConfig
 import com.base.app.startup.LaunchHook
 import com.base.app.startup.ShellConfigOverride
@@ -27,7 +30,9 @@ import javax.inject.Singleton
  * - `perf.barMinimize=OnScrollDown` makes the tab bar minimize while a list scrolls down;
  * - `perf.barLabels=Selected` (or `Never`) sets which tabs show their label;
  * - `perf.theme=dark` (or `light`, `system`) saves the app's theme, as the settings screen does, so
- *   a recording can be made in either without touching the phone's own setting.
+ *   a recording can be made in either without touching the phone's own setting;
+ * - `glass.quality=Live` (or `LiveNoLens`, `Frosted`, `Solid`) forces the liquid glass tier, so each
+ *   can be measured on one device.
  *
  * The token is made up. A dev server that checks tokens answers 401 and the app signs out, so the
  * journeys rely on screens that load without a real session, as the sample feature's public API does.
@@ -41,6 +46,9 @@ class DevLaunchOptions @Inject constructor(
     private var screenResponse: Float? = null
     private var barMinimize: BarMinimize? = null
     private var barLabels: TabLabels? = null
+    // <opt:liquidglass>
+    private var glassQuality: GlassQuality? = null
+    // </opt:liquidglass>
 
     override suspend fun beforeStart(intent: Intent) {
         val fakeSession = intent.isOn(FAKE_SESSION)
@@ -50,12 +58,18 @@ class DevLaunchOptions @Inject constructor(
         screenResponse = intent.getStringExtra(SCREEN_RESPONSE)?.toFloatOrNull()?.takeIf { it > 0f }
         barMinimize = intent.getStringExtra(BAR_MINIMIZE)?.let { name -> BarMinimize.entries.firstOrNull { it.name == name } }
         barLabels = intent.getStringExtra(BAR_LABELS)?.let { name -> TabLabels.entries.firstOrNull { it.name == name } }
+        // <opt:liquidglass>
+        glassQuality = intent.getStringExtra(GLASS_QUALITY)?.let { name -> GlassQuality.entries.firstOrNull { it.name == name } }
+        // </opt:liquidglass>
     }
 
     override fun adjust(config: ShellConfig): ShellConfig = config.copy(
         screenResponse = screenResponse ?: config.screenResponse,
         barMinimize = barMinimize ?: config.barMinimize,
         barLabels = barLabels ?: config.barLabels,
+        // <opt:liquidglass>
+        glassQuality = glassQuality ?: config.glassQuality,
+        // </opt:liquidglass>
     )
 
     private fun Intent.isOn(name: String): Boolean = getStringExtra(name).toBoolean()
@@ -67,6 +81,9 @@ class DevLaunchOptions @Inject constructor(
         const val BAR_MINIMIZE = "perf.barMinimize"
         const val BAR_LABELS = "perf.barLabels"
         const val THEME = "perf.theme"
+        // <opt:liquidglass>
+        const val GLASS_QUALITY = "glass.quality"
+        // </opt:liquidglass>
         val THEMES = setOf(AppSettings.THEME_SYSTEM, AppSettings.THEME_LIGHT, AppSettings.THEME_DARK)
         const val SYNTHETIC_TOKEN = "perf-session"
     }

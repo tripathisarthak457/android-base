@@ -3,17 +3,14 @@ package com.base.app.core.navigation.shell
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.LayoutDirection
-import com.base.app.core.designsystem.component.container.AppListItem
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
-import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.R
 import com.base.app.core.navigation.ShellTab
@@ -25,7 +22,6 @@ import com.base.app.core.navigation.ShellTab
  */
 @Composable
 internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onSelect: (Int) -> Unit) {
-    val chevron = if (LocalLayoutDirection.current == LayoutDirection.Rtl) AppIcons.ChevronLeft else AppIcons.ChevronRight
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = { AppTopBar(title = stringResource(R.string.navigation_more)) },
@@ -35,7 +31,7 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
             items(count = tabs.size - from, key = { from + it }) { offset ->
                 val index = from + offset
                 val tab = tabs[index]
-                AppListItem(
+                AppRow(
                     title = labels[index],
                     modifier = Modifier.testTag("more_$index"),
                     onClick = { onSelect(index) },
@@ -43,9 +39,6 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
                         AppBadgedBox(count = tab.badgeCount) {
                             AppIcon(imageVector = tab.icon, contentDescription = null, tint = AppTheme.colors.accent)
                         }
-                    },
-                    trailing = {
-                        AppIcon(imageVector = chevron, contentDescription = null, tint = AppTheme.colors.contentTertiary)
                     },
                 )
             }

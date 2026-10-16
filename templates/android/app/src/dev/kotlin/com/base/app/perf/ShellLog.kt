@@ -5,6 +5,8 @@ import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.ShellState
 import com.base.app.startup.ShellObserver
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
 import javax.inject.Inject
@@ -23,7 +25,16 @@ import kotlin.math.roundToInt
 class ShellLog @Inject constructor() : ShellObserver {
 
     override suspend fun observe(state: ShellState) {
-        snapshotFlow { describe(state) }.collect { Log.i(TAG, it) }
+        coroutineScope {
+            // A glass measurement is trusted only on a build with a stage: tools/perf reads
+            // `perf.glass: tier=<Tier> stage=<true|false>` before it keeps a forced tier's numbers.
+            launch {
+                snapshotFlow { state.glass }.collect { tier ->
+                    Log.i(GLASS_TAG, "tier=${tier ?: "none"} stage=${tier != null}")
+                }
+            }
+            snapshotFlow { describe(state) }.collect { Log.i(TAG, it) }
+        }
     }
 
     private fun describe(state: ShellState): String =
@@ -36,5 +47,6 @@ class ShellLog @Inject constructor() : ShellObserver {
 
     private companion object {
         const val TAG = "perf.shell"
+        const val GLASS_TAG = "perf.glass"
     }
 }

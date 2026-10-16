@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
 import com.base.app.core.designsystem.theme.AppTheme
@@ -92,12 +93,22 @@ internal class PillSlots(
 }
 
 /**
+ * Where the selection pill is drawn, as the slot span [from]..[to], read in draw only. The default
+ * bar animates two edges ([IndicatorEdges]); the glass bar reads its lens.
+ */
+@Stable
+internal interface PillSpan {
+    val from: Float
+    val to: Float
+}
+
+/**
  * The selection pill's two edges, in slot units. The edge facing the new tab runs ahead on a
  * quicker spring with a little give and the trailing one follows, so the pill stretches toward its
  * target and contracts as it lands, instead of sliding over as a rigid block. Read in draw only.
  */
 @Stable
-internal class IndicatorEdges(selected: Int) {
+internal class IndicatorEdges(selected: Int) : PillSpan {
     val start = Animatable(selected.toFloat())
     val end = Animatable(selected.toFloat())
 
@@ -115,14 +126,19 @@ internal class IndicatorEdges(selected: Int) {
     }
 
     /** The pill's drawn span in slot units, never wider than [MAX_STRETCH] past one slot. */
-    inline fun span(block: (from: Float, to: Float) -> Unit) {
-        var from = min(start.value, end.value)
-        var to = max(start.value, end.value)
-        if (to - from > MAX_STRETCH) {
-            if (forward) from = to - MAX_STRETCH else to = from + MAX_STRETCH
+    override val from: Float
+        get() {
+            val from = min(start.value, end.value)
+            val to = max(start.value, end.value)
+            return if (to - from > MAX_STRETCH && forward) to - MAX_STRETCH else from
         }
-        block(from, to)
-    }
+
+    override val to: Float
+        get() {
+            val from = min(start.value, end.value)
+            val to = max(start.value, end.value)
+            return if (to - from > MAX_STRETCH && !forward) from + MAX_STRETCH else to
+        }
 
     companion object {
         const val MAX_STRETCH = 0.5f
@@ -243,7 +259,7 @@ private fun TabCell(
                 ) {
                     BasicText(
                         text = if (uppercase) item.label.uppercase() else item.label,
-                        style = AppTheme.typography.labelSmall.copy(textAlign = TextAlign.Center),
+                        style = AppTheme.typography.caption2.copy(textAlign = TextAlign.Center),
                         color = { color },
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -272,6 +288,10 @@ private fun TabCell(
 /**
  * How the tab cells are measured and placed along the bar or the rail, and where the pill rests in
  * each slot. The base layer writes [slots]; the selected layer is placed identically.
+ *
+ * @param uniformPills every pill as wide as its slot less the gaps, whatever its label: the glass
+ *   bar's lens is one element that must cover the pill at every slot.
+ * @param pillHeight the pill's height in the bar; the glass bar's lens is taller.
  */
 @Stable
 internal class TabMeasure(
@@ -279,9 +299,17 @@ internal class TabMeasure(
     private val state: AppTabBarState?,
     private val selected: () -> Int,
     val slots: MutableState<PillSlots>,
+    private val uniformPills: Boolean = false,
+    private val pillHeight: Dp = PillHeight,
 ) {
     /** Px of rail height the cells may use before they scroll; written by the rail's viewport. */
     var railViewport by mutableIntStateOf(Constraints.Infinity)
+
+    val isVertical: Boolean get() = vertical
+
+    /** The row's length along its axis at the last measure, in px; a plain value, read in draw. */
+    var lengthPx: Int = 0
+        private set
 
     private val basePolicy = if (vertical) railPolicy(writesSlots = true) else barPolicy(writesSlots = true)
     private val selectedPolicy = if (vertical) railPolicy(writesSlots = false) else barPolicy(writesSlots = false)
@@ -293,20 +321,25 @@ internal class TabMeasure(
         val height = BarHeight.roundToPx()
         val count = measurables.size.coerceAtLeast(1)
         val slot = width / count
+        lengthPx = width
         val placeables = measurables.map { it.measure(Constraints.fixed(slot, height)) }
         if (writesSlots) {
             val starts = FloatArray(placeables.size)
             val ends = FloatArray(placeables.size)
             placeables.forEachIndexed { index, placeable ->
                 val content = (slot - 2 * placeable.contentStart()).toFloat()
-                val pill = (content + 2 * LabelPadding.toPx())
-                    .coerceIn(MinPillWidth.toPx(), MaxPillWidth.toPx())
-                    .coerceAtLeast(content + 2 * LabelPaddingMin.toPx())
-                    .coerceAtMost(slot - 2 * SlotGap.toPx())
+                val pill = if (uniformPills) {
+                    slot - 2 * SlotGap.toPx()
+                } else {
+                    (content + 2 * LabelPadding.toPx())
+                        .coerceIn(MinPillWidth.toPx(), MaxPillWidth.toPx())
+                        .coerceAtLeast(content + 2 * LabelPaddingMin.toPx())
+                        .coerceAtMost(slot - 2 * SlotGap.toPx())
+                }
                 starts[index] = index * slot + (slot - pill) / 2f
                 ends[index] = starts[index] + pill
             }
-            val inset = (height - PillHeight.toPx()) / 2f
+            val inset = (height - pillHeight.toPx()) / 2f
             publish(PillSlots(starts, ends, inset, height - inset))
         }
         layout(width, height) {
@@ -331,6 +364,7 @@ internal class TabMeasure(
         // tab in view as long as it can.
         val fit = if (railViewport == Constraints.Infinity) Int.MAX_VALUE else railViewport / count
         val item = fit.coerceIn(RailItemMinHeight.roundToPx(), RailItemHeight.roundToPx())
+        lengthPx = item * measurables.size
         val placeables = measurables.map { it.measure(Constraints.fixed(width, item)) }
         if (writesSlots) {
             val inset = RailPillInset.toPx()

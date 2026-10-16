@@ -1,0 +1,17 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Lean Glass",
+  "package_name": "com.example.leanglass",
+  "architecture": "compact",
+  "features": [
+    "catalog",
+    "leakcanary",
+    "liquidglass",
+    "network",
+    "sample"
+  ],
+  "feature_modules": [],
+  "languages": [],
+  "design_style": "Glass"
+}

@@ -76,6 +76,13 @@ class ShellState internal constructor(
     var window: SizeClass? by mutableStateOf(null)
         private set
 
+    /**
+     * The liquid glass tier the chrome draws at, by name, or null while no glass stage exists: the
+     * dev log reports it, so a measurement that forced a tier can tell it was taken.
+     */
+    var glass: String? by mutableStateOf(null)
+        internal set
+
     /** Whether the person opened (true) or folded (false) the sidebar; null until they do. */
     var sidebarOpen by mutableStateOf(initialSidebar)
         private set

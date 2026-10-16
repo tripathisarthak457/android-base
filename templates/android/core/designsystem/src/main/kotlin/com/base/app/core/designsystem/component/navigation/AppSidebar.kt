@@ -48,11 +48,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
-import com.base.app.core.designsystem.foundation.HapticEffect
-import com.base.app.core.designsystem.foundation.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -78,7 +77,7 @@ fun AppSidebar(
 ) {
     val look = barLook(treatment)
     val haptics = rememberAppHaptics()
-    val reduceMotion = rememberReduceMotion()
+    val reduceMotion = AppTheme.reduceMotion
     val highlight = remember(items.size) { SidebarHighlight(items.size, selected) }
     LaunchedEffect(highlight, selected) { highlight.moveTo(selected, animate = !reduceMotion) }
     val spacing = AppTheme.spacing
@@ -123,7 +122,7 @@ fun AppSidebar(
                     if (item.section != null && item.section != items.getOrNull(index - 1)?.section) {
                         BasicText(
                             text = item.section,
-                            style = AppTheme.typography.labelSmall,
+                            style = AppTheme.typography.caption2,
                             color = { look.content },
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -146,7 +145,7 @@ fun AppSidebar(
                             if (index == selected) {
                                 onReselect(index)
                             } else {
-                                haptics.perform(HapticEffect.Select)
+                                haptics.perform(AppHaptic.Selection)
                                 onSelect(index)
                             }
                         },
@@ -193,7 +192,7 @@ private fun SidebarRow(item: TabItem, selected: Boolean, look: BarLook, modifier
         }
         BasicText(
             text = item.label,
-            style = AppTheme.typography.bodyLarge,
+            style = AppTheme.typography.body,
             color = { color },
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

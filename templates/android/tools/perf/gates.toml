@@ -61,6 +61,7 @@ solid = 1.0
 standard = 1.0
 lean = 1.0
 smoke = { add = 0.5, scale = 0.2 }
+glass_live = 2.5
 
 [[row]]
 metric = "tabs.first_frame_ms.median"
@@ -69,6 +70,7 @@ solid = 8.0
 standard = 8.0
 lean = 8.0
 smoke = { add = 2.0 }
+glass_live = 8.0
 
 [[row]]
 metric = "tabs.first_frame_ms.max"
@@ -76,6 +78,7 @@ label = "Tab switch to a visited tab, first frame max (ms)"
 solid = 16.0
 standard = 16.0
 lean = 16.0
+glass_live = 16.0
 
 [[row]]
 metric = "tabs.hitch_ms_per_s"
@@ -128,6 +131,7 @@ solid = 2.0
 standard = 2.0
 lean = 2.0
 smoke = { add = 0.5, scale = 0.2 }
+glass_live = 3.0
 
 [[row]]
 metric = "pushpop.p99_ms"
@@ -145,6 +149,7 @@ solid = "ratchet"
 metric = "pushpop_gesture.janky_pct"
 label = "Push/pop with the back gesture, janky frames (%)"
 solid = 2.0
+glass_live = 3.0
 
 [[row]]
 metric = "pushpop_gesture.gesture_first_frame_ms.median"
@@ -227,6 +232,7 @@ label = "Scroll a root list, janky frames (%)"
 solid = 0.5
 standard = 0.5
 smoke = { add = 0.5, scale = 0.2 }
+glass_live = 2.0
 
 [[row]]
 metric = "scroll_root.gpu_p90_ms"
@@ -234,16 +240,19 @@ label = "Scroll a root list, GPU p90 (ms)"
 solid = 7.0
 standard = 7.0
 smoke = { add = 1.0 }
+glass_live = 8.0
 
 [[row]]
 metric = "scroll_minimize.janky_pct"
 label = "Scroll with the bar minimizing, janky frames (%)"
 solid = 0.5
+glass_live = 2.0
 
 [[row]]
 metric = "scroll_minimize.gpu_p90_ms"
 label = "Scroll with the bar minimizing, GPU p90 (ms)"
 solid = 7.0
+glass_live = 8.0
 
 [[row]]
 metric = "idle.frames"
@@ -252,6 +261,7 @@ solid = 0
 standard = 0
 lean = 0
 smoke = { add = 0.0 }
+glass_live = 0
 
 [[row]]
 metric = "coldstart.median_ms"
@@ -280,6 +290,7 @@ standard = 48
 metric = "meminfo.pss_mb"
 label = "PSS after the journey (MB)"
 solid = "ratchet"
+glass_live = 80.0
 
 [[row]]
 metric = "recompose.tab_switch.max"
@@ -360,3 +371,18 @@ large = 7.0
 metric = "sidebar_toggle.janky_pct"
 label = "Large window: fold and open the sidebar, janky frames (%)"
 large = 0.5
+
+[[row]]
+metric = "lens_drag.janky_pct"
+label = "Lens drag across the tabs, janky frames (%)"
+glass_live = 2.5
+
+[[row]]
+metric = "lens_drag.gpu_p90_ms"
+label = "Lens drag across the tabs, GPU p90 (ms)"
+glass_live = 8.0
+
+[[row]]
+metric = "pushpop_gesture.gpu_p90_ms"
+label = "Back gesture push/pop, GPU p90 (ms)"
+glass_live = 8.0

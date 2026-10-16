@@ -34,6 +34,14 @@ enum class AppDesignStyle {
 
     /** Cream surfaces, thick outlines, hard offset shadows and extra-bold type. Games, kids. */
     Playful,
+
+    // <opt:liquidglass>
+    /**
+     * Social's shapes and surfaces under liquid glass chrome: the tab bar blurs and bends the
+     * screen scrolling under it, and its selection is a lens. Needs the `liquidglass` feature.
+     */
+    Glass,
+    // </opt:liquidglass>
     ;
 
     /** The tokens this style decides, built once per process. */
@@ -44,6 +52,9 @@ enum class AppDesignStyle {
         Social -> DesignTokens.Styles.social
         Editorial -> DesignTokens.Styles.editorial
         Playful -> DesignTokens.Styles.playful
+        // <opt:liquidglass>
+        Glass -> DesignTokens.Styles.glass
+        // </opt:liquidglass>
     }
 }
 
@@ -111,6 +122,15 @@ enum class BarTreatment {
 
     /** Full width against the bottom edge with a hairline above, as iOS drew it before 26. */
     Docked,
+
+    // <opt:liquidglass>
+    /**
+     * A floating capsule of liquid glass: the screen blurs and bends under it, and the selection
+     * is a lens that lifts off the bar as it travels or is dragged. Falls back to a frosted
+     * capsule on devices that cannot afford the sampling.
+     */
+    Glass,
+    // </opt:liquidglass>
 }
 
 /** How the bar marks the selected tab. */

@@ -14,6 +14,8 @@ implied_only = false
 owns = [
   "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/foundation/glass",
   "core/designsystem/src/test/kotlin/{pkg_path}/core/designsystem/foundation/glass",
+  "core/designsystem/src/main/kotlin/{pkg_path}/core/designsystem/component/navigation/LiquidTabs.kt",
+  "core/navigation/src/main/kotlin/{pkg_path}/core/navigation/shell/GlassTier.kt",
 ]
 legacy = []
 licence = { name = "Kyant backdrop", spdx = "Apache-2.0", url = "https://github.com/Kyant0/AndroidLiquidGlass" }

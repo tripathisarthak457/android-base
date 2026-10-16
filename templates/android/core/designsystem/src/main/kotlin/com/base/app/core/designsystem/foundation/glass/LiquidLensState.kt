@@ -17,7 +17,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.layout.ScaleFactor
-import com.base.app.core.designsystem.theme.rememberReduceMotion
+import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import kotlin.math.abs
@@ -52,8 +52,7 @@ internal fun rememberLiquidLensState(
     val state = remember {
         LiquidLensState(selectedSlot, slotCount, trackSpring, settleSpring, pressSpring)
     }
-    val reduceMotion = rememberReduceMotion()
-    val refracts = LocalGlassQuality.current.refracts && !reduceMotion
+    val refracts = LocalGlassQuality.current.refracts && !AppTheme.reduceMotion
     SideEffect {
         state.slotCount = slotCount
         state.setSprings(trackSpring, settleSpring, pressSpring)
@@ -114,6 +113,8 @@ internal class LiquidLensState(
     private var restSlot by mutableIntStateOf(initialSlot)
     private var followedSlot = initialSlot
     private var pressureVelocity = 0f
+    private var pressedAt = 0f
+    private var pullVelocity = 0f
 
     // The glass the last frame showed, which each frame may raise only so far (see travel).
     private var lift by mutableFloatStateOf(0f)
@@ -127,6 +128,18 @@ internal class LiquidLensState(
     /** True from [press] to [release] or [cancel]. */
     var pressed by mutableStateOf(false)
         private set
+
+    /**
+     * How far, in slots, the finger has pulled the lens from where it pressed: the bar gives a
+     * little in that direction, as the catalog's does. It follows the finger while pressed and
+     * springs back to 0 once released. Read it in a layer block.
+     */
+    var pull by mutableFloatStateOf(0f)
+        private set
+
+    /** Where the finger is, in slots, while pressed; where it last was otherwise. Read it in draw. */
+    val touch: Float
+        get() = finger
 
     /** The lens's centre, in slots. Read it in layout or draw. */
     var position by mutableFloatStateOf(initialSlot.toFloat())
@@ -198,7 +211,8 @@ internal class LiquidLensState(
 
     private val atRest: Boolean
         get() = position == target && velocity == 0f &&
-            pressure == pressureTarget && pressureVelocity == 0f
+            pressure == pressureTarget && pressureVelocity == 0f &&
+            (pressed || (pull == 0f && pullVelocity == 0f))
 
     /**
      * Takes new springs, each in the role [rememberLiquidLensState] gives it, from the lens's next
@@ -235,11 +249,16 @@ internal class LiquidLensState(
     /** A finger lands on the lens at [slot]. */
     fun press(slot: Float) {
         finger = slot.coerceIn(0f, lastSlot.toFloat())
+        pressedAt = finger
+        pull = 0f
+        pullVelocity = 0f
         pressed = true
     }
 
     fun dragBy(slots: Float) {
-        if (pressed) finger = (finger + slots).coerceIn(0f, lastSlot.toFloat())
+        if (!pressed) return
+        finger = (finger + slots).coerceIn(0f, lastSlot.toFloat())
+        pull = finger - pressedAt
     }
 
     /**
@@ -280,10 +299,17 @@ internal class LiquidLensState(
      * Runs every motion of the lens until cancelled. Launch it once, for the bar's lifetime. It
      * follows the context's [MotionDurationScale] as Compose's animations do: with animations off
      * the lens jumps to where it is going.
+     *
+     * Its first frames show the lens, under its full resting tint, where the indicator is: the
+     * refraction shaders are compiled for the GPU on first use, and paying that on launch keeps it
+     * out of the first tap.
      */
     suspend fun animate() {
         var lastFrameNanos = NoFrame
         var unspentNanos = 0L
+        glassShown = true
+        repeat(WarmFrames) { withFrameNanos {} }
+        glassShown = false
         while (true) {
             if (atRest) {
                 lastFrameNanos = NoFrame
@@ -318,6 +344,10 @@ internal class LiquidLensState(
         pressure = pressureTarget
         pressureVelocity = 0f
         lift = 0f
+        if (!pressed) {
+            pull = 0f
+            pullVelocity = 0f
+        }
     }
 
     private fun step(elapsedNanos: Long) {
@@ -353,6 +383,19 @@ internal class LiquidLensState(
         } else {
             pressure = nextPressure
             pressureVelocity = nextPressureVelocity
+        }
+
+        // Released, the bar's give springs back on the settle spring; pressed, the finger sets it.
+        if (!pressed && (pull != 0f || pullVelocity != 0f)) {
+            val nextPullVelocity = settleSpec.getVelocityFromNanos(elapsedNanos, pull, 0f, pullVelocity)
+            val nextPull = settleSpec.getValueFromNanos(elapsedNanos, pull, 0f, pullVelocity)
+            if (abs(nextPull) < SlotThreshold && abs(nextPullVelocity) < SlotThreshold * StillRate) {
+                pull = 0f
+                pullVelocity = 0f
+            } else {
+                pull = nextPull
+                pullVelocity = nextPullVelocity
+            }
         }
     }
 }
@@ -427,7 +470,21 @@ private const val LiftDistance = 0.2f
  */
 private const val LiftNanos = 32 * NanosPerMilli
 
-private const val PressSwell = 0.3f
-private const val TravelSwell = 0.12f
-private const val StretchAlong = 0.2f
+/** The catalog's pressed lens is 78 dp tall on a 56 dp rest: it swells past the bar's edge. */
+private const val PressSwell = 0.39f
+
+/** Frames the lens is shown at rest on launch, so its shaders are compiled before the first tap. */
+private const val WarmFrames = 2
+
+/**
+ * A tap's lens swells nearly as far as a pressed one: the catalog presses the lens for a tap too,
+ * and the user wants that drop of glass, a touch lighter than a finger's.
+ */
+private const val TravelSwell = 0.3f
+
+/**
+ * The catalog stretches its lens by up to a quarter with its speed, and narrows it a little; the
+ * stretch here follows the motion's glass, so it holds through a turnaround.
+ */
+private const val StretchAlong = 0.25f
 private const val StretchAcross = 0.08f
