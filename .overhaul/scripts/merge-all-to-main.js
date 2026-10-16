@@ -20,7 +20,7 @@ const CONTEXT = `CONTEXT. The user (Sarthak, GitHub tripathisarthak457) will wip
 - android-base: ${R}, origin github.com/tripathisarthak457/android-base (PUBLIC). Vercel deploys the website from main. The user confirmed the merge (Oct 16: "u merge it pls i get confused in lots of branches will stop vercel to deploy that we will do after testing"), so deploys from main get paused in vercel.json before the push.
   - The branches were already pushed and verified by the handover-backup workflow (see ${H}/PUSHED.md): overhaul/multiplatform-v2 (integration), wp/WP01..WP10, wp/WP03-skel, wp/WP04-perf, wp/WP05-glass, backup/*-wip-2026-10-16 (WIP snapshots of uncommitted work, may not compile), the orphan branch overhaul-workspace (the .overhaul workspace, handover docs and Claude memory), and the merged/* tags.
   - Worktrees live in ${OV}/wt/<name>, plus ${OV}/scratch/WP09-trial.
-- PeriFlow: ${PF}, origin github.com/tripathisarthak457/periflow (PRIVATE).
+- PeriFlow: ${PF}, origin github.com/tripathisarthak457/periflow, which now redirects to github.com/JorwenLabs/periflow (PRIVATE, an organization repo). Before deleting branches there, list the organization's other members (gh api orgs/JorwenLabs/members) and record them in the MERGE-ALL file. The user asked for it, and the archive tags keep every branch restorable.
   - Branches: main, develop, feat/p5..p11-*, fix/p7-device-verification, worktree-agent-* (local only), overhaul/smooth-glass (the overhaul's PeriFlow work, worktree ${OV}/wt/WP11), backup/smooth-glass-wip-2026-10-16 (if the backup workflow pushed it), and remote-only branches such as feat/p0-foundation-docs, feat/p6-android-foundation and claude/full-audit-bug-fixes-*.
   - Some branches are checked out in other worktrees (git worktree list), which may hold uncommitted work.
   - NEVER commit periflow-recovery-codes.txt or PeriFlow-Postman/ (secrets; the offline zip holds them).
@@ -55,10 +55,11 @@ phase('Merge')
 const ab = await agent(`${CONTEXT}
 
 TASK: android-base, every branch into main. ${MERGE_STEPS(R, 'android-base', 'overhaul/multiplatform-v2 first; then wp/WP05-glass, because it already merges wp/WP04 and wp/WP03 with a tested conflict resolution (commit 282dd3c); then wp/WP04, wp/WP04-perf, wp/WP03-skel, wp/WP03, wp/WP02, wp/WP06, wp/WP07, wp/WP08 and any remaining wp/*; then the backup/*-wip-2026-10-16 snapshots; and last overhaul-workspace')}
-Special case, the overhaul-workspace branch: it has unrelated history, with CLAUDE.md, HANDOVER.md and README.md at its root, which would clash with main's own. Merge it as a subtree under overhaul-workspace/:
-  git merge -s ours --no-commit --allow-unrelated-histories overhaul-workspace
-  git read-tree --prefix=overhaul-workspace/ -u overhaul-workspace
-  git commit
+Special case, the overhaul-workspace branch. Its early commits (a961701, 7feafaf) hold an unredacted WIPE-READINESS.md naming the user's work-org account, colleagues and client files; the branch head is redacted. Bring in ONLY its current tree, WITHOUT its history, so that main never reaches those commits:
+  - git read-tree --prefix=overhaul-workspace/ -u overhaul-workspace, on main, then git commit (one ordinary parent: main). No merge, no --allow-unrelated-histories.
+  - Do NOT create an archive tag for overhaul-workspace. Then delete the branch (local and remote, like the others), so that the unredacted commits are no longer reachable from any ref.
+  - Before committing, check that overhaul-workspace/.overhaul/handover/WIPE-READINESS.md is the redacted version: no work-organisation account names, no colleague names, no client document names. Redact anything left.
+  - Add to PUSHED and the MERGE-ALL file a note for the user: GitHub may keep the old commits viewable by SHA for a while; if that matters, GitHub Support can purge them.
 Then add a short pointer at the top of main's root CLAUDE.md (and AGENTS.md if it exists): "Overhaul handover: read overhaul-workspace/HANDOVER.md first."
 The draft release overhaul-raw-data-2026-10-16 stays as it is.
 VERCEL (the user, Oct 16: "will stop vercel to deploy that we will do after testing"): BEFORE pushing main, commit to the root vercel.json (merge into its existing JSON, do not drop keys) "git": { "deploymentEnabled": { "main": false } }, with the message "Pause Vercel deploys from main until the consolidated code is tested" and a why-line. Vercel reads vercel.json from the pushed commit, so the merged main does not deploy. Also tell the user to pause auto-deploy in the Vercel dashboard. The docs say how to re-enable it after testing: remove the key, or deploy by hand.`, { label: 'merge:android-base', phase: 'Merge', schema: STATUS })
@@ -73,6 +74,11 @@ if (!pf) throw new Error('periflow merge failed')
 phase('Docs')
 const docs = await agent(`${CONTEXT}
 
+Fix these gaps from the backup verification too:
+- The draft release now exists: overhaul-raw-data-2026-10-16 on android-base, with 8 of 9 archives; overhaul-private-app-listings was held back (it may contain an API key). Its 3 files exist only in the Drive zip p01. Say so plainly wherever the docs still call the release pending.
+- HANDOVER's zip counts: the Drive backup is 25 zips plus 5 movies (~56 GB), including 11-late-changes-and-missed.zip; the user re-runs late-refresh.py just before the wipe.
+- claude-memory/laptop-memory-freeze.md: the Windows/WSL2 setup is the RECOMMENDED one, not a fact yet.
+- SESSION-2026-10-16.md was repaired (the NUL bytes from the crash were replaced by the rewritten 10:55 section); HANDOVER's 'trailing padding' remark is wrong, so fix it.
 The merges are done (android-base: ${ab.state}: ${ab.summary.slice(0, 600)}; PeriFlow: ${pf.state}: ${pf.summary.slice(0, 600)}).
 TASK: update the handover documents so that they describe the NEW layout. Edit them in ${R}/overhaul-workspace/ (main) and in ${H}/:
 - HANDOVER.md, PACKAGES-AND-BRANCHES.md, RESUME-ON-WINDOWS.md, CLAUDE.md, tools-CLAUDE.md and README.md, plus MERGE-ALL-*.md copied in.

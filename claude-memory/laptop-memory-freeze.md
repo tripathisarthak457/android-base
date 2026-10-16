@@ -5,8 +5,8 @@ metadata:
   type: project
 ---
 
-Same hardware after the wipe: Xiaomi Mi NoteBook Ultra, i5-11300H (4 cores / 8 threads), 15 GB RAM. Since Oct 16 it
-runs Windows with the workspace inside WSL2 Ubuntu (`.wslconfig` `memory=10GB`; see
+Same hardware after the wipe: Xiaomi Mi NoteBook Ultra, i5-11300H (4 cores / 8 threads), 15 GB RAM. From Oct 16 the plan is
+Windows 11 26H2 with the workspace inside WSL2 Ubuntu (recommended `.wslconfig` `memory=10GB`; confirm the actual setup with the user on arrival; see
 `.overhaul/handover/RESUME-ON-WINDOWS.md` §2 and §7).
 
 **Oct 10, 15:23: memory freeze (Linux).** No panic, OOM or thermal entry; a silent gap about 3 minutes after 9 agents
