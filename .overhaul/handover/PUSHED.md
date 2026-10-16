@@ -272,3 +272,99 @@ Built with `.overhaul/handover/tools/sync-workspace-branch.sh` (`WS_DIR` = the s
 
 A last small commit on top records this SHA here; the branch head is whatever `git ls-remote` shows.
 
+
+## 7. The draft release `overhaul-raw-data-2026-10-16` (Archive step, Oct 16, 13:13–13:42 IST)
+
+**Done: 8 of the 9 archives are uploaded; one is left for the user (§7.3).** The release is a **DRAFT** on the PUBLIC
+repo `tripathisarthak457/android-base`. Only accounts with push access can see a draft, and the repo's only collaborator
+is the owner (`gh api repos/tripathisarthak457/android-base/collaborators`, checked at 13:12). **Never publish this
+release:** it holds PeriFlow screens. Publishing it would make them public.
+
+| Field | Value |
+|---|---|
+| Tag name | `overhaul-raw-data-2026-10-16`. A draft has no git tag yet: `refs/tags/overhaul-raw-data-2026-10-16` does not exist on GitHub, and `main` is still `99c4edf` |
+| Release id | `414677818` |
+| URL (owner only) | https://github.com/tripathisarthak457/android-base/releases/tag/untagged-25be7e41483ab47e13ce (GitHub gives drafts an `untagged-…` URL) |
+| Title | Overhaul raw data (2026-10-16 backup) |
+| Check at 13:42 | `gh release view overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base --json isDraft,assets`: `isDraft: true`, 8 assets, all `state: uploaded` |
+
+### 7.1 The archives
+
+Packed one at a time from `.overhaul/` with the recipe in `MANIFEST.md` §3: `tar -cf - -T <paths of release-assets.txt>`,
+piped to `nice -n 19 zstd -3 -T1`, with `bin/memwait` (CPU under 80 °C) before each one. Before uploading each
+archive, its member count was checked against the file inventory. Each upload was checked three ways: the remote size,
+`state: uploaded`, and GitHub's own `digest`, which equals the local sha256 below. Every upload worked on its first
+attempt. The local archives were then deleted.
+
+| Archive | Files | Raw bytes | Archive bytes | sha256 |
+|---|---:|---:|---:|---|
+| `overhaul-recordings.tar.zst` | 117 | 176,032,569 | 144,416,230 | `fa42c2d34345d78a8f5989b583e8644c9078bbcebb6f476a73f40ee80f7ecae1` |
+| `overhaul-periflow-media-4.tar.zst` | 588 | 94,375,067 | 91,723,679 | `525ddfce098b3c7dd6994167b1d5ed252861e5cd9d14dc871ffe0b4a5f11015d` |
+| `overhaul-raw-traces.tar.zst` | 1,084 | 1,274,680,895 | 131,912,452 | `fb8b305f445d3b469859eeeeacbd078aeaf5c12da6bae718d0020159d9d6f764` |
+| `overhaul-frames-1.tar.zst` | 6,039 | 1,634,915,642 | 1,487,456,060 | `0c04e9936bd9ba6ee36f28d04a5c7859bc09ec9fb6a251c6c74c51387ad8560a` |
+| `overhaul-frames-2.tar.zst` | 5,154 | 1,327,366,039 | 1,274,794,310 | `9f09ba13ce07d91465a952ca864fa7477308de62e86e6362853b06abec3bcde7` |
+| `overhaul-periflow-media-1.tar.zst` | 4,402 | 1,308,896,197 | 1,207,547,450 | `07217eda8c136ccf1143bf72fb87327713d7fd33e9daf5f2b39894650f7e144f` |
+| `overhaul-periflow-media-2.tar.zst` | 4,428 | 1,595,351,141 | 1,515,372,882 | `9793ffe6c517bfc28105fd8fcb9d37867097a54c506fb023a098d7ba1f9a1785` |
+| `overhaul-periflow-media-3.tar.zst` | 1,661 | 1,698,739,194 | 1,675,251,347 | `40cc0e137d8effa8dd6c7d75bdebaa4b5ea277581a72a3489bc44dab2df71237` |
+| **Total (8)** | **23,473** | **9,110,356,744** | **7,528,474,410** | |
+
+Every archive is under 1.9 GB. Member paths are relative to `.overhaul/` (for example `perf/WP04/cp1/push_0.30/frames/f_0001.png`).
+Before packing, the file lists were scanned again:
+
+- **Never-publish names:** none matched. The scan covered the Gmail material, `record-gmail-r2.log`,
+  `failure_run2_041`, `scratch/pf-diff`, `scratch/vitfleet`, keystores, `*.pem`/`*.key`, `local.properties`,
+  `google-services.json`, `keystore.properties`, `.env*`, `periflow-recovery-codes.txt`, `PeriFlow-Postman/` and
+  build outputs.
+- **Tokens and e-mail addresses** in the 1,391 text files (txt, json, xml, pbtxt, log, md): the only hit was
+  `scratch/template-build/vit-res.txt`. That file is in the archive that was not uploaded (§7.3).
+- **Overlap:** no file is in two archives.
+
+**Where the PeriFlow media went.** `MANIFEST.md` §3 had planned the four `overhaul-periflow-media-*` archives for a
+draft release on the private PeriFlow repo, with the android-base draft as the fallback. They went to the android-base
+draft, as this step's task said, for two reasons:
+
+- PeriFlow now belongs to the organization `JorwenLabs` (§2). There, other members with write access could see a
+  draft release.
+- The android-base draft is visible to the owner only.
+
+On Oct 16 the user also said PeriFlow files may be pushed ("push each and every file periflow too"). No PeriFlow
+**source code** is in any archive: only screenshots, frames, recordings and UI dumps.
+
+### 7.2 Restore
+
+```bash
+# needs gh logged in as tripathisarthak457 (a draft release is visible only to the owner)
+gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base -D raw-data
+cd raw-data && sha256sum overhaul-*.tar.zst      # compare with the table in section 7.1
+cd <tools>/.overhaul                              # the restored workspace (the overhaul-workspace branch's .overhaul/)
+for f in <path>/raw-data/overhaul-*.tar.zst; do zstd -dc "$f" | tar -xf -; done
+```
+
+On Windows without WSL, run `gh release download` the same way. Check each file with
+`Get-FileHash -Algorithm SHA256 <file>`. Then, inside `.overhaul\`, run `zstd -d NAME.tar.zst` (zstd's Windows build)
+and `tar -xf NAME.tar` (Windows 10 and later ship `tar.exe`). Restore one asset with `-p <asset name>`. No restore was
+test-downloaded: that would have meant downloading the 7.5 GB again. The digests that GitHub reports match the local
+sha256 values.
+
+### 7.3 Not uploaded: `overhaul-private-app-listings.tar.zst` (left for the user)
+
+| What | Files | Raw bytes |
+|---|---:|---:|
+| `scratch/template-build/peri-dex-packages.txt`, `vit-dex-packages.txt`, `vit-res.txt` (package, class and resource listings of the private PeriFlow and VitFleet APKs) | 3 | 21,113,562 |
+
+Why it was not uploaded:
+
+- The token scan found a Google-API-key-like string (`AIza…`) in `vit-res.txt`. `MANIFEST.md` §6 calls it a
+  placeholder. This agent could not verify that: reading the value was blocked.
+- The session's auto-mode safety classifier blocked uploading this archive.
+- An API key is on the never-publish list, so the archive was left out of the batch and not retried.
+
+The user decides what happens to it. Agents must not upload it. Until he decides, the three files exist only on this
+laptop, in `.overhaul/scratch/template-build/`, and in the Drive offline backup (`scratch/` is in
+`00-android-base-not-on-github-p01.zip`, §3). They are also regenerable from the PeriFlow and VitFleet APKs with
+`dexdump`/`aapt`.
+
+The file lists used for packing (`lists/<archive>.paths` and `.files`), the script (`pack-upload.sh`) and the log
+(`run.log`, `results.tsv`) were in the session scratchpad
+`/tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/handover/raw/`.
+The scratchpad is not backed up. The path lists themselves are `.overhaul/handover/release-assets.txt`.
