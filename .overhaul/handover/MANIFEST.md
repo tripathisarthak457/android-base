@@ -7,6 +7,13 @@ This manifest records how every file of the workspace `/home/crazyhusir/Document
 
 The scope is `.overhaul` only. Claude's memory, the chat transcripts and the git branches are handled by other steps of the handover.
 
+> **Status (12:45, handover fix round 1).** This file is the plan. The git part was pushed as planned (`PUSHED.md` §1.5).
+> The draft release had **not** been created yet (`PUSHED.md` §3); until it is, every path in `release-assets.txt`
+> exists only in the user's Google Drive backup (`00-android-base-not-on-github-p*.zip`; `RESUME-ON-WINDOWS.md` §3.10).
+> The PeriFlow repo is now named `JorwenLabs/periflow` (formerly `tripathisarthak457/periflow`). The filter
+> `backup-include.txt` now also leaves out `handover/claude-memory/` (that folder becomes the branch's top-level
+> `claude-memory/` instead).
+
 ## 1. Totals
 
 | Where it goes | Files | Size | Notes |

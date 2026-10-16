@@ -1,3 +1,3 @@
-- [android-base generator overhaul](android-base-generator.md) — user's generator; multi-day overhaul, read .overhaul/STATUS.md to resume; standing instructions
-- [Android skills plugin](android-skills-installed.md) — Google's official Android skills installed; read before Android work
-- [Laptop freezes and power-offs](laptop-memory-freeze.md) — memory freeze (Oct 10); sudden power-offs from a suspect thermal sensor or charger (Oct 16); thermlog, recovery
+- [android-base generator overhaul](android-base-generator.md) — user's generator; multi-day overhaul moved from Linux to Windows/WSL2 on Oct 16; read .overhaul/handover/HANDOVER.md first; standing instructions
+- [Android skills plugin](android-skills-installed.md) — Google's official Android skills plugin (1.0.15); reinstall on a new machine; read before Android work
+- [Laptop freezes and power-offs](laptop-memory-freeze.md) — Oct 10 memory freeze, Oct 16 power-offs (most likely CPU heat under Gradle); bin/locked, bin/memwait, thermlog; watch heat on Windows too

@@ -28,6 +28,7 @@
 # worktrees are git; their WIP is snapshotted into backup/<name>-wip-2026-10-16 branches
 - /wt/
 - /handover/local-only/
+- /handover/claude-memory/
 
 ## 3. SECRETS (never committed)
 - *.jks

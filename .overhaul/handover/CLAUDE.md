@@ -6,7 +6,7 @@ Linux laptop was wiped for Windows. It came from the orphan branch `overhaul-wor
 folder on `main`).
 
 **Read `HANDOVER.md` first** (next to this file; the same text is at `.overhaul/handover/HANDOVER.md`). It tells you
-who the user is, what the project and its 38 requirements are, the plan, where every package stopped, how the
+who the user is, what the project and its 39 requirements are, the plan, where every package stopped, how the
 agents are orchestrated, the rules, the lessons, and the exact first 30 minutes on Windows. You should not need to
 ask the user to re-explain anything.
 
@@ -20,10 +20,11 @@ ask the user to re-explain anything.
 | `.overhaul/` | the workspace: `REQUIREMENTS.md`, `STATUS.md`, `SESSION-*.md`, `PROGRESS.md`, `design/` (MASTER-PLAN, per-package designs), `handoff/` (every package's handoff and RESUME brief), `decisions/`, `research/`, `qa/`, `perf/`, `scripts/` (the Workflow scripts), `bin/` (`locked`, `memwait`, `thermlog`), `handover/` (all handover docs) |
 | `claude-memory/` | Claude's memory files for this project; restore them into `~/.claude/projects/<slug>/memory/` |
 
-Not here, on purpose: the source code (it is in the android-base repo branches), raw traces and recordings (a DRAFT
-release `overhaul-raw-data-2026-10-16`), PeriFlow's code (its own private repo `tripathisarthak457/periflow`),
-secrets, chat transcripts and other people's personal data (only in the user's private offline backup
-`backup-2026-10-16` on his Google Drive).
+Not here, on purpose: the source code (it is in the android-base repo branches), raw traces and recordings (planned
+for a DRAFT release `overhaul-raw-data-2026-10-16`, which did **not** exist yet at 12:45 on Oct 16; they are in any case
+in the user's Google Drive backup: HANDOVER.md §8.2 step 8), PeriFlow's code (its own private repo
+`JorwenLabs/periflow`, formerly `tripathisarthak457/periflow`), secrets, chat transcripts and other people's personal
+data (only in the user's private offline backup `backup-2026-10-16` on his Google Drive).
 
 ## Before you do anything
 
@@ -31,9 +32,15 @@ secrets, chat transcripts and other people's personal data (only in the user's p
    `git ls-remote --heads https://github.com/tripathisarthak457/android-base.git`. Many `wp/*` heads: the branch
    layout. Only `main` plus `archive/*` tags: everything was merged into `main` (read `MERGE-ALL-*.md` in
    `.overhaul/handover/`, and HANDOVER.md §4.8).
+   **Merge-all did not run (checked Oct 16, 12:45); it is pending the user's decision; do not run
+   `.overhaul/scripts/merge-all-to-main.js` (or merge anything into `main`) without asking him** (HANDOVER.md §1.7
+   item 0).
 2. Follow HANDOVER.md §8 and `.overhaul/handover/RESUME-ON-WINDOWS.md` to restore the workspace, the worktrees and
    the uncommitted work (`backup/*-wip-2026-10-16` branches).
 3. Start the session on **Opus 5.5** and do not switch models mid-chat.
+4. Check that this client has the `Workflow` tool (and `CronCreate`/`CronList`, `Monitor`); load them with
+   `ToolSearch` (`select:Workflow,CronCreate,CronList,Monitor`). Unverified for the Claude Code CLI in WSL2; the
+   fallbacks are in HANDOVER.md §5.14.
 
 ## The user's standing instructions (brief; full list in HANDOVER.md §1.3)
 
@@ -52,6 +59,9 @@ secrets, chat transcripts and other people's personal data (only in the user's p
 
 - **`main` is production**: a push to `main` deploys through CI. Never merge into or push `main` without the Android
   release gate's GO and the user's explicit go-ahead in chat. Never force-push; never change the default branch.
+- **Back up off-machine regularly** (HANDOVER.md §6.1 #6): the orchestrator, never an agent, pushes `wp/*`,
+  `overhaul/*`, the `merged/*` tags and the `overhaul-workspace` branch (`.overhaul/handover/tools/sync-workspace-branch.sh`)
+  at the end of every session and after every merge; explicit refspecs, no `--force`, never `main`.
 - Never commit or publish secrets (keystores, signing passwords, `local.properties`, real `google-services.json`,
   `.env`, tokens, `periflow-recovery-codes.txt`, `PeriFlow-Postman/`). Never publish chat transcripts (they contain
   secrets).

@@ -12,7 +12,7 @@ for Windows. No secret values appear in this file: only paths, key *names*, coun
 > `Documents/projects/tools/.overhaul/handover/WIPE-READINESS.md`. The offline backup's own `README-RESTORE.md` and
 > `PLAN.md` say where every other project's files went.
 >
-> **Note for the user:** the first two commits of `overhaul-workspace` still contain the full
+> **Note for the user:** the first two commits of `overhaul-workspace` (`a961701`, `7feafaf`) still contain the full
 > version (paths and names only, no values). Removing it from history needs a force-push or deleting and recreating the
 > branch; agents must not do either. It is your call (`HANDOVER.md` §1.7).
 

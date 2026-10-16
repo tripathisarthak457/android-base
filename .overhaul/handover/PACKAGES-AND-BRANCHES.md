@@ -18,29 +18,34 @@ the plan below where they differ).
 
 ## 0. Read this first
 
-### 0.1 What was on GitHub when this was written
+### 0.1 What is on GitHub
 
-At 11:46 the public repo `github.com/tripathisarthak457/android-base` held **only `main`** (`99c4edf`). Every other
-branch, the `merged/*` tags and the WIP snapshots were still local. The backup workflow (`scripts/handover-backup.js`,
-run `wf_1b6fefc0-712`) pushes them **after** this file was written, in this layout:
+At 11:46, when this file was first written, the public repo `github.com/tripathisarthak457/android-base` held **only
+`main`** (`99c4edf`). The backup workflow (`scripts/handover-backup.js`, run `wf_1b6fefc0-712`) pushed the rest at
+about 12:20. **Status checked against GitHub at 12:45 (handover fix round 1):**
 
-| Where | What |
-|---|---|
-| `tripathisarthak457/android-base` (PUBLIC) | every branch except `main` (`main` stays untouched, because Vercel deploys it); the `merged/*` tags; the WIP snapshots as `backup/<name>-wip-2026-10-16`; the orphan branch `overhaul-workspace` (the curated `.overhaul/`, the handover docs, Claude's memory) |
-| Draft release `overhaul-raw-data-2026-10-16` on the same repo (owner-only) | raw data too big for git (`gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base`) |
-| `tripathisarthak457/periflow` (PRIVATE) | the branch `overhaul/smooth-glass` and its WIP snapshot `backup/smooth-glass-wip-2026-10-16` |
+| Where | What | Status at 12:45 |
+|---|---|---|
+| `tripathisarthak457/android-base` (PUBLIC) | every branch except `main` (`main` stays untouched, because production deploys from it); the `merged/*` tags; the WIP snapshots as `backup/<name>-wip-2026-10-16`; `backup/WP09-trial-28cd271`; the orphan branch `overhaul-workspace` (the curated `.overhaul/`, the handover docs, Claude's memory) | **pushed**, every SHA equal to the local one (`PUSHED.md` §1) |
+| Draft release `overhaul-raw-data-2026-10-16` on the same repo (owner-only) | raw data too big for git | **not created**; the workflow's Archive step was due next. If it is missing, the same files are in the user's Drive backup (`RESUME-ON-WINDOWS.md` §3.10; `PUSHED.md` §3) |
+| `JorwenLabs/periflow` (PRIVATE; formerly `tripathisarthak457/periflow`, which redirects) | the branch `overhaul/smooth-glass` and its WIP snapshot `backup/smooth-glass-wip-2026-10-16` | **pushed** (`PUSHED.md` §2) |
 
-Check what really landed: `git ls-remote https://github.com/tripathisarthak457/android-base.git` and
+Check again on the new machine: `git ls-remote https://github.com/tripathisarthak457/android-base.git` and
 `.overhaul/handover/PUSHED.md`.
 
-### 0.2 Warning: a later workflow may have merged everything into `main`
+### 0.2 Merge-all into `main`: did not run; pending the user's decision
 
-`PROGRESS.md` (Oct 16, about 11:30) records that **the user asked for every branch to be merged into `main` and then
-deleted**, in both repos. The user's words, quoted there: "u merge it pls i get confused in lots of branches will stop
-vercel to deploy that we will do after testing". The script `scripts/merge-all-to-main.js` does this (see §9.3). It was
-planned to start **after** the backup workflow finished, and it was **not running** when this file was written.
+The user asked on Oct 16 at **11:11** for every branch to be merged into `main` and then deleted, in both repos, and
+confirmed it at **11:17**: "u merge it pls i get confused in lots of branches will stop vercel to deploy that we will
+do after testing" (`USER-MESSAGES.md` #170, #172; `PROGRESS.md` logged it at "about 11:30"). The script
+`scripts/merge-all-to-main.js` does this (see §9.3). It was queued to start **after** the backup workflow finished.
+**At 12:45 it had not run:** no `archive/*` tags on GitHub, every branch present, `main` = `99c4edf`.
 
-If it ran, the layout below has changed:
+**If you still see the branch layout, it never ran. It is pending the user's decision: do not run it, and do not
+merge anything into `main`, without asking him again in chat** (`HANDOVER.md` §1.7 item 0 gives the reasons and the
+recommendation: its `vercel.json` "pause" pauses nothing, and it would put unreviewed, non-compiling WIP on `main`).
+
+If it ran later, the layout below has changed:
 
 - `main` contains everything, merged **without review**, including the WIP snapshots, which do not compile;
 - the branches are deleted;
@@ -535,12 +540,12 @@ it: perf tools, glass fixes, and later ports of the generator's new shell and gl
 
 | Field | Value |
 |---|---|
-| Repository | `github.com/tripathisarthak457/periflow` (**PRIVATE**). Old local path `/home/crazyhusir/Documents/projects/jorwen/periflow` |
+| Repository | `github.com/JorwenLabs/periflow` (**PRIVATE**; renamed from `tripathisarthak457/periflow`, which redirects). Old local path `/home/crazyhusir/Documents/projects/jorwen/periflow` |
 | Branch | `overhaul/smooth-glass`, head `45b91a2` "Draw the screen into the travelling lens unscaled, so a lift builds no GPU programs" (Oct 15 16:12) |
 | Base | PeriFlow `main` at `240871f` (Sep 28); 16 commits on top |
 | Worktree | `.overhaul/wt/WP11` (only `periflow-android/` is ever touched) |
 | Baseline worktree | `.overhaul/wt/WP11-base`, detached at `a5b630a` (which is on the branch), clean; used to build the "before" APK |
-| Pushed? | Never, until this backup. The backup pushes the branch and its WIP snapshot to the private repo only. **PeriFlow source never goes to the public android-base repo.** |
+| Pushed? | Never, until this backup. On Oct 16 the backup pushed the branch and its WIP snapshot to the private repo only (`PUSHED.md` §2); from now on the orchestrator pushes the branch there regularly (`HANDOVER.md` §6.1 #6). **PeriFlow source never goes to the public android-base repo.** |
 | Never touch | `periflow-recovery-codes.txt`, `PeriFlow-Postman/` (secrets); never `git add -A` |
 
 **The 16 commits, oldest first:**
@@ -940,7 +945,7 @@ Run it before any build: build outputs are ignored, but a tool that writes a tra
 ```bash
 gh auth status                    # the repo is PRIVATE: log in first (gh auth login)
 mkdir -p "$(dirname "$P")"
-git clone https://github.com/tripathisarthak457/periflow.git "$P"
+git clone https://github.com/JorwenLabs/periflow.git "$P"         # formerly tripathisarthak457/periflow (redirects)
 cd "$P"
 git branch --no-track overhaul/smooth-glass origin/overhaul/smooth-glass
 git worktree add "$T/.overhaul/wt/WP11" overhaul/smooth-glass
@@ -1019,7 +1024,9 @@ this file.
   preceded a freeze. Watch memory, heat and usage (`get_usage`) between launches.
 - **The autopilot.** The cron prompt in `scripts/AUTOPILOT-PROMPT.md` is session-only; re-create it in each new
   session. Run `CronList` first so there is only one. Its line "never push package branches" predates the user's
-  Oct 16 backup permission: that permission covered the backup push only.
+  Oct 16 permission. The policy decided in the handover's fix round (`HANDOVER.md` §6.1 #6): agents inside workflows
+  still never push; the orchestrator pushes the branches, the `merged/*` tags and the workspace branch regularly as
+  the off-machine backup (never `main`, never force). Update the autopilot line to say that.
 - **Session copies and records.**
   - The Workflow tool saved a copy of each launched script under
     `~/.claude/projects/-home-crazyhusir-Documents-projects-tools--overhaul/e3f9060d-6364-4a81-a9a2-20851e25521f/workflows/scripts/`.
@@ -1074,12 +1081,15 @@ Earlier task ids of the same runs are listed in `STATUS.md` §1, `SESSION-2026-1
    - **Relaunch:** fresh. Its vendoring agent shares `wt/WP02` with the WP02-M2 agent; the prompts tell each to treat
      the other's commits as its own.
 
-**Suggested relaunch order (a recommendation, not a recorded decision):**
+**Relaunch order: the canonical one is `HANDOVER.md` §5.11** (decided in the handover's fix round; the same table is
+in `RESUME-ON-WINDOWS.md` §8.2):
 
-1. First `to-release.js` and `deep-smoothness-fable.js`. WP04 is first in the merge order, and its escalation turns
+1. Wave 1: `to-release.js` and `deep-smoothness-fable.js`. WP04 is first in the merge order, and its escalation turns
    on the round-2 numbers.
-2. Then `full-liquid-glass-fable.js` and `android-skills-v1-0-15.js`.
-3. The shimmer Verify last, when the phone is attached.
+2. Wave 2, 20–30 minutes later: `shimmer-fix-from-report.js` (edited to run only Verify, with the phone attached)
+   and `android-skills-v1-0-15.js`.
+3. Wave 3: `full-liquid-glass-fable.js`. If the phone is not attached for wave 2, swap: glass in wave 2, shimmer
+   when the phone is back.
 
 **Before any Gradle build:** confirm the new machine's heat behaviour (Windows' Intel DTT driver should hold the CPU
 below the Linux power-off levels). Keep `bin/locked` and `bin/memwait`.
@@ -1088,10 +1098,10 @@ below the Linux power-off levels). Keep `bin/locked` and `bin/memwait`.
 
 | Script | Phases | Run | Purpose and state |
 |---|---|---|---|
-| `handover-backup.js` (242) | Inventory, Document, Pack, Verify, Archive | `wf_1b6fefc0-712` (task `w2on5hl5t`, from about 11:15) | **This backup.** It wrote `MANIFEST.md` and `WIPE-READINESS.md`, then the handover docs (this file is its `doc:packages` agent), then: WIP snapshots; a secrets scan; pushes of every branch except `main`, the `merged/*` tags and `backup/*`; PeriFlow to its private repo; the `overhaul-workspace` orphan branch; a verification from fresh clones; the draft release of raw data. **Running when this was written.** Results: `handover/PUSHED.md` |
+| `handover-backup.js` (242) | Inventory, Document, Pack, Verify, Archive | `wf_1b6fefc0-712` (task `w2on5hl5t`, from about 11:15) | **This backup.** It wrote `MANIFEST.md` and `WIPE-READINESS.md`, then the handover docs (this file is its `doc:packages` agent), then: WIP snapshots; a secrets scan; pushes of every branch except `main`, the `merged/*` tags and `backup/*`; PeriFlow to its private repo; the `overhaul-workspace` orphan branch; a verification from fresh clones with fix rounds; the draft release of raw data. **At 12:45:** pushes done and verified, fix round 1 done, the draft release not yet created. Results: `handover/PUSHED.md` |
 | `handover-backup.private.js` (215) | Inventory, Document, Pack, Verify | `wf_d5a4bdd1-aef` (task `wyjib7dx3`, 11:03) | The first version: everything into a new PRIVATE repo `tripathisarthak457/android-base-overhaul-backup`. **Killed during Inventory** when the user changed the target ("push to public there is no problem, just push each and every file periflow too"). Its Pack phase never ran. Superseded; do not run |
-| `local-offline-backup.js` (99) | Scan, Pack, Verify | `wf_be6d2f15-ba1` (task `w3lb0dkqq`; identified from its agent labels `scan:machine` and `pack:zips`) | Zips of everything not on GitHub (secrets, ignored files, git bundles, Claude transcripts and memory, the whole `.overhaul` including `wt/`, other unpushed projects, personal files) into `tools/backup-2026-10-16/`. Each zip is under 3.9 GB, with `README-RESTORE.md`, `MANIFEST.txt` and `SHA256SUMS.txt`. The user uploads the folder to Google Drive as `backup-2026-10-16`. **Running (Pack) when this was written** |
-| `merge-all-to-main.js` (104) | Merge, Docs, Verify | **not launched** at 11:46 | The user's Oct 16 request (§0.2), in both repos: <ul><li>WIP snapshots for anything left uncommitted;</li><li>`archive/<branch>-2026-10-16` tags, pushed;</li><li>everything merged into `main` (android-base order: `overhaul/multiplatform-v2`, `wp/WP05-glass`, `wp/WP04`, `wp/WP04-perf`, `wp/WP03-skel`, `wp/WP03`, `wp/WP02`, `wp/WP06`, `wp/WP07`, `wp/WP08`, the rest, the `backup/*` snapshots, then `overhaul-workspace` as a subtree under `overhaul-workspace/`);</li><li>Vercel paused through `vercel.json` before the push;</li><li>push `main`; delete the branches and worktrees;</li><li>rewrite the handover docs for the one-branch layout and the offline zip; verify from fresh clones.</li></ul>Planned to start after `handover-backup.js` completes |
+| `local-offline-backup.js` (99) | Scan, Pack, Verify | `wf_be6d2f15-ba1` (task `w3lb0dkqq`; identified from its agent labels `scan:machine` and `pack:zips`) | Zips of everything not on GitHub (secrets, ignored files, git bundles, Claude transcripts and memory, the whole `.overhaul` including `wt/`, other unpushed projects, personal files) into `tools/backup-2026-10-16/`. Each zip is under 3.9 GB, with `README-RESTORE.md`, `MANIFEST.txt` and `SHA256SUMS.txt`. The user uploads the folder to Google Drive as `backup-2026-10-16`. **Finished:** 23 zips plus 5 movie files, checksums 12:17, full coverage of `.overhaul` and `android-base` checked 12:19 (`pack.log`). Upload to Drive: unconfirmed |
+| `merge-all-to-main.js` (104) | Merge, Docs, Verify | **not launched** (checked again at 12:45). **Pending the user's decision; do not run it without asking him** (§0.2) | The user's Oct 16 request (§0.2), in both repos: <ul><li>WIP snapshots for anything left uncommitted;</li><li>`archive/<branch>-2026-10-16` tags, pushed;</li><li>everything merged into `main` (android-base order: `overhaul/multiplatform-v2`, `wp/WP05-glass`, `wp/WP04`, `wp/WP04-perf`, `wp/WP03-skel`, `wp/WP03`, `wp/WP02`, `wp/WP06`, `wp/WP07`, `wp/WP08`, the rest, the `backup/*` snapshots, then `overhaul-workspace` as a subtree under `overhaul-workspace/`);</li><li>Vercel paused through `vercel.json` before the push;</li><li>push `main`; delete the branches and worktrees;</li><li>rewrite the handover docs for the one-branch layout and the offline zip; verify from fresh clones.</li></ul>Planned to start after `handover-backup.js` completes |
 
 ### 9.4 Finished or retired scripts (history; do not relaunch)
 
@@ -1173,7 +1183,7 @@ below the Linux power-off levels). Keep `bin/locked` and `bin/memwait`.
 | | `PF` | `/home/crazyhusir/Documents/projects/jorwen/periflow` | the new PeriFlow clone |
 | | `SCRATCH` | `/tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/handover` | the new session's scratchpad |
 | | inline, lines 96 and 156 | `/home/crazyhusir/Documents`, `/home/crazyhusir/Downloads`, `/home/crazyhusir/...` | scan targets of the old laptop; meaningless after the wipe |
-| | `AB`, `PFR`, `WSB`, `RAW` | `tripathisarthak457/android-base`, `tripathisarthak457/periflow`, `overhaul-workspace`, `overhaul-raw-data-2026-10-16` | GitHub names, not paths |
+| | `AB`, `PFR`, `WSB`, `RAW` | `tripathisarthak457/android-base`, `tripathisarthak457/periflow` (now `JorwenLabs/periflow`; the old name redirects), `overhaul-workspace`, `overhaul-raw-data-2026-10-16` | GitHub names, not paths |
 | `handover-backup.private.js` | `TOOLS`, `R`, `OV`, `H`, `MEM`, `CP`, `PF`, `SCRATCH` | as in `handover-backup.js` | superseded; do not run |
 | | `BACKUP_REPO` | `tripathisarthak457/android-base-overhaul-backup` | (a GitHub name) |
 | | inline, lines 85 and 145 | `/home/crazyhusir/Documents`, `/home/crazyhusir/Downloads`, `/home/crazyhusir/...` | as above |

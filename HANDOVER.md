@@ -4,6 +4,9 @@ Written on 2026-10-16, about 11:40–12:05 IST, on the old Pop!_OS laptop just b
 author is a handover agent (Claude Opus 5.5) of the workflow `handover-backup` (script
 `.overhaul/scripts/handover-backup.js`, run `wf_1b6fefc0-712`). Every fact below was checked against git, the
 workspace files and the session transcripts at that time, unless it is marked **[unverified]** or **[estimate]**.
+**Updated about 12:50 IST** by the handover's fix round 1, after a fresh-context verifier read the pushed backup: the
+backup and merge-all status (§0 box, §1.7 item 0), the draft release, PeriFlow's new repo name, one canonical
+relaunch order (§5.11), tool preflight (§5.14), the push policy (§6.1 #6), requirement 39 (§3.2) and refreshed memory.
 
 This document is for a brand-new Claude (and for the user, Sarthak). Its job: let you continue the overhaul with **no
 re-briefing**. It is long on purpose. Read §0 and §8 first if you are short on time; come back to the rest as needed.
@@ -18,18 +21,31 @@ re-briefing**. It is long on purpose. Read §0 and §8 first if you are short on
 > at `.overhaul/handover/HANDOVER.md`. They are the same text. Links are written as plain paths from the workspace
 > root, so they work from either copy once the workspace is restored.
 
-> **Which layout is real? Check before you do anything.** This document describes the backup as planned at 11:40 on
-> Oct 16: every branch pushed to GitHub, WIP saved as `backup/*-wip-2026-10-16` branches, the workspace as the orphan
-> branch `overhaul-workspace`. **After that, the user asked for everything to be merged into `main` and the branches
-> deleted** (Oct 16, 11:11 and 11:17 IST; §1.2 rows 42–43). A follow-up workflow, `.overhaul/scripts/merge-all-to-main.js`,
-> was queued to do that once the backup finished, and it updates this document when it runs. So, first:
+> **Backup status at a glance (checked against GitHub on Oct 16, about 12:45 IST, by the handover's fix round).**
+>
+> | Item | Status | Details |
+> |---|---|---|
+> | Every android-base branch except `main`, the `merged/*` tags, the WIP snapshots `backup/*-wip-2026-10-16` | **pushed**, SHAs verified | `PUSHED.md` §1 |
+> | The workspace as the orphan branch `overhaul-workspace` | **pushed** | `PUSHED.md` §1.5 |
+> | PeriFlow `overhaul/smooth-glass` + `backup/smooth-glass-wip-2026-10-16` | **pushed** to the PRIVATE repo, now named **`JorwenLabs/periflow`** (the old `tripathisarthak457/periflow` URL redirects) | `PUSHED.md` §2 |
+> | `main` | **untouched**: `99c4edf` | production deploys from it (§2.8) |
+> | Draft release `overhaul-raw-data-2026-10-16` (raw traces, frames, recordings; about 9.1 GB raw) | **not created** at 12:45. The same workflow's Archive step was due to create it next; check with `gh release view` (§8.2 step 8). If it is missing, those files exist only in the user's Google Drive backup | `PUSHED.md` §3 |
+> | The user's Google Drive backup `backup-2026-10-16` | built and checked on the laptop (12:19: every `.overhaul` and `android-base` file is in a zip); **whether the user uploaded it is unknown** | ask him (§1.7) |
+> | **Merge-all into `main`** (the user's 11:11/11:17 request) | **did not run**: no `archive/*` tags, every branch present, `main` = `99c4edf`. **It is pending the user's decision; do not run `.overhaul/scripts/merge-all-to-main.js` (or any merge into `main`) without asking him again in chat** | §1.7 item 0 |
+>
+> **Which layout is real? Check before you do anything.** The user asked on Oct 16 (11:11, confirmed 11:17 IST; §1.2
+> rows 42–43) for everything to be merged into `main` and the branches deleted. The script
+> `.overhaul/scripts/merge-all-to-main.js` was queued to start after the backup finished; at 12:45 it had not run
+> (table above), and if it ever runs it rewrites this document. So, first:
 >
 > ```bash
 > git ls-remote --heads https://github.com/tripathisarthak457/android-base.git   # only main?  -> merged layout
 > git ls-remote --tags  https://github.com/tripathisarthak457/android-base.git | grep -c 'archive/'   # >0 -> merge-all ran
 > ```
 >
-> - Many heads (`wp/*`, `overhaul/*`, `backup/*`, `overhaul-workspace`): the **branch layout** described here holds.
+> - Many heads (`wp/*`, `overhaul/*`, `backup/*`, `overhaul-workspace`) and no `archive/*` tags: the **branch layout**
+>   described here holds, and **merge-all never ran**. Keep the release-gate model and ask the user about merge-all
+>   (§1.7 item 0); do not run it on your own.
 > - Only `main`, plus `archive/<branch>-2026-10-16` tags: the **merged layout**. Read
 >   `overhaul-workspace/HANDOVER.md` on `main` (the merge workflow's updated copy) and
 >   `.overhaul/handover/MERGE-ALL-android-base.md` / `MERGE-ALL-periflow.md`, then come back here for everything that
@@ -65,7 +81,8 @@ re-briefing**. It is long on purpose. Read §0 and §8 first if you are short on
 - **The overhaul (since Oct 8, 2026).** Make generated apps smooth and light (iOS-level smoothness on the user's
   Redmi Note 10 Pro at 120 Hz), Apple-level components, Gmail-style predictive back, optional Kyant liquid glass,
   a modern bottom sheet, a deeper architecture, Google/AOSP code quality, adaptive UI, agent docs, new generators
-  (Compose Multiplatform, SwiftUI), richer anonymous admin telemetry. 38 numbered requirements (§3).
+  (Compose Multiplatform, SwiftUI), richer anonymous admin telemetry. 39 numbered requirements (§3.2; number 39,
+  an opt-in Cronet/HTTP3 transport, was added on Oct 16 at 12:10 and is scheduled after the Android release).
 - **How.** An orchestrator Claude session runs Workflow scripts that launch many subagents, each working in a git
   worktree on a package branch `wp/<WP>`, with fresh-context Google-bar reviews and serialized merges into the
   integration branch `overhaul/multiplatform-v2`. Never into `main` without a release gate and the user's go-ahead.
@@ -84,6 +101,10 @@ re-briefing**. It is long on purpose. Read §0 and §8 first if you are short on
   sheet compiling, rule on WP04's perf escalation, then merge WP04 → WP03 → WP06 → WP02-M2 → WP05 → WP02-M3 → WP14 →
   MB → QA2 → WP12 → WP13 → Android release gate → **ask the user** → deploy. Phase B (Compose Multiplatform, Swift)
   after that. Honest ETA: §4.9.
+- **Merge-all did not run; it is pending the user's decision; do not run it without asking.** On Oct 16 the user
+  asked to merge every branch into `main` and delete the branches (11:11, 11:17). It was queued but never ran before
+  the wipe (box above). Do not run `.overhaul/scripts/merge-all-to-main.js` without a fresh yes from him in chat;
+  recommend keeping the release-gate model (§1.7 item 0 says why).
 - **Never:** push or merge to `main` without the gate and the user's explicit go-ahead in chat (a push to `main`
   deploys production through CI, §2.8); publish secrets, PeriFlow source or other people's personal data; kill
   processes you did not start; run heavy builds without `bin/locked`; switch models mid-chat.
@@ -96,7 +117,7 @@ re-briefing**. It is long on purpose. Read §0 and §8 first if you are short on
 | Integration branch | `overhaul/multiplatform-v2` = `a402d87` "Merge WP10: website configurator, previews, telemetry client and admin portal" (Oct 14 17:54), 233 commits past `main` |
 | Merged tags | `merged/WP01` `709612d`, `merged/WP02-M1` `54d078d`, `merged/WP09` `8672003`, `merged/WP10` `a402d87` |
 | Branches with uncommitted WIP | `wp/WP03` (47 entries), `wp/WP05-glass` (43), `wp/WP04-perf` (4), PeriFlow `overhaul/smooth-glass` (2). Saved as `backup/<name>-wip-2026-10-16` |
-| Private repo | `github.com/tripathisarthak457/periflow` (PeriFlow), branch `overhaul/smooth-glass` = `45b91a2` (Oct 15 16:12) |
+| Private repo | `github.com/JorwenLabs/periflow` (PeriFlow; formerly `tripathisarthak457/periflow`, which redirects), branch `overhaul/smooth-glass` = `45b91a2` (Oct 15 16:12) |
 | Release gate file | `.overhaul/RELEASE-GATE-android.md`: **does not exist yet** |
 | CP2 (glass decision) | `.overhaul/decisions/CP2.md`: **does not exist yet** |
 | Final report | `.overhaul/report/FINAL.md`: **does not exist yet** |
@@ -179,7 +200,7 @@ from the transcripts in the offline backup).
 | — | Oct 16, 11:02 | "yes back up to the private repo, save periflow as a bundle i think android base and periflow already have a repo on my github why not pushinh there" | Use the existing repos |
 | 41 | Oct 16, 11:04 | "push to public there is no problem, just push each and everry file periflow too" | android-base branches public; PeriFlow to its own private repo |
 | 42 | Oct 16, 11:11 | "merge all the code of android base in the main branch and delete all the branches after merge is fully done of all branches. same for periflow too. nothing should not be left unbacked up on this machine thats ur responsibity if anything u cant save on github make a folder in the toold directuory as backup-todays date and zip it and have all the files which i would need later in windows which arent sent to git i will save it offline in pendrive" | `merge-all-to-main.js`; `local-offline-backup.js` (`tools/backup-2026-10-16/`) |
-| 43 | Oct 16, 11:17 | "u merge it pls i get confused in lots of branches will stop vercel to deploy that we will do after testing" | Merge everything into `main`, **with production deploys paused until tested** (but see §2.8: the pause mechanism matters) |
+| 43 | Oct 16, 11:17 | "u merge it pls i get confused in lots of branches will stop vercel to deploy that we will do after testing" | Merge everything into `main`, **with production deploys paused until tested** (but see §2.8: the pause mechanism matters). 11:17 is the message time; `PROGRESS.md` logged it at "~11:30". Queued, but it **did not run** before the wipe: pending (§1.7 item 0) |
 | 44 | Oct 16, 11:20–11:27 | "also in the offline zip incude the projects on my system that werent pushed to github" / "i am gonna upload to google drive over pendirve" / "i have 5TB stroage on drive." / "and no need to protect the zips my account is secure the zip should extract simply" / "I want eeyrhting, anything u have exclude in github should be present in zip make a seperate zip for android base stuff which isnt on github" / "i have 1 Gbps so upload is really fast" | The offline backup goes to the user's Google Drive as folder `backup-2026-10-16`, plain zips |
 
 ### 1.3 The standing instructions (the short list)
@@ -198,7 +219,9 @@ Every agent prompt carries these. They still hold on Windows unless the user cha
 5. **No separate billing.** Extra usage stays off. Use the included usage fully, but do not waste it (§7.1).
 6. **`main` is production.** Never merge to or push `main` without the Android release gate's GO **and the user's
    explicit go-ahead in chat**. (Oct 16: the user asked for a consolidation merge into `main` "will stop vercel to
-   deploy that we will do after testing"; that is a one-off consolidation with deploys paused, not a release; §2.8.)
+   deploy that we will do after testing"; that was meant as a one-off consolidation with deploys paused, not a
+   release. It **did not run** before the wipe. It is pending his decision: ask him again before running it; §1.7
+   item 0, §2.8.)
 7. **Never commit secrets**, keystores, `local.properties` or a real `google-services.json`.
 8. **Never kill processes you did not start.** (The auto-mode classifier blocks it anyway; ask the user.)
 9. **The Gmail reference recordings describe motion only, never content** (they show real e-mails).
@@ -208,8 +231,10 @@ Every agent prompt carries these. They still hold on Windows unless the user cha
 12. **Opus 5.5 only**, for the session and every subagent (Oct 15 20:55 per the notes; restated Oct 16 10:34).
 13. **Send status with an ETA when asked, and proactively at milestones.** He asks "send summary and eta" constantly.
 14. **Before a usage window runs out, or before compaction, save notes** (SESSION file, STATUS, PROGRESS, memory).
-15. **Pushing non-main branches to GitHub is allowed** (Oct 16, for the backup: "push to public there is no
-    problem"). PeriFlow code goes only to its own private repo.
+15. **Pushing non-main branches to GitHub is allowed** (Oct 16: "push to public there is no problem"), and from now
+    on the orchestrator **does it regularly as the off-machine backup** (the lesson of the crashes and the wipe):
+    the exact policy is §6.1 #6. Agents inside workflows still never push. PeriFlow code goes only to its own
+    private repo.
 
 ### 1.4 Preferences
 
@@ -257,6 +282,23 @@ Every agent prompt carries these. They still hold on Windows unless the user cha
 
 ### 1.7 Decisions only the user can make (open on Oct 16)
 
+0. **Merge-all into `main`: did not run; it is pending the user's decision; do not run it without asking.** On Oct 16
+   the user asked to merge every android-base and PeriFlow branch into `main` and delete the branches (11:11), and
+   confirmed it (11:17: "u merge it pls i get confused in lots of branches will stop vercel to deploy that we will do
+   after testing"). The auto-mode classifier had blocked the first attempt at 11:16; the orchestrator then queued
+   `.overhaul/scripts/merge-all-to-main.js` to start after the backup. At 12:45 it had not run: no `archive/*` tags,
+   every branch on GitHub, `main` = `99c4edf`. If GitHub still shows the branch layout when you read this, it never
+   ran. **Do not run it, and do not merge anything into `main`, without asking him again in chat and getting a clear
+   yes.** Why it needs a fresh decision, not a silent run:
+   - it would put unreviewed work into `main`, including WIP that does not compile (WP03's sheet, WP05-glass's bar);
+   - its "pause" (`vercel.json` `git.deploymentEnabled.main = false`) **pauses nothing**: that key is already there,
+     and CI's `deploy` job ships every green push to `main` (§2.8). A real pause is `gh workflow disable ci.yml`;
+   - it deletes every branch on two repositories, which the auto-mode classifier treats as hard to undo;
+   - it contradicts REQUIREMENTS 36 (gate first, then his go-ahead), which he set and has not withdrawn.
+   **Recommend:** keep the branch model until the Android release gate, then do one reviewed merge of
+   `overhaul/multiplatform-v2` into `main` (this also gives him the "one branch" he wanted, once it is safe). If he
+   still wants it now, first disable the CI workflow (with his OK), then run the script, and tell him what changed.
+   The same item is `REQUIREMENTS-STATUS-FINAL.md` §9 item 7.
 1. **PeriFlow's lens-on-tap gate (REQ 35, WP11).** The travelling lens works and is unit-tested, but the tab-switch
    janky gate (2.5 %) fails: last measurement (lens-6, Oct 15 16:25, `.overhaul/logs/WP11/lens-tap-phone6.log`)
    3.76 % with the lens against 3.44 % for the same build without it; PeriFlow's own baseline already fails
@@ -273,8 +315,8 @@ Every agent prompt carries these. They still hold on Windows unless the user cha
    time, janky frames after the first; keep the old rows as ratchets), and keep the other packages moving meanwhile.
    Related: scroll janky 0.81–0.88 % vs 0.5 % on `everything`, PSS 52–54 MB vs 48 and cold start 419–440 ms vs 400 on
    `everything` (`standard`/`lean` pass).
-4. **Re-enabling production deploys** after the consolidation merge (if merge-all ran): only when he says testing is
-   done.
+4. **Re-enabling production deploys** after the consolidation merge, only if merge-all ever runs (item 0): only when
+   he says testing is done.
 5. **Installing the Kyant playground APK** on the phone for side-by-side glass recordings (REQ 37): agents must not
    download or install it; he may.
 6. **OS-level changes**: earlyoom (Linux, moot now), Windows power and lid settings, WSL2 memory limits.
@@ -286,16 +328,29 @@ Every agent prompt carries these. They still hold on Windows unless the user cha
    WIP); waiting download approvals (the Gradle 9.8.1 distribution in WP02-M2's Deviation 1, `protobuf` for the
    r8-analyzer scoring); display-size overrides on the Redmi for the `large` gate column; whether CP2 may be decided
    by an agent as CP1 was (the scripts assume yes).
+9. **The backup and the new machine** (Oct 16, after the handover): confirm that he uploaded the Drive folder
+   `backup-2026-10-16` and stored `01-secrets.zip` safely (it is not encrypted, by his choice); accept the WSL2 setup
+   and do its admin steps (RESUME-ON-WINDOWS.md §8.4); say whether the raw-data draft release is still wanted if it
+   does not exist (the Drive copy holds the same files; §8.2 step 8).
+10. **The public workspace branch's history.** The first two commits of `overhaul-workspace` (`a961701`, `7feafaf`)
+    contain the full `WIPE-READINESS.md`: paths and names (no values) of where keystores, an SSH deploy key, 2FA
+    recovery codes and a service-account file lived, plus the names of his work-organisation repositories, a
+    colleague-named branch and a client's server. From the fix round on, the branch head carries a redacted copy.
+    Removing it from history needs a force-push or deleting and recreating the branch, which agents must not do. His
+    options: accept it, or delete and recreate `overhaul-workspace` himself (or let an agent do it with his explicit
+    OK).
 
-The complete list, with options for each, is **`.overhaul/handover/REQUIREMENTS-STATUS-FINAL.md` §9** (13 items). Ask
-them together, once, in one short message with your recommendation for each, not one at a time.
+The complete list, with options for each, is **`.overhaul/handover/REQUIREMENTS-STATUS-FINAL.md` §9** (items 1–16).
+Ask them together, once, in one short message with your recommendation for each, not one at a time.
 
 ### 1.8 Superseded instructions (do not follow these)
 
 - **"Never push package branches; never push PeriFlow; PeriFlow stays local, never pushed"** (Oct 8–15, in STATUS.md,
   memory, AUTOPILOT-PROMPT.md and every script prompt). Superseded on Oct 16 by rows 41–42: android-base branches
-  may be pushed (not `main`), PeriFlow's branch goes to its own **private** repo. Update the scripts' prompts on
-  Windows (§5.13).
+  may be pushed (not `main`), PeriFlow's branch goes to its own **private** repo. The resulting policy is §6.1 #6:
+  the **orchestrator** pushes regularly; **agents inside workflows** keep "never push" (so the script prompts may stay
+  as they are on this point; only change their paths). The autopilot prompt's last line should be updated to say
+  that (§5.9).
 - **"Fable first, then Opus"** (Oct 15). Superseded: Opus 5.5 only.
 - **"Push verified work to main without asking"** (a Sept 23–24 memory of the earlier session in
   `~/.claude/projects/-home-crazyhusir-Downloads-android-base/memory/push-to-main-deploys.md`). Superseded for the
@@ -458,8 +513,10 @@ Checked on Oct 16 from `.github/workflows/ci.yml`, `vercel.json` and `gh secret 
   (`gh workflow disable ci.yml -R tripathisarthak457/android-base`, re-enable with `gh workflow enable`), or guard the
   `deploy` job (`if: false`, or a repository variable), or have the user remove/rename the `VERCEL_TOKEN` secret.
   The first is the cleanest and reversible; it is a repository setting, so tell the user what you did.
-  **[unverified]** whether merge-all-to-main.js's agent noticed this; check `gh run list -R
-  tripathisarthak457/android-base -L 5` and the live site after any push to `main`.
+  `merge-all-to-main.js` had **not run** at 12:45 on Oct 16 (§0 box), so nothing was pushed to `main` and nothing was
+  deployed. Its prompt still relies on the `vercel.json` "pause": if the user ever approves running it (§1.7 item 0),
+  disable the CI workflow first. After any push to `main`, check `gh run list -R tripathisarthak457/android-base -L 5`
+  and the live site.
 - Pushing `wp/*`, `overhaul/*`, `backup/*` branches triggers no CI and no production deploy; Vercel may build
   preview deployments for them (harmless).
 
@@ -467,7 +524,7 @@ Checked on Oct 16 from `.github/workflows/ci.yml`, `vercel.json` and `gh secret 
 
 | App | Where | Relation | In the overhaul |
 |---|---|---|---|
-| PeriFlow | `../jorwen/periflow` (old: `/home/crazyhusir/Documents/projects/jorwen/periflow`), Android app in `periflow-android/`, private repo `tripathisarthak457/periflow` | generated from android-base; first had liquid glass, which cost FPS | **WP11**: PeriFlow-only perf fixes and the lens on tap, branch `overhaul/smooth-glass`; ports of the new shell/glass in its second half. Never part of a deploy. Its secrets (`periflow-recovery-codes.txt`, `PeriFlow-Postman/`, keystores, `google-services.json`, `.env`) never go into git |
+| PeriFlow | `../jorwen/periflow` (old: `/home/crazyhusir/Documents/projects/jorwen/periflow`), Android app in `periflow-android/`, private repo **`JorwenLabs/periflow`** (renamed from `tripathisarthak457/periflow`; the old URL redirects; on a fresh clone use the new one) | generated from android-base; first had liquid glass, which cost FPS | **WP11**: PeriFlow-only perf fixes and the lens on tap, branch `overhaul/smooth-glass`; ports of the new shell/glass in its second half. Never part of a deploy. Its secrets (`periflow-recovery-codes.txt`, `PeriFlow-Postman/`, keystores, `google-services.json`, `.env`) never go into git |
 | VitFleet | `vitfleet/` (private repo `tripathisarthak457/vitfleet`), a client's app | generated from android-base | Out of scope; learnings in `.overhaul/audit/vitfleet-learnings.md`; its source never goes public |
 
 ### 2.10 The test phone and the old machine
@@ -551,6 +608,7 @@ merged), **WIP** (uncommitted or in progress), **not started**, **decided** (a p
 | 36 | **Android first**: release when Android is 100% done; CMP and Swift later | process | release gate not reached |
 | 37 | Full Kyant liquid-glass effect set at playground parity, bottom bar first, then 9 more components and a Glass playground | WP05-glass → WP05 | bar **WIP (43 uncommitted files)**; the other components not started |
 | 38 | Google Android skills v1.0.15, feature-aware vendoring; Oct 16: **use** jetpack-compose-performance (audit on every UI change; violations BLOCKING; template-wide audit `research/COMPOSE-PERF-AUDIT.md`) | WP02 (vendoring), all | plugin and digest updated; vendoring and the audit not done (`COMPOSE-PERF-AUDIT.md` does not exist) |
+| 39 | (Oct 16, 12:10) Opt-in Cronet / HTTP/3 transport: a generator feature, off by default; Cronet into the shared OkHttpClient through `cronet-okhttp` (HttpEngine on API 34+, else Play Services Cronet, else plain OkHttp); WebSockets stay on OkHttp; certificate pins mirrored; measured on release builds before it is recommended | WP06, WP02, WP12, WP13 | **not started**; scheduled **after** the Android release gate (not on its critical path unless the user says so). Details: the appendix at the end of this file and `REQUIREMENTS.md` item 39 |
 | — | **Memory safety** (Oct 10): Gradle only via `bin/locked gradle`; other heavy commands via `bin/memwait`; emulator only inside `bin/locked emu`; never raise the Gradle heap | all | in force; on Oct 16 extended with a CPU-temperature wait |
 
 ### 3.3 Definition of done: the Android release (REQUIREMENTS 36)
@@ -875,8 +933,8 @@ MOTION.md, AGENTS-SECTION.md, ADAPTIVE.md; claims marked [verify]) and `RELEASE-
 ### 4.7 What remains, in order (the Android critical path)
 
 1. Restore the workspace on Windows; fix paths; re-create worktrees and re-apply the WIP (§8).
-2. Relaunch, two at a time: `to-release.js`, then `shimmer-fix-from-report.js`, `deep-smoothness-fable.js`,
-   `full-liquid-glass-fable.js`, `android-skills-v1-0-15.js` (§5.11).
+2. Relaunch, two at a time, in the order of §5.11: `to-release.js` + `deep-smoothness-fable.js`; then
+   `shimmer-fix-from-report.js` (Verify only) + `android-skills-v1-0-15.js`; then `full-liquid-glass-fable.js`.
 3. WP03: sheet compiling, tests green, committed, `accept.sh`.
 4. WP04: accept-local, phase 3f phone gates, WP04-perf round 2 (fixed vs floor), **rule on the escalation**, review,
    **merge WP04**.
@@ -896,6 +954,10 @@ MOTION.md, AGENTS-SECTION.md, ADAPTIVE.md; claims marked [verify]) and `RELEASE-
 14. Throughout, in parallel and never blocking the release: WP11 (PeriFlow), the user's lens decision.
 
 ### 4.8 If the merge-all consolidation ran
+
+**At 12:45 on Oct 16 it had not run** (§0 box). If GitHub still shows the branch layout, skip this section: merge-all
+is pending the user's decision (§1.7 item 0), and you must not run it without asking him. This section is only for
+the case that it ran later.
 
 If `main` now holds everything (§0 box), the package branches exist only as `archive/<branch>-2026-10-16` tags and the
 merges were **not reviewed** (WIP that does not compile is in `main`). Then:
@@ -970,6 +1032,10 @@ after the first two windows on Windows, when the real pace is known.
   offline backup, not on GitHub (they contain secrets: §6.2).
 - A session-only **cron** (`CronCreate`, `CronList`, `CronDelete`) acts as the autopilot, and **Monitor** tasks watch
   memory; both die with the session (§5.9).
+- **These tools were all used in the Claude desktop app's Code session on Linux.** Whether the client you run on
+  Windows (the recommended one: the Claude Code CLI inside WSL2) offers `Workflow`, `CronCreate`/`CronList`, `Monitor`
+  and a usage tool has **not been verified**. Check before anything else, and use the fallbacks if one is missing:
+  §5.14.
 
 ### 5.2 The scripts (`.overhaul/scripts/`)
 
@@ -984,10 +1050,10 @@ after the first two windows on Windows, when the real pace is known.
 | `master-plan.js` | Architect + two critics + revision → `design/MASTER-PLAN.md`, `design/wp/*.md` | Oct 9 | done |
 | `waves-0-1*.js`, `wave-2-early*.js` | The Oct 9–10 wave workflows | — | retired (superseded by `to-release.js`) |
 | `AUTOPILOT-PROMPT.md` | The cron prompt (every 20 min) | — | needs updating (§5.9) |
-| `handover-backup.js` | Oct 16: inventory, these docs, push branches/WIP/workspace, verify, draft-release archives | `wf_1b6fefc0-712` (task `w2on5hl5t`) | ran while this was written |
+| `handover-backup.js` | Oct 16: inventory, these docs, push branches/WIP/workspace, verify, draft-release archives | `wf_1b6fefc0-712` (task `w2on5hl5t`) | at 12:45: pushes done and verified; verify/fix rounds running; the Archive step (draft release) not yet run. Outcome: `PUSHED.md` |
 | `handover-backup.private.js` | First version of the handover (a private backup repo); superseded at 11:15 by the user's "push to public" | `wf_d5a4bdd1-aef` | superseded |
-| `local-offline-backup.js` | Oct 16: everything not on GitHub into plain zips under `tools/backup-2026-10-16/` for the user's Google Drive | task `w3lb0dkqq` | running at 11:40 **[unverified outcome]** |
-| `merge-all-to-main.js` | Oct 16: archive-tag every branch, merge everything into `main` (android-base and PeriFlow), push, delete branches, update the docs | queued after `handover-backup` | **[unverified whether it ran]**; see §0 box and §2.8 |
+| `local-offline-backup.js` | Oct 16: everything not on GitHub into plain zips under `tools/backup-2026-10-16/` for the user's Google Drive | task `w3lb0dkqq` | **finished**: 23 zips plus 5 loose movie files, checksums written 12:17, full coverage of `.overhaul` and `android-base` checked 12:19 (`pack.log`). Upload to Drive: unconfirmed |
+| `merge-all-to-main.js` | Oct 16: archive-tag every branch, merge everything into `main` (android-base and PeriFlow), push, delete branches, update the docs | queued after `handover-backup` | **did not run** (checked 12:45). Pending the user's decision; **never run it without asking him** (§1.7 item 0, §2.8) |
 
 Backups of earlier script versions: `*.pre-opus-only` (before Oct 15 20:51), `*.pre-compose-perf` (before Oct 16
 10:30), `to-release.pre-android-first.js` (before Oct 14 12:15), `to-release.pre-lens.js` (before Oct 13).
@@ -1115,7 +1181,8 @@ All three live in `.overhaul/bin/` and hard-code `/home/crazyhusir/Documents/pro
   if a package ended blocked, fix the cause and resume; if `RELEASE-GATE-android.md` says GO, tell the user and ask
   for the go-ahead; never push or merge to main without it. **Run `CronList` first** (duplicates happened).
 - **Update the prompt on Windows:** paths; and its last line ("Never push package branches; never push PeriFlow") is
-  superseded by §1.8: non-main branches may be pushed; PeriFlow only to its private repo.
+  superseded by §1.8 and §6.1 #6: the orchestrator pushes the non-main branches, the `merged/*` tags and the
+  workspace branch as the off-machine backup; PeriFlow only to its private repo; never `main`, never force.
 - **Monitors:** a low-memory alert (re-armed at 1.5 GB after Oct 16; they expire after 30 min) and a thermal
   monitor (SEN3 > 80 °C, charging changes). Re-arm them on Windows if the tools exist there.
 - Cron and monitors are session-only: they die with a crash, a restart or a new session, and nothing runs while the
@@ -1135,18 +1202,26 @@ All three live in `.overhaul/bin/` and hard-code `/home/crazyhusir/Documents/pro
 
 ### 5.11 How to resume the workflows (on Windows or after any crash)
 
-1. Checks first: usage (`get_usage`), `adb devices` (if the phone is plugged in but missing: `adb kill-server && adb
+1. Checks first: the tools exist (§5.14: `Workflow` above all), usage (`get_usage` in the desktop app; in the CLI
+   ask the user to look at `/usage`), `adb devices` (if the phone is plugged in but missing: `adb kill-server && adb
    start-server`), free memory, CPU temperature, `git -C android-base tag -l 'merged/*'`, each worktree's ahead/dirty
    counts, stale locks (`lslocks | grep .overhaul` on Linux/WSL; ask the user to clear stale entries; never kill them
    yourself).
 2. Launch **two workflows at a time**, a few minutes apart (five at once front-loads every agent's reading and spiked
-   usage and memory on Oct 15–16): first `to-release.js`, then `shimmer-fix-from-report.js`; then
-   `deep-smoothness-fable.js` and `full-liquid-glass-fable.js`; then `android-skills-v1-0-15.js`.
+   usage and memory on Oct 15–16). **This order is the canonical one** (decided in the handover's fix round on Oct 16;
+   `RESUME-ON-WINDOWS.md` §8.2 and `PACKAGES-AND-BRANCHES.md` §9.2 now say the same):
+
+   | Wave | Scripts | Why |
+   |---|---|---|
+   | 1 | `to-release.js` + `deep-smoothness-fable.js` | The backbone (every package, reviews, serialized merges, CP2, the release gate; the lens fix first) and the first Android release blocker: smoothness on `wp/WP04-perf`, whose round-2 numbers decide WP04's escalation, and WP04 is first in the merge order. |
+   | 2 (20–30 min later, if `free -m`, heat and usage allow) | `shimmer-fix-from-report.js` + `android-skills-v1-0-15.js` | Shimmer is nearly done: only the phone Verify is left. **Edit it first** to reuse the existing `qa/shimmer/REPORT.md` and jump to `phase('Verify')`, or a fresh launch re-runs the 440k-token report agent (`PACKAGES-AND-BRANCHES.md` §9.2); launch it only with the phone attached. The skills workflow is mostly reading and writing, little building; unshallow the marketplace clone first. |
+   | 3 (when a wave-2 run ends) | `full-liquid-glass-fable.js` | The heaviest phone and GPU work, and its final integration waits for WP03 and WP04 anyway. If the phone is not attached for wave 2, launch this one in wave 2 instead of shimmer, and shimmer when the phone is back. |
 3. Fresh launches (new session): the lens agents, the side agents and every package agent will re-read their
    handoffs. That costs a large part of a window. Consider pre-firing signals that are known done (e.g.
    `LENS:generator`) by editing the pre-fire list **before** the first launch (edits after a launch invalidate the
    resume cache of that run).
-4. Re-create the autopilot cron and the memory monitor; record task/run ids in STATUS §1 and a line in PROGRESS.
+4. Re-create the autopilot cron and the memory monitor (or their fallbacks, §5.14); record task/run ids in STATUS §1
+   and a line in PROGRESS.
 5. Tell the user what is running and when you will report next.
 
 ### 5.12 Recording IDs
@@ -1175,7 +1250,34 @@ user `crazyhusir` and the same folder `/home/crazyhusir/Documents/projects/tools
 `/home/crazyhusir/Documents/projects/jorwen/periflow`). Then every hard-coded path, every handoff path and the Claude
 memory slug (`-home-crazyhusir-Documents-projects-tools`) stay valid, and `bin/*` works unchanged. The trade-offs
 (USB passthrough for the phone with `usbipd-win`, WSL2 memory limits in `.wslconfig`, Android SDK and Gradle inside
-WSL) are in RESUME-ON-WINDOWS.md, which is authoritative for the setup.
+WSL) are in RESUME-ON-WINDOWS.md, which is authoritative for the setup. Tool availability on that client: §5.14.
+
+### 5.14 Tool availability on the new client: preflight and fallbacks
+
+**Unverified assumption, check it first.** On Linux the orchestrator ran in the **Claude desktop app's Code session**,
+which offered the `Workflow` tool, `CronCreate`/`CronList`/`CronDelete`, `Monitor` and the desktop-only usage tool
+`get_usage`. The recommended Windows setup runs the **Claude Code CLI inside WSL2** (RESUME-ON-WINDOWS.md §2.1). Nobody
+checked that the CLI offers the same tools; `~/.claude/settings.json` had a `skipWorkflowUsageWarning` key, which
+suggests Claude Code itself knows workflows, but that is not proof. Without `Workflow`, none of the five scripts can
+run as written.
+
+**Preflight (first thing in the new session, before any restore work that depends on it):**
+
+1. Look at your own tool list. Some tools are deferred: load them with `ToolSearch`, query
+   `select:Workflow,CronCreate,CronList,CronDelete,Monitor`. A tool that the search cannot find is not available.
+2. Check that `Skill` lists `workflow-authoring` (the reference for the script API).
+3. Usage: the desktop app's `get_usage` will not exist in the CLI. The user can type `/usage` there; you cannot run a
+   slash command yourself.
+4. Record the result in the first `SESSION-<date>.md` and tell the user in one line.
+
+**Fallbacks, in order of preference:**
+
+| Missing | Fallback |
+|---|---|
+| `Workflow` | (a) Ask the user to update Claude Code (`claude update`) and check its docs or `/help` for workflows; (b) try the Claude desktop app's Code session against the WSL folder (RESUME-ON-WINDOWS.md §2.1 has the WSL proof: `uname -r`, `flock`, `/proc/meminfo`); (c) as a last resort, orchestrate by hand: run the same packages with the subagent tool (`Agent`/`Task`), one package agent at a time in its worktree, with the prompts of `to-release.js` (`implPrompt`, the review prompt, the integrator's merge checks) copied verbatim, the same order (`ORDER`) and the same rules. It is slower and fills the orchestrator's context faster, so keep notes in `SESSION-*.md` and compact earlier. Tell the user which one you use. |
+| `CronCreate`/`CronList` | Use the `loop` skill if it is listed (a recurring prompt); otherwise no autopilot: check the running work at every turn and after every notification, and tell the user that nothing relaunches on its own while he is away. |
+| `Monitor` | A background Bash command that exits when the condition is met re-invokes you, for example `until [ "$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)" -lt 1500 ]; do sleep 30; done` with `run_in_background`. |
+| `get_usage` | The user's `/usage`, and the limit messages themselves; save notes early in each window. |
 
 ---
 
@@ -1195,7 +1297,28 @@ instructions and the lessons of Oct 8–16. Every agent prompt should carry the 
 4. Never `git add -A` in a repository with unrelated files; stage explicit paths. (The handover snapshots used a
    temporary index; never `add -A` on a real index.)
 5. Small commits with why-messages ending `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
-6. Pushing non-main branches of android-base is allowed (Oct 16). Use explicit refspecs, no `-u`, no `--force`.
+6. **Pushing non-main branches is allowed (the user, Oct 16), and the orchestrator does it regularly as the
+   off-machine backup** (decided in the handover's fix round, Oct 16: the crashes and the wipe showed that work only
+   on one laptop is at risk; the user said "push to public there is no problem"). The policy:
+   - **Who:** only the orchestrator (the main session). Agents inside workflows never push: their prompts keep that
+     rule, and the worktrees keep `--no-track`, so a bare `git push` in an agent's shell fails instead of publishing.
+     One pusher avoids races with the serialized merges.
+   - **When:** at the end of every session; before a usage cutoff, a compaction or the user going offline; after
+     every merge into the integration branch; before anything risky on the machine (OS updates, driver installs).
+   - **What, android-base (public):** `wp/*`, `overhaul/multiplatform-v2`, the `merged/*` tags, with explicit
+     refspecs, no `-u`, no `--force`:
+     `git -C android-base push origin 'refs/heads/wp/*:refs/heads/wp/*' 'refs/heads/overhaul/*:refs/heads/overhaul/*' 'refs/tags/merged/*:refs/tags/merged/*'`.
+     Uncommitted work worth keeping goes up as a WIP snapshot branch `backup/<name>-wip-<date>` built with a temporary
+     index (`PUSHED.md` §1.3 has the recipe), never by committing on the package branch.
+   - **What, the workspace:** the `overhaul-workspace` branch, rebuilt with
+     `.overhaul/handover/tools/sync-workspace-branch.sh` (the rsync filter `backup-include.txt`, the redactions, a
+     secrets check, then a normal commit and push).
+   - **PeriFlow:** `overhaul/smooth-glass` (and any WIP snapshot) only to its private repo `JorwenLabs/periflow`.
+   - **Before each public push:** scan what is new for secrets (`git log -p origin/<b>..<b>` or the new objects
+     against the patterns of §6.2 #10 and `PUSHED.md` §5); never push a file named like a secret.
+   - **Never:** `main`, `--force`, deleting remote branches, or changing the default branch. If a push is rejected as
+     non-fast-forward (it should not happen), push the local state under a new name `backup/<branch>-<date>` and
+     investigate; never force.
 7. Emitted files (`DesignTokens.*`, `web/frontend/lib/catalogue.json`) are regenerated with `--write`, never
    hand-edited or hand-merged.
 8. Shared files (`libs.versions.toml`, `settings.gradle.kts`): edit only your lines, keep order; the integrator
@@ -1212,9 +1335,10 @@ instructions and the lessons of Oct 8–16. Every agent prompt should carry the 
 11. **The session transcripts contain secrets** (the real keystore password of another app appears in two subagent
     transcripts, plus other key-shaped strings; WIPE-READINESS §0 risk 7). Never put transcripts in a public repo.
     They live only in the user's private offline backup.
-12. **PeriFlow source never goes into the public repo.** PeriFlow's code goes only to `tripathisarthak457/periflow`
-    (private). Notes *about* PeriFlow are fine. PeriFlow screenshots and frames stay out of public git (they went
-    to an owner-only draft release; MANIFEST §3).
+12. **PeriFlow source never goes into the public repo.** PeriFlow's code goes only to `JorwenLabs/periflow`
+    (private; formerly `tripathisarthak457/periflow`). Notes *about* PeriFlow are fine. PeriFlow screenshots and
+    frames stay out of public git (MANIFEST §3 planned them for an owner-only draft release; at 12:45 on Oct 16 no
+    release existed, so they may be only in the Drive backup: `PUSHED.md` §3).
 13. **VitFleet is a client's private app:** its source (`scratch/vitfleet/`) never goes public.
 14. **The Gmail reference recordings** (`research/predictive-back/gmail/`) show other people's real e-mails. The user
     allowed motion analysis only: describe motion, never content; never publish them (they are only in the private
@@ -1490,8 +1614,9 @@ Ask for these in one message, as a checklist, and nothing else:
 - [ ] `gh auth login` (GitHub `tripathisarthak457`) in his own terminal. Never paste a token into chat.
 - [ ] Download the offline backup folder **`backup-2026-10-16`** from his Google Drive (plain zips, a
       `README-RESTORE.md`, `MANIFEST.txt` and `SHA256SUMS.txt`) into Downloads, if he wants the secrets, Claude's
-      transcripts, the never-published files and the unpushed projects back. **[unverified]** that the offline backup
-      workflow finished; its plan is `scripts/local-offline-backup.js`.
+      transcripts, the never-published files, the raw perf data and the unpushed projects back. The backup was built
+      and checked on the laptop (23 zips plus 5 movie files; `pack.log` at 12:19: every `.overhaul` and
+      `android-base` file is in the `00-*` zips). **Whether he uploaded it to Drive is unknown**: ask him (§1.7 item 9).
 - [ ] Put the signing keys and other secrets from the `01-secrets` zip into a password manager / private folder
       (PeriFlow and VitFleet release keys are irreplaceable; WIPE-READINESS §0).
 - [ ] Plug in the Redmi (`9a7c74f4`), accept the USB-debugging prompt on the phone, keep it unlocked during device
@@ -1500,16 +1625,18 @@ Ask for these in one message, as a checklist, and nothing else:
 
 ### 8.2 The order of operations
 
-1. **Read** `CLAUDE.md` (root of the workspace), this file's §0, §1.3, §6 and this section, then
-   `RESUME-ON-WINDOWS.md`. Check the usage window (`get_usage`). Start the session on Opus 5.5 and do not switch.
+1. **Read** `CLAUDE.md` (root of the workspace), this file's §0, §1.3, §1.7, §6 and this section, then
+   `RESUME-ON-WINDOWS.md`. Start the session on Opus 5.5 and do not switch. **Preflight the tools** (§5.14): `Workflow`,
+   `CronCreate`/`CronList`, `Monitor`, the usage tool; if `Workflow` is missing, settle the fallback before step 14.
 2. **Find out which layout is real** (§0 box): `git ls-remote --heads https://github.com/tripathisarthak457/android-base.git`.
-   If merged: read `MERGE-ALL-*.md` and §4.8 first.
+   Branch layout and no `archive/*` tags: merge-all never ran; **do not run it**; it is one of the questions for the
+   user (§1.7 item 0). If merged: read `MERGE-ALL-*.md` and §4.8 first.
 3. **Clone android-base** into `tools/android-base` and fetch every branch and tag:
    ```bash
    git clone https://github.com/tripathisarthak457/android-base.git android-base
    git -C android-base fetch origin '+refs/heads/*:refs/remotes/origin/*' '+refs/tags/*:refs/tags/*'
    for b in $(git -C android-base for-each-ref --format='%(refname:strip=3)' refs/remotes/origin | grep -v '^HEAD$\|^main$'); do
-     git -C android-base branch --track "$b" "origin/$b" 2>/dev/null; done
+     git -C android-base branch --no-track "$b" "origin/$b" 2>/dev/null; done   # no upstream: a bare `git push` publishes nothing (§6.1 #6)
    git -C android-base checkout overhaul/multiplatform-v2     # the orchestrator's checkout stays on the integration branch
    git -C android-base tag -l 'merged/*'                      # expect WP01, WP02-M1, WP09, WP10
    ```
@@ -1524,9 +1651,11 @@ Ask for these in one message, as a checklist, and nothing else:
 5. **Restore Claude's memory:** copy `claude-memory/*.md` into `~/.claude/projects/<slug>/memory/`, where `<slug>`
    is the workspace root's absolute path with every `/` (and other separators) turned into `-` (on the old laptop:
    `-home-crazyhusir-Documents-projects-tools`). If the root keeps the same path inside WSL2, the slug is identical.
-   **[unverified]** the exact slug rule for native Windows paths; RESUME-ON-WINDOWS.md covers it. Then update
-   `android-base-generator.md` there: it still says "nothing pushed", "PeriFlow never pushed" and points at
-   SESSION-2026-10-15; point it at this file instead.
+   **[unverified]** the exact slug rule for native Windows paths; RESUME-ON-WINDOWS.md covers it. The copies in
+   `claude-memory/` were **refreshed for Windows** in the handover's fix round (Oct 16, about 12:50): they point at
+   this file, say what was pushed, carry the 39 requirements, the merge-all status and the push policy. No edit is
+   needed after the restore. (The Linux originals are in the branch's first commit `a961701` and in the Drive backup's
+   `02-claude-and-config.zip`.)
 6. **Re-create the worktrees and re-apply the WIP.** The canonical commands, with a parent check and an exactness
    check (`restore_wip`, `verify_wip`), are in `.overhaul/handover/PACKAGES-AND-BRANCHES.md` §8.1–8.5; use those. The
    idea, for one package:
@@ -1540,15 +1669,25 @@ Ask for these in one message, as a checklist, and nothing else:
    ```
    Do the same for `wp/WP05-glass` (43) and `wp/WP04-perf` (4). The branch names `backup/<name>-wip-2026-10-16`
    are the planned ones; confirm in `PUSHED.md`.
-7. **PeriFlow** (private): clone `https://github.com/tripathisarthak457/periflow.git` to `../jorwen/periflow`
+7. **PeriFlow** (private): clone `https://github.com/JorwenLabs/periflow.git` (formerly
+   `tripathisarthak457/periflow`; the old URL redirects) to `../jorwen/periflow`
    (relative to the workspace root), add the worktree `.overhaul/wt/WP11` on `overhaul/smooth-glass`, apply
    `backup/smooth-glass-wip-2026-10-16` the same way (2 files). Its builds need the secrets from the offline backup
    (keystores, `keystore.properties`, the `google-services.json` files, three `periflow.*` keys in
    `~/.gradle/gradle.properties`); never commit them.
-8. **Raw data** (only when an agent needs old traces or frames): `gh release download overhaul-raw-data-2026-10-16 -R
-   tripathisarthak457/android-base -D <dir>`, then `zstd -d NAME.tar.zst && tar -xf NAME.tar -C .overhaul/`
-   (archive member paths are relative to `.overhaul/`). PeriFlow media archives went to a draft release with the same
-   tag on the private PeriFlow repo (fallback: android-base) per MANIFEST §3.
+8. **Raw data** (only when an agent needs old traces, frames or recordings; nothing needs them to resume). At 12:45
+   on Oct 16 the draft release **did not exist yet**; the backup workflow's Archive step was due to create it next.
+   First check: `gh release view overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base --json isDraft,assets`
+   (and `-R JorwenLabs/periflow` for the PeriFlow media, which MANIFEST §3 assigned to the private repo).
+   - **If it exists:** `gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base -D <dir>`,
+     then `tar -I zstd --skip-old-files -xf NAME.tar.zst -C .overhaul/` (member paths are relative to `.overhaul/`;
+     RESUME-ON-WINDOWS.md §3.10).
+   - **If it does not exist,** the same files are only in the user's Google Drive backup, in the
+     `00-android-base-not-on-github-p*.zip` parts (paths inside start at `Documents/projects/tools/.overhaul/`):
+     `perf/WP04` in p12, `perf/WP11` (PeriFlow) in p11 and p13, the rest of `perf/` in p10, and `audit/`, `qa/`,
+     `research/`, `scratch/` in p01. Find a path with `grep` in the backup's `MANIFEST.txt`, unzip that part into a
+     separate folder (`unzip -n`), and copy only what you need (never the never-publish items) into `.overhaul/`.
+     Which archives would have held which paths: `.overhaul/handover/release-assets.txt`.
 9. **The Android skills plugin:** reinstall `android-skills@android-skills` at v1.0.15 (marketplace `android/skills`
    on GitHub; RESUME-ON-WINDOWS.md has the command). The scripts expect it at
    `~/.claude/plugins/marketplaces/android-skills/`.
@@ -1560,9 +1699,13 @@ Ask for these in one message, as a checklist, and nothing else:
 12. **Machine checks:** free memory, WSL limits, CPU temperature under a first small build (`bin/locked gradle
     ./gradlew :core:common:test` in `templates/android`), `adb devices` shows `9a7c74f4`.
 13. **Notes:** write `SESSION-<date>.md` ("restored on Windows"), update `STATUS.md` §1 header and `PROGRESS.md`.
-14. **Launch** `to-release.js` and `shimmer-fix-from-report.js`; a few minutes later the two deep-work scripts; then
-    the skills script (§5.11). Re-create the autopilot cron and a memory monitor.
-15. **Tell the user** (below).
+14. **Launch** in the canonical order of §5.11: `to-release.js` + `deep-smoothness-fable.js`; 20–30 minutes later
+    `shimmer-fix-from-report.js` (edited to run only its Verify phase, with the phone attached) +
+    `android-skills-v1-0-15.js`; then `full-liquid-glass-fable.js`. Re-create the autopilot cron and a memory monitor
+    (or their fallbacks, §5.14).
+15. **Back up off-machine from now on** (§6.1 #6): push the branches, the `merged/*` tags and the workspace branch at
+    the end of the session and after each merge.
+16. **Tell the user** (below), and ask the open decisions of §1.7 in the same message (merge-all first).
 
 ### 8.3 What to tell the user (template)
 
@@ -1571,13 +1714,17 @@ Keep it short; he reads on his phone. Example after a successful restore:
 > Restored on Windows. Everything from Linux is here: N branches, the 4 merged packages (WP01, WP02-M1, WP09, WP10),
 > the uncommitted work of WP03 (bottom sheet), WP05-glass (glass bar), WP04-perf and PeriFlow, the whole `.overhaul`
 > workspace and my memory.
-> Running now: the release workflow and the shimmer verification; the smoothness, glass and skills workflows start in
-> a few minutes (two at a time, to keep usage and heat down).
+> Running now: the release workflow and the smoothness work; the shimmer check and the skills work start in about
+> half an hour, the glass work after that (two at a time, to keep usage and heat down).
 > Next milestones: WP03's sheet compiling, then WP04 merges, then WP03.
 > ETA for the Android release gate: about 12–18 usage windows, roughly 5–8 days at 2–3 windows a day; I will update
 > it after the first two windows. I will ask you before anything goes to `main`.
-> Open decision for you when you have a minute: PeriFlow's tab-tap lens costs about +0.3 % janky on a gate PeriFlow
-> already fails (3.76 % vs 3.44 %, gate 2.5 %). Keep the lens (my recommendation) or keep working on it?
+> Decisions for you when you have a minute:
+> 1. The merge of everything into `main` you asked for on Oct 16 never ran. I recommend we keep the branches until the
+>    Android release passes its checks, then merge once (a push to `main` deploys the live site). OK, or merge now?
+> 2. PeriFlow's tab-tap lens costs about +0.3 % janky on a gate PeriFlow already fails (3.76 % vs 3.44 %, gate 2.5 %).
+>    Keep the lens (my recommendation) or keep working on it?
+> 3. (the other §1.7 items, one line each, with my recommendation)
 
 If something is missing (a branch, the WIP, the offline backup), say exactly what and what it costs, in one line each.
 
@@ -1592,7 +1739,7 @@ If something is missing (a branch, the WIP, the offline backup), say exactly wha
 | `HANDOVER.md` | this file (also at the root of `overhaul-workspace`) | handover agent |
 | `CLAUDE.md` | auto-loaded entry point at the root of the workspace branch: what this is, read HANDOVER first, rules in brief | handover agent |
 | `tools-CLAUDE.md` | the same pointer for the parent `tools/` folder on Windows (rename to `CLAUDE.md` there) | handover agent |
-| `REQUIREMENTS-STATUS-FINAL.md` | every requirement 1–38 (and sub-items): exact words, status, evidence, what remains, owner, acceptance check; the user's open decisions | sibling step **[may be missing if that step failed]** |
+| `REQUIREMENTS-STATUS-FINAL.md` | every requirement 1–38 (and sub-items): exact words, status, evidence, what remains, owner, acceptance check; item 39 in its closing appendix; the user's open decisions (§9, items 1–16) | sibling step |
 | `PACKAGES-AND-BRANCHES.md` | every branch and worktree: purpose, head, ahead, WIP, review verdict, remaining work, dependencies; script catalogue with hard-coded paths; exact restore commands | sibling step |
 | `CHAT-HISTORY.md` | the day-by-day story of the conversation, Oct 8–16; "things the user said they want, in their own words" | sibling step |
 | `USER-MESSAGES.md` | every user message verbatim with timestamps | sibling step |
@@ -1601,16 +1748,19 @@ If something is missing (a branch, the WIP, the offline backup), say exactly wha
 | `MANIFEST.md` | how every workspace file was backed up (git, draft-release archives, left out, never published), the secrets scan, the personal-data review | inventory step |
 | `backup-include.txt` | the rsync filter that selected the git part of the workspace | inventory step |
 | `release-assets.txt` | the draft-release archives and their paths | inventory step |
-| `WIPE-READINESS.md` | everything on the old laptop a wipe would lose, by repo; keystores and secrets (paths only); the user's checklist; last checks | inventory step |
-| `PUSHED.md` | what was actually pushed: every ref and SHA, WIP file counts, archives with sizes and sha256 | pack/verify steps |
+| `WIPE-READINESS.md` | what the old laptop held that a wipe would lose: **public, redacted copy** (this project and PeriFlow only; paths, no values); the full scan is in `local-only/` and in the Drive backup (`00-…-p01.zip`) | inventory step; redacted in fix round 1 |
+| `PUSHED.md` | what was actually pushed: every ref and SHA, WIP file counts, the draft-release status, what each fix round changed | pack/verify/fix steps |
+| `claude-memory/` | the memory files refreshed for Windows; the branch's top-level `claude-memory/` is built from them (not duplicated under `.overhaul/handover/` in the branch) | fix round 1 |
+| `tools/restore-on-wsl.sh`, `tools/memwait-wsl` | the restore script and the WSL-safe `memwait` (RESUME-ON-WINDOWS.md §3.2, §7.1) | sibling step |
+| `tools/sync-workspace-branch.sh` | rebuilds and pushes the `overhaul-workspace` branch from the live workspace (filter, redactions, secrets check, normal commit; never force): the regular off-machine backup of §6.1 #6 | fix round 1 |
 | `MERGE-ALL-android-base.md`, `MERGE-ALL-periflow.md` | only if the consolidation ran: archive tags, merges, conflicts, deletions | `merge-all-to-main.js` |
-| `local-only/` | never published | — |
+| `local-only/` | never published (`WIPE-READINESS-full.md`) | — |
 
 ### 9.2 The workspace, top level (`.overhaul/`)
 
 | File | Use |
 |---|---|
-| `REQUIREMENTS.md` | **the bar**: items 1–38 plus memory safety, in the user's intent |
+| `REQUIREMENTS.md` | **the bar**: items 1–39 plus memory safety, in the user's intent |
 | `STATUS.md` | §1 running ids, §3 decisions, §4 phone numbers (rest stale) |
 | `SESSION-2026-10-16.md`, `-15`, `-14`, `-13` | session notes, newest first |
 | `PROGRESS.md` | the timeline |
@@ -1673,7 +1823,8 @@ No handoff yet for WP13, WP14, MB, QA2, WP12-B, WP13-B.
 ### 9.7 Claude's memory (`claude-memory/` in the workspace branch)
 
 `MEMORY.md` (index), `android-base-generator.md` (the project and standing instructions), `android-skills-installed.md`
-(the plugin), `laptop-memory-freeze.md` (freezes and power-offs). The earlier android-base session's memory
+(the plugin), `laptop-memory-freeze.md` (freezes and power-offs). These are the copies **refreshed for Windows** in the
+fix round (source: `.overhaul/handover/claude-memory/`); the Linux originals are in the branch's first commit `a961701`. The earlier android-base session's memory
 (`~/.claude/projects/-home-crazyhusir-Downloads-android-base/memory/`: GitHub push auth through `gh`, the Sept
 improvement plan, "push to main deploys") is in the offline backup; its push-to-main rule is superseded (§1.8).
 
@@ -1689,8 +1840,10 @@ improvement plan, "push to main deploys") is in the offline backup; its push-to-
 
 - `tools/backup-2026-10-16/` → the user's Google Drive folder `backup-2026-10-16` (offline backup: secrets, Claude
   config and memory, transcripts, the whole `.overhaul` including never-published items, git bundles of android-base
-  and PeriFlow, unpushed projects, documents). **[unverified]** final contents; read its `README-RESTORE.md`.
-- PeriFlow: `../jorwen/periflow`, private repo `tripathisarthak457/periflow`.
+  and PeriFlow, unpushed projects, documents). Built and checked on the laptop (23 zips plus 5 movie files; full
+  coverage of `.overhaul` and `android-base` per `pack.log`, 12:19); its `README-RESTORE.md` is authoritative.
+  Whether the user uploaded it to Drive: unknown (§1.7 item 9).
+- PeriFlow: `../jorwen/periflow`, private repo `JorwenLabs/periflow` (formerly `tripathisarthak457/periflow`).
 
 ---
 
@@ -1751,13 +1904,18 @@ Workflow({scriptPath: "<workspace>/.overhaul/scripts/to-release.js"})
 Workflow({scriptPath: "<…>/to-release.js", resumeFromRunId: "<run id>"})     # same session only
 CronList  /  CronCreate (prompt from .overhaul/scripts/AUTOPILOT-PROMPT.md, "13,33,53 * * * *")
 
+# Off-machine backup (orchestrator only; never main, never --force; §6.1 #6)
+git -C android-base push origin 'refs/heads/wp/*:refs/heads/wp/*' 'refs/heads/overhaul/*:refs/heads/overhaul/*' 'refs/tags/merged/*:refs/tags/merged/*'
+bash .overhaul/handover/tools/sync-workspace-branch.sh          # rebuild + push overhaul-workspace (PUSH=0 to only commit)
+
 # Pausing production deploys (only with a reason, and tell the user)
 gh workflow disable ci.yml -R tripathisarthak457/android-base     # gh workflow enable ci.yml to undo
 ```
 
 ## Appendix C. Branch snapshot (Oct 16, 11:40 IST)
 
-android-base (local; nothing but `main` was on GitHub at 11:19):
+android-base (local; nothing but `main` was on GitHub at 11:19; every ref below except `main` was pushed at about
+12:20 with the same SHAs, `PUSHED.md` §1):
 
 | Ref | SHA | Last commit (IST) | Ahead of integration | Worktree, dirty |
 |---|---|---|---|---|
@@ -1807,5 +1965,5 @@ Run ids stay the same across relaunches within one session; task ids change at e
 None of these can be resumed from a new session; launch fresh (§5.11).
 
 
-## REQUIREMENTS 39, added Oct 16 after this document was written: Cronet / HTTP/3 transport (opt-in)
+## REQUIREMENTS 39, added Oct 16 after this document was first written: Cronet / HTTP/3 transport (opt-in; also §3.2 row 39)
 Status: **not started.** The full text is in `.overhaul/REQUIREMENTS.md` item 39. It is an opt-in generator feature: Cronet installed into the shared OkHttpClient through the cronet-okhttp bridge (HttpEngine on API 34+, else Play Services Cronet, else plain OkHttp), WebSockets kept on OkHttp, certificate pins mirrored into Cronet, and perf-proven before it is recommended. Owners: WP06, WP02, WP12, WP13. Scheduled after the Android release gate.

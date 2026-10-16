@@ -1,31 +1,70 @@
 ---
 name: android-base-generator
-description: User's own android-base project generator (github tripathisarthak457/android-base, android-base.vercel.app); multi-day overhaul in progress — read .overhaul/STATUS.md first to resume
+description: User's own android-base app generator (github tripathisarthak457/android-base, android-base.vercel.app); multi-day overhaul since Oct 8, moved to Windows/WSL2 after the Oct 16 laptop wipe — read .overhaul/handover/HANDOVER.md first
 metadata:
   type: project
 ---
 
-android-base is the user's own generator: a Python generator, Kotlin template(s), a Next.js site and a Go API on Vercel. It is cloned to `~/Documents/projects/tools/android-base`, integration branch `overhaul/multiplatform-v2`, with nothing pushed. PeriFlow (`~/Documents/projects/jorwen/periflow/periflow-android`) and VitFleet (`~/Documents/projects/tools/vitfleet/vitfleet-android`) were generated from it.
+android-base is the user's own generator: a Python generator, a Kotlin/Compose Android template, a Compose Multiplatform
+template, a hidden SwiftUI template, a Next.js site and admin portal, and a Go API on Vercel. Workspace root ("tools"):
+`android-base/` (integration branch `overhaul/multiplatform-v2`; package branches `wp/<WP>` in worktrees
+`.overhaul/wt/<WP>`) and `.overhaul/` side by side. On Linux the root was `/home/crazyhusir/Documents/projects/tools`;
+the recommended Windows setup recreates that exact path inside WSL2 (user `crazyhusir`). PeriFlow (private app,
+`../jorwen/periflow`, repo now **`JorwenLabs/periflow`**, PRIVATE; the old `tripathisarthak457/periflow` URL
+redirects) and VitFleet (a client's private app) were generated from it.
 
-**To resume the overhaul, read `~/Documents/projects/tools/.overhaul/SESSION-2026-10-15.md` (latest session notes), then `STATUS.md`.** It has running state, package table, merge order, decisions, phone numbers and resume steps. Then `PROGRESS.md`, `REQUIREMENTS.md` (1–32 + memory safety), `notes/INDEX.md`, `design/MASTER-PLAN.md`, `design/wp/WP*.md`, `handoff/*.md`. Since Oct 12 a single workflow, `.overhaul/scripts/to-release.js`, carries all remaining packages to a release candidate; after a usage cutoff, resume it with `resumeFromRunId` (same session) or launch it fresh (new session). The autopilot prompt (cron every 20 min) is in `scripts/AUTOPILOT-PROMPT.md`.
+**To resume, read `.overhaul/handover/HANDOVER.md` first** (§0, §1.3, §1.7, §6, §8), then
+`.overhaul/handover/RESUME-ON-WINDOWS.md` (setup, restore, relaunch), `.overhaul/handover/PUSHED.md` (what is on GitHub,
+with SHAs), `.overhaul/handover/REQUIREMENTS-STATUS-FINAL.md` (every requirement), `.overhaul/SESSION-2026-10-16.md`.
+`.overhaul/REQUIREMENTS.md` has **39** items plus memory safety (39, Cronet/HTTP3 opt-in, added Oct 16, after the
+Android release). `STATUS.md` is partly stale (trust §1 ids and §3 decisions only).
+
+State at the wipe (Oct 16, ~12:45 IST): merged into the integration branch: WP01, WP02-M1, WP09, WP10 (`a402d87`).
+Everything else is on `wp/*` branches. **Pushed to GitHub on Oct 16** (no force, `main` untouched at `99c4edf`): every
+branch except `main`, the `merged/*` tags, the WIP snapshots `backup/<name>-wip-2026-10-16` (WP03 47 files, the
+bottom-sheet system, does not compile at `SheetFlingBehavior.kt:88`; WP05-glass 43; WP04-perf 4), and the workspace as
+the orphan branch `overhaul-workspace`. PeriFlow's `overhaul/smooth-glass` and its WIP went to its private repo. Raw
+traces/frames/recordings: draft release `overhaul-raw-data-2026-10-16` was planned but NOT created at 12:45 (check with
+`gh release view`); they are in the user's Google Drive backup `backup-2026-10-16` (`00-android-base-not-on-github-p*.zip`).
+No workflow is running; relaunch fresh, two at a time, in the order of HANDOVER §5.11.
+
+**Merge-all into main: did NOT run; pending the user's decision; do not run `.overhaul/scripts/merge-all-to-main.js`
+without asking him again in chat.** (He asked on Oct 16 at 11:11 and 11:17 to merge everything into `main` and delete
+the branches; the auto-mode classifier blocked it once; the script's `vercel.json` "pause" pauses nothing, because CI's
+deploy job ships `main`.)
 
 User decisions and standing instructions:
-- Telemetry is anonymous only. Compose Multiplatform targets Android + iOS (beta: iOS unverified). Swift is SwiftUI + @Observable MVI, iOS 17, XcodeGen, shown as "coming soon". Design system is custom, foundation-only, no Material components; material3.adaptive is allowed.
-- Keep running until they say stop. Launch full-width subagents, Opus everywhere. Never compromise quality: Google/AOSP-level review before every merge.
-- Don't ask questions; decide and record. Merge to main only when the full matrix is green. PeriFlow stays on local branch `overhaul/smooth-glass`, never pushed.
-- Smoothness bar is iOS level on their Redmi Note 10 Pro (serial 9a7c74f4, 120 Hz). Final report must show measured before/after numbers. Every smoothness/motion/adaptive finding must be documented in generated projects' AGENTS.md/CLAUDE.md/docs.
-- Visual polish is continuous: hunt UI defects while working.
-- Oct 12: "do the best just achieve our goal": proceed autonomously through release.
-- Oct 14: **Android first** (REQUIREMENTS 36). Go live as soon as the Android generator is 100% done (smoothness, security and all goals); Compose Multiplatform and Swift ship later. A release gate writes RELEASE-GATE-android.md, then ask the user for the go-ahead before merging to main and pushing (the classifier blocked an autonomous deploy step).
-- Closing the laptop lid suspends it and stops all work (Oct 10 18:06 → Oct 12 13:06 lost). Workflow concurrency is capped at 6 agents (8 CPUs).
-- When the user reports a bug they saw ("first fix it"), it takes priority: pause the pipeline workflows, which resume from cache, and run the fix alone. They also pause near the usage limit ("save progress and stop, continue at 6"); STATUS.md §0 holds the pause snapshot.
-- Workflow resume is prefix-cached: after a cutoff of early agents, everything reruns live (agents resume from their handoffs). The phone may need `adb kill-server && adb start-server` after a replug. Emulator sessions must go through `bin/locked emu`.
-- **Models (latest, Oct 15 20:55): Opus 5.5 only, in subagents too.** The scripts' `fableAgent()` passes options through unchanged (no `model` key), so agents run on the session's model (Opus 5.5). Don't add a `model` key to a resumed run: it changes every cache key and reruns finished agents live (that caused the Oct 15 usage spike). Fable's findings are in `.overhaul/FABLE-FINDINGS.md`.
-- Oct 16: the user wants Google's **jetpack-compose-performance** skill *used*, not only vendored. It is now in every implementation and review prompt (BLOCKING on changed code). A template-wide audit writes `research/COMPOSE-PERF-AUDIT.md`, and every generated project vendors it, with an AGENTS.md instruction to run it.
-- Usage: the 5-hour limit is shared by all models (Fable included; Fable also has its own weekly cap). Avoid switching models mid-chat: each switch rebuilds the cache of the whole long conversation (about a million tokens). Compact the chat once it passes about 50% of context.
-- The auto-mode classifier blocks killing or stopping processes (even stale builds from dead agents); leave them to finish and tell agents never to kill processes.
+- Keep going until told to stop. Don't ask questions; decide and record (ask only for what only he can do: physical
+  actions, logins, money, the deploy go-ahead, and the open decisions in HANDOVER §1.7, all in one message).
+- Never compromise quality: a fresh-context Google/AOSP-level review before every merge; phone gates on release builds
+  on his Redmi Note 10 Pro (serial 9a7c74f4, 120 Hz). Final report must show measured before/after numbers.
+- **Android first** (REQUIREMENTS 36): release gate (`RELEASE-GATE-android.md`) first, then the user's explicit
+  go-ahead in chat, then merge to `main`, push and deploy. A push to `main` deploys production through CI. Compose
+  Multiplatform and Swift ship later.
+- Pushing non-`main` branches is allowed (Oct 16: "push to public there is no problem"). The orchestrator pushes the
+  package branches, the integration branch, the `merged/*` tags and the `overhaul-workspace` branch as an off-machine
+  backup at the end of every session and after every merge (HANDOVER §6.1 #6); agents inside workflows never push.
+  Never push `main`, never force-push. PeriFlow code goes only to its private repo. Never commit secrets.
+- No separate billing: extra usage stays off. **Opus 5.5 only**, session and subagents (Oct 15 20:55; Oct 16 10:34).
+  Never switch models mid-chat, never add a `model` key to a run you mean to resume (it invalidates the resume cache),
+  launch workflows two at a time. Compact the chat once it passes about half its context.
+- A bug the user reports comes first ("first fix it"): pause the pipelines, fix it alone.
+- Telemetry is anonymous only. CMP targets Android + iOS (beta: iOS unverified). Swift is SwiftUI + @Observable MVI,
+  iOS 17, XcodeGen, "coming soon". Design system is custom, foundation-only, no Material components;
+  material3.adaptive is allowed. CP1 (motion) was decided by an agent; CP2 (glass) is open.
+- Use Google's jetpack-compose-performance skill (BLOCKING in reviews) and vendor the Android skills (v1.0.15) into
+  generated projects (REQUIREMENTS 38).
+- The Gmail reference recordings show real e-mails: describe motion only, never publish them.
+- Never kill or stop processes you did not start (the auto-mode classifier blocks it too). Gradle only via
+  `.overhaul/bin/locked gradle`, adb via `bin/locked adb`, the emulator only inside `bin/locked emu`, heavy commands
+  via `bin/memwait`.
+- Send a short status with an ETA when asked ("send summary and eta") and at milestones; save notes (SESSION file,
+  STATUS §1, PROGRESS, memory) before every usage limit or compaction.
+- Commit trailer: `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 
-**Why:** these were the user's answers and repeated instructions across Oct 8–10.
-**How to apply:** don't re-ask; follow them when touching the generator, site or PeriFlow. Relaunch workflows from STATUS.md state after any restart. Related: [[android-skills-installed]], [[laptop-memory-freeze]].
-
-- Oct 16: **Opus 5.5 only for every agent** (the user: Fable used too much usage). The scripts strip any `model` option in `fableAgent()`, so agents run on the session's model. The two former Fable workflows continue on Opus with the same goals. Fable's findings: `.overhaul/FABLE-FINDINGS.md`. The user wants Google's jetpack-compose-performance skill both used (in every UI agent prompt, BLOCKING in reviews, and a template-wide audit) and vendored into every generated project.
+**Why:** these are the user's answers and repeated instructions across Oct 8–16, plus the decisions recorded in the
+handover documents.
+**How to apply:** don't re-ask; follow them when touching the generator, the site or PeriFlow. Superseded and no longer
+valid: "nothing pushed / PeriFlow never pushed", "Fable first", "merge to main only when the full matrix is green"
+(replaced by the release gate plus the go-ahead), and the Sept memory "push verified work to main without asking".
+Related: [[android-skills-installed]], [[laptop-memory-freeze]].

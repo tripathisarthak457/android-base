@@ -45,7 +45,7 @@ at the branch root, and this file is `.overhaul/handover/CHAT-HISTORY.md`.
 - **The project.** android-base (github.com/tripathisarthak457/android-base, **public**; site
   android-base.vercel.app, which Vercel deploys from `main`) is the user's own app generator: a Python generator, a
   Kotlin/Compose Android template, a Compose Multiplatform template, a hidden SwiftUI template, a Next.js website with
-  an admin portal, and a Go API. PeriFlow (private repo `tripathisarthak457/periflow`) and VitFleet are apps generated
+  an admin portal, and a Go API. PeriFlow (private repo `JorwenLabs/periflow`, formerly `tripathisarthak457/periflow`) and VitFleet are apps generated
   from it.
 - **The goal (Oct 8, #54).** Fix the heavy, glitchy generated apps; reach iOS-level smoothness on the user's Redmi
   Note 10 Pro (120 Hz); remove ripple; optional Kyant liquid glass that does not cost FPS (in the generator and in
@@ -739,12 +739,13 @@ will wipe the laptop and install Windows, and wants Claude on Windows to have "t
      `backup/<name>-wip-2026-10-16` branches, and an orphan branch **`overhaul-workspace`** holding `CLAUDE.md`,
      `HANDOVER.md` and `README.md` at its root, `.overhaul/` (the curated workspace, with `handover/` inside) and
      `claude-memory/`. `main` is left untouched by this step, because Vercel deploys it.
-   - **PeriFlow (PRIVATE, `tripathisarthak457/periflow`):** branch `overhaul/smooth-glass` and
+   - **PeriFlow (PRIVATE, `tripathisarthak457/periflow`, since renamed `JorwenLabs/periflow`):** branch `overhaul/smooth-glass` and
      `backup/smooth-glass-wip-2026-10-16`. PeriFlow source never goes into the public repo.
    - **Draft release `overhaul-raw-data-2026-10-16`** of android-base (visible only to the owner): archives of raw data
      too big for git (traces, recordings, frame dumps). `handover/MANIFEST.md` decided to put the four PeriFlow media
      archives on a draft release of the private PeriFlow repo instead, with the android-base draft as fallback.
-     Download: `gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base`.
+     Download: `gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base`. **At 12:45 the
+     release had not been created** (`PUSHED.md` §3); the Drive backup holds the same files.
    - **Never published**, even with the go-ahead: secrets (keystores, signing keys, tokens, API keys, passwords,
      `google-services.json`, `local.properties`, `.env`, `periflow-recovery-codes.txt`, `PeriFlow-Postman/`), PeriFlow
      source code, and other people's personal data (the Gmail reference recordings show real e-mails). Regenerable
@@ -773,7 +774,8 @@ will wipe the laptop and install Windows, and wants Claude on Windows to have "t
    android-base, a full copy of the repository with every branch from before the merge, and every Claude transcript
    and memory file about android-base (#178). Other projects not on GitHub go to `09-unpushed-projects` (#173).
    Secrets were meant for `01-secrets.zip`, but at 11:47 the classifier refused to pack them unencrypted, so **the user
-   must build that zip themselves** from `01-secrets-HELD-list.txt` (command in §3, Oct 16). `PLAN.md` in that folder
+   must build that zip themselves** from `01-secrets-HELD-list.txt` (command in §3, Oct 16). He did, at 12:04 (53
+   files, plain zip). `PLAN.md` in that folder
    lists each group. **On Windows, Claude should ask the user to
    download `backup-2026-10-16` from Google Drive and restore from it** (#171).
 6. ETA given at 11:27: wipe-ready about 14:00–14:30, if the laptop does not power off again. The user was told not to
@@ -782,6 +784,12 @@ will wipe the laptop and install Windows, and wants Claude on Windows to have "t
 **State at the time of writing (11:45–11:55):** the handover workflow was writing documents; `git ls-remote` showed only
 `main` on android-base; the merge had not started. Whether the backup push, the draft release, the merge into `main`
 and the zips finished is **unknown here**: check as in §11.
+
+**Update, 12:45 (handover fix round 1):** the backup push finished and was verified (every branch except `main`, the
+`merged/*` tags, the WIP snapshots, `overhaul-workspace`; PeriFlow's branch and WIP on its private repo; `PUSHED.md`).
+The zips finished (23 plus 5 movie files; full coverage checked 12:19). The draft release had **not** been created.
+**The merge into `main` had not run**; it is pending the user's decision, and no agent may run it without asking him
+again (`HANDOVER.md` §1.7 item 0).
 
 ---
 
@@ -928,10 +936,10 @@ are in `USER-MESSAGES.md`.
 
 | Question | Not known at writing because | Where to check |
 |---|---|---|
-| Did the backup push finish (branches, tags, `backup/*-wip-2026-10-16`, `overhaul-workspace`)? | It was still writing docs at 11:45 | `git ls-remote https://github.com/tripathisarthak457/android-base`; `HANDOVER.md`; `.overhaul/PROGRESS.md` |
-| Was the draft release created, and where did the PeriFlow media go? | Same | `gh release list -R tripathisarthak457/android-base` and `-R tripathisarthak457/periflow` |
-| **Did the merge of everything into `main` happen?** Is Vercel paused? | `merge-all-to-main.js` was to start after the backup | `git log origin/main`; tags `archive/*-2026-10-16`; `vercel.json` on `main` (`git.deploymentEnabled`); the Vercel dashboard. If `main` has the merged work, the live site must stay paused until it builds and is tested |
-| Did the Drive zips get made and uploaded? Did the user build `01-secrets.zip` (keystores, SSH keys, `.env`, recovery codes)? | Workflow `w3lb0dkqq` was running; the secrets zip was left to the user at 11:47 | Ask the user; `backup-2026-10-16/PLAN.md`, `01-secrets-HELD-list.txt`. Losing the app signing keystores means no more updates to installed apps (`WIPE-READINESS.md` risk 1) |
+| Did the backup push finish (branches, tags, `backup/*-wip-2026-10-16`, `overhaul-workspace`)? | It was still writing docs at 11:45 | **Yes** (verified 12:45): `PUSHED.md`; `git ls-remote https://github.com/tripathisarthak457/android-base` |
+| Was the draft release created, and where did the PeriFlow media go? | Same | **Not created at 12:45.** Check `gh release list -R tripathisarthak457/android-base` and `-R JorwenLabs/periflow`; otherwise the Drive backup (`RESUME-ON-WINDOWS.md` §3.10) |
+| **Did the merge of everything into `main` happen?** Is Vercel paused? | `merge-all-to-main.js` was to start after the backup | **Not at 12:45** (no `archive/*` tags, `main` = `99c4edf`). Pending the user's decision: never run it without asking him. Check `git ls-remote` for `archive/*` tags. If `main` ever has the merged work, the live site must stay paused (disable `ci.yml`: the `vercel.json` key pauses nothing) until it builds and is tested |
+| Did the Drive zips get made and uploaded? Did the user build `01-secrets.zip` (keystores, SSH keys, `.env`, recovery codes)? | Workflow `w3lb0dkqq` was running; the secrets zip was left to the user at 11:47 | **Made** (23 zips plus 5 movies, full coverage 12:19) and **`01-secrets.zip` built by the user at 12:04**. The **upload** is unconfirmed: ask the user. Losing the app signing keystores means no more updates to installed apps (`WIPE-READINESS.md` risk 1) |
 | Did the user install earlyoom or change the lid or journald settings? | Never confirmed in chat | Irrelevant after the wipe |
 | What caused the Oct 10 12:07, Oct 12 14:57 and later reboots, and the Oct 13 10:41 boot with no shutdown record? | Not recorded | Unknown; the clean ones were probably the user |
 | Does the user accept the PeriFlow lens deviation (3.62% vs 2.5%)? | Never asked; one more attempt was in progress | `handoff/WP11-RESUME.md`, `handoff/WP11.md`, `perf/WP11/lens-tap/` |

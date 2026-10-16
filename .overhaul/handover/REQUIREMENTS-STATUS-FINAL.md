@@ -3,7 +3,8 @@
 Written **Oct 16, 2026, 11:20–11:50 IST** on the Linux laptop, read-only (no build, no phone, no git write). It
 replaces the older, unfinished draft `.overhaul/REQUIREMENTS-STATUS.md` (Oct 14, whose tables say "(pending)").
 
-It covers **every item of `.overhaul/REQUIREMENTS.md`** (1–38, every sub-item and addendum, plus the "Non-negotiable
+It covers **every item of `.overhaul/REQUIREMENTS.md`** (1–38 in full; **item 39**, Cronet/HTTP3, was added on Oct 16
+at 12:10, after this file was written, and is in the appendix at the very end; every sub-item and addendum, plus the "Non-negotiable
 outcome" and "Process" sections) and the **original overhaul goals of `.overhaul/design/MASTER-PLAN.md`** (§1 "The
 decisions in one page", §2 gates, the checkpoints and the package plan). For each item: the user's words, the status,
 the evidence (branch and commit, handoff section, perf or QA path, review verdict), what remains and who owns it, and
@@ -40,13 +41,13 @@ Paths in this file are relative to that root. The old Linux absolute path is
 | `wt/<WP>` | `.overhaul/wt/<WP>` (a git worktree of `R` on branch `wp/<WP>`; not in the backup, recreate it) | same under `/home/crazyhusir/...` |
 | `P/<WP>` | `.overhaul/perf/<WP>` (phone results: `summary.md`/`summary.json` are in the git backup; raw frames, recordings and traces are in the draft release) | |
 | `H/<WP>` | `.overhaul/handoff/<WP>.md` (each package's living record) | |
-| PeriFlow | separate PRIVATE repo `github.com/tripathisarthak457/periflow`, branch `overhaul/smooth-glass` (worktree was `.overhaul/wt/WP11`) | `/home/crazyhusir/Documents/projects/jorwen/periflow` |
+| PeriFlow | separate PRIVATE repo `github.com/JorwenLabs/periflow` (formerly `tripathisarthak457/periflow`, which redirects), branch `overhaul/smooth-glass` (worktree was `.overhaul/wt/WP11`) | `/home/crazyhusir/Documents/projects/jorwen/periflow` |
 
 Where the backup puts things (from `.overhaul/handover/MANIFEST.md`): the workspace is the orphan branch
-`overhaul-workspace` of `R`; raw data is on the owner-only DRAFT release `overhaul-raw-data-2026-10-16`
-(`gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base`); the WIP of the dirty
-worktrees is on `backup/<name>-wip-2026-10-16` branches (exact names were not yet on GitHub at writing time; list
-them with `git ls-remote origin 'refs/heads/backup/*'`). **Not backed up at all:** the Gmail reference recordings
+`overhaul-workspace` of `R`; raw data was planned for the owner-only DRAFT release `overhaul-raw-data-2026-10-16`,
+which **did not exist yet at 12:45 on Oct 16** (`PUSHED.md` §3; if it is still missing, the files are in the user's
+Drive backup: `RESUME-ON-WINDOWS.md` §3.10); the WIP of the dirty worktrees is on `backup/<name>-wip-2026-10-16`
+branches (pushed; names and SHAs in `PUSHED.md` §1.3). **Not backed up at all:** the Gmail reference recordings
 `research/predictive-back/gmail/` (other people's e-mails; MANIFEST §5). What they taught is in
 `research/predictive-back/SPEC.md`.
 
@@ -950,10 +951,14 @@ push, Vercel. The ETA of "about Oct 17" (`SESSION-2026-10-15.md`) assumed no cra
    report proposes.
 6. **CP2, glass feel** (blur and tint variant, tier policy), once WP05 records the per-tier strips. Earlier the user
    let a decision agent pick CP1; say whether CP2 may be decided the same way.
-7. **Release model after the wipe.** REQUIREMENTS 36 says: release gate first, then the user's go-ahead, then merge to
-   `main`. `PROGRESS.md` records a later request to merge every branch into `main` with Vercel deploys paused
-   (`scripts/merge-all-to-main.js`). Confirm which holds; if the merge-all happened, re-enabling the Vercel deploy is
-   the release step and needs the gate first.
+7. **Release model after the wipe (merge-all).** REQUIREMENTS 36 says: release gate first, then the user's go-ahead,
+   then merge to `main`. On Oct 16 (11:11, confirmed 11:17) he asked to merge every branch into `main` with Vercel
+   deploys paused (`scripts/merge-all-to-main.js`). **It did not run** (checked 12:45: no `archive/*` tags, every
+   branch present, `main` = `99c4edf`). **It is pending his decision; do not run it without asking him.** Ask which
+   model holds. Recommendation: keep the gate model and merge once, reviewed, at the release; the script's
+   `vercel.json` "pause" pauses nothing (CI's deploy job ships `main`; `HANDOVER.md` §2.8), so if he wants it now,
+   disable `ci.yml` first with his OK. If the merge-all ever happens, re-enabling the deploy is the release step and
+   needs the gate first.
 8. **Utility style's default bar: Docked → Floating** (K3 (e)). A product-visible default; the edit is in WP03's
    uncommitted tree. Confirm it.
 9. **Licence wording.** The site says "MIT" but the repository has no `LICENSE` file, and generated projects will
@@ -964,7 +969,18 @@ push, Vercel. The ETA of "about Oct 17" (`SESSION-2026-10-15.md`) assumed no cra
     the r8-analyzer scoring; display-size overrides on the Redmi for the `large` gate column (ADAPTIVE §0.7).
 12. **The Kyant playground APK** for side-by-side glass strips (R37): the user installs it on the phone; agents may not.
 13. **The release itself:** the explicit go-ahead in chat after `RELEASE-GATE-android.md` says go.
+14. **The new machine and the offline backup** (added in the handover fix round): accept the WSL2 setup and do its
+    admin steps (WSL with the user `crazyhusir`, `.wslconfig`, power and lid, Intel DTT, usbipd, `gh auth login`;
+    `RESUME-ON-WINDOWS.md` §2.2, §8.4); confirm that the Drive folder `backup-2026-10-16` was uploaded and that
+    `01-secrets.zip` (not encrypted, by his choice) is stored safely.
+15. **The raw-data draft release.** It was not created by 12:45 on Oct 16. If it still does not exist, say whether it
+    is still wanted (the Drive backup holds the same files) or whether the Drive copy is enough.
+16. **The public workspace branch's history.** Commits `a961701` and `7feafaf` of `overhaul-workspace` contain the
+    full `WIPE-READINESS.md` (paths and names, no values: where keystores, an SSH deploy key, 2FA recovery codes and a
+    service-account file lived; his work-organisation repositories, a colleague-named branch, a client's server). The
+    branch head now carries a redacted copy. Accept it, or delete and recreate the branch (agents must not
+    force-push or delete it on their own).
 
 
-## REQUIREMENTS 39, added Oct 16 after this document was written: Cronet / HTTP/3 transport (opt-in)
+## REQUIREMENTS 39, added Oct 16 (12:10) after this document was written: Cronet / HTTP/3 transport (opt-in)
 Status: **not started.** The full text is in `.overhaul/REQUIREMENTS.md` item 39. It is an opt-in generator feature: Cronet installed into the shared OkHttpClient through the cronet-okhttp bridge (HttpEngine on API 34+, else Play Services Cronet, else plain OkHttp), WebSockets kept on OkHttp, certificate pins mirrored into Cronet, and perf-proven before it is recommended. Owners: WP06, WP02, WP12, WP13. Scheduled after the Android release gate.

@@ -7,6 +7,10 @@ a SHA or a branch name, trust this file.
 Nothing was force-pushed. `main` was not pushed or changed in either repository, and the default branches were not
 changed (android-base: `main`; PeriFlow: `main`).
 
+**Updated by the handover's fix round 1 (Oct 16, about 12:45–13:00 IST)** after a fresh-context verifier read the
+backup: every ref and WIP snapshot was re-checked (nothing missing, nothing changed), the documents were corrected,
+and one more workspace commit was pushed (§1.5, §6). The merge of everything into `main` **did not run** (§6.1).
+
 ## 1. android-base (PUBLIC): `https://github.com/tripathisarthak457/android-base`
 
 Before the push, GitHub had only `main`. Local `main` and `origin/main` were both at
@@ -78,8 +82,14 @@ WP03's snapshot holds the whole bottom-sheet system. It does not compile (`Sheet
 |---|---|---|
 | `refs/heads/overhaul-workspace` | `a9617013ec3d3bc9cd54abd032b55ec89e5007f2` | Back up the android-base overhaul workspace before the laptop wipe (2026-10-16) |
 
-A second commit adds this file (`.overhaul/handover/PUSHED.md`) and re-syncs the handover documents. Its SHA is the
-branch head: run `git ls-remote https://github.com/tripathisarthak457/android-base.git refs/heads/overhaul-workspace`.
+Later commits on top (normal fast-forward pushes, never forced):
+
+| Commit | What |
+|---|---|
+| `7feafaf9d306f4789ecdc979e99112a93b888f1c` | adds this file (`.overhaul/handover/PUSHED.md`) and re-syncs `logs/thermal.log` |
+| fix round 1 (SHA in §6.3) | the corrected handover documents, the refreshed `claude-memory/`, the redacted `WIPE-READINESS.md`, the new `README.md` source, `tools/sync-workspace-branch.sh` |
+
+The branch head is always: `git ls-remote https://github.com/tripathisarthak457/android-base.git refs/heads/overhaul-workspace`.
 
 **What the branch holds** (first commit): 13,335 files, 498,917,457 bytes (476 MiB) of content; the local `.git` is
 284 MiB packed. The largest file is `.overhaul/perf/WP03/cp1-phone/not-driven/toast/toast_crop_strip.png`
@@ -90,8 +100,9 @@ branch head: run `git ls-remote https://github.com/tripathisarthak457/android-ba
 | `README.md` | written for this branch: what it is and how to restore |
 | `HANDOVER.md`, `CLAUDE.md`, `tools-CLAUDE.md` | `.overhaul/handover/HANDOVER.md`, `CLAUDE.md`, `tools-CLAUDE.md` |
 | `.overhaul/` | `rsync -a --filter='merge .overhaul/handover/backup-include.txt'` of the workspace (13,327 files, the same count as the dry run) |
-| `.overhaul/handover/` | the whole handover folder except `local-only/` |
-| `claude-memory/` | `~/.claude/projects/-home-crazyhusir-Documents-projects-tools/memory/` (`MEMORY.md` plus 3 memory files) |
+| `.overhaul/handover/` | the whole handover folder except `local-only/` and (since fix round 1) `claude-memory/` |
+| `claude-memory/` | first commit: the live `~/.claude/projects/-home-crazyhusir-Documents-projects-tools/memory/` (`MEMORY.md` plus 3 memory files). **Since fix round 1:** `.overhaul/handover/claude-memory/`, the same four files refreshed for Windows (they point at `HANDOVER.md`, say what was pushed, the 39 requirements, the merge-all status, the push policy). The live Linux memory was left unchanged; its originals stay in commit `a961701` |
+| `README.md` | first commits: written in the scratch build folder. **Since fix round 1:** `.overhaul/handover/BRANCH-README.md` |
 
 **Redacted in the branch copy only** (the local files are unchanged). These were local dev-only values for a
 throwaway Postgres container and a local API on `127.0.0.1`. Each one is now `<local-dev-value>`:
@@ -103,9 +114,11 @@ throwaway Postgres container and a local API on `127.0.0.1`. Each one is now `<l
 
 Restore notes: the branch is a **copy**, not a checkout of the workspace (see `RESUME-ON-WINDOWS.md` §3.4). Use
 `git add --all --force` if you ever re-commit it: `scratch/WP09-trial` and `scratch/WP07-skel` carry their own
-`.gitignore` files.
+`.gitignore` files. Since fix round 1 the whole rebuild (copy, redaction, secrets check, commit, push) is one script:
+`.overhaul/handover/tools/sync-workspace-branch.sh` (`HANDOVER.md` §6.1 #6). On this laptop it ran with
+`WS_DIR=<scratchpad>/handover/workspace MEM_SRC=.overhaul/handover/claude-memory`.
 
-## 2. PeriFlow (PRIVATE): `https://github.com/tripathisarthak457/periflow`
+## 2. PeriFlow (PRIVATE): `https://github.com/JorwenLabs/periflow` (pushed through the old URL `tripathisarthak457/periflow`)
 
 `gh repo view` reported `"visibility": "PRIVATE"` before the push. **The repository has moved:** GitHub now names it
 **`JorwenLabs/periflow`** (an organization). The old URL redirects, and the push through
@@ -138,9 +151,18 @@ backup plan (`tools/backup-2026-10-16/plan-paths.txt`: `KEYS.md` in `01-secrets`
 
 ## 3. Still to go: the draft release `overhaul-raw-data-2026-10-16`
 
-**Not done by this step.** On Oct 16 at 12:25, no release existed on either repo (`gh release list` was empty). The
-archives and their paths are listed in `.overhaul/handover/release-assets.txt`. The packing recipe is in `MANIFEST.md`
-§3. Always create the release with `--draft`.
+**Not done by this step.** On Oct 16 at 12:25, no release existed on either repo (`gh release list` was empty), and
+at 12:45 it still did not (`gh api repos/tripathisarthak457/android-base/releases` and the same for
+`JorwenLabs/periflow` returned nothing). The workflow's next step (Archive, `scripts/handover-backup.js`) was due to
+create it; if it ran, it appended the archives, sizes and sha256 to the end of this file. The archives and their paths are
+listed in `.overhaul/handover/release-assets.txt`. The packing recipe is in `MANIFEST.md` §3. Always create the
+release with `--draft`.
+
+**If no archive list was appended to this file (after §6), the release was never made.** Then these files exist only in the user's
+Google Drive backup `backup-2026-10-16` (built and coverage-checked on the laptop at 12:19; the upload itself is
+unconfirmed): `perf/WP04` in `00-android-base-not-on-github-p12.zip`; `perf/WP11` (PeriFlow) in p11 and p13; the rest
+of `perf/` in p10; `audit/`, `qa/`, `research/` and `scratch/` in p01. How to restore from there:
+`RESUME-ON-WINDOWS.md` §3.10.
 
 | Archive | Raw size | Target (MANIFEST.md §3 decision) |
 |---|---:|---|
@@ -169,7 +191,8 @@ holds them).
 | `scratch/pf-diff/`, `scratch/vitfleet/` | Copies of PeriFlow and VitFleet source code (private repos). Never in the public repo. |
 | Secrets (keystores, `keystore.properties`, `local.properties`, real `google-services.json`, `.env`, `verify-gen/ks/p.properties`, tokens, `periflow-recovery-codes.txt`, `PeriFlow-Postman/`) | Never published. The PeriFlow secrets are in the user's offline-backup plan (`01-secrets-HELD-list.txt`). The user has to build that zip himself. |
 | Chat transcripts (`~/.claude/projects/*/*.jsonl`, subagent transcripts) | They contain secrets. Their content is summarised in `CHAT-HISTORY.md` and `USER-MESSAGES.md`, which are in the branch. The transcripts themselves are only in the offline backup. |
-| `handover/local-only/` | Out of scope by design (it was empty at push time). |
+| `handover/local-only/` | Out of scope by design (it was empty at the first push; since fix round 1 it holds `WIPE-READINESS-full.md`). |
+| The full `WIPE-READINESS.md` (since fix round 1) | It mapped where the user's keystores, SSH deploy key, 2FA codes and service-account file lived and named his work-organisation repos, a colleague-named branch and a client's server. Not needed to resume; the public copy is now redacted (§6.2). The full one: `handover/local-only/WIPE-READINESS-full.md` on the laptop and `00-android-base-not-on-github-p01.zip` on Drive. |
 
 ## 5. Secrets scan before the public push (android-base)
 
@@ -199,3 +222,47 @@ holds them).
   `vitfleet.json`. They are generator spec fixtures (app name, package, features, `example.com` URLs, no keystores), not
   app source.
 - **Result:** no real secret. Nothing was blocked.
+
+## 6. Fix round 1 (Oct 16, about 12:45–13:00 IST)
+
+A fresh-context verifier cloned the public repo, checked every ref, the WIP, the contents and the secrets, and did a
+cold read of the documents. It found the refs, WIP and secrets in order, and nine gaps in the documents plus one privacy
+note. This round fixed them. It changed no package branch, no `main`, and nothing in PeriFlow.
+
+### 6.1 Re-checks (no ref or WIP was missing)
+
+- `git ls-remote` of android-base: all 22 refs of §1 at the same SHAs; `overhaul-workspace` at `7feafaf` before this
+  round; `main` = `99c4edf`; **no `archive/*` tags** (so merge-all did not run). `JorwenLabs/periflow`: both refs of
+  §2 at the same SHAs; PRIVATE.
+- Local refs equal the remote ones. Each dirty worktree's current files, written into a temporary index
+  (`read-tree HEAD`, `add -A`; for WP11 only the paths `git status` lists), give exactly the tree of its snapshot:
+  WP03 `ed06126`, WP04-perf `1cb11c5`, WP05-glass `79f4543`, WP11 `49b74fe`. Nothing new to push.
+- No secret was found on the public repo, so nothing needs rotating from this round's checks.
+
+### 6.2 What changed in the documents (all under `.overhaul/handover/`)
+
+| Gap | Fix |
+|---|---|
+| 1. Merge-all had no clear status | One explicit line in `HANDOVER.md` §0 (new status box and bullet), §1.7 (new item 0, with the reasons and a recommendation), `CLAUDE.md`, `tools-CLAUDE.md`, the branch `README.md`, `RESUME-ON-WINDOWS.md` §1 and §9, `PACKAGES-AND-BRANCHES.md` §0.2 and §9.3, `REQUIREMENTS-STATUS-FINAL.md` §9 item 7, `CHAT-HISTORY.md`, and the memory: **merge-all did not run; it is pending the user's decision; do not run it without asking** |
+| 2. Docs said the draft release existed | Every mention made conditional (`HANDOVER.md` §0 box, §6.2 #12, §8.2 step 8; `RESUME-ON-WINDOWS.md` §3.10, §3.11; `PACKAGES-AND-BRANCHES.md` §0.1; `REQUIREMENTS-STATUS-FINAL.md` §0.2; `MANIFEST.md`; the branch `README.md`; `CLAUDE.md`), with the Drive fallback and which zip holds which folder (§3 above). The release itself is the Archive step's job |
+| 3. PeriFlow repo renamed | `JorwenLabs/periflow` everywhere a reader would use it (HANDOVER §0.1, §2.9, §6.2, §8.2 step 7, §9.9; `CLAUDE.md`; `tools-CLAUDE.md`; RESUME §3.7, §3.10; PACKAGES §0.1, §4, §8.5; REQUIREMENTS-STATUS-FINAL; CHAT-HISTORY); `restore-on-wsl.sh` `PF_URL` default |
+| 4. Three different relaunch orders | One canonical order in `HANDOVER.md` §5.11 (wave 1 `to-release` + `deep-smoothness`; wave 2 `shimmer` (Verify only, phone attached) + `android-skills`; wave 3 `full-liquid-glass`), copied into §4.7, §8.2 step 14, §8.3, RESUME §8.2 and PACKAGES §9.2 |
+| 5. Stale memory copy | `claude-memory/` rebuilt from `.overhaul/handover/claude-memory/` (refreshed for Windows); HANDOVER §8.2 step 5 and RESUME §3.8 now say no edit is needed |
+| 6. Push policy ambiguous | Decided and recorded in `HANDOVER.md` §6.1 #6: the orchestrator pushes `wp/*`, `overhaul/*`, `merged/*` and the workspace branch at every session end and after every merge (never `main`, never force); agents never push; worktrees stay `--no-track`. Tool: `tools/sync-workspace-branch.sh`. Aligned in §1.3 #15, §1.8, §5.9, PACKAGES §9.1, RESUME §3.5 |
+| 7. 38 vs 39 requirements | 39 in `HANDOVER.md` §0 and §3.2 (new row 39), §9.1/§9.2, `CLAUDE.md`, `tools-CLAUDE.md`, the branch `README.md`, `REQUIREMENTS-STATUS-FINAL.md` header, the memory |
+| 8. Tools unverified in the CLI | New `HANDOVER.md` §5.14 (preflight with `ToolSearch`, fallbacks for `Workflow`, cron, `Monitor`, usage); preflight added to §5.11, §8.2 step 1, `CLAUDE.md`, `tools-CLAUDE.md`, RESUME §2.1, §8.1 item 0, §9 |
+| 9. 11:30 vs 11:17 | 11:17 is the user's message; "~11:30" is when `PROGRESS.md` logged it (HANDOVER §1.2 row 43, RESUME §1, §9, PACKAGES §0.2) |
+| Privacy note | `WIPE-READINESS.md` on the branch head is now a redacted public copy (only android-base and PeriFlow; no work-organisation, colleague or client names). The full scan moved to `handover/local-only/WIPE-READINESS-full.md` (never published) and is in the Drive zip p01. **Commits `a961701` and `7feafaf` still contain the full version**: removing it needs a force-push or deleting and recreating the branch, which is the user's call (`HANDOVER.md` §1.7 item 10; `REQUIREMENTS-STATUS-FINAL.md` §9 item 16). One work-project name was also generalised in `USER-MESSAGES.md` |
+
+Also corrected while there: RESUME §3.11 (14 parts, `01-secrets.zip` was built by the user, the offline backup
+finished), the offline backup's status in HANDOVER §5.2, §8.1 and §9.9, and `--no-track` in HANDOVER §8.2 step 3.
+New user decisions were added to `REQUIREMENTS-STATUS-FINAL.md` §9 (items 14–16) and `HANDOVER.md` §1.7 (items 0, 9,
+10).
+
+### 6.3 The fix-round commit
+
+Built with `.overhaul/handover/tools/sync-workspace-branch.sh` (`WS_DIR` = the scratchpad build folder,
+`MEM_SRC=.overhaul/handover/claude-memory`): rsync with `backup-include.txt` (now also excluding
+`handover/claude-memory/`), the generic redaction of the local dev values, the secrets check of the staged diff
+(no hits), a normal commit and a fast-forward push. SHA: see the line below (filled in after the push).
+

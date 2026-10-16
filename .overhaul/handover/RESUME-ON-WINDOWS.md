@@ -9,6 +9,10 @@ Paths are given relative to the **tools root**: the folder that holds `android-b
 On Linux the tools root was `/home/crazyhusir/Documents/projects/tools`. The recommended Windows setup (section 2)
 recreates **exactly that path inside WSL2**, so every hard-coded path in the scripts and notes keeps working.
 
+**Updated about 12:50 IST** by the handover's fix round 1: merge-all status (section 1), tool preflight (2.1, 8.1),
+PeriFlow's new repo name (3.7), refreshed memory (3.8), the draft-release status (3.10, 3.11), the push policy (3.5)
+and one canonical relaunch order (8.2).
+
 What was tested (section 10 has the details): the restore script against a local copy of the repository shaped like
 both possible GitHub layouts, with byte-for-byte checks of the restored work in progress; the WSL-safe `memwait` and
 `bin/locked`; the path-rewrite recipe. Nothing could be tested **on Windows itself**, so every Windows-side step
@@ -29,9 +33,9 @@ below comes from documentation and is marked where it is uncertain.
 | 7 | Settings (Opus 5.5), the android-skills plugin 1.0.15 | Claude | 3.9 |
 | 8 | Toolchain: JDK 21, Android SDK 37, Python 3.12, Node 24.21.0, Go 1.27.1, ffmpeg, Docker | Claude (sudo: user) | 4 |
 | 9 | Phone: usbipd-win attaches the Redmi `9a7c74f4` to WSL; `adb devices` | User once, then Claude | 5 |
-| 10 | Optional: raw-data archives from the draft release(s) | Claude | 3.10 |
+| 10 | Optional: raw data, from the draft release if it exists, otherwise from the Drive backup | Claude | 3.10 |
 | 11 | Optional: replace `bin/memwait` with the WSL version | Claude | 7.1 |
-| 12 | Preflight checks, then relaunch the workflows **two at a time, fresh** | Claude | 8 |
+| 12 | Preflight checks (the `Workflow` tool above all), then relaunch the workflows **two at a time, fresh** | Claude | 8 |
 
 Never, at any step: push or change `main` (Vercel and the CI deploy job ship it), force-push, publish PeriFlow code,
 commit secrets, or kill processes you did not start.
@@ -45,7 +49,7 @@ Two workflows ran on Oct 16, one after the other, and the second one changes the
 | Layout | Made by | What GitHub holds |
 |---|---|---|
 | **branches** | `scripts/handover-backup.js` (this guide's workflow) | `tripathisarthak457/android-base` (PUBLIC): `main` untouched; `overhaul/multiplatform-v2`, `wp/WP01`…`wp/WP10`, `wp/WP03-skel`, `wp/WP04-perf`, `wp/WP05-glass`; tags `merged/WP01`, `merged/WP02-M1`, `merged/WP09`, `merged/WP10`; WIP branches `backup/<name>-wip-2026-10-16`; the orphan branch `overhaul-workspace`. PeriFlow (PRIVATE): `overhaul/smooth-glass` and `backup/smooth-glass-wip-2026-10-16`. |
-| **one-branch** | `scripts/merge-all-to-main.js` (the user confirmed it at about 11:30: "u merge it pls i get confused in lots of branches will stop vercel to deploy that we will do after testing") | Everything merged into `main` in both repos, the branches deleted, every former branch kept as the tag `archive/<branch>-2026-10-16`, the workspace under `overhaul-workspace/` on `main`, and Vercel deploys from `main` paused in `vercel.json`. That workflow also rewrites this guide; if you are reading an older copy, prefer the newer one under `overhaul-workspace/.overhaul/handover/` on `main`. |
+| **one-branch** | `scripts/merge-all-to-main.js` (the user asked at 11:11 and confirmed at 11:17: "u merge it pls i get confused in lots of branches will stop vercel to deploy that we will do after testing"; `PROGRESS.md` logged it at "~11:30"). **It had not run at 12:45 on Oct 16** (no `archive/*` tags, every branch present, `main` = `99c4edf`) | Everything merged into `main` in both repos, the branches deleted, every former branch kept as the tag `archive/<branch>-2026-10-16`, the workspace under `overhaul-workspace/` on `main`, and Vercel deploys from `main` paused in `vercel.json`. That workflow also rewrites this guide; if you are reading an older copy, prefer the newer one under `overhaul-workspace/.overhaul/handover/` on `main`. |
 
 Check (no clone needed):
 
@@ -55,7 +59,9 @@ git ls-remote --tags  https://github.com/tripathisarthak457/android-base.git | g
 ```
 
 - You see `overhaul/multiplatform-v2`, `wp/*`, `backup/*` and `overhaul-workspace`: **branches** layout. This guide
-  applies as written.
+  applies as written. **Merge-all never ran: it is pending the user's decision; do not run
+  `scripts/merge-all-to-main.js` (or merge anything into `main`) without asking him again** (`HANDOVER.md` §1.7 item 0
+  says why: unreviewed, non-compiling work would reach `main`, and its `vercel.json` "pause" pauses nothing).
 - You see only `main`, and a non-zero count of `archive/` tags: **one-branch** layout. Read
   `overhaul-workspace/HANDOVER.md` and `MERGE-ALL-android-base.md` on `main` first: they say whether to keep working on
   `main` or to recreate package branches. The restore script (3.2) handles this layout too: by default it restores
@@ -95,6 +101,14 @@ The Claude **desktop app** on Windows is fine for chatting, for bootstrapping (s
 for looking at artifacts. Whether its Code sessions can run inside WSL is **unknown** (not checked). If it offers a
 WSL environment, it may be used with the folder above; prove it first with a Bash call: `uname -r` must contain
 `microsoft-standard-WSL2`, and `flock --version` and `ls /proc/meminfo` must work. Otherwise use the CLI in WSL.
+
+**Unverified: the orchestration's tools in the CLI.** On Linux the orchestrator ran in the desktop app's Code session,
+which had the `Workflow` tool, `CronCreate`/`CronList`/`CronDelete`, `Monitor` and the usage tool `get_usage` (the
+last one is desktop-only). Nobody checked that the Claude Code CLI inside WSL2 has `Workflow`, `CronCreate` and
+`Monitor`. Without `Workflow` the five scripts cannot run as written. So the first thing Claude does in the new
+session is the tool preflight of 8.1 item 1; the fallbacks (update the CLI, try the desktop app against the WSL
+folder, or orchestrate with plain subagents) are in `HANDOVER.md` §5.14. Decide before the restore is finished, so the
+user can still switch clients while he is at the keyboard.
 
 ### 2.2 Windows host (the user, in an Administrator PowerShell)
 
@@ -302,7 +316,11 @@ exists only as `origin/wp/<X>`, that would start a new, empty `wp/<X>` from the 
 fork away from the real work.
 
 `--no-track`: on Linux the package branches had no upstream. Without one, a bare `git push` in an agent's shell fails
-instead of publishing; the scripts' rule is still "never push package branches".
+instead of publishing. This matches the push policy decided on Oct 16 (`HANDOVER.md` §6.1 #6): **agents inside
+workflows never push** (the scripts' rule stays), and **the orchestrator pushes** the branches, the `merged/*` tags and
+the `overhaul-workspace` branch regularly, with explicit refspecs (`git push origin 'refs/heads/wp/*:refs/heads/wp/*'
+…`), so it needs no upstream either. The workspace branch is rebuilt and pushed with
+`.overhaul/handover/tools/sync-workspace-branch.sh` (it uses `../tools-ws`, the clone made in 3.4).
 
 `scratch/WP09-trial` comes back as plain files (its worktree pointer was left out; its commit `28cd271` is on no
 branch). It is reference material only.
@@ -349,13 +367,19 @@ By hand:
 
 ```bash
 PF=~/Documents/projects/jorwen/periflow; OV=~/Documents/projects/tools/.overhaul
-git clone https://github.com/tripathisarthak457/periflow.git $PF          # needs gh auth setup-git
+git clone https://github.com/JorwenLabs/periflow.git $PF                 # PRIVATE; needs gh auth setup-git
 git -C $PF worktree add --no-track -b overhaul/smooth-glass $OV/wt/WP11 origin/overhaul/smooth-glass
 git -C $OV/wt/WP11 restore --source=origin/backup/smooth-glass-wip-2026-10-16 --worktree -- .
 git -C $PF worktree add --detach $OV/wt/WP11-base a5b630a                 # the "before" baseline WP11 measures against
 ```
 
-`--no-track` matters here: `design/wp/WP11.md` says "the remote (no push, no upstream)".
+The repository was renamed on GitHub: it is now **`JorwenLabs/periflow`** (an organisation; PRIVATE, checked Oct 16).
+The old URL `tripathisarthak457/periflow` redirects, but use the new one. The restore script's `PF_URL` default is the
+new URL.
+
+`--no-track` matters here: `design/wp/WP11.md` says "the remote (no push, no upstream)". Since Oct 16 the orchestrator
+pushes `overhaul/smooth-glass` to this private repo as the off-machine backup (explicit refspec, never `main`, never
+force); agents still never push.
 
 **PeriFlow builds need files that are in no git backup**, by design. They are secrets, and the user restores them
 from their own private storage (`WIPE-READINESS.md` section 4 lists them):
@@ -397,8 +421,11 @@ mkdir -p ~/.claude/projects/$SLUG/memory
 cp -n ~/Documents/projects/tools-ws/claude-memory/* ~/.claude/projects/$SLUG/memory/
 ```
 
-Then, in Claude, `/memory` should list them. Two facts in them are now stale; update them after the restore:
-"nothing pushed" and "PeriFlow ... never pushed" (both changed on Oct 16), and the laptop notes (Linux-specific).
+Then, in Claude, `/memory` should list them. The copies in the backup were **refreshed for Windows** in the handover's
+fix round (Oct 16, about 12:50): they point at `HANDOVER.md`, record what was pushed, the 39 requirements, the merge-all
+status, the push policy and the heat findings. Nothing needs editing after the restore. The Linux originals are in the
+branch's first commit (`git show a961701:claude-memory/android-base-generator.md`) and in the Drive backup's
+`02-claude-and-config.zip`.
 
 Not restored on purpose:
 - the chat transcripts (`*.jsonl`, 712 MB): they contain secrets (another app's keystore password, see `WIPE-READINESS.md`
@@ -458,11 +485,15 @@ ls ~/.claude/plugins/marketplaces/android-skills/jetpack-compose/jetpack-compose
   install another one.
 - Never copy `~/.claude/.credentials.json` or any token from the old machine.
 
-### 3.10 Raw data from the draft release(s) (optional)
+### 3.10 Raw data: the draft release(s), or the Drive backup (optional)
 
-Bulky raw data went into zstd tar archives on a **draft** release, visible only to the owner (`MANIFEST.md` section 3
-lists their contents). None of it is needed to resume work: it is evidence (traces, frames, recordings). Get the
-traces and recordings first; the frames and the PeriFlow screens only when a task needs them.
+**Status: at 12:45 on Oct 16 the draft release did not exist** (`gh api repos/tripathisarthak457/android-base/releases`
+and the same for PeriFlow returned nothing). The backup workflow's Archive step was due to create it next. So check
+first (the `gh release view` lines below). If it is missing, use the Drive backup instead (end of this section).
+
+Bulky raw data was planned as zstd tar archives on a **draft** release, visible only to the owner (`MANIFEST.md`
+section 3 lists their contents). None of it is needed to resume work: it is evidence (traces, frames, recordings). Get
+the traces and recordings first; the frames and the PeriFlow screens only when a task needs them.
 
 | Archive | Raw size | Where (per MANIFEST's decision) |
 |---|---:|---|
@@ -470,12 +501,12 @@ traces and recordings first; the frames and the PeriFlow screens only when a tas
 | `overhaul-recordings.tar.zst` | 0.18 GB | android-base |
 | `overhaul-private-app-listings.tar.zst` | 0.02 GB | android-base |
 | `overhaul-frames-1.tar.zst`, `overhaul-frames-2.tar.zst` | 1.64 + 1.33 GB | android-base |
-| `overhaul-periflow-media-1..4.tar.zst` | 1.31 + 1.60 + 1.70 + 0.09 GB | **`tripathisarthak457/periflow`** (PRIVATE), same tag; android-base was the fallback |
+| `overhaul-periflow-media-1..4.tar.zst` | 1.31 + 1.60 + 1.70 + 0.09 GB | **`JorwenLabs/periflow`** (PRIVATE), same tag; android-base was the fallback |
 
 ```bash
 TAG=overhaul-raw-data-2026-10-16; mkdir -p ~/raw && cd ~/raw
 gh release view $TAG -R tripathisarthak457/android-base --json isDraft,assets -q '.isDraft, (.assets[] | "\(.name) \(.size)")'
-gh release view $TAG -R tripathisarthak457/periflow     --json isDraft,assets -q '.isDraft, (.assets[] | "\(.name) \(.size)")'
+gh release view $TAG -R JorwenLabs/periflow             --json isDraft,assets -q '.isDraft, (.assets[] | "\(.name) \(.size)")'
 gh release download $TAG -R tripathisarthak457/android-base -p 'overhaul-raw-traces.tar.zst' -p 'overhaul-recordings.tar.zst'
 sha256sum *.tar.zst          # compare with the list in .overhaul/handover/PUSHED.md
 cd ~/Documents/projects/tools/.overhaul
@@ -490,20 +521,38 @@ for f in ~/raw/*.tar.zst; do nice -n 19 tar -I zstd --skip-old-files -xf "$f"; d
 - Unpacked PeriFlow screens are private: they must never be added to the public `overhaul-workspace` branch
   (`backup-include.txt` already excludes their folders).
 
+**If the release does not exist: the Drive backup.** Every file of every planned archive is in the user's Google Drive
+backup (`pack.log`, 12:19: all 921,063 files of `.overhaul` are in the `00-android-base-not-on-github-p*.zip` parts).
+Inside the zips, paths start at `Documents/projects/tools/.overhaul/`. Where they are: `perf/WP04` in p12;
+`perf/WP11` (PeriFlow) in p11 and p13; the rest of `perf/` in p10; `audit/`, `qa/`, `research/` and `scratch/` in p01.
+Which paths each archive would have held: `.overhaul/handover/release-assets.txt`.
+
+```bash
+B=/mnt/c/Users/<WindowsUser>/Downloads/backup-2026-10-16
+grep -m3 'perf/WP04/phase3e' $B/MANIFEST.txt                     # find the path; the "Archive:" line above it names the zip
+mkdir -p ~/offline-restore && unzip -n $B/00-android-base-not-on-github-p12.zip 'Documents/projects/tools/.overhaul/perf/WP04/*' -d ~/offline-restore
+rsync -a --ignore-existing ~/offline-restore/Documents/projects/tools/.overhaul/perf/WP04/ ~/Documents/projects/tools/.overhaul/perf/WP04/
+```
+
+Never copy the never-publish items (`research/predictive-back/gmail/`, `scratch/pf-diff/`, `scratch/vitfleet/`) into
+the workspace from the zips, and never unzip a whole `00-*` part over `.overhaul` (3.11).
+
 ### 3.11 The offline backup on Google Drive (second source)
 
 A separate workflow (`scripts/local-offline-backup.js`) packed what GitHub does not hold into
-`/home/crazyhusir/Documents/projects/tools/backup-2026-10-16/`. The user uploads that folder to Google Drive as
-`backup-2026-10-16` and downloads it on Windows. Its own `README-RESTORE.md`, `MANIFEST.txt` and `SHA256SUMS.txt` are
-authoritative; the plan (`plan-paths.txt`) had these zips:
+`/home/crazyhusir/Documents/projects/tools/backup-2026-10-16/`. It **finished** on the laptop: 23 zips plus 5 movie
+files, `SHA256SUMS.txt` at 12:17, and a full-coverage check at 12:19 (every file of `.overhaul` and `android-base` is in
+the `00-*` zips). The user uploads that folder to Google Drive as `backup-2026-10-16` and downloads it on Windows;
+**whether he uploaded it is not recorded anywhere on the laptop**, so ask him. Its own `README-RESTORE.md`,
+`MANIFEST.txt` and `SHA256SUMS.txt` are authoritative; in short:
 
 | Zip | Holds (planned) |
 |---|---|
-| `00-android-base-not-on-github-p01..p13` | the **entire** `.overhaul` (including `wt/` with build outputs, `out/`, and the never-publish items such as the Gmail recordings), android-base's ignored files, a git bundle, and every Claude transcript and memory folder about android-base |
+| `00-android-base-not-on-github-p01..p14` | the **entire** `.overhaul` (including `wt/` with build outputs, `out/`, `perf/`, and the never-publish items such as the Gmail recordings), android-base's ignored files, a git bundle, and every Claude transcript and memory folder about android-base; p14 holds the files that changed while the backup ran (extract it last) |
 | `02-claude-and-config` | `~/.claude/settings.json`, plugin lists, memory folders of all projects, other config |
 | `04-git-bundles` | `git bundle --all` of android-base, PeriFlow and every repo with unpushed work |
 | `05`..`10` | ignored and uncommitted repo files, documents, downloads, media, unpushed projects |
-| `01-secrets` | **held back, not packed** (the plan's header): keystores and `.env` files are the user's to store |
+| `01-secrets` | **made by the user himself** at 12:04 from `01-secrets-HELD-list.txt` (53 files: keystores, `.env` files, SSH and GPG keys, PeriFlow's recovery codes); **not encrypted**, by his choice. Treat it as the most sensitive file |
 
 Use it, if needed, **after** the GitHub restore, from WSL:
 
@@ -813,6 +862,9 @@ What changes in WSL2 (tested on Oct 16 by hiding the thermal zones from the scri
 
 ### 8.1 Preflight (Claude, in the WSL session started in the tools root)
 
+0. **Tools first:** load `Workflow`, `CronCreate`, `CronList`, `CronDelete` and `Monitor` with `ToolSearch`
+   (`select:Workflow,CronCreate,CronList,CronDelete,Monitor`) and check that `Skill` lists `workflow-authoring`. If
+   `Workflow` is missing, stop and pick a fallback from `HANDOVER.md` §5.14 with the user before going on.
 1. Read, in order: `tools/CLAUDE.md`, `.overhaul/handover/HANDOVER.md`, `.overhaul/STATUS.md`,
    `.overhaul/SESSION-2026-10-16.md`, `.overhaul/SESSION-2026-10-15.md` (its Oct 16 sections),
    `.overhaul/handover/PACKAGES-AND-BRANCHES.md`, `.overhaul/handover/PUSHED.md`.
@@ -839,11 +891,14 @@ cannot resume them. Launch each script fresh with the Workflow tool and its path
 `resumeFromRunId`. A fresh run has no cache, so every agent starts live, reads its handoff and git state, and continues
 from there. That costs usage at the start, which is one more reason to launch two at a time.
 
+This order is the **canonical** one (decided in the handover's fix round on Oct 16; `HANDOVER.md` §5.11 and
+`PACKAGES-AND-BRANCHES.md` §9.2 say the same).
+
 | Wave | Script | Why at this point |
 |---|---|---|
 | 1 | `scripts/to-release.js` | The backbone: every remaining package with dependency waits, the review loops, the serialized merges into `overhaul/multiplatform-v2`, the CP2 decision, and the Android release gate. The lens fix (REQUIREMENTS 35, the user's priority) runs first inside it. |
 | 1 | `scripts/deep-smoothness-fable.js` | Smoothness is the first Android release blocker (REQUIREMENTS 19 to 22, 36). It works on `wp/WP04-perf`, which feeds WP04, the first merge in `ORDER`. Despite the name, every agent now runs on Opus 5.5. |
-| 2 (after 20 to 30 minutes, if `free -m` and the usage window allow) | `scripts/shimmer-fix-from-report.js` | Nearly done: review 3 approved and WP03 merged the fix; what remains is the phone verification. |
+| 2 (after 20 to 30 minutes, if `free -m` and the usage window allow) | `scripts/shimmer-fix-from-report.js` | Nearly done: review 3 approved and WP03 merged the fix; what remains is the phone verification. **Edit it first** to reuse the existing `qa/shimmer/REPORT.md` and jump to `phase('Verify')` (a fresh launch otherwise re-runs the 440k-token report agent; `PACKAGES-AND-BRANCHES.md` §9.2), and launch it only with the phone attached. If the phone is not attached, launch `full-liquid-glass-fable.js` in this wave instead and shimmer later. |
 | 2 | `scripts/android-skills-v1-0-15.js` | REQUIREMENTS 38: skills digest, vendoring on `wp/WP02`, and the template-wide jetpack-compose-performance audit (`research/COMPOSE-PERF-AUDIT.md`). Mostly reading and writing, little building. Unshallow the marketplace clone first (3.9). |
 | 3 (when a wave-2 run ends) | `scripts/full-liquid-glass-fable.js` | REQUIREMENTS 37, on `wp/WP05-glass`. The heaviest phone and GPU work, and its final integration waits for WP03 and WP04 to merge anyway. |
 
@@ -874,7 +929,10 @@ Claude decides and records everything else ("Don't ask questions; decide and rec
 2. Plug in the phone, run the `usbipd bind` and `attach` commands, and accept the RSA prompt on the phone.
 3. `gh auth login` and the Claude login, if not yet done.
 4. PeriFlow's secret files (3.7), only when WP11 needs a PeriFlow build.
-5. Whether the offline backup (3.11) is downloaded, if a task needs something from it.
+5. Whether the offline backup (3.11) was uploaded to Drive and is downloaded, and that `01-secrets.zip` is stored
+   safely.
+6. The open decisions of `HANDOVER.md` §1.7, in the same message, merge-all first: it did not run, and Claude must
+   not run it without his fresh yes (recommendation: keep the branches until the Android release gate).
 
 ---
 
@@ -883,8 +941,10 @@ Claude decides and records everything else ("Don't ask questions; decide and rec
 | Point | Status | Where to look |
 |---|---|---|
 | The exact names of the `backup/*-wip-2026-10-16` branches | decided by the pack step after this guide was written; the script reads the branch from each snapshot's message, so any name works | `handover/PUSHED.md` |
-| Whether the one-branch merge ran, and whether it finished | it was confirmed by the user at about 11:30 on Oct 16 | `git ls-remote` (section 1); `MERGE-ALL-*.md` |
-| Whether the PeriFlow media archives are on the periflow repo's draft release or on android-base's | MANIFEST decided "periflow first, android-base as fallback" | `PUSHED.md`; `gh release view` on both |
+| Whether the one-branch merge ran | **it had not run at 12:45 on Oct 16** (asked 11:11, confirmed 11:17). Pending the user's decision; never run it without asking | `git ls-remote` (section 1); `HANDOVER.md` §1.7 item 0 |
+| Whether the raw-data draft release exists, and where the PeriFlow media went | **not created at 12:45**; MANIFEST decided "PeriFlow repo first, android-base as fallback"; the Drive backup holds every file anyway | `PUSHED.md` §3; `gh release view` on both repos (3.10) |
+| Whether the user uploaded the Drive backup | unknown | ask him (8.4) |
+| `Workflow`, `CronCreate`, `Monitor` in the Claude Code CLI inside WSL2 | **unverified**; without `Workflow` the scripts cannot run | 8.1 item 0; `HANDOVER.md` §5.14 |
 | Claude desktop app with WSL | unknown | test as in 2.1 |
 | `/sys/class/thermal` in WSL2 | expected absent; both `memwait` versions handle it | `ls /sys/class/thermal` |
 | The phone's USB vendor id under usbipd | `18d1` or `2717` | `usbipd list` |
