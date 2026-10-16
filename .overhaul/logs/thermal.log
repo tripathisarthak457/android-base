@@ -1165,3 +1165,5 @@
 12:56:10 acpitz=76 INT3400_Thermal=20 SEN2=55 SEN3=97 SEN4=60 SEN5=4 iwlwifi_1=59 TCPU=72 x86_pkg_temp=73 bat=Charging/85% memavail=7384MB load=2.10
 12:56:15 acpitz=76 INT3400_Thermal=20 SEN2=55 SEN3=96 SEN4=59 SEN5=4 iwlwifi_1=59 TCPU=78 x86_pkg_temp=76 bat=Charging/85% memavail=7362MB load=1.93
 12:56:20 acpitz=77 INT3400_Thermal=20 SEN2=53 SEN3=97 SEN4=58 SEN5=4 iwlwifi_1=60 TCPU=83 x86_pkg_temp=82 bat=Charging/85% memavail=7320MB load=1.86
+12:56:25 acpitz=73 INT3400_Thermal=20 SEN2=54 SEN3=125 SEN4=58 SEN5=4 iwlwifi_1=59 TCPU=58 x86_pkg_temp=57 bat=Charging/85% memavail=7245MB load=1.79
+12:56:30 acpitz=68 INT3400_Thermal=20 SEN2=52 SEN3=125 SEN4=58 SEN5=4 iwlwifi_1=57 TCPU=60 x86_pkg_temp=60 bat=Charging/85% memavail=7263MB load=1.64

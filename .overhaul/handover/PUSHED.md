@@ -87,7 +87,7 @@ Later commits on top (normal fast-forward pushes, never forced):
 | Commit | What |
 |---|---|
 | `7feafaf9d306f4789ecdc979e99112a93b888f1c` | adds this file (`.overhaul/handover/PUSHED.md`) and re-syncs `logs/thermal.log` |
-| fix round 1 (SHA in §6.3) | the corrected handover documents, the refreshed `claude-memory/`, the redacted `WIPE-READINESS.md`, the new `README.md` source, `tools/sync-workspace-branch.sh` |
+| `ae3168a11314f68fbbf84f28a7bdca9e52bf0714` (fix round 1, §6.3) | the corrected handover documents, the refreshed `claude-memory/`, the redacted `WIPE-READINESS.md`, the new `README.md` source, `tools/sync-workspace-branch.sh` |
 
 The branch head is always: `git ls-remote https://github.com/tripathisarthak457/android-base.git refs/heads/overhaul-workspace`.
 
@@ -264,5 +264,11 @@ New user decisions were added to `REQUIREMENTS-STATUS-FINAL.md` §9 (items 14–
 Built with `.overhaul/handover/tools/sync-workspace-branch.sh` (`WS_DIR` = the scratchpad build folder,
 `MEM_SRC=.overhaul/handover/claude-memory`): rsync with `backup-include.txt` (now also excluding
 `handover/claude-memory/`), the generic redaction of the local dev values, the secrets check of the staged diff
-(no hits), a normal commit and a fast-forward push. SHA: see the line below (filled in after the push).
+(no hits), a normal commit and a fast-forward push (`7feafaf..ae3168a`).
+
+| Ref | SHA | Commit |
+|---|---|---|
+| `refs/heads/overhaul-workspace` | `ae3168a11314f68fbbf84f28a7bdca9e52bf0714` | Fix the handover gaps a fresh-context verifier found (24 files) |
+
+A last small commit on top records this SHA here; the branch head is whatever `git ls-remote` shows.
 
