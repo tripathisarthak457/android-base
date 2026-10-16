@@ -1,0 +1,377 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:testing:compose:testDebugUnitTest :app:verifyManifestRules checkComposeStability :build-logic:convention:test
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :build-logic:convention:pluginUnderTestMetadata UP-TO-DATE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:testing:compose:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:koverFindJar UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:testing:compose:verifyApiPurity
+> Task :app:preDevBenchmarkReleaseBuild UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:preBuild
+> Task :core:testing:compose:preDebugBuild
+> Task :core:common:classes UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugUnitTestBuild
+> Task :core:testing:compose:javaPreCompileDebug UP-TO-DATE
+> Task :app:extractDevBenchmarkReleaseVersionControlInfo UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:compose:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compose:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :app:processDevBenchmarkReleaseGoogleServices UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestResources UP-TO-DATE
+> Task :app:injectCrashlyticsVersionControlInfoDevBenchmarkRelease UP-TO-DATE
+> Task :build-logic:convention:compileTestKotlin UP-TO-DATE
+> Task :core:analytics:verifyApiPurity UP-TO-DATE
+> Task :core:analytics:verifyModuleDependencies UP-TO-DATE
+> Task :core:analytics:preBuild UP-TO-DATE
+> Task :core:analytics:preReleaseBuild UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:database:verifyModuleDependencies UP-TO-DATE
+> Task :core:database:verifyApiPurity UP-TO-DATE
+> Task :core:database:preBuild UP-TO-DATE
+> Task :core:database:preReleaseBuild UP-TO-DATE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:testing:compose:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preReleaseBuild UP-TO-DATE
+> Task :core:testing:compose:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:analytics:processReleaseManifest UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:database:processReleaseManifest UP-TO-DATE
+> Task :core:designsystem:preReleaseBuild UP-TO-DATE
+> Task :core:devtools:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksRelease UP-TO-DATE
+> Task :core:devtools:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:processReleaseManifest UP-TO-DATE
+> Task :core:devtools:preBuild UP-TO-DATE
+> Task :core:devtools:preReleaseBuild UP-TO-DATE
+> Task :core:flags:verifyApiPurity UP-TO-DATE
+> Task :core:flags:verifyModuleDependencies UP-TO-DATE
+> Task :core:flags:preBuild UP-TO-DATE
+> Task :core:flags:preReleaseBuild UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdDevBenchmarkRelease
+> Task :core:devtools:processReleaseManifest UP-TO-DATE
+> Task :core:media:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:processReleaseManifest UP-TO-DATE
+> Task :core:media:verifyApiPurity UP-TO-DATE
+> Task :core:media:preBuild UP-TO-DATE
+> Task :core:media:preReleaseBuild UP-TO-DATE
+> Task :app:extractDeepLinksDevBenchmarkRelease UP-TO-DATE
+> Task :core:testing:compose:processDebugUnitTestResources UP-TO-DATE
+> Task :core:mvi:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:testing:compose:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:flags:processReleaseManifest UP-TO-DATE
+> Task :core:mvi:preReleaseBuild UP-TO-DATE
+> Task :core:testing:compose:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:media:extractDeepLinksRelease UP-TO-DATE
+> Task :core:network:verifyModuleDependencies UP-TO-DATE
+> Task :core:notification:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preReleaseBuild UP-TO-DATE
+> Task :core:media:processReleaseManifest UP-TO-DATE
+> Task :core:mvi:processReleaseManifest UP-TO-DATE
+> Task :core:ui:verifyApiPurity UP-TO-DATE
+> Task :core:ui:verifyModuleDependencies UP-TO-DATE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:navigation:processReleaseManifest UP-TO-DATE
+> Task :data:auth:verifyModuleDependencies UP-TO-DATE
+> Task :core:ui:preReleaseBuild UP-TO-DATE
+> Task :data:auth:verifyApiPurity UP-TO-DATE
+> Task :data:auth:preBuild UP-TO-DATE
+> Task :data:feed:verifyModuleDependencies UP-TO-DATE
+> Task :data:feed:verifyApiPurity UP-TO-DATE
+> Task :data:auth:preReleaseBuild UP-TO-DATE
+> Task :data:feed:preBuild UP-TO-DATE
+> Task :data:feed:preReleaseBuild UP-TO-DATE
+> Task :core:ui:extractDeepLinksRelease UP-TO-DATE
+> Task :data:profile:verifyModuleDependencies UP-TO-DATE
+> Task :data:auth:processReleaseManifest UP-TO-DATE
+> Task :data:profile:verifyApiPurity UP-TO-DATE
+> Task :data:profile:preBuild UP-TO-DATE
+> Task :data:profile:preReleaseBuild UP-TO-DATE
+> Task :data:sample:verifyModuleDependencies UP-TO-DATE
+> Task :data:feed:processReleaseManifest UP-TO-DATE
+> Task :data:sample:verifyApiPurity UP-TO-DATE
+> Task :data:search:verifyModuleDependencies UP-TO-DATE
+> Task :data:sample:preBuild UP-TO-DATE
+> Task :data:sample:preReleaseBuild UP-TO-DATE
+> Task :data:search:verifyApiPurity UP-TO-DATE
+> Task :data:search:preBuild UP-TO-DATE
+> Task :data:search:preReleaseBuild UP-TO-DATE
+> Task :data:sample:processReleaseManifest UP-TO-DATE
+> Task :feature:auth:verifyApiPurity UP-TO-DATE
+> Task :feature:auth:verifyModuleDependencies UP-TO-DATE
+> Task :feature:auth:preBuild UP-TO-DATE
+> Task :feature:auth:preReleaseBuild UP-TO-DATE
+> Task :feature:auth:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:auth:processReleaseManifest UP-TO-DATE
+> Task :feature:feed:verifyModuleDependencies UP-TO-DATE
+> Task :feature:onboarding:verifyApiPurity UP-TO-DATE
+> Task :feature:onboarding:verifyModuleDependencies UP-TO-DATE
+> Task :feature:onboarding:preBuild UP-TO-DATE
+> Task :feature:onboarding:preReleaseBuild UP-TO-DATE
+> Task :feature:onboarding:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:onboarding:processReleaseManifest UP-TO-DATE
+> Task :core:notification:verifyApiPurity UP-TO-DATE
+> Task :core:network:verifyApiPurity UP-TO-DATE
+> Task :build-logic:convention:test UP-TO-DATE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preReleaseBuild UP-TO-DATE
+> Task :core:notification:preBuild UP-TO-DATE
+> Task :core:notification:preReleaseBuild UP-TO-DATE
+> Task :data:profile:processReleaseManifest UP-TO-DATE
+> Task :feature:feed:verifyApiPurity UP-TO-DATE
+> Task :data:search:processReleaseManifest UP-TO-DATE
+> Task :feature:feed:preBuild UP-TO-DATE
+> Task :feature:feed:preReleaseBuild UP-TO-DATE
+> Task :feature:profile:verifyApiPurity UP-TO-DATE
+> Task :feature:profile:verifyModuleDependencies UP-TO-DATE
+> Task :feature:profile:preBuild UP-TO-DATE
+> Task :feature:profile:preReleaseBuild UP-TO-DATE
+> Task :feature:feed:extractDeepLinksRelease UP-TO-DATE
+> Task :core:notification:extractDeepLinksRelease UP-TO-DATE
+> Task :core:ui:processReleaseManifest UP-TO-DATE
+> Task :core:notification:processReleaseManifest UP-TO-DATE
+> Task :feature:profile:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:sample:verifyModuleDependencies UP-TO-DATE
+> Task :feature:search:verifyApiPurity UP-TO-DATE
+> Task :feature:feed:processReleaseManifest UP-TO-DATE
+> Task :core:network:processReleaseManifest UP-TO-DATE
+> Task :feature:sample:verifyApiPurity UP-TO-DATE
+> Task :feature:sample:preBuild UP-TO-DATE
+> Task :feature:sample:preReleaseBuild UP-TO-DATE
+> Task :feature:search:verifyModuleDependencies UP-TO-DATE
+> Task :feature:profile:processReleaseManifest UP-TO-DATE
+> Task :feature:search:preBuild UP-TO-DATE
+> Task :feature:settings:verifyModuleDependencies UP-TO-DATE
+> Task :feature:sample:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:search:preReleaseBuild UP-TO-DATE
+> Task :app:injectCrashlyticsVersionControlInfoDevDebug UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :core:analytics:preDebugBuild UP-TO-DATE
+> Task :feature:settings:verifyApiPurity UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdDevDebug UP-TO-DATE
+> Task :core:database:preDebugBuild UP-TO-DATE
+> Task :feature:settings:preBuild UP-TO-DATE
+> Task :feature:search:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:settings:preReleaseBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :feature:sample:processReleaseManifest UP-TO-DATE
+> Task :app:processDevDebugGoogleServices UP-TO-DATE
+> Task :feature:settings:extractDeepLinksRelease UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:analytics:processDebugManifest UP-TO-DATE
+> Task :core:database:processDebugManifest UP-TO-DATE
+> Task :core:devtools:preDebugBuild UP-TO-DATE
+> Task :app:extractDeepLinksDevDebug UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:datastore:processDebugManifest UP-TO-DATE
+> Task :core:flags:preDebugBuild UP-TO-DATE
+> Task :core:devtools:processDebugManifest UP-TO-DATE
+> Task :core:media:preDebugBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :feature:settings:processReleaseManifest UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :feature:search:processReleaseManifest UP-TO-DATE
+> Task :core:media:extractDeepLinksDebug UP-TO-DATE
+> Task :core:notification:preDebugBuild UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :core:media:processDebugManifest UP-TO-DATE
+> Task :core:flags:processDebugManifest UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :core:mvi:processDebugManifest UP-TO-DATE
+> Task :core:network:processDebugManifest UP-TO-DATE
+> Task :data:feed:preDebugBuild UP-TO-DATE
+> Task :data:auth:preDebugBuild UP-TO-DATE
+> Task :core:notification:extractDeepLinksDebug UP-TO-DATE
+> Task :data:profile:preDebugBuild UP-TO-DATE
+> Task :data:feed:processDebugManifest UP-TO-DATE
+> Task :data:sample:preDebugBuild UP-TO-DATE
+> Task :core:ui:extractDeepLinksDebug UP-TO-DATE
+> Task :data:auth:processDebugManifest UP-TO-DATE
+> Task :data:search:preDebugBuild UP-TO-DATE
+> Task :feature:auth:preDebugBuild UP-TO-DATE
+> Task :data:profile:processDebugManifest UP-TO-DATE
+> Task :core:notification:processDebugManifest UP-TO-DATE
+> Task :feature:feed:preDebugBuild UP-TO-DATE
+> Task :core:ui:processDebugManifest UP-TO-DATE
+> Task :feature:feed:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:onboarding:preDebugBuild UP-TO-DATE
+> Task :feature:auth:extractDeepLinksDebug UP-TO-DATE
+> Task :data:sample:processDebugManifest UP-TO-DATE
+> Task :feature:auth:processDebugManifest UP-TO-DATE
+> Task :feature:profile:preDebugBuild UP-TO-DATE
+> Task :feature:sample:preDebugBuild UP-TO-DATE
+> Task :feature:feed:processDebugManifest UP-TO-DATE
+> Task :data:search:processDebugManifest UP-TO-DATE
+> Task :feature:profile:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:search:preDebugBuild UP-TO-DATE
+> Task :feature:sample:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:onboarding:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:profile:processDebugManifest UP-TO-DATE
+> Task :feature:settings:preDebugBuild UP-TO-DATE
+> Task :feature:onboarding:processDebugManifest UP-TO-DATE
+> Task :feature:search:extractDeepLinksDebug UP-TO-DATE
+> Task :app:preDevNonMinifiedReleaseBuild UP-TO-DATE
+> Task :feature:search:processDebugManifest UP-TO-DATE
+> Task :feature:settings:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:sample:processDebugManifest UP-TO-DATE
+> Task :app:preDevReleaseBuild UP-TO-DATE
+> Task :app:extractDevNonMinifiedReleaseVersionControlInfo UP-TO-DATE
+> Task :app:extractDevReleaseVersionControlInfo UP-TO-DATE
+> Task :app:injectCrashlyticsVersionControlInfoDevNonMinifiedRelease UP-TO-DATE
+> Task :app:processDevNonMinifiedReleaseGoogleServices UP-TO-DATE
+> Task :feature:settings:processDebugManifest UP-TO-DATE
+> Task :app:injectCrashlyticsVersionControlInfoDevRelease UP-TO-DATE
+> Task :app:prePlaystoreReleaseBuild UP-TO-DATE
+> Task :app:processDevReleaseGoogleServices UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdDevNonMinifiedRelease
+> Task :app:extractPlaystoreReleaseVersionControlInfo UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdDevRelease
+> Task :app:injectCrashlyticsVersionControlInfoPlaystoreRelease UP-TO-DATE
+> Task :app:extractDeepLinksDevNonMinifiedRelease UP-TO-DATE
+> Task :app:extractDeepLinksDevRelease UP-TO-DATE
+> Task :app:processPlaystoreReleaseGoogleServices UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdPlaystoreRelease
+> Task :app:injectCrashlyticsVersionControlInfoProdDebug UP-TO-DATE
+> Task :app:preProdDebugBuild UP-TO-DATE
+> Task :app:extractDeepLinksPlaystoreRelease UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdProdDebug
+> Task :app:processProdDebugGoogleServices UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdProdRelease
+> Task :app:preProdReleaseBuild UP-TO-DATE
+> Task :app:extractDeepLinksProdDebug UP-TO-DATE
+> Task :app:extractProdReleaseVersionControlInfo UP-TO-DATE
+> Task :app:injectCrashlyticsVersionControlInfoProdRelease UP-TO-DATE
+> Task :app:processProdReleaseGoogleServices UP-TO-DATE
+> Task :app:extractDeepLinksProdRelease UP-TO-DATE
+> Task :app:processPlaystoreReleaseMainManifest UP-TO-DATE
+> Task :app:processProdReleaseMainManifest UP-TO-DATE
+> Task :app:processDevReleaseMainManifest UP-TO-DATE
+> Task :app:processProdDebugMainManifest UP-TO-DATE
+> Task :app:processDevBenchmarkReleaseMainManifest UP-TO-DATE
+> Task :app:processDevDebugMainManifest UP-TO-DATE
+> Task :app:processDevNonMinifiedReleaseMainManifest UP-TO-DATE
+> Task :app:verifyDevReleaseManifestRules
+> Task :app:verifyPlaystoreReleaseManifestRules
+> Task :app:verifyDevNonMinifiedReleaseManifestRules
+> Task :app:preStagingDebugBuild UP-TO-DATE
+> Task :app:verifyProdReleaseManifestRules
+> Task :app:injectCrashlyticsVersionControlInfoStagingDebug UP-TO-DATE
+> Task :app:preStagingReleaseBuild UP-TO-DATE
+> Task :app:verifyDevBenchmarkReleaseManifestRules
+> Task :app:processStagingDebugGoogleServices UP-TO-DATE
+> Task :app:extractStagingReleaseVersionControlInfo UP-TO-DATE
+> Task :app:processStagingReleaseGoogleServices UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdStagingRelease
+> Task :app:injectCrashlyticsVersionControlInfoStagingRelease UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdStagingDebug
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :app:extractDeepLinksStagingRelease UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug UP-TO-DATE
+> Task :app:verifyProdDebugManifestRules
+> Task :app:extractDeepLinksStagingDebug UP-TO-DATE
+> Task :app:verifyDevDebugManifestRules
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :app:processStagingReleaseMainManifest UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:ui:generateDebugResources UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources UP-TO-DATE
+> Task :app:processStagingDebugMainManifest UP-TO-DATE
+> Task :app:verifyStagingReleaseManifestRules
+> Task :core:ui:packageDebugResources UP-TO-DATE
+> Task :core:ui:parseDebugLocalResources UP-TO-DATE
+> Task :app:verifyStagingDebugManifestRules
+> Task :app:verifyManifestRules
+> Task :core:ui:generateDebugRFile UP-TO-DATE
+> Task :core:mvi:compileDebugKotlin UP-TO-DATE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:checkComposeStability
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+> Task :core:navigation:checkComposeStability
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:ui:compileDebugKotlin UP-TO-DATE
+> Task :core:ui:checkComposeStability
+> Task :core:testing:compose:compileDebugKotlin
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:testing:compose:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:processDebugUnitTestJavaRes
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:testing:compose:testDebugUnitTest
+
+BUILD SUCCESSFUL in 15s
+251 actionable tasks: 26 executed, 1 from cache, 224 up-to-date
+Configuration cache entry stored.

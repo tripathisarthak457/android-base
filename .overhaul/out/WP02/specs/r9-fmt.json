@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "WP02 Format",
+  "package_name": "io.example.wp02fmt",
+  "architecture": "compact",
+  "features": ["coil", "formatting", "network"],
+  "feature_modules": ["subscriptions", "orders"],
+  "languages": ["de"]
+}

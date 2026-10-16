@@ -1,0 +1,8 @@
+[locked:adb] waiting for lock...
+0 108 2246
+1 324 2246
+2 540 2246
+3 756 2246
+4 972 2246
+-rw-r--r-- 1 crazyhusir crazyhusir 30029908 Oct 15 15:58 /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/dvfs/trace.perfetto-trace
+DVFS-TRACE DONE

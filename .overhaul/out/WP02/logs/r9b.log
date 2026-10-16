@@ -1,0 +1,233 @@
+[locked:gradle] waiting for lock...
+Starting a Gradle Daemon, 1 busy and 2 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:network:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:network:verifyModuleDependencies UP-TO-DATE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:network:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:ui:verifyApiPurity UP-TO-DATE
+> Task :core:ui:verifyModuleDependencies UP-TO-DATE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :data:subscriptions:verifyApiPurity UP-TO-DATE
+> Task :core:ui:generateDebugResources UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources UP-TO-DATE
+> Task :core:ui:javaPreCompileDebug UP-TO-DATE
+> Task :data:subscriptions:verifyModuleDependencies UP-TO-DATE
+> Task :data:subscriptions:preBuild UP-TO-DATE
+> Task :data:subscriptions:preDebugBuild UP-TO-DATE
+> Task :core:ui:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :data:subscriptions:javaPreCompileDebug UP-TO-DATE
+> Task :data:subscriptions:preDebugTestFixturesBuild UP-TO-DATE
+> Task :core:ui:parseDebugLocalResources UP-TO-DATE
+> Task :data:subscriptions:javaPreCompileDebugTestFixtures UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:ui:generateDebugRFile UP-TO-DATE
+> Task :feature:subscriptions:verifyModuleDependencies UP-TO-DATE
+> Task :feature:subscriptions:generateDebugComposePreviewRobolectricTests UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:ui:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:ui:compileDebugLibraryResources UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:datastore:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:verifyApiPurity
+> Task :core:mvi:compileDebugKotlin UP-TO-DATE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:mvi:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:mvi:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:subscriptions:preBuild
+> Task :feature:subscriptions:preDebugBuild
+> Task :feature:subscriptions:generateDebugResources UP-TO-DATE
+> Task :feature:subscriptions:processDebugNavigationResources UP-TO-DATE
+> Task :feature:subscriptions:javaPreCompileDebug UP-TO-DATE
+> Task :feature:subscriptions:packageDebugResources UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:subscriptions:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:generateDebugRFile UP-TO-DATE
+> Task :core:mvi:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :core:network:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:ui:writeDebugAarMetadata UP-TO-DATE
+> Task :data:subscriptions:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:preDebugUnitTestBuild
+> Task :data:subscriptions:writeDebugTestFixturesAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:compose:verifyApiPurity UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :feature:subscriptions:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:subscriptions:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:datastore:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:mvi:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:navigation:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:network:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :data:subscriptions:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :data:subscriptions:generateDebugTestFixturesEmptyResourceFiles UP-TO-DATE
+> Task :feature:subscriptions:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:processDebugJavaRes UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+> Task :core:network:kspDebugKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:network:compileDebugKotlin UP-TO-DATE
+> Task :core:network:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:network:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:network:processDebugJavaRes UP-TO-DATE
+> Task :core:network:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:subscriptions:kspDebugKotlin UP-TO-DATE
+> Task :data:subscriptions:compileDebugKotlin UP-TO-DATE
+> Task :core:ui:compileDebugKotlin UP-TO-DATE
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:subscriptions:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:subscriptions:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ui:processDebugJavaRes UP-TO-DATE
+> Task :data:subscriptions:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:subscriptions:processDebugJavaRes UP-TO-DATE
+> Task :core:ui:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:subscriptions:kspDebugTestFixturesKotlin UP-TO-DATE
+> Task :data:subscriptions:compileDebugTestFixturesKotlin UP-TO-DATE
+> Task :data:subscriptions:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:subscriptions:bundleLibRuntimeToJarDebugTestFixtures UP-TO-DATE
+> Task :data:subscriptions:processDebugTestFixturesJavaRes UP-TO-DATE
+> Task :data:subscriptions:bundleLibCompileToJarDebugTestFixtures UP-TO-DATE
+> Task :core:datastore:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:mvi:processDebugManifest UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :core:network:processDebugManifest UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:ui:extractDeepLinksDebug UP-TO-DATE
+> Task :core:ui:processDebugManifest UP-TO-DATE
+> Task :data:subscriptions:processDebugManifest UP-TO-DATE
+> Task :data:subscriptions:processDebugTestFixturesManifest UP-TO-DATE
+> Task :feature:subscriptions:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:subscriptions:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:processDebugManifest UP-TO-DATE
+> Task :feature:subscriptions:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebug UP-TO-DATE
+> Task :feature:subscriptions:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets UP-TO-DATE
+> Task :data:subscriptions:generateDebugAssets UP-TO-DATE
+> Task :data:subscriptions:mergeDebugAssets UP-TO-DATE
+> Task :data:subscriptions:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:subscriptions:mergeDebugTestFixturesAssets UP-TO-DATE
+> Task :feature:subscriptions:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:subscriptions:generateDebugAssets UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:subscriptions:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:testing:compose:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:compose:processDebugJavaRes UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:subscriptions:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:subscriptions:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:subscriptions:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:subscriptions:kspDebugKotlin
+> Task :feature:subscriptions:compileDebugKotlin
+> Task :feature:subscriptions:processDebugJavaRes UP-TO-DATE
+> Task :feature:subscriptions:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:subscriptions:bundleLibRuntimeToJarDebug
+> Task :feature:subscriptions:bundleLibCompileToJarDebug
+> Task :feature:subscriptions:kspDebugUnitTestKotlin
+> Task :feature:subscriptions:compileDebugUnitTestKotlin
+> Task :feature:subscriptions:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:subscriptions:processDebugUnitTestJavaRes UP-TO-DATE
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :feature:subscriptions:testDebugUnitTest
+> Task :feature:subscriptions:finalizeTestRoborazziDebug SKIPPED
+
+BUILD SUCCESSFUL in 53s
+171 actionable tasks: 8 executed, 163 up-to-date
+Configuration cache entry reused.
+spotless-exit=1
+R9B OK
+exit=0

@@ -1,0 +1,244 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:navigation:testDebugUnitTest :catalog:assembleDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:generateDebugAssets UP-TO-DATE
+> Task :core:coroutines:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:common:verifyComposeUsage
+> Task :core:coroutines:verifyModuleDependencies
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:testing:verifyModuleDependencies
+> Task :catalog:generateDebugAssets UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:coroutines:verifyComposeUsage
+> Task :core:coroutines:preBuild
+> Task :core:coroutines:preDebugBuild
+> Task :catalog:verifyComposeUsage
+> Task :core:navigation:verifyComposeUsage
+> Task :core:common:preBuild
+> Task :core:common:preDebugBuild
+> Task :core:navigation:preBuild
+> Task :core:navigation:koverFindJar UP-TO-DATE
+> Task :core:coroutines:processDebugNavigationResources UP-TO-DATE
+> Task :core:coroutines:generateDebugResources UP-TO-DATE
+> Task :core:navigation:preDebugBuild
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:common:processDebugNavigationResources UP-TO-DATE
+> Task :core:common:generateDebugResources UP-TO-DATE
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+> Task :core:common:javaPreCompileDebug UP-TO-DATE
+> Task :core:coroutines:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:common:packageDebugResources UP-TO-DATE
+> Task :core:coroutines:mergeDebugAssets UP-TO-DATE
+> Task :core:common:mergeDebugAssets UP-TO-DATE
+> Task :core:coroutines:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:common:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:coroutines:writeDebugAarMetadata UP-TO-DATE
+> Task :core:common:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :core:common:writeDebugAarMetadata UP-TO-DATE
+> Task :core:coroutines:packageDebugResources UP-TO-DATE
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+> Task :core:common:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:coroutines:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:coroutines:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:navigation:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:common:generateDebugRFile UP-TO-DATE
+> Task :core:common:extractDeepLinksDebug UP-TO-DATE
+> Task :core:coroutines:extractDeepLinksDebug UP-TO-DATE
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+> Task :core:coroutines:generateDebugRFile UP-TO-DATE
+> Task :core:navigation:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:common:processDebugManifest UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:coroutines:processDebugManifest UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :catalog:preBuild
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :catalog:preDebugBuild
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :catalog:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :core:common:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :catalog:generateDebugResources UP-TO-DATE
+> Task :catalog:javaPreCompileDebug UP-TO-DATE
+> Task :catalog:generateDebugBuildConfig UP-TO-DATE
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :catalog:generateDebugGlobalSynthetics UP-TO-DATE
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :catalog:mapDebugSourceSetPaths UP-TO-DATE
+> Task :catalog:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :catalog:desugarDebugFileDependencies UP-TO-DATE
+> Task :catalog:extractDeepLinksDebug UP-TO-DATE
+> Task :catalog:packageDebugResources UP-TO-DATE
+> Task :catalog:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:common:mergeDebugNativeLibs NO-SOURCE
+> Task :catalog:validateSigningDebug UP-TO-DATE
+> Task :core:navigation:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:coroutines:mergeDebugJniLibFolders UP-TO-DATE
+> Task :catalog:writeDebugAppMetadata UP-TO-DATE
+> Task :catalog:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:coroutines:mergeDebugNativeLibs NO-SOURCE
+> Task :core:common:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:coroutines:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:navigation:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:coroutines:kspDebugKotlin UP-TO-DATE
+> Task :catalog:checkDebugDuplicateClasses UP-TO-DATE
+> Task :core:coroutines:compileDebugKotlin UP-TO-DATE
+> Task :core:coroutines:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:coroutines:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:coroutines:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:coroutines:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:coroutines:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:common:kspDebugKotlin UP-TO-DATE
+> Task :core:common:compileDebugKotlin UP-TO-DATE
+> Task :core:common:compileDebugJavaWithJavac UP-TO-DATE
+> Task :catalog:mergeDebugAssets UP-TO-DATE
+> Task :catalog:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :catalog:compressDebugAssets UP-TO-DATE
+> Task :core:common:transformDebugClassesWithAsm UP-TO-DATE
+> Task :catalog:parseDebugLocalResources UP-TO-DATE
+> Task :core:common:processDebugJavaRes UP-TO-DATE
+> Task :core:common:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:common:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:coroutines:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :catalog:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:common:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :catalog:checkDebugAarMetadata UP-TO-DATE
+> Task :catalog:compileDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :catalog:mergeDebugResources UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :catalog:processDebugMainManifest UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :catalog:processDebugManifest UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestManifest UP-TO-DATE
+> Task :catalog:processDebugManifestForPackage UP-TO-DATE
+> Task :catalog:mergeExtDexDebug UP-TO-DATE
+> Task :catalog:mergeDebugNativeLibs UP-TO-DATE
+> Task :catalog:stripDebugDebugSymbols UP-TO-DATE
+> Task :catalog:processDebugResources UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibRuntimeToDirDebug
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :catalog:compileDebugKotlin
+> Task :catalog:processDebugJavaRes UP-TO-DATE
+> Task :catalog:mergeDebugJavaResource UP-TO-DATE
+> Task :catalog:compileDebugJavaWithJavac UP-TO-DATE
+> Task :catalog:dexBuilderDebug UP-TO-DATE
+> Task :catalog:mergeProjectDexDebug UP-TO-DATE
+> Task :core:navigation:kspDebugUnitTestKotlin
+> Task :core:navigation:compileDebugUnitTestKotlin
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:navigation:hiltCollectClassesDebugUnitTest
+> Task :core:navigation:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:navigation:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm
+> Task :catalog:mergeLibDexDebug
+> Task :catalog:packageDebug
+> Task :catalog:assembleDebug
+> Task :catalog:createDebugApkListingFileRedirect UP-TO-DATE
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:navigation:testDebugUnitTest
+
+ChromeLayeringTest > a screen that hides the bar reports its own bottom bar instead FAILED
+    java.lang.AssertionError at ChromeLayeringTest.kt:119
+
+61 tests completed, 1 failed
+
+> Task :core:navigation:testDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:navigation:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 36s
+172 actionable tasks: 24 executed, 148 up-to-date
+Configuration cache entry stored.
+EXIT=1

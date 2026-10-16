@@ -1,0 +1,189 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:datastore:testDebugUnitTest :core:network:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:datastore:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:datastore:verifyComposeUsage
+> Task :core:database:verifyModuleDependencies UP-TO-DATE
+> Task :core:database:verifyComposeUsage
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:network:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:database:verifyApiPurity UP-TO-DATE
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:datastore:koverFindJar
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:network:verifyModuleDependencies
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:database:generateDebugResources UP-TO-DATE
+> Task :core:database:processDebugNavigationResources UP-TO-DATE
+> Task :core:database:mergeDebugAssets UP-TO-DATE
+> Task :core:database:javaPreCompileDebug UP-TO-DATE
+> Task :core:datastore:verifyApiPurity
+> Task :core:network:verifyComposeUsage
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:database:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:database:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:datastore:preDebugUnitTestBuild
+> Task :core:datastore:generateDebugResources FROM-CACHE
+> Task :core:database:packageDebugResources UP-TO-DATE
+> Task :core:datastore:processDebugNavigationResources FROM-CACHE
+> Task :core:network:verifyApiPurity
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:generateDebugUnitTestResources FROM-CACHE
+> Task :core:datastore:mapDebugSourceSetPaths
+> Task :core:datastore:mapDebugUnitTestSourceSetPaths
+> Task :core:datastore:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:datastore:extractDeepLinksDebug FROM-CACHE
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:network:processDebugNavigationResources FROM-CACHE
+> Task :core:network:generateDebugResources FROM-CACHE
+> Task :core:database:parseDebugLocalResources UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:database:generateDebugRFile UP-TO-DATE
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:network:preDebugUnitTestBuild
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:database:compileDebugLibraryResources UP-TO-DATE
+> Task :core:network:writeDebugAarMetadata
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:datastore:mergeDebugAssets
+> Task :core:network:packageDebugResources
+> Task :core:datastore:packageDebugResources
+> Task :core:datastore:parseDebugLocalResources FROM-CACHE
+> Task :core:network:parseDebugLocalResources FROM-CACHE
+> Task :core:datastore:compileDebugLibraryResources FROM-CACHE
+> Task :core:datastore:processDebugManifest
+> Task :core:datastore:generateDebugRFile
+> Task :core:datastore:mergeDebugUnitTestAssets
+> Task :core:network:generateDebugRFile
+> Task :core:datastore:checkDebugUnitTestAarMetadata
+> Task :core:network:mapDebugSourceSetPaths
+> Task :core:network:mapDebugUnitTestSourceSetPaths
+> Task :core:network:compileDebugLibraryResources FROM-CACHE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:network:generateDebugUnitTestResources FROM-CACHE
+> Task :core:database:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:database:processDebugManifest UP-TO-DATE
+> Task :core:network:extractDeepLinksDebug FROM-CACHE
+
+> Task :core:network:processDebugManifest
+/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP06/templates/android/core/network/src/main/AndroidManifest.xml:24:13-27:39 Warning:
+	meta-data#androidx.work.WorkManagerInitializer was tagged at AndroidManifest.xml:24 to remove other declarations but no other declaration present
+
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:datastore:mergeDebugUnitTestManifest
+> Task :core:datastore:processDebugUnitTestManifest
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:network:koverFindJar
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:network:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:network:mergeDebugUnitTestAssets
+> Task :core:network:checkDebugUnitTestAarMetadata
+> Task :core:network:mergeDebugUnitTestManifest
+> Task :core:network:processDebugUnitTestManifest
+> Task :core:datastore:mergeDebugUnitTestResources
+> Task :core:network:mergeDebugUnitTestResources
+> Task :core:network:processDebugUnitTestResources
+> Task :core:datastore:processDebugUnitTestResources
+> Task :core:datastore:packageDebugUnitTestForUnitTest
+> Task :core:network:packageDebugUnitTestForUnitTest
+> Task :core:datastore:generateDebugUnitTestConfig
+> Task :core:network:generateDebugUnitTestConfig
+> Task :core:datastore:kspDebugKotlin
+> Task :core:database:kspDebugKotlin
+> Task :core:database:compileDebugKotlin UP-TO-DATE
+> Task :core:database:processDebugJavaRes UP-TO-DATE
+> Task :core:database:compileDebugJavaWithJavac
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:database:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:database:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:database:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin
+> Task :core:datastore:processDebugJavaRes
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:datastore:transformDebugClassesWithAsm
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:datastore:kspDebugUnitTestKotlin
+> Task :core:datastore:compileDebugUnitTestKotlin
+> Task :core:datastore:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:datastore:hiltCollectClassesDebugUnitTest
+> Task :core:datastore:processDebugUnitTestJavaRes
+> Task :core:datastore:hiltAggregateDepsDebugUnitTest
+> Task :core:datastore:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:datastore:transformDebugUnitTestClassesWithAsm
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor (file:/home/crazyhusir/.gradle/caches/modules-2/files-2.1/androidx.datastore/datastore-preferences-external-protobuf/1.2.1/200a891fd29602b4bcff8e197d243a372fb026d5/datastore-preferences-external-protobuf-1.2.1.jar)
+WARNING: Please consider reporting this to the maintainers of class androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+> Task :core:network:kspDebugKotlin
+> Task :core:datastore:testDebugUnitTest
+> Task :core:network:compileDebugKotlin
+> Task :core:network:processDebugJavaRes
+> Task :core:network:compileDebugJavaWithJavac
+> Task :core:network:transformDebugClassesWithAsm
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:network:kspDebugUnitTestKotlin
+> Task :core:network:compileDebugUnitTestKotlin
+> Task :core:network:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:network:hiltCollectClassesDebugUnitTest
+> Task :core:network:processDebugUnitTestJavaRes
+> Task :core:network:hiltAggregateDepsDebugUnitTest
+> Task :core:network:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:network:transformDebugUnitTestClassesWithAsm
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:network:testDebugUnitTest
+
+BUILD SUCCESSFUL in 50s
+129 actionable tasks: 68 executed, 16 from cache, 45 up-to-date
+Configuration cache entry stored.
+EXIT 0

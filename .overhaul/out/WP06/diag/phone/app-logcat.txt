@@ -1,0 +1,31 @@
+--------- beginning of main
+10-14 12:10:23.755   535   535 W zygote64: Activation of cgroup controller +memory failed in path /sys/fs/cgroup/apps/uid_10272: Invalid argument
+10-14 12:10:23.755   535   535 I libprocessgroup: Created cgroup /sys/fs/cgroup/apps/uid_10272/pid_535
+10-14 12:10:23.767   535   535 I Zygote  : Process 535 created for com.example.wp06.badgeqa.dev
+10-14 12:10:23.767   535   535 I p06.badgeqa.dev: Using generational CollectorTypeCMC GC.
+10-14 12:10:23.809   535   535 D CompatChangeReporter: Compat change id reported: 333566037; UID 10272; state: ENABLED
+10-14 12:10:23.810   535   535 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+10-14 12:10:23.810   535   535 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+10-14 12:10:23.821   535   535 V GraphicsEnvironment: Currently set values for:
+10-14 12:10:23.821   535   535 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+10-14 12:10:23.821   535   535 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+10-14 12:10:23.821   535   535 V GraphicsEnvironment: com.example.wp06.badgeqa.dev is not listed in per-application setting
+10-14 12:10:23.821   535   535 V GraphicsEnvironment: No special selections for ANGLE, returning default driver choice
+10-14 12:10:23.822   535   535 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+10-14 12:10:23.827   535   535 D CompatChangeReporter: Compat change id reported: 407952621; UID 10272; state: ENABLED
+10-14 12:10:23.827   535   535 D CompatChangeReporter: Compat change id reported: 419020719; UID 10272; state: ENABLED
+10-14 12:10:23.850   535   535 D CompatChangeReporter: Compat change id reported: 458413887; UID 10272; state: ENABLED
+--------- beginning of system
+10-14 12:10:23.853   535   582 I DisplayManager: Choreographer implicitly registered for the refresh rate.
+10-14 12:10:23.860   535   535 D DesktopExperienceFlags: Toggle override initialized to: false
+10-14 12:10:23.892   535   535 D CompatChangeReporter: Compat change id reported: 418924588; UID 10272; state: ENABLED
+10-14 12:10:23.905   535   535 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@816b0e4
+10-14 12:10:23.926   535   535 D VRI[MainActivity]: WindowInsets changed: 1080x2400 statusBars:[0,100,0,0] navigationBars:[0,0,0,66] mandatorySystemGestures:[0,126,0,88] 
+10-14 12:10:24.033   535   535 I Surface : Creating surface for consumer unnamed-535-0 with slotExpansion=1 for 64 slots
+10-14 12:10:24.034   535   535 I Surface : Creating surface for consumer VRI[MainActivity]#0(BLAST Consumer)0 with slotExpansion=1 for 64 slots
+10-14 12:10:24.038   535   610 I Gralloc4: Adding additional valid usage bits: 0x8202000
+10-14 12:10:24.225   535   535 I Choreographer: Skipped 37 frames!  The application may be doing too much work on its main thread.
+10-14 12:10:24.230   535   592 W System.err: SLF4J(W): No SLF4J providers were found.
+10-14 12:10:24.230   535   592 W System.err: SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+10-14 12:10:24.230   535   592 W System.err: SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+10-14 12:10:24.272   535   535 D InsetsController: hide(ime())

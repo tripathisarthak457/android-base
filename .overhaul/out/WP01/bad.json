@@ -1,0 +1,1 @@
+{"ok": false, "kind": "invalid", "error": "A package name is required, like com.example.myapp.", "field": "package_name"}

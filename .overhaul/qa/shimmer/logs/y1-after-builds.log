@@ -1,0 +1,10 @@
+[locked:gradle] waiting for lock...
+  ! Upgraded a schema-1 spec (it has no "schema" field).
+/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP03-skel/ptr/app/build/outputs/apk/dev/release/app-dev-armeabi-v7a-release.apk
+/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP03-skel/ptr/app/build/outputs/apk/dev/release/app-dev-x86_64-release.apk
+/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP03-skel/ptr/app/build/outputs/apk/dev/release/app-dev-universal-release.apk
+/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP03-skel/ptr/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk
+/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP03-skel/ptr/app/build/outputs/apk/dev/release/app-dev-x86-release.apk
+/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP03-skel/cp1/catalog/build/outputs/apk/release/catalog-release.apk
+DEVICE BUILDS OK
+rc=0

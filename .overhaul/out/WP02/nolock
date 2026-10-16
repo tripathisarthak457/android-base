@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# bin/locked's stand-in inside a script that already holds the Gradle lock: drops the kind, runs the command.
+shift
+exec "$@"

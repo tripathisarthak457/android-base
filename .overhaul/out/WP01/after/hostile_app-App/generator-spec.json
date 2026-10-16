@@ -1,0 +1,56 @@
+{
+  "generator": {
+    "commit": "d19f79c8aec1",
+    "generatedOn": "2026-10-09"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "App",
+  "display_name": "",
+  "package_name": "com.example.app",
+  "architecture": "compact",
+  "features": [
+    "analytics",
+    "auth",
+    "catalog",
+    "database",
+    "deeplink",
+    "devtools",
+    "firebase",
+    "flags",
+    "forms",
+    "language",
+    "network",
+    "onboarding",
+    "push",
+    "room",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [
+    "orders"
+  ],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [
+    "de",
+    "pt-BR"
+  ],
+  "android": {
+    "min_sdk": 26,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "1.0.0",
+    "version_code": 1,
+    "api_base_urls": {},
+    "web_socket_urls": {},
+    "deeplink_scheme": "",
+    "deeplink_host": ""
+  }
+}

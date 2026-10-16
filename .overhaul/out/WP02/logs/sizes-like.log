@@ -1,0 +1,11 @@
+post-M2-pre-preset lean-preset-pre app-dev-arm64-v8a-release.apk apk=1695234 dex=3068136
+post-M2-pre-preset lean-preset-pre app-dev-armeabi-v7a-release.apk apk=1693310 dex=3068136
+post-M2-pre-preset lean-preset-pre app-dev-universal-release.apk apk=1793122 dex=3068136
+post-M2-pre-preset lean-preset-pre app-dev-x86_64-release.apk apk=1694292 dex=3068136
+post-M2-pre-preset lean-preset-pre app-dev-x86-release.apk apk=1692838 dex=3068136
+post-M2-pre-preset standard-preset-pre app-dev-arm64-v8a-release.apk apk=1989973 dex=3649732
+post-M2-pre-preset standard-preset-pre app-dev-armeabi-v7a-release.apk apk=1988049 dex=3649732
+post-M2-pre-preset standard-preset-pre app-dev-universal-release.apk apk=2087861 dex=3649732
+post-M2-pre-preset standard-preset-pre app-dev-x86_64-release.apk apk=1989031 dex=3649732
+post-M2-pre-preset standard-preset-pre app-dev-x86-release.apk apk=1987577 dex=3649732
+exit=done

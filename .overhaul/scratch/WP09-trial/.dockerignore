@@ -1,0 +1,35 @@
+# The build context is the repository root, and the image needs four directories of it. Everything
+# else is excluded by default, so a new folder at the root does not quietly end up in the image.
+*
+!generator/
+!templates/
+!tokens/
+!web/api/
+
+# Build output and tool state inside those four: Gradle's alone is gigabytes on a machine that has
+# built the templates.
+**/build/
+**/.gradle/
+**/.kotlin/
+**/.cxx/
+**/.idea/
+**/captures/
+**/__pycache__/
+**/DerivedData/
+**/.build/
+**/xcuserdata/
+**/.swiftpm/
+**/kotlin-js-store/
+**/node_modules/
+**/*.zip
+generator/tests/
+
+# Never, under any circumstances, in an image that gets pushed somewhere.
+**/local.properties
+**/keystore.properties
+**/keys/
+**/*.jks
+**/*.keystore
+**/.env
+**/.env.*
+**/*.env

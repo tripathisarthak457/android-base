@@ -1,0 +1,53 @@
+{
+  "app_name": "All Features",
+  "package_name": "com.example.all",
+  "features": [
+    "analytics",
+    "applock",
+    "auth",
+    "baselineprofile",
+    "browser",
+    "catalog",
+    "coil",
+    "composemetrics",
+    "coverage",
+    "database",
+    "deeplink",
+    "depsanalysis",
+    "devtools",
+    "firebase",
+    "flags",
+    "forms",
+    "googlefonts",
+    "googlesignin",
+    "language",
+    "leakcanary",
+    "licenses",
+    "lottie",
+    "media",
+    "network",
+    "onboarding",
+    "paging",
+    "playstore",
+    "profile",
+    "push",
+    "room",
+    "sample",
+    "search",
+    "settings",
+    "websocket",
+    "widget",
+    "workmanager"
+  ],
+  "feature_modules": [
+    "orders",
+    "order_history"
+  ],
+  "languages": [
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "pt-BR"
+  ]
+}

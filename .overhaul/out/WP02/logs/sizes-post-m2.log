@@ -1,0 +1,20 @@
+post-M2 lean app-dev-arm64-v8a-release.apk apk=1222922 dex=2185564
+post-M2 lean app-dev-armeabi-v7a-release.apk apk=1220998 dex=2185564
+post-M2 lean app-dev-universal-release.apk apk=1320810 dex=2185564
+post-M2 lean app-dev-x86_64-release.apk apk=1221980 dex=2185564
+post-M2 lean app-dev-x86-release.apk apk=1220526 dex=2185564
+post-M2 standard app-dev-arm64-v8a-release.apk apk=1890262 dex=3453940
+post-M2 standard app-dev-armeabi-v7a-release.apk apk=1888338 dex=3453940
+post-M2 standard app-dev-universal-release.apk apk=1988150 dex=3453940
+post-M2 standard app-dev-x86_64-release.apk apk=1889320 dex=3453940
+post-M2 standard app-dev-x86-release.apk apk=1887866 dex=3453940
+post-M2 everything app-dev-arm64-v8a-release.apk apk=4126735 dex=6229136
+post-M2 everything app-dev-armeabi-v7a-release.apk apk=4124811 dex=6229136
+post-M2 everything app-dev-universal-release.apk apk=4224623 dex=6229136
+post-M2 everything app-dev-x86_64-release.apk apk=4125793 dex=6229136
+post-M2 everything app-dev-x86-release.apk apk=4124339 dex=6229136
+config pre-m2/everything BUILD SUCCESSFUL in 2s
+variants pre-m2/everything 15
+config post-m2/everything BUILD SUCCESSFUL in 1s
+variants post-m2/everything 9
+exit=done

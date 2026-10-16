@@ -1,0 +1,182 @@
+everything-modules:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/order_history/src/main/kotlin/{pkg}/data/order_history/OrderHistoryRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/order_history/src/main/kotlin/{pkg}/data/order_history/OrderHistoryRepository.kt: {package}.core.network.get is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+only-applock:
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+only-appstatus:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+only-auth:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+only-googlesignin:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+only-network:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+only-offlinequeue:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+only-paging:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+only-playstore:
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+only-push:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+only-sample:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+only-search:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+only-websocket:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+pair-0:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+pair-1:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-10:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-12:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+pair-13:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-14:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-15:
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+pair-16:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-17:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-18:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-2:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+pair-3:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-4:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+pair-5:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-6:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+pair-7:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+pair-8:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.NetworkClient is not declared
+  IMPORT data/orders/src/main/kotlin/{pkg}/data/orders/OrdersRepository.kt: {package}.core.network.get is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+pair-9:
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+preset-everything-compact:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs OfflineQueueWorkerFactory
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs PushRegistration
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppLock
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs AppUpdates
+  HILT app/src/main/kotlin/{pkg}/MainActivity.kt: field needs ReviewPrompt
+  HILT core/network/src/main/kotlin/{pkg}/core/network/di/NetworkModule.kt: bindRequestQueue needs OfflineQueue
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/di/NotificationModule.kt: bindPushRegistrationAsSessionScoped needs PushRegistration
+  HILT core/notification/src/main/kotlin/{pkg}/core/notification/push/AppMessagingService.kt: field needs PushRegistration
+preset-lean-compact:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+preset-standard-compact:
+  IMPORT app/src/main/kotlin/{pkg}/di/AppModule.kt: {package}.core.network.NetworkConfig is not declared
+known issue no longer seen (WP06): ^UNUSED-IMPORT core/network/src/test/kotlin/\{pkg\}/core/network/KtorNetworkClientTest\.kt: kotlinx\.serialization\.json\.(JsonPrimitive|buildJsonObject)$
+known issue no longer seen (WP06): ^UNUSED-RES feature/settings/src/main/res/values/strings\.xml: string/settings_(require_unlock|app_lock_explanation)$
+known issue no longer seen (WP06): ^UNUSED-RES app/src/main/res/drawable/ic_notification\.xml: drawable/ic_notification$
+
+61 projects in 26 s: 143 new issues, 503 known (9 of 12 known-issue lines seen).

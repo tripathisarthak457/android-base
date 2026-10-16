@@ -1,0 +1,769 @@
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:tasks :benchmark:tasks --all
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :benchmark:tasks
+
+------------------------------------------------------------
+Tasks runnable from project ':benchmark'
+------------------------------------------------------------
+
+Android tasks
+-------------
+signingReport - Displays the signing info for the base and test modules
+
+Baseline Profile tasks
+----------------------
+collectNonMinifiedReleaseBaselineProfile - Collects a baseline profile previously generated through integration tests.
+
+Build tasks
+-----------
+assemble - Assemble main outputs for all the variants.
+assembleAndroidTest - Assembles all the Test applications.
+assembleUnitTest - Assembles all the unit test applications.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+clean - Deletes the build directory.
+compileBenchmarkReleaseSources
+compileNonMinifiedReleaseSources
+
+Dependency-analysis tasks
+-------------------------
+computeDominatorTreeCompileBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeResolvedDependencies - Computes resolved external dependencies for all variants.
+discoverDuplicationForCompileBenchmarkRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileNonMinifiedRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForRuntimeBenchmarkRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeNonMinifiedRelease - Discovers duplicates on the runtime classpath
+fixDependencies - Rewrite build script for this project to match dependency advice
+printDominatorTreeCompileBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeNonMinifiedRelease - Prints a dominator view of the dependency graph
+projectGraphBenchmarkRelease - Generates several graph views of this project's local dependency graph
+projectGraphNonMinifiedRelease - Generates several graph views of this project's local dependency graph
+projectHealth - Prints advice for this project
+reason - Explain how a dependency is used
+resolveExternalDependenciesBenchmarkRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesNonMinifiedRelease - Resolves external dependencies for compile and runtime classpaths.
+
+Help tasks
+----------
+artifactTransforms - Displays the Artifact Transforms that can be executed in project ':benchmark'.
+buildEnvironment - Displays all buildscript dependencies declared in project ':benchmark'.
+dependencies - Displays all dependencies declared in project ':benchmark'.
+dependencyInsight - Displays the insight into a specific dependency in project ':benchmark'.
+help - Displays a help message.
+javaToolchains - Displays the detected java toolchains.
+kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+outgoingVariants - Displays the outgoing variants of project ':benchmark'.
+projects - Displays the sub-projects of project ':benchmark'.
+properties - Displays the properties of project ':benchmark'.
+resolvableConfigurations - Displays the configurations that can be resolved in project ':benchmark'.
+tasks - Displays the tasks runnable from project ':benchmark'.
+
+Install tasks
+-------------
+installBenchmarkRelease - Installs the BenchmarkRelease build.
+installNonMinifiedRelease - Installs the NonMinifiedRelease build.
+uninstallAll - Uninstall all applications.
+uninstallBenchmarkRelease - Uninstalls the BenchmarkRelease build.
+uninstallNonMinifiedRelease - Uninstalls the NonMinifiedRelease build.
+
+Verification tasks
+------------------
+check - Runs all checks.
+checkJetifier - Checks whether Jetifier is needed for the current project
+connectedAndroidTest - Installs and runs instrumentation tests for all flavors on connected devices.
+connectedBenchmarkReleaseAndroidTest - Installs and runs the tests for benchmarkRelease on connected devices.
+connectedCheck - Runs all device checks on currently connected devices.
+connectedNonMinifiedReleaseAndroidTest - Installs and runs the tests for nonMinifiedRelease on connected devices.
+deviceAndroidTest - Installs and runs instrumentation tests using all Device Providers.
+deviceCheck - Runs all device checks using Device Providers and Test Servers.
+koverBinaryReport - Task to generate binary coverage report in IntelliJ format for all code.
+koverCachedVerify - Cacheable task for performing verification for all code.
+koverHtmlReport - Task to generate HTML coverage report for all code.
+koverLog - Task to print coverage to log for all code.
+koverVerify
+koverXmlReport - Task to generate XML coverage report for all code.
+test - Run unit tests for all variants.
+
+Other tasks
+-----------
+aggregatePublicTypes - Writes report of all public classes across all variants or source sets in this project
+aggregateTypeUsage - Computes type-level dependency usage, aggregating all variants or source sets in this project
+analyzeBenchmarkReleaseDependencies
+analyzeNonMinifiedReleaseDependencies
+artifactsReportBenchmarkRelease - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportNonMinifiedRelease - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportRuntimeBenchmarkRelease - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportRuntimeNonMinifiedRelease - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+assembleBenchmarkRelease - Assembles main output for variant benchmarkRelease
+assembleNonMinifiedRelease - Assembles main output for variant nonMinifiedRelease
+bundleBenchmarkReleaseClassesToCompileJar
+bundleBenchmarkReleaseClassesToRuntimeJar
+bundleNonMinifiedReleaseClassesToCompileJar
+bundleNonMinifiedReleaseClassesToRuntimeJar
+checkBenchmarkReleaseAarMetadata
+checkBenchmarkReleaseDuplicateClasses
+checkBenchmarkReleaseManifest
+checkNonMinifiedReleaseAarMetadata
+checkNonMinifiedReleaseDuplicateClasses
+checkNonMinifiedReleaseManifest
+checkTestedAppObfuscationBenchmarkRelease
+checkTestedAppObfuscationNonMinifiedRelease
+compileBenchmarkReleaseJavaWithJavac
+compileBenchmarkReleaseKotlin
+compileBenchmarkReleaseNavigationResources
+compileLint
+compileLintChecks
+compileNonMinifiedReleaseJavaWithJavac
+compileNonMinifiedReleaseKotlin
+compileNonMinifiedReleaseNavigationResources
+compressBenchmarkReleaseAssets
+compressNonMinifiedReleaseAssets
+computeActualUsageBenchmarkRelease - Computes actual dependency usage
+computeActualUsageNonMinifiedRelease - Computes actual dependency usage
+computeAdvice - Merges dependency usage reports from variant-specific computations
+computeDominatorTreeBenchmarkRelease
+computeDominatorTreeNonMinifiedRelease
+computeTypeUsageBenchmarkRelease - Computes type-level dependency usage
+computeTypeUsageNonMinifiedRelease - Computes type-level dependency usage
+consumeConfigAttr
+createBenchmarkReleaseApkListingFileRedirect
+createMockableJar
+createNonMinifiedReleaseApkListingFileRedirect
+desugarBenchmarkReleaseFileDependencies
+desugarNonMinifiedReleaseFileDependencies
+dexBuilderBenchmarkRelease
+dexBuilderNonMinifiedRelease
+explodeAssetSourceBenchmarkRelease - Produces a report of all assets in this project
+explodeAssetSourceNonMinifiedRelease - Produces a report of all assets in this project
+explodeByteCodeSourceBenchmarkRelease - Produces a report of all classes referenced by a given set of class files
+explodeByteCodeSourceNonMinifiedRelease - Produces a report of all classes referenced by a given set of class files
+explodeCodeSourceBenchmarkRelease - Parses Java and Kotlin source to detect source-only usages
+explodeCodeSourceNonMinifiedRelease - Parses Java and Kotlin source to detect source-only usages
+explodeJarBenchmarkRelease - Explodes a jar and exposes its capabilities
+explodeJarNonMinifiedRelease - Explodes a jar and exposes its capabilities
+explodeXmlSourceBenchmarkRelease
+explodeXmlSourceNonMinifiedRelease
+extractBenchmarkReleaseNativeDebugMetadata
+extractBenchmarkReleaseNativeSymbolTables
+extractDeepLinksBenchmarkRelease
+extractDeepLinksNonMinifiedRelease
+extractNonMinifiedReleaseNativeDebugMetadata
+extractNonMinifiedReleaseNativeSymbolTables
+extractPackageNameFromManifestBenchmarkRelease - Produces a report of packages, from other components, that are included via Android manifests
+extractPackageNameFromManifestNonMinifiedRelease - Produces a report of packages, from other components, that are included via Android manifests
+extractProguardFiles
+filterAdvice - Filter merged advice based on user preferences
+findAndroidAssetProvidersBenchmarkRelease - Produces a report of dependencies that supply Android assets
+findAndroidAssetProvidersNonMinifiedRelease - Produces a report of dependencies that supply Android assets
+findAndroidLintersBenchmarkRelease - Produces a report of dependencies that supply Android linters
+findAndroidLintersNonMinifiedRelease - Produces a report of dependencies that supply Android linters
+findAndroidResImportsBenchmarkRelease - Produces a report of all R import candidates from set of dependencies
+findAndroidResImportsNonMinifiedRelease - Produces a report of all R import candidates from set of dependencies
+findDeclarations - Produces a report of all dependencies and the configurations on which they are declared
+findDeclaredProcsBenchmarkRelease - Produces a report of all supported annotation types and their annotation processors
+findDeclaredProcsNonMinifiedRelease - Produces a report of all supported annotation types and their annotation processors
+findKotlinMagicBenchmarkRelease - Produces a report of dependencies that contribute used inline members
+findKotlinMagicNonMinifiedRelease - Produces a report of dependencies that contribute used inline members
+findNativeLibsBenchmarkRelease - Produces a report of all dependencies that supply native libs
+findNativeLibsNonMinifiedRelease - Produces a report of all dependencies that supply native libs
+generateBenchmarkReleaseAssets
+generateBenchmarkReleaseFeatureTransitiveDeps
+generateBenchmarkReleaseGlobalSynthetics
+generateBenchmarkReleaseResources
+generateBenchmarkReleaseRFile
+generateBenchmarkReleaseSources
+generateConsoleReport - Generates console report for project health
+generateMergedProjectGraph - Merges the project graphs of all variants into a single graph
+generateNonMinifiedReleaseAssets
+generateNonMinifiedReleaseFeatureTransitiveDeps
+generateNonMinifiedReleaseGlobalSynthetics
+generateNonMinifiedReleaseResources
+generateNonMinifiedReleaseRFile
+generateNonMinifiedReleaseSources
+generateProjectGraphBenchmarkRelease - Generates several graph views of this project's local dependency graph
+generateProjectGraphNonMinifiedRelease - Generates several graph views of this project's local dependency graph
+graphViewBenchmarkRelease - Constructs a variant-specific view of this project's dependency graph
+graphViewNonMinifiedRelease - Constructs a variant-specific view of this project's dependency graph
+javaPreCompileBenchmarkRelease
+javaPreCompileNonMinifiedRelease
+koverFindJar
+koverGenerateArtifact
+koverPrintCoverage
+mapBenchmarkReleaseSourceSetPaths
+mapNonMinifiedReleaseSourceSetPaths
+mergeBenchmarkReleaseAssets
+mergeBenchmarkReleaseGeneratedProguardFiles
+mergeBenchmarkReleaseJavaResource
+mergeBenchmarkReleaseJniLibFolders
+mergeBenchmarkReleaseManifest
+mergeBenchmarkReleaseNativeLibs
+mergeBenchmarkReleaseResources
+mergeExtDexBenchmarkRelease
+mergeExtDexNonMinifiedRelease
+mergeLibDexBenchmarkRelease
+mergeLibDexNonMinifiedRelease
+mergeNonMinifiedReleaseAssets
+mergeNonMinifiedReleaseGeneratedProguardFiles
+mergeNonMinifiedReleaseJavaResource
+mergeNonMinifiedReleaseJniLibFolders
+mergeNonMinifiedReleaseManifest
+mergeNonMinifiedReleaseNativeLibs
+mergeNonMinifiedReleaseResources
+mergeProjectDexBenchmarkRelease
+mergeProjectDexNonMinifiedRelease
+packageBenchmarkRelease
+packageBenchmarkReleaseResources
+packageNonMinifiedRelease
+packageNonMinifiedReleaseResources
+parseBenchmarkReleaseLocalResources
+parseNonMinifiedReleaseLocalResources
+preBenchmarkReleaseBuild
+preBuild
+preNonMinifiedReleaseBuild
+prepareLintJarForPublish
+processBenchmarkReleaseJavaRes
+processBenchmarkReleaseManifest
+processBenchmarkReleaseNavigationResources
+processBenchmarkReleaseResources
+processNonMinifiedReleaseJavaRes
+processNonMinifiedReleaseManifest
+processNonMinifiedReleaseNavigationResources
+processNonMinifiedReleaseResources
+resolveConfigAttr
+resolveExternalDependencies
+serviceLoaderBenchmarkRelease - Produces a report of all dependencies that include Java ServiceLoaders
+serviceLoaderNonMinifiedRelease - Produces a report of all dependencies that include Java ServiceLoaders
+stripBenchmarkReleaseDebugSymbols
+stripNonMinifiedReleaseDebugSymbols
+synthesizeDependenciesBenchmarkRelease - Re-synthesize dependencies from analysis
+synthesizeDependenciesNonMinifiedRelease - Re-synthesize dependencies from analysis
+synthesizeProjectViewBenchmarkRelease - Synthesizes project usages information into a single view
+synthesizeProjectViewNonMinifiedRelease - Synthesizes project usages information into a single view
+validateSigningBenchmarkRelease
+validateSigningNonMinifiedRelease
+writeBenchmarkReleaseApplicationId
+writeBenchmarkReleaseSigningConfigVersions
+writeNonMinifiedReleaseApplicationId
+writeNonMinifiedReleaseSigningConfigVersions
+writeProjectMetadata - Stores the project type so the output of 'generateBuildHealth' is useful
+zipApksForBenchmarkRelease
+zipApksForNonMinifiedRelease
+
+Rules
+-----
+Pattern: clean<TaskName>: Cleans the output files of a task.
+Pattern: build<ConfigurationName>: Assembles the artifacts of a configuration.
+
+> Task :app:tasks
+
+------------------------------------------------------------
+Tasks runnable from project ':app'
+------------------------------------------------------------
+
+Android tasks
+-------------
+signingReport - Displays the signing info for the base and test modules
+
+Baseline Profile tasks
+----------------------
+generateBaselineProfile - Generates a baseline profile for the specified variants or dimensions.
+
+Build tasks
+-----------
+assemble - Assemble main outputs for all the variants.
+assembleAndroidTest - Assembles all the Test applications.
+assembleBenchmarkRelease - Assembles main outputs for all BenchmarkRelease variants.
+assembleDebug - Assembles main outputs for all Debug variants.
+assembleDev - Assembles main outputs for all Dev variants.
+assembleNonMinifiedRelease - Assembles main outputs for all NonMinifiedRelease variants.
+assemblePlaystore - Assembles main outputs for all Playstore variants.
+assembleProd - Assembles main outputs for all Prod variants.
+assembleRelease - Assembles main outputs for all Release variants.
+assembleStaging - Assembles main outputs for all Staging variants.
+assembleUnitTest - Assembles all the unit test applications.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+bundle - Assemble bundles for all the variants.
+bundleBenchmarkRelease - Assembles bundles for all BenchmarkRelease variants.
+bundleDebug - Assembles bundles for all Debug variants.
+bundleDev - Assembles bundles for all Dev variants.
+bundleNonMinifiedRelease - Assembles bundles for all NonMinifiedRelease variants.
+bundlePlaystore - Assembles bundles for all Playstore variants.
+bundleProd - Assembles bundles for all Prod variants.
+bundleRelease - Assembles bundles for all Release variants.
+bundleStaging - Assembles bundles for all Staging variants.
+clean - Deletes the build directory.
+compileDevBenchmarkReleaseSources
+compileDevDebugAndroidTestSources
+compileDevDebugSources
+compileDevDebugUnitTestSources
+compileDevNonMinifiedReleaseSources
+compileDevReleaseSources
+compilePlaystoreBenchmarkReleaseSources
+compilePlaystoreNonMinifiedReleaseSources
+compilePlaystoreReleaseSources
+compileProdBenchmarkReleaseSources
+compileProdDebugAndroidTestSources
+compileProdDebugSources
+compileProdNonMinifiedReleaseSources
+compileProdReleaseSources
+compileStagingBenchmarkReleaseSources
+compileStagingDebugAndroidTestSources
+compileStagingDebugSources
+compileStagingNonMinifiedReleaseSources
+compileStagingReleaseSources
+
+Dependency-analysis tasks
+-------------------------
+computeDominatorTreeCompileDevBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileDevDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileDevDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileDevDebugTest - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileDevNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileDevRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompilePlaystoreBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompilePlaystoreNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompilePlaystoreRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileProdBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileProdDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileProdDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileProdNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileProdRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileStagingBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileStagingDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileStagingDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileStagingNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileStagingRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDevBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDevDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDevDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDevDebugTest - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDevNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDevRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimePlaystoreBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimePlaystoreNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimePlaystoreRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeProdBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeProdDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeProdDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeProdNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeProdRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeStagingBenchmarkRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeStagingDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeStagingDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeStagingNonMinifiedRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeStagingRelease - Computes a dominator view of the dependency graph
+computeResolvedDependencies - Computes resolved external dependencies for all variants.
+discoverDuplicationForCompileDevBenchmarkRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileDevDebug - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileDevDebugAndroidTest - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileDevDebugTest - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileDevNonMinifiedRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileDevRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompilePlaystoreBenchmarkRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompilePlaystoreNonMinifiedRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompilePlaystoreRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileProdBenchmarkRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileProdDebug - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileProdDebugAndroidTest - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileProdNonMinifiedRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileProdRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileStagingBenchmarkRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileStagingDebug - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileStagingDebugAndroidTest - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileStagingNonMinifiedRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileStagingRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForRuntimeDevBenchmarkRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeDevDebug - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeDevDebugAndroidTest - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeDevDebugTest - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeDevNonMinifiedRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeDevRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimePlaystoreBenchmarkRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimePlaystoreNonMinifiedRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimePlaystoreRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeProdBenchmarkRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeProdDebug - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeProdDebugAndroidTest - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeProdNonMinifiedRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeProdRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeStagingBenchmarkRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeStagingDebug - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeStagingDebugAndroidTest - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeStagingNonMinifiedRelease - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeStagingRelease - Discovers duplicates on the runtime classpath
+fixDependencies - Rewrite build script for this project to match dependency advice
+printDominatorTreeCompileDevBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileDevDebug - Prints a dominator view of the dependency graph
+printDominatorTreeCompileDevDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeCompileDevDebugTest - Prints a dominator view of the dependency graph
+printDominatorTreeCompileDevNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileDevRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompilePlaystoreBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompilePlaystoreNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompilePlaystoreRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileProdBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileProdDebug - Prints a dominator view of the dependency graph
+printDominatorTreeCompileProdDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeCompileProdNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileProdRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileStagingBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileStagingDebug - Prints a dominator view of the dependency graph
+printDominatorTreeCompileStagingDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeCompileStagingNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeCompileStagingRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDevBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDevDebug - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDevDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDevDebugTest - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDevNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDevRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimePlaystoreBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimePlaystoreNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimePlaystoreRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeProdBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeProdDebug - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeProdDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeProdNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeProdRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeStagingBenchmarkRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeStagingDebug - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeStagingDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeStagingNonMinifiedRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeStagingRelease - Prints a dominator view of the dependency graph
+projectGraphDevBenchmarkRelease - Generates several graph views of this project's local dependency graph
+projectGraphDevDebug - Generates several graph views of this project's local dependency graph
+projectGraphDevDebugAndroidTest - Generates several graph views of this project's local dependency graph
+projectGraphDevDebugTest - Generates several graph views of this project's local dependency graph
+projectGraphDevNonMinifiedRelease - Generates several graph views of this project's local dependency graph
+projectGraphDevRelease - Generates several graph views of this project's local dependency graph
+projectGraphPlaystoreBenchmarkRelease - Generates several graph views of this project's local dependency graph
+projectGraphPlaystoreNonMinifiedRelease - Generates several graph views of this project's local dependency graph
+projectGraphPlaystoreRelease - Generates several graph views of this project's local dependency graph
+projectGraphProdBenchmarkRelease - Generates several graph views of this project's local dependency graph
+projectGraphProdDebug - Generates several graph views of this project's local dependency graph
+projectGraphProdDebugAndroidTest - Generates several graph views of this project's local dependency graph
+projectGraphProdNonMinifiedRelease - Generates several graph views of this project's local dependency graph
+projectGraphProdRelease - Generates several graph views of this project's local dependency graph
+projectGraphStagingBenchmarkRelease - Generates several graph views of this project's local dependency graph
+projectGraphStagingDebug - Generates several graph views of this project's local dependency graph
+projectGraphStagingDebugAndroidTest - Generates several graph views of this project's local dependency graph
+projectGraphStagingNonMinifiedRelease - Generates several graph views of this project's local dependency graph
+projectGraphStagingRelease - Generates several graph views of this project's local dependency graph
+projectHealth - Prints advice for this project
+reason - Explain how a dependency is used
+resolveExternalDependenciesDevBenchmarkRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesDevDebug - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesDevDebugAndroidTest - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesDevDebugTest - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesDevNonMinifiedRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesDevRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesPlaystoreBenchmarkRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesPlaystoreNonMinifiedRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesPlaystoreRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesProdBenchmarkRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesProdDebug - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesProdDebugAndroidTest - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesProdNonMinifiedRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesProdRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesStagingBenchmarkRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesStagingDebug - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesStagingDebugAndroidTest - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesStagingNonMinifiedRelease - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesStagingRelease - Resolves external dependencies for compile and runtime classpaths.
+
+Distribution tasks
+------------------
+dist - Copies every assembled release artifact into build/outputs/dist, named and checksummed.
+distDevRelease - Names and checksums the devRelease APKs. Bundle: distDevReleaseBundle.
+distDevReleaseApks - Names and checksums the devRelease APKs into build/outputs/dist.
+distDevReleaseBundle - Names and checksums the devRelease app bundle into build/outputs/dist.
+distPlaystoreRelease - Names and checksums the playstoreRelease APKs. Bundle: distPlaystoreReleaseBundle.
+distPlaystoreReleaseApks - Names and checksums the playstoreRelease APKs into build/outputs/dist.
+distPlaystoreReleaseBundle - Names and checksums the playstoreRelease app bundle into build/outputs/dist.
+distProdRelease - Names and checksums the prodRelease APKs. Bundle: distProdReleaseBundle.
+distProdReleaseApks - Names and checksums the prodRelease APKs into build/outputs/dist.
+distProdReleaseBundle - Names and checksums the prodRelease app bundle into build/outputs/dist.
+distStagingRelease - Names and checksums the stagingRelease APKs. Bundle: distStagingReleaseBundle.
+distStagingReleaseApks - Names and checksums the stagingRelease APKs into build/outputs/dist.
+distStagingReleaseBundle - Names and checksums the stagingRelease app bundle into build/outputs/dist.
+
+Firebase Crashlytics tasks
+--------------------------
+injectCrashlyticsMappingFileIdDevBenchmarkRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdDevDebug - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdDevNonMinifiedRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdDevRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdPlaystoreBenchmarkRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdPlaystoreNonMinifiedRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdPlaystoreRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdProdBenchmarkRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdProdDebug - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdProdNonMinifiedRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdProdRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdStagingBenchmarkRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdStagingDebug - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdStagingNonMinifiedRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsMappingFileIdStagingRelease - Generates and injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+injectCrashlyticsVersionControlInfoDevBenchmarkRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoDevDebug - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoDevNonMinifiedRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoDevRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoPlaystoreBenchmarkRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoPlaystoreNonMinifiedRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoPlaystoreRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoProdBenchmarkRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoProdDebug - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoProdNonMinifiedRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoProdRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoStagingBenchmarkRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoStagingDebug - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoStagingNonMinifiedRelease - Injects the version control info into the app. Used by App Quality Insights.
+injectCrashlyticsVersionControlInfoStagingRelease - Injects the version control info into the app. Used by App Quality Insights.
+uploadCrashlyticsMappingFileDevBenchmarkRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+uploadCrashlyticsMappingFileDevRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+uploadCrashlyticsMappingFilePlaystoreBenchmarkRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+uploadCrashlyticsMappingFilePlaystoreRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+uploadCrashlyticsMappingFileProdBenchmarkRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+uploadCrashlyticsMappingFileProdRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+uploadCrashlyticsMappingFileStagingBenchmarkRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+uploadCrashlyticsMappingFileStagingRelease - Uploads mapping files to Crashlytics for crash deobfuscation.
+
+Help tasks
+----------
+artifactTransforms - Displays the Artifact Transforms that can be executed in project ':app'.
+buildEnvironment - Displays all buildscript dependencies declared in project ':app'.
+dependencies - Displays all dependencies declared in project ':app'.
+dependencyInsight - Displays the insight into a specific dependency in project ':app'.
+help - Displays a help message.
+javaToolchains - Displays the detected java toolchains.
+kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+outgoingVariants - Displays the outgoing variants of project ':app'.
+projects - Displays the sub-projects of project ':app'.
+properties - Displays the properties of project ':app'.
+resolvableConfigurations - Displays the configurations that can be resolved in project ':app'.
+tasks - Displays the tasks runnable from project ':app'.
+
+Install tasks
+-------------
+installDevBenchmarkRelease - Installs the BenchmarkRelease build for flavor Dev.
+installDevDebug - Installs the Debug build for flavor Dev.
+installDevDebugAndroidTest - Installs the android (on device) tests for the DevDebug build.
+installDevNonMinifiedRelease - Installs the NonMinifiedRelease build for flavor Dev.
+installDevRelease - Installs the Release build for flavor Dev.
+installPlaystoreBenchmarkRelease - Installs the BenchmarkRelease build for flavor Playstore.
+installPlaystoreNonMinifiedRelease - Installs the NonMinifiedRelease build for flavor Playstore.
+installPlaystoreRelease - Installs the Release build for flavor Playstore.
+installProdBenchmarkRelease - Installs the BenchmarkRelease build for flavor Prod.
+installProdDebug - Installs the Debug build for flavor Prod.
+installProdDebugAndroidTest - Installs the android (on device) tests for the ProdDebug build.
+installProdNonMinifiedRelease - Installs the NonMinifiedRelease build for flavor Prod.
+installProdRelease - Installs the Release build for flavor Prod.
+installStagingBenchmarkRelease - Installs the BenchmarkRelease build for flavor Staging.
+installStagingDebug - Installs the Debug build for flavor Staging.
+installStagingDebugAndroidTest - Installs the android (on device) tests for the StagingDebug build.
+installStagingNonMinifiedRelease - Installs the NonMinifiedRelease build for flavor Staging.
+installStagingRelease - Installs the Release build for flavor Staging.
+uninstallAll - Uninstall all applications.
+uninstallDevBenchmarkRelease - Uninstalls the BenchmarkRelease build for flavor Dev.
+uninstallDevDebug - Uninstalls the Debug build for flavor Dev.
+uninstallDevDebugAndroidTest - Uninstalls the android (on device) tests for the DevDebug build.
+uninstallDevNonMinifiedRelease - Uninstalls the NonMinifiedRelease build for flavor Dev.
+uninstallDevRelease - Uninstalls the Release build for flavor Dev.
+uninstallPlaystoreBenchmarkRelease - Uninstalls the BenchmarkRelease build for flavor Playstore.
+uninstallPlaystoreNonMinifiedRelease - Uninstalls the NonMinifiedRelease build for flavor Playstore.
+uninstallPlaystoreRelease - Uninstalls the Release build for flavor Playstore.
+uninstallProdBenchmarkRelease - Uninstalls the BenchmarkRelease build for flavor Prod.
+uninstallProdDebug - Uninstalls the Debug build for flavor Prod.
+uninstallProdDebugAndroidTest - Uninstalls the android (on device) tests for the ProdDebug build.
+uninstallProdNonMinifiedRelease - Uninstalls the NonMinifiedRelease build for flavor Prod.
+uninstallProdRelease - Uninstalls the Release build for flavor Prod.
+uninstallStagingBenchmarkRelease - Uninstalls the BenchmarkRelease build for flavor Staging.
+uninstallStagingDebug - Uninstalls the Debug build for flavor Staging.
+uninstallStagingDebugAndroidTest - Uninstalls the android (on device) tests for the StagingDebug build.
+uninstallStagingNonMinifiedRelease - Uninstalls the NonMinifiedRelease build for flavor Staging.
+uninstallStagingRelease - Uninstalls the Release build for flavor Staging.
+
+Verification tasks
+------------------
+check - Runs all checks.
+checkJetifier - Checks whether Jetifier is needed for the current project
+connectedAndroidTest - Installs and runs instrumentation tests for all flavors on connected devices.
+connectedCheck - Runs all device checks on currently connected devices.
+connectedDevDebugAndroidTest - Installs and runs the tests for devDebug on connected devices.
+connectedProdDebugAndroidTest - Installs and runs the tests for prodDebug on connected devices.
+connectedStagingDebugAndroidTest - Installs and runs the tests for stagingDebug on connected devices.
+deviceAndroidTest - Installs and runs instrumentation tests using all Device Providers.
+deviceCheck - Runs all device checks using Device Providers and Test Servers.
+koverBinaryReport - Task to generate binary coverage report in IntelliJ format for all code.
+koverBinaryReportDevBenchmarkRelease - Task to generate binary coverage report in IntelliJ format for 'devBenchmarkRelease' Android build variant
+koverBinaryReportDevDebug - Task to generate binary coverage report in IntelliJ format for 'devDebug' Android build variant
+koverBinaryReportDevNonMinifiedRelease - Task to generate binary coverage report in IntelliJ format for 'devNonMinifiedRelease' Android build variant
+koverBinaryReportDevRelease - Task to generate binary coverage report in IntelliJ format for 'devRelease' Android build variant
+koverBinaryReportPlaystoreBenchmarkRelease - Task to generate binary coverage report in IntelliJ format for 'playstoreBenchmarkRelease' Android build variant
+koverBinaryReportPlaystoreNonMinifiedRelease - Task to generate binary coverage report in IntelliJ format for 'playstoreNonMinifiedRelease' Android build variant
+koverBinaryReportPlaystoreRelease - Task to generate binary coverage report in IntelliJ format for 'playstoreRelease' Android build variant
+koverBinaryReportProdBenchmarkRelease - Task to generate binary coverage report in IntelliJ format for 'prodBenchmarkRelease' Android build variant
+koverBinaryReportProdDebug - Task to generate binary coverage report in IntelliJ format for 'prodDebug' Android build variant
+koverBinaryReportProdNonMinifiedRelease - Task to generate binary coverage report in IntelliJ format for 'prodNonMinifiedRelease' Android build variant
+koverBinaryReportProdRelease - Task to generate binary coverage report in IntelliJ format for 'prodRelease' Android build variant
+koverBinaryReportStagingBenchmarkRelease - Task to generate binary coverage report in IntelliJ format for 'stagingBenchmarkRelease' Android build variant
+koverBinaryReportStagingDebug - Task to generate binary coverage report in IntelliJ format for 'stagingDebug' Android build variant
+koverBinaryReportStagingNonMinifiedRelease - Task to generate binary coverage report in IntelliJ format for 'stagingNonMinifiedRelease' Android build variant
+koverBinaryReportStagingRelease - Task to generate binary coverage report in IntelliJ format for 'stagingRelease' Android build variant
+koverCachedVerify - Cacheable task for performing verification for all code.
+koverCachedVerifyDevBenchmarkRelease - Cacheable task for performing verification for 'devBenchmarkRelease' Android build variant
+koverCachedVerifyDevDebug - Cacheable task for performing verification for 'devDebug' Android build variant
+koverCachedVerifyDevNonMinifiedRelease - Cacheable task for performing verification for 'devNonMinifiedRelease' Android build variant
+koverCachedVerifyDevRelease - Cacheable task for performing verification for 'devRelease' Android build variant
+koverCachedVerifyPlaystoreBenchmarkRelease - Cacheable task for performing verification for 'playstoreBenchmarkRelease' Android build variant
+koverCachedVerifyPlaystoreNonMinifiedRelease - Cacheable task for performing verification for 'playstoreNonMinifiedRelease' Android build variant
+koverCachedVerifyPlaystoreRelease - Cacheable task for performing verification for 'playstoreRelease' Android build variant
+koverCachedVerifyProdBenchmarkRelease - Cacheable task for performing verification for 'prodBenchmarkRelease' Android build variant
+koverCachedVerifyProdDebug - Cacheable task for performing verification for 'prodDebug' Android build variant
+koverCachedVerifyProdNonMinifiedRelease - Cacheable task for performing verification for 'prodNonMinifiedRelease' Android build variant
+koverCachedVerifyProdRelease - Cacheable task for performing verification for 'prodRelease' Android build variant
+koverCachedVerifyStagingBenchmarkRelease - Cacheable task for performing verification for 'stagingBenchmarkRelease' Android build variant
+koverCachedVerifyStagingDebug - Cacheable task for performing verification for 'stagingDebug' Android build variant
+koverCachedVerifyStagingNonMinifiedRelease - Cacheable task for performing verification for 'stagingNonMinifiedRelease' Android build variant
+koverCachedVerifyStagingRelease - Cacheable task for performing verification for 'stagingRelease' Android build variant
+koverHtmlReport - Task to generate HTML coverage report for all code.
+koverHtmlReportDevBenchmarkRelease - Task to generate HTML coverage report for 'devBenchmarkRelease' Android build variant
+koverHtmlReportDevDebug - Task to generate HTML coverage report for 'devDebug' Android build variant
+koverHtmlReportDevNonMinifiedRelease - Task to generate HTML coverage report for 'devNonMinifiedRelease' Android build variant
+koverHtmlReportDevRelease - Task to generate HTML coverage report for 'devRelease' Android build variant
+koverHtmlReportPlaystoreBenchmarkRelease - Task to generate HTML coverage report for 'playstoreBenchmarkRelease' Android build variant
+koverHtmlReportPlaystoreNonMinifiedRelease - Task to generate HTML coverage report for 'playstoreNonMinifiedRelease' Android build variant
+koverHtmlReportPlaystoreRelease - Task to generate HTML coverage report for 'playstoreRelease' Android build variant
+koverHtmlReportProdBenchmarkRelease - Task to generate HTML coverage report for 'prodBenchmarkRelease' Android build variant
+koverHtmlReportProdDebug - Task to generate HTML coverage report for 'prodDebug' Android build variant
+koverHtmlReportProdNonMinifiedRelease - Task to generate HTML coverage report for 'prodNonMinifiedRelease' Android build variant
+koverHtmlReportProdRelease - Task to generate HTML coverage report for 'prodRelease' Android build variant
+koverHtmlReportStagingBenchmarkRelease - Task to generate HTML coverage report for 'stagingBenchmarkRelease' Android build variant
+koverHtmlReportStagingDebug - Task to generate HTML coverage report for 'stagingDebug' Android build variant
+koverHtmlReportStagingNonMinifiedRelease - Task to generate HTML coverage report for 'stagingNonMinifiedRelease' Android build variant
+koverHtmlReportStagingRelease - Task to generate HTML coverage report for 'stagingRelease' Android build variant
+koverLog - Task to print coverage to log for all code.
+koverLogDevBenchmarkRelease - Task to print coverage to log for 'devBenchmarkRelease' Android build variant
+koverLogDevDebug - Task to print coverage to log for 'devDebug' Android build variant
+koverLogDevNonMinifiedRelease - Task to print coverage to log for 'devNonMinifiedRelease' Android build variant
+koverLogDevRelease - Task to print coverage to log for 'devRelease' Android build variant
+koverLogPlaystoreBenchmarkRelease - Task to print coverage to log for 'playstoreBenchmarkRelease' Android build variant
+koverLogPlaystoreNonMinifiedRelease - Task to print coverage to log for 'playstoreNonMinifiedRelease' Android build variant
+koverLogPlaystoreRelease - Task to print coverage to log for 'playstoreRelease' Android build variant
+koverLogProdBenchmarkRelease - Task to print coverage to log for 'prodBenchmarkRelease' Android build variant
+koverLogProdDebug - Task to print coverage to log for 'prodDebug' Android build variant
+koverLogProdNonMinifiedRelease - Task to print coverage to log for 'prodNonMinifiedRelease' Android build variant
+koverLogProdRelease - Task to print coverage to log for 'prodRelease' Android build variant
+koverLogStagingBenchmarkRelease - Task to print coverage to log for 'stagingBenchmarkRelease' Android build variant
+koverLogStagingDebug - Task to print coverage to log for 'stagingDebug' Android build variant
+koverLogStagingNonMinifiedRelease - Task to print coverage to log for 'stagingNonMinifiedRelease' Android build variant
+koverLogStagingRelease - Task to print coverage to log for 'stagingRelease' Android build variant
+koverVerify
+koverVerifyDevBenchmarkRelease
+koverVerifyDevDebug
+koverVerifyDevNonMinifiedRelease
+koverVerifyDevRelease
+koverVerifyPlaystoreBenchmarkRelease
+koverVerifyPlaystoreNonMinifiedRelease
+koverVerifyPlaystoreRelease
+koverVerifyProdBenchmarkRelease
+koverVerifyProdDebug
+koverVerifyProdNonMinifiedRelease
+koverVerifyProdRelease
+koverVerifyStagingBenchmarkRelease
+koverVerifyStagingDebug
+koverVerifyStagingNonMinifiedRelease
+koverVerifyStagingRelease
+koverXmlReport - Task to generate XML coverage report for all code.
+koverXmlReportDevBenchmarkRelease - Task to generate XML coverage report for 'devBenchmarkRelease' Android build variant
+koverXmlReportDevDebug - Task to generate XML coverage report for 'devDebug' Android build variant
+koverXmlReportDevNonMinifiedRelease - Task to generate XML coverage report for 'devNonMinifiedRelease' Android build variant
+koverXmlReportDevRelease - Task to generate XML coverage report for 'devRelease' Android build variant
+koverXmlReportPlaystoreBenchmarkRelease - Task to generate XML coverage report for 'playstoreBenchmarkRelease' Android build variant
+koverXmlReportPlaystoreNonMinifiedRelease - Task to generate XML coverage report for 'playstoreNonMinifiedRelease' Android build variant
+koverXmlReportPlaystoreRelease - Task to generate XML coverage report for 'playstoreRelease' Android build variant
+koverXmlReportProdBenchmarkRelease - Task to generate XML coverage report for 'prodBenchmarkRelease' Android build variant
+koverXmlReportProdDebug - Task to generate XML coverage report for 'prodDebug' Android build variant
+koverXmlReportProdNonMinifiedRelease - Task to generate XML coverage report for 'prodNonMinifiedRelease' Android build variant
+koverXmlReportProdRelease - Task to generate XML coverage report for 'prodRelease' Android build variant
+koverXmlReportStagingBenchmarkRelease - Task to generate XML coverage report for 'stagingBenchmarkRelease' Android build variant
+koverXmlReportStagingDebug - Task to generate XML coverage report for 'stagingDebug' Android build variant
+koverXmlReportStagingNonMinifiedRelease - Task to generate XML coverage report for 'stagingNonMinifiedRelease' Android build variant
+koverXmlReportStagingRelease - Task to generate XML coverage report for 'stagingRelease' Android build variant
+licensee - Run Licensee dependency license validation on all Android variants
+licenseeAndroidDevBenchmarkRelease - Run Licensee dependency license validation on Android devBenchmarkRelease variant
+licenseeAndroidDevDebug - Run Licensee dependency license validation on Android devDebug variant
+licenseeAndroidDevNonMinifiedRelease - Run Licensee dependency license validation on Android devNonMinifiedRelease variant
+licenseeAndroidDevRelease - Run Licensee dependency license validation on Android devRelease variant
+licenseeAndroidPlaystoreBenchmarkRelease - Run Licensee dependency license validation on Android playstoreBenchmarkRelease variant
+licenseeAndroidPlaystoreNonMinifiedRelease - Run Licensee dependency license validation on Android playstoreNonMinifiedRelease variant
+licenseeAndroidPlaystoreRelease - Run Licensee dependency license validation on Android playstoreRelease variant
+licenseeAndroidProdBenchmarkRelease - Run Licensee dependency license validation on Android prodBenchmarkRelease variant
+licenseeAndroidProdDebug - Run Licensee dependency license validation on Android prodDebug variant
+licenseeAndroidProdNonMinifiedRelease - Run Licensee dependency license validation on Android prodNonMinifiedRelease variant
+licenseeAndroidProdRelease - Run Licensee dependency license validation on Android prodRelease variant
+licenseeAndroidStagingBenchmarkRelease - Run Licensee dependency license validation on Android stagingBenchmarkRelease variant
+licenseeAndroidStagingDebug - Run Licensee dependency license validation on Android stagingDebug variant
+licenseeAndroidStagingNonMinifiedRelease - Run Licensee dependency license validation on Android stagingNonMinifiedRelease variant
+licenseeAndroidStagingRelease - Run Licensee dependency license validation on Android stagingRelease variant
+lint - Runs lint on the default variant.
+lintDevBenchmarkRelease - Print text output from the corresponding lint report task
+lintDevDebug - Print text output from the corresponding lint report task
+lintDevNonMinifiedRelease - Print text output from the corresponding lint report task
+lintDevRelease - Print text output from the corresponding lint report task
+lintFix - Runs lint on the default variant and applies any safe suggestions to the source code.
+lintPlaystoreBenchmarkRelease - Print text output from the corresponding lint report task
+lintPlaystoreNonMinifiedRelease - Print text output from the corresponding lint report task
+lintPlaystoreRelease - Print text output from the corresponding lint report task
+lintProdBenchmarkRelease - Print text output from the corresponding lint report task
+lintProdDebug - Print text output from the corresponding lint report task
+lintProdNonMinifiedRelease - Print text output from the corresponding lint report task
+lintProdRelease - Print text output from the corresponding lint report task
+lintStagingBenchmarkRelease - Print text output from the corresponding lint report task
+lintStagingDebug - Print text output from the corresponding lint report task
+lintStagingNonMinifiedRelease - Print text output from the corresponding lint report task
+lintStagingRelease - Print text output from the corresponding lint report task
+lintVitalDevRelease - Print text output from the corresponding lint report task
+lintVitalPlaystoreRelease - Print text output from the corresponding lint report task
+lintVitalProdRelease - Print text output from the corresponding lint report task
+lintVitalStagingRelease - Print text output from the corresponding lint report task
+test - Run unit tests for all variants.
+testDevDebugUnitTest - Run unit tests for the devDebug build.
+updateLintBaseline - Updates the lint baseline using the default variant.
+verifyComposeUsage - Fails on Material, a @Composable without the compiler, or untranslatable copy.
+
+Rules
+-----
+Pattern: clean<TaskName>: Cleans the output files of a task.
+Pattern: build<ConfigurationName>: Assembles the artifacts of a configuration.
+
+To see all tasks and more detail, run gradlew tasks --all
+
+To see more detail about a task, run gradlew help --task <task>
+
+BUILD SUCCESSFUL in 9s
+6 actionable tasks: 2 executed, 4 up-to-date
+Configuration cache entry stored.

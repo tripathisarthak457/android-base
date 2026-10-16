@@ -1,0 +1,25 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+
+> Task :core:designsystem:compileDebugKotlin
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/DetentResolution.kt:226:13 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetBodyPolicy.kt:212:37 Unnecessary safe call on a non-null receiver of type 'Placeable'.
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetFrameUpdates.kt:60:76 Cast is redundant.
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 16s
+9 actionable tasks: 3 executed, 6 up-to-date
+Configuration cache entry reused.
+EXIT 0

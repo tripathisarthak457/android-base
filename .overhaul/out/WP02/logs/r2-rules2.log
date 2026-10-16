@@ -1,0 +1,404 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:analytics:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:media:verifyCodeRules FAILED
+> Task :core:mvi:verifyCodeRules
+> Task :catalog:verifyCodeRules FAILED
+> Task :core:notification:verifyCodeRules FAILED
+> Task :core:testing:verifyCodeRules
+> Task :core:navigation:verifyCodeRules FAILED
+> Task :app:verifyCodeRules FAILED
+> Task :data:auth:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules FAILED
+> Task :core:ui:verifyCodeRules FAILED
+> Task :feature:feed:verifyCodeRules FAILED
+> Task :core:network:verifyCodeRules FAILED
+> Task :feature:profile:verifyCodeRules FAILED
+> Task :feature:auth:verifyCodeRules FAILED
+> Task :feature:search:verifyCodeRules FAILED
+> Task :feature:sample:verifyCodeRules FAILED
+> Task :feature:settings:verifyCodeRules FAILED
+> Task :core:designsystem:verifyCodeRules FAILED
+
+FAILURE: Build completed with 15 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:media:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/media/src/main/kotlin/com/base/app/core/media/ImageCompressor.kt:67 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/media/src/main/kotlin/com/base/app/core/media/ImageCompressor.kt:103 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/media/src/main/kotlin/com/base/app/core/media/VideoTranscoder.kt:67 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/media/src/main/kotlin/com/base/app/core/media/VideoTranscoder.kt:109 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':catalog:verifyCodeRules' (registered by plugin 'com.base.app.android.application').
+> Code rules broken:
+  
+    catalog/src/main/kotlin/com/base/app/catalog/CatalogComponents.kt:1 file-length: split the file by concept; more than 500 lines is more than one thing
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+3: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:notification:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/notification/src/main/kotlin/com/base/app/core/notification/AppNotifications.kt:99 commented-code: delete code that is commented out; git keeps it
+    core/notification/src/main/kotlin/com/base/app/core/notification/PushTokenRegistrar.kt:22 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/notification/src/main/kotlin/com/base/app/core/notification/PushTokenRegistrar.kt:32 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+4: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:navigation:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/navigation/src/main/kotlin/com/base/app/core/navigation/AppShell.kt:180 legacy-back: handle Back with NavigationBackHandler (overlays at overlay priority), never the Activity's dispatcher
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+5: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:verifyCodeRules' (registered by plugin 'com.base.app.android.application').
+> Code rules broken:
+  
+    app/src/main/kotlin/com/base/app/playstore/PlayStorePrompts.kt:78 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    app/src/main/kotlin/com/base/app/session/SessionCoordinator.kt:70 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+6: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:onboarding:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt:116 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+    feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt:195 raw-dp: use AppTheme.spacing or a size token; only 0.dp and 1.dp are written raw
+    feature/onboarding/src/main/kotlin/com/base/app/feature/onboarding/Onboarding.kt:204 raw-dp: use AppTheme.spacing or a size token; only 0.dp and 1.dp are written raw
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+7: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:ui:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/ui/src/main/kotlin/com/base/app/core/ui/paging/AppPagingList.kt:70 lazy-content-type: a lazy scope with more than one kind of item gives each a contentType, so rows are reused by kind
+    core/ui/src/main/kotlin/com/base/app/core/ui/paging/AppPagingList.kt:75 lazy-content-type: a lazy scope with more than one kind of item gives each a contentType, so rows are reused by kind
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+8: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:network:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/network/src/main/kotlin/com/base/app/core/network/NetworkClient.kt:46 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/network/src/main/kotlin/com/base/app/core/network/NetworkClient.kt:63 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/network/src/main/kotlin/com/base/app/core/network/ResponseCache.kt:151 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/network/src/main/kotlin/com/base/app/core/network/ResponseCache.kt:192 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/network/src/main/kotlin/com/base/app/core/network/ResponseCache.kt:196 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/network/src/main/kotlin/com/base/app/core/network/websocket/AppWebSocket.kt:107 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+    core/network/src/main/kotlin/com/base/app/core/network/websocket/AppWebSocket.kt:114 run-catching: runCatching in a coroutine swallows its cancellation; use runSuspendCatching or catch what you expect
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+9: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:feed:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt:49 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+10: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:profile:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt:54 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+    feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt:156 raw-dp: use AppTheme.spacing or a size token; only 0.dp and 1.dp are written raw
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+11: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:auth:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt:63 adaptive-box-constraints: BoxWithConstraints subcomposes and costs a frame; use containerClass or a custom Layout
+    feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt:154 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+    feature/auth/src/main/kotlin/com/base/app/feature/auth/PasswordReset.kt:235 raw-dp: use AppTheme.spacing or a size token; only 0.dp and 1.dp are written raw
+    feature/auth/src/main/kotlin/com/base/app/feature/auth/SignIn.kt:206 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+    feature/auth/src/main/kotlin/com/base/app/feature/auth/SignUp.kt:221 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+12: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:search:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:74 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+    feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:97 raw-dp: use AppTheme.spacing or a size token; only 0.dp and 1.dp are written raw
+    feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:99 raw-dp: use AppTheme.spacing or a size token; only 0.dp and 1.dp are written raw
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+13: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:sample:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailScreen.kt:29 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+    feature/sample/src/main/kotlin/com/base/app/feature/sample/list/SampleListScreen.kt:43 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+14: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:settings:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt:132 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+    feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt:214 adaptive-preview: annotate a preview of this screen with @AppScreenPreviews, so it is seen at every window size
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+15: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:designsystem:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/animation/AppTransitions.kt:238 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/button/AppButton.kt:93 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/button/AppButton.kt:100 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/data/AppDataDisplay.kt:301 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/data/AppDataDisplay.kt:378 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt:40 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt:88 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt:139 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt:174 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppSkeleton.kt:44 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppStepIndicator.kt:94 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppStepIndicator.kt:109 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppStepIndicator.kt:114 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppOtpField.kt:71 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppOtpField.kt:133 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSpecialFields.kt:419 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppTextField.kt:76 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppTextField.kt:87 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppListPieces.kt:58 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppListPieces.kt:221 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt:162 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt:178 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt:229 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt:239 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt:248 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt:255 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppNavigationRail.kt:88 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppNavigationRail.kt:105 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabRow.kt:42 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabRow.kt:58 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt:50 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppBottomSheet.kt:90 layer-alpha-fill: alpha on a full-screen layer renders it offscreen every frame; draw a scrim rect, or use CompositingStrategy.ModulateAlpha
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppDialog.kt:60 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppDialog.kt:65 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppDropdownMenu.kt:48 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppDropdownMenu.kt:53 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppChip.kt:40 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppChip.kt:45 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppChip.kt:50 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppRangeSlider.kt:115 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppRangeSlider.kt:120 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSegmentedControl.kt:42 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSegmentedControl.kt:77 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:46 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:51 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:56 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:137 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:142 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:196 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:201 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSelection.kt:206 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSlider.kt:69 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/selection/AppSlider.kt:74 animated-delegate: write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/AppHaptics.kt:64 commented-code: delete code that is commented out; git keeps it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:1 file-length: split the file by concept; more than 500 lines is more than one thing
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:15 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:41 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:64 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:99 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:192 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:255 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:266 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:322 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:407 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:431 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:453 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/icon/AppIcons.kt:491 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppWindowSize.kt:100 adaptive-screen-metrics: the screen is not the window; use containerClass, the layout's constraints, or the window metrics inside a layout lambda
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/Palette.kt:9 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/Palette.kt:22 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/Palette.kt:33 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/Palette.kt:41 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/Palette.kt:57 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+    core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/Palette.kt:75 slop-comment: say why the code is this way; the history of a change belongs in its commit message, and a TODO needs an allow marker naming its owner and the condition that ends it
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 2s
+32 actionable tasks: 28 executed, 4 up-to-date
+Configuration cache entry stored.

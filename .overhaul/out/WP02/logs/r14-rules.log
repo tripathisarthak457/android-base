@@ -1,0 +1,167 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :build-logic:convention:test verifyCodeRules
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata
+> Task :core:analytics:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:feed:verifyCodeRules FAILED
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:profile:verifyCodeRules FAILED
+> Task :feature:auth:verifyCodeRules FAILED
+> Task :feature:search:verifyCodeRules FAILED
+> Task :feature:sample:verifyCodeRules FAILED
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:settings:verifyCodeRules FAILED
+> Task :core:designsystem:verifyCodeRules
+> Task :build-logic:convention:compileTestKotlin
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :build-logic:convention:test
+
+FAILURE: Build completed with 6 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:feed:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/feed/src/main/kotlin/com/base/app/feature/feed/FeedScreen.kt:145 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:profile:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/profile/src/main/kotlin/com/base/app/feature/profile/ProfileScreen.kt:76 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+3: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:auth:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/auth/src/main/kotlin/com/base/app/feature/auth/AuthFrame.kt:75 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+4: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:search:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/search/src/main/kotlin/com/base/app/feature/search/SearchResult.kt:113 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+    feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:196 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+    feature/search/src/main/kotlin/com/base/app/feature/search/SearchScreen.kt:228 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+5: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:sample:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailScreen.kt:54 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+    feature/sample/src/main/kotlin/com/base/app/feature/sample/list/SampleListScreen.kt:117 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+    feature/sample/src/main/kotlin/com/base/app/feature/sample/list/SampleListScreen.kt:143 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+6: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':feature:settings:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    feature/settings/src/main/kotlin/com/base/app/feature/settings/Licenses.kt:150 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+    feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt:208 scroll-chrome: pad scrolling content inside the scroll, so it runs under the bars and rests clear of them: contentPadding = chromeContentPadding(…) on a lazy list, .verticalScroll(…).padding(chromeContentPadding(…)) on a column
+  
+  Each rule keeps the app smooth, light, adaptive, translatable or readable; see docs/MOTION-AND-PERFORMANCE.md and docs/ADAPTIVE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 19s
+36 actionable tasks: 34 executed, 2 up-to-date
+Configuration cache entry stored.
+EXIT 1

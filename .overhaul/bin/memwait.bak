@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Blocks until the machine has at least MEMWAIT_MB of available memory (default 3500 MB).
+# The laptop froze on Oct 10 at 15:23 under memory pressure with zram swap and no OOM daemon: heavy commands wait
+# here rather than push the system into swap thrash.
+need=${MEMWAIT_MB:-3500}
+for i in $(seq 1 180); do
+  avail=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
+  [ "$avail" -ge "$need" ] && exit 0
+  [ $((i % 6)) -eq 1 ] && echo "[memwait] ${avail} MB available, waiting for ${need} MB..." >&2
+  sleep 10
+done
+echo "[memwait] still under ${need} MB after 30 min; continuing" >&2

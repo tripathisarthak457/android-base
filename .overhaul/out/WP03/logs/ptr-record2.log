@@ -1,0 +1,12 @@
+[locked:adb] waiting for lock...
+Night mode: no
+/sdcard/ptr-light_slow.mp4: 1 file pulled, 0 skipped. 40.3 MB/s (2850957 bytes in 0.068s)
+recorded light_slow
+/sdcard/ptr-light_short.mp4: 1 file pulled, 0 skipped. 36.0 MB/s (1162909 bytes in 0.031s)
+recorded light_short
+Night mode: yes
+/sdcard/ptr-dark_slow.mp4: 1 file pulled, 0 skipped. 40.3 MB/s (1943847 bytes in 0.046s)
+recorded dark_slow
+Night mode: no
+PTR-RECORD DONE
+EXIT 0

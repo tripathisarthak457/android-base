@@ -1,0 +1,32 @@
+
+Summary
+───────
+         App  VitFleet (VitFleet)
+     Package  com.vitfleet.app
+     Min SDK  API 29 · Android 10 (Quince Tart)
+  Target SDK  API 37 · Android 17 (Cinnamon Bun)
+     Version  0.1.0 (1)
+  Desugaring  off
+    Features  analytics, auth, baselineprofile, browser, catalog, coil,
+              database, deeplink, devtools, firebase, flags, forms,
+              googlefonts, language, leakcanary, licenses, lottie, media,
+              network, paging, playstore, push, room, settings, websocket,
+              workmanager
+     Modules  dashboard, fleet, attendance, fuel, trips, maintenance,
+              documents, masters, team, alerts, sdui
+   Languages  en, hi
+    Typeface  IBM Plex Sans · IBM Plex Mono
+     Colours  #0E1A2B · #F5A524 · #2F6BFF
+       Style  Utility
+      Motion  Standard, haptics on
+        Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/v1_vitfleet
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/v1_vitfleet and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json — the included one is a placeholder.
+

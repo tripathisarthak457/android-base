@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Blocks until the machine has enough available memory for a heavy command, for at most 30 minutes.
+# The laptop froze on Oct 10 at 15:23 under memory pressure with zram swap and no OOM daemon: heavy commands wait
+# here rather than push the system into swap thrash.
+# A resident Gradle daemon already holds its heap and the next build reuses it, so the bar is lower then
+# (MEMWAIT_WARM_MB); a cold start needs room for a new daemon and its Kotlin daemon (MEMWAIT_MB).
+# Oct 16: builds held the CPU at 95-100 C (acpitz 97 C against its 99 C hot trip) and the laptop powered off twice.
+# A heavy command starts only once the CPU package is under THERMWAIT_C, for at most 10 minutes.
+# WSL2 (Windows, from Oct 2026): the VM is not expected to expose the host's x86_pkg_temp thermal zone. The original
+# script then prints three errors on every call ("cat: ... No such file", "syntax error: operand expected") and bash
+# abandons the heat loop; the memory wait still runs (tested Oct 16 with the zones hidden). This version skips the
+# heat wait quietly when the zone is missing: on Windows the host's Intel DTT driver limits the CPU.
+# Drop-in replacement for .overhaul/bin/memwait. THERMAL_ROOT exists only so the no-zone case can be tested.
+limit=${THERMWAIT_C:-80}
+zone=
+for z in "${THERMAL_ROOT:-/sys/class/thermal}"/thermal_zone*; do
+  [ "$(cat "$z/type" 2>/dev/null)" = x86_pkg_temp ] && { zone=$z; break; }
+done
+if [ -n "$zone" ]; then
+  for i in $(seq 1 60); do
+    t=$(( $(cat "$zone/temp" 2>/dev/null || echo 0) / 1000 ))
+    [ "$t" -lt "$limit" ] && break
+    [ $((i % 6)) -eq 1 ] && echo "[memwait] CPU at ${t} C, waiting for it to cool under ${limit} C..." >&2
+    sleep 10
+  done
+fi
+cold=${MEMWAIT_MB:-3500}
+warm=${MEMWAIT_WARM_MB:-1500}
+for i in $(seq 1 180); do
+  need=$cold
+  pgrep -f 'org.gradle.launcher.daemon.bootstrap.GradleDaemon' >/dev/null && need=$warm
+  avail=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
+  [ "$avail" -ge "$need" ] && exit 0
+  [ $((i % 6)) -eq 1 ] && echo "[memwait] ${avail} MB available, waiting for ${need} MB..." >&2
+  sleep 10
+done
+# Past 30 minutes, go ahead only if the machine is not critically short; below 1 GB keep waiting (up to 2 hours).
+for i in $(seq 1 540); do
+  avail=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
+  [ "$avail" -ge 1000 ] && break
+  [ $((i % 30)) -eq 1 ] && echo "[memwait] only ${avail} MB available; holding until 1000 MB..." >&2
+  sleep 10
+done
+echo "[memwait] still under ${need} MB after 30 min; continuing" >&2

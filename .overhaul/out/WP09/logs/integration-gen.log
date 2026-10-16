@@ -1,0 +1,12 @@
+=== RUN   TestIntegrationRealGenerator
+=== RUN   TestIntegrationRealGenerator/android
+=== RUN   TestIntegrationRealGenerator/multiplatform
+    integration_test.go:41: the catalogue has no multiplatform target yet
+=== RUN   TestIntegrationRealGenerator/v1_spec
+--- PASS: TestIntegrationRealGenerator (0.62s)
+    --- PASS: TestIntegrationRealGenerator/android (0.32s)
+    --- SKIP: TestIntegrationRealGenerator/multiplatform (0.00s)
+    --- PASS: TestIntegrationRealGenerator/v1_spec (0.21s)
+PASS
+ok  	github.com/base-android/generator-api/internal/generate	0.619s
+rc=0

@@ -1,0 +1,30 @@
+plugins {
+    id("com.base.app.android.library")
+    id("com.base.app.android.compose")
+    id("com.base.app.android.hilt")
+}
+
+android {
+    namespace = "com.base.app.core.ui"
+}
+
+dependencies {
+    api(project(":core:common"))
+    api(project(":core:designsystem"))
+    implementation(project(":core:navigation"))
+
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // <opt:coil>
+    implementation(libs.coil.compose)
+    // </opt:coil>
+    // <opt:browser>
+    implementation(libs.androidx.browser)
+    // </opt:browser>
+    // <opt:lottie>
+    implementation(libs.lottie.compose)
+    // </opt:lottie>
+    // <opt:paging>
+    api(libs.androidx.paging.compose)
+    // </opt:paging>
+}

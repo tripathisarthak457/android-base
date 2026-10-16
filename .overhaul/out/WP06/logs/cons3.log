@@ -1,0 +1,34 @@
+everything-modules:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+only-analytics:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+only-crashlytics:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+only-firebaseanalytics:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-0:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-1:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-11:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-12:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-14:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-2:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-3:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-6:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+pair-7:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+preset-everything-compact:
+  UNUSED-IMPORT(kdoc-only) core/analytics/src/main/kotlin/{pkg}/core/analytics/jank/FrameJankRecorder.kt: androidx.metrics.performance.PerformanceMetricsState
+known issue no longer seen (WP06): ^UNUSED-IMPORT core/network/src/test/kotlin/\{pkg\}/core/network/KtorNetworkClientTest\.kt: kotlinx\.serialization\.json\.(JsonPrimitive|buildJsonObject)$
+known issue no longer seen (WP06): ^UNUSED-RES feature/settings/src/main/res/values/strings\.xml: string/settings_(require_unlock|app_lock_explanation)$
+known issue no longer seen (WP06): ^UNUSED-RES app/src/main/res/drawable/ic_notification\.xml: drawable/ic_notification$
+
+61 projects in 45 s: 14 new issues, 503 known (9 of 12 known-issue lines seen).
+EXIT 1

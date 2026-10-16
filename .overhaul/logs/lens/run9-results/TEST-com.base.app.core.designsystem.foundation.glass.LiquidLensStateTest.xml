@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-14T11:33:23.196Z" hostname="pop-os" time="0.545">
+  <properties/>
+  <testcase name="tapping the tab the lens is on neither moves nor lifts it" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.232"/>
+  <testcase name="a slow release lands on the nearest tab" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.015"/>
+  <testcase name="a tap glides the lens to the tab without pressing it, then stops drawing" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.012"/>
+  <testcase name="a released press samples the scene until its swell has receded" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.01"/>
+  <testcase name="with animations off the lens jumps straight to the tab" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.003"/>
+  <testcase name="a selection reversed in flight stays glass until a single hand-over" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.204"/>
+  <testcase name="a cancelled drag returns to the selected tab" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.005"/>
+  <testcase name="without refraction a drag moves a plain indicator that follows the finger" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.007"/>
+  <testcase name="a release settles on the tab the velocity points to, carrying the velocity" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.005"/>
+  <testcase name="a press swells the lens and it trails the finger across the bar" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.003"/>
+  <testcase name="a slower animator scale slows the lens by its factor" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.003"/>
+  <testcase name="the lens stretches along its travel and never drops below its resting size" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.005"/>
+  <testcase name="on a 120 Hz display the lens keeps the display's time" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.004"/>
+  <testcase name="without refraction a tap moves a plain indicator" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.004"/>
+  <testcase name="new springs take over a moving lens from where it is" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.006"/>
+  <testcase name="an overshooting settle spring keeps the lens glass through its turnarounds" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.005"/>
+  <testcase name="a tap's motion lifts the lens into glass, which calms as the lens settles" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.005"/>
+  <testcase name="a lens that stops refracting under the finger lets its swell recede" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.004"/>
+  <testcase name="a press samples the scene from the touch while the finger is down" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.004"/>
+  <testcase name="the finger cannot drag the lens past either end" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.004"/>
+  <testcase name="a tap samples the scene while it travels and stops before it settles" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensStateTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

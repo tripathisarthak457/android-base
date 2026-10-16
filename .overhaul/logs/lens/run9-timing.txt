@@ -1,0 +1,11 @@
+1 slot(s): first moving frame 8 ms travel 1.000 pos 0.0143 v 3.37; full (>=0.99) 8-133 ms; samples 8-283 ms, hands over at 292 ms with 0.0110 slot left; settles 383 ms; peak speed 8.23 slots/s
+   travel per frame: 1.00 1.00 1.00 1.00 1.00 1.00 ... 0.03 0.02 0.02 0.01
+2 slot(s): first moving frame 8 ms travel 1.000 pos 0.0286 v 6.73; full (>=0.99) 8-175 ms; samples 8-317 ms, hands over at 325 ms with 0.0115 slot left; settles 417 ms; peak speed 16.45 slots/s
+   travel per frame: 1.00 1.00 1.00 1.00 1.00 1.00 ... 0.03 0.02 0.02 0.01
+4 slot(s): first moving frame 8 ms travel 1.000 pos 0.0572 v 13.47; full (>=0.99) 8-208 ms; samples 8-350 ms, hands over at 358 ms with 0.0117 slot left; settles 450 ms; peak speed 32.91 slots/s
+   travel per frame: 1.00 1.00 1.00 1.00 1.00 1.00 ... 0.04 0.03 0.02 0.01
+velocity-only (run 7) for comparison:
+  1: first 0.59, samples until 258 ms, settles 383 ms
+  2: first 1.00, samples until 300 ms, settles 417 ms
+  4: first 1.00, samples until 333 ms, settles 450 ms
+K=503.6 sqrt(K)=22.44

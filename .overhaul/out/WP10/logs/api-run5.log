@@ -1,0 +1,29 @@
+{"time":"2026-10-10T11:43:48.179436046+05:30","level":"INFO","msg":"configuration","summary":"addr=0.0.0.0:8090 generator=/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP10/generator python=python3 persistent=true origins=[http://127.0.0.1:3110 http://localhost:3110] targets=[android multiplatform] proxy=none concurrency=4"}
+{"time":"2026-10-10T11:43:48.415862862+05:30","level":"WARN","msg":"ENABLE_TARGETS names a target the catalogue does not list","target":"multiplatform"}
+{"time":"2026-10-10T11:43:48.417610666+05:30","level":"INFO","msg":"listening","addr":"0.0.0.0:8090","targets":["android","multiplatform"]}
+{"time":"2026-10-10T11:43:48.531839794+05:30","level":"INFO","msg":"migration applied","version":"0001"}
+{"time":"2026-10-10T11:43:48.531869544+05:30","level":"INFO","msg":"migration applied","version":"0002"}
+{"time":"2026-10-10T11:43:48.531872459+05:30","level":"INFO","msg":"migration applied","version":"0003"}
+{"time":"2026-10-10T11:43:48.531874839+05:30","level":"INFO","msg":"migration applied","version":"0004"}
+{"time":"2026-10-10T11:43:48.537270978+05:30","level":"INFO","msg":"database ready"}
+{"time":"2026-10-10T11:44:47.016743246+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-10T11:44:48.810224604+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:44:49.546182112+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-10T11:44:51.046248106+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:44:56.956115576+05:30","level":"INFO","msg":"request","route":"client_error","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:44:56.959387378+05:30","level":"INFO","msg":"request","route":"client_error","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:45:03.667343725+05:30","level":"INFO","msg":"request","route":"client_error","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:45:16.345594862+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-10T11:45:17.84826659+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:45:33.723412866+05:30","level":"INFO","msg":"request","route":"catalogue","method":"GET","status":200,"ms":0,"bytes":75290}
+{"time":"2026-10-10T11:45:35.16861465+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:46:07.754398031+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:46:29.645682529+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:46:35.468423862+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:46:44.955321655+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:47:00.647239606+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:47:13.663112981+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:47:16.427424923+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:47:19.406331883+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":200,"ms":585,"bytes":442219}
+{"time":"2026-10-10T11:47:20.314989936+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-10T11:47:33.701998891+05:30","level":"INFO","msg":"shutting down"}

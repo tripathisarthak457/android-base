@@ -1,0 +1,426 @@
+[locked:gradle] waiting for lock...
+Starting a Gradle Daemon, 1 busy and 2 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin :core:navigation:compileDebugKotlin :catalog:compileDebugKotlin :app:compileDevDebugKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:verifyComposeUsage
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:designsystem:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :catalog:verifyComposeUsage
+> Task :core:navigation:generateDebugResources
+> Task :core:navigation:processDebugNavigationResources
+> Task :catalog:preBuild
+> Task :catalog:preDebugBuild
+> Task :catalog:generateDebugBuildConfig
+> Task :catalog:generateDebugResources
+> Task :core:navigation:packageDebugResources
+> Task :catalog:packageDebugResources
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:navigation:javaPreCompileDebug
+> Task :core:designsystem:processDebugNavigationResources
+> Task :core:designsystem:generateDebugResources
+> Task :core:designsystem:javaPreCompileDebug
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:parseDebugLocalResources
+> Task :core:navigation:parseDebugLocalResources
+> Task :core:navigation:generateDebugRFile
+> Task :core:designsystem:generateDebugRFile
+> Task :app:verifyComposeUsage
+> Task :app:preBuild
+> Task :app:preDevDebugBuild
+> Task :app:generateDevDebugBuildConfig
+> Task :app:injectCrashlyticsMappingFileIdDevDebug
+> Task :app:injectCrashlyticsVersionControlInfoDevDebug
+> Task :app:processDevDebugGoogleServices
+> Task :app:extractDevDebugSupportedLocales
+> Task :app:mapDevDebugSourceSetPaths
+> Task :core:analytics:verifyApiPurity
+> Task :core:analytics:verifyComposeUsage
+> Task :core:analytics:verifyModuleDependencies
+> Task :core:analytics:preBuild
+> Task :core:analytics:preDebugBuild
+> Task :core:analytics:extractDebugSupportedLocales
+> Task :core:database:verifyApiPurity
+> Task :core:database:verifyComposeUsage
+> Task :core:database:verifyModuleDependencies
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:database:extractDebugSupportedLocales FROM-CACHE
+> Task :core:datastore:verifyApiPurity
+> Task :core:datastore:verifyComposeUsage
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:extractDebugSupportedLocales FROM-CACHE
+> Task :core:designsystem:extractDebugSupportedLocales
+> Task :core:devtools:verifyApiPurity
+> Task :core:devtools:verifyComposeUsage
+> Task :core:devtools:verifyModuleDependencies
+> Task :core:devtools:preBuild
+> Task :core:devtools:preDebugBuild
+> Task :core:devtools:extractDebugSupportedLocales FROM-CACHE
+> Task :core:flags:verifyApiPurity
+> Task :core:flags:verifyComposeUsage
+> Task :core:flags:verifyModuleDependencies
+> Task :core:flags:preBuild
+> Task :core:flags:preDebugBuild
+> Task :core:flags:extractDebugSupportedLocales FROM-CACHE
+> Task :core:media:verifyApiPurity
+> Task :core:media:verifyComposeUsage
+> Task :core:media:verifyModuleDependencies
+> Task :core:media:preBuild
+> Task :core:media:preDebugBuild
+> Task :core:media:extractDebugSupportedLocales
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyComposeUsage
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:extractDebugSupportedLocales FROM-CACHE
+> Task :core:navigation:extractDebugSupportedLocales
+> Task :core:network:verifyApiPurity
+> Task :core:network:verifyComposeUsage
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:network:extractDebugSupportedLocales FROM-CACHE
+> Task :core:notification:verifyApiPurity
+> Task :core:notification:verifyComposeUsage
+> Task :core:notification:verifyModuleDependencies
+> Task :core:notification:preBuild
+> Task :core:notification:preDebugBuild
+> Task :core:notification:extractDebugSupportedLocales
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:verifyComposeUsage
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:extractDebugSupportedLocales
+> Task :data:auth:verifyApiPurity
+> Task :data:auth:verifyComposeUsage
+> Task :data:auth:verifyModuleDependencies
+> Task :data:auth:preBuild
+> Task :data:auth:preDebugBuild
+> Task :data:auth:extractDebugSupportedLocales FROM-CACHE
+> Task :data:feed:verifyApiPurity
+> Task :data:feed:verifyComposeUsage
+> Task :data:feed:verifyModuleDependencies
+> Task :data:feed:preBuild
+> Task :data:feed:preDebugBuild
+> Task :data:feed:extractDebugSupportedLocales FROM-CACHE
+> Task :data:profile:verifyApiPurity
+> Task :data:profile:verifyComposeUsage
+> Task :data:profile:verifyModuleDependencies
+> Task :data:profile:preBuild
+> Task :data:profile:preDebugBuild
+> Task :data:profile:extractDebugSupportedLocales FROM-CACHE
+> Task :data:sample:verifyApiPurity
+> Task :data:sample:verifyComposeUsage
+> Task :data:sample:verifyModuleDependencies
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :data:sample:extractDebugSupportedLocales FROM-CACHE
+> Task :data:search:verifyApiPurity
+> Task :data:search:verifyComposeUsage
+> Task :data:search:verifyModuleDependencies
+> Task :data:search:preBuild
+> Task :data:search:preDebugBuild
+> Task :data:search:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:auth:verifyApiPurity
+> Task :feature:auth:verifyComposeUsage
+> Task :feature:auth:verifyModuleDependencies
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :feature:auth:extractDebugSupportedLocales
+> Task :feature:feed:verifyApiPurity
+> Task :feature:feed:verifyComposeUsage
+> Task :feature:feed:verifyModuleDependencies
+> Task :feature:feed:preBuild
+> Task :feature:feed:preDebugBuild
+> Task :feature:feed:extractDebugSupportedLocales
+> Task :feature:onboarding:verifyApiPurity
+> Task :feature:onboarding:verifyComposeUsage
+> Task :feature:onboarding:verifyModuleDependencies
+> Task :feature:onboarding:preBuild
+> Task :feature:onboarding:preDebugBuild
+> Task :feature:onboarding:extractDebugSupportedLocales
+> Task :feature:profile:verifyApiPurity
+> Task :feature:profile:verifyComposeUsage
+> Task :feature:profile:verifyModuleDependencies
+> Task :feature:profile:preBuild
+> Task :feature:profile:preDebugBuild
+> Task :feature:profile:extractDebugSupportedLocales
+> Task :feature:sample:verifyApiPurity
+> Task :feature:sample:verifyComposeUsage
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:sample:preBuild
+> Task :feature:sample:preDebugBuild
+> Task :feature:sample:extractDebugSupportedLocales
+> Task :feature:search:verifyApiPurity
+> Task :feature:search:verifyComposeUsage
+> Task :feature:search:verifyModuleDependencies
+> Task :feature:search:preBuild
+> Task :feature:search:preDebugBuild
+> Task :feature:search:extractDebugSupportedLocales
+> Task :feature:settings:verifyApiPurity
+> Task :feature:settings:verifyComposeUsage
+> Task :feature:settings:verifyModuleDependencies
+> Task :feature:settings:preBuild
+> Task :feature:settings:preDebugBuild
+> Task :feature:settings:extractDebugSupportedLocales
+> Task :app:generateDevDebugLocaleConfig
+> Task :app:generateDevDebugResources
+> Task :app:packageDevDebugResources
+> Task :core:analytics:processDebugNavigationResources
+> Task :core:database:processDebugNavigationResources FROM-CACHE
+> Task :core:datastore:processDebugNavigationResources FROM-CACHE
+> Task :core:devtools:processDebugNavigationResources FROM-CACHE
+> Task :core:flags:processDebugNavigationResources FROM-CACHE
+> Task :core:media:processDebugNavigationResources
+> Task :core:mvi:processDebugNavigationResources FROM-CACHE
+> Task :core:network:processDebugNavigationResources FROM-CACHE
+> Task :core:notification:processDebugNavigationResources
+> Task :core:ui:processDebugNavigationResources
+> Task :catalog:processDebugNavigationResources
+> Task :data:auth:processDebugNavigationResources FROM-CACHE
+> Task :data:feed:processDebugNavigationResources FROM-CACHE
+> Task :data:profile:processDebugNavigationResources FROM-CACHE
+> Task :data:sample:processDebugNavigationResources FROM-CACHE
+> Task :data:search:processDebugNavigationResources FROM-CACHE
+> Task :catalog:parseDebugLocalResources
+> Task :feature:auth:processDebugNavigationResources
+> Task :feature:feed:processDebugNavigationResources
+> Task :feature:onboarding:processDebugNavigationResources
+> Task :catalog:generateDebugRFile
+> Task :feature:profile:processDebugNavigationResources
+> Task :feature:sample:processDebugNavigationResources
+> Task :feature:search:processDebugNavigationResources
+> Task :feature:settings:processDebugNavigationResources
+> Task :core:analytics:generateDebugResources
+> Task :core:analytics:packageDebugResources
+> Task :core:analytics:parseDebugLocalResources
+> Task :core:analytics:generateDebugRFile
+> Task :core:analytics:javaPreCompileDebug FROM-CACHE
+> Task :core:database:generateDebugResources FROM-CACHE
+> Task :core:database:packageDebugResources
+> Task :core:database:parseDebugLocalResources FROM-CACHE
+> Task :core:database:generateDebugRFile
+> Task :core:database:javaPreCompileDebug
+> Task :core:datastore:generateDebugResources FROM-CACHE
+> Task :core:datastore:packageDebugResources
+> Task :core:datastore:parseDebugLocalResources FROM-CACHE
+> Task :core:datastore:generateDebugRFile
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:devtools:generateDebugResources FROM-CACHE
+> Task :core:devtools:packageDebugResources
+> Task :core:devtools:parseDebugLocalResources FROM-CACHE
+> Task :core:devtools:generateDebugRFile
+> Task :core:flags:generateDebugResources FROM-CACHE
+> Task :core:flags:packageDebugResources
+> Task :core:flags:parseDebugLocalResources FROM-CACHE
+> Task :core:flags:generateDebugRFile
+> Task :core:flags:javaPreCompileDebug FROM-CACHE
+> Task :core:devtools:javaPreCompileDebug FROM-CACHE
+> Task :core:mvi:generateDebugResources FROM-CACHE
+> Task :core:mvi:packageDebugResources
+> Task :core:mvi:parseDebugLocalResources FROM-CACHE
+> Task :core:mvi:generateDebugRFile
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:network:generateDebugResources FROM-CACHE
+> Task :core:network:packageDebugResources
+> Task :core:network:parseDebugLocalResources FROM-CACHE
+> Task :core:network:generateDebugRFile
+> Task :core:network:javaPreCompileDebug
+> Task :core:notification:generateDebugResources
+> Task :core:notification:packageDebugResources
+> Task :core:notification:parseDebugLocalResources
+> Task :core:notification:generateDebugRFile
+> Task :core:notification:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:generateDebugResources
+> Task :core:ui:packageDebugResources
+> Task :core:ui:parseDebugLocalResources
+> Task :core:ui:generateDebugRFile
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :feature:auth:generateDebugResources
+> Task :feature:auth:packageDebugResources
+> Task :feature:auth:parseDebugLocalResources
+> Task :feature:auth:generateDebugRFile
+> Task :data:auth:generateDebugResources FROM-CACHE
+> Task :data:auth:packageDebugResources
+> Task :data:auth:parseDebugLocalResources FROM-CACHE
+> Task :data:auth:generateDebugRFile
+> Task :data:auth:javaPreCompileDebug FROM-CACHE
+> Task :feature:auth:javaPreCompileDebug FROM-CACHE
+> Task :feature:feed:generateDebugResources
+> Task :feature:feed:packageDebugResources
+> Task :feature:feed:parseDebugLocalResources
+> Task :feature:feed:generateDebugRFile
+> Task :data:feed:generateDebugResources FROM-CACHE
+> Task :data:feed:packageDebugResources
+> Task :data:feed:parseDebugLocalResources FROM-CACHE
+> Task :data:feed:generateDebugRFile
+> Task :data:feed:javaPreCompileDebug FROM-CACHE
+> Task :feature:feed:javaPreCompileDebug FROM-CACHE
+> Task :feature:onboarding:generateDebugResources
+> Task :feature:onboarding:packageDebugResources
+> Task :feature:onboarding:parseDebugLocalResources
+> Task :feature:onboarding:generateDebugRFile
+> Task :feature:onboarding:javaPreCompileDebug FROM-CACHE
+> Task :feature:profile:generateDebugResources
+> Task :feature:profile:packageDebugResources
+> Task :feature:profile:parseDebugLocalResources
+> Task :feature:profile:generateDebugRFile
+> Task :core:media:generateDebugResources
+> Task :core:media:packageDebugResources
+> Task :core:media:parseDebugLocalResources
+> Task :core:media:generateDebugRFile
+> Task :core:media:javaPreCompileDebug FROM-CACHE
+> Task :data:profile:generateDebugResources FROM-CACHE
+> Task :data:profile:packageDebugResources
+> Task :data:profile:parseDebugLocalResources FROM-CACHE
+> Task :data:profile:generateDebugRFile
+> Task :data:profile:javaPreCompileDebug FROM-CACHE
+> Task :feature:profile:javaPreCompileDebug FROM-CACHE
+> Task :feature:sample:generateDebugResources
+> Task :feature:sample:packageDebugResources
+> Task :feature:sample:parseDebugLocalResources
+> Task :feature:sample:generateDebugRFile
+> Task :data:sample:generateDebugResources FROM-CACHE
+> Task :data:sample:packageDebugResources
+> Task :data:sample:parseDebugLocalResources FROM-CACHE
+> Task :data:sample:generateDebugRFile
+> Task :data:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:generateDebugResources
+> Task :feature:search:packageDebugResources
+> Task :feature:search:parseDebugLocalResources
+> Task :feature:search:generateDebugRFile
+> Task :data:search:generateDebugResources FROM-CACHE
+> Task :data:search:packageDebugResources
+> Task :data:search:parseDebugLocalResources FROM-CACHE
+> Task :data:search:generateDebugRFile
+> Task :data:search:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:javaPreCompileDebug FROM-CACHE
+> Task :feature:settings:generateDebugResources
+> Task :feature:settings:packageDebugResources
+> Task :feature:settings:parseDebugLocalResources
+> Task :feature:settings:generateDebugRFile
+> Task :feature:settings:javaPreCompileDebug FROM-CACHE
+> Task :app:processDevDebugNavigationResources
+> Task :app:parseDevDebugLocalResources
+> Task :app:generateDevDebugRFile
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:analytics:kspDebugKotlin
+> Task :core:datastore:kspDebugKotlin
+> Task :core:database:kspDebugKotlin
+> Task :core:analytics:compileDebugKotlin
+> Task :core:database:compileDebugKotlin
+> Task :core:datastore:compileDebugKotlin
+> Task :core:database:compileDebugJavaWithJavac
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:analytics:compileDebugJavaWithJavac
+> Task :core:database:transformDebugClassesWithAsm
+> Task :core:datastore:transformDebugClassesWithAsm
+
+> Task :core:designsystem:compileDebugKotlin
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt:55:9 Condition type mismatch: inferred type is 'TabVisibility' but 'Boolean' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/formfields/AppOtpField.kt:150:20 Condition type mismatch: inferred type is 'TabVisibility' but 'Boolean' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:51:50 Unresolved reference 'HapticEffect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:52:50 Unresolved reference 'rememberAppHaptics'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:55:45 Unresolved reference 'rememberReduceMotion'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:80:19 Unresolved reference 'rememberAppHaptics'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:81:24 Unresolved reference 'rememberReduceMotion'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:126:57 Unresolved reference 'labelSmall' on receiver of type 'AppTypography'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:149:49 Unresolved reference 'HapticEffect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppSidebar.kt:196:41 Unresolved reference 'bodyLarge' on receiver of type 'AppTypography'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:57:50 Unresolved reference 'HapticEffect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:58:50 Unresolved reference 'pressScale'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:59:50 Unresolved reference 'rememberAppHaptics'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:63:45 Unresolved reference 'rememberReduceMotion'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:126:19 Unresolved reference 'rememberAppHaptics'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:128:24 Unresolved reference 'rememberReduceMotion'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:137:33 Unresolved reference 'HapticEffect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:263:43 Unresolved reference 'Chunky'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:266:44 Unresolved reference 'surfaceVariant' on receiver of type 'AppColors'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:267:60 Unresolved reference 'divider' on receiver of type 'AppColors'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:270:60 Unresolved reference 'Minimal'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:271:42 Unresolved reference 'Minimal'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:274:66 Unresolved reference 'Minimal'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:285:36 Unresolved reference 'borderWidth' on receiver of type 'AppSizes'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt:408:18 Unresolved reference 'pressScale' on receiver of type 'Modifier'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabCells.kt:246:53 Unresolved reference 'labelSmall' on receiver of type 'AppTypography'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabCells.kt:246:64 Cannot infer type for type parameter 'K'. Specify it explicitly.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabCells.kt:246:64 Cannot infer type for type parameter 'V'. Specify it explicitly.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabCells.kt:246:64 This declaration needs opt-in. Its usage must be marked with '@kotlin.ExperimentalStdlibApi' or '@OptIn(kotlin.ExperimentalStdlibApi::class)'
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/draw/Skeleton.kt:409:22 Condition type mismatch: inferred type is 'TabVisibility' but 'Boolean' was expected.
+
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:designsystem:compileDebugKotlin FAILED
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:analytics:transformDebugClassesWithAsm
+> Task :core:analytics:bundleLibCompileToJarDebug
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:flags:kspDebugKotlin
+> Task :core:notification:kspDebugKotlin
+> Task :core:flags:compileDebugKotlin
+> Task :core:flags:compileDebugJavaWithJavac
+> Task :core:flags:transformDebugClassesWithAsm
+> Task :core:flags:bundleLibRuntimeToJarDebug
+> Task :core:flags:bundleLibCompileToJarDebug
+> Task :core:notification:compileDebugKotlin
+> Task :core:notification:compileDebugJavaWithJavac
+> Task :core:notification:transformDebugClassesWithAsm
+> Task :core:notification:bundleLibCompileToJarDebug
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: CONDITION_TYPE_MISMATCH
+       Kotlin compiler error
+         Condition type mismatch: inferred type is 'TabVisibility' but 'Boolean' was expected.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05-glass/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt line 55
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 19s
+299 actionable tasks: 235 executed, 64 from cache
+Configuration cache entry stored.

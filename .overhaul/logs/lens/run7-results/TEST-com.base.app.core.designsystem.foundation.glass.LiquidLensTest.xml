@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-14T06:37:09.912Z" hostname="pop-os" time="0.628">
+  <properties/>
+  <testcase name="with animations off neither a selection nor a drag turns the lens to glass" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.139"/>
+  <testcase name="a lens at rest neither samples nor draws, and a pressed one shows its backdrop" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.118"/>
+  <testcase name="a new motion style reaches the lens already in the bar" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.065"/>
+  <testcase name="at Live a selection carries the lens as glass" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.055"/>
+  <testcase name="below Live a selection moves the lens without refracting" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.082"/>
+  <testcase name="a selection carries the lens as glass, and a settled lens samples nothing" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.092"/>
+  <testcase name="a travelling lens recomposes nothing" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.064"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "target": "android",
+  "project_name": "FirebaseOne",
+  "path": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP06/v1fb",
+  "resolved_features": [
+    "analytics",
+    "crashlytics",
+    "database",
+    "firebase",
+    "firebaseanalytics",
+    "flags",
+    "network",
+    "offlinequeue",
+    "push",
+    "remoteconfig",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "notes": [
+    "Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under \"android\".",
+    "'firebase' is now 'crashlytics', 'firebaseanalytics' and 'remoteconfig'.",
+    "'room' is now 'offlinequeue'.",
+    "'workmanager' is no longer a feature: WorkManager arrives with 'offlinequeue', which has a worker to run.",
+    "'widget' was removed: its Glance runtime started WorkManager and a database at every launch to show one line of text."
+  ],
+  "warnings": [],
+  "ignored_fields": [],
+  "summary": []
+}

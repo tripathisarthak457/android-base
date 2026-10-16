@@ -1,0 +1,48 @@
+[locked:gradle] waiting for lock...
+Starting a Gradle Daemon, 3 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: compileDebugUnitTestKotlin :app:compileDevDebugUnitTestKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+1 problem was found storing the configuration cache.
+- Task `:core:analytics:transformDebugClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+
+See the complete report at file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP06/templates/android/build/reports/configuration-cache/b6nr20472bbmm2e16gji5vrlu/7z2udai0q2kuquhpiyrg6tbm/configuration-cache-report.html
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP06/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Configuration cache state could not be cached: field `__runtimeClasspath__` of task `:core:analytics:transformDebugClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+> Could not resolve all files for configuration ':core:analytics:debugRuntimeClasspath'.
+   > Could not resolve androidx.core:core-ktx:1.13.1.
+     Required by:
+         project ':core:analytics' > androidx.metrics:metrics-performance:1.0.0 > androidx.core:core:1.10.0
+      > No cached version of androidx.core:core-ktx:1.13.1 available for offline mode.
+      > No cached version of androidx.core:core-ktx:1.13.1 available for offline mode.
+> There are 6 more failures with identical causes.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2m 24s
+4 actionable tasks: 1 executed, 3 up-to-date
+Configuration cache entry discarded due to serialization error.
+EXIT 1

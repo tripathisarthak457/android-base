@@ -1,0 +1,29 @@
+# Allowed differences between the old generator (before/) and the WP01 engine (after/), per spec.
+# A reason starting with "whitespace" is verified by golden_check.py with diff -wB.
+# The first matching line explains a path, so spec-specific lines come before the generic ones.
+spec_keys/keys/*.jks	freshly generated keys are random; staging.jks is now a copy of dev.jks when the spec reuses the dev key (audit 5.9)
+spec_keys/keystore.properties	written as ISO-8859-1 with \uXXXX escapes (audit 4.3); the header comment lost its em dash, which ISO-8859-1 cannot hold
+hostile_pkg-apple/*	package com.base.apple: the old double rename wrote com.base.applele into scaffolded modules (audit 3.1)
+hostile_pkg-prefix/*	package com.base.app.demo: the old double rename wrote com.base.app.demo.demo into scaffolded modules (audit 3.1)
+hostile_app-Xbaseapp/*	app name Xbaseapp: the old double rename produced Xxbaseapp (audit 3.1)
+hostile_app-Baseapp-x/*	app name Baseapp X: the old double rename produced baseappx_x_* channel ids and key alias (audit 3.1)
+hostile_pkg-baseapp	generated now; the old generator failed with "AppConfig.kt not found" (audit 3.1)
+hostile_pkg-databaseapp	generated now; the old generator failed with "AppConfig.kt not found" (audit 3.1)
+hostile_pkg-firebaseapp	generated now; the old generator failed with "AppConfig.kt not found" (audit 3.1)
+hostile_pkg-base_app	generated now; the old generator failed with "AppConfig.kt not found" (audit 3.1)
+hostile_pkg-global	generated now; "global" is a Python keyword, not a Kotlin or Java one (audit 4.1)
+hostile_pkg-pass	generated now; "pass" is a Python keyword, not a Kotlin or Java one (audit 4.1)
+hostile_mod-baseapp	generated now; the old double rename broke the module's translations (audit 3.1)
+hostile_mod-database_app	generated now; the old double rename turned database_app into :data:datastore (audit 3.1)
+hostile_pkg-null	refused now: null is a Kotlin and Java literal, the old output did not compile (audit 4.1)
+hostile_pkg-java	refused now: ART will not load an app's classes from java.* (audit 4.1)
+hostile_mod-in	refused now: in is a Kotlin keyword, the old output did not compile (audit 3.4)
+hostile_mod-null	refused now: null is a Kotlin and Java literal, the old output did not compile (audit 3.4)
+hostile_mod-dunder	refused now: order__history and order_history both become OrderHistory (audit 5.1)
+*/generator-spec.json	record is always written as schema 2 (A1.3 rule 4), with the new generator commit
+*/*.kt	whitespace: blank lines are tidied only next to a removed block (A1.5), so marker-free code keeps the template's spacing; scaffolded files are no longer collapsed either
+*/*.kts	whitespace: collapse only next to removed blocks (A1.5)
+*/*.md	whitespace: Markdown is never collapsed; blank lines left by removed blocks stay (they do not change how it renders), and README.md is byte-identical
+*/*.toml	whitespace: collapse only next to removed blocks (A1.5)
+*/gradlew	whitespace: a marker-free file is no longer collapsed (A1.5); the wrapper script is byte-identical to the template
+*/gradlew.bat	whitespace: line endings preserved, CRLF as in the template (audit generator-python 5.6)

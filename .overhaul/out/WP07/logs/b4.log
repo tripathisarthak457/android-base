@@ -1,0 +1,1634 @@
+Saturday 10 October 2026 04:14:58 PM IST
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because Gradle property 'kotlin.native.disableCompilerDaemon' has changed.
+Type-safe project accessors is an incubating feature.
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :shared
+w: ⚠️ Native task 'iosSimulatorArm64Test' is disabled
+Task 'iosSimulatorArm64Test' for target 'ios_simulator_arm64' cannot run on the current host (linux-x86_64).
+Reason: simulator tests require macOS
+Solution: To suppress this warning, add 'kotlin.native.ignoreDisabledTargets=true' to gradle.properties.
+
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata UP-TO-DATE
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :androidApp:preBuild UP-TO-DATE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :androidApp:preDevDebugBuild UP-TO-DATE
+> Task :build-logic:convention:validatePlugins UP-TO-DATE
+> Task :androidApp:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :shared:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :core:database:androidPreBuild UP-TO-DATE
+> Task :androidApp:generateDevDebugBuildConfig UP-TO-DATE
+> Task :core:database:preAndroidMainBuild UP-TO-DATE
+> Task :core:datastore:androidPreBuild UP-TO-DATE
+> Task :core:datastore:preAndroidMainBuild UP-TO-DATE
+> Task :core:database:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :core:designsystem:androidPreBuild UP-TO-DATE
+> Task :androidApp:generateDevDebugResources UP-TO-DATE
+> Task :core:designsystem:preAndroidMainBuild UP-TO-DATE
+> Task :core:datastore:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :core:mvi:androidPreBuild UP-TO-DATE
+> Task :core:mvi:preAndroidMainBuild UP-TO-DATE
+> Task :core:designsystem:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :core:navigation:androidPreBuild UP-TO-DATE
+> Task :core:navigation:preAndroidMainBuild UP-TO-DATE
+> Task :core:mvi:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :build-logic:convention:compileTestKotlin UP-TO-DATE
+> Task :androidApp:packageDevDebugResources UP-TO-DATE
+> Task :core:network:androidPreBuild UP-TO-DATE
+> Task :core:ui:androidPreBuild UP-TO-DATE
+> Task :data:sample:androidPreBuild UP-TO-DATE
+> Task :core:network:preAndroidMainBuild UP-TO-DATE
+> Task :core:ui:preAndroidMainBuild UP-TO-DATE
+> Task :data:sample:preAndroidMainBuild UP-TO-DATE
+> Task :core:navigation:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :feature:onboarding:androidPreBuild UP-TO-DATE
+> Task :feature:onboarding:preAndroidMainBuild UP-TO-DATE
+> Task :core:network:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :core:ui:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :data:sample:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :feature:settings:androidPreBuild UP-TO-DATE
+> Task :feature:sample:androidPreBuild UP-TO-DATE
+> Task :feature:settings:preAndroidMainBuild UP-TO-DATE
+> Task :feature:sample:preAndroidMainBuild UP-TO-DATE
+> Task :feature:onboarding:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :core:common:kmpPartiallyResolvedDependenciesChecker
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:jvmProcessResources NO-SOURCE
+> Task :core:common:processJvmMainResources SKIPPED
+> Task :feature:settings:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :feature:sample:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:convertXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :shared:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :shared:generateComposeResClass UP-TO-DATE
+> Task :shared:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :shared:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :shared:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :shared:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :shared:packageAndroidMainResources UP-TO-DATE
+> Task :shared:verifyApiPurity UP-TO-DATE
+> Task :shared:parseAndroidMainLocalResources UP-TO-DATE
+> Task :core:database:kmpPartiallyResolvedDependenciesChecker
+> Task :core:database:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:generateAndroidMainRFile UP-TO-DATE
+> Task :core:database:verifyApiPurity UP-TO-DATE
+> Task :core:database:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:database:verifyModuleDependencies UP-TO-DATE
+> Task :core:database:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:common:compileKotlinJvm UP-TO-DATE
+> Task :core:common:compileJvmMainJava NO-SOURCE
+> Task :core:database:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :core:common:jvmMainClasses UP-TO-DATE
+> Task :core:database:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:common:jvmJar UP-TO-DATE
+> Task :core:database:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:database:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:database:processAndroidMainManifest UP-TO-DATE
+> Task :core:common:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :core:database:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:database:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:database:processAndroidHostTestResources UP-TO-DATE
+> Task :core:common:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:database:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :core:database:iosSimulatorArm64ProcessResources NO-SOURCE
+> Task :core:datastore:kmpPartiallyResolvedDependenciesChecker
+> Task :core:datastore:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :androidApp:processDevDebugNavigationResources UP-TO-DATE
+> Task :androidApp:parseDevDebugLocalResources UP-TO-DATE
+> Task :androidApp:generateDevDebugRFile UP-TO-DATE
+> Task :core:designsystem:kmpPartiallyResolvedDependenciesChecker
+> Task :core:designsystem:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:designsystem:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :core:designsystem:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :core:designsystem:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :core:designsystem:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :core:designsystem:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :core:designsystem:packageAndroidMainResources UP-TO-DATE
+> Task :core:designsystem:parseAndroidMainLocalResources UP-TO-DATE
+> Task :core:designsystem:generateAndroidMainRFile UP-TO-DATE
+> Task :core:designsystem:generateComposeResClass UP-TO-DATE
+> Task :core:designsystem:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :core:common:compileKotlinIosSimulatorArm64 UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:compileAndroidMain UP-TO-DATE
+> Task :core:datastore:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :core:navigation:kmpPartiallyResolvedDependenciesChecker
+> Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:navigation:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForCommonMain NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForCommonMain NO-SOURCE
+> Task :core:navigation:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :core:navigation:generateComposeResClass UP-TO-DATE
+> Task :core:navigation:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:network:kmpPartiallyResolvedDependenciesChecker
+> Task :core:network:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:network:verifyApiPurity UP-TO-DATE
+> Task :core:network:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:compileAndroidMain UP-TO-DATE
+> Task :core:designsystem:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :core:network:compileAndroidMain UP-TO-DATE
+> Task :core:network:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :data:sample:kmpPartiallyResolvedDependenciesChecker
+> Task :data:sample:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :data:sample:verifyApiPurity UP-TO-DATE
+> Task :data:sample:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:kmpPartiallyResolvedDependenciesChecker
+> Task :core:mvi:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:mvi:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:compileAndroidMain UP-TO-DATE
+> Task :core:mvi:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :core:ui:kmpPartiallyResolvedDependenciesChecker
+> Task :core:ui:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:ui:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :core:ui:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :core:ui:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :core:ui:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :core:ui:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :core:ui:packageAndroidMainResources UP-TO-DATE
+> Task :core:ui:parseAndroidMainLocalResources UP-TO-DATE
+> Task :core:ui:generateAndroidMainRFile UP-TO-DATE
+> Task :core:ui:generateComposeResClass UP-TO-DATE
+> Task :core:ui:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :core:ui:verifyApiPurity UP-TO-DATE
+> Task :core:ui:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:compileAndroidMain UP-TO-DATE
+> Task :core:navigation:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :feature:onboarding:kmpPartiallyResolvedDependenciesChecker
+> Task :feature:onboarding:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:onboarding:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :feature:onboarding:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :feature:onboarding:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :feature:onboarding:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :feature:onboarding:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :feature:onboarding:packageAndroidMainResources UP-TO-DATE
+> Task :feature:onboarding:parseAndroidMainLocalResources UP-TO-DATE
+> Task :feature:onboarding:generateAndroidMainRFile UP-TO-DATE
+> Task :feature:onboarding:generateComposeResClass UP-TO-DATE
+> Task :feature:onboarding:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :feature:onboarding:verifyApiPurity UP-TO-DATE
+> Task :feature:onboarding:verifyModuleDependencies UP-TO-DATE
+> Task :feature:sample:kmpPartiallyResolvedDependenciesChecker
+> Task :feature:sample:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:sample:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :feature:sample:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :feature:sample:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :feature:sample:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :feature:sample:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :feature:sample:packageAndroidMainResources UP-TO-DATE
+> Task :feature:sample:parseAndroidMainLocalResources UP-TO-DATE
+> Task :core:ui:compileAndroidMain UP-TO-DATE
+> Task :feature:sample:generateAndroidMainRFile UP-TO-DATE
+> Task :core:ui:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :feature:sample:generateComposeResClass UP-TO-DATE
+> Task :feature:sample:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :feature:sample:verifyApiPurity UP-TO-DATE
+> Task :feature:sample:verifyModuleDependencies UP-TO-DATE
+> Task :feature:settings:kmpPartiallyResolvedDependenciesChecker
+> Task :feature:settings:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:settings:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForCommonMain UP-TO-DATE
+> Task :feature:settings:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForCommonMain UP-TO-DATE
+> Task :feature:settings:generateResourceAccessorsForCommonMain UP-TO-DATE
+> Task :feature:settings:generateActualResourceCollectorsForAndroidMain UP-TO-DATE
+> Task :feature:settings:copyAndroidMainComposeResourcesToAndroidAssets UP-TO-DATE
+> Task :feature:settings:packageAndroidMainResources UP-TO-DATE
+> Task :feature:settings:parseAndroidMainLocalResources UP-TO-DATE
+> Task :feature:settings:generateAndroidMainRFile UP-TO-DATE
+> Task :feature:settings:generateComposeResClass UP-TO-DATE
+> Task :feature:settings:generateExpectResourceCollectorsForCommonMain UP-TO-DATE
+> Task :feature:onboarding:compileAndroidMain UP-TO-DATE
+> Task :feature:settings:verifyApiPurity UP-TO-DATE
+> Task :feature:settings:verifyModuleDependencies UP-TO-DATE
+> Task :feature:onboarding:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :androidApp:javaPreCompileDevDebug UP-TO-DATE
+> Task :androidApp:generateDevDebugAssets UP-TO-DATE
+> Task :shared:generateAndroidMainAssets UP-TO-DATE
+> Task :shared:mergeAndroidMainAssets UP-TO-DATE
+> Task :core:designsystem:generateAndroidMainAssets UP-TO-DATE
+> Task :core:designsystem:mergeAndroidMainAssets UP-TO-DATE
+> Task :core:ui:generateAndroidMainAssets UP-TO-DATE
+> Task :core:ui:mergeAndroidMainAssets UP-TO-DATE
+> Task :feature:onboarding:generateAndroidMainAssets UP-TO-DATE
+> Task :feature:onboarding:mergeAndroidMainAssets UP-TO-DATE
+> Task :feature:sample:generateAndroidMainAssets UP-TO-DATE
+> Task :feature:sample:mergeAndroidMainAssets UP-TO-DATE
+> Task :feature:settings:generateAndroidMainAssets UP-TO-DATE
+> Task :feature:settings:mergeAndroidMainAssets UP-TO-DATE
+> Task :feature:settings:compileAndroidMain UP-TO-DATE
+> Task :feature:settings:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :androidApp:generateDevDebugGlobalSynthetics UP-TO-DATE
+> Task :core:datastore:processAndroidMainJavaRes UP-TO-DATE
+> Task :core:designsystem:processAndroidMainJavaRes UP-TO-DATE
+> Task :core:mvi:processAndroidMainJavaRes UP-TO-DATE
+> Task :core:navigation:processAndroidMainJavaRes UP-TO-DATE
+> Task :core:network:processAndroidMainJavaRes UP-TO-DATE
+> Task :core:ui:processAndroidMainJavaRes UP-TO-DATE
+> Task :feature:onboarding:processAndroidMainJavaRes UP-TO-DATE
+> Task :feature:settings:processAndroidMainJavaRes UP-TO-DATE
+> Task :androidApp:mergeDevDebugAssets UP-TO-DATE
+> Task :androidApp:compressDevDebugAssets UP-TO-DATE
+> Task :androidApp:desugarDevDebugFileDependencies UP-TO-DATE
+> Task :feature:settings:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :feature:onboarding:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :core:navigation:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :core:network:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :core:ui:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :core:mvi:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :shared:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:datastore:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:designsystem:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:mvi:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:navigation:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:network:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:ui:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :data:sample:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :feature:onboarding:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :feature:sample:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :feature:settings:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :androidApp:checkDevDebugAarMetadata UP-TO-DATE
+> Task :androidApp:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :androidApp:compileDevDebugNavigationResources UP-TO-DATE
+> Task :androidApp:checkDevDebugDuplicateClasses UP-TO-DATE
+> Task :androidApp:mergeDevDebugResources UP-TO-DATE
+> Task :androidApp:createDevDebugCompatibleScreenManifests UP-TO-DATE
+> Task :androidApp:extractDeepLinksDevDebug UP-TO-DATE
+> Task :shared:processAndroidMainManifest UP-TO-DATE
+> Task :core:datastore:processAndroidMainManifest UP-TO-DATE
+> Task :core:designsystem:processAndroidMainManifest UP-TO-DATE
+> Task :core:mvi:processAndroidMainManifest UP-TO-DATE
+> Task :core:navigation:processAndroidMainManifest UP-TO-DATE
+> Task :core:network:processAndroidMainManifest UP-TO-DATE
+> Task :core:ui:processAndroidMainManifest UP-TO-DATE
+> Task :data:sample:processAndroidMainManifest UP-TO-DATE
+> Task :feature:onboarding:processAndroidMainManifest UP-TO-DATE
+> Task :feature:sample:processAndroidMainManifest UP-TO-DATE
+> Task :feature:settings:processAndroidMainManifest UP-TO-DATE
+> Task :androidApp:processDevDebugMainManifest UP-TO-DATE
+> Task :androidApp:processDevDebugManifest UP-TO-DATE
+> Task :androidApp:processDevDebugManifestForPackage UP-TO-DATE
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :shared:mapAndroidMainSourceSetPaths UP-TO-DATE
+> Task :shared:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :core:designsystem:mapAndroidMainSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :core:ui:mapAndroidMainSourceSetPaths UP-TO-DATE
+> Task :core:ui:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :feature:onboarding:mapAndroidMainSourceSetPaths UP-TO-DATE
+> Task :feature:onboarding:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :feature:sample:mapAndroidMainSourceSetPaths UP-TO-DATE
+> Task :feature:sample:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :feature:settings:mapAndroidMainSourceSetPaths UP-TO-DATE
+> Task :feature:settings:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :build-logic:convention:test UP-TO-DATE
+> Task :build-logic:convention:check UP-TO-DATE
+> Task :androidApp:processDevDebugResources UP-TO-DATE
+> Task :androidApp:mergeDevDebugJniLibFolders UP-TO-DATE
+> Task :shared:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :shared:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :shared:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :core:database:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :core:database:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:database:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :core:datastore:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :core:datastore:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:datastore:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :core:designsystem:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :core:designsystem:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:designsystem:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :core:mvi:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :core:mvi:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:mvi:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :core:navigation:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :core:navigation:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:navigation:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :core:network:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :core:network:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:network:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :core:ui:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :core:ui:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:ui:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :data:sample:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :data:sample:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :data:sample:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :feature:onboarding:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :feature:onboarding:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :feature:onboarding:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :feature:sample:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :feature:sample:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :feature:sample:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :feature:settings:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :feature:settings:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :feature:settings:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :androidApp:mergeDevDebugNativeLibs UP-TO-DATE
+> Task :androidApp:stripDevDebugDebugSymbols UP-TO-DATE
+> Task :androidApp:validateSigningDevDebug UP-TO-DATE
+> Task :androidApp:writeDevDebugAppMetadata UP-TO-DATE
+> Task :androidApp:writeDevDebugSigningConfigVersions UP-TO-DATE
+> Task :check UP-TO-DATE
+> Task :shared:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :androidApp:preDevDebugAndroidTestBuild SKIPPED
+> Task :shared:prepareLintJarForPublish UP-TO-DATE
+> Task :androidApp:extractProguardFiles UP-TO-DATE
+> Task :core:database:prepareLintJarForPublish UP-TO-DATE
+> Task :core:datastore:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :core:datastore:createFullJarAndroidMain UP-TO-DATE
+> Task :core:datastore:prepareLintJarForPublish UP-TO-DATE
+> Task :core:designsystem:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :core:designsystem:createFullJarAndroidMain UP-TO-DATE
+> Task :core:designsystem:prepareLintJarForPublish UP-TO-DATE
+> Task :core:mvi:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :core:mvi:createFullJarAndroidMain UP-TO-DATE
+> Task :core:mvi:prepareLintJarForPublish UP-TO-DATE
+> Task :core:navigation:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :core:navigation:createFullJarAndroidMain UP-TO-DATE
+> Task :core:navigation:prepareLintJarForPublish UP-TO-DATE
+> Task :core:network:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :core:network:createFullJarAndroidMain UP-TO-DATE
+> Task :core:network:prepareLintJarForPublish UP-TO-DATE
+> Task :core:ui:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :core:ui:createFullJarAndroidMain UP-TO-DATE
+> Task :core:ui:prepareLintJarForPublish UP-TO-DATE
+> Task :data:sample:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:onboarding:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :feature:onboarding:createFullJarAndroidMain UP-TO-DATE
+> Task :feature:onboarding:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:sample:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:settings:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :feature:settings:createFullJarAndroidMain UP-TO-DATE
+> Task :feature:settings:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:sample:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :feature:settings:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :feature:settings:extractAndroidMainAnnotations UP-TO-DATE
+> Task :feature:settings:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :feature:settings:syncAndroidMainLibJars UP-TO-DATE
+> Task :feature:settings:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :feature:onboarding:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :feature:onboarding:extractAndroidMainAnnotations UP-TO-DATE
+> Task :feature:onboarding:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :feature:onboarding:syncAndroidMainLibJars UP-TO-DATE
+> Task :feature:onboarding:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :core:navigation:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:navigation:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:navigation:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :core:navigation:syncAndroidMainLibJars UP-TO-DATE
+> Task :core:navigation:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :core:datastore:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:datastore:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:datastore:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :core:datastore:syncAndroidMainLibJars UP-TO-DATE
+> Task :core:datastore:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :data:sample:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:network:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:network:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:network:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :core:network:syncAndroidMainLibJars UP-TO-DATE
+> Task :core:network:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :core:database:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:database:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:ui:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:ui:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:ui:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :core:ui:syncAndroidMainLibJars UP-TO-DATE
+> Task :core:ui:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :core:mvi:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:mvi:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:mvi:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :core:mvi:syncAndroidMainLibJars UP-TO-DATE
+> Task :core:mvi:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :core:designsystem:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:designsystem:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:designsystem:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :core:designsystem:syncAndroidMainLibJars UP-TO-DATE
+> Task :core:designsystem:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :androidApp:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :shared:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :shared:convertXmlValueResourcesForAppleMain NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForAppleMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAppleMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForAppleMain NO-SOURCE
+> Task :shared:convertXmlValueResourcesForAppleTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForAppleTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAppleTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForAppleTest NO-SOURCE
+> Task :shared:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :shared:convertXmlValueResourcesForIosMain NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForIosMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForIosMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForIosMain NO-SOURCE
+> Task :shared:convertXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForIosSimulatorArm64Main NO-SOURCE
+> Task :shared:generateResourceAccessorsForIosSimulatorArm64Main NO-SOURCE
+> Task :shared:convertXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForIosSimulatorArm64Test NO-SOURCE
+> Task :shared:generateResourceAccessorsForIosSimulatorArm64Test NO-SOURCE
+> Task :shared:convertXmlValueResourcesForIosTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForIosTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForIosTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForIosTest NO-SOURCE
+> Task :shared:convertXmlValueResourcesForNativeMain NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForNativeMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForNativeMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForNativeMain NO-SOURCE
+> Task :shared:convertXmlValueResourcesForNativeTest NO-SOURCE
+> Task :shared:copyNonXmlValueResourcesForNativeTest NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForNativeTest NO-SOURCE
+> Task :shared:generateResourceAccessorsForNativeTest NO-SOURCE
+> Task :shared:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:testing:androidPreBuild UP-TO-DATE
+> Task :core:testing:preAndroidMainBuild UP-TO-DATE
+> Task :core:testing:checkAndroidMainAarMetadata UP-TO-DATE
+> Task :core:testing:extractAndroidMainAnnotations UP-TO-DATE
+> Task :core:testing:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:processAndroidMainManifest UP-TO-DATE
+> Task :core:testing:kmpPartiallyResolvedDependenciesChecker
+> Task :core:testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:compileAndroidMain UP-TO-DATE
+> Task :core:testing:processAndroidMainJavaRes UP-TO-DATE
+> Task :core:testing:mergeAndroidMainJavaResource UP-TO-DATE
+> Task :core:testing:syncAndroidMainLibJars UP-TO-DATE
+> Task :core:testing:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :core:testing:bundleAndroidMainLocalLintAar UP-TO-DATE
+> Task :core:datastore:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:testing:bundleAndroidMainClassesToRuntimeJar UP-TO-DATE
+> Task :core:testing:createFullJarAndroidMain UP-TO-DATE
+> Task :core:testing:prepareLintJarForPublish UP-TO-DATE
+> Task :core:datastore:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :core:datastore:lintAnalyzeAndroidHostTest UP-TO-DATE
+> Task :core:designsystem:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForAppleMain NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForAppleMain NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForAppleMain NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForAppleMain NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForAppleTest NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForAppleTest NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForAppleTest NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForAppleTest NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForIosMain NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForIosMain NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForIosMain NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForIosMain NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForIosSimulatorArm64Main NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForIosSimulatorArm64Main NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForIosSimulatorArm64Test NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForIosSimulatorArm64Test NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForIosTest NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForIosTest NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForIosTest NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForIosTest NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForNativeMain NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForNativeMain NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForNativeMain NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForNativeMain NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForNativeTest NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForNativeTest NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForNativeTest NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForNativeTest NO-SOURCE
+> Task :core:designsystem:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:designsystem:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :core:designsystem:lintAnalyzeAndroidHostTest UP-TO-DATE
+> Task :core:mvi:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:mvi:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :core:mvi:lintAnalyzeAndroidHostTest UP-TO-DATE
+> Task :core:navigation:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForAppleMain NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForAppleMain NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForAppleMain NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForAppleMain NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForAppleTest NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForAppleTest NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForAppleTest NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForAppleTest NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForIosMain NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForIosMain NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForIosMain NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForIosMain NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForIosSimulatorArm64Main NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForIosSimulatorArm64Main NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForIosSimulatorArm64Test NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForIosSimulatorArm64Test NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForIosTest NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForIosTest NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForIosTest NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForIosTest NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForNativeMain NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForNativeMain NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForNativeMain NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForNativeMain NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForNativeTest NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForNativeTest NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForNativeTest NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForNativeTest NO-SOURCE
+> Task :core:navigation:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:navigation:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :core:navigation:lintAnalyzeAndroidHostTest UP-TO-DATE
+> Task :core:network:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:network:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :core:network:lintAnalyzeAndroidHostTest UP-TO-DATE
+> Task :core:ui:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForAppleMain NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForAppleMain NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForAppleMain NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForAppleMain NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForAppleTest NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForAppleTest NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForAppleTest NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForAppleTest NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForIosMain NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForIosMain NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForIosMain NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForIosMain NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForIosSimulatorArm64Main NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForIosSimulatorArm64Main NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForIosSimulatorArm64Test NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForIosSimulatorArm64Test NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForIosTest NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForIosTest NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForIosTest NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForIosTest NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForNativeMain NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForNativeMain NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForNativeMain NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForNativeMain NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForNativeTest NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForNativeTest NO-SOURCE
+> Task :core:ui:prepareComposeResourcesTaskForNativeTest NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForNativeTest NO-SOURCE
+> Task :core:ui:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:ui:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :core:ui:lintAnalyzeAndroidHostTest UP-TO-DATE
+> Task :data:sample:preAndroidHostTestBuild UP-TO-DATE
+> Task :feature:onboarding:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForAppleMain NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForAppleMain NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForAppleMain NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForAppleMain NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForAppleTest NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForAppleTest NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForAppleTest NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForAppleTest NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForIosMain NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForIosMain NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForIosMain NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForIosMain NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForIosTest NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForIosTest NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForIosTest NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForIosTest NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForNativeMain NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForNativeMain NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForNativeMain NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForNativeMain NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForNativeTest NO-SOURCE
+> Task :feature:onboarding:copyNonXmlValueResourcesForNativeTest NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForNativeTest NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForNativeTest NO-SOURCE
+> Task :feature:onboarding:preAndroidHostTestBuild UP-TO-DATE
+> Task :feature:onboarding:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :feature:onboarding:lintAnalyzeAndroidHostTest UP-TO-DATE
+> Task :feature:sample:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForAppleMain NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForAppleMain NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForAppleMain NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForAppleMain NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForAppleTest NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForAppleTest NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForAppleTest NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForAppleTest NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForIosMain NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForIosMain NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForIosMain NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForIosMain NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForIosTest NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForIosTest NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForIosTest NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForIosTest NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForNativeMain NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForNativeMain NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForNativeMain NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForNativeMain NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForNativeTest NO-SOURCE
+> Task :feature:sample:copyNonXmlValueResourcesForNativeTest NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForNativeTest NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForNativeTest NO-SOURCE
+> Task :feature:sample:preAndroidHostTestBuild UP-TO-DATE
+> Task :feature:settings:convertXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForAndroidHostTest NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForAndroidHostTest NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForAndroidHostTest NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForAppleMain NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForAppleMain NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForAppleMain NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForAppleMain NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForAppleTest NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForAppleTest NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForAppleTest NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForAppleTest NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForCommonTest NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForCommonTest NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForCommonTest NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForCommonTest NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForIosMain NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForIosMain NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForIosMain NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForIosMain NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForIosSimulatorArm64Main NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForIosSimulatorArm64Test NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForIosTest NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForIosTest NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForIosTest NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForIosTest NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForNativeMain NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForNativeMain NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForNativeMain NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForNativeMain NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForNativeTest NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForNativeTest NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForNativeTest NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForNativeTest NO-SOURCE
+> Task :feature:settings:preAndroidHostTestBuild UP-TO-DATE
+> Task :feature:settings:generateAndroidHostTestLintModel UP-TO-DATE
+> Task :core:database:kspKotlinIosSimulatorArm64
+> Task :core:database:kspAndroidMain
+
+> Task :core:database:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:database:compileAndroidMain
+> Task :core:database:bundleAndroidMainClassesToCompileJar
+> Task :core:database:kspAndroidHostTest NO-SOURCE
+> Task :data:sample:compileAndroidMain
+> Task :data:sample:bundleAndroidMainClassesToCompileJar
+> Task :feature:sample:compileAndroidMain
+> Task :feature:settings:lintAnalyzeAndroidHostTest
+> Task :feature:sample:bundleAndroidMainClassesToCompileJar
+> Task :core:database:processAndroidMainJavaRes
+> Task :data:sample:processAndroidMainJavaRes
+> Task :feature:sample:processAndroidMainJavaRes
+> Task :feature:sample:bundleLibRuntimeToDirAndroidMain
+> Task :shared:compileAndroidMain
+> Task :shared:bundleAndroidMainClassesToCompileJar
+> Task :androidApp:mergeExtDexDevDebug
+> Task :shared:processAndroidMainJavaRes
+> Task :shared:bundleLibRuntimeToDirAndroidMain
+> Task :data:sample:bundleLibRuntimeToDirAndroidMain
+
+> Task :androidApp:compileDevDebugKotlin FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:5:21 Unresolved reference 'core'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:6:21 Unresolved reference 'core'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:7:21 Unresolved reference 'core'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:17:32 Unresolved reference 'Log'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:29:25 Unresolved reference 'AppLogger'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:30:29 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:32:13 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:33:13 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:34:13 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:35:13 Unresolved reference 'LogLevel'.
+
+> Task :core:database:bundleLibRuntimeToDirAndroidMain
+> Task :shared:extractAndroidMainAnnotations
+> Task :shared:bundleAndroidMainClassesToRuntimeJar
+> Task :shared:createFullJarAndroidMain
+> Task :core:database:bundleAndroidMainClassesToRuntimeJar
+> Task :core:database:createFullJarAndroidMain
+> Task :data:sample:bundleAndroidMainClassesToRuntimeJar
+> Task :data:sample:createFullJarAndroidMain
+> Task :shared:mergeAndroidMainJavaResource
+> Task :shared:syncAndroidMainLibJars
+> Task :feature:sample:bundleAndroidMainClassesToRuntimeJar
+> Task :feature:sample:createFullJarAndroidMain
+> Task :shared:bundleAndroidMainLocalLintAar
+> Task :feature:sample:extractAndroidMainAnnotations
+> Task :data:sample:extractAndroidMainAnnotations
+> Task :feature:sample:mergeAndroidMainJavaResource
+> Task :data:sample:mergeAndroidMainJavaResource
+> Task :data:sample:syncAndroidMainLibJars
+> Task :feature:sample:syncAndroidMainLibJars
+> Task :data:sample:bundleAndroidMainLocalLintAar
+> Task :feature:sample:bundleAndroidMainLocalLintAar
+> Task :core:database:mergeAndroidMainJavaResource
+> Task :androidApp:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :androidApp:preProdDebugBuild UP-TO-DATE
+> Task :androidApp:generateProdDebugBuildConfig UP-TO-DATE
+> Task :androidApp:generateProdDebugResources UP-TO-DATE
+> Task :core:database:syncAndroidMainLibJars
+> Task :androidApp:packageProdDebugResources UP-TO-DATE
+> Task :androidApp:mergeLibDexDevDebug
+> Task :core:database:bundleAndroidMainLocalLintAar
+> Task :core:database:generateAndroidHostTestLintModel
+> Task :shared:generateAndroidHostTestLintModel
+> Task :data:sample:generateAndroidHostTestLintModel
+> Task :core:database:lintAnalyzeAndroidHostTest
+> Task :data:sample:lintAnalyzeAndroidHostTest
+> Task :feature:sample:generateAndroidHostTestLintModel
+> Task :androidApp:processProdDebugNavigationResources UP-TO-DATE
+> Task :androidApp:parseProdDebugLocalResources UP-TO-DATE
+> Task :androidApp:generateProdDebugRFile UP-TO-DATE
+> Task :feature:sample:lintAnalyzeAndroidHostTest
+> Task :androidApp:javaPreCompileProdDebug UP-TO-DATE
+> Task :androidApp:checkProdDebugAarMetadata UP-TO-DATE
+> Task :androidApp:mapProdDebugSourceSetPaths UP-TO-DATE
+> Task :androidApp:compileProdDebugNavigationResources UP-TO-DATE
+
+> Task :androidApp:compileProdDebugKotlin FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:5:21 Unresolved reference 'core'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:6:21 Unresolved reference 'core'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:7:21 Unresolved reference 'core'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:17:32 Unresolved reference 'Log'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:29:25 Unresolved reference 'AppLogger'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:30:29 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:32:13 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:33:13 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:34:13 Unresolved reference 'LogLevel'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt:35:13 Unresolved reference 'LogLevel'.
+
+> Task :androidApp:createProdDebugCompatibleScreenManifests UP-TO-DATE
+> Task :androidApp:extractDeepLinksProdDebug UP-TO-DATE
+> Task :androidApp:processProdDebugMainManifest UP-TO-DATE
+> Task :androidApp:processProdDebugManifest UP-TO-DATE
+> Task :androidApp:processProdDebugManifestForPackage UP-TO-DATE
+> Task :androidApp:preProdDebugUnitTestBuild UP-TO-DATE
+> Task :androidApp:javaPreCompileProdDebugUnitTest UP-TO-DATE
+> Task :shared:checkIosSimulatorArm64MainComposeLibrariesCompatibility
+> Task :shared:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :shared:generateActualResourceCollectorsForIosSimulatorArm64Main UP-TO-DATE
+> Task :core:database:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:datastore:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :androidApp:mergeProdDebugResources UP-TO-DATE
+> Task :core:datastore:compileKotlinIosSimulatorArm64 UP-TO-DATE
+> Task :core:datastore:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:designsystem:checkIosSimulatorArm64MainComposeLibrariesCompatibility
+> Task :core:designsystem:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :androidApp:processProdDebugResources UP-TO-DATE
+> Task :core:designsystem:generateActualResourceCollectorsForIosSimulatorArm64Main UP-TO-DATE
+> Task :core:designsystem:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:mvi:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :core:database:iosSimulatorArm64MainKlibrary
+> Task :core:database:kspTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:database:copyRoomSchemas
+> Task :core:mvi:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:navigation:checkIosSimulatorArm64MainComposeLibrariesCompatibility
+> Task :core:navigation:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :core:navigation:generateActualResourceCollectorsForIosSimulatorArm64Main UP-TO-DATE
+> Task :core:navigation:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:network:downloadKotlinNativeDistribution UP-TO-DATE
+
+> Task :core:designsystem:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :shared:lintAnalyzeAndroidHostTest
+> Task :core:network:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:ui:checkIosSimulatorArm64MainComposeLibrariesCompatibility
+> Task :core:ui:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :core:ui:generateActualResourceCollectorsForIosSimulatorArm64Main UP-TO-DATE
+> Task :core:ui:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :data:sample:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :data:sample:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :feature:onboarding:checkIosSimulatorArm64MainComposeLibrariesCompatibility
+> Task :feature:onboarding:downloadKotlinNativeDistribution UP-TO-DATE
+
+> Task :core:mvi:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:onboarding:generateActualResourceCollectorsForIosSimulatorArm64Main UP-TO-DATE
+> Task :feature:onboarding:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :feature:sample:checkIosSimulatorArm64MainComposeLibrariesCompatibility
+> Task :feature:sample:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :feature:sample:generateActualResourceCollectorsForIosSimulatorArm64Main UP-TO-DATE
+> Task :feature:sample:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :feature:settings:checkIosSimulatorArm64MainComposeLibrariesCompatibility
+> Task :feature:settings:downloadKotlinNativeDistribution UP-TO-DATE
+> Task :feature:settings:generateActualResourceCollectorsForIosSimulatorArm64Main UP-TO-DATE
+> Task :feature:settings:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :shared:checkIosSimulatorArm64TestComposeLibrariesCompatibility
+
+> Task :core:network:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:assembleIosSimulatorArm64MainResources UP-TO-DATE
+> Task :core:designsystem:iosSimulatorArm64CopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :core:designsystem:iosSimulatorArm64ZipMultiplatformResourcesForPublication UP-TO-DATE
+> Task :core:navigation:assembleIosSimulatorArm64MainResources UP-TO-DATE
+> Task :core:navigation:iosSimulatorArm64CopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :core:navigation:iosSimulatorArm64ZipMultiplatformResourcesForPublication UP-TO-DATE
+> Task :core:ui:assembleIosSimulatorArm64MainResources UP-TO-DATE
+> Task :core:ui:iosSimulatorArm64CopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :core:ui:iosSimulatorArm64ZipMultiplatformResourcesForPublication UP-TO-DATE
+> Task :feature:onboarding:assembleIosSimulatorArm64MainResources UP-TO-DATE
+> Task :feature:onboarding:iosSimulatorArm64CopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :feature:onboarding:iosSimulatorArm64ZipMultiplatformResourcesForPublication UP-TO-DATE
+> Task :feature:sample:assembleIosSimulatorArm64MainResources UP-TO-DATE
+> Task :feature:sample:iosSimulatorArm64CopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :feature:sample:iosSimulatorArm64ZipMultiplatformResourcesForPublication UP-TO-DATE
+> Task :feature:settings:assembleIosSimulatorArm64MainResources UP-TO-DATE
+> Task :feature:settings:iosSimulatorArm64CopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :feature:settings:iosSimulatorArm64ZipMultiplatformResourcesForPublication UP-TO-DATE
+> Task :shared:iosSimulatorArm64ResolveResourcesFromDependencies UP-TO-DATE
+> Task :shared:assembleIosSimulatorArm64MainResources UP-TO-DATE
+> Task :shared:iosSimulatorArm64ResolveSelfResourcesCopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :shared:iosSimulatorArm64AggregateResources UP-TO-DATE
+> Task :shared:iosSimulatorArm64ProcessResources UP-TO-DATE
+> Task :shared:validateLocalSwiftPMDependencies SKIPPED
+> Task :shared:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :shared:fingerprintSyntheticPackage
+> Task :shared:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :shared:generateUmbrellaPackageIdentifierBasedResolutionForDefault SKIPPED
+> Task :shared:fetchUmbrellaPackageIdentifierForDefault SKIPPED
+> Task :shared:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :shared:fetchSyntheticImportProjectPackages SKIPPED
+> Task :shared:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :shared:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :shared:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :shared:assembleIosSimulatorArm64TestResources UP-TO-DATE
+> Task :shared:copyTestComposeResourcesForIosSimulatorArm64 UP-TO-DATE
+> Task :shared:androidJar UP-TO-DATE
+> Task :shared:generateAndroidHostTestAssets UP-TO-DATE
+> Task :shared:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :shared:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :shared:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :shared:generateAndroidHostTestResources UP-TO-DATE
+> Task :shared:mergeAndroidHostTestResources UP-TO-DATE
+> Task :shared:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :shared:processAndroidHostTestManifest UP-TO-DATE
+> Task :shared:processAndroidHostTestResources UP-TO-DATE
+> Task :shared:packageAndroidHostTestForUnitTest
+> Task :shared:generateAndroidHostTestConfig
+> Task :shared:compileAndroidHostTest
+> Task :shared:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:common:iosSimulatorArm64ProcessResources NO-SOURCE
+> Task :core:common:iosSimulatorArm64MainKlibrary UP-TO-DATE
+
+> Task :core:common:compileTestKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :shared:testAndroidHostTest
+
+KoinModulesTest > appModules_defineEveryConstructorDependency FAILED
+    org.koin.test.verify.MissingKoinDefinitionException at KoinModulesTest.kt:30
+
+1 test completed, 1 failed
+There were failing tests. See the report at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/shared/build/reports/tests/testAndroidHostTest/index.html
+
+> Task :shared:testAndroid
+> Task :core:common:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:common:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:common:fingerprintSyntheticPackage
+> Task :core:common:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:common:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:common:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:common:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:common:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:common:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:common:compileTestKotlinJvm UP-TO-DATE
+> Task :core:common:compileJvmTestJava NO-SOURCE
+> Task :core:common:jvmTestProcessResources NO-SOURCE
+> Task :core:common:processJvmTestResources SKIPPED
+> Task :core:common:jvmTestClasses UP-TO-DATE
+> Task :core:common:jvmTest UP-TO-DATE
+> Task :core:database:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:database:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:database:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:database:fingerprintSyntheticPackage
+> Task :core:database:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:database:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:database:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:database:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:database:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:database:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:database:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:database:iosSimulatorArm64Test SKIPPED
+> Task :core:database:androidJar UP-TO-DATE
+> Task :core:database:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:database:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:database:packageAndroidHostTestForUnitTest
+> Task :core:database:generateAndroidHostTestConfig
+> Task :core:database:compileAndroidHostTest NO-SOURCE
+> Task :core:database:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:database:testAndroidHostTest NO-SOURCE
+> Task :core:database:allTests NO-SOURCE
+> Task :core:database:testAndroid UP-TO-DATE
+> Task :core:database:check UP-TO-DATE
+> Task :core:datastore:iosSimulatorArm64ProcessResources NO-SOURCE
+> Task :core:datastore:iosSimulatorArm64MainKlibrary UP-TO-DATE
+> Task :core:testing:downloadKotlinNativeDistribution UP-TO-DATE
+
+> Task :data:sample:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:common:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:common:iosSimulatorArm64Test SKIPPED
+> Task :core:common:allTests
+> Task :core:common:check
+> Task :core:testing:exportCrossCompilationMetadataForIosSimulatorArm64ApiElements UP-TO-DATE
+> Task :core:datastore:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:datastore:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:datastore:fingerprintSyntheticPackage
+> Task :core:datastore:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:datastore:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:datastore:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:datastore:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:datastore:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:datastore:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:datastore:androidJar UP-TO-DATE
+> Task :core:datastore:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:datastore:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:datastore:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:datastore:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+
+> Task :core:testing:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:datastore:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:datastore:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:datastore:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:datastore:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:datastore:processAndroidHostTestResources UP-TO-DATE
+> Task :core:datastore:packageAndroidHostTestForUnitTest
+> Task :core:datastore:generateAndroidHostTestConfig
+> Task :core:testing:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :core:datastore:compileAndroidHostTest NO-SOURCE
+> Task :core:datastore:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:datastore:testAndroidHostTest NO-SOURCE
+> Task :core:datastore:testAndroid UP-TO-DATE
+> Task :core:designsystem:checkIosSimulatorArm64TestComposeLibrariesCompatibility
+> Task :core:designsystem:iosSimulatorArm64ResolveResourcesFromDependencies UP-TO-DATE
+> Task :core:designsystem:iosSimulatorArm64ResolveSelfResourcesCopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :core:designsystem:iosSimulatorArm64AggregateResources UP-TO-DATE
+> Task :core:designsystem:iosSimulatorArm64ProcessResources UP-TO-DATE
+> Task :core:designsystem:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:designsystem:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:designsystem:fingerprintSyntheticPackage
+> Task :core:designsystem:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:designsystem:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:designsystem:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:designsystem:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:designsystem:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:designsystem:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:designsystem:assembleIosSimulatorArm64TestResources UP-TO-DATE
+> Task :core:designsystem:copyTestComposeResourcesForIosSimulatorArm64 UP-TO-DATE
+> Task :core:designsystem:androidJar UP-TO-DATE
+> Task :core:designsystem:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:designsystem:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:designsystem:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:designsystem:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:designsystem:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:designsystem:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:designsystem:processAndroidHostTestResources UP-TO-DATE
+> Task :core:designsystem:packageAndroidHostTestForUnitTest
+> Task :core:designsystem:generateAndroidHostTestConfig
+> Task :core:designsystem:compileAndroidHostTest NO-SOURCE
+> Task :core:designsystem:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:designsystem:testAndroidHostTest NO-SOURCE
+> Task :core:designsystem:testAndroid UP-TO-DATE
+> Task :core:mvi:iosSimulatorArm64ProcessResources NO-SOURCE
+> Task :core:mvi:iosSimulatorArm64MainKlibrary
+> Task :core:mvi:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:mvi:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:mvi:fingerprintSyntheticPackage
+> Task :core:mvi:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:mvi:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:mvi:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:mvi:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:mvi:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:mvi:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:mvi:androidJar UP-TO-DATE
+> Task :core:mvi:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:mvi:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:mvi:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:mvi:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :core:mvi:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:mvi:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:mvi:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:mvi:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:mvi:processAndroidHostTestResources UP-TO-DATE
+> Task :core:mvi:packageAndroidHostTestForUnitTest
+> Task :core:mvi:generateAndroidHostTestConfig
+
+> Task :core:mvi:compileAndroidHostTest
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:28:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:44:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:46:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:58:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:60:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:73:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:75:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:80:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:91:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:94:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:103:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:107:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:109:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:113:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:115:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:119:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:121:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:131:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:136:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+
+> Task :core:mvi:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:datastore:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:datastore:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:datastore:iosSimulatorArm64Test SKIPPED
+> Task :core:datastore:allTests NO-SOURCE
+> Task :core:datastore:check UP-TO-DATE
+> Task :core:mvi:testAndroidHostTest
+> Task :core:mvi:testAndroid
+> Task :core:navigation:checkIosSimulatorArm64TestComposeLibrariesCompatibility
+> Task :core:navigation:iosSimulatorArm64ResolveResourcesFromDependencies UP-TO-DATE
+> Task :core:navigation:iosSimulatorArm64ResolveSelfResourcesCopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :core:navigation:iosSimulatorArm64AggregateResources UP-TO-DATE
+> Task :core:navigation:iosSimulatorArm64ProcessResources UP-TO-DATE
+> Task :core:navigation:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:navigation:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:navigation:fingerprintSyntheticPackage
+> Task :core:navigation:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:navigation:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:navigation:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:navigation:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:navigation:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:navigation:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:navigation:assembleIosSimulatorArm64TestResources UP-TO-DATE
+> Task :core:navigation:copyTestComposeResourcesForIosSimulatorArm64 UP-TO-DATE
+> Task :core:navigation:androidJar UP-TO-DATE
+> Task :core:navigation:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:navigation:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:navigation:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:navigation:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :core:navigation:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:navigation:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:navigation:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:navigation:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:navigation:processAndroidHostTestResources UP-TO-DATE
+> Task :core:navigation:packageAndroidHostTestForUnitTest
+> Task :core:navigation:generateAndroidHostTestConfig
+> Task :core:navigation:compileAndroidHostTest NO-SOURCE
+> Task :core:navigation:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:navigation:testAndroidHostTest NO-SOURCE
+> Task :core:navigation:testAndroid UP-TO-DATE
+> Task :core:network:iosSimulatorArm64ProcessResources NO-SOURCE
+> Task :core:network:iosSimulatorArm64MainKlibrary
+> Task :core:network:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:network:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:network:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:network:fingerprintSyntheticPackage
+> Task :core:network:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:network:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:network:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:network:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:network:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:network:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:network:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:network:iosSimulatorArm64Test SKIPPED
+> Task :core:network:androidJar UP-TO-DATE
+> Task :core:network:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:network:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:network:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:network:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :core:network:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:network:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:network:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:network:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:network:processAndroidHostTestResources UP-TO-DATE
+> Task :core:network:packageAndroidHostTestForUnitTest
+> Task :core:network:generateAndroidHostTestConfig
+> Task :core:network:compileAndroidHostTest NO-SOURCE
+> Task :core:network:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:network:testAndroidHostTest NO-SOURCE
+> Task :core:network:allTests NO-SOURCE
+> Task :core:network:testAndroid UP-TO-DATE
+> Task :core:network:check UP-TO-DATE
+> Task :core:testing:iosSimulatorArm64ProcessResources NO-SOURCE
+> Task :core:testing:iosSimulatorArm64MainKlibrary
+> Task :core:testing:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:testing:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:testing:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:testing:fingerprintSyntheticPackage
+> Task :core:testing:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:testing:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:testing:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:testing:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:testing:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:testing:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:testing:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:testing:iosSimulatorArm64Test SKIPPED
+> Task :core:testing:androidJar UP-TO-DATE
+> Task :core:testing:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:testing:preAndroidHostTestBuild UP-TO-DATE
+> Task :core:testing:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:testing:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:testing:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :core:testing:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:testing:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:testing:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:testing:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:designsystem:iosSimulatorArm64MainKlibrary
+> Task :core:designsystem:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:designsystem:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:designsystem:iosSimulatorArm64Test SKIPPED
+> Task :core:designsystem:allTests NO-SOURCE
+> Task :core:designsystem:check UP-TO-DATE
+> Task :core:testing:processAndroidHostTestResources UP-TO-DATE
+> Task :core:testing:packageAndroidHostTestForUnitTest
+> Task :core:testing:generateAndroidHostTestConfig
+> Task :core:testing:compileAndroidHostTest NO-SOURCE
+> Task :core:testing:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:testing:testAndroidHostTest NO-SOURCE
+> Task :core:testing:allTests NO-SOURCE
+> Task :core:testing:testAndroid UP-TO-DATE
+> Task :core:testing:check UP-TO-DATE
+> Task :core:ui:checkIosSimulatorArm64TestComposeLibrariesCompatibility
+> Task :core:ui:iosSimulatorArm64ResolveResourcesFromDependencies UP-TO-DATE
+> Task :core:ui:iosSimulatorArm64ResolveSelfResourcesCopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :core:ui:iosSimulatorArm64AggregateResources UP-TO-DATE
+> Task :core:ui:iosSimulatorArm64ProcessResources UP-TO-DATE
+> Task :core:ui:validateLocalSwiftPMDependencies SKIPPED
+> Task :core:ui:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :core:ui:fingerprintSyntheticPackage
+> Task :core:ui:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :core:ui:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :core:ui:fetchSyntheticImportProjectPackages SKIPPED
+> Task :core:ui:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :core:ui:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :core:ui:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :core:ui:assembleIosSimulatorArm64TestResources UP-TO-DATE
+> Task :core:ui:copyTestComposeResourcesForIosSimulatorArm64 UP-TO-DATE
+> Task :core:ui:androidJar UP-TO-DATE
+> Task :core:ui:generateAndroidHostTestAssets UP-TO-DATE
+> Task :core:ui:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :core:ui:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :core:ui:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :core:ui:generateAndroidHostTestResources UP-TO-DATE
+> Task :core:ui:mergeAndroidHostTestResources UP-TO-DATE
+> Task :core:ui:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :core:ui:processAndroidHostTestManifest UP-TO-DATE
+> Task :core:ui:processAndroidHostTestResources UP-TO-DATE
+> Task :core:ui:packageAndroidHostTestForUnitTest
+> Task :core:ui:generateAndroidHostTestConfig
+> Task :core:ui:compileAndroidHostTest NO-SOURCE
+> Task :core:ui:processAndroidHostTestJavaRes NO-SOURCE
+> Task :core:ui:testAndroidHostTest NO-SOURCE
+> Task :core:ui:testAndroid UP-TO-DATE
+> Task :data:sample:iosSimulatorArm64ProcessResources NO-SOURCE
+> Task :data:sample:iosSimulatorArm64MainKlibrary
+> Task :data:sample:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :data:sample:validateLocalSwiftPMDependencies SKIPPED
+> Task :data:sample:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :data:sample:fingerprintSyntheticPackage
+> Task :data:sample:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :data:sample:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :data:sample:fetchSyntheticImportProjectPackages SKIPPED
+> Task :data:sample:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :data:sample:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :data:sample:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :data:sample:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :data:sample:iosSimulatorArm64Test SKIPPED
+> Task :data:sample:androidJar UP-TO-DATE
+> Task :data:sample:generateAndroidHostTestAssets UP-TO-DATE
+
+> Task :core:mvi:compileTestKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :data:sample:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :data:sample:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :data:sample:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :data:sample:generateAndroidHostTestResources UP-TO-DATE
+> Task :data:sample:mergeAndroidHostTestResources UP-TO-DATE
+> Task :data:sample:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :data:sample:processAndroidHostTestManifest UP-TO-DATE
+> Task :data:sample:processAndroidHostTestResources UP-TO-DATE
+> Task :data:sample:packageAndroidHostTestForUnitTest
+> Task :data:sample:generateAndroidHostTestConfig
+> Task :data:sample:compileAndroidHostTest NO-SOURCE
+> Task :data:sample:processAndroidHostTestJavaRes NO-SOURCE
+> Task :data:sample:testAndroidHostTest NO-SOURCE
+> Task :data:sample:allTests NO-SOURCE
+> Task :data:sample:testAndroid UP-TO-DATE
+> Task :data:sample:check UP-TO-DATE
+> Task :feature:onboarding:checkIosSimulatorArm64TestComposeLibrariesCompatibility
+> Task :feature:onboarding:iosSimulatorArm64ResolveResourcesFromDependencies UP-TO-DATE
+> Task :feature:onboarding:iosSimulatorArm64ResolveSelfResourcesCopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :feature:onboarding:iosSimulatorArm64AggregateResources UP-TO-DATE
+> Task :feature:onboarding:iosSimulatorArm64ProcessResources UP-TO-DATE
+> Task :feature:onboarding:validateLocalSwiftPMDependencies SKIPPED
+> Task :feature:onboarding:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :feature:onboarding:fingerprintSyntheticPackage
+> Task :feature:onboarding:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :feature:onboarding:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :feature:onboarding:fetchSyntheticImportProjectPackages SKIPPED
+> Task :feature:onboarding:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :feature:onboarding:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :feature:onboarding:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :feature:onboarding:assembleIosSimulatorArm64TestResources UP-TO-DATE
+> Task :feature:onboarding:copyTestComposeResourcesForIosSimulatorArm64 UP-TO-DATE
+> Task :feature:onboarding:androidJar UP-TO-DATE
+> Task :feature:onboarding:generateAndroidHostTestAssets UP-TO-DATE
+> Task :feature:onboarding:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :feature:onboarding:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :feature:onboarding:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :feature:onboarding:generateAndroidHostTestResources UP-TO-DATE
+> Task :feature:onboarding:mergeAndroidHostTestResources UP-TO-DATE
+> Task :feature:onboarding:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :feature:onboarding:processAndroidHostTestManifest UP-TO-DATE
+> Task :feature:onboarding:processAndroidHostTestResources UP-TO-DATE
+> Task :feature:onboarding:packageAndroidHostTestForUnitTest
+> Task :feature:onboarding:generateAndroidHostTestConfig
+> Task :feature:onboarding:compileAndroidHostTest NO-SOURCE
+> Task :feature:onboarding:processAndroidHostTestJavaRes NO-SOURCE
+> Task :feature:onboarding:testAndroidHostTest NO-SOURCE
+> Task :feature:onboarding:testAndroid UP-TO-DATE
+> Task :feature:sample:checkIosSimulatorArm64TestComposeLibrariesCompatibility
+> Task :feature:sample:iosSimulatorArm64ResolveResourcesFromDependencies UP-TO-DATE
+> Task :feature:sample:iosSimulatorArm64ResolveSelfResourcesCopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :feature:sample:iosSimulatorArm64AggregateResources UP-TO-DATE
+> Task :feature:sample:iosSimulatorArm64ProcessResources UP-TO-DATE
+> Task :feature:sample:validateLocalSwiftPMDependencies SKIPPED
+> Task :feature:sample:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :feature:sample:fingerprintSyntheticPackage
+> Task :feature:sample:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :feature:sample:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :feature:sample:fetchSyntheticImportProjectPackages SKIPPED
+> Task :feature:sample:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :feature:sample:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :feature:sample:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :feature:sample:assembleIosSimulatorArm64TestResources UP-TO-DATE
+> Task :feature:sample:copyTestComposeResourcesForIosSimulatorArm64 UP-TO-DATE
+> Task :feature:sample:androidJar UP-TO-DATE
+> Task :feature:sample:generateAndroidHostTestAssets UP-TO-DATE
+> Task :feature:sample:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :feature:sample:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :feature:sample:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :feature:sample:generateAndroidHostTestResources UP-TO-DATE
+> Task :feature:sample:mergeAndroidHostTestResources UP-TO-DATE
+> Task :feature:sample:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :feature:sample:processAndroidHostTestManifest UP-TO-DATE
+> Task :feature:sample:processAndroidHostTestResources UP-TO-DATE
+> Task :feature:sample:packageAndroidHostTestForUnitTest
+> Task :feature:sample:generateAndroidHostTestConfig
+> Task :feature:sample:compileAndroidHostTest NO-SOURCE
+> Task :feature:sample:processAndroidHostTestJavaRes NO-SOURCE
+> Task :feature:sample:testAndroidHostTest NO-SOURCE
+> Task :feature:sample:testAndroid UP-TO-DATE
+> Task :feature:settings:checkIosSimulatorArm64TestComposeLibrariesCompatibility
+> Task :feature:settings:iosSimulatorArm64ResolveResourcesFromDependencies UP-TO-DATE
+> Task :feature:settings:iosSimulatorArm64ResolveSelfResourcesCopyHierarchicalMultiplatformResources UP-TO-DATE
+> Task :feature:settings:iosSimulatorArm64AggregateResources UP-TO-DATE
+> Task :feature:settings:iosSimulatorArm64ProcessResources UP-TO-DATE
+> Task :feature:settings:validateLocalSwiftPMDependencies SKIPPED
+> Task :feature:settings:computeLocalPackageDependencyInputFiles SKIPPED
+> Task :feature:settings:fingerprintSyntheticPackage
+> Task :feature:settings:generateSyntheticLinkageSwiftPMImportProjectForCinteropsAndLdDump SKIPPED
+> Task :feature:settings:syncPersistedPackageResolvedToSynthetic SKIPPED
+> Task :feature:settings:fetchSyntheticImportProjectPackages SKIPPED
+> Task :feature:settings:fingerprintXcodebuildIphonesimulator SKIPPED
+> Task :feature:settings:dumpXcodebuildArgsIphonesimulator SKIPPED
+> Task :feature:settings:convertSyntheticImportProjectIntoDefFileIphonesimulator SKIPPED
+> Task :feature:settings:assembleIosSimulatorArm64TestResources UP-TO-DATE
+> Task :feature:settings:copyTestComposeResourcesForIosSimulatorArm64 UP-TO-DATE
+> Task :feature:settings:androidJar UP-TO-DATE
+> Task :feature:settings:generateAndroidHostTestAssets UP-TO-DATE
+> Task :feature:settings:mergeAndroidHostTestAssets UP-TO-DATE
+> Task :feature:settings:checkAndroidHostTestAarMetadata UP-TO-DATE
+> Task :feature:settings:mapAndroidHostTestSourceSetPaths UP-TO-DATE
+> Task :feature:settings:generateAndroidHostTestResources UP-TO-DATE
+> Task :feature:settings:mergeAndroidHostTestResources UP-TO-DATE
+> Task :feature:settings:mergeAndroidHostTestManifest UP-TO-DATE
+> Task :feature:settings:processAndroidHostTestManifest UP-TO-DATE
+> Task :feature:settings:processAndroidHostTestResources UP-TO-DATE
+> Task :feature:settings:packageAndroidHostTestForUnitTest
+> Task :feature:settings:generateAndroidHostTestConfig
+> Task :feature:settings:compileAndroidHostTest NO-SOURCE
+> Task :feature:settings:processAndroidHostTestJavaRes NO-SOURCE
+> Task :feature:settings:testAndroidHostTest NO-SOURCE
+> Task :feature:settings:testAndroid UP-TO-DATE
+
+> Task :core:navigation:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:mvi:compileTestKotlinIosSimulatorArm64
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:28:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:44:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:46:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:58:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:60:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:73:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:75:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:80:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:91:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:94:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:103:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:107:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:109:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:113:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:115:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:119:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:121:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:131:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonTest/kotlin/com/base/app/core/mvi/MviViewModelTest.kt:136:9 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+
+> Task :core:mvi:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:mvi:iosSimulatorArm64Test SKIPPED
+> Task :core:mvi:allTests
+> Task :core:mvi:check
+
+> Task :core:ui:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:ui:iosSimulatorArm64MainKlibrary
+> Task :core:ui:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:ui:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:ui:iosSimulatorArm64Test SKIPPED
+> Task :core:ui:allTests NO-SOURCE
+> Task :core:ui:check UP-TO-DATE
+> Task :core:navigation:iosSimulatorArm64MainKlibrary
+> Task :core:navigation:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :core:navigation:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :core:navigation:iosSimulatorArm64Test SKIPPED
+> Task :core:navigation:allTests NO-SOURCE
+> Task :core:navigation:check UP-TO-DATE
+
+> Task :feature:onboarding:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:settings:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:settings:iosSimulatorArm64MainKlibrary
+> Task :feature:settings:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :feature:settings:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :feature:settings:iosSimulatorArm64Test SKIPPED
+> Task :feature:settings:allTests NO-SOURCE
+> Task :feature:settings:check UP-TO-DATE
+
+> Task :feature:sample:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:onboarding:iosSimulatorArm64MainKlibrary
+> Task :feature:onboarding:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :feature:onboarding:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :feature:onboarding:iosSimulatorArm64Test SKIPPED
+> Task :feature:onboarding:allTests NO-SOURCE
+> Task :feature:onboarding:check UP-TO-DATE
+> Task :feature:sample:iosSimulatorArm64MainKlibrary
+> Task :feature:sample:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :feature:sample:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :feature:sample:iosSimulatorArm64Test SKIPPED
+> Task :feature:sample:allTests NO-SOURCE
+> Task :feature:sample:check UP-TO-DATE
+
+> Task :shared:compileKotlinIosSimulatorArm64
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jetbrains.kotlin.org.fusesource.jansi.internal.JansiLoader in an unnamed module (file:/home/crazyhusir/.konan/kotlin-native-prebuilt-linux-x86_64-2.4.20/konan/lib/kotlin-native-compiler-embeddable.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :shared:iosSimulatorArm64MainKlibrary
+> Task :shared:compileTestKotlinIosSimulatorArm64 NO-SOURCE
+> Task :shared:linkDebugTestIosSimulatorArm64 SKIPPED
+> Task :shared:iosSimulatorArm64Test SKIPPED
+> Task :shared:allTests FAILED
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/build/reports/problems/problems-report.html
+
+FAILURE: Build completed with 3 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':androidApp:compileDevDebugKotlin' (registered by plugin 'com.android.internal.application').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_IMPORT
+       Kotlin compiler error
+         Unresolved reference 'core'.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt line 5
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':androidApp:compileProdDebugKotlin' (registered by plugin 'com.android.internal.application').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_IMPORT
+       Kotlin compiler error
+         Unresolved reference 'core'.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/androidApp/src/main/kotlin/com/base/app/BaseAppApplication.kt line 5
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+3: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':shared:allTests' (registered by plugin 'com.base.app.kmp.library').
+> There were failing tests. See the report at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/shared/build/reports/tests/allTests/index.html
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 1m 15s
+719 actionable tasks: 144 executed, 575 up-to-date
+Configuration cache entry stored.
+exit=1
+Saturday 10 October 2026 05:33:52 PM IST

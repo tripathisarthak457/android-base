@@ -1,0 +1,5 @@
+{
+  "app_name": "WP03 Catalog",
+  "package_name": "com.example.wp03skel.cp1",
+  "features": ["catalog"]
+}

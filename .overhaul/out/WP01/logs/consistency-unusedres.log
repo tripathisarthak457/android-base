@@ -1,0 +1,15 @@
+hostile-8:
+  IMPORT data/v2/src/main/kotlin/{pkg}/data/v2/V2Repository.kt: {package}.core.common.AppResult is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2Contract.kt: {package}.core.common.mvi.LoadState is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2Contract.kt: {package}.core.common.mvi.UiEffect is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2Contract.kt: {package}.core.common.mvi.UiEvent is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2Contract.kt: {package}.core.common.mvi.UiState is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2NavKeys.kt: {package}.core.navigation.AppNavKey is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2Screen.kt: {package}.core.common.mvi.LoadState is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2ViewModel.kt: {package}.core.common.AppResult is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2ViewModel.kt: {package}.core.common.mvi.LoadState is not declared
+  IMPORT feature/v2/src/main/kotlin/{pkg}/feature/v2/V2ViewModel.kt: {package}.core.common.mvi.MviViewModel is not declared
+  IMPORT feature/v2/src/test/kotlin/{pkg}/feature/v2/V2ViewModelTest.kt: {package}.core.common.AppResult is not declared
+  IMPORT feature/v2/src/test/kotlin/{pkg}/feature/v2/V2ViewModelTest.kt: {package}.core.common.mvi.LoadState is not declared
+
+142 projects in 97 s: 12 new issues, 1263 known (12 of 12 known-issue lines seen).

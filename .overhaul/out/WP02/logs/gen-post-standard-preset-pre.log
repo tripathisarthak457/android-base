@@ -1,0 +1,30 @@
+
+Summary
+───────
+           App  Standard (Standard)
+       Package  com.example.standard
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  auth, browser, catalog, coil, deeplink, devtools, flags,
+                forms, googlefonts, language, leakcanary, media, network,
+                onboarding, profile, room, sample, settings
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/post-m2/standard-preset-pre
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/post-m2/standard-preset-pre and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

@@ -1,0 +1,48 @@
+{
+  "generator": {
+    "commit": "6bc38e9e7358",
+    "generatedOn": "2026-10-09"
+  },
+  "app_name": "Trail Notes",
+  "package_name": "com.example.null",
+  "min_sdk": 26,
+  "target_sdk": 37,
+  "compile_sdk": 37,
+  "version_name": "1.0.0",
+  "version_code": 1,
+  "features": [
+    "analytics",
+    "auth",
+    "catalog",
+    "database",
+    "deeplink",
+    "devtools",
+    "firebase",
+    "flags",
+    "forms",
+    "language",
+    "network",
+    "onboarding",
+    "push",
+    "room",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "api_base_urls": {},
+  "web_socket_urls": {},
+  "deeplink_scheme": "",
+  "deeplink_host": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "motion_style": "Standard",
+  "design_style": "Utility",
+  "haptics_enabled": true,
+  "languages": [
+    "de",
+    "pt-BR"
+  ]
+}

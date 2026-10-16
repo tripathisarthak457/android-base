@@ -1,0 +1,2510 @@
+{
+  "generator_commit": "6bc38e9e7358",
+  "rules": {
+    "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
+    "app_name_max": 50,
+    "display_name_max": 30,
+    "feature_modules_max": 12,
+    "features_max": 64,
+    "flavours": [
+      "dev",
+      "staging",
+      "prod",
+      "playstore"
+    ],
+    "font": "^[A-Za-z0-9][A-Za-z0-9 -]{0,59}$",
+    "hex": "^#?[0-9A-Fa-f]{6}$",
+    "host": "^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+$",
+    "http_url": "^https?://[A-Za-z0-9._~:/?#\\[\\]@!&'()*+,;=%-]+$",
+    "keystore_alias": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+    "keystore_country": "^[A-Za-z]{2}$",
+    "keystore_dname_forbidden": ",=+<>#;\\\"",
+    "keystore_names": [
+      "dev",
+      "staging",
+      "prod",
+      "playstore"
+    ],
+    "keystore_password_min": 6,
+    "keystore_validity_max_days": 36500,
+    "keystores_max": 4,
+    "languages_max": 10,
+    "min_compile_sdk": 37,
+    "module_name": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$",
+    "module_name_max": 30,
+    "package_first_segment_forbidden": [
+      "java",
+      "javax",
+      "kotlin"
+    ],
+    "package_max": 100,
+    "package_segments_max": 8,
+    "package_segments_min": 2,
+    "reserved_words": {
+      "java": [
+        "_",
+        "abstract",
+        "assert",
+        "boolean",
+        "break",
+        "byte",
+        "case",
+        "catch",
+        "char",
+        "class",
+        "const",
+        "continue",
+        "default",
+        "do",
+        "double",
+        "else",
+        "enum",
+        "extends",
+        "false",
+        "final",
+        "finally",
+        "float",
+        "for",
+        "goto",
+        "if",
+        "implements",
+        "import",
+        "instanceof",
+        "int",
+        "interface",
+        "long",
+        "native",
+        "new",
+        "null",
+        "package",
+        "private",
+        "protected",
+        "public",
+        "return",
+        "short",
+        "static",
+        "strictfp",
+        "super",
+        "switch",
+        "synchronized",
+        "this",
+        "throw",
+        "throws",
+        "transient",
+        "true",
+        "try",
+        "void",
+        "volatile",
+        "while"
+      ],
+      "kotlin": [
+        "as",
+        "break",
+        "class",
+        "continue",
+        "do",
+        "else",
+        "false",
+        "for",
+        "fun",
+        "if",
+        "in",
+        "interface",
+        "is",
+        "null",
+        "object",
+        "package",
+        "return",
+        "super",
+        "this",
+        "throw",
+        "true",
+        "try",
+        "typealias",
+        "typeof",
+        "val",
+        "var",
+        "when",
+        "while"
+      ]
+    },
+    "scheme": "^[a-z][a-z0-9+.-]{0,31}$",
+    "segment": "^[a-z][a-z0-9_]*$",
+    "segment_max": 30,
+    "socket_url": "^wss?://[A-Za-z0-9._~:/?#\\[\\]@!&'()*+,;=%-]+$",
+    "spec_bytes_max": 32768,
+    "template_module_names": {
+      "android": [
+        "app",
+        "auth",
+        "benchmark",
+        "build",
+        "catalog",
+        "core",
+        "data",
+        "feature",
+        "feed",
+        "onboarding",
+        "profile",
+        "sample",
+        "search",
+        "settings"
+      ]
+    },
+    "version_code_max": 2100000000,
+    "version_name": "^\\d+\\.\\d+\\.\\d+$"
+  },
+  "targets": [
+    {
+      "architectures": [
+        {
+          "available": true,
+          "description": "One module per feature and per data source. Simple, and what most apps need.",
+          "key": "compact",
+          "title": "Compact"
+        },
+        {
+          "available": false,
+          "description": "Each feature and data module split into :api and :impl, for larger teams.",
+          "key": "modular",
+          "title": "Modular"
+        }
+      ],
+      "defaults": {
+        "accent_colour": "#2C6BED",
+        "android": {
+          "compile_sdk": 37,
+          "min_sdk": 26,
+          "target_sdk": 37,
+          "version_code": 1,
+          "version_name": "1.0.0"
+        },
+        "architecture": "compact",
+        "design_style": "Utility",
+        "font_name": "DM Sans",
+        "haptics_enabled": true,
+        "languages": [],
+        "mono_font_name": "JetBrains Mono",
+        "motion_style": "Standard",
+        "preset": "standard"
+      },
+      "design_styles": [
+        {
+          "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
+          "key": "Utility",
+          "requires": [],
+          "title": "Utility"
+        },
+        {
+          "description": "Brand-tinted surfaces, pill buttons, heavier headlines, a floating tab bar. Feeds and chat.",
+          "key": "Social",
+          "requires": [],
+          "title": "Social"
+        },
+        {
+          "description": "Warm paper and ink, large tight display type, underlined fields. Reading and news.",
+          "key": "Editorial",
+          "requires": [],
+          "title": "Editorial"
+        },
+        {
+          "description": "Cream surfaces, extra-bold type, thick outlines and offset shadows. Games and kids.",
+          "key": "Playful",
+          "requires": [],
+          "title": "Playful"
+        }
+      ],
+      "features": [
+        {
+          "default": true,
+          "description": "Remote images with a skeleton placeholder and a failure glyph.",
+          "group": "networking-and-data",
+          "headline": "Load images from URLs",
+          "implied_only": false,
+          "implies": [],
+          "key": "coil",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Image loading (Coil)"
+        },
+        {
+          "default": false,
+          "description": "A database for the app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration and a test that replays it against a database that really was at the older version.",
+          "group": "networking-and-data",
+          "headline": "Store your own data, not just a cache",
+          "implied_only": false,
+          "implies": [
+            "network",
+            "room"
+          ],
+          "key": "database",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "room"
+          ],
+          "title": "App database (Room)"
+        },
+        {
+          "default": true,
+          "description": "NetworkClient with typed helpers, bearer auth with transparent 401 refresh, classified failures, and a pluggable response-envelope unwrapper.",
+          "group": "networking-and-data",
+          "headline": "Talk to a REST API",
+          "implied_only": false,
+          "implies": [],
+          "key": "network",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "REST networking (Ktor)"
+        },
+        {
+          "default": false,
+          "description": "A Feed tab on Paging 3: pages load as you scroll, a failed page keeps what is already loaded and offers a retry, and pull to refresh reloads from where you are. The list component lives in core/ui for your own feeds.",
+          "group": "networking-and-data",
+          "headline": "An endless feed that loads as you scroll",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "paging",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Paged feed"
+        },
+        {
+          "default": true,
+          "description": "Per-call-site response caching with a stale-on-failure fallback, plus a queue that replays failed mutations when connectivity returns.",
+          "group": "networking-and-data",
+          "headline": "Work offline",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "room",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Offline cache and request queue (Room)"
+        },
+        {
+          "default": false,
+          "description": "One long-lived socket with exponential backoff, a jittered retry and a connection state a UI can render.",
+          "group": "networking-and-data",
+          "headline": "Keep a live connection open",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "websocket",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "WebSocket"
+        },
+        {
+          "default": false,
+          "description": "Deferrable background work with Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory.",
+          "group": "networking-and-data",
+          "headline": "Run work in the background",
+          "implied_only": false,
+          "implies": [],
+          "key": "workmanager",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "WorkManager"
+        },
+        {
+          "default": false,
+          "description": "A fingerprint, face or screen-lock prompt when the app comes back from the background, a setting to turn it on, and the app kept out of the task switcher's thumbnail.",
+          "group": "sign-in-and-account",
+          "headline": "Ask for a fingerprint on resume",
+          "implied_only": false,
+          "implies": [
+            "settings"
+          ],
+          "key": "applock",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "settings"
+          ],
+          "title": "Biometric app lock"
+        },
+        {
+          "default": true,
+          "description": "Three screens against your auth endpoints, writing the encrypted token store — with server-side field errors mapped back onto the inputs that caused them.",
+          "group": "sign-in-and-account",
+          "headline": "Sign in, sign up, reset password",
+          "implied_only": false,
+          "implies": [
+            "forms",
+            "network"
+          ],
+          "key": "auth",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network",
+            "forms"
+          ],
+          "title": "Sign in, sign up and password reset"
+        },
+        {
+          "default": false,
+          "description": "A Continue with Google button on the sign-in screen through Credential Manager. The ID token goes to your backend, which answers with its own tokens like any sign-in.",
+          "group": "sign-in-and-account",
+          "headline": "Continue with Google",
+          "implied_only": false,
+          "implies": [
+            "auth",
+            "forms",
+            "network"
+          ],
+          "key": "googlesignin",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "auth"
+          ],
+          "title": "Sign in with Google"
+        },
+        {
+          "default": false,
+          "description": "A Profile tab with an avatar, name and bio, saved on the device per user. With the media picker on, the avatar can be a photo.",
+          "group": "sign-in-and-account",
+          "headline": "A profile tab with a photo",
+          "implied_only": false,
+          "implies": [],
+          "key": "profile",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Profile screen"
+        },
+        {
+          "default": true,
+          "description": "Composable validators, per-field touched/error state, and server-side errors mapped back onto the fields that caused them.",
+          "group": "screens",
+          "headline": "Validate forms properly",
+          "implied_only": false,
+          "implies": [],
+          "key": "forms",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Form state and validation"
+        },
+        {
+          "default": false,
+          "description": "A Language row in settings. Uses the system's per-app language on Android 13+ so it also appears in the phone's settings, and applies it by hand on older releases.",
+          "group": "screens",
+          "headline": "Let people pick the app's language",
+          "implied_only": false,
+          "implies": [
+            "settings"
+          ],
+          "key": "language",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "settings"
+          ],
+          "title": "In-app language picker"
+        },
+        {
+          "default": false,
+          "description": "The real dependency list, generated from the resolved classpath at build time and rendered by the design system. The build also fails on a licence the project has not allowed.",
+          "group": "screens",
+          "headline": "Show the licences you have to show",
+          "implied_only": false,
+          "implies": [
+            "settings"
+          ],
+          "key": "licenses",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "settings"
+          ],
+          "title": "Open source licences screen"
+        },
+        {
+          "default": true,
+          "description": "A paged walkthrough shown once, recorded in the preference store. Skipping counts as finishing, so it never comes back on the next launch.",
+          "group": "screens",
+          "headline": "A first-run walkthrough",
+          "implied_only": false,
+          "implies": [],
+          "key": "onboarding",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Onboarding flow"
+        },
+        {
+          "default": true,
+          "description": "A working list + detail feature against a live public API, with its tests. Proves every wire on first run; delete it once your own first feature exists.",
+          "group": "screens",
+          "headline": "A working screen to learn from",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "sample",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Reference feature"
+        },
+        {
+          "default": false,
+          "description": "A Search tab: results as you type with a debounce, recent searches kept per user, and the empty, no-results and error states already drawn.",
+          "group": "screens",
+          "headline": "Search as you type",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "search",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Search screen"
+        },
+        {
+          "default": true,
+          "description": "Theme switch, analytics opt-out, sign-out with confirmation and the build version — wired to the preference store and the session.",
+          "group": "screens",
+          "headline": "A settings screen",
+          "implied_only": false,
+          "implies": [],
+          "key": "settings",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Settings screen"
+        },
+        {
+          "default": false,
+          "description": "Web pages open in a Custom Tab coloured like the app rather than in the browser. Adds privacy and terms links to settings when settings is on.",
+          "group": "platform",
+          "headline": "Open web pages without leaving the app",
+          "implied_only": false,
+          "implies": [],
+          "key": "browser",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "In-app browser"
+        },
+        {
+          "default": true,
+          "description": "A custom scheme plus verified App Links, resolved through one function, with the onNewIntent handling that is usually missing.",
+          "group": "platform",
+          "headline": "Open the app from a link",
+          "implied_only": false,
+          "implies": [],
+          "key": "deeplink",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Deep linking"
+        },
+        {
+          "default": true,
+          "description": "Photo/video/document/camera pickers on the modern APIs, a permission state that can tell 'denied' from 'denied for good', and tunable image and video compression.",
+          "group": "platform",
+          "headline": "Pick and compress photos and video",
+          "implied_only": false,
+          "implies": [],
+          "key": "media",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Media picker, permissions and compression"
+        },
+        {
+          "default": false,
+          "description": "A flexible update offered in the background when a newer build is live, and a rating prompt on a schedule Play will actually honour rather than silently drop.",
+          "group": "platform",
+          "headline": "Offer updates and ask for ratings",
+          "implied_only": false,
+          "implies": [],
+          "key": "playstore",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Play in-app update and review prompts"
+        },
+        {
+          "default": false,
+          "description": "Notification channels, the runtime permission check, a messaging service, and token registration that re-submits on every launch.",
+          "group": "platform",
+          "headline": "Receive push notifications",
+          "implied_only": false,
+          "implies": [
+            "analytics",
+            "firebase",
+            "flags"
+          ],
+          "key": "push",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "firebase"
+          ],
+          "title": "Push notifications (FCM)"
+        },
+        {
+          "default": false,
+          "description": "A Glance widget in the launcher's colours showing the app's name and a line the app keeps current. Tapping it opens the app.",
+          "group": "platform",
+          "headline": "A widget on the home screen",
+          "implied_only": false,
+          "implies": [],
+          "key": "widget",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Home-screen widget"
+        },
+        {
+          "default": true,
+          "description": "Vendor-agnostic AnalyticsTracker and CrashReporter interfaces with no-op defaults, so instrumentation can be written before a vendor is chosen.",
+          "group": "observability",
+          "headline": "Track events and crashes, vendor-free",
+          "implied_only": false,
+          "implies": [],
+          "key": "analytics",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Analytics and crash-reporting seam"
+        },
+        {
+          "default": true,
+          "description": "A draggable badge naming the environment on every build except production, and a panel behind it holding the last 200 requests with their full bodies, timing and failure rate. Absent from a production build rather than hidden in one.",
+          "group": "observability",
+          "headline": "See every request the app made",
+          "implied_only": false,
+          "implies": [],
+          "key": "devtools",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "On-device inspector"
+        },
+        {
+          "default": false,
+          "description": "Analytics, Crashlytics and Remote Config in one switch: the analytics seam sends to Firebase, every logged error becomes a Crashlytics breadcrumb, and feature flags resolve from Remote Config seeded with their declared defaults.",
+          "group": "observability",
+          "headline": "Analytics, Crashlytics and Remote Config",
+          "implied_only": true,
+          "implies": [
+            "analytics",
+            "flags"
+          ],
+          "key": "firebase",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "analytics",
+            "flags"
+          ],
+          "title": "Firebase"
+        },
+        {
+          "default": true,
+          "description": "Typed flags declared in one file with their defaults beside them, read through an interface that resolves locally until a vendor is bound. Lets both sides of a flag be written before anybody has chosen one.",
+          "group": "observability",
+          "headline": "Turn a feature on without shipping",
+          "implied_only": false,
+          "implies": [],
+          "key": "flags",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Feature flag seam"
+        },
+        {
+          "default": true,
+          "description": "A second installable app showing every component in both themes. Depends on the design system alone, so design work rebuilds two modules instead of the whole graph.",
+          "group": "design",
+          "headline": "A second app showing every component",
+          "implied_only": false,
+          "implies": [],
+          "key": "catalog",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Component catalog app"
+        },
+        {
+          "default": true,
+          "description": "Inter and JetBrains Mono through the Play Services font provider — a real file per weight, which bundled variable fonts do not get on every OEM build.",
+          "group": "design",
+          "headline": "Use any Google Font",
+          "implied_only": false,
+          "implies": [],
+          "key": "googlefonts",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Downloadable Google Font"
+        },
+        {
+          "default": false,
+          "description": "An AppLottie component for raw, asset and URL animations, tintable to the theme and held on its last frame when the system's animations are off, with a success animation that plays when a password-reset link is sent.",
+          "group": "design",
+          "headline": "Play Lottie animations",
+          "implied_only": false,
+          "implies": [],
+          "key": "lottie",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Lottie animations"
+        },
+        {
+          "default": false,
+          "description": "A profile generator and a macrobenchmark that measures cold start with and without it. Typically a 20-30% cut in cold start for no code change.",
+          "group": "build-and-quality",
+          "headline": "Cut cold-start time",
+          "implied_only": false,
+          "implies": [],
+          "key": "baselineprofile",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Baseline profile and startup benchmark"
+        },
+        {
+          "default": false,
+          "description": "Reads the Compose compiler's own report and fails on a design-system composable that restarts without being able to skip. A baseline holds what is already there, so it starts green and cannot get worse.",
+          "group": "build-and-quality",
+          "headline": "Catch a component that cannot skip",
+          "implied_only": false,
+          "implies": [],
+          "key": "composemetrics",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Compose stability check"
+        },
+        {
+          "default": false,
+          "description": "One merged coverage number for the whole project with a floor the build enforces, generated code excluded so the report is about code somebody wrote.",
+          "group": "build-and-quality",
+          "headline": "Fail a build that drops coverage",
+          "implied_only": false,
+          "implies": [],
+          "key": "coverage",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Coverage floor (Kover)"
+        },
+        {
+          "default": false,
+          "description": "Names every module declaring a dependency it never uses, or using one it only gets transitively — the second being the failure that surfaces months later as an unrelated module breaking. Printed on every pull request; a report rather than a gate, because two of this template's own decisions produce advice it is right to ignore.",
+          "group": "build-and-quality",
+          "headline": "See which dependencies nobody uses",
+          "implied_only": false,
+          "implies": [],
+          "key": "depsanalysis",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Dependency health report"
+        },
+        {
+          "default": true,
+          "description": "Memory-leak detection in debug builds.",
+          "group": "build-and-quality",
+          "headline": "Find memory leaks in debug builds",
+          "implied_only": false,
+          "implies": [],
+          "key": "leakcanary",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "LeakCanary (debug only)"
+        }
+      ],
+      "fields": [
+        {
+          "key": "app_name",
+          "required": true,
+          "rule": "app_name",
+          "type": "string"
+        },
+        {
+          "key": "display_name",
+          "max": 30,
+          "type": "string"
+        },
+        {
+          "key": "package_name",
+          "required": true,
+          "rule": "package",
+          "type": "string"
+        },
+        {
+          "key": "architecture",
+          "type": "choice"
+        },
+        {
+          "key": "features",
+          "max": 64,
+          "type": "features"
+        },
+        {
+          "key": "feature_modules",
+          "max": 12,
+          "rule": "module_name",
+          "type": "list"
+        },
+        {
+          "default": "Utility",
+          "key": "design_style",
+          "type": "choice"
+        },
+        {
+          "default": "Standard",
+          "key": "motion_style",
+          "type": "choice"
+        },
+        {
+          "key": "accent_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "key": "secondary_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "key": "tertiary_colour",
+          "rule": "hex",
+          "type": "colour"
+        },
+        {
+          "default": "DM Sans",
+          "key": "font_name",
+          "rule": "font",
+          "suggestions": [
+            {
+              "note": "geometric, large x-height, reads well from 11sp to 32sp",
+              "value": "DM Sans"
+            },
+            {
+              "note": "the safe choice; designed for screens, very neutral",
+              "value": "Inter"
+            },
+            {
+              "note": "a little more character, good for consumer apps",
+              "value": "Plus Jakarta Sans"
+            },
+            {
+              "note": "rounder and friendlier, slightly less good at small sizes",
+              "value": "Manrope"
+            },
+            {
+              "note": "warm and open; strong at display sizes",
+              "value": "Figtree"
+            },
+            {
+              "note": "geometric and clean, at its best in headlines",
+              "value": "Outfit"
+            },
+            {
+              "note": "technical, with quirky details",
+              "value": "Space Grotesk"
+            },
+            {
+              "note": "soft and rounded",
+              "value": "Nunito"
+            },
+            {
+              "note": "wide and modern",
+              "value": "Sora"
+            },
+            {
+              "note": "a soft serif with personality",
+              "value": "Fraunces"
+            },
+            {
+              "note": "a classic book serif",
+              "value": "Libre Baskerville"
+            },
+            {
+              "note": "corporate and very legible",
+              "value": "IBM Plex Sans"
+            }
+          ],
+          "type": "string"
+        },
+        {
+          "default": "JetBrains Mono",
+          "key": "mono_font_name",
+          "rule": "font",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "key": "haptics_enabled",
+          "type": "bool"
+        },
+        {
+          "key": "languages",
+          "max": 10,
+          "type": "list"
+        },
+        {
+          "choices": [
+            {
+              "codename": "Nougat",
+              "label": "API 24 · Android 7.0 (Nougat)",
+              "needs_desugaring": true,
+              "value": 24,
+              "version": "7.0"
+            },
+            {
+              "codename": "Nougat",
+              "label": "API 25 · Android 7.1 (Nougat)",
+              "needs_desugaring": true,
+              "value": 25,
+              "version": "7.1"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 26 · Android 8.0 (Oreo)",
+              "needs_desugaring": false,
+              "value": 26,
+              "version": "8.0"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 27 · Android 8.1 (Oreo)",
+              "needs_desugaring": false,
+              "value": 27,
+              "version": "8.1"
+            },
+            {
+              "codename": "Pie",
+              "label": "API 28 · Android 9 (Pie)",
+              "needs_desugaring": false,
+              "value": 28,
+              "version": "9"
+            },
+            {
+              "codename": "Quince Tart",
+              "label": "API 29 · Android 10 (Quince Tart)",
+              "needs_desugaring": false,
+              "value": 29,
+              "version": "10"
+            },
+            {
+              "codename": "Red Velvet Cake",
+              "label": "API 30 · Android 11 (Red Velvet Cake)",
+              "needs_desugaring": false,
+              "value": 30,
+              "version": "11"
+            },
+            {
+              "codename": "Snow Cone",
+              "label": "API 31 · Android 12 (Snow Cone)",
+              "needs_desugaring": false,
+              "value": 31,
+              "version": "12"
+            },
+            {
+              "codename": "Snow Cone v2",
+              "label": "API 32 · Android 12L (Snow Cone v2)",
+              "needs_desugaring": false,
+              "value": 32,
+              "version": "12L"
+            },
+            {
+              "codename": "Tiramisu",
+              "label": "API 33 · Android 13 (Tiramisu)",
+              "needs_desugaring": false,
+              "value": 33,
+              "version": "13"
+            },
+            {
+              "codename": "Upside Down Cake",
+              "label": "API 34 · Android 14 (Upside Down Cake)",
+              "needs_desugaring": false,
+              "value": 34,
+              "version": "14"
+            },
+            {
+              "codename": "Vanilla Ice Cream",
+              "label": "API 35 · Android 15 (Vanilla Ice Cream)",
+              "needs_desugaring": false,
+              "value": 35,
+              "version": "15"
+            },
+            {
+              "codename": "Baklava",
+              "label": "API 36 · Android 16 (Baklava)",
+              "needs_desugaring": false,
+              "value": 36,
+              "version": "16"
+            },
+            {
+              "codename": "Cinnamon Bun",
+              "label": "API 37 · Android 17 (Cinnamon Bun)",
+              "needs_desugaring": false,
+              "value": 37,
+              "version": "17"
+            }
+          ],
+          "default": 26,
+          "key": "android.min_sdk",
+          "type": "int"
+        },
+        {
+          "choices": [
+            {
+              "codename": "Nougat",
+              "label": "API 24 · Android 7.0 (Nougat)",
+              "needs_desugaring": true,
+              "value": 24,
+              "version": "7.0"
+            },
+            {
+              "codename": "Nougat",
+              "label": "API 25 · Android 7.1 (Nougat)",
+              "needs_desugaring": true,
+              "value": 25,
+              "version": "7.1"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 26 · Android 8.0 (Oreo)",
+              "needs_desugaring": false,
+              "value": 26,
+              "version": "8.0"
+            },
+            {
+              "codename": "Oreo",
+              "label": "API 27 · Android 8.1 (Oreo)",
+              "needs_desugaring": false,
+              "value": 27,
+              "version": "8.1"
+            },
+            {
+              "codename": "Pie",
+              "label": "API 28 · Android 9 (Pie)",
+              "needs_desugaring": false,
+              "value": 28,
+              "version": "9"
+            },
+            {
+              "codename": "Quince Tart",
+              "label": "API 29 · Android 10 (Quince Tart)",
+              "needs_desugaring": false,
+              "value": 29,
+              "version": "10"
+            },
+            {
+              "codename": "Red Velvet Cake",
+              "label": "API 30 · Android 11 (Red Velvet Cake)",
+              "needs_desugaring": false,
+              "value": 30,
+              "version": "11"
+            },
+            {
+              "codename": "Snow Cone",
+              "label": "API 31 · Android 12 (Snow Cone)",
+              "needs_desugaring": false,
+              "value": 31,
+              "version": "12"
+            },
+            {
+              "codename": "Snow Cone v2",
+              "label": "API 32 · Android 12L (Snow Cone v2)",
+              "needs_desugaring": false,
+              "value": 32,
+              "version": "12L"
+            },
+            {
+              "codename": "Tiramisu",
+              "label": "API 33 · Android 13 (Tiramisu)",
+              "needs_desugaring": false,
+              "value": 33,
+              "version": "13"
+            },
+            {
+              "codename": "Upside Down Cake",
+              "label": "API 34 · Android 14 (Upside Down Cake)",
+              "needs_desugaring": false,
+              "value": 34,
+              "version": "14"
+            },
+            {
+              "codename": "Vanilla Ice Cream",
+              "label": "API 35 · Android 15 (Vanilla Ice Cream)",
+              "needs_desugaring": false,
+              "value": 35,
+              "version": "15"
+            },
+            {
+              "codename": "Baklava",
+              "label": "API 36 · Android 16 (Baklava)",
+              "needs_desugaring": false,
+              "value": 36,
+              "version": "16"
+            },
+            {
+              "codename": "Cinnamon Bun",
+              "label": "API 37 · Android 17 (Cinnamon Bun)",
+              "needs_desugaring": false,
+              "value": 37,
+              "version": "17"
+            }
+          ],
+          "default": 37,
+          "key": "android.target_sdk",
+          "type": "int"
+        },
+        {
+          "choices": [
+            {
+              "codename": "Cinnamon Bun",
+              "label": "API 37 · Android 17 (Cinnamon Bun)",
+              "needs_desugaring": false,
+              "value": 37,
+              "version": "17"
+            }
+          ],
+          "default": 37,
+          "key": "android.compile_sdk",
+          "type": "int"
+        },
+        {
+          "default": "1.0.0",
+          "key": "android.version_name",
+          "rule": "version_name",
+          "type": "string"
+        },
+        {
+          "default": 1,
+          "key": "android.version_code",
+          "max": 2100000000,
+          "min": 1,
+          "type": "int"
+        },
+        {
+          "key": "android.api_base_urls",
+          "keys": [
+            "dev",
+            "staging",
+            "prod",
+            "playstore"
+          ],
+          "requires": [
+            "network"
+          ],
+          "rule": "http_url",
+          "type": "map"
+        },
+        {
+          "key": "android.web_socket_urls",
+          "keys": [
+            "dev",
+            "staging",
+            "prod",
+            "playstore"
+          ],
+          "requires": [
+            "websocket"
+          ],
+          "rule": "socket_url",
+          "type": "map"
+        },
+        {
+          "key": "android.deeplink_scheme",
+          "requires": [
+            "deeplink"
+          ],
+          "rule": "scheme",
+          "type": "string"
+        },
+        {
+          "key": "android.deeplink_host",
+          "requires": [
+            "deeplink"
+          ],
+          "rule": "host",
+          "type": "string"
+        },
+        {
+          "key": "android.keystores",
+          "max": 4,
+          "names": [
+            "dev",
+            "staging",
+            "prod",
+            "playstore"
+          ],
+          "type": "keystores"
+        }
+      ],
+      "groups": [
+        {
+          "key": "networking-and-data",
+          "title": "Networking and data"
+        },
+        {
+          "key": "sign-in-and-account",
+          "title": "Sign-in and account"
+        },
+        {
+          "key": "screens",
+          "title": "Screens"
+        },
+        {
+          "key": "platform",
+          "title": "Platform"
+        },
+        {
+          "key": "observability",
+          "title": "Observability"
+        },
+        {
+          "key": "design",
+          "title": "Design"
+        },
+        {
+          "key": "build-and-quality",
+          "title": "Build and quality"
+        }
+      ],
+      "key": "android",
+      "languages": [
+        {
+          "name": "Deutsch",
+          "tag": "de"
+        },
+        {
+          "name": "Español",
+          "tag": "es"
+        },
+        {
+          "name": "Français",
+          "tag": "fr"
+        },
+        {
+          "name": "हिन्दी",
+          "tag": "hi"
+        },
+        {
+          "name": "Português (Brasil)",
+          "tag": "pt-BR"
+        }
+      ],
+      "motion_styles": [
+        {
+          "description": "Crisp, a trace of overshoot. Lively without asking for attention.",
+          "key": "Standard",
+          "title": "Standard"
+        },
+        {
+          "description": "Springy, with a visible overshoot. Playful; wrong for anything financial.",
+          "key": "Bouncy",
+          "title": "Bouncy"
+        },
+        {
+          "description": "No overshoot, slightly longer. For dense, professional interfaces.",
+          "key": "Calm",
+          "title": "Calm"
+        },
+        {
+          "description": "The shortest response that still reads as motion. For utilities.",
+          "key": "Snappy",
+          "title": "Snappy"
+        }
+      ],
+      "presets": [
+        {
+          "default": false,
+          "description": "Networking, the design system, the catalog and one reference feature.",
+          "features": [
+            "catalog",
+            "leakcanary",
+            "network",
+            "sample"
+          ],
+          "key": "lean",
+          "title": "Lean"
+        },
+        {
+          "default": true,
+          "description": "The lean set plus offline cache, images, auth, onboarding, settings with a language picker, a\nprofile tab and media. What most projects want on day one.",
+          "features": [
+            "auth",
+            "browser",
+            "catalog",
+            "coil",
+            "deeplink",
+            "devtools",
+            "flags",
+            "forms",
+            "googlefonts",
+            "language",
+            "leakcanary",
+            "media",
+            "network",
+            "onboarding",
+            "profile",
+            "room",
+            "sample",
+            "settings"
+          ],
+          "key": "standard",
+          "title": "Standard"
+        },
+        {
+          "default": false,
+          "description": "Every feature the template offers, working together. The template's own proof that they coexist;\ndelete what you do not need.",
+          "features": [
+            "analytics",
+            "applock",
+            "auth",
+            "baselineprofile",
+            "browser",
+            "catalog",
+            "coil",
+            "composemetrics",
+            "coverage",
+            "database",
+            "deeplink",
+            "depsanalysis",
+            "devtools",
+            "firebase",
+            "flags",
+            "forms",
+            "googlefonts",
+            "googlesignin",
+            "language",
+            "leakcanary",
+            "licenses",
+            "lottie",
+            "media",
+            "network",
+            "onboarding",
+            "paging",
+            "playstore",
+            "profile",
+            "push",
+            "room",
+            "sample",
+            "search",
+            "settings",
+            "websocket",
+            "widget",
+            "workmanager"
+          ],
+          "key": "everything",
+          "title": "Everything"
+        }
+      ],
+      "status": "available",
+      "status_note": "",
+      "summary": "Jetpack Compose, Navigation 3, Hilt, Ktor. Compact or modular.",
+      "title": "Android Native"
+    }
+  ],
+  "tokens": {
+    "borders": {
+      "hairlinePx": 1,
+      "width": 1,
+      "widthStrong": 1.5
+    },
+    "brand": {
+      "accent": {
+        "base": "#FF2C6BED",
+        "dark": "#FF5B8DEF",
+        "darkPressed": "#FF7BA5F5",
+        "onDark": "#FF06101F",
+        "onLight": "#FFFFFFFF",
+        "pressed": "#FF1F52C4",
+        "subtleDark": "#FF16233B",
+        "subtleLight": "#FFE8EFFD"
+      },
+      "secondary": {
+        "base": "#FF617DB8",
+        "dark": "#FF879BC5",
+        "darkPressed": "#FFA4B3D0",
+        "onDark": "#FF06101F",
+        "onLight": "#FF0B0E14",
+        "pressed": "#FF445F97",
+        "subtleDark": "#FF171F31",
+        "subtleLight": "#FFEFF2F8"
+      },
+      "tertiary": {
+        "base": "#FFAE2CED",
+        "dark": "#FFBE60EB",
+        "darkPressed": "#FFCB89EC",
+        "onDark": "#FF06101F",
+        "onLight": "#FFFFFFFF",
+        "pressed": "#FF8E11CA",
+        "subtleDark": "#FF221438",
+        "subtleLight": "#FFF7EAFD"
+      }
+    },
+    "defaults": {
+      "designStyle": "Utility",
+      "fontName": "DM Sans",
+      "hapticsEnabled": true,
+      "monoFontName": "JetBrains Mono",
+      "motionStyle": "Standard"
+    },
+    "elevation": {
+      "card": 3,
+      "modal": 16,
+      "none": 0,
+      "overlay": 8,
+      "raised": 1
+    },
+    "motion": {
+      "fades": {
+        "longMs": 200,
+        "shortMs": 120
+      },
+      "navigation": {
+        "edgeShadow": 8,
+        "parallax": 0.3,
+        "scrimAlpha": {
+          "dark": 0.24,
+          "light": 0.1
+        }
+      },
+      "press": {
+        "dimAlpha": 0.45,
+        "highlightFadeOutMs": 220,
+        "scale": 0.96,
+        "scaleIcon": 0.9,
+        "scaleLarge": 0.98
+      },
+      "stagger": {
+        "maxItems": 6,
+        "stepMs": 24
+      },
+      "styles": {
+        "Bouncy": {
+          "bounce": 0.35,
+          "speed": 1.0,
+          "springs": {
+            "emphasis": {
+              "bounce": 0.35,
+              "dampingRatio": 0.65,
+              "response": 0.5,
+              "stiffness": 157.91
+            },
+            "layout": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.36,
+              "stiffness": 304.62
+            },
+            "press": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.16,
+              "stiffness": 1542.13
+            },
+            "release": {
+              "bounce": 0.35,
+              "dampingRatio": 0.65,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "screen": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.24,
+              "stiffness": 685.39
+            },
+            "selection": {
+              "bounce": 0.21,
+              "dampingRatio": 0.79,
+              "response": 0.3,
+              "stiffness": 438.65
+            },
+            "sheet": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.34,
+              "stiffness": 341.51
+            }
+          }
+        },
+        "Calm": {
+          "bounce": 0.0,
+          "speed": 0.87,
+          "springs": {
+            "emphasis": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.5,
+              "stiffness": 157.91
+            },
+            "layout": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.4138,
+              "stiffness": 230.56
+            },
+            "press": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.16,
+              "stiffness": 1542.13
+            },
+            "release": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "screen": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.2759,
+              "stiffness": 518.77
+            },
+            "selection": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.3,
+              "stiffness": 438.65
+            },
+            "sheet": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.3908,
+              "stiffness": 258.49
+            }
+          }
+        },
+        "Snappy": {
+          "bounce": 0.1,
+          "speed": 1.15,
+          "springs": {
+            "emphasis": {
+              "bounce": 0.1,
+              "dampingRatio": 0.9,
+              "response": 0.5,
+              "stiffness": 157.91
+            },
+            "layout": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.313,
+              "stiffness": 402.86
+            },
+            "press": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.16,
+              "stiffness": 1542.13
+            },
+            "release": {
+              "bounce": 0.1,
+              "dampingRatio": 0.9,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "screen": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.2087,
+              "stiffness": 906.43
+            },
+            "selection": {
+              "bounce": 0.06,
+              "dampingRatio": 0.94,
+              "response": 0.3,
+              "stiffness": 438.65
+            },
+            "sheet": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.2957,
+              "stiffness": 451.65
+            }
+          }
+        },
+        "Standard": {
+          "bounce": 0.15,
+          "speed": 1.0,
+          "springs": {
+            "emphasis": {
+              "bounce": 0.15,
+              "dampingRatio": 0.85,
+              "response": 0.5,
+              "stiffness": 157.91
+            },
+            "layout": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.36,
+              "stiffness": 304.62
+            },
+            "press": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.16,
+              "stiffness": 1542.13
+            },
+            "release": {
+              "bounce": 0.15,
+              "dampingRatio": 0.85,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "screen": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.24,
+              "stiffness": 685.39
+            },
+            "selection": {
+              "bounce": 0.09,
+              "dampingRatio": 0.91,
+              "response": 0.3,
+              "stiffness": 438.65
+            },
+            "sheet": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.34,
+              "stiffness": 341.51
+            }
+          }
+        }
+      },
+      "visibilityThreshold": {
+        "float": 0.001,
+        "offsetPx": 1
+      }
+    },
+    "palette": {
+      "Editorial": {
+        "dark": {
+          "accent": "#FF5B8DEF",
+          "accentContent": "#FF5B8DEF",
+          "accentPressed": "#FF7BA5F5",
+          "accentSubtle": "#FF16233B",
+          "background": "#FF12110F",
+          "backgroundGrouped": "#FF12110F",
+          "border": "#FF34302A",
+          "borderStrong": "#FF4A443B",
+          "contentDisabled": "#FF565F6E",
+          "contentInverse": "#FF0B0E14",
+          "contentPrimary": "#FFF4EFE6",
+          "contentSecondary": "#FFCBC2B4",
+          "contentTertiary": "#FF999080",
+          "danger": {
+            "base": "#FFF0666D",
+            "border": "#FF4E2126",
+            "content": "#FFF0666D",
+            "on": "#FF06101F",
+            "subtle": "#FF2B1416"
+          },
+          "divider": "#FF27241F",
+          "fill": "#FF25221E",
+          "focusRing": "#735B8DEF",
+          "highlight": "#FF34302A",
+          "info": {
+            "base": "#FF6FA6FF",
+            "border": "#FF1E3862",
+            "content": "#FF6FA6FF",
+            "on": "#FF06101F",
+            "subtle": "#FF10203A"
+          },
+          "neutral": {
+            "base": "#FFB4BCCA",
+            "border": "#FF2C3441",
+            "content": "#FFB4BCCA",
+            "on": "#FF06101F",
+            "subtle": "#FF1A202B"
+          },
+          "onAccent": "#FF06101F",
+          "onSecondary": "#FF06101F",
+          "onTertiary": "#FF06101F",
+          "scrim": "#99000000",
+          "secondary": "#FF879BC5",
+          "secondaryContent": "#FF879BC5",
+          "secondaryPressed": "#FFA4B3D0",
+          "secondarySubtle": "#FF171F31",
+          "separator": "#FF34302A",
+          "shadow": "#66000000",
+          "skeleton": "#FF27241F",
+          "success": {
+            "base": "#FF3DD4A0",
+            "border": "#FF1E4638",
+            "content": "#FF3DD4A0",
+            "on": "#FF06101F",
+            "subtle": "#FF10271F"
+          },
+          "surface": "#FF1B1916",
+          "surfaceElevated": "#FF25221E",
+          "surfaceGrouped": "#FF1B1916",
+          "surfaceInverse": "#FFF2F4F8",
+          "surfaceVariant": "#FF25221E",
+          "tertiary": "#FFBE60EB",
+          "tertiaryContent": "#FFBE60EB",
+          "tertiaryPressed": "#FFCB89EC",
+          "tertiarySubtle": "#FF221438",
+          "warning": {
+            "base": "#FFE9A23B",
+            "border": "#FF4A3616",
+            "content": "#FFE9A23B",
+            "on": "#FF06101F",
+            "subtle": "#FF2A1F0E"
+          }
+        },
+        "light": {
+          "accent": "#FF2C6BED",
+          "accentContent": "#FF1C60EC",
+          "accentPressed": "#FF1F52C4",
+          "accentSubtle": "#FFE8EFFD",
+          "background": "#FFF7F4EE",
+          "backgroundGrouped": "#FFEFEAE1",
+          "border": "#FFE2DBCF",
+          "borderStrong": "#FFCCC2B1",
+          "contentDisabled": "#FFA3AAB6",
+          "contentInverse": "#FFFFFFFF",
+          "contentPrimary": "#FF15130F",
+          "contentSecondary": "#FF3F3931",
+          "contentTertiary": "#FF6A6256",
+          "danger": {
+            "base": "#FFC42B32",
+            "border": "#FFF3C9CB",
+            "content": "#FFC42B32",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFCE9E9"
+          },
+          "divider": "#FFEAE4DA",
+          "fill": "#FFEAE4DA",
+          "focusRing": "#662C6BED",
+          "highlight": "#FFEAE4DA",
+          "info": {
+            "base": "#FF1E5FBF",
+            "border": "#FFC3D8F7",
+            "content": "#FF1E5FBF",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE7F0FD"
+          },
+          "neutral": {
+            "base": "#FF5A6472",
+            "border": "#FFE3E6EC",
+            "content": "#FF5A6472",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFEFF1F5"
+          },
+          "onAccent": "#FFFFFFFF",
+          "onSecondary": "#FF0B0E14",
+          "onTertiary": "#FFFFFFFF",
+          "scrim": "#730B0F1A",
+          "secondary": "#FF617DB8",
+          "secondaryContent": "#FF4D6BAB",
+          "secondaryPressed": "#FF445F97",
+          "secondarySubtle": "#FFEFF2F8",
+          "separator": "#FFE2DBCF",
+          "shadow": "#1F000000",
+          "skeleton": "#FFEAE4DA",
+          "success": {
+            "base": "#FF117C59",
+            "border": "#FFB7E2D2",
+            "content": "#FF117C59",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE4F5EE"
+          },
+          "surface": "#FFFFFDF9",
+          "surfaceElevated": "#FFFFFDF9",
+          "surfaceGrouped": "#FFFFFDF9",
+          "surfaceInverse": "#FF0B0F1A",
+          "surfaceVariant": "#FFEFEAE1",
+          "tertiary": "#FFAE2CED",
+          "tertiaryContent": "#FFA81CEC",
+          "tertiaryPressed": "#FF8E11CA",
+          "tertiarySubtle": "#FFF7EAFD",
+          "warning": {
+            "base": "#FFA35B00",
+            "border": "#FFF2DDB8",
+            "content": "#FFA35B00",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFDF1E0"
+          }
+        }
+      },
+      "Playful": {
+        "dark": {
+          "accent": "#FF5B8DEF",
+          "accentContent": "#FF5B8DEF",
+          "accentPressed": "#FF7BA5F5",
+          "accentSubtle": "#FF16233B",
+          "background": "#FF15120D",
+          "backgroundGrouped": "#FF15120D",
+          "border": "#FF3A3224",
+          "borderStrong": "#FF514634",
+          "contentDisabled": "#FF565F6E",
+          "contentInverse": "#FF0B0E14",
+          "contentPrimary": "#FFFBF3E4",
+          "contentSecondary": "#FFD6C8B0",
+          "contentTertiary": "#FFA3947B",
+          "danger": {
+            "base": "#FFF0666D",
+            "border": "#FF4E2126",
+            "content": "#FFF0666D",
+            "on": "#FF06101F",
+            "subtle": "#FF2B1416"
+          },
+          "divider": "#FF2B2519",
+          "fill": "#FF2A2419",
+          "focusRing": "#735B8DEF",
+          "highlight": "#FF3A3224",
+          "info": {
+            "base": "#FF6FA6FF",
+            "border": "#FF1E3862",
+            "content": "#FF6FA6FF",
+            "on": "#FF06101F",
+            "subtle": "#FF10203A"
+          },
+          "neutral": {
+            "base": "#FFB4BCCA",
+            "border": "#FF2C3441",
+            "content": "#FFB4BCCA",
+            "on": "#FF06101F",
+            "subtle": "#FF1A202B"
+          },
+          "onAccent": "#FF06101F",
+          "onSecondary": "#FF06101F",
+          "onTertiary": "#FF06101F",
+          "scrim": "#99000000",
+          "secondary": "#FF879BC5",
+          "secondaryContent": "#FF879BC5",
+          "secondaryPressed": "#FFA4B3D0",
+          "secondarySubtle": "#FF171F31",
+          "separator": "#FF3A3224",
+          "shadow": "#66000000",
+          "skeleton": "#FF2B2519",
+          "success": {
+            "base": "#FF3DD4A0",
+            "border": "#FF1E4638",
+            "content": "#FF3DD4A0",
+            "on": "#FF06101F",
+            "subtle": "#FF10271F"
+          },
+          "surface": "#FF1F1A13",
+          "surfaceElevated": "#FF2A2419",
+          "surfaceGrouped": "#FF1F1A13",
+          "surfaceInverse": "#FFF2F4F8",
+          "surfaceVariant": "#FF2A2419",
+          "tertiary": "#FFBE60EB",
+          "tertiaryContent": "#FFBE60EB",
+          "tertiaryPressed": "#FFCB89EC",
+          "tertiarySubtle": "#FF221438",
+          "warning": {
+            "base": "#FFE9A23B",
+            "border": "#FF4A3616",
+            "content": "#FFE9A23B",
+            "on": "#FF06101F",
+            "subtle": "#FF2A1F0E"
+          }
+        },
+        "light": {
+          "accent": "#FF2C6BED",
+          "accentContent": "#FF1C60EC",
+          "accentPressed": "#FF1F52C4",
+          "accentSubtle": "#FFE8EFFD",
+          "background": "#FFFFF7EA",
+          "backgroundGrouped": "#FFFFEFD6",
+          "border": "#FFF0DFC2",
+          "borderStrong": "#FFDDC59D",
+          "contentDisabled": "#FFA3AAB6",
+          "contentInverse": "#FFFFFFFF",
+          "contentPrimary": "#FF1A1206",
+          "contentSecondary": "#FF45392A",
+          "contentTertiary": "#FF6F6048",
+          "danger": {
+            "base": "#FFC42B32",
+            "border": "#FFF3C9CB",
+            "content": "#FFC42B32",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFCE9E9"
+          },
+          "divider": "#FFF6E8D0",
+          "fill": "#FFF6E8D0",
+          "focusRing": "#662C6BED",
+          "highlight": "#FFF6E8D0",
+          "info": {
+            "base": "#FF1E5FBF",
+            "border": "#FFC3D8F7",
+            "content": "#FF1E5FBF",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE7F0FD"
+          },
+          "neutral": {
+            "base": "#FF5A6472",
+            "border": "#FFE3E6EC",
+            "content": "#FF5A6472",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFEFF1F5"
+          },
+          "onAccent": "#FFFFFFFF",
+          "onSecondary": "#FF0B0E14",
+          "onTertiary": "#FFFFFFFF",
+          "scrim": "#730B0F1A",
+          "secondary": "#FF617DB8",
+          "secondaryContent": "#FF4D6BAB",
+          "secondaryPressed": "#FF445F97",
+          "secondarySubtle": "#FFEFF2F8",
+          "separator": "#FFF0DFC2",
+          "shadow": "#1F000000",
+          "skeleton": "#FFF6E8D0",
+          "success": {
+            "base": "#FF117C59",
+            "border": "#FFB7E2D2",
+            "content": "#FF117C59",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE4F5EE"
+          },
+          "surface": "#FFFFFFFF",
+          "surfaceElevated": "#FFFFFFFF",
+          "surfaceGrouped": "#FFFFFFFF",
+          "surfaceInverse": "#FF0B0F1A",
+          "surfaceVariant": "#FFFFEFD6",
+          "tertiary": "#FFAE2CED",
+          "tertiaryContent": "#FFAE2CED",
+          "tertiaryPressed": "#FF8E11CA",
+          "tertiarySubtle": "#FFF7EAFD",
+          "warning": {
+            "base": "#FFA35B00",
+            "border": "#FFF2DDB8",
+            "content": "#FFA35B00",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFDF1E0"
+          }
+        }
+      },
+      "Social": {
+        "dark": {
+          "accent": "#FF5B8DEF",
+          "accentContent": "#FF5B8DEF",
+          "accentPressed": "#FF7BA5F5",
+          "accentSubtle": "#FF16233B",
+          "background": "#FF0F131D",
+          "backgroundGrouped": "#FF0F131D",
+          "border": "#FF2B364A",
+          "borderStrong": "#FF38414F",
+          "contentDisabled": "#FF565F6E",
+          "contentInverse": "#FF0B0E14",
+          "contentPrimary": "#FFF2F4F8",
+          "contentSecondary": "#FFB4BCCA",
+          "contentTertiary": "#FF7F8899",
+          "danger": {
+            "base": "#FFF0666D",
+            "border": "#FF4E2126",
+            "content": "#FFF0666D",
+            "on": "#FF06101F",
+            "subtle": "#FF2B1416"
+          },
+          "divider": "#FF232D3E",
+          "fill": "#FF1D232E",
+          "focusRing": "#735B8DEF",
+          "highlight": "#FF262D3A",
+          "info": {
+            "base": "#FF6FA6FF",
+            "border": "#FF1E3862",
+            "content": "#FF6FA6FF",
+            "on": "#FF06101F",
+            "subtle": "#FF10203A"
+          },
+          "neutral": {
+            "base": "#FFB4BCCA",
+            "border": "#FF2C3441",
+            "content": "#FFB4BCCA",
+            "on": "#FF06101F",
+            "subtle": "#FF1A202B"
+          },
+          "onAccent": "#FF06101F",
+          "onSecondary": "#FF06101F",
+          "onTertiary": "#FF06101F",
+          "scrim": "#99000000",
+          "secondary": "#FF879BC5",
+          "secondaryContent": "#FF879BC5",
+          "secondaryPressed": "#FFA4B3D0",
+          "secondarySubtle": "#FF171F31",
+          "separator": "#FF262D3A",
+          "shadow": "#66000000",
+          "skeleton": "#FF222B3B",
+          "success": {
+            "base": "#FF3DD4A0",
+            "border": "#FF1E4638",
+            "content": "#FF3DD4A0",
+            "on": "#FF06101F",
+            "subtle": "#FF10271F"
+          },
+          "surface": "#FF171E2B",
+          "surfaceElevated": "#FF1D232E",
+          "surfaceGrouped": "#FF141922",
+          "surfaceInverse": "#FFF2F4F8",
+          "surfaceVariant": "#FF212A3A",
+          "tertiary": "#FFBE60EB",
+          "tertiaryContent": "#FFBE60EB",
+          "tertiaryPressed": "#FFCB89EC",
+          "tertiarySubtle": "#FF221438",
+          "warning": {
+            "base": "#FFE9A23B",
+            "border": "#FF4A3616",
+            "content": "#FFE9A23B",
+            "on": "#FF06101F",
+            "subtle": "#FF2A1F0E"
+          }
+        },
+        "light": {
+          "accent": "#FF2C6BED",
+          "accentContent": "#FF1C60EC",
+          "accentPressed": "#FF1F52C4",
+          "accentSubtle": "#FFE8EFFD",
+          "background": "#FFEEF2FA",
+          "backgroundGrouped": "#FFE1E8F6",
+          "border": "#FFD0DBEE",
+          "borderStrong": "#FFCBD1DB",
+          "contentDisabled": "#FFA3AAB6",
+          "contentInverse": "#FFFFFFFF",
+          "contentPrimary": "#FF0B0F1A",
+          "contentSecondary": "#FF3D4552",
+          "contentTertiary": "#FF6B7280",
+          "danger": {
+            "base": "#FFC42B32",
+            "border": "#FFF3C9CB",
+            "content": "#FFC42B32",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFCE9E9"
+          },
+          "divider": "#FFDAE2F2",
+          "fill": "#FFE9ECF1",
+          "focusRing": "#662C6BED",
+          "highlight": "#FFE9ECF1",
+          "info": {
+            "base": "#FF1E5FBF",
+            "border": "#FFC3D8F7",
+            "content": "#FF1E5FBF",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE7F0FD"
+          },
+          "neutral": {
+            "base": "#FF5A6472",
+            "border": "#FFE3E6EC",
+            "content": "#FF5A6472",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFEFF1F5"
+          },
+          "onAccent": "#FFFFFFFF",
+          "onSecondary": "#FF0B0E14",
+          "onTertiary": "#FFFFFFFF",
+          "scrim": "#730B0F1A",
+          "secondary": "#FF617DB8",
+          "secondaryContent": "#FF4D6BAB",
+          "secondaryPressed": "#FF445F97",
+          "secondarySubtle": "#FFEFF2F8",
+          "separator": "#FFE3E6EC",
+          "shadow": "#1F000000",
+          "skeleton": "#FFDAE2F2",
+          "success": {
+            "base": "#FF117C59",
+            "border": "#FFB7E2D2",
+            "content": "#FF117C59",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE4F5EE"
+          },
+          "surface": "#FFFFFFFF",
+          "surfaceElevated": "#FFFFFFFF",
+          "surfaceGrouped": "#FFFFFFFF",
+          "surfaceInverse": "#FF0B0F1A",
+          "surfaceVariant": "#FFE1E8F6",
+          "tertiary": "#FFAE2CED",
+          "tertiaryContent": "#FFA81CEC",
+          "tertiaryPressed": "#FF8E11CA",
+          "tertiarySubtle": "#FFF7EAFD",
+          "warning": {
+            "base": "#FFA35B00",
+            "border": "#FFF2DDB8",
+            "content": "#FFA35B00",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFDF1E0"
+          }
+        }
+      },
+      "Utility": {
+        "dark": {
+          "accent": "#FF5B8DEF",
+          "accentContent": "#FF5B8DEF",
+          "accentPressed": "#FF7BA5F5",
+          "accentSubtle": "#FF16233B",
+          "background": "#FF0B0E14",
+          "backgroundGrouped": "#FF0B0E14",
+          "border": "#FF262D3A",
+          "borderStrong": "#FF38414F",
+          "contentDisabled": "#FF565F6E",
+          "contentInverse": "#FF0B0E14",
+          "contentPrimary": "#FFF2F4F8",
+          "contentSecondary": "#FFB4BCCA",
+          "contentTertiary": "#FF7F8899",
+          "danger": {
+            "base": "#FFF0666D",
+            "border": "#FF4E2126",
+            "content": "#FFF0666D",
+            "on": "#FF06101F",
+            "subtle": "#FF2B1416"
+          },
+          "divider": "#FF1E2531",
+          "fill": "#FF1D232E",
+          "focusRing": "#735B8DEF",
+          "highlight": "#FF262D3A",
+          "info": {
+            "base": "#FF6FA6FF",
+            "border": "#FF1E3862",
+            "content": "#FF6FA6FF",
+            "on": "#FF06101F",
+            "subtle": "#FF10203A"
+          },
+          "neutral": {
+            "base": "#FFB4BCCA",
+            "border": "#FF2C3441",
+            "content": "#FFB4BCCA",
+            "on": "#FF06101F",
+            "subtle": "#FF1A202B"
+          },
+          "onAccent": "#FF06101F",
+          "onSecondary": "#FF06101F",
+          "onTertiary": "#FF06101F",
+          "scrim": "#99000000",
+          "secondary": "#FF879BC5",
+          "secondaryContent": "#FF879BC5",
+          "secondaryPressed": "#FFA4B3D0",
+          "secondarySubtle": "#FF171F31",
+          "separator": "#FF262D3A",
+          "shadow": "#66000000",
+          "skeleton": "#FF1D232E",
+          "success": {
+            "base": "#FF3DD4A0",
+            "border": "#FF1E4638",
+            "content": "#FF3DD4A0",
+            "on": "#FF06101F",
+            "subtle": "#FF10271F"
+          },
+          "surface": "#FF141922",
+          "surfaceElevated": "#FF1D232E",
+          "surfaceGrouped": "#FF141922",
+          "surfaceInverse": "#FFF2F4F8",
+          "surfaceVariant": "#FF1D232E",
+          "tertiary": "#FFBE60EB",
+          "tertiaryContent": "#FFBE60EB",
+          "tertiaryPressed": "#FFCB89EC",
+          "tertiarySubtle": "#FF221438",
+          "warning": {
+            "base": "#FFE9A23B",
+            "border": "#FF4A3616",
+            "content": "#FFE9A23B",
+            "on": "#FF06101F",
+            "subtle": "#FF2A1F0E"
+          }
+        },
+        "light": {
+          "accent": "#FF2C6BED",
+          "accentContent": "#FF1C60EC",
+          "accentPressed": "#FF1F52C4",
+          "accentSubtle": "#FFE8EFFD",
+          "background": "#FFF7F8FA",
+          "backgroundGrouped": "#FFEFF1F5",
+          "border": "#FFE3E6EC",
+          "borderStrong": "#FFCBD1DB",
+          "contentDisabled": "#FFA3AAB6",
+          "contentInverse": "#FFFFFFFF",
+          "contentPrimary": "#FF0B0F1A",
+          "contentSecondary": "#FF3D4552",
+          "contentTertiary": "#FF6B7280",
+          "danger": {
+            "base": "#FFC42B32",
+            "border": "#FFF3C9CB",
+            "content": "#FFC42B32",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFCE9E9"
+          },
+          "divider": "#FFE9ECF1",
+          "fill": "#FFE9ECF1",
+          "focusRing": "#662C6BED",
+          "highlight": "#FFE9ECF1",
+          "info": {
+            "base": "#FF1E5FBF",
+            "border": "#FFC3D8F7",
+            "content": "#FF1E5FBF",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE7F0FD"
+          },
+          "neutral": {
+            "base": "#FF5A6472",
+            "border": "#FFE3E6EC",
+            "content": "#FF5A6472",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFEFF1F5"
+          },
+          "onAccent": "#FFFFFFFF",
+          "onSecondary": "#FF0B0E14",
+          "onTertiary": "#FFFFFFFF",
+          "scrim": "#730B0F1A",
+          "secondary": "#FF617DB8",
+          "secondaryContent": "#FF4D6BAB",
+          "secondaryPressed": "#FF445F97",
+          "secondarySubtle": "#FFEFF2F8",
+          "separator": "#FFE3E6EC",
+          "shadow": "#1F000000",
+          "skeleton": "#FFE9ECF1",
+          "success": {
+            "base": "#FF117C59",
+            "border": "#FFB7E2D2",
+            "content": "#FF117C59",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE4F5EE"
+          },
+          "surface": "#FFFFFFFF",
+          "surfaceElevated": "#FFFFFFFF",
+          "surfaceGrouped": "#FFFFFFFF",
+          "surfaceInverse": "#FF0B0F1A",
+          "surfaceVariant": "#FFEFF1F5",
+          "tertiary": "#FFAE2CED",
+          "tertiaryContent": "#FFAE2CED",
+          "tertiaryPressed": "#FF8E11CA",
+          "tertiarySubtle": "#FFF7EAFD",
+          "warning": {
+            "base": "#FFA35B00",
+            "border": "#FFF2DDB8",
+            "content": "#FFA35B00",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFDF1E0"
+          }
+        }
+      }
+    },
+    "radii": {
+      "lg": 20,
+      "md": 14,
+      "none": 0,
+      "sheet": 24,
+      "sm": 10,
+      "xl": 28,
+      "xs": 6
+    },
+    "ramps": {
+      "grey": {
+        "0": "#FFFFFFFF",
+        "100": "#FFEFF1F5",
+        "150": "#FFE9ECF1",
+        "200": "#FFE3E6EC",
+        "300": "#FFCBD1DB",
+        "400": "#FFA3AAB6",
+        "50": "#FFF7F8FA",
+        "500": "#FF6B7280",
+        "600": "#FF5A6472",
+        "700": "#FF3D4552",
+        "900": "#FF0B0F1A"
+      },
+      "ink": {
+        "100": "#FFF2F4F8",
+        "200": "#FFB4BCCA",
+        "300": "#FF7F8899",
+        "400": "#FF565F6E",
+        "500": "#FF38414F",
+        "600": "#FF262D3A",
+        "700": "#FF1D232E",
+        "800": "#FF141922",
+        "900": "#FF0B0E14"
+      }
+    },
+    "sizes": {
+      "buttonLarge": 52,
+      "buttonMedium": 44,
+      "buttonSmall": 36,
+      "fieldHeight": 52,
+      "icon": 20,
+      "iconLarge": 24,
+      "iconSmall": 16,
+      "minTouchTarget": 44,
+      "tabBarHeight": 64,
+      "tabBarLift": 12,
+      "tabBarMaxWidth": 480,
+      "tabBarSideMargin": 20,
+      "topBarHeight": 56
+    },
+    "spacing": {
+      "gutter": 16,
+      "lg": 16,
+      "md": 12,
+      "section": 24,
+      "sm": 8,
+      "stack": 12,
+      "xl": 24,
+      "xs": 4,
+      "xxl": 32,
+      "xxs": 2,
+      "xxxl": 48
+    },
+    "styles": {
+      "Editorial": {
+        "bar": "Minimal",
+        "borderWidth": 1,
+        "borderWidthStrong": 1.5,
+        "buttonRadius": 2,
+        "card": "Outlined",
+        "chipRadius": 2,
+        "field": "Underlined",
+        "offsetShadow": 0,
+        "radii": {
+          "lg": 6,
+          "md": 4,
+          "sheet": 8,
+          "sm": 3,
+          "xl": 8,
+          "xs": 2
+        },
+        "requires": [],
+        "surfaces": "Paper",
+        "uppercaseLabels": true,
+        "voice": "Editorial"
+      },
+      "Playful": {
+        "bar": "Chunky",
+        "borderWidth": 2,
+        "borderWidthStrong": 2.5,
+        "buttonRadius": 14,
+        "card": "Offset",
+        "chipRadius": 12,
+        "field": "Outlined",
+        "offsetShadow": 4,
+        "radii": {
+          "lg": 22,
+          "md": 16,
+          "sheet": 28,
+          "sm": 12,
+          "xl": 28,
+          "xs": 8
+        },
+        "requires": [],
+        "surfaces": "Cream",
+        "uppercaseLabels": false,
+        "voice": "Rounded"
+      },
+      "Social": {
+        "bar": "Floating",
+        "borderWidth": 1,
+        "borderWidthStrong": 1.5,
+        "buttonRadius": "pill",
+        "card": "Raised",
+        "chipRadius": "pill",
+        "field": "Filled",
+        "offsetShadow": 0,
+        "radii": {
+          "lg": 26,
+          "md": 20,
+          "sheet": 30,
+          "sm": 14,
+          "xl": 32,
+          "xs": 10
+        },
+        "requires": [],
+        "surfaces": "BrandTint",
+        "uppercaseLabels": false,
+        "voice": "Bold"
+      },
+      "Utility": {
+        "bar": "Docked",
+        "borderWidth": 1,
+        "borderWidthStrong": 1.5,
+        "buttonRadius": 10,
+        "card": "Outlined",
+        "chipRadius": "pill",
+        "field": "Outlined",
+        "offsetShadow": 0,
+        "radii": {
+          "lg": 20,
+          "md": 14,
+          "sheet": 24,
+          "sm": 10,
+          "xl": 28,
+          "xs": 6
+        },
+        "requires": [],
+        "surfaces": "Cool",
+        "uppercaseLabels": false,
+        "voice": "Neutral"
+      }
+    },
+    "type": {
+      "roles": {
+        "body": {
+          "lineHeight": 22,
+          "size": 17,
+          "tracking": 0,
+          "weight": {
+            "Bold": 400,
+            "Editorial": 400,
+            "Neutral": 400,
+            "Rounded": 400
+          }
+        },
+        "callout": {
+          "lineHeight": 21,
+          "size": 16,
+          "tracking": 0,
+          "weight": {
+            "Bold": 400,
+            "Editorial": 400,
+            "Neutral": 400,
+            "Rounded": 400
+          }
+        },
+        "caption1": {
+          "lineHeight": 16,
+          "size": 12,
+          "tracking": 0.1,
+          "weight": {
+            "Bold": 500,
+            "Editorial": 400,
+            "Neutral": 400,
+            "Rounded": 500
+          }
+        },
+        "caption2": {
+          "lineHeight": 13,
+          "size": 11,
+          "tracking": 0.2,
+          "weight": {
+            "Bold": 600,
+            "Editorial": 500,
+            "Neutral": 500,
+            "Rounded": 600
+          }
+        },
+        "footnote": {
+          "lineHeight": 18,
+          "size": 13,
+          "tracking": 0,
+          "weight": {
+            "Bold": 500,
+            "Editorial": 400,
+            "Neutral": 400,
+            "Rounded": 500
+          }
+        },
+        "headline": {
+          "lineHeight": 22,
+          "size": 17,
+          "tracking": -0.2,
+          "weight": {
+            "Bold": 800,
+            "Editorial": 600,
+            "Neutral": 600,
+            "Rounded": 800
+          }
+        },
+        "largeTitle": {
+          "lineHeight": 41,
+          "size": 34,
+          "tracking": -0.8,
+          "weight": {
+            "Bold": 900,
+            "Editorial": 600,
+            "Neutral": 700,
+            "Rounded": 900
+          }
+        },
+        "mono": {
+          "lineHeight": 20,
+          "size": 15,
+          "tracking": 0,
+          "weight": {
+            "Bold": 400,
+            "Editorial": 400,
+            "Neutral": 400,
+            "Rounded": 400
+          }
+        },
+        "subheadline": {
+          "lineHeight": 20,
+          "size": 15,
+          "tracking": 0,
+          "weight": {
+            "Bold": 400,
+            "Editorial": 400,
+            "Neutral": 400,
+            "Rounded": 400
+          }
+        },
+        "title1": {
+          "lineHeight": 34,
+          "size": 28,
+          "tracking": -0.6,
+          "weight": {
+            "Bold": 900,
+            "Editorial": 600,
+            "Neutral": 700,
+            "Rounded": 900
+          }
+        },
+        "title2": {
+          "lineHeight": 28,
+          "size": 22,
+          "tracking": -0.5,
+          "weight": {
+            "Bold": 800,
+            "Editorial": 600,
+            "Neutral": 700,
+            "Rounded": 900
+          }
+        },
+        "title3": {
+          "lineHeight": 25,
+          "size": 20,
+          "tracking": -0.3,
+          "weight": {
+            "Bold": 800,
+            "Editorial": 600,
+            "Neutral": 600,
+            "Rounded": 800
+          }
+        }
+      },
+      "voices": [
+        "Neutral",
+        "Bold",
+        "Editorial",
+        "Rounded"
+      ]
+    }
+  },
+  "version": 2
+}

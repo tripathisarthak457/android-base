@@ -1,0 +1,42 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:processDebugNavigationResources
+> Task :core:designsystem:generateDebugResources
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:parseDebugLocalResources
+> Task :core:designsystem:generateDebugRFile
+
+> Task :core:designsystem:compileDebugKotlin FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/action/ActionCard.kt:92:49 Assignment type mismatch: actual type is 'androidx.compose.ui.graphics.layer.CompositingStrategy', but 'androidx.compose.ui.graphics.CompositingStrategy' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/chrome/SheetGrabberNode.kt:67:102 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/content/SheetSlots.kt:154:9 Unresolved reference 'OutsideSheetScope'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/layout/SheetLayers.kt:97:29 Assignment type mismatch: actual type is 'androidx.compose.ui.graphics.layer.CompositingStrategy', but 'androidx.compose.ui.graphics.CompositingStrategy' was expected.
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: ASSIGNMENT_TYPE_MISMATCH
+       Kotlin compiler error
+         Assignment type mismatch: actual type is 'androidx.compose.ui.graphics.layer.CompositingStrategy', but 'androidx.compose.ui.graphics.CompositingStrategy' was expected.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/sheet/action/ActionCard.kt line 92
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 14s
+9 actionable tasks: 8 executed, 1 up-to-date
+Configuration cache entry reused.
+EXIT 1

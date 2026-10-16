@@ -1,0 +1,9 @@
+1 slot(s): lift 0.01 0.16 0.52 0.94 1.00 1.00; full (>=0.99) 42-133 ms; samples 8-283 ms, hands over at 292 ms with 0.0110 slot left; settles 383 ms
+2 slot(s): lift 0.06 0.51 1.00 1.00 1.00 1.00; full (>=0.99) 25-175 ms; samples 8-317 ms, hands over at 325 ms with 0.0115 slot left; settles 417 ms
+4 slot(s): lift 0.20 1.00 1.00 1.00 1.00 1.00; full (>=0.99) 17-208 ms; samples 8-350 ms, hands over at 358 ms with 0.0117 slot left; settles 450 ms
+a tap to the next tab at 300 ms, after the first tap's hand-over, while the lens still settles: lift 0.02 0.21 0.60 0.96 1.00 1.00
+run 9 (no lift), for comparison:
+  1 slot(s): lift 1.00 1.00 1.00 1.00 1.00 1.00; full (>=0.99) 8-133 ms; samples 8-283 ms, hands over at 292 ms with 0.0110 slot left; settles 383 ms
+  2 slot(s): lift 1.00 1.00 1.00 1.00 1.00 1.00; full (>=0.99) 8-175 ms; samples 8-317 ms, hands over at 325 ms with 0.0115 slot left; settles 417 ms
+  4 slot(s): lift 1.00 1.00 1.00 1.00 1.00 1.00; full (>=0.99) 8-208 ms; samples 8-350 ms, hands over at 358 ms with 0.0117 slot left; settles 450 ms
+K=503.6 sqrt(K)=22.44

@@ -1,0 +1,78 @@
+{
+ "recording": "../rec/ptr-cold-light.mp4",
+ "size": [
+  720,
+  1600
+ ],
+ "frames": 201,
+ "span_s": 1.916,
+ "region": [
+  40,
+  380,
+  680,
+  1440
+ ],
+ "bone_pixels_sampled": 66241,
+ "bone_luma": 248,
+ "band_half_width_px": 234.1,
+ "sweeps": [
+  {
+   "start": 0.842,
+   "end": 1.916,
+   "visible_s": 1.074,
+   "frames": 108
+  }
+ ],
+ "periods_s": [],
+ "gaps_without_band_s": [],
+ "frames_between_sweeps": [],
+ "strip": [
+  {
+   "index": 100,
+   "t": 0.944,
+   "rows": 143,
+   "median_u": 603.3,
+   "max_abs_dev_px": 265.9,
+   "p90_abs_dev_px": 169.0,
+   "rows_within_2px": 0.035,
+   "y_range": [
+    392,
+    1439
+   ]
+  },
+  {
+   "index": 116,
+   "t": 1.16,
+   "rows": 121,
+   "median_u": 533.3,
+   "max_abs_dev_px": 226.2,
+   "p90_abs_dev_px": 149.2,
+   "rows_within_2px": 0.008,
+   "y_range": [
+    428,
+    1439
+   ]
+  },
+  {
+   "index": 136,
+   "rows": 0
+  },
+  {
+   "index": 161,
+   "t": 1.591,
+   "rows": 8,
+   "median_u": 216.3,
+   "max_abs_dev_px": 15.9,
+   "p90_abs_dev_px": 15.9,
+   "rows_within_2px": 0.375,
+   "y_range": [
+    476,
+    629
+   ]
+  },
+  {
+   "index": 187,
+   "rows": 0
+  }
+ ]
+}

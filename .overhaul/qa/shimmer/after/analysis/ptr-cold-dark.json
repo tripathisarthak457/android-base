@@ -1,0 +1,94 @@
+{
+ "recording": "../rec/ptr-cold-dark.mp4",
+ "theme": "dark",
+ "frames_read": 84,
+ "frames_between_skeleton_and_content": [],
+ "skeleton_from_s": 1.2558,
+ "skeleton_to_s": 1.3877,
+ "skeleton_shown_s": 0.154,
+ "last_skeleton_frame": 79,
+ "first_content_frame": 80,
+ "swap_gap_ms": 22.1,
+ "cards_skeleton": [
+  [
+   393,
+   561
+  ],
+  [
+   586,
+   753
+  ],
+  [
+   778,
+   946
+  ],
+  [
+   971,
+   1139
+  ],
+  [
+   1164,
+   1331
+  ],
+  [
+   1356,
+   1439
+  ]
+ ],
+ "cards_content": [
+  [
+   393,
+   601
+  ],
+  [
+   626,
+   794
+  ],
+  [
+   819,
+   1027
+  ],
+  [
+   1052,
+   1220
+  ],
+  [
+   1245,
+   1413
+  ]
+ ],
+ "card_shift_px": [
+  {
+   "top": 0,
+   "bottom": 40
+  },
+  {
+   "top": 40,
+   "bottom": 41
+  },
+  {
+   "top": 41,
+   "bottom": 81
+  },
+  {
+   "top": 81,
+   "bottom": 81
+  },
+  {
+   "top": 81,
+   "bottom": 82
+  }
+ ],
+ "settled_skeleton_frames": 11,
+ "settled_skeleton_from_s": 1.2965,
+ "above_first_card": {
+  "rows": [
+   60,
+   389
+  ],
+  "sampled_px": 56800,
+  "most_changed_px_in_a_skeleton_frame": 0,
+  "at_frame": null
+ },
+ "bone_max_change_between_settled_skeleton_frames": 2
+}

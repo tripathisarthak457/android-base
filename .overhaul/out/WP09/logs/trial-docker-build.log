@@ -1,0 +1,89 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.80kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-alpine
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/golang:1.27-alpine
+#3 DONE 1.6s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 783B done
+#4 DONE 0.0s
+
+#5 [build 1/6] FROM docker.io/library/golang:1.27-alpine@sha256:738d1cf061836894ff6bb8c33881080ac66de8cf0586615012a0c8f592649cfa
+#5 resolve docker.io/library/golang:1.27-alpine@sha256:738d1cf061836894ff6bb8c33881080ac66de8cf0586615012a0c8f592649cfa 0.0s done
+#5 DONE 0.0s
+
+#6 [stage-1 1/8] FROM docker.io/library/python:3.12-alpine@sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4
+#6 resolve docker.io/library/python:3.12-alpine@sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4 0.0s done
+#6 DONE 0.1s
+
+#7 [internal] load build context
+#7 ...
+
+#8 [stage-1 2/8] WORKDIR /app
+#8 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 1.99MB 0.3s done
+#7 DONE 0.3s
+
+#9 [build 5/6] COPY web/api/ ./
+#9 CACHED
+
+#10 [build 2/6] WORKDIR /src
+#10 CACHED
+
+#11 [build 3/6] COPY web/api/go.mod web/api/go.sum ./
+#11 CACHED
+
+#12 [build 4/6] RUN go mod download
+#12 CACHED
+
+#13 [build 6/6] RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags '-s -w' -o /out/server ./cmd/server
+#13 CACHED
+
+#14 [stage-1 3/8] RUN apk add --no-cache openjdk21-jre-headless
+#14 0.979 (1/6) Installing java-common (1.0-r2)
+#14 0.991 (2/6) Installing libtasn1 (4.21.0-r0)
+#14 1.004 (3/6) Installing p11-kit (0.26.2-r0)
+#14 1.023 (4/6) Installing p11-kit-trust (0.26.2-r0)
+#14 1.041 (5/6) Installing java-cacerts (1.1-r0)
+#14 1.051 (6/6) Installing openjdk21-jre-headless (21.0.12_p8-r0)
+#14 2.142 Executing busybox-1.37.0-r31.trigger
+#14 2.148 Executing ca-certificates-20260909-r0.trigger
+#14 2.244 Executing java-common-1.0-r2.trigger
+#14 2.253 OK: 203.5 MiB in 44 packages
+#14 DONE 2.4s
+
+#15 [stage-1 4/8] COPY --from=build /out/server /app/server
+#15 DONE 0.1s
+
+#16 [stage-1 5/8] COPY generator/ /app/generator/
+#16 DONE 0.1s
+
+#17 [stage-1 6/8] COPY templates/ /app/templates/
+#17 DONE 0.1s
+
+#18 [stage-1 7/8] COPY tokens/ /app/tokens/
+#18 DONE 0.0s
+
+#19 [stage-1 8/8] RUN python -m compileall -q -j 0 /usr/local/lib/python3.12 /app/generator  && cd /app/generator  && python -m genkit.core.catalogue --json > /app/catalogue.json
+#19 DONE 2.0s
+
+#20 exporting to image
+#20 exporting layers
+#20 exporting layers 6.4s done
+#20 exporting manifest sha256:734edc0fc84dcf535b11fc356ee7b143478fc1a461f0024def9d00265cfea291 0.0s done
+#20 exporting config sha256:bd92072518f53963bdf5338ed33cfab3daa5760c60218b89251345b723d5e03e 0.0s done
+#20 exporting attestation manifest sha256:878b91284f114793d9fe7666ce2b0aa35a39d8d1c8870a1f80f67ab4d64d2bbe 0.0s done
+#20 exporting manifest list sha256:a1bff3f749b00a97c46907428afdf522b32ac928dcbb9ddf68f13c561f530ab4 0.0s done
+#20 naming to docker.io/library/android-base-api:wp09-trial done
+#20 unpacking to docker.io/library/android-base-api:wp09-trial
+#20 unpacking to docker.io/library/android-base-api:wp09-trial 1.3s done
+#20 DONE 7.8s
+EXIT 0

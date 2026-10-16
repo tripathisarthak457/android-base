@@ -1,0 +1,209 @@
+[locked:adb] waiting for lock...
+Performing Streamed Install
+Success
+Success
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 12 >= 12
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 14 >= 14
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 16 >= 16
+    Last message repeated 1 times
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 19 >= 19
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 20 >= 20
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+    Last message repeated 1 times
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 29 >= 29
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+[image2 @ 0x5f3242e68f80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 7 >= 7
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 8 >= 8
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 9 >= 9
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 10 >= 10
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 11 >= 11
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 12 >= 12
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 13 >= 13
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 16 >= 16
+    Last message repeated 1 times
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 18 >= 18
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+[image2 @ 0x5b40fcf8c480] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 20 >= 20
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 21 >= 21
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 22 >= 22
+    Last message repeated 1 times
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+    Last message repeated 1 times
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+    Last message repeated 1 times
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 62 >= 62
+    Last message repeated 1 times
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 64 >= 64
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 78 >= 78
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 79 >= 79
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 80 >= 80
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 81 >= 81
+    Last message repeated 1 times
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 82 >= 82
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 84 >= 84
+    Last message repeated 1 times
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 85 >= 85
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 86 >= 86
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 87 >= 87
+[image2 @ 0x6113c2254b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 88 >= 88
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 22 >= 22
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 29 >= 29
+    Last message repeated 1 times
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+    Last message repeated 1 times
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+    Last message repeated 1 times
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 65 >= 65
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 67 >= 67
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 68 >= 68
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 69 >= 69
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 70 >= 70
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 71 >= 71
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 72 >= 72
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 73 >= 73
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 74 >= 74
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 76 >= 76
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 80 >= 80
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 94 >= 94
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 95 >= 95
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+    Last message repeated 1 times
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 105 >= 105
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 106 >= 106
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 107 >= 107
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 108 >= 108
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 109 >= 109
+[image2 @ 0x6023f27b3280] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 111 >= 111
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 16 >= 16
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 17 >= 17
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 18 >= 18
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 19 >= 19
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 20 >= 20
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 22 >= 22
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 64 >= 64
+    Last message repeated 1 times
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 66 >= 66
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 67 >= 67
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 68 >= 68
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 69 >= 69
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 70 >= 70
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 71 >= 71
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 73 >= 73
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 74 >= 74
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 75 >= 75
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 76 >= 76
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 92 >= 92
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 93 >= 93
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 94 >= 94
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+    Last message repeated 1 times
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 102 >= 102
+    Last message repeated 1 times
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+    Last message repeated 1 times
+[image2 @ 0x58e73f1b8180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 6 >= 6
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 7 >= 7
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 8 >= 8
+    Last message repeated 4 times
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 9 >= 9
+    Last message repeated 3 times
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 10 >= 10
+    Last message repeated 2 times
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+    Last message repeated 1 times
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+    Last message repeated 3 times
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 33 >= 33
+    Last message repeated 1 times
+[image2 @ 0x569398ab4cc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+press_buttons: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/cp1/press_buttons/press_buttons.mp4 (10 moving frames)
+press_card_row: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/cp1/press_card_row/press_card_row.mp4 (20 moving frames)
+switch: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/cp1/switch/switch.mp4 (6 moving frames)
+segmented: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/cp1/segmented/segmented.mp4 (7 moving frames)
+sheet: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/cp1/sheet/sheet.mp4 (84 moving frames)
+toast: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/cp1/toast/toast.mp4 (23 moving frames)
+CP1 SESSION OK
+EXIT 0

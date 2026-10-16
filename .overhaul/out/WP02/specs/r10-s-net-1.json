@@ -1,0 +1,24 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Fit net 1",
+  "package_name": "io.example.fitnet1",
+  "architecture": "compact",
+  "features": [
+    "formatting",
+    "network"
+  ],
+  "feature_modules": [
+    "abcdefghijk",
+    "abcdefghijkl",
+    "abcdefghijklm",
+    "abcdefghijklmn",
+    "abcdefghijklmno",
+    "abcdefghijklmnop",
+    "abcdefghijklmnopq",
+    "abcdefghijklmnopqr",
+    "abcdefghijklmnopqrs",
+    "abcdefghijklmnopqrst"
+  ],
+  "languages": []
+}

@@ -1,0 +1,130 @@
+{
+ "recording": "../rec/cat-loading-light-rtl.mp4",
+ "size": [
+  720,
+  1600
+ ],
+ "frames": 358,
+ "span_s": 4.579,
+ "region": [
+  0,
+  300,
+  720,
+  1560
+ ],
+ "bone_pixels_sampled": 16464,
+ "bone_luma": 218.0,
+ "band_half_width_px": 234.1,
+ "sweeps": [
+  {
+   "start": 0.0,
+   "end": 0.538,
+   "visible_s": 0.538,
+   "frames": 46
+  },
+  {
+   "start": 1.356,
+   "end": 2.33,
+   "visible_s": 0.974,
+   "frames": 110
+  },
+  {
+   "start": 3.48,
+   "end": 4.579,
+   "visible_s": 1.1,
+   "frames": 130
+  }
+ ],
+ "periods_s": [
+  1.356,
+  2.124
+ ],
+ "gaps_without_band_s": [
+  0.818,
+  1.15
+ ],
+ "frames_between_sweeps": [
+  1,
+  40
+ ],
+ "strip": [
+  {
+   "index": 77,
+   "t": 1.439,
+   "rows": 4,
+   "median_u": 8.3,
+   "max_abs_dev_px": 178.8,
+   "p90_abs_dev_px": 178.8,
+   "rows_within_2px": 0.0,
+   "y_range": [
+    411,
+    1317
+   ]
+  },
+  {
+   "index": 96,
+   "t": 1.596,
+   "rows": 4,
+   "median_u": 1.3,
+   "max_abs_dev_px": 171.8,
+   "p90_abs_dev_px": 171.8,
+   "rows_within_2px": 0.0,
+   "y_range": [
+    411,
+    1317
+   ]
+  },
+  {
+   "index": 116,
+   "t": 1.763,
+   "rows": 58,
+   "median_u": -404.7,
+   "max_abs_dev_px": 115.7,
+   "p90_abs_dev_px": 70.2,
+   "rows_within_2px": 0.224,
+   "y_range": [
+    348,
+    768
+   ]
+  },
+  {
+   "index": 135,
+   "t": 1.922,
+   "rows": 133,
+   "median_u": -119.7,
+   "max_abs_dev_px": 132.5,
+   "p90_abs_dev_px": 24.4,
+   "rows_within_2px": 0.158,
+   "y_range": [
+    393,
+    1494
+   ]
+  },
+  {
+   "index": 155,
+   "t": 2.088,
+   "rows": 66,
+   "median_u": 207.7,
+   "max_abs_dev_px": 461.4,
+   "p90_abs_dev_px": 31.4,
+   "rows_within_2px": 0.136,
+   "y_range": [
+    540,
+    1530
+   ]
+  },
+  {
+   "index": 174,
+   "t": 2.247,
+   "rows": 14,
+   "median_u": 475.9,
+   "max_abs_dev_px": 183.6,
+   "p90_abs_dev_px": 118.6,
+   "rows_within_2px": 0.0,
+   "y_range": [
+    1281,
+    1530
+   ]
+  }
+ ]
+}

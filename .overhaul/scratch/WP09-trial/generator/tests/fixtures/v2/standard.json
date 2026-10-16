@@ -1,0 +1,29 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Standard",
+  "package_name": "com.example.standard",
+  "architecture": "compact",
+  "features": [
+    "auth",
+    "browser",
+    "catalog",
+    "coil",
+    "deeplink",
+    "devtools",
+    "flags",
+    "forms",
+    "googlefonts",
+    "language",
+    "leakcanary",
+    "media",
+    "network",
+    "onboarding",
+    "profile",
+    "room",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "languages": []
+}

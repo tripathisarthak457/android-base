@@ -1,0 +1,173 @@
+diff --git a/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/DefaultOrdersRepository.kt b/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/DefaultOrdersRepository.kt
+index f263354..cad4bc9 100644
+--- a/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/DefaultOrdersRepository.kt
++++ b/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/DefaultOrdersRepository.kt
+@@ -28,11 +28,10 @@ internal class DefaultOrdersRepository @Inject constructor(
+             ),
+         ).map { dtos -> dtos.map(OrdersDto::toDomain) }
+ 
+-    override suspend fun item(id: String): AppResult<OrdersItem> =
+-        networkClient.get<OrdersDto>(
+-            path = "$PATH/$id",
+-            cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
+-        ).map(OrdersDto::toDomain)
++    override suspend fun item(id: String): AppResult<OrdersItem> = networkClient.get<OrdersDto>(
++        path = "$PATH/$id",
++        cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
++    ).map(OrdersDto::toDomain)
+ 
+     private companion object {
+         const val PATH = "orders"
+diff --git a/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/api/OrdersItem.kt b/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/api/OrdersItem.kt
+index 6229550..4fcca52 100644
+--- a/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/api/OrdersItem.kt
++++ b/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/api/OrdersItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.wp02fmt.data.orders.api
+ 
+ /** One orders entry as the app sees it, whatever shape the source sends. */
+-data class OrdersItem(
+-    val id: String,
+-    val title: String,
+-)
++data class OrdersItem(val id: String, val title: String)
+diff --git a/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/remote/OrdersDto.kt b/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/remote/OrdersDto.kt
+index 4a86fa7..dde90ed 100644
+--- a/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/remote/OrdersDto.kt
++++ b/data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/remote/OrdersDto.kt
+@@ -11,5 +11,4 @@ internal data class OrdersDto(
+     @SerialName("title") val title: String = "",
+ )
+ 
+-internal fun OrdersDto.toDomain(): OrdersItem =
+-    OrdersItem(id = id, title = title.trim())
++internal fun OrdersDto.toDomain(): OrdersItem = OrdersItem(id = id, title = title.trim())
+diff --git a/data/orders/src/testFixtures/kotlin/io/example/wp02fmt/data/orders/api/FakeOrdersRepository.kt b/data/orders/src/testFixtures/kotlin/io/example/wp02fmt/data/orders/api/FakeOrdersRepository.kt
+index e9a78e6..2387695 100644
+--- a/data/orders/src/testFixtures/kotlin/io/example/wp02fmt/data/orders/api/FakeOrdersRepository.kt
++++ b/data/orders/src/testFixtures/kotlin/io/example/wp02fmt/data/orders/api/FakeOrdersRepository.kt
+@@ -6,9 +6,7 @@ import io.example.wp02fmt.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeOrdersRepository(
+-    var result: AppResult<List<OrdersItem>>,
+-) : OrdersRepository {
++class FakeOrdersRepository(var result: AppResult<List<OrdersItem>>) : OrdersRepository {
+ 
+     var loads = 0
+         private set
+@@ -18,9 +16,8 @@ class FakeOrdersRepository(
+         return result
+     }
+ 
+-    override suspend fun item(id: String): AppResult<OrdersItem> =
+-        when (val current = result) {
+-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
+-            is AppResult.Failure -> current
+-        }
++    override suspend fun item(id: String): AppResult<OrdersItem> = when (val current = result) {
++        is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
++        is AppResult.Failure -> current
++    }
+ }
+diff --git a/data/subscriptions/src/main/kotlin/io/example/wp02fmt/data/subscriptions/api/SubscriptionsItem.kt b/data/subscriptions/src/main/kotlin/io/example/wp02fmt/data/subscriptions/api/SubscriptionsItem.kt
+index 579f5bf..1de183a 100644
+--- a/data/subscriptions/src/main/kotlin/io/example/wp02fmt/data/subscriptions/api/SubscriptionsItem.kt
++++ b/data/subscriptions/src/main/kotlin/io/example/wp02fmt/data/subscriptions/api/SubscriptionsItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.wp02fmt.data.subscriptions.api
+ 
+ /** One subscriptions entry as the app sees it, whatever shape the source sends. */
+-data class SubscriptionsItem(
+-    val id: String,
+-    val title: String,
+-)
++data class SubscriptionsItem(val id: String, val title: String)
+diff --git a/data/subscriptions/src/testFixtures/kotlin/io/example/wp02fmt/data/subscriptions/api/FakeSubscriptionsRepository.kt b/data/subscriptions/src/testFixtures/kotlin/io/example/wp02fmt/data/subscriptions/api/FakeSubscriptionsRepository.kt
+index 8da9382..b947822 100644
+--- a/data/subscriptions/src/testFixtures/kotlin/io/example/wp02fmt/data/subscriptions/api/FakeSubscriptionsRepository.kt
++++ b/data/subscriptions/src/testFixtures/kotlin/io/example/wp02fmt/data/subscriptions/api/FakeSubscriptionsRepository.kt
+@@ -6,9 +6,8 @@ import io.example.wp02fmt.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeSubscriptionsRepository(
+-    var result: AppResult<List<SubscriptionsItem>>,
+-) : SubscriptionsRepository {
++class FakeSubscriptionsRepository(var result: AppResult<List<SubscriptionsItem>>) :
++    SubscriptionsRepository {
+ 
+     var loads = 0
+         private set
+diff --git a/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/detail/OrdersDetailViewModel.kt b/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/detail/OrdersDetailViewModel.kt
+index 3b2afb9..f9a6071 100644
+--- a/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/detail/OrdersDetailViewModel.kt
++++ b/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/detail/OrdersDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class OrdersDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/list/OrdersListViewModel.kt b/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/list/OrdersListViewModel.kt
+index 713a920..69f1a4e 100644
+--- a/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/list/OrdersListViewModel.kt
++++ b/feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/list/OrdersListViewModel.kt
+@@ -10,19 +10,21 @@ import io.example.wp02fmt.data.orders.api.OrdersRepository
+ import javax.inject.Inject
+ 
+ @HiltViewModel
+-internal class OrdersListViewModel @Inject constructor(
+-    private val repository: OrdersRepository,
+-) : MviViewModel<OrdersListState, OrdersListEvent, OrdersListEffect>(
+-    initial = OrdersListState(),
+-) {
++internal class OrdersListViewModel @Inject constructor(private val repository: OrdersRepository) :
++    MviViewModel<OrdersListState, OrdersListEvent, OrdersListEffect>(
++        initial = OrdersListState(),
++    ) {
+ 
+     override fun handleEvent(event: OrdersListEvent) {
+         when (event) {
+             OrdersListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             OrdersListEvent.Refresh -> load(refreshing = true)
++
+             OrdersListEvent.Retry -> load(refreshing = false)
++
+             is OrdersListEvent.ItemClicked -> {
+                 emit(OrdersListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt b/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt
+index 412703f..27d1d69 100644
+--- a/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt
++++ b/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class SubscriptionsDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/list/SubscriptionsListViewModel.kt b/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/list/SubscriptionsListViewModel.kt
+index 507e26f..ce89562 100644
+--- a/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/list/SubscriptionsListViewModel.kt
++++ b/feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/list/SubscriptionsListViewModel.kt
+@@ -21,8 +21,11 @@ internal class SubscriptionsListViewModel @Inject constructor(
+             SubscriptionsListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             SubscriptionsListEvent.Refresh -> load(refreshing = true)
++
+             SubscriptionsListEvent.Retry -> load(refreshing = false)
++
+             is SubscriptionsListEvent.ItemClicked -> {
+                 emit(SubscriptionsListEffect.OpenDetail(event.id))
+             }

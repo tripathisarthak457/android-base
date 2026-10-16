@@ -1,0 +1,147 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest :catalog:assembleDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :catalog:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :catalog:verifyComposeUsage
+> Task :catalog:preBuild
+> Task :catalog:preDebugBuild
+> Task :catalog:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :catalog:generateDebugGlobalSynthetics FROM-CACHE
+> Task :catalog:generateDebugBuildConfig FROM-CACHE
+> Task :catalog:javaPreCompileDebug FROM-CACHE
+> Task :catalog:desugarDebugFileDependencies FROM-CACHE
+> Task :catalog:generateDebugResources FROM-CACHE
+> Task :catalog:mapDebugSourceSetPaths
+> Task :catalog:extractDeepLinksDebug FROM-CACHE
+> Task :catalog:packageDebugResources FROM-CACHE
+> Task :catalog:createDebugCompatibleScreenManifests
+> Task :catalog:writeDebugAppMetadata
+> Task :catalog:mergeDebugJniLibFolders
+> Task :catalog:writeDebugSigningConfigVersions
+> Task :catalog:validateSigningDebug
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :catalog:checkDebugDuplicateClasses
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:mergeDebugJniLibFolders
+> Task :catalog:mergeDebugAssets
+> Task :catalog:processDebugMainManifest FROM-CACHE
+> Task :catalog:compressDebugAssets FROM-CACHE
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :catalog:processDebugManifest FROM-CACHE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :catalog:processDebugManifestForPackage FROM-CACHE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly
+> Task :catalog:checkDebugAarMetadata
+> Task :catalog:processDebugNavigationResources FROM-CACHE
+> Task :catalog:parseDebugLocalResources FROM-CACHE
+> Task :catalog:generateDebugRFile FROM-CACHE
+> Task :catalog:compileDebugNavigationResources FROM-CACHE
+> Task :catalog:mergeDebugNativeLibs
+
+> Task :catalog:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :catalog:mergeExtDexDebug FROM-CACHE
+> Task :catalog:mergeDebugResources
+> Task :catalog:processDebugResources
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToDirDebug
+
+> Task :core:designsystem:compileDebugUnitTestKotlin FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/list/SwipeActionsTest.kt:48:66 Unresolved reference 'height' on receiver of type 'DpRect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/list/SwipeActionsTest.kt:49:68 Unresolved reference 'height' on receiver of type 'DpRect'.
+
+> Task :catalog:compileDebugKotlin FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogMotion.kt:78:98 Candidate 'fun LazyItemScope.appAnimateItem(modifier: Modifier = ...): Modifier' is inapplicable because of a receiver type mismatch.
+
+> Task :catalog:mergeLibDexDebug
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugUnitTestKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE
+       Kotlin compiler error
+         Unresolved reference 'height' on receiver of type 'DpRect'.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/list/SwipeActionsTest.kt line 48
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':catalog:compileDebugKotlin' (registered by plugin 'com.android.internal.application').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE_WRONG_RECEIVER
+       Kotlin compiler error
+         Candidate 'fun LazyItemScope.appAnimateItem(modifier: Modifier = ...): Modifier' is inapplicable because of a receiver type mismatch.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogMotion.kt line 78
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 28s
+70 actionable tasks: 25 executed, 16 from cache, 29 up-to-date
+Configuration cache entry stored.
+EXIT 1

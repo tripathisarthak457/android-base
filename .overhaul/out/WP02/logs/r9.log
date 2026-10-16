@@ -1,0 +1,915 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: assembleDevDebug :feature:subscriptions:check :data:subscriptions:check :feature:orders:check :data:orders:check
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :app:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :app:generateDevDebugBuildConfig FROM-CACHE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :app:generateDevDebugResources FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:datastore:generateDebugEmptyResourceFiles
+> Task :app:packageDevDebugResources FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:mvi:generateDebugEmptyResourceFiles
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies FROM-CACHE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:network:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:generateDebugEmptyResourceFiles
+> Task :core:network:verifyModuleDependencies FROM-CACHE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:verifyApiPurity FROM-CACHE
+> Task :core:network:generateDebugEmptyResourceFiles
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :data:orders:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :data:orders:verifyApiPurity FROM-CACHE
+> Task :data:orders:preBuild UP-TO-DATE
+> Task :data:orders:preDebugBuild UP-TO-DATE
+> Task :data:subscriptions:verifyModuleDependencies FROM-CACHE
+> Task :data:subscriptions:verifyApiPurity FROM-CACHE
+> Task :data:subscriptions:preBuild UP-TO-DATE
+> Task :data:subscriptions:preDebugBuild UP-TO-DATE
+> Task :data:orders:generateDebugEmptyResourceFiles
+> Task :feature:orders:verifyModuleDependencies FROM-CACHE
+> Task :data:subscriptions:generateDebugEmptyResourceFiles
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :feature:orders:verifyApiPurity
+> Task :feature:orders:preBuild
+> Task :feature:subscriptions:verifyModuleDependencies FROM-CACHE
+> Task :feature:orders:preDebugBuild
+> Task :feature:orders:processDebugNavigationResources FROM-CACHE
+> Task :feature:subscriptions:verifyApiPurity
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :feature:subscriptions:preBuild
+> Task :feature:subscriptions:preDebugBuild
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :feature:subscriptions:processDebugNavigationResources FROM-CACHE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:common:jar
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :core:mvi:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:datastore:kspDebugKotlin FROM-CACHE
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:ui:packageDebugResources FROM-CACHE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :app:processDevDebugNavigationResources FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :app:parseDevDebugLocalResources FROM-CACHE
+> Task :data:orders:javaPreCompileDebug FROM-CACHE
+> Task :feature:orders:generateDebugResources FROM-CACHE
+> Task :app:generateDevDebugRFile FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:orders:packageDebugResources FROM-CACHE
+> Task :feature:orders:javaPreCompileDebug FROM-CACHE
+> Task :feature:orders:parseDebugLocalResources FROM-CACHE
+> Task :data:subscriptions:javaPreCompileDebug FROM-CACHE
+> Task :feature:subscriptions:generateDebugResources FROM-CACHE
+> Task :feature:orders:generateDebugRFile FROM-CACHE
+> Task :feature:subscriptions:javaPreCompileDebug FROM-CACHE
+> Task :feature:subscriptions:packageDebugResources FROM-CACHE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :feature:subscriptions:parseDebugLocalResources FROM-CACHE
+> Task :core:datastore:compileDebugKotlin FROM-CACHE
+> Task :feature:subscriptions:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :data:orders:generateDebugAssets UP-TO-DATE
+> Task :data:orders:mergeDebugAssets
+> Task :data:subscriptions:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets
+> Task :feature:orders:generateDebugAssets UP-TO-DATE
+> Task :data:subscriptions:mergeDebugAssets
+> Task :feature:subscriptions:generateDebugAssets UP-TO-DATE
+> Task :feature:orders:mergeDebugAssets
+> Task :feature:subscriptions:mergeDebugAssets
+> Task :app:generateDevDebugGlobalSynthetics FROM-CACHE
+> Task :core:datastore:processDebugJavaRes
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:mvi:processDebugJavaRes
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :app:mergeDevDebugAssets
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :app:compressDevDebugAssets FROM-CACHE
+> Task :core:navigation:processDebugJavaRes
+> Task :app:desugarDevDebugFileDependencies FROM-CACHE
+> Task :core:mvi:bundleLibRuntimeToDirDebug
+> Task :core:designsystem:bundleLibRuntimeToDirDebug
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:mvi:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:network:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :data:orders:writeDebugAarMetadata
+> Task :data:subscriptions:writeDebugAarMetadata
+> Task :feature:orders:writeDebugAarMetadata
+> Task :feature:subscriptions:writeDebugAarMetadata
+> Task :app:checkDevDebugDuplicateClasses
+> Task :core:datastore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :app:checkDevDebugAarMetadata
+> Task :core:datastore:bundleLibRuntimeToDirDebug
+> Task :core:network:kspDebugKotlin FROM-CACHE
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :app:mapDevDebugSourceSetPaths
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :core:network:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:network:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :data:orders:kspDebugKotlin FROM-CACHE
+> Task :data:orders:compileDebugKotlin FROM-CACHE
+> Task :data:orders:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:ui:compileDebugKotlin FROM-CACHE
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:orders:bundleLibCompileToJarDebug
+> Task :app:mergeDevDebugResources FROM-CACHE
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:network:processDebugJavaRes
+> Task :data:subscriptions:kspDebugKotlin FROM-CACHE
+> Task :core:ui:processDebugJavaRes
+> Task :data:orders:processDebugJavaRes
+> Task :data:orders:bundleLibRuntimeToDirDebug
+> Task :data:subscriptions:compileDebugKotlin FROM-CACHE
+> Task :data:subscriptions:processDebugJavaRes
+> Task :data:subscriptions:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:subscriptions:bundleLibCompileToJarDebug
+> Task :core:network:bundleLibRuntimeToDirDebug
+> Task :data:subscriptions:bundleLibRuntimeToDirDebug
+> Task :core:ui:bundleLibRuntimeToDirDebug
+> Task :core:navigation:bundleLibRuntimeToDirDebug
+> Task :data:subscriptions:bundleLibRuntimeToJarDebug
+> Task :data:orders:bundleLibRuntimeToJarDebug
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:mvi:processDebugManifest FROM-CACHE
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :data:orders:processDebugManifest FROM-CACHE
+> Task :data:subscriptions:processDebugManifest FROM-CACHE
+> Task :feature:orders:extractDeepLinksDebug FROM-CACHE
+> Task :feature:orders:processDebugManifest FROM-CACHE
+> Task :feature:subscriptions:extractDeepLinksDebug FROM-CACHE
+> Task :feature:subscriptions:processDebugManifest FROM-CACHE
+> Task :app:mergeExtDexDevDebug FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:compileDebugLibraryResources FROM-CACHE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :feature:orders:mapDebugSourceSetPaths
+> Task :feature:orders:compileDebugLibraryResources FROM-CACHE
+> Task :feature:subscriptions:mapDebugSourceSetPaths
+> Task :feature:subscriptions:compileDebugLibraryResources FROM-CACHE
+> Task :app:mergeDevDebugJniLibFolders
+> Task :core:datastore:mergeDebugJniLibFolders
+> Task :core:datastore:mergeDebugNativeLibs NO-SOURCE
+> Task :core:datastore:copyDebugJniLibsProjectOnly
+> Task :core:designsystem:mergeDebugJniLibFolders
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly
+> Task :core:mvi:mergeDebugJniLibFolders
+> Task :core:mvi:mergeDebugNativeLibs NO-SOURCE
+> Task :core:mvi:copyDebugJniLibsProjectOnly
+> Task :core:navigation:mergeDebugJniLibFolders
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:copyDebugJniLibsProjectOnly
+> Task :core:network:mergeDebugJniLibFolders
+> Task :core:network:mergeDebugNativeLibs NO-SOURCE
+> Task :core:network:copyDebugJniLibsProjectOnly
+> Task :core:ui:mergeDebugJniLibFolders
+> Task :core:ui:mergeDebugNativeLibs NO-SOURCE
+> Task :core:ui:copyDebugJniLibsProjectOnly
+> Task :data:orders:mergeDebugJniLibFolders
+> Task :data:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :data:orders:copyDebugJniLibsProjectOnly
+> Task :data:subscriptions:mergeDebugJniLibFolders
+> Task :data:subscriptions:mergeDebugNativeLibs NO-SOURCE
+> Task :data:subscriptions:copyDebugJniLibsProjectOnly
+> Task :feature:orders:mergeDebugJniLibFolders
+> Task :feature:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:orders:copyDebugJniLibsProjectOnly
+> Task :feature:subscriptions:mergeDebugJniLibFolders
+> Task :feature:subscriptions:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:subscriptions:copyDebugJniLibsProjectOnly
+> Task :app:processDevDebugMainManifest FROM-CACHE
+> Task :app:processDevDebugManifest FROM-CACHE
+> Task :app:processDevDebugManifestForPackage FROM-CACHE
+> Task :app:mergeDevDebugNativeLibs
+
+> Task :app:stripDevDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :app:validateSigningDevDebug
+> Task :app:writeDevDebugAppMetadata
+> Task :app:processDevDebugResources FROM-CACHE
+> Task :app:writeDevDebugSigningConfigVersions
+> Task :core:datastore:extractProguardFiles
+> Task :core:datastore:prepareLintJarForPublish
+> Task :core:datastore:generateDebugLintModel
+> Task :core:designsystem:extractProguardFiles
+> Task :core:datastore:lintAnalyzeDebug FROM-CACHE
+> Task :core:designsystem:checkDebugAarMetadata
+> Task :core:designsystem:extractDebugAnnotations FROM-CACHE
+> Task :core:designsystem:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:designsystem:mergeDebugGeneratedProguardFiles
+> Task :core:designsystem:mergeDebugConsumerProguardFiles
+> Task :core:designsystem:prepareDebugArtProfile
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:designsystem:generateDebugLintModel
+> Task :core:testing:verifyApiPurity FROM-CACHE
+> Task :core:testing:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:testing:checkDebugAarMetadata
+> Task :core:testing:extractDebugAnnotations FROM-CACHE
+> Task :core:testing:generateDebugEmptyResourceFiles
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets
+> Task :core:testing:compileDebugKotlin FROM-CACHE
+> Task :core:testing:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:mergeDebugGeneratedProguardFiles
+> Task :core:testing:mergeDebugConsumerProguardFiles
+> Task :core:designsystem:mergeDebugJavaResource
+> Task :core:testing:prepareDebugArtProfile
+> Task :core:testing:prepareLintJarForPublish
+> Task :core:testing:processDebugManifest FROM-CACHE
+> Task :core:designsystem:syncDebugLibJars FROM-CACHE
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:mergeDebugJavaResource
+> Task :core:designsystem:bundleDebugLocalLintAar
+> Task :core:testing:syncDebugLibJars FROM-CACHE
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:testing:bundleDebugLocalLintAar
+> Task :core:testing:compose:verifyApiPurity FROM-CACHE
+> Task :core:testing:compose:verifyModuleDependencies FROM-CACHE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :core:testing:compose:extractDebugAnnotations FROM-CACHE
+> Task :core:testing:compose:checkDebugAarMetadata
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles
+> Task :core:testing:compose:mergeDebugAssets
+> Task :core:testing:compose:javaPreCompileDebug FROM-CACHE
+> Task :core:testing:compose:prepareDebugArtProfile
+> Task :core:testing:compose:prepareLintJarForPublish
+> Task :core:testing:compose:processDebugManifest FROM-CACHE
+> Task :core:testing:compose:writeDebugAarMetadata
+> Task :core:designsystem:createFullJarDebug
+> Task :core:designsystem:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:designsystem:writeDebugLintModelMetadata
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:createFullJarDebug
+> Task :core:testing:writeDebugLintModelMetadata
+> Task :core:testing:compose:writeDebugLintModelMetadata
+> Task :core:designsystem:lintAnalyzeDebug FROM-CACHE
+> Task :core:testing:compose:compileDebugKotlin FROM-CACHE
+> Task :core:mvi:extractProguardFiles
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:mergeDebugGeneratedProguardFiles
+> Task :core:testing:compose:processDebugJavaRes
+> Task :core:testing:compose:mergeDebugConsumerProguardFiles
+> Task :core:testing:compose:mergeDebugJavaResource
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug
+> Task :core:testing:compose:syncDebugLibJars FROM-CACHE
+> Task :core:testing:compose:bundleDebugLocalLintAar
+> Task :core:testing:compose:createFullJarDebug
+> Task :core:designsystem:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:mvi:generateDebugLintModel
+> Task :core:designsystem:generateDebugUnitTestLintModel
+> Task :core:mvi:checkDebugAarMetadata
+> Task :core:mvi:extractDebugAnnotations FROM-CACHE
+> Task :core:mvi:mergeDebugGeneratedProguardFiles
+> Task :core:mvi:prepareDebugArtProfile
+> Task :core:mvi:mergeDebugConsumerProguardFiles
+> Task :core:mvi:prepareLintJarForPublish
+> Task :core:mvi:createFullJarDebug
+> Task :core:mvi:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:mvi:mergeDebugJavaResource
+> Task :core:mvi:writeDebugLintModelMetadata
+> Task :core:mvi:syncDebugLibJars FROM-CACHE
+> Task :core:mvi:lintAnalyzeDebug FROM-CACHE
+> Task :core:navigation:extractProguardFiles
+> Task :core:mvi:bundleDebugLocalLintAar
+> Task :core:mvi:generateDebugUnitTestLintModel
+> Task :core:mvi:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:navigation:checkDebugAarMetadata
+> Task :core:navigation:extractDebugAnnotations FROM-CACHE
+> Task :core:navigation:mergeDebugGeneratedProguardFiles
+> Task :core:navigation:mergeDebugConsumerProguardFiles
+> Task :core:navigation:prepareDebugArtProfile
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:navigation:generateDebugLintModel
+> Task :core:navigation:mergeDebugJavaResource
+> Task :core:navigation:createFullJarDebug
+> Task :core:navigation:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:navigation:writeDebugLintModelMetadata
+> Task :core:navigation:syncDebugLibJars FROM-CACHE
+> Task :core:navigation:bundleDebugLocalLintAar
+> Task :core:navigation:lintAnalyzeDebug FROM-CACHE
+> Task :core:navigation:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:navigation:generateDebugUnitTestLintModel
+> Task :core:datastore:createFullJarDebug
+> Task :core:network:extractProguardFiles
+> Task :core:network:checkDebugAarMetadata
+> Task :core:network:extractDebugAnnotations FROM-CACHE
+> Task :core:network:mergeDebugGeneratedProguardFiles
+> Task :core:network:mergeDebugConsumerProguardFiles
+> Task :core:network:prepareDebugArtProfile
+> Task :core:network:prepareLintJarForPublish
+> Task :core:network:mergeDebugJavaResource
+> Task :core:network:generateDebugLintModel
+> Task :core:network:syncDebugLibJars FROM-CACHE
+> Task :core:network:bundleDebugLocalLintAar
+> Task :core:datastore:checkDebugAarMetadata
+> Task :core:datastore:mergeDebugGeneratedProguardFiles
+> Task :core:datastore:extractDebugAnnotations FROM-CACHE
+> Task :core:datastore:mergeDebugConsumerProguardFiles
+> Task :core:datastore:prepareDebugArtProfile
+> Task :core:datastore:mergeDebugJavaResource
+> Task :core:datastore:writeDebugLintModelMetadata
+> Task :core:datastore:syncDebugLibJars FROM-CACHE
+> Task :core:network:createFullJarDebug
+> Task :core:network:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:datastore:bundleDebugLocalLintAar
+> Task :core:network:writeDebugLintModelMetadata
+> Task :core:network:lintAnalyzeDebug FROM-CACHE
+> Task :core:network:generateDebugUnitTestLintModel
+> Task :core:ui:extractProguardFiles
+> Task :core:network:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:ui:lintAnalyzeDebug FROM-CACHE
+> Task :core:ui:prepareLintJarForPublish
+> Task :data:subscriptions:extractProguardFiles
+> Task :core:ui:generateDebugLintModel
+> Task :data:subscriptions:checkDebugAarMetadata
+> Task :data:subscriptions:extractDebugAnnotations FROM-CACHE
+> Task :data:subscriptions:mergeDebugGeneratedProguardFiles
+> Task :data:subscriptions:mergeDebugConsumerProguardFiles
+> Task :data:subscriptions:prepareDebugArtProfile
+> Task :data:subscriptions:generateDebugLintModel
+> Task :data:subscriptions:prepareLintJarForPublish
+> Task :data:subscriptions:mergeDebugJavaResource
+> Task :data:subscriptions:kspDebugTestFixturesKotlin FROM-CACHE
+> Task :data:subscriptions:preDebugTestFixturesBuild UP-TO-DATE
+> Task :data:subscriptions:syncDebugLibJars FROM-CACHE
+> Task :data:subscriptions:bundleDebugLocalLintAar
+> Task :data:subscriptions:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:subscriptions:createFullJarDebug
+> Task :data:subscriptions:compileDebugTestFixturesKotlin FROM-CACHE
+> Task :data:subscriptions:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:subscriptions:writeDebugLintModelMetadata
+> Task :data:subscriptions:checkDebugTestFixturesAarMetadata
+> Task :data:subscriptions:extractDebugTestFixturesAnnotations FROM-CACHE
+> Task :data:subscriptions:generateDebugTestFixturesEmptyResourceFiles
+> Task :data:subscriptions:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:subscriptions:generateDebugTestFixturesLintModel
+> Task :data:subscriptions:mergeDebugTestFixturesAssets
+> Task :data:subscriptions:processDebugTestFixturesManifest FROM-CACHE
+> Task :data:subscriptions:processDebugTestFixturesJavaRes
+> Task :data:subscriptions:writeDebugTestFixturesAarMetadata
+> Task :data:subscriptions:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:subscriptions:mergeDebugTestFixturesJavaResource
+> Task :data:subscriptions:createFullJarDebugTestFixtures
+> Task :data:subscriptions:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:subscriptions:syncDebugTestFixturesLibJars FROM-CACHE
+> Task :data:subscriptions:bundleDebugTestFixturesLocalLintAar
+> Task :data:subscriptions:lintAnalyzeDebug FROM-CACHE
+> Task :data:subscriptions:lintAnalyzeDebugTestFixtures FROM-CACHE
+> Task :data:subscriptions:generateDebugUnitTestLintModel
+> Task :core:ui:createFullJarDebug
+> Task :data:subscriptions:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :feature:subscriptions:extractProguardFiles
+> Task :feature:subscriptions:extractDeepLinksForAarDebug FROM-CACHE
+> Task :feature:subscriptions:prepareDebugArtProfile
+> Task :feature:subscriptions:prepareLintJarForPublish
+> Task :feature:subscriptions:checkDebugAarMetadata
+> Task :core:ui:checkDebugAarMetadata
+> Task :core:ui:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:ui:mergeDebugGeneratedProguardFiles
+> Task :core:ui:extractDebugAnnotations FROM-CACHE
+> Task :core:ui:mergeDebugConsumerProguardFiles
+> Task :core:ui:prepareDebugArtProfile
+> Task :core:ui:writeDebugLintModelMetadata
+> Task :feature:subscriptions:preDebugUnitTestBuild
+> Task :core:ui:mergeDebugJavaResource
+> Task :feature:subscriptions:writeDebugLintModelMetadata
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:ui:syncDebugLibJars FROM-CACHE
+> Task :data:subscriptions:bundleLibCompileToJarDebugTestFixtures
+> Task :core:ui:bundleDebugLocalLintAar
+> Task :feature:subscriptions:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :feature:subscriptions:mapDebugUnitTestSourceSetPaths
+> Task :feature:subscriptions:generateDebugUnitTestResources FROM-CACHE
+> Task :feature:subscriptions:checkDebugUnitTestAarMetadata
+> Task :feature:subscriptions:mergeDebugUnitTestResources FROM-CACHE
+> Task :core:testing:compose:bundleLibCompileToJarDebug
+> Task :feature:subscriptions:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :feature:subscriptions:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugUnitTestAssets
+> Task :feature:subscriptions:mergeDebugUnitTestManifest
+> Task :feature:subscriptions:processDebugUnitTestManifest
+> Task :feature:subscriptions:verifyCodeRules
+> Task :data:subscriptions:generateDebugLintReportModel
+> Task :feature:subscriptions:processDebugUnitTestResources FROM-CACHE
+> Task :feature:subscriptions:packageDebugUnitTestForUnitTest
+> Task :feature:subscriptions:generateDebugUnitTestConfig
+> Task :data:subscriptions:kspDebugUnitTestKotlin FROM-CACHE
+> Task :data:subscriptions:compileDebugUnitTestKotlin FROM-CACHE
+> Task :data:subscriptions:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:subscriptions:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:subscriptions:processDebugUnitTestJavaRes
+> Task :data:subscriptions:testDebugUnitTest FROM-CACHE
+> Task :data:subscriptions:test UP-TO-DATE
+> Task :data:subscriptions:verifyCodeRules FROM-CACHE
+> Task :data:orders:extractProguardFiles
+> Task :data:orders:generateDebugLintModel
+> Task :data:orders:checkDebugAarMetadata
+> Task :data:orders:extractDebugAnnotations FROM-CACHE
+> Task :data:orders:mergeDebugGeneratedProguardFiles
+> Task :data:orders:mergeDebugConsumerProguardFiles
+> Task :data:orders:prepareDebugArtProfile
+> Task :data:orders:prepareLintJarForPublish
+> Task :data:orders:mergeDebugJavaResource
+> Task :data:orders:syncDebugLibJars FROM-CACHE
+> Task :data:orders:bundleDebugLocalLintAar
+> Task :data:orders:kspDebugTestFixturesKotlin FROM-CACHE
+> Task :data:orders:preDebugTestFixturesBuild UP-TO-DATE
+> Task :data:orders:compileDebugTestFixturesKotlin FROM-CACHE
+> Task :data:orders:javaPreCompileDebugTestFixtures FROM-CACHE
+> Task :data:orders:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:orders:createFullJarDebug
+> Task :data:orders:writeDebugLintModelMetadata
+> Task :data:orders:generateDebugTestFixturesLintModel
+> Task :data:orders:checkDebugTestFixturesAarMetadata
+> Task :data:orders:extractDebugTestFixturesAnnotations FROM-CACHE
+> Task :data:orders:generateDebugTestFixturesEmptyResourceFiles
+> Task :data:orders:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:orders:mergeDebugTestFixturesAssets
+> Task :data:orders:processDebugTestFixturesManifest FROM-CACHE
+> Task :data:orders:processDebugTestFixturesJavaRes
+> Task :data:orders:mergeDebugTestFixturesJavaResource
+> Task :data:orders:syncDebugTestFixturesLibJars FROM-CACHE
+> Task :data:orders:writeDebugTestFixturesAarMetadata
+> Task :data:orders:bundleDebugTestFixturesLocalLintAar
+> Task :data:orders:bundleLibRuntimeToJarDebugTestFixtures
+> Task :data:orders:createFullJarDebugTestFixtures
+> Task :data:orders:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:orders:generateDebugUnitTestLintModel
+> Task :data:orders:lintAnalyzeDebug FROM-CACHE
+> Task :data:orders:lintAnalyzeDebugTestFixtures FROM-CACHE
+> Task :data:orders:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :feature:orders:extractProguardFiles
+> Task :feature:orders:checkDebugAarMetadata
+> Task :feature:orders:extractDeepLinksForAarDebug FROM-CACHE
+> Task :feature:orders:prepareDebugArtProfile
+> Task :feature:orders:prepareLintJarForPublish
+> Task :feature:orders:preDebugUnitTestBuild
+> Task :feature:orders:writeDebugLintModelMetadata
+> Task :data:orders:bundleLibCompileToJarDebugTestFixtures
+> Task :feature:orders:generateDebugComposePreviewRobolectricTests FROM-CACHE
+> Task :feature:orders:checkDebugUnitTestAarMetadata
+> Task :feature:orders:mapDebugUnitTestSourceSetPaths
+> Task :feature:orders:generateDebugUnitTestResources FROM-CACHE
+> Task :feature:orders:mergeDebugUnitTestResources FROM-CACHE
+> Task :feature:orders:mergeDebugUnitTestManifest
+> Task :feature:orders:processDebugUnitTestManifest
+> Task :feature:orders:processDebugUnitTestResources FROM-CACHE
+> Task :feature:orders:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :feature:orders:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:orders:mergeDebugUnitTestAssets
+> Task :feature:orders:packageDebugUnitTestForUnitTest
+> Task :feature:orders:generateDebugUnitTestConfig
+> Task :feature:orders:verifyCodeRules
+> Task :data:orders:generateDebugLintReportModel
+> Task :data:subscriptions:lintReportDebug
+> Task :data:orders:lintReportDebug
+> Task :data:subscriptions:lintDebug
+> Task :data:subscriptions:lint
+> Task :data:subscriptions:check
+> Task :data:orders:lintDebug
+> Task :data:orders:lint
+> Task :data:orders:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :data:orders:verifyCodeRules FROM-CACHE
+> Task :data:orders:kspDebugUnitTestKotlin FROM-CACHE
+> Task :data:orders:compileDebugUnitTestKotlin FROM-CACHE
+> Task :data:orders:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:orders:processDebugUnitTestJavaRes
+> Task :data:orders:testDebugUnitTest FROM-CACHE
+> Task :data:orders:test UP-TO-DATE
+> Task :data:orders:check
+> Task :feature:orders:kspDebugKotlin
+> Task :feature:subscriptions:kspDebugKotlin
+> Task :feature:orders:extractDebugAnnotations
+> Task :feature:subscriptions:extractDebugAnnotations
+> Task :feature:orders:compileDebugKotlin
+> Task :feature:subscriptions:compileDebugKotlin
+> Task :feature:orders:processDebugJavaRes
+> Task :feature:subscriptions:processDebugJavaRes
+> Task :feature:subscriptions:mergeDebugJavaResource
+> Task :feature:orders:mergeDebugJavaResource
+> Task :feature:subscriptions:compileDebugJavaWithJavac
+> Task :feature:orders:compileDebugJavaWithJavac
+> Task :feature:subscriptions:bundleLibRuntimeToJarDebug
+> Task :feature:subscriptions:bundleLibCompileToJarDebug
+> Task :feature:orders:bundleLibCompileToJarDebug
+> Task :feature:subscriptions:bundleLibRuntimeToDirDebug
+> Task :feature:orders:bundleLibRuntimeToDirDebug
+> Task :feature:orders:bundleLibRuntimeToJarDebug
+> Task :feature:subscriptions:generateDebugLintReportModel
+> Task :feature:subscriptions:mergeDebugGeneratedProguardFiles
+> Task :feature:subscriptions:mergeDebugConsumerProguardFiles
+> Task :feature:subscriptions:syncDebugLibJars
+> Task :feature:subscriptions:bundleDebugLocalLintAar
+> Task :feature:subscriptions:createFullJarDebug
+> Task :feature:subscriptions:generateDebugUnitTestLintModel
+> Task :app:kspDevDebugKotlin
+> Task :app:mergeLibDexDevDebug
+> Task :feature:subscriptions:kspDebugUnitTestKotlin
+> Task :feature:subscriptions:compileDebugUnitTestKotlin FROM-CACHE
+> Task :feature:subscriptions:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:subscriptions:processDebugUnitTestJavaRes
+> Task :app:compileDevDebugKotlin FROM-CACHE
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:processDevDebugJavaRes
+> Task :app:mergeDevDebugJavaResource
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:hiltAggregateDepsDevDebug FROM-CACHE
+> Task :feature:subscriptions:lintAnalyzeDebugUnitTest
+> Task :feature:orders:generateDebugLintReportModel
+> Task :feature:orders:mergeDebugGeneratedProguardFiles
+> Task :feature:orders:mergeDebugConsumerProguardFiles
+> Task :feature:orders:syncDebugLibJars
+> Task :feature:orders:bundleDebugLocalLintAar
+> Task :feature:orders:createFullJarDebug
+> Task :feature:orders:generateDebugUnitTestLintModel
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:dexBuilderDevDebug FROM-CACHE
+> Task :app:mergeProjectDexDevDebug FROM-CACHE
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :app:packageDevDebug
+> Task :app:createDevDebugApkListingFileRedirect
+> Task :app:assembleDevDebug
+> Task :feature:orders:lintAnalyzeDebugUnitTest
+> Task :feature:orders:kspDebugUnitTestKotlin
+> Task :feature:orders:compileDebugUnitTestKotlin FROM-CACHE
+> Task :feature:orders:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:orders:processDebugUnitTestJavaRes
+> Task :feature:subscriptions:lintAnalyzeDebug
+> Task :feature:orders:lintAnalyzeDebug
+
+> Task :feature:subscriptions:lintReportDebug
+Wrote HTML report to file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/feature/subscriptions/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/feature/subscriptions/build/reports/lint-results-debug.sarif
+
+> Task :feature:subscriptions:lintDebug
+
+> Task :feature:orders:lintReportDebug
+Wrote HTML report to file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/feature/orders/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/feature/orders/build/reports/lint-results-debug.sarif
+
+> Task :feature:subscriptions:lint
+> Task :feature:orders:lintDebug
+> Task :feature:orders:lint
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :feature:subscriptions:testDebugUnitTest
+> Task :feature:subscriptions:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:subscriptions:test
+> Task :feature:subscriptions:check
+> Task :feature:orders:testDebugUnitTest
+> Task :feature:orders:test
+> Task :feature:orders:finalizeTestRoborazziDebug SKIPPED
+> Task :feature:orders:check
+
+BUILD SUCCESSFUL in 58s
+528 actionable tasks: 334 executed, 194 from cache
+Configuration cache entry stored.
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :feature:subscriptions:testDebugUnitTest --tests *PlaceholderHeightTest
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preDebugBuild UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preDebugBuild UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:navigation:preDebugBuild UP-TO-DATE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:network:verifyApiPurity UP-TO-DATE
+> Task :core:network:verifyModuleDependencies UP-TO-DATE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:network:preDebugBuild UP-TO-DATE
+> Task :core:network:javaPreCompileDebug UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:preBuild UP-TO-DATE
+> Task :core:testing:preDebugBuild UP-TO-DATE
+> Task :core:mvi:compileDebugKotlin UP-TO-DATE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:mvi:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:datastore:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:mvi:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:ui:verifyModuleDependencies UP-TO-DATE
+> Task :core:ui:verifyApiPurity UP-TO-DATE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preDebugBuild UP-TO-DATE
+> Task :data:subscriptions:verifyApiPurity UP-TO-DATE
+> Task :core:ui:generateDebugResources UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources UP-TO-DATE
+> Task :core:ui:javaPreCompileDebug UP-TO-DATE
+> Task :core:ui:packageDebugResources UP-TO-DATE
+> Task :data:subscriptions:verifyModuleDependencies UP-TO-DATE
+> Task :data:subscriptions:preBuild UP-TO-DATE
+> Task :data:subscriptions:preDebugBuild UP-TO-DATE
+> Task :core:ui:parseDebugLocalResources UP-TO-DATE
+> Task :core:network:kspDebugKotlin UP-TO-DATE
+> Task :core:ui:generateDebugRFile UP-TO-DATE
+> Task :data:subscriptions:preDebugTestFixturesBuild UP-TO-DATE
+> Task :data:subscriptions:javaPreCompileDebug UP-TO-DATE
+> Task :feature:subscriptions:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:subscriptions:javaPreCompileDebugTestFixtures UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:subscriptions:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:subscriptions:generateDebugComposePreviewRobolectricTests UP-TO-DATE
+> Task :feature:subscriptions:preBuild UP-TO-DATE
+> Task :feature:subscriptions:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:subscriptions:generateDebugResources UP-TO-DATE
+> Task :feature:subscriptions:processDebugNavigationResources UP-TO-DATE
+> Task :feature:subscriptions:javaPreCompileDebug UP-TO-DATE
+> Task :feature:subscriptions:packageDebugResources UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:subscriptions:parseDebugLocalResources UP-TO-DATE
+> Task :core:network:compileDebugKotlin UP-TO-DATE
+> Task :core:ui:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:subscriptions:generateDebugRFile UP-TO-DATE
+> Task :core:network:processDebugJavaRes UP-TO-DATE
+> Task :core:network:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:network:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ui:compileDebugLibraryResources UP-TO-DATE
+> Task :core:network:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:mvi:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+> Task :core:network:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:ui:writeDebugAarMetadata UP-TO-DATE
+> Task :data:subscriptions:writeDebugAarMetadata UP-TO-DATE
+> Task :data:subscriptions:writeDebugTestFixturesAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:subscriptions:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:subscriptions:kspDebugKotlin UP-TO-DATE
+> Task :core:testing:compose:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:compose:verifyApiPurity UP-TO-DATE
+> Task :core:testing:compose:preBuild UP-TO-DATE
+> Task :core:testing:compose:preDebugBuild UP-TO-DATE
+> Task :feature:subscriptions:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:compose:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:subscriptions:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:subscriptions:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:datastore:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:mvi:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:navigation:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :data:subscriptions:compileDebugKotlin UP-TO-DATE
+> Task :feature:subscriptions:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:network:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :core:ui:compileDebugKotlin UP-TO-DATE
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:subscriptions:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:ui:processDebugJavaRes UP-TO-DATE
+> Task :data:subscriptions:processDebugJavaRes UP-TO-DATE
+> Task :core:ui:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:subscriptions:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:subscriptions:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ui:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :data:subscriptions:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :data:subscriptions:generateDebugTestFixturesEmptyResourceFiles UP-TO-DATE
+> Task :core:testing:compose:generateDebugEmptyResourceFiles UP-TO-DATE
+> Task :feature:subscriptions:generateDebugUnitTestResources UP-TO-DATE
+> Task :data:subscriptions:kspDebugTestFixturesKotlin UP-TO-DATE
+> Task :core:datastore:processDebugManifest UP-TO-DATE
+> Task :feature:subscriptions:kspDebugKotlin UP-TO-DATE
+> Task :data:subscriptions:compileDebugTestFixturesKotlin UP-TO-DATE
+> Task :data:subscriptions:compileDebugTestFixturesJavaWithJavac NO-SOURCE
+> Task :data:subscriptions:bundleLibRuntimeToJarDebugTestFixtures UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :data:subscriptions:bundleLibCompileToJarDebugTestFixtures UP-TO-DATE
+> Task :data:subscriptions:processDebugTestFixturesJavaRes UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :feature:subscriptions:compileDebugKotlin UP-TO-DATE
+> Task :core:mvi:processDebugManifest UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:ui:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :data:subscriptions:processDebugManifest UP-TO-DATE
+> Task :core:ui:processDebugManifest UP-TO-DATE
+> Task :feature:subscriptions:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:subscriptions:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:subscriptions:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:subscriptions:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:network:processDebugManifest UP-TO-DATE
+> Task :feature:subscriptions:processDebugManifest UP-TO-DATE
+> Task :core:testing:compose:processDebugManifest UP-TO-DATE
+> Task :data:subscriptions:processDebugTestFixturesManifest UP-TO-DATE
+> Task :feature:subscriptions:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets UP-TO-DATE
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets UP-TO-DATE
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :data:subscriptions:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets UP-TO-DATE
+> Task :data:subscriptions:generateDebugTestFixturesAssets UP-TO-DATE
+> Task :data:subscriptions:mergeDebugAssets UP-TO-DATE
+> Task :feature:subscriptions:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:subscriptions:generateDebugAssets UP-TO-DATE
+> Task :data:subscriptions:mergeDebugTestFixturesAssets UP-TO-DATE
+> Task :core:testing:compose:generateDebugAssets UP-TO-DATE
+> Task :core:testing:compose:mergeDebugAssets UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugAssets UP-TO-DATE
+> Task :feature:subscriptions:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:compose:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compose:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:compose:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:compose:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:compose:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:subscriptions:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:subscriptions:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:subscriptions:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:subscriptions:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:subscriptions:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:subscriptions:kspDebugUnitTestKotlin
+> Task :feature:subscriptions:compileDebugUnitTestKotlin
+> Task :feature:subscriptions:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:subscriptions:processDebugUnitTestJavaRes UP-TO-DATE
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:subscriptions:testDebugUnitTest
+
+PlaceholderHeightTest > placeholdersAreAsTallAsTheTextTheyStandFor FAILED
+    java.lang.AssertionError at PlaceholderHeightTest.kt:84
+
+1 test completed, 1 failed
+
+> Task :feature:subscriptions:testDebugUnitTest FAILED
+> Task :feature:subscriptions:finalizeTestRoborazziDebug SKIPPED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':feature:subscriptions:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/feature/subscriptions/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 11s
+175 actionable tasks: 3 executed, 172 up-to-date
+Configuration cache entry stored.
+exit=1

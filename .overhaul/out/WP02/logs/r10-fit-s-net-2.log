@@ -1,0 +1,56 @@
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: spotlessApply
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :spotlessKotlinGradle
+> Task :spotlessKotlinGradleApply
+> Task :spotlessKotlin
+> Task :spotlessKotlinApply FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotlessKotlinApply' (registered in build file 'build.gradle.kts').
+> There were 22 lint error(s), they must be fixed or suppressed.
+  build-logic/convention/src/main/kotlin/AndroidComposeConventionPlugin.kt:L15 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt:L58 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/android/ComposeStability.kt:L97 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/AdaptiveRules.kt:L21 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/CodeRules.kt:L102 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/ComposeRules.kt:L20 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/Declarations.kt:L1 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/KotlinRules.kt:L23 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/ManifestRules.kt:L77 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/ModuleGraph.kt:L148 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/main/kotlin/io/example/fitnet2/buildlogic/guard/StructureRules.kt:L15 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/io/example/fitnet2/buildlogic/guard/CodeRuleCasesTest.kt:L155 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/io/example/fitnet2/buildlogic/guard/CodeRulesBaselineTest.kt:L26 ktlint(standard:max-line-length) Exceeded max line length (100)
+  build-logic/convention/src/test/kotlin/io/example/fitnet2/buildlogic/guard/ManifestRulesTest.kt:L19 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/io/example/fitnet2/core/designsystem/animation/AppTransitions.kt:L198 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/io/example/fitnet2/core/designsystem/component/data/AppDataDisplay.kt:L179 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/io/example/fitnet2/core/designsystem/component/feedback/AppStateViews.kt:L72 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/io/example/fitnet2/core/designsystem/component/input/AppFieldVariants.kt:L52 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/io/example/fitnet2/core/designsystem/component/navigation/AppTopBar.kt:L88 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/io/example/fitnet2/core/designsystem/component/text/AppExpandableText.kt:L63 ktlint(standard:max-line-length) Exceeded max line length (100)
+  core/designsystem/src/main/kotlin/io/example/fitnet2/core/designsystem/theme/AppFonts.kt:L31 ktlint(standard:property-naming) Property name should use the screaming snake case notation when the value can not be changed
+  core/navigation/src/main/kotlin/io/example/fitnet2/core/navigation/AppNavKey.kt:L1 ktlint(standard:filename) File 'AppNavKey.kt' contains a single class, and possibly related top level declarations for that class. The file should be named after the class, 'NavTransitionStyle.kt'
+  Resolve these lints or suppress with `suppressLintsFor`
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 27s
+8 actionable tasks: 8 executed
+Configuration cache entry stored.

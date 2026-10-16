@@ -1,0 +1,263 @@
+{
+  "package": "com.example.wp04.basestandard.dev",
+  "apk": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/base-standard/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk",
+  "variant": "devRelease",
+  "runs": 3,
+  "seed": 647120,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "scenarios": [
+    "tabs",
+    "pushpop",
+    "coldstart"
+  ],
+  "gate": null,
+  "gates_file": "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/gates.toml",
+  "started": "2026-10-09T08:49:42",
+  "device": {
+    "serial": "9a7c74f4",
+    "model": "M2101K6I",
+    "sdk": "37",
+    "battery_c": 34.5
+  },
+  "metrics": {
+    "coldstart.median_ms": {
+      "value": 271,
+      "runs": [
+        274,
+        271,
+        268
+      ]
+    },
+    "coldstart.runs_ms": {
+      "value": [
+        267,
+        274,
+        269,
+        265,
+        249,
+        313
+      ],
+      "runs": [
+        [
+          273,
+          285,
+          286,
+          276,
+          268,
+          266
+        ],
+        [
+          245,
+          269,
+          267,
+          278,
+          274,
+          277
+        ],
+        [
+          267,
+          274,
+          269,
+          265,
+          249,
+          313
+        ]
+      ]
+    },
+    "pushpop.frames": {
+      "value": 867,
+      "runs": [
+        867,
+        867,
+        859
+      ]
+    },
+    "pushpop.gpu_p50_ms": {
+      "value": 6,
+      "runs": [
+        6,
+        6,
+        6
+      ]
+    },
+    "pushpop.gpu_p90_ms": {
+      "value": 11,
+      "runs": [
+        11,
+        11,
+        10
+      ]
+    },
+    "pushpop.gpu_p99_ms": {
+      "value": 15,
+      "runs": [
+        15,
+        15,
+        15
+      ]
+    },
+    "pushpop.janky_pct": {
+      "value": 4.73,
+      "runs": [
+        4.73,
+        4.5,
+        5.24
+      ]
+    },
+    "pushpop.p50_ms": {
+      "value": 8,
+      "runs": [
+        8,
+        8,
+        8
+      ]
+    },
+    "pushpop.p90_ms": {
+      "value": 17,
+      "runs": [
+        17,
+        17,
+        16
+      ]
+    },
+    "pushpop.p99_ms": {
+      "value": 30,
+      "runs": [
+        30,
+        30,
+        34
+      ]
+    },
+    "pushpop.pop_first_frame_ms.max": {
+      "value": 20.18,
+      "runs": [
+        20.08,
+        25.4,
+        20.18
+      ]
+    },
+    "pushpop.pop_first_frame_ms.median": {
+      "value": 11.96,
+      "runs": [
+        9.48,
+        11.96,
+        14.62
+      ]
+    },
+    "pushpop.push_first_frame_ms.max": {
+      "value": 22.26,
+      "runs": [
+        22.87,
+        21.14,
+        22.26
+      ]
+    },
+    "pushpop.push_first_frame_ms.median": {
+      "value": 8.3,
+      "runs": [
+        8.3,
+        7.87,
+        19.33
+      ]
+    },
+    "tab_first_visit.first_frame_ms.max": {
+      "value": 26.81,
+      "runs": [
+        26.81,
+        25.47,
+        27.4
+      ]
+    },
+    "tab_first_visit.first_frame_ms.median": {
+      "value": 18.77,
+      "runs": [
+        19.21,
+        17.98,
+        18.77
+      ]
+    },
+    "tabs.first_frame_ms.max": {
+      "value": 49.93,
+      "runs": [
+        54.52,
+        45.89,
+        49.93
+      ]
+    },
+    "tabs.first_frame_ms.median": {
+      "value": 20.52,
+      "runs": [
+        20.52,
+        19.35,
+        20.9
+      ]
+    },
+    "tabs.frames": {
+      "value": 617,
+      "runs": [
+        617,
+        614,
+        618
+      ]
+    },
+    "tabs.gpu_p50_ms": {
+      "value": 7,
+      "runs": [
+        6,
+        7,
+        7
+      ]
+    },
+    "tabs.gpu_p90_ms": {
+      "value": 10,
+      "runs": [
+        10,
+        11,
+        10
+      ]
+    },
+    "tabs.gpu_p99_ms": {
+      "value": 15,
+      "runs": [
+        14,
+        17,
+        15
+      ]
+    },
+    "tabs.janky_pct": {
+      "value": 1.46,
+      "runs": [
+        1.46,
+        1.47,
+        1.46
+      ]
+    },
+    "tabs.p50_ms": {
+      "value": 9,
+      "runs": [
+        9,
+        9,
+        9
+      ]
+    },
+    "tabs.p90_ms": {
+      "value": 17,
+      "runs": [
+        17,
+        17,
+        17
+      ]
+    },
+    "tabs.p99_ms": {
+      "value": 38,
+      "runs": [
+        38,
+        38,
+        53
+      ]
+    }
+  },
+  "notes": []
+}

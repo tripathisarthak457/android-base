@@ -1,0 +1,23 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Fit local 1",
+  "package_name": "io.example.fitlocal1",
+  "architecture": "compact",
+  "features": [
+    "formatting"
+  ],
+  "feature_modules": [
+    "abcdefghijk",
+    "abcdefghijkl",
+    "abcdefghijklm",
+    "abcdefghijklmn",
+    "abcdefghijklmno",
+    "abcdefghijklmnop",
+    "abcdefghijklmnopq",
+    "abcdefghijklmnopqr",
+    "abcdefghijklmnopqrs",
+    "abcdefghijklmnopqrst"
+  ],
+  "languages": []
+}

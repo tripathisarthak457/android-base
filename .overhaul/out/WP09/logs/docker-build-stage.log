@@ -1,0 +1,72 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.80kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/golang:1.27-alpine
+#2 DONE 2.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 783B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 74.16kB 0.0s done
+#4 DONE 0.1s
+
+#5 [build 1/6] FROM docker.io/library/golang:1.27-alpine@sha256:738d1cf061836894ff6bb8c33881080ac66de8cf0586615012a0c8f592649cfa
+#5 resolve docker.io/library/golang:1.27-alpine@sha256:738d1cf061836894ff6bb8c33881080ac66de8cf0586615012a0c8f592649cfa 0.0s done
+#5 DONE 0.1s
+
+#5 [build 1/6] FROM docker.io/library/golang:1.27-alpine@sha256:738d1cf061836894ff6bb8c33881080ac66de8cf0586615012a0c8f592649cfa
+#5 sha256:6ff05f868da7888e9c1d6b4967ff0892cf86b51d23c81149794e72c001604803 0B / 126B 0.2s
+#5 sha256:6ff05f868da7888e9c1d6b4967ff0892cf86b51d23c81149794e72c001604803 126B / 126B 0.3s done
+#5 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 0B / 71.15MB 0.2s
+#5 sha256:e2443a591f6296d5e94b53e785f358049a0c73d97e9e0941fcf48cf482f385b8 0B / 247.53kB 0.2s
+#5 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 13.63MB / 71.15MB 0.8s
+#5 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 30.41MB / 71.15MB 0.9s
+#5 sha256:e2443a591f6296d5e94b53e785f358049a0c73d97e9e0941fcf48cf482f385b8 247.53kB / 247.53kB 1.0s done
+#5 extracting sha256:e2443a591f6296d5e94b53e785f358049a0c73d97e9e0941fcf48cf482f385b8 0.0s done
+#5 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 46.14MB / 71.15MB 1.1s
+#5 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 62.91MB / 71.15MB 1.2s
+#5 sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 71.15MB / 71.15MB 1.3s done
+#5 extracting sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2
+#5 extracting sha256:b2b6413ae8f393d11d32262c8dc6bd053dbaea3d074f95edd5605d3eb116e3c2 1.7s done
+#5 DONE 3.1s
+
+#5 [build 1/6] FROM docker.io/library/golang:1.27-alpine@sha256:738d1cf061836894ff6bb8c33881080ac66de8cf0586615012a0c8f592649cfa
+#5 extracting sha256:6ff05f868da7888e9c1d6b4967ff0892cf86b51d23c81149794e72c001604803 0.0s done
+#5 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0.0s done
+#5 DONE 3.2s
+
+#6 [build 2/6] WORKDIR /src
+#6 DONE 0.2s
+
+#7 [build 3/6] COPY web/api/go.mod web/api/go.sum ./
+#7 DONE 0.0s
+
+#8 [build 4/6] RUN go mod download
+#8 DONE 5.0s
+
+#9 [build 5/6] COPY web/api/ ./
+#9 DONE 0.1s
+
+#10 [build 6/6] RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags '-s -w' -o /out/server ./cmd/server
+#10 DONE 14.2s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 6.8s done
+#11 exporting manifest sha256:03f81fba9e8f38f469ec3f47e13ee69a758727c7eafdda769369928f23331807 0.0s done
+#11 exporting config sha256:6656cc7930ecf0e9439d0ee2c1d55cda34867d19ac3eb3b59e66445461566c0a 0.0s done
+#11 exporting attestation manifest sha256:5b695c127115387309d4f65043dd6273761f8326de4dc0ecf6110b0419cc009f 0.0s done
+#11 exporting manifest list sha256:6ccbd2972de460a23ae6bbce3d7d49cfc8efec48cf6fd60b0e61132c09224d69 0.0s done
+#11 naming to docker.io/library/android-base-api:wp09-build done
+#11 unpacking to docker.io/library/android-base-api:wp09-build
+#11 unpacking to docker.io/library/android-base-api:wp09-build 0.8s done
+#11 DONE 7.8s
+exit 0

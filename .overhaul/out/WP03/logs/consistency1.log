@@ -1,0 +1,154 @@
+everything-modules:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+none-modules:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-analytics:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-applock:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-auth:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-baselineprofile:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-browser:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-catalog:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-coil:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-collections:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-composemetrics:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-coverage:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-database:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-datadisplay:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-deeplink:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-depsanalysis:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-devtools:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-flags:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-formfields:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-forms:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-googlefonts:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-googlesignin:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-language:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-leakcanary:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-licenses:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-lottie:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-media:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-network:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-onboarding:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-paging:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-pickers:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+only-playstore:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-profile:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-push:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-room:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-sample:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-search:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-settings:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-websocket:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-widget:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+only-workmanager:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-0:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-1:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-10:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-11:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-12:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-13:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-14:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-15:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-16:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-17:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-18:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-2:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-3:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-4:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-5:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-6:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-7:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+pair-8:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+pair-9:
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+preset-everything-compact:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+  UNUSED-IMPORT core/designsystem/src/test/kotlin/{pkg}/core/designsystem/component/pickers/WheelPickerTest.kt: androidx.compose.ui.test.onNodeWithTag
+preset-lean-compact:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+preset-standard-compact:
+  UNUSED-IMPORT catalog/src/main/kotlin/{pkg}/catalog/CatalogApp.kt: androidx.compose.foundation.lazy.items
+  UNUSED-IMPORT core/designsystem/src/main/kotlin/{pkg}/core/designsystem/theme/AppMetrics.kt: androidx.compose.ui.unit.dp
+
+63 projects in 19 s: 88 new issues, 621 known (12 of 12 known-issue lines seen).
+EXIT 1

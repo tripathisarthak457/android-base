@@ -1,0 +1,187 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :catalog:assembleDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:coroutines:verifyModuleDependencies
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:verifyComposeUsage
+> Task :catalog:generateDebugAssets UP-TO-DATE
+> Task :core:common:generateDebugAssets UP-TO-DATE
+> Task :core:coroutines:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:common:preBuild
+> Task :core:common:preDebugBuild
+> Task :core:common:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:coroutines:verifyComposeUsage
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:coroutines:preBuild
+> Task :core:coroutines:preDebugBuild
+> Task :core:coroutines:processDebugNavigationResources UP-TO-DATE
+> Task :core:common:generateDebugResources UP-TO-DATE
+> Task :core:common:mergeDebugAssets UP-TO-DATE
+> Task :core:coroutines:javaPreCompileDebug UP-TO-DATE
+> Task :core:coroutines:generateDebugResources UP-TO-DATE
+> Task :core:navigation:verifyComposeUsage
+> Task :catalog:verifyComposeUsage
+> Task :core:common:javaPreCompileDebug UP-TO-DATE
+> Task :core:coroutines:mergeDebugAssets UP-TO-DATE
+> Task :core:common:packageDebugResources UP-TO-DATE
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+> Task :core:coroutines:packageDebugResources UP-TO-DATE
+> Task :core:common:writeDebugAarMetadata UP-TO-DATE
+> Task :core:coroutines:writeDebugAarMetadata UP-TO-DATE
+> Task :core:common:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :catalog:preBuild
+> Task :core:coroutines:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :catalog:preDebugBuild
+> Task :core:coroutines:generateDebugRFile UP-TO-DATE
+> Task :core:common:generateDebugRFile UP-TO-DATE
+> Task :core:common:extractDeepLinksDebug UP-TO-DATE
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+> Task :catalog:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+> Task :catalog:generateDebugBuildConfig UP-TO-DATE
+> Task :catalog:javaPreCompileDebug FROM-CACHE
+> Task :catalog:generateDebugGlobalSynthetics FROM-CACHE
+> Task :catalog:desugarDebugFileDependencies FROM-CACHE
+> Task :core:common:processDebugManifest UP-TO-DATE
+> Task :catalog:generateDebugResources
+> Task :core:coroutines:extractDeepLinksDebug UP-TO-DATE
+> Task :catalog:mapDebugSourceSetPaths
+> Task :core:navigation:extractDeepLinksDebug UP-TO-DATE
+> Task :core:coroutines:processDebugManifest UP-TO-DATE
+> Task :core:common:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :core:coroutines:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:common:compileDebugLibraryResources UP-TO-DATE
+> Task :core:coroutines:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:mapDebugSourceSetPaths UP-TO-DATE
+> Task :catalog:createDebugCompatibleScreenManifests
+> Task :core:common:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:common:mergeDebugNativeLibs NO-SOURCE
+> Task :core:common:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:coroutines:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:navigation:compileDebugLibraryResources UP-TO-DATE
+> Task :core:coroutines:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:coroutines:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :catalog:extractDeepLinksDebug
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :catalog:writeDebugAppMetadata
+> Task :catalog:mergeDebugJniLibFolders
+> Task :core:coroutines:kspDebugKotlin UP-TO-DATE
+> Task :catalog:writeDebugSigningConfigVersions
+> Task :catalog:validateSigningDebug
+> Task :core:coroutines:compileDebugKotlin UP-TO-DATE
+> Task :core:coroutines:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:coroutines:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:coroutines:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:coroutines:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:coroutines:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:coroutines:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :catalog:packageDebugResources
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :catalog:checkDebugDuplicateClasses
+> Task :core:common:kspDebugKotlin UP-TO-DATE
+> Task :core:common:compileDebugKotlin UP-TO-DATE
+> Task :core:common:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:common:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:common:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:common:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:common:processDebugJavaRes UP-TO-DATE
+> Task :core:common:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:designsystem:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :catalog:mergeDebugAssets
+> Task :catalog:compressDebugAssets
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+> Task :catalog:processDebugNavigationResources
+> Task :catalog:mergeDebugNativeLibs
+> Task :catalog:compileDebugNavigationResources FROM-CACHE
+> Task :catalog:checkDebugAarMetadata
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:bundleLibRuntimeToDirDebug UP-TO-DATE
+
+> Task :catalog:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :catalog:parseDebugLocalResources
+> Task :catalog:processDebugMainManifest
+> Task :catalog:processDebugManifest
+> Task :catalog:processDebugManifestForPackage
+> Task :catalog:generateDebugRFile
+> Task :catalog:mergeDebugResources
+> Task :catalog:mergeLibDexDebug
+> Task :catalog:processDebugResources
+> Task :catalog:compileDebugKotlin
+> Task :catalog:processDebugJavaRes
+> Task :catalog:compileDebugJavaWithJavac
+> Task :catalog:mergeDebugJavaResource
+> Task :catalog:dexBuilderDebug
+> Task :catalog:mergeProjectDexDebug
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2.6 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+> Task :catalog:mergeExtDexDebug
+> Task :catalog:packageDebug
+> Task :catalog:assembleDebug
+> Task :catalog:createDebugApkListingFileRedirect
+
+BUILD SUCCESSFUL in 19s
+135 actionable tasks: 42 executed, 4 from cache, 89 up-to-date
+Configuration cache entry stored.
+EXIT=0

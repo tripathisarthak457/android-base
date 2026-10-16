@@ -1,0 +1,5 @@
+pre-m2 everything app-dev-arm64-v8a-release.apk apk=4606404 dex=6286160
+pre-m2 everything app-dev-armeabi-v7a-release.apk apk=4604480 dex=6286160
+pre-m2 everything app-dev-universal-release.apk apk=4704292 dex=6286160
+pre-m2 everything app-dev-x86_64-release.apk apk=4605462 dex=6286160
+pre-m2 everything app-dev-x86-release.apk apk=4604008 dex=6286160

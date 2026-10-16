@@ -1,0 +1,8 @@
+ M templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppScaffold.kt
+ M templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTabBar.kt
+ M templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/TabCells.kt
+ M templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/layout/Chrome.kt
+ M templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationHost.kt
+ M templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/EntryFrame.kt
+ M templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackLayout.kt
+ M templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/ShellRecompositionTest.kt

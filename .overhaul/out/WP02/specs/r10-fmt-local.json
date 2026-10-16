@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "WP02 Fit Local",
+  "package_name": "io.example.fitlocal",
+  "architecture": "compact",
+  "features": ["formatting"],
+  "feature_modules": ["map", "trips", "orders", "payments", "inventory", "statements", "user_profile", "notification", "subscriptions", "recommendations", "customer_order_history", "abcdefghijklmnopqrstuvwxyzabcd"],
+  "languages": []
+}

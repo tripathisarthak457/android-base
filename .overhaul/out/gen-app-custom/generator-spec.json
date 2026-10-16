@@ -1,0 +1,36 @@
+{
+  "generator": {
+    "commit": "99c4edf97570",
+    "generatedOn": "2026-10-08"
+  },
+  "app_name": "Acme Field",
+  "package_name": "com.acme.field",
+  "min_sdk": 26,
+  "target_sdk": 37,
+  "compile_sdk": 37,
+  "version_name": "1.0.0",
+  "version_code": 1,
+  "features": [
+    "deeplink",
+    "googlefonts",
+    "language",
+    "network",
+    "settings"
+  ],
+  "feature_modules": [],
+  "api_base_urls": {},
+  "web_socket_urls": {},
+  "deeplink_scheme": "acme",
+  "deeplink_host": "links.acme.dev",
+  "font_name": "Inter",
+  "mono_font_name": "Fira Code",
+  "accent_colour": "#E11D48",
+  "secondary_colour": "#0EA5E9",
+  "tertiary_colour": "#FACC15",
+  "motion_style": "Bouncy",
+  "design_style": "Playful",
+  "haptics_enabled": false,
+  "languages": [
+    "de"
+  ]
+}

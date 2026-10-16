@@ -1,0 +1,18 @@
+[locked:adb] waiting for lock...
+Success
+shot light-rest-top
+shot light-mid
+shot light-end
+shot light-pull
+shot light-settings-end
+shot dark-rest-top
+shot dark-mid
+shot dark-end
+shot dark-pull
+shot dark-settings-end
+/sdcard/r17.mp4: 1 file pulled, 0 skipped. 36.6 MB/s (10221747 bytes in 0.266s)
+shot font150-rest
+shot font150-end
+shot landscape-rest
+shot landscape-end
+R17-REQ34 DONE

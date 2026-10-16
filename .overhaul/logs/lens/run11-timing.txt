@@ -1,0 +1,19 @@
+1 slot(s): lift 0.07 0.25 0.50 0.79 1.00 1.00; full (>=0.99) 42-133 ms; samples 8-283 ms, hands over at 292 ms with 0.0110 slot left; settles 383 ms; largest rise 0.281
+2 slot(s): lift 0.14 0.39 0.64 0.92 1.00 1.00; full (>=0.99) 42-175 ms; samples 8-317 ms, hands over at 325 ms with 0.0115 slot left; settles 417 ms; largest rise 0.281
+4 slot(s): lift 0.25 0.50 0.75 1.00 1.00 1.00; full (>=0.99) 33-208 ms; samples 8-350 ms, hands over at 358 ms with 0.0117 slot left; settles 450 ms; largest rise 0.250
+a second selection after a tap to the next tab, at every frame up to its hand-over (frame 35):
+  run 11, then to 2: largest rise 0.281 (a tap from rest: 0.281); falls at the selection 0; faster than from rest at 0 frames
+  run 11, then to 0: largest rise 0.281 (a tap from rest: 0.281); falls at the selection 0; faster than from rest at 0 frames
+  run 10 (saturated lift), then to 2: largest rise 0.988 (a tap from rest: 0.281); falls at the selection 0; faster than from rest at 20 frames, e.g. 8 ms 0.00->1.00, 17 ms 0.01->1.00, 25 ms 0.16->1.00, 33 ms 0.52->1.00
+  run 10 (saturated lift), then to 0: largest rise 0.988 (a tap from rest: 0.281); falls at the selection 2; faster than from rest at 17 frames, e.g. 33 ms 0.52->0.84, 167 ms 0.68->1.00, 175 ms 0.56->1.00, 183 ms 0.46->1.00
+  run 11, a tap to the next tab at 150 ms, then the next: 1.00 1.00 1.00 1.00 1.00 1.00
+  run 11, a tap to the next tab at 167 ms, then the next: 0.84 1.00 1.00 1.00 1.00 1.00
+  run 11, a tap to the next tab at 183 ms, then the next: 0.62 0.87 1.00 1.00 1.00 1.00
+  run 11, a tap to the next tab at 200 ms, then the next: 0.40 0.66 0.91 1.00 1.00 1.00
+  run 11, a tap to the next tab at 217 ms, then the next: 0.27 0.49 0.77 1.00 1.00 1.00
+  run 11, a tap to the next tab at 233 ms, then the next: 0.22 0.43 0.68 0.97 1.00 1.00
+  run 11, a tap to the next tab at 300 ms, then the next: 0.09 0.31 0.56 0.81 1.00 1.00
+run 11, reversal 2->0 at every frame: largest rise 0.281, falls 0, second dips 0
+run 11, reversal 1->0 at every frame: largest rise 0.281, falls 0, second dips 0
+run 11, reversal 2->1 at every frame: largest rise 0.281, falls 0, second dips 0
+K=503.6 sqrt(K)=22.44

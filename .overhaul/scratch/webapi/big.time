@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/android-base/generator/generate_headless.py", line 137, in <module>
+    sys.exit(main(sys.argv))
+             ^^^^^^^^^^^^^^
+  File "/home/crazyhusir/Documents/projects/tools/android-base/generator/generate_headless.py", line 115, in main
+    json.dump(
+  File "/usr/lib/python3.12/json/__init__.py", line 180, in dump
+    fp.write(chunk)
+BrokenPipeError: [Errno 32] Broken pipe
+Command exited with non-zero status 1
+	Command being timed: "timeout 120 python3 -B generate_headless.py /home/crazyhusir/Documents/projects/tools/.overhaul/scratch/webapi/big.zip"
+	User time (seconds): 16.91
+	System time (seconds): 7.79
+	Percent of CPU this job got: 83%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.42
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 358364
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 192177
+	Voluntary context switches: 258
+	Involuntary context switches: 1642
+	Swaps: 0
+	File system inputs: 9240
+	File system outputs: 608520
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1

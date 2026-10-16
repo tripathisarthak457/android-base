@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "WP02 Fit",
+  "package_name": "io.example.fit",
+  "architecture": "compact",
+  "features": ["formatting", "network"],
+  "feature_modules": ["map", "trips", "orders", "payments", "inventory", "statements", "user_profile", "notification", "subscriptions", "recommendations", "customer_order_history", "abcdefghijklmnopqrstuvwxyzabcd"],
+  "languages": []
+}

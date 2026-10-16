@@ -1,0 +1,39 @@
+# What not to upload to Vercel. Both services build from this upload: the site from `web/frontend/`
+# and the API container from the root (see `.dockerignore` for what that image takes). So
+# `generator/`, `templates/` and `tokens/` must stay; build output inside them must not, or the CLI
+# packs gigabytes of Gradle and Xcode output to deliver a few megabytes.
+
+**/build/
+**/.gradle/
+**/.kotlin/
+**/.cxx/
+**/.idea/
+**/captures/
+**/__pycache__/
+**/DerivedData/
+**/.build/
+**/xcuserdata/
+**/.swiftpm/
+**/kotlin-js-store/
+**/node_modules/
+**/.next/
+**/*.tsbuildinfo
+*.zip
+
+# Local working state that is in .gitignore but not, by itself, kept out of an upload.
+/out/
+/tools/
+.claude/
+.agents/
+.venv/
+venv/
+
+# Signing material and anything that has ever held a secret.
+**/local.properties
+**/keystore.properties
+**/keys/
+**/*.jks
+**/*.keystore
+**/.env
+**/.env.*
+**/*.env

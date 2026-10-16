@@ -1,0 +1,95 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:designsystem:koverFindJar
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+> Task :core:designsystem:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:designsystem:compileDebugLibraryResources
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:designsystem:mergeDebugUnitTestAssets
+> Task :core:designsystem:checkDebugUnitTestAarMetadata
+> Task :core:designsystem:mergeDebugUnitTestManifest
+> Task :core:designsystem:processDebugUnitTestManifest
+> Task :core:designsystem:mergeDebugUnitTestResources
+> Task :core:designsystem:processDebugUnitTestResources
+> Task :core:designsystem:packageDebugUnitTestForUnitTest
+> Task :core:designsystem:generateDebugUnitTestConfig
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+
+> Task :core:designsystem:compileDebugUnitTestKotlin FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/fields/DecimalInputTest.kt:10:9 Name contains illegal characters: ;.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/list/SwipeActionsTest.kt:64:29 Unresolved reference 'getOrNull' on receiver of type 'SemanticsConfiguration'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/list/SwipeActionsTest.kt:64:78 Unresolved reference 'it'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayHostTest.kt:61:27 Unresolved reference 'width' on receiver of type 'DpRect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayHostTest.kt:65:9 Name contains illegal characters: ;.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/selection/SelectionTest.kt:20:33 Unresolved reference 'onAllNodes'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/selection/SelectionTest.kt:69:41 Unresolved reference 'assertCountEquals' on receiver of type 'SemanticsNodeInteractionCollection'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/selection/SelectionTest.kt:73:34 Unresolved reference 'click'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/selection/SelectionTest.kt:85:27 Unresolved reference 'height' on receiver of type 'DpRect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/selection/SelectionTest.kt:85:53 Unresolved reference 'width' on receiver of type 'DpRect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/PressableTest.kt:54:27 Unresolved reference 'width' on receiver of type 'DpRect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/PressableTest.kt:54:52 Unresolved reference 'height' on receiver of type 'DpRect'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/FontPreloadTest.kt:64:40 Extending sealed classes or interfaces from a different module is prohibited.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/FontPreloadTest.kt:64:40 A class can only extend a sealed class or interface declared in the same package.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/FontPreloadTest.kt:70:85 Extending sealed classes or interfaces from a different module is prohibited.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/FontPreloadTest.kt:70:85 A class can only extend a sealed class or interface declared in the same package.
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugUnitTestKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: INVALID_CHARACTERS
+       Kotlin compiler error
+         Name contains illegal characters: ;.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/fields/DecimalInputTest.kt line 10
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 10s
+35 actionable tasks: 21 executed, 5 from cache, 9 up-to-date
+Configuration cache entry stored.
+EXIT 1

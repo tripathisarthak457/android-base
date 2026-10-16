@@ -1,0 +1,164 @@
+   ▲ Next.js 15.5.25
+   - Local:        http://127.0.0.1:3110
+   - Network:      http://127.0.0.1:3110
+
+ ✓ Starting...
+ ✓ Ready in 6.2s
+ ○ Compiling / ...
+ ✓ Compiled / in 17.5s (1513 modules)
+ GET / 200 in 20465ms
+ ○ Compiling /icon.svg ...
+ ✓ Compiled /icon.svg in 2.5s (817 modules)
+ GET /icon.svg?3c9544f012216e6f 200 in 2708ms
+ GET / 200 in 935ms
+ ✓ Compiled in 1571ms (1503 modules)
+ GET / 200 in 327ms
+ ✓ Compiled in 1951ms (1486 modules)
+ GET / 200 in 629ms
+ GET / 200 in 1234ms
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 1802ms (1504 modules)
+ GET /admin 200 in 2686ms
+ GET /admin 200 in 71ms
+ ✓ Compiled in 782ms (1518 modules)
+ GET /admin 200 in 138ms
+ ✓ Compiled in 811ms (1518 modules)
+ GET /admin 200 in 216ms
+ GET / 200 in 814ms
+ ✓ Compiled in 4.8s (1518 modules)
+ GET / 200 in 890ms
+ ✓ Compiled in 1002ms (1518 modules)
+ GET / 200 in 555ms
+ ✓ Compiled in 1010ms (1518 modules)
+ GET / 200 in 591ms
+ ✓ Compiled in 1920ms (1518 modules)
+ GET / 200 in 377ms
+ ✓ Compiled in 1558ms (1518 modules)
+ GET / 200 in 317ms
+ GET / 200 in 1185ms
+ ✓ Compiled in 6s (1518 modules)
+ GET / 200 in 693ms
+ ✓ Compiled in 2.1s (1518 modules)
+ GET / 200 in 650ms
+ ✓ Compiled in 4.1s (1520 modules)
+ GET / 200 in 1046ms
+ ✓ Compiled in 1196ms (1520 modules)
+ GET / 200 in 280ms
+ ✓ Compiled in 1180ms (1520 modules)
+ GET / 200 in 458ms
+ ⚠ ./features/admin/AdminPortal.tsx
+Attempted import error: 'Durations' is not exported from './panels/Audience.tsx' (imported as 'Durations').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Errors' is not exported from './panels/Failures.tsx' (imported as 'Errors').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Health' is not exported from './panels/Reports.tsx' (imported as 'Health').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Durations' is not exported from './panels/Audience.tsx' (imported as 'Durations').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Errors' is not exported from './panels/Failures.tsx' (imported as 'Errors').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Health' is not exported from './panels/Reports.tsx' (imported as 'Health').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+ GET / 200 in 506ms
+ ⚠ ./features/admin/AdminPortal.tsx
+Attempted import error: 'Durations' is not exported from './panels/Audience.tsx' (imported as 'Durations').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Errors' is not exported from './panels/Failures.tsx' (imported as 'Errors').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Health' is not exported from './panels/Reports.tsx' (imported as 'Health').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Durations' is not exported from './panels/Audience.tsx' (imported as 'Durations').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Errors' is not exported from './panels/Failures.tsx' (imported as 'Errors').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+
+./features/admin/AdminPortal.tsx
+Attempted import error: 'Health' is not exported from './panels/Reports.tsx' (imported as 'Health').
+
+Import trace for requested module:
+./features/admin/AdminPortal.tsx
+ GET / 200 in 312ms
+ ✓ Compiled in 1185ms (1526 modules)
+ GET / 200 in 435ms
+ ✓ Compiled in 1304ms (1526 modules)
+ GET / 200 in 344ms
+ ✓ Compiled in 627ms (1526 modules)
+ GET / 200 in 220ms
+ ✓ Compiled in 669ms (1526 modules)
+ GET / 200 in 165ms
+ GET / 200 in 382ms
+ ✓ Compiled in 2s (1526 modules)
+ GET / 200 in 254ms
+ ✓ Compiled in 334ms (1526 modules)
+ GET / 200 in 265ms
+ ✓ Compiled in 651ms (1526 modules)
+ GET / 200 in 177ms
+ ✓ Compiled in 358ms (1526 modules)
+ GET / 200 in 122ms
+ GET / 200 in 441ms
+ ✓ Compiled in 459ms (1526 modules)
+ GET / 200 in 118ms
+ ✓ Compiled in 665ms (1526 modules)
+ GET / 200 in 333ms
+ GET / 200 in 349ms
+ ✓ Compiled in 472ms (1526 modules)
+ GET / 200 in 123ms
+ ✓ Compiled in 2.9s (1526 modules)
+ GET / 200 in 540ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 751ms
+ GET / 200 in 593ms
+ ✓ Compiled in 878ms (1526 modules)
+ GET / 200 in 326ms
+ GET / 200 in 1755ms
+ GET / 200 in 778ms
+ ✓ Compiled in 1791ms (1526 modules)
+ GET / 200 in 251ms
+ GET / 200 in 733ms
+ ✓ Compiled in 2.3s (1526 modules)
+ GET / 200 in 426ms
+ GET /admin 200 in 234ms
+ ✓ Compiled in 1462ms (1526 modules)
+ GET /admin 200 in 481ms
+ GET /admin 200 in 217ms
+[?25h

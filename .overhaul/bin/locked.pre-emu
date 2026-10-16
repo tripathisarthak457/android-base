@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Serialises heavy work across parallel agents. Usage: locked gradle|adb|emu <command...>
+# gradle: one Gradle build machine-wide, started only when enough memory is free, with capped workers and short
+#         daemon idle time (15 GB laptop, zram swap, no OOM daemon: an over-committed build freezes the machine).
+# adb: one agent driving the phone at a time. emu: one agent driving the emulator.
+set -euo pipefail
+kind="$1"; shift
+lock="/home/crazyhusir/Documents/projects/tools/.overhaul/${kind}.lock"
+echo "[locked:$kind] waiting for lock..." >&2
+if [ "$kind" = gradle ]; then
+  export GRADLE_OPTS="${GRADLE_OPTS:-} -Dorg.gradle.workers.max=4 -Dorg.gradle.daemon.idletimeout=900000"
+  exec flock "$lock" bash -c '/home/crazyhusir/Documents/projects/tools/.overhaul/bin/memwait && exec "$@"' locked-gradle "$@"
+fi
+exec flock "$lock" "$@"

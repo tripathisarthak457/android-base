@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.GpuBudgetWindowTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-14T11:33:23.185Z" hostname="pop-os" time="0.001">
+  <properties/>
+  <testcase name="a frame that takes exactly one period is not slow" classname="com.base.app.core.designsystem.foundation.glass.GpuBudgetWindowTest" time="0.0"/>
+  <testcase name="one burst of heavy frames, however slow, does not decide" classname="com.base.app.core.designsystem.foundation.glass.GpuBudgetWindowTest" time="0.0"/>
+  <testcase name="two consecutive windows over the share decide that the GPU fell behind" classname="com.base.app.core.designsystem.foundation.glass.GpuBudgetWindowTest" time="0.001"/>
+  <testcase name="a window at exactly the share is not over it" classname="com.base.app.core.designsystem.foundation.glass.GpuBudgetWindowTest" time="0.0"/>
+  <testcase name="a clean window in between starts the count again" classname="com.base.app.core.designsystem.foundation.glass.GpuBudgetWindowTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

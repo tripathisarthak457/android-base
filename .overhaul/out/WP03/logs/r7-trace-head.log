@@ -1,0 +1,10 @@
+[locked:adb] waiting for lock...
+Success
+Night mode: no
+Night mode: yes
+Night mode: no
+perf/WP03/ptr/head-e68bbfa/trace.pbtxt: 1 file pushed, 0 skipped. 22.1 MB/s (598 bytes in 0.000s)
+/data/misc/perfetto-traces/ptr.perfetto-trace: 1 file pulled, 0 skipped. 40.3 MB/s (12196647 bytes in 0.289s)
+traced
+PTR-TRACE DONE
+EXIT 0

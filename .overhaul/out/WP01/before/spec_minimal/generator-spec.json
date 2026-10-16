@@ -1,0 +1,30 @@
+{
+  "generator": {
+    "commit": "54d078d79590",
+    "generatedOn": "2026-10-09"
+  },
+  "app_name": "Bare",
+  "package_name": "io.bare.min",
+  "min_sdk": 24,
+  "target_sdk": 36,
+  "compile_sdk": 37,
+  "version_name": "2.1.0",
+  "version_code": 7,
+  "features": [],
+  "feature_modules": [
+    "home"
+  ],
+  "api_base_urls": {},
+  "web_socket_urls": {},
+  "deeplink_scheme": "",
+  "deeplink_host": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "motion_style": "Standard",
+  "design_style": "Utility",
+  "haptics_enabled": true,
+  "languages": []
+}

@@ -1,0 +1,35 @@
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+
+Summary
+───────
+           App  PeriFlow (PeriFlow)
+       Package  com.jorwen.periflow
+        Target  android
+  Architecture  compact
+       Min SDK  API 30 · Android 11 (Red Velvet Cake)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, auth, baselineprofile, browser, catalog,
+                coil, composemetrics, coverage, database, deeplink,
+                depsanalysis, devtools, firebase, flags, forms, googlefonts,
+                googlesignin, language, leakcanary, licenses, lottie, media,
+                network, onboarding, paging, playstore, profile, push, room,
+                sample, search, settings, websocket, widget, workmanager
+       Modules  none
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  Nunito · JetBrains Mono
+       Colours  #9E0000 · #732B2B (derived) · #9E9E00 (derived)
+         Style  Social
+        Motion  Calm, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/after/v1_periflow
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/after/v1_periflow and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+

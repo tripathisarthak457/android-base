@@ -1,0 +1,20 @@
+[locked:emu] waiting for lock...
+emulator booted
+/sdcard/d.xml: 1 file pulled, 0 skipped. 7.8 MB/s (8962 bytes in 0.001s)
+A start: [954,1340][1080,1466]
+/sdcard/d.xml: 1 file pulled, 0 skipped. 12.4 MB/s (8950 bytes in 0.001s)
+A fast left throw 300 px / 120 ms from x=975: [0,1340][126,1466]
+/sdcard/d.xml: 1 file pulled, 0 skipped. 14.4 MB/s (8962 bytes in 0.001s)
+B start: [954,1340][1080,1466]
+/sdcard/d.xml: 1 file pulled, 0 skipped. 11.8 MB/s (8962 bytes in 0.001s)
+B slow left drag 300 px / 1500 ms: [954,1340][1080,1466]
+/sdcard/d.xml: 1 file pulled, 0 skipped. 9.3 MB/s (8962 bytes in 0.001s)
+C start: [954,1340][1080,1466]
+/sdcard/d.xml: 1 file pulled, 0 skipped. 16.2 MB/s (8942 bytes in 0.001s)
+C diagonal (-500,-800) / 600 ms from x=975: [0,656][126,782]
+/sdcard/d.xml: 1 file pulled, 0 skipped. 11.2 MB/s (8962 bytes in 0.001s)
+D start: [954,1340][1080,1466]
+/sdcard/d.xml: 1 file pulled, 0 skipped. 16.3 MB/s (8942 bytes in 0.001s)
+D diagonal from x=1017 (edge zone): [0,560][126,686]
+10-13 16:08:46.803   600  1072 D CoreBackPreview: startBackNavigation currentTas
+emulator stopped

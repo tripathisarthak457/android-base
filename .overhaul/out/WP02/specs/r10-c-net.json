@@ -1,0 +1,20 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Fit compile net",
+  "package_name": "io.example.fitcnet",
+  "architecture": "compact",
+  "features": [
+    "formatting",
+    "network"
+  ],
+  "feature_modules": [
+    "abc",
+    "abcdefghi",
+    "abcdefghijklmno",
+    "abcdefghijklmnopqrs",
+    "abcdefghijklmnopqrstuvw",
+    "abcdefghijklmnopqrstuvwxyzabcd"
+  ],
+  "languages": []
+}

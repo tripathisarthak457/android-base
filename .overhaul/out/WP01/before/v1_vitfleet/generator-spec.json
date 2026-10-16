@@ -1,0 +1,79 @@
+{
+  "generator": {
+    "commit": "54d078d79590",
+    "generatedOn": "2026-10-09"
+  },
+  "app_name": "VitFleet",
+  "package_name": "com.vitfleet.app",
+  "min_sdk": 29,
+  "target_sdk": 37,
+  "compile_sdk": 37,
+  "version_name": "0.1.0",
+  "version_code": 1,
+  "features": [
+    "analytics",
+    "auth",
+    "baselineprofile",
+    "browser",
+    "catalog",
+    "coil",
+    "database",
+    "deeplink",
+    "devtools",
+    "firebase",
+    "flags",
+    "forms",
+    "googlefonts",
+    "language",
+    "leakcanary",
+    "licenses",
+    "lottie",
+    "media",
+    "network",
+    "paging",
+    "playstore",
+    "push",
+    "room",
+    "settings",
+    "websocket",
+    "workmanager"
+  ],
+  "feature_modules": [
+    "dashboard",
+    "fleet",
+    "attendance",
+    "fuel",
+    "trips",
+    "maintenance",
+    "documents",
+    "masters",
+    "team",
+    "alerts",
+    "sdui"
+  ],
+  "api_base_urls": {
+    "dev": "http://10.0.2.2:8080/api/",
+    "staging": "https://staging-api.vitfleet.example/api/",
+    "prod": "https://api.vitfleet.example/api/",
+    "playstore": "https://api.vitfleet.example/api/"
+  },
+  "web_socket_urls": {
+    "dev": "ws://10.0.2.2:8080/ws",
+    "staging": "wss://staging-api.vitfleet.example/ws",
+    "prod": "wss://api.vitfleet.example/ws",
+    "playstore": "wss://api.vitfleet.example/ws"
+  },
+  "deeplink_scheme": "vitfleet",
+  "deeplink_host": "app.vitfleet.example",
+  "font_name": "IBM Plex Sans",
+  "mono_font_name": "IBM Plex Mono",
+  "accent_colour": "#0E1A2B",
+  "secondary_colour": "#F5A524",
+  "tertiary_colour": "#2F6BFF",
+  "motion_style": "Standard",
+  "design_style": "Utility",
+  "haptics_enabled": true,
+  "languages": [
+    "hi"
+  ]
+}

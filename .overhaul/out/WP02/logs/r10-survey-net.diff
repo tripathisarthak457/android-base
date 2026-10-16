@@ -1,0 +1,1033 @@
+diff --git a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/DefaultAbcdefghijklmnopqrstuvwxyzabcdRepository.kt b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/DefaultAbcdefghijklmnopqrstuvwxyzabcdRepository.kt
+index c9f8e93..a4b15ea 100644
+--- a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/DefaultAbcdefghijklmnopqrstuvwxyzabcdRepository.kt
++++ b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/DefaultAbcdefghijklmnopqrstuvwxyzabcdRepository.kt
+@@ -18,7 +18,9 @@ internal class DefaultAbcdefghijklmnopqrstuvwxyzabcdRepository @Inject construct
+ ) : AbcdefghijklmnopqrstuvwxyzabcdRepository {
+ 
+     /** Cached, so reopening the screen or going offline shows the last answer. */
+-    override suspend fun items(forceRefresh: Boolean): AppResult<List<AbcdefghijklmnopqrstuvwxyzabcdItem>> =
++    override suspend fun items(
++        forceRefresh: Boolean,
++    ): AppResult<List<AbcdefghijklmnopqrstuvwxyzabcdItem>> =
+         networkClient.get<List<AbcdefghijklmnopqrstuvwxyzabcdDto>>(
+             path = PATH,
+             cache = CachePolicy.Enabled(
+diff --git a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdItem.kt b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdItem.kt
+index 7fbdba1..0f0badb 100644
+--- a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdItem.kt
++++ b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.abcdefghijklmnopqrstuvwxyzabcd.api
+ 
+ /** One abcdefghijklmnopqrstuvwxyzabcd entry as the app sees it, whatever shape the source sends. */
+-data class AbcdefghijklmnopqrstuvwxyzabcdItem(
+-    val id: String,
+-    val title: String,
+-)
++data class AbcdefghijklmnopqrstuvwxyzabcdItem(val id: String, val title: String)
+diff --git a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdRepository.kt b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdRepository.kt
+index a11435d..545c66b 100644
+--- a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdRepository.kt
++++ b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/AbcdefghijklmnopqrstuvwxyzabcdRepository.kt
+@@ -7,7 +7,9 @@ import io.example.fit.core.common.result.AppResult
+  */
+ interface AbcdefghijklmnopqrstuvwxyzabcdRepository {
+ 
+-    suspend fun items(forceRefresh: Boolean = false): AppResult<List<AbcdefghijklmnopqrstuvwxyzabcdItem>>
++    suspend fun items(
++        forceRefresh: Boolean = false,
++    ): AppResult<List<AbcdefghijklmnopqrstuvwxyzabcdItem>>
+ 
+     suspend fun item(id: String): AppResult<AbcdefghijklmnopqrstuvwxyzabcdItem>
+ }
+diff --git a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/di/AbcdefghijklmnopqrstuvwxyzabcdDataModule.kt b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/di/AbcdefghijklmnopqrstuvwxyzabcdDataModule.kt
+index 2d7105c..334f787 100644
+--- a/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/di/AbcdefghijklmnopqrstuvwxyzabcdDataModule.kt
++++ b/data/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/di/AbcdefghijklmnopqrstuvwxyzabcdDataModule.kt
+@@ -12,5 +12,7 @@ import io.example.fit.data.abcdefghijklmnopqrstuvwxyzabcd.api.Abcdefghijklmnopqr
+ internal interface AbcdefghijklmnopqrstuvwxyzabcdDataModule {
+ 
+     @Binds
+-    fun bindAbcdefghijklmnopqrstuvwxyzabcdRepository(impl: DefaultAbcdefghijklmnopqrstuvwxyzabcdRepository): AbcdefghijklmnopqrstuvwxyzabcdRepository
++    fun bindAbcdefghijklmnopqrstuvwxyzabcdRepository(
++        impl: DefaultAbcdefghijklmnopqrstuvwxyzabcdRepository,
++    ): AbcdefghijklmnopqrstuvwxyzabcdRepository
+ }
+diff --git a/data/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/remote/AbcdefghijklmnopqrstuvwxyzabcdDtoTest.kt b/data/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/remote/AbcdefghijklmnopqrstuvwxyzabcdDtoTest.kt
+index b729a0e..37ae6d0 100644
+--- a/data/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/remote/AbcdefghijklmnopqrstuvwxyzabcdDtoTest.kt
++++ b/data/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/remote/AbcdefghijklmnopqrstuvwxyzabcdDtoTest.kt
+@@ -14,7 +14,9 @@ class AbcdefghijklmnopqrstuvwxyzabcdDtoTest {
+ 
+     @Test
+     fun `the list answer decodes, and unknown fields are ignored`() {
+-        val dtos = json.decodeFromString<List<AbcdefghijklmnopqrstuvwxyzabcdDto>>(resource("abcdefghijklmnopqrstuvwxyzabcd.json"))
++        val dtos = json.decodeFromString<List<AbcdefghijklmnopqrstuvwxyzabcdDto>>(
++            resource("abcdefghijklmnopqrstuvwxyzabcd.json"),
++        )
+ 
+         assertEquals(listOf("1", "2"), dtos.map { it.id })
+         assertEquals("Second", dtos[1].toDomain().title)
+diff --git a/data/abcdefghijklmnopqrstuvwxyzabcd/src/testFixtures/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/FakeAbcdefghijklmnopqrstuvwxyzabcdRepository.kt b/data/abcdefghijklmnopqrstuvwxyzabcd/src/testFixtures/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/FakeAbcdefghijklmnopqrstuvwxyzabcdRepository.kt
+index ad331c1..1c9e937 100644
+--- a/data/abcdefghijklmnopqrstuvwxyzabcd/src/testFixtures/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/FakeAbcdefghijklmnopqrstuvwxyzabcdRepository.kt
++++ b/data/abcdefghijklmnopqrstuvwxyzabcd/src/testFixtures/kotlin/io/example/fit/data/abcdefghijklmnopqrstuvwxyzabcd/api/FakeAbcdefghijklmnopqrstuvwxyzabcdRepository.kt
+@@ -13,7 +13,9 @@ class FakeAbcdefghijklmnopqrstuvwxyzabcdRepository(
+     var loads = 0
+         private set
+ 
+-    override suspend fun items(forceRefresh: Boolean): AppResult<List<AbcdefghijklmnopqrstuvwxyzabcdItem>> {
++    override suspend fun items(
++        forceRefresh: Boolean,
++    ): AppResult<List<AbcdefghijklmnopqrstuvwxyzabcdItem>> {
+         loads++
+         return result
+     }
+diff --git a/data/inventory/src/main/kotlin/io/example/fit/data/inventory/api/InventoryItem.kt b/data/inventory/src/main/kotlin/io/example/fit/data/inventory/api/InventoryItem.kt
+index 6e8815d..a3411e6 100644
+--- a/data/inventory/src/main/kotlin/io/example/fit/data/inventory/api/InventoryItem.kt
++++ b/data/inventory/src/main/kotlin/io/example/fit/data/inventory/api/InventoryItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.inventory.api
+ 
+ /** One inventory entry as the app sees it, whatever shape the source sends. */
+-data class InventoryItem(
+-    val id: String,
+-    val title: String,
+-)
++data class InventoryItem(val id: String, val title: String)
+diff --git a/data/inventory/src/main/kotlin/io/example/fit/data/inventory/remote/InventoryDto.kt b/data/inventory/src/main/kotlin/io/example/fit/data/inventory/remote/InventoryDto.kt
+index b5628dd..9626f14 100644
+--- a/data/inventory/src/main/kotlin/io/example/fit/data/inventory/remote/InventoryDto.kt
++++ b/data/inventory/src/main/kotlin/io/example/fit/data/inventory/remote/InventoryDto.kt
+@@ -11,5 +11,4 @@ internal data class InventoryDto(
+     @SerialName("title") val title: String = "",
+ )
+ 
+-internal fun InventoryDto.toDomain(): InventoryItem =
+-    InventoryItem(id = id, title = title.trim())
++internal fun InventoryDto.toDomain(): InventoryItem = InventoryItem(id = id, title = title.trim())
+diff --git a/data/inventory/src/testFixtures/kotlin/io/example/fit/data/inventory/api/FakeInventoryRepository.kt b/data/inventory/src/testFixtures/kotlin/io/example/fit/data/inventory/api/FakeInventoryRepository.kt
+index fe1c965..2f60d3c 100644
+--- a/data/inventory/src/testFixtures/kotlin/io/example/fit/data/inventory/api/FakeInventoryRepository.kt
++++ b/data/inventory/src/testFixtures/kotlin/io/example/fit/data/inventory/api/FakeInventoryRepository.kt
+@@ -6,9 +6,7 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeInventoryRepository(
+-    var result: AppResult<List<InventoryItem>>,
+-) : InventoryRepository {
++class FakeInventoryRepository(var result: AppResult<List<InventoryItem>>) : InventoryRepository {
+ 
+     var loads = 0
+         private set
+@@ -18,9 +16,8 @@ class FakeInventoryRepository(
+         return result
+     }
+ 
+-    override suspend fun item(id: String): AppResult<InventoryItem> =
+-        when (val current = result) {
+-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
+-            is AppResult.Failure -> current
+-        }
++    override suspend fun item(id: String): AppResult<InventoryItem> = when (val current = result) {
++        is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
++        is AppResult.Failure -> current
++    }
+ }
+diff --git a/data/map/src/main/kotlin/io/example/fit/data/map/DefaultMapRepository.kt b/data/map/src/main/kotlin/io/example/fit/data/map/DefaultMapRepository.kt
+index 3fa57f6..a25a376 100644
+--- a/data/map/src/main/kotlin/io/example/fit/data/map/DefaultMapRepository.kt
++++ b/data/map/src/main/kotlin/io/example/fit/data/map/DefaultMapRepository.kt
+@@ -13,9 +13,8 @@ import javax.inject.Inject
+ import javax.inject.Singleton
+ 
+ @Singleton
+-internal class DefaultMapRepository @Inject constructor(
+-    private val networkClient: NetworkClient,
+-) : MapRepository {
++internal class DefaultMapRepository @Inject constructor(private val networkClient: NetworkClient) :
++    MapRepository {
+ 
+     /** Cached, so reopening the screen or going offline shows the last answer. */
+     override suspend fun items(forceRefresh: Boolean): AppResult<List<MapItem>> =
+@@ -28,11 +27,10 @@ internal class DefaultMapRepository @Inject constructor(
+             ),
+         ).map { dtos -> dtos.map(MapDto::toDomain) }
+ 
+-    override suspend fun item(id: String): AppResult<MapItem> =
+-        networkClient.get<MapDto>(
+-            path = "$PATH/$id",
+-            cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
+-        ).map(MapDto::toDomain)
++    override suspend fun item(id: String): AppResult<MapItem> = networkClient.get<MapDto>(
++        path = "$PATH/$id",
++        cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
++    ).map(MapDto::toDomain)
+ 
+     private companion object {
+         const val PATH = "map"
+diff --git a/data/map/src/main/kotlin/io/example/fit/data/map/api/MapItem.kt b/data/map/src/main/kotlin/io/example/fit/data/map/api/MapItem.kt
+index 6bbcb10..ed6e136 100644
+--- a/data/map/src/main/kotlin/io/example/fit/data/map/api/MapItem.kt
++++ b/data/map/src/main/kotlin/io/example/fit/data/map/api/MapItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.map.api
+ 
+ /** One map entry as the app sees it, whatever shape the source sends. */
+-data class MapItem(
+-    val id: String,
+-    val title: String,
+-)
++data class MapItem(val id: String, val title: String)
+diff --git a/data/map/src/main/kotlin/io/example/fit/data/map/remote/MapDto.kt b/data/map/src/main/kotlin/io/example/fit/data/map/remote/MapDto.kt
+index f27547d..0ff8a56 100644
+--- a/data/map/src/main/kotlin/io/example/fit/data/map/remote/MapDto.kt
++++ b/data/map/src/main/kotlin/io/example/fit/data/map/remote/MapDto.kt
+@@ -11,5 +11,4 @@ internal data class MapDto(
+     @SerialName("title") val title: String = "",
+ )
+ 
+-internal fun MapDto.toDomain(): MapItem =
+-    MapItem(id = id, title = title.trim())
++internal fun MapDto.toDomain(): MapItem = MapItem(id = id, title = title.trim())
+diff --git a/data/map/src/testFixtures/kotlin/io/example/fit/data/map/api/FakeMapRepository.kt b/data/map/src/testFixtures/kotlin/io/example/fit/data/map/api/FakeMapRepository.kt
+index 414cf0b..fe0e680 100644
+--- a/data/map/src/testFixtures/kotlin/io/example/fit/data/map/api/FakeMapRepository.kt
++++ b/data/map/src/testFixtures/kotlin/io/example/fit/data/map/api/FakeMapRepository.kt
+@@ -6,9 +6,7 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeMapRepository(
+-    var result: AppResult<List<MapItem>>,
+-) : MapRepository {
++class FakeMapRepository(var result: AppResult<List<MapItem>>) : MapRepository {
+ 
+     var loads = 0
+         private set
+@@ -18,9 +16,8 @@ class FakeMapRepository(
+         return result
+     }
+ 
+-    override suspend fun item(id: String): AppResult<MapItem> =
+-        when (val current = result) {
+-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
+-            is AppResult.Failure -> current
+-        }
++    override suspend fun item(id: String): AppResult<MapItem> = when (val current = result) {
++        is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
++        is AppResult.Failure -> current
++    }
+ }
+diff --git a/data/notification/src/main/kotlin/io/example/fit/data/notification/api/NotificationItem.kt b/data/notification/src/main/kotlin/io/example/fit/data/notification/api/NotificationItem.kt
+index f108419..4183abe 100644
+--- a/data/notification/src/main/kotlin/io/example/fit/data/notification/api/NotificationItem.kt
++++ b/data/notification/src/main/kotlin/io/example/fit/data/notification/api/NotificationItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.notification.api
+ 
+ /** One notification entry as the app sees it, whatever shape the source sends. */
+-data class NotificationItem(
+-    val id: String,
+-    val title: String,
+-)
++data class NotificationItem(val id: String, val title: String)
+diff --git a/data/notification/src/testFixtures/kotlin/io/example/fit/data/notification/api/FakeNotificationRepository.kt b/data/notification/src/testFixtures/kotlin/io/example/fit/data/notification/api/FakeNotificationRepository.kt
+index b7e36aa..cef0f3f 100644
+--- a/data/notification/src/testFixtures/kotlin/io/example/fit/data/notification/api/FakeNotificationRepository.kt
++++ b/data/notification/src/testFixtures/kotlin/io/example/fit/data/notification/api/FakeNotificationRepository.kt
+@@ -6,9 +6,8 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeNotificationRepository(
+-    var result: AppResult<List<NotificationItem>>,
+-) : NotificationRepository {
++class FakeNotificationRepository(var result: AppResult<List<NotificationItem>>) :
++    NotificationRepository {
+ 
+     var loads = 0
+         private set
+diff --git a/data/orders/src/main/kotlin/io/example/fit/data/orders/DefaultOrdersRepository.kt b/data/orders/src/main/kotlin/io/example/fit/data/orders/DefaultOrdersRepository.kt
+index 2f0ee0f..77a4e18 100644
+--- a/data/orders/src/main/kotlin/io/example/fit/data/orders/DefaultOrdersRepository.kt
++++ b/data/orders/src/main/kotlin/io/example/fit/data/orders/DefaultOrdersRepository.kt
+@@ -28,11 +28,10 @@ internal class DefaultOrdersRepository @Inject constructor(
+             ),
+         ).map { dtos -> dtos.map(OrdersDto::toDomain) }
+ 
+-    override suspend fun item(id: String): AppResult<OrdersItem> =
+-        networkClient.get<OrdersDto>(
+-            path = "$PATH/$id",
+-            cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
+-        ).map(OrdersDto::toDomain)
++    override suspend fun item(id: String): AppResult<OrdersItem> = networkClient.get<OrdersDto>(
++        path = "$PATH/$id",
++        cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
++    ).map(OrdersDto::toDomain)
+ 
+     private companion object {
+         const val PATH = "orders"
+diff --git a/data/orders/src/main/kotlin/io/example/fit/data/orders/api/OrdersItem.kt b/data/orders/src/main/kotlin/io/example/fit/data/orders/api/OrdersItem.kt
+index a6ccc16..86e61da 100644
+--- a/data/orders/src/main/kotlin/io/example/fit/data/orders/api/OrdersItem.kt
++++ b/data/orders/src/main/kotlin/io/example/fit/data/orders/api/OrdersItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.orders.api
+ 
+ /** One orders entry as the app sees it, whatever shape the source sends. */
+-data class OrdersItem(
+-    val id: String,
+-    val title: String,
+-)
++data class OrdersItem(val id: String, val title: String)
+diff --git a/data/orders/src/main/kotlin/io/example/fit/data/orders/remote/OrdersDto.kt b/data/orders/src/main/kotlin/io/example/fit/data/orders/remote/OrdersDto.kt
+index 7a58ddd..a317bae 100644
+--- a/data/orders/src/main/kotlin/io/example/fit/data/orders/remote/OrdersDto.kt
++++ b/data/orders/src/main/kotlin/io/example/fit/data/orders/remote/OrdersDto.kt
+@@ -11,5 +11,4 @@ internal data class OrdersDto(
+     @SerialName("title") val title: String = "",
+ )
+ 
+-internal fun OrdersDto.toDomain(): OrdersItem =
+-    OrdersItem(id = id, title = title.trim())
++internal fun OrdersDto.toDomain(): OrdersItem = OrdersItem(id = id, title = title.trim())
+diff --git a/data/orders/src/testFixtures/kotlin/io/example/fit/data/orders/api/FakeOrdersRepository.kt b/data/orders/src/testFixtures/kotlin/io/example/fit/data/orders/api/FakeOrdersRepository.kt
+index 012f12b..67f815e 100644
+--- a/data/orders/src/testFixtures/kotlin/io/example/fit/data/orders/api/FakeOrdersRepository.kt
++++ b/data/orders/src/testFixtures/kotlin/io/example/fit/data/orders/api/FakeOrdersRepository.kt
+@@ -6,9 +6,7 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeOrdersRepository(
+-    var result: AppResult<List<OrdersItem>>,
+-) : OrdersRepository {
++class FakeOrdersRepository(var result: AppResult<List<OrdersItem>>) : OrdersRepository {
+ 
+     var loads = 0
+         private set
+@@ -18,9 +16,8 @@ class FakeOrdersRepository(
+         return result
+     }
+ 
+-    override suspend fun item(id: String): AppResult<OrdersItem> =
+-        when (val current = result) {
+-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
+-            is AppResult.Failure -> current
+-        }
++    override suspend fun item(id: String): AppResult<OrdersItem> = when (val current = result) {
++        is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
++        is AppResult.Failure -> current
++    }
+ }
+diff --git a/data/payments/src/main/kotlin/io/example/fit/data/payments/DefaultPaymentsRepository.kt b/data/payments/src/main/kotlin/io/example/fit/data/payments/DefaultPaymentsRepository.kt
+index 457744f..31ff22a 100644
+--- a/data/payments/src/main/kotlin/io/example/fit/data/payments/DefaultPaymentsRepository.kt
++++ b/data/payments/src/main/kotlin/io/example/fit/data/payments/DefaultPaymentsRepository.kt
+@@ -28,11 +28,10 @@ internal class DefaultPaymentsRepository @Inject constructor(
+             ),
+         ).map { dtos -> dtos.map(PaymentsDto::toDomain) }
+ 
+-    override suspend fun item(id: String): AppResult<PaymentsItem> =
+-        networkClient.get<PaymentsDto>(
+-            path = "$PATH/$id",
+-            cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
+-        ).map(PaymentsDto::toDomain)
++    override suspend fun item(id: String): AppResult<PaymentsItem> = networkClient.get<PaymentsDto>(
++        path = "$PATH/$id",
++        cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
++    ).map(PaymentsDto::toDomain)
+ 
+     private companion object {
+         const val PATH = "payments"
+diff --git a/data/payments/src/main/kotlin/io/example/fit/data/payments/api/PaymentsItem.kt b/data/payments/src/main/kotlin/io/example/fit/data/payments/api/PaymentsItem.kt
+index d6ccb12..3080b78 100644
+--- a/data/payments/src/main/kotlin/io/example/fit/data/payments/api/PaymentsItem.kt
++++ b/data/payments/src/main/kotlin/io/example/fit/data/payments/api/PaymentsItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.payments.api
+ 
+ /** One payments entry as the app sees it, whatever shape the source sends. */
+-data class PaymentsItem(
+-    val id: String,
+-    val title: String,
+-)
++data class PaymentsItem(val id: String, val title: String)
+diff --git a/data/payments/src/main/kotlin/io/example/fit/data/payments/remote/PaymentsDto.kt b/data/payments/src/main/kotlin/io/example/fit/data/payments/remote/PaymentsDto.kt
+index 134f748..f3b62da 100644
+--- a/data/payments/src/main/kotlin/io/example/fit/data/payments/remote/PaymentsDto.kt
++++ b/data/payments/src/main/kotlin/io/example/fit/data/payments/remote/PaymentsDto.kt
+@@ -11,5 +11,4 @@ internal data class PaymentsDto(
+     @SerialName("title") val title: String = "",
+ )
+ 
+-internal fun PaymentsDto.toDomain(): PaymentsItem =
+-    PaymentsItem(id = id, title = title.trim())
++internal fun PaymentsDto.toDomain(): PaymentsItem = PaymentsItem(id = id, title = title.trim())
+diff --git a/data/payments/src/testFixtures/kotlin/io/example/fit/data/payments/api/FakePaymentsRepository.kt b/data/payments/src/testFixtures/kotlin/io/example/fit/data/payments/api/FakePaymentsRepository.kt
+index 657aa2d..0eb0223 100644
+--- a/data/payments/src/testFixtures/kotlin/io/example/fit/data/payments/api/FakePaymentsRepository.kt
++++ b/data/payments/src/testFixtures/kotlin/io/example/fit/data/payments/api/FakePaymentsRepository.kt
+@@ -6,9 +6,7 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakePaymentsRepository(
+-    var result: AppResult<List<PaymentsItem>>,
+-) : PaymentsRepository {
++class FakePaymentsRepository(var result: AppResult<List<PaymentsItem>>) : PaymentsRepository {
+ 
+     var loads = 0
+         private set
+@@ -18,9 +16,8 @@ class FakePaymentsRepository(
+         return result
+     }
+ 
+-    override suspend fun item(id: String): AppResult<PaymentsItem> =
+-        when (val current = result) {
+-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
+-            is AppResult.Failure -> current
+-        }
++    override suspend fun item(id: String): AppResult<PaymentsItem> = when (val current = result) {
++        is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
++        is AppResult.Failure -> current
++    }
+ }
+diff --git a/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/api/RecommendationsItem.kt b/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/api/RecommendationsItem.kt
+index d748bdd..9a41f2a 100644
+--- a/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/api/RecommendationsItem.kt
++++ b/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/api/RecommendationsItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.recommendations.api
+ 
+ /** One recommendations entry as the app sees it, whatever shape the source sends. */
+-data class RecommendationsItem(
+-    val id: String,
+-    val title: String,
+-)
++data class RecommendationsItem(val id: String, val title: String)
+diff --git a/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/di/RecommendationsDataModule.kt b/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/di/RecommendationsDataModule.kt
+index 60fc2cc..7ee22ea 100644
+--- a/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/di/RecommendationsDataModule.kt
++++ b/data/recommendations/src/main/kotlin/io/example/fit/data/recommendations/di/RecommendationsDataModule.kt
+@@ -12,5 +12,7 @@ import io.example.fit.data.recommendations.api.RecommendationsRepository
+ internal interface RecommendationsDataModule {
+ 
+     @Binds
+-    fun bindRecommendationsRepository(impl: DefaultRecommendationsRepository): RecommendationsRepository
++    fun bindRecommendationsRepository(
++        impl: DefaultRecommendationsRepository,
++    ): RecommendationsRepository
+ }
+diff --git a/data/recommendations/src/testFixtures/kotlin/io/example/fit/data/recommendations/api/FakeRecommendationsRepository.kt b/data/recommendations/src/testFixtures/kotlin/io/example/fit/data/recommendations/api/FakeRecommendationsRepository.kt
+index 6ea7d0a..867510a 100644
+--- a/data/recommendations/src/testFixtures/kotlin/io/example/fit/data/recommendations/api/FakeRecommendationsRepository.kt
++++ b/data/recommendations/src/testFixtures/kotlin/io/example/fit/data/recommendations/api/FakeRecommendationsRepository.kt
+@@ -6,9 +6,8 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeRecommendationsRepository(
+-    var result: AppResult<List<RecommendationsItem>>,
+-) : RecommendationsRepository {
++class FakeRecommendationsRepository(var result: AppResult<List<RecommendationsItem>>) :
++    RecommendationsRepository {
+ 
+     var loads = 0
+         private set
+diff --git a/data/statements/src/main/kotlin/io/example/fit/data/statements/api/StatementsItem.kt b/data/statements/src/main/kotlin/io/example/fit/data/statements/api/StatementsItem.kt
+index 586d677..92d9d7f 100644
+--- a/data/statements/src/main/kotlin/io/example/fit/data/statements/api/StatementsItem.kt
++++ b/data/statements/src/main/kotlin/io/example/fit/data/statements/api/StatementsItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.statements.api
+ 
+ /** One statements entry as the app sees it, whatever shape the source sends. */
+-data class StatementsItem(
+-    val id: String,
+-    val title: String,
+-)
++data class StatementsItem(val id: String, val title: String)
+diff --git a/data/statements/src/testFixtures/kotlin/io/example/fit/data/statements/api/FakeStatementsRepository.kt b/data/statements/src/testFixtures/kotlin/io/example/fit/data/statements/api/FakeStatementsRepository.kt
+index 5fff76e..d6572cf 100644
+--- a/data/statements/src/testFixtures/kotlin/io/example/fit/data/statements/api/FakeStatementsRepository.kt
++++ b/data/statements/src/testFixtures/kotlin/io/example/fit/data/statements/api/FakeStatementsRepository.kt
+@@ -6,9 +6,8 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeStatementsRepository(
+-    var result: AppResult<List<StatementsItem>>,
+-) : StatementsRepository {
++class FakeStatementsRepository(var result: AppResult<List<StatementsItem>>) :
++    StatementsRepository {
+ 
+     var loads = 0
+         private set
+@@ -18,9 +17,8 @@ class FakeStatementsRepository(
+         return result
+     }
+ 
+-    override suspend fun item(id: String): AppResult<StatementsItem> =
+-        when (val current = result) {
+-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
+-            is AppResult.Failure -> current
+-        }
++    override suspend fun item(id: String): AppResult<StatementsItem> = when (val current = result) {
++        is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
++        is AppResult.Failure -> current
++    }
+ }
+diff --git a/data/subscriptions/src/main/kotlin/io/example/fit/data/subscriptions/api/SubscriptionsItem.kt b/data/subscriptions/src/main/kotlin/io/example/fit/data/subscriptions/api/SubscriptionsItem.kt
+index 6d6f39e..86a7f3d 100644
+--- a/data/subscriptions/src/main/kotlin/io/example/fit/data/subscriptions/api/SubscriptionsItem.kt
++++ b/data/subscriptions/src/main/kotlin/io/example/fit/data/subscriptions/api/SubscriptionsItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.subscriptions.api
+ 
+ /** One subscriptions entry as the app sees it, whatever shape the source sends. */
+-data class SubscriptionsItem(
+-    val id: String,
+-    val title: String,
+-)
++data class SubscriptionsItem(val id: String, val title: String)
+diff --git a/data/subscriptions/src/testFixtures/kotlin/io/example/fit/data/subscriptions/api/FakeSubscriptionsRepository.kt b/data/subscriptions/src/testFixtures/kotlin/io/example/fit/data/subscriptions/api/FakeSubscriptionsRepository.kt
+index 1a72121..a2ce61d 100644
+--- a/data/subscriptions/src/testFixtures/kotlin/io/example/fit/data/subscriptions/api/FakeSubscriptionsRepository.kt
++++ b/data/subscriptions/src/testFixtures/kotlin/io/example/fit/data/subscriptions/api/FakeSubscriptionsRepository.kt
+@@ -6,9 +6,8 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeSubscriptionsRepository(
+-    var result: AppResult<List<SubscriptionsItem>>,
+-) : SubscriptionsRepository {
++class FakeSubscriptionsRepository(var result: AppResult<List<SubscriptionsItem>>) :
++    SubscriptionsRepository {
+ 
+     var loads = 0
+         private set
+diff --git a/data/trips/src/main/kotlin/io/example/fit/data/trips/DefaultTripsRepository.kt b/data/trips/src/main/kotlin/io/example/fit/data/trips/DefaultTripsRepository.kt
+index ab07b89..8be5b3f 100644
+--- a/data/trips/src/main/kotlin/io/example/fit/data/trips/DefaultTripsRepository.kt
++++ b/data/trips/src/main/kotlin/io/example/fit/data/trips/DefaultTripsRepository.kt
+@@ -28,11 +28,10 @@ internal class DefaultTripsRepository @Inject constructor(
+             ),
+         ).map { dtos -> dtos.map(TripsDto::toDomain) }
+ 
+-    override suspend fun item(id: String): AppResult<TripsItem> =
+-        networkClient.get<TripsDto>(
+-            path = "$PATH/$id",
+-            cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
+-        ).map(TripsDto::toDomain)
++    override suspend fun item(id: String): AppResult<TripsItem> = networkClient.get<TripsDto>(
++        path = "$PATH/$id",
++        cache = CachePolicy.Enabled(key = "$PATH/$id", maxAgeMillis = CACHE_MAX_AGE_MILLIS),
++    ).map(TripsDto::toDomain)
+ 
+     private companion object {
+         const val PATH = "trips"
+diff --git a/data/trips/src/main/kotlin/io/example/fit/data/trips/api/TripsItem.kt b/data/trips/src/main/kotlin/io/example/fit/data/trips/api/TripsItem.kt
+index 8c5b37e..fdc394d 100644
+--- a/data/trips/src/main/kotlin/io/example/fit/data/trips/api/TripsItem.kt
++++ b/data/trips/src/main/kotlin/io/example/fit/data/trips/api/TripsItem.kt
+@@ -1,7 +1,4 @@
+ package io.example.fit.data.trips.api
+ 
+ /** One trips entry as the app sees it, whatever shape the source sends. */
+-data class TripsItem(
+-    val id: String,
+-    val title: String,
+-)
++data class TripsItem(val id: String, val title: String)
+diff --git a/data/trips/src/main/kotlin/io/example/fit/data/trips/remote/TripsDto.kt b/data/trips/src/main/kotlin/io/example/fit/data/trips/remote/TripsDto.kt
+index 8cc1912..3704a8e 100644
+--- a/data/trips/src/main/kotlin/io/example/fit/data/trips/remote/TripsDto.kt
++++ b/data/trips/src/main/kotlin/io/example/fit/data/trips/remote/TripsDto.kt
+@@ -11,5 +11,4 @@ internal data class TripsDto(
+     @SerialName("title") val title: String = "",
+ )
+ 
+-internal fun TripsDto.toDomain(): TripsItem =
+-    TripsItem(id = id, title = title.trim())
++internal fun TripsDto.toDomain(): TripsItem = TripsItem(id = id, title = title.trim())
+diff --git a/data/trips/src/testFixtures/kotlin/io/example/fit/data/trips/api/FakeTripsRepository.kt b/data/trips/src/testFixtures/kotlin/io/example/fit/data/trips/api/FakeTripsRepository.kt
+index 2f40e6f..0f885ef 100644
+--- a/data/trips/src/testFixtures/kotlin/io/example/fit/data/trips/api/FakeTripsRepository.kt
++++ b/data/trips/src/testFixtures/kotlin/io/example/fit/data/trips/api/FakeTripsRepository.kt
+@@ -6,9 +6,7 @@ import io.example.fit.core.common.result.AppResult
+  * Answers with [result] and counts the list loads, so a test can check that a screen does not load
+  * twice. Set [result] between events to script a failure or a recovery.
+  */
+-class FakeTripsRepository(
+-    var result: AppResult<List<TripsItem>>,
+-) : TripsRepository {
++class FakeTripsRepository(var result: AppResult<List<TripsItem>>) : TripsRepository {
+ 
+     var loads = 0
+         private set
+@@ -18,9 +16,8 @@ class FakeTripsRepository(
+         return result
+     }
+ 
+-    override suspend fun item(id: String): AppResult<TripsItem> =
+-        when (val current = result) {
+-            is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
+-            is AppResult.Failure -> current
+-        }
++    override suspend fun item(id: String): AppResult<TripsItem> = when (val current = result) {
++        is AppResult.Success -> AppResult.Success(current.value.first { it.id == id })
++        is AppResult.Failure -> current
++    }
+ }
+diff --git a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/detail/AbcdefghijklmnopqrstuvwxyzabcdDetailScreen.kt b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/detail/AbcdefghijklmnopqrstuvwxyzabcdDetailScreen.kt
+index a490e66..51c4c35 100644
+--- a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/detail/AbcdefghijklmnopqrstuvwxyzabcdDetailScreen.kt
++++ b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/detail/AbcdefghijklmnopqrstuvwxyzabcdDetailScreen.kt
+@@ -38,7 +38,9 @@ internal fun AbcdefghijklmnopqrstuvwxyzabcdDetailScreen(
+         modifier = modifier,
+         topBar = {
+             AppBackTopBar(
+-                title = state.item?.title ?: stringResource(R.string.abcdefghijklmnopqrstuvwxyzabcd_title),
++                title =
++                    state.item?.title
++                        ?: stringResource(R.string.abcdefghijklmnopqrstuvwxyzabcd_title),
+                 onBack = { onEvent(AbcdefghijklmnopqrstuvwxyzabcdDetailEvent.BackClicked) },
+             )
+         },
+@@ -93,7 +95,10 @@ private fun AbcdefghijklmnopqrstuvwxyzabcdDetailScreenPreview() {
+         AbcdefghijklmnopqrstuvwxyzabcdDetailScreen(
+             state = AbcdefghijklmnopqrstuvwxyzabcdDetailState(
+                 loadState = LoadState.Success,
+-                item = AbcdefghijklmnopqrstuvwxyzabcdItem(id = "1", title = "Abcdefghijklmnopqrstuvwxyzabcd"),
++                item = AbcdefghijklmnopqrstuvwxyzabcdItem(
++                    id = "1",
++                    title = "Abcdefghijklmnopqrstuvwxyzabcd",
++                ),
+             ),
+             onEvent = {},
+         )
+diff --git a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListScreen.kt b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListScreen.kt
+index c70095a..957b890 100644
+--- a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListScreen.kt
++++ b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListScreen.kt
+@@ -40,7 +40,9 @@ internal fun AbcdefghijklmnopqrstuvwxyzabcdListScreen(
+     AppScaffold(
+         contentMaxWidth = AppTheme.layout.readableMaxWidth,
+         modifier = modifier,
+-        topBar = { AppLargeTitle(title = stringResource(R.string.abcdefghijklmnopqrstuvwxyzabcd_title)) },
++        topBar = {
++            AppLargeTitle(title = stringResource(R.string.abcdefghijklmnopqrstuvwxyzabcd_title))
++        },
+     ) {
+         when (val loadState = state.loadState) {
+             // Idle is the first frame, before the route's Appeared has started the load.
+@@ -71,10 +73,17 @@ internal fun AbcdefghijklmnopqrstuvwxyzabcdListScreen(
+                     contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+                 ) {
+-                    items(items = state.items, key = AbcdefghijklmnopqrstuvwxyzabcdItem::id) { item ->
++                    items(
++                        items = state.items,
++                        key = AbcdefghijklmnopqrstuvwxyzabcdItem::id,
++                    ) { item ->
+                         AbcdefghijklmnopqrstuvwxyzabcdRow(
+                             item = item,
+-                            onClick = { onEvent(AbcdefghijklmnopqrstuvwxyzabcdListEvent.ItemClicked(item.id)) },
++                            onClick = {
++                                onEvent(
++                                    AbcdefghijklmnopqrstuvwxyzabcdListEvent.ItemClicked(item.id),
++                                )
++                            },
+                         )
+                     }
+                 }
+@@ -84,7 +93,10 @@ internal fun AbcdefghijklmnopqrstuvwxyzabcdListScreen(
+ }
+ 
+ @Composable
+-private fun AbcdefghijklmnopqrstuvwxyzabcdRow(item: AbcdefghijklmnopqrstuvwxyzabcdItem, onClick: () -> Unit) {
++private fun AbcdefghijklmnopqrstuvwxyzabcdRow(
++    item: AbcdefghijklmnopqrstuvwxyzabcdItem,
++    onClick: () -> Unit,
++) {
+     AppCard(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
+         AppText(
+             text = item.title,
+@@ -135,7 +147,10 @@ private fun AbcdefghijklmnopqrstuvwxyzabcdListScreenPreview() {
+             state = AbcdefghijklmnopqrstuvwxyzabcdListState(
+                 loadState = LoadState.Success,
+                 items = List(4) { index ->
+-                    AbcdefghijklmnopqrstuvwxyzabcdItem(id = "$index", title = "Abcdefghijklmnopqrstuvwxyzabcd ${index + 1}")
++                    AbcdefghijklmnopqrstuvwxyzabcdItem(
++                        id = "$index",
++                        title = "Abcdefghijklmnopqrstuvwxyzabcd ${index + 1}",
++                    )
+                 },
+             ),
+             onEvent = {},
+diff --git a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/navigation/AbcdefghijklmnopqrstuvwxyzabcdNavigation.kt b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/navigation/AbcdefghijklmnopqrstuvwxyzabcdNavigation.kt
+index b061ae8..e1f3af3 100644
+--- a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/navigation/AbcdefghijklmnopqrstuvwxyzabcdNavigation.kt
++++ b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/main/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/navigation/AbcdefghijklmnopqrstuvwxyzabcdNavigation.kt
+@@ -38,7 +38,13 @@ internal object AbcdefghijklmnopqrstuvwxyzabcdNavigation {
+     @Provides
+     @IntoSet
+     fun abcdefghijklmnopqrstuvwxyzabcdNavKeys(): SerializersModule = navKeys {
+-        subclass(AbcdefghijklmnopqrstuvwxyzabcdListKey::class, AbcdefghijklmnopqrstuvwxyzabcdListKey.serializer())
+-        subclass(AbcdefghijklmnopqrstuvwxyzabcdDetailKey::class, AbcdefghijklmnopqrstuvwxyzabcdDetailKey.serializer())
++        subclass(
++            AbcdefghijklmnopqrstuvwxyzabcdListKey::class,
++            AbcdefghijklmnopqrstuvwxyzabcdListKey.serializer(),
++        )
++        subclass(
++            AbcdefghijklmnopqrstuvwxyzabcdDetailKey::class,
++            AbcdefghijklmnopqrstuvwxyzabcdDetailKey.serializer(),
++        )
+     }
+ }
+diff --git a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/AbcdefghijklmnopqrstuvwxyzabcdRecompositionTest.kt b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/AbcdefghijklmnopqrstuvwxyzabcdRecompositionTest.kt
+index 4dc9100..68ce4c7 100644
+--- a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/AbcdefghijklmnopqrstuvwxyzabcdRecompositionTest.kt
++++ b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/AbcdefghijklmnopqrstuvwxyzabcdRecompositionTest.kt
+@@ -36,7 +36,10 @@ class AbcdefghijklmnopqrstuvwxyzabcdRecompositionTest {
+         compose.setContent {
+             AppTheme {
+                 AbcdefghijklmnopqrstuvwxyzabcdListScreen(
+-                    state = AbcdefghijklmnopqrstuvwxyzabcdListState(loadState = LoadState.Success, items = items),
++                    state = AbcdefghijklmnopqrstuvwxyzabcdListState(
++                        loadState = LoadState.Success,
++                        items = items,
++                    ),
+                     onEvent = {},
+                 )
+             }
+diff --git a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListViewModelTest.kt b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListViewModelTest.kt
+index a722f37..a4b47d3 100644
+--- a/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListViewModelTest.kt
++++ b/feature/abcdefghijklmnopqrstuvwxyzabcd/src/test/kotlin/io/example/fit/feature/abcdefghijklmnopqrstuvwxyzabcd/list/AbcdefghijklmnopqrstuvwxyzabcdListViewModelTest.kt
+@@ -39,7 +39,8 @@ class AbcdefghijklmnopqrstuvwxyzabcdListViewModelTest {
+ 
+     @Test
+     fun `an empty answer is Empty, not Success with no rows`() = runTest {
+-        val repository = FakeAbcdefghijklmnopqrstuvwxyzabcdRepository(AppResult.Success(emptyList()))
++        val repository =
++            FakeAbcdefghijklmnopqrstuvwxyzabcdRepository(AppResult.Success(emptyList()))
+         val viewModel = AbcdefghijklmnopqrstuvwxyzabcdListViewModel(repository)
+ 
+         viewModel.onEvent(AbcdefghijklmnopqrstuvwxyzabcdListEvent.Appeared)
+@@ -65,7 +66,8 @@ class AbcdefghijklmnopqrstuvwxyzabcdListViewModelTest {
+ 
+     @Test
+     fun `a failed first load is an error the screen can retry`() = runTest {
+-        val repository = FakeAbcdefghijklmnopqrstuvwxyzabcdRepository(AppResult.Failure(AppError.Offline))
++        val repository =
++            FakeAbcdefghijklmnopqrstuvwxyzabcdRepository(AppResult.Failure(AppError.Offline))
+         val viewModel = AbcdefghijklmnopqrstuvwxyzabcdListViewModel(repository)
+ 
+         viewModel.onEvent(AbcdefghijklmnopqrstuvwxyzabcdListEvent.Appeared)
+diff --git a/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/detail/InventoryDetailViewModel.kt b/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/detail/InventoryDetailViewModel.kt
+index e56a320..8211842 100644
+--- a/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/detail/InventoryDetailViewModel.kt
++++ b/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/detail/InventoryDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class InventoryDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/list/InventoryListViewModel.kt b/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/list/InventoryListViewModel.kt
+index 10dee7a..1729a05 100644
+--- a/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/list/InventoryListViewModel.kt
++++ b/feature/inventory/src/main/kotlin/io/example/fit/feature/inventory/list/InventoryListViewModel.kt
+@@ -21,8 +21,11 @@ internal class InventoryListViewModel @Inject constructor(
+             InventoryListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             InventoryListEvent.Refresh -> load(refreshing = true)
++
+             InventoryListEvent.Retry -> load(refreshing = false)
++
+             is InventoryListEvent.ItemClicked -> {
+                 emit(InventoryListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/map/src/main/kotlin/io/example/fit/feature/map/detail/MapDetailViewModel.kt b/feature/map/src/main/kotlin/io/example/fit/feature/map/detail/MapDetailViewModel.kt
+index 163c449..9736515 100644
+--- a/feature/map/src/main/kotlin/io/example/fit/feature/map/detail/MapDetailViewModel.kt
++++ b/feature/map/src/main/kotlin/io/example/fit/feature/map/detail/MapDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class MapDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListRoute.kt b/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListRoute.kt
+index 29ec394..db46dee 100644
+--- a/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListRoute.kt
++++ b/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListRoute.kt
+@@ -8,10 +8,7 @@ import io.example.fit.core.ui.MviScreen
+ import io.example.fit.feature.map.api.MapDetailKey
+ 
+ @Composable
+-internal fun MapListRoute(
+-    navigator: AppNavigator,
+-    viewModel: MapListViewModel = hiltViewModel(),
+-) {
++internal fun MapListRoute(navigator: AppNavigator, viewModel: MapListViewModel = hiltViewModel()) {
+     LaunchedEffect(Unit) { viewModel.onEvent(MapListEvent.Appeared) }
+ 
+     MviScreen(
+diff --git a/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListViewModel.kt b/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListViewModel.kt
+index 26f5e7e..ae71b7d 100644
+--- a/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListViewModel.kt
++++ b/feature/map/src/main/kotlin/io/example/fit/feature/map/list/MapListViewModel.kt
+@@ -10,19 +10,21 @@ import io.example.fit.data.map.api.MapRepository
+ import javax.inject.Inject
+ 
+ @HiltViewModel
+-internal class MapListViewModel @Inject constructor(
+-    private val repository: MapRepository,
+-) : MviViewModel<MapListState, MapListEvent, MapListEffect>(
+-    initial = MapListState(),
+-) {
++internal class MapListViewModel @Inject constructor(private val repository: MapRepository) :
++    MviViewModel<MapListState, MapListEvent, MapListEffect>(
++        initial = MapListState(),
++    ) {
+ 
+     override fun handleEvent(event: MapListEvent) {
+         when (event) {
+             MapListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             MapListEvent.Refresh -> load(refreshing = true)
++
+             MapListEvent.Retry -> load(refreshing = false)
++
+             is MapListEvent.ItemClicked -> {
+                 emit(MapListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/notification/src/main/kotlin/io/example/fit/feature/notification/detail/NotificationDetailViewModel.kt b/feature/notification/src/main/kotlin/io/example/fit/feature/notification/detail/NotificationDetailViewModel.kt
+index 26ebf44..6d87439 100644
+--- a/feature/notification/src/main/kotlin/io/example/fit/feature/notification/detail/NotificationDetailViewModel.kt
++++ b/feature/notification/src/main/kotlin/io/example/fit/feature/notification/detail/NotificationDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class NotificationDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/notification/src/main/kotlin/io/example/fit/feature/notification/list/NotificationListViewModel.kt b/feature/notification/src/main/kotlin/io/example/fit/feature/notification/list/NotificationListViewModel.kt
+index 2ef2549..b4764d7 100644
+--- a/feature/notification/src/main/kotlin/io/example/fit/feature/notification/list/NotificationListViewModel.kt
++++ b/feature/notification/src/main/kotlin/io/example/fit/feature/notification/list/NotificationListViewModel.kt
+@@ -21,8 +21,11 @@ internal class NotificationListViewModel @Inject constructor(
+             NotificationListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             NotificationListEvent.Refresh -> load(refreshing = true)
++
+             NotificationListEvent.Retry -> load(refreshing = false)
++
+             is NotificationListEvent.ItemClicked -> {
+                 emit(NotificationListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/orders/src/main/kotlin/io/example/fit/feature/orders/detail/OrdersDetailViewModel.kt b/feature/orders/src/main/kotlin/io/example/fit/feature/orders/detail/OrdersDetailViewModel.kt
+index 41ea1a6..b689da9 100644
+--- a/feature/orders/src/main/kotlin/io/example/fit/feature/orders/detail/OrdersDetailViewModel.kt
++++ b/feature/orders/src/main/kotlin/io/example/fit/feature/orders/detail/OrdersDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class OrdersDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/orders/src/main/kotlin/io/example/fit/feature/orders/list/OrdersListViewModel.kt b/feature/orders/src/main/kotlin/io/example/fit/feature/orders/list/OrdersListViewModel.kt
+index ec1e57e..43e6117 100644
+--- a/feature/orders/src/main/kotlin/io/example/fit/feature/orders/list/OrdersListViewModel.kt
++++ b/feature/orders/src/main/kotlin/io/example/fit/feature/orders/list/OrdersListViewModel.kt
+@@ -10,19 +10,21 @@ import io.example.fit.data.orders.api.OrdersRepository
+ import javax.inject.Inject
+ 
+ @HiltViewModel
+-internal class OrdersListViewModel @Inject constructor(
+-    private val repository: OrdersRepository,
+-) : MviViewModel<OrdersListState, OrdersListEvent, OrdersListEffect>(
+-    initial = OrdersListState(),
+-) {
++internal class OrdersListViewModel @Inject constructor(private val repository: OrdersRepository) :
++    MviViewModel<OrdersListState, OrdersListEvent, OrdersListEffect>(
++        initial = OrdersListState(),
++    ) {
+ 
+     override fun handleEvent(event: OrdersListEvent) {
+         when (event) {
+             OrdersListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             OrdersListEvent.Refresh -> load(refreshing = true)
++
+             OrdersListEvent.Retry -> load(refreshing = false)
++
+             is OrdersListEvent.ItemClicked -> {
+                 emit(OrdersListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/payments/src/main/kotlin/io/example/fit/feature/payments/detail/PaymentsDetailViewModel.kt b/feature/payments/src/main/kotlin/io/example/fit/feature/payments/detail/PaymentsDetailViewModel.kt
+index e33568e..1100559 100644
+--- a/feature/payments/src/main/kotlin/io/example/fit/feature/payments/detail/PaymentsDetailViewModel.kt
++++ b/feature/payments/src/main/kotlin/io/example/fit/feature/payments/detail/PaymentsDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class PaymentsDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/payments/src/main/kotlin/io/example/fit/feature/payments/list/PaymentsListViewModel.kt b/feature/payments/src/main/kotlin/io/example/fit/feature/payments/list/PaymentsListViewModel.kt
+index d49ed86..04f38b7 100644
+--- a/feature/payments/src/main/kotlin/io/example/fit/feature/payments/list/PaymentsListViewModel.kt
++++ b/feature/payments/src/main/kotlin/io/example/fit/feature/payments/list/PaymentsListViewModel.kt
+@@ -21,8 +21,11 @@ internal class PaymentsListViewModel @Inject constructor(
+             PaymentsListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             PaymentsListEvent.Refresh -> load(refreshing = true)
++
+             PaymentsListEvent.Retry -> load(refreshing = false)
++
+             is PaymentsListEvent.ItemClicked -> {
+                 emit(PaymentsListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/recommendations/src/main/kotlin/io/example/fit/feature/recommendations/list/RecommendationsListViewModel.kt b/feature/recommendations/src/main/kotlin/io/example/fit/feature/recommendations/list/RecommendationsListViewModel.kt
+index f8c4c21..1dba94d 100644
+--- a/feature/recommendations/src/main/kotlin/io/example/fit/feature/recommendations/list/RecommendationsListViewModel.kt
++++ b/feature/recommendations/src/main/kotlin/io/example/fit/feature/recommendations/list/RecommendationsListViewModel.kt
+@@ -21,8 +21,11 @@ internal class RecommendationsListViewModel @Inject constructor(
+             RecommendationsListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             RecommendationsListEvent.Refresh -> load(refreshing = true)
++
+             RecommendationsListEvent.Retry -> load(refreshing = false)
++
+             is RecommendationsListEvent.ItemClicked -> {
+                 emit(RecommendationsListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/statements/src/main/kotlin/io/example/fit/feature/statements/detail/StatementsDetailViewModel.kt b/feature/statements/src/main/kotlin/io/example/fit/feature/statements/detail/StatementsDetailViewModel.kt
+index 7062178..5323e2b 100644
+--- a/feature/statements/src/main/kotlin/io/example/fit/feature/statements/detail/StatementsDetailViewModel.kt
++++ b/feature/statements/src/main/kotlin/io/example/fit/feature/statements/detail/StatementsDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class StatementsDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/statements/src/main/kotlin/io/example/fit/feature/statements/list/StatementsListViewModel.kt b/feature/statements/src/main/kotlin/io/example/fit/feature/statements/list/StatementsListViewModel.kt
+index 9e37a80..eeb590e 100644
+--- a/feature/statements/src/main/kotlin/io/example/fit/feature/statements/list/StatementsListViewModel.kt
++++ b/feature/statements/src/main/kotlin/io/example/fit/feature/statements/list/StatementsListViewModel.kt
+@@ -21,8 +21,11 @@ internal class StatementsListViewModel @Inject constructor(
+             StatementsListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             StatementsListEvent.Refresh -> load(refreshing = true)
++
+             StatementsListEvent.Retry -> load(refreshing = false)
++
+             is StatementsListEvent.ItemClicked -> {
+                 emit(StatementsListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt b/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt
+index 5f944e7..5eab987 100644
+--- a/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt
++++ b/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class SubscriptionsDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/list/SubscriptionsListViewModel.kt b/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/list/SubscriptionsListViewModel.kt
+index 677ff9c..60301ce 100644
+--- a/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/list/SubscriptionsListViewModel.kt
++++ b/feature/subscriptions/src/main/kotlin/io/example/fit/feature/subscriptions/list/SubscriptionsListViewModel.kt
+@@ -21,8 +21,11 @@ internal class SubscriptionsListViewModel @Inject constructor(
+             SubscriptionsListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             SubscriptionsListEvent.Refresh -> load(refreshing = true)
++
+             SubscriptionsListEvent.Retry -> load(refreshing = false)
++
+             is SubscriptionsListEvent.ItemClicked -> {
+                 emit(SubscriptionsListEffect.OpenDetail(event.id))
+             }
+diff --git a/feature/trips/src/main/kotlin/io/example/fit/feature/trips/detail/TripsDetailViewModel.kt b/feature/trips/src/main/kotlin/io/example/fit/feature/trips/detail/TripsDetailViewModel.kt
+index 65a43b9..a4294c3 100644
+--- a/feature/trips/src/main/kotlin/io/example/fit/feature/trips/detail/TripsDetailViewModel.kt
++++ b/feature/trips/src/main/kotlin/io/example/fit/feature/trips/detail/TripsDetailViewModel.kt
+@@ -38,6 +38,7 @@ internal class TripsDetailViewModel @AssistedInject constructor(
+                 is AppResult.Success -> setState {
+                     copy(loadState = LoadState.Success, item = result.value)
+                 }
++
+                 is AppResult.Failure -> setState {
+                     copy(loadState = LoadState.Error(result.error))
+                 }
+diff --git a/feature/trips/src/main/kotlin/io/example/fit/feature/trips/list/TripsListViewModel.kt b/feature/trips/src/main/kotlin/io/example/fit/feature/trips/list/TripsListViewModel.kt
+index b2a489c..ee3a01d 100644
+--- a/feature/trips/src/main/kotlin/io/example/fit/feature/trips/list/TripsListViewModel.kt
++++ b/feature/trips/src/main/kotlin/io/example/fit/feature/trips/list/TripsListViewModel.kt
+@@ -10,19 +10,21 @@ import io.example.fit.data.trips.api.TripsRepository
+ import javax.inject.Inject
+ 
+ @HiltViewModel
+-internal class TripsListViewModel @Inject constructor(
+-    private val repository: TripsRepository,
+-) : MviViewModel<TripsListState, TripsListEvent, TripsListEffect>(
+-    initial = TripsListState(),
+-) {
++internal class TripsListViewModel @Inject constructor(private val repository: TripsRepository) :
++    MviViewModel<TripsListState, TripsListEvent, TripsListEffect>(
++        initial = TripsListState(),
++    ) {
+ 
+     override fun handleEvent(event: TripsListEvent) {
+         when (event) {
+             TripsListEvent.Appeared -> {
+                 if (current.loadState == LoadState.Idle) load(refreshing = false)
+             }
++
+             TripsListEvent.Refresh -> load(refreshing = true)
++
+             TripsListEvent.Retry -> load(refreshing = false)
++
+             is TripsListEvent.ItemClicked -> {
+                 emit(TripsListEffect.OpenDetail(event.id))
+             }

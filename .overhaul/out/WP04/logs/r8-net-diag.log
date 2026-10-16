@@ -1,0 +1,10 @@
+[locked:adb] waiting for lock...
+ User "Sarthak Tripathi" (id=0, flags=0x4c13) (current): trustState=UNTRUSTED, trustManaged=0, deviceLocked=0, isActiveUnlockRunning=0, strongAuthRequired=0x0
+Active default network: none
+Wifi is enabled
+Wifi scanning is always available
+==== Primary ClientModeManager instance ====
+0
+connect: Network is unreachable
+ping: unknown host jsonplaceholder.typicode.com
+NET-DIAG DONE

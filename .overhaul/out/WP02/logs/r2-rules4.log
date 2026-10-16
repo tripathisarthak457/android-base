@@ -1,0 +1,56 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :build-logic:convention:test verifyCodeRules
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata
+> Task :core:database:verifyCodeRules
+> Task :core:analytics:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+> Task :build-logic:convention:compileTestKotlin
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :build-logic:convention:test
+
+BUILD SUCCESSFUL in 19s
+35 actionable tasks: 33 executed, 2 up-to-date
+Configuration cache entry stored.

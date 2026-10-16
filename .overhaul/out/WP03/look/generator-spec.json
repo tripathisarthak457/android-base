@@ -1,0 +1,43 @@
+{
+  "generator": {
+    "commit": "8ea3985f426b",
+    "generatedOn": "2026-10-12"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Look",
+  "display_name": "",
+  "package_name": "com.example.wp03.look",
+  "architecture": "compact",
+  "features": [
+    "catalog",
+    "collections",
+    "datadisplay",
+    "formfields",
+    "googlefonts",
+    "network",
+    "pickers",
+    "sample"
+  ],
+  "feature_modules": [],
+  "design_style": "Editorial",
+  "motion_style": "Calm",
+  "accent_colour": "#8E3B46",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "Plus Jakarta Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [],
+  "android": {
+    "min_sdk": 26,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "1.0.0",
+    "version_code": 1,
+    "api_base_urls": {},
+    "web_socket_urls": {},
+    "deeplink_scheme": "",
+    "deeplink_host": ""
+  }
+}

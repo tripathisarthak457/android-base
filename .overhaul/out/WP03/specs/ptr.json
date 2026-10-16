@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "WP03 Refresh",
+  "package_name": "com.example.wp03.ptr",
+  "architecture": "compact",
+  "features": ["catalog", "network", "sample"],
+  "feature_modules": [],
+  "languages": []
+}

@@ -1,0 +1,171 @@
+[locked:emu] waiting for lock...
+[locked:gradle] waiting for lock...
+== 13:53:39 emulator booted
+== target /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+== 13:53:39 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 13:53:56 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/benchmark/build/outputs/apk/nonMinifiedRelease/benchmark-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 13:54:00 adb -s emulator-5554 shell am instrument -w -r -e class com.example.wp04.everything.benchmark.BaselineProfileGenerator -e androidx.benchmark.enabledRules BaselineProfile -e additionalTestOutputDir /sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output -e targetAppId com.example.wp04.everything.dev com.example.wp04.everything.benchmark/androidx.test.runner.AndroidJUnitRunner
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.wp04.everything.benchmark.BaselineProfileGenerator:
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof-2026-10-13-08-30-54.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof-2026-10-13-08-30-54.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: android.studio.display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 409548141253.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-08-30-54.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 409548141253.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-08-30-54.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 409548141253.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-08-30-54.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: the root list is not on screen; the journey cannot continue.
+	at com.example.wp04.everything.benchmark.JourneysKt.waitFor(Journeys.kt:137)
+	at com.example.wp04.everything.benchmark.JourneysKt.assertAtRoot(Journeys.kt:129)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:43)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+INSTRUMENTATION_STATUS: stream=
+Error in journeys(com.example.wp04.everything.benchmark.BaselineProfileGenerator):
+java.lang.IllegalStateException: the root list is not on screen; the journey cannot continue.
+	at com.example.wp04.everything.benchmark.JourneysKt.waitFor(Journeys.kt:137)
+	at com.example.wp04.everything.benchmark.JourneysKt.assertAtRoot(Journeys.kt:129)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:43)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 449.98
+There was 1 failure:
+1) journeys(com.example.wp04.everything.benchmark.BaselineProfileGenerator)
+java.lang.IllegalStateException: the root list is not on screen; the journey cannot continue.
+	at com.example.wp04.everything.benchmark.JourneysKt.waitFor(Journeys.kt:137)
+	at com.example.wp04.everything.benchmark.JourneysKt.assertAtRoot(Journeys.kt:129)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:43)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+FAILURES!!!
+Tests run: 2,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1
+== exit 0 : adb
+/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/: 2 files pulled, 0 skipped. 24.3 MB/s (8229816 bytes in 0.323s)
+total 8048
+drwxrwxr-x 2 crazyhusir crazyhusir    4096 Oct 13 14:01 .
+drwxrwxr-x 3 crazyhusir crazyhusir    4096 Oct 13 14:01 ..
+-rw-r--r-- 1 crazyhusir crazyhusir 4114908 Oct 13 14:01 BaselineProfileGenerator_startup-startup-prof-2026-10-13-08-30-54.txt
+-rw-r--r-- 1 crazyhusir crazyhusir 4114908 Oct 13 14:01 BaselineProfileGenerator_startup-startup-prof.txt
+  38271 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/baseline-prof.txt
+  38271 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/startup-prof.txt
+  76542 total
+== 14:01:36 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/adaptive/adaptive.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --serial emulator-5554 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/adaptive/emulator sizes multiinstance keyboard
+error: device offline
+adaptive: no perf.shell line: is this a dev build, signed in (perf.fakeSession)?
+fold: window=673x841dp class=MediumxMedium chrome=Rail ok
+tablet-8: window=673x841dp class=MediumxMedium chrome=Rail FAIL: the app is no longer running
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/adaptive/adaptive.sh
+adb: device 'emulator-5554' not found
+== 14:02:08 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --runs 1 --serial emulator-5554 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/emulator-large tabs_large pushpop_large listdetail_select scroll_large sidebar_toggle
+perf: device emulator-5554 is not attached
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+== 14:02:09 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/tab-switch/emulator-font2 --serial emulator-5554
+perf: device emulator-5554 is not attached
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+== ar-XB: 
+adb: device 'emulator-5554' not found
+error: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+== ar: 
+adb: device 'emulator-5554' not found
+error: device 'emulator-5554' not found
+adb: device 'emulator-5554' not found
+== 14:02:15 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/tab-switch/emulator-rtl/tab_switch --serial emulator-5554
+perf: device emulator-5554 is not attached
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+adb: device 'emulator-5554' not found
+EMU-SESSION DONE
+== 14:02:15 emulator stopped
+emu exit 0

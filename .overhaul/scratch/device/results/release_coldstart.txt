@@ -1,0 +1,39 @@
+[locked:adb] waiting for lock...
+Performing Streamed Install
+Success
+    versionName=1.0.0-devRelease
+    flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ]
+        android.permission.POST_NOTIFICATIONS: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+  [com.acme.field.dev]
+    path: /data/app/~~lFmL6YRjUkMLdlLIip4zBQ==/com.acme.field.dev-Yr7Od2uM7KybK0u9sUA0Ag==/base.apk
+      arm64: [status=verify] [reason=install] [primary-abi]
+        [location is /data/app/~~lFmL6YRjUkMLdlLIip4zBQ==/com.acme.field.dev-Yr7Od2uM7KybK0u9sUA0Ag==/oat/arm64/base.odex]
+== cold start, as installed
+LaunchState: COLD TotalTime: 448 WaitTime: 452 
+LaunchState: COLD TotalTime: 450 WaitTime: 455 
+LaunchState: COLD TotalTime: 489 WaitTime: 493 
+LaunchState: COLD TotalTime: 471 WaitTime: 474 
+LaunchState: COLD TotalTime: 464 WaitTime: 469 
+LaunchState: COLD TotalTime: 475 WaitTime: 478 
+  [com.acme.field.dev]
+    path: /data/app/~~lFmL6YRjUkMLdlLIip4zBQ==/com.acme.field.dev-Yr7Od2uM7KybK0u9sUA0Ag==/base.apk
+      arm64: [status=verify] [reason=install] [primary-abi]
+        [location is /data/app/~~lFmL6YRjUkMLdlLIip4zBQ==/com.acme.field.dev-Yr7Od2uM7KybK0u9sUA0Ag==/oat/arm64/base.odex]
+== profile install + speed-profile compile
+Broadcast completed: result=1
+Success
+  [com.acme.field.dev]
+    path: /data/app/~~lFmL6YRjUkMLdlLIip4zBQ==/com.acme.field.dev-Yr7Od2uM7KybK0u9sUA0Ag==/base.apk
+      arm64: [status=speed-profile] [reason=cmdline] [primary-abi]
+        [location is /data/app/~~lFmL6YRjUkMLdlLIip4zBQ==/com.acme.field.dev-Yr7Od2uM7KybK0u9sUA0Ag==/oat/arm64/base.odex]
+== cold start, speed-profile
+LaunchState: COLD TotalTime: 422 WaitTime: 426 
+LaunchState: COLD TotalTime: 364 WaitTime: 368 
+LaunchState: COLD TotalTime: 362 WaitTime: 369 
+LaunchState: COLD TotalTime: 368 WaitTime: 372 
+LaunchState: COLD TotalTime: 365 WaitTime: 369 
+LaunchState: COLD TotalTime: 392 WaitTime: 396 
+== warm start (HOME then relaunch)
+LaunchState: HOT TotalTime: 39 
+LaunchState: HOT TotalTime: 57 
+LaunchState: HOT TotalTime: 41 

@@ -1,0 +1,34 @@
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :feature:trips:verifyModuleDependencies
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :feature:trips:verifyModuleDependencies FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':feature:trips:verifyModuleDependencies' (registered by plugin 'com.example.modulescompact.android.library').
+> Module graph rule broken:
+  
+    :feature:trips -> :feature:orders
+  
+  A feature may depend on :core:* and :data:*, never on another feature. A screen another feature opens gets its key in core/navigation/src/main/kotlin/<package path>/feature/<owner>/api/, in the owner's api package, where both features can reach it.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+5 actionable tasks: 1 executed, 4 up-to-date
+Configuration cache entry stored.

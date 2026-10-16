@@ -1,0 +1,154 @@
+test_a_display_name_with_quotes_and_emoji_reaches_the_home_screen (tests.test_target_ios.GeneratedProjectsTest.test_a_display_name_with_quotes_and_emoji_reaches_the_home_screen) ... ok
+test_each_feature_switched_off_alone (tests.test_target_ios.GeneratedProjectsTest.test_each_feature_switched_off_alone) ... ok
+test_every_preset (tests.test_target_ios.GeneratedProjectsTest.test_every_preset) ... ok
+test_headless_generation_names_the_target (tests.test_target_ios.GeneratedProjectsTest.test_headless_generation_names_the_target) ... ok
+test_nothing_but_a_scaffolded_module_without_networking (tests.test_target_ios.GeneratedProjectsTest.test_nothing_but_a_scaffolded_module_without_networking) ... ok
+test_scaffolded_tabs_each_get_their_own_symbol (tests.test_target_ios.GeneratedProjectsTest.test_scaffolded_tabs_each_get_their_own_symbol) ... ok
+test_the_fixtures (tests.test_target_ios.GeneratedProjectsTest.test_the_fixtures) ... ok
+test_with_no_tab_feature_a_home_module_is_the_tab (tests.test_target_ios.GeneratedProjectsTest.test_with_no_tab_feature_a_home_module_is_the_tab) ... ok
+test_a_missing_source_keeps_the_placeholder_and_says_so (tests.test_target_ios.IconTest.test_a_missing_source_keeps_the_placeholder_and_says_so) ... ok
+test_an_app_store_ready_png_is_used_as_it_is (tests.test_target_ios.IconTest.test_an_app_store_ready_png_is_used_as_it_is) ... ok
+test_only_an_opaque_png_of_the_right_size_is_ready (tests.test_target_ios.IconTest.test_only_an_opaque_png_of_the_right_size_is_ready) ... ok
+test_with_pillow_any_image_becomes_an_opaque_square_of_the_right_size (tests.test_target_ios.IconTest.test_with_pillow_any_image_becomes_an_opaque_square_of_the_right_size) ... skipped 'Pillow is not installed'
+test_without_pillow_any_other_image_keeps_the_placeholder_and_says_so (tests.test_target_ios.IconTest.test_without_pillow_any_other_image_keeps_the_placeholder_and_says_so) ... ok
+test_comments_and_strings_do_not_count_as_code (tests.test_target_ios.LexerTest.test_comments_and_strings_do_not_count_as_code) ... ok
+test_interpolations_hold_strings_of_their_own (tests.test_target_ios.LexerTest.test_interpolations_hold_strings_of_their_own) ... ok
+test_it_reports_what_does_not_pair_up (tests.test_target_ios.LexerTest.test_it_reports_what_does_not_pair_up) ... ok
+test_multi_line_strings_and_raw_interpolation (tests.test_target_ios.LexerTest.test_multi_line_strings_and_raw_interpolation) ... ok
+test_every_language_translates_exactly_the_templates_keys (tests.test_target_ios.TemplateTest.test_every_language_translates_exactly_the_templates_keys) ... ok
+test_no_test_outlives_the_source_it_tests (tests.test_target_ios.TemplateTest.test_no_test_outlives_the_source_it_tests)
+A feature that removes a source file has to take its tests with it: `<Name>Tests.swift` in ... ok
+test_springs_and_treatments_the_swift_reads_exist_in_the_tokens (tests.test_target_ios.TemplateTest.test_springs_and_treatments_the_swift_reads_exist_in_the_tokens) ... ok
+test_the_accent_colour_is_emitted_from_the_tokens (tests.test_target_ios.TemplateTest.test_the_accent_colour_is_emitted_from_the_tokens) ... ok
+test_the_offered_languages_match_android (tests.test_target_ios.TemplateTest.test_the_offered_languages_match_android) ... ok
+test_the_tabs_region_is_what_the_target_writes_with_every_feature_on (tests.test_target_ios.TemplateTest.test_the_tabs_region_is_what_the_target_writes_with_every_feature_on) ... ok
+test_a_database_nothing_uses_is_flagged (tests.test_target_ios.ValidationTest.test_a_database_nothing_uses_is_flagged) ... ok
+test_a_spec_without_a_tab_gets_a_home_module (tests.test_target_ios.ValidationTest.test_a_spec_without_a_tab_gets_a_home_module) ... ok
+test_bundle_ids (tests.test_target_ios.ValidationTest.test_bundle_ids) ... ok
+test_deployment_targets (tests.test_target_ios.ValidationTest.test_deployment_targets) ... ok
+test_names_swift_cannot_take (tests.test_target_ios.ValidationTest.test_names_swift_cannot_take) ... ok
+test_settings_the_platform_does_not_have (tests.test_target_ios.ValidationTest.test_settings_the_platform_does_not_have) ... ok
+test_team_ids (tests.test_target_ios.ValidationTest.test_team_ids) ... ok
+test_the_language_shortcut_without_a_second_language_is_flagged (tests.test_target_ios.ValidationTest.test_the_language_shortcut_without_a_second_language_is_flagged) ... ok
+test_code_rules (tests.test_target_ios.ViolationsTest.test_code_rules) ... ok
+test_docs_rules (tests.test_target_ios.ViolationsTest.test_docs_rules) ... ok
+test_every_ipad_orientation_stays (tests.test_target_ios.ViolationsTest.test_every_ipad_orientation_stays) ... ok
+test_graph_and_isolation_rules (tests.test_target_ios.ViolationsTest.test_graph_and_isolation_rules) ... ok
+test_layout_rules (tests.test_target_ios.ViolationsTest.test_layout_rules) ... ok
+test_the_unchanged_project_passes (tests.test_target_ios.ViolationsTest.test_the_unchanged_project_passes) ... ok
+
+----------------------------------------------------------------------
+Ran 37 tests in 40.263s
+
+OK (skipped=1)
+...............................................................................s.......................................................................................................................................s........................................................................
+----------------------------------------------------------------------
+Ran 288 tests in 48.217s
+
+OK (skipped=2)
+1 token copy current.
+web/frontend/lib/catalogue.json is current.
+
+Summary
+───────
+           App  Lean (Lean)
+       Package  com.example.ioslean
+        Target  ios
+  Architecture  compact
+      Features  network, sample
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-lean
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+
+Summary
+───────
+           App  Standard (Standard)
+       Package  com.example.iosstandard
+        Target  ios
+  Architecture  compact
+      Features  language, network, onboarding, sample, settings
+       Modules  none
+     Languages  en, es, hi
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-standard
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-standard and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+
+Summary
+───────
+           App  Everything ✨ (Everything)
+       Package  com.example.ioseverything
+        Target  ios
+  Architecture  compact
+      Features  database, language, liquidglass, network, onboarding,
+                sample, settings
+       Modules  none
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #1F7A5C · #386153 (derived) · #1F3D7A (derived)
+         Style  Social
+        Motion  Calm, haptics on
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-everything
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+
+Summary
+───────
+           App  Field Ops (FieldOps)
+       Package  com.example.iosmodules
+        Target  ios
+  Architecture  compact
+      Features  database, network, settings
+       Modules  orders, order_history, wallet
+     Languages  en, de, pt-BR
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-modules
+
+  ! The app database is set up, but nothing keeps data in it yet: the
+  ! reference feature is off, and scaffolded modules read from the network or
+  ! memory. When a data module needs it, give that module a @ModelActor and
+  ! build the app's ModelContainer in AppServices with ModelContainerFactory.
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP08/ios-modules and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+ACCEPT OK
+
+real	1m29.996s
+user	1m35.607s
+sys	0m3.712s
+exit=0

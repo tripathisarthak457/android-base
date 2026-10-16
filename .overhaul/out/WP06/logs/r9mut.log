@@ -1,0 +1,13 @@
+[locked:gradle] waiting for lock...
+=== mutation: no pointerInput on the cover
+  pass unlocking hands the content back where it was | 
+  pass a field that asks for focus underneath the cover does not get it | 
+  FAIL while locked, the content is out of reach of touch, focus and accessibility | java.lang.AssertionError: A tap reached the locked content. expected:<0> but was:<1>
+=== mutation: no onEnter cancel
+  pass unlocking hands the content back where it was | 
+  pass a field that asks for focus underneath the cover does not get it | 
+  pass while locked, the content is out of reach of touch, focus and accessibility | 
+=== mutation: no onExit cancel
+  pass unlocking hands the content back where it was | 
+  pass a field that asks for focus underneath the cover does not get it | 
+  pass while locked, the content is out of reach of touch, focus and accessibility | 

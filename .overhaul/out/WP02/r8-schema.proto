@@ -1,0 +1,232 @@
+// Copyright (c) 2026, the R8 project authors. Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+syntax = "proto3";
+
+package com.android.tools.r8.keepradius.proto;
+
+// Don't put all messages under the outer class.
+option java_multiple_files = true;
+
+// Camel-case the outer class name.
+option java_outer_classname = "KeepRadiusProtos";
+
+// Java package consistent with R8 convention.
+option java_package = "com.android.tools.r8.keepradius.proto";
+
+// Information about a single keep rule and its immediate keep radius.
+message KeepRuleKeepRadius {
+  int32 id = 1;
+  // Textual representation of the keep rule.
+  string source = 2;
+  // What this keep rule prohibits (e.g., optimization).
+  // Id into KeepConstraints.
+  int32 constraints_id = 3;
+  // Where this rule comes from.
+  TextFileOrigin origin = 4;
+  // Keep radius information.
+  KeepRadius keep_radius = 5;
+  // Keep rule tags.
+  repeated KeepRuleTag tags = 6;
+}
+
+enum KeepRuleTag {
+  PACKAGE_WIDE = 0;
+}
+
+message KeepRadius {
+  // Which rules subsume this rule. Note: This information could in principle
+  // be computed offline using the kept_by info of Kept*Info.
+  // Ids into KeepAnnotationKeepRadius and KeepRuleKeepRadius.
+  repeated int32 subsumed_by = 1;
+  // The immediate keep radius of this rule.
+  // - Ids into KeptClassInfo.
+  repeated int32 class_keep_radius = 2;
+  // - Ids into KeptFieldInfo.
+  repeated int32 field_keep_radius = 3;
+  // - Ids into KeptMethodInfo.
+  repeated int32 method_keep_radius = 4;
+}
+
+// The ids of GlobalKeepRuleKeepRadius and KeepRuleKeepRadius are
+// non-overlapping by design, so that a single int32 id can be used to
+// unambiguously reference a GlobalKeepRuleKeepRadius or KeepRuleKeepRadius.
+message GlobalKeepRuleKeepRadius {
+  int32 id = 1;
+  // Textual representation of the keep rule.
+  string source = 2;
+  // Where this rule comes from.
+  TextFileOrigin origin = 3;
+}
+
+// Information about the constraints of a single keep annotation or rule,
+// i.e., what is prohibited by it.
+//
+// This is encoded as a message to support keep constraints that cannot be
+// encoded as a bit in the future.
+message KeepConstraints {
+  int32 id = 1;
+  repeated KeepConstraint constraints = 2;
+}
+
+enum KeepConstraint {
+  DONT_OBFUSCATE = 0;
+  DONT_OPTIMIZE = 1;
+  DONT_SHRINK = 2;
+}
+
+// Information about a class in the app/library and which keep rules that
+// keep it.
+message KeptClassInfo {
+  int32 id = 1;
+  // Id into TypeReference.
+  int32 class_reference_id = 2;
+  // Id into FileOrigin or ClassFileInJarOrigin.
+  int32 file_origin_id = 3;
+  // Ids into KeepRuleKeepRadius, telling which rules keep this class.
+  // Allows reasoning about properties such as:
+  // - Which keep rules are fully subsumed by other keep rules?
+  // - Which keep rules keep the most classes/fields/methods
+  //   not kept by rules?
+  repeated int32 kept_by = 4;
+}
+
+message KeptFieldInfo {
+  int32 id = 1;
+  // Id into FieldReference.
+  int32 field_reference_id = 2;
+  // Id into FileOrigin or ClassFileInJarOrigin.
+  int32 file_origin_id = 3;
+  // Ids into KeepRuleKeepRadius, telling which rules keep this field.
+  repeated int32 kept_by = 4;
+}
+
+message KeptMethodInfo {
+  int32 id = 1;
+  // Id into MethodReference.
+  int32 method_reference_id = 2;
+  // Id into FileOrigin or ClassFileInJarOrigin.
+  int32 file_origin_id = 3;
+  // Ids into KeepRuleKeepRadius, telling which rules keep this method.
+  repeated int32 kept_by = 4;
+}
+
+// References:
+
+message FieldReference {
+  int32 id = 1;
+  // The class on which the field is declared.
+  // Id into TypeReference.
+  int32 class_reference_id = 2;
+  // The type of the field.
+  // Id into type reference.
+  int32 type_reference_id = 3;
+  // The name of the field.
+  string name = 4;
+}
+
+message MethodReference {
+  int32 id = 1;
+  // The class on which the method is declared.
+  // Id into TypeReference.
+  int32 class_reference_id = 2;
+  // The proto (return type, parameter types) of the method.
+  // Id into ProtoReference.
+  int32 proto_reference_id = 3;
+  // The name of the method.
+  string name = 4;
+}
+
+message ProtoReference {
+  int32 id = 1;
+  // Id into TypeReferenceList.
+  int32 parameters_id = 2;
+  // Id into TypeReference.
+  int32 return_type_id = 3;
+}
+
+message TypeReference {
+  int32 id = 1;
+  // The descriptor, e.g.,
+  // - Z
+  // - Ljava/lang/Object;
+  // - [[Ljava/lang/Object;
+  string java_descriptor = 2;
+}
+
+message TypeReferenceList {
+  int32 id = 1;
+  repeated int32 type_reference_ids = 2;
+}
+
+// Origins:
+
+message FileOrigin {
+  int32 id = 1;
+  string filename = 2;
+  MavenCoordinate maven_coordinate = 3;
+  bool provided_by_build_system = 4;
+}
+
+// The ids of ClassFileInJarOrigin and FileOrigin are non-overlapping
+// by design, so that a single int32 id can be used to
+// unambiguously reference a ClassFileInJarOrigin or FileOrigin.
+message ClassFileInJarOrigin {
+  int32 id = 1;
+  int32 file_origin_id = 2;
+  string entry = 3;
+}
+
+// Intentionally doesn't declare an id since each keep rule has its own
+// TextFileOrigin, i.e., there is no sharing of TextFileOrigin.
+message TextFileOrigin {
+  // Id into FileOrigin
+  int32 file_origin_id = 1;
+  int32 line_number = 2;
+  int32 column_number = 3;
+}
+
+message MavenCoordinate {
+  int32 id = 1;
+  string group_id = 2;
+  string artifact_id = 3;
+  string version = 4;
+}
+
+message BuildInfo {
+  int32 class_count = 1;
+  int32 field_count = 2;
+  int32 method_count = 3;
+  int32 live_class_count = 4;
+  int32 live_field_count = 5;
+  int32 live_method_count = 6;
+}
+
+// Container.
+
+message KeepRadiusContainer {
+  // Origins.
+  repeated FileOrigin file_origin_table = 1;
+  repeated ClassFileInJarOrigin class_file_in_jar_origin_table = 2;
+  repeated MavenCoordinate maven_coordinate_table = 3;
+
+  // References.
+  repeated FieldReference field_reference_table = 4;
+  repeated MethodReference method_reference_table = 5;
+  repeated ProtoReference proto_reference_table = 6;
+  repeated TypeReference type_reference_table = 7;
+  repeated TypeReferenceList type_reference_list_table = 8;
+
+  // Kept items.
+  repeated KeptClassInfo kept_class_info_table = 9;
+  repeated KeptFieldInfo kept_field_info_table = 10;
+  repeated KeptMethodInfo kept_method_info_table = 11;
+
+  // Keep specifications.
+  repeated KeepConstraints keep_constraints_table = 12;
+  repeated KeepRuleKeepRadius keep_rule_keep_radius_table = 13;
+  repeated GlobalKeepRuleKeepRadius global_keep_rule_keep_radius_table = 14;
+
+  // Build info.
+  BuildInfo build_info = 15;
+}

@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Restore",
+  "package_name": "com.example.wp02.restore",
+  "architecture": "compact",
+  "features": ["network", "coil", "sample", "settings"],
+  "feature_modules": [],
+  "languages": []
+}

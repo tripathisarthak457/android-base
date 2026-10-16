@@ -1,0 +1,8 @@
+----------------------------------------------------------------------
+Ran 261 tests in 29.243s
+
+OK (skipped=1)
+1 token copy current.
+tokens check exit 0
+web/frontend/lib/catalogue.json is current.
+catalogue check exit 0

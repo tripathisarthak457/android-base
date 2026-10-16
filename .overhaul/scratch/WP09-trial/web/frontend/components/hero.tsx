@@ -1,0 +1,201 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Badge, Button } from "./primitives";
+
+const REPO = "https://github.com/tripathisarthak457/android-base";
+
+/**
+ * The one screen a visitor decides on. It has to answer three questions before they scroll: what is
+ * this, what do I get, and is it going to work.
+ */
+export function Hero({
+  onStart,
+  featureCount,
+}: {
+  onStart: () => void;
+  /** How many features there are, from the generator itself. */
+  featureCount?: number;
+}) {
+  return (
+    <section className="relative overflow-hidden">
+      <div className="paper-backdrop pointer-events-none absolute inset-0" aria-hidden />
+
+      <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-20 md:pt-28">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl"
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge tone="amber">Beta</Badge>
+            <Badge tone="accent">Open source · MIT</Badge>
+          </div>
+
+          <h1 className="font-display mt-5 text-5xl font-extrabold leading-[1.02] text-ink-100 md:text-7xl">
+            A new Android project,
+            <br />
+            <span className="relative inline-block text-accent">
+              already wired up.
+              <svg
+                className="absolute -bottom-2 left-0 w-full"
+                height="10"
+                viewBox="0 0 300 10"
+                preserveAspectRatio="none"
+                aria-hidden
+              >
+                <path d="M2 7c60-5 130-6 296-2" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
+              </svg>
+            </span>
+          </h1>
+
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-300">
+            Multi-module Compose with MVI, Hilt and Ktor. Four build environments, signed release
+            output, a design system with no Material dependency in one of four styles, and a
+            catalog app that shows every component. Pick what you want, get a zip that compiles.
+          </p>
+
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <Button size="large" onClick={onStart}>
+              Configure your project
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path
+                  d="M3 8h10M9 4l4 4-4 4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Button>
+            <Button
+              size="large"
+              variant="secondary"
+              onClick={() => window.open(REPO, "_blank", "noopener")}
+            >
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden>
+                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38l-.01-1.49c-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+              </svg>
+              Read the source
+            </Button>
+          </div>
+
+          <p className="mt-4 text-sm text-ink-400">
+            No sign-up, nothing stored, no email. The zip is built when you click and streamed
+            straight back.
+          </p>
+
+          {/*
+            Stated plainly rather than buried. The repository builds both extremes of the generator
+            on every push, but "tested" and "used by a lot of people" are different things, and only
+            the second one finds the last few bugs.
+          */}
+          <div className="mt-6 flex max-w-2xl items-start gap-3 rounded-lg border border-amber/30 bg-amber/[0.07] p-4">
+            <span className="mt-0.5 text-amber" aria-hidden>
+              ⚠
+            </span>
+            <p className="text-sm leading-relaxed text-ink-300">
+              <span className="font-medium text-ink-100">This is beta.</span> Every feature on, every
+              feature off and both big presets are compiled, tested and linted in CI before a change
+              ships, but not many people have used it yet. If something breaks, the button in the corner sends a report straight to whoever
+              can fix it — and it attaches what you configured, so you do not have to describe it.
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-14 grid items-start gap-4 md:grid-cols-5"
+        >
+          <Terminal />
+          <Stats featureCount={featureCount} />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/** The same commands the README tells you to run, with their real output. */
+function Terminal() {
+  const lines: { text: string; tone?: "prompt" | "dim" | "ok" }[] = [
+    { text: "$ ./gradlew :app:assembleDevDebug", tone: "prompt" },
+    { text: "BUILD SUCCESSFUL", tone: "ok" },
+    { text: "" },
+    { text: "$ ./gradlew build", tone: "prompt" },
+    { text: "compiles 7 variants · unit tests · android lint", tone: "dim" },
+    { text: "BUILD SUCCESSFUL in 6m 3s", tone: "ok" },
+    { text: "" },
+    { text: "$ ./gradlew :app:distDevRelease", tone: "prompt" },
+    { text: "MyApp-devRelease-arm64-v8a-1.0.0-1-20260904-1048.apk", tone: "dim" },
+    { text: "MyApp-devRelease-universal-1.0.0-1-20260904-1048.apk", tone: "dim" },
+    { text: "checksums.sha256", tone: "dim" },
+  ];
+
+  return (
+    // A terminal is dark in both site themes, the way a terminal on the visitor's own machine is.
+    <div className="md:col-span-3 overflow-hidden rounded-xl border border-[#2c2924] bg-[#1c1a17] shadow-[0_20px_50px_-24px_rgba(40,30,15,0.5)]">
+      <div className="flex items-center gap-2 border-b border-[#2c2924] bg-[#23211d] px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#e2614a]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#e6b34e]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#62c98f]" />
+        <span className="ml-2 font-mono text-xs text-[#999080]">MyApp — zsh</span>
+      </div>
+      <pre className="overflow-x-auto p-4 font-mono text-[12.5px] leading-[1.75]">
+        {lines.map((line, index) => (
+          <div
+            key={index}
+            className={
+              line.tone === "ok"
+                ? "text-[#62c98f]"
+                : line.tone === "prompt"
+                  ? "text-[#f5efe4]"
+                  : "text-[#999080]"
+            }
+          >
+            {line.text || " "}
+          </div>
+        ))}
+      </pre>
+    </div>
+  );
+}
+
+const STATS = [
+  { value: null, label: "features you can switch off", detail: "Each removes a module, not just code" },
+  { value: "80+", label: "components, zero Material", detail: "An androidx.compose.material import fails the build" },
+  { value: "4", label: "design styles", detail: "Utility, Social, Editorial, Playful — one enum" },
+  { value: "7", label: "build variants", detail: "dev / staging / prod / playstore × debug / release" },
+  { value: "0", label: "extra JDKs", detail: "Builds on Android Studio's bundled JBR" },
+];
+
+function Stats({ featureCount }: { featureCount?: number }) {
+  // A null `value` is the one the generator answers. Shown as a dash until it arrives rather than
+  // as a guess that could be wrong — a placeholder number is how the old one survived so long.
+  const stats = STATS.map((stat) => ({
+    ...stat,
+    value: stat.value ?? (featureCount === undefined ? "—" : String(featureCount)),
+  }));
+
+  return (
+    <div className="md:col-span-2 grid gap-3">
+      {stats.map((stat, index) => (
+        <motion.div
+          key={stat.label}
+          initial={{ opacity: 0, x: 14 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.45, delay: 0.24 + index * 0.07 }}
+          className="rounded-xl border border-ink-700 bg-ink-850 px-4 py-3"
+        >
+          <div className="flex items-baseline gap-2.5">
+            <span className="font-display text-2xl font-extrabold text-accent">{stat.value}</span>
+            <span className="text-sm font-medium text-ink-200">{stat.label}</span>
+          </div>
+          <p className="mt-0.5 text-xs text-ink-400">{stat.detail}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+}

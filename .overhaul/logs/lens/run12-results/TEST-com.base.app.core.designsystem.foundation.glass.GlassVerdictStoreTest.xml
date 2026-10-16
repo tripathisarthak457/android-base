@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.GlassVerdictStoreTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-15T10:16:21.499Z" hostname="pop-os" time="0.203">
+  <properties/>
+  <testcase name="the store reads its own build from the running app" classname="com.base.app.core.designsystem.foundation.glass.GlassVerdictStoreTest" time="0.055"/>
+  <testcase name="a system update or a new install measures again" classname="com.base.app.core.designsystem.foundation.glass.GlassVerdictStoreTest" time="0.049"/>
+  <testcase name="a device with no verdict is assumed to keep up" classname="com.base.app.core.designsystem.foundation.glass.GlassVerdictStoreTest" time="0.044"/>
+  <testcase name="the verdict outlives the process for the same build and install" classname="com.base.app.core.designsystem.foundation.glass.GlassVerdictStoreTest" time="0.047"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

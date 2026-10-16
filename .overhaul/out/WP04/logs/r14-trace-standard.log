@@ -1,0 +1,20 @@
+[locked:adb] waiting for lock...
+run 1/1: install, profile, warm-up
+run 1/1: trace
+# perf.sh: com.example.wp04.standard.dev
+
+- APK: `/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-standard/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk`
+- Device: M2101K6I (9a7c74f4), battery 27.7 °C at the start
+- Runs: 1, seed 207988, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: trace
+
+| Metric | Median | Runs |
+|---|---|---|
+| First push after pm clear (cold), the frame that composes the screen (ms) | 10.33 | 10.33 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 18.69 | 18.69 |
+| First visit to a tab, first frame max (ms) | 5.48 | 5.48 |
+| First visit to a tab, first frame median (ms) | 4.59 | 4.59 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 5.06 | 5.06 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.53 | 4.53 |
+| trace.captured | yes | yes |
+

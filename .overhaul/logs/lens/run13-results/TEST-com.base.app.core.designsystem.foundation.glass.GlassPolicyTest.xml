@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-15T15:17:55.943Z" hostname="pop-os" time="0.007">
+  <properties/>
+  <testcase name="below S nothing samples, since Kyant would draw the scene unblurred" classname="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" time="0.002"/>
+  <testcase name="reduce transparency wins over everything, even a device that could not blur" classname="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" time="0.0"/>
+  <testcase name="a healthy Tiramisu or later device gets the lens" classname="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" time="0.0"/>
+  <testcase name="only the live tiers sample the scene, and only Live refracts" classname="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" time="0.002"/>
+  <testcase name="low RAM, battery saver and a GPU that fell behind each frost the glass" classname="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" time="0.0"/>
+  <testcase name="a warm device loses the lens and a hot one the blur" classname="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" time="0.001"/>
+  <testcase name="S and S V2 blur without the lens, which is an AGSL shader" classname="com.base.app.core.designsystem.foundation.glass.GlassPolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

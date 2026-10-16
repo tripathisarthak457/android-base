@@ -1,0 +1,134 @@
+[locked:gradle] waiting for lock...
+Starting a Gradle Daemon, 3 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin :catalog:assembleRelease
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :catalog:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :catalog:verifyComposeUsage
+> Task :catalog:preBuild
+> Task :catalog:preReleaseBuild
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :catalog:mapReleaseSourceSetPaths
+> Task :catalog:javaPreCompileRelease FROM-CACHE
+> Task :catalog:generateReleaseResources FROM-CACHE
+> Task :catalog:generateReleaseBuildConfig FROM-CACHE
+> Task :catalog:createReleaseCompatibleScreenManifests
+> Task :catalog:extractDeepLinksRelease FROM-CACHE
+> Task :catalog:mergeReleaseStartupProfile
+> Task :catalog:packageReleaseResources FROM-CACHE
+> Task :catalog:mergeReleaseJniLibFolders
+> Task :catalog:writeReleaseAppMetadata
+> Task :catalog:extractReleaseVersionControlInfo
+> Task :catalog:extractProguardFiles
+> Task :catalog:validateSigningRelease
+> Task :catalog:writeReleaseSigningConfigVersions
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preReleaseBuild
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:prepareReleaseArtProfile
+> Task :catalog:collectReleaseDependencies
+> Task :core:designsystem:processReleaseNavigationResources FROM-CACHE
+> Task :core:designsystem:generateReleaseResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileRelease FROM-CACHE
+> Task :core:designsystem:mergeReleaseJniLibFolders
+> Task :core:designsystem:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:designsystem:extractDeepLinksRelease FROM-CACHE
+> Task :catalog:checkReleaseDuplicateClasses
+> Task :core:designsystem:writeReleaseAarMetadata
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:copyReleaseJniLibsProjectOnly
+> Task :core:designsystem:mapReleaseSourceSetPaths
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:mergeReleaseAssets
+> Task :core:designsystem:processReleaseManifest FROM-CACHE
+> Task :core:designsystem:packageReleaseResources
+> Task :core:designsystem:parseReleaseLocalResources FROM-CACHE
+> Task :core:designsystem:generateReleaseRFile FROM-CACHE
+> Task :catalog:processReleaseNavigationResources FROM-CACHE
+> Task :catalog:mergeReleaseAssets
+> Task :catalog:parseReleaseLocalResources FROM-CACHE
+> Task :catalog:compileReleaseNavigationResources FROM-CACHE
+> Task :catalog:mergeReleaseArtProfile
+> Task :catalog:checkReleaseAarMetadata
+> Task :catalog:generateReleaseRFile FROM-CACHE
+> Task :core:designsystem:extractProguardFiles
+> Task :catalog:compressReleaseAssets FROM-CACHE
+> Task :core:designsystem:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:designsystem:checkReleaseAarMetadata
+> Task :catalog:mergeReleaseNativeLibs
+> Task :core:designsystem:compileReleaseLibraryResources
+> Task :core:designsystem:writeReleaseLintModelMetadata
+> Task :catalog:processReleaseMainManifest FROM-CACHE
+
+> Task :catalog:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :catalog:extractReleaseNativeSymbolTables FROM-CACHE
+> Task :catalog:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :core:designsystem:extractReleaseAnnotations
+> Task :catalog:sdkReleaseDependencyData
+> Task :catalog:processReleaseManifest
+> Task :catalog:processReleaseManifestForPackage FROM-CACHE
+> Task :catalog:mergeReleaseResources
+> Task :catalog:processReleaseResources
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileReleaseKotlin
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:designsystem:mergeReleaseGeneratedProguardFiles
+> Task :core:designsystem:mergeReleaseConsumerProguardFiles
+> Task :core:designsystem:processReleaseJavaRes
+> Task :core:designsystem:exportReleaseConsumerProguardFiles
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:bundleLibCompileToJarRelease
+> Task :core:designsystem:createFullJarRelease
+> Task :core:designsystem:mergeReleaseJavaResource
+> Task :core:designsystem:syncReleaseLibJars
+> Task :core:designsystem:bundleReleaseLocalLintAar
+> Task :core:designsystem:generateReleaseLintVitalModel
+> Task :core:designsystem:generateReleaseLintModel
+> Task :catalog:compileReleaseKotlin
+> Task :catalog:processReleaseJavaRes
+> Task :catalog:mergeReleaseJavaResource
+> Task :catalog:compileReleaseJavaWithJavac
+> Task :catalog:mergeReleaseGeneratedProguardFiles
+> Task :catalog:generateReleaseLintVitalReportModel
+> Task :catalog:expandReleaseArtProfileWildcards
+> Task :catalog:produceReleaseComposeMapping
+> Task :catalog:reportReleaseComposeMappingErrors
+> Task :core:designsystem:lintVitalAnalyzeRelease
+> Task :catalog:minifyReleaseWithR8
+> Task :catalog:lintVitalAnalyzeRelease
+> Task :catalog:lintVitalReportRelease
+> Task :catalog:lintVitalRelease
+> Task :catalog:convertShrunkResourcesToBinaryRelease
+> Task :catalog:optimizeReleaseResources
+> Task :catalog:mergeReleaseComposeMapping
+> Task :catalog:compileReleaseArtProfile
+> Task :catalog:packageRelease
+> Task :catalog:assembleRelease
+> Task :catalog:createReleaseApkListingFileRedirect
+
+BUILD SUCCESSFUL in 2m 30s
+100 actionable tasks: 70 executed, 21 from cache, 9 up-to-date
+Configuration cache entry stored.
+EXIT 0

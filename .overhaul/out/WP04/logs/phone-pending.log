@@ -1,0 +1,1265 @@
+[locked:adb] waiting for lock...
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.base.dev --variant devBenchmarkRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/baseline tabs tab1 pushpop pushpop_gesture rapid_back scroll_root idle coldstart meminfo
+run 1/3: install, profile, warm-up
+run 1/3: tabs
+run 1/3: tab1
+run 1/3: pushpop
+run 1/3: pushpop_gesture
+run 1/3: rapid_back
+run 1/3: scroll_root
+run 1/3: idle
+run 1/3: meminfo
+run 1/3: coldstart
+run 2/3: install, profile, warm-up
+run 2/3: tabs
+run 2/3: tab1
+run 2/3: pushpop
+run 2/3: pushpop_gesture
+run 2/3: rapid_back
+run 2/3: scroll_root
+run 2/3: idle
+run 2/3: meminfo
+run 2/3: coldstart
+run 3/3: install, profile, warm-up
+run 3/3: tabs
+run 3/3: tab1
+run 3/3: pushpop
+run 3/3: pushpop_gesture
+run 3/3: rapid_back
+run 3/3: scroll_root
+run 3/3: idle
+run 3/3: meminfo
+run 3/3: coldstart
+# perf.sh: com.example.wp04.base.dev
+
+- APK: `/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/base/app/build/outputs/apk/dev/benchmarkRelease/app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 29.9 °C at the start
+- Runs: 3, seed 632725, extras {"perf.fakeSession": "true"}
+- Scenarios: tabs, tab1, pushpop, pushpop_gesture, rapid_back, scroll_root, idle, meminfo, coldstart
+
+| Metric | Median | Runs |
+|---|---|---|
+| Cold start, speed-profile, median (ms) | 336 | 346, 336, 332 |
+| coldstart.runs_ms | [301, 337, 355, 307, 327, 354] | [341, 362, 331, 351, 326, 372], [313, 332, 382, 372, 341, 324], [301, 337, 355, 307, 327, 354] |
+| Idle 5 s on every tab, frames rendered | 0 | 608, 0, 0 |
+| idle.frames_per_tab | [0, 0, 0, 0, 0, 0, 0] | [0, 605, 0, 608, 607, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0] |
+| PSS after the journey (MB) | 109.8 | 129.7, 108.6, 109.8 |
+| pushpop.frames | 868 | 962, 861, 868 |
+| pushpop.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop.gpu_p90_ms | 10 | 10, 10, 11 |
+| pushpop.gpu_p99_ms | 15 | 15, 15, 15 |
+| Push/pop with the Back key, janky frames (%) | 4.03 | 3.95, 4.88, 4.03 |
+| pushpop.p50_ms | 8 | 8, 8, 8 |
+| pushpop.p90_ms | 17 | 17, 16, 18 |
+| Push/pop with the Back key, p99 frame (ms) | 34 | 36, 34, 34 |
+| Pop, first frame max (ms) | 27.64 | 30.09, 26.24, 27.64 |
+| Pop, first frame median (ms) | 19.09 | 19.68, 12.56, 19.09 |
+| Push, the frame that composes the screen, max (ms) | 9.98 | 9.98, 19.77, 9.78 |
+| Push, the frame that composes the screen, median (ms) | 8.35 | 7.8, 9.31, 8.35 |
+| pushpop_gesture.frames | 702 | 706, 698, 702 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 7 | 7, 7, 7 |
+| pushpop_gesture.gpu_p99_ms | 14 | 14, 14, 14 |
+| Push/pop with the back gesture, janky frames (%) | 3.54 | 3.54, 3.44, 3.56 |
+| pushpop_gesture.p50_ms | 8 | 8, 8, 8 |
+| pushpop_gesture.p90_ms | 13 | 13, 12, 13 |
+| pushpop_gesture.p99_ms | 36 | 30, 48, 36 |
+| Rapid Back: the app is still running | yes | yes, yes, yes |
+| rapid_back.depth | 2 | 2, 2, 2 |
+| Rapid Back: lands on the expected screen | no | no, no, no |
+| rapid_back.frames | 282 | 273, 282, 287 |
+| rapid_back.gpu_p50_ms | 6 | 5, 6, 6 |
+| rapid_back.gpu_p90_ms | 11 | 11, 10, 11 |
+| rapid_back.gpu_p99_ms | 24 | 21, 24, 4950 |
+| Rapid Back, janky frames (%) | 5.32 | 7.33, 5.32, 4.53 |
+| rapid_back.p50_ms | 10 | 10, 10, 9 |
+| rapid_back.p90_ms | 23 | 25, 19, 23 |
+| rapid_back.p99_ms | 73 | 73, 53, 77 |
+| scroll_root.frames | 1354 | 1354, 1356, 1351 |
+| scroll_root.gpu_p50_ms | 6 | 6, 6, 6 |
+| Scroll a root list, GPU p90 (ms) | 6 | 6, 6, 6 |
+| scroll_root.gpu_p99_ms | 7 | 7, 7, 8 |
+| Scroll a root list, janky frames (%) | 0.22 | 0.22, 0.07, 0.22 |
+| scroll_root.p50_ms | 8 | 8, 8, 8 |
+| scroll_root.p90_ms | 9 | 9, 9, 9 |
+| scroll_root.p99_ms | 12 | 12, 12, 17 |
+| tab1.first_frame_ms.max | 53.56 | 53.56, 50.53, 53.62 |
+| tab1.first_frame_ms.median | 21.63 | 22.12, 21.63, 21.23 |
+| First visit to a tab, first frame max (ms) | 25.51 | 35.25, 25.51, 25.44 |
+| First visit to a tab, first frame median (ms) | 19.41 | 28.32, 15.25, 19.41 |
+| Tab switch to a visited tab, first frame max (ms) | 45.28 | 50.24, 42.03, 45.28 |
+| Tab switch to a visited tab, first frame median (ms) | 18.97 | 20.78, 18.97, 17.66 |
+| tabs.frames | 1333 | 1333, 1333, 1332 |
+| tabs.gpu_p50_ms | 6 | 7, 6, 6 |
+| tabs.gpu_p90_ms | 11 | 11, 10, 11 |
+| tabs.gpu_p99_ms | 15 | 15, 14, 15 |
+| Tab switch, janky frames (%) | 1.58 | 1.58, 1.58, 1.58 |
+| tabs.p50_ms | 9 | 9, 9, 9 |
+| tabs.p90_ms | 17 | 17, 17, 17 |
+| tabs.p99_ms | 36 | 40, 36, 36 |
+
+Notes:
+
+- run 1: rapid_back from depth 2: three Back presses left the app
+- run 1: rapid_back from depth 2: three Back presses left the app
+- run 1: rapid_back from depth 2: three Back presses left the app
+- run 1: rapid_back from depth 2: three Back presses left the app
+- run 1: rapid_back from depth 2: three Back presses left the app
+- run 1: rapid_back from depth 2: three Back presses left the app
+- run 2: rapid_back from depth 2: three Back presses left the app
+- run 2: rapid_back from depth 2: three Back presses left the app
+- run 2: rapid_back from depth 2: three Back presses left the app
+- run 2: rapid_back from depth 2: three Back presses left the app
+- run 2: rapid_back from depth 2: three Back presses left the app
+- run 2: rapid_back from depth 2: three Back presses left the app
+- run 3: rapid_back from depth 2: three Back presses left the app
+- run 3: rapid_back from depth 2: three Back presses left the app
+- run 3: rapid_back from depth 2: three Back presses left the app
+- run 3: rapid_back from depth 2: three Back presses left the app
+- run 3: rapid_back from depth 2: three Back presses left the app
+- run 3: rapid_back from depth 2: three Back presses left the app
+
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.base.dev
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.base.dev rapid_back /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/baseline/frames/rapid_back --serial 9a7c74f4
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+    Last message repeated 1 times
+[image2 @ 0x585bca400a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+    Last message repeated 1 times
+rapid_back recorded from depth 2
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/baseline/frames/rapid_back/rapid_back.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/baseline/frames/rapid_back/rapid_back_strip.png
+36 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.base.dev rapid_back
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.basestandard.dev --variant devRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/baseline-standard tabs pushpop coldstart
+run 1/3: install, profile, warm-up
+run 1/3: tabs
+run 1/3: pushpop
+run 1/3: coldstart
+run 2/3: install, profile, warm-up
+run 2/3: tabs
+run 2/3: pushpop
+run 2/3: coldstart
+run 3/3: install, profile, warm-up
+run 3/3: tabs
+run 3/3: pushpop
+run 3/3: coldstart
+# perf.sh: com.example.wp04.basestandard.dev
+
+- APK: `/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/base-standard/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk`
+- Device: M2101K6I (9a7c74f4), battery 34.5 °C at the start
+- Runs: 3, seed 647120, extras {"perf.fakeSession": "true"}
+- Scenarios: tabs, pushpop, coldstart
+
+| Metric | Median | Runs |
+|---|---|---|
+| Cold start, speed-profile, median (ms) | 271 | 274, 271, 268 |
+| coldstart.runs_ms | [267, 274, 269, 265, 249, 313] | [273, 285, 286, 276, 268, 266], [245, 269, 267, 278, 274, 277], [267, 274, 269, 265, 249, 313] |
+| pushpop.frames | 867 | 867, 867, 859 |
+| pushpop.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop.gpu_p90_ms | 11 | 11, 11, 10 |
+| pushpop.gpu_p99_ms | 15 | 15, 15, 15 |
+| Push/pop with the Back key, janky frames (%) | 4.73 | 4.73, 4.5, 5.24 |
+| pushpop.p50_ms | 8 | 8, 8, 8 |
+| pushpop.p90_ms | 17 | 17, 17, 16 |
+| Push/pop with the Back key, p99 frame (ms) | 30 | 30, 30, 34 |
+| Pop, first frame max (ms) | 20.18 | 20.08, 25.4, 20.18 |
+| Pop, first frame median (ms) | 11.96 | 9.48, 11.96, 14.62 |
+| Push, the frame that composes the screen, max (ms) | 22.26 | 22.87, 21.14, 22.26 |
+| Push, the frame that composes the screen, median (ms) | 8.3 | 8.3, 7.87, 19.33 |
+| First visit to a tab, first frame max (ms) | 26.81 | 26.81, 25.47, 27.4 |
+| First visit to a tab, first frame median (ms) | 18.77 | 19.21, 17.98, 18.77 |
+| Tab switch to a visited tab, first frame max (ms) | 49.93 | 54.52, 45.89, 49.93 |
+| Tab switch to a visited tab, first frame median (ms) | 20.52 | 20.52, 19.35, 20.9 |
+| tabs.frames | 617 | 617, 614, 618 |
+| tabs.gpu_p50_ms | 7 | 6, 7, 7 |
+| tabs.gpu_p90_ms | 10 | 10, 11, 10 |
+| tabs.gpu_p99_ms | 15 | 14, 17, 15 |
+| Tab switch, janky frames (%) | 1.46 | 1.46, 1.47, 1.46 |
+| tabs.p50_ms | 9 | 9, 9, 9 |
+| tabs.p90_ms | 17 | 17, 17, 17 |
+| tabs.p99_ms | 38 | 38, 38, 53 |
+
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.basestandard.dev
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.baselean.dev --variant devRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/baseline-lean tabs pushpop coldstart
+run 1/3: install, profile, warm-up
+run 1/3: tabs
+run 1/3: pushpop
+run 1/3: coldstart
+run 2/3: install, profile, warm-up
+run 2/3: tabs
+run 2/3: pushpop
+run 2/3: coldstart
+run 3/3: install, profile, warm-up
+run 3/3: tabs
+run 3/3: pushpop
+run 3/3: coldstart
+# perf.sh: com.example.wp04.baselean.dev
+
+- APK: `/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/base-lean/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk`
+- Device: M2101K6I (9a7c74f4), battery 35.4 °C at the start
+- Runs: 3, seed 199427, extras {"perf.fakeSession": "true"}
+- Scenarios: tabs, pushpop, coldstart
+
+| Metric | Median | Runs |
+|---|---|---|
+| Cold start, speed-profile, median (ms) | 306 | 292, 309, 306 |
+| coldstart.runs_ms | [298, 292, 309, 304, 324, 316] | [294, 276, 311, 334, 290, 271], [278, 310, 320, 274, 309, 313], [298, 292, 309, 304, 324, 316] |
+| pushpop.frames | 865 | 866, 865, 860 |
+| pushpop.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop.gpu_p90_ms | 10 | 10, 10, 11 |
+| pushpop.gpu_p99_ms | 14 | 14, 14, 14 |
+| Push/pop with the Back key, janky frames (%) | 4.73 | 4.73, 4.62, 5.23 |
+| pushpop.p50_ms | 8 | 8, 8, 8 |
+| pushpop.p90_ms | 17 | 17, 16, 18 |
+| Push/pop with the Back key, p99 frame (ms) | 32 | 38, 30, 32 |
+| Pop, first frame max (ms) | 16.08 | 56.9, 16.03, 16.08 |
+| Pop, first frame median (ms) | 10.66 | 14.75, 10.66, 7.8 |
+| Push, the frame that composes the screen, max (ms) | 19.37 | 19.27, 19.37, 19.62 |
+| Push, the frame that composes the screen, median (ms) | 8.71 | 8.71, 8.67, 11.36 |
+
+Notes:
+
+- run 1: tabs skipped: the app has one tab
+- run 2: tabs skipped: the app has one tab
+- run 3: tabs skipped: the app has one tab
+
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.baselean.dev
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.p2.dev --variant devBenchmarkRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase2 --gate solid tabs tab1 pushpop pushpop_gesture rapid_back nav_stress restore scroll_root scroll_minimize idle coldstart meminfo coldstart_installed
+run 1/3: install, profile, warm-up
+run 1/3: tabs
+run 1/3: tab1
+run 1/3: pushpop
+run 1/3: pushpop_gesture
+run 1/3: rapid_back
+run 1/3: scroll_root
+run 1/3: idle
+run 1/3: nav_stress
+run 1/3: restore
+run 1/3: meminfo
+run 1/3: scroll_minimize
+run 1/3: coldstart
+run 1/3: coldstart_installed
+run 2/3: install, profile, warm-up
+run 2/3: tabs
+run 2/3: tab1
+run 2/3: pushpop
+run 2/3: pushpop_gesture
+run 2/3: rapid_back
+run 2/3: scroll_root
+run 2/3: idle
+run 2/3: nav_stress
+run 2/3: restore
+run 2/3: meminfo
+run 2/3: scroll_minimize
+run 2/3: coldstart
+run 2/3: coldstart_installed
+battery at 37.6 °C; waiting for it to drop under 37.0 °C
+battery at 37.5 °C; waiting for it to drop under 37.0 °C
+battery at 37.4 °C; waiting for it to drop under 37.0 °C
+battery at 37.4 °C; waiting for it to drop under 37.0 °C
+battery at 37.3 °C; waiting for it to drop under 37.0 °C
+battery at 37.2 °C; waiting for it to drop under 37.0 °C
+battery at 37.1 °C; waiting for it to drop under 37.0 °C
+battery at 37.0 °C; waiting for it to drop under 37.0 °C
+battery at 37.0 °C; waiting for it to drop under 37.0 °C
+run 3/3: install, profile, warm-up
+run 3/3: tabs
+run 3/3: tab1
+run 3/3: pushpop
+run 3/3: pushpop_gesture
+run 3/3: rapid_back
+run 3/3: scroll_root
+run 3/3: idle
+run 3/3: nav_stress
+run 3/3: restore
+run 3/3: meminfo
+run 3/3: scroll_minimize
+run 3/3: coldstart
+run 3/3: coldstart_installed
+# perf.sh: com.example.wp04.p2.dev
+
+- APK: `/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p2/app/build/outputs/apk/dev/benchmarkRelease/app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 36.0 °C at the start
+- Runs: 3, seed 216279, extras {"perf.fakeSession": "true"}
+- Scenarios: tabs, tab1, pushpop, pushpop_gesture, rapid_back, scroll_root, idle, nav_stress, restore, meminfo, scroll_minimize, coldstart, coldstart_installed
+
+| Metric | Median | Runs |
+|---|---|---|
+| Cold start, speed-profile, median (ms) | 355 | 346, 357, 355 |
+| coldstart.runs_ms | [366, 321, 315, 346, 364, 373] | [326, 338, 339, 353, 389, 378], [354, 367, 401, 330, 325, 361], [366, 321, 315, 346, 364, 373] |
+| Cold start as installed (profile from the APK only), median (ms) | 416 | 408, 421, 416 |
+| coldstart_installed.runs_ms | [443, 404, 412, 441, 416, 416] | [420, 429, 402, 393, 400, 415], [458, 425, 421, 407, 421, 417], [443, 404, 412, 441, 416, 416] |
+| Idle 5 s on every tab, frames rendered | 0 | 0, 0, 0 |
+| idle.frames_per_tab | [0, 0, 0, 0, 0] | [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0] |
+| PSS after the journey (MB) | 93.8 | 93.6, 93.8, 94 |
+| Navigation stress: the app is still running | yes | yes, yes, yes |
+| nav_stress.exits | 18 | 15, 19, 18 |
+| nav_stress.frames | 2490 | 3181, 2132, 2490 |
+| nav_stress.gpu_p50_ms | 6 | 6, 6, 6 |
+| nav_stress.gpu_p90_ms | 10 | 8, 11, 10 |
+| nav_stress.gpu_p99_ms | 19 | 16, 22, 19 |
+| Navigation stress: stack invariants hold | yes | yes, yes, yes |
+| Navigation stress, janky frames (%) | 5.26 | 3.36, 5.82, 5.26 |
+| nav_stress.p50_ms | 9 | 9, 10, 9 |
+| nav_stress.p90_ms | 21 | 17, 22, 21 |
+| nav_stress.p99_ms | 53 | 46, 57, 53 |
+| nav_stress.states | 56 | 59, 56, 46 |
+| pushpop.frames | 689 | 684, 694, 689 |
+| pushpop.gpu_p50_ms | 10 | 7, 10, 10 |
+| pushpop.gpu_p90_ms | 12 | 12, 12, 12 |
+| pushpop.gpu_p99_ms | 18 | 18, 19, 18 |
+| Push/pop with the Back key, janky frames (%) | 2.34 | 2.34, 2.45, 2.32 |
+| pushpop.p50_ms | 16 | 10, 16, 16 |
+| pushpop.p90_ms | 19 | 19, 19, 19 |
+| Push/pop with the Back key, p99 frame (ms) | 57 | 57, 57, 61 |
+| Pop, first frame max (ms) | 36.93 | 37.51, 36.93, 32.73 |
+| Pop, first frame median (ms) | 15.01 | 33.84, 14.86, 15.01 |
+| Push, the frame that composes the screen, max (ms) | 48.61 | 42.59, 50.52, 48.61 |
+| Push, the frame that composes the screen, median (ms) | 19.95 | 19.09, 19.95, 32.27 |
+| pushpop_gesture.frames | 828 | 828, 828, 817 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 11, 10, 10 |
+| pushpop_gesture.gpu_p99_ms | 17 | 18, 17, 17 |
+| Push/pop with the back gesture, janky frames (%) | 2.82 | 2.66, 3.14, 2.82 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 18 | 18, 18, 18 |
+| pushpop_gesture.p99_ms | 42 | 42, 40, 48 |
+| Rapid Back: the app is still running | yes | yes, yes, yes |
+| rapid_back.depth | 4 | 4, 4, 4 |
+| Rapid Back: lands on the expected screen | yes | yes, yes, yes |
+| rapid_back.frames | 453 | 447, 458, 453 |
+| rapid_back.gpu_p50_ms | 6 | 6, 6, 6 |
+| rapid_back.gpu_p90_ms | 7 | 7, 7, 8 |
+| rapid_back.gpu_p99_ms | 10 | 8, 10, 10 |
+| Rapid Back, janky frames (%) | 2.62 | 2.68, 2.62, 2.43 |
+| rapid_back.p50_ms | 9 | 9, 9, 9 |
+| rapid_back.p90_ms | 11 | 11, 11, 16 |
+| rapid_back.p99_ms | 32 | 32, 34, 32 |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) | 34.56 | 36.76, 34.56, 24.61 |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) | 23.63 | 23.83, 23.63, 23.59 |
+| Process death: Back pops the restored stack | yes | yes, yes, yes |
+| Process death: tab, stacks and presented sheet restored | yes | yes, yes, yes |
+| scroll_minimize.frames | 1355 | 1357, 1355, 1352 |
+| scroll_minimize.gpu_p50_ms | 6 | 6, 6, 6 |
+| Scroll with the bar minimizing, GPU p90 (ms) | 6 | 6, 6, 6 |
+| scroll_minimize.gpu_p99_ms | 7 | 8, 7, 7 |
+| Scroll with the bar minimizing, janky frames (%) | 0.3 | 0.29, 0.3, 0.44 |
+| scroll_minimize.p50_ms | 8 | 8, 8, 8 |
+| scroll_minimize.p90_ms | 9 | 9, 9, 9 |
+| scroll_minimize.p99_ms | 13 | 13, 11, 13 |
+| scroll_root.frames | 1355 | 1362, 1331, 1355 |
+| scroll_root.gpu_p50_ms | 6 | 6, 6, 6 |
+| Scroll a root list, GPU p90 (ms) | 6 | 6, 6, 6 |
+| scroll_root.gpu_p99_ms | 9 | 9, 9, 10 |
+| Scroll a root list, janky frames (%) | 0.15 | 0.22, 0.15, 0.15 |
+| scroll_root.p50_ms | 8 | 8, 8, 8 |
+| scroll_root.p90_ms | 9 | 9, 9, 9 |
+| scroll_root.p99_ms | 16 | 16, 16, 17 |
+| tab1.first_frame_ms.max | 16.01 | 7.81, 16.01, 16.44 |
+| tab1.first_frame_ms.median | 6.63 | 6.63, 6.49, 7.37 |
+| First visit to a tab, first frame max (ms) | 27.55 | 27.55, 30.03, 26.31 |
+| First visit to a tab, first frame median (ms) | 22.68 | 22.68, 24.82, 19.46 |
+| Tab switch to a visited tab, first frame max (ms) | 16.45 | 16.45, 16.97, 14.54 |
+| Tab switch to a visited tab, first frame median (ms) | 6.51 | 7.41, 6.51, 6.42 |
+| tabs.frames | 789 | 788, 789, 789 |
+| tabs.gpu_p50_ms | 6 | 6, 6, 6 |
+| tabs.gpu_p90_ms | 8 | 8, 8, 7 |
+| tabs.gpu_p99_ms | 17 | 18, 17, 17 |
+| Tab switch, janky frames (%) | 1.9 | 1.9, 1.9, 1.9 |
+| tabs.p50_ms | 8 | 8, 8, 8 |
+| tabs.p90_ms | 10 | 10, 11, 9 |
+| tabs.p99_ms | 27 | 29, 24, 27 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 22.68 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 27.55 | ratchet | report |
+| Tab switch, janky frames (%) | 1.9 | 1 | fail |
+| Tab switch to a visited tab, first frame median (ms) | 6.51 | 8 | pass |
+| Tab switch to a visited tab, first frame max (ms) | 16.45 | 16 | fail |
+| Push, the frame that composes the screen, median (ms) | 19.95 | ratchet | report |
+| Push, the frame that composes the screen, max (ms) | 48.61 | ratchet | report |
+| Pop, first frame median (ms) | 15.01 | 8 | fail |
+| Pop, first frame max (ms) | 36.93 | 16 | fail |
+| Push/pop with the Back key, janky frames (%) | 2.34 | 2 | fail |
+| Push/pop with the Back key, p99 frame (ms) | 57 | 25 | fail |
+| Push/pop with the back gesture, janky frames (%) | 2.82 | 2 | fail |
+| Rapid Back: the app is still running | yes | yes | pass |
+| Rapid Back: lands on the expected screen | yes | yes | pass |
+| Rapid Back, janky frames (%) | 2.62 | 4 | pass |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) | 23.63 | 8 | fail |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) | 34.56 | 16 | fail |
+| Navigation stress: the app is still running | yes | yes | pass |
+| Navigation stress: stack invariants hold | yes | yes | pass |
+| Navigation stress, janky frames (%) | 5.26 | 4 | fail |
+| Process death: tab, stacks and presented sheet restored | yes | yes | pass |
+| Process death: Back pops the restored stack | yes | yes | pass |
+| Scroll a root list, janky frames (%) | 0.15 | 0.5 | pass |
+| Scroll a root list, GPU p90 (ms) | 6 | 7 | pass |
+| Scroll with the bar minimizing, janky frames (%) | 0.3 | 0.5 | pass |
+| Scroll with the bar minimizing, GPU p90 (ms) | 6 | 7 | pass |
+| Idle 5 s on every tab, frames rendered | 0 | 0 | pass |
+| Cold start, speed-profile, median (ms) | 355 | 380 | pass |
+| Cold start as installed (profile from the APK only), median (ms) | 416 | 400 | fail |
+| PSS after the journey (MB) | 93.8 | 70 | fail |
+
+== exit 1 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.p2.dev
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.24 --extra perf.screenResponse=0.24 --serial 9a7c74f4
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+    Last message repeated 1 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 33 >= 33
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+    Last message repeated 1 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+    Last message repeated 2 times
+[image2 @ 0x56e2afa04600] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.24/push.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.24/push_strip.png
+37 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev push
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev pop /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.24 --extra perf.screenResponse=0.24 --serial 9a7c74f4
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+    Last message repeated 1 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+    Last message repeated 1 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+    Last message repeated 1 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 2 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 1 times
+[image2 @ 0x5ecc46ba8140] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.24/pop.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.24/pop_strip.png
+34 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev pop
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.30 --extra perf.screenResponse=0.30 --serial 9a7c74f4
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+    Last message repeated 2 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 2 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 2 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+[image2 @ 0x5fef372edbc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 2 times
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.30/push.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.30/push_strip.png
+47 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev push
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev pop /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.30 --extra perf.screenResponse=0.30 --serial 9a7c74f4
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+    Last message repeated 2 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 2 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 2 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 2 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 2 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 0x6431f1ecde40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 2 times
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.30/pop.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.30/pop_strip.png
+39 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev pop
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.36 --extra perf.screenResponse=0.36 --serial 9a7c74f4
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+    Last message repeated 2 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+    Last message repeated 2 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 62 >= 62
+    Last message repeated 1 times
+[image2 @ 0x5955dff4b980] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+    Last message repeated 1 times
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.36/push.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/push_0.36/push_strip.png
+52 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev push
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev pop /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.36 --extra perf.screenResponse=0.36 --serial 9a7c74f4
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 2 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 62 >= 62
+    Last message repeated 2 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 64 >= 64
+    Last message repeated 1 times
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 65 >= 65
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 66 >= 66
+[image2 @ 0x5bf21cb23340] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 66 >= 66
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.36/pop.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/pop_0.36/pop_strip.png
+47 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev pop
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/tab_switch --serial 9a7c74f4
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 91 >= 91
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 92 >= 92
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 93 >= 93
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 94 >= 94
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 95 >= 95
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 102 >= 102
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 105 >= 105
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 106 >= 106
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 139 >= 139
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 141 >= 141
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 142 >= 142
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 143 >= 143
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 144 >= 144
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 145 >= 145
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 146 >= 146
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 147 >= 147
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 148 >= 148
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 149 >= 149
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 150 >= 150
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 151 >= 151
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 152 >= 152
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 153 >= 153
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 154 >= 154
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 155 >= 155
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 190 >= 190
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 191 >= 191
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 192 >= 192
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 193 >= 193
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 194 >= 194
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 195 >= 195
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 196 >= 196
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 197 >= 197
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 198 >= 198
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 199 >= 199
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 200 >= 200
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 201 >= 201
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 202 >= 202
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 203 >= 203
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 204 >= 204
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 205 >= 205
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 238 >= 238
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 239 >= 239
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 240 >= 240
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 241 >= 241
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 242 >= 242
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 243 >= 243
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 244 >= 244
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 245 >= 245
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 246 >= 246
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 247 >= 247
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 248 >= 248
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 249 >= 249
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 250 >= 250
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 251 >= 251
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 252 >= 252
+    Last message repeated 2 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 253 >= 253
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 254 >= 254
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 255 >= 255
+    Last message repeated 1 times
+[image2 @ 0x57768ac324c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 256 >= 256
+    Last message repeated 1 times
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/tab_switch/tab_switch.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/tab_switch/tab_switch_strip.png
+57 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev tab_switch
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev gesture_pop /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/gesture_pop --serial 9a7c74f4
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 62 >= 62
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 64 >= 64
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 65 >= 65
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 66 >= 66
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 67 >= 67
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 68 >= 68
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 69 >= 69
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 70 >= 70
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 72 >= 72
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 73 >= 73
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 74 >= 74
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 75 >= 75
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 76 >= 76
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 78 >= 78
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 80 >= 80
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 81 >= 81
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 82 >= 82
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 83 >= 83
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 84 >= 84
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 85 >= 85
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 86 >= 86
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 87 >= 87
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 88 >= 88
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 89 >= 89
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 90 >= 90
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 91 >= 91
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 92 >= 92
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 93 >= 93
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 94 >= 94
+    Last message repeated 1 times
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 95 >= 95
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+[image2 @ 0x6285a9e7ee40] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/gesture_pop/gesture_pop.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/gesture_pop/gesture_pop_strip.png
+78 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev gesture_pop
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev rapid_back /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/rapid_back --serial 9a7c74f4
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 62 >= 62
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 64 >= 64
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 65 >= 65
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 66 >= 66
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 67 >= 67
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 68 >= 68
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 69 >= 69
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 70 >= 70
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 71 >= 71
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 72 >= 72
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 73 >= 73
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 74 >= 74
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 75 >= 75
+    Last message repeated 1 times
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 76 >= 76
+[image2 @ 0x61e1605856c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+    Last message repeated 1 times
+rapid_back recorded from depth 4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/rapid_back/rapid_back.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/rapid_back/rapid_back_strip.png
+62 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev rapid_back
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_labels_selected --extra perf.barLabels=Selected --serial 9a7c74f4
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 2 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 93 >= 93
+    Last message repeated 2 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 94 >= 94
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 95 >= 95
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 102 >= 102
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 105 >= 105
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 106 >= 106
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 107 >= 107
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 108 >= 108
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 141 >= 141
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 142 >= 142
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 143 >= 143
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 144 >= 144
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 145 >= 145
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 146 >= 146
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 147 >= 147
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 148 >= 148
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 149 >= 149
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 150 >= 150
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 151 >= 151
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 152 >= 152
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 153 >= 153
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 154 >= 154
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 155 >= 155
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 156 >= 156
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 191 >= 191
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 192 >= 192
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 193 >= 193
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 194 >= 194
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 195 >= 195
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 196 >= 196
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 197 >= 197
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 198 >= 198
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 199 >= 199
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 200 >= 200
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 201 >= 201
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 202 >= 202
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 203 >= 203
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 204 >= 204
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 205 >= 205
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 206 >= 206
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 207 >= 207
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 240 >= 240
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 241 >= 241
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 242 >= 242
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 243 >= 243
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 244 >= 244
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 245 >= 245
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 246 >= 246
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 247 >= 247
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 248 >= 248
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 249 >= 249
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 250 >= 250
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 251 >= 251
+    Last message repeated 2 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 252 >= 252
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 253 >= 253
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 254 >= 254
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 255 >= 255
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 256 >= 256
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 257 >= 257
+    Last message repeated 1 times
+[image2 @ 0x5c9e30543800] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 258 >= 258
+    Last message repeated 1 times
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_labels_selected/tab_switch.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_labels_selected/tab_switch_strip.png
+53 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev tab_switch
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_labels_never --extra perf.barLabels=Never --serial 9a7c74f4
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 92 >= 92
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 93 >= 93
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 94 >= 94
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 95 >= 95
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 102 >= 102
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 105 >= 105
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 106 >= 106
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 107 >= 107
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 142 >= 142
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 143 >= 143
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 144 >= 144
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 145 >= 145
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 146 >= 146
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 147 >= 147
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 148 >= 148
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 149 >= 149
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 150 >= 150
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 151 >= 151
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 152 >= 152
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 153 >= 153
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 154 >= 154
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 155 >= 155
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 156 >= 156
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 190 >= 190
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 191 >= 191
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 192 >= 192
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 193 >= 193
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 194 >= 194
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 195 >= 195
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 196 >= 196
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 197 >= 197
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 198 >= 198
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 199 >= 199
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 200 >= 200
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 201 >= 201
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 202 >= 202
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 203 >= 203
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 204 >= 204
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 205 >= 205
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 238 >= 238
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 239 >= 239
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 240 >= 240
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 241 >= 241
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 242 >= 242
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 243 >= 243
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 244 >= 244
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 245 >= 245
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 246 >= 246
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 247 >= 247
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 248 >= 248
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 249 >= 249
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 250 >= 250
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 251 >= 251
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 252 >= 252
+    Last message repeated 2 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 253 >= 253
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 254 >= 254
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 255 >= 255
+    Last message repeated 1 times
+[image2 @ 0x57294ba96880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 256 >= 256
+    Last message repeated 1 times
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_labels_never/tab_switch.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_labels_never/tab_switch_strip.png
+51 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev tab_switch
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev custom /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_minimize --extra perf.barMinimize=OnScrollDown --serial 9a7c74f4 --prepare sleep 3 --actions input swipe 540 1800 540 700 140; sleep 1.5; input swipe 540 700 540 1800 140
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_minimize/custom.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/cp1/bar_minimize/custom_strip.png
+311 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.p2.dev custom
+PHONE-PENDING DONE

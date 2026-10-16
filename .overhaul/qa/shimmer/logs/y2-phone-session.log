@@ -1,0 +1,34 @@
+lock wait from 16:07:46
+[locked:adb] waiting for lock...
+16:07:47 initial state: {'system/font_scale': '1.0', 'system/accelerometer_rotation': '0', 'system/user_rotation': '0', 'global/stay_on_while_plugged_in': '7', 'global/airplane_mode_on': '0', 'global/window_animation_scale': '1.0', 'global/transition_animation_scale': '1.0', 'global/animator_duration_scale': 'null', 'night': 'no', 'wm size': 'Physical size: 1080x2400', 'wm density': 'Physical density: 440'}
+16:07:50 install catalog-release.apk (4c60a9a9ba2c05694cd35a3de21452f3): Performing Streamed Install
+Success
+16:07:51 install app-dev-arm64-v8a-release.apk (81de025c77a6c0d2282bd183f9a1d46a): Performing Streamed Install
+Success
+16:07:51 com.example.wp03.cp1.catalog installed copy is the Oct 12 13:30 build
+16:08:04 gfx cat-loading-light-10s: 10 s, frames 728, janky Janky frames: 5 (0.69%), gpu p90 7 ms
+16:08:13 recorded rec/cat-loading-light.mp4 (7 s, action at +0.8 s after start, pulled.returncode=0)
+16:08:34 gfx cat-loading-dark-10s: 10 s, frames 725, janky Janky frames: 5 (0.69%), gpu p90 7 ms
+16:08:42 recorded rec/cat-loading-dark.mp4 (7 s, action at +0.8 s after start, pulled.returncode=0)
+16:08:53 Load button at (945, 154, 1036, 195)
+16:08:59 recorded rec/cat-loading-light-load.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:09:05 gfx cat-loaded-light-idle-5s: 5 s, frames 0, janky Janky frames: 0 (0.00%), gpu p90 4950 ms
+16:09:15 recorded rec/cat-loading-light-rtl.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:09:23 gfx cat-loading-reduce-motion-idle-5s: 5 s, frames 0, janky Janky frames: 0 (0.00%), gpu p90 4950 ms
+16:09:35 gfx cat-loading-covered-idle-5s: 5 s, frames 0, janky Janky frames: 0 (0.00%), gpu p90 4950 ms
+16:09:35 covered: process CPU ticks over 5 s: 5
+16:09:42 recorded rec/ptr-cold-light-reduce-motion.mp4 (4 s, action at +0.8 s after start, pulled.returncode=0)
+16:10:27 recorded rec/cat-skel-light.mp4 (6 s, action at +0.8 s after start, pulled.returncode=0)
+16:10:38 gfx cat-skel-light-10s: 10 s, frames 763, janky Janky frames: 21 (2.75%), gpu p90 5 ms
+16:11:20 recorded rec/cat-skel-dark.mp4 (6 s, action at +0.8 s after start, pulled.returncode=0)
+16:11:26 'Skeletons' not in the UI dump (never idle?): replaying [800, 900, 484, -159, 51, 51]
+16:11:54 gfx old-cat-skel-light-10s: 10 s, frames 1210, janky Janky frames: 0 (0.00%), gpu p90 4 ms
+16:12:02 recorded rec/ptr-cold-light.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:12:11 recorded rec/ptr-cold-light-2.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:12:22 recorded rec/ptr-cold-dark.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:12:32 recorded rec/ptr-cold-dark-2.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:12:44 recorded rec/ptr-cold-font150-light.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:12:57 recorded rec/ptr-cold-landscape-light.mp4 (5 s, action at +0.8 s after start, pulled.returncode=0)
+16:13:11 recorded rec/ptr-light-pull.mp4 (4 s, action at +0.8 s after start, pulled.returncode=0)
+16:13:27 restored; differences from the initial state: none
+rc=0 at 16:13:27

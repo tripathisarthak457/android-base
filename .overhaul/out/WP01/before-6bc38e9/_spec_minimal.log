@@ -1,0 +1,26 @@
+
+Summary
+───────
+         App  Bare (Bare)
+     Package  io.bare.min
+     Min SDK  API 24 · Android 7.0 (Nougat)
+  Target SDK  API 36 · Android 16 (Baklava)
+     Version  2.1.0 (7)
+  Desugaring  on — java.time below API 26
+    Features  none
+     Modules  home
+   Languages  en
+    Typeface  DM Sans · JetBrains Mono
+     Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+       Style  Utility
+      Motion  Standard, haptics on
+        Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/spec_minimal
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/spec_minimal and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

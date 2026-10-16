@@ -1,0 +1,102 @@
+{
+  "description": "Bodies of POST /api/v1/events (MASTER-PLAN A10.2). 'accepted' bodies are answered 204 and stored; 'refused' bodies are answered 400 and nothing in them is stored. The catalogue assumed here has the targets and presets in 'catalogue'. Read by web/api (internal/telemetry) and by the website's telemetry tests.",
+  "catalogue": {"android": ["lean", "standard", "everything"], "multiplatform": ["standard"]},
+  "accepted": [
+    {
+      "name": "a first batch: landing with a campaign, then the platform",
+      "body": {
+        "session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+        "events": [
+          {"name": "landed", "referrer": "https://news.ycombinator.com/item?id=1", "utm_source": "hn",
+           "utm_medium": "social", "utm_campaign": "launch", "returning": false, "viewport": "lg"},
+          {"name": "step_viewed", "target": "android", "step": "platform"},
+          {"name": "platform_selected", "target": "multiplatform"}
+        ]
+      },
+      "stored": {
+        "events": [
+          {"name": "landed", "target": null, "step": null, "value": null},
+          {"name": "step_viewed", "target": "android", "step": "platform", "value": null},
+          {"name": "platform_selected", "target": "multiplatform", "step": null, "value": null}
+        ],
+        "visit": {"referrer_origin": "https://news.ycombinator.com", "utm_source": "hn", "utm_medium": "social",
+                  "utm_campaign": "launch", "returning": false, "viewport": "lg"}
+      }
+    },
+    {
+      "name": "a returning visitor with no referrer",
+      "body": {
+        "session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+        "events": [{"name": "landed", "returning": true}]
+      },
+      "stored": {
+        "events": [{"name": "landed", "target": null, "step": null, "value": null}],
+        "visit": {"referrer_origin": null, "utm_source": null, "utm_medium": null, "utm_campaign": null,
+                  "returning": true, "viewport": null}
+      }
+    },
+    {
+      "name": "the rest of the funnel",
+      "body": {
+        "session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+        "events": [
+          {"name": "step_viewed", "target": "android", "step": "identity"},
+          {"name": "preset_chosen", "target": "android", "preset": "everything"},
+          {"name": "step_viewed", "target": "android", "step": "review"},
+          {"name": "generate_clicked", "target": "android"},
+          {"name": "download_started", "target": "android"}
+        ]
+      },
+      "stored": {
+        "events": [
+          {"name": "step_viewed", "target": "android", "step": "identity", "value": null},
+          {"name": "preset_chosen", "target": "android", "step": null, "value": "everything"},
+          {"name": "step_viewed", "target": "android", "step": "review", "value": null},
+          {"name": "generate_clicked", "target": "android", "step": null, "value": null},
+          {"name": "download_started", "target": "android", "step": null, "value": null}
+        ],
+        "visit": null
+      }
+    }
+  ],
+  "refused": [
+    {"name": "no session id", "body": {"events": [{"name": "landed"}]}},
+    {"name": "a session id that is not a UUID v4",
+     "body": {"session_id": "abc", "events": [{"name": "landed"}]}},
+    {"name": "no events", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c", "events": []}},
+    {"name": "a server event", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "generated", "target": "android"}]}},
+    {"name": "an unknown name", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "clicked_logo"}]}},
+    {"name": "an unknown target", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "platform_selected", "target": "windows"}]}},
+    {"name": "an unknown step", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "step_viewed", "target": "android", "step": "payment"}]}},
+    {"name": "a preset of another target", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "preset_chosen", "target": "multiplatform", "preset": "lean"}]}},
+    {"name": "a step on an event that takes none", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "generate_clicked", "target": "android", "step": "review"}]}},
+    {"name": "acquisition fields on a later event", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "generate_clicked", "target": "android", "utm_source": "hn"}]}},
+    {"name": "a target on landed", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "landed", "target": "android"}]}},
+    {"name": "two landings in one batch", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "landed"}, {"name": "landed"}]}},
+    {"name": "an unknown viewport", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "landed", "viewport": "1920"}]}},
+    {"name": "a field the API does not know", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+     "events": [{"name": "landed", "email": "a@example.com"}]}},
+    {"name": "more than 20 events", "body": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c", "events": [
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}, {"name": "generate_clicked", "target": "android"},
+      {"name": "generate_clicked", "target": "android"}]}}
+  ]
+}

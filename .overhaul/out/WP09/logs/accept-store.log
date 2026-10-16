@@ -1,0 +1,16 @@
+=== RUN   TestIntegrationMigratesOnceEvenWhenInstancesRace
+--- PASS: TestIntegrationMigratesOnceEvenWhenInstancesRace (0.28s)
+=== RUN   TestIntegrationUpgradesADatabaseTheOldRunnerMigrated
+--- PASS: TestIntegrationUpgradesADatabaseTheOldRunnerMigrated (0.21s)
+=== RUN   TestIntegrationAdminQueriesReadWhatWasRecorded
+--- PASS: TestIntegrationAdminQueriesReadWhatWasRecorded (0.24s)
+=== RUN   TestIntegrationRejectionsAreGroupedByCauseNotByValue
+--- PASS: TestIntegrationRejectionsAreGroupedByCauseNotByValue (0.19s)
+=== RUN   TestIntegrationTheWriterRecordsInTheBackground
+--- PASS: TestIntegrationTheWriterRecordsInTheBackground (0.19s)
+=== RUN   TestIntegrationRetentionForgetsNamesAndOldRows
+--- PASS: TestIntegrationRetentionForgetsNamesAndOldRows (0.26s)
+=== RUN   TestIntegrationFeedbackNotesCanBeCleared
+--- PASS: TestIntegrationFeedbackNotesCanBeCleared (0.22s)
+PASS
+ok  	github.com/base-android/generator-api/internal/store	2.592s

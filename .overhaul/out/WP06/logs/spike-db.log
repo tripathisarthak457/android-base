@@ -1,0 +1,108 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:database:testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:testing:verifyComposeUsage
+> Task :core:database:verifyComposeUsage
+> Task :core:database:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:testing:verifyModuleDependencies
+> Task :core:database:verifyApiPurity
+> Task :core:common:verifyModuleDependencies
+> Task :core:database:verifyModuleDependencies
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:preBuild
+> Task :core:database:koverFindJar
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:database:preDebugUnitTestBuild
+> Task :core:testing:preDebugBuild
+> Task :core:common:verifyApiPurity
+> Task :core:database:processDebugNavigationResources
+> Task :core:database:generateDebugResources
+> Task :core:database:mapDebugUnitTestSourceSetPaths
+> Task :core:database:mapDebugSourceSetPaths
+> Task :core:database:writeDebugAarMetadata
+> Task :core:testing:writeDebugAarMetadata
+> Task :core:database:extractDeepLinksDebug
+> Task :core:testing:generateDebugResources FROM-CACHE
+> Task :core:database:generateDebugUnitTestResources FROM-CACHE
+> Task :core:testing:extractDeepLinksDebug FROM-CACHE
+> Task :core:testing:mapDebugSourceSetPaths
+> Task :core:testing:processDebugNavigationResources FROM-CACHE
+> Task :core:testing:javaPreCompileDebug
+> Task :core:testing:packageDebugResources
+> Task :core:database:packageDebugResources
+> Task :core:database:javaPreCompileDebugUnitTest
+> Task :core:database:processDebugManifest
+> Task :core:testing:processDebugManifest
+> Task :core:database:compileDebugLibraryResources
+> Task :core:testing:compileDebugLibraryResources
+> Task :core:database:mergeDebugAssets
+> Task :core:testing:mergeDebugAssets
+> Task :core:database:javaPreCompileDebug
+> Task :core:database:mergeDebugUnitTestAssets
+> Task :core:database:checkDebugUnitTestAarMetadata
+> Task :core:database:parseDebugLocalResources
+> Task :core:testing:parseDebugLocalResources
+> Task :core:database:mergeDebugUnitTestManifest
+> Task :core:database:processDebugUnitTestManifest
+> Task :core:testing:generateDebugRFile
+> Task :core:database:generateDebugRFile
+> Task :core:database:mergeDebugUnitTestResources
+> Task :core:database:processDebugUnitTestResources
+> Task :core:database:packageDebugUnitTestForUnitTest
+> Task :core:database:generateDebugUnitTestConfig
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:processDebugJavaRes
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:database:kspDebugKotlin
+> Task :core:database:compileDebugKotlin
+> Task :core:database:processDebugJavaRes
+> Task :core:database:compileDebugJavaWithJavac
+> Task :core:database:transformDebugClassesWithAsm
+> Task :core:database:bundleLibCompileToJarDebug
+> Task :core:database:bundleLibRuntimeToJarDebug
+> Task :core:database:kspDebugUnitTestKotlin
+> Task :core:database:compileDebugUnitTestKotlin
+> Task :core:database:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:database:hiltCollectClassesDebugUnitTest
+> Task :core:database:processDebugUnitTestJavaRes
+> Task :core:database:copyRoomSchemas
+> Task :core:database:hiltAggregateDepsDebugUnitTest
+> Task :core:database:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:database:transformDebugUnitTestClassesWithAsm
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:database:testDebugUnitTest
+
+BUILD SUCCESSFUL in 1m 16s
+68 actionable tasks: 61 executed, 4 from cache, 3 up-to-date
+Configuration cache entry stored.
+EXIT 0

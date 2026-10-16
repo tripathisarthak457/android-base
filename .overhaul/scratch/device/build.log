@@ -1,0 +1,2100 @@
+start release 1791482451
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:assembleDevRelease
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies
+> Task :core:model:verifyModuleDependencies
+> Task :core:coroutines:verifyModuleDependencies
+> Task :core:coroutines:verifyComposeUsage
+> Task :core:coroutines:preBuild
+> Task :core:coroutines:preReleaseBuild
+> Task :core:analytics:verifyModuleDependencies
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:verifyComposeUsage
+> Task :core:datastore:preBuild
+> Task :core:common:verifyComposeUsage
+> Task :core:common:preBuild
+> Task :core:common:preReleaseBuild
+> Task :core:analytics:verifyComposeUsage
+> Task :core:analytics:preBuild
+> Task :core:analytics:preReleaseBuild
+> Task :core:model:processResources NO-SOURCE
+> Task :core:datastore:preReleaseBuild
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:flags:verifyComposeUsage
+> Task :core:flags:verifyModuleDependencies
+> Task :core:flags:preBuild
+> Task :core:flags:preReleaseBuild
+> Task :app:verifyComposeUsage
+> Task :app:preBuild
+> Task :app:preDevReleaseBuild
+> Task :core:datastore:mergeReleaseJniLibFolders
+> Task :core:analytics:mergeReleaseJniLibFolders
+> Task :core:coroutines:mergeReleaseJniLibFolders
+> Task :core:flags:mergeReleaseJniLibFolders
+> Task :core:common:mergeReleaseJniLibFolders
+> Task :app:mergeDevReleaseJniLibFolders
+> Task :core:analytics:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:coroutines:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:datastore:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:media:verifyComposeUsage
+> Task :core:media:verifyModuleDependencies
+> Task :core:media:preBuild
+> Task :core:media:preReleaseBuild
+> Task :core:flags:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:common:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:media:mergeReleaseJniLibFolders
+> Task :core:media:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:common:copyReleaseJniLibsProjectOnly
+> Task :core:coroutines:copyReleaseJniLibsProjectOnly
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:datastore:copyReleaseJniLibsProjectOnly
+> Task :core:flags:copyReleaseJniLibsProjectOnly
+> Task :core:analytics:copyReleaseJniLibsProjectOnly
+> Task :core:network:verifyModuleDependencies
+> Task :core:notification:verifyModuleDependencies
+> Task :core:media:copyReleaseJniLibsProjectOnly
+> Task :core:ui:verifyModuleDependencies
+> Task :data:auth:verifyModuleDependencies
+> Task :core:notification:verifyComposeUsage
+> Task :core:notification:preBuild
+> Task :core:notification:preReleaseBuild
+> Task :data:auth:verifyComposeUsage
+> Task :data:auth:preBuild
+> Task :data:auth:preReleaseBuild
+> Task :core:navigation:verifyComposeUsage
+> Task :core:navigation:preBuild
+> Task :core:navigation:preReleaseBuild
+> Task :data:feed:verifyComposeUsage
+> Task :data:feed:verifyModuleDependencies
+> Task :data:feed:preBuild
+> Task :data:feed:preReleaseBuild
+> Task :core:network:verifyComposeUsage
+> Task :core:network:preBuild
+> Task :core:network:preReleaseBuild
+> Task :data:auth:mergeReleaseJniLibFolders
+> Task :core:notification:mergeReleaseJniLibFolders
+> Task :core:navigation:mergeReleaseJniLibFolders
+> Task :core:ui:verifyComposeUsage
+> Task :core:ui:preBuild
+> Task :core:ui:preReleaseBuild
+> Task :data:feed:mergeReleaseJniLibFolders
+> Task :core:navigation:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:auth:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:network:mergeReleaseJniLibFolders
+> Task :data:feed:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:ui:mergeReleaseJniLibFolders
+> Task :core:notification:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:navigation:copyReleaseJniLibsProjectOnly
+> Task :core:network:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:ui:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:feed:copyReleaseJniLibsProjectOnly
+> Task :data:auth:copyReleaseJniLibsProjectOnly
+> Task :data:orders:verifyComposeUsage
+> Task :data:profile:verifyModuleDependencies
+> Task :data:sample:verifyComposeUsage
+> Task :data:sample:verifyModuleDependencies
+> Task :data:sample:preBuild
+> Task :data:sample:preReleaseBuild
+> Task :data:orders:verifyModuleDependencies
+> Task :data:orders:preBuild
+> Task :data:orders:preReleaseBuild
+> Task :data:profile:verifyComposeUsage
+> Task :core:notification:copyReleaseJniLibsProjectOnly
+> Task :data:profile:preBuild
+> Task :data:profile:preReleaseBuild
+> Task :core:ui:copyReleaseJniLibsProjectOnly
+> Task :core:network:copyReleaseJniLibsProjectOnly
+> Task :data:search:verifyModuleDependencies
+> Task :data:wallet:verifyModuleDependencies
+> Task :data:wallet:verifyComposeUsage
+> Task :data:wallet:preBuild
+> Task :data:wallet:preReleaseBuild
+> Task :data:sample:mergeReleaseJniLibFolders
+> Task :data:sample:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:search:verifyComposeUsage
+> Task :data:search:preBuild
+> Task :data:search:preReleaseBuild
+> Task :data:orders:mergeReleaseJniLibFolders
+> Task :data:orders:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:profile:mergeReleaseJniLibFolders
+> Task :data:sample:copyReleaseJniLibsProjectOnly
+> Task :feature:auth:verifyModuleDependencies
+> Task :data:search:mergeReleaseJniLibFolders
+> Task :data:wallet:mergeReleaseJniLibFolders
+> Task :data:profile:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:search:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:wallet:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:feed:verifyComposeUsage
+> Task :data:orders:copyReleaseJniLibsProjectOnly
+> Task :feature:feed:verifyModuleDependencies
+> Task :feature:feed:preBuild
+> Task :feature:auth:verifyComposeUsage
+> Task :feature:auth:preBuild
+> Task :feature:auth:preReleaseBuild
+> Task :feature:feed:preReleaseBuild
+> Task :data:search:copyReleaseJniLibsProjectOnly
+> Task :feature:orders:verifyModuleDependencies
+> Task :data:wallet:copyReleaseJniLibsProjectOnly
+> Task :feature:profile:verifyModuleDependencies
+> Task :data:profile:copyReleaseJniLibsProjectOnly
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:orders:verifyComposeUsage
+> Task :feature:orders:preBuild
+> Task :feature:orders:preReleaseBuild
+> Task :feature:feed:mergeReleaseJniLibFolders
+> Task :feature:feed:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:orders:mergeReleaseJniLibFolders
+> Task :feature:orders:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:profile:verifyComposeUsage
+> Task :feature:profile:preBuild
+> Task :feature:profile:preReleaseBuild
+> Task :feature:auth:mergeReleaseJniLibFolders
+> Task :feature:auth:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:orders:copyReleaseJniLibsProjectOnly
+> Task :feature:search:verifyModuleDependencies
+> Task :feature:feed:copyReleaseJniLibsProjectOnly
+> Task :feature:settings:verifyModuleDependencies
+> Task :feature:sample:verifyComposeUsage
+> Task :feature:sample:preBuild
+> Task :feature:sample:preReleaseBuild
+> Task :feature:search:verifyComposeUsage
+> Task :feature:search:preBuild
+> Task :feature:search:preReleaseBuild
+> Task :feature:profile:mergeReleaseJniLibFolders
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preReleaseBuild
+> Task :feature:profile:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:wallet:verifyComposeUsage
+> Task :feature:auth:copyReleaseJniLibsProjectOnly
+> Task :feature:wallet:verifyModuleDependencies
+> Task :feature:settings:verifyComposeUsage
+> Task :feature:wallet:preBuild
+> Task :feature:wallet:preReleaseBuild
+> Task :core:designsystem:mergeReleaseJniLibFolders
+> Task :feature:sample:mergeReleaseJniLibFolders
+> Task :feature:settings:preBuild
+> Task :feature:settings:preReleaseBuild
+> Task :core:designsystem:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:sample:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:designsystem:copyReleaseJniLibsProjectOnly
+> Task :feature:profile:copyReleaseJniLibsProjectOnly
+> Task :core:common:generateReleaseResources
+> Task :feature:search:mergeReleaseJniLibFolders
+> Task :feature:wallet:mergeReleaseJniLibFolders
+> Task :feature:search:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:wallet:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:settings:mergeReleaseJniLibFolders
+> Task :core:common:processReleaseNavigationResources
+> Task :feature:settings:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:coroutines:generateReleaseResources
+> Task :feature:sample:copyReleaseJniLibsProjectOnly
+> Task :feature:search:copyReleaseJniLibsProjectOnly
+> Task :core:coroutines:processReleaseNavigationResources
+> Task :core:datastore:generateReleaseResources FROM-CACHE
+> Task :feature:wallet:copyReleaseJniLibsProjectOnly
+> Task :feature:settings:copyReleaseJniLibsProjectOnly
+> Task :core:datastore:processReleaseNavigationResources FROM-CACHE
+> Task :core:designsystem:generateReleaseResources
+> Task :core:datastore:packageReleaseResources
+> Task :core:datastore:javaPreCompileRelease
+> Task :core:coroutines:javaPreCompileRelease
+> Task :core:coroutines:packageReleaseResources
+> Task :core:designsystem:processReleaseNavigationResources
+> Task :core:navigation:generateReleaseResources FROM-CACHE
+> Task :core:navigation:packageReleaseResources
+> Task :core:navigation:processReleaseNavigationResources FROM-CACHE
+> Task :core:designsystem:packageReleaseResources
+> Task :core:common:packageReleaseResources
+> Task :core:designsystem:javaPreCompileRelease
+> Task :core:navigation:javaPreCompileRelease FROM-CACHE
+> Task :core:common:javaPreCompileRelease
+> Task :core:network:processReleaseNavigationResources FROM-CACHE
+> Task :core:network:generateReleaseResources FROM-CACHE
+> Task :core:network:packageReleaseResources
+> Task :core:network:javaPreCompileRelease
+> Task :core:ui:generateReleaseResources FROM-CACHE
+> Task :core:ui:packageReleaseResources
+> Task :core:ui:processReleaseNavigationResources FROM-CACHE
+> Task :core:coroutines:parseReleaseLocalResources
+> Task :core:datastore:parseReleaseLocalResources
+> Task :core:navigation:parseReleaseLocalResources
+> Task :core:common:parseReleaseLocalResources
+> Task :core:designsystem:parseReleaseLocalResources
+> Task :core:navigation:generateReleaseRFile
+> Task :core:common:generateReleaseRFile
+> Task :core:datastore:generateReleaseRFile
+> Task :core:coroutines:generateReleaseRFile
+> Task :core:designsystem:generateReleaseRFile
+> Task :core:ui:javaPreCompileRelease FROM-CACHE
+> Task :data:auth:generateReleaseResources FROM-CACHE
+> Task :data:auth:processReleaseNavigationResources FROM-CACHE
+> Task :core:ui:parseReleaseLocalResources FROM-CACHE
+> Task :data:auth:javaPreCompileRelease FROM-CACHE
+> Task :core:network:parseReleaseLocalResources FROM-CACHE
+> Task :feature:auth:processReleaseNavigationResources
+> Task :feature:auth:javaPreCompileRelease FROM-CACHE
+> Task :feature:auth:generateReleaseResources
+> Task :data:auth:packageReleaseResources
+> Task :core:ui:generateReleaseRFile
+> Task :data:sample:generateReleaseResources FROM-CACHE
+> Task :data:auth:parseReleaseLocalResources FROM-CACHE
+> Task :data:sample:processReleaseNavigationResources FROM-CACHE
+> Task :core:network:generateReleaseRFile
+> Task :data:sample:javaPreCompileRelease FROM-CACHE
+> Task :data:sample:packageReleaseResources
+> Task :feature:sample:processReleaseNavigationResources
+> Task :data:sample:parseReleaseLocalResources FROM-CACHE
+> Task :feature:sample:generateReleaseResources
+> Task :feature:sample:javaPreCompileRelease FROM-CACHE
+> Task :data:auth:generateReleaseRFile
+> Task :data:feed:processReleaseNavigationResources FROM-CACHE
+> Task :data:feed:generateReleaseResources FROM-CACHE
+> Task :data:sample:generateReleaseRFile
+> Task :data:feed:javaPreCompileRelease FROM-CACHE
+> Task :feature:auth:packageReleaseResources
+> Task :feature:feed:processReleaseNavigationResources
+> Task :feature:feed:generateReleaseResources
+> Task :data:feed:packageReleaseResources
+> Task :feature:feed:javaPreCompileRelease FROM-CACHE
+> Task :data:feed:parseReleaseLocalResources FROM-CACHE
+> Task :data:search:generateReleaseResources FROM-CACHE
+> Task :feature:sample:packageReleaseResources
+> Task :feature:auth:parseReleaseLocalResources
+> Task :data:search:packageReleaseResources
+> Task :data:search:processReleaseNavigationResources FROM-CACHE
+> Task :data:search:parseReleaseLocalResources FROM-CACHE
+> Task :data:feed:generateReleaseRFile
+> Task :data:search:javaPreCompileRelease FROM-CACHE
+> Task :feature:sample:parseReleaseLocalResources
+> Task :feature:auth:generateReleaseRFile
+> Task :data:search:generateReleaseRFile
+> Task :feature:feed:packageReleaseResources
+> Task :feature:search:generateReleaseResources
+> Task :feature:search:javaPreCompileRelease FROM-CACHE
+> Task :feature:search:processReleaseNavigationResources
+> Task :core:media:processReleaseNavigationResources
+> Task :core:media:generateReleaseResources
+> Task :feature:sample:generateReleaseRFile
+> Task :data:profile:generateReleaseResources FROM-CACHE
+> Task :core:media:javaPreCompileRelease FROM-CACHE
+> Task :feature:search:packageReleaseResources
+> Task :feature:feed:parseReleaseLocalResources
+> Task :data:profile:processReleaseNavigationResources FROM-CACHE
+> Task :core:media:packageReleaseResources
+> Task :data:profile:javaPreCompileRelease FROM-CACHE
+> Task :data:profile:packageReleaseResources
+> Task :feature:feed:generateReleaseRFile
+> Task :data:profile:parseReleaseLocalResources FROM-CACHE
+> Task :feature:search:parseReleaseLocalResources
+> Task :feature:profile:processReleaseNavigationResources
+> Task :feature:profile:generateReleaseResources
+> Task :core:media:parseReleaseLocalResources
+> Task :feature:profile:javaPreCompileRelease FROM-CACHE
+> Task :data:orders:generateReleaseResources FROM-CACHE
+> Task :data:profile:generateReleaseRFile
+> Task :feature:search:generateReleaseRFile
+> Task :core:media:generateReleaseRFile
+> Task :data:orders:processReleaseNavigationResources FROM-CACHE
+> Task :data:orders:javaPreCompileRelease FROM-CACHE
+> Task :feature:orders:generateReleaseResources
+> Task :feature:orders:processReleaseNavigationResources
+> Task :data:wallet:generateReleaseResources FROM-CACHE
+> Task :feature:orders:javaPreCompileRelease FROM-CACHE
+> Task :data:wallet:processReleaseNavigationResources FROM-CACHE
+> Task :data:orders:packageReleaseResources
+> Task :feature:profile:packageReleaseResources
+> Task :data:wallet:packageReleaseResources
+> Task :data:wallet:javaPreCompileRelease FROM-CACHE
+> Task :data:orders:parseReleaseLocalResources FROM-CACHE
+> Task :data:wallet:parseReleaseLocalResources FROM-CACHE
+> Task :feature:orders:packageReleaseResources
+> Task :feature:wallet:generateReleaseResources
+> Task :feature:profile:parseReleaseLocalResources
+> Task :data:orders:generateReleaseRFile
+> Task :feature:orders:parseReleaseLocalResources
+> Task :feature:wallet:processReleaseNavigationResources
+> Task :feature:wallet:javaPreCompileRelease FROM-CACHE
+> Task :data:wallet:generateReleaseRFile
+> Task :feature:wallet:packageReleaseResources
+> Task :core:notification:processReleaseNavigationResources
+> Task :core:notification:javaPreCompileRelease FROM-CACHE
+> Task :feature:profile:generateReleaseRFile
+> Task :core:notification:generateReleaseResources
+> Task :feature:settings:generateReleaseResources
+> Task :feature:settings:processReleaseNavigationResources
+> Task :feature:orders:generateReleaseRFile
+> Task :feature:settings:javaPreCompileRelease FROM-CACHE
+> Task :core:analytics:generateReleaseResources FROM-CACHE
+> Task :core:analytics:processReleaseNavigationResources FROM-CACHE
+> Task :feature:wallet:parseReleaseLocalResources
+> Task :core:analytics:javaPreCompileRelease FROM-CACHE
+> Task :core:flags:generateReleaseResources FROM-CACHE
+> Task :core:notification:packageReleaseResources
+> Task :core:analytics:packageReleaseResources
+> Task :feature:settings:packageReleaseResources
+> Task :core:analytics:parseReleaseLocalResources FROM-CACHE
+> Task :core:flags:packageReleaseResources
+> Task :core:flags:processReleaseNavigationResources FROM-CACHE
+> Task :core:flags:parseReleaseLocalResources FROM-CACHE
+> Task :core:notification:parseReleaseLocalResources
+> Task :core:analytics:generateReleaseRFile
+> Task :core:flags:javaPreCompileRelease FROM-CACHE
+> Task :feature:settings:parseReleaseLocalResources
+> Task :feature:wallet:generateReleaseRFile
+> Task :core:flags:generateReleaseRFile
+> Task :core:analytics:prepareReleaseArtProfile
+> Task :core:common:prepareReleaseArtProfile
+> Task :core:coroutines:prepareReleaseArtProfile
+> Task :core:datastore:prepareReleaseArtProfile
+> Task :core:designsystem:prepareReleaseArtProfile
+> Task :core:flags:prepareReleaseArtProfile
+> Task :core:media:prepareReleaseArtProfile
+> Task :core:navigation:prepareReleaseArtProfile
+> Task :core:notification:generateReleaseRFile
+> Task :core:network:prepareReleaseArtProfile
+> Task :core:notification:prepareReleaseArtProfile
+> Task :data:auth:prepareReleaseArtProfile
+> Task :core:ui:prepareReleaseArtProfile
+> Task :data:feed:prepareReleaseArtProfile
+> Task :data:orders:prepareReleaseArtProfile
+> Task :data:profile:prepareReleaseArtProfile
+> Task :data:sample:prepareReleaseArtProfile
+> Task :data:search:prepareReleaseArtProfile
+> Task :data:wallet:prepareReleaseArtProfile
+> Task :feature:auth:prepareReleaseArtProfile
+> Task :feature:feed:prepareReleaseArtProfile
+> Task :feature:orders:prepareReleaseArtProfile
+> Task :feature:profile:prepareReleaseArtProfile
+> Task :feature:sample:prepareReleaseArtProfile
+> Task :feature:search:prepareReleaseArtProfile
+> Task :feature:settings:prepareReleaseArtProfile
+> Task :feature:wallet:prepareReleaseArtProfile
+> Task :app:generateDevReleaseBuildConfig
+> Task :feature:settings:generateReleaseRFile
+> Task :app:injectCrashlyticsMappingFileIdDevRelease
+> Task :app:processDevReleaseGoogleServices
+> Task :core:analytics:extractReleaseSupportedLocales
+> Task :core:common:extractReleaseSupportedLocales
+> Task :core:datastore:extractReleaseSupportedLocales FROM-CACHE
+> Task :core:coroutines:extractReleaseSupportedLocales FROM-CACHE
+> Task :core:flags:extractReleaseSupportedLocales FROM-CACHE
+> Task :core:designsystem:extractReleaseSupportedLocales
+> Task :app:extractDevReleaseVersionControlInfo
+> Task :app:injectCrashlyticsVersionControlInfoDevRelease
+> Task :core:navigation:extractReleaseSupportedLocales FROM-CACHE
+> Task :core:media:extractReleaseSupportedLocales
+> Task :core:network:extractReleaseSupportedLocales FROM-CACHE
+> Task :core:notification:extractReleaseSupportedLocales
+> Task :app:mapDevReleaseSourceSetPaths
+> Task :core:ui:extractReleaseSupportedLocales FROM-CACHE
+> Task :app:extractDevReleaseSupportedLocales
+> Task :data:auth:extractReleaseSupportedLocales FROM-CACHE
+> Task :data:orders:extractReleaseSupportedLocales FROM-CACHE
+> Task :data:feed:extractReleaseSupportedLocales FROM-CACHE
+> Task :data:profile:extractReleaseSupportedLocales FROM-CACHE
+> Task :data:sample:extractReleaseSupportedLocales FROM-CACHE
+> Task :data:search:extractReleaseSupportedLocales FROM-CACHE
+> Task :feature:feed:extractReleaseSupportedLocales
+> Task :data:wallet:extractReleaseSupportedLocales FROM-CACHE
+> Task :feature:auth:extractReleaseSupportedLocales
+> Task :feature:sample:extractReleaseSupportedLocales
+> Task :feature:profile:extractReleaseSupportedLocales
+> Task :feature:orders:extractReleaseSupportedLocales
+> Task :feature:search:extractReleaseSupportedLocales
+> Task :feature:wallet:extractReleaseSupportedLocales
+> Task :feature:settings:extractReleaseSupportedLocales
+> Task :app:generateDevReleaseResources
+> Task :app:javaPreCompileDevRelease
+> Task :core:analytics:writeReleaseAarMetadata
+> Task :core:common:writeReleaseAarMetadata
+> Task :core:coroutines:writeReleaseAarMetadata
+> Task :core:datastore:writeReleaseAarMetadata
+> Task :core:designsystem:writeReleaseAarMetadata
+> Task :core:flags:writeReleaseAarMetadata
+> Task :core:media:writeReleaseAarMetadata
+> Task :core:navigation:writeReleaseAarMetadata
+> Task :core:network:writeReleaseAarMetadata
+> Task :core:notification:writeReleaseAarMetadata
+> Task :core:ui:writeReleaseAarMetadata
+> Task :data:auth:writeReleaseAarMetadata
+> Task :data:feed:writeReleaseAarMetadata
+> Task :app:generateDevReleaseLocaleConfig
+> Task :data:orders:writeReleaseAarMetadata
+> Task :data:profile:writeReleaseAarMetadata
+> Task :data:sample:writeReleaseAarMetadata
+> Task :data:search:writeReleaseAarMetadata
+> Task :data:wallet:writeReleaseAarMetadata
+> Task :feature:auth:writeReleaseAarMetadata
+> Task :app:packageDevReleaseResources
+> Task :feature:feed:writeReleaseAarMetadata
+> Task :feature:profile:writeReleaseAarMetadata
+> Task :feature:sample:writeReleaseAarMetadata
+> Task :feature:search:writeReleaseAarMetadata
+> Task :feature:settings:writeReleaseAarMetadata
+> Task :feature:wallet:writeReleaseAarMetadata
+> Task :feature:orders:writeReleaseAarMetadata
+> Task :core:model:compileKotlin
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar
+> Task :app:processDevReleaseNavigationResources
+> Task :app:mergeDevReleaseArtProfile
+> Task :app:checkDevReleaseAarMetadata
+> Task :app:parseDevReleaseLocalResources
+> Task :app:compileDevReleaseNavigationResources
+> Task :app:createDevReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksDevRelease
+> Task :core:analytics:extractDeepLinksRelease
+> Task :core:common:extractDeepLinksRelease FROM-CACHE
+> Task :app:generateDevReleaseRFile
+> Task :core:coroutines:extractDeepLinksRelease FROM-CACHE
+> Task :app:mergeDevReleaseNativeLibs
+> Task :core:coroutines:processReleaseManifest
+> Task :core:analytics:processReleaseManifest
+> Task :core:common:processReleaseManifest
+> Task :core:datastore:extractDeepLinksRelease FROM-CACHE
+> Task :core:designsystem:extractDeepLinksRelease FROM-CACHE
+> Task :core:flags:extractDeepLinksRelease FROM-CACHE
+
+> Task :app:stripDevReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :core:datastore:processReleaseManifest
+> Task :core:designsystem:processReleaseManifest
+> Task :core:flags:processReleaseManifest
+> Task :core:media:extractDeepLinksRelease FROM-CACHE
+> Task :core:navigation:extractDeepLinksRelease FROM-CACHE
+> Task :core:media:processReleaseManifest
+> Task :core:network:extractDeepLinksRelease FROM-CACHE
+> Task :core:notification:extractDeepLinksRelease FROM-CACHE
+> Task :core:navigation:processReleaseManifest
+> Task :core:ui:extractDeepLinksRelease FROM-CACHE
+> Task :app:extractDevReleaseNativeSymbolTables
+> Task :core:network:processReleaseManifest
+> Task :app:mergeDevReleaseNativeDebugMetadata NO-SOURCE
+> Task :core:notification:processReleaseManifest
+> Task :data:auth:extractDeepLinksRelease FROM-CACHE
+> Task :data:feed:extractDeepLinksRelease FROM-CACHE
+> Task :core:ui:processReleaseManifest
+> Task :data:orders:extractDeepLinksRelease FROM-CACHE
+> Task :data:profile:extractDeepLinksRelease FROM-CACHE
+> Task :app:checkDevReleaseDuplicateClasses
+> Task :data:auth:processReleaseManifest
+> Task :data:feed:processReleaseManifest
+> Task :data:orders:processReleaseManifest
+> Task :data:search:extractDeepLinksRelease FROM-CACHE
+> Task :data:sample:extractDeepLinksRelease FROM-CACHE
+> Task :data:wallet:extractDeepLinksRelease FROM-CACHE
+> Task :feature:auth:extractDeepLinksRelease FROM-CACHE
+> Task :data:profile:processReleaseManifest
+> Task :data:sample:processReleaseManifest
+> Task :feature:feed:extractDeepLinksRelease FROM-CACHE
+> Task :data:search:processReleaseManifest
+> Task :feature:auth:processReleaseManifest
+> Task :data:wallet:processReleaseManifest
+> Task :feature:orders:extractDeepLinksRelease FROM-CACHE
+> Task :feature:profile:extractDeepLinksRelease FROM-CACHE
+> Task :feature:sample:extractDeepLinksRelease FROM-CACHE
+> Task :feature:feed:processReleaseManifest
+> Task :feature:profile:processReleaseManifest
+> Task :feature:search:extractDeepLinksRelease FROM-CACHE
+> Task :feature:settings:extractDeepLinksRelease FROM-CACHE
+> Task :feature:orders:processReleaseManifest
+> Task :feature:wallet:extractDeepLinksRelease FROM-CACHE
+> Task :feature:sample:processReleaseManifest
+> Task :feature:wallet:processReleaseManifest
+> Task :core:analytics:mapReleaseSourceSetPaths
+> Task :core:common:mapReleaseSourceSetPaths
+> Task :feature:search:processReleaseManifest
+> Task :feature:settings:processReleaseManifest
+> Task :core:coroutines:mapReleaseSourceSetPaths
+> Task :core:datastore:mapReleaseSourceSetPaths
+> Task :core:common:compileReleaseLibraryResources
+> Task :core:analytics:compileReleaseLibraryResources
+> Task :core:flags:mapReleaseSourceSetPaths
+> Task :core:datastore:compileReleaseLibraryResources FROM-CACHE
+> Task :core:designsystem:mapReleaseSourceSetPaths
+> Task :core:flags:compileReleaseLibraryResources FROM-CACHE
+> Task :core:media:mapReleaseSourceSetPaths
+> Task :core:designsystem:compileReleaseLibraryResources
+> Task :core:coroutines:compileReleaseLibraryResources
+> Task :core:navigation:mapReleaseSourceSetPaths
+> Task :core:network:mapReleaseSourceSetPaths
+> Task :core:notification:mapReleaseSourceSetPaths
+> Task :core:navigation:compileReleaseLibraryResources FROM-CACHE
+> Task :core:ui:mapReleaseSourceSetPaths
+> Task :core:network:compileReleaseLibraryResources FROM-CACHE
+> Task :core:ui:compileReleaseLibraryResources FROM-CACHE
+> Task :data:auth:mapReleaseSourceSetPaths
+> Task :data:feed:mapReleaseSourceSetPaths
+> Task :data:auth:compileReleaseLibraryResources FROM-CACHE
+> Task :data:feed:compileReleaseLibraryResources FROM-CACHE
+> Task :core:notification:compileReleaseLibraryResources
+> Task :data:orders:mapReleaseSourceSetPaths
+> Task :data:profile:mapReleaseSourceSetPaths
+> Task :data:orders:compileReleaseLibraryResources FROM-CACHE
+> Task :data:sample:mapReleaseSourceSetPaths
+> Task :data:profile:compileReleaseLibraryResources FROM-CACHE
+> Task :data:sample:compileReleaseLibraryResources FROM-CACHE
+> Task :data:search:mapReleaseSourceSetPaths
+> Task :data:wallet:mapReleaseSourceSetPaths
+> Task :feature:auth:mapReleaseSourceSetPaths
+> Task :data:search:compileReleaseLibraryResources FROM-CACHE
+> Task :data:wallet:compileReleaseLibraryResources FROM-CACHE
+> Task :feature:orders:mapReleaseSourceSetPaths
+> Task :feature:feed:mapReleaseSourceSetPaths
+> Task :feature:auth:compileReleaseLibraryResources
+> Task :feature:orders:compileReleaseLibraryResources
+> Task :feature:profile:mapReleaseSourceSetPaths
+> Task :feature:sample:mapReleaseSourceSetPaths
+> Task :feature:feed:compileReleaseLibraryResources
+> Task :feature:search:mapReleaseSourceSetPaths
+> Task :feature:profile:compileReleaseLibraryResources
+> Task :feature:search:compileReleaseLibraryResources
+> Task :feature:settings:mapReleaseSourceSetPaths
+> Task :feature:wallet:mapReleaseSourceSetPaths
+> Task :feature:sample:compileReleaseLibraryResources
+> Task :feature:wallet:compileReleaseLibraryResources
+> Task :feature:settings:compileReleaseLibraryResources
+> Task :app:generateDevReleaseAssets UP-TO-DATE
+> Task :core:analytics:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeDevReleaseStartupProfile
+> Task :core:common:generateReleaseAssets UP-TO-DATE
+> Task :app:extractProguardFiles
+> Task :core:coroutines:generateReleaseAssets UP-TO-DATE
+> Task :core:analytics:mergeReleaseAssets
+> Task :core:datastore:generateReleaseAssets UP-TO-DATE
+> Task :core:coroutines:mergeReleaseAssets
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :core:common:mergeReleaseAssets
+> Task :core:flags:generateReleaseAssets UP-TO-DATE
+> Task :core:datastore:mergeReleaseAssets
+> Task :core:media:generateReleaseAssets UP-TO-DATE
+> Task :core:flags:mergeReleaseAssets
+> Task :core:navigation:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:mergeReleaseAssets
+> Task :core:network:generateReleaseAssets UP-TO-DATE
+> Task :core:media:mergeReleaseAssets
+> Task :core:notification:generateReleaseAssets UP-TO-DATE
+> Task :core:network:mergeReleaseAssets
+> Task :core:ui:generateReleaseAssets UP-TO-DATE
+> Task :core:notification:mergeReleaseAssets
+> Task :data:auth:generateReleaseAssets UP-TO-DATE
+> Task :core:navigation:mergeReleaseAssets
+> Task :data:feed:generateReleaseAssets UP-TO-DATE
+> Task :data:auth:mergeReleaseAssets
+> Task :data:feed:mergeReleaseAssets
+> Task :data:orders:generateReleaseAssets UP-TO-DATE
+> Task :core:ui:mergeReleaseAssets
+> Task :data:profile:generateReleaseAssets UP-TO-DATE
+> Task :data:sample:generateReleaseAssets UP-TO-DATE
+> Task :data:profile:mergeReleaseAssets
+> Task :data:search:generateReleaseAssets UP-TO-DATE
+> Task :data:orders:mergeReleaseAssets
+> Task :data:wallet:generateReleaseAssets UP-TO-DATE
+> Task :core:media:compileReleaseLibraryResources
+> Task :feature:auth:generateReleaseAssets UP-TO-DATE
+> Task :data:sample:mergeReleaseAssets
+> Task :feature:feed:generateReleaseAssets UP-TO-DATE
+> Task :data:search:mergeReleaseAssets
+> Task :feature:orders:generateReleaseAssets UP-TO-DATE
+> Task :feature:auth:mergeReleaseAssets
+> Task :feature:profile:generateReleaseAssets UP-TO-DATE
+> Task :data:wallet:mergeReleaseAssets
+> Task :feature:sample:generateReleaseAssets UP-TO-DATE
+> Task :feature:sample:mergeReleaseAssets
+> Task :feature:search:generateReleaseAssets UP-TO-DATE
+> Task :feature:feed:mergeReleaseAssets
+> Task :feature:settings:generateReleaseAssets UP-TO-DATE
+> Task :feature:orders:mergeReleaseAssets
+> Task :feature:wallet:generateReleaseAssets UP-TO-DATE
+> Task :feature:wallet:mergeReleaseAssets
+> Task :feature:search:mergeReleaseAssets
+> Task :feature:profile:mergeReleaseAssets
+> Task :feature:settings:mergeReleaseAssets
+> Task :core:analytics:extractProguardFiles
+> Task :core:common:extractProguardFiles
+> Task :core:coroutines:extractProguardFiles
+> Task :core:common:prepareLintJarForPublish
+> Task :core:coroutines:prepareLintJarForPublish
+> Task :core:analytics:prepareLintJarForPublish
+> Task :core:datastore:extractProguardFiles
+> Task :core:designsystem:extractProguardFiles
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:datastore:prepareLintJarForPublish
+> Task :core:flags:extractProguardFiles
+> Task :core:media:extractProguardFiles
+> Task :core:media:prepareLintJarForPublish
+> Task :core:flags:prepareLintJarForPublish
+> Task :core:navigation:extractProguardFiles
+> Task :core:network:extractProguardFiles
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:notification:prepareLintJarForPublish
+> Task :core:network:prepareLintJarForPublish
+> Task :core:notification:extractProguardFiles
+> Task :core:ui:extractProguardFiles
+> Task :data:auth:extractProguardFiles
+> Task :core:ui:prepareLintJarForPublish
+> Task :data:feed:extractProguardFiles
+> Task :data:auth:prepareLintJarForPublish
+> Task :data:feed:prepareLintJarForPublish
+> Task :data:profile:extractProguardFiles
+> Task :data:orders:extractProguardFiles
+> Task :data:profile:prepareLintJarForPublish
+> Task :data:orders:prepareLintJarForPublish
+> Task :data:sample:extractProguardFiles
+> Task :data:search:extractProguardFiles
+> Task :data:sample:prepareLintJarForPublish
+> Task :data:search:prepareLintJarForPublish
+> Task :data:wallet:extractProguardFiles
+> Task :feature:auth:extractProguardFiles
+> Task :data:wallet:prepareLintJarForPublish
+> Task :feature:auth:prepareLintJarForPublish
+> Task :feature:orders:extractProguardFiles
+> Task :feature:feed:extractProguardFiles
+> Task :feature:feed:prepareLintJarForPublish
+> Task :feature:orders:prepareLintJarForPublish
+> Task :feature:sample:extractProguardFiles
+> Task :feature:profile:extractProguardFiles
+> Task :feature:profile:prepareLintJarForPublish
+> Task :feature:sample:prepareLintJarForPublish
+> Task :feature:search:extractProguardFiles
+> Task :feature:settings:extractProguardFiles
+> Task :feature:settings:prepareLintJarForPublish
+> Task :feature:search:prepareLintJarForPublish
+> Task :feature:wallet:extractProguardFiles
+> Task :feature:auth:extractDeepLinksForAarRelease
+> Task :feature:wallet:prepareLintJarForPublish
+> Task :data:auth:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:sample:checkReleaseAarMetadata
+> Task :feature:sample:extractDeepLinksForAarRelease FROM-CACHE
+> Task :data:auth:checkReleaseAarMetadata
+> Task :data:sample:checkReleaseAarMetadata
+> Task :data:sample:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:feed:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:feed:checkReleaseAarMetadata
+> Task :data:feed:extractDeepLinksForAarRelease FROM-CACHE
+> Task :data:feed:checkReleaseAarMetadata
+> Task :feature:search:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:search:checkReleaseAarMetadata
+> Task :data:search:extractDeepLinksForAarRelease FROM-CACHE
+> Task :data:search:checkReleaseAarMetadata
+> Task :feature:auth:checkReleaseAarMetadata
+> Task :feature:profile:extractDeepLinksForAarRelease FROM-CACHE
+> Task :app:mergeDevReleaseAssets
+> Task :data:profile:extractDeepLinksForAarRelease FROM-CACHE
+> Task :data:profile:checkReleaseAarMetadata
+> Task :feature:profile:checkReleaseAarMetadata
+> Task :feature:orders:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:orders:checkReleaseAarMetadata
+> Task :data:orders:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:wallet:extractDeepLinksForAarRelease FROM-CACHE
+> Task :app:compressDevReleaseAssets
+> Task :data:wallet:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:wallet:checkReleaseAarMetadata
+> Task :data:orders:checkReleaseAarMetadata
+> Task :data:wallet:checkReleaseAarMetadata
+> Task :core:network:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:notification:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:settings:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:network:checkReleaseAarMetadata
+> Task :core:datastore:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:datastore:checkReleaseAarMetadata
+> Task :core:ui:checkReleaseAarMetadata
+> Task :feature:settings:checkReleaseAarMetadata
+> Task :core:ui:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:navigation:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:analytics:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:navigation:checkReleaseAarMetadata
+> Task :core:flags:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:notification:checkReleaseAarMetadata
+> Task :core:media:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:common:checkReleaseAarMetadata
+> Task :core:common:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:analytics:checkReleaseAarMetadata
+> Task :core:flags:checkReleaseAarMetadata
+> Task :core:coroutines:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:designsystem:extractDeepLinksForAarRelease FROM-CACHE
+> Task :app:processDevReleaseMainManifest
+> Task :core:media:checkReleaseAarMetadata
+> Task :core:common:writeReleaseLintModelMetadata
+> Task :core:coroutines:writeReleaseLintModelMetadata
+> Task :core:analytics:writeReleaseLintModelMetadata
+> Task :core:datastore:writeReleaseLintModelMetadata
+> Task :core:designsystem:writeReleaseLintModelMetadata
+> Task :core:flags:writeReleaseLintModelMetadata
+> Task :core:media:writeReleaseLintModelMetadata
+> Task :core:navigation:writeReleaseLintModelMetadata
+> Task :core:network:writeReleaseLintModelMetadata
+> Task :core:notification:writeReleaseLintModelMetadata
+> Task :core:ui:writeReleaseLintModelMetadata
+> Task :data:auth:writeReleaseLintModelMetadata
+> Task :data:feed:writeReleaseLintModelMetadata
+> Task :data:orders:writeReleaseLintModelMetadata
+> Task :data:profile:writeReleaseLintModelMetadata
+> Task :app:processDevReleaseManifest
+> Task :app:processDevReleaseManifestForPackage
+> Task :data:search:writeReleaseLintModelMetadata
+> Task :data:wallet:writeReleaseLintModelMetadata
+> Task :feature:auth:writeReleaseLintModelMetadata
+> Task :feature:feed:writeReleaseLintModelMetadata
+> Task :data:sample:writeReleaseLintModelMetadata
+> Task :feature:orders:writeReleaseLintModelMetadata
+> Task :feature:profile:writeReleaseLintModelMetadata
+> Task :feature:sample:writeReleaseLintModelMetadata
+> Task :feature:settings:writeReleaseLintModelMetadata
+> Task :feature:search:writeReleaseLintModelMetadata
+> Task :app:mergeDevReleaseResources
+> Task :feature:wallet:writeReleaseLintModelMetadata
+> Task :app:validateSigningDevRelease
+> Task :app:writeDevReleaseAppMetadata
+> Task :core:coroutines:checkReleaseAarMetadata
+> Task :core:designsystem:checkReleaseAarMetadata
+> Task :app:writeDevReleaseSigningConfigVersions
+> Task :core:designsystem:extractReleaseAnnotations
+> Task :app:collectDevReleaseDependencies
+> Task :app:sdkDevReleaseDependencyData
+> Task :app:processDevReleaseResources
+> Task :core:coroutines:kspReleaseKotlin
+> Task :core:coroutines:extractReleaseAnnotations
+> Task :core:coroutines:compileReleaseKotlin
+> Task :core:coroutines:processReleaseJavaRes
+> Task :core:designsystem:compileReleaseKotlin
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:designsystem:mergeReleaseGeneratedProguardFiles
+> Task :core:designsystem:processReleaseJavaRes
+> Task :core:designsystem:mergeReleaseConsumerProguardFiles
+> Task :core:designsystem:exportReleaseConsumerProguardFiles
+> Task :core:designsystem:bundleLibCompileToJarRelease
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:mergeReleaseJavaResource
+> Task :core:coroutines:mergeReleaseJavaResource
+> Task :core:designsystem:createFullJarRelease
+> Task :core:designsystem:syncReleaseLibJars
+> Task :core:designsystem:bundleReleaseLocalLintAar
+> Task :core:coroutines:compileReleaseJavaWithJavac
+> Task :core:coroutines:transformReleaseClassesWithAsm
+> Task :core:coroutines:bundleLibCompileToJarRelease
+> Task :core:coroutines:bundleLibRuntimeToJarRelease
+> Task :core:coroutines:mergeReleaseGeneratedProguardFiles
+> Task :core:coroutines:exportReleaseConsumerProguardFiles
+> Task :core:coroutines:createFullJarRelease
+> Task :core:coroutines:mergeReleaseConsumerProguardFiles
+> Task :core:coroutines:syncReleaseLibJars
+> Task :core:coroutines:bundleReleaseLocalLintAar
+> Task :core:coroutines:generateReleaseLintModel
+> Task :core:coroutines:generateReleaseLintVitalModel
+> Task :core:designsystem:generateReleaseLintModel
+> Task :core:designsystem:generateReleaseLintVitalModel
+> Task :core:common:kspReleaseKotlin
+> Task :core:common:extractReleaseAnnotations
+> Task :core:coroutines:lintVitalAnalyzeRelease
+> Task :core:common:compileReleaseKotlin
+> Task :core:common:processReleaseJavaRes
+> Task :core:common:mergeReleaseJavaResource
+> Task :core:common:compileReleaseJavaWithJavac
+> Task :core:common:generateReleaseLintModel
+> Task :core:common:generateReleaseLintVitalModel
+> Task :core:common:transformReleaseClassesWithAsm
+> Task :core:common:bundleLibRuntimeToJarRelease
+> Task :core:common:mergeReleaseGeneratedProguardFiles
+> Task :core:common:bundleLibCompileToJarRelease
+> Task :core:common:mergeReleaseConsumerProguardFiles
+> Task :core:common:createFullJarRelease
+> Task :core:common:exportReleaseConsumerProguardFiles
+> Task :core:common:syncReleaseLibJars
+> Task :core:common:bundleReleaseLocalLintAar
+> Task :core:flags:kspReleaseKotlin
+> Task :core:flags:extractReleaseAnnotations
+> Task :core:media:kspReleaseKotlin
+> Task :core:media:extractReleaseAnnotations
+> Task :core:flags:compileReleaseKotlin
+> Task :core:flags:processReleaseJavaRes
+> Task :core:flags:mergeReleaseJavaResource
+> Task :core:navigation:kspReleaseKotlin
+> Task :core:navigation:extractReleaseAnnotations
+> Task :core:analytics:kspReleaseKotlin
+> Task :core:analytics:extractReleaseAnnotations
+> Task :core:flags:compileReleaseJavaWithJavac
+> Task :core:flags:transformReleaseClassesWithAsm
+> Task :core:flags:mergeReleaseGeneratedProguardFiles
+> Task :core:flags:exportReleaseConsumerProguardFiles
+> Task :core:flags:bundleLibCompileToJarRelease
+> Task :core:flags:bundleLibRuntimeToJarRelease
+> Task :core:flags:createFullJarRelease
+> Task :core:flags:mergeReleaseConsumerProguardFiles
+> Task :core:flags:syncReleaseLibJars
+> Task :core:flags:generateReleaseLintModel
+> Task :core:flags:bundleReleaseLocalLintAar
+> Task :core:flags:generateReleaseLintVitalModel
+> Task :core:analytics:compileReleaseKotlin
+> Task :core:analytics:processReleaseJavaRes
+> Task :core:analytics:mergeReleaseJavaResource
+> Task :core:media:compileReleaseKotlin
+> Task :core:media:processReleaseJavaRes
+> Task :core:media:mergeReleaseJavaResource
+> Task :core:datastore:kspReleaseKotlin
+> Task :core:datastore:extractReleaseAnnotations
+> Task :core:media:compileReleaseJavaWithJavac
+> Task :core:media:transformReleaseClassesWithAsm
+> Task :core:media:bundleLibCompileToJarRelease
+> Task :core:media:bundleLibRuntimeToJarRelease
+> Task :core:media:mergeReleaseGeneratedProguardFiles
+> Task :core:media:generateReleaseLintModel
+> Task :core:analytics:compileReleaseJavaWithJavac
+> Task :core:media:exportReleaseConsumerProguardFiles
+> Task :core:media:createFullJarRelease
+> Task :core:media:mergeReleaseConsumerProguardFiles
+> Task :core:media:syncReleaseLibJars
+> Task :core:analytics:transformReleaseClassesWithAsm
+> Task :core:analytics:mergeReleaseGeneratedProguardFiles
+> Task :core:media:bundleReleaseLocalLintAar
+> Task :core:analytics:exportReleaseConsumerProguardFiles
+> Task :core:analytics:bundleLibCompileToJarRelease
+> Task :core:analytics:bundleLibRuntimeToJarRelease
+> Task :core:analytics:mergeReleaseConsumerProguardFiles
+> Task :core:analytics:createFullJarRelease
+> Task :core:analytics:syncReleaseLibJars
+> Task :core:analytics:bundleReleaseLocalLintAar
+> Task :core:analytics:generateReleaseLintModel
+> Task :core:datastore:compileReleaseKotlin
+> Task :core:navigation:compileReleaseKotlin
+> Task :core:analytics:generateReleaseLintVitalModel
+> Task :core:datastore:processReleaseJavaRes
+> Task :core:navigation:processReleaseJavaRes
+> Task :core:datastore:mergeReleaseJavaResource
+> Task :core:navigation:mergeReleaseJavaResource
+> Task :core:media:generateReleaseLintVitalModel
+> Task :core:navigation:compileReleaseJavaWithJavac
+> Task :core:datastore:compileReleaseJavaWithJavac
+> Task :core:navigation:transformReleaseClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarRelease
+> Task :core:navigation:bundleLibRuntimeToJarRelease
+> Task :core:navigation:generateReleaseLintModel
+> Task :core:datastore:transformReleaseClassesWithAsm
+> Task :core:datastore:bundleLibCompileToJarRelease
+> Task :core:datastore:bundleLibRuntimeToJarRelease
+> Task :core:flags:lintVitalAnalyzeRelease
+> Task :core:datastore:mergeReleaseGeneratedProguardFiles
+> Task :core:datastore:exportReleaseConsumerProguardFiles
+> Task :core:navigation:mergeReleaseGeneratedProguardFiles
+> Task :core:navigation:exportReleaseConsumerProguardFiles
+> Task :core:datastore:createFullJarRelease
+> Task :core:datastore:generateReleaseLintModel
+> Task :core:navigation:createFullJarRelease
+> Task :core:datastore:mergeReleaseConsumerProguardFiles
+> Task :core:datastore:syncReleaseLibJars
+> Task :core:datastore:bundleReleaseLocalLintAar
+> Task :core:navigation:mergeReleaseConsumerProguardFiles
+> Task :core:navigation:syncReleaseLibJars
+> Task :core:navigation:bundleReleaseLocalLintAar
+> Task :core:analytics:lintVitalAnalyzeRelease
+> Task :core:ui:kspReleaseKotlin
+> Task :core:common:lintVitalAnalyzeRelease
+> Task :core:ui:extractReleaseAnnotations
+> Task :core:datastore:generateReleaseLintVitalModel
+> Task :core:navigation:generateReleaseLintVitalModel
+> Task :core:ui:compileReleaseKotlin
+> Task :core:ui:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:ui:processReleaseJavaRes
+> Task :core:datastore:lintVitalAnalyzeRelease
+> Task :core:ui:mergeReleaseJavaResource
+> Task :core:ui:transformReleaseClassesWithAsm
+> Task :core:ui:bundleLibCompileToJarRelease
+> Task :core:ui:bundleLibRuntimeToJarRelease
+> Task :core:ui:generateReleaseLintModel
+> Task :core:ui:mergeReleaseGeneratedProguardFiles
+> Task :core:ui:exportReleaseConsumerProguardFiles
+> Task :core:ui:createFullJarRelease
+> Task :core:ui:mergeReleaseConsumerProguardFiles
+> Task :core:ui:syncReleaseLibJars
+> Task :core:ui:bundleReleaseLocalLintAar
+> Task :core:ui:generateReleaseLintVitalModel
+> Task :core:notification:kspReleaseKotlin
+> Task :core:notification:extractReleaseAnnotations
+> Task :core:notification:compileReleaseKotlin
+> Task :core:notification:processReleaseJavaRes
+> Task :core:notification:mergeReleaseJavaResource
+> Task :core:notification:compileReleaseJavaWithJavac
+> Task :core:notification:transformReleaseClassesWithAsm
+> Task :core:notification:mergeReleaseGeneratedProguardFiles
+> Task :core:notification:exportReleaseConsumerProguardFiles
+> Task :core:notification:bundleLibCompileToJarRelease
+> Task :core:notification:bundleLibRuntimeToJarRelease
+> Task :core:notification:createFullJarRelease
+> Task :core:notification:mergeReleaseConsumerProguardFiles
+> Task :core:notification:generateReleaseLintModel
+> Task :core:notification:syncReleaseLibJars
+> Task :core:notification:bundleReleaseLocalLintAar
+> Task :core:media:lintVitalAnalyzeRelease
+> Task :core:notification:generateReleaseLintVitalModel
+> Task :core:navigation:lintVitalAnalyzeRelease
+> Task :core:notification:lintVitalAnalyzeRelease
+> Task :core:ui:lintVitalAnalyzeRelease
+> Task :feature:settings:kspReleaseKotlin
+> Task :feature:settings:extractReleaseAnnotations
+> Task :feature:settings:compileReleaseKotlin
+> Task :feature:settings:processReleaseJavaRes
+> Task :feature:settings:mergeReleaseJavaResource
+> Task :feature:settings:compileReleaseJavaWithJavac
+> Task :feature:settings:generateReleaseLintModel
+> Task :feature:settings:transformReleaseClassesWithAsm
+> Task :feature:settings:generateReleaseLintVitalModel
+> Task :feature:settings:bundleLibCompileToJarRelease
+> Task :feature:settings:mergeReleaseGeneratedProguardFiles
+> Task :feature:settings:bundleLibRuntimeToJarRelease
+> Task :feature:settings:exportReleaseConsumerProguardFiles
+> Task :feature:settings:mergeReleaseConsumerProguardFiles
+> Task :feature:settings:createFullJarRelease
+> Task :feature:settings:syncReleaseLibJars
+> Task :feature:settings:bundleReleaseLocalLintAar
+> Task :feature:settings:lintVitalAnalyzeRelease
+> Task :core:network:kspReleaseKotlin
+> Task :core:network:extractReleaseAnnotations
+> Task :core:network:compileReleaseKotlin
+> Task :core:network:processReleaseJavaRes
+> Task :core:network:mergeReleaseJavaResource
+> Task :core:network:compileReleaseJavaWithJavac
+> Task :core:network:transformReleaseClassesWithAsm
+> Task :core:network:mergeReleaseGeneratedProguardFiles
+> Task :core:network:bundleLibCompileToJarRelease
+> Task :core:network:exportReleaseConsumerProguardFiles
+> Task :core:network:bundleLibRuntimeToJarRelease
+> Task :core:network:generateReleaseLintModel
+> Task :core:network:generateReleaseLintVitalModel
+> Task :core:network:syncReleaseLibJars
+> Task :core:designsystem:lintVitalAnalyzeRelease
+> Task :data:orders:kspReleaseKotlin
+> Task :data:profile:kspReleaseKotlin
+> Task :data:auth:kspReleaseKotlin
+> Task :data:feed:kspReleaseKotlin
+> Task :data:sample:kspReleaseKotlin
+> Task :data:search:kspReleaseKotlin
+> Task :data:orders:compileReleaseKotlin
+> Task :data:profile:compileReleaseKotlin
+> Task :data:orders:compileReleaseJavaWithJavac
+> Task :data:orders:transformReleaseClassesWithAsm
+> Task :data:orders:bundleLibCompileToJarRelease
+> Task :data:orders:bundleLibRuntimeToJarRelease
+> Task :data:profile:compileReleaseJavaWithJavac
+> Task :data:profile:transformReleaseClassesWithAsm
+> Task :data:profile:bundleLibCompileToJarRelease
+> Task :data:profile:bundleLibRuntimeToJarRelease
+> Task :data:auth:compileReleaseKotlin
+> Task :data:feed:compileReleaseKotlin
+> Task :data:sample:compileReleaseKotlin
+> Task :data:search:compileReleaseKotlin
+> Task :data:auth:compileReleaseJavaWithJavac
+> Task :data:sample:compileReleaseJavaWithJavac
+> Task :data:feed:compileReleaseJavaWithJavac
+> Task :data:auth:transformReleaseClassesWithAsm
+> Task :data:sample:transformReleaseClassesWithAsm
+> Task :data:auth:bundleLibCompileToJarRelease
+> Task :data:auth:bundleLibRuntimeToJarRelease
+> Task :data:auth:mergeReleaseGeneratedProguardFiles
+> Task :data:feed:transformReleaseClassesWithAsm
+> Task :data:auth:exportReleaseConsumerProguardFiles
+> Task :data:sample:bundleLibCompileToJarRelease
+> Task :data:sample:bundleLibRuntimeToJarRelease
+> Task :data:sample:mergeReleaseGeneratedProguardFiles
+> Task :data:sample:exportReleaseConsumerProguardFiles
+> Task :data:feed:bundleLibCompileToJarRelease
+> Task :data:feed:bundleLibRuntimeToJarRelease
+> Task :data:search:compileReleaseJavaWithJavac
+> Task :data:feed:mergeReleaseGeneratedProguardFiles
+> Task :data:feed:exportReleaseConsumerProguardFiles
+> Task :data:search:transformReleaseClassesWithAsm
+> Task :data:search:bundleLibCompileToJarRelease
+> Task :data:search:bundleLibRuntimeToJarRelease
+> Task :data:search:mergeReleaseGeneratedProguardFiles
+> Task :data:search:exportReleaseConsumerProguardFiles
+> Task :data:profile:mergeReleaseGeneratedProguardFiles
+> Task :data:profile:exportReleaseConsumerProguardFiles
+> Task :data:orders:mergeReleaseGeneratedProguardFiles
+> Task :data:orders:exportReleaseConsumerProguardFiles
+> Task :data:wallet:kspReleaseKotlin
+> Task :core:network:lintVitalAnalyzeRelease
+> Task :feature:profile:kspReleaseKotlin
+> Task :data:auth:processReleaseJavaRes
+> Task :data:feed:processReleaseJavaRes
+> Task :data:orders:processReleaseJavaRes
+> Task :feature:orders:kspReleaseKotlin
+> Task :data:profile:processReleaseJavaRes
+> Task :data:sample:processReleaseJavaRes
+> Task :data:search:processReleaseJavaRes
+> Task :core:network:createFullJarRelease
+> Task :data:auth:createFullJarRelease
+> Task :data:auth:generateReleaseLintModel
+> Task :data:feed:createFullJarRelease
+> Task :data:feed:generateReleaseLintModel
+> Task :data:orders:createFullJarRelease
+> Task :data:wallet:compileReleaseKotlin
+> Task :data:orders:generateReleaseLintModel
+> Task :data:wallet:processReleaseJavaRes
+> Task :data:profile:createFullJarRelease
+> Task :data:profile:generateReleaseLintModel
+> Task :data:sample:createFullJarRelease
+> Task :data:sample:generateReleaseLintModel
+> Task :data:search:createFullJarRelease
+> Task :data:search:generateReleaseLintModel
+> Task :data:auth:extractReleaseAnnotations
+> Task :data:auth:mergeReleaseConsumerProguardFiles
+> Task :data:auth:mergeReleaseJavaResource
+> Task :data:auth:syncReleaseLibJars
+> Task :data:auth:bundleReleaseLocalLintAar
+> Task :data:sample:extractReleaseAnnotations
+> Task :data:sample:mergeReleaseConsumerProguardFiles
+> Task :data:sample:mergeReleaseJavaResource
+> Task :data:sample:syncReleaseLibJars
+> Task :data:sample:bundleReleaseLocalLintAar
+> Task :data:feed:extractReleaseAnnotations
+> Task :data:feed:mergeReleaseConsumerProguardFiles
+> Task :data:wallet:compileReleaseJavaWithJavac
+> Task :data:feed:mergeReleaseJavaResource
+> Task :data:wallet:transformReleaseClassesWithAsm
+> Task :data:wallet:bundleLibCompileToJarRelease
+> Task :data:wallet:generateReleaseLintModel
+> Task :data:wallet:bundleLibRuntimeToJarRelease
+> Task :data:wallet:mergeReleaseGeneratedProguardFiles
+> Task :data:wallet:exportReleaseConsumerProguardFiles
+> Task :data:wallet:createFullJarRelease
+> Task :data:feed:syncReleaseLibJars
+> Task :data:feed:bundleReleaseLocalLintAar
+> Task :feature:feed:kspReleaseKotlin
+> Task :feature:profile:compileReleaseKotlin
+> Task :feature:feed:extractReleaseAnnotations
+> Task :feature:profile:processReleaseJavaRes
+> Task :data:search:extractReleaseAnnotations
+> Task :data:search:mergeReleaseConsumerProguardFiles
+> Task :data:search:mergeReleaseJavaResource
+> Task :data:search:syncReleaseLibJars
+> Task :feature:orders:compileReleaseKotlin
+> Task :data:search:bundleReleaseLocalLintAar
+> Task :feature:orders:processReleaseJavaRes
+> Task :feature:profile:extractReleaseAnnotations
+> Task :feature:profile:mergeReleaseJavaResource
+> Task :data:profile:extractReleaseAnnotations
+> Task :data:profile:mergeReleaseConsumerProguardFiles
+> Task :data:profile:mergeReleaseJavaResource
+> Task :data:profile:syncReleaseLibJars
+> Task :data:profile:bundleReleaseLocalLintAar
+> Task :feature:orders:extractReleaseAnnotations
+> Task :feature:orders:mergeReleaseJavaResource
+> Task :data:orders:extractReleaseAnnotations
+> Task :data:orders:mergeReleaseConsumerProguardFiles
+> Task :data:orders:mergeReleaseJavaResource
+> Task :data:orders:syncReleaseLibJars
+> Task :data:orders:bundleReleaseLocalLintAar
+> Task :data:wallet:extractReleaseAnnotations
+> Task :data:wallet:mergeReleaseConsumerProguardFiles
+> Task :data:wallet:mergeReleaseJavaResource
+> Task :data:wallet:syncReleaseLibJars
+> Task :data:wallet:bundleReleaseLocalLintAar
+> Task :core:network:mergeReleaseConsumerProguardFiles
+> Task :core:network:bundleReleaseLocalLintAar
+> Task :feature:orders:compileReleaseJavaWithJavac
+> Task :feature:profile:compileReleaseJavaWithJavac
+> Task :feature:orders:transformReleaseClassesWithAsm
+> Task :feature:orders:mergeReleaseGeneratedProguardFiles
+> Task :feature:orders:exportReleaseConsumerProguardFiles
+> Task :feature:orders:bundleLibCompileToJarRelease
+> Task :feature:profile:transformReleaseClassesWithAsm
+> Task :feature:orders:bundleLibRuntimeToJarRelease
+> Task :feature:profile:mergeReleaseGeneratedProguardFiles
+> Task :feature:profile:exportReleaseConsumerProguardFiles
+> Task :feature:profile:bundleLibCompileToJarRelease
+> Task :feature:profile:bundleLibRuntimeToJarRelease
+> Task :feature:orders:createFullJarRelease
+> Task :feature:profile:createFullJarRelease
+> Task :feature:orders:generateReleaseLintModel
+> Task :feature:profile:mergeReleaseConsumerProguardFiles
+> Task :feature:profile:generateReleaseLintModel
+> Task :feature:orders:mergeReleaseConsumerProguardFiles
+> Task :feature:profile:syncReleaseLibJars
+> Task :feature:profile:bundleReleaseLocalLintAar
+> Task :feature:orders:syncReleaseLibJars
+> Task :feature:orders:bundleReleaseLocalLintAar
+> Task :feature:feed:compileReleaseKotlin
+> Task :feature:sample:kspReleaseKotlin
+> Task :feature:search:kspReleaseKotlin
+> Task :feature:auth:kspReleaseKotlin
+> Task :feature:feed:compileReleaseJavaWithJavac
+> Task :feature:feed:transformReleaseClassesWithAsm
+> Task :feature:feed:mergeReleaseGeneratedProguardFiles
+> Task :feature:feed:exportReleaseConsumerProguardFiles
+> Task :data:orders:lintVitalAnalyzeRelease
+> Task :feature:feed:bundleLibCompileToJarRelease
+> Task :feature:feed:bundleLibRuntimeToJarRelease
+> Task :feature:feed:processReleaseJavaRes
+> Task :feature:feed:createFullJarRelease
+> Task :feature:auth:extractReleaseAnnotations
+> Task :feature:sample:extractReleaseAnnotations
+> Task :feature:feed:mergeReleaseConsumerProguardFiles
+> Task :feature:feed:mergeReleaseJavaResource
+> Task :feature:feed:generateReleaseLintModel
+> Task :feature:search:extractReleaseAnnotations
+> Task :feature:feed:syncReleaseLibJars
+> Task :data:auth:lintVitalAnalyzeRelease
+> Task :feature:feed:bundleReleaseLocalLintAar
+> Task :data:feed:lintVitalAnalyzeRelease
+> Task :feature:sample:compileReleaseKotlin
+> Task :data:profile:lintVitalAnalyzeRelease
+> Task :feature:sample:processReleaseJavaRes
+> Task :feature:sample:mergeReleaseJavaResource
+> Task :data:sample:lintVitalAnalyzeRelease
+> Task :data:wallet:lintVitalAnalyzeRelease
+> Task :data:search:lintVitalAnalyzeRelease
+> Task :data:auth:generateReleaseLintVitalModel
+> Task :feature:sample:compileReleaseJavaWithJavac
+> Task :data:feed:generateReleaseLintVitalModel
+> Task :feature:sample:generateReleaseLintModel
+> Task :feature:sample:transformReleaseClassesWithAsm
+> Task :feature:sample:mergeReleaseGeneratedProguardFiles
+> Task :feature:sample:exportReleaseConsumerProguardFiles
+> Task :feature:sample:bundleLibCompileToJarRelease
+> Task :feature:sample:bundleLibRuntimeToJarRelease
+> Task :feature:sample:createFullJarRelease
+> Task :feature:sample:mergeReleaseConsumerProguardFiles
+> Task :feature:search:compileReleaseKotlin
+> Task :feature:sample:syncReleaseLibJars
+> Task :feature:search:processReleaseJavaRes
+> Task :feature:sample:bundleReleaseLocalLintAar
+> Task :feature:search:mergeReleaseJavaResource
+> Task :feature:auth:compileReleaseKotlin
+> Task :data:orders:generateReleaseLintVitalModel
+> Task :feature:auth:processReleaseJavaRes
+> Task :feature:auth:mergeReleaseJavaResource
+> Task :data:profile:generateReleaseLintVitalModel
+> Task :data:sample:generateReleaseLintVitalModel
+> Task :data:search:generateReleaseLintVitalModel
+> Task :data:wallet:generateReleaseLintVitalModel
+> Task :feature:feed:generateReleaseLintVitalModel
+> Task :feature:orders:generateReleaseLintVitalModel
+> Task :feature:profile:generateReleaseLintVitalModel
+> Task :feature:search:compileReleaseJavaWithJavac
+> Task :feature:sample:generateReleaseLintVitalModel
+> Task :feature:feed:lintVitalAnalyzeRelease
+> Task :feature:search:generateReleaseLintModel
+> Task :feature:search:transformReleaseClassesWithAsm
+> Task :feature:search:mergeReleaseGeneratedProguardFiles
+> Task :feature:search:exportReleaseConsumerProguardFiles
+> Task :feature:search:generateReleaseLintVitalModel
+> Task :feature:search:bundleLibCompileToJarRelease
+> Task :feature:search:bundleLibRuntimeToJarRelease
+> Task :feature:search:createFullJarRelease
+> Task :feature:auth:compileReleaseJavaWithJavac
+> Task :feature:search:mergeReleaseConsumerProguardFiles
+> Task :feature:search:syncReleaseLibJars
+> Task :feature:orders:lintVitalAnalyzeRelease
+> Task :feature:search:bundleReleaseLocalLintAar
+> Task :feature:auth:transformReleaseClassesWithAsm
+> Task :feature:auth:mergeReleaseGeneratedProguardFiles
+> Task :feature:auth:exportReleaseConsumerProguardFiles
+> Task :feature:profile:lintVitalAnalyzeRelease
+> Task :feature:auth:bundleLibCompileToJarRelease
+> Task :feature:auth:generateReleaseLintModel
+> Task :feature:auth:bundleLibRuntimeToJarRelease
+> Task :feature:auth:generateReleaseLintVitalModel
+> Task :feature:auth:mergeReleaseConsumerProguardFiles
+> Task :feature:auth:createFullJarRelease
+> Task :feature:auth:syncReleaseLibJars
+> Task :feature:auth:bundleReleaseLocalLintAar
+> Task :feature:wallet:kspReleaseKotlin
+> Task :feature:wallet:extractReleaseAnnotations
+> Task :feature:sample:lintVitalAnalyzeRelease
+> Task :feature:search:lintVitalAnalyzeRelease
+> Task :feature:wallet:compileReleaseKotlin
+> Task :feature:wallet:processReleaseJavaRes
+> Task :feature:wallet:mergeReleaseJavaResource
+> Task :feature:wallet:compileReleaseJavaWithJavac
+> Task :feature:auth:lintVitalAnalyzeRelease
+> Task :feature:wallet:generateReleaseLintModel
+> Task :feature:wallet:transformReleaseClassesWithAsm
+> Task :feature:wallet:generateReleaseLintVitalModel
+> Task :feature:wallet:mergeReleaseGeneratedProguardFiles
+> Task :feature:wallet:bundleLibCompileToJarRelease
+> Task :feature:wallet:bundleLibRuntimeToJarRelease
+> Task :feature:wallet:exportReleaseConsumerProguardFiles
+> Task :feature:wallet:mergeReleaseConsumerProguardFiles
+> Task :feature:wallet:createFullJarRelease
+> Task :feature:wallet:syncReleaseLibJars
+> Task :feature:wallet:bundleReleaseLocalLintAar
+> Task :feature:wallet:lintVitalAnalyzeRelease
+> Task :app:kspDevReleaseKotlin
+> Task :app:compileDevReleaseKotlin
+> Task :app:processDevReleaseJavaRes
+> Task :app:compileDevReleaseJavaWithJavac
+> Task :app:hiltCollectClassesDevRelease
+> Task :app:generateDevReleaseLintVitalReportModel
+> Task :app:hiltAggregateDepsDevRelease
+> Task :app:mergeDevReleaseJavaResource
+> Task :app:hiltJavaCompileDevRelease
+> Task :app:transformDevReleaseClassesWithAsm
+> Task :app:mergeDevReleaseGeneratedProguardFiles
+> Task :app:expandDevReleaseArtProfileWildcards
+> Task :app:produceDevReleaseComposeMapping
+> Task :app:reportDevReleaseComposeMappingErrors
+> Task :app:lintVitalAnalyzeDevRelease
+> Task :app:lintVitalReportDevRelease
+> Task :app:lintVitalDevRelease
+> Task :app:minifyDevReleaseWithR8
+> Task :app:convertShrunkResourcesToBinaryDevRelease
+> Task :app:optimizeDevReleaseResources
+> Task :app:mergeDevReleaseComposeMapping
+> Task :app:compileDevReleaseArtProfile
+> Task :app:packageDevRelease
+> Task :app:assembleDevRelease
+> Task :app:createDevReleaseApkListingFileRedirect
+> Task :app:uploadCrashlyticsMappingFileDevRelease
+
+BUILD SUCCESSFUL in 3m 52s
+1132 actionable tasks: 999 executed, 133 from cache
+Configuration cache entry stored.
+END devRelease rc=0 secs=234
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:assembleDevDebug
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:verifyModuleDependencies
+> Task :core:analytics:verifyComposeUsage
+> Task :core:coroutines:verifyModuleDependencies
+> Task :core:coroutines:verifyComposeUsage
+> Task :core:analytics:verifyModuleDependencies
+> Task :core:coroutines:preBuild
+> Task :core:analytics:preBuild
+> Task :core:coroutines:preDebugBuild
+> Task :core:analytics:preDebugBuild
+> Task :core:datastore:verifyComposeUsage
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:common:verifyComposeUsage
+> Task :core:common:preBuild
+> Task :core:common:preDebugBuild
+> Task :core:datastore:extractDebugSupportedLocales FROM-CACHE
+> Task :core:coroutines:extractDebugSupportedLocales FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:flags:verifyComposeUsage
+> Task :core:flags:verifyModuleDependencies
+> Task :core:flags:preBuild
+> Task :core:flags:preDebugBuild
+> Task :core:common:extractDebugSupportedLocales FROM-CACHE
+> Task :core:media:verifyComposeUsage
+> Task :core:media:verifyModuleDependencies
+> Task :core:media:preBuild
+> Task :core:media:preDebugBuild
+> Task :app:injectCrashlyticsVersionControlInfoDevDebug
+> Task :app:processDevDebugGoogleServices FROM-CACHE
+> Task :core:analytics:extractDebugSupportedLocales FROM-CACHE
+> Task :core:flags:extractDebugSupportedLocales FROM-CACHE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:network:verifyModuleDependencies
+> Task :core:notification:verifyModuleDependencies
+> Task :core:notification:verifyComposeUsage
+> Task :app:injectCrashlyticsMappingFileIdDevDebug
+> Task :core:notification:preBuild
+> Task :core:notification:preDebugBuild
+> Task :core:ui:verifyModuleDependencies
+> Task :app:verifyComposeUsage
+> Task :app:preBuild
+> Task :app:preDevDebugBuild
+> Task :core:network:verifyComposeUsage
+> Task :app:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :data:auth:verifyComposeUsage
+> Task :core:navigation:verifyComposeUsage
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:media:extractDebugSupportedLocales FROM-CACHE
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:notification:extractDebugSupportedLocales FROM-CACHE
+> Task :data:auth:verifyModuleDependencies
+> Task :data:auth:preBuild
+> Task :data:auth:preDebugBuild
+> Task :core:navigation:extractDebugSupportedLocales FROM-CACHE
+> Task :app:generateDevDebugBuildConfig
+> Task :core:ui:verifyComposeUsage
+> Task :core:ui:preBuild
+> Task :app:mapDevDebugSourceSetPaths
+> Task :core:ui:preDebugBuild
+> Task :app:extractDevDebugSupportedLocales
+> Task :core:network:extractDebugSupportedLocales FROM-CACHE
+> Task :data:feed:verifyModuleDependencies
+> Task :data:orders:verifyModuleDependencies
+> Task :data:orders:verifyComposeUsage
+> Task :data:orders:preBuild
+> Task :data:orders:preDebugBuild
+> Task :data:feed:verifyComposeUsage
+> Task :data:feed:preBuild
+> Task :data:feed:preDebugBuild
+> Task :data:profile:verifyModuleDependencies
+> Task :data:sample:verifyModuleDependencies
+> Task :data:profile:verifyComposeUsage
+> Task :data:profile:preBuild
+> Task :data:profile:preDebugBuild
+> Task :core:ui:extractDebugSupportedLocales FROM-CACHE
+> Task :data:auth:extractDebugSupportedLocales FROM-CACHE
+> Task :data:search:verifyComposeUsage
+> Task :data:orders:extractDebugSupportedLocales FROM-CACHE
+> Task :data:search:verifyModuleDependencies
+> Task :data:search:preBuild
+> Task :data:search:preDebugBuild
+> Task :data:feed:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:auth:verifyModuleDependencies
+> Task :data:wallet:verifyModuleDependencies
+> Task :data:wallet:verifyComposeUsage
+> Task :data:wallet:preBuild
+> Task :feature:feed:verifyModuleDependencies
+> Task :data:wallet:preDebugBuild
+> Task :data:search:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:orders:verifyModuleDependencies
+> Task :data:sample:verifyComposeUsage
+> Task :data:profile:extractDebugSupportedLocales FROM-CACHE
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :feature:profile:verifyModuleDependencies
+> Task :feature:orders:verifyComposeUsage
+> Task :feature:orders:preBuild
+> Task :feature:orders:preDebugBuild
+> Task :feature:feed:verifyComposeUsage
+> Task :data:sample:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:feed:preBuild
+> Task :feature:feed:preDebugBuild
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:profile:verifyComposeUsage
+> Task :data:wallet:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:profile:preBuild
+> Task :feature:search:verifyModuleDependencies
+> Task :feature:profile:preDebugBuild
+> Task :feature:orders:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:settings:verifyModuleDependencies
+> Task :feature:sample:verifyComposeUsage
+> Task :feature:feed:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:auth:verifyComposeUsage
+> Task :feature:wallet:verifyModuleDependencies
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :feature:sample:preBuild
+> Task :feature:sample:preDebugBuild
+> Task :feature:settings:verifyComposeUsage
+> Task :feature:wallet:verifyComposeUsage
+> Task :feature:wallet:preBuild
+> Task :feature:settings:preBuild
+> Task :feature:search:verifyComposeUsage
+> Task :feature:wallet:preDebugBuild
+> Task :feature:settings:preDebugBuild
+> Task :feature:search:preBuild
+> Task :feature:search:preDebugBuild
+> Task :feature:profile:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:auth:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:sample:extractDebugSupportedLocales FROM-CACHE
+> Task :core:common:processDebugNavigationResources FROM-CACHE
+> Task :core:analytics:processDebugNavigationResources FROM-CACHE
+> Task :core:coroutines:processDebugNavigationResources FROM-CACHE
+> Task :feature:settings:extractDebugSupportedLocales FROM-CACHE
+> Task :feature:wallet:extractDebugSupportedLocales FROM-CACHE
+> Task :core:navigation:processDebugNavigationResources FROM-CACHE
+> Task :core:media:processDebugNavigationResources FROM-CACHE
+> Task :feature:search:extractDebugSupportedLocales FROM-CACHE
+> Task :core:flags:processDebugNavigationResources FROM-CACHE
+> Task :core:datastore:processDebugNavigationResources FROM-CACHE
+> Task :app:generateDevDebugResources
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:notification:processDebugNavigationResources FROM-CACHE
+> Task :data:feed:processDebugNavigationResources FROM-CACHE
+> Task :data:profile:processDebugNavigationResources FROM-CACHE
+> Task :data:auth:processDebugNavigationResources FROM-CACHE
+> Task :core:network:processDebugNavigationResources FROM-CACHE
+> Task :data:sample:processDebugNavigationResources FROM-CACHE
+> Task :data:orders:processDebugNavigationResources FROM-CACHE
+> Task :feature:auth:processDebugNavigationResources FROM-CACHE
+> Task :data:search:processDebugNavigationResources FROM-CACHE
+> Task :data:wallet:processDebugNavigationResources FROM-CACHE
+> Task :feature:feed:processDebugNavigationResources FROM-CACHE
+> Task :feature:profile:processDebugNavigationResources FROM-CACHE
+> Task :feature:sample:processDebugNavigationResources FROM-CACHE
+> Task :feature:orders:processDebugNavigationResources FROM-CACHE
+> Task :feature:settings:processDebugNavigationResources FROM-CACHE
+> Task :feature:search:processDebugNavigationResources FROM-CACHE
+> Task :feature:wallet:processDebugNavigationResources FROM-CACHE
+> Task :core:coroutines:generateDebugResources FROM-CACHE
+> Task :core:common:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:generateDebugResources FROM-CACHE
+> Task :core:analytics:generateDebugResources FROM-CACHE
+> Task :core:coroutines:javaPreCompileDebug FROM-CACHE
+> Task :core:common:generateDebugResources FROM-CACHE
+> Task :core:flags:generateDebugResources FROM-CACHE
+> Task :core:analytics:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:coroutines:packageDebugResources
+> Task :core:flags:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:packageDebugResources
+> Task :core:analytics:packageDebugResources
+> Task :core:coroutines:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:generateDebugResources FROM-CACHE
+> Task :core:flags:packageDebugResources
+> Task :core:analytics:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:flags:parseDebugLocalResources FROM-CACHE
+> Task :core:datastore:parseDebugLocalResources FROM-CACHE
+> Task :core:coroutines:generateDebugRFile FROM-CACHE
+> Task :core:analytics:generateDebugRFile FROM-CACHE
+> Task :core:network:generateDebugResources FROM-CACHE
+> Task :core:flags:generateDebugRFile FROM-CACHE
+> Task :core:navigation:packageDebugResources
+> Task :core:notification:generateDebugResources FROM-CACHE
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:parseDebugLocalResources FROM-CACHE
+> Task :core:datastore:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:notification:javaPreCompileDebug FROM-CACHE
+> Task :core:network:packageDebugResources
+> Task :core:coroutines:kspDebugKotlin FROM-CACHE
+> Task :core:designsystem:extractDebugSupportedLocales FROM-CACHE
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:navigation:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:common:packageDebugResources
+> Task :core:network:parseDebugLocalResources FROM-CACHE
+> Task :core:common:parseDebugLocalResources FROM-CACHE
+> Task :core:notification:packageDebugResources
+> Task :core:common:generateDebugRFile FROM-CACHE
+> Task :app:generateDevDebugLocaleConfig FROM-CACHE
+> Task :core:network:generateDebugRFile FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:verifyModuleDependencies
+> Task :feature:auth:generateDebugResources FROM-CACHE
+> Task :core:notification:parseDebugLocalResources FROM-CACHE
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:ui:packageDebugResources
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources NO-SOURCE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :core:model:jar UP-TO-DATE
+> Task :core:notification:generateDebugRFile FROM-CACHE
+> Task :data:auth:generateDebugResources FROM-CACHE
+> Task :data:auth:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:generateDebugRFile FROM-CACHE
+> Task :data:auth:packageDebugResources
+> Task :feature:auth:javaPreCompileDebug FROM-CACHE
+> Task :feature:auth:packageDebugResources
+> Task :feature:feed:generateDebugResources FROM-CACHE
+> Task :data:auth:parseDebugLocalResources FROM-CACHE
+> Task :data:feed:generateDebugResources FROM-CACHE
+> Task :feature:auth:parseDebugLocalResources FROM-CACHE
+> Task :app:packageDevDebugResources
+> Task :data:feed:javaPreCompileDebug FROM-CACHE
+> Task :data:auth:generateDebugRFile FROM-CACHE
+> Task :feature:auth:generateDebugRFile FROM-CACHE
+> Task :core:designsystem:packageDebugResources
+> Task :data:feed:packageDebugResources
+> Task :feature:feed:javaPreCompileDebug FROM-CACHE
+> Task :data:orders:generateDebugResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :feature:orders:generateDebugResources FROM-CACHE
+> Task :data:feed:parseDebugLocalResources FROM-CACHE
+> Task :data:orders:javaPreCompileDebug FROM-CACHE
+> Task :data:feed:generateDebugRFile FROM-CACHE
+> Task :feature:orders:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+> Task :data:orders:packageDebugResources
+> Task :core:media:generateDebugResources FROM-CACHE
+> Task :feature:feed:packageDebugResources
+> Task :feature:profile:generateDebugResources FROM-CACHE
+> Task :data:orders:parseDebugLocalResources FROM-CACHE
+> Task :feature:feed:parseDebugLocalResources FROM-CACHE
+> Task :feature:feed:generateDebugRFile FROM-CACHE
+> Task :data:orders:generateDebugRFile FROM-CACHE
+> Task :feature:orders:packageDebugResources
+> Task :core:media:javaPreCompileDebug FROM-CACHE
+> Task :feature:orders:parseDebugLocalResources FROM-CACHE
+> Task :data:profile:generateDebugResources FROM-CACHE
+> Task :data:profile:javaPreCompileDebug FROM-CACHE
+> Task :core:media:packageDebugResources
+> Task :core:media:parseDebugLocalResources FROM-CACHE
+> Task :feature:profile:javaPreCompileDebug FROM-CACHE
+> Task :feature:sample:generateDebugResources FROM-CACHE
+> Task :feature:orders:generateDebugRFile FROM-CACHE
+> Task :feature:profile:packageDebugResources
+> Task :core:media:generateDebugRFile FROM-CACHE
+> Task :data:sample:generateDebugResources FROM-CACHE
+> Task :data:profile:packageDebugResources
+> Task :data:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:profile:parseDebugLocalResources FROM-CACHE
+> Task :data:profile:parseDebugLocalResources FROM-CACHE
+> Task :feature:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:generateDebugResources FROM-CACHE
+> Task :feature:profile:generateDebugRFile FROM-CACHE
+> Task :data:profile:generateDebugRFile FROM-CACHE
+> Task :data:sample:packageDebugResources
+> Task :data:search:generateDebugResources FROM-CACHE
+> Task :data:search:javaPreCompileDebug FROM-CACHE
+> Task :data:sample:parseDebugLocalResources FROM-CACHE
+> Task :feature:sample:packageDebugResources
+> Task :feature:sample:parseDebugLocalResources FROM-CACHE
+> Task :feature:search:javaPreCompileDebug FROM-CACHE
+> Task :data:sample:generateDebugRFile FROM-CACHE
+> Task :feature:settings:generateDebugResources FROM-CACHE
+> Task :feature:settings:javaPreCompileDebug FROM-CACHE
+> Task :feature:search:packageDebugResources
+> Task :feature:sample:generateDebugRFile FROM-CACHE
+> Task :feature:wallet:generateDebugResources FROM-CACHE
+> Task :feature:search:parseDebugLocalResources FROM-CACHE
+> Task :data:wallet:generateDebugResources FROM-CACHE
+> Task :feature:search:generateDebugRFile FROM-CACHE
+> Task :data:wallet:packageDebugResources
+> Task :data:wallet:parseDebugLocalResources FROM-CACHE
+> Task :data:wallet:generateDebugRFile FROM-CACHE
+> Task :feature:settings:packageDebugResources
+> Task :feature:wallet:javaPreCompileDebug FROM-CACHE
+> Task :feature:settings:parseDebugLocalResources FROM-CACHE
+> Task :app:javaPreCompileDevDebug FROM-CACHE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :core:analytics:generateDebugAssets UP-TO-DATE
+> Task :data:wallet:javaPreCompileDebug FROM-CACHE
+> Task :core:common:generateDebugAssets UP-TO-DATE
+> Task :core:analytics:mergeDebugAssets
+> Task :core:coroutines:generateDebugAssets UP-TO-DATE
+> Task :feature:settings:generateDebugRFile FROM-CACHE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :data:search:packageDebugResources
+> Task :core:common:mergeDebugAssets
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:coroutines:mergeDebugAssets
+> Task :core:flags:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets
+> Task :core:media:generateDebugAssets UP-TO-DATE
+> Task :data:search:parseDebugLocalResources FROM-CACHE
+> Task :core:flags:mergeDebugAssets
+> Task :core:designsystem:mergeDebugAssets
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :data:search:generateDebugRFile FROM-CACHE
+> Task :core:notification:generateDebugAssets UP-TO-DATE
+> Task :core:media:mergeDebugAssets
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :feature:wallet:packageDebugResources
+> Task :core:notification:mergeDebugAssets
+> Task :data:auth:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets
+> Task :data:feed:generateDebugAssets UP-TO-DATE
+> Task :feature:wallet:parseDebugLocalResources FROM-CACHE
+> Task :core:ui:mergeDebugAssets
+> Task :data:orders:generateDebugAssets UP-TO-DATE
+> Task :feature:wallet:generateDebugRFile FROM-CACHE
+> Task :core:network:mergeDebugAssets
+> Task :data:profile:generateDebugAssets UP-TO-DATE
+> Task :data:orders:mergeDebugAssets
+> Task :data:sample:generateDebugAssets UP-TO-DATE
+> Task :data:search:generateDebugAssets UP-TO-DATE
+> Task :data:feed:mergeDebugAssets
+> Task :data:wallet:generateDebugAssets UP-TO-DATE
+> Task :data:profile:mergeDebugAssets
+> Task :data:auth:mergeDebugAssets
+> Task :feature:auth:generateDebugAssets UP-TO-DATE
+> Task :feature:feed:generateDebugAssets UP-TO-DATE
+> Task :data:sample:mergeDebugAssets
+> Task :feature:orders:generateDebugAssets UP-TO-DATE
+> Task :data:search:mergeDebugAssets
+> Task :feature:profile:generateDebugAssets UP-TO-DATE
+> Task :feature:auth:mergeDebugAssets
+> Task :feature:sample:generateDebugAssets UP-TO-DATE
+> Task :data:wallet:mergeDebugAssets
+> Task :feature:search:generateDebugAssets UP-TO-DATE
+> Task :feature:profile:mergeDebugAssets
+> Task :feature:settings:generateDebugAssets UP-TO-DATE
+> Task :feature:feed:mergeDebugAssets
+> Task :feature:orders:mergeDebugAssets
+> Task :feature:wallet:generateDebugAssets UP-TO-DATE
+> Task :feature:search:mergeDebugAssets
+> Task :feature:settings:mergeDebugAssets
+> Task :feature:wallet:mergeDebugAssets
+> Task :app:desugarDevDebugFileDependencies
+> Task :core:analytics:writeDebugAarMetadata
+> Task :core:common:writeDebugAarMetadata
+> Task :feature:sample:mergeDebugAssets
+> Task :core:coroutines:writeDebugAarMetadata
+> Task :core:datastore:writeDebugAarMetadata
+> Task :core:designsystem:writeDebugAarMetadata
+> Task :core:flags:writeDebugAarMetadata
+> Task :app:processDevDebugNavigationResources
+> Task :app:mergeDevDebugAssets
+> Task :core:media:writeDebugAarMetadata
+> Task :app:compressDevDebugAssets
+> Task :core:network:writeDebugAarMetadata
+> Task :core:navigation:writeDebugAarMetadata
+> Task :core:notification:writeDebugAarMetadata
+> Task :core:ui:writeDebugAarMetadata
+> Task :data:auth:writeDebugAarMetadata
+> Task :data:feed:writeDebugAarMetadata
+> Task :data:orders:writeDebugAarMetadata
+> Task :data:profile:writeDebugAarMetadata
+> Task :data:search:writeDebugAarMetadata
+> Task :core:coroutines:compileDebugKotlin
+> Task :data:sample:writeDebugAarMetadata
+> Task :app:parseDevDebugLocalResources
+> Task :core:coroutines:processDebugJavaRes
+> Task :core:coroutines:compileDebugJavaWithJavac FROM-CACHE
+> Task :feature:auth:writeDebugAarMetadata
+> Task :data:wallet:writeDebugAarMetadata
+> Task :app:generateDevDebugRFile FROM-CACHE
+> Task :feature:feed:writeDebugAarMetadata
+> Task :feature:orders:writeDebugAarMetadata
+> Task :core:coroutines:transformDebugClassesWithAsm FROM-CACHE
+> Task :feature:profile:writeDebugAarMetadata
+> Task :feature:sample:writeDebugAarMetadata
+> Task :feature:search:writeDebugAarMetadata
+> Task :core:coroutines:bundleLibRuntimeToJarDebug
+> Task :core:coroutines:bundleLibCompileToJarDebug
+> Task :feature:settings:writeDebugAarMetadata
+> Task :feature:wallet:writeDebugAarMetadata
+> Task :app:compileDevDebugNavigationResources FROM-CACHE
+> Task :core:coroutines:bundleLibRuntimeToDirDebug
+> Task :core:common:kspDebugKotlin FROM-CACHE
+> Task :app:createDevDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:analytics:extractDeepLinksDebug FROM-CACHE
+> Task :core:analytics:processDebugManifest FROM-CACHE
+> Task :core:common:extractDeepLinksDebug FROM-CACHE
+> Task :core:common:processDebugManifest FROM-CACHE
+> Task :core:coroutines:extractDeepLinksDebug FROM-CACHE
+> Task :core:coroutines:processDebugManifest FROM-CACHE
+> Task :core:datastore:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:extractDeepLinksDebug FROM-CACHE
+> Task :core:datastore:processDebugManifest FROM-CACHE
+> Task :core:flags:extractDeepLinksDebug FROM-CACHE
+> Task :core:designsystem:processDebugManifest FROM-CACHE
+> Task :core:media:extractDeepLinksDebug FROM-CACHE
+> Task :core:flags:processDebugManifest FROM-CACHE
+> Task :core:media:processDebugManifest FROM-CACHE
+> Task :app:checkDevDebugAarMetadata
+> Task :core:network:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:extractDeepLinksDebug FROM-CACHE
+> Task :core:navigation:processDebugManifest FROM-CACHE
+> Task :core:notification:extractDeepLinksDebug FROM-CACHE
+> Task :core:network:processDebugManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksDebug FROM-CACHE
+> Task :data:auth:extractDeepLinksDebug FROM-CACHE
+> Task :core:notification:processDebugManifest FROM-CACHE
+> Task :core:ui:processDebugManifest FROM-CACHE
+> Task :data:feed:extractDeepLinksDebug FROM-CACHE
+> Task :data:feed:processDebugManifest FROM-CACHE
+> Task :app:checkDevDebugDuplicateClasses
+> Task :data:auth:processDebugManifest FROM-CACHE
+> Task :data:orders:extractDeepLinksDebug FROM-CACHE
+> Task :data:profile:extractDeepLinksDebug FROM-CACHE
+> Task :data:sample:extractDeepLinksDebug FROM-CACHE
+> Task :data:profile:processDebugManifest FROM-CACHE
+> Task :data:orders:processDebugManifest FROM-CACHE
+> Task :data:search:extractDeepLinksDebug FROM-CACHE
+> Task :data:wallet:extractDeepLinksDebug FROM-CACHE
+> Task :data:search:processDebugManifest FROM-CACHE
+> Task :data:sample:processDebugManifest FROM-CACHE
+> Task :feature:auth:extractDeepLinksDebug FROM-CACHE
+> Task :data:wallet:processDebugManifest FROM-CACHE
+> Task :feature:auth:processDebugManifest FROM-CACHE
+> Task :feature:feed:extractDeepLinksDebug FROM-CACHE
+> Task :feature:orders:extractDeepLinksDebug FROM-CACHE
+> Task :feature:orders:processDebugManifest FROM-CACHE
+> Task :feature:profile:extractDeepLinksDebug FROM-CACHE
+> Task :feature:feed:processDebugManifest FROM-CACHE
+> Task :feature:sample:extractDeepLinksDebug FROM-CACHE
+> Task :feature:search:extractDeepLinksDebug FROM-CACHE
+> Task :feature:profile:processDebugManifest FROM-CACHE
+> Task :feature:sample:processDebugManifest FROM-CACHE
+> Task :feature:settings:extractDeepLinksDebug FROM-CACHE
+> Task :feature:search:processDebugManifest FROM-CACHE
+> Task :feature:wallet:extractDeepLinksDebug FROM-CACHE
+> Task :feature:settings:processDebugManifest FROM-CACHE
+> Task :core:analytics:mapDebugSourceSetPaths
+> Task :core:common:mapDebugSourceSetPaths
+> Task :feature:wallet:processDebugManifest FROM-CACHE
+> Task :core:analytics:compileDebugLibraryResources
+> Task :core:common:compileDebugLibraryResources
+> Task :core:coroutines:mapDebugSourceSetPaths
+> Task :core:datastore:mapDebugSourceSetPaths
+> Task :core:coroutines:compileDebugLibraryResources FROM-CACHE
+> Task :core:datastore:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:mapDebugSourceSetPaths
+> Task :core:flags:mapDebugSourceSetPaths
+> Task :core:flags:compileDebugLibraryResources FROM-CACHE
+> Task :core:designsystem:compileDebugLibraryResources
+> Task :core:navigation:mapDebugSourceSetPaths
+> Task :core:media:mapDebugSourceSetPaths
+> Task :core:navigation:compileDebugLibraryResources FROM-CACHE
+> Task :core:network:mapDebugSourceSetPaths
+> Task :core:network:compileDebugLibraryResources FROM-CACHE
+> Task :core:notification:mapDebugSourceSetPaths
+> Task :core:notification:compileDebugLibraryResources
+> Task :core:media:compileDebugLibraryResources
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :data:auth:mapDebugSourceSetPaths
+> Task :core:ui:compileDebugLibraryResources FROM-CACHE
+> Task :data:auth:compileDebugLibraryResources FROM-CACHE
+> Task :data:feed:mapDebugSourceSetPaths
+> Task :data:feed:compileDebugLibraryResources FROM-CACHE
+> Task :data:orders:mapDebugSourceSetPaths
+> Task :data:profile:mapDebugSourceSetPaths
+> Task :data:orders:compileDebugLibraryResources FROM-CACHE
+> Task :data:profile:compileDebugLibraryResources FROM-CACHE
+> Task :data:sample:mapDebugSourceSetPaths
+> Task :data:sample:compileDebugLibraryResources FROM-CACHE
+> Task :data:search:mapDebugSourceSetPaths
+> Task :data:wallet:mapDebugSourceSetPaths
+> Task :data:wallet:compileDebugLibraryResources FROM-CACHE
+> Task :data:search:compileDebugLibraryResources FROM-CACHE
+> Task :feature:feed:mapDebugSourceSetPaths
+> Task :feature:auth:mapDebugSourceSetPaths
+> Task :feature:feed:compileDebugLibraryResources
+> Task :feature:orders:mapDebugSourceSetPaths
+> Task :feature:auth:compileDebugLibraryResources
+> Task :feature:profile:mapDebugSourceSetPaths
+> Task :feature:orders:compileDebugLibraryResources
+> Task :feature:sample:mapDebugSourceSetPaths
+> Task :feature:profile:compileDebugLibraryResources
+> Task :feature:sample:compileDebugLibraryResources
+> Task :feature:search:mapDebugSourceSetPaths
+> Task :feature:settings:mapDebugSourceSetPaths
+> Task :feature:search:compileDebugLibraryResources
+> Task :feature:wallet:mapDebugSourceSetPaths
+> Task :feature:settings:compileDebugLibraryResources
+> Task :feature:wallet:compileDebugLibraryResources
+> Task :app:mergeDevDebugJniLibFolders
+> Task :core:analytics:mergeDebugJniLibFolders
+> Task :core:common:mergeDebugJniLibFolders
+> Task :core:analytics:mergeDebugNativeLibs NO-SOURCE
+> Task :core:common:mergeDebugNativeLibs NO-SOURCE
+> Task :core:analytics:copyDebugJniLibsProjectOnly
+> Task :core:common:copyDebugJniLibsProjectOnly
+> Task :core:coroutines:mergeDebugJniLibFolders
+> Task :core:coroutines:mergeDebugNativeLibs NO-SOURCE
+> Task :core:datastore:mergeDebugJniLibFolders
+> Task :core:coroutines:copyDebugJniLibsProjectOnly
+> Task :core:datastore:mergeDebugNativeLibs NO-SOURCE
+> Task :core:datastore:copyDebugJniLibsProjectOnly
+> Task :core:designsystem:mergeDebugJniLibFolders
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly
+> Task :core:flags:mergeDebugJniLibFolders
+> Task :core:flags:mergeDebugNativeLibs NO-SOURCE
+> Task :core:flags:copyDebugJniLibsProjectOnly
+> Task :app:generateDevDebugGlobalSynthetics
+> Task :core:media:mergeDebugJniLibFolders
+> Task :core:navigation:mergeDebugJniLibFolders
+> Task :core:media:mergeDebugNativeLibs NO-SOURCE
+> Task :core:network:mergeDebugJniLibFolders
+> Task :core:media:copyDebugJniLibsProjectOnly
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:network:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:copyDebugJniLibsProjectOnly
+> Task :core:notification:mergeDebugJniLibFolders
+> Task :core:network:copyDebugJniLibsProjectOnly
+> Task :core:notification:mergeDebugNativeLibs NO-SOURCE
+> Task :core:ui:mergeDebugJniLibFolders
+> Task :core:ui:mergeDebugNativeLibs NO-SOURCE
+> Task :core:notification:copyDebugJniLibsProjectOnly
+> Task :core:ui:copyDebugJniLibsProjectOnly
+> Task :data:auth:mergeDebugJniLibFolders
+> Task :data:auth:mergeDebugNativeLibs NO-SOURCE
+> Task :data:orders:mergeDebugJniLibFolders
+> Task :data:feed:mergeDebugJniLibFolders
+> Task :data:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :data:feed:mergeDebugNativeLibs NO-SOURCE
+> Task :data:orders:copyDebugJniLibsProjectOnly
+> Task :data:auth:copyDebugJniLibsProjectOnly
+> Task :data:feed:copyDebugJniLibsProjectOnly
+> Task :data:search:mergeDebugJniLibFolders
+> Task :data:profile:mergeDebugJniLibFolders
+> Task :data:sample:mergeDebugJniLibFolders
+> Task :data:search:mergeDebugNativeLibs NO-SOURCE
+> Task :data:profile:mergeDebugNativeLibs NO-SOURCE
+> Task :data:sample:mergeDebugNativeLibs NO-SOURCE
+> Task :data:sample:copyDebugJniLibsProjectOnly
+> Task :data:profile:copyDebugJniLibsProjectOnly
+> Task :data:search:copyDebugJniLibsProjectOnly
+> Task :feature:feed:mergeDebugJniLibFolders
+> Task :data:wallet:mergeDebugJniLibFolders
+> Task :feature:auth:mergeDebugJniLibFolders
+> Task :data:wallet:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:feed:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:auth:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:auth:copyDebugJniLibsProjectOnly
+> Task :data:wallet:copyDebugJniLibsProjectOnly
+> Task :feature:feed:copyDebugJniLibsProjectOnly
+> Task :feature:profile:mergeDebugJniLibFolders
+> Task :feature:sample:mergeDebugJniLibFolders
+> Task :feature:profile:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:orders:mergeDebugJniLibFolders
+> Task :feature:orders:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:sample:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:sample:copyDebugJniLibsProjectOnly
+> Task :feature:search:mergeDebugJniLibFolders
+> Task :feature:search:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:orders:copyDebugJniLibsProjectOnly
+> Task :feature:profile:copyDebugJniLibsProjectOnly
+> Task :feature:search:copyDebugJniLibsProjectOnly
+> Task :app:validateSigningDevDebug
+> Task :app:writeDevDebugAppMetadata
+> Task :app:writeDevDebugSigningConfigVersions
+> Task :feature:wallet:mergeDebugJniLibFolders
+> Task :feature:settings:mergeDebugJniLibFolders
+> Task :feature:wallet:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:settings:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:settings:copyDebugJniLibsProjectOnly
+> Task :feature:wallet:copyDebugJniLibsProjectOnly
+> Task :app:mergeDevDebugNativeLibs
+
+> Task :app:stripDevDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :app:processDevDebugMainManifest
+> Task :core:common:compileDebugKotlin
+> Task :app:processDevDebugManifest
+> Task :core:common:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:common:processDebugJavaRes
+> Task :app:processDevDebugManifestForPackage
+> Task :core:common:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:common:bundleLibRuntimeToJarDebug
+> Task :core:common:bundleLibCompileToJarDebug
+> Task :core:common:bundleLibRuntimeToDirDebug
+> Task :core:analytics:kspDebugKotlin FROM-CACHE
+> Task :core:flags:kspDebugKotlin FROM-CACHE
+> Task :core:datastore:kspDebugKotlin FROM-CACHE
+> Task :core:analytics:compileDebugKotlin
+> Task :core:analytics:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:datastore:compileDebugKotlin
+> Task :core:analytics:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:datastore:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:datastore:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:network:kspDebugKotlin FROM-CACHE
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:notification:kspDebugKotlin FROM-CACHE
+> Task :core:analytics:bundleLibCompileToJarDebug
+> Task :core:analytics:processDebugJavaRes
+> Task :core:datastore:processDebugJavaRes
+> Task :core:flags:compileDebugKotlin
+> Task :core:flags:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:flags:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:flags:bundleLibCompileToJarDebug
+> Task :core:datastore:bundleLibRuntimeToDirDebug
+> Task :core:analytics:bundleLibRuntimeToDirDebug
+> Task :core:flags:processDebugJavaRes
+> Task :core:flags:bundleLibRuntimeToDirDebug
+> Task :core:flags:bundleLibRuntimeToJarDebug
+> Task :app:mergeDevDebugResources
+> Task :core:analytics:bundleLibRuntimeToJarDebug
+> Task :core:notification:compileDebugKotlin
+> Task :core:notification:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:notification:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:notification:bundleLibCompileToJarDebug
+> Task :core:notification:processDebugJavaRes
+> Task :core:notification:bundleLibRuntimeToJarDebug
+> Task :core:notification:bundleLibRuntimeToDirDebug
+> Task :app:processDevDebugResources
+> Task :core:network:compileDebugKotlin
+> Task :core:network:compileDebugJavaWithJavac FROM-CACHE
+> Task :core:network:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:network:processDebugJavaRes
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :data:auth:kspDebugKotlin FROM-CACHE
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :data:feed:kspDebugKotlin FROM-CACHE
+> Task :data:orders:kspDebugKotlin FROM-CACHE
+> Task :core:network:bundleLibRuntimeToDirDebug
+> Task :data:profile:kspDebugKotlin FROM-CACHE
+> Task :data:auth:compileDebugKotlin
+> Task :data:auth:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:auth:transformDebugClassesWithAsm FROM-CACHE
+> Task :data:sample:kspDebugKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:feed:compileDebugKotlin
+> Task :data:auth:bundleLibCompileToJarDebug
+> Task :data:feed:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:feed:transformDebugClassesWithAsm FROM-CACHE
+> Task :data:orders:compileDebugKotlin
+> Task :data:feed:bundleLibRuntimeToJarDebug
+> Task :data:profile:compileDebugKotlin
+> Task :data:orders:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:profile:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:profile:transformDebugClassesWithAsm FROM-CACHE
+> Task :data:orders:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :data:orders:bundleLibRuntimeToJarDebug
+> Task :data:sample:compileDebugKotlin
+> Task :data:profile:bundleLibCompileToJarDebug
+> Task :data:feed:bundleLibCompileToJarDebug
+> Task :data:auth:bundleLibRuntimeToJarDebug
+> Task :data:search:kspDebugKotlin FROM-CACHE
+> Task :data:sample:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:wallet:kspDebugKotlin FROM-CACHE
+> Task :data:sample:transformDebugClassesWithAsm FROM-CACHE
+> Task :data:orders:bundleLibCompileToJarDebug
+> Task :data:search:compileDebugKotlin
+> Task :data:search:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:search:transformDebugClassesWithAsm FROM-CACHE
+> Task :data:profile:bundleLibRuntimeToJarDebug
+> Task :core:media:kspDebugKotlin
+> Task :data:search:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:processDebugJavaRes
+> Task :data:auth:processDebugJavaRes
+> Task :data:feed:processDebugJavaRes
+> Task :core:navigation:kspDebugKotlin
+> Task :data:orders:processDebugJavaRes
+> Task :data:profile:processDebugJavaRes
+> Task :data:sample:processDebugJavaRes
+> Task :data:search:processDebugJavaRes
+> Task :data:auth:bundleLibRuntimeToDirDebug
+> Task :data:sample:bundleLibCompileToJarDebug
+> Task :data:sample:bundleLibRuntimeToDirDebug
+> Task :data:sample:bundleLibRuntimeToJarDebug
+> Task :data:wallet:compileDebugKotlin
+> Task :data:wallet:compileDebugJavaWithJavac FROM-CACHE
+> Task :data:search:bundleLibCompileToJarDebug
+> Task :data:wallet:processDebugJavaRes
+> Task :data:profile:bundleLibRuntimeToDirDebug
+> Task :data:wallet:transformDebugClassesWithAsm FROM-CACHE
+> Task :data:feed:bundleLibRuntimeToDirDebug
+> Task :data:wallet:bundleLibRuntimeToDirDebug
+> Task :core:media:compileDebugKotlin
+> Task :core:media:processDebugJavaRes
+> Task :core:navigation:compileDebugKotlin
+> Task :core:media:compileDebugJavaWithJavac
+> Task :core:navigation:processDebugJavaRes
+> Task :data:orders:bundleLibRuntimeToDirDebug
+> Task :core:media:transformDebugClassesWithAsm
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:media:bundleLibCompileToJarDebug
+> Task :data:search:bundleLibRuntimeToDirDebug
+> Task :core:media:bundleLibRuntimeToDirDebug
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToDirDebug
+> Task :core:navigation:bundleLibRuntimeToDirDebug
+> Task :core:media:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :data:wallet:bundleLibCompileToJarDebug
+> Task :data:wallet:bundleLibRuntimeToJarDebug
+> Task :app:mergeExtDexDevDebug
+> Task :core:ui:kspDebugKotlin
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:processDebugJavaRes
+> Task :core:ui:transformDebugClassesWithAsm
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :core:ui:bundleLibRuntimeToDirDebug
+> Task :feature:feed:kspDebugKotlin
+> Task :feature:auth:kspDebugKotlin
+> Task :core:ui:bundleLibRuntimeToJarDebug
+> Task :feature:feed:compileDebugKotlin
+> Task :feature:feed:compileDebugJavaWithJavac
+> Task :feature:orders:kspDebugKotlin
+> Task :feature:search:kspDebugKotlin
+> Task :feature:feed:transformDebugClassesWithAsm
+> Task :feature:profile:kspDebugKotlin
+> Task :feature:feed:bundleLibCompileToJarDebug
+> Task :feature:orders:compileDebugKotlin
+> Task :feature:auth:compileDebugKotlin
+> Task :feature:search:compileDebugKotlin
+> Task :feature:profile:compileDebugKotlin
+> Task :feature:orders:compileDebugJavaWithJavac
+> Task :feature:settings:kspDebugKotlin
+> Task :feature:orders:transformDebugClassesWithAsm
+> Task :feature:orders:bundleLibCompileToJarDebug
+> Task :feature:auth:compileDebugJavaWithJavac
+> Task :feature:auth:processDebugJavaRes
+> Task :feature:feed:processDebugJavaRes
+> Task :feature:orders:processDebugJavaRes
+> Task :feature:profile:processDebugJavaRes
+> Task :feature:profile:compileDebugJavaWithJavac
+> Task :feature:search:processDebugJavaRes
+> Task :feature:search:compileDebugJavaWithJavac
+> Task :feature:feed:bundleLibRuntimeToDirDebug
+> Task :feature:profile:transformDebugClassesWithAsm
+> Task :feature:profile:bundleLibCompileToJarDebug
+> Task :feature:auth:transformDebugClassesWithAsm
+> Task :feature:profile:bundleLibRuntimeToDirDebug
+> Task :feature:auth:bundleLibCompileToJarDebug
+> Task :feature:search:transformDebugClassesWithAsm
+> Task :feature:search:bundleLibCompileToJarDebug
+> Task :feature:search:bundleLibRuntimeToDirDebug
+> Task :feature:auth:bundleLibRuntimeToDirDebug
+> Task :feature:auth:bundleLibRuntimeToJarDebug
+> Task :feature:feed:bundleLibRuntimeToJarDebug
+> Task :feature:orders:bundleLibRuntimeToDirDebug
+> Task :feature:search:bundleLibRuntimeToJarDebug
+> Task :feature:profile:bundleLibRuntimeToJarDebug
+> Task :feature:orders:bundleLibRuntimeToJarDebug
+> Task :feature:settings:compileDebugKotlin
+> Task :feature:settings:processDebugJavaRes
+> Task :feature:sample:kspDebugKotlin
+> Task :feature:wallet:kspDebugKotlin
+> Task :feature:settings:compileDebugJavaWithJavac
+> Task :feature:settings:transformDebugClassesWithAsm
+> Task :feature:settings:bundleLibRuntimeToJarDebug
+> Task :feature:settings:bundleLibCompileToJarDebug
+> Task :feature:settings:bundleLibRuntimeToDirDebug
+> Task :feature:wallet:compileDebugKotlin
+> Task :feature:wallet:processDebugJavaRes
+> Task :feature:sample:compileDebugKotlin
+> Task :feature:wallet:compileDebugJavaWithJavac
+> Task :feature:sample:processDebugJavaRes
+> Task :feature:wallet:transformDebugClassesWithAsm
+> Task :feature:wallet:bundleLibCompileToJarDebug
+> Task :feature:wallet:bundleLibRuntimeToJarDebug
+> Task :feature:wallet:bundleLibRuntimeToDirDebug
+> Task :feature:sample:compileDebugJavaWithJavac
+> Task :feature:sample:transformDebugClassesWithAsm
+> Task :feature:sample:bundleLibRuntimeToJarDebug
+> Task :feature:sample:bundleLibCompileToJarDebug
+> Task :feature:sample:bundleLibRuntimeToDirDebug
+> Task :app:mergeLibDexDevDebug
+> Task :app:kspDevDebugKotlin
+> Task :app:compileDevDebugKotlin
+> Task :app:processDevDebugJavaRes
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:hiltAggregateDepsDevDebug FROM-CACHE
+> Task :app:mergeDevDebugJavaResource
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:dexBuilderDevDebug
+> Task :app:mergeProjectDexDevDebug
+> Task :app:packageDevDebug
+> Task :app:assembleDevDebug
+> Task :app:createDevDebugApkListingFileRedirect
+
+BUILD SUCCESSFUL in 1m 14s
+701 actionable tasks: 425 executed, 270 from cache, 6 up-to-date
+Configuration cache entry stored.
+END devDebug rc=0 secs=74

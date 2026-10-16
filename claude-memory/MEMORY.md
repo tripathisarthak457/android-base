@@ -1,0 +1,3 @@
+- [android-base generator overhaul](android-base-generator.md) — user's generator; multi-day overhaul, read .overhaul/STATUS.md to resume; standing instructions
+- [Android skills plugin](android-skills-installed.md) — Google's official Android skills installed; read before Android work
+- [Laptop freezes and power-offs](laptop-memory-freeze.md) — memory freeze (Oct 10); sudden power-offs from a suspect thermal sensor or charger (Oct 16); thermlog, recovery

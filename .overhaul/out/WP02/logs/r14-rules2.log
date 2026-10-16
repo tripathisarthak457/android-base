@@ -1,0 +1,44 @@
+  ! Lottie was left out: it pulled in appcompat, about 190 KB of code, for one decorative animation.
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata UP-TO-DATE
+> Task :core:analytics:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+> Task :build-logic:convention:compileTestKotlin UP-TO-DATE
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :build-logic:convention:test UP-TO-DATE
+> Task :core:designsystem:verifyCodeRules
+
+BUILD SUCCESSFUL in 4s
+32 actionable tasks: 29 executed, 3 up-to-date
+Configuration cache entry reused.
+[locked:gradle] waiting for lock...

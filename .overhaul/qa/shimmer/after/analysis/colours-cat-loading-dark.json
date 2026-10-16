@@ -1,0 +1,136 @@
+{
+ "bone_token": "2D333E",
+ "highlight_token": "393F4B",
+ "shots": [
+  {
+   "shot": "cat-loading-dark-00.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 48394,
+   "peak": "393F4B",
+   "peak_lift_L": 5.43
+  },
+  {
+   "shot": "cat-loading-dark-01.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93519,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-02.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93565,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-03.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93565,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-04.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93519,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-05.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 54057,
+   "peak": "393F4B",
+   "peak_lift_L": 5.43
+  },
+  {
+   "shot": "cat-loading-dark-06.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 87458,
+   "peak": "383E4A",
+   "peak_lift_L": 4.99
+  },
+  {
+   "shot": "cat-loading-dark-07.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93565,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-08.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93565,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-09.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93519,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-10.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 41096,
+   "peak": "393F4B",
+   "peak_lift_L": 5.43
+  },
+  {
+   "shot": "cat-loading-dark-11.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 92911,
+   "peak": "303642",
+   "peak_lift_L": 1.4
+  },
+  {
+   "shot": "cat-loading-dark-12.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93565,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  },
+  {
+   "shot": "cat-loading-dark-13.png",
+   "page": "0B0E14",
+   "card": "141922",
+   "bone_px_exact": 93565,
+   "peak": "2D333E",
+   "peak_lift_L": 0.0
+  }
+ ],
+ "L": {
+  "page": 3.94,
+  "card": 8.65,
+  "bone_token": 21.11,
+  "highlight_token": 26.54,
+  "brightest_on_lift_line": 26.54
+ },
+ "page": "0B0E14",
+ "card": "141922",
+ "brightest_on_lift_line": "393F4B",
+ "rule": {
+  "bone_to_page": 17.17,
+  "bone_to_card": 12.46,
+  "highlight_lift_token": 5.43,
+  "highlight_lift_measured": 5.43,
+  "highlight_to_page": 22.6,
+  "highlight_to_card": 17.89
+ }
+}

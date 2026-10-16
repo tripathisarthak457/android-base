@@ -1,0 +1,403 @@
+[locked:emu] waiting for lock...
+[memwait] 2876 MB available, waiting for 3000 MB...
+[memwait] 2885 MB available, waiting for 3000 MB...
+[memwait] 2807 MB available, waiting for 3000 MB...
+[memwait] 2642 MB available, waiting for 3000 MB...
+[memwait] 2467 MB available, waiting for 3000 MB...
+[memwait] 2655 MB available, waiting for 3000 MB...
+[memwait] 2616 MB available, waiting for 3000 MB...
+[memwait] 2530 MB available, waiting for 3000 MB...
+[memwait] 2468 MB available, waiting for 3000 MB...
+[locked:gradle] waiting for lock...
+== 12:17:27 emulator booted
+== navigation: com.android.internal.systemui.navbar.gestural, navigation_mode 2
+== target /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+== 12:17:30 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 12:17:41 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/benchmark/build/outputs/apk/nonMinifiedRelease/benchmark-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 12:17:44 adb -s emulator-5554 shell am instrument -w -r -e class com.example.wp04.everything.benchmark.BaselineProfileGenerator -e androidx.benchmark.enabledRules BaselineProfile -e additionalTestOutputDir /sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output -e targetAppId com.example.wp04.everything.dev com.example.wp04.everything.benchmark/androidx.test.runner.AndroidJUnitRunner
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.wp04.everything.benchmark.BaselineProfileGenerator:
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: android.studio.display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 275100720890.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 275100720890.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 275100720890.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_journeys-baseline-prof.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: android.studio.display.benchmark=BaselineProfileGenerator_journeys
+Total run time Ns: 713946218526.
+Baseline profile [results](file://BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark=BaselineProfileGenerator_journeys
+Total run time Ns: 713946218526.
+Baseline profile [results](file://BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark=BaselineProfileGenerator_journeys
+Total run time Ns: 713946218526.
+Baseline profile [results](file://BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 989.331
+
+OK (2 tests)
+
+
+INSTRUMENTATION_CODE: -1
+== exit 0 : adb
+== 315 perf.shell lines in /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/profile/emulator/shell-1217.txt
+/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/: 4 files pulled, 0 skipped. 312.1 MB/s (16922530 bytes in 0.052s)
+total 16544
+drwxrwxr-x 2 crazyhusir crazyhusir    4096 Oct 14 12:34 .
+drwxrwxr-x 3 crazyhusir crazyhusir    4096 Oct 14 12:34 ..
+-rw-r--r-- 1 crazyhusir crazyhusir 4424245 Oct 14 12:34 BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt
+-rw-r--r-- 1 crazyhusir crazyhusir 4424245 Oct 14 12:34 BaselineProfileGenerator_journeys-baseline-prof.txt
+-rw-r--r-- 1 crazyhusir crazyhusir 4037020 Oct 14 12:34 BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt
+-rw-r--r-- 1 crazyhusir crazyhusir 4037020 Oct 14 12:34 BaselineProfileGenerator_startup-startup-prof.txt
+  44082 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/baseline-prof.txt
+  37909 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/startup-prof.txt
+  81991 total
+== 12:34:19 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --runs 1 --serial emulator-5554 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/emulator-large tabs_large pushpop_large listdetail_select scroll_large sidebar_toggle
+run 1/1: install, profile, warm-up
+run 1/1: tabs_large
+run 1/1: pushpop_large
+run 1/1: listdetail_select
+run 1/1: scroll_large
+run 1/1: sidebar_toggle
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/benchmarkRelease/app-dev-x86_64-benchmarkRelease.apk`
+- Device: sdk_gphone64_x86_64 (emulator-5554), battery 25.0 °C at the start
+- Runs: 1, seed 530326, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: tabs_large, pushpop_large, listdetail_select, scroll_large, sidebar_toggle
+
+| Metric | Median | Runs |
+|---|---|---|
+| First push after pm clear (cold), the frame that composes the screen (ms) | 4.98 | 4.98 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 5.39 | 5.39 |
+| listdetail_select.first3_dequeue_ms.max | 10.36 | 10.36 |
+| listdetail_select.first3_dequeue_ms.median | 0 | 0 |
+| listdetail_select.first3_gpu_ms.max | 29.71 | 29.71 |
+| listdetail_select.first3_gpu_ms.median | 12.77 | 12.77 |
+| listdetail_select.first3_issue_ms.max | 4.77 | 4.77 |
+| listdetail_select.first3_issue_ms.median | 0.96 | 0.96 |
+| Large window: the detail swaps in place, first frame max (ms) | 5.35 | 5.35 |
+| Large window: the detail swaps in place, first frame median (ms) | 4.87 | 4.87 |
+| listdetail_select.frames | 153 | 153 |
+| listdetail_select.gpu_p50_ms | 23 | 23 |
+| listdetail_select.gpu_p90_ms | 4950 | 4950 |
+| listdetail_select.gpu_p99_ms | 4950 | 4950 |
+| Large window: a row opens its detail beside the list, janky frames (%) | 19.61 | 19.61 |
+| listdetail_select.p50_ms | 29 | 29 |
+| listdetail_select.p90_ms | 46 | 46 |
+| listdetail_select.p99_ms | 57 | 57 |
+| pushpop_large.first3_dequeue_ms.max | 9.81 | 9.81 |
+| pushpop_large.first3_dequeue_ms.median | 0 | 0 |
+| pushpop_large.first3_gpu_ms.max | 30.48 | 30.48 |
+| pushpop_large.first3_gpu_ms.median | 11.92 | 11.92 |
+| pushpop_large.first3_issue_ms.max | 3.57 | 3.57 |
+| pushpop_large.first3_issue_ms.median | 0.88 | 0.88 |
+| pushpop_large.frames | 104 | 104 |
+| pushpop_large.gpu_p50_ms | 21 | 21 |
+| pushpop_large.gpu_p90_ms | 4950 | 4950 |
+| pushpop_large.gpu_p99_ms | 4950 | 4950 |
+| Large window: open and close a detail, janky frames (%) | 24.04 | 24.04 |
+| pushpop_large.p50_ms | 24 | 24 |
+| pushpop_large.p90_ms | 31 | 31 |
+| pushpop_large.p99_ms | 34 | 34 |
+| Large window: close a detail with Back, first frame max (ms) | 5.3 | 5.3 |
+| Large window: close a detail with Back, first frame median (ms) | 3.44 | 3.44 |
+| pushpop_large.push_first_frame_ms.max | 4.56 | 4.56 |
+| pushpop_large.push_first_frame_ms.median | 4.08 | 4.08 |
+| scroll_large.frames | 631 | 631 |
+| scroll_large.gpu_p50_ms | 23 | 23 |
+| Large window: scroll the list pane, GPU p90 (ms) | 4950 | 4950 |
+| scroll_large.gpu_p99_ms | 4950 | 4950 |
+| Large window: scroll the list pane, janky frames (%) | 7.61 | 7.61 |
+| scroll_large.p50_ms | 28 | 28 |
+| scroll_large.p90_ms | 42 | 42 |
+| scroll_large.p99_ms | 65 | 65 |
+| sidebar_toggle.first3_dequeue_ms.max | 8.89 | 8.89 |
+| sidebar_toggle.first3_dequeue_ms.median | 0 | 0 |
+| sidebar_toggle.first3_gpu_ms.max | 50.78 | 50.78 |
+| sidebar_toggle.first3_gpu_ms.median | 16.03 | 16.03 |
+| sidebar_toggle.first3_issue_ms.max | 331.74 | 331.74 |
+| sidebar_toggle.first3_issue_ms.median | 1.59 | 1.59 |
+| sidebar_toggle.frames | 246 | 246 |
+| sidebar_toggle.gpu_p50_ms | 24 | 24 |
+| sidebar_toggle.gpu_p90_ms | 4950 | 4950 |
+| sidebar_toggle.gpu_p99_ms | 4950 | 4950 |
+| Large window: fold and open the sidebar, janky frames (%) | 33.74 | 33.74 |
+| sidebar_toggle.p50_ms | 40 | 40 |
+| sidebar_toggle.p90_ms | 48 | 48 |
+| sidebar_toggle.p99_ms | 61 | 61 |
+| First visit to a tab, first frame max (ms) | 1.92 | 1.92 |
+| First visit to a tab, first frame median (ms) | 1.72 | 1.72 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 2.83 | 2.83 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 1.8 | 1.8 |
+| tabs_large.first3_dequeue_ms.max | 8.49 | 8.49 |
+| tabs_large.first3_dequeue_ms.median | 0 | 0 |
+| tabs_large.first3_gpu_ms.max | 31.94 | 31.94 |
+| tabs_large.first3_gpu_ms.median | 15.35 | 15.35 |
+| tabs_large.first3_issue_ms.max | 5.12 | 5.12 |
+| tabs_large.first3_issue_ms.median | 0.65 | 0.65 |
+| Large window: tab switch to a visited tab, first frame max (ms) | 1.82 | 1.82 |
+| Large window: tab switch to a visited tab, first frame median (ms) | 1.41 | 1.41 |
+| tabs_large.frames | 353 | 353 |
+| tabs_large.gpu_p50_ms | 24 | 24 |
+| tabs_large.gpu_p90_ms | 4950 | 4950 |
+| tabs_large.gpu_p99_ms | 4950 | 4950 |
+| Large window: tab switch beside the rail or sidebar, janky frames (%) | 30.31 | 30.31 |
+| tabs_large.p50_ms | 32 | 32 |
+| tabs_large.p90_ms | 53 | 53 |
+| tabs_large.p99_ms | 61 | 61 |
+
+Notes:
+
+- run 1: tabs_large: LargexMedium window (1280x800dp), Sidebar
+- run 1: pushpop_large: LargexMedium window (1280x800dp), Sidebar
+- run 1: listdetail_select: LargexMedium window (1280x800dp), Sidebar
+- run 1: scroll_large: LargexMedium window (1280x800dp), Sidebar
+- run 1: sidebar_toggle: LargexMedium window (1280x800dp), Sidebar
+
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh
+== 12:36:43 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/tab-switch/emulator-font2 --serial emulator-5554
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 29 >= 29
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+    Last message repeated 1 times
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 68 >= 68
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 70 >= 70
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 74 >= 74
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 76 >= 76
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 78 >= 78
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 79 >= 79
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 80 >= 80
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 82 >= 82
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 83 >= 83
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 84 >= 84
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 91 >= 91
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 93 >= 93
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 105 >= 105
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 115 >= 115
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 118 >= 118
+    Last message repeated 1 times
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 121 >= 121
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 124 >= 124
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 125 >= 125
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 126 >= 126
+[image2 @ 0x61cf6fe5d180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 128 >= 128
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/tab-switch/emulator-font2/tab_switch.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/tab-switch/emulator-font2/tab_switch_strip.png
+52 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 12:37:06 debug.force_rtl=true
+/sdcard/rtl.xml: 1 file pulled, 0 skipped. 29.8 MB/s (28145 bytes in 0.001s)
+== tab lefts: {'tab_0': 864, 'tab_1': 648, 'tab_2': 432, 'tab_3': 216, 'tab_4': 0} mirrored
+== 12:37:14 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/tab_switch --serial emulator-5554
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+    Last message repeated 1 times
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 33 >= 33
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+    Last message repeated 1 times
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 67 >= 67
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 69 >= 69
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 73 >= 73
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 75 >= 75
+    Last message repeated 1 times
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+    Last message repeated 1 times
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 79 >= 79
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 80 >= 80
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 81 >= 81
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 82 >= 82
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 83 >= 83
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 89 >= 89
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 91 >= 91
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 93 >= 93
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 102 >= 102
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 112 >= 112
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 114 >= 114
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 117 >= 117
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 120 >= 120
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 121 >= 121
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 122 >= 122
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 124 >= 124
+[image2 @ 0x57fc1d68e5c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 126 >= 126
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/tab_switch/tab_switch.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/tab_switch/tab_switch_strip.png
+44 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 12:37:36 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/push --serial emulator-5554
+[image2 @ 0x5bff20e66700] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 12 >= 12
+    Last message repeated 1 times
+[image2 @ 0x5bff20e66700] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 13 >= 13
+    Last message repeated 2 times
+[image2 @ 0x5bff20e66700] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 15 >= 15
+[image2 @ 0x5bff20e66700] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 15 >= 15
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/push/push.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/push/push_strip.png
+11 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 12:37:56 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_slow_commit /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_slow_commit --edge right --serial emulator-5554
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 9 >= 9
+    Last message repeated 4 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 10 >= 10
+    Last message repeated 3 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 11 >= 11
+    Last message repeated 3 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 12 >= 12
+    Last message repeated 2 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 13 >= 13
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 15 >= 15
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 16 >= 16
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 17 >= 17
+    Last message repeated 1 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+    Last message repeated 1 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+    Last message repeated 3 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+    Last message repeated 4 times
+[image2 @ 0x6254684990c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_slow_commit/back_slow_commit.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_slow_commit/back_slow_commit_strip.png
+22 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 12:38:18 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_during_push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_during_push --edge right --serial emulator-5554
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 18 >= 18
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 19 >= 19
+    Last message repeated 1 times
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 20 >= 20
+    Last message repeated 1 times
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 21 >= 21
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 22 >= 22
+    Last message repeated 1 times
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+    Last message repeated 1 times
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+    Last message repeated 1 times
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+[image2 @ 0x5be9c4cde880] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_during_push/back_during_push.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_during_push/back_during_push_strip.png
+12 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+EMU-SESSION DONE
+== 12:38:38 emulator stopped

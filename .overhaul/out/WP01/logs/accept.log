@@ -1,0 +1,177 @@
+...............................................................................s.........................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 249 tests in 19.992s
+
+OK (skipped=1)
+
+58 projects in 35 s: 0 new issues, 575 known (12 of 12 known-issue lines seen).
+CONSISTENCY OK
+0 token copies current.
+web/frontend/lib/catalogue.json is current.
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+
+Summary
+───────
+           App  PeriFlow (PeriFlow)
+       Package  com.jorwen.periflow
+        Target  android
+  Architecture  compact
+       Min SDK  API 30 · Android 11 (Red Velvet Cake)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, auth, baselineprofile, browser, catalog,
+                coil, composemetrics, coverage, database, deeplink,
+                depsanalysis, devtools, firebase, flags, forms, googlefonts,
+                googlesignin, language, leakcanary, licenses, lottie, media,
+                network, onboarding, paging, playstore, profile, push, room,
+                sample, search, settings, websocket, widget, workmanager
+       Modules  none
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  Nunito · JetBrains Mono
+       Colours  #9E0000 · #732B2B (derived) · #9E9E00 (derived)
+         Style  Social
+        Motion  Calm, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/periflow
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/periflow and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+
+Summary
+───────
+           App  Acme Field (AcmeField)
+       Package  com.acme.field
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, auth, baselineprofile, browser, catalog, coil,
+                deeplink, firebase, flags, forms, googlefonts, googlesignin,
+                language, leakcanary, media, network, paging, profile, push,
+                room, sample, search, settings, websocket, widget,
+                workmanager
+       Modules  orders, wallet
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Social
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/spec_full
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/spec_full and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+
+Summary
+───────
+           App  Keyed App (KeyedApp)
+       Package  com.keyed.app
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, catalog, coil, deeplink, googlefonts, leakcanary,
+                network, room, sample
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  dev, staging, prod, playstore
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/spec_keys
+  Keystores: dev, staging, prod, playstore
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/spec_keys and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+
+Summary
+───────
+           App  Bare (Bare)
+       Package  io.bare.min
+        Target  android
+  Architecture  compact
+       Min SDK  API 24 · Android 7.0 (Nougat)
+    Target SDK  API 36 · Android 16 (Baklava)
+       Version  2.1.0 (7)
+    Desugaring  on: java.time below API 26
+      Features  none
+       Modules  home
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/spec_minimal
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/spec_minimal and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+
+Summary
+───────
+           App  VitFleet (VitFleet)
+       Package  com.vitfleet.app
+        Target  android
+  Architecture  compact
+       Min SDK  API 29 · Android 10 (Quince Tart)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  0.1.0 (1)
+    Desugaring  off
+      Features  analytics, auth, baselineprofile, browser, catalog, coil,
+                database, deeplink, devtools, firebase, flags, forms,
+                googlefonts, language, leakcanary, licenses, lottie, media,
+                network, paging, playstore, push, room, settings, websocket,
+                workmanager
+       Modules  dashboard, fleet, attendance, fuel, trips, maintenance,
+                documents, masters, team, alerts, sdui
+     Languages  en, hi
+      Typeface  IBM Plex Sans · IBM Plex Mono
+       Colours  #0E1A2B · #F5A524 · #2F6BFF
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/vitfleet
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/v1/vitfleet and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+2606 differences explained by the allow-list
+GOLDEN OK
+ACCEPT OK

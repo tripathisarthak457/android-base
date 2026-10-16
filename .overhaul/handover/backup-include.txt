@@ -1,0 +1,390 @@
+# backup-include.txt: rsync filter rules that select the git part of the .overhaul workspace
+# (orphan branch overhaul-workspace of the PUBLIC repo tripathisarthak457/android-base).
+# Paths are relative to /home/crazyhusir/Documents/projects/tools/.overhaul. First matching rule wins.
+# Use:  rsync -a --filter='merge /home/crazyhusir/Documents/projects/tools/.overhaul/handover/backup-include.txt' \
+#         /home/crazyhusir/Documents/projects/tools/.overhaul/ <workspace-branch-checkout>/
+# Then: git add --all --force  (nested .gitignore files under scratch/WP09-trial and scratch/WP07-skel
+#       would otherwise hide some kept files). See MANIFEST.md for the reasons behind every rule.
+# Order: 1 never publish, 2 out of scope, 3 secrets, 4 regenerable, 5 generated projects,
+#        6 draft-release content (archives, see release-assets.txt), 7 allowlist, then "- *".
+
+## 1. NEVER PUBLISH (not in git, not in the draft release)
+# Gmail reference recordings, frames, UI dump and screenshots: real e-mails of other people
+- /research/predictive-back/gmail/
+# PeriFlow source copies (pf/, pfapp/, base-raw/ = periflow-android, base/ = its rename; tpl/ is a template copy)
+- /scratch/pf-diff/
+# VitFleet source copy: private repo tripathisarthak457/vitfleet, commit 25db943, vitfleet-android/
+- /scratch/vitfleet/
+# Google app (not PeriFlow) captured on a failed run: the user's Google account e-mail and personal feed
+- /perf/WP11/after-early/run2/failure_run2_041.png
+- /perf/WP11/after-early/run2/failure_run2_041.xml
+# Gmail recording log: line 3 is the subject of a real e-mail. Add back only a redacted copy (MANIFEST.md)
+- /research/predictive-back/record-gmail-r2.log
+# PeriFlow secrets (none are in the workspace; kept as a guard)
+- PeriFlow-Postman/
+- periflow-recovery-codes.txt
+
+## 2. OUT OF SCOPE
+# worktrees are git; their WIP is snapshotted into backup/<name>-wip-2026-10-16 branches
+- /wt/
+- /handover/local-only/
+
+## 3. SECRETS (never committed)
+- *.jks
+- *.keystore
+- *.p12
+- *.pfx
+- *.pem
+- *.key
+- local.properties
+- google-services.json
+- GoogleService-Info.plist
+- keystore.properties
+- .env
++ .env.example
+- .env.*
+# test keystore password for verify-gen/ks/t.jks
+- /verify-gen/ks/p.properties
+
+## 4. REGENERABLE (build outputs, downloaded artifacts, lock files)
+- *.lock
+- *.apk
+- *.aab
+- *.apks
+- *.idsig
+- *.ap_
+- *.dex
+- *.class
+- *.jar
+- *.aar
+- *.so
+- *.o
+- *.pyc
+- *.klib
+# compiled Go servers (go build of web/api), R8 build data, a worktree pointer file
+- /out/WP09/server
+- /out/WP10/api-server
+- /out/WP02/r8-data.b64
+- .git
+# zips of generated projects (one holds a google-services.json)
+- /out/**.zip
+- /verify-gen/**.zip
+- /scratch/webapi/**.zip
+# third-party AGP sources have package folders named "build" (com/android/build): keep them whole
++ /scratch/agp/***
++ /scratch/template-build/agpsrc/***
++ /scratch/template-build/agpapi/***
+- build/
+- .gradle/
+- .kotlin/
+- __pycache__/
+- node_modules/
+- .next/
+- DerivedData/
+- .build/
+
+## 5. GENERATED PROJECTS (regenerable with the generator): only their spec and build provenance are kept
++ generator-spec.json
++ BUILT_FROM
++ BUILT_DIRTY
+- /out/Full/*
+- /out/FullDevtools/*
+- /out/WP00/after-full/*
+- /out/WP00/after-minimal/*
+- /out/WP00/before-full/*
+- /out/WP00/before-minimal/*
+- /out/WP01/after/all/*
+- /out/WP01/after/hostile_app-App/*
+- /out/WP01/after/hostile_app-Baseapp-x/*
+- /out/WP01/after/hostile_app-NASA/*
+- /out/WP01/after/hostile_app-Xbaseapp/*
+- /out/WP01/after/hostile_app-punct/*
+- /out/WP01/after/hostile_app-single/*
+- /out/WP01/after/hostile_mod-baseapp/*
+- /out/WP01/after/hostile_mod-database_app/*
+- /out/WP01/after/hostile_mod-trail-name/*
+- /out/WP01/after/hostile_pkg-apple/*
+- /out/WP01/after/hostile_pkg-base_app/*
+- /out/WP01/after/hostile_pkg-baseapp/*
+- /out/WP01/after/hostile_pkg-databaseapp/*
+- /out/WP01/after/hostile_pkg-digits/*
+- /out/WP01/after/hostile_pkg-exact/*
+- /out/WP01/after/hostile_pkg-firebaseapp/*
+- /out/WP01/after/hostile_pkg-global/*
+- /out/WP01/after/hostile_pkg-pass/*
+- /out/WP01/after/hostile_pkg-prefix/*
+- /out/WP01/after/look/*
+- /out/WP01/after/nofonts/*
+- /out/WP01/after/none/*
+- /out/WP01/after/preset_everything/*
+- /out/WP01/after/preset_lean/*
+- /out/WP01/after/preset_standard/*
+- /out/WP01/after/spec_full/*
+- /out/WP01/after/spec_keys/*
+- /out/WP01/after/spec_minimal/*
+- /out/WP01/after/v1_periflow/*
+- /out/WP01/after/v1_vitfleet/*
+- /out/WP01/before-6bc38e9/all/*
+- /out/WP01/before-6bc38e9/hostile_app-App/*
+- /out/WP01/before-6bc38e9/hostile_app-Baseapp-x/*
+- /out/WP01/before-6bc38e9/hostile_app-NASA/*
+- /out/WP01/before-6bc38e9/hostile_app-Xbaseapp/*
+- /out/WP01/before-6bc38e9/hostile_app-punct/*
+- /out/WP01/before-6bc38e9/hostile_app-single/*
+- /out/WP01/before-6bc38e9/hostile_mod-dunder/*
+- /out/WP01/before-6bc38e9/hostile_mod-in/*
+- /out/WP01/before-6bc38e9/hostile_mod-null/*
+- /out/WP01/before-6bc38e9/hostile_mod-trail-name/*
+- /out/WP01/before-6bc38e9/hostile_pkg-apple/*
+- /out/WP01/before-6bc38e9/hostile_pkg-digits/*
+- /out/WP01/before-6bc38e9/hostile_pkg-exact/*
+- /out/WP01/before-6bc38e9/hostile_pkg-java/*
+- /out/WP01/before-6bc38e9/hostile_pkg-null/*
+- /out/WP01/before-6bc38e9/hostile_pkg-prefix/*
+- /out/WP01/before-6bc38e9/look/*
+- /out/WP01/before-6bc38e9/nofonts/*
+- /out/WP01/before-6bc38e9/none/*
+- /out/WP01/before-6bc38e9/preset_everything/*
+- /out/WP01/before-6bc38e9/preset_lean/*
+- /out/WP01/before-6bc38e9/preset_standard/*
+- /out/WP01/before-6bc38e9/spec_full/*
+- /out/WP01/before-6bc38e9/spec_keys/*
+- /out/WP01/before-6bc38e9/spec_minimal/*
+- /out/WP01/before-6bc38e9/v1_periflow/*
+- /out/WP01/before-6bc38e9/v1_vitfleet/*
+- /out/WP01/before/all/*
+- /out/WP01/before/hostile_app-App/*
+- /out/WP01/before/hostile_app-Baseapp-x/*
+- /out/WP01/before/hostile_app-NASA/*
+- /out/WP01/before/hostile_app-Xbaseapp/*
+- /out/WP01/before/hostile_app-punct/*
+- /out/WP01/before/hostile_app-single/*
+- /out/WP01/before/hostile_mod-dunder/*
+- /out/WP01/before/hostile_mod-in/*
+- /out/WP01/before/hostile_mod-null/*
+- /out/WP01/before/hostile_mod-trail-name/*
+- /out/WP01/before/hostile_pkg-apple/*
+- /out/WP01/before/hostile_pkg-digits/*
+- /out/WP01/before/hostile_pkg-exact/*
+- /out/WP01/before/hostile_pkg-java/*
+- /out/WP01/before/hostile_pkg-null/*
+- /out/WP01/before/hostile_pkg-prefix/*
+- /out/WP01/before/look/*
+- /out/WP01/before/nofonts/*
+- /out/WP01/before/none/*
+- /out/WP01/before/preset_everything/*
+- /out/WP01/before/preset_lean/*
+- /out/WP01/before/preset_standard/*
+- /out/WP01/before/spec_full/*
+- /out/WP01/before/spec_keys/*
+- /out/WP01/before/spec_minimal/*
+- /out/WP01/before/v1_periflow/*
+- /out/WP01/before/v1_vitfleet/*
+- /out/WP01/tmp-new/minimal/*
+- /out/WP01/tmp-new/p/*
+- /out/WP01/tmp-new/p0/*
+- /out/WP01/tmp-new/p1/*
+- /out/WP01/tmp-new/p2/*
+- /out/WP01/tmp-new/spec_full/*
+- /out/WP01/tmp-new/warm/*
+- /out/WP01/v1/periflow/*
+- /out/WP01/v1/spec_full/*
+- /out/WP01/v1/spec_keys/*
+- /out/WP01/v1/spec_minimal/*
+- /out/WP01/v1/vitfleet/*
+- /out/WP01/wizard/*
+- /out/WP01/wizard2/*
+- /out/WP02/crossnav/*
+- /out/WP02/modules-compact/*
+- /out/WP02/modules-modular/*
+- /out/WP02/none/*
+- /out/WP02/post-m2/everything/*
+- /out/WP02/post-m2/lean/*
+- /out/WP02/post-m2/lean-preset-pre/*
+- /out/WP02/post-m2/standard/*
+- /out/WP02/post-m2/standard-preset-pre/*
+- /out/WP02/pre-m2/everything/*
+- /out/WP02/pre-m2/lean/*
+- /out/WP02/pre-m2/standard/*
+- /out/WP02/r10-c-local/*
+- /out/WP02/r10-c-net/*
+- /out/WP02/r10-fmt-local/*
+- /out/WP02/r10-fmt-net/*
+- /out/WP02/r10-s-local-0/*
+- /out/WP02/r10-s-local-1/*
+- /out/WP02/r10-s-local-2/*
+- /out/WP02/r10-s-net-0/*
+- /out/WP02/r10-s-net-1/*
+- /out/WP02/r10-s-net-2/*
+- /out/WP02/r14-everything/*
+- /out/WP02/r14-lean/*
+- /out/WP02/r14-standard-modular/*
+- /out/WP02/r15-everything/*
+- /out/WP02/r15-lean/*
+- /out/WP02/r15-standard/*
+- /out/WP02/r15-standard-modular/*
+- /out/WP02/r9-fmt/*
+- /out/WP02/restore/*
+- /out/WP02/standard/*
+- /out/WP02/standard-modular/*
+- /out/WP02/tf-modules-compact/*
+- /out/WP02/tf-modules-modular/*
+- /out/WP03-skel/cp1/*
+- /out/WP03-skel/ptr/*
+- /out/WP03/cp1/*
+- /out/WP03/look/*
+- /out/WP03/ptr/*
+- /out/WP03/ptr0/*
+- /out/WP04-perf/everything/*
+- /out/WP04-perf/fixed/*
+- /out/WP04-perf/floor/*
+- /out/WP04-perf/head/*
+- /out/WP04-perf/inv2/*
+- /out/WP04/base/*
+- /out/WP04/base-lean/*
+- /out/WP04/base-standard/*
+- /out/WP04/exp-everything/*
+- /out/WP04/final-everything/*
+- /out/WP04/final-lean/*
+- /out/WP04/final-standard/*
+- /out/WP04/inv-everything/*
+- /out/WP04/p2/*
+- /out/WP04/p2-lean/*
+- /out/WP04/p2-standard/*
+- /out/WP04/p3/*
+- /out/WP05/lean/*
+- /out/WP06/badgeqa/*
+- /out/WP06/everything/*
+- /out/WP06/size/after-everything/*
+- /out/WP06/size/after-everything-noqueue/*
+- /out/WP06/size/after-standard/*
+- /out/WP06/size/before-everything/*
+- /out/WP06/size/before-standard/*
+- /out/WP06/standard/*
+- /out/WP06/standard-nofirebase/*
+- /out/WP06/v1fb/*
+- /out/WP07/mp-everything/*
+- /out/WP07/mp-lean/*
+- /out/WP07/mp-standard/*
+- /out/WP08/ios-everything/*
+- /out/WP08/ios-lean/*
+- /out/WP08/ios-modules/*
+- /out/WP08/ios-standard/*
+- /out/addtest/*
+- /out/gen-app-custom/*
+- /out/gen-app-default/*
+- /out/gen-coll-mod-database_app/*
+- /out/gen-coll-mod-firebase_app/*
+- /out/gen-crash-auth/*
+- /out/gen-full/*
+- /out/gen-jsoncheck/*
+- /out/gen-keys/*
+- /out/gen-keys2/*
+- /out/gen-minimal/*
+- /out/gen-n-app-App/*
+- /out/gen-n-app-Baseapp-x/*
+- /out/gen-n-app-Xbaseapp/*
+- /out/gen-n-app-ios/*
+- /out/gen-n-app-long/*
+- /out/gen-n-app-punct/*
+- /out/gen-n-app-single/*
+- /out/gen-n-app-trailing/*
+- /out/gen-n-mod-base_app-nolang/*
+- /out/gen-n-mod-baseapp-nolang/*
+- /out/gen-n-mod-class/*
+- /out/gen-n-mod-core-name/*
+- /out/gen-n-mod-default/*
+- /out/gen-n-mod-devtools/*
+- /out/gen-n-mod-digit/*
+- /out/gen-n-mod-dunder/*
+- /out/gen-n-mod-fun/*
+- /out/gen-n-mod-in/*
+- /out/gen-n-mod-null/*
+- /out/gen-n-mod-object/*
+- /out/gen-n-mod-trail-name/*
+- /out/gen-n-pkg-android/*
+- /out/gen-n-pkg-apple/*
+- /out/gen-n-pkg-digits/*
+- /out/gen-n-pkg-exact/*
+- /out/gen-n-pkg-java/*
+- /out/gen-n-pkg-null/*
+- /out/gen-n-pkg-prefix/*
+- /out/gen-n-pkg-true/*
+- /out/gen-n-pkg-typealias/*
+- /out/gen-orph-lean/*
+- /out/gen-orph-none/*
+- /out/gen-pascal-collide/*
+- /out/gen-ref-all/*
+- /out/parentdir/*
+- /verify-gen/out/authonly/*
+- /verify-gen/out/bare/A/*
+- /verify-gen/out/com.base.app.demo/*
+- /verify-gen/out/com.base.apple/*
+- /verify-gen/out/dup/*
+- /verify-gen/out/gitcheck/*
+- /verify-gen/out/kw/*
+- /verify-gen/out/lang/*
+- /verify-gen/out/lang-add/*
+- /verify-gen/out/store/*
+- /verify-gen/out/xb/*
+
+## 6. DRAFT-RELEASE CONTENT (owner-only archives listed in release-assets.txt), so not in git
+# PeriFlow screenshots, frames, recordings and UI dumps (owner-only, never in the public branch)
+- /perf/WP11/**.png
+- /perf/WP11/**.jpg
+- /perf/WP11/**.mp4
+- /perf/WP11/**.xml
+- /audit/frames/periflow_*
+- /scratch/device/results/*peri*.png
+- /scratch/device/results/*peri*.mp4
+- /scratch/device/results/shot_p[0-9]*.png
+- /scratch/device/results/ui_p[0-9]*.xml
+- /scratch/device/results/ui_tt.xml
+- /scratch/device/results/fr_*/*.png
+# dex/resource listings of the private PeriFlow and VitFleet APKs
+- /scratch/template-build/peri-dex-packages.txt
+- /scratch/template-build/vit-dex-packages.txt
+- /scratch/template-build/vit-res.txt
+# raw traces
+- *.perfetto-trace
+- atrace.txt
+- recompose_atrace.txt
+# screen recordings
+- *.mp4
+- *.webm
+- *.mkv
+- *.mov
+- *.3gp
+# raw frame dumps (f_0001.png ...)
+- f_[0-9]*.png
+
+## 7. ALLOWLIST: everything else in these places goes to git
++ /*.md
++ /*.txt
++ /*.py
++ /*.sh
++ /*.js
++ /*.json
++ /audit/***
++ /backup/***
++ /bin/***
++ /decisions/***
++ /design/***
++ /docs-draft/***
++ /handoff/***
++ /handover/***
++ /logs/***
++ /notes/***
++ /out/***
++ /perf/***
++ /qa/***
++ /research/***
++ /reviews/***
++ /scratch/***
++ /scratch-gen/***
++ /scripts/***
++ /verify-gen/***
++ /verify-webapi/***
+
+## everything not listed above stays out
+- *

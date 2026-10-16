@@ -1,0 +1,88 @@
+{
+ "recording": "../../evidence/rec/ptr-cold-light.mp4",
+ "theme": "light",
+ "frames_read": 164,
+ "frames_between_skeleton_and_content": [
+  [
+   162,
+   2.2685,
+   "both"
+  ]
+ ],
+ "skeleton_from_s": 1.4471,
+ "skeleton_to_s": 2.2609,
+ "skeleton_shown_s": 0.831,
+ "last_skeleton_frame": 161,
+ "first_content_frame": 163,
+ "swap_gap_ms": 16.9,
+ "cards_skeleton": [
+  [
+   404,
+   564
+  ],
+  [
+   593,
+   755
+  ],
+  [
+   779,
+   940
+  ],
+  [
+   967,
+   1126
+  ]
+ ],
+ "cards_content": [
+  [
+   396,
+   598
+  ],
+  [
+   627,
+   791
+  ],
+  [
+   819,
+   1024
+  ],
+  [
+   1056,
+   1217
+  ],
+  [
+   1250,
+   1409
+  ]
+ ],
+ "card_shift_px": [
+  {
+   "top": -8,
+   "bottom": 34
+  },
+  {
+   "top": 34,
+   "bottom": 36
+  },
+  {
+   "top": 40,
+   "bottom": 84
+  },
+  {
+   "top": 89,
+   "bottom": 91
+  }
+ ],
+ "settled_skeleton_frames": 91,
+ "settled_skeleton_from_s": 1.4952,
+ "above_first_card": {
+  "rows": [
+   60,
+   392
+  ],
+  "sampled_px": 57160,
+  "most_changed_px_in_a_skeleton_frame": 625,
+  "at_frame": 71
+ },
+ "bone_max_change_between_settled_skeleton_frames": 16
+}

@@ -1,0 +1,95 @@
+{
+  "root": {
+    "title": [
+      44,
+      144,
+      314,
+      229
+    ],
+    "badge": [
+      948,
+      1323,
+      1080,
+      1455
+    ],
+    "clear": true
+  },
+  "pushed": {
+    "back": [
+      44,
+      150,
+      99,
+      205
+    ],
+    "badge": [
+      948,
+      276,
+      1080,
+      408
+    ],
+    "clear": true
+  },
+  "back_tap_popped": true,
+  "top_chrome": {
+    "root-throw": {
+      "header": [
+        44,
+        144,
+        1036,
+        468
+      ],
+      "badge": [
+        0,
+        276,
+        132,
+        408
+      ],
+      "clear": false
+    },
+    "root-drag": {
+      "header": [
+        44,
+        144,
+        1036,
+        468
+      ],
+      "badge": [
+        948,
+        276,
+        1080,
+        408
+      ],
+      "clear": false
+    },
+    "pushed-throw": {
+      "bar": [
+        6,
+        112,
+        948,
+        244
+      ],
+      "badge": [
+        0,
+        276,
+        132,
+        408
+      ],
+      "clear": true
+    },
+    "popped-reclamped": {
+      "header": [
+        44,
+        144,
+        1036,
+        468
+      ],
+      "badge": [
+        0,
+        276,
+        132,
+        408
+      ],
+      "clear": false
+    }
+  }
+}

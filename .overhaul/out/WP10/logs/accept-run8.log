@@ -1,0 +1,261 @@
+
+added 55 packages, and audited 56 packages in 22s
+
+11 packages are looking for funding
+  run `npm fund` for details
+
+4 vulnerabilities (1 moderate, 3 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues, run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn install-scripts 2 packages have install scripts not yet covered by allowScripts:
+npm warn install-scripts   @tailwindcss/oxide@4.1.13 (postinstall: node ./scripts/install.js)
+npm warn install-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+web/frontend/lib/catalogue.json is current.
+✔ a preset range ends today in UTC and includes both ends (5.941114ms)
+✔ only the filters that are set go into the query, the country uppercased (2.578293ms)
+✔ a custom window is checked the way the API checks it (0.639452ms)
+✔ a feature reached only through another is not selectable (3.060037ms)
+✔ a licensed feature offered on two platforms is listed once (2.785691ms)
+✔ the checked-in catalogue passes the guard (16.115365ms)
+✔ a body that is not catalogue v2 is refused (11.03951ms)
+✔ a target whose features lost their requires is refused (1.364155ms)
+✔ keystores are offered unless the serving machine says it has no keytool (9.58108ms)
+✔ the default answers make a spec the generator accepts (17.456076ms)
+✔ blank optional answers are left out, so the generator keeps its own defaults (3.432559ms)
+✔ settings for a feature that is off are not sent (1.457229ms)
+✔ targetSdk follows minSdk up and compileSdk is never below it (0.588251ms)
+✔ signing keys are described only when asked for, and pass the generator's rules (12.127832ms)
+✔ languages go out in the catalogue's order (4.264999ms)
+✔ a multiplatform spec carries both settings blocks (6.56375ms)
+✔ a picked choice keeps its type, so iOS 18 is sent as the string the generator checks for (5.135632ms)
+✔ the API's header contract has cases for every header the site sends (0.42664ms)
+✔ session headers agree with the API: the website (2.329285ms)
+✔ session headers agree with the API: a script with no session headers (0.459227ms)
+✔ session headers agree with the API: no headers at all (0.948383ms)
+✔ session headers agree with the API: an uppercase session id is stored lowercase (0.15998ms)
+✔ session headers agree with the API: a version 1 UUID is not a session id (0.078503ms)
+✔ session headers agree with the API: a UUID with the wrong variant is not a session id (0.139041ms)
+✔ session headers agree with the API: a braced UUID is not a session id (0.08408ms)
+✔ session headers agree with the API: a UUID with text after it is not a session id (0.112385ms)
+✔ session headers agree with the API: zero configurator time (0.20937ms)
+✔ session headers agree with the API: the two-hour cap itself (0.104666ms)
+✔ session headers agree with the API: one millisecond over the cap is ignored, so the site caps before sending (1.494892ms)
+✔ session headers agree with the API: a negative time is ignored (0.095884ms)
+✔ session headers agree with the API: a fractional time is ignored (0.060011ms)
+✔ session headers agree with the API: exponent notation is ignored (0.05319ms)
+✔ session headers agree with the API: a plus sign is ignored (0.050533ms)
+✔ session headers agree with the API: leading zeros are still a number (0.088154ms)
+✔ session headers agree with the API: the site prefix without a build is not the site (0.174762ms)
+✔ session headers agree with the API: the prefix is case-sensitive (0.070862ms)
+✔ session headers agree with the API: an X-Client over 64 characters is ignored (0.066963ms)
+✔ session headers agree with the API: an X-Client of exactly 64 characters is the site (0.063109ms)
+✔ session headers agree with the API: an X-Client that is not printable ASCII is ignored (0.064675ms)
+✔ session headers agree with the API: a crawler (0.066966ms)
+✔ session headers agree with the API: a headless browser (0.064929ms)
+✔ session headers agree with the API: the site's own header wins over a crawler-like agent (0.133737ms)
+✔ session headers agree with the API: python-requests is a script, not a crawler (0.43079ms)
+✔ a configurator time past the cap is capped, never dropped, and never negative (0.206343ms)
+✔ the client header is printable ASCII within 64 characters whatever the build is called (0.516242ms)
+✔ unticking any feature leaves nothing on that needs it (23.599227ms)
+✔ unticking a transitive requirement takes every dependent with it (5.276171ms)
+✔ ticking a feature adds what it needs and says which (1.566759ms)
+✔ a feature nobody can tick leaves with the last feature that brought it (0.589631ms)
+✔ a hidden feature is dropped from choices when nothing chosen needs it (0.412669ms)
+✔ ticking something already needed adds nothing else (0.301127ms)
+✔ dependents are what an untick would also remove (0.632784ms)
+✔ every preset is recognised from its features, and an edit makes the set the visitor's own (16.004627ms)
+✔ unknown keys are dropped when closing a set (0.38104ms)
+✔ the initial answers are the catalogue's defaults (8.758309ms)
+✔ the package follows the app name until it is typed (0.884766ms)
+✔ an untick that takes dependents with it can be undone (18.259886ms)
+✔ any other edit drops the undo hint (0.488858ms)
+✔ every edit bumps the revision, so a finished download stops describing the answers (4.824948ms)
+✔ module names are normalised the way they will be generated (0.493117ms)
+✔ only available and beta targets can be picked (13.587976ms)
+✔ a target the server turned off gives way to one it generates (6.90709ms)
+✔ switching platform keeps compatible answers and drops the rest (7.417234ms)
+✔ a customised feature set keeps what the new platform also has (8.191823ms)
+✔ a design style that needs a feature turns it on (6.747762ms)
+✔ Firebase is not sent once the feature that brought it is unticked (26.769128ms)
+✔ a draft that kept a hidden feature on its own loses it (0.397951ms)
+✔ a design style keeps what it needs through a preset and a restored draft, and leaves with it (1.783072ms)
+✔ only answers that differ from the defaults are stored (11.401717ms)
+✔ a draft round-trips without the signing passwords (0.692933ms)
+✔ a draft from an older catalogue loses only what no longer exists (0.397682ms)
+✔ anything that is not a draft reads as none (3.834502ms)
+✔ an error sends the visitor to the step that edits its field (0.508093ms)
+✔ the shared fixture still has cases for the site (9.093929ms)
+✔ accepts: minimal (8.670836ms)
+✔ accepts: display name with any characters (4.082421ms)
+✔ accepts: python keywords are fine in a package (7.229501ms)
+✔ accepts: kotlin soft keywords are fine in a package (0.619391ms)
+✔ accepts: eight segments (0.961825ms)
+✔ accepts: twelve modules (0.761581ms)
+✔ accepts: ten languages listed once each (3.500961ms)
+✔ accepts: hex with and without the hash (0.754927ms)
+✔ accepts: font names as fonts.google.com spells them (0.510913ms)
+✔ accepts: font name of 60 (0.329422ms)
+✔ accepts: every motion and design style (0.255376ms)
+✔ accepts: android settings (8.159832ms)
+✔ accepts: an ordinary https url (5.429226ms)
+✔ accepts: a scheme with a hyphen, a plus and a digit (0.340428ms)
+✔ accepts: a keystore (10.644004ms)
+✔ refuses: no package (2.612508ms)
+✔ refuses: no app name (0.340645ms)
+✔ refuses: app name starting with a digit (0.179705ms)
+✔ refuses: app name with an apostrophe (0.151298ms)
+✔ refuses: app name over 50 (6.38693ms)
+✔ refuses: display name over 30 (0.315141ms)
+✔ refuses: display name with a newline (2.618471ms)
+✔ accepts: display name with a zero-width non-joiner and a no-break space (0.375198ms)
+✔ accepts: display name with a joined emoji sequence (0.236906ms)
+✔ accepts: display name of 30 characters outside the BMP, counted as code points (0.223051ms)
+✔ refuses: display name of 31 characters outside the BMP (0.208908ms)
+✔ refuses: display name with a line separator (0.196908ms)
+✔ refuses: one segment (0.205277ms)
+✔ refuses: nine segments (0.163814ms)
+✔ refuses: package over 100 (0.15275ms)
+✔ refuses: segment over 30 (5.560944ms)
+✔ refuses: uppercase segment (0.434486ms)
+✔ refuses: segment starting with a digit (0.237635ms)
+✔ refuses: kotlin hard keyword (0.422304ms)
+✔ refuses: java literal (0.255105ms)
+✔ refuses: typealias (0.207888ms)
+✔ refuses: java first segment (0.221977ms)
+✔ refuses: kotlin first segment (0.197797ms)
+✔ refuses: trailing newline in a package (0.203788ms)
+✔ refuses: thirteen modules (0.189256ms)
+✔ refuses: module keyword (8.286113ms)
+✔ refuses: module taken by the template (1.24435ms)
+✔ refuses: module with a double underscore (0.217662ms)
+✔ refuses: module with a trailing underscore (0.164226ms)
+✔ refuses: module with a newline (0.156068ms)
+✔ refuses: modules whose classes collide (0.195652ms)
+✔ refuses: duplicate modules (6.446565ms)
+✔ refuses: module given as a string (0.160419ms)
+✔ refuses: eleven languages (0.180183ms)
+✔ refuses: language listed twice (0.574143ms)
+✔ refuses: language with no translation (0.199064ms)
+✔ refuses: unknown feature (0.281811ms)
+✔ refuses: features given as a string (0.302102ms)
+✔ refuses: five-digit hex (0.255041ms)
+✔ refuses: named colour (1.392542ms)
+✔ refuses: font with a quote (0.293311ms)
+✔ refuses: font with a backslash (0.168547ms)
+✔ refuses: font over 60 (0.16837ms)
+✔ refuses: font with markup (0.177003ms)
+✔ refuses: font with a trailing newline (0.170261ms)
+✔ refuses: unknown motion style (0.238667ms)
+✔ refuses: unknown design style (0.198563ms)
+✔ refuses: unknown architecture (3.410978ms)
+✔ refuses: modular is not available yet (0.397696ms)
+✔ refuses: unknown top-level field (1.260142ms)
+✔ refuses: unknown android field (3.907457ms)
+✔ refuses: schema from the future (0.210107ms)
+✔ refuses: haptics as a string (0.235754ms)
+✔ refuses: min sdk below the table (0.24502ms)
+✔ refuses: min sdk as a string (0.136485ms)
+✔ refuses: target below min (0.168227ms)
+✔ refuses: compile below the libraries' floor (0.173175ms)
+✔ refuses: target sdk past the newest release (0.170395ms)
+✔ refuses: compile sdk past the newest release (0.445088ms)
+✔ refuses: version name with two parts (0.231378ms)
+✔ refuses: version name with a trailing newline (0.159125ms)
+✔ refuses: fractional version code (0.125404ms)
+✔ refuses: zero version code (0.21807ms)
+✔ refuses: url closing the string (0.220074ms)
+✔ refuses: url with a template (0.17669ms)
+✔ refuses: url with a backslash (0.167893ms)
+✔ refuses: url with a space (4.585314ms)
+✔ refuses: ftp url (0.280865ms)
+✔ refuses: javascript url (0.285748ms)
+✔ refuses: url with a trailing newline (0.571177ms)
+✔ refuses: unknown flavour (0.205668ms)
+✔ refuses: http where a socket belongs (0.255266ms)
+✔ refuses: urls as a list (0.280855ms)
+✔ refuses: scheme with markup (0.187453ms)
+✔ refuses: uppercase scheme (0.186516ms)
+✔ refuses: scheme starting with a digit (0.170652ms)
+✔ refuses: scheme with a space (0.169917ms)
+✔ refuses: host without a dot (0.306434ms)
+✔ refuses: host closing the string (0.16522ms)
+✔ refuses: host starting with a hyphen (0.149389ms)
+✔ refuses: host with an empty label (1.067376ms)
+✔ refuses: unknown keystore (0.86833ms)
+✔ refuses: short keystore password (13.90892ms)
+✔ refuses: alias that reads as a flag (0.305781ms)
+✔ refuses: dname that splits (0.227158ms)
+✔ refuses: three-letter country (0.460755ms)
+✔ refuses: same key twice (0.557351ms)
+✔ refuses: five keystores (0.164953ms)
+✔ a spec for a target the catalogue lacks is refused on platform (0.424464ms)
+✔ several problems are all reported, each once, in the generator's order (0.391457ms)
+✔ a settings block without checks of its own is held to its fields' rules and limits (7.500155ms)
+✔ the ramps match the generator on its 200 seeded accents (60.498147ms)
+✔ the readable shades match the catalogue's resolved content roles (3.525288ms)
+✔ hex parsing takes six digits with or without the hash, and nothing else (0.510784ms)
+✔ roles come from the style's palette, brand roles from the visitor's colour (4.638945ms)
+✔ a style or motion style this build does not know falls back instead of throwing (1.379452ms)
+✔ a new style added to the tokens renders with its own tokens (0.858297ms)
+✔ an unfinished hex leaves the template's brand roles in place (0.302422ms)
+✔ type takes the voice's weight and the scale's size (1.614294ms)
+✔ springs carry the token's stiffness and damping ratio (0.717041ms)
+✔ colours with alpha are written the CSS way (0.441881ms)
+✔ tabs follow the template's order, then modules, at most five (1.448245ms)
+✔ scaffolded modules get distinct icons (0.493801ms)
+✔ with no tab source the generator's home module is the one tab (0.568653ms)
+✔ module titles read like the scaffolded screen's (1.233692ms)
+✔ a style describes itself from its tokens, so a new one needs no copy (0.480935ms)
+✔ buttons read square up to 4 dp of radius and rounded above it (5.154635ms)
+✔ a landing from a campaign is stored as the API's contract says (3.337694ms)
+✔ every other event the site sends has the shape of an accepted one (0.66456ms)
+✔ only the referrer's origin leaves the browser, and never the site's own (0.338447ms)
+✔ a landing with nothing to say sends only the returning flag and viewport (0.257359ms)
+✔ viewport buckets match the API's (0.259353ms)
+✔ a long queue is split into batches the API accepts (1.083608ms)
+✔ session ids are random UUID v4s, the form the generate headers pass on (21.500086ms)
+ℹ tests 203
+ℹ suites 0
+ℹ pass 203
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 908.552527
+   ▲ Next.js 15.5.25
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 10.9s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/6) ...
+   Generating static pages (1/6) 
+   Generating static pages (2/6) 
+   Generating static pages (4/6) 
+ ✓ Generating static pages (6/6)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    53.9 kB         201 kB
+├ ○ /_not-found                            995 B         105 kB
+├ ○ /admin                               13.3 kB         160 kB
+└ ○ /icon.svg                                0 B            0 B
++ First Load JS shared by all             104 kB
+  ├ chunks/255-916c0b8d384cc300.js       46.4 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          3.46 kB
+
+
+○  (Static)  prerendered as static content
+
+ACCEPT OK
+exit=0

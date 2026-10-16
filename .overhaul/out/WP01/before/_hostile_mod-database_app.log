@@ -1,0 +1,31 @@
+
+Summary
+───────
+         App  Store (Store)
+     Package  com.example.store
+     Min SDK  API 26 · Android 8.0 (Oreo)
+  Target SDK  API 37 · Android 17 (Cinnamon Bun)
+     Version  1.0.0 (1)
+  Desugaring  off
+    Features  analytics, auth, catalog, database, deeplink, devtools,
+              firebase, flags, forms, language, network, onboarding, push,
+              room, sample, settings
+     Modules  database_app
+   Languages  en, de, pt-BR
+    Typeface  DM Sans · JetBrains Mono
+     Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+       Style  Utility
+      Motion  Standard, haptics on
+        Keys  debug key only
+Traceback (most recent call last):
+  File "/tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/base-54d078d/generator/create_project.py", line 373, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/base-54d078d/generator/create_project.py", line 130, in main
+    result = builder.build(
+             ^^^^^^^^^^^^^^
+  File "/tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/base-54d078d/generator/genkit/build.py", line 56, in build
+    translations.apply(project, spec)
+  File "/tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/base-54d078d/generator/genkit/translations.py", line 81, in apply
+    raise TranslationError(
+genkit.translations.TranslationError: No de translation for datastore_title, datastore_empty_title, datastore_empty_message, datastore_reload in feature/database_app/src/main/res. Add them to generator/translations/de.json.

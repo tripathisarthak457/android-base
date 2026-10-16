@@ -1,0 +1,1 @@
+A package cannot start with 'java.': the runtime refuses to load an app's classes from it.

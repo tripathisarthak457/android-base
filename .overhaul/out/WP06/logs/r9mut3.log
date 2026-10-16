@@ -1,0 +1,11 @@
+[locked:gradle] waiting for lock...
+=== mutation: none (the gate as committed)
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  pass a field focused when the app locks loses focus to the cover | 
+  pass while locked, the content is out of reach of touch, keyboard and accessibility | 
+=== mutation: the cover does not ask for focus
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  FAIL a field focused when the app locks loses focus to the cover | java.lang.AssertionError: The field kept focus, and the keyboard with it.
+  pass while locked, the content is out of reach of touch, keyboard and accessibility | 

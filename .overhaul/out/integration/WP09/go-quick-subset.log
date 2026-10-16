@@ -1,0 +1,8 @@
+?   	github.com/base-android/generator-api/cmd/server	[no test files]
+ok  	github.com/base-android/generator-api/internal/clip	0.017s
+ok  	github.com/base-android/generator-api/internal/config	0.017s
+ok  	github.com/base-android/generator-api/internal/generate	0.972s
+ok  	github.com/base-android/generator-api/internal/httpapi	0.073s
+ok  	github.com/base-android/generator-api/internal/store	0.055s
+ok  	github.com/base-android/generator-api/internal/telemetry	0.005s
+EXIT 0

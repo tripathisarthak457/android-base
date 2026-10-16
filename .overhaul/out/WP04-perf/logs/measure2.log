@@ -1,0 +1,95 @@
+[locked:adb] waiting for lock...
+== everything built from 3c9c403 (0 dirty)
+== 20:40:16 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04-perf/templates/android/tools/perf/perf.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/everything --gate solid tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize meminfo recompose coldstart coldstart_installed
+run 1/3: install, profile, warm-up
+run 1/3: tabs
+run 1/3: tabs_tap
+run 1/3: tab1
+run 1/3: pushpop
+run 1/3: pushpop_gesture
+run 1/3: rapid_back
+run 1/3: scroll_root
+run 1/3: meminfo
+run 1/3: scroll_minimize
+run 1/3: recompose
+run 1/3: coldstart
+run 1/3: coldstart_installed
+run 2/3: install, profile, warm-up
+run 2/3: tabs
+run 2/3: tabs_tap
+run 2/3: tab1
+run 2/3: pushpop
+run 2/3: pushpop_gesture
+run 2/3: rapid_back
+run 2/3: scroll_root
+run 2/3: meminfo
+run 2/3: scroll_minimize
+run 2/3: recompose
+run 2/3: coldstart
+run 2/3: coldstart_installed
+run 3/3: install, profile, warm-up
+run 3/3: tabs
+run 3/3: tabs_tap
+run 3/3: tab1
+run 3/3: pushpop
+run 3/3: pushpop_gesture
+run 3/3: rapid_back
+run 3/3: scroll_root
+run 3/3: meminfo
+run 3/3: scroll_minimize
+run 3/3: recompose
+perf: uiautomator could not dump the screen: 
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04-perf/templates/android/tools/perf/perf.sh
+== 10:26:11 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04-perf/dvfs-trace.sh /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/everything-trace
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/everything-trace/ui.xml'
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+ls: cannot access '/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/everything-trace/trace.perfetto-trace': No such file or directory
+DVFS-TRACE DONE
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04-perf/dvfs-trace.sh
+== fixed built from 3c9c403 (8 dirty)
+== 10:26:42 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04-perf/templates/android/tools/perf/perf.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/fixed --gate solid tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize meminfo recompose coldstart coldstart_installed
+perf: device 9a7c74f4 is not attached
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04-perf/templates/android/tools/perf/perf.sh
+== 10:26:42 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04-perf/dvfs-trace.sh /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/fixed-trace
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/fixed-trace/ui.xml'
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+ls: cannot access '/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/fixed-trace/trace.perfetto-trace': No such file or directory
+DVFS-TRACE DONE
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04-perf/dvfs-trace.sh
+MEASURE DONE
+== 10:27:14 measure exit 0
+MEASURE2 DONE

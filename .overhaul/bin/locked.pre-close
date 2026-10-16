@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Serialises heavy work across parallel agents. Usage: locked gradle|adb|emu <command...>
+# gradle: one Gradle build machine-wide, started only when enough memory is free, with capped workers and short
+#         daemon idle time (15 GB laptop, zram swap, no OOM daemon: an over-committed build freezes the machine).
+# adb: one agent driving the phone at a time.
+# emu: one agent driving the emulator, and never while a build runs: the emulator and a Gradle build together
+#      exhaust the laptop (Oct 13, 13:55: 2.7 GB emulator + 4.7 GB of daemons left under 700 MB free). An emulator
+#      session holds the Gradle lock too; a build it starts itself runs inside that hold (OVERHAUL_HOLDS_GRADLE).
+set -euo pipefail
+kind="$1"; shift
+dir=/home/crazyhusir/Documents/projects/tools/.overhaul
+echo "[locked:$kind] waiting for lock..." >&2
+case "$kind" in
+  gradle)
+    export GRADLE_OPTS="${GRADLE_OPTS:-} -Dorg.gradle.workers.max=4 -Dorg.gradle.daemon.idletimeout=900000"
+    if [ "${OVERHAUL_HOLDS_GRADLE:-}" = 1 ]; then exec "$@"; fi
+    exec flock "$dir/gradle.lock" bash -c "$dir/bin/memwait && exec \"\$@\"" locked-gradle "$@"
+    ;;
+  emu)
+    export OVERHAUL_HOLDS_GRADLE=1
+    export GRADLE_OPTS="${GRADLE_OPTS:-} -Dorg.gradle.workers.max=4 -Dorg.gradle.daemon.idletimeout=900000"
+    exec flock "$dir/emu.lock" flock "$dir/gradle.lock" bash -c "MEMWAIT_WARM_MB=3000 $dir/bin/memwait && exec \"\$@\"" locked-emu "$@"
+    ;;
+  *)
+    exec flock "$dir/$kind.lock" "$@"
+    ;;
+esac

@@ -1,0 +1,360 @@
+{
+  "package": "com.example.wp04.p2.dev",
+  "apk": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p2/app/build/outputs/apk/dev/benchmarkRelease/app-dev-x86_64-benchmarkRelease.apk",
+  "variant": "devBenchmarkRelease",
+  "runs": 1,
+  "seed": 867246,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "scenarios": [
+    "tabs",
+    "pushpop",
+    "rapid_back",
+    "idle",
+    "nav_stress",
+    "restore"
+  ],
+  "gate": null,
+  "gates_file": "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/gates.toml",
+  "started": "2026-10-09T08:17:58",
+  "device": {
+    "serial": "emulator-5554",
+    "model": "sdk_gphone64_x86_64",
+    "sdk": "35",
+    "battery_c": 25.0
+  },
+  "metrics": {
+    "idle.frames": {
+      "value": 0,
+      "runs": [
+        0
+      ]
+    },
+    "idle.frames_per_tab": {
+      "value": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "runs": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "nav_stress.alive": {
+      "value": true,
+      "runs": [
+        true
+      ]
+    },
+    "nav_stress.exits": {
+      "value": 7,
+      "runs": [
+        7
+      ]
+    },
+    "nav_stress.frames": {
+      "value": 152,
+      "runs": [
+        152
+      ]
+    },
+    "nav_stress.gpu_p50_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "nav_stress.gpu_p90_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "nav_stress.gpu_p99_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "nav_stress.invariants": {
+      "value": true,
+      "runs": [
+        true
+      ]
+    },
+    "nav_stress.janky_pct": {
+      "value": 96.71,
+      "runs": [
+        96.71
+      ]
+    },
+    "nav_stress.p50_ms": {
+      "value": 150,
+      "runs": [
+        150
+      ]
+    },
+    "nav_stress.p90_ms": {
+      "value": 500,
+      "runs": [
+        500
+      ]
+    },
+    "nav_stress.p99_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "nav_stress.states": {
+      "value": 21,
+      "runs": [
+        21
+      ]
+    },
+    "pushpop.frames": {
+      "value": 134,
+      "runs": [
+        134
+      ]
+    },
+    "pushpop.gpu_p50_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "pushpop.gpu_p90_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "pushpop.gpu_p99_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "pushpop.janky_pct": {
+      "value": 96.27,
+      "runs": [
+        96.27
+      ]
+    },
+    "pushpop.p50_ms": {
+      "value": 150,
+      "runs": [
+        150
+      ]
+    },
+    "pushpop.p90_ms": {
+      "value": 250,
+      "runs": [
+        250
+      ]
+    },
+    "pushpop.p99_ms": {
+      "value": 300,
+      "runs": [
+        300
+      ]
+    },
+    "pushpop.pop_first_frame_ms.max": {
+      "value": 64.12,
+      "runs": [
+        64.12
+      ]
+    },
+    "pushpop.pop_first_frame_ms.median": {
+      "value": 31.54,
+      "runs": [
+        31.54
+      ]
+    },
+    "pushpop.push_first_frame_ms.max": {
+      "value": 101.84,
+      "runs": [
+        101.84
+      ]
+    },
+    "pushpop.push_first_frame_ms.median": {
+      "value": 42.13,
+      "runs": [
+        42.13
+      ]
+    },
+    "rapid_back.alive": {
+      "value": true,
+      "runs": [
+        true
+      ]
+    },
+    "rapid_back.depth": {
+      "value": 4,
+      "runs": [
+        4
+      ]
+    },
+    "rapid_back.final_screen": {
+      "value": true,
+      "runs": [
+        true
+      ]
+    },
+    "rapid_back.frames": {
+      "value": 77,
+      "runs": [
+        77
+      ]
+    },
+    "rapid_back.gpu_p50_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "rapid_back.gpu_p90_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "rapid_back.gpu_p99_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "rapid_back.janky_pct": {
+      "value": 100.0,
+      "runs": [
+        100.0
+      ]
+    },
+    "rapid_back.p50_ms": {
+      "value": 150,
+      "runs": [
+        150
+      ]
+    },
+    "rapid_back.p90_ms": {
+      "value": 200,
+      "runs": [
+        200
+      ]
+    },
+    "rapid_back.p99_ms": {
+      "value": 250,
+      "runs": [
+        250
+      ]
+    },
+    "rapid_back.pop_frame_ms.max": {
+      "value": 85.44,
+      "runs": [
+        85.44
+      ]
+    },
+    "rapid_back.pop_frame_ms.median": {
+      "value": 58.37,
+      "runs": [
+        58.37
+      ]
+    },
+    "restore.back_pops": {
+      "value": true,
+      "runs": [
+        true
+      ]
+    },
+    "restore.restored": {
+      "value": true,
+      "runs": [
+        true
+      ]
+    },
+    "tab_first_visit.first_frame_ms.max": {
+      "value": 93.18,
+      "runs": [
+        93.18
+      ]
+    },
+    "tab_first_visit.first_frame_ms.median": {
+      "value": 74.8,
+      "runs": [
+        74.8
+      ]
+    },
+    "tabs.first_frame_ms.max": {
+      "value": 32.2,
+      "runs": [
+        32.2
+      ]
+    },
+    "tabs.first_frame_ms.median": {
+      "value": 8.36,
+      "runs": [
+        8.36
+      ]
+    },
+    "tabs.frames": {
+      "value": 136,
+      "runs": [
+        136
+      ]
+    },
+    "tabs.gpu_p50_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "tabs.gpu_p90_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "tabs.gpu_p99_ms": {
+      "value": 4950,
+      "runs": [
+        4950
+      ]
+    },
+    "tabs.janky_pct": {
+      "value": 96.32,
+      "runs": [
+        96.32
+      ]
+    },
+    "tabs.p50_ms": {
+      "value": 121,
+      "runs": [
+        121
+      ]
+    },
+    "tabs.p90_ms": {
+      "value": 150,
+      "runs": [
+        150
+      ]
+    },
+    "tabs.p99_ms": {
+      "value": 200,
+      "runs": [
+        200
+      ]
+    }
+  },
+  "notes": []
+}

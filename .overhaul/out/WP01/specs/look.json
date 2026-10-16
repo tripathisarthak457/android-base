@@ -1,0 +1,31 @@
+{
+  "app_name": "Look Check",
+  "package_name": "com.example.look",
+  "features": [
+    "network",
+    "sample",
+    "catalog",
+    "settings",
+    "language"
+  ],
+  "accent_colour": "#16A34A",
+  "secondary_colour": "#F5A524",
+  "tertiary_colour": "",
+  "design_style": "Playful",
+  "motion_style": "Bouncy",
+  "haptics_enabled": false,
+  "font_name": "Plus Jakarta Sans",
+  "mono_font_name": "IBM Plex Mono",
+  "languages": [
+    "hi"
+  ],
+  "min_sdk": 24,
+  "version_name": "3.2.1",
+  "version_code": 42,
+  "api_base_urls": {
+    "dev": "https://dev.look.example/api/",
+    "prod": "https://api.look.example/api/"
+  },
+  "deeplink_scheme": "lookcheck",
+  "deeplink_host": "look.example.com"
+}

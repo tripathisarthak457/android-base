@@ -1,0 +1,13 @@
+[locked:gradle] waiting for lock...
+=== mutation: none
+  pass Tab reaches Unlock, and the content underneath cannot take focus off it | 
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  pass a field focused when the app locks loses focus to the cover | 
+  pass while locked, the content is out of reach of touch, keyboard and accessibility | 
+=== mutation: no-onexit
+  FAIL Tab reaches Unlock, and the content underneath cannot take focus off it | java.lang.AssertionError: Failed to assert the following: (Focused = 'true') Semantics of the node: Node #8 at (l=139.0, t=297.0, r=182.0, b=352.0)px Focused = 
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  pass a field focused when the app locks loses focus to the cover | 
+  pass while locked, the content is out of reach of touch, keyboard and accessibility | 

@@ -1,0 +1,64 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest :catalog:assembleDebug :app:compileDevDebugKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Configure project :core:designsystem
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/build.gradle.kts:25:13: 'fun included(action: AbiFilterSetSpec.() -> Unit): Unit' is deprecated. Use 'include' instead.
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/build.gradle.kts' line: 25
+
+* What went wrong:
+Script compilation error:
+
+  Line 25:             included {
+                       ^ 'fun included(action: AbiFilterSetSpec.() -> Unit): Unit' is deprecated. Use 'include' instead.
+
+1 error
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 7s
+4 actionable tasks: 4 up-to-date
+Configuration cache entry stored.
+TEMPLATE EXIT 1
+Starting a Gradle Daemon, 1 busy and 1 incompatible and 1 stopped Daemons could not be reused, use --status for details
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:pluginDescriptors
+> Task :convention:processResources
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileKotlin
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:classes
+> Task :convention:jar
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+> Task :convention:test
+
+BUILD SUCCESSFUL in 23s
+7 actionable tasks: 7 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html
+RULES EXIT 0
+CHAIN DONE

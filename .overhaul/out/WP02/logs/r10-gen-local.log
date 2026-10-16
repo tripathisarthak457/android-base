@@ -1,0 +1,36 @@
+
+Summary
+───────
+           App  WP02 Fit Local (WP02FitLocal)
+       Package  io.example.fitlocal
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  formatting
+       Modules  map, trips, orders, payments, inventory, statements,
+                user_profile, notification, subscriptions, recommendations,
+                customer_order_history, abcdefghijklmnopqrstuvwxyzabcd
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local
+
+  ! The app has 12 tabs. A phone's bar shows Map, Trips, Orders, Payments and
+  ! More, which holds Inventory, Statements, User profile, Notification,
+  ! Subscriptions, Recommendations, Customer order history,
+  ! Abcdefghijklmnopqrstuvwxyzabcd; wider windows show them all in the rail.
+  ! Reorder feature_modules to choose what stays in the bar.
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

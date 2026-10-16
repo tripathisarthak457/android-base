@@ -1,0 +1,34 @@
+{
+  "app_name": "Preset Standard",
+  "package_name": "com.example.standard",
+  "features": [
+    "network",
+    "leakcanary",
+    "sample",
+    "catalog",
+    "room",
+    "coil",
+    "googlefonts",
+    "forms",
+    "auth",
+    "settings",
+    "onboarding",
+    "media",
+    "deeplink",
+    "flags",
+    "devtools",
+    "profile",
+    "browser",
+    "language"
+  ],
+  "feature_modules": [
+    "orders"
+  ],
+  "languages": [
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "pt-BR"
+  ]
+}

@@ -1,0 +1,30 @@
+....................................................................................s..........................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 255 tests in 18.819s
+
+OK (skipped=1)
+
+61 projects in 34 s: 0 new issues, 418 known (7 of 7 known-issue lines seen).
+CONSISTENCY OK
+web/frontend/lib/catalogue.json is current.
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+  ! 'firebase' is now 'crashlytics', 'firebaseanalytics' and 'remoteconfig'.
+  ! 'room' is now 'offlinequeue'.
+  ! 'workmanager' is no longer a feature: WorkManager arrives with 'offlinequeue', which has a worker to run.
+  ! 'widget' was removed: its Glance runtime started WorkManager and a database at every launch to show one line of text.
+Gradle builds passed at d2febdbc7ee6ba60989f68eedb91881dce966196 on a clean tree: 2026-10-13T16:39:49+05:30
+[locked:emu] waiting for lock...
+emulator booted
+[locked:adb] waiting for lock...
+[locked:adb] waiting for lock...
+Answered Wait to com.android.systemui's not-responding dialog.
+{"screen": [1080, 2400], "swipe": {"from": [1017, 1403], "by": [-500, -800], "millis": 600}, "before": [954, 1340, 1080, 1466], "after": [0, 560, 126, 686], "moved": [-954, -780], "x_ok": true, "y_ok": true}
+BADGE DRAG OK
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0
+[locked:adb] waiting for lock...
+{"root": {"title": [42, 174, 300, 256], "badge": [954, 1340, 1080, 1466], "clear": true}, "pushed": {"back": [43, 180, 96, 233], "badge": [954, 1340, 1080, 1466], "clear": true}, "back_tap_popped": true}
+BADGE QA OK
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0
+DEVICE CHECKS OK on emulator-5554
+emulator stopped
+ACCEPT OK

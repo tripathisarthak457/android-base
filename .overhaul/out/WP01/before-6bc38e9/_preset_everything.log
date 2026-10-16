@@ -1,0 +1,31 @@
+
+Summary
+───────
+         App  Preset Everything (PresetEverything)
+     Package  com.example.everything
+     Min SDK  API 26 · Android 8.0 (Oreo)
+  Target SDK  API 37 · Android 17 (Cinnamon Bun)
+     Version  1.0.0 (1)
+  Desugaring  off
+    Features  analytics, auth, baselineprofile, browser, catalog, coil,
+              deeplink, devtools, firebase, flags, forms, googlefonts,
+              googlesignin, language, leakcanary, lottie, media, network,
+              onboarding, paging, profile, push, room, sample, search,
+              settings, websocket, widget, workmanager
+     Modules  orders
+   Languages  en, de, es, fr, hi, pt-BR
+    Typeface  DM Sans · JetBrains Mono
+     Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+       Style  Utility
+      Motion  Standard, haptics on
+        Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/preset_everything
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/preset_everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json — the included one is a placeholder.
+

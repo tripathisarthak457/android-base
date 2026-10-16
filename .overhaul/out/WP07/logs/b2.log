@@ -1,0 +1,361 @@
+Saturday 10 October 2026 03:19:50 PM IST
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :androidApp:assembleDevDebug
+Type-safe project accessors is an incubating feature.
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :shared
+w: ⚠️ Native task 'iosSimulatorArm64Test' is disabled
+Task 'iosSimulatorArm64Test' for target 'ios_simulator_arm64' cannot run on the current host (linux-x86_64).
+Reason: simulator tests require macOS
+Solution: To suppress this warning, add 'kotlin.native.ignoreDisabledTargets=true' to gradle.properties.
+
+
+> Task :shared:androidPreBuild UP-TO-DATE
+> Task :core:datastore:androidPreBuild UP-TO-DATE
+> Task :core:navigation:androidPreBuild UP-TO-DATE
+> Task :androidApp:preBuild UP-TO-DATE
+> Task :core:datastore:preAndroidMainBuild UP-TO-DATE
+> Task :core:mvi:androidPreBuild UP-TO-DATE
+> Task :core:designsystem:androidPreBuild UP-TO-DATE
+> Task :core:designsystem:preAndroidMainBuild UP-TO-DATE
+> Task :core:mvi:preAndroidMainBuild UP-TO-DATE
+> Task :core:database:androidPreBuild UP-TO-DATE
+> Task :androidApp:preDevDebugBuild UP-TO-DATE
+> Task :core:navigation:preAndroidMainBuild UP-TO-DATE
+> Task :shared:preAndroidMainBuild UP-TO-DATE
+> Task :core:network:androidPreBuild UP-TO-DATE
+> Task :core:database:preAndroidMainBuild UP-TO-DATE
+> Task :androidApp:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :core:mvi:generateAndroidMainEmptyResourceFiles
+> Task :core:network:preAndroidMainBuild UP-TO-DATE
+> Task :core:designsystem:generateAndroidMainEmptyResourceFiles
+> Task :core:ui:androidPreBuild UP-TO-DATE
+> Task :core:ui:preAndroidMainBuild UP-TO-DATE
+> Task :core:database:generateAndroidMainEmptyResourceFiles
+> Task :shared:generateAndroidMainEmptyResourceFiles
+> Task :feature:onboarding:androidPreBuild UP-TO-DATE
+> Task :core:datastore:generateAndroidMainEmptyResourceFiles
+> Task :feature:onboarding:preAndroidMainBuild UP-TO-DATE
+> Task :feature:sample:androidPreBuild UP-TO-DATE
+> Task :feature:sample:preAndroidMainBuild UP-TO-DATE
+> Task :data:sample:androidPreBuild UP-TO-DATE
+> Task :core:navigation:generateAndroidMainEmptyResourceFiles
+> Task :data:sample:preAndroidMainBuild UP-TO-DATE
+> Task :feature:settings:androidPreBuild UP-TO-DATE
+> Task :feature:settings:preAndroidMainBuild UP-TO-DATE
+> Task :androidApp:generateDevDebugResources
+> Task :core:network:generateAndroidMainEmptyResourceFiles
+> Task :core:ui:generateAndroidMainEmptyResourceFiles
+> Task :core:common:kmpPartiallyResolvedDependenciesChecker
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :androidApp:generateDevDebugBuildConfig
+> Task :shared:kmpPartiallyResolvedDependenciesChecker
+> Task :core:common:verifyModuleDependencies
+> Task :shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:sample:generateAndroidMainEmptyResourceFiles
+> Task :core:common:jvmProcessResources NO-SOURCE
+> Task :feature:onboarding:generateAndroidMainEmptyResourceFiles
+> Task :feature:settings:generateAndroidMainEmptyResourceFiles
+> Task :data:sample:generateAndroidMainEmptyResourceFiles
+> Task :shared:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:common:processJvmMainResources SKIPPED
+> Task :shared:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :shared:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :shared:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :core:database:kmpPartiallyResolvedDependenciesChecker
+> Task :core:database:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:convertXmlValueResourcesForCommonMain
+> Task :shared:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :shared:verifyApiPurity
+> Task :core:database:verifyApiPurity
+> Task :core:datastore:kmpPartiallyResolvedDependenciesChecker
+> Task :core:datastore:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:prepareComposeResourcesTaskForCommonMain
+> Task :core:database:verifyModuleDependencies
+> Task :core:datastore:verifyApiPurity
+> Task :shared:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:designsystem:kmpPartiallyResolvedDependenciesChecker
+> Task :core:designsystem:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:designsystem:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:designsystem:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :core:designsystem:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :core:designsystem:convertXmlValueResourcesForCommonMain
+> Task :core:designsystem:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:designsystem:prepareComposeResourcesTaskForCommonMain
+> Task :shared:packageAndroidMainResources
+> Task :shared:generateExpectResourceCollectorsForCommonMain
+> Task :core:designsystem:generateResourceAccessorsForCommonMain
+> Task :shared:generateComposeResClass
+> Task :shared:generateResourceAccessorsForCommonMain
+> Task :core:designsystem:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :core:designsystem:generateComposeResClass
+> Task :core:designsystem:generateActualResourceCollectorsForAndroidMain
+> Task :shared:generateActualResourceCollectorsForAndroidMain
+> Task :core:designsystem:generateExpectResourceCollectorsForCommonMain
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:navigation:kmpPartiallyResolvedDependenciesChecker
+> Task :androidApp:packageDevDebugResources
+> Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:navigation:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:navigation:convertXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:navigation:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :core:navigation:prepareComposeResourcesTaskForCommonMain NO-SOURCE
+> Task :core:navigation:generateResourceAccessorsForCommonMain NO-SOURCE
+> Task :core:navigation:generateComposeResClass
+> Task :core:designsystem:packageAndroidMainResources
+> Task :core:designsystem:verifyApiPurity
+> Task :core:navigation:generateExpectResourceCollectorsForCommonMain
+> Task :core:navigation:generateActualResourceCollectorsForAndroidMain
+> Task :core:network:kmpPartiallyResolvedDependenciesChecker
+> Task :core:network:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:navigation:verifyApiPurity
+> Task :data:sample:kmpPartiallyResolvedDependenciesChecker
+> Task :data:sample:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:verifyApiPurity
+> Task :core:mvi:kmpPartiallyResolvedDependenciesChecker
+> Task :core:mvi:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :data:sample:verifyModuleDependencies
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:ui:kmpPartiallyResolvedDependenciesChecker
+> Task :core:ui:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:mvi:verifyApiPurity
+> Task :core:ui:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :data:sample:verifyApiPurity
+> Task :core:ui:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:ui:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :core:ui:convertXmlValueResourcesForCommonMain
+> Task :core:ui:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :core:ui:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :core:ui:generateExpectResourceCollectorsForCommonMain
+> Task :core:ui:generateComposeResClass
+> Task :core:ui:prepareComposeResourcesTaskForCommonMain
+> Task :feature:onboarding:kmpPartiallyResolvedDependenciesChecker
+> Task :core:ui:verifyApiPurity
+> Task :feature:onboarding:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:onboarding:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :feature:onboarding:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :core:ui:generateResourceAccessorsForCommonMain
+> Task :feature:onboarding:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :feature:onboarding:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :feature:onboarding:convertXmlValueResourcesForCommonMain
+> Task :feature:onboarding:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :feature:onboarding:prepareComposeResourcesTaskForCommonMain
+> Task :core:ui:generateActualResourceCollectorsForAndroidMain
+> Task :feature:onboarding:generateComposeResClass
+> Task :core:ui:packageAndroidMainResources
+> Task :feature:onboarding:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :feature:onboarding:generateExpectResourceCollectorsForCommonMain
+> Task :feature:onboarding:generateResourceAccessorsForCommonMain
+> Task :feature:onboarding:packageAndroidMainResources
+> Task :feature:onboarding:verifyApiPurity
+> Task :feature:onboarding:generateActualResourceCollectorsForAndroidMain
+> Task :feature:sample:kmpPartiallyResolvedDependenciesChecker
+> Task :feature:sample:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:sample:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:onboarding:verifyModuleDependencies
+> Task :feature:sample:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :feature:sample:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :feature:sample:convertXmlValueResourcesForCommonMain
+> Task :feature:sample:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :feature:sample:prepareComposeResourcesTaskForCommonMain
+> Task :feature:sample:generateComposeResClass
+> Task :feature:sample:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :feature:sample:generateResourceAccessorsForCommonMain
+> Task :feature:sample:generateActualResourceCollectorsForAndroidMain
+> Task :feature:sample:packageAndroidMainResources
+> Task :feature:sample:generateExpectResourceCollectorsForCommonMain
+> Task :feature:sample:verifyApiPurity
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:settings:kmpPartiallyResolvedDependenciesChecker
+> Task :feature:settings:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :feature:settings:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:settings:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :feature:settings:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :feature:settings:convertXmlValueResourcesForCommonMain
+> Task :feature:settings:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :feature:settings:prepareComposeResourcesTaskForCommonMain
+> Task :feature:settings:generateResourceAccessorsForCommonMain
+> Task :feature:settings:generateActualResourceCollectorsForAndroidMain
+> Task :feature:settings:copyAndroidMainComposeResourcesToAndroidAssets
+> Task :feature:settings:packageAndroidMainResources
+> Task :shared:parseAndroidMainLocalResources
+> Task :core:designsystem:parseAndroidMainLocalResources
+> Task :feature:sample:parseAndroidMainLocalResources
+> Task :core:ui:parseAndroidMainLocalResources
+> Task :feature:onboarding:parseAndroidMainLocalResources
+> Task :feature:settings:parseAndroidMainLocalResources
+> Task :core:designsystem:generateAndroidMainRFile
+> Task :feature:onboarding:generateAndroidMainRFile
+> Task :feature:settings:generateAndroidMainRFile
+> Task :shared:generateAndroidMainRFile
+> Task :feature:sample:generateAndroidMainRFile
+> Task :core:ui:generateAndroidMainRFile
+> Task :feature:settings:generateExpectResourceCollectorsForCommonMain
+> Task :androidApp:generateDevDebugAssets UP-TO-DATE
+> Task :feature:settings:generateComposeResClass
+> Task :shared:generateAndroidMainAssets UP-TO-DATE
+> Task :core:designsystem:generateAndroidMainAssets UP-TO-DATE
+> Task :feature:settings:verifyModuleDependencies
+> Task :core:ui:generateAndroidMainAssets UP-TO-DATE
+> Task :feature:settings:verifyApiPurity
+> Task :feature:onboarding:generateAndroidMainAssets UP-TO-DATE
+> Task :shared:mergeAndroidMainAssets
+> Task :feature:sample:generateAndroidMainAssets UP-TO-DATE
+> Task :core:ui:mergeAndroidMainAssets
+> Task :feature:settings:generateAndroidMainAssets UP-TO-DATE
+> Task :androidApp:javaPreCompileDevDebug
+> Task :core:designsystem:mergeAndroidMainAssets
+> Task :feature:onboarding:mergeAndroidMainAssets
+> Task :feature:settings:mergeAndroidMainAssets
+> Task :feature:sample:mergeAndroidMainAssets
+> Task :androidApp:desugarDevDebugFileDependencies
+> Task :shared:writeAndroidMainAarMetadata
+> Task :core:datastore:writeAndroidMainAarMetadata
+> Task :core:designsystem:writeAndroidMainAarMetadata
+> Task :core:database:writeAndroidMainAarMetadata
+> Task :core:mvi:writeAndroidMainAarMetadata
+> Task :core:navigation:writeAndroidMainAarMetadata
+> Task :core:network:writeAndroidMainAarMetadata
+> Task :data:sample:writeAndroidMainAarMetadata
+> Task :core:ui:writeAndroidMainAarMetadata
+> Task :feature:sample:writeAndroidMainAarMetadata
+> Task :feature:onboarding:writeAndroidMainAarMetadata
+> Task :androidApp:mapDevDebugSourceSetPaths
+> Task :androidApp:processDevDebugNavigationResources
+> Task :feature:settings:writeAndroidMainAarMetadata
+> Task :androidApp:parseDevDebugLocalResources
+> Task :androidApp:mergeDevDebugAssets
+> Task :androidApp:generateDevDebugRFile
+> Task :androidApp:compileDevDebugNavigationResources
+> Task :androidApp:compressDevDebugAssets
+> Task :androidApp:extractDeepLinksDevDebug
+> Task :androidApp:createDevDebugCompatibleScreenManifests
+> Task :core:database:processAndroidMainManifest
+> Task :shared:processAndroidMainManifest
+> Task :androidApp:checkDevDebugAarMetadata
+> Task :core:datastore:processAndroidMainManifest
+> Task :core:designsystem:processAndroidMainManifest
+> Task :core:navigation:processAndroidMainManifest
+> Task :core:mvi:processAndroidMainManifest
+> Task :core:network:processAndroidMainManifest
+> Task :core:ui:processAndroidMainManifest
+> Task :feature:onboarding:processAndroidMainManifest
+> Task :feature:sample:processAndroidMainManifest
+> Task :data:sample:processAndroidMainManifest
+> Task :shared:mapAndroidMainSourceSetPaths
+> Task :core:designsystem:mapAndroidMainSourceSetPaths
+> Task :shared:compileAndroidMainLibraryResources
+> Task :core:designsystem:compileAndroidMainLibraryResources
+> Task :feature:settings:processAndroidMainManifest
+> Task :core:ui:mapAndroidMainSourceSetPaths
+> Task :feature:onboarding:mapAndroidMainSourceSetPaths
+> Task :core:ui:compileAndroidMainLibraryResources FROM-CACHE
+> Task :feature:onboarding:compileAndroidMainLibraryResources FROM-CACHE
+> Task :feature:settings:mapAndroidMainSourceSetPaths
+> Task :feature:sample:mapAndroidMainSourceSetPaths
+> Task :feature:sample:compileAndroidMainLibraryResources FROM-CACHE
+> Task :feature:settings:compileAndroidMainLibraryResources FROM-CACHE
+> Task :androidApp:mergeDevDebugJniLibFolders
+> Task :shared:mergeAndroidMainJniLibFolders
+> Task :shared:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:database:mergeAndroidMainJniLibFolders
+> Task :core:database:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:database:copyAndroidMainJniLibsProjectOnly
+> Task :shared:copyAndroidMainJniLibsProjectOnly
+> Task :core:designsystem:mergeAndroidMainJniLibFolders
+> Task :core:designsystem:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:datastore:mergeAndroidMainJniLibFolders
+> Task :core:datastore:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:designsystem:copyAndroidMainJniLibsProjectOnly
+> Task :core:datastore:copyAndroidMainJniLibsProjectOnly
+> Task :core:mvi:mergeAndroidMainJniLibFolders
+> Task :core:mvi:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:mvi:copyAndroidMainJniLibsProjectOnly
+> Task :core:navigation:mergeAndroidMainJniLibFolders
+> Task :core:navigation:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:network:mergeAndroidMainJniLibFolders
+> Task :core:navigation:copyAndroidMainJniLibsProjectOnly
+> Task :core:network:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :core:network:copyAndroidMainJniLibsProjectOnly
+> Task :core:ui:mergeAndroidMainJniLibFolders
+> Task :data:sample:mergeAndroidMainJniLibFolders
+> Task :core:ui:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :data:sample:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :data:sample:copyAndroidMainJniLibsProjectOnly
+> Task :core:ui:copyAndroidMainJniLibsProjectOnly
+> Task :feature:sample:mergeAndroidMainJniLibFolders
+> Task :feature:onboarding:mergeAndroidMainJniLibFolders
+> Task :feature:sample:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :feature:onboarding:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :feature:sample:copyAndroidMainJniLibsProjectOnly
+> Task :feature:settings:mergeAndroidMainJniLibFolders
+> Task :feature:onboarding:copyAndroidMainJniLibsProjectOnly
+> Task :feature:settings:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :androidApp:validateSigningDevDebug
+> Task :androidApp:writeDevDebugAppMetadata
+> Task :androidApp:writeDevDebugSigningConfigVersions
+> Task :feature:settings:copyAndroidMainJniLibsProjectOnly
+> Task :androidApp:checkDevDebugDuplicateClasses
+> Task :androidApp:processDevDebugMainManifest
+> Task :androidApp:processDevDebugManifest
+> Task :androidApp:processDevDebugManifestForPackage
+> Task :androidApp:mergeDevDebugResources
+> Task :core:common:compileKotlinJvm
+> Task :core:common:compileJvmMainJava NO-SOURCE
+> Task :core:common:jvmMainClasses
+> Task :core:common:jvmJar
+> Task :androidApp:generateDevDebugGlobalSynthetics
+> Task :core:datastore:compileAndroidMain
+> Task :androidApp:processDevDebugResources
+> Task :core:datastore:processAndroidMainJavaRes
+> Task :androidApp:mergeDevDebugNativeLibs
+
+> Task :core:designsystem:compileAndroidMain
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/designsystem/src/commonMain/kotlin/com/base/app/core/designsystem/component/input/AppSearchField.kt:10:41 Unresolved reference 'KeyboardActionHandler'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/designsystem/src/commonMain/kotlin/com/base/app/core/designsystem/component/input/AppSearchField.kt:52:54 Unresolved reference 'KeyboardActionHandler'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/designsystem/src/commonMain/kotlin/com/base/app/core/designsystem/component/input/AppTextField.kt:13:41 Unresolved reference 'KeyboardActionHandler'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/designsystem/src/commonMain/kotlin/com/base/app/core/designsystem/component/input/AppTextField.kt:45:23 Unresolved reference 'KeyboardActionHandler'.
+
+> Task :core:mvi:compileAndroidMain FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform/core/mvi/src/commonMain/kotlin/com/base/app/core/mvi/UiMessage.kt:18:24 Unresolved reference 'incrementAndFetch' on receiver of type 'AtomicLong'.
+
+> Task :core:designsystem:compileAndroidMain FAILED
+> Task :core:datastore:bundleLibRuntimeToDirAndroidMain
+> Task :core:datastore:bundleAndroidMainClassesToCompileJar
+
+> Task :androidApp:stripDevDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so, libsqliteJni.so. Run with --info option to learn more.
+
+> Task :core:network:compileAndroidMain
+> Task :core:network:bundleAndroidMainClassesToCompileJar
+> Task :core:network:processAndroidMainJavaRes
+> Task :core:network:bundleLibRuntimeToDirAndroidMain
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2.6 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+> Task :androidApp:mergeExtDexDevDebug
+                                                                           

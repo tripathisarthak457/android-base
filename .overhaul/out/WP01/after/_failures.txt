@@ -1,0 +1,5 @@
+hostile_mod-dunder: Module name 'order__history' is invalid: lowercase letters and digits, words joined by single underscores, starting with a letter. It becomes a Gradle path, a package segment and a class name.
+hostile_mod-in: Module name 'in' is a Kotlin or Java keyword, so its package would not compile.
+hostile_mod-null: Module name 'null' is a Kotlin or Java keyword, so its package would not compile.
+hostile_pkg-java: A package cannot start with 'java.': the runtime refuses to load an app's classes from it.
+hostile_pkg-null: Package segment 'null' is a Kotlin or Java keyword, so the generated sources would not compile.

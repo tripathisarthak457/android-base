@@ -1,0 +1,16 @@
+[locked:gradle] waiting for lock...
+spotless-s-net-0-exit=1
+spotless-s-net-1-exit=1
+spotless-s-net-2-exit=1
+spotless-s-local-0-exit=1
+spotless-s-local-1-exit=1
+spotless-s-local-2-exit=1
+build-c-net-exit=0
+build-c-local-exit=1
+s-net-0:  | lint in scaffold: 0
+s-net-1:  | lint in scaffold: 0
+s-net-2:  | lint in scaffold: 0
+s-local-0:  | lint in scaffold: 0
+s-local-1:  | lint in scaffold: 0
+s-local-2:  | lint in scaffold: 0
+FIT DONE

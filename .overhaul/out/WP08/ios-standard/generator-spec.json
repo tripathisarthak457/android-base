@@ -1,0 +1,37 @@
+{
+  "generator": {
+    "commit": "d05a6828a607",
+    "generatedOn": "2026-10-16"
+  },
+  "schema": 2,
+  "platform": "ios",
+  "app_name": "Standard",
+  "display_name": "",
+  "package_name": "com.example.iosstandard",
+  "architecture": "compact",
+  "features": [
+    "language",
+    "network",
+    "onboarding",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [
+    "es",
+    "hi"
+  ],
+  "ios": {
+    "bundle_id": "",
+    "deployment_target": "17.0",
+    "team_id": ""
+  }
+}

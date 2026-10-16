@@ -1,0 +1,18 @@
+[locked:adb] waiting for lock...
+== 10:27:14 fixed (3c9c403)
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+adb: device '9a7c74f4' not found
+TotalTime: 1188 WaitTime: 1208 
+TotalTime: 504 WaitTime: 509 
+TotalTime: 518 WaitTime: 521 
+-rw-r--r-- 1 crazyhusir crazyhusir 55370192 Oct 16 10:27 /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04-perf/fixed-startup/trace.perfetto-trace
+STARTUP-TRACE DONE
+STARTUP-APK DONE
+== 10:27:43 exit 0
+STARTUP-FIXED DONE

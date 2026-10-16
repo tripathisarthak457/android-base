@@ -1,0 +1,78 @@
+{
+ "recording": "../../evidence/rec/ptr-cold-font150-light.mp4",
+ "theme": "light",
+ "frames_read": 143,
+ "frames_between_skeleton_and_content": [],
+ "skeleton_from_s": 1.4579,
+ "skeleton_to_s": 2.1379,
+ "skeleton_shown_s": 0.689,
+ "last_skeleton_frame": 140,
+ "first_content_frame": 141,
+ "swap_gap_ms": 9.4,
+ "cards_skeleton": [
+  [
+   405,
+   564
+  ],
+  [
+   593,
+   754
+  ],
+  [
+   783,
+   940
+  ],
+  [
+   967,
+   1126
+  ]
+ ],
+ "cards_content": [
+  [
+   409,
+   677
+  ],
+  [
+   710,
+   921
+  ],
+  [
+   949,
+   1217
+  ],
+  [
+   1261,
+   1439
+  ]
+ ],
+ "card_shift_px": [
+  {
+   "top": 4,
+   "bottom": 113
+  },
+  {
+   "top": 117,
+   "bottom": 167
+  },
+  {
+   "top": 166,
+   "bottom": 277
+  },
+  {
+   "top": 294,
+   "bottom": 313
+  }
+ ],
+ "settled_skeleton_frames": 70,
+ "settled_skeleton_from_s": 1.5164,
+ "above_first_card": {
+  "rows": [
+   60,
+   405
+  ],
+  "sampled_px": 59680,
+  "most_changed_px_in_a_skeleton_frame": 1443,
+  "at_frame": 86
+ },
+ "bone_max_change_between_settled_skeleton_frames": 17
+}

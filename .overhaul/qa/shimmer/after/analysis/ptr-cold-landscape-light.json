@@ -1,0 +1,54 @@
+{
+ "recording": "../rec/ptr-cold-landscape-light.mp4",
+ "theme": "light",
+ "frames_read": 131,
+ "frames_between_skeleton_and_content": [],
+ "skeleton_from_s": 1.2102,
+ "skeleton_to_s": 1.3879,
+ "skeleton_shown_s": 0.191,
+ "last_skeleton_frame": 125,
+ "first_content_frame": 126,
+ "swap_gap_ms": 13.6,
+ "cards_skeleton": [
+  [
+   290,
+   453
+  ],
+  [
+   483,
+   648
+  ]
+ ],
+ "cards_content": [
+  [
+   290,
+   496
+  ],
+  [
+   521,
+   679
+  ]
+ ],
+ "card_shift_px": [
+  {
+   "top": 0,
+   "bottom": 43
+  },
+  {
+   "top": 38,
+   "bottom": 31
+  }
+ ],
+ "settled_skeleton_frames": 10,
+ "settled_skeleton_from_s": 1.3058,
+ "above_first_card": {
+  "rows": [
+   60,
+   286
+  ],
+  "sampled_px": 87800,
+  "most_changed_px_in_a_skeleton_frame": 0,
+  "at_frame": null
+ },
+ "bone_max_change_between_settled_skeleton_frames": 1
+}

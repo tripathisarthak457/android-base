@@ -1,0 +1,1274 @@
+[locked:gradle] waiting for lock...
+Initialized native services in: /home/crazyhusir/.gradle/native
+Initialized jansi services in: /home/crazyhusir/.gradle/native
+The client will now receive all logging from the daemon (pid: 7846). The daemon log file: /home/crazyhusir/.gradle/daemon/9.7.1/daemon-7846.out.log
+Starting 2nd build in daemon [uptime: 2 mins 44.915 secs, performance: 97%, GC rate: 0.07/s, heap usage: 7% of 2.6 GiB, non-heap usage: 39% of 1 GiB]
+Using 8 worker leases.
+Operational build model parameters: {cachingModelBuilding=false, configurationCache=true, configurationCacheDisabledReason=null, configurationCacheParallelLoad=true, configurationCacheParallelStore=true, configureOnDemand=false, invalidateCoupledProjects=false, isolatedProjects=false, isolatedProjectsDiagnostics=false, isolatedProjectsDangerouslyIgnoreProblems=false, modelAsProjectDependency=false, modelBuilding=false, parallelModelBuilding=false, parallelProjectConfiguration=false, parallelProjectExecution=true, vintage=false}
+Parallel Configuration Cache is an incubating feature.
+Encryption key source: default Gradle keystore (pkcs12)
+Calculating task graph as no cached configuration is available for tasks: :core:navigation:testDebugUnitTest --tests *ShellRecompositionTest*
+Now considering [/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP06/templates/android/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP06/templates/android] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/settings.gradle.kts'.
+Using local directory build cache for the root build (location = /home/crazyhusir/.gradle/caches/build-cache-1, remove unused entries = after 7 days).
+Now considering [/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP06/templates/android/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP06/templates/android] as hierarchies to watch
+Projects loaded. Root project using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build.gradle.kts'.
+Included projects: [root project 'BaseApp', project ':app', project ':benchmark', project ':catalog', project ':core', project ':data', project ':feature', project ':core:analytics', project ':core:common', project ':core:database', project ':core:datastore', project ':core:designsystem', project ':core:devtools', project ':core:flags', project ':core:media', project ':core:mvi', project ':core:navigation', project ':core:network', project ':core:notification', project ':core:testing', project ':core:ui', project ':data:auth', project ':data:feed', project ':data:profile', project ':data:sample', project ':data:search', project ':feature:auth', project ':feature:feed', project ':feature:onboarding', project ':feature:profile', project ':feature:sample', project ':feature:search', project ':feature:settings']
+
+> Configure project :build-logic
+Evaluating project ':build-logic' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build-logic/build.gradle'.
+
+> Configure project :build-logic:convention
+Evaluating project ':build-logic:convention' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build-logic/convention/build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '6.7.3']
+Build b888ac8b-c3eb-4cae-abc8-ee1ccf35aabb is started
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build-logic/convention/src/main/java', not found
+
+> Configure project :
+Evaluating root project 'BaseApp' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.base']
+Resolved plugin [id: 'com.android.application', version: '9.4.1', apply: false]
+Resolved plugin [id: 'com.android.library', version: '9.4.1', apply: false]
+Resolved plugin [id: 'com.android.test', version: '9.4.1', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.jvm', version: '2.4.20', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '2.4.20', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.20', apply: false]
+Resolved plugin [id: 'com.google.devtools.ksp', version: '2.3.12', apply: false]
+Resolved plugin [id: 'com.google.dagger.hilt.android', version: '2.60.1', apply: false]
+Resolved plugin [id: 'com.google.gms.google-services', version: '4.5.0', apply: false]
+Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.8', apply: false]
+Resolved plugin [id: 'androidx.baselineprofile', version: '1.5.0', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlinx.kover', version: '0.9.9']
+Resolved plugin [id: 'com.autonomousapps.dependency-analysis', version: '3.19.2']
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+Resolve mutations for :build-logic:convention:checkKotlinGradlePluginConfigurationErrors (Thread[#236,Execution worker,5,main]) started.
+:build-logic:convention:checkKotlinGradlePluginConfigurationErrors (Thread[#236,Execution worker,5,main]) started.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':build-logic:convention:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :build-logic:convention:compileKotlin (Thread[#236,Execution worker,5,main]) started.
+:build-logic:convention:compileKotlin (Thread[#236,Execution worker,5,main]) started.
+
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+Build cache key for task ':build-logic:convention:compileKotlin' is 2204a4cacd20cdae88745215bb94f548
+Skipping task ':build-logic:convention:compileKotlin' as it is up-to-date.
+Resolve mutations for :build-logic:convention:compileJava (Thread[#236,Execution worker,5,main]) started.
+:build-logic:convention:compileJava (Thread[#236,Execution worker,5,main]) started.
+
+> Task :build-logic:convention:compileJava NO-SOURCE
+Skipping task ':build-logic:convention:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :build-logic:convention:pluginDescriptors (Thread[#236,Execution worker,5,main]) started.
+:build-logic:convention:pluginDescriptors (Thread[#236,Execution worker,5,main]) started.
+
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+Caching disabled for task ':build-logic:convention:pluginDescriptors' because:
+  Not worth caching
+Skipping task ':build-logic:convention:pluginDescriptors' as it is up-to-date.
+Resolve mutations for :build-logic:convention:processResources (Thread[#236,Execution worker,5,main]) started.
+:build-logic:convention:processResources (Thread[#236,Execution worker,5,main]) started.
+
+> Task :build-logic:convention:processResources UP-TO-DATE
+Caching disabled for task ':build-logic:convention:processResources' because:
+  Not worth caching
+Skipping task ':build-logic:convention:processResources' as it is up-to-date.
+Resolve mutations for :build-logic:convention:classes (Thread[#236,Execution worker,5,main]) started.
+:build-logic:convention:classes (Thread[#236,Execution worker,5,main]) started.
+
+> Task :build-logic:convention:classes UP-TO-DATE
+Skipping task ':build-logic:convention:classes' as it has no actions.
+Resolve mutations for :build-logic:convention:jar (Thread[#236,Execution worker,5,main]) started.
+:build-logic:convention:jar (Thread[#236,Execution worker,5,main]) started.
+
+> Task :build-logic:convention:jar UP-TO-DATE
+Caching disabled for task ':build-logic:convention:jar' because:
+  Not worth caching
+Skipping task ':build-logic:convention:jar' as it is up-to-date.
+
+> Configure project :app
+Evaluating project ':app' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/app/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.application']
+Resolved plugin [id: 'com.base.app.android.application.flavors']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.20']
+Resolved plugin [id: 'com.base.app.android.firebase']
+Resolved plugin [id: 'androidx.baselineprofile', version: '1.5.0']
+Resolved plugin [id: 'app.cash.licensee', version: '1.14.1']
+Resolved plugin [id: 'com.base.app.android.licenses']
+Build 25f1e5f4-9014-4f6d-8a16-c60462636a23 is started
+Using default execution profile
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :benchmark
+Evaluating project ':benchmark' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/benchmark/build.gradle.kts'.
+Resolved plugin [id: 'com.android.test', version: '9.4.1']
+Resolved plugin [id: 'androidx.baselineprofile', version: '1.5.0']
+Resolved plugin [id: 'com.base.app.android.library', apply: false]
+Using default execution profile
+
+> Configure project :catalog
+Evaluating project ':catalog' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.application']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.20']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core
+Evaluating project ':core' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/build.gradle'.
+
+> Configure project :data
+Evaluating project ':data' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/data/build.gradle'.
+
+> Configure project :feature
+Evaluating project ':feature' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/build.gradle'.
+
+> Configure project :core:analytics
+Evaluating project ':core:analytics' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/analytics/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+
+> Configure project :core:common
+Evaluating project ':core:common' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/common/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.jvm.library']
+Using Kotlin Gradle Plugin gradle96 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :core:database
+Evaluating project ':core:database' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/database/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.base.app.android.room']
+Using default execution profile
+
+> Configure project :core:datastore
+Evaluating project ':core:datastore' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/datastore/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.20']
+Using default execution profile
+
+> Configure project :core:designsystem
+Evaluating project ':core:designsystem' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:devtools
+Evaluating project ':core:devtools' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/devtools/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:flags
+Evaluating project ':core:flags' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/flags/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+
+> Configure project :core:media
+Evaluating project ':core:media' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/media/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.base.app.android.compose']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:mvi
+Evaluating project ':core:mvi' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/mvi/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Using default execution profile
+
+> Configure project :core:navigation
+Evaluating project ':core:navigation' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.20']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :core:network
+Evaluating project ':core:network' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/network/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.20']
+Resolved plugin [id: 'com.base.app.android.room']
+Using default execution profile
+
+> Configure project :core:notification
+Evaluating project ':core:notification' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/notification/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.20']
+Using default execution profile
+
+> Configure project :core:testing
+Evaluating project ':core:testing' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Using default execution profile
+
+> Configure project :core:ui
+Evaluating project ':core:ui' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/ui/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.library']
+Resolved plugin [id: 'com.base.app.android.compose']
+Resolved plugin [id: 'com.base.app.android.hilt']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :data:auth
+Evaluating project ':data:auth' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/data/auth/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:feed
+Evaluating project ':data:feed' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/data/feed/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:profile
+Evaluating project ':data:profile' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/data/profile/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:sample
+Evaluating project ':data:sample' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/data/sample/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :data:search
+Evaluating project ':data:search' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/data/search/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.data']
+Using default execution profile
+
+> Configure project :feature:auth
+Evaluating project ':feature:auth' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/auth/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :feature:feed
+Evaluating project ':feature:feed' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/feed/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :feature:onboarding
+Evaluating project ':feature:onboarding' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/onboarding/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :feature:profile
+Evaluating project ':feature:profile' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/profile/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :feature:sample
+Evaluating project ':feature:sample' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/sample/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :feature:search
+Evaluating project ':feature:search' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/search/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+
+> Configure project :feature:settings
+Evaluating project ':feature:settings' using build file '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/feature/settings/build.gradle.kts'.
+Resolved plugin [id: 'com.base.app.android.feature']
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+All projects evaluated.
+Task path ':core:navigation:testDebugUnitTest' matched project ':core:navigation'
+Task name matched 'testDebugUnitTest'
+Selected primary task 'testDebugUnitTest' from project :core:navigation
+Tasks to be executed: [task ':core:common:checkKotlinGradlePluginConfigurationErrors', task ':core:common:verifyApiPurity', task ':core:common:verifyModuleDependencies', task ':core:common:compileKotlin', task ':core:common:compileJava', task ':core:common:processResources', task ':core:common:classes', task ':core:common:jar', task ':core:designsystem:verifyApiPurity', task ':core:designsystem:verifyComposeUsage', task ':core:designsystem:verifyModuleDependencies', task ':core:designsystem:preBuild', task ':core:designsystem:preDebugBuild', task ':core:designsystem:generateDebugResources', task ':core:designsystem:packageDebugResources', task ':core:designsystem:processDebugNavigationResources', task ':core:designsystem:parseDebugLocalResources', task ':core:designsystem:generateDebugRFile', task ':core:designsystem:compileDebugKotlin', task ':core:designsystem:javaPreCompileDebug', task ':core:designsystem:compileDebugJavaWithJavac', task ':core:designsystem:bundleLibRuntimeToJarDebug', task ':core:designsystem:processDebugJavaRes', task ':core:navigation:verifyApiPurity', task ':core:navigation:verifyComposeUsage', task ':core:navigation:verifyModuleDependencies', task ':core:navigation:preBuild', task ':core:navigation:preDebugBuild', task ':core:designsystem:bundleLibCompileToJarDebug', task ':core:navigation:generateDebugResources', task ':core:navigation:packageDebugResources', task ':core:navigation:processDebugNavigationResources', task ':core:navigation:parseDebugLocalResources', task ':core:navigation:generateDebugRFile', task ':core:navigation:kspDebugKotlin', task ':core:navigation:compileDebugKotlin', task ':core:navigation:javaPreCompileDebug', task ':core:navigation:compileDebugJavaWithJavac', task ':core:navigation:transformDebugClassesWithAsm', task ':core:navigation:bundleLibRuntimeToJarDebug', task ':core:designsystem:generateDebugAssets', task ':core:designsystem:mergeDebugAssets', task ':core:navigation:generateDebugUnitTestAssets', task ':core:navigation:generateDebugAssets', task ':core:navigation:mergeDebugAssets', task ':core:navigation:preDebugUnitTestBuild', task ':core:testing:generateDebugAssets', task ':core:testing:verifyApiPurity', task ':core:testing:verifyComposeUsage', task ':core:testing:verifyModuleDependencies', task ':core:testing:preBuild', task ':core:testing:preDebugBuild', task ':core:testing:mergeDebugAssets', task ':core:navigation:mergeDebugUnitTestAssets', task ':core:designsystem:mapDebugSourceSetPaths', task ':core:designsystem:compileDebugLibraryResources', task ':core:designsystem:writeDebugAarMetadata', task ':core:navigation:writeDebugAarMetadata', task ':core:testing:writeDebugAarMetadata', task ':core:navigation:checkDebugUnitTestAarMetadata', task ':core:navigation:mapDebugSourceSetPaths', task ':core:navigation:compileDebugLibraryResources', task ':core:navigation:mapDebugUnitTestSourceSetPaths', task ':core:navigation:generateDebugUnitTestResources', task ':core:testing:generateDebugResources', task ':core:testing:packageDebugResources', task ':core:navigation:mergeDebugUnitTestResources', task ':core:designsystem:extractDeepLinksDebug', task ':core:designsystem:processDebugManifest', task ':core:navigation:extractDeepLinksDebug', task ':core:navigation:processDebugManifest', task ':core:testing:extractDeepLinksDebug', task ':core:testing:processDebugManifest', task ':core:navigation:mergeDebugUnitTestManifest', task ':core:navigation:processDebugUnitTestManifest', task ':core:testing:mapDebugSourceSetPaths', task ':core:testing:processDebugNavigationResources', task ':core:testing:compileDebugLibraryResources', task ':core:testing:parseDebugLocalResources', task ':core:testing:generateDebugRFile', task ':core:navigation:processDebugUnitTestResources', task ':core:navigation:packageDebugUnitTestForUnitTest', task ':core:navigation:generateDebugUnitTestConfig', task ':core:navigation:koverFindJar', task ':core:navigation:processDebugJavaRes', task ':core:navigation:bundleLibCompileToJarDebug', task ':core:testing:compileDebugKotlin', task ':core:testing:javaPreCompileDebug', task ':core:testing:compileDebugJavaWithJavac', task ':core:testing:bundleLibCompileToJarDebug', task ':core:navigation:kspDebugUnitTestKotlin', task ':core:navigation:compileDebugUnitTestKotlin', task ':core:navigation:processDebugUnitTestJavaRes', task ':core:navigation:javaPreCompileDebugUnitTest', task ':core:navigation:compileDebugUnitTestJavaWithJavac', task ':core:testing:bundleLibRuntimeToJarDebug', task ':core:navigation:hiltCollectClassesDebugUnitTest', task ':core:navigation:hiltAggregateDepsDebugUnitTest', task ':core:navigation:hiltJavaCompileDebugUnitTest', task ':core:navigation:transformDebugUnitTestClassesWithAsm', task ':core:testing:processDebugJavaRes', task ':core:navigation:testDebugUnitTest']
+Tasks that were excluded: []
+Using local directory build cache for the root build (location = /home/crazyhusir/.gradle/caches/build-cache-1, remove unused entries = after 7 days).
+Ignoring listeners of task graph ready event, as this build (:) has already executed work.
+Resolve mutations for :core:common:checkKotlinGradlePluginConfigurationErrors (Thread[#239,Execution worker Thread 4,5,main]) started.
+Resolve mutations for :core:designsystem:verifyApiPurity (Thread[#242,Execution worker Thread 7,5,main]) started.
+work action Unknown value (Thread[#236,Execution worker,5,main]) started.
+Resolve mutations for :core:common:verifyApiPurity (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:common:checkKotlinGradlePluginConfigurationErrors (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:common:verifyApiPurity (Thread[#241,Execution worker Thread 6,5,main]) started.
+Resolve mutations for :core:common:verifyModuleDependencies (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:common:processResources (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:designsystem:verifyApiPurity (Thread[#242,Execution worker Thread 7,5,main]) started.
+work action Unknown value (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:common:processResources (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:common:verifyModuleDependencies (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:verifyComposeUsage (Thread[#235,included builds,5,main]) started.
+:core:designsystem:verifyComposeUsage (Thread[#235,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:verifyModuleDependencies (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:navigation:verifyApiPurity (Thread[#236,Execution worker,5,main]) started.
+:core:designsystem:verifyModuleDependencies (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:verifyApiPurity (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':core:common:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :core:navigation:verifyComposeUsage (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:navigation:verifyComposeUsage (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:designsystem:verifyModuleDependencies' is 6c437f79deb6125afbd259a72e6b3eb1
+Skipping task ':core:designsystem:verifyModuleDependencies' as it is up-to-date.
+Resolve mutations for :core:navigation:verifyModuleDependencies (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:verifyModuleDependencies (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:common:verifyModuleDependencies' is 873ee7efb6409bf5244ca4e45963d63b
+Skipping task ':core:common:verifyModuleDependencies' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugAssets (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:designsystem:generateDebugAssets (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+Skipping task ':core:designsystem:generateDebugAssets' as it has no actions.
+Resolve mutations for :core:navigation:generateDebugUnitTestAssets (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:common:processResources NO-SOURCE
+Skipping task ':core:common:processResources' as it has no source files and no previous output files.
+:core:navigation:generateDebugUnitTestAssets (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:navigation:generateDebugAssets (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:navigation:generateDebugAssets (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+Skipping task ':core:navigation:generateDebugAssets' as it has no actions.
+Resolve mutations for :core:testing:generateDebugAssets (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:testing:generateDebugAssets (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+Skipping task ':core:testing:generateDebugAssets' as it has no actions.
+
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+Skipping task ':core:navigation:generateDebugUnitTestAssets' as it has no actions.
+Resolve mutations for :core:testing:verifyComposeUsage (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:testing:verifyComposeUsage (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:testing:verifyApiPurity (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:testing:verifyApiPurity (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:testing:verifyComposeUsage
+Caching disabled for task ':core:testing:verifyComposeUsage' because:
+  Caching has not been enabled for the task
+Task ':core:testing:verifyComposeUsage' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:navigation:verifyModuleDependencies' is 39850b18386b379087d80bb115c32b19
+Skipping task ':core:navigation:verifyModuleDependencies' as it is up-to-date.
+Resolve mutations for :core:testing:verifyModuleDependencies (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:testing:verifyModuleDependencies (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:navigation:koverFindJar (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:koverFindJar (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:common:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:common:verifyApiPurity' is d711d56bf2da3099628012ed3e75095b
+Skipping task ':core:common:verifyApiPurity' as it is up-to-date.
+Resolve mutations for :core:common:compileKotlin (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:testing:verifyModuleDependencies' is b73333643498cbe3955adf003920e6a1
+Skipping task ':core:testing:verifyModuleDependencies' as it is up-to-date.
+work action Unknown value (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:navigation:koverFindJar UP-TO-DATE
+Caching disabled for task ':core:navigation:koverFindJar' because:
+  Local file operations are faster then using build cache
+Skipping task ':core:navigation:koverFindJar' as it is up-to-date.
+:core:common:compileKotlin (Thread[#241,Execution worker Thread 6,5,main]) started.
+work action Unknown value (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:testing:verifyApiPurity' is f92d59f15c6b008676bfd00059a6e8d9
+Skipping task ':core:testing:verifyApiPurity' as it is up-to-date.
+Resolve mutations for :core:testing:preBuild (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:testing:preBuild (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:testing:preBuild
+Skipping task ':core:testing:preBuild' as it has no actions.
+Resolve mutations for :core:testing:preDebugBuild (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:testing:preDebugBuild (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:testing:preDebugBuild
+Skipping task ':core:testing:preDebugBuild' as it has no actions.
+Resolve mutations for :core:testing:mergeDebugAssets (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:verifyComposeUsage
+Caching disabled for task ':core:navigation:verifyComposeUsage' because:
+  Caching has not been enabled for the task
+Task ':core:navigation:verifyComposeUsage' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :core:testing:writeDebugAarMetadata (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:testing:generateDebugResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:testing:writeDebugAarMetadata (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:testing:mergeDebugAssets (Thread[#240,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :core:testing:extractDeepLinksDebug (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:testing:generateDebugResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:navigation:verifyApiPurity' is 3d86c2182575ebbeb8b48543768f53f2
+Skipping task ':core:navigation:verifyApiPurity' as it is up-to-date.
+:core:testing:extractDeepLinksDebug (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:navigation:preBuild (Thread[#236,Execution worker,5,main]) started.
+:core:navigation:preBuild (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:navigation:preBuild
+Skipping task ':core:navigation:preBuild' as it has no actions.
+Resolve mutations for :core:navigation:preDebugBuild (Thread[#236,Execution worker,5,main]) started.
+:core:navigation:preDebugBuild (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:navigation:preDebugBuild
+Skipping task ':core:navigation:preDebugBuild' as it has no actions.
+Resolve mutations for :core:navigation:generateDebugResources (Thread[#236,Execution worker,5,main]) started.
+:core:navigation:generateDebugResources (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':core:testing:mergeDebugAssets' because:
+  Simple merging task
+Skipping task ':core:testing:mergeDebugAssets' as it is up-to-date.
+
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+Build cache key for task ':core:testing:extractDeepLinksDebug' is d075d792310b30483f8c714da2203097
+Skipping task ':core:testing:extractDeepLinksDebug' as it is up-to-date.
+Resolve mutations for :core:navigation:processDebugNavigationResources (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:navigation:javaPreCompileDebug (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:navigation:processDebugNavigationResources (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:javaPreCompileDebug (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':core:testing:writeDebugAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:writeDebugAarMetadata' as it is up-to-date.
+Resolve mutations for :core:navigation:mergeDebugAssets (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:mergeDebugAssets (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+Build cache key for task ':core:navigation:processDebugNavigationResources' is 70a26402e04b4c3f12144c215bf74575
+Skipping task ':core:navigation:processDebugNavigationResources' as it is up-to-date.
+
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+Build cache key for task ':core:navigation:javaPreCompileDebug' is df89c32b593bbab543a07e5a449a1db8
+Skipping task ':core:navigation:javaPreCompileDebug' as it is up-to-date.
+Resolve mutations for :core:navigation:preDebugUnitTestBuild (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+Build cache key for task ':core:navigation:generateDebugResources' is d34359fa759610b207c86179c081868a
+Skipping task ':core:navigation:generateDebugResources' as it is up-to-date.
+Resolve mutations for :core:navigation:packageDebugResources (Thread[#236,Execution worker,5,main]) started.
+work action resolve mergeDebugAssets (project ':core:testing') (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:packageDebugResources (Thread[#236,Execution worker,5,main]) started.
+Resolve mutations for :core:navigation:writeDebugAarMetadata (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:writeDebugAarMetadata (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:preDebugUnitTestBuild (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:preDebugUnitTestBuild
+Skipping task ':core:navigation:preDebugUnitTestBuild' as it has no actions.
+work action resolve aar-metadata.properties (project ':core:testing') (Thread[#240,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :core:navigation:mapDebugSourceSetPaths (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:navigation:mapDebugSourceSetPaths (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':core:navigation:writeDebugAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project ':core:navigation') (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:navigation:mapDebugSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:navigation:mapDebugSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:mapDebugSourceSetPaths' as it is up-to-date.
+Resolve mutations for :core:navigation:mapDebugUnitTestSourceSetPaths (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:mapDebugUnitTestSourceSetPaths (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:navigation:generateDebugUnitTestResources (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':core:navigation:mergeDebugAssets' because:
+  Simple merging task
+Skipping task ':core:navigation:mergeDebugAssets' as it is up-to-date.
+work action resolve mergeDebugAssets (project ':core:navigation') (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:generateDebugUnitTestResources (Thread[#240,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :core:navigation:extractDeepLinksDebug (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:extractDeepLinksDebug (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:navigation:extractDeepLinksDebug UP-TO-DATE
+Build cache key for task ':core:navigation:extractDeepLinksDebug' is d075d792310b30483f8c714da2203097
+Skipping task ':core:navigation:extractDeepLinksDebug' as it is up-to-date.
+Resolve mutations for :core:navigation:processDebugManifest (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:processDebugManifest (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:designsystem:verifyApiPurity' is 9155d40f4a67161543b161faa38d2ac5
+Skipping task ':core:designsystem:verifyApiPurity' as it is up-to-date.
+Resolve mutations for :core:testing:processDebugManifest (Thread[#242,Execution worker Thread 7,5,main]) started.
+:core:testing:processDebugManifest (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:navigation:generateDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:navigation:generateDebugUnitTestResources' is 6140d34ef406d16e572f27f8076e378d
+Skipping task ':core:navigation:generateDebugUnitTestResources' as it is up-to-date.
+
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:navigation:mapDebugUnitTestSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:mapDebugUnitTestSourceSetPaths' as it is up-to-date.
+work action resolve navigation.json (project ':core:navigation') (Thread[#240,Execution worker Thread 5,5,main]) started.
+work action resolve navigation.json (project ':core:testing') (Thread[#240,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :core:testing:mapDebugSourceSetPaths (Thread[#240,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :core:testing:processDebugNavigationResources (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:testing:mapDebugSourceSetPaths (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:testing:processDebugNavigationResources (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:generateDebugResources UP-TO-DATE
+Build cache key for task ':core:testing:generateDebugResources' is 6140d34ef406d16e572f27f8076e378d
+Skipping task ':core:testing:generateDebugResources' as it is up-to-date.
+
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+Build cache key for task ':core:navigation:packageDebugResources' is ac6d61921debb7e04d10273ccb8f9c07
+Skipping task ':core:navigation:packageDebugResources' as it is up-to-date.
+Resolve mutations for :core:testing:packageDebugResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:testing:packageDebugResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+Resolve mutations for :core:navigation:parseDebugLocalResources (Thread[#236,Execution worker,5,main]) started.
+:core:navigation:parseDebugLocalResources (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+Build cache key for task ':core:testing:processDebugNavigationResources' is b22c27f8fe1517f7e14bd66e9fc4a553
+Skipping task ':core:testing:processDebugNavigationResources' as it is up-to-date.
+Resolve mutations for :core:navigation:compileDebugLibraryResources (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:compileDebugLibraryResources (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:testing:mapDebugSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:mapDebugSourceSetPaths' as it is up-to-date.
+work action resolve packageDebugResources (project ':core:navigation') (Thread[#240,Execution worker Thread 5,5,main]) started.
+work action resolve file-map.txt (project ':core:testing') (Thread[#240,Execution worker Thread 5,5,main]) started.
+work action resolve file-map.txt (project ':core:navigation') (Thread[#240,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :core:testing:javaPreCompileDebug (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:testing:javaPreCompileDebug (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:compileDebugLibraryResources UP-TO-DATE
+Build cache key for task ':core:navigation:compileDebugLibraryResources' is 25fb8840b80a7962aa68ed1a055b7f96
+Skipping task ':core:navigation:compileDebugLibraryResources' as it is up-to-date.
+work action resolve out (project ':core:navigation') (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:navigation:javaPreCompileDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:javaPreCompileDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+Build cache key for task ':core:testing:javaPreCompileDebug' is fa34930c1ae667088366ef27fed71395
+Skipping task ':core:testing:javaPreCompileDebug' as it is up-to-date.
+
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+Build cache key for task ':core:navigation:processDebugManifest' is 5b3bb140c6ea69a5ad4892607fc5b365
+Skipping task ':core:navigation:processDebugManifest' as it is up-to-date.
+work action resolve AndroidManifest.xml (project ':core:navigation') (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:testing:processDebugManifest UP-TO-DATE
+Build cache key for task ':core:testing:processDebugManifest' is 3ece7dcc2a4ec2a4b16ae138b2e68694
+Skipping task ':core:testing:processDebugManifest' as it is up-to-date.
+work action resolve AndroidManifest.xml (project ':core:testing') (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:testing:packageDebugResources UP-TO-DATE
+Build cache key for task ':core:testing:packageDebugResources' is 8efa7c3d104a113adaccf7e7b5f72595
+Skipping task ':core:testing:packageDebugResources' as it is up-to-date.
+work action resolve packageDebugResources (project ':core:testing') (Thread[#239,Execution worker Thread 4,5,main]) started.
+Resolve mutations for :core:testing:compileDebugLibraryResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:testing:compileDebugLibraryResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+Resolve mutations for :core:testing:parseDebugLocalResources (Thread[#242,Execution worker Thread 7,5,main]) started.
+:core:testing:parseDebugLocalResources (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+Build cache key for task ':core:testing:compileDebugLibraryResources' is 8f8d9115ee937c7d5d6f23ce890826a6
+Skipping task ':core:testing:compileDebugLibraryResources' as it is up-to-date.
+
+> Task :core:navigation:javaPreCompileDebugUnitTest UP-TO-DATE
+Build cache key for task ':core:navigation:javaPreCompileDebugUnitTest' is df89c32b593bbab543a07e5a449a1db8
+Skipping task ':core:navigation:javaPreCompileDebugUnitTest' as it is up-to-date.
+work action resolve out (project ':core:testing') (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+Build cache key for task ':core:testing:parseDebugLocalResources' is 5474a7ad7c2f3abf013a9737aa2ed05e
+Skipping task ':core:testing:parseDebugLocalResources' as it is up-to-date.
+
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+Build cache key for task ':core:navigation:parseDebugLocalResources' is 861e5a35c68a895b16f486de6441efc0
+Skipping task ':core:navigation:parseDebugLocalResources' as it is up-to-date.
+Resolve mutations for :core:testing:generateDebugRFile (Thread[#242,Execution worker Thread 7,5,main]) started.
+Resolve mutations for :core:navigation:generateDebugRFile (Thread[#236,Execution worker,5,main]) started.
+:core:testing:generateDebugRFile (Thread[#242,Execution worker Thread 7,5,main]) started.
+:core:navigation:generateDebugRFile (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+Build cache key for task ':core:navigation:generateDebugRFile' is d812ded95195f31549cda7c4ee0a5088
+Skipping task ':core:navigation:generateDebugRFile' as it is up-to-date.
+work action resolve package-aware-r.txt (project ':core:navigation') (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+Build cache key for task ':core:testing:generateDebugRFile' is 2cfc79333bf7ddaf19c54606afb95431
+Skipping task ':core:testing:generateDebugRFile' as it is up-to-date.
+work action resolve package-aware-r.txt (project ':core:testing') (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:common:compileKotlin UP-TO-DATE
+Build cache key for task ':core:common:compileKotlin' is 21155be3df12cde5e79f1789911969c0
+Skipping task ':core:common:compileKotlin' as it is up-to-date.
+Resolve mutations for :core:common:compileJava (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:common:compileJava (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:common:compileJava NO-SOURCE
+Skipping task ':core:common:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :core:common:classes (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:common:classes (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:common:classes UP-TO-DATE
+Skipping task ':core:common:classes' as it has no actions.
+Resolve mutations for :core:common:jar (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:common:jar (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:common:jar UP-TO-DATE
+Caching disabled for task ':core:common:jar' because:
+  Not worth caching
+Skipping task ':core:common:jar' as it is up-to-date.
+work action resolve common.jar (project ':core:common') (Thread[#242,Execution worker Thread 7,5,main]) started.
+IdentityTransform (Thread[#242,Execution worker Thread 7,5,main]) started.
+IdentityTransform (Thread[#239,Execution worker Thread 4,5,main]) started.
+IdentityTransform (Thread[#237,Execution worker Thread 2,5,main]) started.
+IdentityTransform (Thread[#238,Execution worker Thread 3,5,main]) started.
+AggregatedPackagesTransform (Thread[#241,Execution worker Thread 6,5,main]) started.
+Resolve mutations for :core:testing:compileDebugKotlin (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:testing:compileDebugKotlin (Thread[#238,Execution worker Thread 3,5,main]) started.
+AggregatedPackagesTransform (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/java', not found
+Build cache key for task ':core:testing:compileDebugKotlin' is f21d8d4d3d9f386d1294038dc3dad388
+Skipping task ':core:testing:compileDebugKotlin' as it is up-to-date.
+Resolve mutations for :core:testing:compileDebugJavaWithJavac (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:testing:processDebugJavaRes (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:testing:compileDebugJavaWithJavac (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:testing:processDebugJavaRes (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+Skipping task ':core:testing:compileDebugJavaWithJavac' as it has no source files and no previous output files.
+Resolve mutations for :core:testing:bundleLibCompileToJarDebug (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:testing:bundleLibRuntimeToJarDebug (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:testing:bundleLibCompileToJarDebug (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:testing:bundleLibRuntimeToJarDebug (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+Caching disabled for task ':core:testing:bundleLibRuntimeToJarDebug' because:
+  Simple merging task
+Skipping task ':core:testing:bundleLibRuntimeToJarDebug' as it is up-to-date.
+work action resolve classes.jar (project ':core:testing') (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+Caching disabled for task ':core:testing:bundleLibCompileToJarDebug' because:
+  Simple merging task
+Skipping task ':core:testing:bundleLibCompileToJarDebug' as it is up-to-date.
+
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/main/resources', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/testing/src/debug/resources', not found
+Caching disabled for task ':core:testing:processDebugJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:testing:processDebugJavaRes' as it is up-to-date.
+work action resolve out (project ':core:testing') (Thread[#241,Execution worker Thread 6,5,main]) started.
+AggregatedPackagesTransform (Thread[#239,Execution worker Thread 4,5,main]) started.
+work action resolve classes.jar (project ':core:testing') (Thread[#238,Execution worker Thread 3,5,main]) started.
+AggregatedPackagesTransform (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:verifyComposeUsage
+Caching disabled for task ':core:designsystem:verifyComposeUsage' because:
+  Caching has not been enabled for the task
+Task ':core:designsystem:verifyComposeUsage' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :core:designsystem:preBuild (Thread[#235,included builds,5,main]) started.
+:core:designsystem:preBuild (Thread[#235,included builds,5,main]) started.
+
+> Task :core:designsystem:preBuild
+Skipping task ':core:designsystem:preBuild' as it has no actions.
+Resolve mutations for :core:designsystem:preDebugBuild (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:designsystem:preDebugBuild (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:preDebugBuild
+Skipping task ':core:designsystem:preDebugBuild' as it has no actions.
+Resolve mutations for :core:designsystem:generateDebugResources (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:designsystem:generateDebugResources (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugNavigationResources (Thread[#236,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:javaPreCompileDebug (Thread[#235,included builds,5,main]) started.
+:core:designsystem:javaPreCompileDebug (Thread[#235,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:mergeDebugAssets (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:mapDebugSourceSetPaths (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:designsystem:mergeDebugAssets (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:designsystem:mapDebugSourceSetPaths (Thread[#242,Execution worker Thread 7,5,main]) started.
+Resolve mutations for :core:designsystem:writeDebugAarMetadata (Thread[#241,Execution worker Thread 6,5,main]) started.
+Resolve mutations for :core:designsystem:extractDeepLinksDebug (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:designsystem:processDebugNavigationResources (Thread[#236,Execution worker,5,main]) started.
+:core:designsystem:extractDeepLinksDebug (Thread[#239,Execution worker Thread 4,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugManifest (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:designsystem:processDebugManifest (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+Build cache key for task ':core:designsystem:javaPreCompileDebug' is fa34930c1ae667088366ef27fed71395
+Skipping task ':core:designsystem:javaPreCompileDebug' as it is up-to-date.
+:core:designsystem:writeDebugAarMetadata (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:designsystem:mapDebugSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:mapDebugSourceSetPaths' as it is up-to-date.
+
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugResources' is 03f662581268ab44f5c7641b49913b07
+Skipping task ':core:designsystem:generateDebugResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:packageDebugResources (Thread[#238,Execution worker Thread 3,5,main]) started.
+work action resolve file-map.txt (project ':core:designsystem') (Thread[#235,included builds,5,main]) started.
+:core:designsystem:packageDebugResources (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+Build cache key for task ':core:designsystem:extractDeepLinksDebug' is d075d792310b30483f8c714da2203097
+Skipping task ':core:designsystem:extractDeepLinksDebug' as it is up-to-date.
+work action resolve navigation.json (project ':core:designsystem') (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugNavigationResources' is 61cfa2bd7f9e6db2dd1b91fd351dfd67
+Skipping task ':core:designsystem:processDebugNavigationResources' as it is up-to-date.
+
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':core:designsystem:writeDebugAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:writeDebugAarMetadata' as it is up-to-date.
+work action resolve aar-metadata.properties (project ':core:designsystem') (Thread[#236,Execution worker,5,main]) started.
+Resolve mutations for :core:navigation:checkDebugUnitTestAarMetadata (Thread[#236,Execution worker,5,main]) started.
+:core:navigation:checkDebugUnitTestAarMetadata (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugManifest' is a21d47c3a01058ea5a5a86630af54ea5
+Skipping task ':core:designsystem:processDebugManifest' as it is up-to-date.
+
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':core:designsystem:mergeDebugAssets' because:
+  Simple merging task
+Skipping task ':core:designsystem:mergeDebugAssets' as it is up-to-date.
+work action resolve AndroidManifest.xml (project ':core:designsystem') (Thread[#240,Execution worker Thread 5,5,main]) started.
+Resolve mutations for :core:navigation:mergeDebugUnitTestManifest (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:navigation:mergeDebugUnitTestManifest (Thread[#240,Execution worker Thread 5,5,main]) started.
+work action resolve mergeDebugAssets (project ':core:designsystem') (Thread[#237,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:navigation:mergeDebugUnitTestAssets (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:mergeDebugUnitTestAssets (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+Build cache key for task ':core:designsystem:packageDebugResources' is 96fe421e0e0f51f53e45bc4aed21b4eb
+Skipping task ':core:designsystem:packageDebugResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:parseDebugLocalResources (Thread[#242,Execution worker Thread 7,5,main]) started.
+work action resolve packageDebugResources (project ':core:designsystem') (Thread[#239,Execution worker Thread 4,5,main]) started.
+Resolve mutations for :core:designsystem:compileDebugLibraryResources (Thread[#241,Execution worker Thread 6,5,main]) started.
+Resolve mutations for :core:navigation:mergeDebugUnitTestResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:designsystem:compileDebugLibraryResources (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:designsystem:parseDebugLocalResources (Thread[#242,Execution worker Thread 7,5,main]) started.
+:core:navigation:mergeDebugUnitTestResources (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+Build cache key for task ':core:designsystem:compileDebugLibraryResources' is ab59dc7e08e1c07cb80c8e56a687e86d
+Skipping task ':core:designsystem:compileDebugLibraryResources' as it is up-to-date.
+work action resolve out (project ':core:designsystem') (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+Build cache key for task ':core:designsystem:parseDebugLocalResources' is 3a23d22226ae8a145066a4470c72f979
+Skipping task ':core:designsystem:parseDebugLocalResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugRFile (Thread[#242,Execution worker Thread 7,5,main]) started.
+:core:designsystem:generateDebugRFile (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugRFile' is 3f5ac4b5ccb2625c915cd46af360fe1c
+Skipping task ':core:designsystem:generateDebugRFile' as it is up-to-date.
+Resolve mutations for :core:designsystem:compileDebugKotlin (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:designsystem:compileDebugKotlin (Thread[#241,Execution worker Thread 6,5,main]) started.
+work action resolve package-aware-r.txt (project ':core:designsystem') (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:navigation:mergeDebugUnitTestAssets UP-TO-DATE
+Caching disabled for task ':core:navigation:mergeDebugUnitTestAssets' because:
+  Simple merging task
+Skipping task ':core:navigation:mergeDebugUnitTestAssets' as it is up-to-date.
+
+> Task :core:navigation:checkDebugUnitTestAarMetadata UP-TO-DATE
+Caching disabled for task ':core:navigation:checkDebugUnitTestAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:checkDebugUnitTestAarMetadata' as it is up-to-date.
+
+> Task :core:navigation:mergeDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:navigation:mergeDebugUnitTestResources' is cf796dc1cffdec7d3c32250fa5c94477
+Skipping task ':core:navigation:mergeDebugUnitTestResources' as it is up-to-date.
+
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/java', not found
+Build cache key for task ':core:designsystem:compileDebugKotlin' is a29bc993a67a5ff4a488df74b0309832
+Skipping task ':core:designsystem:compileDebugKotlin' as it is up-to-date.
+Resolve mutations for :core:designsystem:compileDebugJavaWithJavac (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:designsystem:compileDebugJavaWithJavac (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+Skipping task ':core:designsystem:compileDebugJavaWithJavac' as it has no source files and no previous output files.
+Resolve mutations for :core:designsystem:bundleLibRuntimeToJarDebug (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:designsystem:bundleLibRuntimeToJarDebug (Thread[#241,Execution worker Thread 6,5,main]) started.
+
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+Caching disabled for task ':core:designsystem:bundleLibRuntimeToJarDebug' because:
+  Simple merging task
+Skipping task ':core:designsystem:bundleLibRuntimeToJarDebug' as it is up-to-date.
+Resolve mutations for :core:designsystem:processDebugJavaRes (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:designsystem:processDebugJavaRes (Thread[#241,Execution worker Thread 6,5,main]) started.
+Resolve mutations for :core:designsystem:bundleLibCompileToJarDebug (Thread[#242,Execution worker Thread 7,5,main]) started.
+:core:designsystem:bundleLibCompileToJarDebug (Thread[#242,Execution worker Thread 7,5,main]) started.
+work action resolve classes.jar (project ':core:designsystem') (Thread[#236,Execution worker,5,main]) started.
+AggregatedPackagesTransform (Thread[#236,Execution worker,5,main]) started.
+
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/main/resources', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/designsystem/src/debug/resources', not found
+Caching disabled for task ':core:designsystem:processDebugJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:processDebugJavaRes' as it is up-to-date.
+
+> Task :core:navigation:mergeDebugUnitTestManifest UP-TO-DATE
+Caching disabled for task ':core:navigation:mergeDebugUnitTestManifest' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:mergeDebugUnitTestManifest' as it is up-to-date.
+Resolve mutations for :core:navigation:processDebugUnitTestManifest (Thread[#240,Execution worker Thread 5,5,main]) started.
+work action resolve out (project ':core:designsystem') (Thread[#241,Execution worker Thread 6,5,main]) started.
+:core:navigation:processDebugUnitTestManifest (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+Caching disabled for task ':core:designsystem:bundleLibCompileToJarDebug' because:
+  Simple merging task
+Skipping task ':core:designsystem:bundleLibCompileToJarDebug' as it is up-to-date.
+work action resolve classes.jar (project ':core:designsystem') (Thread[#242,Execution worker Thread 7,5,main]) started.
+Resolve mutations for :core:navigation:kspDebugKotlin (Thread[#242,Execution worker Thread 7,5,main]) started.
+AggregatedPackagesTransform (Thread[#236,Execution worker,5,main]) started.
+:core:navigation:kspDebugKotlin (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:navigation:processDebugUnitTestManifest UP-TO-DATE
+Caching disabled for task ':core:navigation:processDebugUnitTestManifest' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:processDebugUnitTestManifest' as it is up-to-date.
+Resolve mutations for :core:navigation:processDebugUnitTestResources (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:navigation:processDebugUnitTestResources (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+Build cache key for task ':core:navigation:kspDebugKotlin' is 344851e027b1c332c533928bba9e22ab
+Skipping task ':core:navigation:kspDebugKotlin' as it is up-to-date.
+Resolve mutations for :core:navigation:compileDebugKotlin (Thread[#242,Execution worker Thread 7,5,main]) started.
+:core:navigation:compileDebugKotlin (Thread[#242,Execution worker Thread 7,5,main]) started.
+
+> Task :core:navigation:processDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:navigation:processDebugUnitTestResources' is d2275333a25e87785eb3727cd72865cc
+Skipping task ':core:navigation:processDebugUnitTestResources' as it is up-to-date.
+Resolve mutations for :core:navigation:packageDebugUnitTestForUnitTest (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:navigation:packageDebugUnitTestForUnitTest (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:packageDebugUnitTestForUnitTest UP-TO-DATE
+Caching disabled for task ':core:navigation:packageDebugUnitTestForUnitTest' because:
+  Simple merging task
+Skipping task ':core:navigation:packageDebugUnitTestForUnitTest' as it is up-to-date.
+Resolve mutations for :core:navigation:generateDebugUnitTestConfig (Thread[#240,Execution worker Thread 5,5,main]) started.
+:core:navigation:generateDebugUnitTestConfig (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:generateDebugUnitTestConfig UP-TO-DATE
+Caching disabled for task ':core:navigation:generateDebugUnitTestConfig' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:generateDebugUnitTestConfig' as it is up-to-date.
+
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/java', not found
+Build cache key for task ':core:navigation:compileDebugKotlin' is 4462a6f26160247b31cda38991791a04
+Skipping task ':core:navigation:compileDebugKotlin' as it is up-to-date.
+Resolve mutations for :core:navigation:compileDebugJavaWithJavac (Thread[#242,Execution worker Thread 7,5,main]) started.
+Resolve mutations for :core:navigation:processDebugJavaRes (Thread[#235,included builds,5,main]) started.
+:core:navigation:processDebugJavaRes (Thread[#235,included builds,5,main]) started.
+:core:navigation:compileDebugJavaWithJavac (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/main/resources', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/debug/resources', not found
+Caching disabled for task ':core:navigation:processDebugJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:processDebugJavaRes' as it is up-to-date.
+work action resolve out (project ':core:navigation') (Thread[#235,included builds,5,main]) started.
+
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+Build cache key for task ':core:navigation:compileDebugJavaWithJavac' is e01d0b4153857be675efa6746eba72ff
+Skipping task ':core:navigation:compileDebugJavaWithJavac' as it is up-to-date.
+No compile result for :core:navigation:compileDebugJavaWithJavac
+No compile result for :core:navigation:compileDebugJavaWithJavac
+No compile result for :core:navigation:compileDebugJavaWithJavac
+No compile result for :core:navigation:compileDebugJavaWithJavac
+No compile result for :core:navigation:compileDebugJavaWithJavac
+Resolve mutations for :core:navigation:transformDebugClassesWithAsm (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:navigation:transformDebugClassesWithAsm (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:navigation:transformDebugClassesWithAsm UP-TO-DATE
+Build cache key for task ':core:navigation:transformDebugClassesWithAsm' is f58125df1e1252699f7ca37e87da25f8
+Skipping task ':core:navigation:transformDebugClassesWithAsm' as it is up-to-date.
+Resolve mutations for :core:navigation:bundleLibRuntimeToJarDebug (Thread[#239,Execution worker Thread 4,5,main]) started.
+:core:navigation:bundleLibRuntimeToJarDebug (Thread[#239,Execution worker Thread 4,5,main]) started.
+Resolve mutations for :core:navigation:bundleLibCompileToJarDebug (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:bundleLibCompileToJarDebug (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:navigation:bundleLibRuntimeToJarDebug UP-TO-DATE
+Caching disabled for task ':core:navigation:bundleLibRuntimeToJarDebug' because:
+  Simple merging task
+Skipping task ':core:navigation:bundleLibRuntimeToJarDebug' as it is up-to-date.
+work action resolve classes.jar (project ':core:navigation') (Thread[#239,Execution worker Thread 4,5,main]) started.
+AggregatedPackagesTransform (Thread[#239,Execution worker Thread 4,5,main]) started.
+
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+Caching disabled for task ':core:navigation:bundleLibCompileToJarDebug' because:
+  Simple merging task
+Skipping task ':core:navigation:bundleLibCompileToJarDebug' as it is up-to-date.
+work action resolve classes.jar (project ':core:navigation') (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:navigation:kspDebugUnitTestKotlin (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:kspDebugUnitTestKotlin (Thread[#238,Execution worker Thread 3,5,main]) started.
+AggregatedPackagesTransform (Thread[#240,Execution worker Thread 5,5,main]) started.
+
+> Task :core:navigation:kspDebugUnitTestKotlin
+Build cache key for task ':core:navigation:kspDebugUnitTestKotlin' is 04aec506e0d99eca1432d70f94bc276f
+Task ':core:navigation:kspDebugUnitTestKotlin' is not up-to-date because:
+  Input property 'kspConfig.javaSourceRoots' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/RecompositionCounter.kt has changed.
+  Input property 'kspConfig.javaSourceRoots' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/ShellRecompositionTest.kt has changed.
+  Input property 'kspConfig.sourceRoots' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/RecompositionCounter.kt has changed.
+  and more...
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+i: [ksp] loaded provider(s): [dagger.hilt.processor.internal.uninstallmodules.KspUninstallModulesProcessor$Provider, dagger.hilt.processor.internal.aggregateddeps.KspAggregatedDepsProcessor$Provider, dagger.hilt.processor.internal.generatesrootinput.KspGeneratesRootInputProcessor$Provider, dagger.hilt.android.processor.internal.viewmodel.KspViewModelProcessor$Provider, dagger.hilt.processor.internal.originatingelement.KspOriginatingElementProcessor$Provider, dagger.hilt.processor.internal.earlyentrypoint.KspEarlyEntryPointProcessor$Provider, dagger.hilt.processor.internal.aliasof.KspAliasOfProcessor$Provider, dagger.hilt.android.processor.internal.bindvalue.KspBindValueProcessor$Provider, dagger.hilt.processor.internal.definecomponent.KspDefineComponentProcessor$Provider, dagger.hilt.processor.internal.root.KspRootProcessor$Provider, dagger.hilt.android.processor.internal.androidentrypoint.KspAndroidEntryPointProcessor$Provider, dagger.hilt.android.processor.internal.customtestapplication.KspCustomTestApplicationProcessor$Provider, dagger.hilt.processor.internal.root.KspComponentTreeDepsProcessor$Provider, dagger.internal.codegen.KspComponentProcessor$Provider]
+i: [ksp] Processor 'dagger.hilt.processor.internal.uninstallmodules.KspUninstallModulesProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.aggregateddeps.KspAggregatedDepsProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.generatesrootinput.KspGeneratesRootInputProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.android.processor.internal.viewmodel.KspViewModelProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.originatingelement.KspOriginatingElementProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.earlyentrypoint.KspEarlyEntryPointProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.aliasof.KspAliasOfProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.android.processor.internal.bindvalue.KspBindValueProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.definecomponent.KspDefineComponentProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.root.KspRootProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.android.processor.internal.androidentrypoint.KspAndroidEntryPointProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.android.processor.internal.customtestapplication.KspCustomTestApplicationProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.hilt.processor.internal.root.KspComponentTreeDepsProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+i: [ksp] Processor 'dagger.internal.codegen.KspComponentProcessor' has not opted in for upcoming features yet. It might break in a future version of KSP. To fix this, please update the processor to a version that is compatible with upcoming features.
+Stored cache entry for task ':core:navigation:kspDebugUnitTestKotlin' with cache key 04aec506e0d99eca1432d70f94bc276f
+Resolve mutations for :core:navigation:compileDebugUnitTestKotlin (Thread[#238,Execution worker Thread 3,5,main]) started.
+:core:navigation:compileDebugUnitTestKotlin (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:navigation:compileDebugUnitTestKotlin
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+Build cache key for task ':core:navigation:compileDebugUnitTestKotlin' is 9054a9da3e3d87864fc852347d8e8d94
+Task ':core:navigation:compileDebugUnitTestKotlin' is not up-to-date because:
+  Input property 'sources' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/RecompositionCounter.kt has changed.
+  Input property 'sources' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/ShellRecompositionTest.kt has changed.
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/kotlin', not found
+Kotlin source files: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/ComposeTestSupport.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/RecompositionCounter.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/ShellRecompositionTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/ShellStateTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/AppBackStackTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/TestScreens.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/PendingDeepLinkTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/di/MultiInstanceTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/RestoreTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/ShortcutsTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/RapidBackTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackGateTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/NavGuardTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/AppNavigatorTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/stack/StackPlanTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/stack/StackSceneTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/TestKeys.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/shell/TabBarTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/shell/tabs/KeptTabsTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/shell/ShellChromePolicyTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/shell/MoreTabTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/shell/ChromeLayeringTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/shell/ResizeContinuityTest.kt
+Java source files: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/java/dagger/hilt/internal/aggregatedroot/codegen/_com_base_app_core_navigation_di_MultiInstanceTest.java, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/java/hilt_aggregated_deps/_com_base_app_core_navigation_di_MultiInstanceTest_GeneratedInjector.java, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/java/hilt_aggregated_deps/_com_base_app_core_navigation_di_WindowActivity_GeneratedInjector.java, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/java/com/base/app/core/navigation/di/Hilt_WindowActivity.java, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/java/com/base/app/core/navigation/di/WindowActivity_GeneratedInjector.java, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/java/com/base/app/core/navigation/di/MultiInstanceTest_GeneratedInjector.java, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/generated/ksp/debugUnitTest/java/com/base/app/core/navigation/di/WindowActivity_MembersInjector.java
+Script source files: 
+Script file extensions: 
+Using Kotlin/JVM incremental compilation
+[KOTLIN] Kotlin compilation 'jdkHome' argument: /home/crazyhusir/.local/share/JetBrains/Toolbox/apps/android-studio/jbr
+i: Options for KOTLIN DAEMON: IncrementalCompilationOptions(super=CompilationOptions(compilerMode=INCREMENTAL_COMPILER, targetPlatform=JVM, reportCategories=[0], reportSeverity=2, requestedCompilationResults=[0], kotlinScriptExtensions=[], generateCompilerRefIndex=false), sourceChanges=org.jetbrains.kotlin.buildtools.api.SourcesChanges$Known@817d9a8, classpathChanges=NoChanges, workingDir=/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/kotlin/compileDebugUnitTestKotlin/cacheable, multiModuleICSettings=null, icFeatures=IncrementalCompilationFeatures(usePreciseJavaTracking=true, withAbiSnapshot=false, preciseCompilationResultsBackup=true, keepIncrementalCompilationCachesInMemory=true, enableUnsafeIncrementalCompilationForMultiplatform=false, enableMonotonousIncrementalCompileSetExpansion=true), outputFiles=[/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/kotlin/compileDebugUnitTestKotlin/cacheable, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/kotlin/compileDebugUnitTestKotlin/local-state])
+w: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/recomposition/ShellRecompositionTest.kt:49:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+i: Finished executing kotlin compiler using DAEMON strategy
+Stored cache entry for task ':core:navigation:compileDebugUnitTestKotlin' with cache key 9054a9da3e3d87864fc852347d8e8d94
+Resolve mutations for :core:navigation:processDebugUnitTestJavaRes (Thread[#238,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:navigation:compileDebugUnitTestJavaWithJavac (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:compileDebugUnitTestJavaWithJavac (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:processDebugUnitTestJavaRes (Thread[#238,Execution worker Thread 3,5,main]) started.
+
+> Task :core:navigation:processDebugUnitTestJavaRes UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/resources', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/resources', not found
+Caching disabled for task ':core:navigation:processDebugUnitTestJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:navigation:processDebugUnitTestJavaRes' as it is up-to-date.
+
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac UP-TO-DATE
+Build cache key for task ':core:navigation:compileDebugUnitTestJavaWithJavac' is 0a6427c1922eac3f88cb1a48a54c56ac
+Task ':core:navigation:compileDebugUnitTestJavaWithJavac' is not up-to-date because:
+  Input property 'classpath' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/RecompositionCounter.class has changed.
+  Input property 'classpath' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/RecompositionCounterKt.class has changed.
+  Input property 'classpath' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/ShellRecompositionTest.class has changed.
+  and more...
+Compilation mode: in-process compilation
+Created classpath snapshot for incremental compilation in 0.075 secs.
+None of the classes needs to be compiled! Analysis took 0.112 secs. 
+Stored cache entry for task ':core:navigation:compileDebugUnitTestJavaWithJavac' with cache key 0a6427c1922eac3f88cb1a48a54c56ac
+Resolve mutations for :core:navigation:hiltCollectClassesDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:hiltCollectClassesDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:navigation:hiltCollectClassesDebugUnitTest
+Skipping task ':core:navigation:hiltCollectClassesDebugUnitTest' as it has no actions.
+Resolve mutations for :core:navigation:hiltAggregateDepsDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:hiltAggregateDepsDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+Caching disabled for CopyTransform: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes because:
+  Caching not enabled.
+Build cache key for AggregatedPackagesTransform: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes is d84860dd588c5f266d6921db962ffbc5
+Stored cache entry for AggregatedPackagesTransform: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes with cache key d84860dd588c5f266d6921db962ffbc5
+Build cache key for task ':core:navigation:hiltAggregateDepsDebugUnitTest' is 8b58f61a903cf8fb17668bacb74d1ee3
+Skipping task ':core:navigation:hiltAggregateDepsDebugUnitTest' as it is up-to-date.
+Resolve mutations for :core:navigation:hiltJavaCompileDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:hiltJavaCompileDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:navigation:hiltJavaCompileDebugUnitTest UP-TO-DATE
+Build cache key for task ':core:navigation:hiltJavaCompileDebugUnitTest' is a8bf003b1b96113bd6fbc4264a903915
+Task ':core:navigation:hiltJavaCompileDebugUnitTest' is not up-to-date because:
+  Input property 'classpath' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/RecompositionCounter.class has changed.
+  Input property 'classpath' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/RecompositionCounterKt.class has changed.
+  Input property 'classpath' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/ShellRecompositionTest.class has changed.
+  and more...
+Compilation mode: in-process compilation
+Created classpath snapshot for incremental compilation in 0.186 secs.
+None of the classes needs to be compiled! Analysis took 0.24 secs. 
+Stored cache entry for task ':core:navigation:hiltJavaCompileDebugUnitTest' with cache key a8bf003b1b96113bd6fbc4264a903915
+Resolve mutations for :core:navigation:transformDebugUnitTestClassesWithAsm (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:transformDebugUnitTestClassesWithAsm (Thread[#237,Execution worker Thread 2,5,main]) started.
+
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm
+Build cache key for task ':core:navigation:transformDebugUnitTestClassesWithAsm' is c7d186621fe9ed5c5987e932385a5ff9
+Task ':core:navigation:transformDebugUnitTestClassesWithAsm' is not up-to-date because:
+  Input property 'inputClassesDir' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/RecompositionCounter.class has changed.
+  Input property 'inputClassesDir' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/RecompositionCounterKt$assertQuietBetweenEnds$$inlined$sortedByDescending$1.class has changed.
+  Input property 'inputClassesDir' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/navigation/recomposition/RecompositionCounterKt.class has changed.
+  and more...
+Stored cache entry for task ':core:navigation:transformDebugUnitTestClassesWithAsm' with cache key c7d186621fe9ed5c5987e932385a5ff9
+Resolve mutations for :core:navigation:testDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+:core:navigation:testDebugUnitTest (Thread[#237,Execution worker Thread 2,5,main]) started.
+Gradle Test Executor 1 started executing tests.
+
+> Task :core:navigation:testDebugUnitTest
+Build cache key for task ':core:navigation:testDebugUnitTest' is 9ff475381429311086f3d7459f8e6202
+Task ':core:navigation:testDebugUnitTest' is not up-to-date because:
+  Task has failed previously.
+Starting process 'Gradle Test Executor 1'. Working directory: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation Command: /home/crazyhusir/.local/share/JetBrains/Toolbox/apps/android-studio/jbr/bin/java -Djava.awt.headless=true -Djava.library.path=/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/testDebug/jniLibs:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/jniLibs -Dorg.gradle.internal.worker.tmpdir=/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/tmp/testDebugUnitTest/work --add-opens=java.base/java.io=ALL-UNNAMED -javaagent:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/kover/kover-jvm-agent-0.9.9.jar=file:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/tmp/testDebugUnitTest/kover-agent.args @/home/crazyhusir/.gradle/.tmp/gradle-worker-classpath11951053359510112207txt -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=IN -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 1'
+Successfully started process 'Gradle Test Executor 1'
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:navigation:testDebugUnitTest
+
+ShellRecompositionTest > three Back presses during a pop compose what one pop does STANDARD_ERROR
+    DIAG rapid frame 0: androidx.compose.runtime.internal.rememberComposableLambda x19, androidx.compose.runtime.DisposableEffect x15, androidx.compose.runtime.LaunchedEffect x7, androidx.compose.runtime.<get-currentCompositeKeyHashCode> x7, androidx.compose.runtime.CompositionLocalProvider x7, androidx.navigation3.runtime.decorateEntry.<anonymous>.<anonymous>.<anonymous>.<anonymous> x6, com.base.app.core.designsystem.theme.AppTheme.<get-colors> x5, androidx.compose.runtime.rememberUpdatedState x5, com.base.app.core.navigation.stack.EntrySlot x4, com.base.app.core.navigation.stack.rememberEntryLifecycle x4, com.base.app.core.navigation.stack.EntrySlot.<anonymous> x4, androidx.navigation3.runtime.NavEntry.Content x3, com.base.app.core.navigation.stack.rememberEntryProvider.<anonymous>.<anonymous>.<anonymous> x3, com.base.app.core.navigation.stack.rememberEntryProvider.<anonymous>.<anonymous>.<anonymous>.<anonymous> x3, androidx.navigation3.runtime.decorateEntry x3, androidx.compose.runtime.SideEffect x3, androidx.lifecycle.viewmodel.navigation3.ViewModelStoreNavEntryDecorator.<init>.<anonymous>.<anonymous> x3, androidx.lifecycle.viewmodel.navigation3.ViewModelStoreNavEntryDecorator.<init>.<anonymous> x3, androidx.lifecycle.viewmodel.compose.rememberViewModelStoreOwner x3, androidx.navigation3.runtime.decorateEntry.<anonymous>.<anonymous> x3, androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator x2, androidx.navigation3.runtime.rememberDecoratedNavEntries x2, androidx.compose.runtime.saveable.rememberSaveable x2, androidx.lifecycle.viewmodel.compose.rememberViewModelStoreProvider x2, androidx.navigationevent.compose.rememberNavigationEventState x1, com.base.app.core.navigation.stack.rememberEntryDecorators x1, com.base.app.core.navigation.stack.StackLayout x1, com.base.app.core.navigation.stack.StackHost x1, com.base.app.core.designsystem.theme.AppTheme.<get-windowSize> x1, com.base.app.core.designsystem.theme.AppTheme.<get-layout> x1, com.base.app.core.designsystem.theme.rememberReduceMotion x1, androidx.compose.runtime.saveable.rememberSaveableStateHolder x1, androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner.<get-current> x1, com.base.app.core.navigation.back.StackBackHandler x1, com.base.app.core.navigation.back.GateSettle x1, androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator x1, com.base.app.core.navigation.stack.rememberEntryProvider x1, androidx.navigation3.runtime.PrepareBackStack x1
+    DIAG rapid frame 25: androidx.compose.runtime.internal.rememberComposableLambda x7, androidx.compose.runtime.DisposableEffect x7, androidx.compose.runtime.LaunchedEffect x5, androidx.compose.runtime.<get-currentCompositeKeyHashCode> x5, com.base.app.core.designsystem.theme.AppTheme.<get-colors> x3, androidx.compose.runtime.SideEffect x3, androidx.compose.runtime.rememberUpdatedState x3, androidx.compose.runtime.CompositionLocalProvider x3, androidx.navigation3.runtime.decorateEntry.<anonymous>.<anonymous>.<anonymous>.<anonymous> x2, com.base.app.core.navigation.stack.EntrySlot x2, androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator x2, androidx.navigation3.runtime.rememberDecoratedNavEntries x2, com.base.app.core.navigation.stack.rememberEntryLifecycle x2, androidx.compose.runtime.saveable.rememberSaveable x2, androidx.lifecycle.viewmodel.compose.rememberViewModelStoreProvider x2, com.base.app.core.navigation.stack.EntrySlot.<anonymous> x2, androidx.navigation3.runtime.NavEntry.Content x1, androidx.navigationevent.compose.rememberNavigationEventState x1, com.base.app.core.navigation.stack.rememberEntryDecorators x1, com.base.app.core.navigation.stack.StackLayout x1, com.base.app.core.navigation.stack.rememberEntryProvider.<anonymous>.<anonymous>.<anonymous> x1, com.base.app.core.navigation.stack.StackHost x1, com.base.app.core.navigation.stack.rememberEntryProvider.<anonymous>.<anonymous>.<anonymous>.<anonymous> x1, com.base.app.core.designsystem.theme.AppTheme.<get-windowSize> x1, androidx.navigation3.runtime.decorateEntry x1, com.base.app.core.designsystem.theme.AppTheme.<get-layout> x1, androidx.lifecycle.viewmodel.navigation3.ViewModelStoreNavEntryDecorator.<init>.<anonymous>.<anonymous> x1, com.base.app.core.designsystem.theme.rememberReduceMotion x1, androidx.compose.runtime.saveable.rememberSaveableStateHolder x1, androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner.<get-current> x1, androidx.lifecycle.viewmodel.navigation3.ViewModelStoreNavEntryDecorator.<init>.<anonymous> x1, androidx.lifecycle.viewmodel.compose.rememberViewModelStoreOwner x1, com.base.app.core.navigation.back.StackBackHandler x1, com.base.app.core.navigation.back.GateSettle x1, androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator x1, com.base.app.core.navigation.stack.rememberEntryProvider x1, androidx.navigation3.runtime.PrepareBackStack x1, androidx.navigation3.runtime.decorateEntry.<anonymous>.<anonymous> x1
+    DIAG rapid frame 49: androidx.compose.runtime.SideEffect x2, androidx.navigationevent.compose.rememberNavigationEventState x1, androidx.navigationevent.compose.NavigationEventHandler x1, androidx.compose.runtime.LaunchedEffect x1, androidx.compose.runtime.DisposableEffect x1, androidx.navigationevent.compose.NavigationBackHandler x1, com.base.app.core.navigation.back.StackBackHandler x1, androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner.<get-current> x1
+    DIAG rapid frame 59: androidx.compose.runtime.DisposableEffect x4, androidx.compose.runtime.internal.rememberComposableLambda x3, androidx.compose.runtime.<get-currentCompositeKeyHashCode> x3, androidx.compose.runtime.rememberUpdatedState x3, androidx.navigation3.runtime.decorateEntry.<anonymous>.<anonymous>.<anonymous>.<anonymous> x2, androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator x2, androidx.navigation3.runtime.rememberDecoratedNavEntries x2, androidx.compose.runtime.SideEffect x2, androidx.compose.runtime.saveable.rememberSaveable x2, androidx.lifecycle.viewmodel.compose.rememberViewModelStoreProvider x2, com.base.app.core.navigation.stack.rememberEntryDecorators x1, com.base.app.core.navigation.stack.StackLayout x1, com.base.app.core.navigation.stack.StackHost x1, com.base.app.core.designsystem.theme.AppTheme.<get-colors> x1, com.base.app.core.designsystem.theme.AppTheme.<get-windowSize> x1, androidx.navigation3.runtime.decorateEntry x1, com.base.app.core.designsystem.theme.AppTheme.<get-layout> x1, com.base.app.core.designsystem.theme.rememberReduceMotion x1, androidx.compose.runtime.saveable.rememberSaveableStateHolder x1, androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner.<get-current> x1, androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator x1, com.base.app.core.navigation.stack.rememberEntryProvider x1, androidx.navigation3.runtime.PrepareBackStack x1, androidx.navigation3.runtime.decorateEntry.<anonymous>.<anonymous> x1
+
+Gradle Test Executor 1 finished executing tests.
+
+> Task :core:navigation:testDebugUnitTest
+Generating HTML test report...
+Finished generating test html results (0.231 secs) into: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/reports/tests/testDebugUnitTest
+Finished generating test XML results (0.013 secs) into: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/build/test-results/testDebugUnitTest
+Stored cache entry for task ':core:navigation:testDebugUnitTest' with cache key 9ff475381429311086f3d7459f8e6202
+Build b888ac8b-c3eb-4cae-abc8-ee1ccf35aabb is closed
+Build 25f1e5f4-9014-4f6d-8a16-c60462636a23 is closed
+
+See the complete report at file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build/reports/configuration-cache/ryhgk1ehapxyqzcracng5mnv/9c65sr5gpfutg1w25wna7ishq/configuration-cache-report.html
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 55s
+88 actionable tasks: 7 executed, 81 up-to-date
+Configuration cache entry stored.
+VCS Checkout Cache (/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/.gradle/vcs-1) removing files not accessed on or after Sat Oct 03 11:07:09 IST 2026.
+VCS Checkout Cache (/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/.gradle/vcs-1) cleanup deleted 0 files/directories.
+VCS Checkout Cache (/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/.gradle/vcs-1) cleaned up in 0.0 secs.
+Configuration Cache (/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/.gradle/configuration-cache) removing files not accessed on or after Sat Oct 03 11:07:09 IST 2026.
+Configuration Cache (/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/.gradle/configuration-cache) cleanup deleted 0 files/directories.
+Configuration Cache (/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/.gradle/configuration-cache) cleaned up in 0.032 secs.
+EXIT 0

@@ -1,0 +1,135 @@
+FFFFFFF.FFFFFF.......................
+======================================================================
+FAIL: test_a_display_name_with_quotes_and_emoji_reaches_the_home_screen (tests.test_target_ios.GeneratedProjectsTest.test_a_display_name_with_quotes_and_emoji_reaches_the_home_screen) (check='the docs name only what the project has')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Database', 'Glass'] is not false : AGENTS.md names ['AppGlassGroup', 'Database', 'Glass'], which this project does not have
+
+======================================================================
+FAIL: test_each_feature_switched_off_alone (tests.test_target_ios.GeneratedProjectsTest.test_each_feature_switched_off_alone) (check='the docs name only what the project has', without='database')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['Database'] is not false : AGENTS.md names ['Database'], which this project does not have
+
+======================================================================
+FAIL: test_each_feature_switched_off_alone (tests.test_target_ios.GeneratedProjectsTest.test_each_feature_switched_off_alone) (check='the docs name only what the project has', without='liquidglass')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Glass'] is not false : AGENTS.md names ['AppGlassGroup', 'Glass'], which this project does not have
+
+======================================================================
+FAIL: test_each_feature_switched_off_alone (tests.test_target_ios.GeneratedProjectsTest.test_each_feature_switched_off_alone) (check='the docs name only what the project has', without='network')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['APIClient', 'Endpoint', 'NetworkMonitor', 'Networking', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView', 'func'] is not false : AGENTS.md names ['APIClient', 'Endpoint', 'NetworkMonitor', 'Networking', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView', 'func'], which this project does not have
+
+======================================================================
+FAIL: test_each_feature_switched_off_alone (tests.test_target_ios.GeneratedProjectsTest.test_each_feature_switched_off_alone) (check='the docs name only what the project has', without='sample')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView'] is not false : AGENTS.md names ['SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView'], which this project does not have
+
+======================================================================
+FAIL: test_every_preset (tests.test_target_ios.GeneratedProjectsTest.test_every_preset) (check='the docs name only what the project has', preset='lean')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Database', 'Glass'] is not false : AGENTS.md names ['AppGlassGroup', 'Database', 'Glass'], which this project does not have
+
+======================================================================
+FAIL: test_every_preset (tests.test_target_ios.GeneratedProjectsTest.test_every_preset) (check='the docs name only what the project has', preset='standard')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Database', 'Glass'] is not false : AGENTS.md names ['AppGlassGroup', 'Database', 'Glass'], which this project does not have
+
+======================================================================
+FAIL: test_nothing_but_a_scaffolded_module_without_networking (tests.test_target_ios.GeneratedProjectsTest.test_nothing_but_a_scaffolded_module_without_networking) (check='the docs name only what the project has')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['APIClient', 'AppGlassGroup', 'Database', 'Endpoint', 'Glass', 'NetworkMonitor', 'Networking', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView', 'func'] is not false : AGENTS.md names ['APIClient', 'AppGlassGroup', 'Database', 'Endpoint', 'Glass', 'NetworkMonitor', 'Networking', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView', 'func'], which this project does not have
+
+======================================================================
+FAIL: test_scaffolded_tabs_each_get_their_own_symbol (tests.test_target_ios.GeneratedProjectsTest.test_scaffolded_tabs_each_get_their_own_symbol) (check='the docs name only what the project has')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Database', 'Glass'] is not false : AGENTS.md names ['AppGlassGroup', 'Database', 'Glass'], which this project does not have
+
+======================================================================
+FAIL: test_the_fixtures (tests.test_target_ios.GeneratedProjectsTest.test_the_fixtures) (check='the docs name only what the project has', fixture='ios-lean.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Database', 'Glass'] is not false : AGENTS.md names ['AppGlassGroup', 'Database', 'Glass'], which this project does not have
+
+======================================================================
+FAIL: test_the_fixtures (tests.test_target_ios.GeneratedProjectsTest.test_the_fixtures) (check='the docs name only what the project has', fixture='ios-modules.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Glass', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView'] is not false : AGENTS.md names ['AppGlassGroup', 'Glass', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView'], which this project does not have
+
+======================================================================
+FAIL: test_the_fixtures (tests.test_target_ios.GeneratedProjectsTest.test_the_fixtures) (check='the docs name only what the project has', fixture='ios-standard.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Database', 'Glass'] is not false : AGENTS.md names ['AppGlassGroup', 'Database', 'Glass'], which this project does not have
+
+======================================================================
+FAIL: test_with_no_tab_feature_a_home_module_is_the_tab (tests.test_target_ios.GeneratedProjectsTest.test_with_no_tab_feature_a_home_module_is_the_tab) (check='the docs name only what the project has')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 396, in check_project
+    check_docs(case, project)
+  File "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP08/generator/tests/test_target_ios.py", line 577, in check_docs
+    case.assertFalse(absent, f"{path.name} names {absent}, which this project does not have")
+AssertionError: ['AppGlassGroup', 'Database', 'Glass', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView'] is not false : AGENTS.md names ['AppGlassGroup', 'Database', 'Glass', 'SampleListStore', 'SampleListStore.swift', 'SampleListView.swift', 'SampleRootView'], which this project does not have
+
+----------------------------------------------------------------------
+Ran 31 tests in 54.469s
+
+FAILED (failures=13)

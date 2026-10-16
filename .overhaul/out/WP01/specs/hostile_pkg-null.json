@@ -1,0 +1,22 @@
+{
+  "app_name": "Trail Notes",
+  "package_name": "com.example.null",
+  "features": [
+    "network",
+    "sample",
+    "settings",
+    "language",
+    "push",
+    "auth",
+    "onboarding",
+    "database",
+    "deeplink",
+    "catalog",
+    "devtools"
+  ],
+  "feature_modules": [],
+  "languages": [
+    "de",
+    "pt-BR"
+  ]
+}

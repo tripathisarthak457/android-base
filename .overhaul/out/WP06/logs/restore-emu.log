@@ -1,0 +1,6 @@
+[locked:emu] waiting for lock...
+[memwait] 1760 MB available, waiting for 3000 MB...
+emulator booted
+before: pointer_location=1 show_touches=null
+after: pointer_location=0 show_touches=null
+emulator stopped

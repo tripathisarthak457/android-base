@@ -1,0 +1,31 @@
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+
+Summary
+───────
+           App  Keyed App (KeyedApp)
+       Package  com.keyed.app
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, catalog, coil, deeplink, googlefonts, leakcanary,
+                network, room, sample
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  dev, staging, prod, playstore
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/after/spec_keys
+  Keystores: dev, staging, prod, playstore
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/after/spec_keys and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

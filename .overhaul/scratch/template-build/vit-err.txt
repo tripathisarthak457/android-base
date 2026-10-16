@@ -1,0 +1,1 @@
+Successfully loaded maps from: mapping.txt

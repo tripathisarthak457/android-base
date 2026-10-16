@@ -1,0 +1,37 @@
+
+Summary
+───────
+           App  Fit net 1 (FitNet1)
+       Package  io.example.fitnet1
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  formatting, network
+       Modules  abcdefghijk, abcdefghijkl, abcdefghijklm, abcdefghijklmn,
+                abcdefghijklmno, abcdefghijklmnop, abcdefghijklmnopq,
+                abcdefghijklmnopqr, abcdefghijklmnopqrs,
+                abcdefghijklmnopqrst
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-s-net-1
+
+  ! The app has 10 tabs. A phone's bar shows Abcdefghijk, Abcdefghijkl,
+  ! Abcdefghijklm, Abcdefghijklmn and More, which holds Abcdefghijklmno,
+  ! Abcdefghijklmnop, Abcdefghijklmnopq, Abcdefghijklmnopqr,
+  ! Abcdefghijklmnopqrs, Abcdefghijklmnopqrst; wider windows show them all in
+  ! the rail. Reorder feature_modules to choose what stays in the bar.
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-s-net-1 and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

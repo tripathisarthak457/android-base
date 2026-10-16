@@ -1,0 +1,123 @@
+[locked:gradle] waiting for lock...
+Starting a Gradle Daemon, 4 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :catalog:assembleRelease
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :catalog:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :catalog:verifyComposeUsage
+> Task :catalog:preBuild
+> Task :catalog:preReleaseBuild
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :catalog:javaPreCompileRelease FROM-CACHE
+> Task :catalog:generateReleaseBuildConfig FROM-CACHE
+> Task :catalog:mapReleaseSourceSetPaths
+> Task :catalog:generateReleaseResources FROM-CACHE
+> Task :catalog:extractProguardFiles
+> Task :catalog:mergeReleaseStartupProfile
+> Task :catalog:extractDeepLinksRelease FROM-CACHE
+> Task :catalog:createReleaseCompatibleScreenManifests
+> Task :catalog:packageReleaseResources FROM-CACHE
+> Task :catalog:writeReleaseAppMetadata
+> Task :catalog:mergeReleaseJniLibFolders
+> Task :catalog:writeReleaseSigningConfigVersions
+> Task :catalog:extractReleaseVersionControlInfo
+> Task :catalog:validateSigningRelease
+> Task :catalog:checkReleaseDuplicateClasses
+> Task :catalog:collectReleaseDependencies
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preReleaseBuild
+> Task :core:designsystem:generateReleaseResources FROM-CACHE
+> Task :core:designsystem:prepareReleaseArtProfile
+> Task :core:designsystem:extractProguardFiles
+> Task :core:designsystem:javaPreCompileRelease FROM-CACHE
+> Task :core:designsystem:processReleaseNavigationResources FROM-CACHE
+> Task :core:designsystem:mergeReleaseJniLibFolders
+> Task :core:designsystem:writeReleaseAarMetadata
+> Task :core:designsystem:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:designsystem:extractDeepLinksRelease FROM-CACHE
+> Task :core:designsystem:processReleaseManifest FROM-CACHE
+> Task :core:designsystem:mapReleaseSourceSetPaths
+> Task :core:designsystem:packageReleaseResources FROM-CACHE
+> Task :core:designsystem:mergeReleaseAssets
+> Task :core:designsystem:copyReleaseJniLibsProjectOnly
+> Task :catalog:sdkReleaseDependencyData
+> Task :core:designsystem:compileReleaseLibraryResources FROM-CACHE
+> Task :catalog:processReleaseNavigationResources FROM-CACHE
+> Task :catalog:mergeReleaseAssets
+> Task :catalog:checkReleaseAarMetadata
+> Task :catalog:compileReleaseNavigationResources FROM-CACHE
+> Task :catalog:compressReleaseAssets FROM-CACHE
+> Task :catalog:mergeReleaseArtProfile
+> Task :core:designsystem:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:designsystem:writeReleaseLintModelMetadata
+> Task :catalog:mergeReleaseNativeLibs
+> Task :core:designsystem:parseReleaseLocalResources FROM-CACHE
+> Task :core:designsystem:generateReleaseRFile FROM-CACHE
+> Task :catalog:processReleaseMainManifest FROM-CACHE
+
+> Task :catalog:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :catalog:processReleaseManifest FROM-CACHE
+> Task :core:designsystem:checkReleaseAarMetadata
+> Task :catalog:extractReleaseNativeSymbolTables FROM-CACHE
+> Task :catalog:mergeReleaseResources FROM-CACHE
+> Task :catalog:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :catalog:processReleaseManifestForPackage FROM-CACHE
+> Task :catalog:parseReleaseLocalResources FROM-CACHE
+> Task :catalog:generateReleaseRFile FROM-CACHE
+> Task :catalog:processReleaseResources FROM-CACHE
+> Task :core:designsystem:extractReleaseAnnotations
+> Task :core:designsystem:compileReleaseKotlin
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:designsystem:mergeReleaseGeneratedProguardFiles
+> Task :core:designsystem:mergeReleaseConsumerProguardFiles
+> Task :core:designsystem:exportReleaseConsumerProguardFiles
+> Task :core:designsystem:processReleaseJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:bundleLibCompileToJarRelease
+> Task :core:designsystem:mergeReleaseJavaResource
+> Task :core:designsystem:createFullJarRelease
+> Task :core:designsystem:syncReleaseLibJars
+> Task :core:designsystem:bundleReleaseLocalLintAar
+> Task :core:designsystem:generateReleaseLintVitalModel
+> Task :core:designsystem:generateReleaseLintModel
+> Task :catalog:compileReleaseKotlin
+> Task :catalog:processReleaseJavaRes
+> Task :catalog:mergeReleaseJavaResource
+> Task :catalog:compileReleaseJavaWithJavac
+> Task :catalog:mergeReleaseGeneratedProguardFiles
+> Task :catalog:generateReleaseLintVitalReportModel
+> Task :catalog:expandReleaseArtProfileWildcards
+> Task :catalog:produceReleaseComposeMapping
+> Task :catalog:reportReleaseComposeMappingErrors
+> Task :core:designsystem:lintVitalAnalyzeRelease
+> Task :catalog:minifyReleaseWithR8
+> Task :catalog:lintVitalAnalyzeRelease
+> Task :catalog:lintVitalReportRelease
+> Task :catalog:lintVitalRelease
+> Task :catalog:convertShrunkResourcesToBinaryRelease FROM-CACHE
+> Task :catalog:optimizeReleaseResources FROM-CACHE
+> Task :catalog:mergeReleaseComposeMapping
+> Task :catalog:compileReleaseArtProfile
+> Task :catalog:packageRelease
+> Task :catalog:assembleRelease
+> Task :catalog:createReleaseApkListingFileRedirect
+
+BUILD SUCCESSFUL in 1m 58s
+94 actionable tasks: 65 executed, 29 from cache
+Configuration cache entry stored.
+EXIT 0

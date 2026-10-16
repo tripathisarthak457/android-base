@@ -1,0 +1,95 @@
+== 12:17:44 adb -s emulator-5554 shell am instrument -w -r -e class com.example.wp04.everything.benchmark.BaselineProfileGenerator -e androidx.benchmark.enabledRules BaselineProfile -e additionalTestOutputDir /sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output -e targetAppId com.example.wp04.everything.dev com.example.wp04.everything.benchmark/androidx.test.runner.AndroidJUnitRunner
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.wp04.everything.benchmark.BaselineProfileGenerator:
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: android.studio.display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 275100720890.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 275100720890.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 275100720890.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-14-06-52-21.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_journeys-baseline-prof.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: android.studio.display.benchmark=BaselineProfileGenerator_journeys
+Total run time Ns: 713946218526.
+Baseline profile [results](file://BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark=BaselineProfileGenerator_journeys
+Total run time Ns: 713946218526.
+Baseline profile [results](file://BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark=BaselineProfileGenerator_journeys
+Total run time Ns: 713946218526.
+Baseline profile [results](file://BaselineProfileGenerator_journeys-baseline-prof-2026-10-14-07-04-15.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_journeys-baseline-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 989.331
+
+OK (2 tests)
+
+
+INSTRUMENTATION_CODE: -1
+== exit 0 : adb

@@ -1,0 +1,14 @@
+[locked:adb] waiting for lock...
+Performing Streamed Install
+Success
+Success
+Starting: Intent { cmp=com.example.wp04.inv.dev/com.example.wp04.inv.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.wp04.inv.dev/com.example.wp04.inv.MainActivity
+TotalTime: 3229
+WaitTime: 3232
+Complete
+/data/local/tmp/inv.xml: 1 file pulled, 0 skipped. 18.5 MB/s (28902 bytes in 0.001s)
+coords: primary_list=540,1445,490 tab_0=108,2246,2158 tab_1=324,2246,2158 tab_2=540,2246,2158 tab_3=756,2246,2158 tab_4=972,2246,2158
+INV-RUN DONE

@@ -1,0 +1,10 @@
+[locked:adb] waiting for lock...
+alert: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/qa/interact/alert.png
+action_sheet: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/qa/interact/action_sheet.png
+menu: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/qa/interact/menu.png
+sheet_large: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/qa/interact/sheet_large.png
+sheet_medium: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/qa/interact/sheet_medium.png
+toast_hud: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/qa/interact/toast_hud.png
+toast_error: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/qa/interact/toast_error.png
+qa: could not find 'Block the screen for 2 s'
+EXIT 1

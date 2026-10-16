@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">Something went wrong. Please try again.</string>
+    <string name="common_error_offline">You are offline. Check your connection and try again.</string>
+    <string name="common_error_unreachable">Could not reach the server. Try again in a moment.</string>
+    <string name="common_error_queued">You are offline. This will be sent as soon as you are back online.</string>
+
+    <string name="validation_required">This is required.</string>
+    <string name="validation_email">Enter a valid email address.</string>
+    <string name="validation_phone">Enter a valid phone number.</string>
+    <string name="validation_number">Enter a number.</string>
+    <string name="validation_range">Must be between %1$d and %2$d.</string>
+    <string name="validation_mismatch">Does not match.</string>
+    <string name="validation_password_letter">Include at least one letter.</string>
+    <string name="validation_password_digit">Include at least one number.</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">Must be at least %1$d character.</item>
+        <item quantity="other">Must be at least %1$d characters.</item>
+    </plurals>
+    <plurals name="validation_max_length">
+        <item quantity="one">Must be %1$d character or fewer.</item>
+        <item quantity="other">Must be %1$d characters or fewer.</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">Use at least %1$d character.</item>
+        <item quantity="other">Use at least %1$d characters.</item>
+    </plurals>
+</resources>

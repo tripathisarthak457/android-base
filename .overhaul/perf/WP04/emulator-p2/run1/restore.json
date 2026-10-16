@@ -1,0 +1,116 @@
+{
+  "before": {
+    "generation": 1,
+    "tab": 1,
+    "stacks": [
+      [
+        "SampleListKey",
+        "SampleDetailKey(itemId=1)"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "OrdersListKey"
+      ],
+      [
+        "WalletListKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "OrdersListKey",
+      "WalletListKey",
+      "ProfileKey",
+      "SettingsKey"
+    ]
+  },
+  "after": {
+    "generation": 1,
+    "tab": 1,
+    "stacks": [
+      [
+        "SampleListKey",
+        "SampleDetailKey(itemId=1)"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "OrdersListKey"
+      ],
+      [
+        "WalletListKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "OrdersListKey",
+      "WalletListKey",
+      "ProfileKey",
+      "SettingsKey"
+    ]
+  },
+  "after_back": {
+    "generation": 1,
+    "tab": 0,
+    "stacks": [
+      [
+        "SampleListKey",
+        "SampleDetailKey(itemId=1)"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "OrdersListKey"
+      ],
+      [
+        "WalletListKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "OrdersListKey",
+      "WalletListKey",
+      "ProfileKey",
+      "SettingsKey"
+    ]
+  }
+}

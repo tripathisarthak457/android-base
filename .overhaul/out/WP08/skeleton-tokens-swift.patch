@@ -1,0 +1,31 @@
+--- generator/genkit/tokens/swift.py	2026-10-12 13:52:21.171862851 +0530
++++ generator/genkit/tokens/swift.py	2026-10-14 17:23:35.874752864 +0530
+@@ -33,6 +33,12 @@
+     ("pressScaleIcon", "CGFloat", "press", "scaleIcon", 1),
+     ("pressDimAlpha", "Double", "press", "dimAlpha", 1),
+     ("highlightFadeOut", "TimeInterval", "press", "highlightFadeOutMs", 1000),
++    ("skeletonBandWidth", "CGFloat", "skeleton", "bandWidth", 1),
++    ("skeletonTiltDegrees", "Double", "skeleton", "tiltDegrees", 1),
++    ("skeletonSweep", "TimeInterval", "skeleton", "sweepMs", 1000),
++    ("skeletonPause", "TimeInterval", "skeleton", "pauseMs", 1000),
++    ("skeletonReferenceTravel", "CGFloat", "skeleton", "referenceTravel", 1),
++    ("skeletonMaxSlowdown", "CGFloat", "skeleton", "maxSlowdown", 1),
+ )
+ 
+ 
+@@ -203,7 +209,14 @@
+     lines += ["        }", "    }", ""]
+     for name, swift_type, group, key, divisor in _MOTION_CONSTANTS:
+         lines.append(f"    static let {name}: {swift_type} = {number(motion[group][key] / divisor)}")
+-    lines.append("}")
++    x1, y1, x2, y2 = (number(value) for value in motion["skeleton"]["easing"])
++    lines += [
++        "    static let skeletonEasing = UnitCurve.bezier(",
++        f"        startControlPoint: UnitPoint(x: {x1}, y: {y1}),",
++        f"        endControlPoint: UnitPoint(x: {x2}, y: {y2})",
++        "    )",
++        "}",
++    ]
+     return lines
+ 
+ 

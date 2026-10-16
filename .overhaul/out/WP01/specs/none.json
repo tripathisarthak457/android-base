@@ -1,0 +1,8 @@
+{
+  "app_name": "Nothing",
+  "package_name": "com.example.nothing",
+  "features": [],
+  "feature_modules": [
+    "home"
+  ]
+}

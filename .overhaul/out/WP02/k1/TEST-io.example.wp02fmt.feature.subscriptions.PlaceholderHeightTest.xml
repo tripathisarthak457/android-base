@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.example.wp02fmt.feature.subscriptions.PlaceholderHeightTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-13T10:17:56.742Z" hostname="pop-os" time="21.866">
+  <properties/>
+  <testcase name="placeholdersAreAsTallAsTheTextTheyStandFor" classname="io.example.wp02fmt.feature.subscriptions.PlaceholderHeightTest" time="19.968"/>
+  <system-out><![CDATA[K1 scale=1.0 px: row=48 placeholder=48 title=28 bone=28
+K1 scale=1.3 px: row=54 placeholder=54 title=30 bone=30
+K1 scale=1.5 px: row=57 placeholder=57 title=33 bone=33
+K1 scale=2.0 px: row=62 placeholder=62 title=42 bone=42
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

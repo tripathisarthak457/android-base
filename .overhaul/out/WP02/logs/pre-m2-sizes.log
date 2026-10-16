@@ -1,0 +1,10 @@
+pre-M2 lean app-dev-arm64-v8a-release.apk apk=1775344 dex=3002972
+pre-M2 lean app-dev-armeabi-v7a-release.apk apk=1773420 dex=3002972
+pre-M2 lean app-dev-universal-release.apk apk=1873232 dex=3002972
+pre-M2 lean app-dev-x86_64-release.apk apk=1774402 dex=3002972
+pre-M2 lean app-dev-x86-release.apk apk=1772948 dex=3002972
+pre-M2 standard app-dev-arm64-v8a-release.apk apk=2120523 dex=3563228
+pre-M2 standard app-dev-armeabi-v7a-release.apk apk=2118599 dex=3563228
+pre-M2 standard app-dev-universal-release.apk apk=2218411 dex=3563228
+pre-M2 standard app-dev-x86_64-release.apk apk=2119581 dex=3563228
+pre-M2 standard app-dev-x86-release.apk apk=2118127 dex=3563228

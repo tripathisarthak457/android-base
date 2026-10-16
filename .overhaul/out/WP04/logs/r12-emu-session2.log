@@ -1,0 +1,134 @@
+[locked:emu] waiting for lock...
+[locked:gradle] waiting for lock...
+== 14:45:34 emulator booted
+== navigation: com.android.internal.systemui.navbar.gestural, navigation_mode 2
+== target /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+== 14:45:35 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 14:45:47 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/benchmark/build/outputs/apk/nonMinifiedRelease/benchmark-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 14:45:50 adb -s emulator-5554 shell am instrument -w -r -e class com.example.wp04.everything.benchmark.BaselineProfileGenerator -e androidx.benchmark.enabledRules BaselineProfile -e additionalTestOutputDir /sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output -e targetAppId com.example.wp04.everything.dev com.example.wp04.everything.benchmark/androidx.test.runner.AndroidJUnitRunner
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.wp04.everything.benchmark.BaselineProfileGenerator:
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof-2026-10-13-09-20-17.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof-2026-10-13-09-20-17.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: android.studio.display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 266569364086.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-09-20-17.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 266569364086.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-09-20-17.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 266569364086.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-09-20-17.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: The first row did not open a screen.
+	at com.example.wp04.everything.benchmark.JourneysKt.openFirstRow(Journeys.kt:55)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:37)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+INSTRUMENTATION_STATUS: stream=
+Error in journeys(com.example.wp04.everything.benchmark.BaselineProfileGenerator):
+java.lang.IllegalStateException: The first row did not open a screen.
+	at com.example.wp04.everything.benchmark.JourneysKt.openFirstRow(Journeys.kt:55)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:37)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 284.571
+There was 1 failure:
+1) journeys(com.example.wp04.everything.benchmark.BaselineProfileGenerator)
+java.lang.IllegalStateException: The first row did not open a screen.
+	at com.example.wp04.everything.benchmark.JourneysKt.openFirstRow(Journeys.kt:55)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:37)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+FAILURES!!!
+Tests run: 2,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1
+== exit 0 : adb
+/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/: 2 files pulled, 0 skipped. 31.7 MB/s (7976690 bytes in 0.240s)
+total 7800
+drwxrwxr-x 2 crazyhusir crazyhusir    4096 Oct 13 14:50 .
+drwxrwxr-x 3 crazyhusir crazyhusir    4096 Oct 13 14:50 ..
+-rw-r--r-- 1 crazyhusir crazyhusir 3988345 Oct 13 14:50 BaselineProfileGenerator_startup-startup-prof-2026-10-13-09-20-17.txt
+-rw-r--r-- 1 crazyhusir crazyhusir 3988345 Oct 13 14:50 BaselineProfileGenerator_startup-startup-prof.txt
+  37505 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/baseline-prof.txt
+  37505 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/startup-prof.txt
+  75010 total
+== 14:50:37 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/adaptive/adaptive.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --serial emulator-5554 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/adaptive/emulator sizes multiinstance keyboard
+Terminated
+== 14:50:38 emulator stopped

@@ -1,0 +1,64 @@
+[locked:adb] waiting for lock...
+screen 1080x2400
+args: [-p, com.google.android.gm, -c, android.intent.category.LAUNCHER, 1]
+ arg: "-p"
+ arg: "com.google.android.gm"
+ arg: "-c"
+ arg: "android.intent.category.LAUNCHER"
+ arg: "1"
+data="com.google.android.gm"
+data="android.intent.category.LAUNCHER"
+tap 540 912
+/sdcard/pb-before.png: 1 file pulled, 0 skipped. 29.8 MB/s (263393 bytes in 0.008s)
+/sdcard/pb-slow_cancel.mp4: 1 file pulled, 0 skipped.
+recorded slow_cancel
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x5b2ca3c58e40] moov atom not found
+[in#0 @ 0x5b2ca3c58d40] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/slow_cancel.mp4.
+Error opening input files: Invalid data found when processing input
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x5e5261886e80] moov atom not found
+[in#0 @ 0x5e5261886d80] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/slow_cancel.mp4.
+Error opening input files: Invalid data found when processing input
+/sdcard/pb-slow_commit.mp4: 1 file pulled, 0 skipped.
+recorded slow_commit
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x5f65b884be40] moov atom not found
+[in#0 @ 0x5f65b884bd40] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/slow_commit.mp4.
+Error opening input files: Invalid data found when processing input
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x654e5f6b3e80] moov atom not found
+[in#0 @ 0x654e5f6b3d80] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/slow_commit.mp4.
+Error opening input files: Invalid data found when processing input
+tap 540 912
+/sdcard/pb-fast_flick.mp4: 1 file pulled, 0 skipped.
+recorded fast_flick
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x55ad20ba3e40] moov atom not found
+[in#0 @ 0x55ad20ba3d40] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/fast_flick.mp4.
+Error opening input files: Invalid data found when processing input
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x58c1e14e8e80] moov atom not found
+[in#0 @ 0x58c1e14e8d80] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/fast_flick.mp4.
+Error opening input files: Invalid data found when processing input
+/sdcard/pb-to_home_slow.mp4: 1 file pulled, 0 skipped.
+recorded to_home_slow
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x636e69e40e40] moov atom not found
+[in#0 @ 0x636e69e40d40] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/to_home_slow.mp4.
+Error opening input files: Invalid data found when processing input
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x62b4a4318e80] moov atom not found
+[in#0 @ 0x62b4a4318d80] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/to_home_slow.mp4.
+Error opening input files: Invalid data found when processing input
+/sdcard/pb-to_home_commit.mp4: 1 file pulled, 0 skipped.
+recorded to_home_commit
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x63622d5a2e40] moov atom not found
+[in#0 @ 0x63622d5a2d40] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/to_home_commit.mp4.
+Error opening input files: Invalid data found when processing input
+[mov,mp4,m4a,3gp,3g2,mj2 @ 0x64c692411e80] moov atom not found
+[in#0 @ 0x64c692411d80] Error opening input: Invalid data found when processing input
+Error opening input file /home/crazyhusir/Documents/projects/tools/.overhaul/research/predictive-back/gmail/to_home_commit.mp4.
+Error opening input files: Invalid data found when processing input
+RECORD-GMAIL DONE

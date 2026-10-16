@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.theme.PaletteContrastTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-14T06:37:10.544Z" hostname="pop-os" time="0.052">
+  <properties/>
+  <testcase name="the dark palette meets AA everywhere text sits on a background" classname="com.base.app.core.designsystem.theme.PaletteContrastTest" time="0.023"/>
+  <testcase name="every design style's surfaces meet AA in both themes" classname="com.base.app.core.designsystem.theme.PaletteContrastTest" time="0.029"/>
+  <testcase name="the light palette meets AA everywhere text sits on a background" classname="com.base.app.core.designsystem.theme.PaletteContrastTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

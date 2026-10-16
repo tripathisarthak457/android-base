@@ -1,0 +1,179 @@
+[locked:emu] waiting for lock...
+[locked:gradle] waiting for lock...
+== 17:09:54 emulator booted
+== navigation: com.android.internal.systemui.navbar.gestural, navigation_mode 2
+== target /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+== 17:09:56 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 17:10:04 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/benchmark/build/outputs/apk/nonMinifiedRelease/benchmark-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 17:10:08 adb -s emulator-5554 shell am instrument -w -r -e class com.example.wp04.everything.benchmark.BaselineProfileGenerator -e androidx.benchmark.enabledRules BaselineProfile -e additionalTestOutputDir /sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output -e targetAppId com.example.wp04.everything.dev com.example.wp04.everything.benchmark/androidx.test.runner.AndroidJUnitRunner
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+com.example.wp04.everything.benchmark.BaselineProfileGenerator:
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: additionalTestOutputFile_BaselineProfileGenerator_startup-startup-prof-2026-10-13-11-41-30.txt=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof-2026-10-13-11-41-30.txt
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: android.studio.display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 79918283131.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-11-41-30.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 79918283131.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-11-41-30.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v2display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark=BaselineProfileGenerator_startup
+Total run time Ns: 79918283131.
+Baseline profile [results](file://BaselineProfileGenerator_startup-startup-prof-2026-10-13-11-41-30.txt)
+
+To copy the profile use:
+adb -e pull "/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/BaselineProfileGenerator_startup-startup-prof.txt" .
+
+INSTRUMENTATION_STATUS: android.studio.v3display.benchmark.outputDirPath=/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output
+INSTRUMENTATION_STATUS_CODE: 2
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=startup
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stack=java.lang.IllegalStateException: The detail screen has no related_row to open.
+	at com.example.wp04.everything.benchmark.JourneysKt.openRelated(Journeys.kt:62)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:38)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+INSTRUMENTATION_STATUS: stream=
+Error in journeys(com.example.wp04.everything.benchmark.BaselineProfileGenerator):
+java.lang.IllegalStateException: The detail screen has no related_row to open.
+	at com.example.wp04.everything.benchmark.JourneysKt.openRelated(Journeys.kt:62)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:38)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: -2
+INSTRUMENTATION_RESULT: stream=
+
+Time: 66,790.997
+There was 1 failure:
+1) journeys(com.example.wp04.everything.benchmark.BaselineProfileGenerator)
+java.lang.IllegalStateException: The detail screen has no related_row to open.
+	at com.example.wp04.everything.benchmark.JourneysKt.openRelated(Journeys.kt:62)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys$lambda$0(BaselineProfileGenerator.kt:38)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator$$ExternalSyntheticLambda0.invoke(D8$$SyntheticClass:0)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:78)
+	at androidx.benchmark.macro.BaselineProfilesKt$collect$1$1$1.invoke(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.CompilationMode$Partial.compileImpl$benchmark_macro(CompilationMode.kt:359)
+	at androidx.benchmark.macro.CompilationMode.resetAndCompile$benchmark_macro(CompilationMode.kt:126)
+	at androidx.benchmark.macro.BaselineProfilesKt.collect(BaselineProfiles.kt:76)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect(BaselineProfileRule.kt:94)
+	at androidx.benchmark.macro.junit4.BaselineProfileRule.collect$default(BaselineProfileRule.kt:84)
+	at com.example.wp04.everything.benchmark.BaselineProfileGenerator.journeys(BaselineProfileGenerator.kt:33)
+
+FAILURES!!!
+Tests run: 2,  Failures: 1
+
+
+INSTRUMENTATION_CODE: -1
+== exit 0 : adb
+/sdcard/failure.xml: 1 file pulled, 0 skipped. 9.6 MB/s (12317 bytes in 0.001s)
+== failure kept: /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/profile/emulator/failure-1710.{png,xml}
+== 11 perf.shell lines in /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/profile/emulator/shell-1710.txt
+/sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output/: 2 files pulled, 0 skipped. 221.0 MB/s (8031230 bytes in 0.035s)
+total 7856
+drwxrwxr-x 2 crazyhusir crazyhusir    4096 Oct 14 11:43 .
+drwxrwxr-x 3 crazyhusir crazyhusir    4096 Oct 14 11:43 ..
+-rw-r--r-- 1 crazyhusir crazyhusir 4015615 Oct 14 11:43 BaselineProfileGenerator_startup-startup-prof-2026-10-13-11-41-30.txt
+-rw-r--r-- 1 crazyhusir crazyhusir 4015615 Oct 14 11:43 BaselineProfileGenerator_startup-startup-prof.txt
+  37676 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/baseline-prof.txt
+  37676 /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/src/main/generated/baselineProfiles/startup-prof.txt
+  75352 total
+== 11:43:29 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --runs 1 --serial emulator-5554 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/emulator-large tabs_large pushpop_large listdetail_select scroll_large sidebar_toggle
+run 1/1: install, profile, warm-up
+perf: a row of primary_list on the first tab did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh
+== 11:44:02 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_y_follow /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/emulator-y-follow --extra perf.theme=light --serial emulator-5554
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 12 >= 12
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 13 >= 13
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 14 >= 14
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 15 >= 15
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 17 >= 17
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 18 >= 18
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 19 >= 19
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 21 >= 21
+    Last message repeated 1 times
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0x5560bc689b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/emulator-y-follow/back_y_follow.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/emulator-y-follow/back_y_follow_strip.png
+50 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 11:45:23 rebooted, debug.force_rtl=false
+== 11:45:31 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/tab_switch --serial emulator-5554
+perf: the tab bar (tab_0) did not appear within 30 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 11:46:10 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/push --serial emulator-5554
+perf: the tab bar (tab_0) did not appear within 30 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 11:46:49 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_slow_commit /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_slow_commit --edge right --serial emulator-5554
+perf: the tab bar (tab_0) did not appear within 30 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+== 11:47:27 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_during_push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/rtl/emulator/back_during_push --edge right --serial emulator-5554
+perf: the tab bar (tab_0) did not appear within 30 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh
+EMU-SESSION DONE
+== 11:48:07 emulator stopped

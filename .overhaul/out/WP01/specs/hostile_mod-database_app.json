@@ -1,0 +1,24 @@
+{
+  "app_name": "Store",
+  "package_name": "com.example.store",
+  "features": [
+    "network",
+    "sample",
+    "settings",
+    "language",
+    "push",
+    "auth",
+    "onboarding",
+    "database",
+    "deeplink",
+    "catalog",
+    "devtools"
+  ],
+  "feature_modules": [
+    "database_app"
+  ],
+  "languages": [
+    "de",
+    "pt-BR"
+  ]
+}

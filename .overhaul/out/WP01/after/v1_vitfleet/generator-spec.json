@@ -1,0 +1,85 @@
+{
+  "generator": {
+    "commit": "d19f79c8aec1",
+    "generatedOn": "2026-10-09"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "VitFleet",
+  "display_name": "",
+  "package_name": "com.vitfleet.app",
+  "architecture": "compact",
+  "features": [
+    "analytics",
+    "auth",
+    "baselineprofile",
+    "browser",
+    "catalog",
+    "coil",
+    "database",
+    "deeplink",
+    "devtools",
+    "firebase",
+    "flags",
+    "forms",
+    "googlefonts",
+    "language",
+    "leakcanary",
+    "licenses",
+    "lottie",
+    "media",
+    "network",
+    "paging",
+    "playstore",
+    "push",
+    "room",
+    "settings",
+    "websocket",
+    "workmanager"
+  ],
+  "feature_modules": [
+    "dashboard",
+    "fleet",
+    "attendance",
+    "fuel",
+    "trips",
+    "maintenance",
+    "documents",
+    "masters",
+    "team",
+    "alerts",
+    "sdui"
+  ],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "#0E1A2B",
+  "secondary_colour": "#F5A524",
+  "tertiary_colour": "#2F6BFF",
+  "font_name": "IBM Plex Sans",
+  "mono_font_name": "IBM Plex Mono",
+  "haptics_enabled": true,
+  "languages": [
+    "hi"
+  ],
+  "android": {
+    "min_sdk": 29,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "0.1.0",
+    "version_code": 1,
+    "api_base_urls": {
+      "dev": "http://10.0.2.2:8080/api/",
+      "playstore": "https://api.vitfleet.example/api/",
+      "prod": "https://api.vitfleet.example/api/",
+      "staging": "https://staging-api.vitfleet.example/api/"
+    },
+    "web_socket_urls": {
+      "dev": "ws://10.0.2.2:8080/ws",
+      "playstore": "wss://api.vitfleet.example/ws",
+      "prod": "wss://api.vitfleet.example/ws",
+      "staging": "wss://staging-api.vitfleet.example/ws"
+    },
+    "deeplink_scheme": "vitfleet",
+    "deeplink_host": "app.vitfleet.example"
+  }
+}

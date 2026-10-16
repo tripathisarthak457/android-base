@@ -1,0 +1,40 @@
+[locked:gradle] waiting for lock...
+Starting a Gradle Daemon, 1 busy and 1 incompatible and 6 stopped Daemons could not be reused, use --status for details
+> Task :convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :convention:pluginDescriptors
+> Task :convention:processResources
+> Task :convention:processTestResources NO-SOURCE
+> Task :convention:compileKotlin
+> Task :convention:compileJava NO-SOURCE
+> Task :convention:classes
+> Task :convention:jar
+> Task :convention:pluginUnderTestMetadata
+> Task :convention:compileTestKotlin
+> Task :convention:compileTestJava NO-SOURCE
+> Task :convention:testClasses UP-TO-DATE
+
+> Task :convention:test FAILED
+
+CodeRulesTest > every rule fires on its fixture, on the right line FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:195
+
+CodeRulesTest > an allow marker with a reason on the line above silences each rule FAILED
+    java.lang.AssertionError at CodeRulesTest.kt:203
+
+SheetRuleCasesTest > IME padding in a provided footer is flagged FAILED
+    java.lang.AssertionError at SheetRuleCasesTest.kt:33
+
+43 tests completed, 3 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':convention:test'.
+> There were failing tests. See the report at: file:///tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/wp02rules/build-logic/convention/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 33s
+7 actionable tasks: 7 executed
+EXIT 1

@@ -1,0 +1,124 @@
+Applications Graphics Acceleration Info:
+Uptime: 167420707 Realtime: 238416946
+
+** Graphics info for pid 32151 [com.example.wp04.p2.dev] **
+
+Stats since: 167357434040948ns
+Total frames rendered: 3181
+Janky frames: 107 (3.36%)
+Janky frames (legacy): 641 (20.15%)
+50th percentile: 9ms
+90th percentile: 17ms
+95th percentile: 24ms
+99th percentile: 46ms
+Number Missed Vsync: 16
+Number High input latency: 5803
+Number Slow UI thread: 93
+Number Slow bitmap uploads: 1
+Number Slow issue draw commands: 93
+Number Frame deadline missed: 107
+Number Frame deadline missed (legacy): 136
+HISTOGRAM: 5ms=104 6ms=252 7ms=323 8ms=540 9ms=771 10ms=271 11ms=153 12ms=125 13ms=81 14ms=68 15ms=59 16ms=50 17ms=68 18ms=50 19ms=30 20ms=28 21ms=14 22ms=18 23ms=13 24ms=16 25ms=17 26ms=11 27ms=6 28ms=9 29ms=17 30ms=3 31ms=8 32ms=9 34ms=8 36ms=10 38ms=11 40ms=1 42ms=3 44ms=2 46ms=2 48ms=7 53ms=9 57ms=6 61ms=3 65ms=2 69ms=3 73ms=0 77ms=0 81ms=0 85ms=0 89ms=0 93ms=0 97ms=0 101ms=0 105ms=0 109ms=0 113ms=0 117ms=0 121ms=0 125ms=0 129ms=0 133ms=0 150ms=0 200ms=0 250ms=0 300ms=0 350ms=0 400ms=0 450ms=0 500ms=0 550ms=0 600ms=0 650ms=0 700ms=0 750ms=0 800ms=0 850ms=0 900ms=0 950ms=0 1000ms=0 1050ms=0 1100ms=0 1150ms=0 1200ms=0 1250ms=0 1300ms=0 1350ms=0 1400ms=0 1450ms=0 1500ms=0 1550ms=0 1600ms=0 1650ms=0 1700ms=0 1750ms=0 1800ms=0 1850ms=0 1900ms=0 1950ms=0 2000ms=0 2050ms=0 2100ms=0 2150ms=0 2200ms=0 2250ms=0 2300ms=0 2350ms=0 2400ms=0 2450ms=0 2500ms=0 2550ms=0 2600ms=0 2650ms=0 2700ms=0 2750ms=0 2800ms=0 2850ms=0 2900ms=0 2950ms=0 3000ms=0 3050ms=0 3100ms=0 3150ms=0 3200ms=0 3250ms=0 3300ms=0 3350ms=0 3400ms=0 3450ms=0 3500ms=0 3550ms=0 3600ms=0 3650ms=0 3700ms=0 3750ms=0 3800ms=0 3850ms=0 3900ms=0 3950ms=0 4000ms=0 4050ms=0 4100ms=0 4150ms=0 4200ms=0 4250ms=0 4300ms=0 4350ms=0 4400ms=0 4450ms=0 4500ms=0 4550ms=0 4600ms=0 4650ms=0 4700ms=0 4750ms=0 4800ms=0 4850ms=0 4900ms=0 4950ms=0
+50th gpu percentile: 6ms
+90th gpu percentile: 8ms
+95th gpu percentile: 10ms
+99th gpu percentile: 16ms
+GPU HISTOGRAM: 1ms=0 2ms=7 3ms=189 4ms=341 5ms=615 6ms=1105 7ms=509 8ms=123 9ms=89 10ms=62 11ms=37 12ms=30 13ms=17 14ms=10 15ms=15 16ms=6 17ms=6 18ms=6 19ms=5 20ms=1 21ms=0 22ms=3 23ms=0 24ms=1 25ms=0 4950ms=4
+
+Pipeline=Skia (OpenGL)
+Memory policy:
+  Max surface area: 2592000
+  Max resource usage: 124.42MB (x48)
+  Background retention: 50% (altUiHidden = true)
+  GPU Context timeout: 10
+Contexts: 4 (stopped = 3)
+CPU Caches:
+  Glyph Cache: 47.25 KB (1 entry)
+  Glyph Count: 9 
+Total CPU memory usage:
+  48385 bytes, 47.25 KB (0.00 bytes is purgeable)
+GPU Caches:
+  Other:
+    Other: 30.62 KB (1 entry)
+  Image:
+    Texture: 297.05 KB (8 entries)
+  Scratch:
+    Buffer Object: 48.00 KB (1 entry)
+    Texture: 4.00 MB (2 entries)
+Total GPU memory usage:
+  4579125 bytes, 4.37 MB (64.00 bytes is purgeable)
+Pipeline Cache: inactive
+GraphicBufferAllocator buffers:
+            Handle |         Size |     W (Stride) x H | Layers |   Format |      Usage | Requestor
+0xb400006e7b2c7810 |   538.00 KiB |  242 ( 256) x  538 |      1 |        1 | 0x     100 | AHardwareBuffer pid [32151]
+0xb400006e92711f00 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#13(BLAST Consumer)13
+0xb400006e92711f70 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#13(BLAST Consumer)13
+0xb400006e92711fe0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#13(BLAST Consumer)13
+0xb400006e92712050 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#13(BLAST Consumer)13
+0xb400006e927120c0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#13(BLAST Consumer)13
+Total allocated by GraphicBufferAllocator (estimate): 51538.00 KB
+Imported gralloc buffers:
++ name:VRI[MainActivity]#13(BLAST Consumer)13, id:20993, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#13(BLAST Consumer)13, id:20992, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#13(BLAST Consumer)13, id:20991, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#13(BLAST Consumer)13, id:20990, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#13(BLAST Consumer)13, id:20989, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:AHardwareBuffer pid [32151], id:20960, size:540.00KiB, w/h:242x538, usage: 0x100, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x0, compressed: false
+	planes: R/G/B/A:	 w/h:242x538, stride:1024 bytes, size:552960
+Total imported by gralloc: 51920.00KiB
+
+Profile data in ms:
+
+	com.example.wp04.p2.dev/com.example.wp04.p2.MainActivity/android.view.ViewRootImpl@5019c67 (visibility=0)
+Window: com.example.wp04.p2.dev/com.example.wp04.p2.MainActivity
+Stats since: 167418053314518ns
+Total frames rendered: 7
+Janky frames: 1 (14.29%)
+Janky frames (legacy): 7 (100.00%)
+50th percentile: 29ms
+90th percentile: 48ms
+95th percentile: 48ms
+99th percentile: 48ms
+Number Missed Vsync: 0
+Number High input latency: 11
+Number Slow UI thread: 1
+Number Slow bitmap uploads: 0
+Number Slow issue draw commands: 1
+Number Frame deadline missed: 1
+Number Frame deadline missed (legacy): 2
+HISTOGRAM: 5ms=0 6ms=0 7ms=0 8ms=0 9ms=0 10ms=0 11ms=0 12ms=0 13ms=0 14ms=0 15ms=0 16ms=0 17ms=0 18ms=0 19ms=0 20ms=0 21ms=0 22ms=1 23ms=0 24ms=1 25ms=0 26ms=1 27ms=0 28ms=0 29ms=1 30ms=0 31ms=0 32ms=1 34ms=0 36ms=0 38ms=0 40ms=0 42ms=1 44ms=0 46ms=0 48ms=1 53ms=0 57ms=0 61ms=0 65ms=0 69ms=0 73ms=0 77ms=0 81ms=0 85ms=0 89ms=0 93ms=0 97ms=0 101ms=0 105ms=0 109ms=0 113ms=0 117ms=0 121ms=0 125ms=0 129ms=0 133ms=0 150ms=0 200ms=0 250ms=0 300ms=0 350ms=0 400ms=0 450ms=0 500ms=0 550ms=0 600ms=0 650ms=0 700ms=0 750ms=0 800ms=0 850ms=0 900ms=0 950ms=0 1000ms=0 1050ms=0 1100ms=0 1150ms=0 1200ms=0 1250ms=0 1300ms=0 1350ms=0 1400ms=0 1450ms=0 1500ms=0 1550ms=0 1600ms=0 1650ms=0 1700ms=0 1750ms=0 1800ms=0 1850ms=0 1900ms=0 1950ms=0 2000ms=0 2050ms=0 2100ms=0 2150ms=0 2200ms=0 2250ms=0 2300ms=0 2350ms=0 2400ms=0 2450ms=0 2500ms=0 2550ms=0 2600ms=0 2650ms=0 2700ms=0 2750ms=0 2800ms=0 2850ms=0 2900ms=0 2950ms=0 3000ms=0 3050ms=0 3100ms=0 3150ms=0 3200ms=0 3250ms=0 3300ms=0 3350ms=0 3400ms=0 3450ms=0 3500ms=0 3550ms=0 3600ms=0 3650ms=0 3700ms=0 3750ms=0 3800ms=0 3850ms=0 3900ms=0 3950ms=0 4000ms=0 4050ms=0 4100ms=0 4150ms=0 4200ms=0 4250ms=0 4300ms=0 4350ms=0 4400ms=0 4450ms=0 4500ms=0 4550ms=0 4600ms=0 4650ms=0 4700ms=0 4750ms=0 4800ms=0 4850ms=0 4900ms=0 4950ms=0
+50th gpu percentile: 13ms
+90th gpu percentile: 24ms
+95th gpu percentile: 24ms
+99th gpu percentile: 24ms
+GPU HISTOGRAM: 1ms=0 2ms=0 3ms=0 4ms=0 5ms=0 6ms=0 7ms=0 8ms=0 9ms=1 10ms=0 11ms=0 12ms=0 13ms=3 14ms=0 15ms=0 16ms=0 17ms=0 18ms=1 19ms=0 20ms=0 21ms=0 22ms=1 23ms=0 24ms=1 25ms=0 4950ms=0
+
+
+
+---PROFILEDATA---
+Flags,FrameTimelineVsyncId,IntendedVsync,Vsync,InputEventId,HandleInputStart,AnimationStart,PerformTraversalsStart,DrawStart,FrameDeadline,FrameStartTime,FrameInterval,WorkloadTarget,AnimationTime,SyncQueued,SyncStart,IssueDrawCommandsStart,SwapBuffers,FrameCompleted,DequeueBufferDuration,QueueBufferDuration,GpuCompleted,SwapBuffersCompleted,DisplayPresentTime,CommandSubmissionCompleted,
+1,20417661,167418115284118,167418115284118,0,167418115701862,167418115711029,167418127242748,167418134887800,167418128950784,167418115689518,8338852,13666666,167418115284118,167418143167643,167418143283789,167418144613425,167418152906289,167418165495091,10573,188386,167418165495091,167418153454258,167418186140925,167418152906289,
+0,20417740,167418131905134,167418148576700,0,167418156429206,167418156435456,167418157591289,167418157658685,167418187322748,167418156421862,8335783,13666666,167418148576700,167418158269362,167418158362435,167418158624935,167418162196081,167418174334571,25937,153020,167418174334571,167418165537071,0,167418162196081,
+0,20417841,167418156827833,167418156827833,0,167418160075143,167418160081081,167418160279518,167418160332487,167418195658531,167418160068633,8331725,13666666,167418156827833,167418160758373,167418165582435,167418165692696,167418167189987,167418184557800,11875,189219,167418184557800,167418174394102,0,167418167189987,
+0,20417884,167418165138119,167418165138119,0,167418168117591,167418168122383,167418168397591,167418168449102,167418203990256,167418168110300,8329973,13666666,167418165138119,167418168772018,167418174441393,167418174537018,167418176038477,167418199950404,9218,169219,167418199950404,167418184899310,0,167418176038477,
+0,20417927,167418173446201,167418173446201,0,167418175443268,167418175450664,167418175992227,167418176111914,167418212320229,167418175431029,8328086,13666666,167418173446201,167418176916810,167418184952018,167418185051185,167418186490873,167418207604831,12084,146459,167418207604831,167418200024831,0,167418186490873,
+0,20417970,167418181759102,167418181759102,0,167418187550873,167418187556914,167418189175248,167418189232383,167418220648315,167418187544518,8326580,13666666,167418181759102,167418199391237,167418200092956,167418200252643,167418202398633,167418215068685,20677,360937,167418215068685,167418207684102,0,167418202398633,
+0,20418013,167418190085682,167418198412262,0,167418202838529,167418202844623,167418203616237,167418203688216,167418228974895,167418202829675,8326580,13666666,167418198412262,167418203991550,167418207736133,167418207828373,167418209181237,167418218162227,18594,175052,167418218162227,167418215509362,0,167418209181237,
+---PROFILEDATA---
+
+
+View hierarchy:
+
+  com.example.wp04.p2.dev/com.example.wp04.p2.MainActivity/android.view.ViewRootImpl@5019c67
+  8 views, 13.70 kB of render nodes
+
+
+Total ViewRootImpl   : 1
+Total attached Views : 8
+Total RenderNode     : 13.70 kB (used) / 37.77 kB (capacity)
+

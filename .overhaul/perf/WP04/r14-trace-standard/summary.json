@@ -1,0 +1,68 @@
+{
+  "package": "com.example.wp04.standard.dev",
+  "apk": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-standard/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk",
+  "variant": "devRelease",
+  "runs": 1,
+  "seed": 207988,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "compile": "speed-profile",
+  "scenarios": [
+    "trace"
+  ],
+  "gate": null,
+  "gates_file": "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/gates.toml",
+  "started": "2026-10-13T16:45:53",
+  "device": {
+    "serial": "9a7c74f4",
+    "model": "M2101K6I",
+    "sdk": "37",
+    "battery_c": 27.7
+  },
+  "metrics": {
+    "first_push.frame_ms": {
+      "value": 10.33,
+      "runs": [
+        10.33
+      ]
+    },
+    "first_push_warm.frame_ms": {
+      "value": 18.69,
+      "runs": [
+        18.69
+      ]
+    },
+    "tab_first_visit.first_frame_ms.max": {
+      "value": 5.48,
+      "runs": [
+        5.48
+      ]
+    },
+    "tab_first_visit.first_frame_ms.median": {
+      "value": 4.59,
+      "runs": [
+        4.59
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.max": {
+      "value": 5.06,
+      "runs": [
+        5.06
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.median": {
+      "value": 4.53,
+      "runs": [
+        4.53
+      ]
+    },
+    "trace.captured": {
+      "value": true,
+      "runs": [
+        true
+      ]
+    }
+  },
+  "notes": []
+}

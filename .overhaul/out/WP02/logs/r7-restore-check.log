@@ -1,0 +1,14 @@
+[locked:adb] waiting for lock...
+{
+  "apk": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/restore/app/build/outputs/apk/dev/release/app-dev-release.apk",
+  "device": "M2101K6I",
+  "list_loaded": true,
+  "detail_opened": true,
+  "killed": true,
+  "restored_detail": true,
+  "new_pid_differs": true,
+  "back_pops_to_list": true,
+  "crash_log": "",
+  "passed": true
+}
+RESTORE PASS

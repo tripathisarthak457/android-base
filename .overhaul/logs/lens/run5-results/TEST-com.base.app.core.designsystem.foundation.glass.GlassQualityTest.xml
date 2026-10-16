@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.GlassQualityTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-13T11:10:22.913Z" hostname="pop-os" time="9.621">
+  <properties/>
+  <testcase name="reduce transparency makes the chrome solid" classname="com.base.app.core.designsystem.foundation.glass.GlassQualityTest" time="8.114"/>
+  <testcase name="a healthy device gets live glass with the lens" classname="com.base.app.core.designsystem.foundation.glass.GlassQualityTest" time="0.074"/>
+  <testcase name="a GPU that fell behind on an earlier launch starts the app frosted" classname="com.base.app.core.designsystem.foundation.glass.GlassQualityTest" time="0.097"/>
+  <testcase name="battery saver frosts the glass, and turning it off brings the glass back" classname="com.base.app.core.designsystem.foundation.glass.GlassQualityTest" time="0.118"/>
+  <testcase name="a device that warmed up keeps its lower tier after it cools down" classname="com.base.app.core.designsystem.foundation.glass.GlassQualityTest" time="0.107"/>
+  <testcase name="a low-RAM device gets frosted glass" classname="com.base.app.core.designsystem.foundation.glass.GlassQualityTest" time="0.07"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Intent = Intent { act=android.os.action.POWER_SAVE_MODE_CHANGED }; Matching wrappers: [Wrapper[receiver=[com.base.app.core.designsystem.foundation.glass.DeviceGlassSignals$powerSaveReceiver$1@17ff763], context=[android.app.ContextImpl@610196c5], intentFilter=[android.content.IntentFilter@5fceeb35]]]
+Intent = Intent { act=android.os.action.POWER_SAVE_MODE_CHANGED }; Matching wrappers: [Wrapper[receiver=[com.base.app.core.designsystem.foundation.glass.DeviceGlassSignals$powerSaveReceiver$1@17ff763], context=[android.app.ContextImpl@610196c5], intentFilter=[android.content.IntentFilter@5fceeb35]]]
+]]></system-err>
+</testsuite>

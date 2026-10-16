@@ -1,0 +1,27 @@
+[locked:adb] waiting for lock...
+== 18:03:21 /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.sh --package com.example.wp04.everything.dev --variant devBenchmarkRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3e --gate solid tabs tabs_tap tab1 pushpop pushpop_gesture back_during_push rapid_back scroll_root idle nav_stress restore meminfo scroll_minimize recompose coldstart coldstart_installed
+run 1/3: install, profile, warm-up
+run 1/3: tabs
+run 1/3: tabs_tap
+run 1/3: tab1
+run 1/3: pushpop
+run 1/3: pushpop_gesture
+run 1/3: back_during_push
+run 1/3: rapid_back
+run 1/3: scroll_root
+run 1/3: idle
+run 1/3: nav_stress
+run 1/3: restore
+run 1/3: meminfo
+run 1/3: scroll_minimize
+run 1/3: recompose
+run 1/3: coldstart
+run 1/3: coldstart_installed
+run 2/3: install, profile, warm-up
+run 2/3: tabs
+run 2/3: tabs_tap
+run 2/3: tab1
+run 2/3: pushpop
+run 2/3: pushpop_gesture
+run 2/3: back_during_push
+run 2/3: rapid_back

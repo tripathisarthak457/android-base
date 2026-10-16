@@ -1,0 +1,24 @@
+{
+  "app_name": "Xbaseapp",
+  "package_name": "com.example.x",
+  "features": [
+    "network",
+    "sample",
+    "settings",
+    "language",
+    "push",
+    "auth",
+    "onboarding",
+    "database",
+    "deeplink",
+    "catalog",
+    "devtools"
+  ],
+  "feature_modules": [
+    "orders"
+  ],
+  "languages": [
+    "de",
+    "pt-BR"
+  ]
+}

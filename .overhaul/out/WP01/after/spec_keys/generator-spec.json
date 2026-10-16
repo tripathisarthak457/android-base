@@ -1,0 +1,49 @@
+{
+  "generator": {
+    "commit": "d19f79c8aec1",
+    "generatedOn": "2026-10-09"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Keyed App",
+  "display_name": "",
+  "package_name": "com.keyed.app",
+  "architecture": "compact",
+  "features": [
+    "analytics",
+    "catalog",
+    "coil",
+    "deeplink",
+    "googlefonts",
+    "leakcanary",
+    "network",
+    "room",
+    "sample"
+  ],
+  "feature_modules": [],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [],
+  "android": {
+    "min_sdk": 26,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "1.0.0",
+    "version_code": 1,
+    "api_base_urls": {
+      "dev": "https://jsonplaceholder.typicode.com/",
+      "playstore": "https://api.keyed.example.com/api/",
+      "prod": "https://api.keyed.example.com/api/",
+      "staging": "https://staging.keyed.example.com/api/"
+    },
+    "web_socket_urls": {},
+    "deeplink_scheme": "keyedapp",
+    "deeplink_host": "keyed.example.com"
+  }
+}

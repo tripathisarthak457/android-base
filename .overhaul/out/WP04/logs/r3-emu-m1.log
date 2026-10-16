@@ -1,0 +1,84 @@
+[locked:adb] waiting for lock...
+deviceLocked=1
+run 1/1: install, profile, warm-up
+run 1/1: tabs
+run 1/1: pushpop
+run 1/1: rapid_back
+run 1/1: idle
+run 1/1: nav_stress
+run 1/1: restore
+# perf.sh: com.example.wp04.p2.dev
+
+- APK: `/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p2/app/build/outputs/apk/dev/benchmarkRelease/app-dev-x86_64-benchmarkRelease.apk`
+- Device: sdk_gphone64_x86_64 (emulator-5554), battery 25.0 °C at the start
+- Runs: 1, seed 867246, extras {"perf.fakeSession": "true"}
+- Scenarios: tabs, pushpop, rapid_back, idle, nav_stress, restore
+
+| Metric | Median | Runs |
+|---|---|---|
+| Idle 5 s on every tab, frames rendered | 0 | 0 |
+| idle.frames_per_tab | [0, 0, 0, 0, 0] | [0, 0, 0, 0, 0] |
+| Navigation stress: the app is still running | yes | yes |
+| nav_stress.exits | 7 | 7 |
+| nav_stress.frames | 152 | 152 |
+| nav_stress.gpu_p50_ms | 4950 | 4950 |
+| nav_stress.gpu_p90_ms | 4950 | 4950 |
+| nav_stress.gpu_p99_ms | 4950 | 4950 |
+| Navigation stress: stack invariants hold | yes | yes |
+| Navigation stress, janky frames (%) | 96.71 | 96.71 |
+| nav_stress.p50_ms | 150 | 150 |
+| nav_stress.p90_ms | 500 | 500 |
+| nav_stress.p99_ms | 4950 | 4950 |
+| nav_stress.states | 21 | 21 |
+| pushpop.frames | 134 | 134 |
+| pushpop.gpu_p50_ms | 4950 | 4950 |
+| pushpop.gpu_p90_ms | 4950 | 4950 |
+| pushpop.gpu_p99_ms | 4950 | 4950 |
+| Push/pop with the Back key, janky frames (%) | 96.27 | 96.27 |
+| pushpop.p50_ms | 150 | 150 |
+| pushpop.p90_ms | 250 | 250 |
+| Push/pop with the Back key, p99 frame (ms) | 300 | 300 |
+| Pop, first frame max (ms) | 64.12 | 64.12 |
+| Pop, first frame median (ms) | 31.54 | 31.54 |
+| Push, the frame that composes the screen, max (ms) | 101.84 | 101.84 |
+| Push, the frame that composes the screen, median (ms) | 42.13 | 42.13 |
+| Rapid Back: the app is still running | yes | yes |
+| rapid_back.depth | 4 | 4 |
+| Rapid Back: lands on the expected screen | yes | yes |
+| rapid_back.frames | 77 | 77 |
+| rapid_back.gpu_p50_ms | 4950 | 4950 |
+| rapid_back.gpu_p90_ms | 4950 | 4950 |
+| rapid_back.gpu_p99_ms | 4950 | 4950 |
+| Rapid Back, janky frames (%) | 100 | 100 |
+| rapid_back.p50_ms | 150 | 150 |
+| rapid_back.p90_ms | 200 | 200 |
+| rapid_back.p99_ms | 250 | 250 |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) | 85.44 | 85.44 |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) | 58.37 | 58.37 |
+| Process death: Back pops the restored stack | yes | yes |
+| Process death: tab, stacks and presented sheet restored | yes | yes |
+| First visit to a tab, first frame max (ms) | 93.18 | 93.18 |
+| First visit to a tab, first frame median (ms) | 74.8 | 74.8 |
+| Tab switch to a visited tab, first frame max (ms) | 32.2 | 32.2 |
+| Tab switch to a visited tab, first frame median (ms) | 8.36 | 8.36 |
+| tabs.frames | 136 | 136 |
+| tabs.gpu_p50_ms | 4950 | 4950 |
+| tabs.gpu_p90_ms | 4950 | 4950 |
+| tabs.gpu_p99_ms | 4950 | 4950 |
+| Tab switch, janky frames (%) | 96.32 | 96.32 |
+| tabs.p50_ms | 121 | 121 |
+| tabs.p90_ms | 150 | 150 |
+| tabs.p99_ms | 200 | 200 |
+
+P2 EXIT=0
+[image2 @ 0x64ee1ad79a80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 7 >= 7
+[image2 @ 0x64ee1ad79a80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 10 >= 10
+[image2 @ 0x64ee1ad79a80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 11 >= 11
+    Last message repeated 1 times
+[image2 @ 0x64ee1ad79a80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 12 >= 12
+rapid_back recorded from depth 4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/emulator-m1/frames/rapid_back/rapid_back.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/emulator-m1/frames/rapid_back/rapid_back_strip.png
+8 moving frames, near-blank frames: []
+EMU-M1 DONE
+EXIT=0

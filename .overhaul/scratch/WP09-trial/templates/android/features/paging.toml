@@ -1,0 +1,17 @@
+key = "paging"
+title = "Paged feed"
+headline = "An endless feed that loads as you scroll"
+description = """
+A Feed tab on Paging 3: pages load as you scroll, a failed page keeps what is already loaded and
+offers a retry, and pull to refresh reloads from where you are. The list component lives in
+core/ui for your own feeds."""
+group = "Networking and data"
+default = false
+requires = ["network"]
+implied_only = false
+owns = [
+  "data/feed",
+  "feature/feed",
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/paging",
+]
+legacy = []

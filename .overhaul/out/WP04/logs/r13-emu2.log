@@ -1,0 +1,70 @@
+[locked:emu] waiting for lock...
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :benchmark:generateNonMinifiedReleaseAssets UP-TO-DATE
+> Task :benchmark:preBuild UP-TO-DATE
+> Task :benchmark:preNonMinifiedReleaseBuild UP-TO-DATE
+> Task :benchmark:generateNonMinifiedReleaseResources UP-TO-DATE
+> Task :benchmark:javaPreCompileNonMinifiedRelease UP-TO-DATE
+> Task :benchmark:checkTestedAppObfuscationNonMinifiedRelease UP-TO-DATE
+> Task :benchmark:generateNonMinifiedReleaseGlobalSynthetics UP-TO-DATE
+> Task :benchmark:packageNonMinifiedReleaseResources UP-TO-DATE
+> Task :benchmark:desugarNonMinifiedReleaseFileDependencies UP-TO-DATE
+> Task :benchmark:processNonMinifiedReleaseNavigationResources UP-TO-DATE
+> Task :benchmark:mergeNonMinifiedReleaseAssets UP-TO-DATE
+> Task :benchmark:compressNonMinifiedReleaseAssets UP-TO-DATE
+> Task :benchmark:mapNonMinifiedReleaseSourceSetPaths UP-TO-DATE
+> Task :benchmark:parseNonMinifiedReleaseLocalResources UP-TO-DATE
+> Task :benchmark:checkNonMinifiedReleaseAarMetadata UP-TO-DATE
+> Task :benchmark:compileNonMinifiedReleaseNavigationResources UP-TO-DATE
+> Task :benchmark:generateNonMinifiedReleaseRFile UP-TO-DATE
+> Task :benchmark:mergeNonMinifiedReleaseResources UP-TO-DATE
+> Task :benchmark:mergeNonMinifiedReleaseJniLibFolders UP-TO-DATE
+> Task :benchmark:checkNonMinifiedReleaseDuplicateClasses UP-TO-DATE
+> Task :benchmark:mergeNonMinifiedReleaseManifest UP-TO-DATE
+> Task :benchmark:mergeLibDexNonMinifiedRelease UP-TO-DATE
+> Task :benchmark:processNonMinifiedReleaseManifest UP-TO-DATE
+> Task :benchmark:mergeNonMinifiedReleaseNativeLibs UP-TO-DATE
+> Task :benchmark:stripNonMinifiedReleaseDebugSymbols UP-TO-DATE
+> Task :benchmark:validateSigningNonMinifiedRelease UP-TO-DATE
+> Task :benchmark:writeNonMinifiedReleaseSigningConfigVersions UP-TO-DATE
+> Task :benchmark:mergeExtDexNonMinifiedRelease UP-TO-DATE
+> Task :benchmark:processNonMinifiedReleaseResources UP-TO-DATE
+> Task :benchmark:compileNonMinifiedReleaseKotlin
+> Task :benchmark:processNonMinifiedReleaseJavaRes UP-TO-DATE
+> Task :benchmark:compileNonMinifiedReleaseJavaWithJavac NO-SOURCE
+> Task :benchmark:mergeNonMinifiedReleaseJavaResource UP-TO-DATE
+> Task :benchmark:dexBuilderNonMinifiedRelease
+> Task :benchmark:mergeProjectDexNonMinifiedRelease
+> Task :benchmark:packageNonMinifiedRelease
+> Task :benchmark:assembleNonMinifiedRelease
+> Task :benchmark:createNonMinifiedReleaseApkListingFileRedirect UP-TO-DATE
+
+BUILD SUCCESSFUL in 4s
+33 actionable tasks: 4 executed, 29 up-to-date
+Configuration cache entry reused.
+== exit 0 : bench
+[locked:gradle] waiting for lock...
+== 16:02:42 emulator booted
+== navigation: com.android.internal.systemui.navbar.gestural, navigation_mode 2
+== target /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+== 16:02:44 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/nonMinifiedRelease/app-dev-universal-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 16:02:55 adb -s emulator-5554 install -r -t /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/benchmark/build/outputs/apk/nonMinifiedRelease/benchmark-nonMinifiedRelease.apk
+Performing Streamed Install
+Success
+== exit 0 : adb
+== 16:03:01 adb -s emulator-5554 shell am instrument -w -r -e class com.example.wp04.everything.benchmark.BaselineProfileGenerator#journeys -e androidx.benchmark.enabledRules BaselineProfile -e additionalTestOutputDir /sdcard/Android/media/com.example.wp04.everything.benchmark/additional_test_output -e targetAppId com.example.wp04.everything.dev com.example.wp04.everything.benchmark/androidx.test.runner.AndroidJUnitRunner
+INSTRUMENTATION_STATUS: class=com.example.wp04.everything.benchmark.BaselineProfileGenerator
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+com.example.wp04.everything.benchmark.BaselineProfileGenerator:
+INSTRUMENTATION_STATUS: test=journeys
+INSTRUMENTATION_STATUS_CODE: 1
+Terminated
+== 16:07:06 emulator stopped

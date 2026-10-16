@@ -1,0 +1,12 @@
+key = "browser"
+title = "In-app browser"
+headline = "Open web pages without leaving the app"
+description = """
+Web pages open in a Custom Tab coloured like the app rather than in the browser. Adds privacy and
+terms links to settings when settings is on."""
+group = "Platform"
+default = false
+requires = []
+implied_only = false
+owns = ["core/ui/src/main/kotlin/{pkg_path}/core/ui/browser"]
+legacy = []

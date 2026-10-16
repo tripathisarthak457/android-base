@@ -1,0 +1,26 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Badge QA",
+  "package_name": "com.example.standard",
+  "architecture": "compact",
+  "features": [
+    "browser",
+    "catalog",
+    "coil",
+    "database",
+    "deeplink",
+    "devtools",
+    "flags",
+    "forms",
+    "googlefonts",
+    "language",
+    "leakcanary",
+    "network",
+    "profile",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "languages": []
+}

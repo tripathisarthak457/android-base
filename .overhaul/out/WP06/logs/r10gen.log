@@ -1,0 +1,8 @@
+----------------------------------------------------------------------
+Ran 255 tests in 21.806s
+
+OK (skipped=1)
+
+61 projects in 55 s: 0 new issues, 418 known (7 of 7 known-issue lines seen).
+CONSISTENCY OK
+web/frontend/lib/catalogue.json is current.

@@ -1,0 +1,95 @@
+export const meta = {
+  name: 'full-liquid-glass-fable',
+  description: 'Fable deep work: restore the full Kyant liquid-glass effect set (distortion, refraction, dispersion, highlights, press and drag morphs) across iOS-style components, the bottom bar first, at parity with the library playground, at the Live tier, without hurting smoothness; Opus review and phone verification',
+  phases: [
+    { title: 'Deep work', detail: 'Fable: study the library and its playground, build the full glass components', model: 'fable' },
+    { title: 'Review', detail: 'Opus fresh-context review, Fable fixes' },
+    { title: 'Verify', detail: 'Opus: phone gates and side-by-side recordings' },
+  ],
+}
+
+// Fable first, until its weekly limit runs out; after a failed Fable call the rest of the run uses Opus (the user,
+// Oct 15). A relaunch tries Fable again, so the switch happens by itself once the limit resets.
+// Oct 15, 20:55: the user switched every agent to Opus 5.5 only, so Fable is skipped from the start.
+let fableOut = true
+async function fableAgent(prompt, opts) {
+  if (!fableOut) {
+    const r = await agent(prompt, Object.assign({}, opts || {}, { model: 'fable' }))
+    if (r !== null && r !== undefined) return r
+    fableOut = true
+    log('a Fable call failed (weekly limit?); the rest of this run uses Opus')
+  }
+  // Opus 5.5 only (the user, Oct 15 20:55). Opts pass through unchanged: an agent with no model runs on this
+  // session's model (Opus 5.5), and replays of calls made before the Fable switch match their cached results.
+  return agent(prompt, opts)
+}
+
+const R = '/home/crazyhusir/Documents/projects/tools/android-base'
+const OV = '/home/crazyhusir/Documents/projects/tools/.overhaul'
+const L = OV + '/bin/locked'
+const WT = OV + '/wt/WP05-glass'
+const KY = '/home/crazyhusir/.gradle/caches/modules-2/files-2.1/io.github.kyant0'
+
+const BRIEF = `You are the deep-work liquid-glass engineer for the android-base overhaul.
+THE USER'S REQUEST (Oct 15): restore the FULL liquid glass effect in the iOS-style components that use the third-party Android liquid-glass library (Kyant backdrop), especially the bottom bar. They want the distortion and every other effect, with real similarity to the library's own playground/catalog app, where the bottom bar is done the way they want (it can be improved further, but it must feel like that).
+Library: io.github.kyant0:backdrop 2.0.1 and shapes 1.2.1. The sources are local: ${KY}/backdrop-android/2.0.1/*/backdrop-android-sources.jar and ${KY}/shapes-android/1.2.1/*/shapes-android-sources.jar (unzip them into ${OV}/research/glass/kyant-src/). The playground/catalog sample is in the library's public GitHub repository (github.com/Kyant0/AndroidLiquidGlass). Read its sample code with WebFetch or WebSearch (ToolSearch "select:WebFetch,WebSearch"), especially the bottom tabs, buttons, toggle, slider and dialog demos, and record their exact parameters: refraction height and amount, dispersion (chromatic aberration), blur radius, vibrancy, highlight and rim light, inner and outer shadow, lens shape and size, the press swell and scale, drag behaviour with velocity, the selection morph, and the spring specs. Do not download or install any APK yourself. If the user installs the playground on the phone (adb -s 9a7c74f4 shell pm list packages | grep -i -E 'kyant|liquid'), record it with screenrecord --size 720x1600 as the reference.
+Also read:
+- ${OV}/REQUIREMENTS.md items 3, 19, 21, 22, 33, 35 and 36;
+- ${OV}/design/wp/WP05.md;
+- ${OV}/handoff/WP05.md and WP05-RESUME.md (the foundation that exists: GlassQuality tiers, SceneBackdrop recording the scene once, GlassSurface, LiquidLens with the travelling tap lens);
+- ${OV}/audit/periflow-learnings.md G1-G17 (what made PeriFlow's glass cost frames: a whole-bar re-render on every tap, dispersion and inner shadow over the full bar, per-event coroutines);
+- ${OV}/research/SHEET-SPEC.md (the Glass sheet style).
+THE GOAL: the full effect set at the Live tier, as close to the playground as possible, and still smooth. Never remove an effect to save cost (REQUIREMENTS 35): make it cheap.
+- Sample only within the lens or control bounds, from the scene recorded once.
+- Use static effect chains and drawWithCache, with no allocation in draw.
+- Animate in the draw or layer phase, with no per-frame recomposition.
+- Apply dispersion and inner shadow to the lens region only, never re-rendering the whole bar.
+- Lower tiers (LiveNoLens, Frosted, Solid) degrade gracefully and keep the motion.
+Components, in this order:
+1. The liquid bottom bar (LiquidTabs) and rail: the lens distortion, refraction and magnification of the content under it, dispersion at the rim, the specular highlight, the press swell, drag-to-select with velocity, the travelling tap morph, and labels and icons tinted through the lens.
+2. Glass top-bar buttons.
+3. Toggle and switch.
+4. Slider.
+5. Segmented control.
+6. Buttons.
+7. Sheet (the Glass style in SHEET-SPEC).
+8. Alert and dialog.
+9. Toast.
+10. A Glass playground section that shows them all like the library's catalog.
+Worktree: ${WT} on branch wp/WP05-glass. If missing: git -C ${R} worktree add ${WT} -b wp/WP05-glass wp/WP05. Work only there: other agents work in wt/WP05, wt/WP03 and wt/WP04, so never edit those. To build against the shell and the design system, which are not merged yet, you may merge wp/WP04 and wp/WP03 into your branch (they reach the integration branch before WP05 does). Keep everything behind the <opt:liquidglass> feature, so a project without glass has no Kyant dependency.
+Quality: the Google/AOSP bar (${OV}/research/CODE-STANDARDS.md, the androidx Compose API guidelines); comment why, never what. Commit each step with a why-message ending in "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>", and stage explicit paths only. Unit and Robolectric tests for the tier policy and the motion logic.
+Rules:
+- Gradle only via ${L} gradle; adb only via ${L} adb; release builds only for smoothness; the emulator never for perf.
+- Never kill or stop processes you did not start; never run ./gradlew --stop.
+- Restore any device setting you change.
+Measure on the phone with the template's perf tooling (glass_live gate column, three runs): the bar's tab tap, drag, scroll under the bar and bar minimize, before and after. Save frame strips under ${OV}/perf/WP05-glass/.
+Write ${OV}/handoff/WP05-glass.md as you go, saving after each component: what each effect does and its parameters against the playground's, the numbers, the strips, and what is still open. End it with the line "WP05: merge wp/WP05-glass into wp/WP05 at the start of your next run; the orchestrator verified it".`
+
+const STATUS = { type: 'object', properties: { state: { type: 'string', enum: ['done', 'partial', 'blocked'] }, summary: { type: 'string' } }, required: ['state', 'summary'] }
+const REVIEW = { type: 'object', properties: { verdict: { type: 'string' }, blocking: { type: 'array', items: { type: 'object', properties: { file: { type: 'string' }, line: { type: 'integer' }, problem: { type: 'string' }, fix: { type: 'string' } }, required: ['file', 'problem', 'fix'] } }, nonblocking: { type: 'array', items: { type: 'string' } } }, required: ['verdict', 'blocking', 'nonblocking'] }
+
+phase('Deep work')
+let r = await fableAgent(BRIEF + '\n\nReturn state "done" when the bottom bar and the other components meet the brief and the glass_live gates; otherwise "partial", with what remains.', { label: 'fable:glass', phase: 'Deep work', model: 'fable', schema: STATUS })
+if (!r) throw new Error('glass deep work failed')
+
+phase('Review')
+for (let round = 1; round <= 3; round++) {
+  const rv = await fableAgent(`You are a fresh-context reviewer holding a liquid-glass change set to the Google/AOSP bar. Review the commits on wp/WP05-glass that are not on wp/WP05, wp/WP04 or wp/WP03 (git -C ${R} log --oneline wp/WP05..wp/WP05-glass --not wp/WP04 wp/WP03, then read each diff and every changed file), with ${OV}/handoff/WP05-glass.md and the perf summaries it cites.
+BLOCKING:
+- an effect from the brief missing or visibly weaker than the playground, without a stated reason;
+- the whole bar re-rendered or sampled on a tap;
+- dispersion or inner shadow outside the lens region;
+- per-frame recomposition, state reads in composition that change per frame, allocation in draw, or new coroutines per event;
+- glass tiers or reduce motion broken; a Kyant dependency leaking into a project without glass;
+- unproven glass_live numbers; API guideline violations; slop; missing tests.
+NON-BLOCKING: nits. Do not modify anything; cite file:line.`, { label: `review:glass#${round}`, phase: 'Review', schema: REVIEW })
+  if (!rv) throw new Error('glass review failed')
+  if (!rv.blocking.length) { log(`glass review #${round}: clean`); break }
+  log(`glass review #${round}: ${rv.blocking.length} blocking`)
+  r = await fableAgent(`${BRIEF}\n\nMODE: fix. A fresh-context reviewer found BLOCKING issues on wp/WP05-glass. Fix every one (commits with why-messages), re-measure what the fixes touch, update the handoff, and return the same schema:\n${JSON.stringify(rv.blocking, null, 1)}\nNon-blocking: ${JSON.stringify(rv.nonblocking)}`, { label: `fable:glass-fix#${round}`, phase: 'Review', model: 'fable', schema: STATUS })
+  if (!r) throw new Error('glass fix failed')
+}
+
+phase('Verify')
+const v = await fableAgent(`Independently verify the liquid-glass work on wp/WP05-glass, on the phone (9a7c74f4, through ${L} adb; builds through ${L} gradle). Do not change code. Build the catalog or app release APK from ${WT}, record the bottom bar (tap between near and far tabs, drag, scroll under the bar, minimize) and the glass playground section at the Live tier, extract frames, and confirm the distortion, refraction, dispersion, highlight and press and drag morphs are visible. Compare against the library playground's look as described in ${OV}/handoff/WP05-glass.md (and against a playground recording if one exists). Run the glass_live gates (three runs). Write ${OV}/perf/WP05-glass/VERIFY.md with a verdict per effect and component, the numbers and the strip paths. Return a 10-line summary.`, { label: 'verify:glass-phone', phase: 'Verify', schema: STATUS })
+return { work: r, verify: v }

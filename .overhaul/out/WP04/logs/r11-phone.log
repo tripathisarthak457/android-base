@@ -1,0 +1,39 @@
+[locked:adb] waiting for lock...
+== install /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/app/build/outputs/apk/dev/benchmarkRelease/app-dev-arm64-v8a-benchmarkRelease.apk
+Performing Streamed Install
+Success
+Success
+== install /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-standard/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk
+Performing Streamed Install
+Success
+Success
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_slow_commit /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_commit --serial 9a7c74f4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_commit/back_slow_commit.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_commit/back_slow_commit_strip.png
+0 moving frames, near-blank frames: []
+== exit 0 : com.example.wp04.everything.dev back_slow_commit
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_slow_cancel /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_cancel --serial 9a7c74f4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_cancel/back_slow_cancel.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_cancel/back_slow_cancel_strip.png
+0 moving frames, near-blank frames: []
+== exit 0 : com.example.wp04.everything.dev back_slow_cancel
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_fast_flick /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_fast_flick --serial 9a7c74f4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_fast_flick/back_fast_flick.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_fast_flick/back_fast_flick_strip.png
+0 moving frames, near-blank frames: []
+== exit 0 : com.example.wp04.everything.dev back_fast_flick
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_y_follow /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_y_follow --serial 9a7c74f4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_y_follow/back_y_follow.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_y_follow/back_y_follow_strip.png
+0 moving frames, near-blank frames: []
+== exit 0 : com.example.wp04.everything.dev back_y_follow
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev back_to_home /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_to_home --serial 9a7c74f4
+[image2 @ 0x56815c0f5ac0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 2 >= 2
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_to_home/back_to_home.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_to_home/back_to_home_strip.png
+1 moving frames, near-blank frames: []
+== exit 0 : com.example.wp04.everything.dev back_to_home
+== /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/record.sh com.example.wp04.everything.dev gesture_pop /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/gesture_pop --serial 9a7c74f4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/gesture_pop/gesture_pop.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/gesture_pop/gesture_pop_strip.png
+0 moving frames, near-blank frames: []

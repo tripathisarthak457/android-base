@@ -1,0 +1,44 @@
+[locked:adb] waiting for lock...
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/perf.sh --package com.example.wp04.p3.dev --variant devBenchmarkRelease --runs 3 --serial 9a7c74f4 --out /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3a --gate solid tabs tabs_tap tab1 pushpop pushpop_gesture back_during_push rapid_back scroll_root idle nav_stress restore meminfo scroll_minimize recompose coldstart coldstart_installed
+run 1/3: install, profile, warm-up
+perf: a row of primary_list on the first tab did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/perf.sh --package com.example.wp04.p3.dev
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_slow_commit /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_commit --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_slow_commit
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_slow_cancel /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_slow_cancel --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_slow_cancel
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_fast_flick /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_fast_flick --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_fast_flick
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_y_follow /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_y_follow --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_y_follow
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_to_home /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/back_to_home --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_to_home
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev gesture_pop /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/predictive-back/gesture_pop --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev gesture_pop
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_during_push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/back-during-push/right --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev back_during_push
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev tab_switch /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/tab-switch/light --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev tab_switch
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev push /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3a-frames/push --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev push
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev pop /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3a-frames/pop --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev pop
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev rapid_back /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3a-frames/rapid_back --serial 9a7c74f4
+perf: a row of primary_list did not appear within 20 s
+== exit 2 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev rapid_back
+== /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev custom /home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3a-frames/bar_minimize --extra perf.barMinimize=OnScrollDown --serial 9a7c74f4 --actions input swipe 540 1800 540 700 140; sleep 1.5; input swipe 540 700 540 1800 140
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3a-frames/bar_minimize/custom.mp4
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP04/phase3a-frames/bar_minimize/custom_strip.png
+0 moving frames, near-blank frames: []
+== exit 0 : /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/p3/tools/perf/record.sh com.example.wp04.p3.dev custom
+PHONE-P3A DONE

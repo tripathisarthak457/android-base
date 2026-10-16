@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.GlassStageTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-14T11:33:17.094Z" hostname="pop-os" time="5.816">
+  <properties/>
+  <testcase name="tiers that sample nothing give chrome no scene" classname="com.base.app.core.designsystem.foundation.glass.GlassStageTest" time="5.04"/>
+  <testcase name="chrome samples the part of the scene that lies under it" classname="com.base.app.core.designsystem.foundation.glass.GlassStageTest" time="0.246"/>
+  <testcase name="a sample follows the chrome to the other end of the scene" classname="com.base.app.core.designsystem.foundation.glass.GlassStageTest" time="0.063"/>
+  <testcase name="a tier change keeps the content's composition and state" classname="com.base.app.core.designsystem.foundation.glass.GlassStageTest" time="0.062"/>
+  <testcase name="where the scene is transparent a sample shows the window background" classname="com.base.app.core.designsystem.foundation.glass.GlassStageTest" time="0.057"/>
+  <testcase name="live chrome tints the scene behind it, frosted chrome all but hides it" classname="com.base.app.core.designsystem.foundation.glass.GlassStageTest" time="0.192"/>
+  <testcase name="a surface inside the scene it samples fails with a reason, not a render thread crash" classname="com.base.app.core.designsystem.foundation.glass.GlassStageTest" time="0.08"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

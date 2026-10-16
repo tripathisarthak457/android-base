@@ -1,0 +1,26 @@
+....................................................................................s..........................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 255 tests in 24.163s
+
+OK (skipped=1)
+
+61 projects in 21 s: 0 new issues, 418 known (7 of 7 known-issue lines seen).
+CONSISTENCY OK
+web/frontend/lib/catalogue.json is current.
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+  ! 'firebase' is now 'crashlytics', 'firebaseanalytics' and 'remoteconfig'.
+  ! 'room' is now 'offlinequeue'.
+  ! 'workmanager' is no longer a feature: WorkManager arrives with 'offlinequeue', which has a worker to run.
+  ! 'widget' was removed: its Glance runtime started WorkManager and a database at every launch to show one line of text.
+Gradle builds passed at 1dcacd99f7e9a36ba7807fda56f4d071d1992487 on a clean tree: 2026-10-14T13:13:15+05:30
+[locked:adb] waiting for lock...
+[locked:adb] waiting for lock...
+{"screen": [1080, 2400], "swipe": {"from": [1014, 1389], "by": [-500, -800], "millis": 600}, "before": [948, 1323, 1080, 1455], "after": [0, 550, 132, 682], "moved": [-948, -773], "x_ok": true, "y_ok": true}
+BADGE DRAG OK
+restored: night no, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0
+[locked:adb] waiting for lock...
+{"root": {"title": [44, 144, 314, 229], "badge": [948, 1323, 1080, 1455], "clear": true}, "pushed": {"back": [44, 150, 99, 205], "badge": [948, 1323, 1080, 1455], "clear": true}, "back_tap_popped": true}
+BADGE QA OK
+restored: night no, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0
+DEVICE CHECKS OK on 9a7c74f4
+ACCEPT OK

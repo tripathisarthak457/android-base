@@ -1,0 +1,27 @@
+[locked:adb] waiting for lock...
+Success
+Night mode: no
+Night mode: yes
+Night mode: no
+PTR-MEASURE DONE
+Success
+Night mode: no
+Night mode: yes
+Night mode: no
+/home/crazyhusir/Documents/projects/tools/.overhaul/perf/WP03/ptr/r8-after/trace.pbtxt: 1 file pushed, 0 skipped. 8.3 MB/s (598 bytes in 0.000s)
+/data/misc/perfetto-traces/ptr.perfetto-trace: 1 file pulled, 0 skipped. 36.5 MB/s (26740552 bytes in 0.699s)
+traced
+PTR-MEASURE DONE
+Night mode: no
+/sdcard/ptr-light_slow.mp4: 1 file pulled, 0 skipped. 31.1 MB/s (3033783 bytes in 0.093s)
+recorded light_slow
+/sdcard/ptr-light_short.mp4: 1 file pulled, 0 skipped. 33.8 MB/s (575899 bytes in 0.016s)
+recorded light_short
+Night mode: yes
+/sdcard/ptr-dark_slow.mp4: 1 file pulled, 0 skipped. 35.7 MB/s (852011 bytes in 0.023s)
+recorded dark_slow
+Night mode: no
+PTR-RECORD DONE
+Night mode: no
+R8 SESSION DONE (night mode restored to no)
+EXIT 0

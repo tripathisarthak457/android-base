@@ -1,0 +1,91 @@
+{
+  "before": {
+    "generation": 1,
+    "tab": 0,
+    "stacks": [
+      [
+        "SampleListKey",
+        "SampleDetailKey(itemId=1)"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "ProfileKey",
+      "SettingsKey"
+    ]
+  },
+  "after": {
+    "generation": 1,
+    "tab": 0,
+    "stacks": [
+      [
+        "SampleListKey",
+        "SampleDetailKey(itemId=1)"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "ProfileKey",
+      "SettingsKey"
+    ]
+  },
+  "after_back": {
+    "generation": 1,
+    "tab": 0,
+    "stacks": [
+      [
+        "SampleListKey"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "ProfileKey",
+      "SettingsKey"
+    ]
+  }
+}

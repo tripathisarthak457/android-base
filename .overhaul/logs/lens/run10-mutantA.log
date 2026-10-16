@@ -1,0 +1,118 @@
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+
+LiquidLensStateTest > a selection reversed in flight stays glass until a single hand-over FAILED
+    java.lang.AssertionError at LiquidLensStateTest.kt:146
+
+LiquidLensStateTest > an overshooting settle spring keeps the lens glass through its turnarounds FAILED
+    java.lang.AssertionError at LiquidLensStateTest.kt:317
+
+45 tests completed, 2 failed
+
+> Task :core:designsystem:testDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP05/templates/android/core/designsystem/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 18s
+34 actionable tasks: 6 executed, 28 up-to-date
+Configuration cache entry reused.
+EXIT 1
+PASS LiquidLensStateTest: a lens at rest has its resting size
+PASS LiquidLensStateTest: tapping the tab the lens is on neither moves nor lifts it
+PASS LiquidLensStateTest: a pressed lens trails the finger across the bar
+PASS LiquidLensStateTest: a slow release lands on the nearest tab
+PASS LiquidLensStateTest: a released lens keeps the speed the finger gave it
+PASS LiquidLensStateTest: a released press samples the scene until its swell has receded
+PASS LiquidLensStateTest: with animations off the lens jumps straight to the tab
+FAIL LiquidLensStateTest: a selection reversed in flight stays glass until a single hand-over :: java.lang.AssertionError: in one unbroken run, to 2, back to 0 after 2 frames: [false, true, true, true, true, true, false, false, false, false, false, false, f
+PASS LiquidLensStateTest: a cancelled drag returns to the selected tab
+PASS LiquidLensStateTest: without refraction a drag moves a plain indicator that follows the finger
+PASS LiquidLensStateTest: a slower animator scale slows the lens by its factor
+PASS LiquidLensStateTest: a lens that jumped with animations off lifts gradually on its next tap
+PASS LiquidLensStateTest: a tap glides the lens to the tab without pressing it
+PASS LiquidLensStateTest: on a 120 Hz display the lens keeps the display's time
+PASS LiquidLensStateTest: without refraction a tap moves a plain indicator
+PASS LiquidLensStateTest: a release settles on the tab the lens's velocity points to
+PASS LiquidLensStateTest: new springs take over a moving lens from where it is
+PASS LiquidLensStateTest: a tap made while the lens still settles lifts it gradually again
+PASS LiquidLensStateTest: a travelling lens stretches along its orientation
+FAIL LiquidLensStateTest: an overshooting settle spring keeps the lens glass through its turnarounds :: java.lang.AssertionError: in one unbroken run: [false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, tru
+PASS LiquidLensStateTest: a lens held under a still finger swells evenly by the full press
+PASS LiquidLensStateTest: a lens held still under a finger asks for no frames
+PASS LiquidLensStateTest: a tap's glass materializes over the lens's first frames
+PASS LiquidLensStateTest: a travelling lens never shrinks below its resting size
+PASS LiquidLensStateTest: a tap's motion lifts the lens into glass, which calms as the lens settles
+PASS LiquidLensStateTest: a lens that stops refracting under the finger lets its swell recede
+PASS LiquidLensStateTest: a press samples the scene from the touch while the finger is down
+PASS LiquidLensStateTest: the finger cannot drag the lens past either end
+PASS LiquidLensStateTest: a tap samples the scene while it travels and stops before it settles
+PASS LiquidLensStateTest: a lens that has arrived asks for no more frames
+PASS LiquidLensTest: a travelling lens stretches along the bar
+PASS LiquidLensTest: a lens that has handed over is not redrawn while it settles
+PASS LiquidLensTest: with animations off neither a selection nor a drag turns the lens to glass
+PASS LiquidLensTest: a composition before the app takes up a released tab leaves the lens going there
+PASS LiquidLensTest: a new motion style reaches the lens already in the bar
+PASS LiquidLensTest: a selection's lens is glass on screen while it travels
+PASS LiquidLensTest: at Live a selection carries the lens as glass
+PASS LiquidLensTest: a pressed lens swells past its resting bounds along and across the bar
+PASS LiquidLensTest: a pressed lens shows its backdrop
+PASS LiquidLensTest: a travelling lens magnifies what is under it
+PASS LiquidLensTest: a travelling lens on a rail stretches along the rail
+PASS LiquidLensTest: a settled lens drawn again samples nothing
+PASS LiquidLensTest: a lens at rest neither samples nor draws
+PASS LiquidLensTest: below Live a selection moves the lens without refracting
+PASS LiquidLensTest: a travelling lens recomposes nothing

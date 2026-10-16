@@ -1,0 +1,832 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest :app:assembleDevDebug :catalog:assembleDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:navigation:verifyComposeUsage
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:common:verifyModuleDependencies
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:navigation:koverFindJar UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies
+> Task :app:injectCrashlyticsMappingFileIdDevDebug UP-TO-DATE
+> Task :app:injectCrashlyticsVersionControlInfoDevDebug UP-TO-DATE
+> Task :core:testing:verifyApiPurity
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:navigation:verifyApiPurity
+> Task :app:processDevDebugGoogleServices UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :core:common:verifyApiPurity
+> Task :core:navigation:preDebugBuild
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:analytics:verifyApiPurity
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+> Task :core:navigation:extractDeepLinksDebug UP-TO-DATE
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:navigation:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:analytics:verifyComposeUsage
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:analytics:verifyModuleDependencies
+> Task :core:analytics:preBuild
+> Task :core:analytics:preDebugBuild
+> Task :core:navigation:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+> Task :core:database:verifyComposeUsage
+> Task :core:analytics:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:database:verifyModuleDependencies
+> Task :core:database:verifyApiPurity
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:datastore:verifyComposeUsage
+> Task :core:database:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:datastore:verifyApiPurity
+> Task :core:devtools:verifyComposeUsage
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:devtools:verifyModuleDependencies
+> Task :core:datastore:preDebugBuild
+> Task :core:flags:verifyComposeUsage
+> Task :core:datastore:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:devtools:verifyApiPurity
+> Task :core:devtools:preBuild
+> Task :core:flags:verifyApiPurity
+> Task :app:verifyComposeUsage
+> Task :core:devtools:preDebugBuild
+> Task :app:preBuild
+> Task :core:flags:verifyModuleDependencies
+> Task :app:preDevDebugBuild
+> Task :core:flags:preBuild
+> Task :core:media:verifyComposeUsage
+> Task :core:devtools:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:flags:preDebugBuild
+> Task :core:media:verifyModuleDependencies
+> Task :core:media:verifyApiPurity
+> Task :core:media:preBuild
+> Task :core:media:preDebugBuild
+> Task :app:generateDevDebugBuildConfig UP-TO-DATE
+> Task :core:flags:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:mvi:verifyComposeUsage
+> Task :core:media:extractDebugSupportedLocales UP-TO-DATE
+> Task :app:extractDevDebugSupportedLocales UP-TO-DATE
+> Task :app:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:notification:verifyComposeUsage
+> Task :core:network:verifyComposeUsage
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:verifyApiPurity
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:network:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:mvi:extractDebugSupportedLocales FROM-CACHE
+> Task :core:notification:verifyModuleDependencies
+> Task :core:notification:verifyApiPurity
+> Task :core:notification:preBuild
+> Task :core:notification:preDebugBuild
+> Task :data:auth:verifyComposeUsage
+> Task :core:ui:verifyApiPurity
+> Task :core:notification:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:auth:verifyModuleDependencies
+> Task :core:ui:verifyModuleDependencies
+> Task :data:feed:verifyComposeUsage
+> Task :core:ui:verifyComposeUsage
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :data:auth:verifyApiPurity
+> Task :data:auth:preBuild
+> Task :data:feed:verifyModuleDependencies
+> Task :data:profile:verifyComposeUsage
+> Task :data:auth:preDebugBuild
+> Task :data:feed:verifyApiPurity
+> Task :data:feed:preBuild
+> Task :data:feed:preDebugBuild
+> Task :data:feed:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:sample:verifyComposeUsage
+> Task :data:auth:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:profile:verifyApiPurity
+> Task :data:profile:verifyModuleDependencies
+> Task :data:profile:preBuild
+> Task :data:profile:preDebugBuild
+> Task :data:search:verifyComposeUsage
+> Task :core:ui:extractDebugSupportedLocales
+> Task :data:sample:verifyApiPurity
+> Task :data:sample:verifyModuleDependencies
+> Task :data:profile:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :data:search:verifyModuleDependencies
+> Task :data:sample:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:auth:verifyModuleDependencies
+> Task :data:search:verifyApiPurity
+> Task :data:search:preBuild
+> Task :data:search:preDebugBuild
+> Task :feature:auth:verifyApiPurity
+> Task :data:search:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:feed:verifyModuleDependencies
+> Task :feature:feed:verifyComposeUsage
+> Task :feature:onboarding:verifyComposeUsage
+> Task :feature:auth:verifyComposeUsage
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :feature:onboarding:verifyModuleDependencies
+> Task :feature:feed:verifyApiPurity
+> Task :feature:feed:preBuild
+> Task :feature:onboarding:verifyApiPurity
+> Task :feature:onboarding:preBuild
+> Task :feature:feed:preDebugBuild
+> Task :feature:onboarding:preDebugBuild
+> Task :feature:profile:verifyComposeUsage
+> Task :feature:onboarding:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:feed:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :feature:profile:verifyModuleDependencies
+> Task :feature:auth:extractDebugSupportedLocales
+> Task :feature:profile:verifyApiPurity
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :feature:sample:verifyModuleDependencies
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:sample:verifyComposeUsage
+> Task :feature:sample:verifyApiPurity
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:sample:preBuild
+> Task :feature:profile:preBuild
+> Task :feature:profile:preDebugBuild
+> Task :feature:sample:preDebugBuild
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :feature:profile:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :feature:search:verifyApiPurity
+> Task :feature:sample:extractDebugSupportedLocales
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :feature:search:verifyModuleDependencies
+> Task :feature:search:verifyComposeUsage
+> Task :feature:search:preBuild
+> Task :feature:search:preDebugBuild
+> Task :feature:settings:verifyApiPurity
+> Task :feature:search:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:settings:verifyModuleDependencies
+> Task :app:generateDevDebugResources UP-TO-DATE
+> Task :core:analytics:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:verifyComposeUsage
+> Task :feature:settings:preBuild
+> Task :core:database:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:preDebugBuild
+> Task :core:datastore:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:devtools:processDebugNavigationResources UP-TO-DATE
+> Task :core:flags:processDebugNavigationResources UP-TO-DATE
+> Task :core:media:processDebugNavigationResources UP-TO-DATE
+> Task :core:mvi:processDebugNavigationResources FROM-CACHE
+> Task :core:network:processDebugNavigationResources UP-TO-DATE
+> Task :core:notification:processDebugNavigationResources UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources
+> Task :data:auth:processDebugNavigationResources UP-TO-DATE
+> Task :data:feed:processDebugNavigationResources UP-TO-DATE
+> Task :app:generateDevDebugLocaleConfig
+> Task :data:profile:processDebugNavigationResources UP-TO-DATE
+> Task :data:sample:processDebugNavigationResources UP-TO-DATE
+> Task :data:search:processDebugNavigationResources UP-TO-DATE
+> Task :app:packageDevDebugResources UP-TO-DATE
+> Task :feature:auth:processDebugNavigationResources
+> Task :feature:feed:processDebugNavigationResources UP-TO-DATE
+> Task :feature:profile:processDebugNavigationResources UP-TO-DATE
+> Task :feature:onboarding:processDebugNavigationResources UP-TO-DATE
+> Task :feature:sample:processDebugNavigationResources
+> Task :feature:settings:processDebugNavigationResources UP-TO-DATE
+> Task :core:analytics:generateDebugResources UP-TO-DATE
+> Task :core:analytics:packageDebugResources UP-TO-DATE
+> Task :core:analytics:parseDebugLocalResources UP-TO-DATE
+> Task :core:analytics:generateDebugRFile UP-TO-DATE
+> Task :core:analytics:javaPreCompileDebug UP-TO-DATE
+> Task :core:database:generateDebugResources UP-TO-DATE
+> Task :core:database:packageDebugResources UP-TO-DATE
+> Task :core:database:parseDebugLocalResources UP-TO-DATE
+> Task :core:database:generateDebugRFile UP-TO-DATE
+> Task :feature:search:processDebugNavigationResources UP-TO-DATE
+> Task :core:database:javaPreCompileDebug UP-TO-DATE
+> Task :core:datastore:generateDebugResources UP-TO-DATE
+> Task :core:datastore:packageDebugResources UP-TO-DATE
+> Task :core:datastore:parseDebugLocalResources UP-TO-DATE
+> Task :core:datastore:generateDebugRFile UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:devtools:generateDebugResources UP-TO-DATE
+> Task :core:devtools:packageDebugResources UP-TO-DATE
+> Task :core:devtools:parseDebugLocalResources UP-TO-DATE
+> Task :core:devtools:generateDebugRFile UP-TO-DATE
+> Task :core:flags:generateDebugResources UP-TO-DATE
+> Task :core:flags:packageDebugResources UP-TO-DATE
+> Task :core:flags:parseDebugLocalResources UP-TO-DATE
+> Task :core:flags:generateDebugRFile UP-TO-DATE
+> Task :core:flags:javaPreCompileDebug UP-TO-DATE
+> Task :core:devtools:javaPreCompileDebug UP-TO-DATE
+> Task :core:mvi:generateDebugResources FROM-CACHE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:mvi:packageDebugResources
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:mvi:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:network:generateDebugResources UP-TO-DATE
+> Task :core:network:packageDebugResources UP-TO-DATE
+> Task :core:network:parseDebugLocalResources UP-TO-DATE
+> Task :core:network:generateDebugRFile UP-TO-DATE
+> Task :core:network:javaPreCompileDebug UP-TO-DATE
+> Task :core:notification:generateDebugResources UP-TO-DATE
+> Task :core:notification:packageDebugResources UP-TO-DATE
+> Task :core:notification:parseDebugLocalResources UP-TO-DATE
+> Task :core:notification:generateDebugRFile UP-TO-DATE
+> Task :core:notification:javaPreCompileDebug UP-TO-DATE
+> Task :core:ui:generateDebugResources
+> Task :core:mvi:generateDebugRFile
+> Task :core:ui:javaPreCompileDebug UP-TO-DATE
+> Task :feature:auth:generateDebugResources
+> Task :feature:auth:packageDebugResources
+> Task :core:ui:packageDebugResources
+> Task :core:ui:parseDebugLocalResources
+> Task :feature:auth:parseDebugLocalResources
+> Task :feature:auth:generateDebugRFile
+> Task :core:ui:generateDebugRFile
+> Task :data:auth:generateDebugResources UP-TO-DATE
+> Task :data:auth:javaPreCompileDebug UP-TO-DATE
+> Task :feature:auth:javaPreCompileDebug UP-TO-DATE
+> Task :feature:feed:generateDebugResources UP-TO-DATE
+> Task :data:auth:packageDebugResources UP-TO-DATE
+> Task :feature:feed:packageDebugResources UP-TO-DATE
+> Task :data:auth:parseDebugLocalResources UP-TO-DATE
+> Task :feature:feed:parseDebugLocalResources UP-TO-DATE
+> Task :feature:feed:generateDebugRFile UP-TO-DATE
+> Task :data:auth:generateDebugRFile UP-TO-DATE
+> Task :data:feed:generateDebugResources UP-TO-DATE
+> Task :data:feed:javaPreCompileDebug UP-TO-DATE
+> Task :feature:feed:javaPreCompileDebug UP-TO-DATE
+> Task :data:feed:packageDebugResources UP-TO-DATE
+> Task :data:feed:parseDebugLocalResources UP-TO-DATE
+> Task :feature:onboarding:generateDebugResources UP-TO-DATE
+> Task :data:feed:generateDebugRFile UP-TO-DATE
+> Task :feature:onboarding:packageDebugResources UP-TO-DATE
+> Task :feature:onboarding:javaPreCompileDebug UP-TO-DATE
+> Task :feature:profile:generateDebugResources UP-TO-DATE
+> Task :feature:onboarding:parseDebugLocalResources UP-TO-DATE
+> Task :feature:onboarding:generateDebugRFile UP-TO-DATE
+> Task :core:media:generateDebugResources UP-TO-DATE
+> Task :feature:profile:packageDebugResources UP-TO-DATE
+> Task :feature:profile:parseDebugLocalResources UP-TO-DATE
+> Task :core:media:packageDebugResources UP-TO-DATE
+> Task :feature:profile:generateDebugRFile UP-TO-DATE
+> Task :core:media:parseDebugLocalResources UP-TO-DATE
+> Task :core:media:javaPreCompileDebug UP-TO-DATE
+> Task :core:media:generateDebugRFile UP-TO-DATE
+> Task :data:profile:generateDebugResources UP-TO-DATE
+> Task :data:profile:javaPreCompileDebug UP-TO-DATE
+> Task :feature:profile:javaPreCompileDebug UP-TO-DATE
+> Task :data:profile:packageDebugResources UP-TO-DATE
+> Task :data:profile:parseDebugLocalResources UP-TO-DATE
+> Task :feature:sample:generateDebugResources
+> Task :data:profile:generateDebugRFile UP-TO-DATE
+> Task :data:sample:generateDebugResources UP-TO-DATE
+> Task :data:sample:packageDebugResources UP-TO-DATE
+> Task :data:sample:parseDebugLocalResources UP-TO-DATE
+> Task :data:sample:generateDebugRFile UP-TO-DATE
+> Task :feature:sample:packageDebugResources
+> Task :core:navigation:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :data:sample:javaPreCompileDebug UP-TO-DATE
+> Task :feature:sample:javaPreCompileDebug UP-TO-DATE
+> Task :feature:search:generateDebugResources UP-TO-DATE
+> Task :data:search:generateDebugResources UP-TO-DATE
+> Task :feature:sample:parseDebugLocalResources
+> Task :feature:search:packageDebugResources UP-TO-DATE
+> Task :data:search:packageDebugResources UP-TO-DATE
+> Task :feature:search:parseDebugLocalResources UP-TO-DATE
+> Task :data:search:parseDebugLocalResources UP-TO-DATE
+> Task :data:search:generateDebugRFile UP-TO-DATE
+> Task :feature:search:generateDebugRFile UP-TO-DATE
+> Task :data:search:javaPreCompileDebug UP-TO-DATE
+> Task :feature:search:javaPreCompileDebug UP-TO-DATE
+> Task :feature:settings:generateDebugResources UP-TO-DATE
+> Task :feature:settings:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:checkDebugUnitTestAarMetadata
+> Task :core:analytics:writeDebugAarMetadata UP-TO-DATE
+> Task :app:javaPreCompileDevDebug UP-TO-DATE
+> Task :feature:sample:generateDebugRFile
+> Task :core:database:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:packageDebugResources UP-TO-DATE
+> Task :core:devtools:writeDebugAarMetadata UP-TO-DATE
+> Task :core:flags:writeDebugAarMetadata UP-TO-DATE
+> Task :core:datastore:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:parseDebugLocalResources UP-TO-DATE
+> Task :core:media:writeDebugAarMetadata UP-TO-DATE
+> Task :core:network:writeDebugAarMetadata UP-TO-DATE
+> Task :core:notification:writeDebugAarMetadata UP-TO-DATE
+> Task :core:ui:writeDebugAarMetadata UP-TO-DATE
+> Task :data:auth:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:generateDebugRFile UP-TO-DATE
+> Task :data:profile:writeDebugAarMetadata UP-TO-DATE
+> Task :data:feed:writeDebugAarMetadata UP-TO-DATE
+> Task :data:sample:writeDebugAarMetadata UP-TO-DATE
+> Task :data:search:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:auth:writeDebugAarMetadata UP-TO-DATE
+> Task :core:mvi:writeDebugAarMetadata
+> Task :feature:feed:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:profile:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:search:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:onboarding:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:sample:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:writeDebugAarMetadata UP-TO-DATE
+> Task :app:createDevDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDevDebug UP-TO-DATE
+> Task :core:analytics:extractDeepLinksDebug UP-TO-DATE
+> Task :core:analytics:processDebugManifest UP-TO-DATE
+> Task :core:database:extractDeepLinksDebug UP-TO-DATE
+> Task :core:datastore:extractDeepLinksDebug UP-TO-DATE
+> Task :core:database:processDebugManifest UP-TO-DATE
+> Task :core:datastore:processDebugManifest UP-TO-DATE
+> Task :core:devtools:extractDeepLinksDebug UP-TO-DATE
+> Task :core:flags:extractDeepLinksDebug UP-TO-DATE
+> Task :core:devtools:processDebugManifest UP-TO-DATE
+> Task :core:media:extractDeepLinksDebug UP-TO-DATE
+> Task :core:flags:processDebugManifest UP-TO-DATE
+> Task :core:mvi:extractDeepLinksDebug FROM-CACHE
+> Task :core:media:processDebugManifest UP-TO-DATE
+> Task :core:network:extractDeepLinksDebug UP-TO-DATE
+> Task :core:network:processDebugManifest
+> Task :core:mvi:processDebugManifest
+> Task :core:notification:extractDeepLinksDebug UP-TO-DATE
+> Task :core:ui:extractDeepLinksDebug UP-TO-DATE
+> Task :core:notification:processDebugManifest UP-TO-DATE
+> Task :core:ui:processDebugManifest UP-TO-DATE
+> Task :data:auth:extractDeepLinksDebug UP-TO-DATE
+> Task :data:feed:extractDeepLinksDebug UP-TO-DATE
+> Task :data:auth:processDebugManifest UP-TO-DATE
+> Task :data:profile:extractDeepLinksDebug UP-TO-DATE
+> Task :data:feed:processDebugManifest UP-TO-DATE
+> Task :data:profile:processDebugManifest UP-TO-DATE
+> Task :data:sample:extractDeepLinksDebug UP-TO-DATE
+> Task :data:search:extractDeepLinksDebug UP-TO-DATE
+> Task :data:sample:processDebugManifest UP-TO-DATE
+> Task :data:search:processDebugManifest UP-TO-DATE
+> Task :feature:auth:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:feed:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:auth:processDebugManifest UP-TO-DATE
+> Task :feature:onboarding:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:feed:processDebugManifest UP-TO-DATE
+> Task :feature:onboarding:processDebugManifest UP-TO-DATE
+> Task :feature:profile:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:sample:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:profile:processDebugManifest UP-TO-DATE
+> Task :feature:sample:processDebugManifest UP-TO-DATE
+> Task :feature:search:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:settings:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:search:processDebugManifest UP-TO-DATE
+> Task :core:analytics:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:settings:processDebugManifest UP-TO-DATE
+> Task :core:analytics:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestManifest
+> Task :core:database:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:database:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestManifest
+> Task :core:devtools:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:devtools:compileDebugLibraryResources UP-TO-DATE
+> Task :core:flags:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:flags:compileDebugLibraryResources UP-TO-DATE
+> Task :core:media:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:media:compileDebugLibraryResources UP-TO-DATE
+> Task :core:mvi:mapDebugSourceSetPaths
+> Task :core:mvi:compileDebugLibraryResources FROM-CACHE
+> Task :core:network:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:datastore:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:network:compileDebugLibraryResources UP-TO-DATE
+> Task :core:datastore:compileDebugLibraryResources UP-TO-DATE
+> Task :core:notification:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:notification:compileDebugLibraryResources UP-TO-DATE
+> Task :core:ui:mapDebugSourceSetPaths
+> Task :data:auth:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:auth:compileDebugLibraryResources UP-TO-DATE
+> Task :data:feed:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:feed:compileDebugLibraryResources UP-TO-DATE
+> Task :data:profile:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:profile:compileDebugLibraryResources UP-TO-DATE
+> Task :data:sample:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:ui:compileDebugLibraryResources
+> Task :data:sample:compileDebugLibraryResources UP-TO-DATE
+> Task :data:search:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:search:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:auth:mapDebugSourceSetPaths
+> Task :feature:feed:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:auth:compileDebugLibraryResources
+> Task :feature:feed:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:onboarding:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:onboarding:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:profile:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:profile:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:sample:mapDebugSourceSetPaths
+> Task :feature:search:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:search:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:sample:compileDebugLibraryResources
+> Task :feature:settings:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:settings:compileDebugLibraryResources UP-TO-DATE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :core:analytics:generateDebugAssets UP-TO-DATE
+> Task :core:analytics:mergeDebugAssets UP-TO-DATE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugAssets UP-TO-DATE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets UP-TO-DATE
+> Task :core:devtools:generateDebugAssets UP-TO-DATE
+> Task :core:devtools:mergeDebugAssets UP-TO-DATE
+> Task :core:flags:generateDebugAssets UP-TO-DATE
+> Task :core:flags:mergeDebugAssets UP-TO-DATE
+> Task :core:media:generateDebugAssets UP-TO-DATE
+> Task :core:media:mergeDebugAssets UP-TO-DATE
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets UP-TO-DATE
+> Task :core:notification:generateDebugAssets UP-TO-DATE
+> Task :core:notification:mergeDebugAssets UP-TO-DATE
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets UP-TO-DATE
+> Task :data:auth:generateDebugAssets UP-TO-DATE
+> Task :data:auth:mergeDebugAssets UP-TO-DATE
+> Task :data:feed:generateDebugAssets UP-TO-DATE
+> Task :data:feed:mergeDebugAssets UP-TO-DATE
+> Task :data:profile:generateDebugAssets UP-TO-DATE
+> Task :data:profile:mergeDebugAssets UP-TO-DATE
+> Task :data:sample:generateDebugAssets UP-TO-DATE
+> Task :data:sample:mergeDebugAssets UP-TO-DATE
+> Task :data:search:generateDebugAssets UP-TO-DATE
+> Task :data:search:mergeDebugAssets UP-TO-DATE
+> Task :feature:auth:generateDebugAssets UP-TO-DATE
+> Task :feature:auth:mergeDebugAssets UP-TO-DATE
+> Task :feature:feed:generateDebugAssets UP-TO-DATE
+> Task :feature:feed:mergeDebugAssets UP-TO-DATE
+> Task :feature:onboarding:generateDebugAssets UP-TO-DATE
+> Task :feature:onboarding:mergeDebugAssets UP-TO-DATE
+> Task :feature:profile:generateDebugAssets UP-TO-DATE
+> Task :feature:profile:mergeDebugAssets UP-TO-DATE
+> Task :feature:sample:generateDebugAssets UP-TO-DATE
+> Task :feature:sample:mergeDebugAssets UP-TO-DATE
+> Task :feature:search:generateDebugAssets UP-TO-DATE
+
+> Task :app:licenseeAndroidDevDebug
+WARNING: Allowed SPDX identifier 'BSD-2-Clause' is unused
+WARNING: Allowed SPDX identifier 'EPL-1.0' is unused
+WARNING: Allowed SPDX identifier 'CC0-1.0' is unused
+
+
+> Task :feature:search:mergeDebugAssets UP-TO-DATE
+> Task :feature:settings:generateDebugAssets UP-TO-DATE
+> Task :app:bundleDevDebugLicenses
+> Task :app:preDevDebugUnitTestBuild
+> Task :feature:settings:mergeDebugAssets UP-TO-DATE
+> Task :app:koverFindJar UP-TO-DATE
+> Task :app:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :app:mergeDevDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDevDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeDevDebugAssets UP-TO-DATE
+> Task :app:processDevDebugNavigationResources UP-TO-DATE
+> Task :app:compressDevDebugAssets UP-TO-DATE
+> Task :app:parseDevDebugLocalResources UP-TO-DATE
+> Task :app:compileDevDebugNavigationResources UP-TO-DATE
+> Task :app:desugarDevDebugFileDependencies UP-TO-DATE
+> Task :app:generateDevDebugRFile UP-TO-DATE
+> Task :app:mergeDevDebugJniLibFolders UP-TO-DATE
+> Task :core:analytics:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:analytics:mergeDebugNativeLibs NO-SOURCE
+> Task :core:analytics:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:database:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:database:mergeDebugNativeLibs NO-SOURCE
+> Task :core:database:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:datastore:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:designsystem:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:datastore:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:datastore:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:flags:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:devtools:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:common:compileKotlin
+> Task :core:flags:mergeDebugNativeLibs NO-SOURCE
+> Task :core:devtools:mergeDebugNativeLibs NO-SOURCE
+> Task :core:flags:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:devtools:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:media:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:common:jar
+> Task :core:mvi:mergeDebugJniLibFolders
+> Task :app:checkDevDebugAarMetadata
+> Task :app:processDevDebugMainManifest
+> Task :core:navigation:mergeDebugUnitTestResources
+> Task :app:checkDevDebugDuplicateClasses UP-TO-DATE
+> Task :core:testing:compileDebugKotlin
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug
+> Task :core:testing:bundleLibRuntimeToJarDebug
+> Task :core:testing:processDebugJavaRes
+> Task :core:navigation:processDebugUnitTestResources
+> Task :core:navigation:packageDebugUnitTestForUnitTest
+> Task :core:navigation:generateDebugUnitTestConfig
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :app:mergeDevDebugResources
+> Task :app:processDevDebugManifest
+> Task :app:processDevDebugManifestForPackage
+
+> Task :app:mergeDevDebugUnitTestManifest
+/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/app/src/main/AndroidManifest.xml:38:13-41:39 Warning:
+	meta-data#androidx.work.WorkManagerInitializer was tagged at AndroidManifest.xml:38 to remove other declarations but no other declaration present
+
+> Task :app:processDevDebugUnitTestManifest
+> Task :core:mvi:processDebugJavaRes
+> Task :app:processDevDebugResources
+> Task :app:packageDevDebugUnitTestForUnitTest
+> Task :app:generateDevDebugUnitTestConfig
+> Task :core:mvi:bundleLibRuntimeToDirDebug
+> Task :app:mergeExtDexDevDebug UP-TO-DATE
+> Task :core:media:mergeDebugNativeLibs NO-SOURCE
+> Task :core:media:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:mvi:mergeDebugNativeLibs NO-SOURCE
+> Task :core:mvi:copyDebugJniLibsProjectOnly
+> Task :core:navigation:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:navigation:mergeDebugNativeLibs NO-SOURCE
+> Task :core:navigation:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:network:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:network:mergeDebugNativeLibs NO-SOURCE
+> Task :core:network:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:notification:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:notification:mergeDebugNativeLibs NO-SOURCE
+> Task :core:notification:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :core:ui:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:ui:mergeDebugNativeLibs NO-SOURCE
+> Task :core:ui:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :data:auth:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:auth:mergeDebugNativeLibs NO-SOURCE
+> Task :data:auth:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :data:feed:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:feed:mergeDebugNativeLibs NO-SOURCE
+> Task :data:feed:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :data:profile:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:profile:mergeDebugNativeLibs NO-SOURCE
+> Task :data:profile:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :data:sample:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:sample:mergeDebugNativeLibs NO-SOURCE
+> Task :data:sample:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :data:search:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:search:mergeDebugNativeLibs NO-SOURCE
+> Task :data:search:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:auth:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:auth:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:auth:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:feed:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:feed:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:feed:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:onboarding:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:onboarding:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:onboarding:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:profile:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:profile:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:profile:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:sample:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:sample:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:sample:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:search:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:search:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:search:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:settings:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:settings:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:settings:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:validateSigningDevDebug UP-TO-DATE
+> Task :app:writeDevDebugAppMetadata UP-TO-DATE
+> Task :app:writeDevDebugSigningConfigVersions UP-TO-DATE
+> Task :catalog:verifyComposeUsage
+> Task :catalog:preBuild
+> Task :catalog:preDebugBuild
+> Task :catalog:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :catalog:generateDebugBuildConfig UP-TO-DATE
+> Task :catalog:generateDebugResources UP-TO-DATE
+> Task :app:mergeDevDebugNativeLibs UP-TO-DATE
+> Task :catalog:packageDebugResources UP-TO-DATE
+> Task :app:stripDevDebugDebugSymbols UP-TO-DATE
+> Task :catalog:javaPreCompileDebug UP-TO-DATE
+> Task :catalog:generateDebugAssets UP-TO-DATE
+> Task :catalog:mergeDebugAssets UP-TO-DATE
+> Task :catalog:compressDebugAssets UP-TO-DATE
+> Task :catalog:processDebugNavigationResources UP-TO-DATE
+> Task :catalog:generateDebugGlobalSynthetics UP-TO-DATE
+> Task :catalog:parseDebugLocalResources UP-TO-DATE
+> Task :catalog:generateDebugRFile UP-TO-DATE
+> Task :catalog:desugarDebugFileDependencies UP-TO-DATE
+> Task :catalog:checkDebugDuplicateClasses UP-TO-DATE
+> Task :catalog:checkDebugAarMetadata
+> Task :catalog:mapDebugSourceSetPaths UP-TO-DATE
+> Task :catalog:compileDebugNavigationResources UP-TO-DATE
+> Task :catalog:mergeExtDexDebug UP-TO-DATE
+> Task :catalog:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :catalog:extractDeepLinksDebug UP-TO-DATE
+> Task :catalog:processDebugMainManifest
+> Task :catalog:processDebugManifest
+> Task :catalog:processDebugManifestForPackage
+> Task :catalog:mergeDebugJniLibFolders UP-TO-DATE
+> Task :catalog:mergeDebugNativeLibs UP-TO-DATE
+> Task :catalog:stripDebugDebugSymbols UP-TO-DATE
+> Task :catalog:validateSigningDebug UP-TO-DATE
+> Task :catalog:writeDebugAppMetadata UP-TO-DATE
+> Task :catalog:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :catalog:mergeDebugResources
+> Task :catalog:processDebugResources
+> Task :core:flags:kspDebugKotlin
+> Task :core:navigation:kspDebugKotlin
+> Task :core:datastore:kspDebugKotlin
+> Task :core:media:kspDebugKotlin
+> Task :core:analytics:kspDebugKotlin
+> Task :core:analytics:compileDebugKotlin
+> Task :core:analytics:processDebugJavaRes UP-TO-DATE
+> Task :core:flags:compileDebugKotlin
+> Task :core:flags:processDebugJavaRes UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin
+> Task :core:datastore:processDebugJavaRes UP-TO-DATE
+> Task :core:analytics:compileDebugJavaWithJavac
+> Task :core:flags:compileDebugJavaWithJavac
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:database:kspDebugKotlin
+> Task :core:flags:transformDebugClassesWithAsm
+> Task :core:analytics:transformDebugClassesWithAsm
+> Task :core:analytics:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:flags:bundleLibCompileToJarDebug
+> Task :core:flags:bundleLibRuntimeToJarDebug
+> Task :core:datastore:transformDebugClassesWithAsm
+> Task :core:flags:bundleLibRuntimeToDirDebug
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:analytics:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:analytics:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToDirDebug
+> Task :core:database:compileDebugKotlin
+> Task :core:database:processDebugJavaRes UP-TO-DATE
+> Task :core:database:compileDebugJavaWithJavac
+> Task :core:database:transformDebugClassesWithAsm
+> Task :core:database:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:database:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:database:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:media:compileDebugKotlin
+> Task :core:media:processDebugJavaRes UP-TO-DATE
+> Task :core:media:compileDebugJavaWithJavac
+> Task :core:media:transformDebugClassesWithAsm
+> Task :core:media:bundleLibRuntimeToJarDebug
+> Task :core:media:bundleLibCompileToJarDebug
+> Task :core:media:bundleLibRuntimeToDirDebug
+> Task :core:devtools:kspDebugKotlin
+> Task :core:notification:kspDebugKotlin
+> Task :core:notification:compileDebugKotlin
+> Task :core:notification:processDebugJavaRes UP-TO-DATE
+> Task :core:devtools:compileDebugKotlin
+> Task :core:devtools:processDebugJavaRes UP-TO-DATE
+> Task :core:notification:compileDebugJavaWithJavac
+> Task :core:devtools:compileDebugJavaWithJavac
+> Task :core:notification:transformDebugClassesWithAsm
+> Task :core:devtools:transformDebugClassesWithAsm
+> Task :core:notification:bundleLibRuntimeToJarDebug
+> Task :core:devtools:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:notification:bundleLibCompileToJarDebug
+> Task :core:devtools:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:notification:bundleLibRuntimeToDirDebug
+> Task :core:devtools:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibRuntimeToDirDebug
+
+> Task :catalog:compileDebugKotlin FAILED
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:43:26 Unresolved reference 'common'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:187:19 Type argument is not within its bounds: type parameter 'T (of fun <T : AppNavKey> entry)' must be subtype of 'com.base.app.core.common.navigation.AppNavKey', but actual: 'DemoList'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:187:29 Argument type mismatch: actual type is 'ComposableFunction1<DemoList, Unit>', but 'ComposableFunction1<DemoList, Unit>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:193:55 Cannot access class 'com.base.app.core.common.navigation.AppNavKey'. Check your module classpath for missing or conflicting dependencies.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:193:64 Argument type mismatch: actual type is 'DemoDetail', but 'com.base.app.core.common.navigation.AppNavKey' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:199:19 Type argument is not within its bounds: type parameter 'T (of fun <T : AppNavKey> entry)' must be subtype of 'com.base.app.core.common.navigation.AppNavKey', but actual: 'DemoDetail'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:199:31 Argument type mismatch: actual type is 'ComposableFunction1<DemoDetail, Unit>', but 'ComposableFunction1<DemoDetail, Unit>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:205:81 Cannot access class 'com.base.app.core.common.navigation.AppNavKey'. Check your module classpath for missing or conflicting dependencies.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:205:90 Argument type mismatch: actual type is 'DemoDetail', but 'com.base.app.core.common.navigation.AppNavKey' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:206:76 Cannot access class 'com.base.app.core.common.navigation.AppNavKey'. Check your module classpath for missing or conflicting dependencies.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:206:85 Argument type mismatch: actual type is 'DemoCover', but 'com.base.app.core.common.navigation.AppNavKey' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:210:19 Type argument is not within its bounds: type parameter 'T (of fun <T : AppNavKey> entry)' must be subtype of 'com.base.app.core.common.navigation.AppNavKey', but actual: 'DemoCover'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:210:65 Argument type mismatch: actual type is 'ComposableFunction1<DemoCover, Unit>', but 'ComposableFunction1<DemoCover, Unit>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:219:19 Type argument is not within its bounds: type parameter 'T (of fun <T : AppNavKey> entry)' must be subtype of 'com.base.app.core.common.navigation.AppNavKey', but actual: 'DemoSettings'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:219:33 Argument type mismatch: actual type is 'ComposableFunction1<DemoSettings, Unit>', but 'ComposableFunction1<DemoSettings, Unit>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:227:32 Unresolved reference 'AppNavKey'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:230:47 Unresolved reference 'AppNavKey'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:233:33 Unresolved reference 'AppNavKey'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:236:36 Unresolved reference 'AppNavKey'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:239:5 Cannot access class 'com.base.app.core.common.navigation.AppNavKey'. Check your module classpath for missing or conflicting dependencies.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:239:14 Argument type mismatch: actual type is 'DemoList', but 'com.base.app.core.common.navigation.AppNavKey' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:240:5 Cannot access class 'com.base.app.core.common.navigation.AppNavKey'. Check your module classpath for missing or conflicting dependencies.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:240:14 Argument type mismatch: actual type is 'DemoSettings', but 'com.base.app.core.common.navigation.AppNavKey' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:245:9 Cannot access class 'com.base.app.core.common.navigation.AppNavKey'. Check your module classpath for missing or conflicting dependencies.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:246:13 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:246:22 Argument type mismatch: actual type is 'KClass<DemoList>', but 'KClass<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:246:39 Argument type mismatch: actual type is 'KSerializer<DemoList>', but 'KSerializer<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:247:13 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:247:22 Argument type mismatch: actual type is 'KClass<DemoDetail>', but 'KClass<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:247:41 Argument type mismatch: actual type is 'KSerializer<DemoDetail>', but 'KSerializer<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:248:13 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:248:22 Argument type mismatch: actual type is 'KClass<DemoCover>', but 'KClass<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:248:40 Argument type mismatch: actual type is 'KSerializer<DemoCover>', but 'KSerializer<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:249:13 Cannot infer type for type parameter 'T'. Specify it explicitly.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:249:22 Argument type mismatch: actual type is 'KClass<DemoSettings>', but 'KClass<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt:249:43 Argument type mismatch: actual type is 'KSerializer<DemoSettings>', but 'KSerializer<uninferred T (of fun <T : AppNavKey> subclass)>' was expected.
+
+> Task :core:ui:kspDebugKotlin
+> Task :core:navigation:kspDebugUnitTestKotlin
+> Task :core:network:kspDebugKotlin
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':catalog:compileDebugKotlin' (registered by plugin 'com.android.internal.application').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_IMPORT
+       Kotlin compiler error
+         Unresolved reference 'common'.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogNavigation.kt line 43
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 50s
+622 actionable tasks: 202 executed, 7 from cache, 413 up-to-date
+Configuration cache entry stored.
+The Daemon will expire after the build after running out of JVM Metaspace.
+The project memory settings are likely not configured or are configured to an insufficient value.
+The daemon will restart for the next build, which may increase subsequent build times.
+These settings can be adjusted by setting 'org.gradle.jvmargs' in 'gradle.properties'.
+The currently configured max heap space is '2.6 GiB' and the configured max metaspace is '1 GiB'.
+For more information on how to set these values, please refer to https://docs.gradle.org/9.7.1/userguide/build_environment.html#sec:configuring_jvm_memory in the Gradle documentation.
+To disable this warning, set 'org.gradle.daemon.performance.disable-logging=true'.
+Daemon will be stopped at the end of the build after running out of JVM Metaspace
+EXIT=1

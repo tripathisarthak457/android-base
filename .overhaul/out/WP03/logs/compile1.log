@@ -1,0 +1,76 @@
+[locked:gradle] waiting for lock...
+Starting a Gradle Daemon, 3 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:compileDebugKotlin
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:generateDebugRFile FROM-CACHE
+
+> Task :core:designsystem:compileDebugKotlin
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppImageViewer.kt:141:58 Unresolved reference 'designsystem_close'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppReorderableList.kt:65:42 Unresolved reference 'designsystem_move_up'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppReorderableList.kt:66:44 Unresolved reference 'designsystem_move_down'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/data/AppDataTable.kt:89:51 Unresolved reference 'designsystem_total'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/data/AppDataTable.kt:144:76 Unresolved reference 'designsystem_table_cell'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppAvatar.kt:69:41 Unresolved reference 'designsystem_people_count'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppProgress.kt:55:47 Unresolved reference 'designsystem_loading'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppSkeleton.kt:100:43 Unresolved reference 'addOutline'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/fields/AppDecimalFields.kt:193:57 Unresolved reference 'insert'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppDisclosure.kt:52:55 Unresolved reference 'designsystem_expanded'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppDisclosure.kt:52:91 Unresolved reference 'designsystem_collapsed'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppDisclosure.kt:53:56 Unresolved reference 'designsystem_collapse'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/list/AppDisclosure.kt:53:92 Unresolved reference 'designsystem_expand'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppBottomBar.kt:109:24 No parameter with name 'thickness' found.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppNavigationRail.kt:74:63 No parameter with name 'thickness' found.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppPageControl.kt:87:47 Unresolved reference 'designsystem_page_of'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppSheet.kt:427:70 Unresolved reference 'designsystem_close'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppToast.kt:240:65 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/AppOverscroll.kt:80:43 Argument type mismatch: actual type is 'SpringSpec<IntOffset>', but 'AnimationSpec<Offset>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/AppOverscroll.kt:85:43 Argument type mismatch: actual type is 'SpringSpec<IntOffset>', but 'AnimationSpec<Offset>' was expected.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/ScrollEdge.kt:30:67 Assignment type mismatch: actual type is 'androidx.compose.ui.graphics.CompositingStrategy', but 'androidx.compose.ui.graphics.layer.CompositingStrategy' was expected.
+
+> Task :core:designsystem:compileDebugKotlin FAILED
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_REFERENCE
+       Kotlin compiler error
+         Unresolved reference 'designsystem_close'.
+         Location: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/collections/AppImageViewer.kt line 141
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 39s
+12 actionable tasks: 6 executed, 6 from cache
+Configuration cache entry stored.
+EXIT 1

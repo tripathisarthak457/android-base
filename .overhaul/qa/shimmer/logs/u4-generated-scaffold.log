@@ -1,0 +1,199 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :feature:orders:compileDebugKotlin :feature:orders:verifyComposeUsage :feature:sample:compileDebugKotlin :feature:sample:verifyComposeUsage
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies
+> Task :core:common:verifyApiPurity
+> Task :core:designsystem:verifyModuleDependencies
+> Task :core:designsystem:verifyApiPurity
+> Task :core:mvi:verifyComposeUsage
+> Task :core:mvi:verifyApiPurity
+> Task :core:mvi:verifyModuleDependencies
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:navigation:verifyApiPurity
+> Task :core:mvi:generateDebugResources FROM-CACHE
+> Task :core:mvi:processDebugNavigationResources FROM-CACHE
+> Task :core:mvi:javaPreCompileDebug FROM-CACHE
+> Task :core:navigation:verifyComposeUsage
+> Task :core:navigation:verifyModuleDependencies
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:generateDebugResources FROM-CACHE
+> Task :core:mvi:packageDebugResources
+> Task :core:navigation:packageDebugResources
+> Task :core:navigation:processDebugNavigationResources FROM-CACHE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources FROM-CACHE
+> Task :core:designsystem:packageDebugResources
+> Task :core:designsystem:processDebugNavigationResources FROM-CACHE
+> Task :core:mvi:parseDebugLocalResources FROM-CACHE
+> Task :core:navigation:parseDebugLocalResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileDebug FROM-CACHE
+> Task :core:designsystem:parseDebugLocalResources FROM-CACHE
+> Task :core:mvi:generateDebugRFile
+> Task :core:designsystem:generateDebugRFile
+> Task :core:navigation:generateDebugRFile
+> Task :core:ui:verifyApiPurity
+> Task :core:ui:verifyComposeUsage
+> Task :core:navigation:javaPreCompileDebug FROM-CACHE
+> Task :core:ui:verifyModuleDependencies
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources FROM-CACHE
+> Task :data:orders:verifyApiPurity
+> Task :core:ui:processDebugNavigationResources FROM-CACHE
+> Task :core:ui:javaPreCompileDebug FROM-CACHE
+> Task :data:orders:verifyComposeUsage
+> Task :core:ui:packageDebugResources
+> Task :data:orders:verifyModuleDependencies
+> Task :core:ui:parseDebugLocalResources FROM-CACHE
+> Task :data:orders:preBuild
+> Task :data:orders:preDebugBuild
+> Task :data:orders:generateDebugResources FROM-CACHE
+> Task :core:ui:generateDebugRFile
+> Task :data:orders:processDebugNavigationResources FROM-CACHE
+> Task :data:orders:packageDebugResources
+> Task :data:orders:parseDebugLocalResources FROM-CACHE
+> Task :core:datastore:verifyApiPurity
+> Task :core:datastore:verifyComposeUsage
+> Task :core:datastore:verifyModuleDependencies
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:generateDebugResources FROM-CACHE
+> Task :data:orders:generateDebugRFile
+> Task :core:datastore:processDebugNavigationResources FROM-CACHE
+> Task :core:datastore:javaPreCompileDebug FROM-CACHE
+> Task :core:datastore:packageDebugResources
+> Task :core:datastore:parseDebugLocalResources FROM-CACHE
+> Task :core:network:verifyApiPurity
+> Task :core:network:verifyComposeUsage
+> Task :core:network:verifyModuleDependencies
+> Task :core:network:preBuild
+> Task :core:datastore:generateDebugRFile
+> Task :core:network:preDebugBuild
+> Task :core:network:processDebugNavigationResources FROM-CACHE
+> Task :core:network:generateDebugResources FROM-CACHE
+> Task :core:network:javaPreCompileDebug FROM-CACHE
+> Task :data:orders:javaPreCompileDebug FROM-CACHE
+> Task :core:network:packageDebugResources
+> Task :core:network:parseDebugLocalResources FROM-CACHE
+> Task :feature:orders:verifyApiPurity
+> Task :feature:orders:verifyComposeUsage
+> Task :feature:orders:verifyModuleDependencies
+> Task :feature:orders:preBuild
+> Task :feature:orders:preDebugBuild
+> Task :core:network:generateDebugRFile
+> Task :feature:orders:generateDebugResources
+> Task :feature:orders:processDebugNavigationResources
+> Task :data:sample:verifyApiPurity
+> Task :feature:orders:packageDebugResources
+> Task :data:sample:verifyComposeUsage
+> Task :data:sample:verifyModuleDependencies
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :data:sample:generateDebugResources FROM-CACHE
+> Task :data:sample:packageDebugResources
+> Task :data:sample:processDebugNavigationResources FROM-CACHE
+> Task :data:sample:parseDebugLocalResources FROM-CACHE
+> Task :feature:orders:parseDebugLocalResources
+> Task :data:sample:generateDebugRFile
+> Task :data:sample:javaPreCompileDebug FROM-CACHE
+> Task :feature:orders:generateDebugRFile
+> Task :feature:sample:verifyComposeUsage
+> Task :feature:sample:verifyApiPurity
+> Task :feature:sample:verifyModuleDependencies
+> Task :feature:sample:preBuild
+> Task :feature:sample:preDebugBuild
+> Task :feature:sample:processDebugNavigationResources FROM-CACHE
+> Task :feature:sample:generateDebugResources FROM-CACHE
+> Task :feature:sample:packageDebugResources
+> Task :feature:sample:parseDebugLocalResources FROM-CACHE
+> Task :feature:sample:generateDebugRFile
+> Task :core:common:compileKotlin
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar
+> Task :core:mvi:compileDebugKotlin
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug
+> Task :core:mvi:bundleLibCompileToJarDebug
+> Task :core:datastore:kspDebugKotlin
+> Task :core:datastore:compileDebugKotlin
+> Task :core:datastore:compileDebugJavaWithJavac
+> Task :core:datastore:transformDebugClassesWithAsm
+> Task :core:datastore:bundleLibRuntimeToJarDebug
+> Task :core:datastore:bundleLibCompileToJarDebug
+> Task :core:network:kspDebugKotlin
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:navigation:kspDebugKotlin
+> Task :core:network:compileDebugKotlin
+> Task :core:network:compileDebugJavaWithJavac
+> Task :core:network:transformDebugClassesWithAsm
+> Task :core:network:bundleLibRuntimeToJarDebug
+> Task :core:network:bundleLibCompileToJarDebug
+> Task :core:navigation:compileDebugKotlin
+> Task :data:orders:kspDebugKotlin
+> Task :data:sample:kspDebugKotlin
+
+> Task :data:orders:compileDebugKotlin FAILED
+e: file:///tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/genskel/SkelCheck/data/orders/src/main/kotlin/com/example/skelcheck/data/orders/OrdersRepository.kt:3:42 Unresolved reference 'AppResult'.
+e: file:///tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/genskel/SkelCheck/data/orders/src/main/kotlin/com/example/skelcheck/data/orders/OrdersRepository.kt:18:26 Unresolved reference 'AppResult'.
+e: file:///tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/genskel/SkelCheck/data/orders/src/main/kotlin/com/example/skelcheck/data/orders/OrdersRepository.kt:26:35 Unresolved reference 'AppResult'.
+
+> Task :core:navigation:compileDebugJavaWithJavac
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :data:sample:compileDebugKotlin
+> Task :data:sample:compileDebugJavaWithJavac
+> Task :data:sample:transformDebugClassesWithAsm
+> Task :data:sample:bundleLibCompileToJarDebug
+> Task :core:ui:kspDebugKotlin
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:transformDebugClassesWithAsm
+> Task :core:ui:bundleLibCompileToJarDebug
+> Task :feature:sample:kspDebugKotlin
+> Task :feature:sample:compileDebugKotlin
+
+[Incubating] Problems report is available at: file:///tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/genskel/SkelCheck/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':data:orders:compileDebugKotlin' (registered by plugin 'com.android.internal.library').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Kotlin compiler: UNRESOLVED_IMPORT
+       Kotlin compiler error
+         Unresolved reference 'AppResult'.
+         Location: /tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/genskel/SkelCheck/data/orders/src/main/kotlin/com/example/skelcheck/data/orders/OrdersRepository.kt line 3
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 54s
+133 actionable tasks: 98 executed, 35 from cache
+Configuration cache entry stored.
+GEN EXIT 1
+EXIT 0

@@ -1,0 +1,82 @@
+{
+ "recording": "../../evidence/rec/ptr-cold-dark.mp4",
+ "theme": "dark",
+ "frames_read": 105,
+ "frames_between_skeleton_and_content": [],
+ "skeleton_from_s": 1.379,
+ "skeleton_to_s": 1.7957,
+ "skeleton_shown_s": 0.425,
+ "last_skeleton_frame": 102,
+ "first_content_frame": 103,
+ "swap_gap_ms": 8.5,
+ "cards_skeleton": [
+  [
+   402,
+   568
+  ],
+  [
+   592,
+   755
+  ],
+  [
+   780,
+   942
+  ],
+  [
+   967,
+   1131
+  ]
+ ],
+ "cards_content": [
+  [
+   390,
+   602
+  ],
+  [
+   625,
+   796
+  ],
+  [
+   818,
+   1029
+  ],
+  [
+   1050,
+   1221
+  ],
+  [
+   1245,
+   1413
+  ]
+ ],
+ "card_shift_px": [
+  {
+   "top": -12,
+   "bottom": 34
+  },
+  {
+   "top": 33,
+   "bottom": 41
+  },
+  {
+   "top": 38,
+   "bottom": 87
+  },
+  {
+   "top": 83,
+   "bottom": 90
+  }
+ ],
+ "settled_skeleton_frames": 32,
+ "settled_skeleton_from_s": 1.5309,
+ "above_first_card": {
+  "rows": [
+   60,
+   386
+  ],
+  "sampled_px": 56080,
+  "most_changed_px_in_a_skeleton_frame": 6332,
+  "at_frame": 97
+ },
+ "bone_max_change_between_settled_skeleton_frames": 35
+}

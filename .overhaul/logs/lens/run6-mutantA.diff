@@ -1,0 +1,1 @@
+310:        alpha = if (state.pressed) 1f else 0f

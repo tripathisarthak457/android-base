@@ -1,0 +1,8 @@
+hostile_mod-baseapp: genkit.translations.TranslationError: No de translation for trailnotes_title, trailnotes_empty_title, trailnotes_empty_message, trailnotes_reload in feature/baseapp/src/main/res. Add them to generator/translations/de.json.
+hostile_mod-database_app: genkit.translations.TranslationError: No de translation for datastore_title, datastore_empty_title, datastore_empty_message, datastore_reload in feature/database_app/src/main/res. Add them to generator/translations/de.json.
+hostile_pkg-base_app: AppConfig.kt not found where expected: /tmp/androidgen-t6qveowf/TrailNotes/build-logic/convention/src/main/kotlin/com/base_app/demo/buildlogic/AppConfig.kt
+hostile_pkg-baseapp: AppConfig.kt not found where expected: /tmp/androidgen-p0yqhrle/TrailNotes/build-logic/convention/src/main/kotlin/com/example/baseapp/buildlogic/AppConfig.kt
+hostile_pkg-databaseapp: AppConfig.kt not found where expected: /tmp/androidgen-phlt7bdi/TrailNotes/build-logic/convention/src/main/kotlin/com/example/databaseapp/buildlogic/AppConfig.kt
+hostile_pkg-firebaseapp: AppConfig.kt not found where expected: /tmp/androidgen-q5x6rr4m/TrailNotes/build-logic/convention/src/main/kotlin/com/firebaseapp/notes/buildlogic/AppConfig.kt
+hostile_pkg-global: Package segment 'global' is a reserved word — the generated directories would not be a valid package.
+hostile_pkg-pass: Package segment 'pass' is a reserved word — the generated directories would not be a valid package.

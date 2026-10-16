@@ -1,0 +1,33 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: assembleDevDebug testDebugUnitTest verifyCodeRules
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+
+> Task :build-logic:convention:compileKotlin
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/modules-compact/build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt:9:38 Unresolved reference 'ExperimentalRoborazziApi'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/modules-compact/build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt:28:12 Unresolved reference 'ExperimentalRoborazziApi'.
+e: file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/modules-compact/build-logic/convention/src/main/kotlin/AndroidScreenshotsConventionPlugin.kt:28:12 Annotation argument must be a compile-time constant.
+
+> Task :build-logic:convention:compileKotlin FAILED
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/modules-compact/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':build-logic:convention:compileKotlin' (registered by plugin class 'org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 13s
+3 actionable tasks: 3 executed
+Configuration cache entry stored.
+exit=1

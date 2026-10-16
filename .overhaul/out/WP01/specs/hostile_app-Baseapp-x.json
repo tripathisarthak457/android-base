@@ -1,0 +1,24 @@
+{
+  "app_name": "Baseapp X",
+  "package_name": "com.example.bx",
+  "features": [
+    "network",
+    "sample",
+    "settings",
+    "language",
+    "push",
+    "auth",
+    "onboarding",
+    "database",
+    "deeplink",
+    "catalog",
+    "devtools"
+  ],
+  "feature_modules": [
+    "orders"
+  ],
+  "languages": [
+    "de",
+    "pt-BR"
+  ]
+}

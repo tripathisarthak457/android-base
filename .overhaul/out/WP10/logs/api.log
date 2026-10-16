@@ -1,0 +1,29 @@
+{"time":"2026-10-09T18:14:31.759642247+05:30","level":"INFO","msg":"configuration","summary":"addr=0.0.0.0:8090 generator=/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP10/generator python=python3 persistent=true origins=[http://127.0.0.1:3110 http://localhost:3110] targets=[android multiplatform] proxy=none concurrency=4"}
+{"time":"2026-10-09T18:14:31.913946739+05:30","level":"WARN","msg":"ENABLE_TARGETS names a target the catalogue does not list","target":"multiplatform"}
+{"time":"2026-10-09T18:14:31.917277685+05:30","level":"INFO","msg":"listening","addr":"0.0.0.0:8090","targets":["android","multiplatform"]}
+{"time":"2026-10-09T18:14:32.061714718+05:30","level":"INFO","msg":"migration applied","version":"0001"}
+{"time":"2026-10-09T18:14:32.061758112+05:30","level":"INFO","msg":"migration applied","version":"0002"}
+{"time":"2026-10-09T18:14:32.061762325+05:30","level":"INFO","msg":"migration applied","version":"0003"}
+{"time":"2026-10-09T18:14:32.061765+05:30","level":"INFO","msg":"migration applied","version":"0004"}
+{"time":"2026-10-09T18:14:32.065680966+05:30","level":"INFO","msg":"database ready"}
+{"time":"2026-10-09T18:15:00.566522746+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-09T18:15:04.786507972+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-09T18:15:06.420964784+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:15:06.713504267+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-09T18:15:08.201565661+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:15:17.069460578+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:15:38.888884182+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:15:44.415438862+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:15:49.401639057+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:15:56.582055326+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-09T18:15:58.083439603+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:16:04.557223672+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":200,"ms":424,"bytes":442218}
+{"time":"2026-10-09T18:16:04.831424962+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:16:12.734390431+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":400,"ms":175,"bytes":89}
+{"time":"2026-10-09T18:16:33.548847815+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":200,"ms":310,"bytes":329835}
+{"time":"2026-10-09T18:16:50.435937389+05:30","level":"INFO","msg":"request","route":"admin.generations","method":"GET","status":200,"ms":3,"bytes":3261}
+{"time":"2026-10-09T18:17:09.704620372+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":156}
+{"time":"2026-10-09T18:17:09.730979175+05:30","level":"INFO","msg":"request","route":"catalogue","method":"GET","status":200,"ms":0,"bytes":75290}
+{"time":"2026-10-09T18:17:11.2024335+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:17:38.288282776+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T18:17:51.537465803+05:30","level":"INFO","msg":"shutting down"}

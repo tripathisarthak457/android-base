@@ -1,0 +1,6 @@
+known issue no longer seen (WP06): ^UNUSED-IMPORT core/network/src/test/kotlin/\{pkg\}/core/network/KtorNetworkClientTest\.kt: kotlinx\.serialization\.json\.(JsonPrimitive|buildJsonObject)$
+known issue no longer seen (WP06): ^UNUSED-RES feature/settings/src/main/res/values/strings\.xml: string/settings_(require_unlock|app_lock_explanation)$
+known issue no longer seen (WP06): ^UNUSED-RES app/src/main/res/drawable/ic_notification\.xml: drawable/ic_notification$
+
+61 projects in 37 s: 0 new issues, 503 known (9 of 12 known-issue lines seen).
+CONSISTENCY OK

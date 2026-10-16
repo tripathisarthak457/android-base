@@ -1,0 +1,3 @@
+{"time":"2026-10-08T23:27:13.721107914Z","level":"WARN","msg":"ENABLE_TARGETS names a target the catalogue does not list","target":"multiplatform"}
+{"time":"2026-10-08T23:27:14.141091025Z","level":"INFO","msg":"selftest","target":"android","zip_entries":234}
+{"time":"2026-10-08T23:27:14.141108136Z","level":"INFO","msg":"selftest passed","targets":1,"generator_commit":"unknown"}

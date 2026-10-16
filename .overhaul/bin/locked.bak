@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Serialises heavy work across parallel agents. Usage: locked gradle|adb <command...>
+# gradle: one Gradle build machine-wide (15GB RAM box). adb: one agent driving the phones at a time.
+set -euo pipefail
+kind="$1"; shift
+lock="/home/crazyhusir/Documents/projects/tools/.overhaul/${kind}.lock"
+echo "[locked:$kind] waiting for lock..." >&2
+exec flock "$lock" "$@"

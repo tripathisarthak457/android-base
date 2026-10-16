@@ -1,0 +1,139 @@
+{
+ "recording": "../rec/cat-loading-light.mp4",
+ "size": [
+  720,
+  1600
+ ],
+ "frames": 486,
+ "span_s": 6.456,
+ "region": [
+  0,
+  300,
+  720,
+  1560
+ ],
+ "bone_pixels_sampled": 16078,
+ "bone_luma": 218.0,
+ "band_half_width_px": 234.1,
+ "sweeps": [
+  {
+   "start": 0.0,
+   "end": 0.24,
+   "visible_s": 0.24,
+   "frames": 19
+  },
+  {
+   "start": 1.448,
+   "end": 2.148,
+   "visible_s": 0.7,
+   "frames": 80
+  },
+  {
+   "start": 3.523,
+   "end": 4.423,
+   "visible_s": 0.9,
+   "frames": 86
+  },
+  {
+   "start": 5.299,
+   "end": 6.456,
+   "visible_s": 1.157,
+   "frames": 110
+  }
+ ],
+ "periods_s": [
+  1.448,
+  2.075,
+  1.776
+ ],
+ "gaps_without_band_s": [
+  1.208,
+  1.375,
+  0.876
+ ],
+ "frames_between_sweeps": [
+  48,
+  68,
+  7
+ ],
+ "strip": [
+  {
+   "index": 239,
+   "t": 3.598,
+   "rows": 20,
+   "median_u": 212.5,
+   "max_abs_dev_px": 235.0,
+   "p90_abs_dev_px": 69.2,
+   "rows_within_2px": 0.3,
+   "y_range": [
+    351,
+    582
+   ]
+  },
+  {
+   "index": 257,
+   "t": 3.748,
+   "rows": 127,
+   "median_u": 466.0,
+   "max_abs_dev_px": 108.6,
+   "p90_abs_dev_px": 34.2,
+   "rows_within_2px": 0.189,
+   "y_range": [
+    351,
+    1434
+   ]
+  },
+  {
+   "index": 275,
+   "t": 3.898,
+   "rows": 100,
+   "median_u": 760.3,
+   "max_abs_dev_px": 350.6,
+   "p90_abs_dev_px": 84.5,
+   "rows_within_2px": 0.06,
+   "y_range": [
+    354,
+    1491
+   ]
+  },
+  {
+   "index": 293,
+   "t": 4.047,
+   "rows": 31,
+   "median_u": 1036.2,
+   "max_abs_dev_px": 626.9,
+   "p90_abs_dev_px": 385.7,
+   "rows_within_2px": 0.161,
+   "y_range": [
+    390,
+    1491
+   ]
+  },
+  {
+   "index": 310,
+   "t": 4.19,
+   "rows": 5,
+   "median_u": 549.1,
+   "max_abs_dev_px": 524.1,
+   "p90_abs_dev_px": 524.1,
+   "rows_within_2px": 0.2,
+   "y_range": [
+    390,
+    1407
+   ]
+  },
+  {
+   "index": 333,
+   "t": 4.381,
+   "rows": 4,
+   "median_u": 536.2,
+   "max_abs_dev_px": 232.9,
+   "p90_abs_dev_px": 232.9,
+   "rows_within_2px": 0.0,
+   "y_range": [
+    390,
+    1125
+   ]
+  }
+ ]
+}

@@ -1,0 +1,91 @@
+{
+ "recording": "../../evidence/rec/cat-skel-light.mp4",
+ "size": [
+  720,
+  1600
+ ],
+ "frames": 476,
+ "span_s": 3.96,
+ "region": [
+  0,
+  200,
+  720,
+  1520
+ ],
+ "bone_pixels_sampled": 15877,
+ "bone_luma": 236,
+ "band_half_width_px": 234.1,
+ "sweeps": [
+  {
+   "start": 0.0,
+   "end": 3.96,
+   "visible_s": 3.96,
+   "frames": 476
+  }
+ ],
+ "periods_s": [],
+ "gaps_without_band_s": [],
+ "frames_between_sweeps": [],
+ "strip": [
+  {
+   "index": 40,
+   "rows": 0
+  },
+  {
+   "index": 119,
+   "t": 0.993,
+   "rows": 74,
+   "median_u": 564.2,
+   "max_abs_dev_px": 129.6,
+   "p90_abs_dev_px": 118.9,
+   "rows_within_2px": 0.054,
+   "y_range": [
+    731,
+    1130
+   ]
+  },
+  {
+   "index": 198,
+   "rows": 0
+  },
+  {
+   "index": 277,
+   "t": 2.309,
+   "rows": 87,
+   "median_u": 500.8,
+   "max_abs_dev_px": 461.6,
+   "p90_abs_dev_px": 110.8,
+   "rows_within_2px": 0.046,
+   "y_range": [
+    329,
+    1340
+   ]
+  },
+  {
+   "index": 356,
+   "t": 2.969,
+   "rows": 60,
+   "median_u": 995.8,
+   "max_abs_dev_px": 644.1,
+   "p90_abs_dev_px": 549.0,
+   "rows_within_2px": 0.067,
+   "y_range": [
+    329,
+    1268
+   ]
+  },
+  {
+   "index": 435,
+   "t": 3.626,
+   "rows": 85,
+   "median_u": 447.0,
+   "max_abs_dev_px": 515.4,
+   "p90_abs_dev_px": 140.8,
+   "rows_within_2px": 0.071,
+   "y_range": [
+    329,
+    1265
+   ]
+  }
+ ]
+}

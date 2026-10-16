@@ -1,0 +1,42 @@
+{
+  "generator": {
+    "commit": "d05a6828a607",
+    "generatedOn": "2026-10-16"
+  },
+  "schema": 2,
+  "platform": "ios",
+  "app_name": "Everything",
+  "display_name": "Everything \u2728",
+  "package_name": "com.example.ioseverything",
+  "architecture": "compact",
+  "features": [
+    "database",
+    "language",
+    "liquidglass",
+    "network",
+    "onboarding",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "design_style": "Social",
+  "motion_style": "Calm",
+  "accent_colour": "#1F7A5C",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "pt-BR"
+  ],
+  "ios": {
+    "bundle_id": "",
+    "deployment_target": "18.0",
+    "team_id": "ABCDE12345"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "generator": {
+    "commit": "6bc38e9e7358",
+    "generatedOn": "2026-10-09"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Bare",
+  "display_name": "",
+  "package_name": "io.bare.min",
+  "architecture": "compact",
+  "features": [],
+  "feature_modules": [
+    "home"
+  ],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [],
+  "android": {
+    "min_sdk": 24,
+    "target_sdk": 36,
+    "compile_sdk": 37,
+    "version_name": "2.1.0",
+    "version_code": 7,
+    "api_base_urls": {},
+    "web_socket_urls": {},
+    "deeplink_scheme": "",
+    "deeplink_host": ""
+  }
+}

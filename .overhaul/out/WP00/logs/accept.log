@@ -1,0 +1,19 @@
+
+OK
+  ! No AppDestinations.kt at /tmp/tmpj5myz1nr/app/src/main/kotlin/com/acme/field/ui/AppDestinations.kt; check the tabs by hand.
+> Task :app:compileDevDebugJavaWithJavac
+> Task :app:hiltCollectClassesDevDebug
+> Task :app:hiltAggregateDepsDevDebug
+> Task :app:mergeDevDebugJavaResource
+> Task :app:hiltJavaCompileDevDebug
+> Task :app:transformDevDebugClassesWithAsm
+> Task :app:dexBuilderDevDebug
+> Task :app:mergeProjectDexDevDebug
+> Task :app:packageDevDebug
+> Task :app:assembleDevDebug
+> Task :app:createDevDebugApkListingFileRedirect
+
+BUILD SUCCESSFUL in 2m 38s
+678 actionable tasks: 529 executed, 149 from cache
+Configuration cache entry stored.
+ACCEPT OK

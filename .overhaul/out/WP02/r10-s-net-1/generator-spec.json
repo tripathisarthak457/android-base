@@ -1,0 +1,48 @@
+{
+  "generator": {
+    "commit": "a6a207a41e24",
+    "generatedOn": "2026-10-13"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Fit net 1",
+  "display_name": "",
+  "package_name": "io.example.fitnet1",
+  "architecture": "compact",
+  "features": [
+    "formatting",
+    "network"
+  ],
+  "feature_modules": [
+    "abcdefghijk",
+    "abcdefghijkl",
+    "abcdefghijklm",
+    "abcdefghijklmn",
+    "abcdefghijklmno",
+    "abcdefghijklmnop",
+    "abcdefghijklmnopq",
+    "abcdefghijklmnopqr",
+    "abcdefghijklmnopqrs",
+    "abcdefghijklmnopqrst"
+  ],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [],
+  "android": {
+    "min_sdk": 26,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "1.0.0",
+    "version_code": 1,
+    "api_base_urls": {},
+    "web_socket_urls": {},
+    "deeplink_scheme": "",
+    "deeplink_host": ""
+  }
+}

@@ -1,0 +1,135 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :build-logic:convention:test verifyCodeRules :app:assembleDevDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+Variant `stagingNonMinifiedRelease` is disabled. If this is not intentional, please check your gradle configuration for beforeVariants blocks. For more information on variant filters checkout the docs at https://developer.android.com/build/build-variants#filter-variants.
+
+This warning can be disabled setting the following property:
+baselineProfile {
+    warnings {
+        disabledVariants = false
+    }
+}
+Variant `prodNonMinifiedRelease` is disabled. If this is not intentional, please check your gradle configuration for beforeVariants blocks. For more information on variant filters checkout the docs at https://developer.android.com/build/build-variants#filter-variants.
+
+This warning can be disabled setting the following property:
+baselineProfile {
+    warnings {
+        disabledVariants = false
+    }
+}
+Variant `playstoreNonMinifiedRelease` is disabled. If this is not intentional, please check your gradle configuration for beforeVariants blocks. For more information on variant filters checkout the docs at https://developer.android.com/build/build-variants#filter-variants.
+
+This warning can be disabled setting the following property:
+baselineProfile {
+    warnings {
+        disabledVariants = false
+    }
+}
+Variant `stagingBenchmarkRelease` is disabled. If this is not intentional, please check your gradle configuration for beforeVariants blocks. For more information on variant filters checkout the docs at https://developer.android.com/build/build-variants#filter-variants.
+
+This warning can be disabled setting the following property:
+baselineProfile {
+    warnings {
+        disabledVariants = false
+    }
+}
+Variant `prodBenchmarkRelease` is disabled. If this is not intentional, please check your gradle configuration for beforeVariants blocks. For more information on variant filters checkout the docs at https://developer.android.com/build/build-variants#filter-variants.
+
+This warning can be disabled setting the following property:
+baselineProfile {
+    warnings {
+        disabledVariants = false
+    }
+}
+Variant `playstoreBenchmarkRelease` is disabled. If this is not intentional, please check your gradle configuration for beforeVariants blocks. For more information on variant filters checkout the docs at https://developer.android.com/build/build-variants#filter-variants.
+
+This warning can be disabled setting the following property:
+baselineProfile {
+    warnings {
+        disabledVariants = false
+    }
+}
+
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :build-logic:convention:pluginUnderTestMetadata
+> Task :core:database:verifyCodeRules
+> Task :core:analytics:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :core:ui:verifyCodeRules FAILED
+> Task :data:feed:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :core:network:verifyCodeRules FAILED
+> Task :core:designsystem:verifyCodeRules
+> Task :build-logic:convention:compileTestKotlin
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :build-logic:convention:test
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:ui:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/ui/src/main/kotlin/com/base/app/core/ui/AppNetworkImage.kt:34 subcompose-image: SubcomposeAsyncImage composes per load state and stutters in lists; use AsyncImage
+  
+  Each rule keeps the app smooth, light or translatable; see MOTION-AND-PERFORMANCE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:network:verifyCodeRules' (registered by plugin 'com.base.app.android.library').
+> Code rules broken:
+  
+    core/network/src/main/kotlin/com/base/app/core/network/NetworkClient.kt:44 dispatchers-io: inject AppDispatchers and use dispatchers.io or dispatchers.default
+    core/network/src/main/kotlin/com/base/app/core/network/NetworkClient.kt:60 dispatchers-io: inject AppDispatchers and use dispatchers.io or dispatchers.default
+  
+  Each rule keeps the app smooth, light or translatable; see MOTION-AND-PERFORMANCE.md. A justified exception goes on the line above: // allow(<rule-id>): <reason>
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 1m 3s
+28 actionable tasks: 26 executed, 2 up-to-date
+Configuration cache entry stored.
+EXIT 1

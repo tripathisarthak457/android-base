@@ -1,0 +1,10 @@
+ M data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/DefaultOrdersRepository.kt
+ M data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/api/OrdersItem.kt
+ M data/orders/src/main/kotlin/io/example/wp02fmt/data/orders/remote/OrdersDto.kt
+ M data/orders/src/testFixtures/kotlin/io/example/wp02fmt/data/orders/api/FakeOrdersRepository.kt
+ M data/subscriptions/src/main/kotlin/io/example/wp02fmt/data/subscriptions/api/SubscriptionsItem.kt
+ M data/subscriptions/src/testFixtures/kotlin/io/example/wp02fmt/data/subscriptions/api/FakeSubscriptionsRepository.kt
+ M feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/detail/OrdersDetailViewModel.kt
+ M feature/orders/src/main/kotlin/io/example/wp02fmt/feature/orders/list/OrdersListViewModel.kt
+ M feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/detail/SubscriptionsDetailViewModel.kt
+ M feature/subscriptions/src/main/kotlin/io/example/wp02fmt/feature/subscriptions/list/SubscriptionsListViewModel.kt

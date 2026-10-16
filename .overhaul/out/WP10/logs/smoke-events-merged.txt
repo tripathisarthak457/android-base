@@ -1,0 +1,36 @@
+# Against merged/WP09 (wp/WP10 at d80a3b9), 2026-10-09T17:50:26+05:30
+ id |              session_id              |       name        | target  |   step   | client | config_ms 
+----+--------------------------------------+-------------------+---------+----------+--------+-----------
+  1 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | landed            |         |          | web    |          
+  2 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | platform | web    |          
+  3 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | platform_selected | android |          | web    |          
+  4 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | identity | web    |          
+  5 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | features | web    |          
+  6 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | look     | web    |          
+  7 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | motion   | web    |          
+  8 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | build    | web    |          
+  9 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | review   | web    |          
+ 10 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | generate_clicked  | android |          | web    |          
+ 11 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | generated         | android |          | web    |    161314
+ 12 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | downloaded        | android |          | web    |    161314
+ 13 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | download_started  | android |          | web    |          
+ 14 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | platform | web    |          
+ 15 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | platform_selected | android |          | web    |          
+ 16 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | step_viewed       | android | review   | web    |          
+ 17 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | generated         | android |          | web    |          
+ 18 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | downloaded        | android |          | web    |          
+ 19 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | generate_clicked  | android |          | web    |          
+ 20 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | download_started  | android |          | web    |          
+(20 rows)
+
+ id | target  | outcome |  preset  | design_style | client | config_ms | queue_ms | python_ms | stream_ms | zip_bytes |              session_id              | notes | ignored_fields | warnings 
+----+---------+---------+----------+--------------+--------+-----------+----------+-----------+-----------+-----------+--------------------------------------+-------+----------------+----------
+  1 | android | ok      | standard | Social       | web    |    161314 |        0 |      1956 |         0 |    471342 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | {}    | {}             | {}
+  2 | android | ok      | standard | Social       | web    |           |        0 |       770 |         0 |    471341 | 2e9a7c5d-6b9a-4168-a02f-0ad6c7ee7191 | {}    | {}             | {}
+(2 rows)
+
+ visits |       string_agg        
+--------+-------------------------
+      1 | chrome/linux/desktop/xs
+(1 row)
+

@@ -1,0 +1,26 @@
+
+Summary
+───────
+         App  Preset Lean (PresetLean)
+     Package  com.example.lean
+     Min SDK  API 26 · Android 8.0 (Oreo)
+  Target SDK  API 37 · Android 17 (Cinnamon Bun)
+     Version  1.0.0 (1)
+  Desugaring  off
+    Features  catalog, leakcanary, network, sample
+     Modules  orders
+   Languages  en, de, es, fr, hi, pt-BR
+    Typeface  DM Sans · JetBrains Mono
+     Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+       Style  Utility
+      Motion  Standard, haptics on
+        Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/preset_lean
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/preset_lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

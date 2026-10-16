@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-14T11:33:23.751Z" hostname="pop-os" time="1.092">
+  <properties/>
+  <testcase name="a travelling lens stretches along the bar" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.178"/>
+  <testcase name="a lens that has handed over is not redrawn while it settles" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.123"/>
+  <testcase name="with animations off neither a selection nor a drag turns the lens to glass" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.069"/>
+  <testcase name="a composition before the app takes up a released tab leaves the lens going there" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.056"/>
+  <testcase name="a new motion style reaches the lens already in the bar" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.057"/>
+  <testcase name="a selection's lens is glass on screen while it travels" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.074"/>
+  <testcase name="at Live a selection carries the lens as glass" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.065"/>
+  <testcase name="a pressed lens shows its backdrop" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.07"/>
+  <testcase name="a travelling lens magnifies what is under it" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.081"/>
+  <testcase name="a settled lens drawn again samples nothing" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.108"/>
+  <testcase name="a lens at rest neither samples nor draws" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.058"/>
+  <testcase name="below Live a selection moves the lens without refracting" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.065"/>
+  <testcase name="a travelling lens recomposes nothing" classname="com.base.app.core.designsystem.foundation.glass.LiquidLensTest" time="0.072"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,4 @@
+[locked:adb] waiting for lock...
+run 1/1: install, profile, warm-up
+perf: the tab bar (tab_0) did not appear within 30 s
+EXIT=2

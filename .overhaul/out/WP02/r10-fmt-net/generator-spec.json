@@ -1,0 +1,50 @@
+{
+  "generator": {
+    "commit": "a6a207a41e24",
+    "generatedOn": "2026-10-13"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "WP02 Fit",
+  "display_name": "",
+  "package_name": "io.example.fit",
+  "architecture": "compact",
+  "features": [
+    "formatting",
+    "network"
+  ],
+  "feature_modules": [
+    "map",
+    "trips",
+    "orders",
+    "payments",
+    "inventory",
+    "statements",
+    "user_profile",
+    "notification",
+    "subscriptions",
+    "recommendations",
+    "customer_order_history",
+    "abcdefghijklmnopqrstuvwxyzabcd"
+  ],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [],
+  "android": {
+    "min_sdk": 26,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "1.0.0",
+    "version_code": 1,
+    "api_base_urls": {},
+    "web_socket_urls": {},
+    "deeplink_scheme": "",
+    "deeplink_host": ""
+  }
+}

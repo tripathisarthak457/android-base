@@ -1,0 +1,16 @@
+....................................................................................s..........................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 255 tests in 22.596s
+
+OK (skipped=1)
+
+61 projects in 31 s: 0 new issues, 418 known (7 of 7 known-issue lines seen).
+CONSISTENCY OK
+web/frontend/lib/catalogue.json is current.
+  ! Upgraded a schema-1 spec: 'min_sdk', 'target_sdk', 'compile_sdk', 'version_name', 'version_code', 'keystores', 'api_base_urls', 'web_socket_urls', 'deeplink_scheme' and 'deeplink_host' now live under "android".
+  ! 'firebase' is now 'crashlytics', 'firebaseanalytics' and 'remoteconfig'.
+  ! 'room' is now 'offlinequeue'.
+  ! 'workmanager' is no longer a feature: WorkManager arrives with 'offlinequeue', which has a worker to run.
+  ! 'widget' was removed: its Glance runtime started WorkManager and a database at every launch to show one line of text.
+Gradle builds passed at d2febdbc7ee6ba60989f68eedb91881dce966196 on a clean tree: 2026-10-13T16:39:49+05:30
+[locked:emu] waiting for lock...

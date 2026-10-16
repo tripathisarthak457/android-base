@@ -1,0 +1,140 @@
+{
+  "description": "Session headers on POST /api/v1/{target}/generate (MASTER-PLAN A10.1). Each case lists request headers and the values the API stores for them. A header that fails its check is ignored, never an error. Read by web/api (internal/telemetry) and by the website's request.ts tests.",
+  "rules": {
+    "X-Session-Id": "UUID v4, whole value, case-insensitive; stored lowercase",
+    "X-Config-Ms": "decimal digits only, 0 to 7200000 inclusive",
+    "X-Client": "1 to 64 printable ASCII characters; 'web' when it starts with 'android-base-web/' followed by at least one character, otherwise 'bot' when the User-Agent is a crawler, otherwise 'cli'"
+  },
+  "cases": [
+    {
+      "name": "the website",
+      "headers": {
+        "X-Session-Id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c",
+        "X-Config-Ms": "93000",
+        "X-Client": "android-base-web/1a2b3c4",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+      },
+      "expected": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c", "config_ms": 93000, "client": "web"}
+    },
+    {
+      "name": "a script with no session headers",
+      "headers": {"User-Agent": "curl/8.5.0"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "no headers at all",
+      "headers": {},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "an uppercase session id is stored lowercase",
+      "headers": {"X-Session-Id": "3F1C2A9E-8B7D-4C6E-9A1B-2D3E4F5A6B7C", "X-Client": "android-base-web/dev"},
+      "expected": {"session_id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c", "config_ms": null, "client": "web"}
+    },
+    {
+      "name": "a version 1 UUID is not a session id",
+      "headers": {"X-Session-Id": "3f1c2a9e-8b7d-1c6e-9a1b-2d3e4f5a6b7c"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "a UUID with the wrong variant is not a session id",
+      "headers": {"X-Session-Id": "3f1c2a9e-8b7d-4c6e-7a1b-2d3e4f5a6b7c"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "a braced UUID is not a session id",
+      "headers": {"X-Session-Id": "{3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c}"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "a UUID with text after it is not a session id",
+      "headers": {"X-Session-Id": "3f1c2a9e-8b7d-4c6e-9a1b-2d3e4f5a6b7c-x"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "zero configurator time",
+      "headers": {"X-Config-Ms": "0"},
+      "expected": {"session_id": null, "config_ms": 0, "client": "cli"}
+    },
+    {
+      "name": "the two-hour cap itself",
+      "headers": {"X-Config-Ms": "7200000"},
+      "expected": {"session_id": null, "config_ms": 7200000, "client": "cli"}
+    },
+    {
+      "name": "one millisecond over the cap is ignored, so the site caps before sending",
+      "headers": {"X-Config-Ms": "7200001"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "a negative time is ignored",
+      "headers": {"X-Config-Ms": "-1"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "a fractional time is ignored",
+      "headers": {"X-Config-Ms": "1500.5"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "exponent notation is ignored",
+      "headers": {"X-Config-Ms": "1e3"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "a plus sign is ignored",
+      "headers": {"X-Config-Ms": "+500"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "leading zeros are still a number",
+      "headers": {"X-Config-Ms": "0042"},
+      "expected": {"session_id": null, "config_ms": 42, "client": "cli"}
+    },
+    {
+      "name": "the site prefix without a build is not the site",
+      "headers": {"X-Client": "android-base-web/"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "the prefix is case-sensitive",
+      "headers": {"X-Client": "Android-Base-Web/1a2b3c4"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "an X-Client over 64 characters is ignored",
+      "headers": {"X-Client": "android-base-web/0123456789012345678901234567890123456789012345678"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "an X-Client of exactly 64 characters is the site",
+      "headers": {"X-Client": "android-base-web/01234567890123456789012345678901234567890123456"},
+      "expected": {"session_id": null, "config_ms": null, "client": "web"}
+    },
+    {
+      "name": "an X-Client that is not printable ASCII is ignored",
+      "headers": {"X-Client": "android-base-web/café"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    },
+    {
+      "name": "a crawler",
+      "headers": {"User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"},
+      "expected": {"session_id": null, "config_ms": null, "client": "bot"}
+    },
+    {
+      "name": "a headless browser",
+      "headers": {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36"},
+      "expected": {"session_id": null, "config_ms": null, "client": "bot"}
+    },
+    {
+      "name": "the site's own header wins over a crawler-like agent",
+      "headers": {"X-Client": "android-base-web/1a2b3c4", "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1)"},
+      "expected": {"session_id": null, "config_ms": null, "client": "web"}
+    },
+    {
+      "name": "python-requests is a script, not a crawler",
+      "headers": {"User-Agent": "python-requests/2.32.3"},
+      "expected": {"session_id": null, "config_ms": null, "client": "cli"}
+    }
+  ]
+}

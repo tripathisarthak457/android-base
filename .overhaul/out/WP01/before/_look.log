@@ -1,0 +1,26 @@
+
+Summary
+───────
+         App  Look Check (LookCheck)
+     Package  com.example.look
+     Min SDK  API 24 · Android 7.0 (Nougat)
+  Target SDK  API 37 · Android 17 (Cinnamon Bun)
+     Version  3.2.1 (42)
+  Desugaring  on — java.time below API 26
+    Features  catalog, language, network, sample, settings
+     Modules  none
+   Languages  en, hi
+    Typeface  Plus Jakarta Sans · IBM Plex Mono
+     Colours  #16A34A · #F5A524 · #166FA3 (derived)
+       Style  Playful
+      Motion  Bouncy, haptics off
+        Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/look
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP01/before/look and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

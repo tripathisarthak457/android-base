@@ -1,0 +1,397 @@
+Starting a Gradle Daemon, 1 busy and 2 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :app:assembleDevRelease
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevReleaseBuild UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies FROM-CACHE
+> Task :core:common:verifyApiPurity FROM-CACHE
+> Task :core:datastore:verifyModuleDependencies FROM-CACHE
+> Task :core:datastore:verifyApiPurity FROM-CACHE
+> Task :core:datastore:preBuild UP-TO-DATE
+> Task :core:datastore:preReleaseBuild UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preReleaseBuild UP-TO-DATE
+> Task :core:designsystem:mergeReleaseJniLibFolders
+> Task :core:datastore:mergeReleaseJniLibFolders
+> Task :app:mergeDevReleaseJniLibFolders
+> Task :core:common:compileKotlin FROM-CACHE
+> Task :core:designsystem:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:datastore:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:mvi:verifyApiPurity FROM-CACHE
+> Task :core:mvi:verifyModuleDependencies FROM-CACHE
+> Task :core:designsystem:copyReleaseJniLibsProjectOnly
+> Task :core:datastore:copyReleaseJniLibsProjectOnly
+> Task :core:mvi:preBuild UP-TO-DATE
+> Task :core:mvi:preReleaseBuild UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies FROM-CACHE
+> Task :core:common:jar
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:navigation:preBuild UP-TO-DATE
+> Task :core:navigation:preReleaseBuild UP-TO-DATE
+> Task :core:mvi:mergeReleaseJniLibFolders
+> Task :core:network:verifyApiPurity FROM-CACHE
+> Task :core:navigation:mergeReleaseJniLibFolders
+> Task :core:network:verifyModuleDependencies FROM-CACHE
+> Task :core:network:preBuild UP-TO-DATE
+> Task :core:navigation:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:mvi:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:network:preReleaseBuild UP-TO-DATE
+> Task :core:navigation:copyReleaseJniLibsProjectOnly
+> Task :core:mvi:copyReleaseJniLibsProjectOnly
+> Task :core:ui:verifyApiPurity FROM-CACHE
+> Task :core:ui:verifyModuleDependencies FROM-CACHE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preReleaseBuild UP-TO-DATE
+> Task :core:network:mergeReleaseJniLibFolders
+> Task :core:network:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:home:verifyModuleDependencies FROM-CACHE
+> Task :data:home:verifyApiPurity FROM-CACHE
+> Task :data:home:preBuild UP-TO-DATE
+> Task :data:home:preReleaseBuild UP-TO-DATE
+> Task :core:ui:mergeReleaseJniLibFolders
+> Task :core:network:copyReleaseJniLibsProjectOnly
+> Task :core:ui:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:home:mergeReleaseJniLibFolders
+> Task :feature:home:verifyApiPurity FROM-CACHE
+> Task :data:home:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:home:verifyModuleDependencies FROM-CACHE
+> Task :feature:home:preBuild UP-TO-DATE
+> Task :core:ui:copyReleaseJniLibsProjectOnly
+> Task :feature:home:preReleaseBuild UP-TO-DATE
+> Task :data:home:copyReleaseJniLibsProjectOnly
+> Task :feature:home:mergeReleaseJniLibFolders
+> Task :core:datastore:javaPreCompileRelease FROM-CACHE
+> Task :core:network:javaPreCompileRelease FROM-CACHE
+> Task :feature:home:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:home:copyReleaseJniLibsProjectOnly
+> Task :core:designsystem:generateReleaseResources FROM-CACHE
+> Task :core:designsystem:processReleaseNavigationResources FROM-CACHE
+> Task :core:designsystem:javaPreCompileRelease FROM-CACHE
+> Task :core:designsystem:packageReleaseResources FROM-CACHE
+> Task :core:designsystem:parseReleaseLocalResources FROM-CACHE
+> Task :core:designsystem:generateReleaseRFile FROM-CACHE
+> Task :core:datastore:kspReleaseKotlin FROM-CACHE
+> Task :core:mvi:compileReleaseKotlin FROM-CACHE
+> Task :core:mvi:javaPreCompileRelease FROM-CACHE
+> Task :core:mvi:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarRelease
+> Task :core:navigation:javaPreCompileRelease FROM-CACHE
+> Task :core:datastore:compileReleaseKotlin FROM-CACHE
+> Task :core:ui:generateReleaseResources FROM-CACHE
+> Task :core:ui:packageReleaseResources FROM-CACHE
+> Task :core:ui:processReleaseNavigationResources FROM-CACHE
+> Task :core:ui:parseReleaseLocalResources FROM-CACHE
+> Task :core:ui:generateReleaseRFile FROM-CACHE
+> Task :core:ui:javaPreCompileRelease FROM-CACHE
+> Task :data:home:kspReleaseKotlin FROM-CACHE
+> Task :data:home:compileReleaseKotlin FROM-CACHE
+> Task :data:home:javaPreCompileRelease FROM-CACHE
+> Task :core:designsystem:compileReleaseKotlin FROM-CACHE
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :app:mergeDevReleaseNativeLibs
+> Task :core:designsystem:bundleLibCompileToJarRelease
+
+> Task :app:stripDevReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :app:extractDevReleaseNativeSymbolTables FROM-CACHE
+> Task :app:mergeDevReleaseNativeDebugMetadata NO-SOURCE
+> Task :feature:home:generateReleaseResources FROM-CACHE
+> Task :feature:home:packageReleaseResources FROM-CACHE
+> Task :feature:home:processReleaseNavigationResources FROM-CACHE
+> Task :feature:home:parseReleaseLocalResources FROM-CACHE
+> Task :feature:home:generateReleaseRFile FROM-CACHE
+> Task :feature:home:javaPreCompileRelease FROM-CACHE
+> Task :core:mvi:mergeReleaseGeneratedProguardFiles
+> Task :core:mvi:exportReleaseConsumerProguardFiles
+> Task :core:designsystem:mergeReleaseGeneratedProguardFiles
+> Task :core:designsystem:exportReleaseConsumerProguardFiles
+> Task :core:navigation:kspReleaseKotlin FROM-CACHE
+> Task :core:navigation:compileReleaseKotlin FROM-CACHE
+> Task :app:checkDevReleaseDuplicateClasses
+> Task :core:datastore:prepareReleaseArtProfile
+> Task :core:designsystem:prepareReleaseArtProfile
+> Task :data:home:compileReleaseJavaWithJavac FROM-CACHE
+> Task :core:mvi:prepareReleaseArtProfile
+> Task :core:datastore:compileReleaseJavaWithJavac FROM-CACHE
+> Task :data:home:mergeReleaseGeneratedProguardFiles
+> Task :data:home:bundleLibCompileToJarRelease
+> Task :core:datastore:mergeReleaseGeneratedProguardFiles
+> Task :data:home:exportReleaseConsumerProguardFiles
+> Task :core:datastore:bundleLibCompileToJarRelease
+> Task :core:navigation:prepareReleaseArtProfile
+> Task :core:datastore:exportReleaseConsumerProguardFiles
+> Task :core:network:prepareReleaseArtProfile
+> Task :data:home:prepareReleaseArtProfile
+> Task :core:ui:prepareReleaseArtProfile
+> Task :feature:home:prepareReleaseArtProfile
+> Task :app:generateDevReleaseBuildConfig FROM-CACHE
+> Task :app:generateDevReleaseResources FROM-CACHE
+> Task :app:packageDevReleaseResources FROM-CACHE
+> Task :core:datastore:generateReleaseEmptyResourceFiles
+> Task :core:mvi:generateReleaseEmptyResourceFiles
+> Task :core:navigation:generateReleaseEmptyResourceFiles
+> Task :core:network:generateReleaseEmptyResourceFiles
+> Task :data:home:generateReleaseEmptyResourceFiles
+> Task :core:network:kspReleaseKotlin FROM-CACHE
+> Task :core:navigation:compileReleaseJavaWithJavac FROM-CACHE
+> Task :core:navigation:bundleLibCompileToJarRelease
+> Task :app:mergeDevReleaseArtProfile
+> Task :core:navigation:mergeReleaseGeneratedProguardFiles
+> Task :core:navigation:exportReleaseConsumerProguardFiles
+> Task :app:javaPreCompileDevRelease FROM-CACHE
+> Task :core:network:compileReleaseKotlin FROM-CACHE
+> Task :core:datastore:bundleLibRuntimeToJarRelease
+> Task :core:navigation:bundleLibRuntimeToJarRelease
+> Task :core:mvi:bundleLibRuntimeToJarRelease
+> Task :data:home:bundleLibRuntimeToJarRelease
+> Task :core:network:compileReleaseJavaWithJavac FROM-CACHE
+> Task :app:processDevReleaseNavigationResources FROM-CACHE
+> Task :core:network:mergeReleaseGeneratedProguardFiles
+> Task :app:parseDevReleaseLocalResources FROM-CACHE
+> Task :core:network:exportReleaseConsumerProguardFiles
+> Task :core:network:bundleLibCompileToJarRelease
+> Task :app:generateDevReleaseRFile FROM-CACHE
+> Task :core:network:bundleLibRuntimeToJarRelease
+> Task :core:datastore:writeReleaseAarMetadata
+> Task :core:designsystem:writeReleaseAarMetadata
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :core:ui:compileReleaseKotlin FROM-CACHE
+> Task :core:mvi:writeReleaseAarMetadata
+> Task :core:navigation:writeReleaseAarMetadata
+> Task :core:ui:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:ui:writeReleaseAarMetadata
+> Task :core:network:writeReleaseAarMetadata
+> Task :core:ui:mergeReleaseGeneratedProguardFiles
+> Task :core:ui:bundleLibCompileToJarRelease
+> Task :core:ui:exportReleaseConsumerProguardFiles
+> Task :data:home:writeReleaseAarMetadata
+> Task :core:ui:bundleLibRuntimeToJarRelease
+> Task :feature:home:writeReleaseAarMetadata
+> Task :app:mapDevReleaseSourceSetPaths
+> Task :app:compileDevReleaseNavigationResources FROM-CACHE
+> Task :app:createDevReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksDevRelease FROM-CACHE
+> Task :core:datastore:processReleaseManifest FROM-CACHE
+> Task :core:designsystem:extractDeepLinksRelease FROM-CACHE
+> Task :feature:home:kspReleaseKotlin FROM-CACHE
+> Task :core:designsystem:processReleaseManifest FROM-CACHE
+> Task :core:mvi:processReleaseManifest FROM-CACHE
+> Task :core:navigation:processReleaseManifest FROM-CACHE
+> Task :core:network:processReleaseManifest FROM-CACHE
+> Task :core:ui:extractDeepLinksRelease FROM-CACHE
+> Task :core:ui:processReleaseManifest FROM-CACHE
+> Task :data:home:processReleaseManifest FROM-CACHE
+> Task :feature:home:compileReleaseKotlin FROM-CACHE
+> Task :feature:home:extractDeepLinksRelease FROM-CACHE
+> Task :feature:home:processReleaseManifest FROM-CACHE
+> Task :feature:home:compileReleaseJavaWithJavac FROM-CACHE
+> Task :feature:home:mergeReleaseGeneratedProguardFiles
+> Task :feature:home:exportReleaseConsumerProguardFiles
+> Task :feature:home:bundleLibCompileToJarRelease
+> Task :app:checkDevReleaseAarMetadata
+> Task :app:kspDevReleaseKotlin FROM-CACHE
+> Task :feature:home:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:mapReleaseSourceSetPaths
+> Task :app:mergeDevReleaseResources FROM-CACHE
+> Task :core:designsystem:compileReleaseLibraryResources FROM-CACHE
+> Task :core:ui:mapReleaseSourceSetPaths
+> Task :feature:home:mapReleaseSourceSetPaths
+> Task :core:ui:compileReleaseLibraryResources FROM-CACHE
+> Task :feature:home:compileReleaseLibraryResources FROM-CACHE
+> Task :app:extractProguardFiles
+> Task :core:datastore:processReleaseJavaRes
+> Task :core:mvi:processReleaseJavaRes
+> Task :core:designsystem:processReleaseJavaRes
+> Task :core:navigation:processReleaseJavaRes
+> Task :app:compileDevReleaseKotlin FROM-CACHE
+> Task :core:network:processReleaseJavaRes
+> Task :core:ui:processReleaseJavaRes
+> Task :app:processDevReleaseJavaRes
+> Task :data:home:processReleaseJavaRes
+> Task :app:mergeDevReleaseStartupProfile
+> Task :app:generateDevReleaseAssets UP-TO-DATE
+> Task :core:datastore:generateReleaseAssets UP-TO-DATE
+> Task :feature:home:processReleaseJavaRes
+> Task :core:datastore:mergeReleaseAssets
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :app:compileDevReleaseJavaWithJavac FROM-CACHE
+> Task :app:hiltCollectClassesDevRelease UP-TO-DATE
+> Task :core:designsystem:mergeReleaseAssets
+> Task :core:mvi:generateReleaseAssets UP-TO-DATE
+> Task :core:mvi:mergeReleaseAssets
+> Task :core:navigation:generateReleaseAssets UP-TO-DATE
+> Task :core:navigation:mergeReleaseAssets
+> Task :core:network:generateReleaseAssets UP-TO-DATE
+> Task :core:network:mergeReleaseAssets
+> Task :core:ui:generateReleaseAssets UP-TO-DATE
+> Task :core:ui:mergeReleaseAssets
+> Task :data:home:generateReleaseAssets UP-TO-DATE
+> Task :data:home:mergeReleaseAssets
+> Task :feature:home:generateReleaseAssets UP-TO-DATE
+> Task :feature:home:mergeReleaseAssets
+> Task :app:processDevReleaseMainManifest FROM-CACHE
+> Task :app:processDevReleaseManifest FROM-CACHE
+> Task :app:processDevReleaseManifestForPackage FROM-CACHE
+> Task :app:mergeDevReleaseAssets
+> Task :app:compressDevReleaseAssets FROM-CACHE
+> Task :app:extractDevReleaseVersionControlInfo
+> Task :core:datastore:createFullJarRelease
+> Task :core:datastore:extractProguardFiles
+> Task :app:hiltAggregateDepsDevRelease FROM-CACHE
+> Task :app:hiltJavaCompileDevRelease FROM-CACHE
+> Task :core:datastore:prepareLintJarForPublish
+> Task :core:designsystem:createFullJarRelease
+> Task :core:designsystem:extractProguardFiles
+> Task :app:processDevReleaseResources FROM-CACHE
+> Task :app:transformDevReleaseClassesWithAsm FROM-CACHE
+> Task :app:expandDevReleaseArtProfileWildcards FROM-CACHE
+> Task :app:mergeDevReleaseGeneratedProguardFiles
+> Task :app:produceDevReleaseComposeMapping FROM-CACHE
+> Task :app:reportDevReleaseComposeMappingErrors
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:mvi:createFullJarRelease
+> Task :core:mvi:extractProguardFiles
+> Task :core:datastore:generateReleaseLintModel
+> Task :core:mvi:prepareLintJarForPublish
+> Task :core:navigation:createFullJarRelease
+> Task :core:navigation:extractProguardFiles
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:network:createFullJarRelease
+> Task :core:network:extractProguardFiles
+> Task :core:mvi:generateReleaseLintModel
+> Task :core:network:prepareLintJarForPublish
+> Task :core:ui:createFullJarRelease
+> Task :core:ui:extractProguardFiles
+> Task :core:ui:prepareLintJarForPublish
+> Task :data:home:createFullJarRelease
+> Task :data:home:extractProguardFiles
+> Task :data:home:generateReleaseLintModel
+> Task :data:home:prepareLintJarForPublish
+> Task :feature:home:createFullJarRelease
+> Task :feature:home:extractProguardFiles
+> Task :feature:home:prepareLintJarForPublish
+> Task :core:network:generateReleaseLintModel
+> Task :core:designsystem:generateReleaseLintModel
+> Task :app:mergeDevReleaseJavaResource
+> Task :core:network:extractReleaseAnnotations FROM-CACHE
+> Task :core:network:checkReleaseAarMetadata
+> Task :core:network:mergeReleaseConsumerProguardFiles
+> Task :core:network:mergeReleaseJavaResource
+> Task :core:network:syncReleaseLibJars FROM-CACHE
+> Task :core:network:bundleReleaseLocalLintAar
+> Task :core:datastore:checkReleaseAarMetadata
+> Task :core:datastore:extractReleaseAnnotations FROM-CACHE
+> Task :core:datastore:mergeReleaseConsumerProguardFiles
+> Task :core:datastore:mergeReleaseJavaResource
+> Task :core:datastore:syncReleaseLibJars FROM-CACHE
+> Task :core:datastore:bundleReleaseLocalLintAar
+> Task :feature:home:extractDeepLinksForAarRelease FROM-CACHE
+> Task :feature:home:checkReleaseAarMetadata
+> Task :feature:home:mergeReleaseConsumerProguardFiles
+> Task :feature:home:extractReleaseAnnotations FROM-CACHE
+> Task :feature:home:mergeReleaseJavaResource
+> Task :feature:home:syncReleaseLibJars FROM-CACHE
+> Task :feature:home:bundleReleaseLocalLintAar
+> Task :core:ui:checkReleaseAarMetadata
+> Task :core:ui:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:ui:mergeReleaseConsumerProguardFiles
+> Task :core:ui:extractReleaseAnnotations FROM-CACHE
+> Task :core:ui:mergeReleaseJavaResource
+> Task :core:ui:syncReleaseLibJars FROM-CACHE
+> Task :core:navigation:generateReleaseLintModel
+> Task :core:ui:bundleReleaseLocalLintAar
+> Task :core:navigation:checkReleaseAarMetadata
+> Task :core:navigation:mergeReleaseConsumerProguardFiles
+> Task :core:navigation:extractReleaseAnnotations FROM-CACHE
+> Task :core:mvi:checkReleaseAarMetadata
+> Task :core:navigation:mergeReleaseJavaResource
+> Task :core:navigation:syncReleaseLibJars FROM-CACHE
+> Task :core:mvi:extractReleaseAnnotations FROM-CACHE
+> Task :core:mvi:mergeReleaseConsumerProguardFiles
+> Task :core:navigation:bundleReleaseLocalLintAar
+> Task :core:mvi:mergeReleaseJavaResource
+> Task :core:mvi:syncReleaseLibJars FROM-CACHE
+> Task :data:home:checkReleaseAarMetadata
+> Task :core:mvi:bundleReleaseLocalLintAar
+> Task :data:home:extractReleaseAnnotations FROM-CACHE
+> Task :data:home:mergeReleaseConsumerProguardFiles
+> Task :data:home:mergeReleaseJavaResource
+> Task :data:home:syncReleaseLibJars FROM-CACHE
+> Task :data:home:bundleReleaseLocalLintAar
+> Task :core:designsystem:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:designsystem:checkReleaseAarMetadata
+> Task :core:designsystem:mergeReleaseConsumerProguardFiles
+> Task :core:designsystem:extractReleaseAnnotations FROM-CACHE
+> Task :core:designsystem:mergeReleaseJavaResource
+> Task :core:datastore:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:datastore:writeReleaseLintModelMetadata
+> Task :core:designsystem:syncReleaseLibJars FROM-CACHE
+> Task :core:designsystem:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:designsystem:writeReleaseLintModelMetadata
+> Task :core:designsystem:bundleReleaseLocalLintAar
+> Task :core:mvi:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:ui:generateReleaseLintModel
+> Task :core:mvi:writeReleaseLintModelMetadata
+> Task :core:navigation:writeReleaseLintModelMetadata
+> Task :core:navigation:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:network:writeReleaseLintModelMetadata
+> Task :core:network:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:ui:writeReleaseLintModelMetadata
+> Task :core:ui:lintVitalAnalyzeRelease FROM-CACHE
+> Task :data:home:lintVitalAnalyzeRelease FROM-CACHE
+> Task :feature:home:generateReleaseLintModel
+> Task :data:home:writeReleaseLintModelMetadata
+> Task :feature:home:writeReleaseLintModelMetadata
+> Task :core:datastore:generateReleaseLintVitalModel
+> Task :feature:home:lintVitalAnalyzeRelease FROM-CACHE
+> Task :core:designsystem:generateReleaseLintVitalModel
+> Task :core:mvi:generateReleaseLintVitalModel
+> Task :core:navigation:generateReleaseLintVitalModel
+
+> Task :app:generateDevReleaseLintVitalReportModel
+Warning: Lint will treat :core:common as an external dependency and not analyze it.
+ * Recommended Action: Apply the 'com.android.lint' plugin to java library project :core:common. to enable lint to analyze those sources.
+
+
+> Task :core:network:generateReleaseLintVitalModel
+> Task :core:ui:generateReleaseLintVitalModel
+> Task :data:home:generateReleaseLintVitalModel
+> Task :feature:home:generateReleaseLintVitalModel
+> Task :app:validateSigningDevRelease
+> Task :app:writeDevReleaseAppMetadata
+> Task :app:writeDevReleaseSigningConfigVersions
+> Task :app:collectDevReleaseDependencies
+> Task :app:sdkDevReleaseDependencyData
+> Task :app:lintVitalAnalyzeDevRelease
+> Task :app:lintVitalReportDevRelease
+> Task :app:lintVitalDevRelease
+> Task :app:minifyDevReleaseWithR8
+> Task :app:convertShrunkResourcesToBinaryDevRelease FROM-CACHE
+> Task :app:optimizeDevReleaseResources FROM-CACHE
+> Task :app:mergeDevReleaseComposeMapping
+> Task :app:compileDevReleaseArtProfile
+> Task :app:packageDevRelease
+> Task :app:assembleDevRelease
+> Task :app:createDevReleaseApkListingFileRedirect
+
+BUILD SUCCESSFUL in 1m 3s
+330 actionable tasks: 202 executed, 128 from cache
+Configuration cache entry stored.

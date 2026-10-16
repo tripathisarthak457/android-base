@@ -1,0 +1,11 @@
+
+----------------------------------------------------------------------
+Ran 250 tests in 8.409s
+
+FAILED (failures=7, errors=12, skipped=1)
+1 token copy current.
+
+web/frontend/lib/catalogue.json is stale. Run: python3 -m genkit.core.catalogue --write
+Ran 3 tests in 0.143s
+
+OK

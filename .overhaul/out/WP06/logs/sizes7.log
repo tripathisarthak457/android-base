@@ -1,0 +1,72 @@
+
+Summary
+───────
+           App  Everything (Everything)
+       Package  com.example.wp06size.aftereverything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, baselineprofile,
+                browser, catalog, coil, composemetrics, coverage,
+                crashlytics, database, deeplink, depsanalysis, devtools,
+                firebase, firebaseanalytics, flags, forms, googlefonts,
+                googlesignin, language, leakcanary, licenses, lottie, media,
+                network, offlinequeue, onboarding, paging, playstore,
+                profile, push, remoteconfig, sample, search, settings,
+                websocket
+       Modules  none
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP06/size/after-everything
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP06/size/after-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+
+Summary
+───────
+           App  Everything (Everything)
+       Package  com.example.wp06size.aftereverythingnoqueue
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, appstatus, auth, baselineprofile,
+                browser, catalog, coil, composemetrics, coverage,
+                crashlytics, database, deeplink, depsanalysis, devtools,
+                firebase, firebaseanalytics, flags, forms, googlefonts,
+                googlesignin, language, leakcanary, licenses, lottie, media,
+                network, onboarding, paging, playstore, profile, push,
+                remoteconfig, sample, search, settings, websocket
+       Modules  none
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP06/size/after-everything-noqueue
+
+  Next
+    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP06/size/after-everything-noqueue and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+BUILT after-everything after-everything-noqueue

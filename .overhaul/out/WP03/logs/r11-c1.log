@@ -1,0 +1,49 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because file 'settings.gradle.kts' has changed.
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyComposeUsage FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:verifyComposeUsage' (registered by plugin 'com.base.app.android.library').
+> :core:designsystem renders copy that is written into the Kotlin rather than into a
+  string resource, so it cannot be translated and cannot be changed without a rebuild.
+  
+  ShellSeamApi.kt:8: @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "A shell seam: features use AppSheet")
+  AppBottomSheet.kt:21: message = "Keep the sheet composed and drive visible, so it can slide away before it leaves.",
+  AppActionSheet.kt:14: message = "Moved to the sheet package, where destructive is spelt without the is.",
+  AppActionSheet.kt:30: message = "Keep the action sheet composed and drive visible, so it can slide away before it leaves.",
+  
+  Move each one to src/main/res/values/strings.xml and read it with
+  stringResource(R.string.your_key). For a string a ViewModel produces rather than a
+  composable, use UiText.of(R.string.your_key) — it resolves at render time, so it
+  follows a locale change without the ViewModel knowing there was one.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 21s
+7 actionable tasks: 2 executed, 5 up-to-date
+Configuration cache entry stored.
+EXIT 1

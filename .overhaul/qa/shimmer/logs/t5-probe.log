@@ -1,0 +1,419 @@
+[locked:gradle] waiting for lock...
+Initialized native services in: /home/crazyhusir/.gradle/native
+Initialized jansi services in: /home/crazyhusir/.gradle/native
+The client will now receive all logging from the daemon (pid: 726742). The daemon log file: /home/crazyhusir/.gradle/daemon/9.7.1/daemon-726742.out.log
+Starting 11th build in daemon [uptime: 21 mins 23.758 secs, performance: 99%, GC rate: 0.02/s, heap usage: 9% of 2.6 GiB, non-heap usage: 70% of 1 GiB]
+Using 4 worker leases.
+Operational build model parameters: {cachingModelBuilding=false, configurationCache=true, configurationCacheDisabledReason=null, configurationCacheParallelLoad=true, configurationCacheParallelStore=true, configureOnDemand=false, invalidateCoupledProjects=false, isolatedProjects=false, isolatedProjectsDiagnostics=false, isolatedProjectsDangerouslyIgnoreProblems=false, modelAsProjectDependency=false, modelBuilding=false, parallelModelBuilding=false, parallelProjectConfiguration=false, parallelProjectExecution=true, vintage=false}
+Parallel Configuration Cache is an incubating feature.
+Encryption key source: default Gradle keystore (pkcs12)
+Now considering [/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-net/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-net, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt] as hierarchies to watch
+Now considering [/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-net/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-net, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt] as hierarchies to watch
+Reusing configuration cache.
+Now considering [/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-local, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-net/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r10-fmt-net, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt/build-logic, /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/r9-fmt] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Using local directory build cache for the root build (location = /home/crazyhusir/.gradle/caches/build-cache-1, remove unused entries = after 7 days).
+Tasks to be executed: [task ':core:designsystem:verifyApiPurity', task ':core:designsystem:verifyComposeUsage', task ':core:designsystem:verifyModuleDependencies', task ':core:designsystem:preBuild', task ':core:designsystem:preDebugBuild', task ':core:designsystem:generateDebugResources', task ':core:designsystem:packageDebugResources', task ':core:designsystem:processDebugNavigationResources', task ':core:designsystem:parseDebugLocalResources', task ':core:designsystem:generateDebugRFile', task ':core:designsystem:compileDebugKotlin', task ':core:designsystem:javaPreCompileDebug', task ':core:designsystem:compileDebugJavaWithJavac', task ':core:designsystem:bundleLibRuntimeToJarDebug', task ':core:designsystem:bundleLibCompileToJarDebug', task ':core:designsystem:preDebugUnitTestBuild', task ':core:designsystem:writeDebugAarMetadata', task ':core:designsystem:checkDebugUnitTestAarMetadata', task ':core:designsystem:mapDebugSourceSetPaths', task ':core:designsystem:compileDebugLibraryResources', task ':core:designsystem:mapDebugUnitTestSourceSetPaths', task ':core:designsystem:generateDebugUnitTestResources', task ':core:designsystem:mergeDebugUnitTestResources', task ':core:designsystem:extractDeepLinksDebug', task ':core:designsystem:processDebugManifest', task ':core:designsystem:mergeDebugUnitTestManifest', task ':core:designsystem:processDebugUnitTestManifest', task ':core:designsystem:processDebugUnitTestResources', task ':core:designsystem:compileDebugUnitTestKotlin', task ':core:designsystem:javaPreCompileDebugUnitTest', task ':core:designsystem:compileDebugUnitTestJavaWithJavac', task ':core:designsystem:generateDebugUnitTestAssets', task ':core:designsystem:generateDebugAssets', task ':core:designsystem:mergeDebugAssets', task ':core:designsystem:mergeDebugUnitTestAssets', task ':core:designsystem:packageDebugUnitTestForUnitTest', task ':core:designsystem:generateDebugUnitTestConfig', task ':core:designsystem:koverFindJar', task ':core:designsystem:processDebugJavaRes', task ':core:designsystem:processDebugUnitTestJavaRes', task ':core:designsystem:testDebugUnitTest']
+Tasks that were excluded: []
+Resolve mutations for :core:designsystem:verifyApiPurity (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:verifyApiPurity (Thread[#569,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:verifyComposeUsage (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:verifyComposeUsage (Thread[#570,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:verifyModuleDependencies (Thread[#568,included builds,5,main]) started.
+:core:designsystem:verifyModuleDependencies (Thread[#568,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:generateDebugUnitTestAssets (Thread[#571,Execution worker Thread 3,5,main]) started.
+:core:designsystem:generateDebugUnitTestAssets (Thread[#571,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+Build cache key for task ':core:designsystem:verifyApiPurity' is e743ee6d3176699f11afc760fb17cf6c
+Skipping task ':core:designsystem:verifyApiPurity' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugAssets (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:generateDebugAssets (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+Skipping task ':core:designsystem:generateDebugAssets' as it has no actions.
+Resolve mutations for :core:designsystem:koverFindJar (Thread[#569,Execution worker,5,main]) started.
+Build e1b459e5-ea2a-411d-ae11-e3e7cfc4d246 is started
+:core:designsystem:koverFindJar (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+Build cache key for task ':core:designsystem:verifyModuleDependencies' is 037512097ba466d30af0de16b303f725
+Skipping task ':core:designsystem:verifyModuleDependencies' as it is up-to-date.
+
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+Skipping task ':core:designsystem:generateDebugUnitTestAssets' as it has no actions.
+
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+Caching disabled for task ':core:designsystem:koverFindJar' because:
+  Local file operations are faster then using build cache
+Skipping task ':core:designsystem:koverFindJar' as it is up-to-date.
+
+> Task :core:designsystem:verifyComposeUsage
+Caching disabled for task ':core:designsystem:verifyComposeUsage' because:
+  Caching has not been enabled for the task
+Task ':core:designsystem:verifyComposeUsage' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :core:designsystem:preBuild (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:preBuild (Thread[#570,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:preBuild
+Skipping task ':core:designsystem:preBuild' as it has no actions.
+Resolve mutations for :core:designsystem:preDebugBuild (Thread[#570,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:preDebugUnitTestBuild (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:preDebugBuild (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:preDebugUnitTestBuild (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:preDebugBuild
+Skipping task ':core:designsystem:preDebugBuild' as it has no actions.
+Resolve mutations for :core:designsystem:generateDebugResources (Thread[#570,Execution worker Thread 2,5,main]) started.
+
+> Task :core:designsystem:preDebugUnitTestBuild
+Skipping task ':core:designsystem:preDebugUnitTestBuild' as it has no actions.
+Resolve mutations for :core:designsystem:javaPreCompileDebug (Thread[#568,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugNavigationResources (Thread[#571,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:writeDebugAarMetadata (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:javaPreCompileDebug (Thread[#568,included builds,5,main]) started.
+:core:designsystem:writeDebugAarMetadata (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:generateDebugResources (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:processDebugNavigationResources (Thread[#571,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+Build cache key for task ':core:designsystem:javaPreCompileDebug' is 08f6310aac597c158175a3efe6951459
+Skipping task ':core:designsystem:javaPreCompileDebug' as it is up-to-date.
+
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugResources' is fc8196f1f5e4018ef55a840fd4077596
+Skipping task ':core:designsystem:generateDebugResources' as it is up-to-date.
+
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+Caching disabled for task ':core:designsystem:writeDebugAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:writeDebugAarMetadata' as it is up-to-date.
+Resolve mutations for :core:designsystem:packageDebugResources (Thread[#570,Execution worker Thread 2,5,main]) started.
+work action resolve aar-metadata.properties (project ':core:designsystem') (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugNavigationResources' is dfbed4d57a639564d8fd1e6c2d3f5cda
+Skipping task ':core:designsystem:processDebugNavigationResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:checkDebugUnitTestAarMetadata (Thread[#571,Execution worker Thread 3,5,main]) started.
+:core:designsystem:checkDebugUnitTestAarMetadata (Thread[#571,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:mapDebugSourceSetPaths (Thread[#568,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:mapDebugUnitTestSourceSetPaths (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:packageDebugResources (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:mapDebugSourceSetPaths (Thread[#568,included builds,5,main]) started.
+:core:designsystem:mapDebugUnitTestSourceSetPaths (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:designsystem:mapDebugUnitTestSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:mapDebugUnitTestSourceSetPaths' as it is up-to-date.
+
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+Caching disabled for task ':core:designsystem:mapDebugSourceSetPaths' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:mapDebugSourceSetPaths' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugUnitTestResources (Thread[#569,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:extractDeepLinksDebug (Thread[#568,included builds,5,main]) started.
+:core:designsystem:generateDebugUnitTestResources (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:extractDeepLinksDebug (Thread[#568,included builds,5,main]) started.
+
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugUnitTestResources' is fd1efb7eff5ac03130a95cc86813ab46
+Skipping task ':core:designsystem:generateDebugUnitTestResources' as it is up-to-date.
+
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+Build cache key for task ':core:designsystem:packageDebugResources' is b790964bcc800140c12ae6791faff232
+Skipping task ':core:designsystem:packageDebugResources' as it is up-to-date.
+
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+Build cache key for task ':core:designsystem:extractDeepLinksDebug' is f0f96b1ebf4a41906744be39ed4e2d6a
+Skipping task ':core:designsystem:extractDeepLinksDebug' as it is up-to-date.
+Resolve mutations for :core:designsystem:parseDebugLocalResources (Thread[#570,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:compileDebugLibraryResources (Thread[#568,included builds,5,main]) started.
+:core:designsystem:parseDebugLocalResources (Thread[#570,Execution worker Thread 2,5,main]) started.
+work action resolve packageDebugResources (project ':core:designsystem') (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:compileDebugLibraryResources (Thread[#568,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:mergeDebugUnitTestResources (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:mergeDebugUnitTestResources (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+Build cache key for task ':core:designsystem:parseDebugLocalResources' is f6f9edb6e478e1112c2dd42280ac5b95
+Skipping task ':core:designsystem:parseDebugLocalResources' as it is up-to-date.
+
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+Build cache key for task ':core:designsystem:compileDebugLibraryResources' is 9c60374ef4dd4a3b78e4b04517098488
+Skipping task ':core:designsystem:compileDebugLibraryResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugRFile (Thread[#570,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugManifest (Thread[#568,included builds,5,main]) started.
+:core:designsystem:generateDebugRFile (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:processDebugManifest (Thread[#568,included builds,5,main]) started.
+
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+Build cache key for task ':core:designsystem:generateDebugRFile' is f18aaaf91eda411284e9b4a86d079b1c
+Skipping task ':core:designsystem:generateDebugRFile' as it is up-to-date.
+
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugManifest' is 04af9a4ef33c3c78854357c28c541401
+Skipping task ':core:designsystem:processDebugManifest' as it is up-to-date.
+Resolve mutations for :core:designsystem:compileDebugKotlin (Thread[#570,Execution worker Thread 2,5,main]) started.
+work action resolve navigation.json (project ':core:designsystem') (Thread[#568,included builds,5,main]) started.
+work action resolve AndroidManifest.xml (project ':core:designsystem') (Thread[#568,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:mergeDebugUnitTestManifest (Thread[#568,included builds,5,main]) started.
+:core:designsystem:compileDebugKotlin (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:mergeDebugUnitTestManifest (Thread[#568,included builds,5,main]) started.
+
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+Caching disabled for task ':core:designsystem:checkDebugUnitTestAarMetadata' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:checkDebugUnitTestAarMetadata' as it is up-to-date.
+work action resolve package-aware-r.txt (project ':core:designsystem') (Thread[#571,Execution worker Thread 3,5,main]) started.
+work action resolve out (project ':core:designsystem') (Thread[#571,Execution worker Thread 3,5,main]) started.
+work action resolve file-map.txt (project ':core:designsystem') (Thread[#571,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:javaPreCompileDebugUnitTest (Thread[#571,Execution worker Thread 3,5,main]) started.
+:core:designsystem:javaPreCompileDebugUnitTest (Thread[#571,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:designsystem:mergeDebugUnitTestResources' is 8ee1c3babf21acf4e680d6f69f4ad1a6
+Skipping task ':core:designsystem:mergeDebugUnitTestResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:mergeDebugAssets (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:mergeDebugAssets (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+Caching disabled for task ':core:designsystem:mergeDebugAssets' because:
+  Simple merging task
+Skipping task ':core:designsystem:mergeDebugAssets' as it is up-to-date.
+
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+Build cache key for task ':core:designsystem:javaPreCompileDebugUnitTest' is 08f6310aac597c158175a3efe6951459
+Skipping task ':core:designsystem:javaPreCompileDebugUnitTest' as it is up-to-date.
+work action resolve mergeDebugAssets (project ':core:designsystem') (Thread[#569,Execution worker,5,main]) started.
+Resolve mutations for :core:designsystem:mergeDebugUnitTestAssets (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:mergeDebugUnitTestAssets (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+Caching disabled for task ':core:designsystem:mergeDebugUnitTestManifest' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:mergeDebugUnitTestManifest' as it is up-to-date.
+Resolve mutations for :core:designsystem:processDebugUnitTestManifest (Thread[#568,included builds,5,main]) started.
+:core:designsystem:processDebugUnitTestManifest (Thread[#568,included builds,5,main]) started.
+
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+Caching disabled for task ':core:designsystem:processDebugUnitTestManifest' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:processDebugUnitTestManifest' as it is up-to-date.
+
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/main/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/java', not found
+Build cache key for task ':core:designsystem:compileDebugKotlin' is 34b5639e35ca0fdf6808b598c99fc0ff
+Skipping task ':core:designsystem:compileDebugKotlin' as it is up-to-date.
+Resolve mutations for :core:designsystem:compileDebugJavaWithJavac (Thread[#568,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugJavaRes (Thread[#570,Execution worker Thread 2,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugUnitTestResources (Thread[#571,Execution worker Thread 3,5,main]) started.
+:core:designsystem:processDebugJavaRes (Thread[#570,Execution worker Thread 2,5,main]) started.
+:core:designsystem:processDebugUnitTestResources (Thread[#571,Execution worker Thread 3,5,main]) started.
+:core:designsystem:compileDebugJavaWithJavac (Thread[#568,included builds,5,main]) started.
+
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+Caching disabled for task ':core:designsystem:mergeDebugUnitTestAssets' because:
+  Simple merging task
+Skipping task ':core:designsystem:mergeDebugUnitTestAssets' as it is up-to-date.
+
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+Skipping task ':core:designsystem:compileDebugJavaWithJavac' as it has no source files and no previous output files.
+Resolve mutations for :core:designsystem:bundleLibRuntimeToJarDebug (Thread[#568,included builds,5,main]) started.
+Resolve mutations for :core:designsystem:bundleLibCompileToJarDebug (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:bundleLibRuntimeToJarDebug (Thread[#568,included builds,5,main]) started.
+:core:designsystem:bundleLibCompileToJarDebug (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+Caching disabled for task ':core:designsystem:bundleLibRuntimeToJarDebug' because:
+  Simple merging task
+Skipping task ':core:designsystem:bundleLibRuntimeToJarDebug' as it is up-to-date.
+work action resolve classes.jar (project ':core:designsystem') (Thread[#568,included builds,5,main]) started.
+
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+Caching disabled for task ':core:designsystem:bundleLibCompileToJarDebug' because:
+  Simple merging task
+Skipping task ':core:designsystem:bundleLibCompileToJarDebug' as it is up-to-date.
+
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/main/resources', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/debug/resources', not found
+Caching disabled for task ':core:designsystem:processDebugJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:processDebugJavaRes' as it is up-to-date.
+work action resolve out (project ':core:designsystem') (Thread[#570,Execution worker Thread 2,5,main]) started.
+work action resolve classes.jar (project ':core:designsystem') (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+Build cache key for task ':core:designsystem:processDebugUnitTestResources' is 2d18f5e6d9d15a54fbb9c24c56e2914f
+Skipping task ':core:designsystem:processDebugUnitTestResources' as it is up-to-date.
+Resolve mutations for :core:designsystem:compileDebugUnitTestKotlin (Thread[#571,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:packageDebugUnitTestForUnitTest (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:packageDebugUnitTestForUnitTest (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:compileDebugUnitTestKotlin (Thread[#571,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+Caching disabled for task ':core:designsystem:packageDebugUnitTestForUnitTest' because:
+  Simple merging task
+Skipping task ':core:designsystem:packageDebugUnitTestForUnitTest' as it is up-to-date.
+Resolve mutations for :core:designsystem:generateDebugUnitTestConfig (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:generateDebugUnitTestConfig (Thread[#569,Execution worker,5,main]) started.
+
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+Caching disabled for task ':core:designsystem:generateDebugUnitTestConfig' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:generateDebugUnitTestConfig' as it is up-to-date.
+
+> Task :core:designsystem:compileDebugUnitTestKotlin
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+Build cache key for task ':core:designsystem:compileDebugUnitTestKotlin' is d2b0fba24926c6df73a1f73ad05253c0
+Task ':core:designsystem:compileDebugUnitTestKotlin' is not up-to-date because:
+  Input property 'sources' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/ZzClockProbeTest.kt has changed.
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/java', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/kotlin', not found
+Kotlin source files: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionCounter.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/animation/BusyOverlayTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/PaletteContrastTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/FontPreloadTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/theme/AppSpringsTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionJourneysTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/interaction/InputTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/interaction/RowHighlightTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/interaction/PressableTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SkeletonCoherenceTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SkeletonDrawAllocationTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/ShimmerClockTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SkeletonStillnessTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/ZzClockProbeTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/draw/SweepGeometryTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/WindowClassTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/Themed.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/formfields/DecimalInputTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/formfields/StepperTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/pickers/WheelPickerTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/selection/SegmentedControlTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/selection/SelectionTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/LargeTitleTopBarTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/TopBarTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/ContextMenuTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayBackTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/OverlayHostTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/overlay/SheetTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/datadisplay/DataTableWidthsTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/list/SwipeActionsTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/RedactedGeometryTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/feedback/SkeletonScreenshotTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/input/TextFieldSemanticsTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/ChromeInsetsTest.kt, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/refresh/PullToRefreshTest.kt
+Java source files: 
+Script source files: 
+Script file extensions: 
+Using Kotlin/JVM incremental compilation
+[KOTLIN] Kotlin compilation 'jdkHome' argument: /home/crazyhusir/.local/share/JetBrains/Toolbox/apps/android-studio/jbr
+i: Options for KOTLIN DAEMON: IncrementalCompilationOptions(super=CompilationOptions(compilerMode=INCREMENTAL_COMPILER, targetPlatform=JVM, reportCategories=[0], reportSeverity=2, requestedCompilationResults=[0], kotlinScriptExtensions=[], generateCompilerRefIndex=false), sourceChanges=org.jetbrains.kotlin.buildtools.api.SourcesChanges$Known@3c4da357, classpathChanges=NoChanges, workingDir=/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/kotlin/compileDebugUnitTestKotlin/cacheable, multiModuleICSettings=null, icFeatures=IncrementalCompilationFeatures(usePreciseJavaTracking=true, withAbiSnapshot=false, preciseCompilationResultsBackup=true, keepIncrementalCompilationCachesInMemory=true, enableUnsafeIncrementalCompilationForMultiplatform=false, enableMonotonousIncrementalCompileSetExpansion=true), outputFiles=[/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/kotlin/compileDebugUnitTestKotlin/cacheable, /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/kotlin/compileDebugUnitTestKotlin/local-state])
+i: Finished executing kotlin compiler using DAEMON strategy
+Stored cache entry for task ':core:designsystem:compileDebugUnitTestKotlin' with cache key d2b0fba24926c6df73a1f73ad05253c0
+Resolve mutations for :core:designsystem:compileDebugUnitTestJavaWithJavac (Thread[#571,Execution worker Thread 3,5,main]) started.
+Resolve mutations for :core:designsystem:processDebugUnitTestJavaRes (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:processDebugUnitTestJavaRes (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:compileDebugUnitTestJavaWithJavac (Thread[#571,Execution worker Thread 3,5,main]) started.
+
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Skipping task ':core:designsystem:compileDebugUnitTestJavaWithJavac' as it has no source files and no previous output files.
+
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/resources', not found
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/resources', not found
+Caching disabled for task ':core:designsystem:processDebugUnitTestJavaRes' because:
+  Caching has been disabled for the task
+Skipping task ':core:designsystem:processDebugUnitTestJavaRes' as it is up-to-date.
+Resolve mutations for :core:designsystem:testDebugUnitTest (Thread[#569,Execution worker,5,main]) started.
+:core:designsystem:testDebugUnitTest (Thread[#569,Execution worker,5,main]) started.
+Gradle Test Executor 6 started executing tests.
+
+> Task :core:designsystem:testDebugUnitTest
+Build cache key for task ':core:designsystem:testDebugUnitTest' is 746a14ce8cd10150b5b7947542bb4ab7
+Task ':core:designsystem:testDebugUnitTest' is not up-to-date because:
+  Input property 'candidateClassFiles' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/designsystem/foundation/draw/ZzClockProbeTest.class has changed.
+  Input property 'stableClasspath' file /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/intermediates/built_in_kotlinc/debugUnitTest/compileDebugUnitTestKotlin/classes/com/base/app/core/designsystem/foundation/draw/ZzClockProbeTest.class has changed.
+file or directory '/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/intermediates/javac/debugUnitTest/compileDebugUnitTestJavaWithJavac/classes', not found
+Starting process 'Gradle Test Executor 6'. Working directory: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem Command: /home/crazyhusir/.local/share/JetBrains/Toolbox/apps/android-studio/jbr/bin/java -Djava.awt.headless=true -Djava.library.path=/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/testDebug/jniLibs:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/src/test/jniLibs -Dorg.gradle.internal.worker.tmpdir=/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/tmp/testDebugUnitTest/work --add-opens=java.base/java.io=ALL-UNNAMED -javaagent:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/kover/kover-jvm-agent-0.9.9.jar=file:/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/tmp/testDebugUnitTest/kover-agent.args @/home/crazyhusir/.gradle/.tmp/gradle-worker-classpath5018804005236715057txt -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=IN -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 6'
+Successfully started process 'Gradle Test Executor 6'
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+
+ZzClockProbeTest > probe STANDARD_OUT
+    DBG attach 913420049 clock=null
+    DBG follow 913420049 sweeps=true next=com.base.app.core.designsystem.foundation.draw.ShimmerClock@161e4c7f clock=null
+    DBG detach 913420049 clock=com.base.app.core.designsystem.foundation.draw.ShimmerClock@161e4c7f
+    DBG attach 345647233 clock=null
+    DBG follow 345647233 sweeps=true next=com.base.app.core.designsystem.foundation.draw.ShimmerClock@161e4c7f clock=null
+    PROBE 0:-:b1:jA 20:0.19:b1:jA 40:0.55:b1:jA 60:0.89:b1:jA 80:-:b1:jA 100:-:b1:jA 120:-:b1:jA 140:0.10:b1:jA 160:0.43:b1:jA 180:0.80:b1:jA 195:0.98:b1:jA 196:0.99:b1:jA 197:0.99:b1:jA 198:0.99:b1:jA 199:1.00:b1:jA 200:-:b0:j0 201:-:b0:j0 202:-:b0:j0 203:-:b0:j0 204:-:b0:j0 205:-:b0:j0 206:-:b0:j0 207:-:b0:j0 208:-:b0:j0 209:-:b0:j0 210:-:b1:jA 211:-:b1:jA 212:0.00:b1:jA 213:0.00:b1:jA 214:0.01:b1:jA 215:0.01:b1:jA 216:0.01:b1:jA 217:0.02:b1:jA 218:0.03:b1:jA 219:0.04:b1:jA 220:0.05:b1:jA 221:0.05:b1:jA 222:0.07:b1:jA 223:0.08:b1:jA 224:0.09:b1:jA 225:0.10:b1:jA 226:0.11:b1:jA 227:0.13:b1:jA 228:0.14:b1:jA 229:0.16:b1:jA 230:0.17:b1:jA 240:0.34:b1:jA 260:0.71:b1:jA 280:0.98:b1:jA 300:-:b1:jA 320:-:b1:jA 340:0.01:b1:jA 360:0.23:b1:jA 380:0.60:b1:jA 
+    DBG detach 345647233 clock=com.base.app.core.designsystem.foundation.draw.ShimmerClock@161e4c7f
+
+Gradle Test Executor 6 finished executing tests.
+
+> Task :core:designsystem:testDebugUnitTest
+Generating HTML test report...
+Finished generating test html results (0.004 secs) into: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/reports/tests/testDebugUnitTest
+Finished generating test XML results (0.0 secs) into: /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP03-skel/templates/android/core/designsystem/build/test-results/testDebugUnitTest
+Stored cache entry for task ':core:designsystem:testDebugUnitTest' with cache key 746a14ce8cd10150b5b7947542bb4ab7
+Build e1b459e5-ea2a-411d-ae11-e3e7cfc4d246 is closed
+
+BUILD SUCCESSFUL in 15s
+34 actionable tasks: 3 executed, 31 up-to-date
+Configuration cache entry reused.
+EXIT 0

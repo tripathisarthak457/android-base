@@ -1,0 +1,146 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :check :core:common:test :app:assembleDevDebug testDebugUnitTest
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+8 problems were found storing the configuration cache.
+- Task `:core:devtools:kspReleaseKotlin` of type `com.google.devtools.ksp.gradle.KspAATask`: error writing value of type 'org.gradle.api.internal.provider.DefaultProvider'
+- Task `:core:media:kspReleaseKotlin` of type `com.google.devtools.ksp.gradle.KspAATask`: error writing value of type 'org.gradle.api.internal.provider.DefaultProvider'
+- Task `:core:network:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+- Task `:data:auth:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+- Task `:data:feed:kspReleaseKotlin` of type `com.google.devtools.ksp.gradle.KspAATask`: error writing value of type 'org.gradle.api.internal.provider.DefaultProvider'
+- Task `:data:profile:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+- Task `:data:sample:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+- Task `:data:search:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+
+See the complete report at file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP02/templates/android/build/reports/configuration-cache/8s1gsc5p2nzx1493c2gyxwrq4/d1h21z42hvrvd4lx0qsvyns8m/configuration-cache-report.html
+
+[Incubating] Problems report is available at: file:///home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP02/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Error while saving task graph
+> Configuration cache state could not be cached: field `provider` of `org.gradle.internal.serialize.codecs.core.ProviderBackedFileCollectionSpec` bean found in field `element` of `java.util.Collections$SingletonList` bean found in field `elements` of `org.gradle.internal.serialize.codecs.core.ResolutionBackedFileCollectionSpec` bean found in field `__classpathStructure__` of `com.google.devtools.ksp.gradle.KspGradleConfig_Decorated` bean found in field `__kspConfig__` of task `:core:devtools:kspReleaseKotlin` of type `com.google.devtools.ksp.gradle.KspAATask`: error writing value of type 'org.gradle.api.internal.provider.DefaultProvider'
+   > Could not resolve all files for configuration ':core:devtools:releaseCompileClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-livedata:2.8.7.
+        Required by:
+            project ':core:devtools' > com.google.dagger:hilt-android:2.60.1 > androidx.fragment:fragment:1.5.1 > androidx.loader:loader:1.0.0
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.8.7 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.8.7 available for offline mode.
+> Configuration cache state could not be cached: field `provider` of `org.gradle.internal.serialize.codecs.core.ProviderBackedFileCollectionSpec` bean found in field `element` of `java.util.Collections$SingletonList` bean found in field `elements` of `org.gradle.internal.serialize.codecs.core.ResolutionBackedFileCollectionSpec` bean found in field `__classpathStructure__` of `com.google.devtools.ksp.gradle.KspGradleConfig_Decorated` bean found in field `__kspConfig__` of task `:core:media:kspReleaseKotlin` of type `com.google.devtools.ksp.gradle.KspAATask`: error writing value of type 'org.gradle.api.internal.provider.DefaultProvider'
+   > Could not resolve all files for configuration ':core:media:releaseCompileClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-livedata:2.9.4.
+        Required by:
+            project ':core:media' > com.google.dagger:hilt-android:2.60.1 > androidx.fragment:fragment:1.5.1 > androidx.loader:loader:1.0.0
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+> Configuration cache state could not be cached: field `__runtimeClasspath__` of task `:core:network:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+   > Could not resolve all files for configuration ':core:network:releaseRuntimeClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-livedata:2.9.4.
+        Required by:
+            project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-service:2.9.4.
+        Required by:
+            project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+> Configuration cache state could not be cached: field `provider` of `org.gradle.internal.serialize.codecs.core.ProviderBackedFileCollectionSpec` bean found in field `element` of `java.util.Collections$SingletonList` bean found in field `elements` of `org.gradle.internal.serialize.codecs.core.ResolutionBackedFileCollectionSpec` bean found in field `__classpathStructure__` of `com.google.devtools.ksp.gradle.KspGradleConfig_Decorated` bean found in field `__kspConfig__` of task `:data:feed:kspReleaseKotlin` of type `com.google.devtools.ksp.gradle.KspAATask`: error writing value of type 'org.gradle.api.internal.provider.DefaultProvider'
+   > Could not resolve all files for configuration ':data:feed:releaseCompileClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3.
+        Required by:
+            project ':data:feed' > com.google.dagger:hilt-android:2.60.1
+            project ':data:feed' > com.google.dagger:hilt-android:2.60.1 > androidx.fragment:fragment:1.5.1
+            project ':data:feed' > com.google.dagger:hilt-android:2.60.1 > androidx.activity:activity:1.5.1
+         > No cached version of androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-common-jvm:2.8.3.
+        Required by:
+            project ':data:feed' > com.google.dagger:hilt-android:2.60.1 > androidx.lifecycle:lifecycle-common:2.8.3
+         > No cached version of androidx.lifecycle:lifecycle-common-jvm:2.8.3 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-common-jvm:2.8.3 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-viewmodel-android:2.8.3.
+        Required by:
+            project ':data:feed' > com.google.dagger:hilt-android:2.60.1 > androidx.lifecycle:lifecycle-viewmodel:2.8.3
+         > No cached version of androidx.lifecycle:lifecycle-viewmodel-android:2.8.3 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-viewmodel-android:2.8.3 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-runtime-android:2.8.3.
+        Required by:
+            project ':data:feed' > com.google.dagger:hilt-android:2.60.1 > androidx.activity:activity:1.5.1 > androidx.lifecycle:lifecycle-runtime:2.8.3
+         > No cached version of androidx.lifecycle:lifecycle-runtime-android:2.8.3 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-runtime-android:2.8.3 available for offline mode.
+> Configuration cache state could not be cached: field `__runtimeClasspath__` of task `:data:auth:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+   > Could not resolve all files for configuration ':data:auth:releaseRuntimeClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-livedata:2.9.4.
+        Required by:
+            project ':data:auth' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-service:2.9.4.
+        Required by:
+            project ':data:auth' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+> Configuration cache state could not be cached: field `__runtimeClasspath__` of task `:data:sample:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+   > Could not resolve all files for configuration ':data:sample:releaseRuntimeClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-livedata:2.9.4.
+        Required by:
+            project ':data:sample' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-service:2.9.4.
+        Required by:
+            project ':data:sample' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+> Configuration cache state could not be cached: field `__runtimeClasspath__` of task `:data:profile:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+   > Could not resolve all files for configuration ':data:profile:releaseRuntimeClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-livedata:2.9.4.
+        Required by:
+            project ':data:profile' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-service:2.9.4.
+        Required by:
+            project ':data:profile' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+> Configuration cache state could not be cached: field `__runtimeClasspath__` of task `:data:search:transformReleaseClassesWithAsm` of type `com.android.build.gradle.tasks.TransformClassesWithAsmTask`: error writing value of type 'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection'
+   > Could not resolve all files for configuration ':data:search:releaseRuntimeClasspath'.
+      > Could not resolve androidx.lifecycle:lifecycle-livedata:2.9.4.
+        Required by:
+            project ':data:search' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-livedata:2.9.4 available for offline mode.
+      > Could not resolve androidx.lifecycle:lifecycle-service:2.9.4.
+        Required by:
+            project ':data:search' > project ':core:network' > androidx.work:work-runtime-ktx:2.11.2 > androidx.work:work-runtime:2.11.2
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+         > No cached version of androidx.lifecycle:lifecycle-service:2.9.4 available for offline mode.
+> There are 36 more failures with identical causes.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 26s
+4 actionable tasks: 4 executed
+Configuration cache entry discarded due to serialization error.
+EXIT 1

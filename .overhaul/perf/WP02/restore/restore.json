@@ -1,0 +1,40 @@
+{
+  "apk": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP02/restore/app/build/outputs/apk/dev/release/app-dev-release.apk",
+  "device": "M2101K6I",
+  "list_loaded": true,
+  "detail_opened": true,
+  "killed": true,
+  "restored_detail": true,
+  "new_pid_differs": true,
+  "texts_before": [
+    "qui est esse",
+    "Navigate back",
+    "#2",
+    "qui est esse",
+    "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla",
+    "Related",
+    "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+    "et iusto sed quo iure voluptatem occaecati omnis eligendi aut ad voluptatem doloribus vel \u2026",
+    "eum et est occaecati",
+    "ullam et saepe reiciendis voluptatem adipisci sit amet autem assumenda provident rerum cul\u2026",
+    "nesciunt quas odio",
+    "repudiandae veniam quaerat sunt sed alias aut fugiat sit autem sed est voluptatem omnis po\u2026"
+  ],
+  "texts_after": [
+    "qui est esse",
+    "Navigate back",
+    "#2",
+    "qui est esse",
+    "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\nqui aperiam non debitis possimus qui neque nisi nulla",
+    "Related",
+    "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+    "et iusto sed quo iure voluptatem occaecati omnis eligendi aut ad voluptatem doloribus vel \u2026",
+    "eum et est occaecati",
+    "ullam et saepe reiciendis voluptatem adipisci sit amet autem assumenda provident rerum cul\u2026",
+    "nesciunt quas odio",
+    "repudiandae veniam quaerat sunt sed alias aut fugiat sit autem sed est voluptatem omnis po\u2026"
+  ],
+  "back_pops_to_list": true,
+  "crash_log": "",
+  "passed": true
+}

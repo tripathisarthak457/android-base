@@ -1,0 +1,11 @@
+night: Night mode: no
+font_scale: 1.0
+accelerometer_rotation: 1
+user_rotation: 0
+stay_on: 2
+airplane: 0
+http_proxy: null
+wm: Physical size: 1080x2400  Physical density: 440 
+anim: 1.0 1.0 null
+rotation_now: 
+wakefulness:   mWakefulness=Awake

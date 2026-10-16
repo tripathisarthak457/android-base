@@ -1,0 +1,35 @@
+{"time":"2026-10-09T04:19:48.440242164+05:30","level":"INFO","msg":"configuration","summary":"addr=127.0.0.1:18089 generator=/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP09/stub-generator python=python3 persistent=true origins=[http://localhost:3000] targets=[android multiplatform] proxy=vercel concurrency=4"}
+{"time":"2026-10-09T04:19:48.494097585+05:30","level":"INFO","msg":"listening","addr":"127.0.0.1:18089","targets":["android","multiplatform"]}
+{"time":"2026-10-09T04:19:48.619280469+05:30","level":"INFO","msg":"migration applied","version":"0001"}
+{"time":"2026-10-09T04:19:48.619303696+05:30","level":"INFO","msg":"migration applied","version":"0002"}
+{"time":"2026-10-09T04:19:48.61930669+05:30","level":"INFO","msg":"migration applied","version":"0003"}
+{"time":"2026-10-09T04:19:48.619309598+05:30","level":"INFO","msg":"migration applied","version":"0004"}
+{"time":"2026-10-09T04:19:48.61945758+05:30","level":"INFO","msg":"database ready"}
+{"time":"2026-10-09T04:19:48.70316387+05:30","level":"INFO","msg":"request","route":"health","method":"GET","status":200,"ms":0,"bytes":171}
+{"time":"2026-10-09T04:19:48.721617919+05:30","level":"INFO","msg":"request","route":"health","method":"GET","status":200,"ms":0,"bytes":171}
+{"time":"2026-10-09T04:19:48.737760282+05:30","level":"INFO","msg":"request","route":"targets","method":"GET","status":200,"ms":0,"bytes":363}
+{"time":"2026-10-09T04:20:01.015417496+05:30","level":"INFO","msg":"request","route":"events","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T04:20:01.196081405+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":200,"ms":161,"bytes":349}
+{"time":"2026-10-09T04:20:01.411926192+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":400,"ms":130,"bytes":88}
+{"time":"2026-10-09T04:20:01.424468563+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":400,"ms":0,"bytes":127}
+{"time":"2026-10-09T04:20:01.62951674+05:30","level":"INFO","msg":"request","route":"legacy.generate","method":"POST","status":200,"ms":195,"bytes":349}
+{"time":"2026-10-09T04:20:01.662796325+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":415,"ms":0,"bytes":82}
+{"time":"2026-10-09T04:20:01.690176374+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":404,"ms":0,"bytes":85}
+{"time":"2026-10-09T04:20:01.713187803+05:30","level":"INFO","msg":"request","route":"client_error","method":"POST","status":204,"ms":0,"bytes":0}
+{"time":"2026-10-09T04:20:01.746793395+05:30","level":"INFO","msg":"request","route":"feedback","method":"POST","status":201,"ms":4,"bytes":19}
+{"time":"2026-10-09T04:20:07.798738726+05:30","level":"ERROR","msg":"generation failed","target":"android","outcome":"internal_error","error":"The generator failed."}
+{"time":"2026-10-09T04:20:07.798833191+05:30","level":"INFO","msg":"request","route":"generate","method":"POST","status":500,"ms":131,"bytes":127}
+{"time":"2026-10-09T04:20:08.343825295+05:30","level":"INFO","msg":"request","route":"admin.overview","method":"GET","status":200,"ms":14,"bytes":311}
+{"time":"2026-10-09T04:20:08.364751108+05:30","level":"INFO","msg":"request","route":"admin.funnel","method":"GET","status":200,"ms":7,"bytes":1408}
+{"time":"2026-10-09T04:20:08.399089736+05:30","level":"INFO","msg":"request","route":"admin.series","method":"GET","status":200,"ms":7,"bytes":5869}
+{"time":"2026-10-09T04:20:08.440897201+05:30","level":"INFO","msg":"request","route":"admin.adoption","method":"GET","status":200,"ms":17,"bytes":1612}
+{"time":"2026-10-09T04:20:08.497891668+05:30","level":"INFO","msg":"request","route":"admin.failures","method":"GET","status":200,"ms":27,"bytes":927}
+{"time":"2026-10-09T04:20:08.525631584+05:30","level":"INFO","msg":"request","route":"admin.audience","method":"GET","status":200,"ms":7,"bytes":666}
+{"time":"2026-10-09T04:20:08.555825251+05:30","level":"INFO","msg":"request","route":"admin.durations","method":"GET","status":200,"ms":20,"bytes":587}
+{"time":"2026-10-09T04:20:08.581927543+05:30","level":"INFO","msg":"request","route":"admin.generations","method":"GET","status":200,"ms":5,"bytes":1445}
+{"time":"2026-10-09T04:20:08.604752798+05:30","level":"INFO","msg":"request","route":"admin.errors","method":"GET","status":200,"ms":4,"bytes":660}
+{"time":"2026-10-09T04:20:08.64022501+05:30","level":"INFO","msg":"request","route":"admin.feedback","method":"GET","status":200,"ms":5,"bytes":553}
+{"time":"2026-10-09T04:20:08.664533659+05:30","level":"INFO","msg":"request","route":"admin.health","method":"GET","status":200,"ms":4,"bytes":731}
+{"time":"2026-10-09T04:20:08.686753061+05:30","level":"INFO","msg":"request","route":"admin.generations.csv","method":"GET","status":200,"ms":3,"bytes":661}
+{"time":"2026-10-09T04:20:08.704713904+05:30","level":"INFO","msg":"request","route":"admin.overview","method":"GET","status":401,"ms":0,"bytes":50}
+{"time":"2026-10-09T04:20:19.297995866+05:30","level":"INFO","msg":"shutting down"}

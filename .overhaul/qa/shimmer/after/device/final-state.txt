@@ -1,0 +1,13 @@
+{
+ "system/font_scale": "1.0",
+ "system/accelerometer_rotation": "0",
+ "system/user_rotation": "0",
+ "global/stay_on_while_plugged_in": "7",
+ "global/airplane_mode_on": "0",
+ "global/window_animation_scale": "1.0",
+ "global/transition_animation_scale": "1.0",
+ "global/animator_duration_scale": "null",
+ "night": "no",
+ "wm size": "Physical size: 1080x2400",
+ "wm density": "Physical density: 440"
+}

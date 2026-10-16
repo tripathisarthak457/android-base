@@ -1,0 +1,171 @@
+{
+  "package": "com.example.wp04.baselean.dev",
+  "apk": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/base-lean/app/build/outputs/apk/dev/release/app-dev-arm64-v8a-release.apk",
+  "variant": "devRelease",
+  "runs": 3,
+  "seed": 199427,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "scenarios": [
+    "tabs",
+    "pushpop",
+    "coldstart"
+  ],
+  "gate": null,
+  "gates_file": "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/gates.toml",
+  "started": "2026-10-09T08:54:35",
+  "device": {
+    "serial": "9a7c74f4",
+    "model": "M2101K6I",
+    "sdk": "37",
+    "battery_c": 35.4
+  },
+  "metrics": {
+    "coldstart.median_ms": {
+      "value": 306,
+      "runs": [
+        292,
+        309,
+        306
+      ]
+    },
+    "coldstart.runs_ms": {
+      "value": [
+        298,
+        292,
+        309,
+        304,
+        324,
+        316
+      ],
+      "runs": [
+        [
+          294,
+          276,
+          311,
+          334,
+          290,
+          271
+        ],
+        [
+          278,
+          310,
+          320,
+          274,
+          309,
+          313
+        ],
+        [
+          298,
+          292,
+          309,
+          304,
+          324,
+          316
+        ]
+      ]
+    },
+    "pushpop.frames": {
+      "value": 865,
+      "runs": [
+        866,
+        865,
+        860
+      ]
+    },
+    "pushpop.gpu_p50_ms": {
+      "value": 6,
+      "runs": [
+        6,
+        6,
+        6
+      ]
+    },
+    "pushpop.gpu_p90_ms": {
+      "value": 10,
+      "runs": [
+        10,
+        10,
+        11
+      ]
+    },
+    "pushpop.gpu_p99_ms": {
+      "value": 14,
+      "runs": [
+        14,
+        14,
+        14
+      ]
+    },
+    "pushpop.janky_pct": {
+      "value": 4.73,
+      "runs": [
+        4.73,
+        4.62,
+        5.23
+      ]
+    },
+    "pushpop.p50_ms": {
+      "value": 8,
+      "runs": [
+        8,
+        8,
+        8
+      ]
+    },
+    "pushpop.p90_ms": {
+      "value": 17,
+      "runs": [
+        17,
+        16,
+        18
+      ]
+    },
+    "pushpop.p99_ms": {
+      "value": 32,
+      "runs": [
+        38,
+        30,
+        32
+      ]
+    },
+    "pushpop.pop_first_frame_ms.max": {
+      "value": 16.08,
+      "runs": [
+        56.9,
+        16.03,
+        16.08
+      ]
+    },
+    "pushpop.pop_first_frame_ms.median": {
+      "value": 10.66,
+      "runs": [
+        14.75,
+        10.66,
+        7.8
+      ]
+    },
+    "pushpop.push_first_frame_ms.max": {
+      "value": 19.37,
+      "runs": [
+        19.27,
+        19.37,
+        19.62
+      ]
+    },
+    "pushpop.push_first_frame_ms.median": {
+      "value": 8.71,
+      "runs": [
+        8.71,
+        8.67,
+        11.36
+      ]
+    }
+  },
+  "notes": [
+    "run 1: tabs skipped: the app has one tab",
+    "run 2: tabs skipped: the app has one tab",
+    "run 3: tabs skipped: the app has one tab"
+  ]
+}

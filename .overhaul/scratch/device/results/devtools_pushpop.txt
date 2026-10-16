@@ -1,0 +1,85 @@
+Applications Graphics Acceleration Info:
+Uptime: 134136266 Realtime: 205132504
+
+** Graphics info for pid 20219 [com.acme.field.dev] **
+
+Stats since: 134113428627015ns
+Total frames rendered: 848
+Janky frames: 45 (5.31%)
+Janky frames (legacy): 70 (8.25%)
+50th percentile: 8ms
+90th percentile: 15ms
+95th percentile: 24ms
+99th percentile: 48ms
+Number Missed Vsync: 9
+Number High input latency: 1473
+Number Slow UI thread: 41
+Number Slow bitmap uploads: 0
+Number Slow issue draw commands: 44
+Number Frame deadline missed: 45
+Number Frame deadline missed (legacy): 30
+HISTOGRAM: 5ms=10 6ms=32 7ms=297 8ms=236 9ms=149 10ms=2 11ms=10 12ms=8 13ms=1 14ms=3 15ms=24 16ms=15 17ms=3 18ms=4 19ms=1 20ms=6 21ms=1 22ms=0 23ms=3 24ms=4 25ms=4 26ms=5 27ms=2 28ms=1 29ms=2 30ms=2 31ms=0 32ms=2 34ms=0 36ms=0 38ms=0 40ms=3 42ms=2 44ms=1 46ms=1 48ms=6 53ms=3 57ms=2 61ms=0 65ms=2 69ms=0 73ms=0 77ms=1 81ms=0 85ms=0 89ms=0 93ms=0 97ms=0 101ms=0 105ms=0 109ms=0 113ms=0 117ms=0 121ms=0 125ms=0 129ms=0 133ms=0 150ms=0 200ms=0 250ms=0 300ms=0 350ms=0 400ms=0 450ms=0 500ms=0 550ms=0 600ms=0 650ms=0 700ms=0 750ms=0 800ms=0 850ms=0 900ms=0 950ms=0 1000ms=0 1050ms=0 1100ms=0 1150ms=0 1200ms=0 1250ms=0 1300ms=0 1350ms=0 1400ms=0 1450ms=0 1500ms=0 1550ms=0 1600ms=0 1650ms=0 1700ms=0 1750ms=0 1800ms=0 1850ms=0 1900ms=0 1950ms=0 2000ms=0 2050ms=0 2100ms=0 2150ms=0 2200ms=0 2250ms=0 2300ms=0 2350ms=0 2400ms=0 2450ms=0 2500ms=0 2550ms=0 2600ms=0 2650ms=0 2700ms=0 2750ms=0 2800ms=0 2850ms=0 2900ms=0 2950ms=0 3000ms=0 3050ms=0 3100ms=0 3150ms=0 3200ms=0 3250ms=0 3300ms=0 3350ms=0 3400ms=0 3450ms=0 3500ms=0 3550ms=0 3600ms=0 3650ms=0 3700ms=0 3750ms=0 3800ms=0 3850ms=0 3900ms=0 3950ms=0 4000ms=0 4050ms=0 4100ms=0 4150ms=0 4200ms=0 4250ms=0 4300ms=0 4350ms=0 4400ms=0 4450ms=0 4500ms=0 4550ms=0 4600ms=0 4650ms=0 4700ms=0 4750ms=0 4800ms=0 4850ms=0 4900ms=0 4950ms=0
+50th gpu percentile: 6ms
+90th gpu percentile: 8ms
+95th gpu percentile: 10ms
+99th gpu percentile: 14ms
+GPU HISTOGRAM: 1ms=0 2ms=0 3ms=8 4ms=46 5ms=256 6ms=384 7ms=58 8ms=18 9ms=24 10ms=29 11ms=5 12ms=0 13ms=7 14ms=11 15ms=1 16ms=1 17ms=0 18ms=0 19ms=0 20ms=0 21ms=0 22ms=0 23ms=0 24ms=0 25ms=0 4950ms=0
+
+Pipeline=Skia (OpenGL)
+Memory policy:
+  Max surface area: 3026960
+  Max resource usage: 145.29MB (x48)
+  Background retention: 50% (altUiHidden = true)
+  GPU Context timeout: 10
+Contexts: 1 (stopped = 0)
+CPU Caches:
+  Glyph Cache: 314.78 KB (1 entry)
+  Glyph Count: 56 
+Total CPU memory usage:
+  322330 bytes, 314.78 KB (0.00 bytes is purgeable)
+GPU Caches:
+  Other:
+    Other: 39.67 KB (1 entry)
+  Image:
+    Texture: 136.90 KB (35 entries)
+  Scratch:
+    RenderTarget: 11.42 MB (2 entries)
+    Buffer Object: 78.00 KB (2 entries)
+    Texture: 2.18 MB (52 entries)
+Total GPU memory usage:
+  14525479 bytes, 13.85 MB (11.71 MB is purgeable)
+Pipeline Cache: inactive
+GraphicBufferAllocator buffers:
+            Handle |         Size |     W (Stride) x H | Layers |   Format |      Usage | Requestor
+0xb400006e9b9d4e50 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006e9b9d4ec0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006e9b9d4f30 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006e9b9d4fa0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006e9b9d5010 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+Total allocated by GraphicBufferAllocator (estimate): 51000.00 KB
+Imported gralloc buffers:
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:17655, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:17658, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:17657, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:17656, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:17654, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
+	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
+Total imported by gralloc: 51380.00KiB
+
+Profile data in ms:
+
+	com.acme.field.dev/com.acme.field.MainActivity/android.view.ViewRootImpl@a7066cd (visibility=0)
+View hierarchy:
+
+  com.acme.field.dev/com.acme.field.MainActivity/android.view.ViewRootImpl@a7066cd
+  9 views, 15.01 kB of render nodes
+
+
+Total ViewRootImpl   : 1
+Total attached Views : 9
+Total RenderNode     : 15.01 kB (used) / 39.08 kB (capacity)
+

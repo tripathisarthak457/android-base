@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Blocks until the machine has enough available memory for a heavy command, for at most 30 minutes.
+# The laptop froze on Oct 10 at 15:23 under memory pressure with zram swap and no OOM daemon: heavy commands wait
+# here rather than push the system into swap thrash.
+# A resident Gradle daemon already holds its heap and the next build reuses it, so the bar is lower then
+# (MEMWAIT_WARM_MB); a cold start needs room for a new daemon and its Kotlin daemon (MEMWAIT_MB).
+cold=${MEMWAIT_MB:-3500}
+warm=${MEMWAIT_WARM_MB:-1500}
+for i in $(seq 1 180); do
+  need=$cold
+  pgrep -f 'org.gradle.launcher.daemon.bootstrap.GradleDaemon' >/dev/null && need=$warm
+  avail=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
+  [ "$avail" -ge "$need" ] && exit 0
+  [ $((i % 6)) -eq 1 ] && echo "[memwait] ${avail} MB available, waiting for ${need} MB..." >&2
+  sleep 10
+done
+# Past 30 minutes, go ahead only if the machine is not critically short; below 1 GB keep waiting (up to 2 hours).
+for i in $(seq 1 540); do
+  avail=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
+  [ "$avail" -ge 1000 ] && break
+  [ $((i % 30)) -eq 1 ] && echo "[memwait] only ${avail} MB available; holding until 1000 MB..." >&2
+  sleep 10
+done
+echo "[memwait] still under ${need} MB after 30 min; continuing" >&2

@@ -1,0 +1,43 @@
+{
+  "generator": {
+    "commit": "8dd02b3671a6",
+    "generatedOn": "2026-10-13"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "WP02 Format",
+  "display_name": "",
+  "package_name": "io.example.wp02fmt",
+  "architecture": "compact",
+  "features": [
+    "coil",
+    "formatting",
+    "network"
+  ],
+  "feature_modules": [
+    "subscriptions",
+    "orders"
+  ],
+  "design_style": "Utility",
+  "motion_style": "Standard",
+  "accent_colour": "",
+  "secondary_colour": "",
+  "tertiary_colour": "",
+  "font_name": "DM Sans",
+  "mono_font_name": "JetBrains Mono",
+  "haptics_enabled": true,
+  "languages": [
+    "de"
+  ],
+  "android": {
+    "min_sdk": 26,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "1.0.0",
+    "version_code": 1,
+    "api_base_urls": {},
+    "web_socket_urls": {},
+    "deeplink_scheme": "",
+    "deeplink_host": ""
+  }
+}

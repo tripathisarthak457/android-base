@@ -1,0 +1,20 @@
+{
+  "app_name": "Preset Lean",
+  "package_name": "com.example.lean",
+  "features": [
+    "network",
+    "leakcanary",
+    "sample",
+    "catalog"
+  ],
+  "feature_modules": [
+    "orders"
+  ],
+  "languages": [
+    "de",
+    "es",
+    "fr",
+    "hi",
+    "pt-BR"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "generator": {
+    "commit": "d19f79c8aec1",
+    "generatedOn": "2026-10-09"
+  },
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Look Check",
+  "display_name": "",
+  "package_name": "com.example.look",
+  "architecture": "compact",
+  "features": [
+    "catalog",
+    "language",
+    "network",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "design_style": "Playful",
+  "motion_style": "Bouncy",
+  "accent_colour": "#16A34A",
+  "secondary_colour": "#F5A524",
+  "tertiary_colour": "",
+  "font_name": "Plus Jakarta Sans",
+  "mono_font_name": "IBM Plex Mono",
+  "haptics_enabled": false,
+  "languages": [
+    "hi"
+  ],
+  "android": {
+    "min_sdk": 24,
+    "target_sdk": 37,
+    "compile_sdk": 37,
+    "version_name": "3.2.1",
+    "version_code": 42,
+    "api_base_urls": {
+      "dev": "https://dev.look.example/api/",
+      "prod": "https://api.look.example/api/"
+    },
+    "web_socket_urls": {},
+    "deeplink_scheme": "lookcheck",
+    "deeplink_host": "look.example.com"
+  }
+}

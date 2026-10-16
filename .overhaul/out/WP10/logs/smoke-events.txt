@@ -1,0 +1,39 @@
+ id |              session_id              |       name        | target  |   step   | value | client | config_ms 
+----+--------------------------------------+-------------------+---------+----------+-------+--------+-----------
+  1 | ea1669fc-f6da-4fc1-a964-6985e71f6f3c | landed            |         |          |       | web    |          
+  2 | ea1669fc-f6da-4fc1-a964-6985e71f6f3c | step_viewed       | android | platform |       | web    |          
+  3 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | landed            |         |          |       | web    |          
+  4 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | platform |       | web    |          
+  5 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | platform_selected | android |          |       | web    |          
+  6 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | identity |       | web    |          
+  7 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | features |       | web    |          
+  8 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | look     |       | web    |          
+  9 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | motion   |       | web    |          
+ 10 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | build    |       | web    |          
+ 11 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | review   |       | web    |          
+ 12 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | generate_clicked  | android |          |       | web    |          
+ 13 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | generated         | android |          |       | web    |    153726
+ 14 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | downloaded        | android |          |       | web    |    153726
+ 15 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | download_started  | android |          |       | web    |          
+ 16 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | platform |       | web    |          
+ 17 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | platform |       | web    |          
+ 18 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | platform_selected | android |          |       | web    |          
+ 19 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | look     |       | web    |          
+ 20 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | platform |       | web    |          
+ 21 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | platform_selected | android |          |       | web    |          
+ 22 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | identity |       | web    |          
+ 23 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | features |       | web    |          
+ 24 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | look     |       | web    |          
+ 25 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | motion   |       | web    |          
+ 26 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | build    |       | web    |          
+ 27 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | review   |       | web    |          
+ 28 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | motion   |       | web    |          
+ 29 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | review   |       | web    |          
+ 30 | 242b74b4-4a9e-4427-8119-95ccd4a928ad | step_viewed       | android | features |       | web    |          
+(30 rows)
+
+ id | target  | outcome |  preset  | added | removed | design_style | client | config_ms |              session_id              
+----+---------+---------+----------+-------+---------+--------------+--------+-----------+--------------------------------------
+  1 | android | ok      | standard | {}    | {}      | Social       | web    |    153726 | 242b74b4-4a9e-4427-8119-95ccd4a928ad
+(1 row)
+

@@ -1,0 +1,230 @@
+[locked:gradle] waiting for lock...
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:devtools:testDebugUnitTest :core:devtools:lintDebug :core:devtools:verifyComposeUsage
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:devtools:verifyComposeUsage
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:devtools:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:devtools:verifyApiPurity
+> Task :core:devtools:preBuild
+> Task :core:devtools:preDebugBuild
+> Task :core:flags:verifyApiPurity UP-TO-DATE
+> Task :core:devtools:generateDebugResources UP-TO-DATE
+> Task :core:devtools:processDebugNavigationResources UP-TO-DATE
+> Task :core:flags:verifyComposeUsage
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:devtools:packageDebugResources UP-TO-DATE
+> Task :core:flags:verifyModuleDependencies UP-TO-DATE
+> Task :core:flags:preBuild
+> Task :core:flags:preDebugBuild
+> Task :core:flags:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:devtools:parseDebugLocalResources UP-TO-DATE
+> Task :core:flags:packageDebugResources UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:flags:processDebugNavigationResources UP-TO-DATE
+> Task :core:devtools:generateDebugRFile UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:flags:javaPreCompileDebug UP-TO-DATE
+> Task :core:flags:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:devtools:javaPreCompileDebug UP-TO-DATE
+> Task :core:devtools:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:devtools:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:flags:generateDebugRFile UP-TO-DATE
+> Task :core:devtools:preDebugUnitTestBuild
+> Task :core:flags:generateDebugAssets UP-TO-DATE
+> Task :core:devtools:mergeDebugAssets UP-TO-DATE
+> Task :core:flags:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:devtools:writeDebugAarMetadata UP-TO-DATE
+> Task :core:flags:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:devtools:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:devtools:compileDebugLibraryResources UP-TO-DATE
+> Task :core:devtools:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:devtools:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:flags:kspDebugKotlin UP-TO-DATE
+> Task :core:flags:compileDebugKotlin UP-TO-DATE
+> Task :core:flags:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:flags:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:flags:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:devtools:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:devtools:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:flags:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:devtools:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:devtools:extractDeepLinksDebug UP-TO-DATE
+> Task :core:flags:extractDeepLinksDebug UP-TO-DATE
+> Task :core:devtools:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:flags:processDebugManifest UP-TO-DATE
+> Task :core:flags:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:flags:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:devtools:koverFindJar UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:devtools:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:flags:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:extractDebugAnnotations UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:designsystem:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:designsystem:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:designsystem:prepareDebugArtProfile UP-TO-DATE
+> Task :core:designsystem:prepareLintJarForPublish UP-TO-DATE
+> Task :core:designsystem:mergeDebugJavaResource UP-TO-DATE
+> Task :core:designsystem:syncDebugLibJars UP-TO-DATE
+> Task :core:designsystem:createFullJarDebug UP-TO-DATE
+> Task :core:designsystem:preDebugAndroidTestBuild
+> Task :core:designsystem:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:designsystem:extractProguardFiles UP-TO-DATE
+> Task :core:designsystem:checkDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:devtools:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:devtools:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:generateDebugLintModel UP-TO-DATE
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :core:designsystem:lintAnalyzeDebug UP-TO-DATE
+> Task :core:designsystem:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :core:devtools:checkDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :core:devtools:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:devtools:prepareDebugArtProfile UP-TO-DATE
+> Task :core:devtools:prepareLintJarForPublish UP-TO-DATE
+> Task :core:flags:extractDebugAnnotations UP-TO-DATE
+> Task :core:flags:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:flags:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:flags:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:flags:prepareDebugArtProfile UP-TO-DATE
+> Task :core:flags:prepareLintJarForPublish UP-TO-DATE
+> Task :core:flags:mergeDebugJavaResource UP-TO-DATE
+> Task :core:flags:syncDebugLibJars UP-TO-DATE
+> Task :core:devtools:preDebugAndroidTestBuild
+> Task :core:devtools:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:flags:createFullJarDebug UP-TO-DATE
+> Task :core:flags:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:devtools:extractProguardFiles UP-TO-DATE
+> Task :core:flags:extractProguardFiles UP-TO-DATE
+> Task :core:flags:checkDebugAarMetadata UP-TO-DATE
+> Task :core:flags:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:testing:checkDebugAarMetadata UP-TO-DATE
+> Task :core:testing:extractDebugAnnotations UP-TO-DATE
+> Task :core:testing:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:testing:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:testing:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:testing:prepareDebugArtProfile UP-TO-DATE
+> Task :core:testing:prepareLintJarForPublish UP-TO-DATE
+> Task :core:testing:mergeDebugJavaResource UP-TO-DATE
+> Task :core:testing:syncDebugLibJars UP-TO-DATE
+> Task :core:testing:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:testing:createFullJarDebug UP-TO-DATE
+> Task :core:testing:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:flags:generateDebugLintModel UP-TO-DATE
+> Task :core:flags:preDebugAndroidTestBuild
+> Task :core:flags:lintAnalyzeDebug UP-TO-DATE
+> Task :core:flags:preDebugUnitTestBuild
+> Task :core:flags:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :core:flags:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :core:flags:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :core:flags:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :core:devtools:processDebugUnitTestResources UP-TO-DATE
+> Task :core:devtools:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:devtools:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:devtools:kspDebugKotlin
+> Task :core:devtools:extractDebugAnnotations
+> Task :core:devtools:compileDebugKotlin
+> Task :core:devtools:processDebugJavaRes UP-TO-DATE
+> Task :core:devtools:mergeDebugJavaResource UP-TO-DATE
+> Task :core:devtools:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:devtools:transformDebugClassesWithAsm
+> Task :core:devtools:generateDebugLintReportModel
+> Task :core:devtools:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:devtools:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:devtools:bundleLibRuntimeToJarDebug
+> Task :core:devtools:bundleLibCompileToJarDebug
+> Task :core:devtools:syncDebugLibJars
+> Task :core:devtools:bundleDebugLocalLintAar
+> Task :core:devtools:createFullJarDebug
+> Task :core:devtools:generateDebugAndroidTestLintModel
+> Task :core:devtools:generateDebugUnitTestLintModel
+> Task :core:devtools:kspDebugUnitTestKotlin
+> Task :core:devtools:compileDebugUnitTestKotlin
+> Task :core:devtools:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:devtools:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:devtools:hiltCollectClassesDebugUnitTest
+> Task :core:devtools:lintAnalyzeDebugAndroidTest
+> Task :core:devtools:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:devtools:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:devtools:transformDebugUnitTestClassesWithAsm
+> Task :core:devtools:lintAnalyzeDebugUnitTest
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+> Task :core:devtools:lintAnalyzeDebug
+> Task :core:devtools:lintReportDebug
+> Task :core:devtools:lintDebug
+> Task :core:devtools:testDebugUnitTest
+
+BUILD SUCCESSFUL in 55s
+179 actionable tasks: 26 executed, 153 up-to-date
+Configuration cache entry stored.

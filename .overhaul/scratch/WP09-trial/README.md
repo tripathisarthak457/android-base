@@ -1,0 +1,614 @@
+# Android project generator
+
+> **Beta.** The presets and the every-feature combination are compiled, tested and linted in CI
+> before a change ships, and the checks below are the ones I run myself — but not many people have
+> used this yet, and that is the part that finds the last few bugs.
+> [Open an issue](https://github.com/tripathisarthak457/android-base/issues) if something breaks;
+> the browser version has a report button that attaches your configuration for you.
+
+This repository is two things.
+
+`templates/android/` is a working Android app: multi-module, Jetpack Compose, MVI, Hilt, Ktor, four build
+environments, signed release output. You can open it in Android Studio right now and run it.
+
+`generator/` is a Python script that copies that app, renames it to whatever you are building,
+strips out the parts you said you didn't want, generates your signing keys, and hands you a zip.
+
+The point is that the first day of a new project stops being a day.
+
+**Using an AI coding agent?** Point it at [`AGENTS.md`](AGENTS.md) to generate a project, and every
+generated project ships its own `AGENTS.md` for the work after that.
+
+If you would rather not clone anything, **[android-base.vercel.app](https://android-base.vercel.app)**
+runs the same script against the same template and hands back the same zip. It will generate
+signing keys too, including prod and playstore, but only if you ask — it is off by default, and
+the site spells out the trade before you turn it on. Keys made on someone else's server are keys
+whose custody is not solely yours.
+
+---
+
+## Contents
+
+1. [Requirements](#requirements)
+2. [Generating a project](#generating-a-project)
+3. [Checking that it worked](#checking-that-it-worked)
+4. [What the wizard asks](#what-the-wizard-asks)
+5. [Optional features](#optional-features)
+6. [What you get either way](#what-you-get-either-way)
+7. [What the build refuses to let through](#what-the-build-refuses-to-let-through)
+8. [Non-interactive use](#non-interactive-use)
+9. [Adding a feature module later](#adding-a-feature-module-later)
+10. [Working on the template itself](#working-on-the-template-itself)
+11. [When something goes wrong](#when-something-goes-wrong)
+
+---
+
+## Requirements
+
+| | | |
+|---|---|---|
+| **Python** | 3.10 or newer | Runs the generator. No packages needed. |
+| **JDK** | 17 or newer | Runs Gradle. Android Studio's bundled JDK (JBR 21 or 25) is enough — nothing downloads a second one. |
+| **Android SDK** | with API 37 installed | Android Studio installs this. |
+| **keytool** | on `PATH`, or under `JAVA_HOME` | Only if you want generated keystores. Ships with the JDK. |
+| **git** | on `PATH` | Only for `--git`. |
+| **Pillow** | `pip install pillow` | Only for `--icon`. |
+
+The last three are genuinely optional. Without `keytool` you get a project that builds and says
+"falling back to the debug key" on every release build; without Pillow you get the template's own
+launcher icon and a warning telling you so. Neither costs you the project.
+
+---
+
+## Generating a project
+
+```bash
+cd generator
+py create_project.py
+```
+
+On macOS and Linux use `python3` instead of `py`.
+
+The wizard walks through ten sections. Every question has a default in brackets; pressing Enter
+takes it. At the end it prints a summary, asks you to confirm, and opens a save dialog. If there
+is no display — over SSH, in a container — it asks for a path instead.
+
+A run takes about two minutes if you accept the defaults, about five if you type your own
+answers and set up four keystores.
+
+### Faster ways in
+
+```bash
+# Skip the per-feature questions and take a curated set.
+py create_project.py --preset standard
+
+# Everything on, including the things most projects don't want.
+py create_project.py --all
+
+# Generate launcher icons from your logo, and start a git repo with the first commit made.
+py create_project.py --icon ~/Desktop/logo.png --git
+
+# Write to a directory instead of a zip, and skip the save dialog.
+py create_project.py --out ../MyApp --no-zip
+
+# Record the answers so you can regenerate the same project later.
+py create_project.py --save-spec myapp.json
+```
+
+The three presets:
+
+| Preset | Feature count | What's in it |
+|---|---|---|
+| `lean` | 4 | Ktor, the design system, the catalog app, one reference feature, LeakCanary. |
+| `standard` | 18 | The lean set plus Room caching, Coil, forms, auth, settings with a language picker, onboarding, a profile tab, media, deep links, the in-app browser, the inspector and feature flags. |
+| `everything` | 28 | The standard set plus Firebase, FCM push, Google sign-in, a paged feed, search, a home-screen widget, WorkManager, WebSocket and baseline profiles. |
+
+---
+
+## Checking that it worked
+
+Do not take the script's word for it. Four checks, in order of how long they take.
+
+### 1. It compiles (about a minute)
+
+```bash
+cd MyApp
+./gradlew :app:assembleDevDebug
+```
+
+Expect `BUILD SUCCESSFUL`. If Gradle complains that it cannot find the SDK, see
+[When something goes wrong](#when-something-goes-wrong).
+
+### 2. It runs
+
+```bash
+./gradlew :app:installDevDebug
+```
+
+Then open it from the launcher. With the default features you should land on a three-page
+onboarding walkthrough, then a sign-in screen. Sign-in will fail unless you pointed it at a real
+backend — the default is `https://dev.example.com/api/` — and it should fail *politely*, with
+"Could not reach the server." in a red banner rather than a crash. That banner is the proof that
+Ktor, the coroutine dispatchers, the error classifier, the MVI event loop and the design system
+are all wired together.
+
+Install the catalog beside it and every component is on a page you can scroll:
+
+```bash
+./gradlew :catalog:installDebug
+```
+
+### 3. Everything passes (about seven minutes, cold)
+
+```bash
+./gradlew build
+```
+
+This is the check that matters. It compiles all seven variants, runs the unit tests, runs Android
+lint over every module and runs the project's own guards (see
+[What the build refuses to let through](#what-the-build-refuses-to-let-through)). A generated project should be green on
+the first run, before you have written a line.
+
+### 4. A release is actually signed
+
+```bash
+./gradlew :app:distDevRelease
+ls app/build/outputs/dist/devRelease
+```
+
+You should see five APKs and a checksum file:
+
+```
+KeyedApp-devRelease-arm64-v8a-1.0.0-1-20260904-1048.apk
+KeyedApp-devRelease-armeabi-v7a-1.0.0-1-20260904-1048.apk
+KeyedApp-devRelease-universal-1.0.0-1-20260904-1048.apk
+KeyedApp-devRelease-x86-1.0.0-1-20260904-1048.apk
+KeyedApp-devRelease-x86_64-1.0.0-1-20260904-1048.apk
+checksums.sha256
+```
+
+Confirm the signature is yours and not the debug key:
+
+```bash
+$ANDROID_HOME/build-tools/37.0.0/apksigner verify --print-certs \
+  app/build/outputs/dist/devRelease/KeyedApp-devRelease-arm64-v8a-1.0.0-1-20260904-1048.apk
+```
+
+```
+V3.0 Signer: certificate DN: CN=Keyed App (dev), O=Acme, C=IN
+```
+
+If that line says `CN=Android Debug` instead, `keytool` was not found when you generated and the
+build fell back. Fix it by creating the keys yourself and filling in `keystore.properties`.
+
+For the Play Store bundle, use the separate task — AGP refuses to build ABI splits and an app
+bundle in the same invocation:
+
+```bash
+./gradlew :app:distPlaystoreReleaseBundle
+```
+
+---
+
+## What the wizard asks
+
+**Project.** App name and application id. The name is used for the display name, the Gradle root
+project, the `Application` subclass and the deep-link scheme, each in the appropriate form —
+`My Great App` becomes `MyGreatApp`, `mygreatapp` and `my_great_app` depending on where it lands.
+
+**Android versions.** minSdk, targetSdk, compileSdk. The prompt prints the full API-level table
+because nobody remembers that 34 is Android 14. Anything below 26 turns on core-library
+desugaring automatically so `java.time` keeps working.
+
+**Version.** versionName and versionCode. dev and staging builds get stamped `1.0.0-devDebug` and
+so on; prod and playstore releases stay a bare `1.0.0`, because that string ends up on a store
+listing.
+
+**Features.** A preset, or a yes/no question per feature. Dependencies resolve themselves: ask for
+push notifications and Firebase comes with it.
+
+**Backend URLs.** One per environment, for REST and — if you enabled it — WebSocket. These end up
+in `AppConfig.kt`, which is the only place the build reads them from.
+
+**Deep links.** A custom scheme and a host for verified App Links.
+
+**Typeface.** A Google Fonts family name, defaulting to DM Sans. Whatever you type is written into
+one constant that all seventeen text styles read from, so changing the app's font later is editing
+one string.
+
+**Look and feel.** Three brand hexes. Each one becomes a full ramp — the pressed state, the
+subtle fill, both dark-theme variants and whether text on it is black or white — and the primary
+also becomes the launcher icon background. Leave the second and third blank and they are worked
+out from the primary: the same hue with the chroma taken out, and a sixth of a turn around the
+wheel. Harmonious by construction, and a starting point rather than a brand decision.
+
+The design system itself draws with the primary alone, which is what keeps one action per screen
+looking like the action. The other two are there for the screen that genuinely needs a second
+colour — a chart with two series, a promotion beside a primary button — so that it reaches for
+`AppTheme.colors.secondary` rather than for a hex somebody typed inline.
+
+Then a design style, a motion style and whether haptics start on.
+
+The design style decides what the components look like, all together: corner radii, the button
+shape, how cards and text fields are drawn, the tab bar, border weight, the tone of the surfaces
+and the weight of the type. Every combination of style and theme is checked against WCAG AA by
+`PaletteContrastTest`.
+
+| Style | Looks like | Suits |
+|---|---|---|
+| Utility | Cool neutral surfaces, hairline outlines, modest corners, a docked tab bar | Tools, finance, admin |
+| Social | Surfaces tinted with your brand colour, pill buttons, heavier headlines, soft raised cards, filled fields, a floating tab bar with a sliding pill | Feeds, chat, communities |
+| Editorial | Warm paper and ink, large tight display type, near-square corners, underlined fields, uppercase labels, a minimal tab bar | Reading, news, portfolios |
+| Playful | Cream surfaces, extra-bold type, thick outlines and solid offset shadows; buttons sink into their shadow when pressed | Games, kids, anything toy-like |
+
+The motion style (Standard, Bouncy, Calm, Snappy) decides how controls and screens move. Both are
+one argument to `AppTheme`, so changing your mind later is one line, and the catalog app switches
+between all four design styles live.
+
+**Feature modules.** Comma-separated names, or blank. Each one produces a matching `:data:x` and
+`:feature:x` pair with a repository, an MVI contract, a ViewModel, a screen, a nav key and tests.
+
+**Languages.** English is always there. Add Spanish, French, German, Brazilian Portuguese or
+Hindi and every screen the template ships is translated, including the components' own copy, and
+the language picker in Settings lists them.
+
+**Signing keys.** Four: dev, staging, prod, playstore. dev and staging may share one — they never
+leave your team. prod and playstore must not share with anything; the Play upload key is the one
+credential whose loss cannot be undone. The script generates `.jks` files with `keytool` and
+writes a git-ignored `keystore.properties`, or takes paths to keys you already have. Press Enter at
+a password prompt and a strong one is generated and printed once — save it before you go on.
+
+---
+
+## Optional features
+
+Everything here can be switched off, and switching it off removes the module rather than leaving
+dead code behind.
+
+| Feature | Default | What you get |
+|---|---|---|
+| REST networking (Ktor) | on | Typed client, bearer auth with transparent 401 refresh sent only to your API host, classified and translatable failures, retries with backoff for requests safe to repeat, identical reads shared, an HTTP cache that honours ETag and Cache-Control, optional certificate pinning, pluggable response-envelope unwrapper |
+| WebSocket | off | One long-lived socket, exponential backoff with jitter, a connection state a UI can render |
+| Offline cache + queue (Room) | on | Per-call-site response caching with stale-on-failure, force refresh and saved-then-latest streams, and failed mutations replayed with idempotency keys when connectivity returns |
+| App database (Room) | off | The app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration, and a test that replays it against a database that really was at the older version |
+| Image loading (Coil) | on | Remote images with a skeleton placeholder and a failure glyph |
+| Paged feed | off | A Feed tab on Paging 3. A failed page keeps what is loaded and offers a retry; pull to refresh reloads from where you are. The list component is in `:core:ui` for your own feeds |
+| WorkManager | off | Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory |
+| Auth | on | Sign in, sign up and password reset against your endpoints, writing the encrypted token store |
+| Sign in with Google | off | A Continue with Google button through Credential Manager; the ID token goes to your backend like any other sign-in |
+| Onboarding | on | A paged walkthrough shown once. Skipping counts as finishing |
+| Profile screen | off | A Profile tab with avatar, name and bio, kept per user and cleared on sign-out. With the media picker, the avatar can be a photo |
+| Search screen | off | A Search tab: debounced search as you type, recent searches per user, empty, no-results and error states |
+| Settings screen | on | Theme, haptics, analytics opt-out, sign-out, build version |
+| In-app language picker | off | A Language row in settings. The system per-app language on Android 13+, applied by hand below it |
+| Reference feature | on | A list + detail feature against a live public API, with its tests. Delete it once yours exists |
+| Forms and validation | on | Composable validators, per-field touched/error state, server-side errors mapped back onto the fields that caused them |
+| Media picker and compression | on | Modern photo/video/document/camera pickers, a permission state that distinguishes "denied" from "denied for good", tunable image and video compression |
+| Biometric app lock | off | A fingerprint, face or screen-lock prompt when the app returns from the background, a settings toggle, and the app kept out of the task switcher's thumbnail |
+| Open source licences screen | off | The real dependency list, generated from the resolved classpath at build time and rendered by the design system. The build also fails on a licence the project has not allowed |
+| Deep linking | on | Custom scheme plus verified App Links, resolved through one function, with the `onNewIntent` handling that is usually missing |
+| In-app browser | off | Links open in a Custom Tab coloured like the app. Adds privacy and terms rows to settings |
+| Home-screen widget | off | A Glance widget in the launcher's colours with the app's name and a line the app keeps current |
+| Play in-app update and review | off | A flexible update downloaded in the background with a restart prompt, and a rating request on a schedule Play will honour rather than silently drop |
+| Analytics seam | on | Vendor-agnostic `AnalyticsTracker` and `CrashReporter` with no-op defaults |
+| Feature flag seam | on | Typed flags declared with their defaults beside them, read through an interface that resolves locally until a vendor is bound |
+| Firebase | off | One switch for Analytics, Crashlytics and Remote Config: the analytics seam, crash breadcrumbs and the flag seam all bound to Firebase |
+| Push notifications (FCM) | off | Channels, the runtime permission check, a messaging service, token re-registration |
+| Lottie animations | off | `AppLottie` for raw, asset and URL animations, tinted to the theme and held on the last frame when the system's animations are off. A success animation plays when a password-reset link is sent |
+| Downloadable Google Font | on | Real files per weight through the Play Services provider |
+| Component catalog app | on | A second installable app showing every component in both themes and all four design styles |
+| Compose stability check | off | Reads the Compose compiler's own report and fails on a design-system composable that restarts without skipping, or takes a parameter it cannot prove immutable. A baseline holds what is already there, so it starts green and can only improve |
+| LeakCanary | on | Debug builds only |
+| On-device inspector | on | A draggable badge naming the environment on every build except production, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
+| Coverage floor (Kover) | off | One merged number for the whole project with a floor `koverVerify` enforces, generated code excluded so the report is about code somebody wrote |
+| Dependency health report | off | Every module declaring a dependency it never uses, or using one it only gets transitively. A report rather than a gate — see the note in the root `build.gradle.kts` for why, and what it would take to make it a gate |
+| Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |
+
+---
+
+## What you get either way
+
+Some things are not optional, because they are the reason the template exists.
+
+**No Material.** The design system is built on `androidx.compose.foundation` and
+`androidx.compose.ui` and nothing else. It supplies its own ripple, typography, 80-odd components,
+date and time pickers, bottom sheet, charts and a hand-drawn icon set. An
+`androidx.compose.material` import fails the build — see the `verifyComposeUsage` task, which also
+catches a `@Composable` in a module that forgot the Compose compiler plugin.
+
+**One place for the look.** Colours, type, spacing, shapes, elevation, motion and haptics are
+composition locals read through `AppTheme.`. Changing the font is one string; changing a brand
+colour is one hex, and the ramp around it follows; changing how every control responds to a
+finger is one enum.
+
+**Every form factor.** Layout follows Android's window size classes, never orientation or device
+type, so the same app is designed for a phone, a foldable, a tablet and a desktop window. A bottom
+bar becomes a rail from Medium width; a list and its detail share the window from Expanded width;
+forms and text stop at a readable width and centre; sheets and dialogs stop stretching. Locking an
+activity to one orientation fails the build.
+
+**Decentralised navigation.** A feature registers its own screens through Hilt multibinding.
+Adding a screen touches no file outside its own module — there is no central sealed `Route` class
+to extend and no `when` in `:app` to add a branch to. Navigation 3 is named in exactly one file,
+so replacing it is a change to that file and its transitions.
+
+**Per-tab back stacks.** Switching tabs and coming back returns the user where they were, scroll
+position and loaded data included. Tabs crossfade rather than slide, because they are peers, not
+forward navigation. Re-tapping the active tab pops it to its root, and Back at a tab root returns
+to the first tab.
+
+**A ViewModel per screen.** Every destination gets its own ViewModel store, cleared when the
+screen is popped, so two detail screens never share state.
+
+**An AI agent guide.** `AGENTS.md` (with `CLAUDE.md` pointing at it) tells an agent how the
+project is laid out, that the base components are there to be reshaped, and how to write code and
+comments the way the rest of the project does.
+
+**Seven build variants.** dev / staging / prod / playstore × debug / release, minus
+`playstoreDebug`, which does not exist. Only the two application modules carry flavours, so
+switching environment rebuilds nothing in `core`, `data` or `feature`.
+
+**Enforced layering.** `feature → feature` and `data → data` fail the build rather than a code
+review. See the `verifyModuleDependencies` task.
+
+**Copy that can be translated.** Every string the app renders lives in a `strings.xml`, and a
+literal typed into a composable fails the build in the features, the app shell and the design
+system — see the third check in `verifyComposeUsage`. It catches copy passed to any copy parameter
+(`text`, `title`, `confirmLabel` and the rest), either branch of an `if` written into one, and an
+English fallback turned into a `UiText`, but never anything inside a `@Preview`. Adding a
+`stringResource` is easy and remembering to is not, so it is checked rather than asked for.
+For a string a ViewModel produces, `UiText.of(R.string.x)` resolves at render time — so it
+follows a locale change without the ViewModel knowing there was one.
+
+`templates/android/docs/ARCHITECTURE.md` explains the reasoning behind each of these.
+
+---
+
+## What the build refuses to let through
+
+Three guards, none of which a reviewer could reliably catch by reading a diff. Each is a build
+failure rather than a warning, because a warning in a build log is a thing nobody has read since
+the second week.
+
+| Guard | Where it lives | What it catches |
+|---|---|---|
+| `verifyModuleDependencies` | every module | An edge the layering forbids — `:feature:cart` depending on `:feature:catalog`, `:core:*` reaching up into `:data:*`. Reads only that module's own dependencies, so it stays compatible with configuration caching |
+| `verifyComposeUsage` | every module | An `androidx.compose.material` import, a `@Composable` in a module without the compiler plugin, and copy typed into Kotlin instead of a `strings.xml` |
+| `checkComposeStability` | `:core:designsystem`, `:core:ui` | A component that recomposes when nothing it draws has changed |
+
+All three are Gradle tasks in `build-logic`. The first two run on every build; the stability check
+only exists when that feature is on.
+
+---
+
+## Non-interactive use
+
+The wizard produces a `ProjectSpec`; the renderer consumes one. Nothing in between needs a
+terminal, which is what makes this straightforward to put behind an HTTP endpoint later.
+
+```bash
+# Record a spec once.
+py create_project.py --save-spec myapp.json
+
+# Regenerate from it, no questions asked.
+py create_project.py --spec myapp.json --out ../MyApp --no-zip
+```
+
+The spec is plain JSON. Editing it by hand is a supported way to work — the same validation runs
+either way, so a typo in the package name is rejected with the same message the wizard would give
+you.
+
+Regenerating over a directory that already exists replaces it wholesale, so it asks first — and
+refuses outright when there is nobody to ask, which is what `--spec` means. Pass `--force` when
+replacing it is genuinely the intent.
+
+Three flags answer questions without generating anything:
+
+```bash
+# Every feature, grouped as the website groups them, and what each one drags in.
+py create_project.py --list-features
+
+# Resolve the answers and say what would be written. Nothing is.
+py create_project.py --spec myapp.json --dry-run
+
+# The same three, for a program rather than a person.
+py create_project.py --list-features --json
+py create_project.py --spec myapp.json --dry-run --json
+py create_project.py --spec myapp.json --out ../MyApp --no-zip --json
+```
+
+`--dry-run` is worth the two seconds before a long build: it names the features that were turned
+on which nobody ticked. Asking for push notifications quietly brings Firebase and both seams it
+binds, which is correct and is also the kind of thing better learned before the build than during
+it.
+
+---
+
+## Adding a feature module later
+
+The generator scaffolds the modules you name at creation time. Afterwards, the same scaffolder is
+a separate script:
+
+```bash
+cd generator
+py add_feature.py orders --project ../MyApp --tab
+```
+
+It writes `:data:orders` and `:feature:orders`, and makes the three edits that are otherwise done
+by hand and forgotten one at a time: `settings.gradle.kts`, the app module's dependencies, and —
+with `--tab` — the bottom-navigation tab list. It reads the project's own package name out of
+`app/build.gradle.kts` rather than asking, so running it in the wrong directory fails immediately
+instead of writing files into the wrong namespace.
+
+Multiple at once:
+
+```bash
+py add_feature.py orders profile settings --project ../MyApp
+```
+
+And the inverse, which undoes the same three edits:
+
+```bash
+py remove_feature.py orders --project ../MyApp --dry-run   # say what would go
+py remove_feature.py orders --project ../MyApp             # ask, then do it
+```
+
+It deletes `:data:orders` and `:feature:orders` and takes their lines back out of all three
+files. The one people forget by hand is the Gradle include, which fails the next sync with an
+error about a missing project rather than about the directory they deleted. It refuses a module
+the template itself ships: those are removed by generating without them, not by deleting a
+directory that half the app still references.
+
+---
+
+## Working on the template itself
+
+`templates/android/` is a normal Android project. Open it, build it, change it.
+
+```bash
+cd template
+./gradlew build                    # compile, test and lint everything
+./gradlew :app:installDevDebug
+./gradlew :catalog:installDebug
+```
+
+Run `./gradlew build` before you commit. It has caught real defects here that no amount of reading
+would have: a library module calling `ConnectivityManager` without declaring the permission,
+`Bitmap.CompressFormat.WEBP_LOSSY` used below the API level that has it, a locale read that never
+recomposed when the user changed language.
+
+### Contrast
+
+`PaletteContrastTest` checks every text-on-background pair in both palettes against WCAG AA.
+Contrast is the one design property that is objectively right or wrong, invisible to whoever
+changed it, and decisive for whoever cannot read the result — a reviewer looking at
+`Grey500 → Grey550` in a diff has no way to evaluate it. It found the success pill at 4.36:1 on
+the palette as it stood, which is why the green in this repository is three percent darker than
+it was.
+
+### Markers
+
+The template carries `// <opt:feature>` marker comments that the generator strips. They are chosen
+so the template still compiles with *every* feature on, which is what lets this repository's own
+build prove the template works. The marker grammar is three forms:
+
+```kotlin
+// <opt:push>   …  // </opt:push>      keep the block when `push` is on
+// <opt:a|b>    …  // </opt:a|b>       keep it when either is on
+// <opt:!push>CODE                     emit CODE when `push` is off
+// <generated:name>                    replaced by generated lines
+```
+
+The third form has to live inside a comment, because two live declarations of the same class —
+one per branch — would break the template's own build. The second exists for the lines that
+several optional blocks share and none of them owns: the `javax.inject.Inject` import in the
+application class is needed by analytics, push and WorkManager, and is an unused import the
+moment all three are off.
+
+In XML the markers are comments on their own line between elements. A comment inside a tag is not
+valid XML, so an optional attribute has to come from somewhere else — the language picker's
+`android:localeConfig`, for instance, is generated by AGP from a Gradle setting that is itself
+behind a marker.
+
+### Keeping dependencies current
+
+```bash
+python3 tools/check_versions.py            # every version against the newest stable release
+python3 tools/check_versions.py --apply    # update libs.versions.toml
+```
+
+It reads the version catalogue itself, so a new library needs nothing added to the script, and it
+never offers an alpha, beta or release candidate.
+
+### The generator's tests
+
+```bash
+cd generator
+py -m unittest discover -s tests -t .
+```
+
+88 tests over the marker grammar, the rename, feature resolution, the design and brand-colour
+settings, the validation rules and the scaffolder. They run in milliseconds and use only the standard library.
+
+They are not sufficient on their own. The real test is generating both extremes and building
+them, because that is what catches a marker left unbalanced in a file nobody thought about:
+
+```bash
+py create_project.py --spec tests/spec_full.json    --out ../out/Full --no-zip --force
+py create_project.py --spec tests/spec_minimal.json --out ../out/Bare --no-zip --force
+(cd ../out/Full && ./gradlew build)
+(cd ../out/Bare && ./gradlew build)
+```
+
+### Layout
+
+```
+templates/android/       the Android project. Open this in Android Studio.
+generator/
+  create_project.py      the wizard and the entry point
+  add_feature.py         the scaffolder, for a project that already exists
+  remove_feature.py      its inverse: delete a module and the three lines naming it
+  generate_headless.py   JSON on stdin, a zip out. What the web API runs
+  genkit/
+    spec.py              what a project is, the feature catalogue, the presets, the rules
+    build.py             the one description of what generating consists of, and in what order
+    catalogue.py         the options as JSON, for the website and --list-features
+    prompts.py           the wizard. I/O only, no logic
+    render.py            copy, strip markers, rename, apply settings, keystores, zip
+    scaffold.py          the :data: + :feature: module pair
+    icons.py             launcher icons from one source image
+    readme.py            the README that ships inside a generated project
+  variants/              the "feature is off" version of a file that has to change, not vanish
+  tests/
+```
+
+---
+
+## When something goes wrong
+
+**`SDK location not found`**
+
+Gradle cannot find the Android SDK. Either set `ANDROID_HOME`, or create `local.properties` in the
+project root:
+
+```properties
+sdk.dir=/Users/you/Library/Android/sdk
+```
+
+On Windows the colon and the backslashes have to be escaped, or Android lint will fail the build
+with `PropertyEscape`:
+
+```properties
+sdk.dir=C\:/Users/you/AppData/Local/Android/Sdk
+```
+
+**`keytool` was not found**
+
+The generator says so and carries on; every variant falls back to the debug key and the build
+prints a warning on each run. `keytool` ships with the JDK — it is usually a `JAVA_HOME` problem
+rather than a missing install. Fix it and re-run, or create the keys yourself and fill in
+`keystore.properties` (there is a `.template` beside it showing the shape).
+
+**`processDevDebugGoogleServices FAILED`**
+
+You enabled Firebase and are still on the placeholder `app/google-services.json`. Replace it with
+the file from your Firebase console, with one client entry per application id — `com.you.app.dev`,
+`com.you.app.staging`, `com.you.app` — or drop a separate file per flavour under
+`app/src/<flavour>/`.
+
+**Text renders in the system font instead of the one I picked**
+
+The downloadable-font provider could not resolve the family. Check the spelling against the family
+page on fonts.google.com — it is case- and space-sensitive, and a misspelling degrades quietly to
+the platform typeface rather than failing loudly. It also needs Play Services, so it will not work
+on an emulator image without Google APIs.
+
+**`Multiple shrunk-resources files found`**
+
+You asked for ABI splits and an app bundle in the same invocation. Use `distProdRelease` for APKs
+and `distProdReleaseBundle` for the bundle, as two commands.
+
+**The generated project's first commit is missing `google-services.json`**
+
+That is deliberate — it is git-ignored, as it should be, since it carries project ids tied to your
+account. Each developer needs their own copy, the same as every other Android project.

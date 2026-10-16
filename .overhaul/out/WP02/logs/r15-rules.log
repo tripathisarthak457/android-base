@@ -1,0 +1,208 @@
+[locked:gradle] waiting for lock...
+  ! Lottie was left out: it pulled in appcompat, about 190 KB of code, for one decorative animation.
+Starting a Gradle Daemon, 1 busy and 1 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :build-logic:convention:pluginUnderTestMetadata UP-TO-DATE
+> Task :app:verifyCodeRules UP-TO-DATE
+> Task :core:analytics:verifyCodeRules UP-TO-DATE
+> Task :catalog:verifyCodeRules UP-TO-DATE
+> Task :core:datastore:verifyCodeRules UP-TO-DATE
+> Task :core:database:verifyCodeRules UP-TO-DATE
+> Task :core:common:verifyCodeRules UP-TO-DATE
+> Task :core:devtools:verifyCodeRules UP-TO-DATE
+> Task :core:flags:verifyCodeRules UP-TO-DATE
+> Task :core:media:verifyCodeRules UP-TO-DATE
+> Task :core:mvi:verifyCodeRules UP-TO-DATE
+> Task :core:navigation:verifyCodeRules UP-TO-DATE
+> Task :core:designsystem:verifyCodeRules UP-TO-DATE
+> Task :core:notification:verifyCodeRules UP-TO-DATE
+> Task :core:network:verifyCodeRules UP-TO-DATE
+> Task :core:testing:verifyCodeRules UP-TO-DATE
+> Task :data:auth:verifyCodeRules UP-TO-DATE
+> Task :data:feed:verifyCodeRules UP-TO-DATE
+> Task :core:ui:verifyCodeRules UP-TO-DATE
+> Task :data:profile:verifyCodeRules UP-TO-DATE
+> Task :data:sample:verifyCodeRules UP-TO-DATE
+> Task :data:search:verifyCodeRules UP-TO-DATE
+> Task :feature:onboarding:verifyCodeRules UP-TO-DATE
+> Task :feature:auth:verifyCodeRules UP-TO-DATE
+> Task :feature:feed:verifyCodeRules UP-TO-DATE
+> Task :feature:search:verifyCodeRules UP-TO-DATE
+> Task :feature:profile:verifyCodeRules UP-TO-DATE
+> Task :feature:sample:verifyCodeRules UP-TO-DATE
+> Task :build-logic:convention:processTestResources NO-SOURCE
+> Task :feature:settings:verifyCodeRules UP-TO-DATE
+> Task :core:testing:compose:verifyCodeRules UP-TO-DATE
+> Task :build-logic:convention:compileTestKotlin UP-TO-DATE
+> Task :build-logic:convention:compileTestJava NO-SOURCE
+> Task :build-logic:convention:testClasses UP-TO-DATE
+> Task :build-logic:convention:test UP-TO-DATE
+
+BUILD SUCCESSFUL in 27s
+32 actionable tasks: 32 up-to-date
+Configuration cache entry reused.
+=== r15-everything
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:analytics:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :core:database:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:media:verifyCodeRules
+> Task :core:notification:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :data:feed:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :data:profile:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :data:search:verifyCodeRules
+> Task :feature:feed:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:profile:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+> Task :feature:search:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+
+BUILD SUCCESSFUL in 1m 32s
+33 actionable tasks: 33 executed
+Configuration cache entry stored.
+=== r15-standard-modular
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:database:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :data:auth:api:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :data:sample:api:verifyCodeRules
+> Task :data:auth:impl:verifyCodeRules
+> Task :data:sample:impl:verifyCodeRules
+> Task :feature:auth:api:verifyCodeRules
+> Task :feature:onboarding:api:verifyCodeRules
+> Task :feature:sample:api:verifyCodeRules
+> Task :feature:onboarding:impl:verifyCodeRules
+> Task :feature:settings:api:verifyCodeRules
+> Task :feature:auth:impl:verifyCodeRules
+> Task :feature:settings:impl:verifyCodeRules
+> Task :feature:sample:impl:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+
+BUILD SUCCESSFUL in 29s
+30 actionable tasks: 30 executed
+Configuration cache entry stored.
+=== r15-lean
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:datastore:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :data:home:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :feature:home:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+
+BUILD SUCCESSFUL in 15s
+16 actionable tasks: 16 executed
+Configuration cache entry stored.
+=== r15-standard
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: verifyCodeRules
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:compileKotlin
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:database:verifyCodeRules
+> Task :core:common:verifyCodeRules
+> Task :app:verifyCodeRules
+> Task :core:datastore:verifyCodeRules
+> Task :core:flags:verifyCodeRules
+> Task :core:devtools:verifyCodeRules
+> Task :catalog:verifyCodeRules
+> Task :core:mvi:verifyCodeRules
+> Task :core:testing:verifyCodeRules
+> Task :core:navigation:verifyCodeRules
+> Task :data:auth:verifyCodeRules
+> Task :core:ui:verifyCodeRules
+> Task :core:network:verifyCodeRules
+> Task :data:sample:verifyCodeRules
+> Task :feature:onboarding:verifyCodeRules
+> Task :feature:settings:verifyCodeRules
+> Task :feature:sample:verifyCodeRules
+> Task :feature:auth:verifyCodeRules
+> Task :core:testing:compose:verifyCodeRules
+> Task :core:designsystem:verifyCodeRules
+
+BUILD SUCCESSFUL in 15s
+24 actionable tasks: 24 executed
+Configuration cache entry stored.
+R15 OK

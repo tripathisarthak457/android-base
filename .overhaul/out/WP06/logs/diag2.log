@@ -1,0 +1,31 @@
+[locked:emu] waiting for lock...
+emulator booted
+Unable to open '/sdcard/diag2.mp4': Operation not permitted
+{"screen": [1080, 2400], "swipe": {"from": [1017, 1403], "by": [-500, -800], "millis": 600}, "before": [954, 1340, 1080, 1466], "after": [954, 1340, 1080, 1466], "moved": [0, 0], "x_ok": false, "y_ok": false}
+FAIL: the badge did not follow the drag.
+run1 rc=1
+adb: error: failed to stat remote object '/sdcard/diag2.mp4': No such file or directory
+10-13 16:01:16.463   600   620 D CoreBackPreview: Window{6032cb0 u0 PointerLocation - display 0}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.WindowOnBackInvokedDispatcher$OnBackInvokedCallbackWrapper@6360186, mPriority=0, mIsAnimationCallback=false}
+10-13 16:01:21.350   600  1514 D CoreBackPreview: Window{7442132 u0 Splash Screen com.example.wp06.everything.dev}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@bfaa48a, mPriority=0, mIsAnimationCallback=false}
+10-13 16:01:21.406   600  1727 D CoreBackPreview: Window{48b235b u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@ee33ae2, mPriority=-1, mIsAnimationCallback=false}
+10-13 16:01:21.406   600  1727 D CoreBackPreview: Window{48b235b u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@f7d1e73, mPriority=0, mIsAnimationCallback=true}
+10-13 16:01:22.508   600   914 D CoreBackPreview: Window{f814b8c u0 com.example.wp06.everything.dev/com.example.wp06.everything.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@75415fa, mPriority=0, mIsAnimationCallback=false}
+10-13 16:01:27.140   600  1731 D CoreBackPreview: Window{a3dd13e u0 com.example.wp06.everything.dev/com.example.wp06.everything.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@bdde49, mPriority=0, mIsAnimationCallback=false}
+10-13 16:01:28.013   600  1519 D CoreBackPreview: startBackNavigation currentTask=Task{ba09d07 #180 type=standard A=10212:com.example.wp06.everything.dev}, topRunningActivity=ActivityRecord{f0a0746 u0 com.example.wp06.everything.dev/com.example.wp06.everything.MainActivity t180}, callbackInfo=OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@bdde49, mPriority=0, mIsAnimationCallback=false}, currentFocus=Window{a3dd13e u0 com.example.wp06.everything.dev/com.example.wp06.everything.MainActivity}
+10-13 16:01:28.014   837   870 D ShellBackPreview: Received backNavigationInfo:BackNavigationInfo{mType=TYPE_CALLBACK (4), mOnBackNavigationDone=android.os.RemoteCallback@86de348, mOnBackInvokedCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@3b9e5e1, mPrepareRemoteAnimation=false, mAnimationCallback=false, mCustomizeAnimationInfo=null}
+10-13 16:01:28.119   837   870 D ShellBackPreview: Finishing gesture with event action: 3
+10-13 16:01:28.119   837   870 D ShellBackPreview: onGestureFinished() mTriggerBack == false
+10-13 16:01:28.119   837   870 D ShellBackPreview: Trigger back without dispatching to animator.
+10-13 16:01:28.119   837   870 D ShellBackPreview: Skipping dispatching onBackCancelled. Start was never dispatched.
+10-13 16:01:28.119   837   870 D ShellBackPreview: BackAnimationController: finishBackNavigation()
+10-13 16:01:28.120   600   614 D CoreBackPreview: onBackNavigationDone backType=4, triggerBack=false
+10-13 16:01:28.281   600  1519 D CoreBackPreview: Window{847e227 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@9a0d035, mPriority=-1, mIsAnimationCallback=false}
+10-13 16:01:28.281   600  1519 D CoreBackPreview: Window{847e227 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@89b3ab1, mPriority=0, mIsAnimationCallback=true}
+{"screen": [1080, 2400], "swipe": {"from": [1017, 1403], "by": [-500, -800], "millis": 600}, "before": [954, 1340, 1080, 1466], "after": [954, 593, 1080, 719], "moved": [0, -747], "x_ok": false, "y_ok": true}
+FAIL: the badge did not follow the drag.
+run2 rc=1
+10-13 16:01:36.919   600   615 D CoreBackPreview: Window{271d9d9 u0 Splash Screen com.example.wp06.everything.dev}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@1efeb49, mPriority=0, mIsAnimationCallback=false}
+10-13 16:01:38.211   600  1514 D CoreBackPreview: Window{6533f6a u0 com.example.wp06.everything.dev/com.example.wp06.everything.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@7f6a22f, mPriority=0, mIsAnimationCallback=false}
+10-13 16:01:42.494   837   870 D ShellBackPreview: Finishing gesture with event action: 3
+10-13 16:01:42.494   837   870 D ShellBackPreview: onGestureFinished called while no gesture is started
+emulator stopped

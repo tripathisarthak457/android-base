@@ -1,0 +1,74 @@
+{
+ "cat-loading-light": {
+  "frames": 486,
+  "span": 6.456,
+  "pauses_s": [
+   0.809,
+   0.801,
+   0.817
+  ],
+  "periods_s": [
+   2.024,
+   2.026
+  ],
+  "sweeps_s": [
+   1.223,
+   1.208
+  ],
+  "mean_frame_interval_ms_in_sweep": 8.36,
+  "max_interval_in_sweep_ms": 15.8
+ },
+ "cat-loading-dark": {
+  "frames": 501,
+  "span": 6.587,
+  "pauses_s": [
+   0.808,
+   0.817,
+   0.817
+  ],
+  "periods_s": [
+   2.025,
+   2.025
+  ],
+  "sweeps_s": [
+   1.209,
+   1.207
+  ],
+  "mean_frame_interval_ms_in_sweep": 8.34,
+  "max_interval_in_sweep_ms": 11.3
+ },
+ "cat-loading-light-rtl": {
+  "frames": 358,
+  "span": 4.579,
+  "pauses_s": [
+   0.81,
+   0.817
+  ],
+  "periods_s": [
+   2.024
+  ],
+  "sweeps_s": [
+   1.207
+  ],
+  "mean_frame_interval_ms_in_sweep": 8.32,
+  "max_interval_in_sweep_ms": 10.7
+ },
+ "cat-skel-light": {
+  "frames": 451,
+  "span": 5.975,
+  "pauses_s": [],
+  "periods_s": [],
+  "sweeps_s": [],
+  "mean_frame_interval_ms_in_sweep": 13.28,
+  "max_interval_in_sweep_ms": 141.7
+ },
+ "cat-skel-dark": {
+  "frames": 448,
+  "span": 5.954,
+  "pauses_s": [],
+  "periods_s": [],
+  "sweeps_s": [],
+  "mean_frame_interval_ms_in_sweep": 13.32,
+  "max_interval_in_sweep_ms": 141.3
+ }
+}
