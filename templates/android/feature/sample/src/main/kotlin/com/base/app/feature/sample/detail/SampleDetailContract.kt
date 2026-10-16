@@ -16,6 +16,10 @@ internal data class SampleDetailState(
 
 internal sealed interface SampleDetailEvent : UiEvent {
     data object Appeared : SampleDetailEvent
+
+    /** The screen has stopped moving: what follows the item may be composed now. */
+    data object LoadRelated : SampleDetailEvent
+
     data object Retry : SampleDetailEvent
     data object BackClicked : SampleDetailEvent
     data class RelatedClicked(val id: Int) : SampleDetailEvent

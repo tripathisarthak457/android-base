@@ -24,10 +24,29 @@ class SampleDetailViewModelTest {
         val viewModel = SampleDetailViewModel(FakeSampleRepository(items), itemId = 4)
 
         viewModel.onEvent(SampleDetailEvent.Appeared)
+        viewModel.onEvent(SampleDetailEvent.LoadRelated)
         advanceUntilIdle()
 
         assertEquals(items[3], viewModel.state.value.item)
         assertEquals(listOf(5, 1, 2), viewModel.state.value.related.map { it.id })
+    }
+
+    @Test
+    fun `related rows wait until the screen has settled, whichever comes first`() = runTest {
+        val early = SampleDetailViewModel(FakeSampleRepository(items), itemId = 1)
+        early.onEvent(SampleDetailEvent.Appeared)
+        advanceUntilIdle()
+        assertEquals(items[0], early.state.value.item)
+        assertEquals(emptyList<SampleItem>(), early.state.value.related)
+        early.onEvent(SampleDetailEvent.LoadRelated)
+        advanceUntilIdle()
+        assertEquals(listOf(2, 3, 4), early.state.value.related.map { it.id })
+
+        val late = SampleDetailViewModel(FakeSampleRepository(items), itemId = 1)
+        late.onEvent(SampleDetailEvent.LoadRelated)
+        late.onEvent(SampleDetailEvent.Appeared)
+        advanceUntilIdle()
+        assertEquals(listOf(2, 3, 4), late.state.value.related.map { it.id })
     }
 
     @Test

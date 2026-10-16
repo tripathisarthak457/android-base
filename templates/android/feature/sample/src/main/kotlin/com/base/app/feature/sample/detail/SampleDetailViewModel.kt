@@ -23,9 +23,19 @@ internal class SampleDetailViewModel @AssistedInject constructor(
         fun create(itemId: Int): SampleDetailViewModel
     }
 
+    /**
+     * Set once the screen has stopped moving. The related rows are three cards composed below the
+     * item; arriving in the middle of the push, they would be composed in a frame of the slide.
+     */
+    private var relatedWanted = false
+
     override fun handleEvent(event: SampleDetailEvent) {
         when (event) {
             SampleDetailEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
+            SampleDetailEvent.LoadRelated -> {
+                relatedWanted = true
+                if (current.item != null) loadRelated()
+            }
             SampleDetailEvent.Retry -> load()
             SampleDetailEvent.BackClicked -> emit(SampleDetailEffect.NavigateBack)
             is SampleDetailEvent.RelatedClicked -> emit(SampleDetailEffect.OpenDetail(event.id))
@@ -43,6 +53,12 @@ internal class SampleDetailViewModel @AssistedInject constructor(
                     return@launchLatest
                 }
             }
+            if (relatedWanted) loadRelated()
+        }
+    }
+
+    private fun loadRelated() {
+        launchLatest(LOAD_RELATED) {
             // The list is cached, so this costs no request after the list screen has loaded. A
             // failure only means no related rows: the item itself is already on screen.
             repository.items().onSuccess { all -> setState { copy(related = all.relatedTo(itemId)) } }
@@ -51,6 +67,7 @@ internal class SampleDetailViewModel @AssistedInject constructor(
 
     private companion object {
         const val LOAD = "load"
+        const val LOAD_RELATED = "related"
     }
 }
 
