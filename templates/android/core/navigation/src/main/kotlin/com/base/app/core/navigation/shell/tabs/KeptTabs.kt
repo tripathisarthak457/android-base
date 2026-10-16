@@ -159,9 +159,10 @@ private class TabBackDispatcher(parent: NavigationEventDispatcher) : NavigationE
 }
 
 /**
- * A tab's lifecycle: lowered to CREATED on the frame it is hidden, and raised two frames after it
- * comes to the front, once the switch frame is on screen. Raised on the switch frame itself, every
- * collector in the tab would restart inside the frame that has to show it.
+ * A tab's lifecycle: lowered to CREATED the frame after it is hidden, and raised two frames after
+ * it comes to the front, once the switch frame is on screen. Changed on the switch frame itself,
+ * every collector in both tabs would stop or restart inside the frame that has to show the switch,
+ * which starts with the CPU at its idle clock and can least afford it.
  */
 @Composable
 internal fun rememberTabLifecycle(active: Boolean): LifecycleOwner {
@@ -183,7 +184,8 @@ internal fun rememberTabLifecycle(active: Boolean): LifecycleOwner {
             owner.follow(parent.lifecycle.currentState)
         }
     } else {
-        SideEffect {
+        LaunchedEffect(owner) {
+            withFrameNanos {}
             owner.cap = Lifecycle.State.CREATED
             owner.follow(parent.lifecycle.currentState)
         }
