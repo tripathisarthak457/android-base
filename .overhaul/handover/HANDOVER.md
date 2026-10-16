@@ -11,6 +11,26 @@ relaunch order (§5.11), tool preflight (§5.14), the push policy (§6.1 #6), re
 This document is for a brand-new Claude (and for the user, Sarthak). Its job: let you continue the overhaul with **no
 re-briefing**. It is long on purpose. Read §0 and §8 first if you are short on time; come back to the rest as needed.
 
+> ## GitHub only: the user's decision (Oct 16, about 14:15)
+> The user said: *"if android base zip stuff is not really required tell claude in prompt on windows to continue with
+> github stuff only"*. So, on Windows, **work from GitHub alone**: clone `android-base` (every branch) and put the
+> `overhaul-workspace` branch's `.overhaul/` next to it. **Do not download or unzip the Google Drive backup
+> `backup-2026-10-16`** unless the user asks for something specific. It is cold storage, and unzipping a million
+> files into Windows would clutter it.
+>
+> | Only on Drive | What to use instead (on GitHub) |
+> |---|---|
+> | The Gmail reference recordings and frames (`research/predictive-back/gmail/`; kept off GitHub because they show real emails) | The motion findings as numbers: `.overhaul/research/predictive-back/SPEC.md` §1 (what Gmail does), §2–3 (constants and curves), §7 (acceptance numbers), and `.overhaul/research/ios-motion.md` §3.1 (full measurements) |
+> | Raw perf traces and screen recordings | The draft release `overhaul-raw-data-2026-10-16` on android-base (owner-only; `gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base`), plus the summaries under `.overhaul/perf/` |
+> | Build outputs, generated projects, APKs | Rebuild with the generator and Gradle |
+> | The raw Claude transcripts | `.overhaul/handover/CHAT-HISTORY.md` (the full story) and `USER-MESSAGES.md` (every message the user sent, verbatim) |
+> | Local dev values for the Go API and admin portal (Postgres password, `ADMIN_TOKEN`, `IP_SALT`; shown as `<local-dev-value>` on GitHub) | Generate new local values |
+> | The old Android debug keystore | A new one is generated; uninstall the old debug builds from the phone once |
+> | Private copies of PeriFlow and VitFleet source (`scratch/pf-diff`, `scratch/vitfleet`) | Their own private repos |
+>
+> Claude's memory is on GitHub too (`claude-memory/` at the branch root). Keys, keystores and `.env` files for the
+> user's OTHER apps (PeriFlow, VitFleet and another) are only in Drive's `01-secrets.zip`; android-base does not need them.
+
 > **Path convention.** Paths are relative to the **workspace root**, the folder that holds `android-base/` and
 > `.overhaul/` side by side. On the old laptop that root was `/home/crazyhusir/Documents/projects/tools/` (abbreviated
 > `~/…/tools/`). PeriFlow lived at `/home/crazyhusir/Documents/projects/jorwen/periflow`, i.e. `../jorwen/periflow`

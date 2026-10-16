@@ -447,7 +447,9 @@ rapid_back nav_stress pushpop` against §6's budget and `perf/WP04/phase2/summar
 **Recording** (requirement 24 acceptance): adapt `slow_back`, `fast_flick` and the cancel variant from
 `research/predictive-back/record-gmail-r3.sh` to the template sample (list → detail, `input motionevent` from x = 2)
 with `screenrecord --size 720x1600`. Write `perf/WP04/predictive-back/{slow_commit,slow_cancel,fast_flick,y_follow,to_home}.mp4`
-plus a key-frame strip, and compare frame by frame with `gmail/key_frames.png`:
+plus a key-frame strip, and check it against these numbers. They were measured from the Gmail clips, which stay
+off GitHub because they show real emails; these numbers and §1 are the reference (`gmail/key_frames.png` exists only
+in the user's Drive backup and is not needed):
 
 - scale 0.91 ± 0.005 at a 45 % swipe
 - far-edge gap 8 dp (≈ 15 px at 720 wide)

@@ -10,6 +10,26 @@ who the user is, what the project and its 39 requirements are, the plan, where e
 agents are orchestrated, the rules, the lessons, and the exact first 30 minutes on Windows. You should not need to
 ask the user to re-explain anything.
 
+> ## GitHub only: the user's decision (Oct 16, about 14:15)
+> The user said: *"if android base zip stuff is not really required tell claude in prompt on windows to continue with
+> github stuff only"*. So, on Windows, **work from GitHub alone**: clone `android-base` (every branch) and put the
+> `overhaul-workspace` branch's `.overhaul/` next to it. **Do not download or unzip the Google Drive backup
+> `backup-2026-10-16`** unless the user asks for something specific. It is cold storage, and unzipping a million
+> files into Windows would clutter it.
+>
+> | Only on Drive | What to use instead (on GitHub) |
+> |---|---|
+> | The Gmail reference recordings and frames (`research/predictive-back/gmail/`; kept off GitHub because they show real emails) | The motion findings as numbers: `.overhaul/research/predictive-back/SPEC.md` §1 (what Gmail does), §2–3 (constants and curves), §7 (acceptance numbers), and `.overhaul/research/ios-motion.md` §3.1 (full measurements) |
+> | Raw perf traces and screen recordings | The draft release `overhaul-raw-data-2026-10-16` on android-base (owner-only; `gh release download overhaul-raw-data-2026-10-16 -R tripathisarthak457/android-base`), plus the summaries under `.overhaul/perf/` |
+> | Build outputs, generated projects, APKs | Rebuild with the generator and Gradle |
+> | The raw Claude transcripts | `.overhaul/handover/CHAT-HISTORY.md` (the full story) and `USER-MESSAGES.md` (every message the user sent, verbatim) |
+> | Local dev values for the Go API and admin portal (Postgres password, `ADMIN_TOKEN`, `IP_SALT`; shown as `<local-dev-value>` on GitHub) | Generate new local values |
+> | The old Android debug keystore | A new one is generated; uninstall the old debug builds from the phone once |
+> | Private copies of PeriFlow and VitFleet source (`scratch/pf-diff`, `scratch/vitfleet`) | Their own private repos |
+>
+> Claude's memory is on GitHub too (`claude-memory/` at the branch root). Keys, keystores and `.env` files for the
+> user's OTHER apps (PeriFlow, VitFleet and another) are only in Drive's `01-secrets.zip`; android-base does not need them.
+
 ## What is in this folder
 
 | Path | What |
