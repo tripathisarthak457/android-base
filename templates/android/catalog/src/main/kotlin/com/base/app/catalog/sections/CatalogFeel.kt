@@ -27,11 +27,15 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.list.AppSection
-import com.base.app.core.designsystem.component.overlay.AppSheet
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.component.overlay.ToastMessage
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.selection.AppSwitch
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.sheet.SheetDetent
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
+import com.base.app.core.designsystem.component.sheet.content.SheetColumn
+import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.NoIndication
@@ -116,9 +120,16 @@ fun FeelSection() {
                 modifier = Modifier.testTag("cp1_toast"),
             )
         }
-        AppSheet(visible = sheet, onDismissRequest = { sheet = false }, title = "A sheet", showCloseButton = true) {
-            AppSection {
-                repeat(12) { AppRow(title = "Row ${it + 1}", onClick = {}) }
+        AppSheet(
+            visible = sheet,
+            onDismissRequest = { sheet = false },
+            state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
+            header = { AppSheetHeader(title = "A sheet") },
+        ) {
+            SheetColumn {
+                AppSection {
+                    repeat(12) { AppRow(title = "Row ${it + 1}", onClick = {}) }
+                }
             }
         }
     }

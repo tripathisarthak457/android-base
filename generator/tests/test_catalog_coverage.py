@@ -41,12 +41,20 @@ def kotlin_sources(root: Path) -> dict[Path, str]:
     return {path: path.read_text(encoding="utf-8") for path in sorted(root.rglob("*.kt"))}
 
 
+def not_for_apps(source: str, start: int) -> bool:
+    """Whether the declaration starting at [start] is deprecated or a shell seam: a catalog shows what an app uses."""
+    preamble = source[max(source.rfind("\n\n", 0, start), source.rfind("}\n", 0, start)) + 1:start]
+    return "@Deprecated(" in preamble or "@ShellSeamApi" in preamble
+
+
 def public_components() -> dict[str, Path]:
-    """Every public `@Composable fun App…` in the design system, with the file that declares it."""
+    """Every public, current `@Composable fun App…` an app calls, with the file that declares it."""
     found: dict[str, Path] = {}
     for path, source in kotlin_sources(DESIGN_SYSTEM).items():
         for match in COMPOSABLE.finditer(source):
             if match.group("visibility") and match.group("visibility").strip() != "public":
+                continue
+            if not_for_apps(source, match.start()):
                 continue
             found.setdefault(match.group("name"), path)
     return found

@@ -751,7 +751,7 @@ internal object DesignTokens {
             chipRadius = null,
             card = CardTreatment.Outlined,
             field = FieldTreatment.Outlined,
-            bar = BarTreatment.Docked,
+            bar = BarTreatment.Floating,
             indicator = BarIndicator.Subtle,
             borderWidth = 1.dp,
             borderWidthStrong = 1.5.dp,

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
+
 plugins {
     id("com.base.app.android.library")
     id("com.base.app.android.compose")
@@ -5,6 +7,27 @@ plugins {
 
 android {
     namespace = "com.base.app.core.designsystem"
+}
+
+kotlin {
+    compilerOptions {
+        // The shell seams are this module's own API; only other modules have to opt in to them.
+        optIn.add("com.base.app.core.designsystem.foundation.layout.ShellSeamApi")
+    }
+
+    // The sheet and the shell seams are called from features, navigation and glass at once, so a
+    // signature change must be deliberate: `check` compares them with api/designsystem.api, and
+    // `./gradlew :core:designsystem:updateLegacyAbi` rewrites it. Only these packages are dumped
+    // because the optional component groups come and go with the project's features.
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation {
+        filters {
+            included {
+                byNames.add("com.base.app.core.designsystem.component.sheet.**")
+                byNames.add("com.base.app.core.designsystem.foundation.layout.**")
+            }
+        }
+    }
 }
 
 dependencies {

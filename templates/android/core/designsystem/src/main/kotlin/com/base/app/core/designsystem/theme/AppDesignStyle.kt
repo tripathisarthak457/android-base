@@ -17,7 +17,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
  * ```
  */
 enum class AppDesignStyle {
-    /** Cool neutrals, hairline outlines, a docked tab bar. Dense and calm: tools, finance, admin. */
+    /** Cool neutrals, hairline outlines, a floating tab bar. Dense and calm: tools, finance, admin. */
     Utility,
 
     /**

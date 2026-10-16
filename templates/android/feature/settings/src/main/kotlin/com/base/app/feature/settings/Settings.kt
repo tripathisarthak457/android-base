@@ -49,8 +49,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 // <opt:language>
 import androidx.compose.ui.platform.LocalContext
-import com.base.app.core.designsystem.component.overlay.AppActionSheet
-import com.base.app.core.designsystem.component.overlay.SheetAction
+import com.base.app.core.designsystem.component.sheet.action.AppActionSheet
+import com.base.app.core.designsystem.component.sheet.action.SheetAction
 import com.base.app.core.ui.locale.AppLocales
 // </opt:language>
 // <opt:browser>

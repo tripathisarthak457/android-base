@@ -43,5 +43,19 @@
   "designsystem_move_down": "नीचे ले जाएं",
   "designsystem_refresh": "रीफ़्रेश करें",
   "designsystem_refreshing": "रीफ़्रेश हो रहा है",
-  "designsystem_show_menu": "मेनू दिखाएँ"
+  "designsystem_show_menu": "मेनू दिखाएँ",
+  "designsystem_sheet_pane": "शीट",
+  "designsystem_sheet_grabber": "शीट का आकार बदलें",
+  "designsystem_sheet_expand": "शीट बड़ी करें",
+  "designsystem_sheet_collapse": "शीट छोटी करें",
+  "designsystem_sheet_dismiss": "शीट हटाएं",
+  "designsystem_sheet_close_scrim": "शीट बंद करें",
+  "designsystem_sheet_state_expanded": "बड़ी की गई",
+  "designsystem_sheet_state_partial": "आंशिक रूप से बड़ी",
+  "designsystem_sheet_state_collapsed": "छोटी की गई",
+  "designsystem_actions_pane": "कार्रवाइयां",
+  "designsystem_sheet_discard_title": "बदलाव छोड़ें?",
+  "designsystem_sheet_discard": "छोड़ें",
+  "designsystem_sheet_keep_editing": "संपादन जारी रखें",
+  "designsystem_none": "कोई नहीं"
 }

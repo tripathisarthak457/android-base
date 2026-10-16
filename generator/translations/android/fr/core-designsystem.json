@@ -43,5 +43,19 @@
   "designsystem_move_down": "Descendre",
   "designsystem_refresh": "Actualiser",
   "designsystem_refreshing": "Actualisation",
-  "designsystem_show_menu": "Afficher le menu"
+  "designsystem_show_menu": "Afficher le menu",
+  "designsystem_sheet_pane": "Feuille",
+  "designsystem_sheet_grabber": "Redimensionner la feuille",
+  "designsystem_sheet_expand": "Développer la feuille",
+  "designsystem_sheet_collapse": "Réduire la feuille",
+  "designsystem_sheet_dismiss": "Fermer la feuille",
+  "designsystem_sheet_close_scrim": "Fermer la feuille",
+  "designsystem_sheet_state_expanded": "Développée",
+  "designsystem_sheet_state_partial": "Partiellement développée",
+  "designsystem_sheet_state_collapsed": "Réduite",
+  "designsystem_actions_pane": "Actions",
+  "designsystem_sheet_discard_title": "Abandonner les modifications ?",
+  "designsystem_sheet_discard": "Abandonner",
+  "designsystem_sheet_keep_editing": "Continuer la modification",
+  "designsystem_none": "Aucun"
 }

@@ -43,5 +43,19 @@
   "designsystem_move_down": "Mover para baixo",
   "designsystem_refresh": "Atualizar",
   "designsystem_refreshing": "Atualizando",
-  "designsystem_show_menu": "Mostrar menu"
+  "designsystem_show_menu": "Mostrar menu",
+  "designsystem_sheet_pane": "Painel",
+  "designsystem_sheet_grabber": "Redimensionar painel",
+  "designsystem_sheet_expand": "Expandir painel",
+  "designsystem_sheet_collapse": "Recolher painel",
+  "designsystem_sheet_dismiss": "Dispensar painel",
+  "designsystem_sheet_close_scrim": "Fechar painel",
+  "designsystem_sheet_state_expanded": "Expandido",
+  "designsystem_sheet_state_partial": "Parcialmente expandido",
+  "designsystem_sheet_state_collapsed": "Recolhido",
+  "designsystem_actions_pane": "Ações",
+  "designsystem_sheet_discard_title": "Descartar alterações?",
+  "designsystem_sheet_discard": "Descartar",
+  "designsystem_sheet_keep_editing": "Continuar editando",
+  "designsystem_none": "Nenhum"
 }

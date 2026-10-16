@@ -48,6 +48,7 @@ import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.component.text.scaledLike
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlin.math.roundToInt
@@ -117,7 +118,12 @@ fun AppSearchField(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
                         ) {
-                            AppIcon(AppIcons.Search, contentDescription = null, tint = colors.contentSecondary, size = AppTheme.sizes.iconSmall)
+                            AppIcon(
+                                AppIcons.Search,
+                                contentDescription = null,
+                                tint = colors.contentSecondary,
+                                size = AppTheme.sizes.iconSmall.scaledLike(AppTheme.typography.body),
+                            )
                             Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
                                 if (state.text.isEmpty()) {
                                     AppText(text = placeholder, style = AppTheme.typography.body, color = colors.contentSecondary, maxLines = 1)

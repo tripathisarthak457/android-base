@@ -69,7 +69,7 @@ fun AppAlert(
     val dismiss by rememberUpdatedState(onDismissRequest)
     OverlayBackHandler(enabled = state.targetState) { dismiss() }
 
-    HostedOverlay(modal = true) {
+    HostedOverlay(modal = { true }) {
         val springs = AppTheme.springs
         val scrim = AppTheme.colors.scrim
         val transition = rememberTransition(state, label = "alert")

@@ -1,5 +1,10 @@
 package com.base.app.catalog
 
+import android.graphics.Color
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.compose.LocalActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -25,6 +30,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -68,6 +74,7 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
     var section by rememberSaveable { mutableStateOf(initialSection) }
 
     ProvideEnvironment(environment) {
+        SystemBarIcons(dark = !AppTheme.colors.isLight)
         // An opaque floor under both pages, so the window's own colour never shows mid-transition.
         // Test tags are resource ids here, so device scripts can find what to tap.
         Box(Modifier.fillMaxSize().background(AppTheme.colors.background).semantics { testTagsAsResourceId = true }) {
@@ -116,6 +123,25 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
             }
             FrameTimesReadout(frames, Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(end = 8.dp, top = 4.dp))
         }
+    }
+}
+
+/**
+ * Status and navigation bar icons follow the catalog's theme rather than the system's: a page shown
+ * dark on a light phone would otherwise draw dark icons on a dark screen. Applied while the frame
+ * that first draws the theme is composed, so no frame shows the wrong icons.
+ */
+@Composable
+private fun SystemBarIcons(dark: Boolean) {
+    val activity = LocalActivity.current as? ComponentActivity ?: return
+    DisposableEffect(activity, dark) {
+        val style = if (dark) {
+            SystemBarStyle.dark(Color.TRANSPARENT)
+        } else {
+            SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+        }
+        activity.enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+        onDispose {}
     }
 }
 

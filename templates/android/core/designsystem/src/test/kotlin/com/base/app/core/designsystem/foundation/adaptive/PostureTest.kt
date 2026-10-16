@@ -11,7 +11,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.collections.AppImageViewer
-import com.base.app.core.designsystem.component.overlay.AppSheet
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.sheet.SheetDetent
+import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import org.junit.Assert.assertEquals
@@ -67,9 +69,14 @@ class PostureTest {
     }
 
     @Test
-    fun `in tabletop a sheet rises from the bottom and rests on the fold`() {
+    fun `R-12 in tabletop a sheet rises from the bottom and its medium detent rests on the fold`() {
         setContent(WindowPosture(WindowPosture.Kind.Tabletop, hinge = Rect(0f, 400f, 800f, 420f))) {
-            AppSheet(visible = true, onDismissRequest = {}, modifier = Modifier.testTag("sheet")) {
+            AppSheet(
+                visible = true,
+                onDismissRequest = {},
+                modifier = Modifier.testTag("sheet"),
+                state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
+            ) {
                 Box(Modifier.fillMaxSize())
             }
         }
