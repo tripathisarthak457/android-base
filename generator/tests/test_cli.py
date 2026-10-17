@@ -163,6 +163,17 @@ class CliTest(unittest.TestCase):
         self.assertNotEqual(0, result.returncode)
         self.assertTrue((working / "keep.txt").exists())
 
+    def test_force_never_deletes_the_current_directory_spelled_in_another_case(self):
+        working = self.root / "work"
+        working.mkdir()
+        (working / "keep.txt").write_text("keep", encoding="utf-8")
+        if not (self.root / "WORK").exists():
+            self.skipTest(f"the file system holding {self.root} tells WORK from work")
+        result = run("--spec", str(self.spec), "--out", str(self.root / "WORK"), "--no-zip", "--force", cwd=working)
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn("the current directory", result.stderr + result.stdout)
+        self.assertTrue((working / "keep.txt").exists())
+
     def test_set_overrides_after_the_spec_is_read(self):
         result = run(
             "--spec", str(self.spec), "--set", "package_name=com.example.wp01.std", "--set", "android.min_sdk=28",

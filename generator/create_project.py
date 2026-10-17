@@ -294,9 +294,18 @@ def _unsafe_to_delete(destination: Path) -> str | None:
         return "it is a filesystem root"
     for name, place in (("your home directory", Path.home()), ("the current directory", Path.cwd()), ("the generator", HERE)):
         for form in {place, place.resolve()}:
-            if any(path == form or path in form.parents for path in paths):
+            # By identity, not spelling: on a case-insensitive file system, the default on macOS,
+            # /users/me is the home directory too, while two POSIX paths compare case by case.
+            if any(_same_file(destination, ancestor) for ancestor in (form, *form.parents)):
                 return f"it is or contains {name}"
     return None
+
+
+def _same_file(path: Path, other: Path) -> bool:
+    try:
+        return path.samefile(other)
+    except OSError:
+        return False
 
 
 def ask_save_location(default_name: str, zip_output: bool) -> Path | None:
