@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -20,12 +22,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.node.DrawModifierNode
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.requireLayoutCoordinates
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.captureToImage
@@ -70,6 +77,64 @@ class GlassStageTest {
         }
 
         assertTrue(rule.onNodeWithTag("bottom").every(Color.Blue))
+    }
+
+    @Test
+    fun `a stage moved together with its chrome still samples what lies under the chrome`() {
+        var shift by mutableStateOf(0.dp)
+        rule.setContent {
+            Box(Modifier.graphicsLayer { translationY = shift.toPx() }) {
+                Stage(chrome = { Sampler(Alignment.TopCenter, "top") }) { Halves() }
+            }
+        }
+        rule.onNodeWithTag("top").captureToImage()
+
+        shift = StageShift
+
+        assertTrue(rule.onNodeWithTag("top").settled().every(Color.Red))
+    }
+
+    @Test
+    fun `a stage moved together with its chrome redraws no sample of its scene`() {
+        var shift by mutableStateOf(0.dp)
+        var draws = 0
+        rule.setContent {
+            Box(Modifier.graphicsLayer { translationY = shift.toPx() }) {
+                Stage(chrome = { CountedSampler { draws++ } }) { Halves() }
+            }
+        }
+        rule.onNodeWithTag("counted").captureToImage()
+        val drawsBefore = draws
+
+        shift = StageShift
+        rule.onNodeWithTag("counted").settled().captureToImage()
+
+        assertEquals(drawsBefore, draws)
+    }
+
+    @Test
+    fun `a sample taken before its scene is recorded shows the scene once it is`() {
+        var recording by mutableStateOf(false)
+        rule.setContent {
+            val layer = rememberGraphicsLayer()
+            val scene = remember(layer) { SceneBackdrop(layer) { Color.White } }
+            Box(Modifier.size(StageSize)) {
+                SceneBox(scene, recording = { recording }) { Halves() }
+                Box(
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .size(SamplerWidth, SamplerHeight)
+                        .testTag("top")
+                        .drawPlainBackdrop(scene, { RectangleShape }, effects = {}),
+                )
+            }
+        }
+        val unrecorded = rule.onNodeWithTag("top").centre()
+
+        recording = true
+
+        assertEquals("nothing to sample yet", Color.White, unrecorded)
+        assertTrue(rule.onNodeWithTag("top").settled().every(Color.Red))
     }
 
     @Test
@@ -199,6 +264,58 @@ class GlassStageTest {
         )
     }
 
+    /**
+     * Samples the scene as Kyant does, but redraws only when something it reads changes, where
+     * Kyant also redraws whenever the sampler itself moves on screen; [onDraw] counts its draws.
+     */
+    @Composable
+    private fun BoxScope.CountedSampler(onDraw: () -> Unit) {
+        val scene = checkNotNull(LocalGlassScene.current)
+        Box(
+            Modifier
+                .align(Alignment.TopCenter)
+                .size(SamplerWidth, SamplerHeight)
+                .testTag("counted")
+                .graphicsLayer()
+                .then(CountedSampleElement(scene, onDraw)),
+        )
+    }
+
+    private data class CountedSampleElement(
+        val scene: SceneBackdrop,
+        val onDraw: () -> Unit,
+    ) : ModifierNodeElement<CountedSampleNode>() {
+        override fun create() = CountedSampleNode(scene, onDraw)
+
+        override fun update(node: CountedSampleNode) {
+            node.scene = scene
+            node.onDraw = onDraw
+        }
+    }
+
+    private class CountedSampleNode(
+        var scene: SceneBackdrop,
+        var onDraw: () -> Unit,
+    ) : Modifier.Node(), DrawModifierNode {
+        override fun ContentDrawScope.draw() {
+            onDraw()
+            with(scene) { drawBackdrop(this@draw, requireLayoutCoordinates(), layerBlock = null) }
+        }
+    }
+
+    /** A box whose content becomes the scene while [recording]. */
+    @Composable
+    private fun SceneBox(
+        scene: SceneBackdrop,
+        recording: () -> Boolean,
+        content: @Composable () -> Unit,
+    ) {
+        val recorded = if (recording()) Modifier.recordScene(scene) else Modifier
+        Box(Modifier.fillMaxSize().then(recorded)) {
+            content()
+        }
+    }
+
     /** The scene: red above, blue below. */
     @Composable
     private fun Halves() {
@@ -213,6 +330,16 @@ class GlassStageTest {
         CanvasDrawScope().draw(rule.density, LayoutDirection.Ltr, Canvas(ImageBitmap(1, 1)), size) {
             drawBackdrop(rule.density, surface, layerBlock = null)
         }
+    }
+
+    /**
+     * Robolectric shows a node inside an offscreen layer, which every Kyant sample is, one draw
+     * late: the first capture after a change still holds the frame before it.
+     */
+    private fun SemanticsNodeInteraction.settled(): SemanticsNodeInteraction {
+        Snapshot.sendApplyNotifications()
+        captureToImage()
+        return this
     }
 
     private fun SemanticsNodeInteraction.centre(): Color {
@@ -230,6 +357,7 @@ class GlassStageTest {
 
     private companion object {
         val StageSize = 200.dp
+        val StageShift = 120.dp
         val SamplerWidth = 120.dp
         val SamplerHeight = 40.dp
     }
