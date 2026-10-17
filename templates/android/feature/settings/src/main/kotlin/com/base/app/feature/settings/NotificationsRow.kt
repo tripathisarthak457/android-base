@@ -20,17 +20,18 @@ import com.base.app.core.notification.permission.rememberNotificationPermission
 @Composable
 internal fun NotificationsRow() {
     val permission = rememberNotificationPermission()
+    val access = permission.access
     AppCard(contentPadding = PaddingValues(0.dp)) {
         AppListItem(
             title = stringResource(R.string.settings_notifications),
             supporting = stringResource(
-                when (permission.access) {
+                when (access) {
                     NotificationAccess.Granted -> R.string.settings_notifications_on
                     NotificationAccess.NotGranted -> R.string.settings_notifications_off
                     NotificationAccess.Blocked -> R.string.settings_notifications_blocked
                 },
             ),
-            onClick = permission::request.takeIf { permission.access != NotificationAccess.Granted },
+            onClick = permission::request.takeIf { access != NotificationAccess.Granted },
             leading = { AppIcon(AppIcons.Bell, contentDescription = null, tint = AppTheme.colors.contentTertiary) },
         )
     }

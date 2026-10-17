@@ -113,8 +113,7 @@ fun AppRoot(
             }
 
             // <opt:appstatus>
-            val appStatus by apiSignals.status.collectAsStateWithLifecycle()
-            AppStatusGate(status = appStatus, onRetry = apiSignals::retry)
+            ApiStatusGate(apiSignals)
             // </opt:appstatus>
 
             // <opt:playstore>
@@ -138,6 +137,15 @@ fun AppRoot(
         // </opt-else:applock>
     }
 }
+
+// <opt:appstatus>
+/** Reads the status in a scope of its own: a change recomposes the gate alone, not the root's whole content. */
+@Composable
+private fun ApiStatusGate(signals: ApiSignals) {
+    val status by signals.status.collectAsStateWithLifecycle()
+    AppStatusGate(status = status, onRetry = signals::retry)
+}
+// </opt:appstatus>
 
 /** Each end of a session after this point, whoever ended it. */
 private fun SessionCoordinator.endedSessions(): Flow<SessionState> =
