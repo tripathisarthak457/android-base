@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,9 +23,11 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
@@ -52,29 +57,39 @@ class LargeTitleTopBarTest {
     private var contentCompositions = 0
     private var withAccessory by mutableStateOf(true)
 
+    private var gap = Dp.Unspecified
+    private var fontScale by mutableFloatStateOf(1f)
+
     private fun setBar() {
         rule.setThemed {
-            AppScaffold(
-                topBar = {
-                    AppLargeTitleTopBar(
-                        title = "Inbox",
-                        scrolled = { scrolled },
-                        accessory = if (withAccessory) {
-                            {
-                                SideEffect { accessoryCompositions++ }
-                                Box(Modifier.height(AccessoryHeight))
-                            }
-                        } else {
-                            null
-                        },
-                    )
-                },
-            ) {
-                inset = LocalTopChrome.current.value
-                SideEffect { contentCompositions++ }
-            }
+            gap = AppTheme.spacing.sm
+            val density = LocalDensity.current
+            CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) { Bar() }
         }
         rule.waitForIdle()
+    }
+
+    @Composable
+    private fun Bar() {
+        AppScaffold(
+            topBar = {
+                AppLargeTitleTopBar(
+                    title = "Inbox",
+                    scrolled = { scrolled },
+                    accessory = if (withAccessory) {
+                        {
+                            SideEffect { accessoryCompositions++ }
+                            Box(Modifier.height(AccessoryHeight).fillMaxWidth().testTag("accessory"))
+                        }
+                    } else {
+                        null
+                    },
+                )
+            },
+        ) {
+            inset = LocalTopChrome.current.value
+            SideEffect { contentCompositions++ }
+        }
     }
 
     @Test
@@ -161,7 +176,36 @@ class LargeTitleTopBarTest {
         assertEquals(1, rule.onAllNodesWithText("Inbox").fetchSemanticsNodes().size)
     }
 
+    @Test
+    @Config(qualifiers = "w891dp-h411dp")
+    fun `in a window held sideways the accessory keeps its gap below the inline bar's hairline`() {
+        setBar()
+        val top = rule.onNodeWithTag("accessory").getUnclippedBoundsInRoot().top
+        assertEquals(TopBarHeight + gap, top)
+    }
+
+    @Test
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    fun `at a larger font scale the large title grows with the text, up to its cap`() {
+        setBar()
+        val regular = titleHeight()
+        fontScale = 1.5f
+        rule.waitForIdle()
+        val larger = titleHeight()
+        assertTrue("$regular then $larger", larger >= regular * 1.25f)
+        fontScale = 2f
+        rule.waitForIdle()
+        val largest = titleHeight()
+        assertEquals(larger.value, largest.value, 2f)
+    }
+
+    private fun titleHeight(): Dp {
+        val bounds = rule.onAllNodesWithText("Inbox")[1].getUnclippedBoundsInRoot()
+        return bounds.bottom - bounds.top
+    }
+
     private companion object {
+        val TopBarHeight = 52.dp
         val AccessoryHeight = 44.dp
         val ListTopPadding = 200.dp
         val ShortRow = 60.dp

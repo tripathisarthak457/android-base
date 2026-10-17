@@ -43,6 +43,7 @@ import com.base.app.core.designsystem.component.button.AppButtonDefaults
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.container.LocalScaffoldBackground
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.component.text.grownWithFontScale
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.icon.AppIcons
@@ -206,7 +207,7 @@ fun AppLargeTitleTopBar(
                         AppText(
                             text = title,
                             modifier = Modifier.semantics { heading() },
-                            style = AppTheme.typography.largeTitle,
+                            style = AppTheme.typography.largeTitle.grownWithFontScale(LargeTitleMaxScale),
                             color = colors.contentPrimary,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
@@ -217,7 +218,14 @@ fun AppLargeTitleTopBar(
                     }
                 }
                 accessory?.let {
-                    Box(Modifier.padding(horizontal = AppTheme.spacing.gutter).padding(bottom = AppTheme.spacing.sm)) { it() }
+                    // Without the large title above it, the accessory keeps the same gap from the
+                    // bar's hairline as it has below the title.
+                    val top = if (large) 0.dp else AppTheme.spacing.sm
+                    Box(
+                        Modifier
+                            .padding(horizontal = AppTheme.spacing.gutter)
+                            .padding(top = top, bottom = AppTheme.spacing.sm),
+                    ) { it() }
                 }
             }
         }
@@ -312,6 +320,9 @@ private fun InlineBar(
 
 /** How far content scrolls under a clear bar before the bar is fully solid. */
 private val ScrollFadeDistance = 24.dp
+
+/** How far the large title grows with the font scale: as iOS's, 44 pt of 34 at the first accessibility size. */
+private const val LargeTitleMaxScale = 1.3f
 
 /** The room the large title takes under the small bar. */
 private val LargeTitleArea = 52.dp
