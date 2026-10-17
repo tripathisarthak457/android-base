@@ -7,6 +7,7 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from unittest import mock
 
 from genkit.core import pipeline, translations
 from genkit.core.spec import SpecError
@@ -50,6 +51,14 @@ class LayoutTest(unittest.TestCase):
         languages = translations.available("android")
         self.assertEqual({"de", "es", "fr", "hi", "pt-BR"}, set(languages))
         self.assertEqual("Deutsch", languages["de"])
+
+    def test_languages_come_in_the_same_order_on_every_host(self):
+        with tempfile.TemporaryDirectory() as temp:
+            for tag in ("zh-HK", "zh-Hans", "de"):
+                (Path(temp) / "android" / tag).mkdir(parents=True)
+                (Path(temp) / "android" / tag / "_language.json").write_text('{"name": "x"}', encoding="utf-8")
+            with mock.patch.object(translations, "ROOT", Path(temp)):
+                self.assertEqual(["de", "zh-HK", "zh-Hans"], list(translations.available.__wrapped__("android")))
 
     def test_every_template_string_is_translated_in_every_language(self):
         source = template_strings()

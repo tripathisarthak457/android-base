@@ -16,6 +16,10 @@ import tomllib
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "generator"))
+
+from genkit.core.copy import write_text  # noqa: E402
+
 TEMPLATES = Path(__file__).resolve().parent.parent / "templates"
 
 GOOGLE = "https://dl.google.com/android/maven2/"
@@ -135,7 +139,7 @@ def check_catalogue(path: Path, apply: bool) -> int:
     with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
         newest = dict(zip(coordinates, pool.map(latest_stable, coordinates.values())))
 
-    print(f"\n{path.relative_to(TEMPLATES.parent)}")
+    print(f"\n{path.relative_to(TEMPLATES.parent).as_posix()}")
     outdated: dict[str, str] = {}
     for key, current in declared.items():
         found = newest.get(key)
@@ -156,7 +160,7 @@ def check_catalogue(path: Path, apply: bool) -> int:
     if apply and outdated:
         for key, version in outdated.items():
             text = re.sub(rf'^({re.escape(key)} = )"[^"]+"', rf'\g<1>"{version}"', text, count=1, flags=re.M)
-        path.write_text(text, encoding="utf-8")
+        write_text(path, text)
     return len(outdated)
 
 
@@ -164,12 +168,12 @@ def check_wrapper(path: Path, newest: str | None, apply: bool) -> int:
     text = path.read_text(encoding="utf-8")
     match = _WRAPPER_VERSION.search(text)
     if match is None:
-        print(f"\n{path.relative_to(TEMPLATES.parent)}: no distributionUrl")
+        print(f"\n{path.relative_to(TEMPLATES.parent).as_posix()}: no distributionUrl")
         return 0
     current = match.group(2)
     behind = newest is not None and _ordering(newest) > _ordering(current)
     status = "could not be looked up" if newest is None else (f"-> {newest}" if behind else "latest")
-    print(f"\n{path.relative_to(TEMPLATES.parent)}\n  {'gradle':28} {current:16} {status}")
+    print(f"\n{path.relative_to(TEMPLATES.parent).as_posix()}\n  {'gradle':28} {current:16} {status}")
     if apply and behind:
         updated = _WRAPPER_VERSION.sub(rf"\g<1>{newest}\g<3>", text, count=1)
         if _WRAPPER_CHECKSUM.search(updated):
@@ -182,7 +186,7 @@ def check_wrapper(path: Path, newest: str | None, apply: bool) -> int:
                       f"run ./gradlew wrapper --gradle-version {newest} in that template instead")
                 return int(behind)
             updated = _WRAPPER_CHECKSUM.sub(rf"\g<1>{checksum}", updated, count=1)
-        path.write_text(updated, encoding="utf-8")
+        write_text(path, updated)
     return int(behind)
 
 

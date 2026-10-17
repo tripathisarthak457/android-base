@@ -17,6 +17,7 @@ from pathlib import Path
 
 from add_feature import find_package_name, normalise
 from genkit.core import prompts
+from genkit.core.copy import write_text
 from genkit.core.spec import SpecError, pascal_case
 
 
@@ -130,7 +131,7 @@ def _drop_lines(path: Path, matches) -> None:
     lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
     kept = [line for line in lines if not matches(line)]
     if len(kept) != len(lines):
-        path.write_text("".join(kept), encoding="utf-8")
+        write_text(path, "".join(kept))
 
 
 def report_plan(project: Path, present: list[Path]) -> None:
