@@ -5,6 +5,6 @@
 #             [--edge left|right] [--serial ID] [--seconds N]
 # Journeys: tab_switch push pop pushpop gesture_pop rapid_back scroll back_slow_commit back_slow_cancel
 # back_fast_flick back_y_follow back_to_home back_during_push custom.
-# Needs ffmpeg and Python 3.11 or newer.
+# Needs ffmpeg and ffprobe, and Python 3.11 or newer.
 set -euo pipefail
-exec python3 "$(dirname "$0")/perf.py" record "$@"
+exec "$(dirname "$0")/perf.sh" record "$@"

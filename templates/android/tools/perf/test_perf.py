@@ -453,6 +453,54 @@ class SplitProfileTest(unittest.TestCase):
                 "HSPLcom/acme/MainActivity;->onCreate(Landroid/os/Bundle;)V",
                 "HSPLcom/acme/feature/sample/DetailScreenKt;->DetailScreen()V",
             ])
+            with open(os.path.join(project, "core/navigation/src/main/baseline-prof.txt"), "rb") as handle:
+                self.assertNotIn(b"\r", handle.read())
+
+
+class HostTest(unittest.TestCase):
+    """What a Windows host does differently: line ends on write, and tools that may be missing."""
+
+    @contextlib.contextmanager
+    def without(self, *tools):
+        which = perf.shutil.which
+        perf.shutil.which = lambda name, *args, **kwargs: None if name in tools else which(name, *args, **kwargs)
+        try:
+            yield
+        finally:
+            perf.shutil.which = which
+
+    class UntouchedDevice:
+        """A device the harness must not reach: any call fails the test."""
+
+        def __getattr__(self, name):
+            raise AssertionError(f"the device was used ({name}) before the tools were checked")
+
+    def test_summaries_are_written_with_lf_line_ends(self):
+        info = {
+            "package": "com.acme.dev", "apk": "app.apk", "runs": 1, "seed": 1, "extras": {}, "scenarios": ["idle"],
+            "gate": "solid", "gates_file": check_gates.DEFAULT_GATES,
+            "device": {"model": "Phone", "serial": "1", "battery_c": 30.0},
+        }
+        metrics = perf.combine_runs([{"idle.frames": 0}])
+        results = check_gates.evaluate({"metrics": metrics}, gate_rows(), "solid")
+        with tempfile.TemporaryDirectory() as out:
+            perf.write_summary(out, info, metrics, ["a note"], results)
+            for name in ("summary.json", "summary.md"):
+                with open(os.path.join(out, name), "rb") as handle:
+                    self.assertNotIn(b"\r", handle.read(), name)
+
+    def test_back_during_push_without_ffmpeg_stops_before_the_device_is_touched(self):
+        args = perf.argparse.Namespace(gates=check_gates.DEFAULT_GATES, gate="solid", apk=None, variant="devRelease",
+                                       scenarios=["tabs", "back_during_push"])
+        with self.without("ffmpeg"), self.assertRaisesRegex(perf.HarnessError, "back_during_push .* ffmpeg"):
+            perf.measure_on(self.UntouchedDevice(), args)
+
+    def test_record_without_ffprobe_fails_with_a_message(self):
+        stderr = io.StringIO()
+        with self.without("ffprobe"), contextlib.redirect_stderr(stderr):
+            code = perf.main(["record", "com.acme.dev", "push", tempfile.gettempdir(), "--serial", "absent"])
+        self.assertEqual(code, 2)
+        self.assertIn("needs ffprobe on PATH", stderr.getvalue())
 
 
 if __name__ == "__main__":
