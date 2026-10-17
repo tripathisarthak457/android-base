@@ -186,7 +186,10 @@ def _path_too_long(error: OSError) -> str | None:
         # A tree copy reports each failure as (source, destination, message), errno lost. With long
         # paths off, a destination past the limit for what its source is cannot have been created
         # whatever the message; one within it failed for some other reason.
-        paths = [str(copy) for source, copy, _ in error.args[0] if _past_limit(str(copy), os.path.isdir(source))]
+        paths = [
+            str(destination) for source, destination, _ in error.args[0]
+            if _past_limit(str(destination), os.path.isdir(source))
+        ]
     elif error.errno in _PATH_REFUSED:
         # A rename names both its paths, and either can be the one too long, a folder as well as a file.
         paths = [
