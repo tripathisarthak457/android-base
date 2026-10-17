@@ -106,7 +106,10 @@ def build(
                 manifest.executable,
             )
 
-        with _windows_path_limit_explained("destination, app name or package name"):
+        shorter = "destination, app name or package name"
+        if not zip_output:
+            _check_windows_path_limit(project, destination, shorter)
+        with _windows_path_limit_explained(shorter):
             destination.parent.mkdir(parents=True, exist_ok=True)
             # The result is finished beside the destination and renamed over it, so a failure never
             # leaves half a project where a caller expects a whole one, nor costs the one it replaces.
@@ -130,6 +133,29 @@ def build(
     return Generated(destination, spec.pascal_name, warnings, context.summary)
 
 
+def _check_windows_path_limit(project: Path, destination: Path, shorter: str) -> None:
+    """
+    Refuses `project` when a path in it would pass Windows' length limit at `destination`. Putting
+    it there is a rename, which Windows does however deep the files inside are, so nothing else
+    would say so before Explorer, git or the build failed on them.
+    """
+    if os.name != "nt" or _windows_long_paths_on():
+        return
+    root = os.path.abspath(destination)
+    past: list[str] = []
+    for folder, folders, files in os.walk(project):
+        placed = root + folder[len(str(project)):]
+        for name in [*folders, *files]:
+            path = os.path.join(placed, name)
+            if _past_limit(path, name in folders):
+                past.append(path)
+    if past:
+        longest = max(past, key=len)
+        raise _past_windows_limit(
+            f"At {destination} the project would hold a path of {len(longest)} characters: {longest}.", shorter
+        )
+
+
 @contextmanager
 def _windows_path_limit_explained(shorter: str) -> Iterator[None]:
     """
@@ -143,11 +169,15 @@ def _windows_path_limit_explained(shorter: str) -> Iterator[None]:
         path = _path_too_long(error)
         if os.name != "nt" or path is None or _windows_long_paths_on():
             raise
-        raise RenderError(
-            f"Windows refused a path of {len(path)} characters: {path}. With long paths off it takes "
-            f"{_WINDOWS_MAX_FILE} at most for a file and {_WINDOWS_MAX_DIRECTORY} for a folder. Turn long "
-            f"paths on (LongPathsEnabled), which building the project needs too, or choose a shorter {shorter}."
-        ) from error
+        raise _past_windows_limit(f"Windows refused a path of {len(path)} characters: {path}.", shorter) from error
+
+
+def _past_windows_limit(what: str, shorter: str) -> RenderError:
+    return RenderError(
+        f"{what} With long paths off Windows takes {_WINDOWS_MAX_FILE} at most for a file and "
+        f"{_WINDOWS_MAX_DIRECTORY} for a folder. Turn long paths on (LongPathsEnabled), which building the "
+        f"project needs too, or choose a shorter {shorter}."
+    )
 
 
 def _path_too_long(error: OSError) -> str | None:

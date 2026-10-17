@@ -466,39 +466,63 @@ class WindowsPathLimitTest(unittest.TestCase):
         self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
 
 
-@unittest.skipUnless(os.name == "nt", "the path length limit is Windows'")
 class WindowsLongPathsTest(unittest.TestCase):
+    """
+    What the pipeline makes of a path's length, shown a Windows host with long paths off whatever
+    this host is. The paths use forward slashes, which both hosts' path functions split on.
+    """
+
+    def setUp(self):
+        for patch in (
+            seen_by_pipeline(os, name="nt"),
+            mock.patch.object(pipeline, "_windows_long_paths_on", return_value=False),
+        ):
+            patch.start()
+            self.addCleanup(patch.stop)
 
     def test_with_long_paths_on_a_long_missing_path_is_only_missing(self):
         for on, expected in ((True, FileNotFoundError), (False, RenderError)):
             with self.subTest(long_paths=on), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=on):
                 with self.assertRaises(expected), pipeline._windows_path_limit_explained("app name"):
-                    raise FileNotFoundError(errno.ENOENT, "No such file or directory", "C:\\" + "x" * 300)
+                    raise FileNotFoundError(errno.ENOENT, "No such file or directory", "C:/" + "x" * 300)
 
     def test_the_path_named_is_the_one_too_long(self):
-        long = "D:\\" + "y" * 300
+        long = "D:/" + "y" * 300
         failures = {
-            "the target of a rename": FileNotFoundError(errno.ENOENT, "No such file", "D:\\short", None, long),
-            "a file a tree copy could not write": shutil.Error([("C:\\staged\\file", long, "[WinError 3] not found")]),
+            "the target of a rename": FileNotFoundError(errno.ENOENT, "No such file", "D:/short", None, long),
+            "a file a tree copy could not write": shutil.Error([("C:/staged/file", long, "[WinError 3] not found")]),
         }
         for what, failure in failures.items():
-            with self.subTest(what), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=False):
+            with self.subTest(what):
                 with self.assertRaises(RenderError) as raised, pipeline._windows_path_limit_explained("destination"):
                     raise failure
                 self.assertIn(f"a path of {len(long)} characters: {long}.", str(raised.exception))
 
     def test_a_tree_copy_is_held_to_the_limit_for_a_file_or_a_folder(self):
         # 254 characters: too long for a folder, not for a file in one of 243.
-        file = "D:\\" + "y" * 240 + "\\shared.bin"
-        folder = "D:\\" + "y" * 250
+        file = "D:/" + "y" * 240 + "/shared.bin"
+        folder = "D:/" + "y" * 250
         failures = {
-            "a file held open": (shutil.Error([("C:\\staged\\shared.bin", file, "[WinError 32] in use")]), shutil.Error),
+            "a file held open": (shutil.Error([("C:/staged/shared.bin", file, "[WinError 32] in use")]), shutil.Error),
             "a folder too deep": (shutil.Error([(str(HERE), folder, "[WinError 3] not found")]), RenderError),
         }
         for what, (failure, expected) in failures.items():
-            with self.subTest(what), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=False):
-                with self.assertRaises(expected), pipeline._windows_path_limit_explained("destination"):
-                    raise failure
+            with self.subTest(what), self.assertRaises(expected), pipeline._windows_path_limit_explained("destination"):
+                raise failure
+
+    def test_a_project_too_deep_at_its_destination_is_refused_before_it_is_placed(self):
+        # Staged, the project fits. Placed one character deeper than it fits, it would not, and
+        # placing it is a rename, which Windows makes whatever the depth of the files inside.
+        temp = Path(tempfile.mkdtemp())
+        self.addCleanup(delete_tree, temp)
+        destination = at_length(temp, deepest_destination("all") + 1, "all")
+        with self.assertRaisesRegex(
+            RenderError,
+            rf"^At {re.escape(str(destination))} the project would hold a path of {pipeline._WINDOWS_MAX_FILE + 1} "
+            r"characters: .*TrailNotesApplication\.kt\. .* shorter destination, app name or package name\.$",
+        ):
+            generate("all", destination)
+        self.assertEqual([], list(destination.parent.iterdir()))
 
 
 if __name__ == "__main__":
