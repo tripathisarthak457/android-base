@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -28,6 +29,15 @@ def run(*arguments: str, cwd: Path | None = None) -> subprocess.CompletedProcess
     )
 
 
+def short_path(path: Path) -> str:
+    """The 8.3 spelling Windows gives `path`, or `path` itself where its volume makes none."""
+    import ctypes
+
+    buffer = ctypes.create_unicode_buffer(32_768)
+    length = ctypes.windll.kernel32.GetShortPathNameW(str(path), buffer, len(buffer))
+    return buffer.value if 0 < length < len(buffer) else str(path)
+
+
 class CliTest(unittest.TestCase):
 
     def setUp(self):
@@ -42,8 +52,26 @@ class CliTest(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stderr)
         data = json.loads(result.stdout)
         self.assertTrue(data["ok"])
-        self.assertEqual(str(self.root / "p"), data["path"])
+        # The temporary directory may be named through a link (macOS) or an 8.3 short name (Windows).
+        self.assertEqual(str(self.root.resolve() / "p"), data["path"])
         self.assertTrue((self.root / "p/settings.gradle.kts").is_file())
+
+    def test_the_reported_path_spells_the_directories_one_way(self):
+        (self.root / "sub").mkdir()
+        result = run("--spec", str(self.spec), "--out", str(self.root / "sub" / ".." / "p"), "--no-zip", "--json")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(str(self.root.resolve() / "p"), json.loads(result.stdout)["path"])
+
+    @unittest.skipUnless(os.name == "nt", "8.3 short names exist only on Windows")
+    def test_the_reported_path_spells_out_a_short_name(self):
+        directory = self.root / "a long directory name"
+        directory.mkdir()
+        short = short_path(directory)
+        if short == str(directory):
+            self.skipTest(f"the volume holding {directory} does not make 8.3 short names")
+        result = run("--spec", str(self.spec), "--out", str(Path(short) / "p"), "--no-zip", "--json")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(str(directory.resolve() / "p"), json.loads(result.stdout)["path"])
 
     def test_a_refusal_with_json_is_the_headless_shape(self):
         self.spec.write_text(json.dumps({**SPEC, "package_name": "com.example.null"}), encoding="utf-8")

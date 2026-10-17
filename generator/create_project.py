@@ -275,8 +275,10 @@ def confirm_replace(destination: Path, force: bool, unattended: bool) -> bool:
 
 def absolute(path: Path) -> Path:
     """
-    `path` made absolute with its directories resolved but not its last part, so that a symbolic
-    link given as the destination is what gets replaced, never the directory it points at.
+    `path` made absolute with its directories resolved but not its last part, so that a link given
+    as the destination is what gets replaced, never the directory it points at. It is also the path
+    the result reports, so its directories have one spelling however the caller named them: through
+    a link, with `..`, or by a Windows 8.3 short name like the one `%TEMP%` often holds.
     """
     path = path.expanduser().absolute()
     if path.name in ("", ".."):
