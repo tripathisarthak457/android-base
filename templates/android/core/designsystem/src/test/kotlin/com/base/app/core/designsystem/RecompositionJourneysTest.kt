@@ -42,14 +42,14 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.overlay.AppContextMenu
 import com.base.app.core.designsystem.component.overlay.AppMenuItem
-import com.base.app.core.designsystem.component.overlay.AppSheet
-import com.base.app.core.designsystem.component.overlay.AppSheetState
-import com.base.app.core.designsystem.component.overlay.SheetDetent
 import com.base.app.core.designsystem.component.pickers.AppWheelPicker
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.selection.AppSwitch
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.sheet.AppSheetState
+import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.LocalTabVisible
 import com.base.app.core.designsystem.foundation.chromeContentPadding
@@ -188,9 +188,9 @@ class RecompositionJourneysTest {
 
     @Test
     fun `dragging a sheet between its detents recomposes nothing`() {
-        val state = AppSheetState()
+        val state = AppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large))
         setContent {
-            AppSheet(state = state, onDismiss = {}) { JourneyRow() }
+            AppSheet(visible = true, onDismissRequest = {}, state = state) { JourneyRow() }
         }
         rule.mainClock.advanceTimeBy(2_000)
         counter.reset()

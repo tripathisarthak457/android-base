@@ -45,7 +45,7 @@ fun AppLoadingOverlay(
     // Taken and ignored: leaving the screen would not stop what is in flight.
     OverlayBackHandler(enabled = state.targetState) {}
 
-    HostedOverlay(modal = true) {
+    HostedOverlay(modal = { true }) {
         val springs = AppTheme.springs
         val scrim = AppTheme.colors.scrim
         val transition = rememberTransition(state, label = "loadingOverlay")

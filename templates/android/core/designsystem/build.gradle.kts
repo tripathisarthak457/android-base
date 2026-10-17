@@ -7,6 +7,13 @@ android {
     namespace = "com.base.app.core.designsystem"
 }
 
+kotlin {
+    compilerOptions {
+        // The shell seams are this module's own API; only other modules have to opt in to them.
+        optIn.add("com.base.app.core.designsystem.foundation.layout.ShellSeamApi")
+    }
+}
+
 dependencies {
 
     // `api` so modules can use Modifier, Color and friends without re-declaring Compose.

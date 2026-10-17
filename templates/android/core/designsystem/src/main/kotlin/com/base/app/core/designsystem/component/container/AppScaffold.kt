@@ -13,9 +13,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
 import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.LocalTopChrome
@@ -38,13 +40,16 @@ import com.base.app.core.designsystem.theme.AppTheme
  * sideways puts at one edge, its display cutout and a three-button navigation bar, so no row ends
  * under them; a screen with a full-bleed panel passes [clearDisplayCutout] false and pads that
  * panel's content itself.
+ *
+ * [background] is the theme's background by default. Inside a sheet the default paints nothing, so
+ * the sheet's material shows, and the sheet keeps the content clear of the cutout itself.
  */
 @Composable
 fun AppScaffold(
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit = {},
     bottomBar: (@Composable () -> Unit)? = null,
-    background: Color = AppTheme.colors.background,
+    background: Color = Color.Unspecified,
     contentMaxWidth: Dp = Dp.Unspecified,
     clearDisplayCutout: Boolean = true,
     content: @Composable () -> Unit,
@@ -52,13 +57,17 @@ fun AppScaffold(
     val topChrome = remember { ChromeInset() }
     val bottomChrome = if (bottomBar != null) remember { ChromeInset() } else LocalBottomChrome.current
     val width = if (contentMaxWidth == Dp.Unspecified) Modifier else Modifier.centeredMaxWidth(contentMaxWidth)
+    val sheet = LocalSheetSurface.current
+    // In a sheet the sheet's material shows through, and the sheet already keeps clear of the cutout.
+    val fill = background.takeOrElse { if (sheet != null) Color.Transparent else AppTheme.colors.background }
+    val behindBars = background.takeOrElse { sheet?.container ?: AppTheme.colors.background }
 
-    CompositionLocalProvider(LocalTopChrome provides topChrome, LocalScaffoldBackground provides background) {
+    CompositionLocalProvider(LocalTopChrome provides topChrome, LocalScaffoldBackground provides behindBars) {
         SubcomposeLayout(
             modifier = modifier
-                .background(background)
+                .background(fill)
                 .then(
-                    if (clearDisplayCutout) {
+                    if (clearDisplayCutout && sheet == null) {
                         Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
                     } else {
                         Modifier

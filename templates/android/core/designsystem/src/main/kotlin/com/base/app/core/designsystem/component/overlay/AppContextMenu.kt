@@ -199,7 +199,7 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer, 
     }
     OverlayBackHandler(enabled = !closing) { close() }
 
-    HostedOverlay(modal = true) {
+    HostedOverlay(modal = { true }) {
         val colors = AppTheme.colors
         val lifting = opening == ContextMenuOpening.Lift
         val liftScale = if (reduceMotion) 1f else LiftScale

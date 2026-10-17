@@ -42,6 +42,8 @@ import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.button.AppButtonDefaults
 import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.container.LocalScaffoldBackground
+import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetCloseButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.component.text.grownWithFontScale
 import com.base.app.core.designsystem.foundation.ChromeInset
@@ -70,8 +72,10 @@ fun LazyListState.scrolledFromTop(): Int {
  * Content runs under the bar. With [scrolled], the bar is clear at the top of the content and its
  * surface and hairline fade in as content scrolls under it; without, it is always solid. Either way
  * it writes its height to the screen's top inset, which `chromeContentPadding()` reads. A bar that
- * is not at the top of the window (inside a pane, a sheet or a demo) passes `WindowInsets(0)` as
- * [windowInsets], so it does not reserve the status bar's height.
+ * is not at the top of the window (inside a pane or a demo) passes `WindowInsets(0)` as
+ * [windowInsets], so it does not reserve the status bar's height; a sheet has already taken it.
+ * Inside a sheet the bar takes the sheet's colour, and at the root of the sheet, where it would
+ * have no Back, it shows the sheet's close button in its place.
  */
 @Composable
 fun AppTopBar(
@@ -87,6 +91,7 @@ fun AppTopBar(
     val colors = AppTheme.colors
     val topChrome = LocalTopChrome.current
     val fadeDistance = ScrollFadeDistance
+    val fill = LocalSheetSurface.current?.container ?: colors.surface
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -94,7 +99,7 @@ fun AppTopBar(
             .drawBehind {
                 val shown = scrolled?.let { (it() / fadeDistance.toPx()).coerceIn(0f, 1f) } ?: 1f
                 if (shown > 0f) {
-                    drawRect(colors.surface, alpha = shown)
+                    drawRect(fill, alpha = shown)
                     drawLine(colors.separator, Offset(0f, size.height - 0.5f), Offset(size.width, size.height - 0.5f), 1f, alpha = shown)
                 }
             }
@@ -146,6 +151,7 @@ fun AppLargeTitleTopBar(
     LaunchedEffect(collapsed) { inlineTitle.animateTo(if (collapsed) 1f else 0f, tween(fade)) }
     val surfaceFade = SurfaceFadeDistance
     val screen = LocalScaffoldBackground.current.takeOrElse { colors.background }
+    val fill = LocalSheetSurface.current?.container ?: colors.surface
 
     Column(
         modifier = modifier
@@ -164,7 +170,7 @@ fun AppLargeTitleTopBar(
                 val fadeFrom = collapseDistance - surfaceFade.toPx()
                 val shown = if (!large) 1f else ((scrolled() - fadeFrom) / surfaceFade.toPx()).coerceIn(0f, 1f)
                 if (shown > 0f) {
-                    drawRect(colors.surface, size = Size(size.width, inline), alpha = shown)
+                    drawRect(fill, size = Size(size.width, inline), alpha = shown)
                     drawLine(colors.separator, Offset(0f, inline - 0.5f), Offset(size.width, inline - 0.5f), 1f, alpha = shown)
                 }
             }
@@ -286,6 +292,8 @@ private fun InlineBar(
                         onClick = onBack,
                         colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
                     )
+                } else {
+                    AppSheetCloseButton()
                 }
             },
             title,

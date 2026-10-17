@@ -37,11 +37,15 @@ import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.list.AppSection
 import com.base.app.core.designsystem.component.list.AppToggleRow
-import com.base.app.core.designsystem.component.overlay.AppSheet
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.component.overlay.ToastMessage
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.selection.AppSlider
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.sheet.SheetDetent
+import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
+import com.base.app.core.designsystem.component.sheet.content.SheetColumn
+import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.AppTwoPane
 import com.base.app.core.designsystem.foundation.adaptive.InputTraits
@@ -151,10 +155,17 @@ private fun PostureDemo() {
             )
         }
         AppButton(text = "Show a sheet", onClick = { sheet = true }, variant = ButtonVariant.Tinted, size = ButtonSize.Small)
-        AppSheet(visible = sheet, onDismissRequest = { sheet = false }, title = "Filters", showCloseButton = true) {
-            AppSection {
-                AppRow(title = "Newest first", onClick = {})
-                AppRow(title = "Nearest first", onClick = {})
+        AppSheet(
+            visible = sheet,
+            onDismissRequest = { sheet = false },
+            state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
+            header = { AppSheetHeader(title = "Filters") },
+        ) {
+            SheetColumn {
+                AppSection {
+                    AppRow(title = "Newest first", onClick = {})
+                    AppRow(title = "Nearest first", onClick = {})
+                }
             }
         }
     }
