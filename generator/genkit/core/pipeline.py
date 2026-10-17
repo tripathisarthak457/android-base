@@ -42,7 +42,7 @@ from .target import BuildContext, RenderError, Target
 _WINDOWS_MAX_FILE = 259
 _WINDOWS_MAX_DIRECTORY = 247
 #: What Windows says of a longer path. The build makes every directory before it writes into it, so
-#: here a missing path means nothing else.
+#: here, with long paths off, a missing path means nothing else.
 _PATH_REFUSED = (errno.ENOENT, errno.ENAMETOOLONG)
 
 
@@ -83,7 +83,10 @@ def build(
         raise RenderError(f"{destination} is a directory, not a path for the zip.")
 
     manifest = target.manifest
-    with _windows_path_limit_explained(), tempfile.TemporaryDirectory(prefix=f"{target.key}-gen-") as staging:
+    with (
+        _windows_path_limit_explained("app name or package name"),
+        tempfile.TemporaryDirectory(prefix=f"{target.key}-gen-") as staging,
+    ):
         project = Path(staging) / spec.pascal_name
         project.mkdir()
         warnings = render_template(project, spec, target)
@@ -98,38 +101,57 @@ def build(
                 manifest.executable,
             )
 
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        # The result is finished beside the destination and renamed over it, so a failure never
-        # leaves half a project where a caller expects a whole one, nor costs the one it replaces.
-        with tempfile.TemporaryDirectory(prefix=f".{destination.name}.", dir=destination.parent) as beside:
-            finished = Path(beside) / destination.name
-            if zip_output:
-                package.zip_project(project, finished, manifest.executable)
-            else:
-                _move(project, finished)
-            if replace and os.path.lexists(destination):
-                _swap(finished, destination, Path(beside) / "replaced")
-            else:
-                os.replace(finished, destination)
+        with _windows_path_limit_explained("destination, app name or package name"):
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            # The result is finished beside the destination and renamed over it, so a failure never
+            # leaves half a project where a caller expects a whole one, nor costs the one it replaces.
+            with tempfile.TemporaryDirectory(prefix=f".{destination.name}.", dir=destination.parent) as beside:
+                finished = Path(beside) / destination.name
+                if zip_output:
+                    package.zip_project(project, finished, manifest.executable)
+                else:
+                    _move(project, finished)
+                if replace and os.path.lexists(destination):
+                    _swap(finished, destination, Path(beside) / "replaced")
+                else:
+                    os.replace(finished, destination)
 
     return Generated(destination, spec.pascal_name, warnings, context.summary)
 
 
 @contextmanager
-def _windows_path_limit_explained() -> Iterator[None]:
-    """Turns what Windows says about a path over its length limit, "no such file", into what happened."""
+def _windows_path_limit_explained(shorter: str) -> Iterator[None]:
+    """
+    Turns what Windows says about a path over its length limit, "no such file", into what happened
+    and what to do: turn long paths on, or shorten what `shorter` names, the caller's parts of the
+    paths written inside this block.
+    """
     try:
         yield
     except OSError as error:
         path = str(error.filename or "")
-        if os.name != "nt" or error.errno not in _PATH_REFUSED or len(path) <= _WINDOWS_MAX_DIRECTORY:
+        if (
+            os.name != "nt"
+            or error.errno not in _PATH_REFUSED
+            or len(path) <= _WINDOWS_MAX_DIRECTORY
+            or _windows_long_paths_on()
+        ):
             raise
         raise RenderError(
             f"Windows refused a path of {len(path)} characters: {path}. With long paths off it takes "
-            f"{_WINDOWS_MAX_FILE} at most for a file and {_WINDOWS_MAX_DIRECTORY} for a folder, the temporary "
-            "folder included. Turn long paths on (LongPathsEnabled), which building the project needs too, "
-            "or choose a shorter app name or package name."
+            f"{_WINDOWS_MAX_FILE} at most for a file and {_WINDOWS_MAX_DIRECTORY} for a folder. Turn long "
+            f"paths on (LongPathsEnabled), which building the project needs too, or choose a shorter {shorter}."
         ) from error
+
+
+def _windows_long_paths_on() -> bool:
+    import winreg  # Windows' own module: importing it anywhere else fails.
+
+    try:
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SYSTEM\CurrentControlSet\Control\FileSystem") as key:
+            return winreg.QueryValueEx(key, "LongPathsEnabled")[0] == 1
+    except OSError:
+        return False
 
 
 def _move(project: Path, finished: Path) -> None:

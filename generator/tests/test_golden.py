@@ -280,7 +280,7 @@ class WindowsPathLimitTest(unittest.TestCase):
         else:
             self.skipTest("long paths are on here")
 
-    def test_a_path_over_the_limit_is_explained(self):
+    def test_a_staged_path_over_the_limit_is_explained(self):
         target = MiniTarget()
         raw = {**CASES["none"], "app_name": "A" * 50, "package_name": "io." + ".".join(["p" * 30] * 3)}
         parsed, _ = pipeline.read_spec(raw, target)
@@ -290,11 +290,30 @@ class WindowsPathLimitTest(unittest.TestCase):
                 staging.mkdir(parents=True)
                 destination = self.root / "Long"
                 with mock.patch.object(tempfile, "tempdir", str(staging)), self.assertRaisesRegex(
-                    RenderError, "Windows refused a path of"
+                    RenderError, "Windows refused a path of .* shorter app name or package name"
                 ):
                     pipeline.build(parsed.spec, target, destination, zip_output=False, commit="golden")
                 self.assertEqual([], [path for path in staging.iterdir() if path.name.startswith("android-gen-")])
                 self.assertFalse(destination.exists())
+
+    def test_a_destination_too_deep_for_the_folder_beside_it_is_explained(self):
+        # 240 characters leave room for Bare.zip, not for the folder it is finished in beside it.
+        deep = self.root / ("d" * (240 - len(str(self.root)) - 1))
+        deep.mkdir()
+        destination = deep / "Bare.zip"
+        with self.assertRaisesRegex(RenderError, "Windows refused a path of .* shorter destination, app name"):
+            generate("none", destination, zip_output=True)
+        self.assertEqual([], list(deep.iterdir()))
+
+
+@unittest.skipUnless(os.name == "nt", "the path length limit is Windows'")
+class WindowsLongPathsTest(unittest.TestCase):
+
+    def test_with_long_paths_on_a_long_missing_path_is_only_missing(self):
+        for on, expected in ((True, FileNotFoundError), (False, RenderError)):
+            with self.subTest(long_paths=on), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=on):
+                with self.assertRaises(expected), pipeline._windows_path_limit_explained("app name"):
+                    raise FileNotFoundError(errno.ENOENT, "No such file or directory", "C:\\" + "x" * 300)
 
 
 if __name__ == "__main__":
