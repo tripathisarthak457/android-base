@@ -18,8 +18,12 @@ from __future__ import annotations
 
 import errno
 import os
+import random
 import re
 import shutil
+import stat
+import string
+import sys
 import tempfile
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -30,7 +34,7 @@ from typing import Any
 
 from . import markers, package, record
 from . import spec as specs
-from .copy import is_executable, mark_executable, prune_empty_directories, template_files, write_text
+from .copy import is_executable, is_link, mark_executable, prune_empty_directories, template_files, write_text
 from .manifest import TemplateManifest
 from .markers import MARKER_TEXT, TemplateError
 from .rename import IdentityRenamer
@@ -44,6 +48,9 @@ _WINDOWS_MAX_DIRECTORY = 247
 #: What Windows says of a longer path. The build makes every directory before it writes into it, so
 #: here, with long paths off, a missing path means nothing else.
 _PATH_REFUSED = (errno.ENOENT, errno.ENAMETOOLONG)
+#: For the name the replaced output takes: lowercase, so no case-insensitive file system takes one
+#: of them for the destination's own.
+_ASIDE_CHARACTERS = string.ascii_lowercase + string.digits
 
 
 @dataclass(frozen=True)
@@ -75,7 +82,8 @@ def build(
 ) -> Generated:
     """
     Generates `spec` into `destination`: a zip file, or a project directory that must not exist yet.
-    With `replace`, whatever is at `destination` is deleted, but only once the new project is complete.
+    With `replace`, whatever is at `destination` is deleted, but only once the new project has taken
+    its place; what of it cannot be deleted then is left beside it, and a warning says where.
     """
     if not replace and not zip_output and destination.exists():
         raise RenderError(f"{destination} already exists.")
@@ -112,7 +120,8 @@ def build(
                 else:
                     _move(project, finished)
                 if replace and os.path.lexists(destination):
-                    _swap(finished, destination, Path(beside) / "replaced")
+                    replaced = _swap(finished, destination)
+                    warnings += _delete_replaced(replaced, destination)
                 else:
                     os.replace(finished, destination)
 
@@ -166,32 +175,87 @@ def _move(project: Path, finished: Path) -> None:
         shutil.copytree(project, finished, symlinks=True)
 
 
-def _swap(finished: Path, destination: Path, aside: Path) -> None:
+def _swap(finished: Path, destination: Path) -> Path:
     """
-    Puts `finished` at `destination` and moves what was there to `aside`, whose temporary directory
-    deletes it: a link is moved, never followed. Moving the old one first fails whole while Windows
-    holds a file in it open, where deleting it in place would stop halfway, and the temporary
-    directory's cleanup clears the read-only flag git puts on its objects.
+    Puts `finished` at `destination` and returns where what was there went: renamed aside, which
+    fails whole while Windows holds a file in it open, where deleting it in place would stop halfway.
+    A link is moved, never followed.
     """
-    os.replace(destination, aside)
+    replaced = _aside(destination)
+    os.replace(destination, replaced)
     try:
         os.replace(finished, destination)
     except BaseException as error:
         try:
-            os.replace(aside, destination)
+            os.replace(replaced, destination)
         except OSError:
-            kept = _keep_beside(aside, destination)
             raise RenderError(
-                f"{destination} could not be replaced, and what was there could not be put back: it is now {kept}."
+                f"{destination} could not be replaced, and what was there could not be put back: it is now {replaced}."
             ) from error
         raise
+    return replaced
 
 
-def _keep_beside(aside: Path, destination: Path) -> Path:
-    """Moves `aside` out of the temporary directory that would delete it, to a new folder beside `destination`."""
-    kept = Path(tempfile.mkdtemp(prefix=f"{destination.name}.previous.", dir=destination.parent)) / destination.name
-    os.replace(aside, kept)
-    return kept
+def _aside(destination: Path) -> Path:
+    """
+    A free name beside `destination` and no longer than its own, so every path inside the old output
+    stays as long as it was: what Windows' length limit let anyone open or delete there, it still does.
+    """
+    length = len(destination.name)
+    for _ in range(100):
+        name = "".join(random.choices(_ASIDE_CHARACTERS, k=max(length - 1, 1)))
+        # Hidden, like the folder the new output is finished in, where the name has room for the dot.
+        if length > 1:
+            name = "." + name
+        if name.lower() != destination.name.lower() and not os.path.lexists(destination.with_name(name)):
+            return destination.with_name(name)
+    raise RenderError(f"{destination} cannot be replaced: no name beside it is free to move it to meanwhile.")
+
+
+def _delete_replaced(replaced: Path, destination: Path) -> list[str]:
+    """
+    Deletes the output `destination` held before. The new one is in place by now, so what cannot be
+    deleted is a warning that says where it is, not a failure.
+    """
+    try:
+        if is_link(replaced) or not replaced.is_dir():
+            os.unlink(replaced)
+        else:
+            _delete_tree(replaced)
+    except OSError as error:
+        if os.path.lexists(replaced):
+            return [
+                f"{destination} holds the new project, but what it replaced could not all be deleted ({error}). "
+                f"Delete {replaced} yourself."
+            ]
+    return []
+
+
+def _delete_tree(directory: Path) -> None:
+    if os.name != "nt":
+        shutil.rmtree(directory)
+        return
+    # In the extended-length form a path is not held to MAX_PATH, and Gradle, long-path aware as
+    # Java is, writes build files past it that would otherwise outlive the project they belong to.
+    absolute = os.path.abspath(directory)
+    if absolute.startswith(("\\\\?\\", "\\\\.\\")):
+        extended = absolute
+    elif absolute.startswith("\\\\"):
+        extended = "\\\\?\\UNC\\" + absolute[2:]
+    else:
+        extended = "\\\\?\\" + absolute
+    if sys.version_info >= (3, 12):
+        shutil.rmtree(extended, onexc=_writable_and_again)
+    else:
+        shutil.rmtree(extended, onerror=lambda function, path, info: _writable_and_again(function, path, info[1]))
+
+
+def _writable_and_again(function: Any, path: str, error: BaseException) -> None:
+    # Windows deletes no read-only file, and git makes its objects read-only.
+    if not isinstance(error, PermissionError):
+        raise error
+    os.chmod(path, stat.S_IWRITE)
+    function(path)
 
 
 def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str]:

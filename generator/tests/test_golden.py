@@ -125,9 +125,19 @@ def tree(root: Path) -> dict[str, bytes]:
     }
 
 
-def pipeline_os(**functions: Any) -> Any:
-    """Patches `functions` into the `os` module as the pipeline sees it, and nowhere else."""
-    return mock.patch.object(pipeline, "os", SimpleNamespace(**{**vars(os), **functions}))
+def unzipped(archive: Path) -> dict[str, bytes]:
+    """`tree` of the one project folder in `archive`."""
+    with zipfile.ZipFile(archive) as opened:
+        return {
+            info.filename.split("/", 1)[1]: opened.read(info)
+            for info in opened.infolist()
+            if not info.is_dir() and not info.filename.endswith("/generator-spec.json")
+        }
+
+
+def seen_by_pipeline(module: Any, **functions: Any) -> Any:
+    """Patches `functions` into `module` (`os`, `shutil`) as the pipeline sees it, and nowhere else."""
+    return mock.patch.object(pipeline, module.__name__, SimpleNamespace(**{**vars(module), **functions}))
 
 
 class GoldenTest(unittest.TestCase):
@@ -224,7 +234,7 @@ class PlacementTest(unittest.TestCase):
             raise OSError(errno.EXDEV, os.strerror(errno.EXDEV), source, None, target)
 
         project = self.root / "all"
-        with pipeline_os(rename=other_volume):
+        with seen_by_pipeline(os, rename=other_volume):
             generate("all", project, git_init=True)
         self.assert_is_golden("all", project)
 
@@ -244,7 +254,7 @@ class PlacementTest(unittest.TestCase):
                 raise PermissionError("in use")
             os.replace(source, target)
 
-        with pipeline_os(replace=refuse_the_new_one), self.assertRaises(PermissionError):
+        with seen_by_pipeline(os, replace=refuse_the_new_one), self.assertRaises(PermissionError):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
@@ -257,13 +267,44 @@ class PlacementTest(unittest.TestCase):
                 raise PermissionError("in use")
             os.replace(source, target)
 
-        with pipeline_os(replace=refuse_the_destination), self.assertRaisesRegex(
+        with seen_by_pipeline(os, replace=refuse_the_destination), self.assertRaisesRegex(
             RenderError, "could not be replaced, and what was there could not be put back"
         ) as raised:
             generate("none", project, replace=True)
         [kept] = self.root.iterdir()
-        self.assertIn(str(kept / project.name), str(raised.exception))
-        self.assertEqual(tree(GOLDEN / "mini-all"), tree(kept / project.name))
+        self.assertIn(str(kept), str(raised.exception))
+        self.assertLessEqual(len(kept.name), len(project.name), "every path in it is longer than it was")
+        self.assertEqual(tree(GOLDEN / "mini-all"), tree(kept))
+
+    def test_the_new_project_stays_when_the_old_one_cannot_all_be_deleted(self):
+        project = self.root / "all"
+        generate("all", project)
+
+        def held_open(path, *arguments, **options):
+            raise PermissionError(errno.EACCES, "in use", str(path))
+
+        with seen_by_pipeline(shutil, rmtree=held_open):
+            result = generate("none", project, replace=True)
+        self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
+        [left] = [path for path in self.root.iterdir() if path != project]
+        self.assertEqual(tree(GOLDEN / "mini-all"), tree(left))
+        [warning] = [warning for warning in result.warnings if warning != "a warning"]
+        self.assertIn("could not all be deleted", warning)
+        self.assertIn(f"Delete {left} yourself.", warning)
+
+    def test_a_destination_of_any_name_is_replaced_whole(self):
+        # A name of one or two letters leaves the old output little room for a name of its own
+        # beside it, and no name the pipeline gives its own folders may collide with the caller's.
+        for name in ("a", "ab", "replaced"):
+            for zip_output in (False, True):
+                with self.subTest(name=name, zip=zip_output):
+                    folder = self.root / f"{name}-{zip_output}"
+                    destination = folder / name
+                    generate("all", destination, zip_output=zip_output)
+                    result = generate("none", destination, zip_output=zip_output, replace=True)
+                    self.assertEqual(["a warning"], result.warnings)
+                    self.assertEqual(tree(GOLDEN / "mini-none"), unzipped(destination) if zip_output else tree(destination))
+                    self.assertEqual([name], [path.name for path in folder.iterdir()], "left beside it")
 
 
 @unittest.skipUnless(os.name == "nt", "the path length limit is Windows'")
@@ -304,6 +345,27 @@ class WindowsPathLimitTest(unittest.TestCase):
         with self.assertRaisesRegex(RenderError, "Windows refused a path of .* shorter destination, app name"):
             generate("none", destination, zip_output=True)
         self.assertEqual([], list(deep.iterdir()))
+
+    def test_an_old_project_goes_whole_however_deep_its_files(self):
+        # One file as deep as Windows allows in place, and one past that, as Gradle writes them in a
+        # built project: Java reaches past the limit by itself.
+        project = self.root / "all"
+        generate("all", project)
+        self.addCleanup(shutil.rmtree, "\\\\?\\" + str(self.root), True)
+        build = project / "build"
+        build.mkdir()
+        in_place = build / ("b" * (pipeline._WINDOWS_MAX_DIRECTORY - len(str(build)) - 1))
+        in_place.mkdir()
+        (in_place / ("f" * (pipeline._WINDOWS_MAX_FILE - len(str(in_place)) - 1))).write_bytes(b"")
+        past = "\\\\?\\" + str(in_place / ("c" * 60))
+        os.mkdir(past)
+        with open(os.path.join(past, "classes.dex"), "wb"):
+            pass
+
+        result = generate("none", project, replace=True)
+        self.assertEqual(["a warning"], result.warnings)
+        self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
+        self.assertEqual([project], list(self.root.iterdir()))
 
 
 @unittest.skipUnless(os.name == "nt", "the path length limit is Windows'")
