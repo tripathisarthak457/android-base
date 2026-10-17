@@ -51,8 +51,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.disabled
+import androidx.compose.ui.semantics.focused
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.onLongClick
+import androidx.compose.ui.semantics.requestFocus
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
@@ -314,6 +316,7 @@ internal class PressableNode(
             emit(FocusInteraction.Unfocus(current))
         }
         invalidateDraw()
+        invalidateSemantics()
     }
 
     override fun onAttach() = observeLocals()
@@ -411,6 +414,11 @@ internal class PressableNode(
 
     override fun SemanticsPropertyReceiver.applySemantics() {
         this@PressableNode.role?.let { role = it }
+        // What foundation's clickable reports: screen readers and keyboard tooling read focus here.
+        if (acceptsInput) {
+            focused = focus != null
+            requestFocus { focusTarget.requestFocus() }
+        }
         onClick(label = onClickLabel) {
             click()
             true
