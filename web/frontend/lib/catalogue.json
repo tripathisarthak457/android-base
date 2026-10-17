@@ -1,5 +1,5 @@
 {
-  "generator_commit": "e2cec54b37cc",
+  "generator_commit": "b595f9d05695",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -190,7 +190,7 @@
       },
       "design_styles": [
         {
-          "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
+          "description": "Cool neutrals, hairline outlines, a floating tab bar. Tools, finance, admin.",
           "key": "Utility",
           "requires": [],
           "title": "Utility"
@@ -2686,7 +2686,7 @@
         "voice": "Bold"
       },
       "Utility": {
-        "bar": "Docked",
+        "bar": "Floating",
         "borderWidth": 1,
         "borderWidthStrong": 1.5,
         "buttonRadius": 10,

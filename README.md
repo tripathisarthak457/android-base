@@ -236,7 +236,7 @@ and the weight of the type. Every combination of style and theme is checked agai
 
 | Style | Looks like | Suits |
 |---|---|---|
-| Utility | Cool neutral surfaces, hairline outlines, modest corners, a docked tab bar | Tools, finance, admin |
+| Utility | Cool neutral surfaces, hairline outlines, modest corners, a floating tab bar | Tools, finance, admin |
 | Social | Surfaces tinted with your brand colour, pill buttons, heavier headlines, soft raised cards, filled fields, a floating tab bar with a sliding pill | Feeds, chat, communities |
 | Editorial | Warm paper and ink, large tight display type, near-square corners, underlined fields, uppercase labels, a minimal tab bar | Reading, news, portfolios |
 | Playful | Cream surfaces, extra-bold type, thick outlines and solid offset shadows; buttons sink into their shadow when pressed | Games, kids, anything toy-like |

@@ -1,13 +1,13 @@
 {
   "Utility": {
-    "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
+    "description": "Cool neutrals, hairline outlines, a floating tab bar. Tools, finance, admin.",
     "requires": [],
     "radii": { "xs": 6, "sm": 10, "md": 14, "lg": 20, "xl": 28, "sheet": 24 },
     "buttonRadius": 10,
     "chipRadius": "pill",
     "card": "Outlined",
     "field": "Outlined",
-    "bar": "Docked",
+    "bar": "Floating",
     "indicator": "Subtle",
     "borderWidth": 1,
     "borderWidthStrong": 1.5,
