@@ -161,6 +161,7 @@ class CliTest(unittest.TestCase):
         (working / "keep.txt").write_text("keep", encoding="utf-8")
         result = run("--spec", str(self.spec), "--out", ".", "--no-zip", "--force", cwd=working)
         self.assertNotEqual(0, result.returncode)
+        self.assertIn("the current directory", result.stderr + result.stdout)
         self.assertTrue((working / "keep.txt").exists())
 
     def test_force_never_deletes_the_current_directory_spelled_in_another_case(self):

@@ -71,8 +71,11 @@ def is_link(path: Path) -> bool:
         status = path.lstat()
     except OSError:
         return False
+    if stat.S_ISLNK(status.st_mode):
+        return True
     # The reparse tag is how Path.is_junction tells, which needs Python 3.12; this runs on 3.11.
-    return stat.S_ISLNK(status.st_mode) or getattr(status, "st_reparse_tag", 0) == stat.IO_REPARSE_TAG_MOUNT_POINT
+    # Both the tag and its constant exist only on Windows.
+    return os.name == "nt" and status.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT
 
 
 def is_executable(relative: str, patterns: tuple[str, ...]) -> bool:

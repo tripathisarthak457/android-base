@@ -1,16 +1,24 @@
 """
-The generator writes the same bytes on every host. A newline translated on Windows is invisible on
-the Linux CI, so the rule that prevents it is checked in the source, where every host can see it.
+The generator behaves the same on every host. A newline translated on Windows is invisible on the
+Linux CI, so the rule that prevents it is checked in the source, where every host can see it; and
+what only one platform's Python defines is kept away from the others by tests that run on all.
 """
 
 from __future__ import annotations
 
 import ast
+import os
+import stat
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
+from unittest import mock
 
-from genkit.core.copy import write_text
+import genkit.core.copy as copy_module
+from genkit.core.copy import is_link, write_text
+from tests.test_cli import ERROR_PRIVILEGE_NOT_HELD
 
 GENERATOR = Path(__file__).resolve().parent.parent
 #: Everything that writes a project, an emitted copy or a template file.
@@ -76,6 +84,50 @@ class HostTest(unittest.TestCase):
             path = Path(temp) / "mixed.txt"
             write_text(path, "lf\ncrlf\r\nend é\n")
             self.assertEqual("lf\ncrlf\r\nend é\n".encode("utf-8"), path.read_bytes())
+
+
+class LinkTest(unittest.TestCase):
+    """`is_link`, which the replace guard asks of whatever --out names, on every host."""
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+        self.directory = self.root / "directory"
+        self.directory.mkdir()
+
+    def test_a_directory_a_file_and_nothing_are_not_links(self):
+        file = self.root / "file.txt"
+        write_text(file, "text")
+        for path in (self.directory, file, self.root / "missing"):
+            with self.subTest(path=path.name):
+                self.assertFalse(is_link(path))
+
+    def test_a_directory_is_not_a_link_where_stat_has_no_reparse_tags(self):
+        # As on Linux and macOS, where CPython defines no IO_REPARSE_TAG_* constants.
+        without_reparse_tags = SimpleNamespace(S_ISLNK=stat.S_ISLNK)
+        with mock.patch.object(copy_module, "stat", without_reparse_tags), \
+                mock.patch.object(copy_module, "os", SimpleNamespace(name="posix")):
+            self.assertFalse(is_link(self.directory))
+
+    def test_a_symbolic_link_is_a_link(self):
+        link = self.root / "link"
+        try:
+            link.symlink_to(self.directory, target_is_directory=True)
+        except OSError as error:
+            if getattr(error, "winerror", None) != ERROR_PRIVILEGE_NOT_HELD:
+                raise
+            self.skipTest(
+                "this Windows account may not create symbolic links (that takes Developer Mode or "
+                "SeCreateSymbolicLinkPrivilege); the junction test covers links here"
+            )
+        self.assertTrue(is_link(link))
+
+    @unittest.skipUnless(os.name == "nt", "junctions exist only on Windows")
+    def test_a_junction_is_a_link(self):
+        junction = self.root / "junction"
+        subprocess.run(["cmd", "/c", "mklink", "/J", str(junction), str(self.directory)], capture_output=True, check=True)
+        self.assertTrue(is_link(junction))
 
 
 if __name__ == "__main__":
