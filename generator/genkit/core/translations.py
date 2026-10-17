@@ -52,9 +52,11 @@ def available(target: str) -> dict[str, str]:
     root = ROOT / target
     if not root.is_dir():
         return {}
+    # Sorted by name, not by path: Windows orders paths without case, so zh-Hans and zh-HK would
+    # swap places there and the website's catalogue would depend on the host that wrote it.
     return {
         directory.name: _read(directory / "_language.json")["name"]
-        for directory in sorted(root.iterdir())
+        for directory in sorted(root.iterdir(), key=lambda directory: directory.name)
         if (directory / "_language.json").is_file()
     }
 
