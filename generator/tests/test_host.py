@@ -17,7 +17,9 @@ from types import SimpleNamespace
 from unittest import mock
 
 import genkit.core.copy as copy_module
-from genkit.core.copy import is_link, write_text
+from genkit import targets
+from genkit.core.copy import is_link, template_files, write_text
+from genkit.targets.android.variants import VARIANTS_DIR
 from tests.test_cli import ERROR_PRIVILEGE_NOT_HELD
 
 GENERATOR = Path(__file__).resolve().parent.parent
@@ -27,6 +29,9 @@ SOURCES = sorted([
     *(GENERATOR / "genkit").rglob("*.py"),
     *(GENERATOR.parent / "tools").glob("*.py"),
 ])
+#: CRLF on purpose, as the repository's .gitattributes checks them out: cmd.exe can miss a label in
+#: an LF batch file.
+BATCH_SUFFIXES = frozenset({".bat", ".cmd"})
 
 
 def text_writes(source: str) -> list[int]:
@@ -42,6 +47,12 @@ def text_writes(source: str) -> list[int]:
         elif name == "open" and _writes_text(node) and not any(keyword.arg == "newline" for keyword in node.keywords):
             lines.append(node.lineno)
     return lines
+
+
+def _text_with_cr(path: Path) -> bool:
+    data = path.read_bytes()
+    # Git's own test for text under text=auto: no NUL byte in the first 8000.
+    return b"\r" in data and b"\0" not in data[:8000]
 
 
 def _writes_text(call: ast.Call) -> bool:
@@ -78,6 +89,22 @@ class HostTest(unittest.TestCase):
             "Image.open(source)",
         ])
         self.assertEqual([1, 2, 3], sorted(text_writes(source)))
+
+    def test_the_text_the_generator_copies_has_lf_line_endings(self):
+        # A clone made under Git for Windows' core.autocrlf=true before the root .gitattributes
+        # existed keeps CRLF working files until they are checked out again, and the generator
+        # copies template bytes into every project as they are.
+        roots = sorted({*(target.template_dir for target in targets.REGISTRY.values()), VARIANTS_DIR})
+        found = [
+            source.source.relative_to(GENERATOR.parent).as_posix()
+            for root in roots
+            for source in template_files(root, [], {})
+            if source.source.suffix.lower() not in BATCH_SUFFIXES and _text_with_cr(source.source)
+        ]
+        self.assertEqual(
+            [], found,
+            "check the working tree out again with LF: git checkout-index --force --all (it overwrites uncommitted changes)",
+        )
 
     def test_write_text_keeps_the_line_endings_it_is_given(self):
         with tempfile.TemporaryDirectory() as temp:
