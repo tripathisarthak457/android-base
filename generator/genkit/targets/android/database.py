@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ...core.copy import write_text
 from ...core.spec import Spec, module_title, pascal_case
 
 SNIPPETS = Path(__file__).parent / "snippets" / "database"
@@ -56,7 +57,7 @@ def write_tables(project: Path, spec: Spec) -> None:
                 ("__ABOUT__", _about(name)),
             ):
                 text = text.replace(token, value)
-            (directory / f"{pascal_case(name)}{suffix}.kt").write_text(text, encoding="utf-8")
+            write_text(directory / f"{pascal_case(name)}{suffix}.kt", text)
 
 
 def _tables(spec: Spec) -> list[str]:
