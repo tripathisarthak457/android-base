@@ -110,8 +110,9 @@ def build(
             destination.parent.mkdir(parents=True, exist_ok=True)
             # The result is finished beside the destination and renamed over it, so a failure never
             # leaves half a project where a caller expects a whole one, nor costs the one it replaces.
-            with tempfile.TemporaryDirectory(prefix=f".{destination.name}.", dir=destination.parent) as beside:
-                finished = Path(beside) / destination.name
+            beside = Path(tempfile.mkdtemp(prefix=f".{destination.name}.", dir=destination.parent))
+            try:
+                finished = beside / destination.name
                 if zip_output:
                     package.zip_project(project, finished, manifest.executable)
                 else:
@@ -121,6 +122,10 @@ def build(
                     warnings += _delete_replaced(replaced, destination)
                 else:
                     os.replace(finished, destination)
+            except BaseException as error:
+                _delete_beside(beside, error.add_note)
+                raise
+            _delete_beside(beside, warnings.append)
 
     return Generated(destination, spec.pascal_name, warnings, context.summary)
 
@@ -255,6 +260,22 @@ def _delete_replaced(replaced: Path, destination: Path) -> list[str]:
                 f"({error.strerror or error}). Delete {replaced} yourself."
             ]
     return []
+
+
+def _delete_beside(beside: Path, report: Callable[[str], object]) -> None:
+    """
+    Deletes the folder the output was finished in. After a failure it still holds the output, deeper
+    than at the destination by the folder's name, so a file that fits there can be past the length
+    limit here, which `_delete_tree` reaches. What stops the deletion goes to `report`, so it never
+    takes the place of the error that brought the build here.
+    """
+    try:
+        _delete_tree(beside)
+    except OSError as error:
+        report(
+            f"{beside}, where the output was finished, could not be deleted ({error.strerror or error}). "
+            "Delete it yourself."
+        )
 
 
 def _delete_tree(directory: Path) -> None:

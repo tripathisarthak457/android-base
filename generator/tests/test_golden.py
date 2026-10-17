@@ -141,6 +141,28 @@ def seen_by_pipeline(module: Any, **functions: Any) -> Any:
     return mock.patch.object(pipeline, module.__name__, SimpleNamespace(**{**vars(module), **functions}))
 
 
+def deepest_destination(case: str) -> int:
+    """The length of the longest destination at which `case`'s project fits Windows' length limit."""
+    root = GOLDEN / f"mini-{case}"
+    room = [pipeline._WINDOWS_MAX_DIRECTORY]
+    for path in root.rglob("*"):
+        limit = pipeline._WINDOWS_MAX_DIRECTORY if path.is_dir() else pipeline._WINDOWS_MAX_FILE
+        room.append(limit - (len(str(path)) - len(str(root))))
+    return min(room)
+
+
+def delete_tree(path: Path) -> None:
+    """Deletes what a test made there, files past Windows' length limit included."""
+    shutil.rmtree("\\\\?\\" + str(path) if os.name == "nt" else path, ignore_errors=True)
+
+
+def at_length(root: Path, length: int, name: str) -> Path:
+    """`root/d…d/name`, `length` characters long, its folder made."""
+    folder = root / ("d" * (length - len(str(root)) - len(name) - 2))
+    folder.mkdir()
+    return folder / name
+
+
 class GoldenTest(unittest.TestCase):
 
     def setUp(self):
@@ -280,6 +302,36 @@ class PlacementTest(unittest.TestCase):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
+    def test_the_folder_it_was_finished_in_is_named_when_it_cannot_be_deleted(self):
+        # Never raised: a warning when the build succeeded, and a note on the error when it did
+        # not, which a failed deletion must not take the place of.
+        held_open = PermissionError(errno.EACCES, "in use")
+        project = self.root / "all"
+        with mock.patch.object(pipeline, "_delete_tree", side_effect=held_open):
+            result = generate("all", project)
+        [beside] = [path for path in self.root.iterdir() if path != project]
+        self.assertEqual(
+            ["a warning", f"{beside}, where the output was finished, could not be deleted (in use). Delete it yourself."],
+            result.warnings,
+        )
+        self.assertEqual(tree(GOLDEN / "mini-all"), tree(project))
+
+        def refuse_the_new_one(source, target):
+            if Path(target) == project and Path(source).name == project.name:
+                raise PermissionError(errno.EACCES, "refused", str(source))
+            os.replace(source, target)
+
+        with mock.patch.object(pipeline, "_delete_tree", side_effect=held_open), seen_by_pipeline(
+            os, replace=refuse_the_new_one
+        ), self.assertRaisesRegex(PermissionError, "refused") as raised:
+            generate("none", project, replace=True)
+        [left] = [path for path in self.root.iterdir() if path not in (project, beside)]
+        self.assertEqual(
+            [f"{left}, where the output was finished, could not be deleted (in use). Delete it yourself."],
+            raised.exception.__notes__,
+        )
+        self.assertEqual(tree(GOLDEN / "mini-all"), tree(project))
+
     def test_the_old_project_is_kept_beside_when_it_can_be_neither_replaced_nor_put_back(self):
         project = self.root / "all"
         generate("all", project)
@@ -301,9 +353,13 @@ class PlacementTest(unittest.TestCase):
     def test_the_new_project_stays_when_the_old_one_cannot_all_be_deleted(self):
         project = self.root / "all"
         generate("all", project)
+        rmtree = shutil.rmtree
 
         def held_open(path, *arguments, **options):
-            raise PermissionError(errno.EACCES, "in use", str(path))
+            # A file in the old project, not the empty folder the new one was finished in.
+            if os.listdir(path):
+                raise PermissionError(errno.EACCES, "in use", str(path))
+            rmtree(path, *arguments, **options)
 
         with seen_by_pipeline(shutil, rmtree=held_open):
             result = generate("none", project, replace=True)
@@ -374,7 +430,7 @@ class WindowsPathLimitTest(unittest.TestCase):
         # built project: Java reaches past the limit by itself.
         project = self.root / "all"
         generate("all", project)
-        self.addCleanup(shutil.rmtree, "\\\\?\\" + str(self.root), True)
+        self.addCleanup(delete_tree, self.root)
         build = project / "build"
         build.mkdir()
         in_place = build / ("b" * (pipeline._WINDOWS_MAX_DIRECTORY - len(str(build)) - 1))
@@ -389,6 +445,25 @@ class WindowsPathLimitTest(unittest.TestCase):
         self.assertEqual(["a warning"], result.warnings)
         self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
         self.assertEqual([project], list(self.root.iterdir()))
+
+    def test_a_failed_replace_leaves_only_the_old_project_however_deep_the_new_one_was_finished(self):
+        # At the deepest destination it fits, the new project's deepest file is past the limit in
+        # the folder beside it where it is finished, deeper by that folder's name.
+        project = at_length(self.root, deepest_destination("all"), "all")
+        generate("none", project)
+        self.addCleanup(delete_tree, self.root)
+
+        def held_open(source, target):
+            if Path(source) == project:
+                raise PermissionError(errno.EACCES, "in use", str(source))
+            os.replace(source, target)
+
+        with seen_by_pipeline(os, replace=held_open), self.assertRaisesRegex(
+            RenderError, r"could not be moved aside \(in use\); nothing was changed\."
+        ):
+            generate("all", project, replace=True)
+        self.assertEqual([project], list(project.parent.iterdir()))
+        self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
 
 
 @unittest.skipUnless(os.name == "nt", "the path length limit is Windows'")
