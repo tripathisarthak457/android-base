@@ -11,8 +11,9 @@ saves a screenshot and the UI tree; `summary.md` lists the results. The exit cod
 step fails.
 
 `sizes` changes the display's size and density with `wm`, which is a system setting: it runs on an
-emulator only, unless --allow-display-overrides says the device's owner agreed. Every exit restores
-the size, the density and the rotation.
+emulator only, unless --allow-display-overrides says the device's owner agreed. Every exit gives back
+the size and density overrides the device had before, the rotation and the screen timeout. `fold` and
+`posture` drive an emulator's virtual hinge, so a phone cannot run them.
 """
 
 import argparse
@@ -25,7 +26,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "perf"))
 
 import check_nav_log  # noqa: E402
-from perf import App, Device, HarnessError, find_apk  # noqa: E402
+from perf import App, Device, HarnessError, find_apk, write_text  # noqa: E402
 
 SCENARIOS = ["sizes", "fold", "posture", "multiinstance", "keyboard"]
 
@@ -44,6 +45,8 @@ WIDTHS = [(1600, "ExtraLarge"), (1200, "Large"), (840, "Expanded"), (600, "Mediu
 HEIGHTS = [(900, "Expanded"), (480, "Medium"), (0, "Compact")]
 
 SETTLE_S = 2.5
+# Scenarios that need an emulator's virtual hinge (`adb emu fold`, `adb emu posture`).
+HINGE_SCENARIOS = {"fold", "posture"}
 
 
 def width_class(dp):
@@ -113,8 +116,7 @@ class Checker:
         stamp = f"{self.counter:02d}_{name}"
         self.device.screenshot(os.path.join(self.out, f"{stamp}.png"))
         try:
-            with open(os.path.join(self.out, f"{stamp}.xml"), "w") as handle:
-                handle.write(self.device.ui().xml)
+            write_text(os.path.join(self.out, f"{stamp}.xml"), self.device.ui().xml)
         except HarnessError:
             pass
         self.results.append((name, state.get("window"), state.get("class"), state.get("chrome"), problems))
@@ -139,9 +141,20 @@ class Checker:
         lines = ["# Adaptive checks", "", "| Step | Window | Class | Chrome | Result |", "|---|---|---|---|---|"]
         for name, window, size_class, chrome, problems in self.results:
             lines.append(f"| {name} | {window} | {size_class} | {chrome} | {'ok' if not problems else '; '.join(problems)} |")
-        with open(os.path.join(self.out, "summary.md"), "w") as handle:
-            handle.write("\n".join(lines) + "\n")
+        write_text(os.path.join(self.out, "summary.md"), "\n".join(lines) + "\n")
         return all(not problems for *_, problems in self.results)
+
+
+def display_overrides(device):
+    """The display's size and density overrides, each None when the display has none."""
+    size = re.search(r"Override size: (\d+x\d+)", device.shell("wm size"))
+    density = re.search(r"Override density: (\d+)", device.shell("wm density"))
+    return size.group(1) if size else None, density.group(1) if density else None
+
+
+def restore_display(device, overrides):
+    size, density = overrides
+    device.shell(f"wm size {size or 'reset'}; wm density {density or 'reset'}")
 
 
 def prepare(checker):
@@ -227,6 +240,9 @@ def main(argv=None):
         if "sizes" in args.scenarios and not emulator and not args.allow_display_overrides:
             raise HarnessError("sizes changes the display's size and density: run it on an emulator, or pass "
                                "--allow-display-overrides with the device owner's agreement")
+        hinged = sorted(HINGE_SCENARIOS.intersection(args.scenarios))
+        if hinged and not emulator:
+            raise HarnessError(f"{' and '.join(hinged)} drive an emulator's virtual hinge, which this device lacks")
         app = App(device, args.package, {})
         apk = args.apk or (find_apk(device, args.variant) if args.variant else None)
         if apk:
@@ -234,15 +250,17 @@ def main(argv=None):
         os.makedirs(args.out, exist_ok=True)
         checker = Checker(device, app, args.out)
         device.wake()
-        prepare(checker)
         runners = {"sizes": run_sizes, "fold": run_fold, "posture": run_posture,
                    "multiinstance": run_multiinstance, "keyboard": run_keyboard}
-        try:
-            for scenario in args.scenarios:
-                runners[scenario](checker)
-        finally:
-            if "sizes" in args.scenarios:
-                device.shell("wm size reset; wm density reset; settings put system user_rotation 0")
+        overrides = display_overrides(device)
+        with device.upright():
+            try:
+                prepare(checker)
+                for scenario in args.scenarios:
+                    runners[scenario](checker)
+            finally:
+                if "sizes" in args.scenarios:
+                    restore_display(device, overrides)
         passed = checker.summary()
     except HarnessError as error:
         print(f"adaptive: {error}", file=sys.stderr)
