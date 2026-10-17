@@ -18,6 +18,7 @@ from pathlib import Path
 
 from genkit import targets
 from genkit.core import prompts, translations
+from genkit.core.copy import write_text
 from genkit.core.record import RECORD_NAME
 from genkit.core.spec import Spec, SpecError, validate_module_name
 from genkit.targets.android import scaffold, strings, tabs
@@ -134,7 +135,7 @@ def register_modules(project: Path, names: tuple[str, ...]) -> None:
         additions = "".join(f'include("{prefix}{name}")\n' for name in names)
         text = insert_after_last(text, f'include("{prefix}', additions)
 
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def register_dependencies(project: Path, names: tuple[str, ...]) -> None:
@@ -150,7 +151,7 @@ def register_dependencies(project: Path, names: tuple[str, ...]) -> None:
         additions,
         fallback=insert_into_dependencies_block,
     )
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def insert_into_dependencies_block(text: str, addition: str) -> str:
@@ -203,7 +204,7 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
         closing = next((index for index in range(opening + 1, len(lines)) if lines[index].strip() == ")"), None)
     if closing is None:
         print(prompts.yellow(f"  ! No tab list in {path}; add the tabs by hand."))
-        path.write_text(text, encoding="utf-8")
+        write_text(path, text)
         return
     position = closing
     for index in range(opening + 1, closing):
@@ -215,7 +216,7 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
             while position > opening + 1 and lines[position - 1].strip().startswith("//"):
                 position -= 1
     lines.insert(position, "".join(tabs.shell_tab(name) for name in names))
-    path.write_text("".join(lines), encoding="utf-8")
+    write_text(path, "".join(lines))
 
 
 def insert_after_last(
