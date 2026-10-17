@@ -410,6 +410,7 @@ class Run:
             self.record(f"{scenario}.{name}", combined[name])
         if frames:
             self.record_frames(scenario, frames)
+            self.record(f"{scenario}.janky_after_first_pct", janky_after_first_pct(dumps, frames))
 
     def record_frames(self, scenario, frames):
         """The hitch ratio and the render-thread, GPU and buffer cost of each transition's first frames."""
@@ -1022,6 +1023,20 @@ def parse_meminfo(text):
         memory["graphics_mb"] = round(int(graphics.group(1)) / 1024, 1)
         memory["pss_app_mb"] = round((int(total.group(1)) - int(graphics.group(1))) / 1024, 1)
     return memory
+
+
+def janky_after_first_pct(dumps, frames):
+    """Janky frames other than each transition's first, as a share of all frames.
+
+    [dumps] are gfxinfo dumps and [frames] the framestats rows of the same segments, one transition
+    each. A transition's first frame starts from idle, with the CPU and GPU at their lowest clocks,
+    and on a phone whose touch boost leaves them there it can miss its deadline whatever it draws.
+    This is the rest: the jank of the motion itself.
+    """
+    total = sum(dump["frames"] for dump in dumps)
+    janky = sum(max(0, dump["janky"] - (1 if rows and parse_framestats.missed_deadline(rows[0]) else 0))
+                for dump, rows in zip(dumps, frames))
+    return round(100 * janky / total, 2) if total else 0.0
 
 
 def image_difference(first, second):

@@ -148,6 +148,17 @@ class ParseFramestatsTest(unittest.TestCase):
         later = dict(frame(1, 1.0), FrameDeadline=40_000_000, FrameCompleted=20_000_000, GpuCompleted=30_000_000)
         self.assertEqual(parse_framestats.late_first_frames([[on_time, later], [gpu_late, later], []]), (1, 2))
 
+    def test_jank_after_the_first_frame_sets_each_late_first_frame_apart(self):
+        on_time = dict(frame(0, 4.0), FrameDeadline=13_666_666, FrameCompleted=10_000_000, GpuCompleted=12_000_000)
+        late = dict(frame(0, 4.0), FrameDeadline=13_666_666, FrameCompleted=10_000_000, GpuCompleted=19_000_000)
+        later = dict(frame(1, 1.0), FrameDeadline=40_000_000, FrameCompleted=20_000_000, GpuCompleted=30_000_000)
+        # A switch whose only janky frame is its late first one, one whose first frame was on time but
+        # which dropped two later, and one that was late first and dropped one more.
+        dumps = [{"frames": 50, "janky": 1}, {"frames": 50, "janky": 2}, {"frames": 100, "janky": 2}]
+        frames = [[late, later], [on_time, later], [late, later]]
+        self.assertEqual(perf.janky_after_first_pct(dumps, frames), 1.5)
+        self.assertEqual(perf.janky_after_first_pct([], []), 0.0)
+
     def test_frames_the_display_did_not_report_are_left_out(self):
         rows = [dict(frame(i, 2.0), DisplayPresentTime=0) for i in range(5)]
         self.assertEqual(parse_framestats.hitch_time(rows), (0.0, 0.0))
