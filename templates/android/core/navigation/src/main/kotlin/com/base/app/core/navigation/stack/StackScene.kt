@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.MutableRect
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -85,6 +86,9 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
     /** Where each laid-out entry's left edge is in the host, written by its layout. */
     val lefts = HashMap<Any, Float>()
 
+    /** Each laid-out entry's width, written by its layout: a pane is narrower than the host. */
+    val widths = HashMap<Any, Float>()
+
     var motion = ScreenMotion()
 
     /** The plan on screen: what composition diffs the next change against. */
@@ -104,6 +108,7 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
     private var velocity = 0f
     private var job: Job? = null
     private val shadowBrushes = HashMap<Int, Brush>()
+    private val cardHole = MutableRect(0f, 0f, 0f, 0f)
 
     /**
      * The entries [plan] slides that are no longer on the stack: a popped page sliding out, or the
@@ -240,7 +245,7 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
                 if (card.active && key == card.subject) with(card) { applyCard() }
             }
             card.active && key in card.beneath ->
-                translationX = -toward * motion.parallax * w * cover * (1f - card.reveal)
+                translationX = beneathShift()
             key in lower && cover < 1f ->
                 translationX = -toward * motion.parallax * w * cover
             else -> {
@@ -264,6 +269,10 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
         val revealing = card.active && key in card.beneath
         val c = cover
         if (key !in lower || c <= 0f || c >= 1f) {
+            if (revealing && coveredByCard(key, cardHole)) {
+                drawAroundCard(cardHole)
+                return
+            }
             drawContent()
             if (revealing) drawCardScrim()
             return
@@ -302,6 +311,62 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
             drawRect(brush, size = Size(shadow, size.height), alpha = c)
         }
         if (revealing) drawCardScrim()
+    }
+
+    /** Where the back card puts the page beneath it: the parallax a running push left it at, easing to rest. */
+    private fun beneathShift(): Float = -(if (rtl) -1f else 1f) * motion.parallax * width * cover * (1f - card.reveal)
+
+    /**
+     * Writes into [hole] the part of [key]'s entry, in its own px, that the opaque back card hides
+     * wholly: the card's rectangle less its corner radius at the top and the bottom, so the corners
+     * are never in it. False while the card fades on commit, when everything under it shows.
+     */
+    private fun coveredByCard(key: Any, hole: MutableRect): Boolean {
+        val subject = card.subject ?: return false
+        if (card.contentAlpha.value < 1f) return false
+        val w = width
+        val h = height
+        // The card is the subject's layer, scaled about its own centre, so its own width, not the host's.
+        val cardWidth = widths[subject] ?: w
+        val scale = card.scale
+        val slide = if (subject in upper) (if (rtl) -1f else 1f) * w * (1f - cover) else 0f
+        val originX = (lefts[key] ?: 0f) + beneathShift()
+        val centerX = (lefts[subject] ?: 0f) + cardWidth / 2f + slide + with(card) { density.shiftX(cardWidth) } - originX
+        val centerY = h / 2f + with(card) { density.shiftY(h) }
+        val corner = with(card) { density.corner() } * scale
+        hole.left = centerX - scale * cardWidth / 2f
+        hole.right = centerX + scale * cardWidth / 2f
+        hole.top = centerY - scale * h / 2f + corner
+        hole.bottom = centerY + scale * h / 2f - corner
+        return true
+    }
+
+    /**
+     * The page beneath the back card, and the card's scrim over it, drawn only around [hole], in up to
+     * four strips. The card is opaque, so what lies under it would be drawn and painted over on every
+     * frame of the gesture: at its smallest the card still hides 81 % of the page, at its start all
+     * of it, and each frame starts with the GPU at the clock the gesture found it at.
+     */
+    private fun ContentDrawScope.drawAroundCard(hole: MutableRect) {
+        val w = size.width
+        val h = size.height
+        // Whole pixels, so every strip is a scissor; the hole shrinks to them, so the strips reach a
+        // little under the card's edges and no rounding opens a seam beside it.
+        val left = ceil(hole.left).coerceIn(0f, w)
+        val right = floor(hole.right).coerceIn(left, w)
+        val top = ceil(hole.top).coerceIn(0f, h)
+        val bottom = floor(hole.bottom).coerceIn(top, h)
+        val scrim = card.scrim.value
+        drawStrip(0f, 0f, w, top, scrim)
+        drawStrip(0f, bottom, w, h, scrim)
+        drawStrip(0f, top, left, bottom, scrim)
+        drawStrip(right, top, w, bottom, scrim)
+    }
+
+    private fun ContentDrawScope.drawStrip(left: Float, top: Float, right: Float, bottom: Float, scrim: Float) {
+        if (right <= left || bottom <= top) return
+        clipRect(left, top, right, bottom) { this@drawStrip.drawContent() }
+        if (scrim > 0f) drawRect(Color.Black, Offset(left, top), Size(right - left, bottom - top), alpha = scrim)
     }
 
     private fun DrawScope.drawCardScrim() {

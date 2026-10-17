@@ -103,6 +103,7 @@ internal fun StackLayout(
             placeables.forEachIndexed { index, placeable ->
                 val x = bounds[index].left
                 scene.lefts[keys[index]] = (if (scene.rtl) width - x - placeable.width else x).toFloat()
+                scene.widths[keys[index]] = placeable.width.toFloat()
                 placeable.placeRelative(x, 0)
             }
         }
