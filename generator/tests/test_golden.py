@@ -459,9 +459,9 @@ class WindowsPathLimitTest(unittest.TestCase):
     def test_a_failed_replace_leaves_only_the_old_project_however_deep_the_new_one_was_finished(self):
         # At the deepest destination it fits, the new project's deepest file is past the limit in
         # the folder beside it where it is finished, deeper by that folder's name.
+        self.addCleanup(delete_tree, self.root)
         project = at_length(self.root, deepest_destination("all"), "all")
         generate("none", project)
-        self.addCleanup(delete_tree, self.root)
 
         def held_open(source, target):
             if Path(source) == project:
