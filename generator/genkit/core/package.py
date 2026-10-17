@@ -37,17 +37,30 @@ def zip_project(project: Path, archive: Path, executable: tuple[str, ...]) -> Pa
     return archive
 
 
-def git_init(project: Path, message: str) -> list[str]:
-    """Initialises a repository and commits the project as generated. Returns warnings."""
+def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[str]:
+    """
+    Initialises a repository and commits the project as generated, with the files `executable`
+    names recorded as 100755. Returns warnings.
+    """
     if shutil.which("git") is None:
         return ["git was not found on PATH, so the repository was not initialised."]
 
+    scripts = [
+        relative
+        for relative in sorted(path.relative_to(project).as_posix() for path in project.rglob("*") if path.is_file())
+        if is_executable(relative, executable)
+    ]
     commands = [
         # Not `--initial-branch`: that needs git 2.28, and an older git fails with a usage error
         # rather than falling back to master.
         ["git", "init"],
         ["git", "symbolic-ref", "HEAD", "refs/heads/main"],
-        ["git", "add", "."],
+        # The project's .gitattributes decides line endings, never this machine's core.autocrlf
+        # (true by default in Git for Windows), so the commit holds the same blobs on every host.
+        ["git", "-c", "core.autocrlf=false", "add", "."],
+        # On Windows `git init` sets core.fileMode to false and `git add` records every file as
+        # 100644, so without this a clone on Linux or macOS could not run ./gradlew.
+        ["git", "update-index", "--chmod=+x", "--", *scripts],
         [
             "git",
             "-c", "user.name=Project generator",

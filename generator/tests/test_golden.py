@@ -13,8 +13,10 @@ from __future__ import annotations
 import os
 import shutil
 import stat
+import subprocess
 import tempfile
 import unittest
+import zipfile
 from functools import cached_property
 from pathlib import Path
 from typing import Any
@@ -102,10 +104,12 @@ CASES: dict[str, dict[str, Any]] = {
 }
 
 
-def generate(case: str, destination: Path) -> pipeline.Generated:
+def generate(case: str, destination: Path, *, zip_output: bool = False, git_init: bool = False) -> pipeline.Generated:
     target = MiniTarget()
     parsed, _ = pipeline.read_spec(CASES[case], target)
-    return pipeline.build(parsed.spec, target, destination, zip_output=False, commit="golden")
+    return pipeline.build(
+        parsed.spec, target, destination, zip_output=zip_output, git_init=git_init, commit="golden"
+    )
 
 
 def tree(root: Path) -> dict[str, bytes]:
@@ -138,6 +142,7 @@ class GoldenTest(unittest.TestCase):
                 for name in expected:
                     self.assertEqual(expected[name], actual[name], name)
 
+    @unittest.skipIf(os.name == "nt", "Windows has no executable bit: os.stat derives one from the file name")
     def test_the_wrapper_script_is_executable_and_nothing_else_is(self):
         project = self.root / "all"
         generate("all", project)
@@ -147,6 +152,30 @@ class GoldenTest(unittest.TestCase):
             if path.is_file() and path.stat().st_mode & stat.S_IXUSR
         }
         self.assertEqual({"gradlew"}, executable)
+
+    def test_the_zip_marks_the_wrapper_script_executable_and_nothing_else(self):
+        archive = self.root / "all.zip"
+        generate("all", archive, zip_output=True)
+        with zipfile.ZipFile(archive) as opened:
+            executable = {info.filename for info in opened.infolist() if (info.external_attr >> 16) & stat.S_IXUSR}
+        self.assertEqual({"TrailNotes/gradlew"}, executable)
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_the_commit_marks_the_wrapper_script_executable_and_nothing_else(self):
+        project = self.root / "all"
+        result = generate("all", project, git_init=True)
+        self.assertEqual(["a warning"], result.warnings)
+
+        def git(*arguments: str) -> str:
+            return subprocess.run(["git", *arguments], cwd=project, capture_output=True, text=True, check=True).stdout
+
+        entries = [line.split(maxsplit=3) for line in git("ls-tree", "-r", "HEAD").splitlines()]
+        self.assertEqual({"gradlew"}, {path for mode, _, _, path in entries if mode == "100755"})
+        self.assertEqual("", git("status", "--porcelain"))
+        # The mini template has no .gitattributes, so each blob is the file as generated, CRLF run.bat too.
+        for _, _, blob, path in entries:
+            committed = subprocess.run(["git", "cat-file", "blob", blob], cwd=project, capture_output=True, check=True).stdout
+            self.assertEqual((project / path).read_bytes(), committed, path)
 
     def test_template_only_files_never_ship(self):
         project = self.root / "all"

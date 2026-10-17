@@ -81,7 +81,9 @@ def build(
         record.write(project, spec, commit or record.generator_commit())
         if git_init:
             warnings += package.git_init(
-                project, f"Initial commit: {spec.app_name} generated from the {manifest.title} template"
+                project,
+                f"Initial commit: {spec.app_name} generated from the {manifest.title} template",
+                manifest.executable,
             )
 
         destination.parent.mkdir(parents=True, exist_ok=True)
