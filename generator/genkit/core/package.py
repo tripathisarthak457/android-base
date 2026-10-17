@@ -50,28 +50,26 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
         for relative in sorted(path.relative_to(project).as_posix() for path in project.rglob("*") if path.is_file())
         if is_executable(relative, executable)
     ]
-    commands = [
+    # The project's .gitattributes decides line endings, never this machine's core.autocrlf (true
+    # by default in Git for Windows), so the commit holds the same blobs on every host. It applies
+    # to each command that hashes the files.
+    as_written = ("-c", "core.autocrlf=false")
+    identity = ("-c", "user.name=Project generator", "-c", "user.email=generator@localhost")
+    steps = [
         # Not `--initial-branch`: that needs git 2.28, and an older git fails with a usage error
         # rather than falling back to master.
-        ["git", "init"],
-        ["git", "symbolic-ref", "HEAD", "refs/heads/main"],
-        # The project's .gitattributes decides line endings, never this machine's core.autocrlf
-        # (true by default in Git for Windows), so the commit holds the same blobs on every host.
-        ["git", "-c", "core.autocrlf=false", "add", "."],
+        ((), ["init"]),
+        ((), ["symbolic-ref", "HEAD", "refs/heads/main"]),
+        (as_written, ["add", "."]),
         # On Windows `git init` sets core.fileMode to false and `git add` records every file as
         # 100644, so without this a clone on Linux or macOS could not run ./gradlew.
-        ["git", "update-index", "--chmod=+x", "--", *scripts],
-        [
-            "git",
-            "-c", "user.name=Project generator",
-            "-c", "user.email=generator@localhost",
-            "commit", "--no-verify", "-m", message,
-        ],
+        (as_written, ["update-index", "--chmod=+x", "--", *scripts]),
+        (identity, ["commit", "--no-verify", "-m", message]),
     ]
-    for command in commands:
-        result = subprocess.run(command, cwd=project, capture_output=True, text=True, check=False)
+    for config, arguments in steps:
+        result = subprocess.run(["git", *config, *arguments], cwd=project, capture_output=True, text=True, check=False)
         if result.returncode != 0:
             detail = (result.stderr or result.stdout).strip().splitlines()
             reason = detail[-1] if detail else f"exit code {result.returncode}"
-            return [f"`{' '.join(command[:2])}` failed ({reason}). The project itself is fine."]
+            return [f"`git {arguments[0]}` failed ({reason}). The project itself is fine."]
     return []
