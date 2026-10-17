@@ -138,19 +138,29 @@ def _windows_path_limit_explained(shorter: str) -> Iterator[None]:
     try:
         yield
     except OSError as error:
-        path = str(error.filename or "")
-        if (
-            os.name != "nt"
-            or error.errno not in _PATH_REFUSED
-            or len(path) <= _WINDOWS_MAX_DIRECTORY
-            or _windows_long_paths_on()
-        ):
+        path = _path_too_long(error)
+        if os.name != "nt" or path is None or _windows_long_paths_on():
             raise
         raise RenderError(
             f"Windows refused a path of {len(path)} characters: {path}. With long paths off it takes "
             f"{_WINDOWS_MAX_FILE} at most for a file and {_WINDOWS_MAX_DIRECTORY} for a folder. Turn long "
             f"paths on (LongPathsEnabled), which building the project needs too, or choose a shorter {shorter}."
         ) from error
+
+
+def _path_too_long(error: OSError) -> str | None:
+    """The longest path `error` names past the folder limit, when it failed the way such a path fails."""
+    if isinstance(error, shutil.Error) and error.args and isinstance(error.args[0], list):
+        # A tree copy reports each failure as (source, destination, message), errno lost; with long
+        # paths off, a destination past the limit cannot have been created whatever the message.
+        paths = [str(failure[1]) for failure in error.args[0]]
+    elif error.errno in _PATH_REFUSED:
+        # A rename names both its paths, and either can be the one too long.
+        paths = [str(name) for name in (error.filename, error.filename2) if name is not None]
+    else:
+        return None
+    longest = max(paths, key=len, default="")
+    return longest if len(longest) > _WINDOWS_MAX_DIRECTORY else None
 
 
 def _windows_long_paths_on() -> bool:

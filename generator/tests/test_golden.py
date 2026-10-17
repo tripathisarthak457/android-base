@@ -377,6 +377,18 @@ class WindowsLongPathsTest(unittest.TestCase):
                 with self.assertRaises(expected), pipeline._windows_path_limit_explained("app name"):
                     raise FileNotFoundError(errno.ENOENT, "No such file or directory", "C:\\" + "x" * 300)
 
+    def test_the_path_named_is_the_one_too_long(self):
+        long = "D:\\" + "y" * 300
+        failures = {
+            "the target of a rename": FileNotFoundError(errno.ENOENT, "No such file or directory", "D:\\short", None, long),
+            "a file a tree copy could not write": shutil.Error([("C:\\staged\\file", long, "[WinError 3] path not found")]),
+        }
+        for what, failure in failures.items():
+            with self.subTest(what), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=False):
+                with self.assertRaises(RenderError) as raised, pipeline._windows_path_limit_explained("destination"):
+                    raise failure
+                self.assertIn(f"a path of {len(long)} characters: {long}.", str(raised.exception))
+
 
 if __name__ == "__main__":
     unittest.main()
