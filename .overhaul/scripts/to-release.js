@@ -27,13 +27,16 @@ async function fableAgent(prompt, opts) {
   return agent(prompt, rest)
 }
 
-const R = '/home/crazyhusir/Documents/projects/tools/android-base'
-const PFR = '/home/crazyhusir/Documents/projects/jorwen/periflow'
-const OV = '/home/crazyhusir/Documents/projects/tools/.overhaul'
+// PeriFlow (WP11) is not restored on the Windows machine (2026-10-17): its private repository and build secrets are
+// not here. Set PERIFLOW to true once they are, and WP11 and its lens fix run as before.
+const PERIFLOW = false
+const R = 'D:/projects/tools/android-base'
+const PFR = 'D:/projects/jorwen/periflow'
+const OV = 'D:/projects/tools/.overhaul'
 const DESIGN = OV + '/design'
 const RS = OV + '/research'
 const L = OV + '/bin/locked'
-const SKILLS = '/home/crazyhusir/.claude/plugins/marketplaces/android-skills'
+const SKILLS = 'C:/Users/crazyhusir/.claude/plugins/marketplaces/android-skills'
 const INTEG = 'overhaul/multiplatform-v2'
 
 // ---------- signals: merged packages, decisions, milestones ----------
@@ -55,7 +58,9 @@ function waitFor(keys) {
   const dead = keys.map(k => endedOf(producerOf(k)).p.then(() => (signal(k).done ? new Promise(() => {}) : 'dead:' + k)))
   return Promise.race([all, ...dead])
 }
-for (const k of ['WP01', 'WP02-M1', 'WP09', 'WP10', 'CP1', 'WP03:phaseA', 'WP04:phase2']) fire(k)
+// LENS:generator: the generator's lens on tap is done and committed on wp/WP05 (SESSION-2026-10-15.md, handoff/WP05.md
+// "Lens on tap"), so a relaunch does not redo it; WP05's package review covers that code before it merges.
+for (const k of ['WP01', 'WP02-M1', 'WP09', 'WP10', 'CP1', 'WP03:phaseA', 'WP04:phase2', 'LENS:generator']) fire(k)
 
 // ---------- packages ----------
 const ALL_MERGED = ['WP01', 'WP02-M1', 'WP09', 'WP10', 'WP08', 'WP04', 'WP03', 'WP06', 'WP02-M2', 'WP05', 'WP07-A', 'WP02-M3', 'WP14', 'MB', 'QA2', 'WP07-B', 'WP07-C', 'WP11', 'WP12']
@@ -78,7 +83,7 @@ const PKGS = {
     scope: 'Phase A in full (the "Phase A" section), plus the multiplatform items of ADAPTIVE-PLAN.md, MOTION-PLAN.md and STANDARDS-PLAN.md that belong to phase A. Everything except the core/navigation shell port is written and committed; the first full build was queued. The shell port needs WP04 merged (return waiting_for ["WP04"] until it is), then port it faithfully and pass the whole Phase A acceptance, including the iOS klib compile attempt recorded in the handoff.' },
   'WP11': { wt: 'WP11', file: 'WP11.md', start: ['LENS:periflow'], kind: 'periflow', noMerge: true,
     scope: `The whole of WP11 in two halves. First half (no template ports): step 1 baseline into ${OV}/perf/WP11/before/, steps 6, 7, 8, 9, the PeriFlow-local glass fixes of step 5 (G1, G2/G3, G6/G13, G9/G10, G11, G12, G16, G17), step 10 tests, step 11 re-measure into ${OV}/perf/WP11/after-early/. Run 4 left steps 5, 6, 7, 8 and 10 uncommitted under review and the baseline APK rebuild in wt/WP11-base. Second half, once WP04, WP05 and WP06 are merged and decisions/CP2.md exists (return state "waiting" with waiting_for ["WP04", "WP05", "WP06", "CP2"] until then): steps 2-4 and the generator ports of step 5 (LiquidTabs, SceneBackdrop, KeptTabs v2, BackGate, sheets, insets), then the final measurements and the device gates of the WP file.
-PeriFlow rules: worktree ${OV}/wt/WP11 on the LOCAL branch overhaul/smooth-glass; never push, never set an upstream, never touch anything outside periflow-android/, stage explicit paths only (never git add -A), never touch periflow-recovery-codes.txt or PeriFlow-Postman/. Every PeriFlow Gradle command shares the template's daemon: ${L} gradle ./gradlew -Dorg.gradle.jvmargs='-Xmx4g -XX:MaxMetaspaceSize=1g -XX:+UseParallelGC -Dfile.encoding=UTF-8' -Pkotlin.daemon.jvmargs='-Xmx2g -XX:+UseParallelGC' -x :app:uploadCrashlyticsMappingFileDevBenchmarkRelease <tasks>.` },
+PeriFlow rules: worktree ${OV}/wt/WP11 on the LOCAL branch overhaul/smooth-glass; never push, never set an upstream, never touch anything outside periflow-android/, stage explicit paths only (never git add -A), never touch periflow-recovery-codes.txt or PeriFlow-Postman/. Every PeriFlow Gradle command: ${L} gradle ./gradlew -x :app:uploadCrashlyticsMappingFileDevBenchmarkRelease <tasks> (the heap comes from the global D:/.caches/gradle/gradle.properties, so it shares the template's daemon; never pass -Dorg.gradle.jvmargs).` },
   'WP02-M3': { wt: 'WP02', file: 'WP02.md', start: ['WP02-M2', 'WP03', 'CP1'], kind: 'android',
     scope: 'Milestone M3 ONLY (the "Milestone M3" section): the reference features use the new design system, plus the WP02-M3 items of the research plans (adaptive screens, motion, edge-to-edge insets in contentPadding) and qa/r1/for-WP02-M3.md. Milestone M2 is already merged from this same branch; merge the integration branch first.' },
   'WP14': { wt: 'WP14', file: 'WP14.md', start: ['WP02-M2', 'WP06'], kind: 'python',
@@ -103,7 +108,16 @@ PKGS['WP12-B'] = { wt: 'WP12', file: 'WP12.md', start: ['WP12', 'WP07-C', 'WP08'
 PKGS['WP13-B'] = { wt: 'WP13', file: 'WP13.md', start: ['WP13', 'WP07-C', 'WP08', 'WP12-B'], kind: 'android',
   scope: `Phase B verification (REQUIREMENTS 36): the Compose Multiplatform rows of the matrix and its Android device gates (solid column, rapid Back, gesture pop), the iOS klib compile attempt, the SwiftUI static checks and acceptance, and the Android quick subset to prove nothing regressed. Update ${OV}/report/FINAL.md with the multiplatform numbers. The website then offers Compose Multiplatform as "Beta: iOS unverified"; Swift stays "coming soon" (no Mac to test). WP13 (Android) is merged from this same branch; merge the integration branch first. Do not push or merge to main.` }
 
-const KNOWN = new Set([...Object.keys(PKGS), 'WP01', 'WP02-M1', 'WP09', 'CP1', 'CP2'])
+// The overhaul moved to Windows on Oct 17, where the generator's own suite fails six tests with no change at all.
+PKGS['WIN'] = { wt: 'WIN', file: null, start: [], kind: 'python',
+  scope: `Make the generator correct on Windows hosts, as on Linux, without weakening any test (there is no WP file; the scope below is the specification). On this Windows machine, at the integration head, python -m unittest discover -s tests -t . in generator/ fails 5 tests and errors 1 (the baseline log is in ${OV}/logs/windows/generator-baseline.md):
+1. test_golden (cases all, none, hostile): transformed.txt comes out with CRLF. Path.write_text translates newlines on Windows, so every file the generator writes (13 or more write_text call sites in genkit: transform, tokens, catalogue, look, strings, scaffold, target, icons, ...) and the emitted files (web/frontend/lib/catalogue.json, DesignTokens.*) must be written byte-for-byte as on Linux: newline='\\n' or write_bytes, one consistent helper, no CRLF anywhere in a generated project on any host.
+2. test_golden.test_the_wrapper_script_is_executable_and_nothing_else_is: Windows has no exec bit, so os.stat reports run.bat as executable and gradlew as not. The guarantee that matters is that gradlew is executable where it is used: in the zip (external_attr) and, when the git_init feature commits the project, in the git index (git update-index --chmod=+x or equivalent). Prove both on every host; keep the filesystem assertion where the OS has exec bits.
+3. test_cli.test_json_means_only_json_on_stdout: the reported path and the test's path differ only by 8.3 short names (C:\\Users\\CRAZYH~1 vs C:\\Users\\crazyhusir). Decide which path the CLI should report (the one the caller passed, or one canonical form) and make the code and the test agree for real, not by loosening the comparison to anything-goes.
+4. test_cli symlink test: os.symlink needs a privilege on Windows (WinError 1314). Skip it only where the OS cannot create symlinks, with the reason in the skip message; it keeps running on Linux and in CI.
+Also check the rest of the generator for the same classes of host bug (newline translation, path separators in reported or stored paths, case-insensitive file systems, file modes) and fix what you find. Acceptance: the whole suite passes on this Windows machine with python -m unittest discover -s tests -t . (run it through ${OV}/bin/memwait), git diff shows no CRLF introduced, and the generated "standard" project is byte-identical to the one generated from the same spec on Linux (compare against the golden trees). This package merges first: until it does, the integrator judges a merge by failures beyond this baseline.` }
+
+const KNOWN = new Set([...Object.keys(PKGS).filter(id => PERIFLOW || PKGS[id].kind !== 'periflow'), 'WP01', 'WP02-M1', 'WP09', 'CP1', 'CP2'])
 const UI_ANDROID = new Set(['WP03', 'WP04', 'WP05', 'WP06', 'WP02-M2', 'WP02-M3', 'QA2', 'MB'])
 
 const STATUS = { type: 'object', properties: { state: { type: 'string', enum: ['done', 'waiting', 'blocked'] }, waiting_for: { type: 'array', items: { type: 'string' } }, milestones: { type: 'array', items: { type: 'string' } }, summary: { type: 'string' }, accept_ok: { type: 'boolean' } }, required: ['state', 'waiting_for', 'milestones', 'summary', 'accept_ok'] }
@@ -113,11 +127,12 @@ const DECISION = { type: 'object', properties: { decided: { type: 'boolean' }, s
 
 const ORCH = `
 Orchestrator rules (they add to the WP file and the master plan; REQUIREMENTS.md wins on conflict):
-- Today is 2026-10-12. The user is away and asked not to be asked anything: decide soundly and record decisions in your handoff. Granted: npm ci in web/frontend; Gradle dependency resolution (incl. androidx.room3, io.insert-koin, io.ktor darwin, io.github.kyant0, org.jetbrains.androidx.navigation3, org.jetbrains.compose, the Kotlin/Native toolchain); Docker pulls of golang:1.27-alpine and python:3.12-alpine. Not granted: pushing anything, merging into main, other downloads.
+- Today is 2026-10-17. The user is away and asked not to be asked anything: decide soundly and record decisions in your handoff. Granted: npm ci in web/frontend (through ${OV}/bin/memwait); Gradle dependency resolution (incl. androidx.room3, io.insert-koin, io.ktor darwin, io.github.kyant0, org.jetbrains.androidx.navigation3, org.jetbrains.compose, the Kotlin/Native toolchain). Not granted: pushing anything, merging into main, installing anything, other downloads. There is no Docker on this machine: the Postgres store tests and go test -race run in CI only.
 - QUALITY BAR (REQUIREMENTS 27): Google/AOSP-level code. ${RS}/CODE-STANDARDS.md, ${RS}/STANDARDS-PLAN.md, the androidx Compose API guidelines, and Google's Android skills at ${SKILLS} (read the relevant SKILL.md before working in its area; digest at ${RS}/ANDROID-SKILLS-DIGEST.md). For any Compose UI change, follow Google's jetpack-compose-performance skill (${SKILLS}/jetpack-compose/jetpack-compose-performance/SKILL.md): run its exhaustive audit over the composables you touch and read the matching references/*.md before each fix (the user, Oct 16). Zero AI-slop comments: comment why, never what; no history or narration.
 - Which packages are merged: git -C ${R} tag -l 'merged/*'. Decisions: ${OV}/decisions/CP1.md and CP2.md (CP2 exists only once decided).
-- Gradle only via ${L} gradle; adb only via ${L} adb; long commands in the background with logs, polled with tail/grep. The Gradle lock is shared by every agent, so work on code while you wait. Memory safety (REQUIREMENTS "Memory safety"): never raise the Gradle heap, never start the emulator while builds run. Never kill, stop or signal processes you did not start in this run, and never run ./gradlew --stop: a stale build from an earlier run finishes on its own.
-- Phone: serial 9a7c74f4 (Redmi Note 10 Pro, 120 Hz). screenrecord needs --size 720x1600. Judge smoothness only on release or benchmark builds. Restore any device setting you change for a test. If the phone is missing, use the emulator AVD periflow_api35 for correctness only, and say which gates still need the phone.
+- Gradle only via ${L} gradle; adb only via ${L} adb; long commands in the background with logs, polled with tail/grep. The Gradle lock is shared by every agent, so work on code while you wait. Memory safety (REQUIREMENTS "Memory safety"): never raise the Gradle heap. Never kill, stop or signal processes you did not start in this run (no taskkill, no Stop-Process), and never run ./gradlew --stop: a stale build from an earlier run finishes on its own.
+- Windows (the user's machine since Oct 16; native, no WSL): your Bash tool is Git Bash. ${L} and ${OV}/bin/memwait set JAVA_HOME, ANDROID_HOME (C:/Users/crazyhusir/AppData/Local/Android/Sdk), GRADLE_USER_HOME (D:/.caches/gradle) and the Go, pip and npm cache variables, which your shell lacks: run gradlew, adb, go, npm and pip only through them, never bare (a bare run creates forbidden cache folders under C:/Users). Gradle's heap comes from the global D:/.caches/gradle/gradle.properties: never pass -Dorg.gradle.jvmargs or kotlin.daemon.jvmargs. Set MSYS_NO_PATHCONV=1 for adb device paths (/sdcard/...) and for git show <ref>:.<path>; with it set, give git D:/ paths, not /d/. Helper scripts under ${OV}/out and ${OV}/logs were written on Linux: before re-running one, port its paths (/home/crazyhusir/Documents/projects/tools is D:/projects/tools) and its Linux-only commands (flock, /proc, /sys). Never write under %APPDATA% and never pip install outside a venv. Generator unit tests: until package WIN merges, 6 of them fail on this machine with no change at all (${OV}/logs/windows/generator-baseline.md); judge your work and every merge by failures beyond those. Perfetto's trace_processor v57.2 is pre-fetched under D:/.caches/perfetto: run it only as USERPROFILE='D:\\.caches\\perfetto' python ${SKILLS}/profilers/android-profiler/references/perfetto/bin/trace_processor <args> (without that override it downloads itself again into the user profile). ffmpeg and ffprobe 9.0.1 are installed and on PATH inside ${L} and ${OV}/bin/memwait. Never install anything yourself.
+- Phone: serial 9a7c74f4 (Redmi Note 10 Pro, 120 Hz). screenrecord needs --size 720x1600. Judge smoothness only on release or benchmark builds. Restore any device setting you change for a test. There is no emulator on this machine: if the phone is missing (${L} adb adb devices), do every code and test step first, poll for it in the background for up to 45 minutes, then record in the handoff which phone steps remain.
 - Commit after every completed step with a message that explains why, ending with the line "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>". Stage explicit paths only.`
 
 function wpRef(p) { return p.file ? `${DESIGN}/wp/${p.file}` : `(no WP file: the scope below is the specification)` }
@@ -271,11 +286,13 @@ Return state "done" with the numbers in the summary, or "blocked" with evidence.
 You fix the generator's lens. Worktree ${OV}/wt/WP05 on branch wp/WP05 (read ${OV}/handoff/WP05.md first). An earlier run was stopped with 6 uncommitted files in this worktree: they are its lens-tap work in progress. Review them, keep what is right and commit. File: templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/foundation/glass/LiquidLens.kt, its tests and the lens modifier it feeds. The generator's LiquidTabs bar is not built yet (it waits for WP03 and WP04), so the lens state and modifier must carry the travelling behaviour and LiquidTabs gets it for free. Add a "Lens on tap (REQUIREMENTS 35)" section at the top of the handoff that says exactly how LiquidTabs must wire it, and that the CP2 recordings must include the tap morph.
 Steps: implement; unit and Robolectric tests as for PeriFlow; run ${L} gradle ./gradlew :core:designsystem:testDebugUnitTest in ${OV}/wt/WP05/templates/android (in the background, log under ${OV}/logs/lens/, polled); commit. Return state "done" or "blocked" with evidence.` },
 ]
+// A lens fix whose signal is already fired is done; PeriFlow's needs its repository on this machine.
+const LENS_TODO = LENS_TREES.filter(t => (PERIFLOW || t.key !== 'periflow') && !signal(`LENS:${t.key}`).done)
 const LENS_STATUS = { type: 'object', properties: { state: { type: 'string', enum: ['done', 'blocked'] }, summary: { type: 'string' } }, required: ['state', 'summary'] }
 
 async function lensFlow() {
   const out = await pipeline(
-    LENS_TREES,
+    LENS_TODO,
     t => fableAgent(t.prompt, { label: `lens:${t.key}`, phase: 'Implement', schema: LENS_STATUS }),
     async (r, t) => {
       if (!r) throw new Error(`lens ${t.key} failed`)
@@ -346,7 +363,10 @@ async function cp2Flow() {
   return d.summary
 }
 
-const ORDER = ['WP04', 'WP10', 'WP08', 'WP06', 'WP02-M2', 'WP03', 'WP05', 'WP07-A', 'WP11', 'WP02-M3', 'WP14', 'MB', 'QA2', 'WP07-B', 'WP07-C', 'WP12', 'WP13', 'WP12-B', 'WP13-B']
+const ORDER = ['WIN', 'WP04', 'WP10', 'WP08', 'WP06', 'WP02-M2', 'WP03', 'WP05', 'WP07-A', 'WP11', 'WP02-M3', 'WP14', 'MB', 'QA2', 'WP07-B', 'WP07-C', 'WP12', 'WP13', 'WP12-B', 'WP13-B']
+  .filter(id => PERIFLOW || PKGS[id].kind !== 'periflow')
+// Without PeriFlow nothing runs WP11, so a wait on it ends as dead:WP11 instead of hanging.
+if (!PERIFLOW) endedOf('WP11').r(true)
 const lens = lensFlow().catch(e => `lens error: ${e}`).then(res => { addImplSlot(); endedOf('LENS').r(true); return res })
 const cp2 = cp2Flow().catch(e => `CP2 error: ${e}`).then(res => { endedOf('CP2').r(true); return res })
 const flows = ORDER.map(id => packageFlow(id)

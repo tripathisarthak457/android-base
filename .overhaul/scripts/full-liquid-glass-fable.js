@@ -26,11 +26,11 @@ async function fableAgent(prompt, opts) {
   return agent(prompt, rest)
 }
 
-const R = '/home/crazyhusir/Documents/projects/tools/android-base'
-const OV = '/home/crazyhusir/Documents/projects/tools/.overhaul'
+const R = 'D:/projects/tools/android-base'
+const OV = 'D:/projects/tools/.overhaul'
 const L = OV + '/bin/locked'
 const WT = OV + '/wt/WP05-glass'
-const KY = '/home/crazyhusir/.gradle/caches/modules-2/files-2.1/io.github.kyant0'
+const KY = 'D:/.caches/gradle/caches/modules-2/files-2.1/io.github.kyant0'
 
 const BRIEF = `You are the deep-work liquid-glass engineer for the android-base overhaul.
 THE USER'S REQUEST (Oct 15): restore the FULL liquid glass effect in the iOS-style components that use the third-party Android liquid-glass library (Kyant backdrop), especially the bottom bar. They want the distortion and every other effect, with real similarity to the library's own playground/catalog app, where the bottom bar is done the way they want (it can be improved further, but it must feel like that).
@@ -41,7 +41,7 @@ Also read:
 - ${OV}/handoff/WP05.md and WP05-RESUME.md (the foundation that exists: GlassQuality tiers, SceneBackdrop recording the scene once, GlassSurface, LiquidLens with the travelling tap lens);
 - ${OV}/audit/periflow-learnings.md G1-G17 (what made PeriFlow's glass cost frames: a whole-bar re-render on every tap, dispersion and inner shadow over the full bar, per-event coroutines);
 - ${OV}/research/SHEET-SPEC.md (the Glass sheet style).
-- Google's new jetpack-compose-performance skill (/home/crazyhusir/.claude/plugins/marketplaces/android-skills/jetpack-compose/jetpack-compose-performance/SKILL.md, especially references/graphics-performance.md, animation.md and state-and-stability.md): run its seven-category audit over every glass file you touch, and read the matching reference before each fix (the user, Oct 16).
+- Google's new jetpack-compose-performance skill (C:/Users/crazyhusir/.claude/plugins/marketplaces/android-skills/jetpack-compose/jetpack-compose-performance/SKILL.md, especially references/graphics-performance.md, animation.md and state-and-stability.md): run its seven-category audit over every glass file you touch, and read the matching reference before each fix (the user, Oct 16).
 THE GOAL: the full effect set at the Live tier, as close to the playground as possible, and still smooth. Never remove an effect to save cost (REQUIREMENTS 35): make it cheap.
 - Sample only within the lens or control bounds, from the scene recorded once.
 - Use static effect chains and drawWithCache, with no allocation in draw.
@@ -62,7 +62,8 @@ Components, in this order:
 Worktree: ${WT} on branch wp/WP05-glass. If missing: git -C ${R} worktree add ${WT} -b wp/WP05-glass wp/WP05. Work only there: other agents work in wt/WP05, wt/WP03 and wt/WP04, so never edit those. To build against the shell and the design system, which are not merged yet, you may merge wp/WP04 and wp/WP03 into your branch (they reach the integration branch before WP05 does). Keep everything behind the <opt:liquidglass> feature, so a project without glass has no Kyant dependency.
 Quality: the Google/AOSP bar (${OV}/research/CODE-STANDARDS.md, the androidx Compose API guidelines); comment why, never what. Commit each step with a why-message ending in "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>", and stage explicit paths only. Unit and Robolectric tests for the tier policy and the motion logic.
 Rules:
-- Gradle only via ${L} gradle; adb only via ${L} adb; release builds only for smoothness; the emulator never for perf.
+- Gradle only via ${L} gradle; adb only via ${L} adb; release builds only for smoothness; there is no emulator on this machine.
+- Windows, native (the user's machine since Oct 16): your Bash tool is Git Bash. ${L} sets JAVA_HOME, ANDROID_HOME and GRADLE_USER_HOME, which your shell lacks, so never run gradlew or adb bare; never pass -Dorg.gradle.jvmargs (the heap comes from D:/.caches/gradle/gradle.properties). Set MSYS_NO_PATHCONV=1 for adb device paths (/sdcard/...). The Kyant sources are already unpacked in ${OV}/research/glass/kyant-src/; ${KY} exists only after a build has resolved the library. ffmpeg and ffprobe 9.0.1 are installed and on PATH inside ${L}. Perfetto's trace_processor runs only as USERPROFILE='D:\\.caches\\perfetto' python C:/Users/crazyhusir/.claude/plugins/marketplaces/android-skills/profilers/android-profiler/references/perfetto/bin/trace_processor <args> (pre-fetched there). Never install anything yourself.
 - Never kill or stop processes you did not start; never run ./gradlew --stop.
 - Restore any device setting you change.
 Measure on the phone with the template's perf tooling (glass_live gate column, three runs): the bar's tab tap, drag, scroll under the bar and bar minimize, before and after. Save frame strips under ${OV}/perf/WP05-glass/.

@@ -1,7 +1,7 @@
 # WP05-glass handoff: the full liquid glass effect set (REQUIREMENTS 37)
 
 Branch `wp/WP05-glass`, worktree `$OV/wt/WP05-glass`, forked from `wp/WP05` at `5d515a0` with `wp/WP04` (`3c9c403`)
-and `wp/WP03` (`285275d`) merged in (below). `OV=/home/crazyhusir/Documents/projects/tools/.overhaul`,
+and `wp/WP03` (`285275d`) merged in (below). `OV=D:/projects/tools/.overhaul`,
 `O=$OV/out/WP05-glass`, `P=$OV/perf/WP05-glass`, `L=$OV/bin/locked`,
 `ds/` = `templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/`.
 

@@ -2,10 +2,6 @@ export const meta = {
   name: 'shimmer-fix-from-report',
   description: 'The user reports the shimmer has issues and content gets cut: capture it on the phone, audit every skeleton and clipping site, fix the shimmer on a side branch for WP03, route clipping fixes to owners, review against the Google bar, verify on the phone',
   phases: [
-    { title: 'Investigate', detail: 'phone evidence and a code audit in parallel' },
-    { title: 'Design', detail: 'one report: root causes and the fix design' },
-    { title: 'Fix', detail: 'side branch wp/WP03-skel; owner notes for the rest' },
-    { title: 'Review', detail: 'fresh-context review and fix loop' },
     { title: 'Verify', detail: 'before/after on the phone' },
   ],
 }
@@ -28,11 +24,11 @@ async function fableAgent(prompt, opts) {
   return agent(prompt, rest)
 }
 
-const R = '/home/crazyhusir/Documents/projects/tools/android-base'
-const OV = '/home/crazyhusir/Documents/projects/tools/.overhaul'
+const R = 'D:/projects/tools/android-base'
+const OV = 'D:/projects/tools/.overhaul'
 const L = OV + '/bin/locked'
 const Q = OV + '/qa/shimmer'
-const SKILLS = '/home/crazyhusir/.claude/plugins/marketplaces/android-skills'
+const SKILLS = 'C:/Users/crazyhusir/.claude/plugins/marketplaces/android-skills'
 const WT = OV + '/wt/WP03-skel'
 
 const CONTEXT = `Project: the user's app generator "android-base" (${R}, integration branch overhaul/multiplatform-v2), mid-overhaul. Packages are built in worktrees ${OV}/wt/<WP>: WP03 owns the design system (core/designsystem, catalog), WP04 owns the navigation shell and chrome (floating tab bar, large title, LocalBottomChrome/LocalTopChrome, content under chrome), WP02-M3 will own the feature screens, WP07 the Compose Multiplatform copy, WP08 the SwiftUI template. Read ${OV}/REQUIREMENTS.md (iOS-level polish and smoothness, zero per-frame recomposition, no alpha over full-screen layers, adaptive UI, Google/AOSP code quality, no AI slop) and ${OV}/research/CODE-STANDARDS.md.
@@ -41,55 +37,17 @@ Leads already seen by the orchestrator:
 - ${OV}/wt/WP03/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppSkeleton.kt: every placeholder sweeps its own band across its own width (band = 60 % of the element), so a list of lines and circles of different widths shimmers out of step with different band sizes instead of one band crossing the screen; the clock is a LocalShimmer that is null unless provided.
 - ${OV}/perf/WP03/ptr/r8-after/light-rest.png: the last card is cut by an opaque full-width strip behind the tab bar (the old shell that WP03's test project still uses; REQUIREMENTS 17, which WP04's branch claims to fix).
 - WP08 has a commit "Sweep the skeleton's highlight over it instead of masking to it" (the SwiftUI skeleton had a related problem).
-Phone: serial 9a7c74f4 (Redmi Note 10 Pro, 120 Hz); adb only via ${L} adb (other agents hold it at times: wait); screenrecord needs --size 720x1600; judge smoothness only on release builds. Gradle only via ${L} gradle. Never kill or stop processes you did not start; never run ./gradlew --stop. Restore any device setting you change (night mode, font scale, wm size/density, airplane mode). Today is 2026-10-13. If the phone (adb devices) is missing, do every non-phone step and poll for it in the background (up to 45 minutes) before the phone steps; record what remains.`
+Phone: serial 9a7c74f4 (Redmi Note 10 Pro, 120 Hz); adb only via ${L} adb (other agents hold it at times: wait); screenrecord needs --size 720x1600; judge smoothness only on release builds. Gradle only via ${L} gradle. Never kill or stop processes you did not start; never run ./gradlew --stop. Restore any device setting you change (night mode, font scale, wm size/density, airplane mode). Today is 2026-10-17. Windows, native (no WSL): your Bash tool is Git Bash; ${L} sets JAVA_HOME, ANDROID_HOME and GRADLE_USER_HOME, which your shell lacks, so never run gradlew or adb bare; set MSYS_NO_PATHCONV=1 for adb device paths (/sdcard/...); helper scripts under ${OV}/qa and ${OV}/out were written on Linux, so port their paths (/home/crazyhusir/Documents/projects/tools is D:/projects/tools) and Linux-only commands before re-running them. There is no emulator on this machine. If the phone (adb devices) is missing, do every non-phone step and poll for it in the background (up to 45 minutes) before the phone steps; record what remains.`
 
 const MAP = { type: 'object', properties: { file: { type: 'string' }, summary: { type: 'string' } }, required: ['file', 'summary'] }
-const STATUS = { type: 'object', properties: { state: { type: 'string', enum: ['done', 'blocked'] }, summary: { type: 'string' }, accept_ok: { type: 'boolean' } }, required: ['state', 'summary', 'accept_ok'] }
-const REVIEW = { type: 'object', properties: { verdict: { type: 'string' }, blocking: { type: 'array', items: { type: 'object', properties: { file: { type: 'string' }, line: { type: 'integer' }, problem: { type: 'string' }, fix: { type: 'string' } }, required: ['file', 'problem', 'fix'] } }, nonblocking: { type: 'array', items: { type: 'string' } } }, required: ['verdict', 'blocking', 'nonblocking'] }
 
-// Phone evidence and the code audit were completed on Oct 12 (files on disk).
-const evidence = { file: Q + '/evidence/EVIDENCE.md', summary: 'see EVIDENCE.md' }
-const audit = { file: Q + '/AUDIT.md', summary: 'see AUDIT.md' }
-
-phase('Design')
-const report = await fableAgent(`${CONTEXT}
-
-Inputs: ${evidence.file} and ${audit.file} (read both fully, and open the key frames they cite).
-TASK: write ${Q}/REPORT.md, the single source of truth for this fix:
-1. Root causes: each defect the user could have meant, confirmed by evidence or marked unconfirmed.
-2. The shimmer design to build in WP03's design system, precise enough to implement: a Modifier.Node based placeholder API (keep AppSkeleton/AppSkeletonLine/AppSkeletonCircle/AppSkeletonListItem as the public names unless a rename is clearly better; follow the androidx Compose API guidelines), one band that crosses all placeholders in the same coordinate space (window or a provided container), band width, angle, period, easing, pause, highlight per theme as tokens, behaviour with reduce motion, hidden tabs and no provider, zero recomposition per frame and no per-frame allocation, how skeletons match the loaded content's geometry so nothing jumps or clips, and the crossfade-free switch from skeleton to content (no alpha over full-screen layers).
-3. Content clipping: each case, owner package (WP03, WP04, WP02-M3, WP06), and the exact fix.
-4. Parity work for WP07 (multiplatform) and WP08 (SwiftUI).
-5. Acceptance: unit/Robolectric tests (a test that two placeholders at different x sample the same band phase), recomposition count 0 per frame, a screenshot test, and the phone check (recording frames and janky % while a skeleton list is on screen, light and dark).
-Return the path and a 15-line summary.`, { label: 'design:report', phase: 'Design', schema: MAP })
-if (!report) throw new Error('report failed')
-
-phase('Fix')
-const IMPL = `${CONTEXT}
-
-You implement the shimmer fix and the WP03-owned clipping fixes from ${report.file} (read it fully, and ${evidence.file} and ${audit.file}).
-Worktree: ${WT} on branch wp/WP03-skel. If it does not exist: git -C ${R} worktree add ${WT} -b wp/WP03-skel wp/WP03 (from wp/WP03's last commit; the WP03 agent keeps working in ${OV}/wt/WP03, so never edit that worktree). Work only in ${WT}, only in paths WP03 owns (templates/android/core/designsystem, templates/android/catalog, and the skeleton call sites in feature screens).
-Do: the design in REPORT.md section 2; the WP03-owned items of section 3; the tests of section 5. Gradle via ${L} gradle (./gradlew :core:designsystem:testDebugUnitTest, the catalog and app compile, lint for the modules you touched), in the background with logs under ${Q}/logs/, polled. Commit each step with a message that explains why, ending with "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"; stage explicit paths only. Comment why, never what; no narration.
-Then write ${OV}/handoff/WP03-skel.md: what changed, the commits, the test results, and the line "WP03: merge wp/WP03-skel into wp/WP03 (git merge wp/WP03-skel) at the start of your next run; the orchestrator verified it".`
-let fx = await fableAgent(IMPL, { label: 'fix:shimmer', phase: 'Fix', schema: STATUS })
-if (!fx) throw new Error('fix failed')
-const notes = await fableAgent(`${CONTEXT}
-
-From ${report.file}: append an "Orchestrator note (Oct 12): shimmer and clipping (the user's report)" section to the handoff of every package that owns a fix it lists outside WP03's design system: ${OV}/handoff/WP04.md, ${OV}/handoff/WP02-M3.md (create it with just this section if missing), ${OV}/handoff/WP06.md, ${OV}/handoff/WP07-A.md (for phase B), ${OV}/handoff/WP08.md. Each note names the defect, the evidence path, the exact fix and its acceptance, and says reviewers will check it. Also append to ${OV}/handoff/WP03.md: "Merge wp/WP03-skel (the shimmer fix, reviewed) into your branch at the start of your next run; see handoff/WP03-skel.md". Do not modify any repository. Return the list of notes written.`, { label: 'route:owner-notes', phase: 'Fix', schema: MAP })
-
-phase('Review')
-for (let round = 1; round <= 3; round++) {
-  const rv = await fableAgent(`You are a fresh-context reviewer holding this change to the Google/AOSP bar (androidx Compose API guidelines, ${OV}/research/CODE-STANDARDS.md, ${OV}/REQUIREMENTS.md). Review git -C ${R} diff wp/WP03...wp/WP03-skel (start with --stat; read every changed file in full) against ${report.file}.
-BLOCKING: the band not coherent across placeholders; any per-frame recomposition, state read in composition that changes per frame, or allocation in draw; alpha over full-screen layers; broken reduce-motion, hidden-tab or no-provider behaviour; skeleton geometry that still jumps or clips; API guideline violations; missing or weak tests; narrating comments or slop; edits outside WP03's paths. NON-BLOCKING: nits. Do not modify anything; cite file:line.`, { label: `review:shimmer#${round}`, phase: 'Review', schema: REVIEW })
-  if (!rv) throw new Error('review failed')
-  if (!rv.blocking.length) { log(`shimmer review #${round}: clean`); break }
-  log(`shimmer review #${round}: ${rv.blocking.length} blocking`)
-  fx = await fableAgent(`${IMPL}\n\nMODE: fix. A fresh-context reviewer found BLOCKING issues. Fix every one (commits with why-messages), re-run the affected tests, update the handoff, return state="done":\n${JSON.stringify(rv.blocking, null, 1)}\nNon-blocking: ${JSON.stringify(rv.nonblocking)}`, { label: `fix:shimmer#${round}`, phase: 'Fix', schema: STATUS })
-  if (!fx) throw new Error('fix round failed')
-}
+// The report (qa/shimmer/REPORT.md), the fix on wp/WP03-skel (review #3 approved; wp/WP03 already contains it) and the
+// owner notes finished on Oct 15. Only the phone verification is left.
+const evidence = { file: Q + '/evidence/EVIDENCE.md' }
+const report = { file: Q + '/REPORT.md' }
 
 phase('Verify')
 const verify = await fableAgent(`${CONTEXT}
 
 Verify the shimmer fix on the phone. Build a release APK of the catalog (and the sample app if the report's evidence used it) from ${WT} through ${L} gradle, then in one ${L} adb hold: record the same states as ${evidence.file} (catalog skeleton section, cold start of the sample list with data cleared, light and dark), extract frames, and measure janky % (FrameTimeline via dumpsys gfxinfo framestats) while a skeleton list is on screen for 10 s. Put before/after frame strips side by side in ${Q}/after/ (before = the evidence frames). Write ${Q}/VERIFY.md with the verdict per defect from REPORT.md (fixed, still present, owned by another package and routed), the numbers, and the image paths. Append the result to ${OV}/handoff/WP03-skel.md. Return the path and a 10-line summary.`, { label: 'verify:phone', phase: 'Verify', schema: MAP })
-return { report: report.file, evidence: evidence.summary, audit: audit.summary, fix: fx.summary, routed: notes ? notes.summary : 'routing failed', verify: verify ? verify.summary : 'verification failed' }
+return { report: report.file, verify: verify ? verify.summary : 'verification failed' }

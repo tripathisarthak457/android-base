@@ -252,7 +252,7 @@ note. This round fixed them. It changed no package branch, no `main`, and nothin
 | 7. 38 vs 39 requirements | 39 in `HANDOVER.md` §0 and §3.2 (new row 39), §9.1/§9.2, `CLAUDE.md`, `tools-CLAUDE.md`, the branch `README.md`, `REQUIREMENTS-STATUS-FINAL.md` header, the memory |
 | 8. Tools unverified in the CLI | New `HANDOVER.md` §5.14 (preflight with `ToolSearch`, fallbacks for `Workflow`, cron, `Monitor`, usage); preflight added to §5.11, §8.2 step 1, `CLAUDE.md`, `tools-CLAUDE.md`, RESUME §2.1, §8.1 item 0, §9 |
 | 9. 11:30 vs 11:17 | 11:17 is the user's message; "~11:30" is when `PROGRESS.md` logged it (HANDOVER §1.2 row 43, RESUME §1, §9, PACKAGES §0.2) |
-| Privacy note | `WIPE-READINESS.md` on the branch head is now a redacted public copy (only android-base and PeriFlow; no work-organisation, colleague or client names). The full scan moved to `handover/local-only/WIPE-READINESS-full.md` (never published) and is in the Drive zip p01. **Commits `a961701` and `7feafaf` still contain the full version**: removing it needs a force-push or deleting and recreating the branch, which is the user's call (`HANDOVER.md` §1.7 item 10; `REQUIREMENTS-STATUS-FINAL.md` §9 item 16). One work-project name was also generalised in `USER-MESSAGES.md` |
+| Privacy note | `WIPE-READINESS.md` on the branch head is now a redacted public copy (only android-base and PeriFlow; no work-organisation, colleague or client names). The full scan moved to `handover/local-only/WIPE-READINESS-full.md` (never published) and is in the Drive zip p01. **Resolved on Oct 17:** the branch history was rewritten with the user's OK, so no commit contains the full version (§8). One work-project name was also generalised in `USER-MESSAGES.md` |
 
 Also corrected while there: RESUME §3.11 (14 parts, `01-secrets.zip` was built by the user, the offline backup
 finished), the offline backup's status in HANDOVER §5.2, §8.1 and §9.9, and `--no-track` in HANDOVER §8.2 step 3.
@@ -368,3 +368,20 @@ The file lists used for packing (`lists/<archive>.paths` and `.files`), the scri
 (`run.log`, `results.tsv`) were in the session scratchpad
 `/tmp/claude-1000/-home-crazyhusir-Documents-projects-tools/e3f9060d-6364-4a81-a9a2-20851e25521f/scratchpad/handover/raw/`.
 The scratchpad is not backed up. The path lists themselves are `.overhaul/handover/release-assets.txt`.
+
+## 8. Oct 17: the history of `overhaul-workspace` was rewritten
+
+On the Windows machine, with the user's OK (he chose "rewrite all 7 commits" and then "do what's best"), the branch's 7
+commits were rewritten in place and pushed once with `--force-with-lease`. Every commit kept its message, author,
+committer and dates; in every commit:
+
+- `WIPE-READINESS.md` and `USER-MESSAGES.md` are the redacted versions (commits 1-2 had held the full ones);
+- three leftovers the Oct 16 redaction missed were made generic (a work-organisation account name, a work app's id, a
+  third-party project's folder name), and so was a work-organisation product name;
+- PeriFlow's private text artifacts were removed (`perf/WP11/`, `logs/WP11/`, `audit/periflow-learnings.md`; 1,690
+  files per commit). They stay in the local workspace, and `backup-include.txt` now excludes them;
+- every citation of a commit id points at the rewritten commit.
+
+The rewritten history is `a961701` .. `b974222`. Two independent checks passed before the push (byte-level scope,
+metadata, a scan of every blob for the removed names: 0 hits). The old commits are unreachable; the user asks GitHub
+Support to purge them. No other ref changed.

@@ -16,6 +16,7 @@ This is the single file to read after a context compaction or restart. Then read
 
 ---
 
+> **Oct 17: restored natively on Windows (`D:/projects/tools`); nothing is running.** Resume from `SESSION-2026-10-17.md` first. The run ids in §1 below belong to the dead Linux session: launch fresh.
 > **Resume from `SESSION-2026-10-16.md` first** (latest: power-offs, thermal sensor), then `SESSION-2026-10-15.md` (its Oct 16 sections at the end), then `SESSION-2026-10-14.md`. Fable's findings: `FABLE-FINDINGS.md`. **Every agent runs on Opus 5.5 only** (the user, Oct 15 20:55).
 > Previously: `SESSION-2026-10-14.md` (latest; then `SESSION-2026-10-13.md` for background).
 > Older note: `SESSION-2026-10-13.md` (written 16:58 Oct 13): what was achieved on Oct 12–13, resume steps, the order of what comes next.

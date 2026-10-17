@@ -12,9 +12,8 @@ for Windows. No secret values appear in this file: only paths, key *names*, coun
 > `Documents/projects/tools/.overhaul/handover/WIPE-READINESS.md`. The offline backup's own `README-RESTORE.md` and
 > `PLAN.md` say where every other project's files went.
 >
-> **Note for the user:** the first two commits of `overhaul-workspace` (`a961701`, `7feafaf`) still contain the full
-> version (paths and names only, no values). Removing it from history needs a force-push or deleting and recreating the
-> branch; agents must not do either. It is your call (`HANDOVER.md` §1.7).
+> **Note for the user (resolved on Oct 17):** with your OK, the history of `overhaul-workspace` was rewritten on
+> 2026-10-17, so no commit of the branch contains the full version any more (`PUSHED.md` §8).
 
 Other agents were pushing the android-base and PeriFlow backups **at the same time** as this scan. At 11:19 the
 android-base remote still had only `main`. The android-base numbers below are therefore the "before" state. What was

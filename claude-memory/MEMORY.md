@@ -1,3 +1,6 @@
-- [android-base generator overhaul](android-base-generator.md) — user's generator; multi-day overhaul moved from Linux to Windows/WSL2 on Oct 16; read .overhaul/handover/HANDOVER.md first; standing instructions
-- [Android skills plugin](android-skills-installed.md) — Google's official Android skills plugin (1.0.15); reinstall on a new machine; read before Android work
-- [Laptop freezes and power-offs](laptop-memory-freeze.md) — Oct 10 memory freeze, Oct 16 power-offs (most likely CPU heat under Gradle); bin/locked, bin/memwait, thermlog; watch heat on Windows too
+- [Claude app AppData redirect](claude-app-appdata-redirect.md) — agent-shell writes to %APPDATA% go into the MSIX package; use a Terminal tab
+- [android-base Windows decisions](android-base-windows-decisions.md) — 2026-10-17: native not WSL, no merge-all, rewrite workspace history, standing OK for non-main backup pushes
+- [winget: never auto-accept](winget-no-auto-accept.md) — no --accept-* flags, even read-only; query with --source winget
+- [android-base generator overhaul](android-base-generator.md) — the user's generator; overhaul resumed natively at D:\projects\tools on Oct 17; read .overhaul/handover/HANDOVER.md; standing instructions
+- [Android skills plugin](android-skills-installed.md) — 1.0.15; shallow clone with CRLF working files on Windows; vendor from git objects
+- [Laptop freezes and power-offs](laptop-memory-freeze.md) — Linux-era history; on Windows the user calls it a Linux problem; locked.py keeps a memory wait only

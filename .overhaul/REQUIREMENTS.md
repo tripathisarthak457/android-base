@@ -1,10 +1,10 @@
 # Overhaul requirements (from the user, verbatim intent)
 
-> **Every agent: also read `/home/crazyhusir/Documents/projects/tools/.overhaul/notes/INDEX.md`.** It lists the plans
+> **Every agent: also read `D:/projects/tools/.overhaul/notes/INDEX.md`.** It lists the plans
 > written after the master plan: visual QA defects, smoothness, iOS motion, recomposition, adaptive UI, and the
 > checkpoint decisions. The items that name your package are part of your acceptance.
 
-Repo: /home/crazyhusir/Documents/projects/tools/android-base (branch overhaul/multiplatform-v2).
+Repo: D:/projects/tools/android-base (branch overhaul/multiplatform-v2).
 The user owns it. Reference apps generated from it: PeriFlow (~/Documents/projects/jorwen/periflow/periflow-android),
 VitFleet (~/Documents/projects/tools/vitfleet/vitfleet-android).
 
@@ -42,9 +42,9 @@ If it runs smooth there, it runs smooth on most phones.
 - Port the good recent bits from PeriFlow and VitFleet back into the generator.
 - Code review and fix bad code.
 - Git: branch overhaul/multiplatform-v2; merge to main only when the full matrix is green (CI gates the Vercel deploy). PeriFlow fixes: local branch, committed, NOT pushed.
-- Gradle builds and adb sessions are serialised through /home/crazyhusir/Documents/projects/tools/.overhaul/bin/locked (gradle|adb). 15GB RAM machine.
-- If the phone disconnects, use the emulator AVD periflow_api35.
-- **Memory safety (the laptop froze on Oct 10 at 15:23 under memory pressure).** `bin/locked gradle` now waits for 3.5 GB of free memory, caps Gradle workers at 4 and shortens the daemon idle time. Run every other heavy command through `/home/crazyhusir/Documents/projects/tools/.overhaul/bin/memwait && <command>`: `npm ci`, `next build`, `go test -race`, Kotlin/Native/iOS klib compiles, ffmpeg batches. Never start the emulator while a build runs: start it only inside `bin/locked emu <script>`, which since Oct 13 also holds the Gradle lock and waits for 3 GB free. A build run inside that script goes straight through `locked gradle` without deadlocking. Shut the emulator down at the end of the script (`adb -s emulator-5554 emu kill`). Never raise the Gradle heap.
+- Gradle builds and adb sessions are serialised through D:/projects/tools/.overhaul/bin/locked (gradle|adb). 16 GB RAM machine, Windows 11 since Oct 17 (native, no WSL).
+- If the phone disconnects: there is no emulator on this machine. Do the code steps, poll for the phone (adb devices through bin/locked adb) for up to 45 minutes, then record which phone steps remain.
+- **Memory safety (the laptop froze on Oct 10 at 15:23 under memory pressure).** `bin/locked gradle` runs one build machine-wide, waits for 3.5 GB of free memory (1.5 GB with a Gradle daemon resident) and caps Gradle workers at 4; the heap and the daemon idle time come from `D:/.caches/gradle/gradle.properties`. Run every other heavy command as `D:/projects/tools/.overhaul/bin/memwait <command...>`, with the command as its arguments (it also sets the SDK and cache variables the shell lacks): `npm ci`, `next build`, `go test`, Kotlin/Native/iOS klib compiles, ffmpeg batches. Never raise the Gradle heap.
 
 ## Added by the user on Oct 9, 08:40
 17. **The bottom bar must not have an opaque white block around it** that cuts off the UI. Content scrolls under a floating bar, and only the scroll content is padded.

@@ -1,6 +1,6 @@
 # WP07-A handoff (Compose Multiplatform foundation, Android + iOS)
 
-Branch `wp/WP07`, worktree `$OV/wt/WP07` (`OV=/home/crazyhusir/Documents/projects/tools/.overhaul`,
+Branch `wp/WP07`, worktree `$OV/wt/WP07` (`OV=D:/projects/tools/.overhaul`,
 `O=$OV/out/WP07`, `L=$OV/bin/locked`).
 
 ## Progress

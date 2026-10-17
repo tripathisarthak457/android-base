@@ -2,7 +2,7 @@
 """First-frame rows of one perf.sh run directory, straight from its framestats dumps:
    peek.py <run-dir> [prefix...]   e.g. peek.py $P/everything/run1 tabs_ pop_ push_"""
 import glob, os, sys, statistics
-sys.path.insert(0, "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04-perf/templates/android/tools/perf")
+sys.path.insert(0, "D:/projects/tools/.overhaul/wt/WP04-perf/templates/android/tools/perf")
 import parse_framestats as pf, parse_gfx
 
 run = sys.argv[1]

@@ -975,11 +975,8 @@ push, Vercel. The ETA of "about Oct 17" (`SESSION-2026-10-15.md`) assumed no cra
     `01-secrets.zip` (not encrypted, by his choice) is stored safely.
 15. **The raw-data draft release.** It was not created by 12:45 on Oct 16. If it still does not exist, say whether it
     is still wanted (the Drive backup holds the same files) or whether the Drive copy is enough.
-16. **The public workspace branch's history.** Commits `a961701` and `7feafaf` of `overhaul-workspace` contain the
-    full `WIPE-READINESS.md` (paths and names, no values: where keystores, an SSH deploy key, 2FA recovery codes and a
-    service-account file lived; his work-organisation repositories, a colleague-named branch, a client's server). The
-    branch head now carries a redacted copy. Accept it, or delete and recreate the branch (agents must not
-    force-push or delete it on their own).
+16. **The public workspace branch's history: resolved on Oct 17.** With the user's OK, the branch's 7 commits were
+    rewritten in place, so no commit holds the full `WIPE-READINESS.md` or the other leftovers (`PUSHED.md` §8).
 
 
 ## REQUIREMENTS 39, added Oct 16 (12:10) after this document was written: Cronet / HTTP/3 transport (opt-in)

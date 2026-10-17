@@ -1,12 +1,16 @@
 export const meta = {
   name: 'merge-all-to-main',
-  description: 'The user asked (Oct 16) to merge all code of android-base and of PeriFlow into main and delete every branch afterwards, before wiping the laptop: archive-tag every branch head, merge everything into main, push, delete the branches, update the handover docs (including the offline pen-drive zip), and verify from fresh clones',
+  description: 'SUPERSEDED, never run: the user declined merge-all on 2026-10-17 and keeps the branches until the Android release gate. (Was: merge all code of android-base and PeriFlow into main, delete every branch, update the handover docs.)',
   phases: [
     { title: 'Merge', detail: 'android-base and PeriFlow, all branches into main' },
     { title: 'Docs', detail: 'handover docs for the one-branch layout and the offline zip' },
     { title: 'Verify', detail: 'fresh clones, ancestry of every archived head, secrets, cold read' },
   ],
 }
+
+// The user declined merge-all on 2026-10-17: the branches stay until the Android release gate, then one reviewed merge
+// of overhaul/multiplatform-v2 into main after their go-ahead.
+throw new Error("merge-all-to-main.js is superseded (the user declined merge-all on 2026-10-17); never run it")
 
 const TOOLS = '/home/crazyhusir/Documents/projects/tools'
 const R = TOOLS + '/android-base'
@@ -55,7 +59,7 @@ phase('Merge')
 const ab = await agent(`${CONTEXT}
 
 TASK: android-base, every branch into main. ${MERGE_STEPS(R, 'android-base', 'overhaul/multiplatform-v2 first; then wp/WP05-glass, because it already merges wp/WP04 and wp/WP03 with a tested conflict resolution (commit 282dd3c); then wp/WP04, wp/WP04-perf, wp/WP03-skel, wp/WP03, wp/WP02, wp/WP06, wp/WP07, wp/WP08 and any remaining wp/*; then the backup/*-wip-2026-10-16 snapshots; and last overhaul-workspace')}
-Special case, the overhaul-workspace branch. Its early commits (a961701, 7feafaf) hold an unredacted WIPE-READINESS.md naming the user's work-org account, colleagues and client files; the branch head is redacted. Bring in ONLY its current tree, WITHOUT its history, so that main never reaches those commits:
+Special case, the overhaul-workspace branch. Its early commits (before the Oct 17 history rewrite) held an unredacted WIPE-READINESS.md naming the user's work-org account, colleagues and client files; the branch head is redacted. Bring in ONLY its current tree, WITHOUT its history, so that main never reaches those commits:
   - git read-tree --prefix=overhaul-workspace/ -u overhaul-workspace, on main, then git commit (one ordinary parent: main). No merge, no --allow-unrelated-histories.
   - Do NOT create an archive tag for overhaul-workspace. Then delete the branch (local and remote, like the others), so that the unredacted commits are no longer reachable from any ref.
   - Before committing, check that overhaul-workspace/.overhaul/handover/WIPE-READINESS.md is the redacted version: no work-organisation account names, no colleague names, no client document names. Redact anything left.

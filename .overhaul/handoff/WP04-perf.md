@@ -1,6 +1,6 @@
 # WP04-perf: deep smoothness (branch `wp/WP04-perf`, worktree `$OV/wt/WP04-perf`)
 
-`OV=/home/crazyhusir/Documents/projects/tools/.overhaul`, `O=$OV/out/WP04-perf` (builds and scripts),
+`OV=D:/projects/tools/.overhaul`, `O=$OV/out/WP04-perf` (builds and scripts),
 `P=$OV/perf/WP04-perf` (phone results and traces). Started 2026-10-15 15:45 from `wp/WP04` at `3c9c403`.
 Phone: Redmi Note 10 Pro `9a7c74f4` (Snapdragon 732G: 6 × A55 at 576–1708 MHz, 2 × A76 at 652–2304 MHz,
 Adreno 618; 120 Hz; custom ROM, SDK 37, HWUI Skia GL). Trace tooling: the android-profiler skill's

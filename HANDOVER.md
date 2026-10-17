@@ -352,13 +352,11 @@ Every agent prompt carries these. They still hold on Windows unless the user cha
    `backup-2026-10-16` and stored `01-secrets.zip` safely (it is not encrypted, by his choice); accept the WSL2 setup
    and do its admin steps (RESUME-ON-WINDOWS.md §8.4); say whether the raw-data draft release is still wanted if it
    does not exist (the Drive copy holds the same files; §8.2 step 8).
-10. **The public workspace branch's history.** The first two commits of `overhaul-workspace` (`a961701`, `7feafaf`)
-    contain the full `WIPE-READINESS.md`: paths and names (no values) of where keystores, an SSH deploy key, 2FA
-    recovery codes and a service-account file lived, plus the names of his work-organisation repositories, a
-    colleague-named branch and a client's server. From the fix round on, the branch head carries a redacted copy.
-    Removing it from history needs a force-push or deleting and recreating the branch, which agents must not do. His
-    options: accept it, or delete and recreate `overhaul-workspace` himself (or let an agent do it with his explicit
-    OK).
+10. **The public workspace branch's history: resolved on Oct 17.** The first two commits once held the full
+    `WIPE-READINESS.md` (paths and names, no values). With the user's OK, all 7 commits were rewritten in place on
+    2026-10-17 (leftovers scrubbed, PeriFlow's private text artifacts removed, commit ids remapped) and pushed once
+    with `--force-with-lease`; no commit contains it now. The user files a GitHub Support request to purge the old,
+    unreachable commits (`PUSHED.md` §8).
 
 The complete list, with options for each, is **`.overhaul/handover/REQUIREMENTS-STATUS-FINAL.md` §9** (items 1–16).
 Ask them together, once, in one short message with your recommendation for each, not one at a time.

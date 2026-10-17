@@ -1,33 +1,7 @@
 #!/usr/bin/env bash
-# Blocks until the machine has enough available memory for a heavy command, for at most 30 minutes.
-# The laptop froze on Oct 10 at 15:23 under memory pressure with zram swap and no OOM daemon: heavy commands wait
-# here rather than push the system into swap thrash.
-# A resident Gradle daemon already holds its heap and the next build reuses it, so the bar is lower then
-# (MEMWAIT_WARM_MB); a cold start needs room for a new daemon and its Kotlin daemon (MEMWAIT_MB).
-# Oct 16: builds held the CPU at 95-100 C (acpitz 97 C against its 99 C hot trip) and the laptop powered off twice.
-# A heavy command starts only once the CPU package is under THERMWAIT_C, for at most 10 minutes.
-limit=${THERMWAIT_C:-80}
-for i in $(seq 1 60); do
-  t=$(( $(cat /sys/class/thermal/thermal_zone*/type | paste - <(cat /sys/class/thermal/thermal_zone*/temp) | awk '$1=="x86_pkg_temp" {print $2}') / 1000 ))
-  [ "$t" -lt "$limit" ] && break
-  [ $((i % 6)) -eq 1 ] && echo "[memwait] CPU at ${t} C, waiting for it to cool under ${limit} C..." >&2
-  sleep 10
-done
-cold=${MEMWAIT_MB:-3500}
-warm=${MEMWAIT_WARM_MB:-1500}
-for i in $(seq 1 180); do
-  need=$cold
-  pgrep -f 'org.gradle.launcher.daemon.bootstrap.GradleDaemon' >/dev/null && need=$warm
-  avail=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
-  [ "$avail" -ge "$need" ] && exit 0
-  [ $((i % 6)) -eq 1 ] && echo "[memwait] ${avail} MB available, waiting for ${need} MB..." >&2
-  sleep 10
-done
-# Past 30 minutes, go ahead only if the machine is not critically short; below 1 GB keep waiting (up to 2 hours).
-for i in $(seq 1 540); do
-  avail=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
-  [ "$avail" -ge 1000 ] && break
-  [ $((i % 30)) -eq 1 ] && echo "[memwait] only ${avail} MB available; holding until 1000 MB..." >&2
-  sleep 10
-done
-echo "[memwait] still under ${need} MB after 30 min; continuing" >&2
+# Git Bash shim: the logic is in locked.py (native Windows). MSYS_NO_PATHCONV keeps Git Bash from rewriting arguments
+# such as /sdcard/... on the way into Python; locked.py gives the command the caller's own setting back.
+export LOCKED_CALLER_NOPATHCONV="${MSYS_NO_PATHCONV-unset}"
+export LOCKED_BASH="$(cygpath -w "$BASH")"
+export MSYS_NO_PATHCONV=1
+exec python -I "$(cygpath -m "$(dirname "$0")")/locked.py" memwait "$@"

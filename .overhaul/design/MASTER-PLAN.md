@@ -12,8 +12,8 @@ Inputs: `.overhaul/REQUIREMENTS.md` (the bar), the 13 audit reports in `.overhau
 
 | Name | Meaning |
 |---|---|
-| `R` | `/home/crazyhusir/Documents/projects/tools/android-base` (main checkout, integration branch `overhaul/multiplatform-v2`, orchestrator only) |
-| `OV` | `/home/crazyhusir/Documents/projects/tools/.overhaul` |
+| `R` | `D:/projects/tools/android-base` (main checkout, integration branch `overhaul/multiplatform-v2`, orchestrator only) |
+| `OV` | `D:/projects/tools/.overhaul` |
 | `W` | the agent's worktree, `OV/wt/<WP>` on branch `wp/<WP>` |
 | `L` | `OV/bin/locked` (serialises Gradle and adb machine-wide) |
 | `O` | `OV/out/<WP>` (generated projects for testing, never inside a repo) |
@@ -26,8 +26,8 @@ Inputs: `.overhaul/REQUIREMENTS.md` (the bar), the 13 audit reports in `.overhau
 Every Gradle and device command in this plan is written with the lock wrapper and the SDK exported:
 
 ```bash
-export ANDROID_HOME=$HOME/Android/Sdk
-L=/home/crazyhusir/Documents/projects/tools/.overhaul/bin/locked
+export ANDROID_HOME=C:/Users/crazyhusir/AppData/Local/Android/Sdk
+L=D:/projects/tools/.overhaul/bin/locked
 cd <project dir> && $L gradle ./gradlew <tasks> --console=plain
 $L adb adb -s 9a7c74f4 <args>
 $L adb $L gradle ./gradlew :benchmark:connected...    # both locks: ALWAYS adb first, then gradle (fixed order, no deadlock)
@@ -2637,7 +2637,7 @@ multiplatform before WP07-C.
 
 **Builds, devices and tests**
 14. Every Gradle command goes through `$L gradle`, every adb command through `$L adb`; when both are needed, adb
-    first. `export ANDROID_HOME=$HOME/Android/Sdk`. Keep the JVM arguments WP00 set (`-Xmx4g` Gradle, `-Xmx2g`
+    first. `export ANDROID_HOME=C:/Users/crazyhusir/AppData/Local/Android/Sdk`. Keep the JVM arguments WP00 set (`-Xmx4g` Gradle, `-Xmx2g`
     Kotlin daemon, identical in every template, so one daemon serves every worktree) and the build cache on; if a
     build runs out of memory, report it rather than raising the heap. Do not use `--no-daemon`; do not pin or
     download a JDK. A package building a project with different JVM arguments (PeriFlow) runs `./gradlew --stop`

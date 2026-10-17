@@ -8,6 +8,9 @@ export const meta = {
   ],
 }
 
+// The user declined merge-all on 2026-10-17; this is the pre-workspace draft of a superseded script. Never run it.
+throw new Error("merge-all-to-main.pre-ws.js is superseded (the user declined merge-all on 2026-10-17); never run it")
+
 const TOOLS = '/home/crazyhusir/Documents/projects/tools'
 const R = TOOLS + '/android-base'
 const OV = TOOLS + '/.overhaul'

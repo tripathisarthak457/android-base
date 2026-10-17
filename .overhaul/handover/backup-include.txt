@@ -330,6 +330,12 @@
 - /verify-gen/out/xb/*
 
 ## 6. DRAFT-RELEASE CONTENT (owner-only archives listed in release-assets.txt), so not in git
+# PeriFlow's text captures, logs and learnings are private too (WIPE-READINESS section 3.3); removed from every
+# public commit of this branch on 2026-10-17
+- /perf/WP11/
+- /logs/WP11/
+- /audit/periflow-learnings.md
+- /audit/frames/periflow_*
 # PeriFlow screenshots, frames, recordings and UI dumps (owner-only, never in the public branch)
 - /perf/WP11/**.png
 - /perf/WP11/**.jpg

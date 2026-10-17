@@ -1,3 +1,6 @@
+> **Historical:** the entry point of the Oct 16 backup, written for a WSL2 restore. On the Windows machine (since Oct 17)
+> `D:/projects/tools/CLAUDE.md` and the newest `SESSION-*.md` win; merge-all was declined; the work runs natively.
+
 # android-base overhaul: workspace backup (2026-10-16)
 
 You are looking at the backup of the **android-base overhaul workspace**, taken on Oct 16, 2026 before the user's
