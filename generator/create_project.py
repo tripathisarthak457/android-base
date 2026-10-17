@@ -22,7 +22,7 @@ from typing import Any
 
 from genkit import targets
 from genkit.core import catalogue, pipeline, prompts
-from genkit.core.copy import write_text
+from genkit.core.copy import is_link, write_text
 from genkit.core.headless import internal, invalid
 from genkit.core.markers import TemplateError
 from genkit.core.spec import SpecError, to_json
@@ -257,9 +257,9 @@ def confirm_replace(destination: Path, force: bool, unattended: bool) -> bool:
     Whether something at `destination` is to be replaced. The build deletes that exact path, and
     nothing else, once the new project is complete. Raises SpecError when it may not be replaced.
     """
-    if not destination.exists() and not destination.is_symlink():
+    if not destination.exists() and not is_link(destination):
         return False
-    if destination.is_dir() and not destination.is_symlink() and not any(destination.iterdir()):
+    if destination.is_dir() and not is_link(destination) and not any(destination.iterdir()):
         return True
 
     refusal = _unsafe_to_delete(destination)

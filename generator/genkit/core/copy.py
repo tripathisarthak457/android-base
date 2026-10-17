@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import stat
 from collections.abc import Iterator
 from dataclasses import dataclass
 from fnmatch import fnmatch
@@ -62,6 +63,16 @@ def write_text(path: Path, text: str) -> None:
     into `\\r\\n` on Windows, and what the generator writes must be the same bytes on every host.
     """
     path.write_bytes(text.encode("utf-8"))
+
+
+def is_link(path: Path) -> bool:
+    """A symbolic link, or a junction: the directory link Windows lets any account make."""
+    try:
+        status = path.lstat()
+    except OSError:
+        return False
+    # The reparse tag is how Path.is_junction tells, which needs Python 3.12; this runs on 3.11.
+    return stat.S_ISLNK(status.st_mode) or getattr(status, "st_reparse_tag", 0) == stat.IO_REPARSE_TAG_MOUNT_POINT
 
 
 def is_executable(relative: str, patterns: tuple[str, ...]) -> bool:

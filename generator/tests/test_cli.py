@@ -21,6 +21,9 @@ from genkit.core import pipeline
 GENERATOR = Path(__file__).resolve().parent.parent
 SPEC = {"schema": 2, "platform": "android", "app_name": "Json Check", "package_name": "com.example.jsoncheck"}
 
+#: What os.symlink raises on Windows for an account without the privilege to create links.
+ERROR_PRIVILEGE_NOT_HELD = 1314
+
 
 def run(*arguments: str, cwd: Path | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
@@ -116,16 +119,38 @@ class CliTest(unittest.TestCase):
         self.assertTrue((sibling / "important.txt").exists())
 
     def test_force_replaces_a_link_and_not_the_directory_it_points_at(self):
+        real = self.precious_directory()
+        link = self.root / "link"
+        try:
+            link.symlink_to(real, target_is_directory=True)
+        except OSError as error:
+            if getattr(error, "winerror", None) != ERROR_PRIVILEGE_NOT_HELD:
+                raise
+            self.skipTest(
+                "this Windows account may not create symbolic links (that takes Developer Mode or "
+                "SeCreateSymbolicLinkPrivilege); the junction test covers links here"
+            )
+        self.assert_force_replaces_only(link, real)
+
+    @unittest.skipUnless(os.name == "nt", "junctions exist only on Windows")
+    def test_force_replaces_a_junction_and_not_the_directory_it_points_at(self):
+        # The directory link any Windows account can make, with no privilege.
+        real = self.precious_directory()
+        junction = self.root / "junction"
+        subprocess.run(["cmd", "/c", "mklink", "/J", str(junction), str(real)], capture_output=True, check=True)
+        self.assert_force_replaces_only(junction, real)
+
+    def precious_directory(self) -> Path:
         real = self.root / "real"
         real.mkdir()
         (real / "precious.txt").write_text("keep", encoding="utf-8")
-        link = self.root / "link"
-        link.symlink_to(real, target_is_directory=True)
+        return real
 
+    def assert_force_replaces_only(self, link: Path, real: Path) -> None:
         result = run("--spec", str(self.spec), "--out", str(link), "--no-zip", "--force", "--json")
         self.assertEqual(0, result.returncode, result.stderr)
-        self.assertEqual(str(link), json.loads(result.stdout)["path"])
-        self.assertFalse(link.is_symlink())
+        self.assertEqual(str(self.root.resolve() / link.name), json.loads(result.stdout)["path"])
+        self.assertEqual(self.root.resolve() / link.name, link.resolve(), "still a link")
         self.assertTrue((link / "settings.gradle.kts").is_file())
         self.assertEqual(["precious.txt"], [path.name for path in real.iterdir()])
         self.assertEqual("keep", (real / "precious.txt").read_text(encoding="utf-8"))

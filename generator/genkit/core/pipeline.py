@@ -27,7 +27,7 @@ from typing import Any
 
 from . import markers, package, record
 from . import spec as specs
-from .copy import is_executable, mark_executable, prune_empty_directories, template_files, write_text
+from .copy import is_executable, is_link, mark_executable, prune_empty_directories, template_files, write_text
 from .manifest import TemplateManifest
 from .markers import MARKER_TEXT, TemplateError
 from .rename import IdentityRenamer
@@ -103,10 +103,10 @@ def build(
 
 
 def _remove(path: Path) -> None:
-    """Deletes `path` itself: a symbolic link is unlinked, never followed."""
-    if path.is_dir() and not path.is_symlink():
+    """Deletes `path` itself: a link is unlinked, never followed."""
+    if path.is_dir() and not is_link(path):
         shutil.rmtree(path)
-    elif path.exists() or path.is_symlink():
+    elif path.exists() or is_link(path):
         path.unlink()
 
 
