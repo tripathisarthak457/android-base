@@ -230,11 +230,17 @@ class PlacementTest(unittest.TestCase):
 
     @unittest.skipIf(shutil.which("git") is None, "git is not installed")
     def test_a_git_project_moves_from_staging_on_another_volume(self):
-        def other_volume(source, target):
-            raise OSError(errno.EXDEV, os.strerror(errno.EXDEV), source, None, target)
+        rename = os.rename
 
+        def other_volume(source, target):
+            if Path(source).parent.name.startswith(f"{MiniTarget.key}-gen-"):
+                raise OSError(errno.EXDEV, os.strerror(errno.EXDEV), source, None, target)
+            rename(source, target)
+
+        # Every rename in the process meets the other volume, so a shutil.move would too and then fail
+        # to delete git's read-only objects on Windows; only the staged project is affected.
         project = self.root / "all"
-        with seen_by_pipeline(os, rename=other_volume):
+        with mock.patch("os.rename", other_volume):
             generate("all", project, git_init=True)
         self.assert_is_golden("all", project)
 
