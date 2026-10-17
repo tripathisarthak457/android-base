@@ -9,6 +9,7 @@ from typing import Any
 
 from ... import tokens
 from ...core import translations
+from ...core.copy import write_text
 from ...core.manifest import TemplateManifest
 from ...core.spec import DEFAULT_FONT, DEFAULT_MONO_FONT, AndroidSettings, IosSettings, Spec, SpecError, Vocabulary
 from ...core.target import BuildContext
@@ -132,9 +133,9 @@ class MultiplatformTarget:
         # the user's brand and choices.
         design_tokens = project / kotlin_common.RELATIVE_PATH.format(package_path=spec.package_path)
         if design_tokens.is_file():
-            design_tokens.write_text(
+            write_text(
+                design_tokens,
                 kotlin_common.emit(tokens.resolve(spec, kotlin_common.PLATFORM), spec.package_name),
-                encoding="utf-8",
             )
         strings.write(project, spec)
         return modules.notes(spec) + _font_notes(spec)

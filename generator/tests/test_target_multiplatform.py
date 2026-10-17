@@ -255,6 +255,18 @@ class ScaffoldTest(unittest.TestCase):
         self.assertFalse((data / "remote").exists())
         self.assertNotIn("core.network", (offline / "data" / "notes" / "build.gradle.kts").read_text())
 
+    def test_only_the_batch_file_holds_a_carriage_return(self):
+        # Scaffolded modules, translations and the token copy are written, not copied: newline
+        # translation on Windows would show up here as a CR byte the Linux CI never sees.
+        found = sorted(
+            path.relative_to(self.project).as_posix()
+            for path in self.project.rglob("*")
+            if path.is_file()
+            and path.suffix.lower() not in MULTIPLATFORM.manifest.binary_suffixes
+            and b"\r" in path.read_bytes()
+        )
+        self.assertEqual(["gradlew.bat"], found)
+
 
 class ValidationTest(unittest.TestCase):
 

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ...core.copy import write_text
 from ...core.spec import Spec, module_title, pascal_case
 
 #: The module added when no feature would give the app a first tab.
@@ -607,4 +608,4 @@ private class Fake{p}Repository(
 
 def _write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
