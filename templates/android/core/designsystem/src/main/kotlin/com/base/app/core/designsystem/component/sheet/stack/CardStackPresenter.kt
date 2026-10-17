@@ -76,6 +76,12 @@ private class RecedeNode(var stack: SheetStack, var level: Int) :
     }
 
     override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        // Read where a rotation or a move to another display measures again, never only on attach.
+        displayCorner = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            currentValueOf(LocalView).rootWindowInsets?.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)?.radius?.toFloat() ?: 0f
+        } else {
+            0f
+        }
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
             safeTop = WindowInsetsRulers.SafeDrawing.current.top.current(0f)
@@ -115,18 +121,17 @@ private class DimNode(private var stack: SheetStack, private var level: Int) :
         if (isAttached) stack.claim(level, geometry)
     }
 
-    override fun onAttach() {
+    override fun onAttach() = stack.claim(level, geometry)
+
+    override fun onDetach() = stack.release(level, geometry)
+
+    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        // Read where a rotation or a move to another display measures again, never only on attach.
         displayCorner = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             currentValueOf(LocalView).rootWindowInsets?.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)?.radius?.toFloat() ?: 0f
         } else {
             0f
         }
-        stack.claim(level, geometry)
-    }
-
-    override fun onDetach() = stack.release(level, geometry)
-
-    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) {
             geometry.safeTop = WindowInsetsRulers.SafeDrawing.current.top.current(0f)
@@ -172,6 +177,12 @@ private object ContentLayerElement : ModifierNodeElement<ContentLayerNode>() {
 
 private class ContentLayerNode : Modifier.Node(), LayoutModifierNode {
     override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        // Read where a rotation or a move to another display measures again, never only on attach.
+        displayCorner = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            currentValueOf(LocalView).rootWindowInsets?.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT)?.radius?.toFloat() ?: 0f
+        } else {
+            0f
+        }
         val placeable = measurable.measure(constraints)
         return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0) }
     }
