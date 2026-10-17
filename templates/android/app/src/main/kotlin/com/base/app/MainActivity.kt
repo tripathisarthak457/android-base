@@ -1,5 +1,6 @@
 package com.base.app
 
+import android.annotation.SuppressLint
 import android.app.UiModeManager
 import android.content.Intent
 import android.graphics.Color
@@ -238,7 +239,14 @@ class MainActivity : ComponentActivity() {
     }
     // </opt:applock>
 
-    /** Keyboard shortcuts first, whatever has focus: Ctrl+1 must work while a text field has it. */
+    /**
+     * Keyboard shortcuts first, whatever has focus: Ctrl+1 must work while a text field has it.
+     *
+     * Lint reports this public Activity method as androidx-only because the restricted base class
+     * androidx.core.app.ComponentActivity overrides it; an app overriding it and calling super is
+     * what the framework method is for.
+     */
+    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean = shortcuts.handle(event) || super.dispatchKeyEvent(event)
 
     /** What the system's Shortcuts Helper (Meta+/) lists for the app. */
