@@ -1,0 +1,14 @@
+# Line endings.
+#
+# The generator copies template and variant files byte for byte, so a working tree checked out
+# with CRLF (Git for Windows sets core.autocrlf=true by default) would put CRLF into every project
+# generated from it. Every text file is LF in every working tree instead, and batch files are CRLF
+# because cmd.exe can miss a label in an LF batch file. templates/android has its own
+# .gitattributes, which ships in the projects generated from it.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Expected output, compared byte for byte by the engine's golden tests: never converted.
+generator/tests/fixtures/** -text
+generator/tests/golden/** -text

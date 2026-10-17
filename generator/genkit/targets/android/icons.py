@@ -8,6 +8,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from ...core.copy import write_text
 from ...core.spec import Spec
 
 #: Legacy launcher icon sizes, in density buckets. Still used by every pre-Oreo launcher and by
@@ -165,7 +166,7 @@ def _point_monochrome_at_the_template_mark(project_dir: Path, warnings: list[str
             text,
         )
         if updated != text:
-            xml.write_text(updated, encoding="utf-8")
+            write_text(xml, updated)
             replaced = True
 
     if replaced:
