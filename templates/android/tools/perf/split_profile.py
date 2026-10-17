@@ -69,7 +69,8 @@ def write(path, rules):
     kept = hand_written(path)
     rules = kept + [rule for rule in rules if rule not in kept]
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w") as handle:
+    # LF on every host: the profile is checked in, and a Windows text-mode write would make it CRLF.
+    with open(path, "w", encoding="utf-8", newline="\n") as handle:
         handle.write("\n".join(rules) + ("\n" if rules else ""))
 
 

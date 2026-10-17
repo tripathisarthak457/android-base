@@ -23,6 +23,7 @@ import os
 import random
 import re
 import shlex
+import shutil
 import statistics
 import subprocess
 import sys
@@ -70,6 +71,20 @@ class HarnessError(Exception):
     """The run could not measure what it was asked to; the message says why."""
 
 
+def write_text(path, text):
+    """Writes [text] with LF line ends on every host. A text-mode write on Windows turns each newline
+    into CRLF, and summaries from two hosts would then differ in every line."""
+    with open(path, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
+
+
+def require_tools(tools, purpose):
+    """Fails before anything is installed when a host tool [purpose] needs is not on PATH."""
+    missing = [tool for tool in tools if shutil.which(tool) is None]
+    if missing:
+        raise HarnessError(f"{purpose} needs {' and '.join(missing)} on PATH")
+
+
 class Device:
     def __init__(self, serial):
         self.serial = serial
@@ -77,7 +92,9 @@ class Device:
 
     def adb(self, *args, timeout=180, check=True):
         command = ["adb"] + (["-s", self.serial] if self.serial else []) + list(args)
-        result = subprocess.run(command, capture_output=True, text=True, timeout=timeout, errors="replace")
+        # The device writes UTF-8 (labels in any language); a Windows host's default codec is not.
+        result = subprocess.run(command, capture_output=True, text=True, timeout=timeout, encoding="utf-8",
+                                errors="replace")
         if check and result.returncode != 0:
             raise HarnessError(f"{' '.join(command)} failed: {result.stderr.strip() or result.stdout.strip()}")
         return result.stdout
@@ -310,8 +327,7 @@ class Run:
     # Helpers
 
     def save(self, name, text):
-        with open(os.path.join(self.out, name), "w") as handle:
-            handle.write(text)
+        write_text(os.path.join(self.out, name), text)
 
     def segment(self, name, command, settle):
         """Resets frame stats, runs one shell command, waits, and dumps; returns (gfx, frames)."""
@@ -394,6 +410,7 @@ class Run:
             self.record(f"{scenario}.{name}", combined[name])
         if frames:
             self.record_frames(scenario, frames)
+            self.record(f"{scenario}.janky_after_first_pct", janky_after_first_pct(dumps, frames))
 
     def record_frames(self, scenario, frames):
         """The hitch ratio and the render-thread, GPU and buffer cost of each transition's first frames."""
@@ -858,12 +875,13 @@ class Run:
         package = self.app.package
         config = PERFETTO_CONFIG.replace("PACKAGE", package)
         remote = "/data/misc/perfetto-traces/perf_trace.perfetto-trace"
+        # A binary pipe: a text one on Windows would turn every line end of the config into CRLF.
         process = subprocess.Popen(
             ["adb"] + (["-s", self.device.serial] if self.device.serial else [])
             + ["shell", f"perfetto --txt -c - -o {remote}"],
-            stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+            stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
-        process.stdin.write(config)
+        process.stdin.write(config.encode())
         process.stdin.close()
         time.sleep(2.0)
         steps = [self.tap(node) for node in self.tabs[1:]] + [self.tap(self.tabs[0]), self.tap(row), "input keyevent 4",
@@ -1007,6 +1025,20 @@ def parse_meminfo(text):
     return memory
 
 
+def janky_after_first_pct(dumps, frames):
+    """Janky frames other than each transition's first, as a share of all frames.
+
+    [dumps] are gfxinfo dumps and [frames] the framestats rows of the same segments, one transition
+    each. A transition's first frame starts from idle, with the CPU and GPU at their lowest clocks,
+    and on a phone whose touch boost leaves them there it can miss its deadline whatever it draws.
+    This is the rest: the jank of the motion itself.
+    """
+    total = sum(dump["frames"] for dump in dumps)
+    janky = sum(max(0, dump["janky"] - (1 if rows and parse_framestats.missed_deadline(rows[0]) else 0))
+                for dump, rows in zip(dumps, frames))
+    return round(100 * janky / total, 2) if total else 0.0
+
+
 def image_difference(first, second):
     """The mean absolute grey-level difference (0 to 255) between the middles of two screenshots."""
     output = subprocess.run(
@@ -1102,8 +1134,7 @@ def write_summary(out, info, metrics, notes, gate_results, inapplicable=None):
     summary["metrics"] = metrics
     summary["inapplicable"] = inapplicable or {}
     summary["notes"] = notes
-    with open(os.path.join(out, "summary.json"), "w") as handle:
-        json.dump(summary, handle, indent=2)
+    write_text(os.path.join(out, "summary.json"), json.dumps(summary, indent=2))
 
     labels = {row["metric"]: row["label"] for row in check_gates.load_rows(info["gates_file"])}
     lines = [
@@ -1129,8 +1160,7 @@ def write_summary(out, info, metrics, notes, gate_results, inapplicable=None):
         lines += ["", "Notes:", ""] + [f"- {note}" for note in notes]
     if gate_results is not None:
         lines += ["", check_gates.table(gate_results, info["gate"])]
-    with open(os.path.join(out, "summary.md"), "w") as handle:
-        handle.write("\n".join(lines) + "\n")
+    write_text(os.path.join(out, "summary.md"), "\n".join(lines) + "\n")
     return summary
 
 
@@ -1205,6 +1235,8 @@ def measure_on(device, args):
     unknown = [name for name in args.scenarios if name not in SCENARIOS]
     if unknown:
         raise HarnessError(f"unknown scenarios {unknown}; known: {', '.join(SCENARIOS)}")
+    if "back_during_push" in args.scenarios:
+        require_tools(["ffmpeg"], "back_during_push (it compares screenshots)")
     apk = args.apk or find_apk(device, args.variant)
     if not os.path.isfile(apk):
         raise HarnessError(f"{apk} does not exist")
@@ -1241,8 +1273,8 @@ def measure_on(device, args):
             print(f"run {index}/{args.runs}: {scenario}", flush=True)
             run.run(scenario)
         # On disk as soon as it is done, so a later run that fails leaves the earlier ones readable.
-        with open(os.path.join(run.out, "metrics.json"), "w") as handle:
-            json.dump({"metrics": run.metrics, "inapplicable": run.inapplicable, "notes": run.notes}, handle, indent=2)
+        write_text(os.path.join(run.out, "metrics.json"),
+                   json.dumps({"metrics": run.metrics, "inapplicable": run.inapplicable, "notes": run.notes}, indent=2))
         results.append(run.metrics)
         skipped.append(run.inapplicable)
         notes += [f"run {index}: {note}" for note in run.notes]
@@ -1253,13 +1285,13 @@ def measure_on(device, args):
     if args.gate:
         baseline = None
         if args.baseline:
-            with open(args.baseline) as handle:
+            with open(args.baseline, encoding="utf-8") as handle:
                 baseline = json.load(handle)
         gate_results = check_gates.evaluate(
             {"metrics": metrics, "inapplicable": inapplicable}, rows, args.gate, baseline,
         )
     write_summary(args.out, info, metrics, notes, gate_results, inapplicable)
-    with open(os.path.join(args.out, "summary.md")) as handle:
+    with open(os.path.join(args.out, "summary.md"), encoding="utf-8") as handle:
         print(handle.read())
     if gate_results is not None and not check_gates.passed(gate_results):
         return 1
@@ -1268,6 +1300,7 @@ def measure_on(device, args):
 
 def record(args):
     """Screen-records one journey on the installed app and writes its frames and a frame strip."""
+    require_tools(["ffmpeg", "ffprobe"], "record.sh (it cuts the video into frames)")
     device = Device(args.serial)
     device.check_attached()
     with device.upright():
@@ -1347,8 +1380,7 @@ def record_on(device, args):
     report = extract_frames(video, frames_dir)
     strip = os.path.join(args.out, f"{args.journey}_strip.png")
     make_strip(frames_dir, report, strip)
-    with open(os.path.join(args.out, "frames.json"), "w") as handle:
-        json.dump(report, handle, indent=2)
+    write_text(os.path.join(args.out, "frames.json"), json.dumps(report, indent=2))
     print(f"{video}\n{strip}\n{len(report['moving'])} moving frames, "
           f"near-blank frames: {report['blank'][:20]}")
     return 0
@@ -1426,8 +1458,7 @@ def make_strip(frames_dir, report, path, columns=8, width=180, limit=64):
     chosen = [n for n in range(first, min(moving[-1] + 3, first + limit))
               if os.path.exists(os.path.join(frames_dir, f"f_{n:04d}.png"))]
     listing = os.path.join(frames_dir, "strip.txt")
-    with open(listing, "w") as handle:
-        handle.writelines(f"file '{os.path.join(frames_dir, f'f_{n:04d}.png')}'\n" for n in chosen)
+    write_text(listing, "".join(f"file '{os.path.join(frames_dir, f'f_{n:04d}.png')}'\n" for n in chosen))
     rows = (len(chosen) + columns - 1) // columns
     subprocess.run(
         ["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", listing, "-vf",
