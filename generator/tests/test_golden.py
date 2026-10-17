@@ -28,7 +28,7 @@ from genkit.core import pipeline
 from genkit.core.copy import write_text
 from genkit.core.manifest import TemplateManifest
 from genkit.core.spec import Spec, Vocabulary
-from genkit.core.target import BuildContext
+from genkit.core.target import BuildContext, RenderError
 
 HERE = Path(__file__).resolve().parent
 MINI = HERE / "fixtures" / "mini-template"
@@ -243,6 +243,37 @@ class PlacementTest(unittest.TestCase):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
+
+
+@unittest.skipUnless(os.name == "nt", "the path length limit is Windows'")
+class WindowsPathLimitTest(unittest.TestCase):
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+        try:
+            (self.root / ("x" * 240)).mkdir()
+        except OSError:
+            pass
+        else:
+            self.skipTest("long paths are on here")
+
+    def test_a_path_over_the_limit_is_explained(self):
+        target = MiniTarget()
+        raw = {**CASES["none"], "app_name": "A" * 50, "package_name": "io." + ".".join(["p" * 30] * 3)}
+        parsed, _ = pipeline.read_spec(raw, target)
+        # Staged here, a source file passes the limit first; one level deeper, its folder does.
+        for staging in (self.root / "s", self.root / "s" / ("t" * 150)):
+            with self.subTest(depth=len(str(staging))):
+                staging.mkdir(parents=True)
+                destination = self.root / "Long"
+                with mock.patch.object(tempfile, "tempdir", str(staging)), self.assertRaisesRegex(
+                    RenderError, "Windows refused a path of"
+                ):
+                    pipeline.build(parsed.spec, target, destination, zip_output=False, commit="golden")
+                self.assertEqual([], [path for path in staging.iterdir() if path.name.startswith("android-gen-")])
+                self.assertFalse(destination.exists())
 
 if __name__ == "__main__":
     unittest.main()

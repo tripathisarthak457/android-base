@@ -21,6 +21,8 @@ import os
 import re
 import shutil
 import tempfile
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
@@ -33,6 +35,15 @@ from .manifest import TemplateManifest
 from .markers import MARKER_TEXT, TemplateError
 from .rename import IdentityRenamer
 from .target import BuildContext, RenderError, Target
+
+
+#: Without long paths, Windows takes MAX_PATH less the closing NUL for a file, and 12 less for a
+#: directory so that an 8.3 name still fits in it.
+_WINDOWS_MAX_FILE = 259
+_WINDOWS_MAX_DIRECTORY = 247
+#: What Windows says of a longer path. The build makes every directory before it writes into it, so
+#: here a missing path means nothing else.
+_PATH_REFUSED = (errno.ENOENT, errno.ENAMETOOLONG)
 
 
 @dataclass(frozen=True)
@@ -72,7 +83,7 @@ def build(
         raise RenderError(f"{destination} is a directory, not a path for the zip.")
 
     manifest = target.manifest
-    with tempfile.TemporaryDirectory(prefix=f"{target.key}-gen-") as staging:
+    with _windows_path_limit_explained(), tempfile.TemporaryDirectory(prefix=f"{target.key}-gen-") as staging:
         project = Path(staging) / spec.pascal_name
         project.mkdir()
         warnings = render_template(project, spec, target)
@@ -102,6 +113,23 @@ def build(
                 os.replace(finished, destination)
 
     return Generated(destination, spec.pascal_name, warnings, context.summary)
+
+
+@contextmanager
+def _windows_path_limit_explained() -> Iterator[None]:
+    """Turns what Windows says about a path over its length limit, "no such file", into what happened."""
+    try:
+        yield
+    except OSError as error:
+        path = str(error.filename or "")
+        if os.name != "nt" or error.errno not in _PATH_REFUSED or len(path) <= _WINDOWS_MAX_DIRECTORY:
+            raise
+        raise RenderError(
+            f"Windows refused a path of {len(path)} characters: {path}. With long paths off it takes "
+            f"{_WINDOWS_MAX_FILE} at most for a file and {_WINDOWS_MAX_DIRECTORY} for a folder, the temporary "
+            "folder included. Turn long paths on (LongPathsEnabled), which building the project needs too, "
+            "or choose a shorter app name or package name."
+        ) from error
 
 
 def _move(project: Path, finished: Path) -> None:
