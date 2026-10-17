@@ -1,0 +1,70 @@
+..................................................E.F...........FFF..F...........s.........................................................................................................................................................................
+======================================================================
+ERROR: test_force_replaces_a_link_and_not_the_directory_it_points_at (tests.test_cli.CliTest.test_force_replaces_a_link_and_not_the_directory_it_points_at)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 95, in test_force_replaces_a_link_and_not_the_directory_it_points_at
+    link.symlink_to(real, target_is_directory=True)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1414, in symlink_to
+    os.symlink(target, self, target_is_directory)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpo99gg63b\\real' -> 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpo99gg63b\\link'
+
+======================================================================
+FAIL: test_json_means_only_json_on_stdout (tests.test_cli.CliTest.test_json_means_only_json_on_stdout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 45, in test_json_means_only_json_on_stdout
+    self.assertEqual(str(self.root / "p"), data["path"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpprs_kj6t\\p' != 'C:\\Users\\crazyhusir\\AppData\\Local\\Temp\\tmpprs_kj6t\\p'
+- C:\Users\CRAZYH~1\AppData\Local\Temp\tmpprs_kj6t\p
+?          ^^^^^^^^
++ C:\Users\crazyhusir\AppData\Local\Temp\tmpprs_kj6t\p
+?          ^^^^^^^^^^
+
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='all')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'com.example.trail BaseApp\n' != b'com.example.trail BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='none')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'io.bare.min BaseApp\n' != b'io.bare.min BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='hostile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'com.base.apple BaseApp\n' != b'com.base.apple BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_the_wrapper_script_is_executable_and_nothing_else_is (tests.test_golden.GoldenTest.test_the_wrapper_script_is_executable_and_nothing_else_is)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_golden.py", line 148, in test_the_wrapper_script_is_executable_and_nothing_else_is
+    self.assertEqual({"gradlew"}, executable)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'gradlew'
+Items in the second set but not the first:
+'run.bat'
+
+----------------------------------------------------------------------
+Ran 249 tests in 46.724s
+
+FAILED (failures=5, errors=1, skipped=1)

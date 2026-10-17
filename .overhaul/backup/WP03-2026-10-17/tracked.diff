@@ -1,0 +1,2141 @@
+diff --git a/README.md b/README.md
+index 5eaaf32c..70ec185e 100644
+--- a/README.md
++++ b/README.md
+@@ -236,7 +236,7 @@ and the weight of the type. Every combination of style and theme is checked agai
+ 
+ | Style | Looks like | Suits |
+ |---|---|---|
+-| Utility | Cool neutral surfaces, hairline outlines, modest corners, a docked tab bar | Tools, finance, admin |
++| Utility | Cool neutral surfaces, hairline outlines, modest corners, a floating tab bar | Tools, finance, admin |
+ | Social | Surfaces tinted with your brand colour, pill buttons, heavier headlines, soft raised cards, filled fields, a floating tab bar with a sliding pill | Feeds, chat, communities |
+ | Editorial | Warm paper and ink, large tight display type, near-square corners, underlined fields, uppercase labels, a minimal tab bar | Reading, news, portfolios |
+ | Playful | Cream surfaces, extra-bold type, thick outlines and solid offset shadows; buttons sink into their shadow when pressed | Games, kids, anything toy-like |
+diff --git a/generator/tests/test_catalog_coverage.py b/generator/tests/test_catalog_coverage.py
+index b9495733..a9b15221 100644
+--- a/generator/tests/test_catalog_coverage.py
++++ b/generator/tests/test_catalog_coverage.py
+@@ -41,13 +41,21 @@ def kotlin_sources(root: Path) -> dict[Path, str]:
+     return {path: path.read_text(encoding="utf-8") for path in sorted(root.rglob("*.kt"))}
+ 
+ 
++def not_for_apps(source: str, start: int) -> bool:
++    """Whether the declaration starting at [start] is deprecated or a shell seam: a catalog shows what an app uses."""
++    preamble = source[max(source.rfind("\n\n", 0, start), source.rfind("}\n", 0, start)) + 1:start]
++    return "@Deprecated(" in preamble or "@ShellSeamApi" in preamble
++
++
+ def public_components() -> dict[str, Path]:
+-    """Every public `@Composable fun App…` in the design system, with the file that declares it."""
++    """Every public, current `@Composable fun App…` an app calls, with the file that declares it."""
+     found: dict[str, Path] = {}
+     for path, source in kotlin_sources(DESIGN_SYSTEM).items():
+         for match in COMPOSABLE.finditer(source):
+             if match.group("visibility") and match.group("visibility").strip() != "public":
+                 continue
++            if not_for_apps(source, match.start()):
++                continue
+             found.setdefault(match.group("name"), path)
+     return found
+ 
+diff --git a/generator/translations/android/de/core-designsystem.json b/generator/translations/android/de/core-designsystem.json
+index 25c3db58..b8b487e6 100644
+--- a/generator/translations/android/de/core-designsystem.json
++++ b/generator/translations/android/de/core-designsystem.json
+@@ -43,5 +43,19 @@
+   "designsystem_move_down": "Nach unten",
+   "designsystem_refresh": "Aktualisieren",
+   "designsystem_refreshing": "Wird aktualisiert",
+-  "designsystem_show_menu": "Menü anzeigen"
++  "designsystem_show_menu": "Menü anzeigen",
++  "designsystem_sheet_pane": "Blatt",
++  "designsystem_sheet_grabber": "Blattgröße ändern",
++  "designsystem_sheet_expand": "Blatt erweitern",
++  "designsystem_sheet_collapse": "Blatt verkleinern",
++  "designsystem_sheet_dismiss": "Blatt schließen",
++  "designsystem_sheet_close_scrim": "Blatt schließen",
++  "designsystem_sheet_state_expanded": "Erweitert",
++  "designsystem_sheet_state_partial": "Teilweise erweitert",
++  "designsystem_sheet_state_collapsed": "Verkleinert",
++  "designsystem_actions_pane": "Aktionen",
++  "designsystem_sheet_discard_title": "Änderungen verwerfen?",
++  "designsystem_sheet_discard": "Verwerfen",
++  "designsystem_sheet_keep_editing": "Weiter bearbeiten",
++  "designsystem_none": "Keine"
+ }
+diff --git a/generator/translations/android/es/core-designsystem.json b/generator/translations/android/es/core-designsystem.json
+index f8fb35f2..3bda6d60 100644
+--- a/generator/translations/android/es/core-designsystem.json
++++ b/generator/translations/android/es/core-designsystem.json
+@@ -43,5 +43,19 @@
+   "designsystem_move_down": "Mover abajo",
+   "designsystem_refresh": "Actualizar",
+   "designsystem_refreshing": "Actualizando",
+-  "designsystem_show_menu": "Mostrar menú"
++  "designsystem_show_menu": "Mostrar menú",
++  "designsystem_sheet_pane": "Hoja",
++  "designsystem_sheet_grabber": "Cambiar tamaño de la hoja",
++  "designsystem_sheet_expand": "Expandir hoja",
++  "designsystem_sheet_collapse": "Contraer hoja",
++  "designsystem_sheet_dismiss": "Descartar hoja",
++  "designsystem_sheet_close_scrim": "Cerrar hoja",
++  "designsystem_sheet_state_expanded": "Expandida",
++  "designsystem_sheet_state_partial": "Parcialmente expandida",
++  "designsystem_sheet_state_collapsed": "Contraída",
++  "designsystem_actions_pane": "Acciones",
++  "designsystem_sheet_discard_title": "¿Descartar los cambios?",
++  "designsystem_sheet_discard": "Descartar",
++  "designsystem_sheet_keep_editing": "Seguir editando",
++  "designsystem_none": "Ninguno"
+ }
+diff --git a/generator/translations/android/fr/core-designsystem.json b/generator/translations/android/fr/core-designsystem.json
+index 4ac5cf43..de7b1849 100644
+--- a/generator/translations/android/fr/core-designsystem.json
++++ b/generator/translations/android/fr/core-designsystem.json
+@@ -43,5 +43,19 @@
+   "designsystem_move_down": "Descendre",
+   "designsystem_refresh": "Actualiser",
+   "designsystem_refreshing": "Actualisation",
+-  "designsystem_show_menu": "Afficher le menu"
++  "designsystem_show_menu": "Afficher le menu",
++  "designsystem_sheet_pane": "Feuille",
++  "designsystem_sheet_grabber": "Redimensionner la feuille",
++  "designsystem_sheet_expand": "Développer la feuille",
++  "designsystem_sheet_collapse": "Réduire la feuille",
++  "designsystem_sheet_dismiss": "Fermer la feuille",
++  "designsystem_sheet_close_scrim": "Fermer la feuille",
++  "designsystem_sheet_state_expanded": "Développée",
++  "designsystem_sheet_state_partial": "Partiellement développée",
++  "designsystem_sheet_state_collapsed": "Réduite",
++  "designsystem_actions_pane": "Actions",
++  "designsystem_sheet_discard_title": "Abandonner les modifications ?",
++  "designsystem_sheet_discard": "Abandonner",
++  "designsystem_sheet_keep_editing": "Continuer la modification",
++  "designsystem_none": "Aucun"
+ }
+diff --git a/generator/translations/android/hi/core-designsystem.json b/generator/translations/android/hi/core-designsystem.json
+index 4155acb7..9472c50b 100644
+--- a/generator/translations/android/hi/core-designsystem.json
++++ b/generator/translations/android/hi/core-designsystem.json
+@@ -43,5 +43,19 @@
+   "designsystem_move_down": "नीचे ले जाएं",
+   "designsystem_refresh": "रीफ़्रेश करें",
+   "designsystem_refreshing": "रीफ़्रेश हो रहा है",
+-  "designsystem_show_menu": "मेनू दिखाएँ"
++  "designsystem_show_menu": "मेनू दिखाएँ",
++  "designsystem_sheet_pane": "शीट",
++  "designsystem_sheet_grabber": "शीट का आकार बदलें",
++  "designsystem_sheet_expand": "शीट बड़ी करें",
++  "designsystem_sheet_collapse": "शीट छोटी करें",
++  "designsystem_sheet_dismiss": "शीट हटाएं",
++  "designsystem_sheet_close_scrim": "शीट बंद करें",
++  "designsystem_sheet_state_expanded": "बड़ी की गई",
++  "designsystem_sheet_state_partial": "आंशिक रूप से बड़ी",
++  "designsystem_sheet_state_collapsed": "छोटी की गई",
++  "designsystem_actions_pane": "कार्रवाइयां",
++  "designsystem_sheet_discard_title": "बदलाव छोड़ें?",
++  "designsystem_sheet_discard": "छोड़ें",
++  "designsystem_sheet_keep_editing": "संपादन जारी रखें",
++  "designsystem_none": "कोई नहीं"
+ }
+diff --git a/generator/translations/android/pt-BR/core-designsystem.json b/generator/translations/android/pt-BR/core-designsystem.json
+index dd0829d8..54455184 100644
+--- a/generator/translations/android/pt-BR/core-designsystem.json
++++ b/generator/translations/android/pt-BR/core-designsystem.json
+@@ -43,5 +43,19 @@
+   "designsystem_move_down": "Mover para baixo",
+   "designsystem_refresh": "Atualizar",
+   "designsystem_refreshing": "Atualizando",
+-  "designsystem_show_menu": "Mostrar menu"
++  "designsystem_show_menu": "Mostrar menu",
++  "designsystem_sheet_pane": "Painel",
++  "designsystem_sheet_grabber": "Redimensionar painel",
++  "designsystem_sheet_expand": "Expandir painel",
++  "designsystem_sheet_collapse": "Recolher painel",
++  "designsystem_sheet_dismiss": "Dispensar painel",
++  "designsystem_sheet_close_scrim": "Fechar painel",
++  "designsystem_sheet_state_expanded": "Expandido",
++  "designsystem_sheet_state_partial": "Parcialmente expandido",
++  "designsystem_sheet_state_collapsed": "Recolhido",
++  "designsystem_actions_pane": "Ações",
++  "designsystem_sheet_discard_title": "Descartar alterações?",
++  "designsystem_sheet_discard": "Descartar",
++  "designsystem_sheet_keep_editing": "Continuar editando",
++  "designsystem_none": "Nenhum"
+ }
+diff --git a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogApp.kt b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogApp.kt
+index 9f6b8a45..75788d0a 100644
+--- a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogApp.kt
++++ b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogApp.kt
+@@ -1,5 +1,10 @@
+ package com.base.app.catalog
+ 
++import android.graphics.Color
++import androidx.activity.ComponentActivity
++import androidx.activity.SystemBarStyle
++import androidx.activity.compose.LocalActivity
++import androidx.activity.enableEdgeToEdge
+ import androidx.compose.animation.AnimatedContent
+ import androidx.compose.animation.EnterTransition
+ import androidx.compose.animation.ExitTransition
+@@ -25,6 +30,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
+ import androidx.compose.foundation.rememberScrollState
+ import androidx.compose.foundation.verticalScroll
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.DisposableEffect
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.key
+ import androidx.compose.runtime.mutableStateOf
+@@ -68,6 +74,7 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
+     var section by rememberSaveable { mutableStateOf(initialSection) }
+ 
+     ProvideEnvironment(environment) {
++        SystemBarIcons(dark = !AppTheme.colors.isLight)
+         // An opaque floor under both pages, so the window's own colour never shows mid-transition.
+         // Test tags are resource ids here, so device scripts can find what to tap.
+         Box(Modifier.fillMaxSize().background(AppTheme.colors.background).semantics { testTagsAsResourceId = true }) {
+@@ -119,6 +126,25 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
+     }
+ }
+ 
++/**
++ * Status and navigation bar icons follow the catalog's theme rather than the system's: a page shown
++ * dark on a light phone would otherwise draw dark icons on a dark screen. Applied while the frame
++ * that first draws the theme is composed, so no frame shows the wrong icons.
++ */
++@Composable
++private fun SystemBarIcons(dark: Boolean) {
++    val activity = LocalActivity.current as? ComponentActivity ?: return
++    DisposableEffect(activity, dark) {
++        val style = if (dark) {
++            SystemBarStyle.dark(Color.TRANSPARENT)
++        } else {
++            SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
++        }
++        activity.enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
++        onDispose {}
++    }
++}
++
+ /** One section's groups, in as many columns as the pane has room for. */
+ @Composable
+ private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
+diff --git a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogSection.kt b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogSection.kt
+index f0dacbc5..8f7ea594 100644
+--- a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogSection.kt
++++ b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/CatalogSection.kt
+@@ -30,6 +30,7 @@ import com.base.app.catalog.sections.PickersSection
+ // </opt:pickers>
+ import com.base.app.catalog.sections.SelectionSection
+ import com.base.app.catalog.sections.TextSection
++import com.base.app.catalog.sections.sheets.SheetsSection
+ import com.base.app.core.designsystem.component.list.AppSectionHeader
+ import com.base.app.core.designsystem.component.text.AppText
+ import com.base.app.core.designsystem.theme.AppTheme
+@@ -45,7 +46,8 @@ enum class CatalogSection(val title: String, val summary: String) {
+     Lists("Lists", "Grouped sections, rows, toggle rows, disclosure, swipe actions, refresh"),
+     Containers("Containers", "Cards, surfaces, dividers, scaffold, bottom action bar"),
+     Bars("Bars and pages", "Inline and large-title top bars, tab row, pager and page control"),
+-    Overlays("Overlays", "Alert, action sheet, sheet with detents, menu, toast, loading"),
++    Overlays("Overlays", "Alert, menu, context menu, toast, loading"),
++    Sheets("Sheets", "Detents, the card stack, non-modal and side sheets, materials, action and choice sheets"),
+     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
+     Loading("Loading screen", "Redacted rows under a large title: one sweep, and the swap to content"),
+     Motion("Animation", "Transitions, first appearance, list placement, emphasis, rubber band"),
+@@ -77,6 +79,7 @@ fun CatalogSection.Content() {
+         CatalogSection.Containers -> ContainersSection()
+         CatalogSection.Bars -> BarsSection()
+         CatalogSection.Overlays -> OverlaysSection()
++        CatalogSection.Sheets -> SheetsSection()
+         CatalogSection.Feedback -> FeedbackSection()
+         CatalogSection.Loading -> error("Loading is a whole screen, not a page of groups")
+         CatalogSection.Motion -> MotionSection()
+diff --git a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt
+index 97667a54..4155d39d 100644
+--- a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt
++++ b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogAdaptive.kt
+@@ -37,11 +37,15 @@ import com.base.app.core.designsystem.component.input.AppTextField
+ import com.base.app.core.designsystem.component.list.AppRow
+ import com.base.app.core.designsystem.component.list.AppSection
+ import com.base.app.core.designsystem.component.list.AppToggleRow
+-import com.base.app.core.designsystem.component.overlay.AppSheet
+ import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+ import com.base.app.core.designsystem.component.overlay.ToastMessage
+ import com.base.app.core.designsystem.component.selection.AppSegmentedControl
+ import com.base.app.core.designsystem.component.selection.AppSlider
++import com.base.app.core.designsystem.component.sheet.AppSheet
++import com.base.app.core.designsystem.component.sheet.SheetDetent
++import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
++import com.base.app.core.designsystem.component.sheet.content.SheetColumn
++import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
+ import com.base.app.core.designsystem.component.text.AppText
+ import com.base.app.core.designsystem.foundation.adaptive.AppTwoPane
+ import com.base.app.core.designsystem.foundation.adaptive.InputTraits
+@@ -151,10 +155,17 @@ private fun PostureDemo() {
+             )
+         }
+         AppButton(text = "Show a sheet", onClick = { sheet = true }, variant = ButtonVariant.Tinted, size = ButtonSize.Small)
+-        AppSheet(visible = sheet, onDismissRequest = { sheet = false }, title = "Filters", showCloseButton = true) {
+-            AppSection {
+-                AppRow(title = "Newest first", onClick = {})
+-                AppRow(title = "Nearest first", onClick = {})
++        AppSheet(
++            visible = sheet,
++            onDismissRequest = { sheet = false },
++            state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
++            header = { AppSheetHeader(title = "Filters") },
++        ) {
++            SheetColumn {
++                AppSection {
++                    AppRow(title = "Newest first", onClick = {})
++                    AppRow(title = "Nearest first", onClick = {})
++                }
+             }
+         }
+     }
+diff --git a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeel.kt b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeel.kt
+index f30989a7..b49e2262 100644
+--- a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeel.kt
++++ b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogFeel.kt
+@@ -27,11 +27,15 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
+ import com.base.app.core.designsystem.component.container.AppCard
+ import com.base.app.core.designsystem.component.list.AppRow
+ import com.base.app.core.designsystem.component.list.AppSection
+-import com.base.app.core.designsystem.component.overlay.AppSheet
+ import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+ import com.base.app.core.designsystem.component.overlay.ToastMessage
+ import com.base.app.core.designsystem.component.selection.AppSegmentedControl
+ import com.base.app.core.designsystem.component.selection.AppSwitch
++import com.base.app.core.designsystem.component.sheet.AppSheet
++import com.base.app.core.designsystem.component.sheet.SheetDetent
++import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
++import com.base.app.core.designsystem.component.sheet.content.SheetColumn
++import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
+ import com.base.app.core.designsystem.component.text.AppText
+ import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+ import com.base.app.core.designsystem.foundation.interaction.NoIndication
+@@ -116,9 +120,16 @@ fun FeelSection() {
+                 modifier = Modifier.testTag("cp1_toast"),
+             )
+         }
+-        AppSheet(visible = sheet, onDismissRequest = { sheet = false }, title = "A sheet", showCloseButton = true) {
+-            AppSection {
+-                repeat(12) { AppRow(title = "Row ${it + 1}", onClick = {}) }
++        AppSheet(
++            visible = sheet,
++            onDismissRequest = { sheet = false },
++            state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
++            header = { AppSheetHeader(title = "A sheet") },
++        ) {
++            SheetColumn {
++                AppSection {
++                    repeat(12) { AppRow(title = "Row ${it + 1}", onClick = {}) }
++                }
+             }
+         }
+     }
+diff --git a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogOverlays.kt b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogOverlays.kt
+index 6a174ebd..3c5edb81 100644
+--- a/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogOverlays.kt
++++ b/templates/android/catalog/src/main/kotlin/com/base/app/catalog/sections/CatalogOverlays.kt
+@@ -1,39 +1,29 @@
+ package com.base.app.catalog.sections
+ 
+ import androidx.compose.foundation.layout.Box
+-import androidx.compose.foundation.layout.fillMaxWidth
+-import androidx.compose.foundation.layout.padding
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.setValue
+-import androidx.compose.ui.Modifier
+ import com.base.app.catalog.CatalogGroup
+ import com.base.app.core.designsystem.component.button.AppButton
+ import com.base.app.core.designsystem.component.button.AppIconButton
+ import com.base.app.core.designsystem.component.button.ButtonVariant
+-import com.base.app.core.designsystem.component.container.AppBottomActionBar
+ import com.base.app.core.designsystem.component.feedback.AppLoadingOverlay
+ import com.base.app.core.designsystem.component.feedback.AppTone
+ import com.base.app.core.designsystem.component.list.AppRow
+ import com.base.app.core.designsystem.component.list.AppSection
+-import com.base.app.core.designsystem.component.overlay.AppActionSheet
+ import com.base.app.core.designsystem.component.overlay.AppAlert
+ import com.base.app.core.designsystem.component.overlay.AppContextMenu
+ import com.base.app.core.designsystem.component.overlay.AppMenu
+ import com.base.app.core.designsystem.component.overlay.AppMenuDivider
+ import com.base.app.core.designsystem.component.overlay.AppMenuItem
+-import com.base.app.core.designsystem.component.overlay.AppSheet
+ import com.base.app.core.designsystem.component.overlay.AppToast
+ import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+-import com.base.app.core.designsystem.component.overlay.SheetAction
+-import com.base.app.core.designsystem.component.overlay.SheetDetent
+ import com.base.app.core.designsystem.component.overlay.ToastMessage
+-import com.base.app.core.designsystem.component.text.AppText
+ import com.base.app.core.designsystem.icon.AppIcons
+-import com.base.app.core.designsystem.theme.AppTheme
+ import kotlinx.coroutines.delay
+ 
+ @Composable
+@@ -58,45 +48,6 @@ fun OverlaysSection() {
+             onDismissRequest = { destructive = false },
+         )
+     }
+-    CatalogGroup("Action sheet", caption = "A choice runs before the sheet asks to close.") {
+-        var open by remember { mutableStateOf(false) }
+-        AppButton(text = "Share options", onClick = { open = true }, variant = ButtonVariant.Tinted)
+-        AppActionSheet(
+-            visible = open,
+-            title = "photo.jpg",
+-            message = "Shared photos are visible to everyone in the album.",
+-            actions = listOf(
+-                SheetAction("Copy link", onClick = {}, icon = AppIcons.Copy),
+-                SheetAction("Save to files", onClick = {}, icon = AppIcons.Download),
+-                SheetAction("Delete", onClick = {}, icon = AppIcons.Trash, destructive = true),
+-            ),
+-            onDismissRequest = { open = false },
+-        )
+-    }
+-    CatalogGroup("Sheet", caption = "Detents, a close button, a footer pinned to the visible bottom, and scrolling that hands off to the sheet at either end.") {
+-        var medium by remember { mutableStateOf(false) }
+-        var large by remember { mutableStateOf(false) }
+-        Wrap {
+-            AppButton(text = "Medium and large", onClick = { medium = true }, variant = ButtonVariant.Tinted)
+-            AppButton(text = "Large only", onClick = { large = true }, variant = ButtonVariant.Tinted)
+-        }
+-        AppSheet(
+-            visible = medium,
+-            onDismissRequest = { medium = false },
+-            title = "Filters",
+-            showCloseButton = true,
+-            footer = { AppBottomActionBar { AppButton(text = "Show 24 results", onClick = { medium = false }, modifier = Modifier.fillMaxWidth()) } },
+-        ) {
+-            AppSection { repeat(16) { AppRow(title = "Option ${it + 1}", onClick = {}) } }
+-        }
+-        AppSheet(visible = large, onDismissRequest = { large = false }, detents = setOf(SheetDetent.Large), title = "New message", showCloseButton = true) {
+-            AppText(
+-                text = "A large-only sheet opens nearly full height.",
+-                modifier = Modifier.padding(horizontal = AppTheme.spacing.gutter),
+-                style = AppTheme.typography.body,
+-            )
+-        }
+-    }
+     CatalogGroup("Menu", caption = "A pull-down from a button. It grows out of its anchor, keeps off the edges, and closes when an item is chosen.") {
+         var pullDown by remember { mutableStateOf(false) }
+         Box {
+diff --git a/templates/android/core/designsystem/build.gradle.kts b/templates/android/core/designsystem/build.gradle.kts
+index 346836c2..69a0bd08 100644
+--- a/templates/android/core/designsystem/build.gradle.kts
++++ b/templates/android/core/designsystem/build.gradle.kts
+@@ -1,3 +1,5 @@
++import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
++
+ plugins {
+     id("com.base.app.android.library")
+     id("com.base.app.android.compose")
+@@ -7,6 +9,27 @@ android {
+     namespace = "com.base.app.core.designsystem"
+ }
+ 
++kotlin {
++    compilerOptions {
++        // The shell seams are this module's own API; only other modules have to opt in to them.
++        optIn.add("com.base.app.core.designsystem.foundation.layout.ShellSeamApi")
++    }
++
++    // The sheet and the shell seams are called from features, navigation and glass at once, so a
++    // signature change must be deliberate: `check` compares them with api/designsystem.api, and
++    // `./gradlew :core:designsystem:updateLegacyAbi` rewrites it. Only these packages are dumped
++    // because the optional component groups come and go with the project's features.
++    @OptIn(ExperimentalAbiValidation::class)
++    abiValidation {
++        filters {
++            included {
++                byNames.add("com.base.app.core.designsystem.component.sheet.**")
++                byNames.add("com.base.app.core.designsystem.foundation.layout.**")
++            }
++        }
++    }
++}
++
+ dependencies {
+ 
+     // `api` so modules can use Modifier, Color and friends without re-declaring Compose.
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppBottomActionBar.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppBottomActionBar.kt
+index 4db153a6..e7abd60a 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppBottomActionBar.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppBottomActionBar.kt
+@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
++import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
+ import com.base.app.core.designsystem.foundation.draw.HairlineEdge
+ import com.base.app.core.designsystem.foundation.draw.hairline
+ import com.base.app.core.designsystem.theme.AppTheme
+@@ -24,7 +25,8 @@ import com.base.app.core.designsystem.theme.AppTheme
+  * The sticky action at the bottom of a screen that has no tab bar (a full-screen destination, a
+  * sheet): a checkout's Pay, a composer's Send. It rides above the keyboard and the navigation bar.
+  * Pass it as `AppScaffold(bottomBar = …)`, which keeps the content's last item above it. On a tab
+- * root the bar's accessory slot does this job instead.
++ * root the bar's accessory slot does this job instead. As a sheet's footer it takes the sheet's
++ * colour, and the sheet keeps it above the navigation bar and the keyboard.
+  */
+ @Composable
+ fun AppBottomActionBar(
+@@ -35,7 +37,7 @@ fun AppBottomActionBar(
+         modifier = modifier
+             .fillMaxWidth()
+             .hairline(HairlineEdge.Top)
+-            .background(AppTheme.colors.surface)
++            .background(LocalSheetSurface.current?.container ?: AppTheme.colors.surface)
+             .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.ime).only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
+             .padding(horizontal = AppTheme.spacing.gutter, vertical = AppTheme.spacing.md),
+         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm, Alignment.End),
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppScaffold.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppScaffold.kt
+index cb723d34..159c98af 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppScaffold.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/container/AppScaffold.kt
+@@ -13,9 +13,11 @@ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.staticCompositionLocalOf
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.takeOrElse
+ import androidx.compose.ui.layout.SubcomposeLayout
+ import androidx.compose.ui.unit.Constraints
+ import androidx.compose.ui.unit.Dp
++import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
+ import com.base.app.core.designsystem.foundation.ChromeInset
+ import com.base.app.core.designsystem.foundation.LocalBottomChrome
+ import com.base.app.core.designsystem.foundation.LocalTopChrome
+@@ -38,13 +40,16 @@ import com.base.app.core.designsystem.theme.AppTheme
+  * sideways puts at one edge, its display cutout and a three-button navigation bar, so no row ends
+  * under them; a screen with a full-bleed panel passes [clearDisplayCutout] false and pads that
+  * panel's content itself.
++ *
++ * [background] is the theme's background by default. Inside a sheet the default paints nothing, so
++ * the sheet's material shows, and the sheet keeps the content clear of the cutout itself.
+  */
+ @Composable
+ fun AppScaffold(
+     modifier: Modifier = Modifier,
+     topBar: @Composable () -> Unit = {},
+     bottomBar: (@Composable () -> Unit)? = null,
+-    background: Color = AppTheme.colors.background,
++    background: Color = Color.Unspecified,
+     contentMaxWidth: Dp = Dp.Unspecified,
+     clearDisplayCutout: Boolean = true,
+     content: @Composable () -> Unit,
+@@ -52,13 +57,17 @@ fun AppScaffold(
+     val topChrome = remember { ChromeInset() }
+     val bottomChrome = if (bottomBar != null) remember { ChromeInset() } else LocalBottomChrome.current
+     val width = if (contentMaxWidth == Dp.Unspecified) Modifier else Modifier.centeredMaxWidth(contentMaxWidth)
++    val sheet = LocalSheetSurface.current
++    // In a sheet the sheet's material shows through, and the sheet already keeps clear of the cutout.
++    val fill = background.takeOrElse { if (sheet != null) Color.Transparent else AppTheme.colors.background }
++    val behindBars = background.takeOrElse { sheet?.container ?: AppTheme.colors.background }
+ 
+-    CompositionLocalProvider(LocalTopChrome provides topChrome, LocalScaffoldBackground provides background) {
++    CompositionLocalProvider(LocalTopChrome provides topChrome, LocalScaffoldBackground provides behindBars) {
+         SubcomposeLayout(
+             modifier = modifier
+-                .background(background)
++                .background(fill)
+                 .then(
+-                    if (clearDisplayCutout) {
++                    if (clearDisplayCutout && sheet == null) {
+                         Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                     } else {
+                         Modifier
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppLoadingOverlay.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppLoadingOverlay.kt
+index a56c6b4f..27aedc40 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppLoadingOverlay.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/feedback/AppLoadingOverlay.kt
+@@ -45,7 +45,7 @@ fun AppLoadingOverlay(
+     // Taken and ignored: leaving the screen would not stop what is in flight.
+     OverlayBackHandler(enabled = state.targetState) {}
+ 
+-    HostedOverlay(modal = true) {
++    HostedOverlay(modal = { true }) {
+         val springs = AppTheme.springs
+         val scrim = AppTheme.colors.scrim
+         val transition = rememberTransition(state, label = "loadingOverlay")
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSearchField.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSearchField.kt
+index f809a8d7..758eed04 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSearchField.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/input/AppSearchField.kt
+@@ -48,6 +48,7 @@ import com.base.app.core.designsystem.component.button.ButtonSize
+ import com.base.app.core.designsystem.component.selection.AppSegmentedControl
+ import com.base.app.core.designsystem.component.text.AppIcon
+ import com.base.app.core.designsystem.component.text.AppText
++import com.base.app.core.designsystem.component.text.scaledLike
+ import com.base.app.core.designsystem.icon.AppIcons
+ import com.base.app.core.designsystem.theme.AppTheme
+ import kotlin.math.roundToInt
+@@ -117,7 +118,12 @@ fun AppSearchField(
+                             verticalAlignment = Alignment.CenterVertically,
+                             horizontalArrangement = Arrangement.spacedBy(spacing.xs),
+                         ) {
+-                            AppIcon(AppIcons.Search, contentDescription = null, tint = colors.contentSecondary, size = AppTheme.sizes.iconSmall)
++                            AppIcon(
++                                AppIcons.Search,
++                                contentDescription = null,
++                                tint = colors.contentSecondary,
++                                size = AppTheme.sizes.iconSmall.scaledLike(AppTheme.typography.body),
++                            )
+                             Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                                 if (state.text.isEmpty()) {
+                                     AppText(text = placeholder, style = AppTheme.typography.body, color = colors.contentSecondary, maxLines = 1)
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt
+index 4e20c90f..a90df0e8 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/navigation/AppTopBar.kt
+@@ -42,7 +42,10 @@ import com.base.app.core.designsystem.R
+ import com.base.app.core.designsystem.component.button.AppButtonDefaults
+ import com.base.app.core.designsystem.component.button.AppIconButton
+ import com.base.app.core.designsystem.component.container.LocalScaffoldBackground
++import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
++import com.base.app.core.designsystem.component.sheet.chrome.AppSheetCloseButton
+ import com.base.app.core.designsystem.component.text.AppText
++import com.base.app.core.designsystem.component.text.grownWithFontScale
+ import com.base.app.core.designsystem.foundation.ChromeInset
+ import com.base.app.core.designsystem.foundation.LocalTopChrome
+ import com.base.app.core.designsystem.icon.AppIcons
+@@ -69,8 +72,10 @@ fun LazyListState.scrolledFromTop(): Int {
+  * Content runs under the bar. With [scrolled], the bar is clear at the top of the content and its
+  * surface and hairline fade in as content scrolls under it; without, it is always solid. Either way
+  * it writes its height to the screen's top inset, which `chromeContentPadding()` reads. A bar that
+- * is not at the top of the window (inside a pane, a sheet or a demo) passes `WindowInsets(0)` as
+- * [windowInsets], so it does not reserve the status bar's height.
++ * is not at the top of the window (inside a pane or a demo) passes `WindowInsets(0)` as
++ * [windowInsets], so it does not reserve the status bar's height; a sheet has already taken it.
++ * Inside a sheet the bar takes the sheet's colour, and at the root of the sheet, where it would
++ * have no Back, it shows the sheet's close button in its place.
+  */
+ @Composable
+ fun AppTopBar(
+@@ -86,6 +91,7 @@ fun AppTopBar(
+     val colors = AppTheme.colors
+     val topChrome = LocalTopChrome.current
+     val fadeDistance = ScrollFadeDistance
++    val fill = LocalSheetSurface.current?.container ?: colors.surface
+     Box(
+         modifier = modifier
+             .fillMaxWidth()
+@@ -93,7 +99,7 @@ fun AppTopBar(
+             .drawBehind {
+                 val shown = scrolled?.let { (it() / fadeDistance.toPx()).coerceIn(0f, 1f) } ?: 1f
+                 if (shown > 0f) {
+-                    drawRect(colors.surface, alpha = shown)
++                    drawRect(fill, alpha = shown)
+                     drawLine(colors.separator, Offset(0f, size.height - 0.5f), Offset(size.width, size.height - 0.5f), 1f, alpha = shown)
+                 }
+             }
+@@ -145,6 +151,7 @@ fun AppLargeTitleTopBar(
+     LaunchedEffect(collapsed) { inlineTitle.animateTo(if (collapsed) 1f else 0f, tween(fade)) }
+     val surfaceFade = SurfaceFadeDistance
+     val screen = LocalScaffoldBackground.current.takeOrElse { colors.background }
++    val fill = LocalSheetSurface.current?.container ?: colors.surface
+ 
+     Column(
+         modifier = modifier
+@@ -163,7 +170,7 @@ fun AppLargeTitleTopBar(
+                 val fadeFrom = collapseDistance - surfaceFade.toPx()
+                 val shown = if (!large) 1f else ((scrolled() - fadeFrom) / surfaceFade.toPx()).coerceIn(0f, 1f)
+                 if (shown > 0f) {
+-                    drawRect(colors.surface, size = Size(size.width, inline), alpha = shown)
++                    drawRect(fill, size = Size(size.width, inline), alpha = shown)
+                     drawLine(colors.separator, Offset(0f, inline - 0.5f), Offset(size.width, inline - 0.5f), 1f, alpha = shown)
+                 }
+             }
+@@ -206,7 +213,7 @@ fun AppLargeTitleTopBar(
+                         AppText(
+                             text = title,
+                             modifier = Modifier.semantics { heading() },
+-                            style = AppTheme.typography.largeTitle,
++                            style = AppTheme.typography.largeTitle.grownWithFontScale(LargeTitleMaxScale),
+                             color = colors.contentPrimary,
+                             maxLines = 2,
+                             overflow = TextOverflow.Ellipsis,
+@@ -217,7 +224,14 @@ fun AppLargeTitleTopBar(
+                     }
+                 }
+                 accessory?.let {
+-                    Box(Modifier.padding(horizontal = AppTheme.spacing.gutter).padding(bottom = AppTheme.spacing.sm)) { it() }
++                    // Without the large title above it, the accessory keeps the same gap from the
++                    // bar's hairline as it has below the title.
++                    val top = if (large) 0.dp else AppTheme.spacing.sm
++                    Box(
++                        Modifier
++                            .padding(horizontal = AppTheme.spacing.gutter)
++                            .padding(top = top, bottom = AppTheme.spacing.sm),
++                    ) { it() }
+                 }
+             }
+         }
+@@ -278,6 +292,8 @@ private fun InlineBar(
+                         onClick = onBack,
+                         colors = AppButtonDefaults.iconButtonColors(content = AppTheme.colors.accentContent),
+                     )
++                } else {
++                    AppSheetCloseButton()
+                 }
+             },
+             title,
+@@ -313,6 +329,9 @@ private fun InlineBar(
+ /** How far content scrolls under a clear bar before the bar is fully solid. */
+ private val ScrollFadeDistance = 24.dp
+ 
++/** How far the large title grows with the font scale: as iOS's, 44 pt of 34 at the first accessibility size. */
++private const val LargeTitleMaxScale = 1.3f
++
+ /** The room the large title takes under the small bar. */
+ private val LargeTitleArea = 52.dp
+ 
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppActionSheet.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppActionSheet.kt
+index 2ee2764c..229daadf 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppActionSheet.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppActionSheet.kt
+@@ -1,197 +1,59 @@
+ package com.base.app.core.designsystem.component.overlay
+ 
+-import androidx.compose.animation.core.MutableTransitionState
+-import androidx.compose.animation.core.animateFloat
+-import androidx.compose.animation.core.rememberTransition
+-import androidx.compose.foundation.gestures.detectTapGestures
+-import androidx.compose.foundation.layout.Arrangement
+-import androidx.compose.foundation.layout.Box
+-import androidx.compose.foundation.layout.Column
+-import androidx.compose.foundation.layout.Row
+-import androidx.compose.foundation.layout.WindowInsets
+-import androidx.compose.foundation.layout.fillMaxSize
+-import androidx.compose.foundation.layout.fillMaxWidth
+-import androidx.compose.foundation.layout.heightIn
+-import androidx.compose.foundation.layout.navigationBars
+-import androidx.compose.foundation.layout.padding
+-import androidx.compose.foundation.layout.widthIn
+-import androidx.compose.foundation.layout.windowInsetsPadding
+ import androidx.compose.runtime.Composable
+-import androidx.compose.runtime.Immutable
+-import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.remember
+-import androidx.compose.runtime.rememberUpdatedState
+-import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.draw.drawBehind
+-import androidx.compose.ui.graphics.Color
+-import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.graphics.vector.ImageVector
+-import androidx.compose.ui.input.pointer.pointerInput
+ import androidx.compose.ui.res.stringResource
+-import androidx.compose.ui.text.font.FontWeight
+-import androidx.compose.ui.text.style.TextAlign
+-import androidx.compose.ui.unit.dp
+ import com.base.app.core.designsystem.R
+-import com.base.app.core.designsystem.component.text.AppIcon
+-import com.base.app.core.designsystem.component.text.AppText
+-import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
+-import com.base.app.core.designsystem.foundation.content.AppSurface
+-import com.base.app.core.designsystem.foundation.draw.HairlineEdge
+-import com.base.app.core.designsystem.foundation.draw.disabledAlpha
+-import com.base.app.core.designsystem.foundation.draw.hairline
+-import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+-import com.base.app.core.designsystem.foundation.interaction.pressable
+-import com.base.app.core.designsystem.theme.AppTheme
+-
+-/** One choice in an [AppActionSheet]. */
+-@Immutable
+-class SheetAction(
++import com.base.app.core.designsystem.component.sheet.action.AppActionSheet as SheetActionSheet
++import com.base.app.core.designsystem.component.sheet.action.SheetAction as ActionSheetAction
++
++/** One choice in the earlier [AppActionSheet]. */
++@Deprecated(
++    "Moved to the sheet package, where destructive is spelt without the is.",
++    ReplaceWith(
++        "SheetAction(label, onClick, icon, destructive = isDestructive, enabled = enabled)",
++        "com.base.app.core.designsystem.component.sheet.action.SheetAction",
++    ),
++)
++data class SheetAction(
+     val label: String,
+     val onClick: () -> Unit,
+     val icon: ImageVector? = null,
+-    val destructive: Boolean = false,
++    val isDestructive: Boolean = false,
+     val enabled: Boolean = true,
+ )
+ 
+-/**
+- * "What would you like to do with this?", as iOS asks it: a group of choices rising from the bottom
+- * with Cancel apart beneath them. It renders in the window's overlay layer, above the tab bar. A
+- * choice runs before the sheet asks to close, so a caller that clears its state on dismiss still has
+- * it when the choice runs.
+- *
+- * Where there is room (Medium width and up, as on an iPad) it is a popover instead, anchored to
+- * whatever composes it, so call it beside the button that opens it; tapping outside cancels.
+- */
++/** The earlier action sheet, shown for as long as it is composed. */
++@Deprecated(
++    "Keep the action sheet composed and drive visible, so it can slide away before it leaves.",
++    ReplaceWith(
++        "AppActionSheet(visible = true, actions = actions, onDismissRequest = onDismissRequest, modifier = modifier, " +
++            "title = title, message = message)",
++        "com.base.app.core.designsystem.component.sheet.action.AppActionSheet",
++    ),
++)
++@Suppress("DEPRECATION")
+ @Composable
+ fun AppActionSheet(
+-    visible: Boolean,
+     actions: List<SheetAction>,
+     onDismissRequest: () -> Unit,
+     modifier: Modifier = Modifier,
+     title: String? = null,
+     message: String? = null,
+-    cancelLabel: String = stringResource(R.string.designsystem_cancel),
+-) {
+-    if (AppTheme.containerClass.width >= WindowWidth.Medium) {
+-        AppMenu(expanded = visible, onDismissRequest = onDismissRequest, modifier = modifier) {
+-            if (title != null || message != null) PopoverHeader(title, message)
+-            actions.forEach { action ->
+-                AppMenuItem(
+-                    text = action.label,
+-                    onClick = action.onClick,
+-                    icon = action.icon,
+-                    enabled = action.enabled,
+-                    destructive = action.destructive,
+-                )
+-            }
+-        }
+-        return
+-    }
+-    val state = remember { MutableTransitionState(false) }
+-    state.targetState = visible
+-    if (!state.currentState && !state.targetState) return
+-    val dismiss by rememberUpdatedState(onDismissRequest)
+-    OverlayBackHandler(enabled = state.targetState) { dismiss() }
+-
+-    HostedOverlay(modal = true) {
+-        val springs = AppTheme.springs
+-        val colors = AppTheme.colors
+-        val transition = rememberTransition(state, label = "actionSheet")
+-        val shown = transition.animateFloat(transitionSpec = { springs.dialog.unit }, label = "actionSheetShown") { if (it) 1f else 0f }
+-
+-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+-            Box(
+-                Modifier
+-                    .fillMaxSize()
+-                    .drawBehind { drawRect(colors.scrim, alpha = shown.value.coerceIn(0f, 1f)) }
+-                    .pointerInput(Unit) { detectTapGestures { dismiss() } },
+-            )
+-            Column(
+-                modifier = modifier
+-                    .widthIn(max = AppTheme.layout.sheetMaxWidth)
+-                    .fillMaxWidth()
+-                    .graphicsLayer { translationY = (1f - shown.value) * size.height }
+-                    .windowInsetsPadding(WindowInsets.navigationBars)
+-                    .padding(AppTheme.spacing.sm),
+-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+-            ) {
+-                AppSurface(modifier = Modifier.fillMaxWidth(), shape = AppTheme.shapes.lg, color = colors.surfaceElevated, clipContent = true) {
+-                    Column {
+-                        if (title != null || message != null) {
+-                            Column(
+-                                modifier = Modifier.fillMaxWidth().padding(AppTheme.spacing.md),
+-                                horizontalAlignment = Alignment.CenterHorizontally,
+-                                verticalArrangement = Arrangement.spacedBy(2.dp),
+-                            ) {
+-                                title?.let { AppText(text = it, style = AppTheme.typography.footnote.copy(fontWeight = FontWeight.SemiBold), color = colors.contentSecondary, textAlign = TextAlign.Center) }
+-                                message?.let { AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary, textAlign = TextAlign.Center) }
+-                            }
+-                        }
+-                        actions.forEachIndexed { index, action ->
+-                            ActionRow(
+-                                label = action.label,
+-                                icon = action.icon,
+-                                color = if (action.destructive) colors.danger.content else colors.accentContent,
+-                                enabled = action.enabled,
+-                                divider = index > 0 || title != null || message != null,
+-                                onClick = {
+-                                    action.onClick()
+-                                    dismiss()
+-                                },
+-                            )
+-                        }
+-                    }
+-                }
+-                AppSurface(modifier = Modifier.fillMaxWidth(), shape = AppTheme.shapes.lg, color = colors.surfaceElevated, clipContent = true) {
+-                    ActionRow(label = cancelLabel, icon = null, color = colors.accentContent, enabled = true, divider = false, bold = true, onClick = dismiss)
+-                }
+-            }
+-        }
+-    }
+-}
+-
+-@Composable
+-private fun PopoverHeader(title: String?, message: String?) {
+-    Column(
+-        modifier = Modifier.fillMaxWidth().padding(AppTheme.spacing.md),
+-        horizontalAlignment = Alignment.CenterHorizontally,
+-        verticalArrangement = Arrangement.spacedBy(2.dp),
+-    ) {
+-        val colors = AppTheme.colors
+-        title?.let { AppText(text = it, style = AppTheme.typography.footnote.copy(fontWeight = FontWeight.SemiBold), color = colors.contentSecondary, textAlign = TextAlign.Center) }
+-        message?.let { AppText(text = it, style = AppTheme.typography.footnote, color = colors.contentSecondary, textAlign = TextAlign.Center) }
+-    }
+-}
+-
+-@Composable
+-private fun ActionRow(
+-    label: String,
+-    icon: ImageVector?,
+-    color: Color,
+-    enabled: Boolean,
+-    divider: Boolean,
+-    onClick: () -> Unit,
+-    bold: Boolean = false,
++    cancelLabel: String? = stringResource(R.string.designsystem_cancel),
+ ) {
+-    Row(
+-        modifier = Modifier
+-            .fillMaxWidth()
+-            .then(if (divider) Modifier.hairline(HairlineEdge.Top) else Modifier)
+-            .pressable(onClick = onClick, feedback = PressFeedback.Highlight, enabled = enabled)
+-            .disabledAlpha(enabled)
+-            .heightIn(min = RowHeight)
+-            .padding(horizontal = AppTheme.spacing.lg),
+-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm, Alignment.CenterHorizontally),
+-        verticalAlignment = Alignment.CenterVertically,
+-    ) {
+-        icon?.let { AppIcon(it, contentDescription = null, tint = color) }
+-        AppText(
+-            text = label,
+-            style = if (bold) AppTheme.typography.body.copy(fontWeight = FontWeight.SemiBold) else AppTheme.typography.body,
+-            color = color,
+-        )
++    val converted = remember(actions) {
++        actions.map { ActionSheetAction(it.label, it.onClick, it.icon, destructive = it.isDestructive, enabled = it.enabled) }
+     }
++    SheetActionSheet(
++        visible = true,
++        actions = converted,
++        onDismissRequest = onDismissRequest,
++        modifier = modifier,
++        title = title,
++        message = message,
++        cancelLabel = cancelLabel ?: stringResource(R.string.designsystem_cancel),
++    )
+ }
+-
+-private val RowHeight = 56.dp
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppAlert.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppAlert.kt
+index 7aa1c847..6a65bc4c 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppAlert.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppAlert.kt
+@@ -69,7 +69,7 @@ fun AppAlert(
+     val dismiss by rememberUpdatedState(onDismissRequest)
+     OverlayBackHandler(enabled = state.targetState) { dismiss() }
+ 
+-    HostedOverlay(modal = true) {
++    HostedOverlay(modal = { true }) {
+         val springs = AppTheme.springs
+         val scrim = AppTheme.colors.scrim
+         val transition = rememberTransition(state, label = "alert")
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppContextMenu.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppContextMenu.kt
+index cc555382..b7436892 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppContextMenu.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppContextMenu.kt
+@@ -199,7 +199,7 @@ private fun ContextMenuOverlay(state: ContextMenuState, drawing: GraphicsLayer,
+     }
+     OverlayBackHandler(enabled = !closing) { close() }
+ 
+-    HostedOverlay(modal = true) {
++    HostedOverlay(modal = { true }) {
+         val colors = AppTheme.colors
+         val lifting = opening == ContextMenuOpening.Lift
+         val liftScale = if (reduceMotion) 1f else LiftScale
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppOverlayHost.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppOverlayHost.kt
+index 6ba56708..803d5731 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppOverlayHost.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppOverlayHost.kt
+@@ -1,26 +1,37 @@
+ package com.base.app.core.designsystem.component.overlay
+ 
++import androidx.compose.foundation.focusGroup
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.CompositionLocalProvider
+ import androidx.compose.runtime.DisposableEffect
+ import androidx.compose.runtime.Stable
++import androidx.compose.runtime.currentCompositeKeyHashCode
+ import androidx.compose.runtime.currentCompositionLocalContext
+ import androidx.compose.runtime.key
+ import androidx.compose.runtime.mutableStateListOf
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberUpdatedState
++import androidx.compose.runtime.saveable.SaveableStateHolder
++import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+ import androidx.compose.runtime.staticCompositionLocalOf
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.semantics.clearAndSetSemantics
++import androidx.compose.ui.focus.FocusRequester
++import androidx.compose.ui.focus.focusProperties
++import androidx.compose.ui.focus.focusRequester
+ import androidx.compose.ui.semantics.semantics
+ import androidx.compose.ui.semantics.testTagsAsResourceId
++import com.base.app.core.designsystem.component.sheet.stack.LocalSheetStack
++import com.base.app.core.designsystem.component.sheet.stack.SheetStack
++import com.base.app.core.designsystem.component.sheet.surface.LocalSheetBackdrop
++import com.base.app.core.designsystem.component.sheet.surface.SheetBackdropHolder
+ import com.base.app.core.designsystem.foundation.interaction.LocalContainerActions
++import com.base.app.core.designsystem.foundation.layout.LocalEntryVisibility
+ 
+ /**
+- * The top two layers of the window. Layer 4 holds alerts, HUDs and the loading overlay; layer 5 the
+- * toasts. Both sit over everything else the app draws, the tab bar and presented sheets included,
+- * which is where iOS puts them too.
++ * The top two layers of the window. Layer 4 holds in-screen sheets, alerts, HUDs and the loading
++ * overlay; layer 5 the toasts. Both sit over everything else the app draws, the tab bar and presented
++ * sheets included, which is where iOS puts them too.
+  *
+  * `AppTheme` installs one host at the window root. Components such as [AppAlert] and
+  * [AppLoadingOverlay] are called from a screen as usual and render through it, so a screen never
+@@ -38,12 +49,41 @@ class OverlayHostState internal constructor() {
+     /** The toast queue. Toasts show one at a time, above the bottom chrome. */
+     val toasts = ToastQueue()
+ 
+-    /** True while a modal overlay is up: the content beneath is hidden from screen readers too. */
++    /** The window's sheets, for whatever recedes and dims behind them. */
++    internal val sheetStack = SheetStack()
++
++    /** Where the liquid glass stage hands Glass sheets their live backdrop. */
++    internal val sheetBackdrop = SheetBackdropHolder()
++
++    /** The app content beneath the overlays, which saves and gets back its focus around a modal overlay. */
++    internal val appFocus = FocusRequester()
++
++    /** True while a modal overlay is up: the content beneath is hidden from screen readers and from focus. */
+     internal val modal: Boolean
+-        get() = overlays.any { it.modal }
++        get() = overlays.any { it.modal() }
++
++    /** Read from the focus properties of the content beneath, so Tab never leaves a modal overlay. */
++    internal var trapsFocus = false
++
++    internal fun saveFocus() {
++        appFocus.saveFocusedChild()
++    }
++
++    internal fun restoreFocus() {
++        appFocus.restoreFocusedChild()
++    }
+ }
+ 
+-internal class OverlayEntry(val modal: Boolean, val content: @Composable () -> Unit)
++/**
++ * One overlay, keyed by the call site that shows it and composed in that call site's saved state, so
++ * what its content saved survives recreation and process death.
++ */
++internal class OverlayEntry(
++    val key: Any,
++    val modal: () -> Boolean,
++    val parked: () -> Boolean,
++    val content: @Composable () -> Unit,
++)
+ 
+ /** The window's overlay host, or null outside an `AppTheme` (a bare preview). */
+ val LocalOverlayHost = staticCompositionLocalOf<OverlayHostState?> { null }
+@@ -52,18 +92,31 @@ val LocalOverlayHost = staticCompositionLocalOf<OverlayHostState?> { null }
+ @Composable
+ internal fun AppOverlayHost(content: @Composable () -> Unit) {
+     val state = remember { OverlayHostState() }
+-    CompositionLocalProvider(LocalOverlayHost provides state) {
++    CompositionLocalProvider(
++        LocalOverlayHost provides state,
++        LocalSheetStack provides state.sheetStack,
++        LocalSheetBackdrop provides state.sheetBackdrop,
++    ) {
+         Box(propagateMinConstraints = true) {
+             Box(
+-                modifier = if (state.modal) Modifier.clearAndSetSemantics {} else Modifier,
++                modifier = Modifier
++                    .hiddenBeneathOverlays(state)
++                    .focusRequester(state.appFocus)
++                    .focusProperties { onEnter = { if (state.trapsFocus) cancelFocusChange() } }
++                    .focusGroup(),
+                 propagateMinConstraints = true,
+             ) {
+                 content()
+             }
+             // The layers are siblings of the app's root, outside whatever exposes its test tags, so
+             // they expose their own: benchmarks find a sheet's grabber or a toast by resource id.
++            // No pointer modifiers here: a touch that misses every placed overlay reaches the app.
+             Box(Modifier.semantics { testTagsAsResourceId = true }, propagateMinConstraints = true) {
+-                state.overlays.forEach { entry -> key(entry) { entry.content() } }
++                state.overlays.forEach { entry ->
++                    key(entry.key) {
++                        Box(Modifier.parkedOverlay(entry.parked), propagateMinConstraints = true) { entry.content() }
++                    }
++                }
+                 ToastLayer(state.toasts)
+             }
+         }
+@@ -72,14 +125,17 @@ internal fun AppOverlayHost(content: @Composable () -> Unit) {
+ 
+ /**
+  * Draws [content] in the window's overlay layer for as long as this is composed, or in place when
+- * there is no host. [modal] hides everything beneath from screen readers while it is up.
++ * there is no host. [modal] hides everything beneath from screen readers and focus while it returns
++ * true; it is read where those apply, so a change recomposes nothing.
+  *
+  * The content keeps the caller's composition locals although it is drawn at the window's root: a
+- * sheet opened from a screen gets that screen's ViewModels, lifecycle and saved state, and a
+- * nested theme or a right-to-left page reaches it too.
++ * sheet opened from a screen gets that screen's ViewModels, lifecycle and saved state, and a nested
++ * theme or a right-to-left page reaches it too. It is parked, laid out but neither drawn nor
++ * announced, while the caller's tab is not the selected one. Calls made in a loop need `key(…)`
++ * around them, as `rememberSaveable` does.
+  */
+ @Composable
+-internal fun HostedOverlay(modal: Boolean, content: @Composable () -> Unit) {
++internal fun HostedOverlay(modal: () -> Boolean, content: @Composable () -> Unit) {
+     val host = LocalOverlayHost.current
+     if (host == null) {
+         content()
+@@ -87,13 +143,25 @@ internal fun HostedOverlay(modal: Boolean, content: @Composable () -> Unit) {
+     }
+     val latest = rememberUpdatedState(content)
+     val locals = rememberUpdatedState(currentCompositionLocalContext)
+-    DisposableEffect(host, modal) {
+-        val entry = OverlayEntry(modal) {
++    val isModal = rememberUpdatedState(modal)
++    val holder: SaveableStateHolder = rememberSaveableStateHolder()
++    val callSite = currentCompositeKeyHashCode
++    val visibility = LocalEntryVisibility.current
++    val entry = remember(host, holder) {
++        OverlayEntry(
++            key = callSite,
++            modal = { isModal.value() },
++            parked = { !visibility.isTabSelected },
++        ) {
+             CompositionLocalProvider(locals.value) {
+-                // An overlay is not inside the row that opened it: its controls carry no row actions.
+-                CompositionLocalProvider(LocalContainerActions provides null) { latest.value() }
++                holder.SaveableStateProvider(callSite) {
++                    // An overlay is not inside the row that opened it: its controls carry no row actions.
++                    CompositionLocalProvider(LocalContainerActions provides null) { latest.value() }
++                }
+             }
+         }
++    }
++    DisposableEffect(host, entry) {
+         host.overlays.add(entry)
+         onDispose { host.overlays.remove(entry) }
+     }
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppSheet.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppSheet.kt
+deleted file mode 100644
+index 0cf7527b..00000000
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppSheet.kt
++++ /dev/null
+@@ -1,345 +0,0 @@
+-package com.base.app.core.designsystem.component.overlay
+-
+-import androidx.compose.animation.core.animate
+-import androidx.compose.foundation.background
+-import androidx.compose.foundation.gestures.Orientation
+-import androidx.compose.foundation.gestures.detectTapGestures
+-import androidx.compose.foundation.gestures.draggable
+-import androidx.compose.foundation.gestures.rememberDraggableState
+-import androidx.compose.foundation.layout.Box
+-import androidx.compose.foundation.layout.Column
+-import androidx.compose.foundation.layout.WindowInsets
+-import androidx.compose.foundation.layout.WindowInsetsSides
+-import androidx.compose.foundation.layout.consumeWindowInsets
+-import androidx.compose.foundation.layout.fillMaxSize
+-import androidx.compose.foundation.layout.fillMaxWidth
+-import androidx.compose.foundation.layout.height
+-import androidx.compose.foundation.layout.ime
+-import androidx.compose.foundation.layout.only
+-import androidx.compose.foundation.layout.padding
+-import androidx.compose.foundation.layout.size
+-import androidx.compose.foundation.layout.statusBars
+-import androidx.compose.foundation.layout.windowInsetsPadding
+-import androidx.compose.foundation.shape.CircleShape
+-import androidx.compose.runtime.Composable
+-import androidx.compose.runtime.CompositionLocalProvider
+-import androidx.compose.runtime.LaunchedEffect
+-import androidx.compose.runtime.getValue
+-import androidx.compose.runtime.mutableIntStateOf
+-import androidx.compose.runtime.mutableStateOf
+-import androidx.compose.runtime.remember
+-import androidx.compose.runtime.rememberCoroutineScope
+-import androidx.compose.runtime.rememberUpdatedState
+-import androidx.compose.runtime.setValue
+-import androidx.compose.ui.Alignment
+-import androidx.compose.ui.Modifier
+-import androidx.compose.ui.draw.clip
+-import androidx.compose.ui.draw.drawBehind
+-import androidx.compose.ui.geometry.Offset
+-import androidx.compose.ui.graphics.TransformOrigin
+-import androidx.compose.ui.graphics.graphicsLayer
+-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+-import androidx.compose.ui.input.nestedscroll.nestedScroll
+-import androidx.compose.ui.input.pointer.pointerInput
+-import androidx.compose.ui.layout.Layout
+-import androidx.compose.ui.platform.testTag
+-import androidx.compose.ui.res.stringResource
+-import androidx.compose.ui.semantics.paneTitle
+-import androidx.compose.ui.semantics.semantics
+-import androidx.compose.ui.unit.Constraints
+-import androidx.compose.ui.unit.Velocity
+-import androidx.compose.ui.unit.dp
+-import com.base.app.core.designsystem.R
+-import com.base.app.core.designsystem.component.button.AppButtonDefaults
+-import com.base.app.core.designsystem.component.button.AppIconButton
+-import com.base.app.core.designsystem.component.button.ButtonSize
+-import com.base.app.core.designsystem.component.button.ButtonVariant
+-import com.base.app.core.designsystem.component.text.AppText
+-import com.base.app.core.designsystem.foundation.ChromeInset
+-import com.base.app.core.designsystem.foundation.LocalBottomChrome
+-import com.base.app.core.designsystem.foundation.adaptive.WindowHeight
+-import com.base.app.core.designsystem.foundation.adaptive.WindowPosture
+-import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
+-import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+-import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+-import com.base.app.core.designsystem.icon.AppIcons
+-import com.base.app.core.designsystem.theme.AppTheme
+-import kotlinx.coroutines.launch
+-import kotlin.math.roundToInt
+-
+-/**
+- * A sheet over everything beneath it, as iOS draws one: it rises to its first detent, can be dragged
+- * between detents or down to close, and scrolling inside hands off to the sheet at either end. A tap
+- * on the dimmed screen behind, Back, or the close button closes it; [onDismiss] runs once it has
+- * gone, for the presenter to remove it.
+- *
+- * The content is measured once, at the large detent's height, and only moved after that, so dragging
+- * the sheet re-places it and never re-measures it. A [footer] (an `AppBottomActionBar`) stays at the
+- * bottom of the part that is showing.
+- *
+- * The content runs edge to edge, as a screen's does: an `AppSection` insets itself, and anything else
+- * pads with `AppTheme.spacing.gutter`.
+- */
+-@Composable
+-fun AppSheet(
+-    state: AppSheetState,
+-    onDismiss: () -> Unit,
+-    modifier: Modifier = Modifier,
+-    title: String? = null,
+-    showCloseButton: Boolean = false,
+-    footer: (@Composable () -> Unit)? = null,
+-    content: @Composable () -> Unit,
+-) {
+-    SheetBack(state, onDismiss)
+-    SheetLayout(state, onDismiss, modifier, title, showCloseButton, footer, content)
+-}
+-
+-/**
+- * Back for a sheet. The system gesture shrinks it toward its bottom edge as the finger moves, as
+- * Material's bottom sheets do (iOS has no back gesture to match; dragging the sheet down is still
+- * the touch way to close it), and closes it on release. While it is already leaving, Back is taken
+- * and ignored, so the screen beneath is not popped as well.
+- */
+-@Composable
+-private fun SheetBack(state: AppSheetState, onDismiss: () -> Unit) {
+-    val scope = rememberCoroutineScope()
+-    val gone by rememberUpdatedState(onDismiss)
+-    OverlayBackHandler(
+-        enabled = true,
+-        onProgress = { if (!state.dismissing) state.backProgress = it },
+-        onCancel = { scope.launch { state.cancelBack() } },
+-        onBack = { if (!state.dismissing) scope.launch { state.dismiss(gone) } },
+-    )
+-}
+-
+-@Composable
+-private fun SheetLayout(
+-    state: AppSheetState,
+-    onDismiss: () -> Unit,
+-    modifier: Modifier,
+-    title: String?,
+-    showCloseButton: Boolean,
+-    footer: (@Composable () -> Unit)?,
+-    content: @Composable () -> Unit,
+-) {
+-    val colors = AppTheme.colors
+-    val springs = AppTheme.springs
+-    val reduceMotion = AppTheme.reduceMotion
+-    val haptics = rememberAppHaptics()
+-    val scope = rememberCoroutineScope()
+-    val gone by rememberUpdatedState(onDismiss)
+-    val statusBar = WindowInsets.statusBars
+-    val layout = AppTheme.layout
+-    val container = AppTheme.containerClass
+-    // On a window with room on every side the sheet is a card in the middle, as iPad's form sheet
+-    // is; on one too short for two heights it has only one, the tallest. On a foldable in tabletop
+-    // it rises from the bottom and rests on the fold, rather than as a card across the crease.
+-    val posture = AppTheme.posture
+-    val fold = posture.hinge?.takeIf { posture.kind == WindowPosture.Kind.Tabletop }
+-    val form = container.width >= WindowWidth.Medium && container.height >= WindowHeight.Medium && fold == null
+-    val oneHeight = container.isShort
+-    // The sheet's content pads for its own footer, not for the tab bar it covers.
+-    val bottomChrome = remember { ChromeInset() }
+-    state.spring = springs.sheet
+-    state.rubberBand = springs.rubberBand
+-
+-    LaunchedEffect(state) { state.show(animate = !reduceMotion) }
+-
+-    fun close() {
+-        scope.launch { state.dismiss(gone) }
+-    }
+-
+-    val connection = remember(state) {
+-        object : NestedScrollConnection {
+-            // Scrolling up grows the sheet to its large detent before the content starts to scroll.
+-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset =
+-                if (available.y < 0f && state.canExpand) Offset(0f, state.dragBy(available.y)) else Offset.Zero
+-
+-            // Content already at its top: pulling further down moves the sheet instead.
+-            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset =
+-                if (available.y > 0f && source == NestedScrollSource.UserInput) Offset(0f, state.dragBy(available.y)) else Offset.Zero
+-
+-            override suspend fun onPreFling(available: Velocity): Velocity {
+-                if (state.resting) return Velocity.Zero
+-                if (state.settle(available.y) { haptics.perform(AppHaptic.Threshold) }) gone()
+-                return available
+-            }
+-        }
+-    }
+-
+-    Box(modifier = Modifier.fillMaxSize()) {
+-        Box(
+-            Modifier
+-                .fillMaxSize()
+-                // A drawn rect, so the dim never takes the window offscreen while it fades.
+-                .drawBehind { drawRect(colors.scrim, alpha = state.progress) }
+-                .pointerInput(state) { detectTapGestures { close() } },
+-        )
+-        Layout(
+-            contents = listOf(
+-                {
+-                    Column(
+-                        modifier = modifier
+-                            .graphicsLayer {
+-                                val back = state.backProgress
+-                                if (back > 0f) {
+-                                    transformOrigin = BottomCentre
+-                                    scaleX = 1f - BackShrinkX.toPx() * back / size.width
+-                                    scaleY = 1f - BackShrinkY.toPx() * back / size.height
+-                                }
+-                            }
+-                            .clip(if (form) AppTheme.shapes.xl else AppTheme.shapes.sheet)
+-                            .background(colors.surface)
+-                            .semantics { title?.let { paneTitle = it } }
+-                            .nestedScroll(connection)
+-                            .draggable(
+-                                state = rememberDraggableState { delta -> state.dragBy(delta) },
+-                                orientation = Orientation.Vertical,
+-                                enabled = !state.dismissing,
+-                                onDragStarted = { state.stop() },
+-                                onDragStopped = { velocity ->
+-                                    if (state.settle(velocity) { haptics.perform(AppHaptic.Threshold) }) gone()
+-                                },
+-                            ),
+-                    ) {
+-                        SheetHeader(title = title, showCloseButton = showCloseButton || form, onClose = ::close)
+-                        Box(
+-                            Modifier
+-                                .fillMaxWidth()
+-                                .weight(1f)
+-                                .consumeWindowInsets(WindowInsets.statusBars)
+-                                .windowInsetsPadding(WindowInsets.ime.only(WindowInsetsSides.Bottom)),
+-                        ) {
+-                            CompositionLocalProvider(LocalBottomChrome provides bottomChrome, content = content)
+-                        }
+-                    }
+-                },
+-                { footer?.invoke() },
+-            ),
+-        ) { (sheetSlot, footerSlot), constraints ->
+-            val height = constraints.maxHeight
+-            val sheetHeight: Int
+-            val width: Int
+-            val anchors: SheetAnchors
+-            if (form) {
+-                width = minOf(layout.formSheetWidth.roundToPx(), constraints.maxWidth - 2 * layout.gutter.roundToPx())
+-                sheetHeight = minOf((height * FormHeightFraction).roundToInt(), FormSheetMaxHeight.roundToPx())
+-                val centred = ((height - sheetHeight) / 2).toFloat()
+-                anchors = SheetAnchors(large = centred, medium = centred, hidden = height.toFloat(), form = true)
+-            } else {
+-                width = minOf(constraints.maxWidth, layout.sheetMaxWidth.roundToPx())
+-                val large = (statusBar.getTop(this) + LargeGap.roundToPx()).toFloat()
+-                val medium = when {
+-                    oneHeight -> large
+-                    fold != null -> fold.bottom.coerceIn(large, height.toFloat())
+-                    else -> height * (1f - MediumFraction)
+-                }
+-                sheetHeight = (height - large).roundToInt().coerceAtLeast(0)
+-                anchors = SheetAnchors(large = large, medium = medium, hidden = height.toFloat(), form = false)
+-            }
+-            state.updateAnchors(anchors)
+-            val pinned = footerSlot.firstOrNull()?.measure(Constraints(maxWidth = width))
+-            bottomChrome.value = (pinned?.height ?: 0).toDp()
+-            val sheet = sheetSlot.first().measure(Constraints.fixed(width, sheetHeight))
+-            layout(constraints.maxWidth, height) {
+-                val x = (constraints.maxWidth - width) / 2
+-                val top = if (state.offset.isNaN()) height.toFloat() else state.offset
+-                sheet.place(x, top.roundToInt())
+-                val bottom = if (form) top.roundToInt() + sheetHeight else height
+-                pinned?.place(x, maxOf(bottom - pinned.height, top.roundToInt()))
+-            }
+-        }
+-    }
+-}
+-
+-/**
+- * A sheet shown from inside a screen, for a quick choice that is not a destination of its own. Keep
+- * it composed and drive [visible]; it renders in the window's overlay layer, over the tab bar.
+- * Sheets that are destinations are registered with the navigation graph instead and presented by the
+- * shell.
+- */
+-@Composable
+-fun AppSheet(
+-    visible: Boolean,
+-    onDismissRequest: () -> Unit,
+-    modifier: Modifier = Modifier,
+-    detents: Set<SheetDetent> = setOf(SheetDetent.Medium, SheetDetent.Large),
+-    title: String? = null,
+-    showCloseButton: Boolean = false,
+-    footer: (@Composable () -> Unit)? = null,
+-    content: @Composable () -> Unit,
+-) {
+-    var session by remember { mutableIntStateOf(0) }
+-    var mounted by remember { mutableStateOf(visible) }
+-    val state = remember(session) { AppSheetState(detents) }
+-    LaunchedEffect(visible) {
+-        if (visible) {
+-            if (!mounted) {
+-                session++
+-                mounted = true
+-            }
+-        } else if (mounted) {
+-            state.dismiss()
+-            mounted = false
+-        }
+-    }
+-    if (!mounted) return
+-    SheetBack(state, onDismissRequest)
+-    HostedOverlay(modal = true) {
+-        SheetLayout(state, onDismissRequest, modifier, title, showCloseButton, footer, content)
+-    }
+-}
+-
+-@Composable
+-private fun SheetHeader(title: String?, showCloseButton: Boolean, onClose: () -> Unit) {
+-    Box(Modifier.fillMaxWidth()) {
+-        Box(
+-            Modifier
+-                .align(Alignment.TopCenter)
+-                .padding(top = 6.dp)
+-                .size(width = GrabberWidth, height = 5.dp)
+-                .background(AppTheme.colors.contentTertiary.copy(alpha = 0.45f), CircleShape)
+-                .testTag("sheet_grabber"),
+-        )
+-        if (title != null || showCloseButton) {
+-            Box(Modifier.fillMaxWidth().padding(top = 14.dp, start = AppTheme.spacing.gutter, end = AppTheme.spacing.xs).height(44.dp)) {
+-                title?.let {
+-                    AppText(
+-                        text = it,
+-                        modifier = Modifier.align(Alignment.Center),
+-                        style = AppTheme.typography.headline,
+-                        color = AppTheme.colors.contentPrimary,
+-                        maxLines = 1,
+-                    )
+-                }
+-                if (showCloseButton) {
+-                    AppIconButton(
+-                        icon = AppIcons.Close,
+-                        contentDescription = stringResource(R.string.designsystem_close),
+-                        onClick = onClose,
+-                        modifier = Modifier.align(Alignment.CenterEnd),
+-                        variant = ButtonVariant.Tinted,
+-                        size = ButtonSize.Small,
+-                        colors = AppButtonDefaults.iconButtonColors(ButtonVariant.Tinted, content = AppTheme.colors.contentSecondary),
+-                    )
+-                }
+-            }
+-        } else {
+-            Box(Modifier.height(HandleArea))
+-        }
+-    }
+-}
+-
+-/** How much of the window a sheet covers at its medium detent. */
+-private const val MediumFraction = 0.55f
+-private const val FormHeightFraction = 0.85f
+-private val FormSheetMaxHeight = 620.dp
+-
+-/** How far the system back gesture narrows and lowers the sheet at its end: Material's bottom container. */
+-private val BackShrinkX = 48.dp
+-private val BackShrinkY = 24.dp
+-private val BottomCentre = TransformOrigin(0.5f, 1f)
+-private val LargeGap = 10.dp
+-private val HandleArea = 20.dp
+-private val GrabberWidth = 36.dp
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppSheetState.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppSheetState.kt
+deleted file mode 100644
+index 414f7dce..00000000
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/component/overlay/AppSheetState.kt
++++ /dev/null
+@@ -1,225 +0,0 @@
+-package com.base.app.core.designsystem.component.overlay
+-
+-import androidx.compose.animation.core.animate
+-import androidx.compose.foundation.MutatePriority
+-import androidx.compose.foundation.MutatorMutex
+-import androidx.compose.runtime.Stable
+-import androidx.compose.runtime.annotation.FrequentlyChangingValue
+-import androidx.compose.runtime.annotation.RememberInComposition
+-import androidx.compose.runtime.getValue
+-import androidx.compose.runtime.mutableFloatStateOf
+-import androidx.compose.runtime.mutableStateOf
+-import androidx.compose.runtime.setValue
+-import androidx.compose.runtime.snapshotFlow
+-import com.base.app.core.designsystem.theme.AppSpring
+-import kotlinx.coroutines.flow.filterNotNull
+-import kotlinx.coroutines.flow.first
+-import kotlin.math.abs
+-
+-/** Where a sheet can rest: a little over half the window, or nearly all of it. */
+-enum class SheetDetent { Medium, Large }
+-
+-/**
+- * A sheet's position, kept outside composition so whoever presents it can also take it away
+- * animated: Back through the navigation stack, a programmatic pop, a parent hiding it.
+- *
+- * [dismiss] is idempotent: while a dismissal runs, another Back or tap does nothing, so the sheet
+- * goes once and never takes the screen beneath with it.
+- */
+-@Stable
+-class AppSheetState @RememberInComposition constructor(
+-    val detents: Set<SheetDetent> = setOf(SheetDetent.Medium, SheetDetent.Large),
+-    private val initialDetent: SheetDetent = if (SheetDetent.Medium in detents) SheetDetent.Medium else SheetDetent.Large,
+-) {
+-    init {
+-        require(detents.isNotEmpty()) { "A sheet needs at least one detent" }
+-        require(initialDetent in detents) { "$initialDetent is not one of $detents" }
+-    }
+-
+-    /** The sheet's top edge, from the top of the area it is shown in. NaN until it is laid out. */
+-    internal var offset by mutableFloatStateOf(Float.NaN)
+-    internal var anchors by mutableStateOf<SheetAnchors?>(null)
+-    internal var spring: AppSpring? = null
+-    internal var rubberBand = 0f
+-
+-    /** How far a system back gesture has gone, 0 to 1; the sheet shrinks toward its bottom edge with it. */
+-    internal var backProgress by mutableFloatStateOf(0f)
+-
+-    /** True from the moment the sheet starts to leave. */
+-    var dismissing by mutableStateOf(false)
+-        private set
+-
+-    private val motion = MutatorMutex()
+-    private var shown = false
+-
+-    /** Where the current drag began, so a settle can tell whether it changed detent. */
+-    private var dragStart = Float.NaN
+-
+-    /** The finger's travel past the top detent; what is shown of it is rubber-banded. */
+-    private var overshoot = 0f
+-
+-    /** The detent the sheet rests nearest, or null while it is hidden. */
+-    val currentDetent: SheetDetent?
+-        get() {
+-            val a = anchors ?: return null
+-            if (offset.isNaN() || dismissing) return null
+-            return detents.minByOrNull { abs(a.offsetOf(it) - offset) }
+-        }
+-
+-    /**
+-     * How far toward its large detent the sheet is: 0 at the medium detent or anywhere below it, 1 at
+-     * the large detent. A presenter reads it to recede behind a large sheet, as iOS's card stack does,
+-     * in a layer or draw block: it changes on every frame of a drag.
+-     */
+-    @get:FrequentlyChangingValue
+-    val largeFraction: Float
+-        get() {
+-            val a = anchors ?: return 0f
+-            // A form sheet floats over the screen like an alert; nothing recedes behind it.
+-            if (offset.isNaN() || a.form || SheetDetent.Large !in detents) return 0f
+-            val from = if (SheetDetent.Medium in detents && a.medium > a.large) a.medium else a.hidden
+-            return ((from - offset) / (from - a.large)).coerceIn(0f, 1f)
+-        }
+-
+-    /** How far the sheet is shown, 0 hidden to 1 at its first detent; drives the scrim. */
+-    internal val progress: Float
+-        get() {
+-            val a = anchors ?: return 0f
+-            if (offset.isNaN()) return 0f
+-            val rest = a.offsetOf(detents.maxBy { a.offsetOf(it) })
+-            return ((a.hidden - offset) / (a.hidden - rest)).coerceIn(0f, 1f)
+-        }
+-
+-    suspend fun animateTo(detent: SheetDetent) {
+-        require(detent in detents) { "$detent is not one of $detents" }
+-        val a = laidOut()
+-        animateOffset(a.offsetOf(detent))
+-    }
+-
+-    /** Slides the sheet away and then calls [onGone], once, however many times this is called. */
+-    suspend fun dismiss(onGone: () -> Unit = {}) {
+-        if (dismissing) return
+-        dismissing = true
+-        anchors?.let { animateOffset(it.hidden) }
+-        onGone()
+-    }
+-
+-    internal suspend fun show(animate: Boolean) {
+-        if (shown) return
+-        shown = true
+-        val a = laidOut()
+-        val target = a.offsetOf(initialDetent)
+-        if (animate) {
+-            offset = a.hidden
+-            animateOffset(target)
+-        } else {
+-            offset = target
+-        }
+-    }
+-
+-    /**
+-     * New anchors after the window changed size: a sheet resting on a detent stays on it, so a
+-     * rotation or an unfold never leaves it floating where the old detent was.
+-     */
+-    internal fun updateAnchors(new: SheetAnchors) {
+-        val old = anchors
+-        if (old == new) return
+-        val detent = if (old != null && !offset.isNaN() && !dismissing) detents.firstOrNull { abs(old.offsetOf(it) - offset) < 0.5f } else null
+-        anchors = new
+-        if (detent != null) offset = new.offsetOf(detent)
+-    }
+-
+-    private suspend fun laidOut(): SheetAnchors = snapshotFlow { anchors }.filterNotNull().first()
+-
+-    internal suspend fun stop() {
+-        motion.mutate(MutatePriority.UserInput) {}
+-    }
+-
+-    /**
+-     * Follows a drag. Past the top detent the sheet gives less the further it is pulled, on iOS's
+-     * rubber band over the window's height, and it never goes past hidden.
+-     */
+-    internal fun dragBy(delta: Float): Float {
+-        val a = anchors ?: return 0f
+-        if (offset.isNaN() || dismissing) return 0f
+-        if (dragStart.isNaN()) {
+-            dragStart = offset
+-            overshoot = 0f
+-        }
+-        val before = offset
+-        val top = a.offsetOf(detents.minBy { a.offsetOf(it) })
+-        if (overshoot > 0f || offset + delta < top) {
+-            val past = overshoot - delta - (offset - top).coerceAtLeast(0f)
+-            overshoot = past.coerceAtLeast(0f)
+-            offset = if (past > 0f) top - rubberBand(past, a.hidden) else (top - past).coerceAtMost(a.hidden)
+-        } else {
+-            offset = (offset + delta).coerceIn(top, a.hidden)
+-        }
+-        return offset - before
+-    }
+-
+-    private fun rubberBand(travel: Float, range: Float): Float = travel * rubberBand * range / (range + travel * rubberBand)
+-
+-    internal val canExpand: Boolean
+-        get() {
+-            val a = anchors ?: return false
+-            return offset > a.offsetOf(detents.minBy { a.offsetOf(it) }) + 0.5f
+-        }
+-
+-    internal val resting: Boolean
+-        get() {
+-            val a = anchors ?: return true
+-            return detents.any { abs(a.offsetOf(it) - offset) < 0.5f }
+-        }
+-
+-    /**
+-     * Settles after a drag, on a detent or off the bottom. [onSnap] runs when it lands on a detent
+-     * other than the one it started from; the result is true when it went off the bottom.
+-     */
+-    internal suspend fun settle(velocity: Float, onSnap: () -> Unit = {}): Boolean {
+-        val a = anchors ?: return false
+-        val from = if (dragStart.isNaN()) null else detents.minBy { abs(a.offsetOf(it) - dragStart) }
+-        dragStart = Float.NaN
+-        overshoot = 0f
+-        // The stop nearest to where the release would coast, as iOS picks a detent: a flick carries
+-        // the sheet a stop further, a slow release lands where it was let go.
+-        val projected = offset + velocity * ProjectionSeconds
+-        val stops = detents.map { a.offsetOf(it) } + a.hidden
+-        val target = stops.minBy { abs(it - projected) }
+-        if (target == a.hidden) {
+-            if (dismissing) return false
+-            dismissing = true
+-        }
+-        animateOffset(target, velocity)
+-        val landed = detents.firstOrNull { a.offsetOf(it) == target }
+-        if (landed != null && landed != from) onSnap()
+-        return target == a.hidden
+-    }
+-
+-    /** A back gesture the user took back: the sheet grows to its size again. */
+-    internal suspend fun cancelBack() {
+-        val spec = spring?.unit ?: return run { backProgress = 0f }
+-        animate(backProgress, 0f, animationSpec = spec) { value, _ -> backProgress = value }
+-    }
+-
+-    private suspend fun animateOffset(target: Float, velocity: Float = 0f) {
+-        val spec = spring?.pixels
+-        motion.mutate {
+-            if (spec == null || offset.isNaN()) {
+-                offset = target
+-            } else {
+-                animate(offset, target, velocity, spec) { value, _ -> offset = value }
+-            }
+-        }
+-    }
+-
+-    private companion object {
+-        /** iOS's paging deceleration (0.99 per ms) coasts `v · 0.99 / (1 − 0.99) / 1000` px: 0.099 s of `v`. */
+-        const val ProjectionSeconds = 0.099f
+-    }
+-}
+-
+-/** Where each detent puts the sheet's top edge. A form sheet rests at one place, the centre. */
+-internal data class SheetAnchors(val large: Float, val medium: Float, val hidden: Float, val form: Boolean) {
+-    fun offsetOf(detent: SheetDetent) = if (detent == SheetDetent.Large) large else medium
+-}
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt
+index bd4cd981..fb00dbe9 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/AppDesignStyle.kt
+@@ -17,7 +17,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
+  * ```
+  */
+ enum class AppDesignStyle {
+-    /** Cool neutrals, hairline outlines, a docked tab bar. Dense and calm: tools, finance, admin. */
++    /** Cool neutrals, hairline outlines, a floating tab bar. Dense and calm: tools, finance, admin. */
+     Utility,
+ 
+     /**
+diff --git a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/tokens/DesignTokens.kt b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/tokens/DesignTokens.kt
+index af39d4e4..88506d40 100644
+--- a/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/tokens/DesignTokens.kt
++++ b/templates/android/core/designsystem/src/main/kotlin/com/base/app/core/designsystem/theme/tokens/DesignTokens.kt
+@@ -751,7 +751,7 @@ internal object DesignTokens {
+             chipRadius = null,
+             card = CardTreatment.Outlined,
+             field = FieldTreatment.Outlined,
+-            bar = BarTreatment.Docked,
++            bar = BarTreatment.Floating,
+             indicator = BarIndicator.Subtle,
+             borderWidth = 1.dp,
+             borderWidthStrong = 1.5.dp,
+diff --git a/templates/android/core/designsystem/src/main/res/values/strings.xml b/templates/android/core/designsystem/src/main/res/values/strings.xml
+index ee3d3ee8..f1ad1584 100644
+--- a/templates/android/core/designsystem/src/main/res/values/strings.xml
++++ b/templates/android/core/designsystem/src/main/res/values/strings.xml
+@@ -27,6 +27,20 @@
+         <item quantity="one">%1$d person</item>
+         <item quantity="other">%1$d people</item>
+     </plurals>
++    <string name="designsystem_sheet_pane">Sheet</string>
++    <string name="designsystem_sheet_grabber">Resize sheet</string>
++    <string name="designsystem_sheet_expand">Expand sheet</string>
++    <string name="designsystem_sheet_collapse">Collapse sheet</string>
++    <string name="designsystem_sheet_dismiss">Dismiss sheet</string>
++    <string name="designsystem_sheet_close_scrim">Close sheet</string>
++    <string name="designsystem_sheet_state_expanded">Expanded</string>
++    <string name="designsystem_sheet_state_partial">Partially expanded</string>
++    <string name="designsystem_sheet_state_collapsed">Collapsed</string>
++    <string name="designsystem_actions_pane">Actions</string>
++    <string name="designsystem_sheet_discard_title">Discard changes?</string>
++    <string name="designsystem_sheet_discard">Discard</string>
++    <string name="designsystem_sheet_keep_editing">Keep Editing</string>
++    <string name="designsystem_none">None</string>
+     <string name="designsystem_nothing_selected">Nothing selected</string>
+     <string name="designsystem_nothing_selected_message">Choose something from the list to see it here.</string>
+     <!-- <opt:pickers> -->
+diff --git a/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionJourneysTest.kt b/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionJourneysTest.kt
+index c8a537e5..1fe37a17 100644
+--- a/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionJourneysTest.kt
++++ b/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/RecompositionJourneysTest.kt
+@@ -42,14 +42,14 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+ import com.base.app.core.designsystem.component.navigation.scrolledFromTop
+ import com.base.app.core.designsystem.component.overlay.AppContextMenu
+ import com.base.app.core.designsystem.component.overlay.AppMenuItem
+-import com.base.app.core.designsystem.component.overlay.AppSheet
+-import com.base.app.core.designsystem.component.overlay.AppSheetState
+-import com.base.app.core.designsystem.component.overlay.SheetDetent
+ import com.base.app.core.designsystem.component.pickers.AppWheelPicker
+ import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
+ import com.base.app.core.designsystem.component.selection.AppChip
+ import com.base.app.core.designsystem.component.selection.AppSegmentedControl
+ import com.base.app.core.designsystem.component.selection.AppSwitch
++import com.base.app.core.designsystem.component.sheet.AppSheet
++import com.base.app.core.designsystem.component.sheet.AppSheetState
++import com.base.app.core.designsystem.component.sheet.SheetDetent
+ import com.base.app.core.designsystem.component.text.AppText
+ import com.base.app.core.designsystem.foundation.LocalTabVisible
+ import com.base.app.core.designsystem.foundation.chromeContentPadding
+@@ -188,9 +188,9 @@ class RecompositionJourneysTest {
+ 
+     @Test
+     fun `dragging a sheet between its detents recomposes nothing`() {
+-        val state = AppSheetState()
++        val state = AppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large))
+         setContent {
+-            AppSheet(state = state, onDismiss = {}) { JourneyRow() }
++            AppSheet(visible = true, onDismissRequest = {}, state = state) { JourneyRow() }
+         }
+         rule.mainClock.advanceTimeBy(2_000)
+         counter.reset()
+diff --git a/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/LargeTitleTopBarTest.kt b/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/LargeTitleTopBarTest.kt
+index abb53a21..18a2ab2c 100644
+--- a/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/LargeTitleTopBarTest.kt
++++ b/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/component/navigation/LargeTitleTopBarTest.kt
+@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.lazy.LazyListState
++import androidx.compose.runtime.Composable
++import androidx.compose.runtime.CompositionLocalProvider
+ import androidx.compose.runtime.SideEffect
+ import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableFloatStateOf
+ import androidx.compose.runtime.mutableIntStateOf
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.setValue
+@@ -20,9 +23,11 @@ import androidx.compose.ui.graphics.toPixelMap
+ import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.platform.testTag
+ import androidx.compose.ui.test.captureToImage
++import androidx.compose.ui.test.getUnclippedBoundsInRoot
+ import androidx.compose.ui.test.junit4.v2.createComposeRule
+ import androidx.compose.ui.test.onAllNodesWithText
+ import androidx.compose.ui.test.onNodeWithTag
++import androidx.compose.ui.unit.Density
+ import androidx.compose.ui.unit.Dp
+ import androidx.compose.ui.unit.dp
+ import com.base.app.core.designsystem.TestSdk
+@@ -52,31 +57,41 @@ class LargeTitleTopBarTest {
+     private var contentCompositions = 0
+     private var withAccessory by mutableStateOf(true)
+ 
++    private var gap = Dp.Unspecified
++    private var fontScale by mutableFloatStateOf(1f)
++
+     private fun setBar() {
+         rule.setThemed {
+-            AppScaffold(
+-                topBar = {
+-                    AppLargeTitleTopBar(
+-                        title = "Inbox",
+-                        scrolled = { scrolled },
+-                        accessory = if (withAccessory) {
+-                            {
+-                                SideEffect { accessoryCompositions++ }
+-                                Box(Modifier.height(AccessoryHeight))
+-                            }
+-                        } else {
+-                            null
+-                        },
+-                    )
+-                },
+-            ) {
+-                inset = LocalTopChrome.current.value
+-                SideEffect { contentCompositions++ }
+-            }
++            gap = AppTheme.spacing.sm
++            val density = LocalDensity.current
++            CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) { Bar() }
+         }
+         rule.waitForIdle()
+     }
+ 
++    @Composable
++    private fun Bar() {
++        AppScaffold(
++            topBar = {
++                AppLargeTitleTopBar(
++                    title = "Inbox",
++                    scrolled = { scrolled },
++                    accessory = if (withAccessory) {
++                        {
++                            SideEffect { accessoryCompositions++ }
++                            Box(Modifier.height(AccessoryHeight).fillMaxWidth().testTag("accessory"))
++                        }
++                    } else {
++                        null
++                    },
++                )
++            },
++        ) {
++            inset = LocalTopChrome.current.value
++            SideEffect { contentCompositions++ }
++        }
++    }
++
+     @Test
+     fun `the accessory is part of the height content starts below`() {
+         withAccessory = false
+@@ -161,7 +176,35 @@ class LargeTitleTopBarTest {
+         assertEquals(1, rule.onAllNodesWithText("Inbox").fetchSemanticsNodes().size)
+     }
+ 
++    @Test
++    @Config(qualifiers = "w891dp-h411dp")
++    fun `in a window held sideways the accessory keeps its gap below the inline bar's hairline`() {
++        setBar()
++        val top = rule.onNodeWithTag("accessory").getUnclippedBoundsInRoot().top
++        assertEquals(TopBarHeight + gap, top)
++    }
++
++    @Test
++    fun `at a larger font scale the large title grows with the text, up to its cap`() {
++        setBar()
++        val regular = titleHeight()
++        fontScale = 1.5f
++        rule.waitForIdle()
++        val larger = titleHeight()
++        assertTrue("$regular then $larger", larger >= regular * 1.25f)
++        fontScale = 2f
++        rule.waitForIdle()
++        val largest = titleHeight()
++        assertEquals(larger.value, largest.value, 2f)
++    }
++
++    private fun titleHeight(): Dp {
++        val bounds = rule.onAllNodesWithText("Inbox")[1].getUnclippedBoundsInRoot()
++        return bounds.bottom - bounds.top
++    }
++
+     private companion object {
++        val TopBarHeight = 52.dp
+         val AccessoryHeight = 44.dp
+         val ListTopPadding = 200.dp
+         val ShortRow = 60.dp
+diff --git a/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt b/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt
+index b08153c1..6a6f8f79 100644
+--- a/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt
++++ b/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/adaptive/PostureTest.kt
+@@ -11,7 +11,9 @@ import androidx.compose.ui.test.onNodeWithTag
+ import androidx.compose.ui.unit.dp
+ import com.base.app.core.designsystem.TestSdk
+ import com.base.app.core.designsystem.component.collections.AppImageViewer
+-import com.base.app.core.designsystem.component.overlay.AppSheet
++import com.base.app.core.designsystem.component.sheet.AppSheet
++import com.base.app.core.designsystem.component.sheet.SheetDetent
++import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
+ import com.base.app.core.designsystem.theme.AppTheme
+ import com.base.app.core.designsystem.theme.ThemeMode
+ import org.junit.Assert.assertEquals
+@@ -67,9 +69,14 @@ class PostureTest {
+     }
+ 
+     @Test
+-    fun `in tabletop a sheet rises from the bottom and rests on the fold`() {
++    fun `R-12 in tabletop a sheet rises from the bottom and its medium detent rests on the fold`() {
+         setContent(WindowPosture(WindowPosture.Kind.Tabletop, hinge = Rect(0f, 400f, 800f, 420f))) {
+-            AppSheet(visible = true, onDismissRequest = {}, modifier = Modifier.testTag("sheet")) {
++            AppSheet(
++                visible = true,
++                onDismissRequest = {},
++                modifier = Modifier.testTag("sheet"),
++                state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
++            ) {
+                 Box(Modifier.fillMaxSize())
+             }
+         }
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/SheetScene.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/SheetScene.kt
+deleted file mode 100644
+index ba0bd7f4..00000000
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/SheetScene.kt
++++ /dev/null
+@@ -1,111 +0,0 @@
+-package com.base.app.core.navigation
+-
+-import androidx.compose.runtime.Composable
+-import androidx.compose.runtime.DisposableEffect
+-import androidx.compose.runtime.Immutable
+-import androidx.compose.runtime.annotation.FrequentlyChangingValue
+-import androidx.compose.runtime.getValue
+-import androidx.compose.runtime.mutableStateOf
+-import androidx.compose.runtime.remember
+-import androidx.compose.runtime.setValue
+-import androidx.navigation3.runtime.NavEntry
+-import androidx.navigation3.runtime.NavMetadataKey
+-import androidx.navigation3.runtime.get
+-import androidx.navigation3.runtime.metadata
+-import androidx.navigation3.scene.OverlayScene
+-import androidx.navigation3.scene.Scene
+-import androidx.navigation3.scene.SceneStrategy
+-import androidx.navigation3.scene.SceneStrategyScope
+-import com.base.app.core.designsystem.component.overlay.AppSheet
+-import com.base.app.core.designsystem.component.overlay.AppSheetState
+-import com.base.app.core.designsystem.component.overlay.SheetDetent
+-
+-/** How a destination presented as a sheet rests: its detents, and whether it shows a close button. */
+-@Immutable
+-data class SheetPresentation(
+-    val detents: Set<SheetDetent> = setOf(SheetDetent.Medium, SheetDetent.Large),
+-    val showCloseButton: Boolean = false,
+-)
+-
+-/**
+- * The sheet strategy of the shell's presentation host: an entry registered with
+- * [SheetSceneStrategy.sheet] metadata is shown as an `AppSheet` over the entries beneath it, which
+- * stay composed and visible behind the scrim.
+- *
+- * Navigation 3 needs something under an overlay, so the presentation host keeps an empty root entry
+- * at the bottom of its stack; with nothing beneath, this strategy declines.
+- *
+- * Each sheet's state is kept across the scene being rebuilt for every back-stack change, so a pop
+- * from anywhere (Back, a programmatic pop, a parent closing it) slides the sheet away before the
+- * entry leaves, and a second Back while it slides does nothing.
+- */
+-class SheetSceneStrategy<T : Any> : SceneStrategy<T> {
+-    private val states = mutableMapOf<Any, AppSheetState>()
+-    internal var shown by mutableStateOf<AppSheetState?>(null)
+-
+-    /**
+-     * How far the sheet on screen is toward its large detent, 0 with none: what the shell reads to
+-     * recede behind it, as iOS's card stack does. Read it in a layer or draw block; it changes on
+-     * every frame of a drag.
+-     */
+-    @get:FrequentlyChangingValue
+-    val largeFraction: Float
+-        get() = shown?.largeFraction ?: 0f
+-
+-    override fun SceneStrategyScope<T>.calculateScene(entries: List<NavEntry<T>>): Scene<T>? {
+-        val top = entries.lastOrNull()
+-        val presentation = top?.metadata?.get(SheetKey)
+-        if (top == null || presentation == null) {
+-            states.clear()
+-            return null
+-        }
+-        val below = entries.dropLast(1)
+-        if (below.isEmpty()) return null
+-        states.keys.retainAll(setOf(top.contentKey))
+-        val state = states.getOrPut(top.contentKey) { AppSheetState(presentation.detents) }
+-        return SheetScene(top, below, state, presentation, onBack, this@SheetSceneStrategy)
+-    }
+-
+-    companion object {
+-        object SheetKey : NavMetadataKey<SheetPresentation>
+-
+-        /** The metadata that marks an entry as a sheet. */
+-        fun sheet(presentation: SheetPresentation = SheetPresentation()): Map<String, Any> =
+-            metadata { put(SheetKey, presentation) }
+-    }
+-}
+-
+-@Composable
+-fun <T : Any> rememberSheetSceneStrategy(): SheetSceneStrategy<T> = remember { SheetSceneStrategy() }
+-
+-private class SheetScene<T : Any>(
+-    private val entry: NavEntry<T>,
+-    override val previousEntries: List<NavEntry<T>>,
+-    private val state: AppSheetState,
+-    private val presentation: SheetPresentation,
+-    private val onBack: () -> Unit,
+-    private val strategy: SheetSceneStrategy<T>,
+-) : OverlayScene<T> {
+-    override val key: Any = entry.contentKey
+-    override val entries: List<NavEntry<T>> = listOf(entry)
+-    override val overlaidEntries: List<NavEntry<T>> = previousEntries
+-
+-    override val content: @Composable () -> Unit = {
+-        DisposableEffect(state) {
+-            strategy.shown = state
+-            onDispose { if (strategy.shown === state) strategy.shown = null }
+-        }
+-        AppSheet(state = state, onDismiss = onBack, showCloseButton = presentation.showCloseButton) {
+-            entry.Content()
+-        }
+-    }
+-
+-    override suspend fun onRemove() {
+-        state.dismiss()
+-    }
+-
+-    override fun equals(other: Any?): Boolean =
+-        other is SheetScene<*> && entry == other.entry && previousEntries == other.previousEntries && presentation == other.presentation
+-
+-    override fun hashCode(): Int = (31 * entry.hashCode() + previousEntries.hashCode()) * 31 + presentation.hashCode()
+-}
+diff --git a/templates/android/feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt b/templates/android/feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt
+index a56b46d7..2c333798 100644
+--- a/templates/android/feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt
++++ b/templates/android/feature/settings/src/main/kotlin/com/base/app/feature/settings/Settings.kt
+@@ -49,8 +49,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
+ import javax.inject.Inject
+ // <opt:language>
+ import androidx.compose.ui.platform.LocalContext
+-import com.base.app.core.designsystem.component.overlay.AppActionSheet
+-import com.base.app.core.designsystem.component.overlay.SheetAction
++import com.base.app.core.designsystem.component.sheet.action.AppActionSheet
++import com.base.app.core.designsystem.component.sheet.action.SheetAction
+ import com.base.app.core.ui.locale.AppLocales
+ // </opt:language>
+ // <opt:browser>
+diff --git a/tokens/styles.json b/tokens/styles.json
+index fba15c7c..ffcd99d8 100644
+--- a/tokens/styles.json
++++ b/tokens/styles.json
+@@ -1,13 +1,13 @@
+ {
+   "Utility": {
+-    "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
++    "description": "Cool neutrals, hairline outlines, a floating tab bar. Tools, finance, admin.",
+     "requires": [],
+     "radii": { "xs": 6, "sm": 10, "md": 14, "lg": 20, "xl": 28, "sheet": 24 },
+     "buttonRadius": 10,
+     "chipRadius": "pill",
+     "card": "Outlined",
+     "field": "Outlined",
+-    "bar": "Docked",
++    "bar": "Floating",
+     "indicator": "Subtle",
+     "borderWidth": 1,
+     "borderWidthStrong": 1.5,
+diff --git a/web/frontend/lib/catalogue.json b/web/frontend/lib/catalogue.json
+index 7a884ac2..65cf3e89 100644
+--- a/web/frontend/lib/catalogue.json
++++ b/web/frontend/lib/catalogue.json
+@@ -1,5 +1,5 @@
+ {
+-  "generator_commit": "e2cec54b37cc",
++  "generator_commit": "46ec781bf54f",
+   "rules": {
+     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
+     "app_name_max": 50,
+@@ -190,7 +190,7 @@
+       },
+       "design_styles": [
+         {
+-          "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
++          "description": "Cool neutrals, hairline outlines, a floating tab bar. Tools, finance, admin.",
+           "key": "Utility",
+           "requires": [],
+           "title": "Utility"
+@@ -2686,7 +2686,7 @@
+         "voice": "Bold"
+       },
+       "Utility": {
+-        "bar": "Docked",
++        "bar": "Floating",
+         "borderWidth": 1,
+         "borderWidthStrong": 1.5,
+         "buttonRadius": 10,

@@ -1,0 +1,345 @@
+[locked:memwait] 577 MB available, 727 MB commit left; waiting for 1500 MB
+.............................................EFFF.EsFFFEFFFF........F.s.....FFFFFFFFFFF....s.FE.F....................................................................................................................................................................
+======================================================================
+ERROR: test_a_preset_replaces_a_specs_features (tests.test_cli.CliTest.test_a_preset_replaces_a_specs_features)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 158, in test_a_preset_replaces_a_specs_features
+    self.assertEqual(["catalog", "leakcanary", "network", "sample"], json.loads(result.stdout)["enabled"])
+                                                                     ~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\__init__.py", line 371, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 358, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 376, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_force_replaces_a_junction_and_not_the_directory_it_points_at (tests.test_cli.CliTest.test_force_replaces_a_junction_and_not_the_directory_it_points_at)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 120, in test_force_replaces_a_junction_and_not_the_directory_it_points_at
+    subprocess.run(["cmd", "/c", "mklink", "/J", str(junction), str(real)], capture_output=True, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['cmd', '/c', 'mklink', '/J', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpc7ih4rsx\\junction', 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpc7ih4rsx\\real']' returned non-zero exit status 3221225794.
+
+======================================================================
+ERROR: test_list_features_json (tests.test_cli.CliTest.test_list_features_json)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 176, in test_list_features_json
+    features = json.loads(run("--list-features", "--json").stdout)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\__init__.py", line 371, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 358, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\json\decoder.py", line 376, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_a_non_ascii_password_round_trips (tests.test_keystores.GenerationTest.test_a_non_ascii_password_round_trips)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_keystores.py", line 121, in test_a_non_ascii_password_round_trips
+    values = load_properties((self.project / "keystore.properties").read_text(encoding="iso-8859-1"))
+                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 986, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 970, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpqkeisotc\\keystore.properties'
+
+======================================================================
+FAIL: test_a_refusal_with_json_is_the_headless_shape (tests.test_cli.CliTest.test_a_refusal_with_json_is_the_headless_shape)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 62, in test_a_refusal_with_json_is_the_headless_shape
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_a_zip_path_must_say_zip (tests.test_cli.CliTest.test_a_zip_path_must_say_zip)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 78, in test_a_zip_path_must_say_zip
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_an_unknown_preset_names_the_ones_that_exist (tests.test_cli.CliTest.test_an_unknown_preset_names_the_ones_that_exist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 162, in test_an_unknown_preset_names_the_ones_that_exist
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_force_replaces_exactly_the_destination (tests.test_cli.CliTest.test_force_replaces_exactly_the_destination)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 96, in test_force_replaces_exactly_the_destination
+    self.assertEqual(0, forced.returncode, forced.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_json_means_only_json_on_stdout (tests.test_cli.CliTest.test_json_means_only_json_on_stdout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 46, in test_json_means_only_json_on_stdout
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_json_without_out_is_refused_rather_than_asked (tests.test_cli.CliTest.test_json_without_out_is_refused_rather_than_asked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 73, in test_json_without_out_is_refused_rather_than_asked
+    self.assertEqual(2, result.returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3221225794
+
+======================================================================
+FAIL: test_out_is_the_zip_itself (tests.test_cli.CliTest.test_out_is_the_zip_itself)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 67, in test_out_is_the_zip_itself
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_set_overrides_after_the_spec_is_read (tests.test_cli.CliTest.test_set_overrides_after_the_spec_is_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 151, in test_set_overrides_after_the_spec_is_read
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_reported_path_spells_the_directories_one_way (tests.test_cli.CliTest.test_the_reported_path_spells_the_directories_one_way)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 56, in test_the_reported_path_spells_the_directories_one_way
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_summary_says_when_the_build_desugars (tests.test_cli.CliTest.test_the_summary_says_when_the_build_desugars)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_cli.py", line 171, in test_the_summary_says_when_the_build_desugars
+    self.assertEqual(0, result.returncode, result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794 : 
+
+======================================================================
+FAIL: test_the_commit_marks_the_wrapper_script_executable_and_nothing_else (tests.test_golden.GoldenTest.test_the_commit_marks_the_wrapper_script_executable_and_nothing_else)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_golden.py", line 167, in test_the_commit_marks_the_wrapper_script_executable_and_nothing_else
+    self.assertEqual(["a warning"], result.warnings)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['a warning'] != ['a warning', '`git init` failed (exit code 322122579[28 chars]ne.']
+
+Second list contains 1 additional elements.
+First extra element 1:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- ['a warning']
+?             ^
+
++ ['a warning',
+?             ^
+
++  '`git init` failed (exit code 3221225794). The project itself is fine.']
+
+======================================================================
+FAIL: test_a_good_spec_writes_a_zip_and_says_so (tests.test_headless.ScriptTest.test_a_good_spec_writes_a_zip_and_says_so)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 40, in test_a_good_spec_writes_a_zip_and_says_so
+    code, result = run_script(json.dumps({**SPEC, "features": ["room"]}).encode(), "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_a_path_on_the_server_is_never_read (tests.test_headless.ScriptTest.test_a_path_on_the_server_is_never_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 78, in test_a_path_on_the_server_is_never_read
+    code, result = run_script(json.dumps({**SPEC, "android": {"keystores": [keystore]}}).encode(), str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_a_schema_one_spec_reports_what_it_ignored (tests.test_headless.ScriptTest.test_a_schema_one_spec_reports_what_it_ignored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 53, in test_a_schema_one_spec_reports_what_it_ignored
+    code, result = run_script(
+                   ~~~~~~~~~~^
+        json.dumps({"app_name": "Old", "package_name": "com.example.old", "colour": "red"}).encode(), str(self.out)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_an_unknown_target_and_bad_arguments_are_refusals (tests.test_headless.ScriptTest.test_an_unknown_target_and_bad_arguments_are_refusals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 89, in test_an_unknown_target_and_bad_arguments_are_refusals
+    self.assertEqual(2, run_script(json.dumps(SPEC).encode(), "--target", "symbian", str(self.out))[0])
+                        ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_more_than_32_kb_is_refused_before_it_is_parsed (tests.test_headless.ScriptTest.test_more_than_32_kb_is_refused_before_it_is_parsed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 84, in test_more_than_32_kb_is_refused_before_it_is_parsed
+    code, result = run_script(b" " * (32 * 1024 + 1), str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'{"schema": 2, "platform": "android", "app_name": "x"}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'{"schema": 2, "platform": "android", "app_name": "Head Less"')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'null')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'not json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field) (stdin=b'\xff\xfe')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 71, in test_refusals_exit_2_with_the_field
+    code, result = run_script(stdin, "--target", "android", str(self.out))
+                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_headless.py", line 28, in run_script
+    assert len(lines) == 1, f"stdout must be exactly one JSON object, got: {result.stdout!r}"
+           ^^^^^^^^^^^^^^^
+AssertionError: stdout must be exactly one JSON object, got: b''
+
+======================================================================
+FAIL: test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens (tests.test_keystores.GenerationTest.test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_keystores.py", line 114, in test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens
+    self.assertEqual((["prod"], []), (generated, skipped))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (['prod'], []) != ([], ['prod'])
+
+First differing element 0:
+['prod']
+[]
+
+- (['prod'], [])
++ ([], ['prod'])
+
+======================================================================
+FAIL: test_reusing_the_dev_key_for_staging_copies_it (tests.test_keystores.GenerationTest.test_reusing_the_dev_key_for_staging_copies_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WIN\generator\tests\test_keystores.py", line 141, in test_reusing_the_dev_key_for_staging_copies_it
+    self.assertEqual(["dev", "staging"], generated)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['dev', 'staging'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'dev'
+
+- ['dev', 'staging']
++ []
+
+----------------------------------------------------------------------
+Ran 256 tests in 255.297s
+
+FAILED (failures=24, errors=4, skipped=3)

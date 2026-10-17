@@ -1,0 +1,6 @@
+standard: 314 files; the old generator wrote CRLF into 4 of them on Windows; template sources that are CRLF themselves: ['gradle/wrapper/gradle-wrapper.jar', 'gradlew.bat']
+  zip: 314 entries under Standard/, executable: ['Standard/gradlew']
+everything-brand: 469 files; the old generator wrote CRLF into 96 of them on Windows; template sources that are CRLF themselves: ['gradle/wrapper/gradle-wrapper.jar', 'gradlew.bat']
+  zip: 469 entries under TrailNotes/, executable: ['TrailNotes/gradlew']
+COMPARE OK
+EXIT 0

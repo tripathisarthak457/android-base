@@ -1,0 +1,18 @@
+everything-modules:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+pair-0:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+pair-10:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+pair-2:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+pair-3:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+pair-6:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+preset-everything-compact:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+preset-standard-compact:
+  HILT app/src/main/kotlin/{pkg}/ConsistencyApplication.kt: field needs dagger.Lazy<OkHttpClient>
+
+61 projects in 63 s: 8 new issues, 418 known (7 of 7 known-issue lines seen).

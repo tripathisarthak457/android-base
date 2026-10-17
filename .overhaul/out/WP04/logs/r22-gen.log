@@ -1,0 +1,141 @@
+C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\pathlib\__init__.py", line 1414, in symlink_to
+    os.symlink(target, self, target_is_directory)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpl0_5kydl\\real' -> 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpl0_5kydl\\link'
+
+======================================================================
+FAIL: test_json_means_only_json_on_stdout (tests.test_cli.CliTest.test_json_means_only_json_on_stdout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_cli.py", line 45, in test_json_means_only_json_on_stdout
+    self.assertEqual(str(self.root / "p"), data["path"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp64jq26rp\\p' != 'C:\\Users\\crazyhusir\\AppData\\Local\\Temp\\tmp64jq26rp\\p'
+- C:\Users\CRAZYH~1\AppData\Local\Temp\tmp64jq26rp\p
+?          ^^^^^^^^
++ C:\Users\crazyhusir\AppData\Local\Temp\tmp64jq26rp\p
+?          ^^^^^^^^^^
+
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='all')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'com.example.trail BaseApp\n' != b'com.example.trail BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='none')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'io.bare.min BaseApp\n' != b'io.bare.min BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='hostile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'com.base.apple BaseApp\n' != b'com.base.apple BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_the_wrapper_script_is_executable_and_nothing_else_is (tests.test_golden.GoldenTest.test_the_wrapper_script_is_executable_and_nothing_else_is)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 148, in test_the_wrapper_script_is_executable_and_nothing_else_is
+    self.assertEqual({"gradlew"}, executable)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'gradlew'
+Items in the second set but not the first:
+'run.bat'
+
+----------------------------------------------------------------------
+Ran 250 tests in 99.117s
+
+FAILED (failures=5, errors=1, skipped=1)
+
+GEN-TESTS OK: 250 tests, failures only from the Windows baseline: {'test_force_replaces_a_link_and_not_the_directory_it_points_at': 1, 'test_json_means_only_json_on_stdout': 1, 'test_every_case_matches_its_golden_tree': 3, 'test_the_wrapper_script_is_executable_and_nothing_else_is': 1}
+Process SpawnProcess-1:
+Process SpawnProcess-2:
+Process SpawnProcess-3:
+Process SpawnProcess-4:
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: module '__main__' has no attribute 'run_one'
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: module '__main__' has no attribute 'run_one'
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: module '__main__' has no attribute 'run_one'
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: module '__main__' has no attribute 'run_one'
+concurrent.futures.process._RemoteTraceback: 
+'''
+Process 15652 terminated abruptly with exit code 1'''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 201, in _run_module_as_main
+  File "<frozen runpy>", line 87, in _run_code
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\consistency\__main__.py", line 189, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\consistency\__main__.py", line 151, in main
+    name, issues = future.result()
+                   ~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\_base.py", line 447, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\_base.py", line 396, in __get_result
+    raise self._exception
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.

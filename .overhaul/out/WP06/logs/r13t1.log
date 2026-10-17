@@ -1,0 +1,25 @@
+[locked:gradle] waiting for the lock (pid 18176 since 2026-10-17 14:20:10: bash -c ./gradlew :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest --console=plain && ./gradlew build --cons)
+[locked:gradle] waiting for the lock (pid 18176 since 2026-10-17 14:20:10: bash -c ./gradlew :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest --console=plain && ./gradlew build --cons)
+[locked:gradle] waiting for the lock (pid 18176 since 2026-10-17 14:20:10: bash -c ./gradlew :core:navigation:testDebugUnitTest :app:testDevDebugUnitTest --console=plain && ./gradlew build --cons)
+[locked:gradle] waiting for the lock (pid 13728 since 2026-10-17 14:42:08: ./gradlew -Pandroid.builder.sdkDownload=false :core:applock:testDebugUnitTest :core:devtools:testDebugUnitTest :core:pla)
+[locked:gradle] 2136 MB available, 3946 MB commit left; waiting for 3500 MB
+[locked:gradle] 2361 MB available, 3850 MB commit left; waiting for 3500 MB
+[locked:gradle] 2066 MB available, 3638 MB commit left; waiting for 3500 MB
+[locked:gradle] 2102 MB available, 3951 MB commit left; waiting for 3500 MB
+[locked:gradle] 2542 MB available, 4026 MB commit left; waiting for 3500 MB
+[locked:gradle] 2622 MB available, 3956 MB commit left; waiting for 3500 MB
+[locked:gradle] 2946 MB available, 3855 MB commit left; waiting for 3500 MB
+[locked:gradle] 3312 MB available, 4173 MB commit left; waiting for 3500 MB
+[locked:gradle] 3097 MB available, 3889 MB commit left; waiting for 3500 MB
+[locked:gradle] 3428 MB available, 4230 MB commit left; waiting for 3500 MB
+[locked:gradle] 3488 MB available, 4344 MB commit left; waiting for 3500 MB
+[locked:gradle] 3478 MB available, 4376 MB commit left; waiting for 3500 MB
+[locked:gradle] 3468 MB available, 4301 MB commit left; waiting for 3500 MB
+[locked:gradle] 2599 MB available, 3785 MB commit left; waiting for 3500 MB
+[locked:gradle] 3333 MB available, 4039 MB commit left; waiting for 3500 MB
+[locked:gradle] 3373 MB available, 4029 MB commit left; waiting for 3500 MB
+[locked:gradle] 3280 MB available, 3906 MB commit left; waiting for 3500 MB
+[locked:gradle] 3307 MB available, 3994 MB commit left; waiting for 3500 MB
+[locked:gradle] 3264 MB available, 3848 MB commit left; waiting for 3500 MB
+[locked:gradle] 3387 MB available, 4103 MB commit left; waiting for 3500 MB
+[locked:gradle] 3339 MB available, 4071 MB commit left; waiting for 3500 MB

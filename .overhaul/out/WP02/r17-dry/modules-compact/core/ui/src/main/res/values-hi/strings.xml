@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_error_generic">कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।</string>
+    <string name="ui_error_offline">आप ऑफ़लाइन हैं। अपना कनेक्शन जांचें और फिर से कोशिश करें।</string>
+    <string name="ui_error_unreachable">सर्वर से कनेक्ट नहीं हो सका। थोड़ी देर में फिर से कोशिश करें।</string>
+</resources>

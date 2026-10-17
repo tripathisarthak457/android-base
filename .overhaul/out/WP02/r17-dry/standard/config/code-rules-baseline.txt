@@ -1,0 +1,72 @@
+# Findings verifyCodeRules accepts in code written before its rule existed: `<path> <rule> <count>`.
+# A file may break the rule at most `count` times. An entry higher than what the file breaks fails
+# the build too, so the list only shrinks: lower or delete a line when you fix the code. New code
+# never goes here; fix it, or put a reasoned `// allow(<rule>): <why>` on the line above.
+
+# Screens
+feature/auth/src/main/kotlin/com/example/standard/feature/auth/AuthFrame.kt adaptive-box-constraints 1
+feature/auth/src/main/kotlin/com/example/standard/feature/auth/AuthFrame.kt scroll-chrome 1
+feature/auth/src/main/kotlin/com/example/standard/feature/auth/PasswordReset.kt adaptive-preview 1
+feature/auth/src/main/kotlin/com/example/standard/feature/auth/SignIn.kt adaptive-preview 1
+feature/auth/src/main/kotlin/com/example/standard/feature/auth/SignUp.kt adaptive-preview 1
+feature/feed/src/main/kotlin/com/example/standard/feature/feed/FeedScreen.kt adaptive-preview 1
+feature/feed/src/main/kotlin/com/example/standard/feature/feed/FeedScreen.kt scroll-chrome 1
+feature/onboarding/src/main/kotlin/com/example/standard/feature/onboarding/Onboarding.kt adaptive-preview 1
+feature/onboarding/src/main/kotlin/com/example/standard/feature/onboarding/Onboarding.kt raw-dp 2
+feature/profile/src/main/kotlin/com/example/standard/feature/profile/ProfileScreen.kt adaptive-preview 1
+feature/profile/src/main/kotlin/com/example/standard/feature/profile/ProfileScreen.kt raw-dp 1
+feature/profile/src/main/kotlin/com/example/standard/feature/profile/ProfileScreen.kt scroll-chrome 1
+feature/sample/src/main/kotlin/com/example/standard/feature/sample/detail/SampleDetailScreen.kt adaptive-preview 1
+feature/sample/src/main/kotlin/com/example/standard/feature/sample/detail/SampleDetailScreen.kt scroll-chrome 1
+feature/sample/src/main/kotlin/com/example/standard/feature/sample/list/SampleListScreen.kt adaptive-preview 1
+feature/sample/src/main/kotlin/com/example/standard/feature/sample/list/SampleListScreen.kt scroll-chrome 2
+feature/search/src/main/kotlin/com/example/standard/feature/search/SearchResult.kt scroll-chrome 1
+feature/search/src/main/kotlin/com/example/standard/feature/search/SearchScreen.kt adaptive-preview 1
+feature/search/src/main/kotlin/com/example/standard/feature/search/SearchScreen.kt raw-dp 2
+feature/search/src/main/kotlin/com/example/standard/feature/search/SearchScreen.kt scroll-chrome 2
+feature/settings/src/main/kotlin/com/example/standard/feature/settings/Licenses.kt adaptive-preview 1
+feature/settings/src/main/kotlin/com/example/standard/feature/settings/Licenses.kt scroll-chrome 1
+feature/settings/src/main/kotlin/com/example/standard/feature/settings/Settings.kt adaptive-preview 1
+feature/settings/src/main/kotlin/com/example/standard/feature/settings/Settings.kt scroll-chrome 1
+
+# Design system and catalog
+catalog/src/main/kotlin/com/example/standard/catalog/CatalogComponents.kt file-length 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/animation/AppTransitions.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/button/AppButton.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/data/AppDataDisplay.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/feedback/AppProgress.kt animated-delegate 4
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/feedback/AppSkeleton.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/feedback/AppStepIndicator.kt animated-delegate 3
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/input/AppOtpField.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/input/AppSpecialFields.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/input/AppTextField.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/list/AppListPieces.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/navigation/AppBottomBar.kt animated-delegate 4
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/navigation/AppTabRow.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/navigation/AppTopBar.kt animated-delegate 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/overlay/AppBottomSheet.kt layer-alpha-fill 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/overlay/AppDialog.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/overlay/AppDropdownMenu.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/selection/AppChip.kt animated-delegate 3
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/selection/AppRangeSlider.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/selection/AppSegmentedControl.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/selection/AppSelection.kt animated-delegate 8
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/component/selection/AppSlider.kt animated-delegate 2
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/icon/AppIcons.kt file-length 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/icon/AppIcons.kt slop-comment 12
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/theme/AppWindowSize.kt adaptive-screen-metrics 1
+core/designsystem/src/main/kotlin/com/example/standard/core/designsystem/theme/Palette.kt slop-comment 6
+
+# Navigation shell
+core/navigation/src/main/kotlin/com/example/standard/core/navigation/AppShell.kt legacy-back 1
+
+# Data and platform services
+app/src/main/kotlin/com/example/standard/playstore/PlayStorePrompts.kt run-catching 1
+app/src/main/kotlin/com/example/standard/session/SessionCoordinator.kt run-catching 1
+core/media/src/main/kotlin/com/example/standard/core/media/ImageCompressor.kt run-catching 2
+core/media/src/main/kotlin/com/example/standard/core/media/VideoTranscoder.kt run-catching 2
+core/network/src/main/kotlin/com/example/standard/core/network/NetworkClient.kt dispatchers-io 2
+core/network/src/main/kotlin/com/example/standard/core/network/NetworkClient.kt run-catching 2
+core/network/src/main/kotlin/com/example/standard/core/network/ResponseCache.kt run-catching 3
+core/network/src/main/kotlin/com/example/standard/core/network/websocket/AppWebSocket.kt run-catching 2
+core/notification/src/main/kotlin/com/example/standard/core/notification/PushTokenRegistrar.kt run-catching 2

@@ -19,7 +19,7 @@ import subprocess
 import sys
 import time
 
-PERF = "/home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.py"
+PERF = "D:/projects/tools/.overhaul/wt/WP04/templates/android/tools/perf/perf.py"
 spec = importlib.util.spec_from_file_location("perf", PERF)
 perf = importlib.util.module_from_spec(spec)
 sys.path.insert(0, os.path.dirname(PERF))

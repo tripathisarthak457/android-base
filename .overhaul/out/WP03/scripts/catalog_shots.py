@@ -19,7 +19,7 @@ import time
 
 SECTIONS = [
     "Foundations", "Feel", "Text", "Buttons", "Inputs", "Selection", "Lists", "Containers", "Bars",
-    "Overlays", "Feedback", "Motion", "Adaptive", "Pickers", "Fields", "Data", "Collections",
+    "Overlays", "Sheets", "Feedback", "Loading", "Motion", "Adaptive", "Pickers", "Fields", "Data", "Collections",
 ]
 
 

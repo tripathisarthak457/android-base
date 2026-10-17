@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- INTERNET and ACCESS_NETWORK_STATE come from :core:network, declared by the module whose
+         code needs them. Manifest merging brings them here. -->
+    <application
+        android:name=".StandardApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Standard">
+
+        <!-- Desktop windowing may open a second window of the app; each one is its own task. -->
+        <property
+            android:name="android.window.PROPERTY_SUPPORTS_MULTI_INSTANCE_SYSTEM_UI"
+            android:value="true" />
+
+        <!--
+          Resizing, folding, rotating or attaching a keyboard reaches Compose as a new configuration
+          instead of recreating the activity, so the screen keeps its state and does not flash.
+          Density, theme, locale and font scale still recreate it: resources have to reload.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation"
+            android:exported="true"
+            android:theme="@style/Theme.Standard.Starting"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!--
+              Custom scheme. Always works, never verified, and any app can claim the same scheme —
+              so it is the fallback, not the primary route in.
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/deeplink_scheme" />
+            </intent-filter>
+
+            <!--
+              App Links. `autoVerify` makes Android check /.well-known/assetlinks.json on the host
+              at install time; when it matches, these URLs open the app directly with no chooser.
+              Without a correctly served assetlinks.json the filter still works, but the user gets
+              a disambiguation dialog every time — which most of them will answer with "browser".
+            -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="@string/deeplink_host"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

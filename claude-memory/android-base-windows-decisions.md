@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 59fc6fe8-3960-47f4-b4f7-458761b66208
-  modified: 2026-10-17T06:56:32.039Z
+  modified: 2026-10-17T10:03:58.969Z
 ---
 
 On 2026-10-17 (first Windows session, after reading the Linux handover `.overhaul/handover/HANDOVER.md` from branch
@@ -19,12 +19,21 @@ On 2026-10-17 (first Windows session, after reading the Linux handover `.overhau
 3. **`overhaul-workspace` history: rewrite all 7 commits in place** (same branch name), scrubbing only the leaked
    strings (unredacted WIPE-READINESS.md and USER-MESSAGES.md in commits 1-2, the work-org name in
    `scripts/merge-all-to-main.js`, the work-org app id in a `perf/WP11` INVALID.txt, a third-party folder name in
-   `SESSION-2026-10-16.md`). One `--force-with-lease` push, only after he has seen the verified diff.
+   `SESSION-2026-10-16.md`). Done and pushed on Oct 17 (on his "do what's best" also scrubbing the work-org product
+   name, PeriFlow's private perf/log texts and old commit ids); he files the GitHub Support purge request.
 4. **Standing OK for non-main backup pushes** of android-base: `wp/*`, `overhaul/*`, `merged/*` tags and
    `overhaul-workspace`, at session end, after merges and before usage cutoffs, after a secret scan. Never `main`,
    never `--force` (the one-off history rewrite has its own OK), never deleting remote branches.
 5. Default he did not object to: PeriFlow (WP11) stays out of the relaunch; its build secrets exist only in the Drive
    zip he asked not to touch.
+6. **Cronet (REQUIREMENTS 39) is in the Android release** (14:30): "I care about full android release now, uske bad we
+   will work on rest platforms". It was scheduled after the gate before; now package NET in `to-release.js` does it
+   (after WP06 and WP02-M2 merge) and WP12/WP13 wait for it. Android first, then Compose Multiplatform and Swift.
+   Same day he added **Brotli on by default for every generated app** to NET (okhttp-brotli on the shared OkHttpClient):
+   his Vercel site serves Brotli but not HTTP/3, so Cronet's HTTP/3 gains need a VPS behind Caddy with UDP 443 open.
+   He wants a plain-English hourly status (he "always feels left out" otherwise).
+7. Ultracode: advised against for this project (memory-bound laptop, the scripts already parallelise); effort stays
+   xhigh because workflow agents inherit the session's effort.
 
 **Why:** his answers to HANDOVER §1.7 items 0 and 10, and to the conflict between the handover's push policy and his
 global "ask before pushing" rule.

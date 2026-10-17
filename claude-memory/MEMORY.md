@@ -1,5 +1,5 @@
 - [Claude app AppData redirect](claude-app-appdata-redirect.md) — agent-shell writes to %APPDATA% go into the MSIX package; use a Terminal tab
-- [android-base Windows decisions](android-base-windows-decisions.md) — 2026-10-17: native not WSL, no merge-all, rewrite workspace history, standing OK for non-main backup pushes
+- [android-base Windows decisions](android-base-windows-decisions.md) — 2026-10-17: native not WSL, no merge-all, rewrite workspace history, standing OK for non-main backup pushes, Cronet in the Android release
 - [winget: never auto-accept](winget-no-auto-accept.md) — no --accept-* flags, even read-only; query with --source winget
 - [android-base generator overhaul](android-base-generator.md) — the user's generator; overhaul resumed natively at D:\projects\tools on Oct 17; read .overhaul/handover/HANDOVER.md; standing instructions
 - [Android skills plugin](android-skills-installed.md) — 1.0.15; shallow clone with CRLF working files on Windows; vendor from git objects

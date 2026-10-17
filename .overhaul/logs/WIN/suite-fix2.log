@@ -1,0 +1,27 @@
+......................................................s...................s..............................ss...........................................................................................................................................................................
+Slowest test durations
+----------------------------------------------------------------------
+41.743s    test_every_package_line_matches_its_directory (tests.test_rename.HostileNamesTest.test_every_package_line_matches_its_directory)
+7.426s     test_a_schema_one_spec_reports_what_it_ignored (tests.test_headless.ScriptTest.test_a_schema_one_spec_reports_what_it_ignored)
+6.482s     test_nothing_printed_while_generating_reaches_stdout (tests.test_headless.InternalFailureTest.test_nothing_printed_while_generating_reaches_stdout)
+5.972s     test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return (tests.test_android_target.ProjectTest.test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return)
+5.794s     test_a_shipped_token_copy_is_re_emitted_with_the_specs_brand (tests.test_android_target.TokenCopyTest.test_a_shipped_token_copy_is_re_emitted_with_the_specs_brand)
+4.739s     test_a_good_spec_writes_a_zip_and_says_so (tests.test_headless.ScriptTest.test_a_good_spec_writes_a_zip_and_says_so)
+4.562s     test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens (tests.test_keystores.GenerationTest.test_a_differing_key_password_is_dropped_with_a_warning_and_the_key_opens)
+4.418s     test_out_is_the_zip_itself (tests.test_cli.CliTest.test_out_is_the_zip_itself)
+4.377s     test_a_non_ascii_password_round_trips (tests.test_keystores.GenerationTest.test_a_non_ascii_password_round_trips)
+3.782s     test_the_record_reads_back_as_the_same_spec_and_holds_no_keys (tests.test_android_target.ProjectTest.test_the_record_reads_back_as_the_same_spec_and_holds_no_keys)
+3.256s     test_staging_lives_under_tmpdir (tests.test_headless.StagingTest.test_staging_lives_under_tmpdir)
+3.244s     test_a_forced_regenerate_replaces_a_zip (tests.test_cli.FailedReplaceTest.test_a_forced_regenerate_replaces_a_zip)
+3.092s     test_refusals_exit_2_with_the_field (tests.test_headless.ScriptTest.test_refusals_exit_2_with_the_field)
+3.071s     test_each_module_with_strings_gets_them_in_every_language (tests.test_translations.GenerationTest.test_each_module_with_strings_gets_them_in_every_language)
+2.917s     test_passwords_never_appear_on_the_command_line (tests.test_keystores.GenerationTest.test_passwords_never_appear_on_the_command_line)
+
+----------------------------------------------------------------------
+Ran 278 tests in 166.304s
+
+OK (skipped=4)
+
+real	2m49.087s
+user	0m0.167s
+sys	0m0.231s

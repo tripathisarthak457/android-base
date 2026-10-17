@@ -26,10 +26,10 @@ Summary
 
   Done.
 
-  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything
+  Project: D:\projects\tools\.overhaul\out\WP04\final-everything
 
   Next
-    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04/final-everything and open it in Android Studio.
+    1. cd D:\projects\tools\.overhaul\out\WP04\final-everything and open it in Android Studio.
     2. ./gradlew :app:installDevDebug
     3. Replace app/google-services.json: the included one is a placeholder.
 

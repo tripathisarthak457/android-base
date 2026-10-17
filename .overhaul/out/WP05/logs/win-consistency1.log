@@ -1,0 +1,65 @@
+Process SpawnProcess-1:
+Process SpawnProcess-4:
+Traceback (most recent call last):
+Process SpawnProcess-2:
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: module '__main__' has no attribute 'run_one'
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+Process SpawnProcess-3:
+AttributeError: module '__main__' has no attribute 'run_one'
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: module '__main__' has no attribute 'run_one'
+Traceback (most recent call last):
+concurrent.futures.process._RemoteTraceback: 
+'''
+Process 11488 terminated abruptly with exit code 1'''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 201, in _run_module_as_main
+  File "<frozen runpy>", line 87, in _run_code
+  File "D:\projects\tools\.overhaul\wt\WP05\generator\tests\consistency\__main__.py", line 189, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\projects\tools\.overhaul\wt\WP05\generator\tests\consistency\__main__.py", line 151, in main
+    name, issues = future.result()
+                   ~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\_base.py", line 447, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\_base.py", line 396, in __get_result
+    raise self._exception
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="trips_title">Trips</string>
+    <string name="trips_empty_title">Noch nichts hier</string>
+    <string name="trips_empty_message">Sobald es etwas anzuzeigen gibt, erscheint es auf diesem Bildschirm.</string>
+    <string name="trips_reload">Neu laden</string>
+</resources>

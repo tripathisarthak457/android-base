@@ -43,6 +43,20 @@ that needs another package's code first. WP13 closes every item (or records why 
   `AppMenu`: close it on `Lifecycle.Event.ON_STOP`, as iOS closes menus when the app leaves the foreground, or host
   it in the window like the sheets; then a test that a menu open at `onStop` is gone at `onStart`. The docs rule
   (WP12): nothing that shows the app's data opens a window of its own.
+- **`python -m tests.consistency` cannot run on Windows (WIN, the generator).** Its `ProcessPoolExecutor` hands
+  workers `run_one`, defined in the package's `__main__.py`; Windows spawns workers, and `multiprocessing` never
+  re-imports a package `__main__` in a worker (`spawn._fixup_main_from_name` skips names ending in `.__main__`),
+  so every worker dies with "module '__main__' has no attribute 'run_one'" and the run ends in
+  `BrokenProcessPool` before checking anything (WP06's `out/WP06/logs/accept14.log`, WP04's
+  `out/WP04/logs/r22-gen.log`). Not in the generator baseline, which covers the unit tests only. Fix: move the
+  runner's body into an importable module (`tests/consistency/runner.py`) and keep `__main__.py` a two-line entry
+  point. Until then `out/WP06/consistency_win.py` runs the same `main()` after importing it under its own name.
+- **What to check once NET's Cronet transport lands (REQUIREMENTS 39).** Read from WP06's network module
+  (`handoff/WP06.md`, "Seams for NET"): an application interceptor that short-circuits OkHttp also skips its
+  `Cache` and `CertificatePinner`, so on the Cronet path check that the pins are mirrored into the engine (with
+  its bypass for user-installed trust anchors off), that the engine keeps no disk cache sign-out cannot empty
+  (the OkHttp cache is a `SessionScopedStore`), that WebSockets still connect over plain OkHttp, and that images
+  go through it too (Coil is on the shared client since `wp/WP06` `10e2916`).
 
 ## WP04
 

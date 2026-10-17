@@ -1,0 +1,29 @@
+
+Summary
+───────
+           App  Look (Look)
+       Package  com.example.wp03.look
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  catalog, collections, datadisplay, formfields, googlefonts,
+                network, pickers, sample
+       Modules  none
+     Languages  en
+      Typeface  Plus Jakarta Sans · JetBrains Mono
+       Colours  #8E3B46 · #775257 (derived) · #8E833B (derived)
+         Style  Editorial
+        Motion  Calm, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP03\look
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP03\look and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+

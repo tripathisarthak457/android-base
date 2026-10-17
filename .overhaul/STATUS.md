@@ -16,7 +16,7 @@ This is the single file to read after a context compaction or restart. Then read
 
 ---
 
-> **Oct 17: restored natively on Windows (`D:/projects/tools`); nothing is running.** Resume from `SESSION-2026-10-17.md` first. The run ids in §1 below belong to the dead Linux session: launch fresh.
+> **Oct 17, 14:15: running natively on Windows (`D:/projects/tools`); `to-release.js` relaunched fresh (§1).** Resume from `SESSION-2026-10-17.md` first. Only §1's run id can be resumed, and only from the session that launched it; a new session launches fresh.
 > **Resume from `SESSION-2026-10-16.md` first** (latest: power-offs, thermal sensor), then `SESSION-2026-10-15.md` (its Oct 16 sections at the end), then `SESSION-2026-10-14.md`. Fable's findings: `FABLE-FINDINGS.md`. **Every agent runs on Opus 5.5 only** (the user, Oct 15 20:55).
 > Previously: `SESSION-2026-10-14.md` (latest; then `SESSION-2026-10-13.md` for background).
 > Older note: `SESSION-2026-10-13.md` (written 16:58 Oct 13): what was achieved on Oct 12–13, resume steps, the order of what comes next.
@@ -27,26 +27,32 @@ The laptop rebooted at 14:57 on Oct 12 and again at 10:41 on Oct 13, then slept 
 The 18:03 one-shot never fired, so nothing ran between Oct 12, 14:50 and Oct 13, 13:20. Every package's commits are
 intact.
 
-## 1. Running right now (relaunched Oct 13, 13:22, in a new session, so fresh runs)
+## 1. Running right now (Windows orchestrator session `8d80ef9d`, launched fresh Oct 17, 14:15 IST)
 
 | Workflow | Task id | Run id | Script | Notes |
 |---|---|---|---|---|
-| Release (all packages) | `wasz12nm7` (relaunched Oct 16, 10:50 after the second power-off; every agent on Opus 5.5) | `wf_0f44e8ee-3dc` | `scripts/to-release.js` | The lens-tap fix (REQUIREMENTS 35) runs first inside it (`lensFlow`: PeriFlow and the generator lens, review, phone); WP05 and WP11 start after `LENS:generator` / `LENS:periflow`. Implementation runs hold at most 4 of 6 slots |
-| Bottom sheet design | **done 16:30** (`wc8zb86v4`) | `wf_47f3983b-b40` | `scripts/sheet-design-from-judge.js` | Starts at the judges: the map, research and three designs were finished on Oct 12 |
-| Shimmer and clipping fix | `w38g24e6c` (Oct 16, 10:50) | `wf_b8570cc1-22c` | `scripts/shimmer-fix-from-report.js` | Review #3 approved; WP03 has merged the fix. Replays to the phone verification |
-| Deep smoothness (Fable) | `wqw8apl4f` (resumed Oct 16, 10:50; Opus) | `wf_18d8ae1b-418` | `scripts/deep-smoothness-fable.js` | One Fable deep-work agent: root-cause and fix the remaining jank (side branch `wp/WP04-perf`, WP04 merges it), Opus review loop. Started Oct 15, 15:45 at the user's suggestion |
-| Full liquid glass (Fable) | `wmb6sdgno` (resumed Oct 16, 10:56; Opus) | `wf_c9329bf3-67e` | `scripts/full-liquid-glass-fable.js` | REQUIREMENTS 37: full Kyant effect set at playground parity, bottom bar first (side branch `wp/WP05-glass`, WP05 merges it), Opus review and phone verification. Started Oct 15, 15:55 |
-| Android skills v1.0.15 | `wh8gyilvr` (Oct 16, 10:56) | `wf_ec030645-26e` | `scripts/android-skills-v1-0-15.js` | REQUIREMENTS 38: digest update, feature-aware vendoring on `wp/WP02`, review loop, plus a template-wide jetpack-compose-performance audit (`research/COMPOSE-PERF-AUDIT.md`, the user, Oct 16). Plugin updated on the system to 1.0.15 |
+| Release (all packages) | `w4f2f2lwb` (resumed Oct 17, 14:37 after adding package NET; first launch 14:15 as `wf32czekj`; every agent on Opus 5.5) | `wf_dca0df06-58a` | `D:/projects/tools/.overhaul/scripts/to-release.js` | First runs: WIN (the generator's Windows fixes), WP04, WP08, WP06. New package **NET** (REQUIREMENTS 39, Cronet, now in the Android release: the user, Oct 17) starts after WP06 and WP02-M2 merge; WP12 and WP13 wait for it. 15:40: Brotli for every generated app added to item 39 and NET's scope (the user); the running instance still has NET's older scope until the next resume, but NET reads REQUIREMENTS.md when it starts. `LENS:generator` pre-fired; PeriFlow off (`PERIFLOW = false`). Implementation runs hold at most 4 of 6 slots |
 
-- **Resume after a usage cutoff (same session):** `Workflow({scriptPath, resumeFromRunId})` with the values above.
+Not running yet, one at a time while free RAM stays near 1.5 GB: `deep-smoothness-fable.js` (once to-release's first
+builds show headroom), then `shimmer-fix-from-report.js` (Verify only, phone attached), `android-skills-v1-0-15.js`
+(only while WP02-M2 is waiting: both use `wt/WP02`), `full-liquid-glass-fable.js`. The Oct 16 Linux run ids are dead.
+
+- **Resume after a usage cutoff (this session only):** `Workflow({scriptPath, resumeFromRunId})` with the values above.
 - **In a new session:** launch the scripts fresh; agents resume from their handoffs and the merged tags.
-- **Autopilot:** cron `26ebc54f` at :13, :33 and :53 (Android-first prompt: on GO it asks the user before any deploy). It is session-only; re-create it from `scripts/AUTOPILOT-PROMPT.md`.
-- **Memory monitor:** `bs91gbjcj` (under 700 MB).
-- **The phone was NOT connected at 13:18 on Oct 13.** Phone steps poll for it for up to 45 minutes, then record what remains.
-- **Merged so far:** WP01, WP02-M1, WP09, **WP10 (Oct 14, a402d87)**.
-- **Usage window:** at 13:18 it was 3% used, resetting at 15:30.
+- **Autopilot:** cron `8f4cac2a` at :13, :33 and :53 (`scripts/AUTOPILOT-PROMPT.md` plus a usage check, same-session
+  resume, no second copy of a running script). Session-only, expires Oct 24; re-create it after a restart (`CronList`
+  first).
+- **Hourly status for the user:** cron `8373299e` (at :03, the scheduler runs it about :18; the user asked to be kept
+  in the loop on Oct 17). Read-only: what merged, what each package is doing, the phone, usage, next milestone.
+- **Memory monitor:** `b5tfuvag3` (re-armed 16:16; under 1500 MB available or 1000 MB commit left; one line on the drop, a reminder
+  every 10 min, one on recovery above 1750 / 1200 MB, at once under 500 MB). Expires every 30 min; re-armed by the orchestrator.
+  `bin/thermlog` runs as background task `bsq8slosn` (every 10 s into `logs/thermal-windows.log`).
+- **Preflight at 14:13:** phone `9a7c74f4` attached; adb and gradle locks free; 1339 MB available, 1797 MB commit left;
+  TZ00 57 C; `GRADLE_USER_HOME=D:\.caches\gradle` in the tool shell (settings `env` active).
+- **Merged so far:** WP01, WP02-M1, WP09, WP10 (`a402d87`).
+- **Usage window:** at 14:15 the 5-hour limit was 2% used, resetting at 19:09 IST; Fable weekly 57% (unused).
 
-### The release workflow (paused; launched Oct 12, 13:18)
+### Historical (Linux, Oct 12): the release workflow's first launch; these ids are dead, do not resume them
 
 One workflow now carries everything to a release candidate: `scripts/to-release.js` (session copy:
 `/home/crazyhusir/.claude/projects/-home-crazyhusir-Documents-projects-tools--overhaul/e3f9060d-6364-4a81-a9a2-20851e25521f/workflows/scripts/android-base-to-release-wf_5f9024db-13d.js`).

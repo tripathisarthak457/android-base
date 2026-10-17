@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# usage: build.sh <logname> <gradle args...>
+# usage: build.sh <logname> <gradle args...>   (Windows, Git Bash; locked sets the SDK and cache variables)
 set -o pipefail
-export ANDROID_HOME=$HOME/Android/Sdk
-log=/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP07/logs/$1.log; shift
-cd /home/crazyhusir/Documents/projects/tools/.overhaul/wt/WP07/templates/multiplatform
-{ date; /home/crazyhusir/Documents/projects/tools/.overhaul/bin/locked gradle ./gradlew "$@" --console=plain; echo "exit=$?"; date; } > "$log" 2>&1
+OV=D:/projects/tools/.overhaul
+log=$OV/out/WP07/logs/$1.log; shift
+cd $OV/wt/WP07/templates/multiplatform
+{ date; $OV/bin/locked gradle ./gradlew "$@" --console=plain; echo "exit=$?"; date; } > "$log" 2>&1

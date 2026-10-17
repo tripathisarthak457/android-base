@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_error_generic">Etwas ist schiefgelaufen. Bitte versuche es noch einmal.</string>
+    <string name="ui_error_offline">Du bist offline. Prüfe deine Verbindung und versuche es noch einmal.</string>
+    <string name="ui_error_unreachable">Der Server ist nicht erreichbar. Versuche es gleich noch einmal.</string>
+</resources>

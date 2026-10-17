@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="trips_title">Trips</string>
+    <string name="trips_empty_title">अभी यहां कुछ नहीं है</string>
+    <string name="trips_empty_message">दिखाने के लिए कुछ होने पर वह इस स्क्रीन पर दिखेगा।</string>
+    <string name="trips_reload">फिर से लोड करें</string>
+</resources>

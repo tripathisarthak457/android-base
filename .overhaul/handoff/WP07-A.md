@@ -5,24 +5,44 @@ Branch `wp/WP07`, worktree `$OV/wt/WP07` (`OV=D:/projects/tools/.overhaul`,
 
 ## Progress
 
-Updated 2026-10-10 16:10 IST (run 3). Runs 1–2 wrote most of `templates/multiplatform/` and the
-generator target but committed nothing; run 2 was cut off during its first full Gradle build
-(`$O/logs/b2.log`: configuration and build-logic fine, two compile errors). Run 3 reviewed that work,
-fixed the two errors, wrote what was missing on the generator side, and committed everything in
-eight steps (`bb59ea3`..`a50b264`). Its first full build is queued behind the other packages on the
-Gradle lock (`$O/logs/b3.log`).
+Updated 2026-10-17 15:25 IST (run 4, the first on Windows). **Stopped waiting for WP04** (the shell port,
+items 1–5 and 7 below) **and WP02-M2** (item 6). Next run: `git merge overhaul/multiplatform-v2`, then item 1.
+
+Run 4 did only what does not need WP04:
+- Merged the integration branch (WP10) into `wp/WP07` as `fdd01b3`. No conflicts: the only overlap
+  candidates were web paths and `generator/tests/fixtures/validation_cases.json`, none of them touched here.
+- Checks on Windows at `fdd01b3`, through `bin/memwait`: the generator suite ran 286 tests with exactly the
+  six host failures of `logs/windows/generator-baseline.md` and nothing else (`$O/logs/gen-tests-win.log`;
+  `test_target_multiplatform` and `test_sync` all pass; the `project.yml` YAML parse is skipped because
+  PyYAML is not installed outside a venv, the string assertions on it still run). `genkit.tokens --check`:
+  1 copy current (the multiplatform one; the Android copy does not exist on the integration branch yet).
+  `genkit.core.catalogue --check`: current. `tools/sync_check.py`: 2 shared parts in sync.
+- Ported `$O/accept-a.sh`, `build.sh`, `build1.sh` and `ios-klib.sh` to Windows (`D:/` paths, no
+  `ANDROID_HOME` override because `locked` sets it and `KONAN_DATA_DIR`, Python through `memwait`).
+- **No Gradle build in this run (decision).** The last full build, b5 (Linux, Oct 12, at `36c90cb`), was
+  green: `:androidApp:assembleDevDebug check`, BUILD SUCCESSFUL (`$O/logs/b5.log`). Since then only
+  `99239af` (the coroutine-test opt-in for every test compilation) and the web-only WP10 merge landed. The
+  user put the Android release first on Oct 17 ("I care about full android release now", Compose
+  Multiplatform and Swift after it), the Gradle lock and the 16 GB are shared with the Android packages,
+  and the shell port needs a full build and the iOS klib compile anyway. So the first Windows build of
+  the template, its first Windows iOS klib compile and the Kotlin/Native toolchain download (into
+  `D:\.caches\konan`, which `locked` sets as `KONAN_DATA_DIR`) happen with the port.
+
+Runs 1–3 (Linux, Oct 10–12): runs 1–2 wrote most of `templates/multiplatform/` and the generator target
+without committing; run 3 fixed b2's two compile errors, finished the generator side and committed it all
+(`bb59ea3`..`ec15ef4`); `36c90cb` and `99239af` followed on Oct 12.
 
 | Step (WP07 phase A) | State |
 |---|---|
 | 1 Build (settings, root build, properties, catalogue) | committed; androidx Navigation 3 pinned strictly to 1.1.7 in androidApp |
-| 2 build-logic (Kmp* plugins, ModuleGraph, ApiPurity, AppConfig/AppFlavor) | committed; compiles (b2) |
-| 3 Modules except the shell port | committed; full compile pending (b3) |
+| 2 build-logic (Kmp* plugins, ModuleGraph, ApiPurity, AppConfig/AppFlavor) | committed; green in b5 |
+| 3 Modules except the shell port | committed; green in b5 (Linux); not yet built on Windows |
 | 4 What cannot port to navigation3-ui 1.1.2 | waits for WP04 (see Remaining) |
-| 5 DI (Koin modules, KoinModulesTest) | written; test pending (b3) |
-| 6 Sync check (core/common, core/mvi) | done: `sync.toml`, `tools/sync_check.py`, `generator/tests/test_sync.py` |
+| 5 DI (Koin modules, KoinModulesTest) | committed; `KoinModulesTest` green in b5 (`:shared:testAndroidHostTest`) |
+| 6 Sync check (core/common, core/mvi) | done: `sync.toml`, `tools/sync_check.py`, `generator/tests/test_sync.py`; the shell pairs wait for WP04 |
 | 7 Generator target `targets/multiplatform` | done: target, scaffold, settings, strings, translations, fixtures, catalogue |
-| 8 Tests (`test_target_multiplatform.py`) | done (25 tests); the shell tests wait for WP04 |
-| iOS klib compile | pending |
+| 8 Tests (`test_target_multiplatform.py`) | done (28 tests, green on Windows); the shell tests wait for WP04 |
+| iOS klib compile | passed on Linux without the shell: every module's `compileKotlinIosSimulatorArm64`, `:shared` included, ran in b4 and was UP-TO-DATE in the green b5 (`check` depends on it). The standalone acceptance attempt (`$O/ios-klib.sh`) never ran (its log shows only the lock wait). Repeat on Windows after the port. |
 
 ## What remains, and what it waits for
 
@@ -66,8 +86,9 @@ two items marked otherwise.
    `tools/update_android_skills.py` once it has merged (it already writes `templates/multiplatform/`
    when the template exists, without `agp-9-upgrade`), add the `verbatim` key it introduces to
    `template.toml`, and add the `.agents/skills` pair to `sync.toml`.
-7. **Acceptance** (`$O/accept-a.sh`, written; WP07 phase A). It runs the full template build and both
-   generated fixtures; it can only end `ACCEPT OK` after items 1–4.
+7. **Acceptance** (`$O/accept-a.sh`, written, ported to Windows in run 4; WP07 phase A). It runs the full
+   template build and both generated fixtures; it can only end `ACCEPT OK` after items 1–4, and only after
+   package WIN has merged (until then the generator suite fails its six Windows host tests under `set -e`).
 
 ## What changed (by path)
 
