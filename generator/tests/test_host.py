@@ -9,7 +9,6 @@ from __future__ import annotations
 import ast
 import os
 import stat
-import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,7 +19,7 @@ import genkit.core.copy as copy_module
 from genkit import targets
 from genkit.core.copy import is_link, template_files, write_text
 from genkit.targets.android.variants import VARIANTS_DIR
-from tests.test_cli import ERROR_PRIVILEGE_NOT_HELD
+from tests.links import junction, symlink_or_skip
 
 GENERATOR = Path(__file__).resolve().parent.parent
 #: Everything that writes a project, an emitted copy or a template file.
@@ -139,22 +138,14 @@ class LinkTest(unittest.TestCase):
 
     def test_a_symbolic_link_is_a_link(self):
         link = self.root / "link"
-        try:
-            link.symlink_to(self.directory, target_is_directory=True)
-        except OSError as error:
-            if getattr(error, "winerror", None) != ERROR_PRIVILEGE_NOT_HELD:
-                raise
-            self.skipTest(
-                "this Windows account may not create symbolic links (that takes Developer Mode or "
-                "SeCreateSymbolicLinkPrivilege); the junction test covers links here"
-            )
+        symlink_or_skip(self, link, self.directory)
         self.assertTrue(is_link(link))
 
     @unittest.skipUnless(os.name == "nt", "junctions exist only on Windows")
     def test_a_junction_is_a_link(self):
-        junction = self.root / "junction"
-        subprocess.run(["cmd", "/c", "mklink", "/J", str(junction), str(self.directory)], capture_output=True, check=True)
-        self.assertTrue(is_link(junction))
+        link = self.root / "junction"
+        junction(link, self.directory)
+        self.assertTrue(is_link(link))
 
 
 if __name__ == "__main__":
