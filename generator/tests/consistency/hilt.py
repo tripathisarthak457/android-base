@@ -86,8 +86,9 @@ def missing_bindings(root: Path) -> list[str]:
         base = re.sub(r"<.*", "", type_name)
         if base in BUILT_IN or type_name in provided or base in provided:
             continue
-        inner = re.match(r"\w+<(?:@JvmSuppressWildcards)?(.*)>", type_name)
-        if base in ("Lazy", "Provider") and inner and (inner.group(1) in provided or re.sub(r"<.*", "", inner.group(1)) in provided):
+        inner = re.match(r"[\w.]+<(?:@JvmSuppressWildcards)?(.*)>", type_name)
+        # Written qualified as often as not: `dagger.Lazy` does not shadow Kotlin's own `Lazy`.
+        if base.rsplit(".", 1)[-1] in ("Lazy", "Provider") and inner and (inner.group(1) in provided or re.sub(r"<.*", "", inner.group(1)) in provided):
             continue
         if base in ("Set", "MutableSet") and inner:
             element = inner.group(1).replace("@JvmSuppressWildcards", "")
