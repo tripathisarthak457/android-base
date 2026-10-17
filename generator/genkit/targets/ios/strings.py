@@ -85,4 +85,4 @@ def translate(project: Path, spec: Spec, user_names: dict[str, set[str]], scaffo
                     f"{', '.join(repr(key) for key in missing)} ({catalog.relative_to(project)})."
                 )
             localizations[tag] = {key: texts[key] for key in wanted}
-        catalog.write_text(render(all_keys, localizations), encoding="utf-8")
+        catalog.write_text(render(all_keys, localizations), encoding="utf-8", newline="\n")

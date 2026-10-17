@@ -976,6 +976,23 @@ class GeneratedProjectsTest(unittest.TestCase):
         self.assertEqual(len(symbols), len(set(symbols)))
         self.assertEqual(["Home", *(f"Module {index}" for index in range(12)), "Settings"], tabs.labels(spec))
 
+    def test_what_the_target_writes_ends_its_lines_with_a_line_feed(self):
+        """
+        `Path.write_text` turns "\\n" into the host's line separator unless told otherwise, so a
+        project generated on Windows would differ from the same project generated anywhere else.
+        Everything the target writes lands in the app folder or a package.
+        """
+        project, spec = self.check("line-endings", raw_spec(
+            features=sorted(IOS.manifest.preset_features("everything")), feature_modules=["field_notes"], languages=["de"],
+        ))
+        with_carriage_returns = [
+            path.relative_to(project).as_posix()
+            for folder in (project / spec.pascal_name, project / "Packages")
+            for path in sorted(folder.rglob("*"))
+            if path.is_file() and path.suffix != ".png" and b"\r" in path.read_bytes()
+        ]
+        self.assertEqual([], with_carriage_returns)
+
     def test_a_display_name_with_quotes_and_emoji_reaches_the_home_screen(self):
         if yaml is None:
             self.skipTest("PyYAML is not installed")

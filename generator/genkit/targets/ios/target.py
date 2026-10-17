@@ -178,7 +178,7 @@ class IosTarget:
     def transform(self, project_dir: Path, spec: Spec) -> list[str]:
         scaffold.write_feature_modules(project_dir, spec)
         (project_dir / spec.pascal_name / "Localizable.xcstrings").write_text(
-            strings.render(tabs.app_strings(spec)), encoding="utf-8"
+            strings.render(tabs.app_strings(spec)), encoding="utf-8", newline="\n"
         )
         return []
 
@@ -188,9 +188,9 @@ class IosTarget:
         resolved = tokens.resolve(spec, "ios")
         design_tokens = project_dir / swift.RELATIVE_PATH
         if design_tokens.is_file():
-            design_tokens.write_text(swift.emit(resolved), encoding="utf-8")
+            design_tokens.write_text(swift.emit(resolved), encoding="utf-8", newline="\n")
         (project_dir / spec.pascal_name / swift.ACCENT_COLOR_PATH).write_text(
-            swift.accent_colorset(resolved), encoding="utf-8"
+            swift.accent_colorset(resolved), encoding="utf-8", newline="\n"
         )
         strings.translate(
             project_dir, spec, scaffold.user_names(spec), scaffolded=frozenset(scaffold.feature_targets(spec))
