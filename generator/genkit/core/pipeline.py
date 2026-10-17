@@ -25,7 +25,7 @@ import stat
 import string
 import sys
 import tempfile
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from functools import cache
@@ -48,9 +48,6 @@ _WINDOWS_MAX_DIRECTORY = 247
 #: What Windows says of a longer path. The build makes every directory before it writes into it, so
 #: here, with long paths off, a missing path means nothing else.
 _PATH_REFUSED = (errno.ENOENT, errno.ENAMETOOLONG)
-#: For the name the replaced output takes: lowercase, so no case-insensitive file system takes one
-#: of them for the destination's own.
-_ASIDE_CHARACTERS = string.ascii_lowercase + string.digits
 
 
 @dataclass(frozen=True)
@@ -213,12 +210,14 @@ def _aside(destination: Path) -> Path:
     """
     length = len(destination.name)
     for _ in range(100):
-        name = "".join(random.choices(_ASIDE_CHARACTERS, k=max(length - 1, 1)))
+        name = "".join(random.choices(string.ascii_lowercase + string.digits, k=max(length - 1, 1)))
         # Hidden, like the folder the new output is finished in, where the name has room for the dot.
         if length > 1:
             name = "." + name
-        if name.lower() != destination.name.lower() and not os.path.lexists(destination.with_name(name)):
-            return destination.with_name(name)
+        aside = destination.with_name(name)
+        # Compared without case: on a case-insensitive file system the two would be one entry.
+        if name.lower() != destination.name.lower() and not os.path.lexists(aside):
+            return aside
     raise RenderError(f"{destination} cannot be replaced: no name beside it is free to move it to meanwhile.")
 
 
@@ -260,7 +259,7 @@ def _delete_tree(directory: Path) -> None:
         shutil.rmtree(extended, onerror=lambda function, path, info: _writable_and_again(function, path, info[1]))
 
 
-def _writable_and_again(function: Any, path: str, error: BaseException) -> None:
+def _writable_and_again(function: Callable[[str], object], path: str, error: BaseException) -> None:
     # Windows deletes no read-only file, and git makes its objects read-only.
     if not isinstance(error, PermissionError):
         raise error

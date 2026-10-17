@@ -274,7 +274,10 @@ def main(argv: list[str] | None = None) -> int:
     # The comparison parses the JSON, and reading text would fold CRLF into LF, so neither sees a
     # copy an editor saved with other line endings or layout; the bytes must be as --write wrote them.
     if written != _static_json(json.loads(written)):
-        print(f"{relative} is not laid out as --write writes it (line endings, say). Run: python3 -m genkit.core.catalogue --write")
+        print(
+            f"{relative} is not laid out as --write writes it (line endings, say). "
+            "Run: python3 -m genkit.core.catalogue --write"
+        )
         return 1
     print(f"{relative} is current.")
     return 0

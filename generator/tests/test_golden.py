@@ -303,7 +303,8 @@ class PlacementTest(unittest.TestCase):
                     generate("all", destination, zip_output=zip_output)
                     result = generate("none", destination, zip_output=zip_output, replace=True)
                     self.assertEqual(["a warning"], result.warnings)
-                    self.assertEqual(tree(GOLDEN / "mini-none"), unzipped(destination) if zip_output else tree(destination))
+                    generated = unzipped(destination) if zip_output else tree(destination)
+                    self.assertEqual(tree(GOLDEN / "mini-none"), generated)
                     self.assertEqual([name], [path.name for path in folder.iterdir()], "left beside it")
 
 
@@ -380,8 +381,8 @@ class WindowsLongPathsTest(unittest.TestCase):
     def test_the_path_named_is_the_one_too_long(self):
         long = "D:\\" + "y" * 300
         failures = {
-            "the target of a rename": FileNotFoundError(errno.ENOENT, "No such file or directory", "D:\\short", None, long),
-            "a file a tree copy could not write": shutil.Error([("C:\\staged\\file", long, "[WinError 3] path not found")]),
+            "the target of a rename": FileNotFoundError(errno.ENOENT, "No such file", "D:\\short", None, long),
+            "a file a tree copy could not write": shutil.Error([("C:\\staged\\file", long, "[WinError 3] not found")]),
         }
         for what, failure in failures.items():
             with self.subTest(what), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=False):
