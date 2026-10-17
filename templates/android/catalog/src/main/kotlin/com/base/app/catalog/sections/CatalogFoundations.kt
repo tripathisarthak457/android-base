@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -178,7 +179,13 @@ private fun Swatches(vararg roles: Pair<String, Color>) {
         roles.forEach { (name, color) ->
             Column(Modifier.width(96.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Box(Modifier.fillMaxWidth().height(40.dp).background(color, AppTheme.shapes.sm).border(1.dp, AppTheme.colors.separator, AppTheme.shapes.sm))
-                AppText(text = name, style = AppTheme.typography.caption2, color = AppTheme.colors.contentSecondary, maxLines = 1)
+                AppText(
+                    text = name,
+                    style = AppTheme.typography.caption2,
+                    color = AppTheme.colors.contentSecondary,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
     }
@@ -199,7 +206,7 @@ private fun StatusRow(name: String, status: StatusColors) {
 @Composable
 private fun TypeRow(name: String, style: TextStyle) {
     Column {
-        AppText(text = name, style = style, color = AppTheme.colors.contentPrimary, maxLines = 1)
+        AppText(text = name, style = style, color = AppTheme.colors.contentPrimary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         AppFiguresText(
             text = "${style.fontSize.value.roundToInt()} / ${style.lineHeight.value.roundToInt()} · ${style.fontWeight?.weight ?: 400}",
             style = AppTheme.typography.caption1,

@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.layer.CompositingStrategy
 import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.unit.Dp
@@ -91,7 +92,35 @@ fun Modifier.scrollEdgeFade(edge: () -> Dp): Modifier = drawWithCache {
     }
 }
 
-/** How far below the bar content takes to fade in completely. */
+/**
+ * A bounded scroller with more below fades its last [FadeTail] out at its bottom edge, so a row the
+ * edge cuts reads as "there is more" rather than as clipped. [more] is read while drawing (a list
+ * state's `canScrollForward`), so scrolling recomposes nothing; with nothing more below, the content
+ * is drawn as it is, with no layer. The fade is real alpha, as [scrollEdgeFade]'s, so it holds over
+ * rows of different colours.
+ */
+internal fun Modifier.bottomEdgeFade(more: () -> Boolean): Modifier = drawWithCache {
+    val tail = FadeTail.toPx().coerceAtMost(size.height)
+    val start = size.height - tail
+    val content = obtainGraphicsLayer()
+    val strip = obtainGraphicsLayer().apply { compositingStrategy = CompositingStrategy.Offscreen }
+    val mask = Brush.verticalGradient(0f to Color.Black, 1f to Color.Transparent, endY = tail)
+    onDrawWithContent {
+        if (!more() || tail <= 0f) {
+            drawContent()
+            return@onDrawWithContent
+        }
+        content.record { this@onDrawWithContent.drawContent() }
+        clipRect(bottom = start) { drawLayer(content) }
+        strip.record(IntSize(size.width.toInt(), tail.toInt().coerceAtLeast(1))) {
+            translate(top = -start) { drawLayer(content) }
+            drawRect(mask, blendMode = BlendMode.DstIn)
+        }
+        translate(top = start) { drawLayer(strip) }
+    }
+}
+
+/** How far from the edge content takes to fade in completely. */
 private val FadeTail = 32.dp
 
 // Content starts to show this far down the bar, and only faintly by its end.

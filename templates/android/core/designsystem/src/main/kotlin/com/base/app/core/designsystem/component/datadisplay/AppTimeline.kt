@@ -13,8 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
@@ -35,6 +36,7 @@ data class TimelineStep(
 /**
  * A vertical trail of steps: an order's status, a history. Each connector is drawn behind its own
  * row and runs to the row's bottom, so it meets the next node whatever the step's text wraps to.
+ * Past the current step the trail is dashed: it is there, and still to come.
  */
 @Composable
 fun AppTimeline(
@@ -53,16 +55,19 @@ fun AppTimeline(
                 else -> colors.outline
             }
             val last = index == steps.lastIndex
-            val connector = if (done) colors.success.base else colors.separator
+            val connector = if (done) colors.success.base else colors.outline
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .drawBehind {
-                        if (last) return@drawBehind
+                    .drawWithCache {
                         val column = NodeColumn.toPx()
                         val x = if (layoutDirection == LayoutDirection.Ltr) column / 2f else size.width - column / 2f
                         val top = (if (active) NodeActive else NodeSize).toPx() + NodeGap.toPx()
-                        drawLine(connector, Offset(x, top), Offset(x, size.height), strokeWidth = ConnectorWidth.toPx())
+                        val stroke = ConnectorWidth.toPx()
+                        val dashes = if (done) null else PathEffect.dashPathEffect(floatArrayOf(stroke * 2f, stroke * 2f))
+                        onDrawBehind {
+                            if (!last) drawLine(connector, Offset(x, top), Offset(x, size.height), strokeWidth = stroke, pathEffect = dashes)
+                        }
                     },
             ) {
                 Box(modifier = Modifier.width(NodeColumn), contentAlignment = Alignment.TopCenter) {

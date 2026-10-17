@@ -42,7 +42,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun ListsSection() {
     CatalogGroup("Inset-grouped section", caption = "Rows share one rounded group; each hairline starts where the next row's text does.") {
-        Box(Modifier.background(AppTheme.colors.backgroundGrouped)) {
+        Box(Modifier.background(AppTheme.colors.backgroundGrouped, AppTheme.shapes.lg).padding(bottom = AppTheme.spacing.lg)) {
             var wifi by remember { mutableStateOf(true) }
             AppSection(header = "Account", footer = "Rows grow with the font size instead of clipping.") {
                 AppRow(title = "Profile", leading = { AppAvatar(name = "Ada Lovelace", size = 32.dp) }, onClick = {})
@@ -65,7 +65,7 @@ fun ListsSection() {
     }
     CatalogGroup("In a lazy list", caption = "A list too long for one section draws the group from its rows: groupItem shapes and a hairline per row.") {
         val shape = AppTheme.shapes.md
-        Column(Modifier.background(AppTheme.colors.backgroundGrouped)) {
+        Column(Modifier.background(AppTheme.colors.backgroundGrouped, AppTheme.shapes.lg).padding(bottom = AppTheme.spacing.lg)) {
             AppSectionHeader(
                 title = "Recent",
                 actionLabel = "See all",

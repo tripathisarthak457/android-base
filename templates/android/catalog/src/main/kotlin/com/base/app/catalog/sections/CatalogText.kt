@@ -14,6 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.base.app.catalog.CatalogGroup
@@ -65,7 +67,14 @@ fun TextSection() {
             AllIcons.forEach { (name, icon) ->
                 Column(Modifier.width(72.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     AppIcon(icon, contentDescription = null, size = AppTheme.sizes.iconLarge)
-                    AppText(text = name, style = AppTheme.typography.caption2, color = AppTheme.colors.contentSecondary, maxLines = 1)
+                    AppText(
+                        text = name,
+                        style = AppTheme.typography.caption2,
+                        color = AppTheme.colors.contentSecondary,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }

@@ -49,6 +49,7 @@ import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
+import com.base.app.core.designsystem.foundation.scroll.bottomEdgeFade
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** How a column's values read and line up. Figures keep one width per digit so they align. */
@@ -122,7 +123,7 @@ fun <T> AppDataTable(
             state = listState,
             contentPadding = contentPadding,
             flingBehavior = fling,
-            modifier = Modifier.fillMaxSize().appScrollIndicator(listState),
+            modifier = Modifier.fillMaxSize().appScrollIndicator(listState).bottomEdgeFade { listState.canScrollForward },
         ) {
             leading?.invoke(this)
             stickyHeader(key = HeaderKey, contentType = HeaderKey) {
