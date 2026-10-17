@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import ctypes
+import errno
 import io
 import json
 import os
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -13,11 +16,13 @@ import unittest
 import zipfile
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
 import create_project
 from genkit import targets
-from genkit.core import pipeline
+from genkit.core import pipeline, placement
+from genkit.core.target import RenderError
 from tests.links import junction, symlink_or_skip
 
 GENERATOR = Path(__file__).resolve().parent.parent
@@ -262,6 +267,38 @@ class FailedReplaceTest(unittest.TestCase):
         self.assertEqual((1, "internal"), (code, answer["kind"]))
         self.assertEqual(b"old", destination.read_bytes())
         self.assertEqual(["app.zip", "spec.json"], sorted(path.name for path in self.root.iterdir()))
+
+    def test_without_json_a_failure_names_the_output_it_could_not_delete(self):
+        # The note is on the error, or on its cause when the explanation of a path past Windows'
+        # length limit took its place, as it does here on any host shown a Windows one.
+        for patch in (
+            mock.patch.object(placement, "os", SimpleNamespace(**{**vars(os), "name": "nt"})),
+            mock.patch.object(placement, "_windows_long_paths_on", return_value=False),
+            mock.patch.object(placement, "_delete_tree", side_effect=PermissionError(errno.EACCES, "in use")),
+        ):
+            patch.start()
+            self.addCleanup(patch.stop)
+        destination = self.root / "Mine"
+        destination.mkdir()
+        (destination / "old.txt").write_text("keep", encoding="utf-8")
+        failures = {
+            "the error": RenderError("Mine could not be replaced."),
+            "its cause": FileNotFoundError(errno.ENOENT, "No such file", "C:/" + "x" * 300),
+        }
+        for where, failure in failures.items():
+            with self.subTest(where), mock.patch.object(placement, "_swap", side_effect=failure), redirect_stdout(
+                io.StringIO()
+            ), redirect_stderr(io.StringIO()) as errors:
+                code = create_project.main(["--spec", str(self.spec), "--out", str(destination), "--no-zip", "--force"])
+            self.assertEqual(1, code)
+            [left] = [path for path in self.root.resolve().iterdir() if path.name not in ("Mine", "spec.json")]
+            self.assertRegex(
+                errors.getvalue(),
+                rf"(could not be replaced|a path of 303 characters).*\n"
+                rf"The new output was left at {re.escape(str(left))}: it could not be deleted \(in use\)\. ",
+            )
+            self.assertTrue((destination / "old.txt").exists())
+            shutil.rmtree(left)
 
     def test_a_forced_regenerate_replaces_a_zip(self):
         destination = self.root / "app.zip"

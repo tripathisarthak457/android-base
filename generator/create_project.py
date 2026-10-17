@@ -117,7 +117,7 @@ def main(argv: list[str] | None = None) -> int:
     except SpecError as error:
         return fail(args.json, invalid(error), str(error), EXIT_INVALID)
     except (RenderError, TemplateError, TranslationError, OSError) as error:
-        return fail(args.json, internal(), str(error), EXIT_FAILED)
+        return fail(args.json, internal(), described(error), EXIT_FAILED)
     except (KeyboardInterrupt, EOFError):
         print("\nCancelled.", file=sys.stderr)
         return EXIT_CANCELLED
@@ -151,6 +151,15 @@ def fail(as_json: bool, payload: dict[str, Any], message: str, code: int) -> int
     else:
         print(prompts.red(message), file=sys.stderr)
     return code
+
+
+def described(error: BaseException) -> str:
+    """
+    `error`'s message, then the notes that name what the failure left behind: on `error`, or on its
+    cause when an explanation, such as that of a path past Windows' length limit, took its place.
+    """
+    notes = [*getattr(error, "__notes__", []), *getattr(error.__cause__, "__notes__", [])]
+    return "\n".join([str(error), *notes])
 
 
 def write_json(data: object) -> None:
@@ -254,8 +263,9 @@ def resolve_destination(project_name: str, args: argparse.Namespace) -> Path | N
 
 def confirm_replace(destination: Path, force: bool, unattended: bool) -> bool:
     """
-    Whether something at `destination` is to be replaced. The build deletes that exact path, and
-    nothing else, once the new project is complete. Raises SpecError when it may not be replaced.
+    Whether something at `destination` is to be replaced. Only that exact path is: the build moves
+    it aside once the new project is complete and deletes it once the new one is in its place,
+    leaving what cannot be deleted beside it with a warning. Raises SpecError when it may not be.
     """
     if not destination.exists() and not is_link(destination):
         return False
