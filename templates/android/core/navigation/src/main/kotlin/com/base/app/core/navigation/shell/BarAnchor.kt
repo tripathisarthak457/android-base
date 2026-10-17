@@ -5,8 +5,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.ClipOp
@@ -192,22 +194,15 @@ private class FollowCoveredNode(
     }
 }
 
-/** A rounded rectangle from lines and cubic quarter arcs, rewritten in place: no allocation per frame. */
+/**
+ * The card's outline as a rounded rect, which the renderer recognises as one and clips analytically,
+ * as the card's own shape is clipped. The same outline built from lines and cubic arcs is a general
+ * path, so both clips of the bar would be masked on every frame of the gesture, and its corners
+ * would only approximate the card's.
+ */
 private fun Path.setRoundedRect(left: Float, top: Float, right: Float, bottom: Float, radius: Float) {
     rewind()
     if (right <= left || bottom <= top) return
     val r = radius.coerceIn(0f, minOf(right - left, bottom - top) / 2f)
-    val k = r * KAPPA
-    moveTo(left + r, top)
-    lineTo(right - r, top)
-    cubicTo(right - r + k, top, right, top + r - k, right, top + r)
-    lineTo(right, bottom - r)
-    cubicTo(right, bottom - r + k, right - r + k, bottom, right - r, bottom)
-    lineTo(left + r, bottom)
-    cubicTo(left + r - k, bottom, left, bottom - r + k, left, bottom - r)
-    lineTo(left, top + r)
-    cubicTo(left, top + r - k, left + r - k, top, left + r, top)
-    close()
+    addRoundRect(RoundRect(left, top, right, bottom, CornerRadius(r)))
 }
-
-private const val KAPPA = 0.5522848f
