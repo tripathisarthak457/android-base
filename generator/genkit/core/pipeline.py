@@ -146,18 +146,26 @@ def _windows_path_limit_explained(shorter: str) -> Iterator[None]:
 
 
 def _path_too_long(error: OSError) -> str | None:
-    """The longest path `error` names past the folder limit, when it failed the way such a path fails."""
+    """The longest path `error` names past Windows' limit, when it failed the way such a path fails."""
     if isinstance(error, shutil.Error) and error.args and isinstance(error.args[0], list):
-        # A tree copy reports each failure as (source, destination, message), errno lost; with long
-        # paths off, a destination past the limit cannot have been created whatever the message.
-        paths = [str(failure[1]) for failure in error.args[0]]
+        # A tree copy reports each failure as (source, destination, message), errno lost. With long
+        # paths off, a destination past the limit for what its source is cannot have been created
+        # whatever the message; one within it failed for some other reason.
+        paths = [str(copy) for source, copy, _ in error.args[0] if _past_limit(str(copy), os.path.isdir(source))]
     elif error.errno in _PATH_REFUSED:
-        # A rename names both its paths, and either can be the one too long.
-        paths = [str(name) for name in (error.filename, error.filename2) if name is not None]
+        # A rename names both its paths, and either can be the one too long, a folder as well as a file.
+        paths = [
+            str(name) for name in (error.filename, error.filename2)
+            if name is not None and len(str(name)) > _WINDOWS_MAX_DIRECTORY
+        ]
     else:
         return None
-    longest = max(paths, key=len, default="")
-    return longest if len(longest) > _WINDOWS_MAX_DIRECTORY else None
+    return max(paths, key=len, default=None)
+
+
+def _past_limit(path: str, folder: bool) -> bool:
+    limit = _WINDOWS_MAX_DIRECTORY if folder else _WINDOWS_MAX_FILE
+    return len(path) > limit or len(os.path.dirname(path)) > _WINDOWS_MAX_DIRECTORY
 
 
 def _windows_long_paths_on() -> bool:
@@ -234,8 +242,9 @@ def _delete_replaced(replaced: Path, destination: Path) -> list[str]:
     except OSError as error:
         if os.path.lexists(replaced):
             return [
-                f"{destination} holds the new project, but what it replaced could not all be deleted ({error}). "
-                f"Delete {replaced} yourself."
+                # Only the reason: on Windows the error names the file in the extended-length form.
+                f"{destination} holds the new project, but what it replaced could not all be deleted "
+                f"({error.strerror or error}). Delete {replaced} yourself."
             ]
     return []
 

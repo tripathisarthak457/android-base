@@ -295,7 +295,7 @@ class PlacementTest(unittest.TestCase):
         [left] = [path for path in self.root.iterdir() if path != project]
         self.assertEqual(tree(GOLDEN / "mini-all"), tree(left))
         [warning] = [warning for warning in result.warnings if warning != "a warning"]
-        self.assertIn("could not all be deleted", warning)
+        self.assertIn("could not all be deleted (in use).", warning)
         self.assertIn(f"Delete {left} yourself.", warning)
 
     def test_a_destination_of_any_name_is_replaced_whole(self):
@@ -395,6 +395,19 @@ class WindowsLongPathsTest(unittest.TestCase):
                 with self.assertRaises(RenderError) as raised, pipeline._windows_path_limit_explained("destination"):
                     raise failure
                 self.assertIn(f"a path of {len(long)} characters: {long}.", str(raised.exception))
+
+    def test_a_tree_copy_is_held_to_the_limit_for_a_file_or_a_folder(self):
+        # 254 characters: too long for a folder, not for a file in one of 243.
+        file = "D:\\" + "y" * 240 + "\\shared.bin"
+        folder = "D:\\" + "y" * 250
+        failures = {
+            "a file held open": (shutil.Error([("C:\\staged\\shared.bin", file, "[WinError 32] in use")]), shutil.Error),
+            "a folder too deep": (shutil.Error([(str(HERE), folder, "[WinError 3] not found")]), RenderError),
+        }
+        for what, (failure, expected) in failures.items():
+            with self.subTest(what), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=False):
+                with self.assertRaises(expected), pipeline._windows_path_limit_explained("destination"):
+                    raise failure
 
 
 if __name__ == "__main__":
