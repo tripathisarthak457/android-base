@@ -154,9 +154,22 @@ def _swap(finished: Path, destination: Path, aside: Path) -> None:
     os.replace(destination, aside)
     try:
         os.replace(finished, destination)
-    except BaseException:
-        os.replace(aside, destination)
+    except BaseException as error:
+        try:
+            os.replace(aside, destination)
+        except OSError:
+            kept = _keep_beside(aside, destination)
+            raise RenderError(
+                f"{destination} could be neither replaced nor put back. What was there is now {kept}."
+            ) from error
         raise
+
+
+def _keep_beside(aside: Path, destination: Path) -> Path:
+    """Moves `aside` out of the temporary directory that would delete it, to a new folder beside `destination`."""
+    kept = Path(tempfile.mkdtemp(prefix=f"{destination.name}.previous.", dir=destination.parent)) / destination.name
+    os.replace(aside, kept)
+    return kept
 
 
 def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str]:

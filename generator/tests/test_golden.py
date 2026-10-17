@@ -20,6 +20,7 @@ import unittest
 import zipfile
 from functools import cached_property
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 from unittest import mock
 
@@ -124,6 +125,11 @@ def tree(root: Path) -> dict[str, bytes]:
     }
 
 
+def pipeline_os(**functions: Any) -> Any:
+    """Patches `functions` into the `os` module as the pipeline sees it, and nowhere else."""
+    return mock.patch.object(pipeline, "os", SimpleNamespace(**{**vars(os), **functions}))
+
+
 class GoldenTest(unittest.TestCase):
 
     def setUp(self):
@@ -218,7 +224,7 @@ class PlacementTest(unittest.TestCase):
             raise OSError(errno.EXDEV, os.strerror(errno.EXDEV), source, None, target)
 
         project = self.root / "all"
-        with mock.patch.object(pipeline.os, "rename", other_volume):
+        with pipeline_os(rename=other_volume):
             generate("all", project, git_init=True)
         self.assert_is_golden("all", project)
 
@@ -232,17 +238,32 @@ class PlacementTest(unittest.TestCase):
     def test_the_old_project_stays_when_the_new_one_cannot_take_its_place(self):
         project = self.root / "all"
         generate("all", project)
-        replace = os.replace
 
         def refuse_the_new_one(source, target):
             if Path(target) == project and Path(source).name == project.name:
                 raise PermissionError("in use")
-            replace(source, target)
+            os.replace(source, target)
 
-        with mock.patch.object(pipeline.os, "replace", refuse_the_new_one), self.assertRaises(PermissionError):
+        with pipeline_os(replace=refuse_the_new_one), self.assertRaises(PermissionError):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
+    def test_the_old_project_is_kept_beside_when_it_can_be_neither_replaced_nor_put_back(self):
+        project = self.root / "all"
+        generate("all", project)
+
+        def refuse_the_destination(source, target):
+            if Path(target) == project:
+                raise PermissionError("in use")
+            os.replace(source, target)
+
+        with pipeline_os(replace=refuse_the_destination), self.assertRaisesRegex(
+            RenderError, "could be neither replaced nor put back"
+        ) as raised:
+            generate("none", project, replace=True)
+        [kept] = self.root.iterdir()
+        self.assertIn(str(kept / project.name), str(raised.exception))
+        self.assertEqual(tree(GOLDEN / "mini-all"), tree(kept / project.name))
 
 
 @unittest.skipUnless(os.name == "nt", "the path length limit is Windows'")
@@ -274,6 +295,7 @@ class WindowsPathLimitTest(unittest.TestCase):
                     pipeline.build(parsed.spec, target, destination, zip_output=False, commit="golden")
                 self.assertEqual([], [path for path in staging.iterdir() if path.name.startswith("android-gen-")])
                 self.assertFalse(destination.exists())
+
 
 if __name__ == "__main__":
     unittest.main()
