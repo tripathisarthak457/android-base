@@ -26,7 +26,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performTouchInput
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.fragment.app.FragmentActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.base.app.core.common.coroutines.ApplicationScope
@@ -36,20 +38,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
-import java.io.File
 
 /**
  * The cover is the lock: whatever the app shows underneath must be out of reach of a finger, a
@@ -62,10 +63,10 @@ class AppLockGateTest {
     @get:Rule
     val compose = createEmptyComposeRule()
 
-    @get:Rule
-    val folder = TemporaryFolder()
-
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    // The settings live in memory and everything that collects them runs unconfined, so the lock is
+    // settled on the test thread before the activity starts, with no file and no other thread to
+    // wait for. Reading and writing the file is AppSettingsStoreTest's job.
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
     private lateinit var activity: ActivityController<FragmentActivity>
 
     private var now = 1_000_000L
@@ -158,12 +159,9 @@ class AppLockGateTest {
     }
 
     private fun lockedApp(): AppLock {
-        val dataStore = PreferenceDataStoreFactory.create(scope = scope) { File(folder.root, "settings.preferences_pb") }
-        val settings = AppSettingsStore(dataStore, ApplicationScope(scope))
-        runBlocking {
-            settings.setAppLockEnabled(true)
-            settings.settings.first { it.appLockEnabled }
-        }
+        val settings = AppSettingsStore(MemoryPreferences(), ApplicationScope(scope))
+        scope.launch { settings.setAppLockEnabled(true) }
+        check(settings.current?.appLockEnabled == true) { "The lock setting must be in place before the app starts." }
         return AppLock(settings, deviceCanAuthenticate = { true }, clock = { now }, scope = ApplicationScope(scope))
     }
 
@@ -194,6 +192,15 @@ class AppLockGateTest {
         }
         compose.waitForIdle()
     }
+}
+
+private class MemoryPreferences : DataStore<Preferences> {
+    private val state = MutableStateFlow(emptyPreferences())
+
+    override val data: Flow<Preferences> = state
+
+    override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences =
+        transform(state.value).also { state.value = it }
 }
 
 private const val ContentTag = "locked_content"
