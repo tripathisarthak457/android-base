@@ -34,7 +34,11 @@ internal fun FlagsTab(flags: FeatureFlags, overrides: FlagOverrides) {
         contentPadding = PaddingValues(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
     ) {
-        items(Flag.ALL, key = { it.key }) { flag ->
+        items(
+            items = Flag.ALL,
+            key = { it.key },
+            contentType = { if (it is Flag.Bool) SwitchRowType else ValueRowType },
+        ) { flag ->
             FlagRow(
                 flag = flag,
                 value = flags[flag],
@@ -75,3 +79,6 @@ private fun FlagRow(
         }
     }
 }
+
+private const val SwitchRowType = "switch"
+private const val ValueRowType = "value"

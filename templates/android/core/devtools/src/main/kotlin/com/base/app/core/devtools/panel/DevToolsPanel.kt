@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -127,7 +128,7 @@ private fun PanelContent(devTools: DevTools, onClose: () -> Unit) {
             onClear = devTools.log::clear,
         )
 
-        PanelTab.Stats -> StatsTab(NetworkStats.of(exchanges))
+        PanelTab.Stats -> StatsTab(exchanges)
         // <opt:flags>
         PanelTab.Flags -> FlagsTab(flags = devTools.flags, overrides = devTools.flagOverrides)
         // </opt:flags>
@@ -187,7 +188,7 @@ private fun RequestList(
         contentPadding = PaddingValues(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
-        items(exchanges, key = { it.id }) { exchange ->
+        items(exchanges, key = { it.id }, contentType = { ExchangeContentType }) { exchange ->
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 AppListItem(
                     title = exchange.method + " " + exchange.path,
@@ -202,7 +203,7 @@ private fun RequestList(
             }
         }
 
-        item(key = ClearKey) {
+        item(key = ClearKey, contentType = ClearKey) {
             AppButton(
                 text = "Clear",
                 onClick = onClear,
@@ -225,7 +226,9 @@ private fun StatusPill(exchange: NetworkExchange) {
 }
 
 @Composable
-private fun StatsTab(stats: NetworkStats) {
+private fun StatsTab(exchanges: List<NetworkExchange>) {
+    // The median sorts every duration: once per new list, not again when the panel recomposes.
+    val stats = remember(exchanges) { NetworkStats.of(exchanges) }
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -349,6 +352,7 @@ private enum class PanelTab(val title: String) {
 }
 
 private val PanelTabTitles = PanelTab.entries.map { it.title }
+private const val ExchangeContentType = "exchange"
 private const val ClearKey = "clear"
 private const val BytesPerKb = 1024L
 private const val Percent = 100
