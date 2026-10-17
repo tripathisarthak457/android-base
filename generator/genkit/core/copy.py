@@ -6,7 +6,7 @@ import os
 import stat
 from collections.abc import Iterator
 from dataclasses import dataclass
-from fnmatch import fnmatch
+from fnmatch import fnmatchcase
 from pathlib import Path
 
 #: Never copied out of a template: build output, IDE state, machine-local settings and keys.
@@ -79,7 +79,8 @@ def is_link(path: Path) -> bool:
 
 
 def is_executable(relative: str, patterns: tuple[str, ...]) -> bool:
-    return any(fnmatch(relative, pattern) for pattern in patterns)
+    # fnmatch ignores case on Windows alone, and the zip and the commit must mark the same files everywhere.
+    return any(fnmatchcase(relative, pattern) for pattern in patterns)
 
 
 def mark_executable(path: Path) -> None:

@@ -17,7 +17,7 @@ from unittest import mock
 
 import genkit.core.copy as copy_module
 from genkit import targets
-from genkit.core.copy import is_link, template_files, write_text
+from genkit.core.copy import is_executable, is_link, template_files, write_text
 from genkit.targets.android.variants import VARIANTS_DIR
 from tests.links import junction, symlink_or_skip
 
@@ -110,6 +110,15 @@ class HostTest(unittest.TestCase):
             path = Path(temp) / "mixed.txt"
             write_text(path, "lf\ncrlf\r\nend é\n")
             self.assertEqual("lf\ncrlf\r\nend é\n".encode("utf-8"), path.read_bytes())
+
+    def test_executable_patterns_match_with_case_on_every_host(self):
+        patterns = ("gradlew", "tools/perf/*.sh")
+        for relative, expected in (
+            ("gradlew", True), ("tools/perf/run.sh", True), ("GRADLEW", False), ("tools/perf/RUN.SH", False),
+            ("Tools/perf/run.sh", False), ("gradlew.bat", False),
+        ):
+            with self.subTest(relative):
+                self.assertEqual(expected, is_executable(relative, patterns))
 
 
 class LinkTest(unittest.TestCase):
