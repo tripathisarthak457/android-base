@@ -20,6 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "generator"))
 
+from genkit.core.copy import write_text  # noqa: E402
 from genkit.targets import get  # noqa: E402
 
 MANIFEST = get("android").manifest
@@ -84,7 +85,7 @@ def main() -> None:
                 "features": features,
                 "feature_modules": ["orders"],
             }
-            (args.specs / f"combo-{index}.json").write_text(json.dumps(spec, indent=2) + "\n")
+            write_text(args.specs / f"combo-{index}.json", json.dumps(spec, indent=2) + "\n")
     print(json.dumps(sets))
 
 

@@ -21,6 +21,7 @@ from typing import Any
 
 from genkit import tokens
 from genkit.core import pipeline
+from genkit.core.copy import write_text
 from genkit.core.manifest import TemplateManifest
 from genkit.core.spec import Spec, Vocabulary
 from genkit.core.target import BuildContext
@@ -71,7 +72,7 @@ class MiniTarget:
         return {}
 
     def transform(self, project: Path, spec: Spec) -> list[str]:
-        (project / "transformed.txt").write_text(f"{spec.package_name} BaseApp\n", encoding="utf-8")
+        write_text(project / "transformed.txt", f"{spec.package_name} BaseApp\n")
         return []
 
     def finish(self, project: Path, spec: Spec, context: BuildContext) -> list[str]:

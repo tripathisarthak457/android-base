@@ -56,6 +56,14 @@ def _join(directory: str, name: str) -> str:
     return name if directory == "." else f"{directory}/{name}"
 
 
+def write_text(path: Path, text: str) -> None:
+    """
+    Writes `text` as UTF-8 with exactly the line endings it has. `Path.write_text` turns every `\\n`
+    into `\\r\\n` on Windows, and what the generator writes must be the same bytes on every host.
+    """
+    path.write_bytes(text.encode("utf-8"))
+
+
 def is_executable(relative: str, patterns: tuple[str, ...]) -> bool:
     return any(fnmatch(relative, pattern) for pattern in patterns)
 

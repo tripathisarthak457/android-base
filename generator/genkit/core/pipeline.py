@@ -27,7 +27,7 @@ from typing import Any
 
 from . import markers, package, record
 from . import spec as specs
-from .copy import is_executable, mark_executable, prune_empty_directories, template_files
+from .copy import is_executable, mark_executable, prune_empty_directories, template_files, write_text
 from .manifest import TemplateManifest
 from .markers import MARKER_TEXT, TemplateError
 from .rename import IdentityRenamer
@@ -137,7 +137,7 @@ def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str
                 rendered = render_text(text, source.relative, manifest, spec.features, known, regions, renamer)
                 if rendered is None:
                     continue
-                destination.write_bytes(rendered.encode("utf-8"))
+                write_text(destination, rendered)
 
         if is_executable(relative, manifest.executable):
             mark_executable(destination)

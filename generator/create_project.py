@@ -22,6 +22,7 @@ from typing import Any
 
 from genkit import targets
 from genkit.core import catalogue, pipeline, prompts
+from genkit.core.copy import write_text
 from genkit.core.headless import internal, invalid
 from genkit.core.markers import TemplateError
 from genkit.core.spec import SpecError, to_json
@@ -189,7 +190,7 @@ def load_raw(args: argparse.Namespace, target) -> object:
 
 def save_spec(spec, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(to_json(spec, keystores=True), indent=2) + "\n", encoding="utf-8")
+    write_text(path, json.dumps(to_json(spec, keystores=True), indent=2) + "\n")
     note = f"  Answers written to {path}."
     if spec.android is not None and spec.android.keystores:
         note += " It holds the keystore passwords: keep it out of version control."

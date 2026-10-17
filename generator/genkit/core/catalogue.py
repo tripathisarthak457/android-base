@@ -22,6 +22,7 @@ from typing import Any
 from .. import targets, tokens
 from ..tokens import web
 from . import record, translations
+from .copy import write_text
 from .manifest import Feature, TemplateManifest
 from .spec import (
     APP_NAME_PATTERN,
@@ -239,7 +240,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python3 -m genkit.core.catalogue", description=__doc__.strip().splitlines()[0])
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--json", action="store_true", help="print the catalogue")
-    action.add_argument("--write", action="store_true", help=f"write {WEBSITE_COPY.relative_to(record.REPOSITORY)}")
+    action.add_argument("--write", action="store_true", help=f"write {WEBSITE_COPY.relative_to(record.REPOSITORY).as_posix()}")
     action.add_argument("--check", action="store_true", help="fail when the website's copy is stale")
     args = parser.parse_args(argv)
 
@@ -251,7 +252,7 @@ def main(argv: list[str] | None = None) -> int:
     relative = WEBSITE_COPY.relative_to(record.REPOSITORY).as_posix()
     if args.write:
         WEBSITE_COPY.parent.mkdir(parents=True, exist_ok=True)
-        WEBSITE_COPY.write_text(fresh, encoding="utf-8")
+        write_text(WEBSITE_COPY, fresh)
         print(f"wrote {relative}")
         return 0
 

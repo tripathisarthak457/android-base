@@ -13,6 +13,7 @@ import json
 import subprocess
 from pathlib import Path
 
+from .copy import write_text
 from .spec import STAMP_KEY, Spec, to_json
 
 RECORD_NAME = "generator-spec.json"
@@ -25,7 +26,7 @@ def write(project: Path, spec: Spec, commit: str) -> None:
         STAMP_KEY: {"commit": commit, "generatedOn": datetime.date.today().isoformat()},
         **to_json(spec, keystores=False),
     }
-    (project / RECORD_NAME).write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    write_text(project / RECORD_NAME, json.dumps(record, indent=2) + "\n")
 
 
 def generator_commit(repository: Path = REPOSITORY) -> str:
