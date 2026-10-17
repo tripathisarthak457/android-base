@@ -30,6 +30,7 @@ import com.base.app.catalog.sections.PickersSection
 // </opt:pickers>
 import com.base.app.catalog.sections.SelectionSection
 import com.base.app.catalog.sections.TextSection
+import com.base.app.catalog.sections.sheets.SheetsSection
 import com.base.app.core.designsystem.component.list.AppSectionHeader
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
@@ -45,7 +46,8 @@ enum class CatalogSection(val title: String, val summary: String) {
     Lists("Lists", "Grouped sections, rows, toggle rows, disclosure, swipe actions, refresh"),
     Containers("Containers", "Cards, surfaces, dividers, scaffold, bottom action bar"),
     Bars("Bars and pages", "Inline and large-title top bars, tab row, pager and page control"),
-    Overlays("Overlays", "Alert, action sheet, sheet with detents, menu, toast, loading"),
+    Overlays("Overlays", "Alert, menu, context menu, toast, loading"),
+    Sheets("Sheets", "Detents, the card stack, non-modal and side sheets, materials, action and choice sheets"),
     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
     Loading("Loading screen", "Redacted rows under a large title: one sweep, and the swap to content"),
     Motion("Animation", "Transitions, first appearance, list placement, emphasis, rubber band"),
@@ -77,6 +79,7 @@ fun CatalogSection.Content() {
         CatalogSection.Containers -> ContainersSection()
         CatalogSection.Bars -> BarsSection()
         CatalogSection.Overlays -> OverlaysSection()
+        CatalogSection.Sheets -> SheetsSection()
         CatalogSection.Feedback -> FeedbackSection()
         CatalogSection.Loading -> error("Loading is a whole screen, not a page of groups")
         CatalogSection.Motion -> MotionSection()
