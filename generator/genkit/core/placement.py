@@ -13,7 +13,6 @@ import shutil
 import stat
 import string
 import sys
-import tempfile
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from pathlib import Path
@@ -39,31 +38,27 @@ def place(
     is, and returns warnings. With `replace`, what was there is deleted once the new output has
     taken its place; what of it cannot be deleted then is left beside it, and a warning says where.
     """
-    warnings: list[str] = []
-    shorter = "destination, app name or package name"
-    if not zip_output:
-        _check_windows_path_limit(project, destination, shorter)
-    with windows_path_limit_explained(shorter):
+    _check_windows_path_limit(project, destination, zip_output)
+    with windows_path_limit_explained("destination, app name or package name"):
         destination.parent.mkdir(parents=True, exist_ok=True)
-        # The result is finished beside the destination and renamed over it, so a failure never
+        # The output is finished beside the destination and renamed over it, so a failure never
         # leaves half a project where a caller expects a whole one, nor costs the one it replaces.
-        beside = Path(tempfile.mkdtemp(prefix=f".{destination.name}.", dir=destination.parent))
+        # Under a name as long as the destination's, so that whatever fits there fits on the way,
+        # copied from staging on another volume included.
+        finished = _free_sibling(destination)
         try:
-            finished = beside / destination.name
             if zip_output:
                 package.zip_project(project, finished, executable)
             else:
                 _move(project, finished)
-            if replace and os.path.lexists(destination):
-                replaced = _swap(finished, destination)
-                warnings += _delete_replaced(replaced, destination)
-            else:
+            if not (replace and os.path.lexists(destination)):
                 os.replace(finished, destination)
+                return []
+            replaced = _swap(finished, destination)
         except BaseException as error:
-            _delete_beside(beside, error.add_note)
+            _delete_unplaced(finished, error.add_note)
             raise
-        _delete_beside(beside, warnings.append)
-    return warnings
+        return _delete_replaced(replaced, destination)
 
 
 @contextmanager
@@ -82,15 +77,19 @@ def windows_path_limit_explained(shorter: str) -> Iterator[None]:
         raise _past_windows_limit(f"Windows refused a path of {len(path)} characters: {path}.", shorter) from error
 
 
-def _check_windows_path_limit(project: Path, destination: Path, shorter: str) -> None:
+def _check_windows_path_limit(project: Path, destination: Path, zip_output: bool) -> None:
     """
-    Refuses `project` when a path in it would pass Windows' length limit at `destination`. Putting
-    it there is a rename, which Windows does however deep the files inside are, so nothing else
-    would say so before Explorer, git or the build failed on them.
+    Refuses the output, before anything is made for it, when a path in it would pass Windows' length
+    limit at `destination`. A project is put there by a rename, which Windows does however deep the
+    files inside are, so nothing else would say so before Explorer, git or the build failed on them.
     """
     if os.name != "nt" or _windows_long_paths_on():
         return
     root = os.path.abspath(destination)
+    if zip_output:
+        if _past_limit(root, folder=False):
+            raise _past_windows_limit(f"The zip would be a path of {len(root)} characters: {root}.", "destination")
+        return
     past: list[str] = []
     for folder, folders, files in os.walk(project):
         placed = root + folder[len(str(project)):]
@@ -101,7 +100,8 @@ def _check_windows_path_limit(project: Path, destination: Path, shorter: str) ->
     if past:
         longest = max(past, key=len)
         raise _past_windows_limit(
-            f"At {destination} the project would hold a path of {len(longest)} characters: {longest}.", shorter
+            f"At {destination} the project would hold a path of {len(longest)} characters: {longest}.",
+            "destination, app name or package name",
         )
 
 
@@ -167,15 +167,18 @@ def _swap(finished: Path, destination: Path) -> Path:
     fails whole while Windows holds a file in it open, where deleting it in place would stop halfway.
     A link is moved, never followed.
     """
-    replaced = _aside(destination)
+    replaced = _free_sibling(destination)
     try:
         os.replace(destination, replaced)
     except PermissionError as error:
         message = f"{destination} could not be moved aside ({error.strerror or error}); nothing was changed."
         if os.name == "nt":
-            # Windows refuses to rename a folder while a program holds a file in it open, or has it
-            # as its working directory.
-            message += " A terminal, an IDE or an indexer may hold a file in it: close it and run again."
+            # Windows refuses to rename a file a program has open, or a folder while a program has
+            # a file in it open or the folder as its working directory.
+            if destination.is_dir():
+                message += " A terminal, an IDE or an indexer may have a file in it open: close it and run again."
+            else:
+                message += " A program may have it open, such as an archive viewer: close it and run again."
         raise RenderError(message) from error
     try:
         os.replace(finished, destination)
@@ -190,22 +193,23 @@ def _swap(finished: Path, destination: Path) -> Path:
     return replaced
 
 
-def _aside(destination: Path) -> Path:
+def _free_sibling(destination: Path) -> Path:
     """
-    A free name beside `destination` and no longer than its own, so every path inside the old output
-    stays as long as it was: what Windows' length limit let anyone open or delete there, it still does.
+    A free name beside `destination` and as long as its own, so every path inside what is put there
+    is as long as at `destination`: what Windows' length limit lets anyone write, open or delete at
+    one, it does at the other.
     """
     length = len(destination.name)
     for _ in range(100):
         name = "".join(random.choices(string.ascii_lowercase + string.digits, k=max(length - 1, 1)))
-        # Hidden, like the folder the new output is finished in, where the name has room for the dot.
+        # Linux and macOS leave a name with a leading dot out of listings, where it has room for one.
         if length > 1:
             name = "." + name
-        aside = destination.with_name(name)
+        sibling = destination.with_name(name)
         # Compared without case: on a case-insensitive file system the two would be one entry.
-        if name.lower() != destination.name.lower() and not os.path.lexists(aside):
-            return aside
-    raise RenderError(f"{destination} cannot be replaced: no name beside it is free to move it to meanwhile.")
+        if name.lower() != destination.name.lower() and not os.path.lexists(sibling):
+            return sibling
+    raise RenderError(f"No name beside {destination} and as long as its own is free to put the output under.")
 
 
 def _delete_replaced(replaced: Path, destination: Path) -> list[str]:
@@ -214,12 +218,7 @@ def _delete_replaced(replaced: Path, destination: Path) -> list[str]:
     deleted is a warning that says where it is, not a failure.
     """
     try:
-        if is_link(replaced):
-            os.unlink(replaced)
-        elif replaced.is_dir():
-            _delete_tree(replaced)
-        else:
-            _delete_file(replaced)
+        _delete(replaced)
     except OSError as error:
         if os.path.lexists(replaced):
             return [
@@ -230,20 +229,30 @@ def _delete_replaced(replaced: Path, destination: Path) -> list[str]:
     return []
 
 
-def _delete_beside(beside: Path, report: Callable[[str], object]) -> None:
+def _delete_unplaced(output: Path, report: Callable[[str], object]) -> None:
     """
-    Deletes the folder the output was finished in. After a failure it still holds the output, deeper
-    than at the destination by the folder's name, so a file that fits there can be past the length
-    limit here, which `_delete_tree` reaches. What stops the deletion goes to `report`, so it never
-    takes the place of the error that brought the build here.
+    Deletes the new output a failure kept from its place, as far as it was made. What stops the
+    deletion goes to `report`, so it never takes the place of the error that brought the build here.
     """
+    if not os.path.lexists(output):
+        return
     try:
-        _delete_tree(beside)
+        _delete(output)
     except OSError as error:
         report(
-            f"{beside}, where the output was finished, could not be deleted ({error.strerror or error}). "
+            f"The new output was left at {output}: it could not be deleted ({error.strerror or error}). "
             "Delete it yourself."
         )
+
+
+def _delete(path: Path) -> None:
+    """Deletes `path` whole. A link is unlinked, never followed."""
+    if is_link(path):
+        os.unlink(path)
+    elif path.is_dir():
+        _delete_tree(path)
+    else:
+        _delete_file(path)
 
 
 def _delete_file(path: Path) -> None:

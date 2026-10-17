@@ -10,6 +10,7 @@ engine change, regenerate the expected trees and review the diff:
 
 from __future__ import annotations
 
+import contextlib
 import errno
 import os
 import re
@@ -163,6 +164,35 @@ def at_length(root: Path, length: int, name: str) -> Path:
     return folder / name
 
 
+def staged_on_another_volume() -> Any:
+    """
+    Fails every rename of the staged project as a rename to another volume fails, wherever in the
+    process it is made, so a shutil.move would meet it too and then fail to delete git's read-only
+    objects on Windows. No other rename is affected.
+    """
+    rename = os.rename
+
+    def other_volume(source, target):
+        if Path(source).parent.name.startswith(f"{MiniTarget.key}-gen-"):
+            raise OSError(errno.EXDEV, os.strerror(errno.EXDEV), source, None, target)
+        rename(source, target)
+
+    return mock.patch("os.rename", other_volume)
+
+
+def refusing_the_new_output(destination: Path, error: OSError) -> Any:
+    """Fails the new output's rename onto `destination`, the first one onto it, with `error`."""
+    refused: list[str] = []
+
+    def replace(source, target):
+        if Path(target) == destination and not refused:
+            refused.append(source)
+            raise error
+        os.replace(source, target)
+
+    return seen_by_placement(os, replace=replace)
+
+
 class GoldenTest(unittest.TestCase):
 
     def setUp(self):
@@ -253,17 +283,8 @@ class PlacementTest(unittest.TestCase):
 
     @unittest.skipIf(shutil.which("git") is None, "git is not installed")
     def test_a_git_project_moves_from_staging_on_another_volume(self):
-        rename = os.rename
-
-        def other_volume(source, target):
-            if Path(source).parent.name.startswith(f"{MiniTarget.key}-gen-"):
-                raise OSError(errno.EXDEV, os.strerror(errno.EXDEV), source, None, target)
-            rename(source, target)
-
-        # Every rename in the process meets the other volume, so a shutil.move would too and then fail
-        # to delete git's read-only objects on Windows; only the staged project is affected.
         project = self.root / "all"
-        with mock.patch("os.rename", other_volume):
+        with staged_on_another_volume():
             generate("all", project, git_init=True)
         self.assert_is_golden("all", project)
 
@@ -277,13 +298,7 @@ class PlacementTest(unittest.TestCase):
     def test_the_old_project_stays_when_the_new_one_cannot_take_its_place(self):
         project = self.root / "all"
         generate("all", project)
-
-        def refuse_the_new_one(source, target):
-            if Path(target) == project and Path(source).name == project.name:
-                raise PermissionError("in use")
-            os.replace(source, target)
-
-        with seen_by_placement(os, replace=refuse_the_new_one), self.assertRaises(PermissionError):
+        with refusing_the_new_output(project, PermissionError("in use")), self.assertRaises(PermissionError):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
@@ -302,34 +317,27 @@ class PlacementTest(unittest.TestCase):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
-    def test_the_folder_it_was_finished_in_is_named_when_it_cannot_be_deleted(self):
-        # Never raised: a warning when the build succeeded, and a note on the error when it did
-        # not, which a failed deletion must not take the place of.
+    def test_the_new_output_is_named_when_a_failure_leaves_it_undeleted(self):
+        # A note on the error, which a failed deletion must not take the place of. A success
+        # leaves nothing of its own to delete.
         held_open = PermissionError(errno.EACCES, "in use")
         project = self.root / "all"
         with mock.patch.object(placement, "_delete_tree", side_effect=held_open):
             result = generate("all", project)
-        [beside] = [path for path in self.root.iterdir() if path != project]
-        self.assertEqual(
-            ["a warning", f"{beside}, where the output was finished, could not be deleted (in use). Delete it yourself."],
-            result.warnings,
-        )
-        self.assertEqual(tree(GOLDEN / "mini-all"), tree(project))
+        self.assertEqual(["a warning"], result.warnings)
+        self.assert_is_golden("all", project)
 
-        def refuse_the_new_one(source, target):
-            if Path(target) == project and Path(source).name == project.name:
-                raise PermissionError(errno.EACCES, "refused", str(source))
-            os.replace(source, target)
-
-        with mock.patch.object(placement, "_delete_tree", side_effect=held_open), seen_by_placement(
-            os, replace=refuse_the_new_one
+        with mock.patch.object(placement, "_delete_tree", side_effect=held_open), refusing_the_new_output(
+            project, PermissionError(errno.EACCES, "refused")
         ), self.assertRaisesRegex(PermissionError, "refused") as raised:
             generate("none", project, replace=True)
-        [left] = [path for path in self.root.iterdir() if path not in (project, beside)]
+        [left] = [path for path in self.root.iterdir() if path != project]
         self.assertEqual(
-            [f"{left}, where the output was finished, could not be deleted (in use). Delete it yourself."],
+            [f"The new output was left at {left}: it could not be deleted (in use). Delete it yourself."],
             raised.exception.__notes__,
         )
+        self.assertEqual(len(project.name), len(left.name))
+        self.assertEqual(tree(GOLDEN / "mini-none"), tree(left))
         self.assertEqual(tree(GOLDEN / "mini-all"), tree(project))
 
     def test_a_read_only_old_zip_is_deleted(self):
@@ -363,13 +371,9 @@ class PlacementTest(unittest.TestCase):
     def test_the_new_project_stays_when_the_old_one_cannot_all_be_deleted(self):
         project = self.root / "all"
         generate("all", project)
-        rmtree = shutil.rmtree
 
         def held_open(path, *arguments, **options):
-            # A file in the old project, not the empty folder the new one was finished in.
-            if os.listdir(path):
-                raise PermissionError(errno.EACCES, "in use", str(path))
-            rmtree(path, *arguments, **options)
+            raise PermissionError(errno.EACCES, "in use", str(path))
 
         with seen_by_placement(shutil, rmtree=held_open):
             result = generate("none", project, replace=True)
@@ -426,14 +430,36 @@ class WindowsPathLimitTest(unittest.TestCase):
                 self.assertEqual([], [path for path in staging.iterdir() if path.name.startswith("android-gen-")])
                 self.assertFalse(destination.exists())
 
-    def test_a_destination_too_deep_for_the_folder_beside_it_is_explained(self):
-        # 240 characters leave room for Bare.zip, not for the folder it is finished in beside it.
-        deep = self.root / ("d" * (240 - len(str(self.root)) - 1))
-        deep.mkdir()
-        destination = deep / "Bare.zip"
-        with self.assertRaisesRegex(RenderError, "Windows refused a path of .* shorter destination, app name"):
-            generate("none", destination, zip_output=True)
-        self.assertEqual([], list(deep.iterdir()))
+    def test_a_zip_is_written_wherever_it_fits_and_nowhere_else(self):
+        # A name long enough that the file's limit, not its folder's, is the one reached.
+        for length, fits in ((placement._WINDOWS_MAX_FILE, True), (placement._WINDOWS_MAX_FILE + 1, False)):
+            with self.subTest(length=length):
+                destination = at_length(self.root, length, "TrailNotes.zip")
+                if fits:
+                    generate("none", destination, zip_output=True)
+                    self.assertEqual(tree(GOLDEN / "mini-none"), unzipped(destination))
+                else:
+                    with self.assertRaisesRegex(
+                        RenderError,
+                        rf"^The zip would be a path of {length} characters: {re.escape(str(destination))}\. .* "
+                        r"shorter destination\.$",
+                    ):
+                        generate("none", destination, zip_output=True)
+                self.assertEqual([destination] if fits else [], list(destination.parent.iterdir()))
+
+    def test_a_project_is_placed_at_the_deepest_destination_it_fits_from_staging_on_either_volume(self):
+        # The project is finished beside the destination before it is renamed into place, copied
+        # there from staging on another volume, so no path on the way may be longer than in place.
+        self.addCleanup(delete_tree, self.root)
+        for other_volume in (False, True):
+            with self.subTest(other_volume=other_volume):
+                folder = self.root / str(other_volume)
+                folder.mkdir()
+                project = at_length(folder, deepest_destination("all"), "all")
+                with staged_on_another_volume() if other_volume else contextlib.nullcontext():
+                    generate("all", project)
+                self.assertEqual(tree(GOLDEN / "mini-all"), tree(project))
+                self.assertEqual([project], list(project.parent.iterdir()))
 
     def test_an_old_project_goes_whole_however_deep_its_files(self):
         # One file as deep as Windows allows in place, and one past that, as Gradle writes them in a
@@ -456,9 +482,8 @@ class WindowsPathLimitTest(unittest.TestCase):
         self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
         self.assertEqual([project], list(self.root.iterdir()))
 
-    def test_a_failed_replace_leaves_only_the_old_project_however_deep_the_new_one_was_finished(self):
-        # At the deepest destination it fits, the new project's deepest file is past the limit in
-        # the folder beside it where it is finished, deeper by that folder's name.
+    def test_a_failed_replace_at_the_deepest_destination_leaves_only_the_old_project(self):
+        # The new project, finished beside the destination as deep as it fits, is deleted whole.
         self.addCleanup(delete_tree, self.root)
         project = at_length(self.root, deepest_destination("all"), "all")
         generate("none", project)
@@ -532,6 +557,16 @@ class WindowsLongPathsTest(unittest.TestCase):
             r"characters: .*TrailNotesApplication\.kt\. .* shorter destination, app name or package name\.$",
         ):
             generate("all", destination)
+        self.assertEqual([], list(destination.parent.iterdir()))
+
+    def test_a_zip_too_long_for_its_destination_is_refused_before_it_is_written(self):
+        temp = Path(tempfile.mkdtemp())
+        self.addCleanup(delete_tree, temp)
+        destination = at_length(temp, placement._WINDOWS_MAX_FILE + 1, "TrailNotes.zip")
+        with self.assertRaisesRegex(
+            RenderError, rf"^The zip would be a path of {placement._WINDOWS_MAX_FILE + 1} characters: "
+        ):
+            generate("all", destination, zip_output=True)
         self.assertEqual([], list(destination.parent.iterdir()))
 
 
