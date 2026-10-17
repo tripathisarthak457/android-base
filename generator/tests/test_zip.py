@@ -1,16 +1,21 @@
-"""The zip a user downloads: the same bytes for the same project, executable bits, one root folder."""
+"""
+What a user receives: the zip, with the same bytes for the same project, executable bits and one
+root folder, or the first commit, with the same executable bits.
+"""
 
 from __future__ import annotations
 
 import os
+import shutil
 import stat
+import subprocess
 import tempfile
 import time
 import unittest
 import zipfile
 from pathlib import Path
 
-from genkit.core.package import zip_project
+from genkit.core.package import git_init, zip_project
 
 EXECUTABLE = ("gradlew", "tools/perf/*.sh")
 
@@ -57,6 +62,20 @@ class ZipTest(unittest.TestCase):
         self.assertEqual(0o755, stat.S_IMODE(modes["Trail/tools/perf/perf.sh"]))
         self.assertEqual(0o644, stat.S_IMODE(modes["Trail/tools/perf/gates.toml"]))
         self.assertTrue(stat.S_ISREG(modes["Trail/README.md"]))
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one(self):
+        (self.project / ".gitignore").write_bytes(b"local.sh\n")
+        (self.project / "tools/perf/local.sh").write_bytes(b"#!/bin/sh\n")
+        self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+        listed = subprocess.run(
+            ["git", "ls-tree", "-r", "HEAD"], cwd=self.project, capture_output=True, text=True, check=True
+        ).stdout
+        modes = {path: mode for mode, _, _, path in (line.split(maxsplit=3) for line in listed.splitlines())}
+        self.assertNotIn("tools/perf/local.sh", modes)
+        self.assertEqual(
+            {"gradlew", "tools/perf/perf.sh"}, {path for path, mode in modes.items() if mode == "100755"}
+        )
 
 
 if __name__ == "__main__":
