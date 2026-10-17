@@ -10,6 +10,7 @@ engine change, regenerate the expected trees and review the diff:
 
 from __future__ import annotations
 
+import errno
 import os
 import shutil
 import stat
@@ -20,6 +21,7 @@ import zipfile
 from functools import cached_property
 from pathlib import Path
 from typing import Any
+from unittest import mock
 
 from genkit import tokens
 from genkit.core import pipeline
@@ -104,11 +106,13 @@ CASES: dict[str, dict[str, Any]] = {
 }
 
 
-def generate(case: str, destination: Path, *, zip_output: bool = False, git_init: bool = False) -> pipeline.Generated:
+def generate(
+    case: str, destination: Path, *, zip_output: bool = False, git_init: bool = False, replace: bool = False
+) -> pipeline.Generated:
     target = MiniTarget()
     parsed, _ = pipeline.read_spec(CASES[case], target)
     return pipeline.build(
-        parsed.spec, target, destination, zip_output=zip_output, git_init=git_init, commit="golden"
+        parsed.spec, target, destination, zip_output=zip_output, git_init=git_init, commit="golden", replace=replace
     )
 
 
@@ -193,6 +197,51 @@ class GoldenTest(unittest.TestCase):
         generate("none", project)
         self.assertFalse((project / "extra").exists())
         self.assertFalse((project / "src/main/kotlin/io/bare/min/ExtraHook.kt").exists())
+
+
+class PlacementTest(unittest.TestCase):
+    """The finished project moved into place: from staging on another volume, and over an older one."""
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.root = Path(temp.name)
+
+    def assert_is_golden(self, case: str, project: Path) -> None:
+        generated = {name: data for name, data in tree(project).items() if not name.startswith(".git/")}
+        self.assertEqual(tree(GOLDEN / f"mini-{case}"), generated)
+        self.assertEqual([project.name], [path.name for path in self.root.iterdir()], "left beside it")
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_a_git_project_moves_from_staging_on_another_volume(self):
+        def other_volume(source, target):
+            raise OSError(errno.EXDEV, os.strerror(errno.EXDEV), source, None, target)
+
+        project = self.root / "all"
+        with mock.patch.object(pipeline.os, "rename", other_volume):
+            generate("all", project, git_init=True)
+        self.assert_is_golden("all", project)
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_a_git_project_is_replaced_whole(self):
+        project = self.root / "all"
+        generate("all", project, git_init=True)
+        generate("none", project, git_init=True, replace=True)
+        self.assert_is_golden("none", project)
+
+    def test_the_old_project_stays_when_the_new_one_cannot_take_its_place(self):
+        project = self.root / "all"
+        generate("all", project)
+        replace = os.replace
+
+        def refuse_the_new_one(source, target):
+            if Path(target) == project and Path(source).name == project.name:
+                raise PermissionError("in use")
+            replace(source, target)
+
+        with mock.patch.object(pipeline.os, "replace", refuse_the_new_one), self.assertRaises(PermissionError):
+            generate("none", project, replace=True)
+        self.assert_is_golden("all", project)
 
 
 if __name__ == "__main__":

@@ -16,6 +16,7 @@ leaves nothing behind that the API does not delete.
 
 from __future__ import annotations
 
+import errno
 import os
 import re
 import shutil
@@ -27,7 +28,7 @@ from typing import Any
 
 from . import markers, package, record
 from . import spec as specs
-from .copy import is_executable, is_link, mark_executable, prune_empty_directories, template_files, write_text
+from .copy import is_executable, mark_executable, prune_empty_directories, template_files, write_text
 from .manifest import TemplateManifest
 from .markers import MARKER_TEXT, TemplateError
 from .rename import IdentityRenamer
@@ -94,20 +95,40 @@ def build(
             if zip_output:
                 package.zip_project(project, finished, manifest.executable)
             else:
-                shutil.move(str(project), str(finished))
-            if replace:
-                _remove(destination)
-            os.replace(finished, destination)
+                _move(project, finished)
+            if replace and os.path.lexists(destination):
+                _swap(finished, destination, Path(beside) / "replaced")
+            else:
+                os.replace(finished, destination)
 
     return Generated(destination, spec.pascal_name, warnings, context.summary)
 
 
-def _remove(path: Path) -> None:
-    """Deletes `path` itself: a link is unlinked, never followed."""
-    if path.is_dir() and not is_link(path):
-        shutil.rmtree(path)
-    elif path.exists() or is_link(path):
-        path.unlink()
+def _move(project: Path, finished: Path) -> None:
+    try:
+        os.rename(project, finished)
+    except OSError as error:
+        if error.errno != errno.EXDEV:
+            raise
+        # Staging is on another volume. Not shutil.move: it deletes the source with a plain rmtree,
+        # which Windows refuses for the read-only files in .git. The staging directory's own
+        # cleanup deletes the source instead.
+        shutil.copytree(project, finished, symlinks=True)
+
+
+def _swap(finished: Path, destination: Path, aside: Path) -> None:
+    """
+    Puts `finished` at `destination` and moves what was there to `aside`, whose temporary directory
+    deletes it: a link is moved, never followed. Moving the old one first fails whole while Windows
+    holds a file in it open, where deleting it in place would stop halfway, and the temporary
+    directory's cleanup clears the read-only flag git puts on its objects.
+    """
+    os.replace(destination, aside)
+    try:
+        os.replace(finished, destination)
+    except BaseException:
+        os.replace(aside, destination)
+        raise
 
 
 def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str]:
