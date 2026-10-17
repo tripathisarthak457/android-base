@@ -70,6 +70,10 @@ def main(argv: list[str] | None = None) -> int:
         if actual != expected:
             stale += 1
             relative = path.relative_to(TEMPLATES.parent).as_posix()
+            # A diff of lines that differ only in how they end shows nothing to fix.
+            if actual.replace("\r\n", "\n") == expected:
+                print(f"{relative} differs only in its line endings: --write writes LF.")
+                continue
             sys.stdout.writelines(
                 difflib.unified_diff(
                     actual.splitlines(keepends=True), expected.splitlines(keepends=True),

@@ -41,8 +41,13 @@ class CheckTest(unittest.TestCase):
             checked_in.write_bytes(b"val a = 1\r\nval b = 2\r\n")
             emitted = {"android": (checked_in, lambda: "val a = 1\nval b = 2\n")}
             with mock.patch.object(cli, "TEMPLATES", templates), mock.patch.object(cli, "emissions", lambda: emitted), \
-                    redirect_stdout(io.StringIO()):
+                    redirect_stdout(io.StringIO()) as printed:
                 self.assertEqual(1, cli.main(["--check"]))
+                self.assertEqual(
+                    "templates/android/Tokens.kt differs only in its line endings: --write writes LF.\n"
+                    "\n1 of 1 token copies are stale. Run: python3 -m genkit.tokens --write\n",
+                    printed.getvalue(),
+                )
                 self.assertEqual(0, cli.main(["--write"]))
                 self.assertEqual(0, cli.main(["--check"]))
             self.assertEqual(b"val a = 1\nval b = 2\n", checked_in.read_bytes())
