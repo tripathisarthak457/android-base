@@ -182,7 +182,7 @@ def _swap(finished: Path, destination: Path, aside: Path) -> None:
         except OSError:
             kept = _keep_beside(aside, destination)
             raise RenderError(
-                f"{destination} could be neither replaced nor put back. What was there is now {kept}."
+                f"{destination} could not be replaced, and what was there could not be put back: it is now {kept}."
             ) from error
         raise
 

@@ -258,7 +258,7 @@ class PlacementTest(unittest.TestCase):
             os.replace(source, target)
 
         with pipeline_os(replace=refuse_the_destination), self.assertRaisesRegex(
-            RenderError, "could be neither replaced nor put back"
+            RenderError, "could not be replaced, and what was there could not be put back"
         ) as raised:
             generate("none", project, replace=True)
         [kept] = self.root.iterdir()
