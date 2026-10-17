@@ -278,10 +278,12 @@ def _delete_replaced(replaced: Path, destination: Path) -> list[str]:
     deleted is a warning that says where it is, not a failure.
     """
     try:
-        if is_link(replaced) or not replaced.is_dir():
+        if is_link(replaced):
             os.unlink(replaced)
-        else:
+        elif replaced.is_dir():
             _delete_tree(replaced)
+        else:
+            _delete_file(replaced)
     except OSError as error:
         if os.path.lexists(replaced):
             return [
@@ -306,6 +308,15 @@ def _delete_beside(beside: Path, report: Callable[[str], object]) -> None:
             f"{beside}, where the output was finished, could not be deleted ({error.strerror or error}). "
             "Delete it yourself."
         )
+
+
+def _delete_file(path: Path) -> None:
+    try:
+        os.unlink(path)
+    except PermissionError as error:
+        if os.name != "nt":
+            raise
+        _writable_and_again(os.unlink, str(path), error)
 
 
 def _delete_tree(directory: Path) -> None:

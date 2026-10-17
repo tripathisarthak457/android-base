@@ -332,6 +332,16 @@ class PlacementTest(unittest.TestCase):
         )
         self.assertEqual(tree(GOLDEN / "mini-all"), tree(project))
 
+    def test_a_read_only_old_zip_is_deleted(self):
+        # Windows deletes no read-only file without its flag cleared first.
+        archive = self.root / "Bare.zip"
+        generate("all", archive, zip_output=True)
+        os.chmod(archive, stat.S_IREAD)
+        result = generate("none", archive, zip_output=True, replace=True)
+        self.assertEqual(["a warning"], result.warnings)
+        self.assertEqual(tree(GOLDEN / "mini-none"), unzipped(archive))
+        self.assertEqual([archive], list(self.root.iterdir()))
+
     def test_the_old_project_is_kept_beside_when_it_can_be_neither_replaced_nor_put_back(self):
         project = self.root / "all"
         generate("all", project)
