@@ -247,7 +247,9 @@ class GoldenTest(unittest.TestCase):
         self.assertEqual("", git("status", "--porcelain"))
         # The mini template has no .gitattributes, so each blob is the file as generated, CRLF run.bat too.
         for _, _, blob, path in entries:
-            committed = subprocess.run(["git", "cat-file", "blob", blob], cwd=project, capture_output=True, check=True).stdout
+            committed = subprocess.run(
+                ["git", "cat-file", "blob", blob], cwd=project, capture_output=True, check=True
+            ).stdout
             self.assertEqual((project / path).read_bytes(), committed, path)
 
     def test_template_only_files_never_ship(self):

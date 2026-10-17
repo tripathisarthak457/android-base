@@ -112,7 +112,8 @@ class HostTest(unittest.TestCase):
         ]
         self.assertEqual(
             [], found,
-            "check the working tree out again with LF: git checkout-index --force --all (it overwrites uncommitted changes)",
+            "check the working tree out again with LF: "
+            "git checkout-index --force --all (it overwrites uncommitted changes)",
         )
 
     def test_write_text_keeps_the_line_endings_it_is_given(self):

@@ -240,7 +240,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python3 -m genkit.core.catalogue", description=__doc__.strip().splitlines()[0])
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--json", action="store_true", help="print the catalogue")
-    action.add_argument("--write", action="store_true", help=f"write {WEBSITE_COPY.relative_to(record.REPOSITORY).as_posix()}")
+    action.add_argument(
+        "--write", action="store_true", help=f"write {WEBSITE_COPY.relative_to(record.REPOSITORY).as_posix()}"
+    )
     action.add_argument("--check", action="store_true", help="fail when the website's copy is stale")
     args = parser.parse_args(argv)
 

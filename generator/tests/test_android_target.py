@@ -283,14 +283,15 @@ class ProjectTest(unittest.TestCase):
         # Newline translation on Windows, or a template checked out with CRLF, shows up here as a
         # CR byte in a text file, and the project would differ from one generated on Linux.
         everything = json.loads((Path(__file__).resolve().parent / "fixtures/v2/everything.json").read_bytes())
+        languages = list(translations.available("android"))
         project = generate(
-            self.root, **{**everything, "feature_modules": ["orders"], "languages": list(translations.available("android"))},
-            accent_colour="#16A34A",
+            self.root, **{**everything, "feature_modules": ["orders"], "languages": languages}, accent_colour="#16A34A"
         )
+        binary = ANDROID.manifest.binary_suffixes
         found = sorted(
             path.relative_to(project).as_posix()
             for path in project.rglob("*")
-            if path.is_file() and path.suffix.lower() not in ANDROID.manifest.binary_suffixes and b"\r" in path.read_bytes()
+            if path.is_file() and path.suffix.lower() not in binary and b"\r" in path.read_bytes()
         )
         self.assertEqual(["gradlew.bat"], found)
 
