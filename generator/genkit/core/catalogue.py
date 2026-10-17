@@ -259,7 +259,8 @@ def main(argv: list[str] | None = None) -> int:
     if not WEBSITE_COPY.is_file():
         print(f"{relative} does not exist. Run: python3 -m genkit.core.catalogue --write")
         return 1
-    current = _comparable(WEBSITE_COPY.read_text(encoding="utf-8"))
+    written = WEBSITE_COPY.read_bytes().decode("utf-8")
+    current = _comparable(written)
     expected = _comparable(fresh)
     if current != expected:
         sys.stdout.writelines(
@@ -269,6 +270,11 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         print(f"\n{relative} is stale. Run: python3 -m genkit.core.catalogue --write")
+        return 1
+    # The comparison parses the JSON, and reading text would fold CRLF into LF, so neither sees a
+    # copy an editor saved with other line endings or layout; the bytes must be as --write wrote them.
+    if written != _static_json(json.loads(written)):
+        print(f"{relative} is not laid out as --write writes it (line endings, say). Run: python3 -m genkit.core.catalogue --write")
         return 1
     print(f"{relative} is current.")
     return 0
