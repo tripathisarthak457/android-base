@@ -42,7 +42,9 @@ def generator_commit(repository: Path = REPOSITORY) -> str:
             ["git", "rev-parse", "--short=12", "HEAD"],
             cwd=repository,
             capture_output=True,
-            text=True,
+            # git prints UTF-8 on every host, and a refusal names the repository's path.
+            encoding="utf-8",
+            errors="replace",
             timeout=5,
             check=True,
         )

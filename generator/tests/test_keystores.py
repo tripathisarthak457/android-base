@@ -134,6 +134,14 @@ class GenerationTest(unittest.TestCase):
         self.assertTrue(seen)
         self.assertFalse(any("secret-on-argv" in part for command in seen for part in command))
 
+    def test_keytool_s_refusal_names_a_non_ascii_path_as_it_is(self):
+        project = self.project / "Ána"
+        # A folder where the key should go: keytool fails to open it and names it.
+        (project / "keys" / "prod.jks").mkdir(parents=True)
+        generated, skipped, [warning] = keystores.generate(project, (keystore(),))
+        self.assertEqual(([], ["prod"]), (generated, skipped))
+        self.assertIn(str(project / "keys" / "prod.jks"), warning)
+
     def test_reusing_the_dev_key_for_staging_copies_it(self):
         dev = keystore(name="dev", alias="shared", store_password="devpass1")
         staging = keystore(name="staging", alias="shared", store_password="devpass1")
