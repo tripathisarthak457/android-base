@@ -26,7 +26,7 @@ from typing import Any
 from unittest import mock
 
 from genkit import tokens
-from genkit.core import pipeline
+from genkit.core import pipeline, placement
 from genkit.core.copy import write_text
 from genkit.core.manifest import TemplateManifest
 from genkit.core.spec import Spec, Vocabulary
@@ -136,17 +136,17 @@ def unzipped(archive: Path) -> dict[str, bytes]:
         }
 
 
-def seen_by_pipeline(module: Any, **functions: Any) -> Any:
-    """Patches `functions` into `module` (`os`, `shutil`) as the pipeline sees it, and nowhere else."""
-    return mock.patch.object(pipeline, module.__name__, SimpleNamespace(**{**vars(module), **functions}))
+def seen_by_placement(module: Any, **functions: Any) -> Any:
+    """Patches `functions` into `module` (`os`, `shutil`) as the placement module sees it, and nowhere else."""
+    return mock.patch.object(placement, module.__name__, SimpleNamespace(**{**vars(module), **functions}))
 
 
 def deepest_destination(case: str) -> int:
     """The length of the longest destination at which `case`'s project fits Windows' length limit."""
     root = GOLDEN / f"mini-{case}"
-    room = [pipeline._WINDOWS_MAX_DIRECTORY]
+    room = [placement._WINDOWS_MAX_DIRECTORY]
     for path in root.rglob("*"):
-        limit = pipeline._WINDOWS_MAX_DIRECTORY if path.is_dir() else pipeline._WINDOWS_MAX_FILE
+        limit = placement._WINDOWS_MAX_DIRECTORY if path.is_dir() else placement._WINDOWS_MAX_FILE
         room.append(limit - (len(str(path)) - len(str(root))))
     return min(room)
 
@@ -283,7 +283,7 @@ class PlacementTest(unittest.TestCase):
                 raise PermissionError("in use")
             os.replace(source, target)
 
-        with seen_by_pipeline(os, replace=refuse_the_new_one), self.assertRaises(PermissionError):
+        with seen_by_placement(os, replace=refuse_the_new_one), self.assertRaises(PermissionError):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
@@ -296,7 +296,7 @@ class PlacementTest(unittest.TestCase):
                 raise PermissionError(errno.EACCES, "in use", str(source))
             os.replace(source, target)
 
-        with seen_by_pipeline(os, replace=held_open), self.assertRaisesRegex(
+        with seen_by_placement(os, replace=held_open), self.assertRaisesRegex(
             RenderError, rf"^{re.escape(str(project))} could not be moved aside \(in use\); nothing was changed\."
         ):
             generate("none", project, replace=True)
@@ -307,7 +307,7 @@ class PlacementTest(unittest.TestCase):
         # not, which a failed deletion must not take the place of.
         held_open = PermissionError(errno.EACCES, "in use")
         project = self.root / "all"
-        with mock.patch.object(pipeline, "_delete_tree", side_effect=held_open):
+        with mock.patch.object(placement, "_delete_tree", side_effect=held_open):
             result = generate("all", project)
         [beside] = [path for path in self.root.iterdir() if path != project]
         self.assertEqual(
@@ -321,7 +321,7 @@ class PlacementTest(unittest.TestCase):
                 raise PermissionError(errno.EACCES, "refused", str(source))
             os.replace(source, target)
 
-        with mock.patch.object(pipeline, "_delete_tree", side_effect=held_open), seen_by_pipeline(
+        with mock.patch.object(placement, "_delete_tree", side_effect=held_open), seen_by_placement(
             os, replace=refuse_the_new_one
         ), self.assertRaisesRegex(PermissionError, "refused") as raised:
             generate("none", project, replace=True)
@@ -351,7 +351,7 @@ class PlacementTest(unittest.TestCase):
                 raise PermissionError("in use")
             os.replace(source, target)
 
-        with seen_by_pipeline(os, replace=refuse_the_destination), self.assertRaisesRegex(
+        with seen_by_placement(os, replace=refuse_the_destination), self.assertRaisesRegex(
             RenderError, "could not be replaced, and what was there could not be put back"
         ) as raised:
             generate("none", project, replace=True)
@@ -371,7 +371,7 @@ class PlacementTest(unittest.TestCase):
                 raise PermissionError(errno.EACCES, "in use", str(path))
             rmtree(path, *arguments, **options)
 
-        with seen_by_pipeline(shutil, rmtree=held_open):
+        with seen_by_placement(shutil, rmtree=held_open):
             result = generate("none", project, replace=True)
         self.assertEqual(tree(GOLDEN / "mini-none"), tree(project))
         [left] = [path for path in self.root.iterdir() if path != project]
@@ -443,9 +443,9 @@ class WindowsPathLimitTest(unittest.TestCase):
         self.addCleanup(delete_tree, self.root)
         build = project / "build"
         build.mkdir()
-        in_place = build / ("b" * (pipeline._WINDOWS_MAX_DIRECTORY - len(str(build)) - 1))
+        in_place = build / ("b" * (placement._WINDOWS_MAX_DIRECTORY - len(str(build)) - 1))
         in_place.mkdir()
-        (in_place / ("f" * (pipeline._WINDOWS_MAX_FILE - len(str(in_place)) - 1))).write_bytes(b"")
+        (in_place / ("f" * (placement._WINDOWS_MAX_FILE - len(str(in_place)) - 1))).write_bytes(b"")
         past = "\\\\?\\" + str(in_place / ("c" * 60))
         os.mkdir(past)
         with open(os.path.join(past, "classes.dex"), "wb"):
@@ -468,7 +468,7 @@ class WindowsPathLimitTest(unittest.TestCase):
                 raise PermissionError(errno.EACCES, "in use", str(source))
             os.replace(source, target)
 
-        with seen_by_pipeline(os, replace=held_open), self.assertRaisesRegex(
+        with seen_by_placement(os, replace=held_open), self.assertRaisesRegex(
             RenderError, r"could not be moved aside \(in use\); nothing was changed\."
         ):
             generate("all", project, replace=True)
@@ -484,16 +484,16 @@ class WindowsLongPathsTest(unittest.TestCase):
 
     def setUp(self):
         for patch in (
-            seen_by_pipeline(os, name="nt"),
-            mock.patch.object(pipeline, "_windows_long_paths_on", return_value=False),
+            seen_by_placement(os, name="nt"),
+            mock.patch.object(placement, "_windows_long_paths_on", return_value=False),
         ):
             patch.start()
             self.addCleanup(patch.stop)
 
     def test_with_long_paths_on_a_long_missing_path_is_only_missing(self):
         for on, expected in ((True, FileNotFoundError), (False, RenderError)):
-            with self.subTest(long_paths=on), mock.patch.object(pipeline, "_windows_long_paths_on", return_value=on):
-                with self.assertRaises(expected), pipeline._windows_path_limit_explained("app name"):
+            with self.subTest(long_paths=on), mock.patch.object(placement, "_windows_long_paths_on", return_value=on):
+                with self.assertRaises(expected), placement.windows_path_limit_explained("app name"):
                     raise FileNotFoundError(errno.ENOENT, "No such file or directory", "C:/" + "x" * 300)
 
     def test_the_path_named_is_the_one_too_long(self):
@@ -504,7 +504,7 @@ class WindowsLongPathsTest(unittest.TestCase):
         }
         for what, failure in failures.items():
             with self.subTest(what):
-                with self.assertRaises(RenderError) as raised, pipeline._windows_path_limit_explained("destination"):
+                with self.assertRaises(RenderError) as raised, placement.windows_path_limit_explained("destination"):
                     raise failure
                 self.assertIn(f"a path of {len(long)} characters: {long}.", str(raised.exception))
 
@@ -517,7 +517,7 @@ class WindowsLongPathsTest(unittest.TestCase):
             "a folder too deep": (shutil.Error([(str(HERE), folder, "[WinError 3] not found")]), RenderError),
         }
         for what, (failure, expected) in failures.items():
-            with self.subTest(what), self.assertRaises(expected), pipeline._windows_path_limit_explained("destination"):
+            with self.subTest(what), self.assertRaises(expected), placement.windows_path_limit_explained("destination"):
                 raise failure
 
     def test_a_project_too_deep_at_its_destination_is_refused_before_it_is_placed(self):
@@ -528,7 +528,7 @@ class WindowsLongPathsTest(unittest.TestCase):
         destination = at_length(temp, deepest_destination("all") + 1, "all")
         with self.assertRaisesRegex(
             RenderError,
-            rf"^At {re.escape(str(destination))} the project would hold a path of {pipeline._WINDOWS_MAX_FILE + 1} "
+            rf"^At {re.escape(str(destination))} the project would hold a path of {placement._WINDOWS_MAX_FILE + 1} "
             r"characters: .*TrailNotesApplication\.kt\. .* shorter destination, app name or package name\.$",
         ):
             generate("all", destination)
