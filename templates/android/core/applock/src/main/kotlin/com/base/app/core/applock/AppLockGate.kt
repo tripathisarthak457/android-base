@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -137,18 +138,22 @@ private fun UnlockScreen(lock: AppLock) {
     // Asked once per challenge. A rotation or a process restart while the prompt is up must not
     // stack a second prompt on the first.
     var promptedFor by rememberSaveable { mutableLongStateOf(NotPrompted) }
-    LaunchedEffect(challenge) {
-        val current = challenge ?: return@LaunchedEffect
-        if (promptedFor != current) {
-            promptedFor = current
-            prompt.authenticate(info)
+    val current = challenge
+    if (current != null) {
+        // Launched after the frame rather than run in it: authenticate adds the prompt's fragment and
+        // executes the transaction there and then, work no frame should wait for.
+        LaunchedEffect(current) {
+            if (promptedFor != current) {
+                promptedFor = current
+                prompt.authenticate(info)
+            }
         }
     }
 
     // Focus moves onto the cover and stays there: a field focused underneath would otherwise keep
     // the keyboard up and take what is typed.
     val focus = remember { FocusRequester() }
-    LaunchedEffect(focus) { focus.requestFocus() }
+    SideEffect(focus) { focus.requestFocus() }
 
     // Back leaves the app as it is rather than going anywhere inside it.
     val back = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)

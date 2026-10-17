@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -44,21 +45,26 @@ fun BoxScope.PlayStorePrompts(
         if (result.resultCode != Activity.RESULT_OK) updates.declined(version)
     }
 
-    LaunchedEffect(updates) { updates.check() }
-    LaunchedEffect(review, activity) { activity?.let { review.onLaunch(it) } }
+    SideEffect(updates) { updates.check() }
+    if (activity != null) {
+        LaunchedEffect(review, activity) { review.onLaunch(activity) }
+    }
 
     val offer = state as? UpdateState.Offer
-    LaunchedEffect(offer) {
-        if (offer == null) return@LaunchedEffect
-        offeredVersion = offer.available.updateInfo.availableVersionCode()
-        updates.offered()
-        offer.available.startFlexibleUpdate(launcher)
+    if (offer != null) {
+        // Launched after the frame rather than run in it: Play's sheet is an activity started through the
+        // system, a call no frame should wait for.
+        LaunchedEffect(offer) {
+            offeredVersion = offer.available.updateInfo.availableVersionCode()
+            updates.offered()
+            offer.available.startFlexibleUpdate(launcher)
+        }
     }
 
     val ready = state as? UpdateState.Ready
     var showReady by rememberSaveable { mutableStateOf(true) }
-    LaunchedEffect(ready) {
-        if (ready != null) {
+    if (ready != null) {
+        LaunchedEffect(ready) {
             delay(ReadyMessageDuration)
             showReady = false
         }

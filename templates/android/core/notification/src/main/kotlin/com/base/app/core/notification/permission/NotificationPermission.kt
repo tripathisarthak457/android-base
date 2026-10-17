@@ -20,7 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 
 /** Where the permission to post notifications stands. */
 enum class NotificationAccess {
@@ -91,10 +92,7 @@ fun rememberNotificationPermission(onResult: (granted: Boolean) -> Unit = {}): N
     permission = remembered
 
     // Granted in the system's settings while the app was away: nothing calls back to say so.
-    LifecycleResumeEffect(remembered) {
-        remembered.refresh()
-        onPauseOrDispose {}
-    }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { remembered.refresh() }
     return remembered
 }
 
