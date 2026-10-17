@@ -34,7 +34,10 @@ BATCH_SUFFIXES = frozenset({".bat", ".cmd"})
 
 
 def text_writes(source: str) -> list[int]:
-    """Lines that write text with the host's line endings: `.write_text(...)`, or `open` for text without `newline`."""
+    """
+    Lines that can write text with the host's line endings: `.write_text(...)`, or an `open` for text
+    without `newline`, which `codecs.open` cannot take (it translates when given no encoding).
+    """
     lines = []
     for node in ast.walk(ast.parse(source)):
         if not isinstance(node, ast.Call):
@@ -55,8 +58,12 @@ def _text_with_cr(path: Path) -> bool:
 
 
 def _writes_text(call: ast.Call) -> bool:
-    # `open(file, mode)` takes the mode second, `Path.open(mode)` first.
-    position = 1 if isinstance(call.func, ast.Name) else 0
+    # `open(file, mode)`, `io.open` and `codecs.open` take the mode second, `Path.open(mode)` first.
+    function = call.func
+    takes_file = isinstance(function, ast.Name) or (
+        isinstance(function.value, ast.Name) and function.value.id in {"io", "codecs"}
+    )
+    position = 1 if takes_file else 0
     modes = [keyword.value for keyword in call.keywords if keyword.arg == "mode"]
     if len(call.args) > position:
         modes.append(call.args[position])
@@ -86,8 +93,11 @@ class HostTest(unittest.TestCase):
             "open(name, 'w', newline='')",
             "path.open()",
             "Image.open(source)",
+            "io.open(name, 'w')",
+            "codecs.open(name, 'w', 'utf-8')",
+            "io.open(name, 'rb')",
         ])
-        self.assertEqual([1, 2, 3], sorted(text_writes(source)))
+        self.assertEqual([1, 2, 3, 8, 9], sorted(text_writes(source)))
 
     def test_the_text_the_generator_copies_has_lf_line_endings(self):
         # A clone made under Git for Windows' core.autocrlf=true before the root .gitattributes
