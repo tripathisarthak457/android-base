@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ctypes
 import io
 import json
 import os
@@ -34,8 +35,6 @@ def run(*arguments: str, cwd: Path | None = None) -> subprocess.CompletedProcess
 
 def short_path(path: Path) -> str:
     """The 8.3 spelling Windows gives `path`, or `path` itself where its volume makes none."""
-    import ctypes
-
     buffer = ctypes.create_unicode_buffer(32_768)
     length = ctypes.windll.kernel32.GetShortPathNameW(str(path), buffer, len(buffer))
     return buffer.value if 0 < length < len(buffer) else str(path)
