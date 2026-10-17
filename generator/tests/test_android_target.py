@@ -10,7 +10,7 @@ from contextlib import redirect_stdout
 from pathlib import Path
 
 from genkit import brand
-from genkit.core import pipeline
+from genkit.core import pipeline, translations
 from genkit.core.record import RECORD_NAME
 from genkit.core.target import RenderError
 from genkit.targets import get
@@ -240,6 +240,22 @@ class ProjectTest(unittest.TestCase):
         self.assertTrue(any(project.rglob("AnalyticsModule.kt")))
         self.assertFalse(any(project.rglob("FlagsModule.kt")))
         self.assertEqual({"firebase"}, set(variants.VARIANTS))
+
+    def test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return(self):
+        # Newline translation on Windows, or a template checked out with CRLF, shows up here as a
+        # CR byte in a text file, and the project would differ from one generated on Linux.
+        everything = json.loads((Path(__file__).resolve().parent / "fixtures/v2/everything.json").read_bytes())
+        languages = list(translations.available("android"))
+        project = generate(
+            self.root, **{**everything, "feature_modules": ["orders"], "languages": languages}, accent_colour="#16A34A"
+        )
+        binary = ANDROID.manifest.binary_suffixes
+        found = sorted(
+            path.relative_to(project).as_posix()
+            for path in project.rglob("*")
+            if path.is_file() and path.suffix.lower() not in binary and b"\r" in path.read_bytes()
+        )
+        self.assertEqual(["gradlew.bat"], found)
 
     def test_a_module_name_that_is_a_template_token_stays_itself(self):
         project = generate(self.root, app_name="Store", feature_modules=["database_app"])

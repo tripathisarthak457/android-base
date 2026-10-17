@@ -8,6 +8,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from ... import tokens
+from ...core.copy import write_text
 from ...core.spec import Spec
 from ...core.target import RenderError
 from ...tokens import kotlin
@@ -18,4 +19,4 @@ def apply(project: Path, spec: Spec) -> None:
     path = project / kotlin.RELATIVE_PATH.format(package_path=spec.package_path)
     if not path.is_file():
         raise RenderError(f"DesignTokens.kt is not where the design system keeps it: {path}")
-    path.write_text(kotlin.emit(tokens.resolve(spec), spec.package_name, kotlin.PROJECT_HEADER), encoding="utf-8")
+    write_text(path, kotlin.emit(tokens.resolve(spec), spec.package_name, kotlin.PROJECT_HEADER))

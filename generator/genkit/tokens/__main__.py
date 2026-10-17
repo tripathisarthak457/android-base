@@ -17,6 +17,7 @@ import sys
 from collections.abc import Callable
 from pathlib import Path
 
+from ..core.copy import write_text
 from . import kotlin, resolve, swift
 
 TEMPLATES = Path(__file__).resolve().parents[3] / "templates"
@@ -60,15 +61,19 @@ def main(argv: list[str] | None = None) -> int:
         expected = emit()
         if args.write:
             path.parent.mkdir(parents=True, exist_ok=True)
-            if not path.exists() or path.read_text(encoding="utf-8") != expected:
-                path.write_text(expected, encoding="utf-8")
-                print(f"wrote {path.relative_to(TEMPLATES.parent)}")
+            if not path.exists() or _read(path) != expected:
+                write_text(path, expected)
+                print(f"wrote {path.relative_to(TEMPLATES.parent).as_posix()}")
             continue
         checked += 1
-        actual = path.read_text(encoding="utf-8")
+        actual = _read(path)
         if actual != expected:
             stale += 1
             relative = path.relative_to(TEMPLATES.parent).as_posix()
+            # A diff of lines that differ only in how they end shows nothing to fix.
+            if actual.replace("\r\n", "\n") == expected:
+                print(f"{relative} differs only in its line endings: --write writes LF.")
+                continue
             sys.stdout.writelines(
                 difflib.unified_diff(
                     actual.splitlines(keepends=True), expected.splitlines(keepends=True),
@@ -82,6 +87,12 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print(f"{checked} token cop{'y' if checked == 1 else 'ies'} current.")
     return 0
+
+
+def _read(path: Path) -> str:
+    # Decoded from bytes: reading text folds CRLF into LF, so a copy written with the wrong line
+    # endings would pass for current.
+    return path.read_bytes().decode("utf-8")
 
 
 if __name__ == "__main__":
