@@ -197,7 +197,15 @@ def _swap(finished: Path, destination: Path) -> Path:
     A link is moved, never followed.
     """
     replaced = _aside(destination)
-    os.replace(destination, replaced)
+    try:
+        os.replace(destination, replaced)
+    except PermissionError as error:
+        message = f"{destination} could not be moved aside ({error.strerror or error}); nothing was changed."
+        if os.name == "nt":
+            # Windows refuses to rename a folder while a program holds a file in it open, or has it
+            # as its working directory.
+            message += " A terminal, an IDE or an indexer may hold a file in it: close it and run again."
+        raise RenderError(message) from error
     try:
         os.replace(finished, destination)
     except BaseException as error:

@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import errno
 import os
+import re
 import shutil
 import stat
 import subprocess
@@ -261,6 +262,21 @@ class PlacementTest(unittest.TestCase):
             os.replace(source, target)
 
         with seen_by_pipeline(os, replace=refuse_the_new_one), self.assertRaises(PermissionError):
+            generate("none", project, replace=True)
+        self.assert_is_golden("all", project)
+
+    def test_a_destination_held_open_is_left_as_it_was(self):
+        project = self.root / "all"
+        generate("all", project)
+
+        def held_open(source, target):
+            if Path(source) == project:
+                raise PermissionError(errno.EACCES, "in use", str(source))
+            os.replace(source, target)
+
+        with seen_by_pipeline(os, replace=held_open), self.assertRaisesRegex(
+            RenderError, rf"^{re.escape(str(project))} could not be moved aside \(in use\); nothing was changed\."
+        ):
             generate("none", project, replace=True)
         self.assert_is_golden("all", project)
 
