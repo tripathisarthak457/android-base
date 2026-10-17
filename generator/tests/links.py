@@ -25,4 +25,14 @@ def symlink_or_skip(test: unittest.TestCase, link: Path, directory: Path) -> Non
 
 def junction(link: Path, directory: Path) -> None:
     """Makes `link` a junction to `directory`: the directory link any Windows account can make."""
-    subprocess.run(["cmd", "/c", "mklink", "/J", str(link), str(directory)], capture_output=True, check=True)
+    result = subprocess.run(
+        ["cmd", "/c", "mklink", "/J", str(link), str(directory)],
+        capture_output=True,
+        # cmd writes its own messages to a pipe in the console's OEM code page.
+        encoding="oem",
+        errors="replace",
+        check=False,
+    )
+    if result.returncode != 0:
+        # cmd gives its reason only in its output, which CalledProcessError leaves out of the failure.
+        raise OSError(f"mklink /J {link} {directory} failed: {(result.stderr or result.stdout).strip()}")
