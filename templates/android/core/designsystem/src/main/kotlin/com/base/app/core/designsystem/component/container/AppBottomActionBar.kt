@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
+import com.base.app.core.designsystem.component.sheet.surface.sheetFooterBacking
 import com.base.app.core.designsystem.foundation.draw.HairlineEdge
 import com.base.app.core.designsystem.foundation.draw.hairline
 import com.base.app.core.designsystem.theme.AppTheme
@@ -26,18 +27,22 @@ import com.base.app.core.designsystem.theme.AppTheme
  * sheet): a checkout's Pay, a composer's Send. It rides above the keyboard and the navigation bar.
  * Pass it as `AppScaffold(bottomBar = …)`, which keeps the content's last item above it. On a tab
  * root the bar's accessory slot does this job instead. As a sheet's footer it takes the sheet's
- * colour, and the sheet keeps it above the navigation bar and the keyboard.
+ * colour, and the sheet keeps it above the navigation bar and the keyboard; its colour runs on
+ * beneath it to the sheet's edge, as it does over the navigation bar outside a sheet.
  */
 @Composable
 fun AppBottomActionBar(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val sheet = LocalSheetSurface.current
+    val container = sheet?.container ?: AppTheme.colors.surface
     Row(
         modifier = modifier
             .fillMaxWidth()
             .hairline(HairlineEdge.Top)
-            .background(LocalSheetSurface.current?.container ?: AppTheme.colors.surface)
+            .sheetFooterBacking(sheet, container)
+            .background(container)
             .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.ime).only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
             .padding(horizontal = AppTheme.spacing.gutter, vertical = AppTheme.spacing.md),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm, Alignment.End),
