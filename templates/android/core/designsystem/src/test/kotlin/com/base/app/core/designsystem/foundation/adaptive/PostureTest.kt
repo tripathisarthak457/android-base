@@ -10,7 +10,6 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
-import com.base.app.core.designsystem.component.collections.AppImageViewer
 import com.base.app.core.designsystem.component.sheet.AppSheet
 import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
@@ -82,13 +81,5 @@ class PostureTest {
         }
         rule.waitForIdle()
         assertEquals(420.dp, rule.onNodeWithTag("sheet").getUnclippedBoundsInRoot().top)
-    }
-
-    @Test
-    fun `in tabletop the picture fills the half above the fold`() {
-        setContent(WindowPosture(WindowPosture.Kind.Tabletop, hinge = Rect(0f, 400f, 800f, 420f))) {
-            AppImageViewer(onDismiss = {}) { Box(Modifier.fillMaxSize().testTag("picture")) }
-        }
-        assertEquals(400.dp, rule.onNodeWithTag("picture").getUnclippedBoundsInRoot().bottom)
     }
 }

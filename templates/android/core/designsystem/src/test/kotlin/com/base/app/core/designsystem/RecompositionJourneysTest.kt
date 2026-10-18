@@ -27,7 +27,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
-import androidx.compose.ui.test.swipeUp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.AppIconButton
@@ -42,7 +41,6 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.overlay.AppContextMenu
 import com.base.app.core.designsystem.component.overlay.AppMenuItem
-import com.base.app.core.designsystem.component.pickers.AppWheelPicker
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
@@ -69,12 +67,13 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
- * The design system's journeys, counted in composables that ran: a press, a drag across a switch, a
- * segmented control or a wheel, a sheet dragged between detents, a pull to refresh, a fling into the
- * end of a list, a context menu opening and a skeleton list sweeping move layers and redraw, and
- * recompose nothing but the state that really changed. Each runs under a quick and a slow motion
- * style too: the counts must not depend on how many frames the motion took, or something recomposes
- * every frame.
+ * The design system's journeys, counted in composables that ran: a press, a drag across a switch or
+ * a segmented control, a sheet dragged between detents, a pull to refresh, a fling into the end of a
+ * list, a context menu opening and a skeleton list sweeping move layers and redraw, and recompose
+ * nothing but the state that really changed. Each runs under a quick and a slow motion style too: the
+ * counts must not depend on how many frames the motion took, or something recomposes every frame.
+ * The optional groups count theirs beside their own tests (`WheelPickerRecompositionTest`), so a
+ * project without them still compiles this one.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [TestSdk], qualifiers = "w411dp-h891dp")
@@ -172,18 +171,6 @@ class RecompositionJourneysTest {
         rule.mainClock.advanceTimeBy(1_000)
         assertEquals(2, selected)
         assertTrue("landing recomposed ${counter.executed()}", counter.count("AppSegmentedControl") <= 1)
-    }
-
-    @Test
-    fun `turning a wheel recomposes only for the value it lands on`() {
-        var selected by mutableIntStateOf(3)
-        setContent {
-            AppWheelPicker(items = (0..40).toList(), selectedIndex = selected, onSelectedChange = { selected = it }, modifier = Modifier.testTag("wheel"), label = { "$it" })
-        }
-        rule.onNodeWithTag("wheel").performTouchInput { swipeUp(startY = bottom - 10f, endY = top + 10f, durationMillis = 600) }
-        rule.mainClock.advanceTimeBy(3_000)
-        assertTrue("the wheel did not move", selected > 3)
-        assertTrue("landing recomposed ${counter.executed()}", counter.count("AppWheelPicker") <= 1)
     }
 
     @Test
