@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.base.app.catalog.CatalogGroup
 import com.base.app.catalog.fontScaled
+import com.base.app.catalog.wrappableIdentifier
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -182,7 +183,7 @@ private fun Swatches(vararg roles: Pair<String, Color>) {
             Column(Modifier.width(width), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Box(Modifier.fillMaxWidth().height(40.dp).background(color, AppTheme.shapes.sm).border(1.dp, AppTheme.colors.separator, AppTheme.shapes.sm))
                 AppText(
-                    text = name,
+                    text = remember(name) { wrappableIdentifier(name) },
                     style = AppTheme.typography.caption2,
                     color = AppTheme.colors.contentSecondary,
                     maxLines = 2,

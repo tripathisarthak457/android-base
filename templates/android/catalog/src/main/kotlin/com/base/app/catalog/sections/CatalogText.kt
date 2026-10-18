@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.base.app.catalog.CatalogGroup
 import com.base.app.catalog.fontScaled
+import com.base.app.catalog.wrappableIdentifier
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -70,7 +71,7 @@ fun TextSection() {
                 Column(Modifier.width(cell), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     AppIcon(icon, contentDescription = null, size = AppTheme.sizes.iconLarge)
                     AppText(
-                        text = name,
+                        text = remember(name) { wrappableIdentifier(name) },
                         style = AppTheme.typography.caption2,
                         color = AppTheme.colors.contentSecondary,
                         textAlign = TextAlign.Center,

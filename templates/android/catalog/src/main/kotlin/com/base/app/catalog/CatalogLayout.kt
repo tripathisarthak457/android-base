@@ -43,6 +43,15 @@ fun catalogContentPadding(base: PaddingValues): PaddingValues {
 fun fontScaled(width: Dp): Dp = width * LocalDensity.current.fontScale
 
 /**
+ * [name] with a zero-width break opportunity before each word inside it, so an identifier longer
+ * than its tile wraps between its words ("background" over "Grouped") rather than wherever the
+ * line runs out ("backgroundGrou" over "ped").
+ */
+fun wrappableIdentifier(name: String): String = name.replace(WordStart, "​")
+
+private val WordStart = Regex("(?<=[a-z0-9])(?=[A-Z])")
+
+/**
  * Children in as many columns as fit at [minColumnWidth] or wider, each placed in whichever column
  * is shortest so far. One column on a phone; on a tablet a page reads like a spread. Placed relative
  * to the layout direction, so a right-to-left page starts on the right.
