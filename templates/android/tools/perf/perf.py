@@ -1408,9 +1408,12 @@ def back_swipe(width, height, edge="left", share=0.45, steps=24, hold=0.0, drift
     start = 2 if edge == "left" else width - 3
     direction = 1 if edge == "left" else -1
     far = int(width * share)
+    # The system drops an edge swipe whose first moves past the touch slop go more down than across, so
+    # the finger drifts only once the first quarter of the moves has made it a back gesture.
+    lead = steps // 4 if drift else 0
 
     def at(i):
-        return start + direction * far * i // steps, y + drift * i // steps
+        return start + direction * far * i // steps, y + drift * max(0, i - lead) // (steps - lead)
 
     commands = [f"input motionevent DOWN {start} {y}"]
     commands += [f"input motionevent MOVE {x} {my}" for x, my in map(at, range(1, steps + 1))]

@@ -395,6 +395,16 @@ class RecomposeTraceTest(unittest.TestCase):
         self.assertTrue(cancel.startswith("input motionevent DOWN 1077 1200"))
         self.assertTrue(cancel.endswith("input motionevent UP 1077 1300"))
 
+    def test_a_drifting_back_swipe_is_a_back_gesture_before_it_drifts(self):
+        # The system cancels an edge swipe whose first moves past the touch slop go more down than across.
+        commands = perf.back_swipe(1080, 2400, share=0.40, steps=24, drift=600, cancel=True).split("; ")
+        moves = [tuple(map(int, command.split()[-2:])) for command in commands if " MOVE " in command]
+        across_before_drift = max(x - 2 for x, y in moves if y == 1200)
+        self.assertGreater(across_before_drift, 48)
+        first_drift = next(i for i, (x, y) in enumerate(moves) if y != 1200)
+        self.assertGreater(moves[first_drift][0] - 2, moves[first_drift][1] - 1200)
+        self.assertEqual(moves[23], (2 + 432, 1800))
+
 
 class UprightTest(unittest.TestCase):
     class FakeDevice(perf.Device):
