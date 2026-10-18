@@ -11,9 +11,12 @@ its code.
 The two lines under the badge are:
 
 - **`118/120 fps`**: frames per second over the last second of drawing, against the display's
-  current rate. An app with nothing to draw reads **idle** rather than a low number: Android draws
-  only when something changes, and not drawing is correct.
+  current rate. Too little drawing to judge (a lone frame, a blinking cursor) reads **idle** rather
+  than a low number: Android draws only when something changes, and not drawing is correct.
 - **`0.4% janky`**: the share of every frame recorded so far that missed its deadline.
+
+They refresh up to four times a second while the app draws, and only then: while it is idle they
+keep the numbers of its last drawing (see [What it costs](#what-it-costs-and-why-it-is-safe-to-leave-on)).
 
 In a release-like build they are green when on target, amber when close, red when not. In a debug
 build they stay one colour, because a debug build's frames say little about the release's (see
@@ -48,8 +51,11 @@ The overlay is built so that watching does not change what is watched:
 - **Nothing per frame on the main thread.** JankStats hands each frame over on its own thread; the
   overlay copies a few numbers into fixed-size arrays and returns. No allocation, no boxing and no
   log line per frame.
-- **No recomposition.** The two lines under the badge are drawn from numbers their draw phase
-  reads, refreshed four times a second, and only when a number changed: an idle app stays idle.
+- **No frame of its own.** The two lines under the badge are drawn straight from the recording,
+  with no state and no recomposition, and redrawn at most four times a second from the window's
+  pre-draw pass, so only inside a frame the app draws anyway. A redraw on a timer would cost a
+  frame each time while the app is idle, and on a phone a lone frame after idle usually misses its
+  deadline: the overlay would make the jank it reports.
 - **Graphs only on request.** The Perf tab draws its graphs only while it is open.
 
 Measured on a Redmi Note 10 Pro at 120 Hz with `devRelease` (the numbers are in the overhaul's

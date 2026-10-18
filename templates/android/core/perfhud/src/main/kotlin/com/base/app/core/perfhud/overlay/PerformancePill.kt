@@ -3,13 +3,9 @@ package com.base.app.core.perfhud.overlay
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -31,7 +27,6 @@ import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.frame.FrameLog
 import com.base.app.core.perfhud.frame.LiveStats
 import com.base.app.core.perfhud.recording.PerformanceRecorder
-import kotlinx.coroutines.delay
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -40,10 +35,11 @@ import kotlin.math.roundToInt
  * drawing against the display's rate, and the janky share of the recording. Tapping them opens
  * the Performance tab.
  *
- * Four times a second it writes three numbers that only its draw phase reads, so the app never
- * recomposes for it. A number that has not changed is not written, so an idle app stays idle: the
- * pill draws nothing new and asks for no frame. In a debug build the numbers are drawn without a
- * verdict colour, since a debug build's frames say little about the release's.
+ * The lines are drawn straight from the frame log, at most four times a second and only within
+ * frames the app draws anyway ([redrawDuringFrames]): the pill holds no state, never recomposes
+ * and never draws a frame of its own. While the app is idle it shows the numbers of its last
+ * drawing. In a debug build the numbers are drawn without a verdict colour, since a debug build's
+ * frames say little about the release's.
  */
 @Composable
 internal fun PerformancePill(
@@ -59,16 +55,8 @@ internal fun PerformancePill(
 
 @Composable
 private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modifier: Modifier = Modifier) {
-    val numbers = remember { PillNumbers() }
-    LaunchedEffect(frames) {
-        val live = LiveStats()
-        while (true) {
-            frames.readLive(System.nanoTime(), live)
-            numbers.update(live)
-            delay(REFRESH_MILLIS)
-        }
-    }
-
+    // Filled in the draw phase, on the main thread only.
+    val live = remember { LiveStats() }
     val measurer = rememberTextMeasurer(cacheSize = TEXT_CACHE)
     val typography = AppTheme.typography
     val style = remember(typography) { typography.mono.merge(TextStyle(fontSize = typography.labelSmall.fontSize)) }
@@ -98,9 +86,11 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
             )
             .appClickable(onClick = onOpen, minTouchTarget = 0.dp)
             .semantics { contentDescription = description }
+            .redrawDuringFrames(REFRESH_MILLIS)
             .drawBehind {
-                val fps = numbers.fps
-                val refresh = numbers.refreshHz
+                frames.readLive(System.nanoTime(), live)
+                val fps = live.framesPerSecond
+                val refresh = live.refreshHz
                 val fpsText = if (fps == LiveStats.IDLE) idleFormat.inRoot(refresh) else fpsFormat.inRoot(fps, refresh)
                 val fpsColor = when {
                     fps == LiveStats.IDLE -> neutral
@@ -108,7 +98,8 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
                     fps >= refresh * FAIR_SHARE -> fair
                     else -> poor
                 }
-                val janky = numbers.jankyTenths
+                // Judged as shown, in tenths of a percent.
+                val janky = (live.jankyPercent * TENTHS).roundToInt()
                 val jankyColor = when {
                     janky <= GOOD_JANKY_TENTHS -> good
                     janky <= FAIR_JANKY_TENTHS -> fair
@@ -129,22 +120,6 @@ private fun DrawScope.drawCentred(
 ) {
     val layout = measurer.measure(text, style)
     drawText(layout, color = color, topLeft = Offset((size.width - layout.size.width) / 2f, top))
-}
-
-/** What the pill shows, as numbers its draw phase reads; an equal write invalidates nothing. */
-@Stable
-private class PillNumbers {
-    var fps by mutableIntStateOf(LiveStats.IDLE)
-    var refreshHz by mutableIntStateOf(0)
-
-    /** The janky share in tenths of a percent, the precision the pill shows. */
-    var jankyTenths by mutableIntStateOf(0)
-
-    fun update(live: LiveStats) {
-        fps = live.framesPerSecond
-        refreshHz = live.refreshHz
-        jankyTenths = (live.jankyPercent * TENTHS).roundToInt()
-    }
 }
 
 private fun tenths(value: Int): String = (value / TENTHS_INT).toString() + "." + (value % TENTHS_INT)
