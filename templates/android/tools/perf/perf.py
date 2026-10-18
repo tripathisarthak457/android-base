@@ -581,7 +581,9 @@ class Run:
             start = 2 if edge == "left" else width - 3
             step = (1 if edge == "left" else -1) * width * 35 // 100 // 8
             moves = "; ".join(f"input motionevent MOVE {start + step * i} {y}" for i in range(1, 9))
-            remote = "/sdcard/perf_back_during_push.png"
+            # Not shared storage: the media scanner picks up an image there, and a gallery app can then
+            # run its own GPU and CPU work on it for seconds, inside the scenarios measured next.
+            remote = "/data/local/tmp/perf_back_during_push.png"
             self.device.shell(
                 f"{self.tap(row)}; input motionevent DOWN {start} {y}; {moves}; "
                 f"screencap -p {remote}; input motionevent UP {start + step * 8} {y}"
@@ -1370,7 +1372,8 @@ def record_on(device, args):
         device.shell(prepare)
         time.sleep(1.6)
 
-    remote = "/sdcard/perf_record.mp4"
+    # Outside shared storage, so no gallery app starts processing the video while the next one records.
+    remote = "/data/local/tmp/perf_record.mp4"
     device.shell(f"rm -f {remote}")
     # 720 px wide: at the panel's own size this phone's encoder records no frames at 120 Hz.
     recorder = subprocess.Popen(
