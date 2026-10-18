@@ -1,0 +1,61 @@
+FAIL pulled right past the first card and back, it follows the finger back :: java.lang.AssertionError: taken halfway back, the first card went from 55.0 to 78.0 px instead of following the finger back
+FAIL swiped right to left onto the last card, it lands on it :: java.lang.AssertionError: the card went past its place by 49.0 px
+FAIL right to left layout, swiped right to left, it moves to the previous card :: java.lang.AssertionError: the card went past its place by 49.0 px
+FAIL right to left layout, swiped left to right, it moves to the next card :: java.lang.AssertionError: the card went past its place by 49.0 px
+FAIL right to left layout, swiped left to right onto the last card, it lands on it :: java.lang.AssertionError: the card went past its place by 49.0 px
+FAIL swiped left to right, it moves to the previous card :: java.lang.AssertionError: the card went past its place by 49.0 px
+FAIL right to left layout, pulled left past the first card and back, it follows the finger back :: java.lang.AssertionError: taken halfway back, the first card went from 55.0 to 78.0 px instead of following the finger back
+FAIL swiped right to left, it moves to the next card :: java.lang.AssertionError: the card went past its place by 49.0 px
+ok   pushing up during a refresh closes the gap before the list scrolls
+ok   a pull while a refresh runs does not start another, and one after it ends does
+ok   pulling and settling recompose none of the content
+ok   a flick up during a refresh closes the gap and carries the list on without a pause
+ok   a fling that reaches the top never refreshes
+ok   the content rests below the spinner while refreshing, and returns when it ends
+ok   the release carries the finger's velocity into the settle
+ok   a pull released short of the trigger springs back without refreshing
+ok   the refresh starts as the pull crosses the trigger, before the finger lifts
+ok   a gentle fling follows the iOS curve
+ok   an ordinary flick follows the iOS curve
+ok   a hard throw follows the iOS curve
+ok   a gentle fling ends once it no longer visibly moves, and the next tap reaches a row
+FAIL pulled past the top and back without letting go, the list follows the finger back :: java.lang.AssertionError: taken halfway back, the band went from 86.0 to 117.0 dp instead of easing back with the finger
+ok   a fling into the end carries past it and springs back without a jump
+ok   pulled past the top, the content follows the finger along the rubber band
+FAIL right-to-left row - a fling right comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -5.0 px in one frame
+ok   row - the content follows a drag both ways
+FAIL row - a fling left comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -5.0 px in one frame
+FAIL column - a fling into the top carries on past it at the speed it got there :: java.lang.AssertionError: the fling stopped at the end instead of carrying on past it: 9.0 px
+FAIL column - pulled past the bottom and flicked back, the content carries on down the list :: java.lang.AssertionError: the flick stopped at the end instead of carrying the content on: 0.0 px
+FAIL column - a fling up comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -5.0 px in one frame
+FAIL right-to-left row - caught springing back from the end, the content follows the finger back :: java.lang.AssertionError: the band never turned back: it reached 9.0 px
+FAIL column - pulled past the top and back, the band follows the finger back :: java.lang.AssertionError: taken halfway back, the band went from -87.0 to -117.0 px instead of easing back with the finger
+FAIL row - a fling into the start carries on past it at the speed it got there :: java.lang.AssertionError: the fling stopped at the end instead of carrying on past it: 9.0 px
+FAIL right-to-left row - pulled past the end and back, the band follows the finger back :: java.lang.AssertionError: taken halfway back, the band went from 87.0 to 117.0 px instead of easing back with the finger
+FAIL right-to-left row - pulled past the start and flicked back, the content carries on along the row :: java.lang.AssertionError: the flick stopped at the end instead of carrying the content on: 0.0 px
+FAIL row - a fling into the end carries on past it at the speed it got there :: java.lang.AssertionError: the fling stopped at the end instead of carrying on past it: 9.0 px
+ok   row - pulled past the start and flicked further, the band springs back onto the start
+FAIL right-to-left row - a fling into the end carries on past it at the speed it got there :: java.lang.AssertionError: the fling stopped at the end instead of carrying on past it: 9.0 px
+FAIL column - a fling down comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -5.0 px in one frame
+FAIL column - a fling into the bottom carries on past it at the speed it got there :: java.lang.AssertionError: the fling stopped at the end instead of carrying on past it: 9.0 px
+FAIL row - caught springing back from the start, the content follows the finger back :: java.lang.AssertionError: the band never turned back: it reached 9.0 px
+FAIL column - pulled past the top and flicked back, the content carries on up the list :: java.lang.AssertionError: the flick stopped at the end instead of carrying the content on: 0.0 px
+FAIL right-to-left row - a fling into the start carries on past it at the speed it got there :: java.lang.AssertionError: the fling stopped at the end instead of carrying on past it: 9.0 px
+FAIL column - caught springing back from the top, the content follows the finger back :: java.lang.AssertionError: the band never turned back: it reached 9.0 px
+FAIL right-to-left row - pulled past the end and flicked back, the content carries on along the row :: java.lang.AssertionError: the flick stopped at the end instead of carrying the content on: 0.0 px
+FAIL row - a fling right comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -5.0 px in one frame
+ok   column - pulled past the top and flicked further, the band springs back onto the top
+FAIL right-to-left row - pulled past the start and back, the band follows the finger back :: java.lang.AssertionError: taken halfway back, the band went from -87.0 to -117.0 px instead of easing back with the finger
+ok   right-to-left row - the content follows a drag both ways
+FAIL column - pulled past the bottom and back, the band follows the finger back :: java.lang.AssertionError: taken halfway back, the band went from 87.0 to 117.0 px instead of easing back with the finger
+FAIL right-to-left row - caught springing back from the start, the content follows the finger back :: java.lang.AssertionError: the band never turned back: it reached 9.0 px
+FAIL row - pulled past the end and flicked back, the content carries on along the row :: java.lang.AssertionError: the flick stopped at the end instead of carrying the content on: 0.0 px
+FAIL row - pulled past the start and flicked back, the content carries on along the row :: java.lang.AssertionError: the flick stopped at the end instead of carrying the content on: 0.0 px
+FAIL row - caught springing back from the end, the content follows the finger back :: java.lang.AssertionError: the band never turned back: it reached 9.0 px
+FAIL row - pulled past the start and back, the band follows the finger back :: java.lang.AssertionError: taken halfway back, the band went from -87.0 to -117.0 px instead of easing back with the finger
+FAIL row - pulled past the end and back, the band follows the finger back :: java.lang.AssertionError: taken halfway back, the band went from 87.0 to 117.0 px instead of easing back with the finger
+ok   right-to-left row - pulled past the start and flicked further, the band springs back onto the start
+FAIL column - caught springing back from the bottom, the content follows the finger back :: java.lang.AssertionError: the band never turned back: it reached 9.0 px
+FAIL right-to-left row - a fling left comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -5.0 px in one frame
+ok   column - the content follows a drag both ways
+ok   a list far down reaches the top quickly, composing only the last two screens of rows

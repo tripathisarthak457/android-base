@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Developer tooling: this module is a dependency of dev and debug builds only, so no shippable build
+  shows a word of it, and the people who read it read the code's language. Lint and the generator's
+  translation check both leave a file of this name untranslated.
+-->
+<resources>
+    <string name="perfhud_tab">Perf</string>
+    <string name="perfhud_pill_description">Live frame rate and janky frames. Opens the Performance tab.</string>
+    <string name="perfhud_pill_fps">%1$d/%2$d fps</string>
+    <string name="perfhud_pill_idle">idle · %1$d Hz</string>
+    <string name="perfhud_pill_janky">%1$s%% janky</string>
+
+    <string name="perfhud_live_stats">Live stats</string>
+    <string name="perfhud_live_stats_summary">Records every frame while on, and puts nothing on the window while off.</string>
+    <string name="perfhud_reset">Reset</string>
+    <string name="perfhud_export">Export report</string>
+    <string name="perfhud_exporting">Exporting…</string>
+    <string name="perfhud_exported">Saved %1$s, and the Markdown beside it. To copy it off the phone: adb pull %1$s</string>
+    <string name="perfhud_export_failed">Could not write the report: %1$s</string>
+    <string name="perfhud_not_recording">Not recording. Turn on Live stats, use the app, then come back here.</string>
+    <string name="perfhud_debug_title">Debug build: these numbers are pessimistic</string>
+    <string name="perfhud_debug_body">A debug build runs without R8 or a baseline profile and mostly interpreted, so it drops several times more frames than the same code in a release. Judge with devRelease: ./gradlew :app:installDevRelease</string>
+
+    <string name="perfhud_score">Optimisation score</string>
+    <string name="perfhud_score_value">%1$d / 100 · %2$s</string>
+    <string name="perfhud_score_none">Not enough recorded to score yet: a few hundred frames and a start.</string>
+    <string name="perfhud_losses">Where the points went</string>
+    <string name="perfhud_no_losses">Every measured metric meets its target.</string>
+    <string name="perfhud_column_metric">Metric</string>
+    <string name="perfhud_column_value">Value</string>
+    <string name="perfhud_column_target">Target</string>
+    <string name="perfhud_column_grade">Grade</string>
+    <string name="perfhud_column_points">Points</string>
+    <string name="perfhud_lost_points">−%1$s of %2$d</string>
+    <string name="perfhud_metric_line">%1$s: %2$s, target %3$s</string>
+    <string name="perfhud_doc">See %1$s</string>
+    <string name="perfhud_not_measured">not measured</string>
+
+    <string name="perfhud_frame_times">Frame times</string>
+    <string name="perfhud_frame_times_caption">The last frames against the budget at 60, 90 and 120 Hz. Red missed its deadline: a janky frame.</string>
+    <string name="perfhud_fps_graph">Frames per second</string>
+    <string name="perfhud_fps_graph_caption">While drawing, for each of the last 60 seconds; a gap is a second with nothing to draw. The line is the display\'s rate.</string>
+    <string name="perfhud_histogram">Frame-time histogram</string>
+    <string name="perfhud_histogram_caption">Every frame recorded, by duration in milliseconds. The line is the current budget.</string>
+    <string name="perfhud_by_screen">Janky frames by screen</string>
+    <string name="perfhud_memory">Memory</string>
+    <string name="perfhud_memory_caption">Java heap and native heap each second; PSS every 15 seconds.</string>
+    <string name="perfhud_legend_java">Java heap</string>
+    <string name="perfhud_legend_native">Native heap</string>
+    <string name="perfhud_legend_pss">PSS</string>
+    <string name="perfhud_hz">%1$d Hz</string>
+    <string name="perfhud_millis_axis">%1$d ms</string>
+
+    <string name="perfhud_frames">Frames</string>
+    <string name="perfhud_recorded">Recorded</string>
+    <string name="perfhud_fps">Frames per second while drawing</string>
+    <string name="perfhud_display">Display</string>
+    <string name="perfhud_janky">Janky (missed deadline)</string>
+    <string name="perfhud_slow">Slow (over 16 ms)</string>
+    <string name="perfhud_frozen">Frozen (over 700 ms)</string>
+    <string name="perfhud_long_work">Long main-thread work (over 50 ms)</string>
+    <string name="perfhud_percentiles">Frame p50 / p90 / p99</string>
+    <string name="perfhud_ui_percentiles">UI thread p50 / p90 / p99</string>
+    <string name="perfhud_worst">Worst</string>
+    <string name="perfhud_screen">Screen</string>
+    <string name="perfhud_screen_launch">(before the first screen)</string>
+    <string name="perfhud_screen_other">(other screens)</string>
+    <string name="perfhud_screen_row">%1$s janky of %2$d · p90 %3$s</string>
+
+    <string name="perfhud_java_heap">Java heap (peak)</string>
+    <string name="perfhud_native_heap">Native heap (peak)</string>
+    <string name="perfhud_pss">PSS (peak)</string>
+    <string name="perfhud_app_pss">PSS less graphics</string>
+    <string name="perfhud_gc">Garbage collections</string>
+    <string name="perfhud_gc_value">%1$d, %2$d ms; blocking %3$d, %4$d ms</string>
+    <string name="perfhud_now_peak">%1$s (%2$s)</string>
+
+    <string name="perfhud_startup">Start-up</string>
+    <string name="perfhud_cold_start">Cold start</string>
+    <string name="perfhud_warm_start">Warm start</string>
+    <string name="perfhud_hot_start">Hot start</string>
+    <string name="perfhud_start_value">%1$s to first frame · %2$s fully drawn</string>
+    <string name="perfhud_start_not_reported">not reported</string>
+    <string name="perfhud_start_none">none recorded</string>
+    <string name="perfhud_startup_unsupported">Android 15 and later record start-up times; this phone does not.</string>
+
+    <string name="perfhud_network">Network</string>
+    <string name="perfhud_requests">Requests (failed)</string>
+    <string name="perfhud_request_times">Median / p90 / slowest</string>
+    <string name="perfhud_network_none">No requests recorded.</string>
+    <string name="perfhud_endpoint_value">%1$d × · median %2$s · slowest %3$s</string>
+
+    <string name="perfhud_strict_mode">StrictMode on the main thread</string>
+    <string name="perfhud_violations">Violations</string>
+    <string name="perfhud_strict_mode_unsupported">Android 9 and later report StrictMode violations; this phone does not.</string>
+
+    <string name="perfhud_build">Build</string>
+    <string name="perfhud_minified">R8</string>
+    <string name="perfhud_profile">Baseline profile</string>
+    <string name="perfhud_debuggable">Debuggable</string>
+    <string name="perfhud_yes">yes</string>
+    <string name="perfhud_no">no</string>
+    <string name="perfhud_profile_compiled">compiled with it</string>
+    <string name="perfhud_profile_enqueued">waiting for ART to compile it</string>
+    <string name="perfhud_profile_not_compiled">in the APK, not compiled</string>
+    <string name="perfhud_profile_not_in_apk">not in the APK</string>
+    <string name="perfhud_profile_not_in_project">not set up in this project</string>
+
+    <string name="perfhud_value_percent">%1$s %%</string>
+    <string name="perfhud_value_budget">%1$s× budget</string>
+    <string name="perfhud_value_per_thousand">%1$s per 1,000 frames</string>
+    <string name="perfhud_value_millis">%1$s ms</string>
+    <string name="perfhud_value_megabytes">%1$s MB</string>
+    <string name="perfhud_value_count">%1$s</string>
+    <string name="perfhud_value_pass">pass</string>
+    <string name="perfhud_value_fail">fail</string>
+    <string name="perfhud_value_target_at_most">at most %1$s</string>
+
+    <string name="perfhud_metric_janky_frames">Janky frames</string>
+    <string name="perfhud_metric_frame_p90">Frame time p90</string>
+    <string name="perfhud_metric_frame_p99">Frame time p99</string>
+    <string name="perfhud_metric_slow_frames">Slow frames</string>
+    <string name="perfhud_metric_frozen_frames">Frozen frames</string>
+    <string name="perfhud_metric_long_work">Long main-thread work</string>
+    <string name="perfhud_metric_cold_start">Cold start</string>
+    <string name="perfhud_metric_warm_start">Warm start</string>
+    <string name="perfhud_metric_app_memory">App memory (PSS less graphics)</string>
+    <string name="perfhud_metric_blocking_gc">Blocking garbage collections</string>
+    <string name="perfhud_metric_strict_mode">StrictMode violations</string>
+    <string name="perfhud_metric_minified">R8</string>
+    <string name="perfhud_metric_baseline_profile">Baseline profile</string>
+    <string name="perfhud_metric_not_debuggable">Not debuggable</string>
+
+    <string name="perfhud_fix_janky_frames">Open Janky frames by screen and start with the worst screen. The usual causes: recomposition on every frame of an animation (read animated values in graphicsLayer, offset or drawBehind lambdas), alpha on a full-screen layer, work on the main thread during a transition, and a first frame that builds a whole screen. Record a trace with the android-profiler skill to see which.</string>
+    <string name="perfhud_fix_frame_p90">Ordinary frames take most of their budget. Look for layouts measured twice (intrinsics, nested weights), lists without contentType, and work in composition that belongs in remember or the draw phase.</string>
+    <string name="perfhud_fix_frame_p99">The slowest frames run past their budget. These are usually first frames: a screen built for the first time, a shader compiled on first use, or a list item type seen for the first time. Pre-warm with the baseline profile, and keep first frames small.</string>
+    <string name="perfhud_fix_slow_frames">Frames over 16 ms miss even a 60 Hz budget. Find them in Frame times and record a trace of that moment.</string>
+    <string name="perfhud_fix_frozen_frames">A frame took longer than 700 ms: the app froze. Something blocked the main thread: disk or network on it (check StrictMode below), a large decode, or a lock. Move it to a background dispatcher.</string>
+    <string name="perfhud_fix_long_work">The main thread did more than 50 ms of work for single frames. StrictMode below names disk and network calls; a trace names the rest. Defer what is not needed for the first frame.</string>
+    <string name="perfhud_fix_cold_start">Start-up does too much before the first frame. Keep Application.onCreate and the first screen\'s creation free of I/O and of eager singletons, make sure the baseline profile is compiled, and measure with tools/perf/perf.sh coldstart on devRelease.</string>
+    <string name="perfhud_fix_warm_start">Re-creating the activity is slow: the first screen does work on creation that it could keep in its ViewModel, or restores more state than it needs.</string>
+    <string name="perfhud_fix_app_memory">The app keeps more memory than the 48 MB budget. Look for caches without a bound, images decoded at full size, and screens that hold their data after they close. A heap dump from the profiler shows who owns it.</string>
+    <string name="perfhud_fix_blocking_gc">The garbage collector stopped every thread. That comes from allocating fast: objects created on every frame, in draw lambdas or animation callbacks. Hoist them into remember or a node.</string>
+    <string name="perfhud_fix_strict_mode">The main thread touched the disk or the network. The examples below name where; move each call to a background dispatcher, or into a repository that already runs there.</string>
+    <string name="perfhud_fix_minified">This build is not shrunk by R8, which also optimises the code. Release builds are; measure one: devRelease.</string>
+    <string name="perfhud_fix_baseline_profile">ART has not compiled this build with the baseline profile, so its first use of each screen runs interpreted. On a debuggable build it never will; install devRelease. Otherwise run tools/perf/perf.sh, or adb shell cmd package compile -f -m speed-profile, and turn on the baselineprofile feature if the project lacks one.</string>
+    <string name="perfhud_fix_not_debuggable">A debuggable build turns off most of ART\'s compilation, so it is several times slower than the release. Its numbers are pessimistic; measure devRelease.</string>
+
+    <string name="perfhud_report_title">Performance report: %1$s %2$s (%3$s)</string>
+    <string name="perfhud_report_generated">Generated %1$s on %2$s %3$s, Android %4$s (API %5$d), display %6$s Hz.</string>
+    <string name="perfhud_report_recorded">Recorded %1$s of use.</string>
+</resources>

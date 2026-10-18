@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shown in the system's notification settings for this app. -->
+<resources>
+    <string name="notification_channel_default">General</string>
+    <string name="notification_channel_default_description">Account activity and important updates.</string>
+    <string name="notification_channel_urgent">Time-sensitive</string>
+    <string name="notification_channel_urgent_description">Things that need your attention right now.</string>
+    <string name="notification_channel_promotions">Offers</string>
+    <string name="notification_channel_promotions_description">Deals and product news.</string>
+    <string name="notification_channel_silent">Background</string>
+    <string name="notification_channel_silent_description">Sync and progress updates.</string>
+</resources>

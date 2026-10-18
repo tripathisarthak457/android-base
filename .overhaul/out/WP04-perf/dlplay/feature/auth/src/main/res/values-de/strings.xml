@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_password_rules">Mindestens acht Zeichen, mit einem Buchstaben und einer Zahl.</string>
+    <string name="auth_confirm_password">Passwort bestätigen</string>
+    <string name="auth_create_account">Konto erstellen</string>
+    <string name="auth_email">E-Mail</string>
+    <string name="auth_reset_explanation">Gib die E-Mail-Adresse ein, mit der du dich registriert hast, und wir schicken dir einen Link.</string>
+    <string name="auth_forgot_password">Passwort vergessen</string>
+    <string name="auth_reset_sent">Falls es zu dieser Adresse ein Konto gibt, ist ein Link zum Zurücksetzen unterwegs.</string>
+    <string name="auth_name">Name</string>
+    <string name="auth_password">Passwort</string>
+    <string name="auth_reset_password">Passwort zurücksetzen</string>
+    <string name="auth_send_reset_link">Link senden</string>
+    <string name="auth_sign_in">Anmelden</string>
+    <string name="auth_welcome_back">Willkommen zurück</string>
+    <string name="auth_continue_with_google">Weiter mit Google</string>
+    <string name="auth_or">oder</string>
+    <string name="auth_google_sign_in_failed">Die Anmeldung mit Google hat nicht geklappt.</string>
+    <string name="auth_google_failed">Die Anmeldung mit Google wurde nicht abgeschlossen. Versuche es noch einmal oder nutze deine E-Mail-Adresse.</string>
+    <string name="auth_wrong_credentials">Diese E-Mail-Adresse und dieses Passwort passen zu keinem Konto.</string>
+    <string name="auth_too_many_attempts">Zu viele Versuche. Versuche es in ein paar Minuten noch einmal.</string>
+    <string name="auth_sign_in_failed">Die Anmeldung hat nicht geklappt.</string>
+    <string name="auth_sign_up_failed">Das Konto konnte nicht erstellt werden.</string>
+    <string name="auth_reset_failed">Der Link konnte nicht gesendet werden.</string>
+    <string name="auth_passwords_do_not_match">Die Passwörter stimmen nicht überein.</string>
+</resources>

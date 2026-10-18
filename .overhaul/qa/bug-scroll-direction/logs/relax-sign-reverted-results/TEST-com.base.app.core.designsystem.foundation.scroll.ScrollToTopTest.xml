@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.scroll.ScrollToTopTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-18T13:04:43.419Z" hostname="SARTHAK-PC" time="0.182">
+  <properties/>
+  <testcase name="a list far down reaches the top quickly, composing only the last two screens of rows" classname="com.base.app.core.designsystem.foundation.scroll.ScrollToTopTest" time="0.176"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

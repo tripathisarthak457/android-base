@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_haptics_explanation">किसी कंट्रोल के जवाब देने पर हल्का वाइब्रेशन।</string>
+    <string name="settings_about">जानकारी</string>
+    <string name="settings_account">खाता</string>
+    <string name="settings_appearance">रूप-रंग</string>
+    <string name="settings_haptic_feedback">हैप्टिक फ़ीडबैक</string>
+    <string name="settings_analytics_explanation">क्रैश और धीमी स्क्रीन ढूंढने में हमारी मदद करता है। इसमें आपका कॉन्टेंट कभी शामिल नहीं होता।</string>
+    <string name="settings_no_licences_recorded">कोई लाइसेंस दर्ज नहीं है</string>
+    <string name="settings_open_source_licences">ओपन सोर्स लाइसेंस</string>
+    <string name="settings_licence_not_stated">लाइसेंस नहीं बताया गया</string>
+    <string name="settings_privacy">निजता</string>
+    <string name="settings_title">सेटिंग</string>
+    <string name="settings_share_usage_data">इस्तेमाल का डेटा शेयर करें</string>
+    <string name="settings_sign_out">साइन आउट करें</string>
+    <string name="settings_sign_out_confirm">साइन आउट करें?</string>
+    <string name="settings_stay">रहने दें</string>
+    <string name="settings_theme_explanation">“सिस्टम” आपके डिवाइस की सेटिंग के हिसाब से चलता है।</string>
+    <string name="settings_licences_explanation">वे लाइब्रेरी जिन पर यह ऐप बना है, और उनकी शर्तें।</string>
+    <string name="settings_theme">थीम</string>
+    <string name="settings_theme_system">सिस्टम</string>
+    <string name="settings_theme_light">लाइट</string>
+    <string name="settings_theme_dark">डार्क</string>
+    <string name="settings_no_licences_explanation">इस बिल्ड में लाइसेंस की सूची नहीं बनी।</string>
+    <string name="settings_sign_out_explanation">ऐप इस्तेमाल करने के लिए आपको फिर से साइन इन करना होगा।</string>
+    <string name="settings_version">वर्शन %1$s</string>
+    <string name="settings_require_unlock">अनलॉक ज़रूरी करें</string>
+    <string name="settings_app_lock_explanation">ऐप के बैकग्राउंड में रहने के बाद फ़िंगरप्रिंट, चेहरा या स्क्रीन लॉक मांगें।</string>
+    <string name="settings_notifications">सूचनाएँ</string>
+    <string name="settings_notifications_on">चालू</string>
+    <string name="settings_notifications_off">बंद। अनुमति देने के लिए टैप करें।</string>
+    <string name="settings_notifications_blocked">आपके फ़ोन की सेटिंग में बंद हैं। खोलने के लिए टैप करें।</string>
+    <string name="settings_cancel">रद्द करें</string>
+    <string name="settings_language">भाषा</string>
+    <string name="settings_language_system">फ़ोन की भाषा</string>
+    <string name="settings_legal">कानूनी जानकारी</string>
+    <string name="settings_privacy_policy">निजता नीति</string>
+    <string name="settings_terms">सेवा की शर्तें</string>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_previous_month">पिछला महीना</string>
+    <string name="designsystem_next_month">अगला महीना</string>
+    <string name="designsystem_select_date">तारीख चुनें</string>
+    <string name="designsystem_select_time">समय चुनें</string>
+    <string name="designsystem_cancel">रद्द करें</string>
+    <string name="designsystem_confirm">पुष्टि करें</string>
+    <string name="designsystem_try_again">फिर से कोशिश करें</string>
+    <string name="designsystem_offline_title">आप ऑफ़लाइन हैं</string>
+    <string name="designsystem_error_title">कुछ गड़बड़ हो गई</string>
+    <string name="designsystem_navigate_back">वापस जाएं</string>
+    <string name="designsystem_hide_password">पासवर्ड छिपाएं</string>
+    <string name="designsystem_show_password">पासवर्ड दिखाएं</string>
+    <string name="designsystem_search">खोजें</string>
+    <string name="designsystem_clear_search">खोज साफ़ करें</string>
+    <string name="designsystem_trend_up">बढ़त</string>
+    <string name="designsystem_trend_down">गिरावट</string>
+    <string name="designsystem_retry">फिर से कोशिश करें</string>
+    <string name="designsystem_decrease">घटाएं</string>
+    <string name="designsystem_increase">बढ़ाएं</string>
+    <string name="designsystem_select">चुनें</string>
+    <string name="designsystem_phone_number">फ़ोन नंबर</string>
+    <string name="designsystem_change_country_code">देश का कोड बदलें</string>
+    <string name="designsystem_add_a_tag">टैग जोड़ें</string>
+    <string name="designsystem_tag_limit_reached">सीमा पूरी हो गई</string>
+    <string name="designsystem_add_tag">टैग जोड़ें</string>
+    <string name="designsystem_not_set">सेट नहीं है</string>
+    <string name="designsystem_remove_item">%1$s हटाएं</string>
+    <string name="designsystem_rating">%2$d में से %1$.1f</string>
+    <string name="designsystem_step_of">चरण %1$d/%2$d: %3$s</string>
+    <string name="designsystem_show_more">ज़्यादा दिखाएं</string>
+    <string name="designsystem_show_less">कम दिखाएं</string>
+    <string name="designsystem_range_start">न्यूनतम</string>
+    <string name="designsystem_range_end">अधिकतम</string>
+    <string name="designsystem_nothing_selected">कुछ नहीं चुना गया</string>
+    <string name="designsystem_nothing_selected_message">यहां देखने के लिए सूची में से कुछ चुनें।</string>
+</resources>

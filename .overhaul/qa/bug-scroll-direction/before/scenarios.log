@@ -1,0 +1,27 @@
+== 17:37:17 carousel_fast
+carousel_fast: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\carousel_fast.mp4
+== 17:37:35 carousel_slow
+carousel_slow: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\carousel_slow.mp4
+== 17:37:55 carousel_quick
+carousel_quick: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\carousel_quick.mp4
+== 17:38:10 carousel_edge_back
+carousel_edge_back: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\carousel_edge_back.mp4
+== 17:38:22 carousel_rtl_fast
+carousel_rtl_fast: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\carousel_rtl_fast.mp4
+== 17:38:40 carousel_rtl_slow
+carousel_rtl_slow: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\carousel_rtl_slow.mp4
+== 17:39:00 carousel_rtl_edge_back
+carousel_rtl_edge_back: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\carousel_rtl_edge_back.mp4
+== 17:39:13 list_mid
+list_mid: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_mid.mp4
+== 17:39:33 list_flings
+list_flings: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_flings.mp4
+== 17:39:55 list_edge_back
+list_edge_back_top: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_edge_back_top.mp4
+list_edge_back_bottom: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_edge_back_bottom.mp4
+== 17:40:26 list_rtl
+list_mid_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_mid_rtl.mp4
+list_flings_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_flings_rtl.mp4
+list_edge_back_top_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_edge_back_top_rtl.mp4
+list_edge_back_bottom_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before\list_edge_back_bottom_rtl.mp4
+SCENARIOS DONE

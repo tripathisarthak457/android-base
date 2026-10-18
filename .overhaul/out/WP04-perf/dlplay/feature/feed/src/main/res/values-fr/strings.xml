@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feed_title">Fil</string>
+    <string name="feed_subtitle">Dix à la fois, au fil du défilement</string>
+    <string name="feed_author">Auteur %1$d</string>
+    <string name="feed_empty_title">Rien à afficher</string>
+    <string name="feed_empty_message">Les nouveautés apparaîtront ici.</string>
+    <string name="feed_load_failed">Impossible de charger le fil.</string>
+    <string name="feed_load_more_failed">Impossible d’en charger plus.</string>
+    <string name="feed_retry">Réessayer</string>
+    <string name="feed_show_more">Afficher plus</string>
+    <string name="feed_show_less">Afficher moins</string>
+</resources>

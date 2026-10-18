@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-10-18T12:22:13.388Z" hostname="SARTHAK-PC" time="3.709">
+  <properties/>
+  <testcase name="right-to-left row - a fling right comes to rest without coming back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.541"/>
+  <testcase name="row - the content follows a drag both ways" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.319"/>
+  <testcase name="row - a fling left comes to rest without coming back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.205"/>
+  <testcase name="column - a fling up comes to rest without coming back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.226"/>
+  <testcase name="column - pulled past the top and back, the band follows the finger back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.253"/>
+  <testcase name="right-to-left row - pulled past the end and back, the band follows the finger back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.223"/>
+  <testcase name="row - a fling into the end carries on past it at the speed it got there" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.128"/>
+  <testcase name="right-to-left row - a fling into the end carries on past it at the speed it got there" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.143"/>
+  <testcase name="column - a fling down comes to rest without coming back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.278"/>
+  <testcase name="column - a fling into the bottom carries on past it at the speed it got there" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.109"/>
+  <testcase name="row - a fling right comes to rest without coming back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.176"/>
+  <testcase name="right-to-left row - pulled past the start and back, the band follows the finger back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.171"/>
+  <testcase name="right-to-left row - the content follows a drag both ways" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.18"/>
+  <testcase name="column - pulled past the bottom and back, the band follows the finger back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.137"/>
+  <testcase name="row - pulled past the start and back, the band follows the finger back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.182"/>
+  <testcase name="row - pulled past the end and back, the band follows the finger back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.132"/>
+  <testcase name="right-to-left row - a fling left comes to rest without coming back" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.116"/>
+  <testcase name="column - the content follows a drag both ways" classname="com.base.app.core.designsystem.foundation.scroll.ScrollDirectionTest" time="0.153"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,19 @@
+key = "auth"
+title = "Sign in, sign up and password reset"
+headline = "Sign in, sign up, reset password"
+description = """
+Three screens against your auth endpoints, writing the encrypted token store — with server-side
+field errors mapped back onto the inputs that caused them."""
+group = "Sign-in and account"
+default = false
+requires = ["network", "forms"]
+implied_only = false
+owns = [
+  "data/auth",
+  "feature/auth",
+  ".agents/skills/restore-credentials",
+  ".agents/skills/verified-email",
+  ".claude/skills/restore-credentials",
+  ".claude/skills/verified-email",
+]
+legacy = []

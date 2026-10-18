@@ -1,0 +1,7 @@
+Starting: Intent { cmp=com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity
+TotalTime: 596
+WaitTime: 601
+Complete

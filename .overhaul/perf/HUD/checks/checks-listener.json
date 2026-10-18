@@ -1,0 +1,28 @@
+{
+  "listener_standard": {
+    "off": {
+      "pid": "20750",
+      "frame_metrics_thread": false,
+      "threads": 35
+    },
+    "on": {
+      "pid": "20880",
+      "frame_metrics_thread": false,
+      "threads": 43
+    },
+    "hidden_adds_no_listener": false
+  },
+  "listener_everything": {
+    "off": {
+      "pid": "21062",
+      "frame_metrics_thread": false,
+      "threads": 67
+    },
+    "on": {
+      "pid": "21329",
+      "frame_metrics_thread": false,
+      "threads": 70
+    },
+    "hidden_adds_no_listener": false
+  }
+}

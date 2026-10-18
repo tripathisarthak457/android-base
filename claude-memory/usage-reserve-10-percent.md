@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 8d80ef9d-4533-47d0-b348-d4c6caaeb696
-  modified: 2026-10-17T17:35:32.253Z
+  modified: 2026-10-18T11:54:15.642Z
 ---
 
 Cap the overhaul's use of the 5-hour usage window by time of day:
@@ -20,5 +20,9 @@ Cap the overhaul's use of the 5-hour usage window by time of day:
 **Why:** 2026-10-17 16:40: "leave 10% of usage for my personal work and wind up then save all progress..."; 23:10: "u can
 consume full 99% in overnight as i am sleeping just working hours 9 am to 9 pm mai 90% kiya karo make sure u dont get
 stuck and auto resume on times".
+- The user can override a single window (Oct 18: 45% for their own work) or ask that nothing restarts by itself
+  (Oct 18 16:55: "i will begin next session manually u dont auto start it"); then delete every resume one-shot and the
+  autopilot, and wait for their message.
+
 **How to apply:** the autopilot prompt (`scripts/AUTOPILOT-PROMPT.md` and the live cron) carries this rule. Related:
 [[android-base-windows-decisions]].

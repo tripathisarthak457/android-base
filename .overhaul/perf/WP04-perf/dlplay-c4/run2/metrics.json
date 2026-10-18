@@ -1,0 +1,32 @@
+{
+  "metrics": {
+    "tab_first_visit.first_frame_ms.median": 4.22,
+    "tab_first_visit.first_frame_ms.max": 6.7,
+    "first_push.frame_ms": 5.63,
+    "first_gesture.janky": 3,
+    "tab_first_visit_warm.first_frame_ms.median": 3.63,
+    "tab_first_visit_warm.first_frame_ms.max": 3.84,
+    "first_push_warm.frame_ms": 6.01,
+    "first_gesture_warm.janky": 2,
+    "coldstart.median_ms": 382,
+    "coldstart.runs_ms": [
+      410,
+      402,
+      374,
+      377,
+      387,
+      351
+    ],
+    "coldstart_installed.median_ms": 378,
+    "coldstart_installed.runs_ms": [
+      382,
+      372,
+      367,
+      424,
+      376,
+      380
+    ]
+  },
+  "inapplicable": {},
+  "notes": []
+}

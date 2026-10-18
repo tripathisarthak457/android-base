@@ -17,7 +17,7 @@ for path in sorted(root.rglob("*.kt")):
             i += 1
         params = re.sub(r"\s+", " ", text[start:i - 1]).strip().rstrip(",")
         params = re.sub(r"\(\s+", "(", params)
-        package = str(path.parent.relative_to(root))
+        package = path.parent.relative_to(root).as_posix()
         generic = match.group(1) or ""
         groups.setdefault(package, []).append(f"`{match.group(2)}{('' if not generic else '')}({params})`")
 for package in sorted(groups):

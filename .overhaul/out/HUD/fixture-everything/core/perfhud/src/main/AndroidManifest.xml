@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <!--
+          The overlay's adb path (see ReportReceiver). Not exported: only the app's own uid reaches it,
+          which adb gets through run-as on a debuggable build and on nothing else. This module is a
+          dependency of dev and debug builds only, so a shippable release has no such receiver at all.
+        -->
+        <receiver
+            android:name="com.example.hud.fixture.core.perfhud.report.ReportReceiver"
+            android:exported="false" />
+    </application>
+
+</manifest>

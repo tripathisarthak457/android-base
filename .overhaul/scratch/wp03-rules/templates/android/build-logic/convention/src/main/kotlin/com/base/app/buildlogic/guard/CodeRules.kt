@@ -147,7 +147,7 @@ internal object CodeRules {
         val lines: (KotlinSource, Location) -> List<Int>,
     )
 
-    val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL
+    val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL
 
     /** Not a source pattern: a `@Composable` built without the Compose compiler crashes when first called. */
     private const val COMPOSE_COMPILER = "compose-compiler"

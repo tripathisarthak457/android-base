@@ -1,0 +1,33 @@
+== 2026-10-18 15:40:40 phase 15
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+wp03 installed
+/sdcard/ff.png: 1 file pulled, 0 skipped. 4.3 MB/s (73045 bytes in 0.016s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 15.8 MB/s (73084 bytes in 0.004s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 2.4 MB/s (73084 bytes in 0.029s)
+-rw-r--r-- 1 crazyhusir 197609 3058476 Oct 18 16:03 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling-wp03-1/trace.perfetto-trace
+FIRSTFLING DONE
+/sdcard/ff.png: 1 file pulled, 0 skipped. 4.9 MB/s (73084 bytes in 0.014s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 15.2 MB/s (73084 bytes in 0.005s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 21.1 MB/s (72395 bytes in 0.003s)
+-rw-r--r-- 1 crazyhusir 197609 3113839 Oct 18 16:04 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling-wp03-2/trace.perfetto-trace
+FIRSTFLING DONE
+total 9736
+drwxr-xr-x 1 crazyhusir 197609       0 Oct 18 16:04 .
+drwxr-xr-x 1 crazyhusir 197609       0 Oct 18 16:04 ..
+-rw-r--r-- 1 crazyhusir 197609     268 Oct 18 16:04 am-start.txt
+-rw-r--r-- 1 crazyhusir 197609 4638394 Oct 18 16:04 cached.perfetto-trace
+-rw-r--r-- 1 crazyhusir 197609     706 Oct 18 16:04 config.pbtxt
+-rw-r--r-- 1 crazyhusir 197609 5322958 Oct 18 16:04 first.perfetto-trace
+-rw-r--r-- 1 crazyhusir 197609     435 Oct 18 16:04 perfetto-cached.log
+-rw-r--r-- 1 crazyhusir 197609     435 Oct 18 16:04 perfetto-first.log
+SCROLL-TRACE DONE
+== 2026-10-18 16:04:52 PHASE15 DONE

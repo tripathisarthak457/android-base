@@ -1,0 +1,12 @@
+key = "analytics"
+title = "Analytics and crash-reporting seam"
+headline = "Track events and crashes, vendor-free"
+description = """
+Vendor-agnostic AnalyticsTracker and CrashReporter interfaces with no-op defaults, so
+instrumentation can be written before a vendor is chosen."""
+group = "Observability"
+default = true
+requires = []
+implied_only = false
+owns = ["core/analytics"]
+legacy = []

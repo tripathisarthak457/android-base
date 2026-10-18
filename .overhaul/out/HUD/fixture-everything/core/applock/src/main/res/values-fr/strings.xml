@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_lock_title">Déverrouillez pour continuer</string>
+    <string name="app_lock_subtitle">Utilisez votre empreinte, votre visage ou le verrouillage de l’écran.</string>
+    <string name="app_lock_action">Déverrouiller</string>
+</resources>

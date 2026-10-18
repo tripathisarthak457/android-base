@@ -1,0 +1,27 @@
+1238 frames; runs of motion (device px; + is down):
+    1.084-  1.219 s  down       60 px   14 frames
+    1.235-  2.980 s  down      672 px  162 frames
+    2.996-  3.312 s  down       26 px   17 frames
+    3.346-  3.373 s  down        3 px    2 frames
+    3.548-  3.663 s  up        795 px   14 frames
+    3.687-  3.687 s  down       26 px    1 frames
+    3.704-  3.721 s  down       38 px    3 frames
+    3.745-  4.947 s  down      370 px  138 frames
+    4.962-  5.270 s  down       26 px   17 frames
+    5.306-  5.363 s  down        4 px    3 frames
+    6.338-  8.647 s  down      752 px  239 frames
+    8.781-  9.014 s  up       1240 px   27 frames
+    9.021-  9.021 s  down        2 px    1 frames
+    9.045-  9.045 s  down       24 px    1 frames
+    9.062-  9.222 s  down       94 px   20 frames
+    9.238-  9.238 s  down        2 px    1 frames
+    9.263-  9.263 s  down        2 px    1 frames
+    9.296-  9.296 s  down        2 px    1 frames
+    9.396-  9.396 s  down        2 px    1 frames
+   11.706- 13.390 s  down      693 px  200 frames
+   13.405- 13.972 s  down       54 px   36 frames
+   14.007- 14.007 s  down        2 px    1 frames
+   14.164- 14.330 s  up        861 px   20 frames
+   14.338- 14.488 s  down       76 px   19 frames
+   14.513- 14.513 s  down       26 px    1 frames
+   14.530- 16.422 s  down      692 px  191 frames

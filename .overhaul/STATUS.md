@@ -16,7 +16,7 @@ This is the single file to read after a context compaction or restart. Then read
 
 ---
 
-> **Oct 18, 10:05: PAUSED by the user (§1 says how to resume).** Resume from `SESSION-2026-10-17.md` first. Only §1's run id can be resumed, and only from the session that launched it; a new session launches fresh.
+> **Oct 18, 19:10: idle until the user starts the next session by hand. Read `SESSION-2026-10-18.md` first (state, decisions, lessons, the restart steps).** Resume from `SESSION-2026-10-17.md` first. Only §1's run id can be resumed, and only from the session that launched it; a new session launches fresh.
 > **Resume from `SESSION-2026-10-16.md` first** (latest: power-offs, thermal sensor), then `SESSION-2026-10-15.md` (its Oct 16 sections at the end), then `SESSION-2026-10-14.md`. Fable's findings: `FABLE-FINDINGS.md`. **Every agent runs on Opus 5.5 only** (the user, Oct 15 20:55).
 > Previously: `SESSION-2026-10-14.md` (latest; then `SESSION-2026-10-13.md` for background).
 > Older note: `SESSION-2026-10-13.md` (written 16:58 Oct 13): what was achieved on Oct 12–13, resume steps, the order of what comes next.
@@ -26,6 +26,31 @@ This is the single file to read after a context compaction or restart. Then read
 The laptop rebooted at 14:57 on Oct 12 and again at 10:41 on Oct 13, then slept with the lid closed from 11:12 to 13:17.
 The 18:03 one-shot never fired, so nothing ran between Oct 12, 14:50 and Oct 13, 13:20. Every package's commits are
 intact.
+
+**PAUSED until the user starts the next session by hand (Oct 18, about 16:55: "fix it right now only. i will begin next session manually u dont auto start it").** No cron or one-shot exists: nothing restarts by itself. The three workflows stopped at 16:09 (release `wwu5szppg`, smoothness `w51p1v05s`, HUD-first `wpz7r0agd`; same run ids as below). The user's bug (`bugs/BUG-2026-10-18-scroll-direction.md`: carousel and list moved the opposite way) is FIXED on `wp/WP03` (`daafdbd` + `91cb638`: the rubber band's drag-back sign, the fling leftover, and the throw back from a stretched band), review clean, verified on the phone (task `womkdvrqs`, run `wf_f47e153f-a84`, done 19:00). `wp/WP05-glass` still carries the buggy `AppOverscroll.kt` and needs both commits before any phone run (its handoff says so). WP03's `accept.sh` has not been re-run for these commits. The user has the catalog APK (`out/share/android-base-catalog-scrollfix-91cb638.apk`). When the user starts the next session: resume the three workflows (§1's commands), then re-create the autopilot and the hourly status (`SESSION-2026-10-17.md` has both prompts; the caps are in memory `usage-reserve-10-percent`).
+
+## 1. Running (resumed Oct 18, 13:40 on the user's "continue"; the 10:05 pause is history)
+
+| Workflow | Task id | Run id | Script | Notes |
+|---|---|---|---|---|
+| Release (all packages) | `wwu5szppg` (13:40; history `wf32czekj`, `w4f2f2lwb`, `whd05nhmo`, `wg14qe5jm`) | `wf_dca0df06-58a` | `D:/projects/tools/.overhaul/scripts/to-release.js` | WP04 next to merge (r25 `FINAL-GATES OK`, three target rows to confirm), then WP03, WP06 |
+| **HUD-first (the user's priority)** | `wpz7r0agd` (Oct 18, 14:25) | `wf_bb3d445a-ed0` | `D:/projects/tools/.overhaul/scripts/hud-first.js` | REQUIREMENTS 40 built ahead of the merge order on `wp/HUD` (from `wp/WP06`): implement, review loop, then a phone demo for the user (`perf/HUD/SHOW.md`, screenshots, a recording). The release workflow's HUD package merges it later |
+| Deep smoothness | `w51p1v05s` (13:40; history `w7quli9q3`, `wnpv3c78t`) | `wf_04982e22-7b2` | `D:/projects/tools/.overhaul/scripts/deep-smoothness-fable.js` | Phases 10 and 11 measured at 10:39; the first-fling scroll hitch next |
+
+- **One-window cap (the user, 15:15):** the window that resets at 20:10 stops at 45% (the user needs usage for their own work); the
+  autopilot stops at 41% or more and adds 7-minute checks from 28%. Normal caps return after 20:10.
+- **Autopilot:** cron `d9c23bb2` (replaced 15:15; three workflows; usage caps 90% 09:00-21:00 IST, 99% at night, stopping 5 points early;
+  one-shot resume after each reset; hung-build kill; battery warning; backups after merges). **Hourly status:** cron
+  `02f44fa3` (about :03). **Heat log:** background task `b7s05gauq`.
+- **New requirements (Oct 18, 14:00):** 40 (live FPS and performance stats beside the DEV badge in dev and debug builds, a
+  performance log and a 0-100 optimisation score; package HUD after WP06 and WP04; WP12 and WP13 wait for it) and 41
+  (iOS scrolling by default everywhere; WP03 physics, WP04-perf jank and the first-fling hitch, QA2 feel check). The
+  script change (HUD, QA2, WP12, WP13 scopes) takes effect at the next resume; WP03 and WP04-perf read item 41 on their next run.
+- **After the 10:05 stop** (notes at the top of the WP04, WP03 and WP04-perf handoffs): WP04 `r25-accept` ended
+  `FINAL-GATES OK` (10:41) and `RECORD-R25 DONE`; its landscape run and WP03's `r18_phone.sh` never got the phone (the app
+  restarted at about 10:41). Smoothness phases 10 and 11 ended DONE.
+
+### The 10:05 pause (history)
 
 ## 1. PAUSED (Oct 18, 10:05) by the user
 

@@ -1,0 +1,5 @@
+--------- beginning of main
+10-18 16:02:20.982 20880 20923 I PerfHud : window=5s frames=1 fps=60.0 janky=0.0% p50=10.1 p90=10.2 p99=10.2 slow=0 frozen=0 long=0 heapMb=8.5 nativeMb=12.4 pssMb=30.0 gc=1 screen=SampleListKey
+10-18 16:02:26.068 20880 20923 I PerfHud : window=5s frames=560 fps=118.7 janky=0.4% p50=8.7 p90=10.4 p99=12.9 slow=0 frozen=0 long=0 heapMb=13.2 nativeMb=13.6 pssMb=82.5 gc=1 screen=SampleListKey
+10-18 16:02:31.074 20880 20923 I PerfHud : window=5s frames=590 fps=119.2 janky=0.2% p50=8.6 p90=10.3 p99=12.0 slow=0 frozen=0 long=0 heapMb=17.7 nativeMb=14.9 pssMb=82.5 gc=1 screen=SampleListKey
+10-18 16:02:36.082 20880 20923 I PerfHud : window=5s frames=84 fps=109.6 janky=4.8% p50=8.6 p90=9.2 p99=18.8 slow=4 frozen=0 long=0 heapMb=18.0 nativeMb=14.9 pssMb=82.5 gc=1 screen=SampleListKey

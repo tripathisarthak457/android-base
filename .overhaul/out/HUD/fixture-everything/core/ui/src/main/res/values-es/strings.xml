@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">Algo salió mal. Inténtalo de nuevo.</string>
+    <string name="common_error_offline">Sin conexión. Revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="common_error_unreachable">No se pudo conectar con el servidor. Inténtalo de nuevo en un momento.</string>
+    <string name="appstatus_update_title">Actualización necesaria</string>
+    <string name="appstatus_update_message">Esta versión ya no es compatible. Actualiza la app para seguir usándola.</string>
+    <string name="appstatus_update_action">Actualizar</string>
+    <string name="appstatus_maintenance_title">En mantenimiento</string>
+    <string name="appstatus_maintenance_message">Estamos trabajando en el servicio. Vuelve a intentarlo en unos minutos.</string>
+    <string name="appstatus_maintenance_action">Reintentar</string>
+    <string name="validation_required">Este campo es obligatorio.</string>
+    <string name="validation_email">Introduce un correo electrónico válido.</string>
+    <string name="validation_mismatch">No coincide.</string>
+    <string name="validation_password_letter">Incluye al menos una letra.</string>
+    <string name="validation_password_digit">Incluye al menos un número.</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">Debe tener al menos %1$d carácter.</item>
+        <item quantity="other">Debe tener al menos %1$d caracteres.</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">Usa al menos %1$d carácter.</item>
+        <item quantity="other">Usa al menos %1$d caracteres.</item>
+    </plurals>
+</resources>

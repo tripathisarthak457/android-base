@@ -1,5 +1,12 @@
 # WP05-glass handoff: the full liquid glass effect set (REQUIREMENTS 37)
 
+- **Bug fix to take in (Oct 18, `bugs/BUG-2026-10-18-scroll-direction.md`).** This branch's
+  `foundation/scroll/AppOverscroll.kt` (from `wp/WP03` at `285275d`) still moves content against the finger at the
+  rubber band, overshoots after every fling and carousel snap, and swings a flick back from a stretched band past its
+  place and back against the flick. `wp/WP03` fixed it in `daafdbd` and `91cb638` with `ScrollDirectionTest`,
+  `AppCarouselTest` and `AppOverscrollTest`; merge `wp/WP03` again (or cherry-pick both commits, in that order)
+  before any phone run or release of this branch. Not fixed here.
+
 Branch `wp/WP05-glass`, worktree `$OV/wt/WP05-glass`, forked from `wp/WP05` at `5d515a0` with `wp/WP04` (`3c9c403`)
 and `wp/WP03` (`285275d`) merged in (below). `OV=D:/projects/tools/.overhaul`,
 `O=$OV/out/WP05-glass`, `P=$OV/perf/WP05-glass`, `L=$OV/bin/locked`,

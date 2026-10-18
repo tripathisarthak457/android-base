@@ -1,5 +1,11 @@
 # WP04-perf: deep smoothness (branch `wp/WP04-perf`, worktree `$OV/wt/WP04-perf`)
 
+- **Orchestrator note (Oct 18, 14:00).** New REQUIREMENTS 41 (iOS-like scrolling by default): this branch owns the scroll jank (≤ 0.5% at 120 Hz, aim ~0%) and the first-fling hitch after a cold start or `pm clear`; WP03 owns the physics defaults. Read item 41.
+
+
+- **Orchestrator note (Oct 18, 13:40).** After the 10:05 stop, `out/WP04-perf/logs/phase10-win.log` ended `PHASE10 DONE` (10:12: MEASURE DONE, STARTUP-AB-TRACE DONE) and `phase11-win.log` ended `PHASE11 DONE` (10:39; the bar-minimizing scroll row is still not measured). The `cardclip` tab measurement (`measure.win.sh cardclip`, `TAG=-t1`, tabs and tabs_tap) has only partial output under `perf/WP04-perf/cardclip-t1/` from 10:14; check whether it finished before relying on it.
+
+
 `OV=D:/projects/tools/.overhaul`, `O=$OV/out/WP04-perf` (builds and scripts),
 `P=$OV/perf/WP04-perf` (phone results and traces). Started 2026-10-15 15:45 from `wp/WP04` at `3c9c403`.
 Phone: Redmi Note 10 Pro `9a7c74f4` (Snapdragon 732G: 6 × A55 at 576–1708 MHz, 2 × A76 at 652–2304 MHz,
@@ -32,6 +38,23 @@ this load, and HWUI's own ADPF hints do not move them.
 (`*.hitch_ms_per_s`) and `*.janky_after_first_pct` (the motion's own jank) as release limits, with
 `*.late_first_frames` reported; keep the current `*.janky_pct`, first-frame and p99 rows as non-regression
 ratchets at the values below (as WP04's `gates-merge.toml` already does for its merge). Numbers in §3.
+
+### 0a. Every gap, where it stands (Oct 18)
+
+Phase 2 and the old template from `STATUS.md` §4; "now" is this branch (`layer` = `7da2c84`'s tree, `$P/layer-p7`,
+three runs; tab rows also `$P/layer-t1`, `layer-t2`), the same tools and phone.
+
+| Gap | Old / phase 2 | Now | Target | Status |
+|---|---|---|---|---|
+| Tab switch, janky | 1.58 % / 1.90 % | 1.07–1.15 %, all of it the switch's first frame; after the first 0 %, hitch 0–0.79 ms/s | ~0 % | first frame: device limit (§0, the floor misses on 7 of 7); the motion itself meets it |
+| Tab switch, first frame UI median / max | 19.0 / 45.3 ms | 4.1–4.2 / 9.4–10.4 ms | ≤ 8 / 8.3 ms | median met; max is the main thread on a little core (§3) |
+| Push/pop, janky / p99 | 4.03 % / 34 ms; 2.34 % / 57 ms | 1.56 % / 26 ms; after the first 0 %, hitch 2.0 ms/s | ~0–0.5 % / ≤ 16 ms | p99 is the push's composing frame and the pop's first frame from idle: device limit (§0) |
+| Pop, first frame UI median / max | 19.1 / 27.6; 15.0 / 36.9 ms | 2.3 / 5.1 ms | ≤ 8 / 16 ms | met |
+| Rapid Back, janky | 5.32 % / 2.62 % | 0.92 %; after the first 0.31 % | ≤ 1 % | met |
+| Back gesture, janky | 3.54 % / 2.82 % | 2.4–2.9 %; after the first 0.9–1.3 %, hitch 15–23 ms/s | ~0 % | open: RenderThread frames on a little core while the card follows the finger, and the commit fade's GPU time (§2d, §2h) |
+| Scroll, janky / GPU p90 | 0.22 % / 6 ms; 0.15 % / 6 ms | 0.22–0.44 % / 6 ms | ≤ 0.5 % (aim ~0) / ≤ 7 ms | met; the janky frames left are GPU programs compiled on first use after `pm clear` (§2f, §2i) |
+| Cold start | 336 ms (Oct 9) / 355 ms | interleaved with the old template on one day: old 393, before the fix 396, **with it 365 ms** (§2e) | below the old template | met: the Play Store checks start after the first frame (`9ed16d25`) |
+| PSS | 109.8 / 93.8 MB | total 107 MB, app share 54 MB (WP04 `final`) | 70 MB total | the 70 MB total is below the window's own buffers on this phone (§2c) |
 
 ## 1. What the first frame of a transition is made of (measured)
 
@@ -201,6 +224,22 @@ decrypting it, §2e).
   take 6 ms or more there; with it, 6 %. Phase 7's push and pop rows agree (RenderThread ≥ 6 ms, push 280 → 221,
   pop 29 → 13; rapid Back hitches 18 → 11). Committed as `7da2c84` after 130 navigation unit tests and
   `:core:navigation:lintDebug` passed with it (`$O/logs/tests-nav-layer2.log`).
+- **Phase 11, tab switches** (`$O/phase11.win.sh`, 10:12–10:39, `$O/logs/phase11-win.log`): phase 7 had seen more slow
+  RenderThread frames in `layer`'s tab switches, though a switch moves nothing the layer wraps. `tabs` and
+  `tabs_tap` alone, cardclip then layer, then layer then cardclip, three runs each (`$P/cardclip-t1`, `layer-t1`,
+  `layer-t2`, `cardclip-t2-retry`: cardclip's second order lost run 1 to a harness failure, `perf.sh exit 2`, and the
+  retry finished; every other "exit 1" in the log is the `tabs.janky_pct` gate, as expected). `$O/abstats.py
+  'tabs(_tap)?_\d+\.txt'`, frames after each dump's first:
+
+  | Tab switches, three runs each | cardclip t1 | layer t1 | layer t2 | cardclip t2 |
+  |---|---|---|---|---|
+  | Frames / late / RenderThread ≥ 6 ms | 7739 / 1 / 188 | 7738 / 1 / 87 | 7739 / 1 / 126 | 7740 / 0 / 169 |
+  | Display hitches (ms/s) | 3 (0.39) | 3 (0.39) | 3 (0.39) | 2 (0.26) |
+  | UI median, RenderThread median / p90, GPU median / p90 (ms) | 0.99, 1.40 / 2.18, 4.80 / 6.97 | 1.01, 1.40 / 2.12, 4.80 / 6.65 | 1.01, 1.41 / 2.20, 4.78 / 6.82 | 1.01, 1.42 / 2.19, 4.74 / 6.83 |
+  | perf.sh `tabs` janky / first frame median / max (ms) | 1.07 % / 4.14 / 9.99 | 1.15 % / 4.08 / 9.41 | 1.07 % / 4.09 / 9.66 | 1.07 % / 4.17 / 9.30 |
+
+  The layer leaves tab switches as they were (fewer slow RenderThread frames in both orders, the same janky %, first
+  frames and hitches); phase 7's difference was drift.
 
 ## 2d. What the display shows: where the remaining hitches are (Oct 18)
 
@@ -244,6 +283,29 @@ back gesture is the one motion that still hitches mid-way:
   edges, reach four or more (page beneath, scrim, card background, top bar or tab bar): about 6 % of the screen,
   the price of §2a's strips leaving the corners to the page beneath. No fill is drawn twice for nothing.
 
+## 2h. Back gesture: what is left, and the one lever not pulled
+
+- **What is left** (§2d, phases 7 and 9): the gesture's janky frames after the first (0.9–1.3 %) and its hitches are
+  RenderThread frames of 6–12 ms while the card follows the finger (33 of 40 hitches) and GPU frames of 7.4–12.9 ms
+  in the 100 ms commit fade (7 of 40). The same RenderThread work takes 3.2–3.5 ms on a big core; the slow frames are
+  that work on a little core, in a rhythm of every 4 or 8 frames, not in any frame whose content differs. The UI
+  thread does 0.7–0.9 ms per gesture frame and records neither screen (§2b).
+- **Levers tried or ruled out:** drawing less under the card (§2a, done), recording less per frame (§2b, done),
+  analytic clips (§4a, done), ADPF hints (HWUI already runs a hint session; the clocks do not move, §0), pinning the
+  RenderThread to big cores (`sched_setaffinity` through JNI: core numbering differs per SoC and it fights the
+  platform's own placement, below the AOSP bar).
+- **The one app-side lever left, a decision for the user:** draw the card from a hardware layer while the gesture
+  runs (`CompositingStrategy.Offscreen` on the subject's pose layer from the gesture's first frame to the end of the
+  commit fade). The card's content would be rendered once into a texture, and each gesture frame would draw one
+  textured quad under the card's clip instead of replaying the whole screen: the RenderThread's per-frame work would
+  drop to roughly the page beneath plus one quad, which fits a little core's frame, and the commit fade would fade
+  one texture instead of every draw of the screen. It costs a full-screen texture (about 10 MB of GPU memory) for
+  the gesture's length, one extra full-screen pass on its first frame, and text drawn from a texture scaled to
+  0.9–1.0 (filtered, as the system's own cross-activity back animation scales the closing window's buffer). A11.3 rule 1 forbids an
+  offscreen layer on a whole screen, written against fades that re-render the layer every frame; this one would be
+  rendered once per gesture unless the screen's own content animates under the card. Not built: it changes a
+  project rule, which is the user's call.
+
 ## 2e. Cold start against the old template
 
 - **Interleaved A/B** (phase 9, `$O/coldstart-ab.win.sh`, 15 rounds of one start each, the old template as the phone
@@ -277,6 +339,67 @@ back gesture is the one motion that still hitches mid-way:
   stored keys, no decryption) and saves the synthetic session only when none is stored (commit `e2fdb08`; the
   dev build compiles with it, `$O/logs/build-dl.log`). Phase 10 measures it: `dl` = `layer` plus this, perf.sh's
   cold start on both in both orders, and a capture of `dl` alternated with the old template.
+- **Phase 10** (`$O/phase10.win.sh`, 09:49–10:12, `$O/logs/phase10-win.log`): perf.sh's cold start, `layer` then
+  `dl`, then `dl` then `layer`, three runs each (`$P/layer-c1`, `dl-c1`, `dl-c2`, `layer-c2-retry`; `layer-c2` lost
+  run 3 to a harness failure and was retried). Pooled over 36 starts each: `layer` **399 ms** median, `dl` **387 ms**
+  (per order 394 / 388 and 399 / 382): the dev hook's Keystore read cost 12 ms of every measured start. The second
+  capture the script planned (`startab-base-dl`) did not run (the log ends after `dl` was prepared); phase 12 replaces
+  it.
+- **The traced A/B** (`$P/startab-base-layer`: six cold starts of each, alternated in one capture;
+  `$O/sql/startstages2.sql`, medians of six): `bindApplication` 111.5 / 113.1 ms (`layer` / old), activity start 55.3 /
+  56.9, **resume 37.1 / 25.1** (`performResume` **15.9 / 7.6**; the main thread's binder calls inside the resume 19 /
+  17, 22.7 / 15.5 ms), first content frame 92 / 84.3 (composition 13.2 / 24.2, measure 35.9 / 21.2: the work moves
+  between the two, their sum is 49 / 45.4). Main thread running 237 / 223 ms, sleeping 147 / 128 ms
+  (`startstates.sql`; per phase in `$O/sql/startphases.sql`). The resume is the one stage longer in every pair:
+  `performResume` by 3.8–10.9 ms. After the same two `Settings` reads, the new activity loads classes (class-init
+  and `ClassLinker` lock slices) and makes two more binder calls to system_server: the Play Store block of
+  `MainActivity` (`repeatOnLifecycle(RESUMED)` on `Main.immediate` runs `AppUpdateManagerFactory.create(...)
+  .requestUpdateFlow()`, which binds Play's service, and `ReviewPrompt.onLaunch` inside `performResume`). The rest of
+  the resume (adding the window) also takes longer in system_server (`wm.addWindow` 4.2 against 3.0 ms in the first
+  pair). The old template has no Play Store feature, app lock or theme follower.
+- **A capture artifact, not app time:** in all four traced `layer` starts and three of the six old ones, the main thread
+  sleeps 18–36 ms one to three milliseconds into `activityStart`, and the thread that wakes it is the app's own
+  `TracingMuxer` (`$O/sql/waker.sql`: `sched_wakeup` events for the main thread at the end of each sleep). That is the
+  in-process Perfetto client connecting to `traced` while a capture runs; untraced starts do not have it. Traced
+  totals (`am start` 409–452 ms against perf.sh's 380–400) overstate both apps, unequally, so totals come only from
+  untraced runs and traces are read stage by stage.
+- **Phase 12** (`$O/phase12.win.sh`, 13:49–13:54, `$O/logs/phase12-win.log`):
+  - Interleaved A/B, the old template against `dl` (HEAD `e2fdb08`'s tree), 15 rounds
+    (`$P/coldstart-ab/base-vs-dl.tsv`): old **392 ms** median, `dl` **393 ms**; per round `dl` is slower in 8 of 15,
+    by 7 ms at the median round (phase 9: `layer` 21 ms slower in 13 of 15). The old build still makes the dev
+    hook's Keystore read and `dl` no longer does, so for a user (no dev hook in either) the new template is still
+    about 10 ms slower, most of it the resume (`performResume` +8 ms).
+  - CPU callstack samples of six alternated starts each (`$O/startup-ab-perf.win.sh` → `$P/startabperf-base-dl`,
+    `traced_perf` at 500 Hz; `sql/startsamples.sql`, `sql/startstacks.sql`, `$O/startprofile.py` puts R8's names back
+    from each build's `mapping.txt`). `traced_perf` runs on this user build for the profileable benchmark APKs, but
+    it kept 58–67 samples per start for about 230 ms of main-thread running (half were dropped) and four per start
+    in the activity's start: too few to put a 5 ms difference on code. Not used for any conclusion here.
+  - Without `task_rename` events, a process forked late in a capture keeps the name `zygote64` in the process table:
+    `startsamples.sql` finds each start's main thread as the one that ran its `bindApplication` (the earlier queries
+    that match by name silently drop those starts: the two `[NULL]` rows above).
+- **Fix (commit `9ed16d25`, `app/.../MainActivity.kt`):** the Play Store checks (`followPlayStore()`: the update
+  flow and the review prompt, still under `repeatOnLifecycle(RESUMED)`) start from the effect that already waits for
+  the first content frame, posted so they run in a message of their own. `:app:lintDevDebug` green
+  (`$O/logs/lint-app-play.log`), the generator's 291 tests green, and a `none` preset generated without
+  `playstore` drops the call with the function.
+- **Phase 13** (`$O/phase13.win.sh`, 15:20–, `$O/logs/phase13-win.log`; `dlplay` = `dl` plus the fix, built as
+  `com.example.wp04.dlplay.dev` by `PKG=… build-wt.win.sh` so the two alternate on the phone):
+  - Interleaved, untraced, 15 rounds of the old template, `dl` and `dlplay` (`$P/coldstart-ab/base-dl-dlplay.tsv`):
+    medians **393 / 396 / 365 ms**; without the five starts under 300 ms (a process `am force-stop` left warm;
+    every build has one or two) 395 / 403 / 365.5. Round by round `dlplay` beats `dl` in 13 of 15 (by 25 ms at the
+    median round) and the old template in 10 of 15 (by 15 ms).
+  - Traced, five alternated pairs (`$P/startab-dl-dlplay`, `startstages2.sql`; `dl` / `dlplay`, medians):
+    `performResume` 14.2 / 5.3 ms, the resume 42.9 / 24.2 ms (its binder calls 19 / 17, 25.4 / 16.5 ms: the window's
+    own calls run slower while system_server serves the binding), the first content frame 83 / 76 ms, the start
+    437 / 408 ms. The Play Store process (`com.android.vending`) ran 18.6–27.2 ms of CPU inside every `dl` start
+    and none inside `dlplay`'s (`$O/sql/startvending.sql`): the update check woke it in the middle of the start.
+  - perf.sh's rows, `dl` then `dlplay`, then `dlplay` then `dl`, three runs each (`$P/dl-c3`, `dlplay-c3`,
+    `dlplay-c4`, `dl-c4`): cold start (speed-profile) **399 / 375** and **383 / 371 ms**, as installed **397 / 376**
+    and **394 / 378 ms** (`dl` / `dlplay`). `dlplay` meets the release gate's 380 and 400 ms rows in both orders; `dl`
+    missed the 380 ms row in the first.
+  - So the new template now starts 15–28 ms faster than the old one on the same day (median round, medians), with
+    the dev hook's Keystore read gone from it and still in the old build (about 10 ms; neither does it for a user):
+    for a user's start the two are level or the new one slightly ahead.
 
 ## 2f. Scroll: shaders compiled on first use (after `pm clear`)
 
@@ -306,6 +429,37 @@ back gesture is the one motion that still hitches mid-way:
   rubber-band edge has first-use programs of its own; if it does, perf.py's warm-up can pay one overscroll and report
   it as a first use, as it does for the first back swipe (`first_gesture`), which is the user's and WP04's call
   because it changes what the scroll rows measure.
+
+## 2i. The first scroll after `pm clear` (REQUIREMENTS 41: no hitch on the first fling)
+
+- **Measured** (phase 14, `$O/firstfling.win.sh` on `dl`, twice: `$P/firstfling-dl-1`, `-2`; read with
+  `$O/ffcompile.py`): after `pm clear`, a launch and a settle, the finger goes down on the root list and moves it
+  20 px at a time (`input motionevent`, each step's device uptime in `steps.txt`, the same boot clock as the
+  capture). In both runs exactly one GPU program is compiled, a `CircularRRectOp` (25.3 / 25.2 ms, a 32 ms
+  RenderThread frame), between the 60 and 80 px steps; nothing else compiles until the flings later reach the top
+  edge (the pull-to-refresh programs of §2f) apart from one 1–2 ms `FillRectOp`. With touch slop (8 dp, 22 px)
+  taken off, 60–80 px of finger is 38–58 px of scroll, and the first card's top edge sits 36–44 px below the list's
+  top edge at rest (`0-rest.png`): **the program is the one a card needs once it is cut by the edge of the list.**
+- **Cause:** `AppClickableSurface` (the old template's `foundation/AppSurface.kt`, unchanged on this branch)
+  clips every card to its shape (`.clip(shape)`) and draws the card's fill and border inside that clip. While a card
+  is wholly inside the list, the only clip that touches its fill is its own rounded outline, the same shape as the
+  fill, which Skia can drop (Ganesh's pre-clip step reports a single rrect clip, and an rrect drawn inside an equal
+  one needs no clip effect). Once the list's own clip cuts the card, two clip elements apply, the rounded outline
+  becomes an analytic coverage effect on the fill, and that op-plus-effect is a GPU program no earlier frame used:
+  compiled on the first such frame after an install, an update or `pm clear` (HWUI keeps it in its disk cache
+  afterwards). This is the reading that fits the step the compile lands on in both runs; phase 15 tests it.
+- **Not changed here, and why:** `wp/WP03` has rewritten the surface (`foundation/content/AppSurface.kt`): content
+  is clipped only when a caller asks (`clipContent = false` by default, "a clip costs a layer"), and its clickable
+  `AppCard` uses `pressable(feedback = Scale)` with no overlay. Its cards carry no rounded clip, so they should never
+  need the program; the same rewrite stops a fling from pulling the refresh indicator out (§2f). Changing the old
+  file here would only collide with that rewrite.
+- **Phase 15 did not test it:** `wp/WP03`'s head (`c55a8fce`, built as `wp03` by `$O/build.win.sh`) has no
+  `perf.fakeSession` launch hook, so after `pm clear` it stays on onboarding (`$P/firstfling-wp03-1/0-rest.png`) and
+  its captures (`firstfling-wp03-*`, `wp03-scroll`) hold no list frames. WP03's rubber band is still unmeasured on
+  first use; that needs the merged tree.
+- **Phase 16** (`$O/phase16.win.sh`) tests the reading directly: `noclip` is HEAD's everything project with one
+  change made in the generated copy only (`AppClickableSurface` draws the fill and border before `.clip(shape)`),
+  `firstfling.win.sh` twice.
 
 ## 2c. PSS: which process the row measures, and the floor
 

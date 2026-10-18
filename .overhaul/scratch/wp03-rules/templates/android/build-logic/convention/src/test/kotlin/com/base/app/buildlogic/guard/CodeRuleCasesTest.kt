@@ -9,7 +9,7 @@ class CodeRuleCasesTest {
     @Test
     fun `a lazy row with a key passes, and items outside a lazy scope are not rows`() {
         val source = """
-            private fun List() = LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            private fun List() = LazyVerticalGrid(flingBehavior = AppScrollDefaults.flingBehavior(), columns = GridCells.Fixed(2)) {
                 items(rows, key = { it.id }, contentType = { "row" }) { Row(it) }
                 items(count = 3, contentType = { "skeleton" }) { Skeleton() }
             }
@@ -24,10 +24,10 @@ class CodeRuleCasesTest {
     @Test
     fun `placeholder rows counted by a number have no identity to key on`() {
         val source = """
-            private fun Loading() = LazyColumn {
+            private fun Loading() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) {
                 items(SKELETON_ROWS) { Skeleton() }
             }
-            private fun Grid() = LazyRow {
+            private fun Grid() = LazyRow(flingBehavior = AppScrollDefaults.flingBehavior()) {
                 items(6) { Skeleton() }
             }
         """.trimIndent()
@@ -51,9 +51,9 @@ class CodeRuleCasesTest {
     @Test
     fun `a nested lazy row is its own scope for content types`() {
         val source = """
-            private fun Feed() = LazyColumn {
+            private fun Feed() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) {
                 items(rows, key = { it.id }) { row ->
-                    LazyRow { items(row.photos, key = { it.url }) { Photo(it) } }
+                    LazyRow(flingBehavior = AppScrollDefaults.flingBehavior()) { items(row.photos, key = { it.url }) { Photo(it) } }
                 }
             }
         """.trimIndent()
@@ -64,20 +64,20 @@ class CodeRuleCasesTest {
     @Test
     fun `scrolling content padded by the chrome passes, and so does a row`() {
         val source = """
-            private fun List() = LazyColumn(
+            private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior(), 
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
             ) {
-                item(key = "photos") { LazyRow { items(photos, key = { it.url }) { Photo(it) } } }
+                item(key = "photos") { LazyRow(flingBehavior = AppScrollDefaults.flingBehavior()) { items(photos, key = { it.url }) { Photo(it) } } }
             }
             private fun Detail() = Column(
                 Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
                     .testTag("detail")
                     .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
             ) { }
-            private fun Section(contentPadding: PaddingValues) = LazyVerticalGrid(
+            private fun Section(contentPadding: PaddingValues) = LazyVerticalGrid(flingBehavior = AppScrollDefaults.flingBehavior(), 
                 columns = GridCells.Adaptive(AppTheme.layout.tileMinWidth),
                 contentPadding = contentPadding,
             ) { }
@@ -92,13 +92,13 @@ class CodeRuleCasesTest {
             private fun Detail() = Column(
                 Modifier
                     .padding(chromeContentPadding())
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior()),
             ) { }
-            private fun Grid() = LazyVerticalGrid(
+            private fun Grid() = LazyVerticalGrid(flingBehavior = AppScrollDefaults.flingBehavior(), 
                 columns = GridCells.Fixed(2),
                 modifier = Modifier.padding(chromeContentPadding()),
             ) { }
-            private fun Loading() = LazyColumn { }
+            private fun Loading() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) { }
         """.trimIndent()
 
         assertEquals(listOf("4 scroll-chrome", "6 scroll-chrome", "10 scroll-chrome"), rules(FEATURE, source))

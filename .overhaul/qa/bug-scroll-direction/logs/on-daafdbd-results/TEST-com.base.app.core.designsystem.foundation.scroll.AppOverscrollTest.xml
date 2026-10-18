@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.scroll.AppOverscrollTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-18T13:02:50.146Z" hostname="SARTHAK-PC" time="0.622">
+  <properties/>
+  <testcase name="pulled past the top and back without letting go, the list follows the finger back" classname="com.base.app.core.designsystem.foundation.scroll.AppOverscrollTest" time="0.288"/>
+  <testcase name="a fling into the end carries past it and springs back without a jump" classname="com.base.app.core.designsystem.foundation.scroll.AppOverscrollTest" time="0.208"/>
+  <testcase name="pulled past the top, the content follows the finger along the rubber band" classname="com.base.app.core.designsystem.foundation.scroll.AppOverscrollTest" time="0.11"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

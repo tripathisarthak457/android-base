@@ -1,0 +1,35 @@
+== 18:40:26 catch_all
+list_catch_top: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_catch_top.mp4
+list_catch_top_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_catch_top_rtl.mp4
+list_catch_bottom: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_catch_bottom.mp4
+list_catch_bottom_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_catch_bottom_rtl.mp4
+carousel_catch_end: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_catch_end.mp4
+carousel_catch_end_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_catch_end_rtl.mp4
+== 18:43:17 carousel_fast
+carousel_fast: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_fast.mp4
+== 18:43:35 carousel_slow
+carousel_slow: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_slow.mp4
+== 18:43:55 carousel_quick
+carousel_quick: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_quick.mp4
+== 18:44:10 carousel_edge_back
+carousel_edge_back: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_edge_back.mp4
+== 18:44:23 carousel_rtl_fast
+carousel_rtl_fast: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_rtl_fast.mp4
+== 18:44:41 carousel_rtl_slow
+carousel_rtl_slow: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_rtl_slow.mp4
+== 18:45:01 carousel_rtl_edge_back
+carousel_rtl_edge_back: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\carousel_rtl_edge_back.mp4
+== 18:45:14 list_mid
+list_mid: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_mid.mp4
+== 18:45:34 list_flings
+list_flings: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_flings.mp4
+== 18:45:56 list_edge_back
+list_edge_back_top: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_edge_back_top.mp4
+list_edge_back_bottom: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_edge_back_bottom.mp4
+== 18:46:27 list_rtl
+list_mid_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_mid_rtl.mp4
+list_flings_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_flings_rtl.mp4
+list_edge_back_top_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_edge_back_top_rtl.mp4
+list_edge_back_bottom_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/after2\list_edge_back_bottom_rtl.mp4
+SCENARIOS DONE
+EXIT 0

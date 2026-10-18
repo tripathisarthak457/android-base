@@ -1,0 +1,6 @@
+1.244	sh:input swipe 180 675 780 675 60; sleep 0.05; input swipe 680 675 600 675 20
+1.551	sleep:2.5
+4.064	sh:input swipe 180 675 780 675 60; sleep 0.15; input swipe 680 675 600 675 20
+4.506	sleep:2.5
+7.012	sh:input swipe 180 675 780 675 60; sleep 0.25; input swipe 680 675 600 675 20
+7.579	sleep:2.5

@@ -1,0 +1,265 @@
+package com.example.wp04.everything.feature.search
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.wp04.everything.core.common.LoadState
+import com.example.wp04.everything.core.common.result.AppError
+import com.example.wp04.everything.core.designsystem.R as DesignSystemR
+import com.example.wp04.everything.core.designsystem.animation.appAnimateItem
+import com.example.wp04.everything.core.designsystem.animation.rememberAppTransitions
+import com.example.wp04.everything.core.designsystem.component.button.AppButton
+import com.example.wp04.everything.core.designsystem.component.button.ButtonSize
+import com.example.wp04.everything.core.designsystem.component.button.ButtonVariant
+import com.example.wp04.everything.core.designsystem.component.container.AppCard
+import com.example.wp04.everything.core.designsystem.component.container.AppScaffold
+import com.example.wp04.everything.core.designsystem.component.feedback.AppActivityIndicator
+import com.example.wp04.everything.core.designsystem.component.feedback.AppRedacted
+import com.example.wp04.everything.core.designsystem.component.feedback.AppStateView
+import com.example.wp04.everything.core.designsystem.component.feedback.StateKind
+import com.example.wp04.everything.core.designsystem.component.input.AppSearchField
+import com.example.wp04.everything.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.example.wp04.everything.core.designsystem.component.navigation.scrolledFromTop
+import com.example.wp04.everything.core.designsystem.component.selection.AppChip
+import com.example.wp04.everything.core.designsystem.component.text.AppText
+import com.example.wp04.everything.core.designsystem.foundation.chromeContentPadding
+import com.example.wp04.everything.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.example.wp04.everything.core.designsystem.icon.AppIcons
+import com.example.wp04.everything.core.designsystem.theme.AppTheme
+import com.example.wp04.everything.core.ui.MviScreen
+import com.example.wp04.everything.core.ui.text
+import com.example.wp04.everything.data.search.api.SearchResult
+
+@Composable
+internal fun SearchRoute(
+    onOpenResult: (Int) -> Unit,
+    viewModel: SearchViewModel = hiltViewModel(),
+) {
+    LaunchedEffect(Unit) { viewModel.onEvent(SearchEvent.Appeared) }
+
+    MviScreen(
+        viewModel = viewModel,
+        onEffect = { effect ->
+            when (effect) {
+                is SearchEffect.OpenResult -> onOpenResult(effect.id)
+            }
+        },
+    ) { state, onEvent ->
+        SearchScreen(state = state, query = viewModel.query, onEvent = onEvent)
+    }
+}
+
+/** The field edits the ViewModel's `query` directly, so nothing is copied into the state. */
+@Composable
+internal fun SearchScreen(
+    state: SearchState,
+    query: TextFieldState,
+    onEvent: (SearchEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val kind = state.contentKind()
+    // A new search starts at the top of its results.
+    val resultsList = remember(state.searchedFor) { LazyListState() }
+    AppScaffold(
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
+        modifier = modifier,
+        topBar = {
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.search_title),
+                scrolled = { if (kind == ContentKind.Results) resultsList.scrolledFromTop() else 0 },
+                accessory = {
+                    AppSearchField(
+                        state = query,
+                        placeholder = stringResource(R.string.search_placeholder),
+                        onSearch = { onEvent(SearchEvent.Submit) },
+                    )
+                },
+                actions = {
+                    // Results stay readable while they refresh; the bar says it is happening.
+                    if (state.loadState is LoadState.Refreshing) AppActivityIndicator()
+                },
+            )
+        },
+    ) {
+        val transitions = rememberAppTransitions()
+        AnimatedContent(
+            targetState = kind,
+            transitionSpec = { transitions.fadeIn togetherWith transitions.fadeOut },
+            label = "searchContent",
+        ) { kind ->
+            when (kind) {
+                ContentKind.Start -> StartContent(state.recent, onEvent)
+                ContentKind.Loading -> LoadingResults()
+                ContentKind.Error -> (state.loadState as? LoadState.Error)?.let {
+                    AppStateView(
+                        message = it.error.text(),
+                        kind = if (it.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                        onAction = { onEvent(SearchEvent.Retry) },
+                        actionLabel = stringResource(R.string.search_retry),
+                    )
+                }
+
+                ContentKind.Empty -> AppStateView(
+                    title = stringResource(R.string.search_no_results_title),
+                    message = stringResource(R.string.search_no_results_message, state.searchedFor),
+                    icon = AppIcons.Search,
+                )
+
+                ContentKind.Results -> Results(state.results, resultsList, onEvent)
+            }
+        }
+    }
+}
+
+private enum class ContentKind { Start, Loading, Error, Empty, Results }
+
+private fun SearchState.contentKind(): ContentKind = when {
+    searchedFor.isBlank() -> ContentKind.Start
+    loadState is LoadState.Loading -> ContentKind.Loading
+    loadState is LoadState.Error -> ContentKind.Error
+    loadState is LoadState.Empty -> ContentKind.Empty
+    else -> ContentKind.Results
+}
+
+@Composable
+private fun StartContent(recent: List<String>, onEvent: (SearchEvent) -> Unit) {
+    if (recent.isEmpty()) {
+        AppStateView(
+            title = stringResource(R.string.search_start_title),
+            message = stringResource(R.string.search_start_message),
+            icon = AppIcons.Search,
+        )
+        return
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = AppTheme.spacing.gutter, vertical = AppTheme.spacing.md),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AppText(
+                text = stringResource(R.string.search_recent),
+                style = AppTheme.typography.footnote,
+                color = AppTheme.colors.contentSecondary,
+            )
+            AppButton(
+                text = stringResource(R.string.search_clear_recent),
+                onClick = { onEvent(SearchEvent.ClearRecent) },
+                variant = ButtonVariant.Plain,
+                size = ButtonSize.Small,
+            )
+        }
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+        ) {
+            recent.forEach { query ->
+                AppChip(
+                    label = query,
+                    onClick = { onEvent(SearchEvent.RecentClicked(query)) },
+                    leadingIcon = AppIcons.Clock,
+                    onRemove = { onEvent(SearchEvent.RecentRemoved(query)) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Results(results: List<SearchResult>, listState: LazyListState, onEvent: (SearchEvent) -> Unit) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = listState,
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+        flingBehavior = AppScrollDefaults.flingBehavior(),
+    ) {
+        items(results, key = SearchResult::id) { result ->
+            ResultCard(
+                result = result,
+                onClick = { onEvent(SearchEvent.ResultClicked(result)) },
+                modifier = appAnimateItem(Modifier.fillMaxWidth()),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ResultCard(result: SearchResult, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppCard(onClick = onClick, modifier = modifier) {
+        AppText(
+            text = result.title,
+            style = AppTheme.typography.subheadline,
+            color = AppTheme.colors.contentPrimary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        AppText(
+            text = result.snippet,
+            modifier = Modifier.padding(top = AppTheme.spacing.xs),
+            style = AppTheme.typography.subheadline,
+            color = AppTheme.colors.contentTertiary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+/**
+ * Real result cards, redacted, with the results list's padding. Not its state: the two lists are on
+ * screen together while the content cross-fades, and a list state serves one list at a time.
+ */
+@Composable
+private fun LoadingResults() {
+    val loading = stringResource(DesignSystemR.string.designsystem_loading)
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .clearAndSetSemantics { contentDescription = loading },
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+        userScrollEnabled = false,
+    ) {
+        items(PlaceholderRows) {
+            AppRedacted(active = true) {
+                ResultCard(result = ResultPlaceholder, onClick = {}, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
+/** Enough for the tallest window; a lazy list composes only the cards that show. */
+private const val PlaceholderRows = 12
+
+// Never shown (see AppRedacted). A one-line title and a two-line snippet, as most results show.
+private val ResultPlaceholder = SearchResult(
+    -1,
+    "Placeholder result title",
+    "A result's snippet is clamped to two lines, and this one runs to them so its card is as tall.",
+)

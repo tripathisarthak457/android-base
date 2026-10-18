@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.component.collections.AppCarouselTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-18T13:02:35.482Z" hostname="SARTHAK-PC" time="12.175">
+  <properties/>
+  <testcase name="pulled right past the first card and back, it follows the finger back" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="10.665"/>
+  <testcase name="swiped right to left onto the last card, it lands on it" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.229"/>
+  <testcase name="right to left layout, swiped right to left, it moves to the previous card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.159"/>
+  <testcase name="right to left layout, swiped left to right, it moves to the next card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.128"/>
+  <testcase name="right to left layout, swiped left to right onto the last card, it lands on it" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.123"/>
+  <testcase name="swiped left to right, it moves to the previous card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.124"/>
+  <testcase name="right to left layout, pulled left past the first card and back, it follows the finger back" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.234"/>
+  <testcase name="swiped right to left, it moves to the next card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.139"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

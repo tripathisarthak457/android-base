@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-18T13:02:47.813Z" hostname="SARTHAK-PC" time="1.564">
+  <properties/>
+  <testcase name="pushing up during a refresh closes the gap before the list scrolls" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.535"/>
+  <testcase name="a pull while a refresh runs does not start another, and one after it ends does" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.291"/>
+  <testcase name="pulling and settling recompose none of the content" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.119"/>
+  <testcase name="a flick up during a refresh closes the gap and carries the list on without a pause" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.125"/>
+  <testcase name="a fling that reaches the top never refreshes" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.12"/>
+  <testcase name="the content rests below the spinner while refreshing, and returns when it ends" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.096"/>
+  <testcase name="the release carries the finger's velocity into the settle" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.093"/>
+  <testcase name="a pull released short of the trigger springs back without refreshing" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.076"/>
+  <testcase name="the refresh starts as the pull crosses the trigger, before the finger lifts" classname="com.base.app.core.designsystem.component.refresh.PullToRefreshTest" time="0.092"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

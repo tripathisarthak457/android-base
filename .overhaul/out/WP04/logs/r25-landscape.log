@@ -29,3 +29,16 @@ install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP0
 install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
 [locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
 install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
+[locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
+install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
+[locked:adb] waiting for the lock (pid 5644 since 2026-10-18 10:12:01: ./record-r25.win.sh D:/projects/tools/.overhaul/out/WP04/extras/everything.apk D:/projects/tools/.overhaul/perf/WP04/run)
+[locked:adb] waiting for the lock (pid 13892 since 2026-10-18 10:13:52: bash -c 
+NOTRACE=1 TAG=-t1 SCENARIOS='tabs tabs_tap' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip l)
+[locked:adb] waiting for the lock (pid 13892 since 2026-10-18 10:13:52: bash -c 
+NOTRACE=1 TAG=-t1 SCENARIOS='tabs tabs_tap' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip l)
+[locked:adb] waiting for the lock (pid 13892 since 2026-10-18 10:13:52: bash -c 
+NOTRACE=1 TAG=-t1 SCENARIOS='tabs tabs_tap' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip l)
+[locked:adb] waiting for the lock (pid 13892 since 2026-10-18 10:13:52: bash -c 
+NOTRACE=1 TAG=-t1 SCENARIOS='tabs tabs_tap' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip l)
+[locked:adb] waiting for the lock (pid 13892 since 2026-10-18 10:13:52: bash -c 
+NOTRACE=1 TAG=-t1 SCENARIOS='tabs tabs_tap' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip l)

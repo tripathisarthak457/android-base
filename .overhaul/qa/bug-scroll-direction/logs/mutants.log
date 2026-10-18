@@ -1,0 +1,7 @@
+== fix2: 61 passed, 0 failed
+== on-daafdbd: 55 passed, 6 failed
+== on-c55a8fc: 22 passed, 39 failed
+== no-leftover-threshold: 43 passed, 18 failed
+RESTORED the fixed AppOverscroll.kt
+MUTANTS DONE
+EXIT 0

@@ -30,3 +30,26 @@ install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP0
 install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
 [locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
 install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
+[locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
+install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
+Success
+== 10:12:02 back_y_follow D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/predictive-back/back_y_follow --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/predictive-back/back_y_follow\back_y_follow.mp4
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/predictive-back/back_y_follow\back_y_follow_strip.png
+45 moving frames, near-blank frames: []
+ar-XB: tab_0 at the left
+ar: tab_0 at the right
+== 10:12:39 tab_switch D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/tab-switch --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/tab-switch\tab_switch.mp4
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/tab-switch\tab_switch_strip.png
+113 moving frames, near-blank frames: []
+== 10:13:05 back_slow_commit D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/back_slow_commit --edge right --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/back_slow_commit\back_slow_commit.mp4
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/back_slow_commit\back_slow_commit_strip.png
+50 moving frames, near-blank frames: []
+== 10:13:29 back_during_push D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/back-during-push --edge right --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/back-during-push\back_during_push.mp4
+D:/projects/tools/.overhaul/perf/WP04/run25-7fa49d5b/rtl/back-during-push\back_during_push_strip.png
+61 moving frames, near-blank frames: []
+RECORD-R25 DONE
+restored: the app's own locale

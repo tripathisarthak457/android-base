@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 59fc6fe8-3960-47f4-b4f7-458761b66208
-  modified: 2026-10-17T10:03:58.969Z
+  modified: 2026-10-18T08:12:14.790Z
 ---
 
 On 2026-10-17 (first Windows session, after reading the Linux handover `.overhaul/handover/HANDOVER.md` from branch
@@ -32,6 +32,9 @@ On 2026-10-17 (first Windows session, after reading the Linux handover `.overhau
    Same day he added **Brotli on by default for every generated app** to NET (okhttp-brotli on the shared OkHttpClient):
    his Vercel site serves Brotli but not HTTP/3, so Cronet's HTTP/3 gains need a VPS behind Caddy with UDP 443 open.
    He wants a plain-English hourly status (he "always feels left out" otherwise).
+8. Oct 18, also in the Android release: **REQUIREMENTS 40** (live FPS and performance stats beside the DEV badge in dev
+   and debug builds, a performance log and a 0-100 optimisation score; package HUD) and **41** (iOS scrolling by default
+   on every scrollable surface).
 7. Ultracode: advised against for this project (memory-bound laptop, the scripts already parallelise); effort stays
    xhigh because workflow agents inherit the session's effort.
 

@@ -1,0 +1,68 @@
+[
+  {
+    "swipe_ms": 700,
+    "velocity_dp_s": 398.0,
+    "distance_dp": 194.0,
+    "seconds": 1.81,
+    "ios_distance_dp": 199.0,
+    "ios_seconds": 1.8,
+    "distance_error": -0.0251,
+    "duration_error": 0.0056,
+    "ok": true
+  },
+  {
+    "swipe_ms": 400,
+    "velocity_dp_s": 687.0,
+    "distance_dp": 337.0,
+    "seconds": 2.08,
+    "ios_distance_dp": 343.0,
+    "ios_seconds": 2.07,
+    "distance_error": -0.0175,
+    "duration_error": 0.0048,
+    "ok": true
+  },
+  {
+    "swipe_ms": 250,
+    "velocity_dp_s": 1100.0,
+    "distance_dp": 544.0,
+    "seconds": 2.32,
+    "ios_distance_dp": 549.0,
+    "ios_seconds": 2.3,
+    "distance_error": -0.0091,
+    "duration_error": 0.0087,
+    "ok": true
+  },
+  {
+    "swipe_ms": 160,
+    "velocity_dp_s": 1720.0,
+    "distance_dp": 854.0,
+    "seconds": 2.54,
+    "ios_distance_dp": 859.0,
+    "ios_seconds": 2.53,
+    "distance_error": -0.0058,
+    "duration_error": 0.004,
+    "ok": true
+  },
+  {
+    "swipe_ms": 110,
+    "velocity_dp_s": 2535.0,
+    "distance_dp": 1261.0,
+    "seconds": 2.73,
+    "ios_distance_dp": 1266.0,
+    "ios_seconds": 2.72,
+    "distance_error": -0.0039,
+    "duration_error": 0.0037,
+    "ok": true
+  },
+  {
+    "swipe_ms": 80,
+    "velocity_dp_s": 3448.0,
+    "distance_dp": 1717.0,
+    "seconds": 2.88,
+    "ios_distance_dp": 1722.0,
+    "ios_seconds": 2.88,
+    "distance_error": -0.0029,
+    "duration_error": 0.0,
+    "ok": true
+  }
+]

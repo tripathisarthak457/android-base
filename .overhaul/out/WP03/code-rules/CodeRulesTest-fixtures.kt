@@ -1,4 +1,4 @@
-        // Sheet rules (SheetRules.kt): add these to CodeRulesTest's `fixtures`.
+        // Sheet rules (SheetRules.kt) and scroll rules (ScrollRules.kt): add these to CodeRulesTest's `fixtures`.
         Fixture(
             "sheet-ime-padding",
             FEATURE,
@@ -58,6 +58,8 @@
             }
             """.trimIndent(),
         ),
+
+        Fixture("scroll-fling", CORE_UI, "private fun Photos() = LazyRow(state = photos) { } /*!*/"),
 
         // And beside FEATURE, DATA and the rest in the companion:
         const val SHEET = "core/designsystem/src/main/kotlin/com/acme/core/designsystem/component/sheet/A.kt"

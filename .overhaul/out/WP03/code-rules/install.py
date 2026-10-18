@@ -1,8 +1,9 @@
-"""Installs the sheet code rules into a copy of WP02's build-logic: SheetRules.kt, its fixtures and its cases.
+"""Installs the sheet and scroll code rules into a copy of WP02's build-logic: the rules, their fixtures and cases.
 
     python3 install.py <templates/android of the copy>
 """
 import pathlib
+import re
 import shutil
 import sys
 
@@ -11,15 +12,35 @@ root = pathlib.Path(sys.argv[1]) / "build-logic/convention/src"
 main = root / "main/kotlin/com/base/app/buildlogic/guard"
 test = root / "test/kotlin/com/base/app/buildlogic/guard"
 
-shutil.copy(here / "SheetRules.kt", main / "SheetRules.kt")
-shutil.copy(here / "SheetRuleCasesTest.kt", test / "SheetRuleCasesTest.kt")
+for name in ("SheetRules.kt", "ScrollRules.kt"):
+    shutil.copy(here / name, main / name)
+for name in ("SheetRuleCasesTest.kt", "ScrollRuleCasesTest.kt"):
+    shutil.copy(here / name, test / name)
 
 rules = main / "CodeRules.kt"
 text = rules.read_text()
 if "SheetRules.ALL" not in text:
-    text = text.replace("+ AdaptiveRules.ALL", "+ AdaptiveRules.ALL + SheetRules.ALL", 1)
-    assert "SheetRules.ALL" in text, "CodeRules.ALL changed shape"
-    rules.write_text(text)
+    text = text.replace("+ AdaptiveRules.ALL", "+ AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL", 1)
+    assert "ScrollRules.ALL" in text, "CodeRules.ALL changed shape"
+    rules.write_text(text, newline="\n")
+
+# WP02's own fixtures and cases use scroll containers to prove other rules. They name the fling, as
+# every container must, so each still proves only its own rule (and keeps its line numbers).
+FLING = "flingBehavior = AppScrollDefaults.flingBehavior()"
+CONTAINER = r"(?<![\w.])(LazyColumn|LazyRow|LazyVerticalGrid)"
+
+
+def name_fling(source: str) -> str:
+    source = re.sub(CONTAINER + r" \{", lambda m: f"{m.group(1)}({FLING}) {{", source)
+    source = re.sub(CONTAINER + r"\((?!flingBehavior)", lambda m: f"{m.group(1)}({FLING}, ", source)
+    return source.replace(".verticalScroll(rememberScrollState())", f".verticalScroll(rememberScrollState(), {FLING})")
+
+
+for name in ("CodeRulesTest.kt", "CodeRuleCasesTest.kt"):
+    path = test / name
+    text = path.read_text()
+    if FLING not in text:
+        path.write_text(name_fling(text), newline="\n")
 
 tests = test / "CodeRulesTest.kt"
 text = tests.read_text()
@@ -34,5 +55,5 @@ if '"sheet-ime-padding"' not in text:
     anchor = '        const val DESIGN_SYSTEM = "core/designsystem/src/main/kotlin/A.kt"\n'
     assert anchor in text, "CodeRulesTest constants changed"
     text = text.replace(anchor, anchor + const_line + "\n", 1)
-    tests.write_text(text)
+    tests.write_text(text, newline="\n")
 print("installed")

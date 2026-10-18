@@ -1,0 +1,285 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:verifyApiPurity FROM-CACHE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:prepareLintJarForPublish UP-TO-DATE
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preReleaseBuild
+> Task :core:designsystem:mergeDebugJniLibFolders UP-TO-DATE
+> Task :core:designsystem:mergeDebugNativeLibs NO-SOURCE
+> Task :core:designsystem:stripDebugDebugSymbols NO-SOURCE
+> Task :core:designsystem:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:checkDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:extractDebugAnnotations
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:prepareDebugArtProfile UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:checkReleaseAarMetadata UP-TO-DATE
+> Task :core:designsystem:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :core:designsystem:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:designsystem:stripReleaseDebugSymbols NO-SOURCE
+> Task :core:designsystem:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :core:designsystem:generateReleaseResources UP-TO-DATE
+> Task :core:designsystem:packageReleaseResources UP-TO-DATE
+> Task :core:designsystem:processReleaseNavigationResources UP-TO-DATE
+> Task :core:designsystem:parseReleaseLocalResources UP-TO-DATE
+> Task :core:designsystem:generateReleaseRFile UP-TO-DATE
+> Task :core:designsystem:extractReleaseAnnotations
+> Task :core:designsystem:mergeReleaseAssets UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:designsystem:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:mergeDebugJavaResource UP-TO-DATE
+> Task :core:designsystem:syncDebugLibJars
+> Task :core:designsystem:compileReleaseKotlin
+> Task :core:designsystem:javaPreCompileRelease UP-TO-DATE
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:designsystem:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :core:designsystem:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :core:designsystem:prepareReleaseArtProfile UP-TO-DATE
+> Task :core:designsystem:processReleaseManifest UP-TO-DATE
+> Task :core:designsystem:processReleaseJavaRes UP-TO-DATE
+> Task :core:designsystem:mergeReleaseJavaResource UP-TO-DATE
+> Task :core:designsystem:bundleDebugAar
+> Task :core:designsystem:assembleDebug
+> Task :core:designsystem:writeReleaseAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapReleaseSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:mergeReleaseResources UP-TO-DATE
+> Task :core:designsystem:verifyReleaseResources UP-TO-DATE
+> Task :core:designsystem:checkComposeStability
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:syncReleaseLibJars
+> Task :core:designsystem:bundleReleaseAar
+> Task :core:designsystem:assembleRelease
+> Task :core:designsystem:assemble
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:koverGenerateArtifactRelease
+> Task :core:designsystem:bundleDebugLocalLintAar
+> Task :core:designsystem:createFullJarDebug
+> Task :core:designsystem:preDebugAndroidTestBuild
+> Task :core:designsystem:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:designsystem:generateDebugAndroidTestLintModel
+> Task :core:designsystem:extractProguardFiles UP-TO-DATE
+> Task :core:designsystem:generateDebugLintReportModel
+> Task :core:designsystem:generateDebugUnitTestLintModel
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:lintAnalyzeDebug
+> Task :core:designsystem:lintAnalyzeDebugAndroidTest
+> Task :core:designsystem:lintAnalyzeDebugUnitTest
+
+> Task :core:designsystem:lintReportDebug
+Wrote HTML report to file:///D:/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/build/reports/lint-results-debug.html
+Wrote SARIF report to file:///D:/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/build/reports/lint-results-debug.sarif
+
+> Task :core:designsystem:lintDebug
+> Task :core:designsystem:lint
+> Task :core:designsystem:test
+> Task :core:designsystem:koverGenerateArtifactDebug
+> Task :core:designsystem:koverGenerateArtifact UP-TO-DATE
+> Task :core:designsystem:koverCachedVerify
+> Task :core:designsystem:koverVerify
+> Task :core:designsystem:check
+> Task :core:designsystem:build
+
+BUILD SUCCESSFUL in 2m 30s
+89 actionable tasks: 28 executed, 1 from cache, 60 up-to-date
+Configuration cache entry reused.
+DESIGNSYSTEM BUILD OK
+
+Summary
+───────
+           App  Look (Look)
+       Package  com.example.wp03.look
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  catalog, collections, datadisplay, formfields, googlefonts,
+                network, pickers, sample
+       Modules  none
+     Languages  en
+      Typeface  Plus Jakarta Sans · JetBrains Mono
+       Colours  #8E3B46 · #775257 (derived) · #8E833B (derived)
+         Style  Editorial
+        Motion  Calm, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP03\look
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP03\look and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :catalog:assembleRelease
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin FROM-CACHE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors
+> Task :build-logic:convention:processResources
+> Task :build-logic:convention:classes
+> Task :build-logic:convention:jar
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :catalog:verifyComposeUsage
+> Task :catalog:preBuild
+> Task :catalog:preReleaseBuild
+> Task :core:designsystem:verifyApiPurity
+> Task :catalog:mergeReleaseJniLibFolders
+> Task :core:designsystem:verifyModuleDependencies FROM-CACHE
+> Task :catalog:checkReleaseDuplicateClasses
+> Task :catalog:generateReleaseBuildConfig FROM-CACHE
+> Task :catalog:generateReleaseResources FROM-CACHE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preReleaseBuild
+> Task :catalog:packageReleaseResources FROM-CACHE
+> Task :core:designsystem:mergeReleaseJniLibFolders
+> Task :core:designsystem:mergeReleaseNativeLibs NO-SOURCE
+> Task :core:designsystem:generateReleaseResources FROM-CACHE
+> Task :core:designsystem:copyReleaseJniLibsProjectOnly
+> Task :core:designsystem:packageReleaseResources FROM-CACHE
+> Task :core:designsystem:processReleaseNavigationResources FROM-CACHE
+> Task :core:designsystem:parseReleaseLocalResources FROM-CACHE
+> Task :core:designsystem:generateReleaseRFile FROM-CACHE
+> Task :catalog:mergeReleaseNativeLibs
+
+> Task :catalog:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :catalog:extractReleaseNativeSymbolTables FROM-CACHE
+> Task :catalog:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :core:designsystem:javaPreCompileRelease FROM-CACHE
+> Task :catalog:processReleaseNavigationResources FROM-CACHE
+> Task :catalog:parseReleaseLocalResources FROM-CACHE
+> Task :catalog:generateReleaseRFile FROM-CACHE
+> Task :catalog:javaPreCompileRelease FROM-CACHE
+> Task :core:designsystem:prepareReleaseArtProfile
+> Task :catalog:mergeReleaseArtProfile
+> Task :core:designsystem:writeReleaseAarMetadata
+> Task :catalog:checkReleaseAarMetadata
+> Task :catalog:mapReleaseSourceSetPaths
+> Task :catalog:compileReleaseNavigationResources FROM-CACHE
+> Task :catalog:mergeReleaseResources FROM-CACHE
+> Task :catalog:createReleaseCompatibleScreenManifests
+> Task :catalog:extractDeepLinksRelease FROM-CACHE
+> Task :core:designsystem:extractDeepLinksRelease FROM-CACHE
+> Task :core:designsystem:processReleaseManifest FROM-CACHE
+> Task :catalog:processReleaseMainManifest FROM-CACHE
+> Task :catalog:processReleaseManifest FROM-CACHE
+> Task :catalog:processReleaseManifestForPackage FROM-CACHE
+> Task :core:designsystem:mapReleaseSourceSetPaths
+> Task :core:designsystem:compileReleaseLibraryResources FROM-CACHE
+> Task :catalog:processReleaseResources FROM-CACHE
+> Task :catalog:extractProguardFiles
+> Task :catalog:mergeReleaseStartupProfile
+> Task :catalog:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:generateReleaseAssets UP-TO-DATE
+> Task :core:designsystem:mergeReleaseAssets
+> Task :catalog:mergeReleaseAssets
+> Task :catalog:compressReleaseAssets FROM-CACHE
+> Task :catalog:extractReleaseVersionControlInfo
+> Task :core:designsystem:extractProguardFiles
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:designsystem:checkReleaseAarMetadata
+> Task :core:designsystem:extractDeepLinksForAarRelease FROM-CACHE
+> Task :core:designsystem:extractReleaseAnnotations
+> Task :core:designsystem:writeReleaseLintModelMetadata
+> Task :catalog:collectReleaseDependencies
+> Task :catalog:sdkReleaseDependencyData
+> Task :catalog:validateSigningRelease
+> Task :catalog:writeReleaseAppMetadata
+> Task :catalog:writeReleaseSigningConfigVersions
+> Task :core:designsystem:compileReleaseKotlin
+> Task :core:designsystem:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:designsystem:mergeReleaseGeneratedProguardFiles
+> Task :core:designsystem:exportReleaseConsumerProguardFiles
+> Task :core:designsystem:processReleaseJavaRes
+> Task :core:designsystem:bundleLibRuntimeToJarRelease
+> Task :core:designsystem:bundleLibCompileToJarRelease
+> Task :core:designsystem:createFullJarRelease
+> Task :core:designsystem:generateReleaseLintModel
+> Task :core:designsystem:mergeReleaseConsumerProguardFiles
+> Task :core:designsystem:mergeReleaseJavaResource
+> Task :core:designsystem:syncReleaseLibJars
+> Task :core:designsystem:bundleReleaseLocalLintAar
+> Task :catalog:compileReleaseKotlin
+> Task :catalog:compileReleaseJavaWithJavac
+> Task :catalog:expandReleaseArtProfileWildcards
+> Task :catalog:mergeReleaseGeneratedProguardFiles
+> Task :catalog:processReleaseJavaRes
+> Task :catalog:mergeReleaseJavaResource
+> Task :core:designsystem:lintVitalAnalyzeRelease
+> Task :catalog:produceReleaseComposeMapping
+> Task :catalog:reportReleaseComposeMappingErrors
+> Task :catalog:generateReleaseLintVitalReportModel
+> Task :catalog:lintVitalAnalyzeRelease
+> Task :core:designsystem:generateReleaseLintVitalModel
+> Task :catalog:lintVitalReportRelease
+> Task :catalog:lintVitalRelease
+> Task :catalog:minifyReleaseWithR8
+> Task :catalog:convertShrunkResourcesToBinaryRelease FROM-CACHE
+> Task :catalog:optimizeReleaseResources FROM-CACHE
+> Task :catalog:mergeReleaseComposeMapping
+> Task :catalog:compileReleaseArtProfile
+> Task :catalog:packageRelease
+> Task :catalog:assembleRelease
+> Task :catalog:createReleaseApkListingFileRedirect
+
+BUILD SUCCESSFUL in 2m 9s
+95 actionable tasks: 65 executed, 30 from cache
+Configuration cache entry stored.
+LOOK CATALOG BUILT from 91cb6388 + 0 dirty
+EXIT 0

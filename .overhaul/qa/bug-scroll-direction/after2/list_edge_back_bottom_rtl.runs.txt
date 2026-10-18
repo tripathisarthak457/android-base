@@ -1,0 +1,7 @@
+61 frames; runs of motion (device px; + is down):
+    1.104-  1.104 s  up         21 px    1 frames
+    1.168-  1.168 s  up         32 px    1 frames
+    1.223-  1.223 s  up         32 px    1 frames
+    1.267-  1.524 s  up        196 px    7 frames
+    1.567-  1.850 s  down      228 px    8 frames
+    1.895-  1.931 s  down       75 px    2 frames

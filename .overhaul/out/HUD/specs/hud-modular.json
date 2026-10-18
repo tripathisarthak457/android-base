@@ -1,0 +1,30 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "HUD Modular",
+  "package_name": "com.example.hud.modular",
+  "architecture": "modular",
+  "features": [
+    "auth",
+    "browser",
+    "catalog",
+    "coil",
+    "deeplink",
+    "devtools",
+    "flags",
+    "forms",
+    "googlefonts",
+    "language",
+    "leakcanary",
+    "media",
+    "network",
+    "onboarding",
+    "perfhud",
+    "profile",
+    "room",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "languages": []
+}

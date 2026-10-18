@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.scroll.AppFlingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-18T12:22:20.117Z" hostname="SARTHAK-PC" time="0.291">
+  <properties/>
+  <testcase name="a gentle fling ends once it no longer visibly moves, and the next tap reaches a row" classname="com.base.app.core.designsystem.foundation.scroll.AppFlingTest" time="0.285"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

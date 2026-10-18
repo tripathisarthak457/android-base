@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.foundation.scroll.AppFlingCurveTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-18T13:03:48.546Z" hostname="SARTHAK-PC" time="0.191">
+  <properties/>
+  <testcase name="a gentle fling follows the iOS curve" classname="com.base.app.core.designsystem.foundation.scroll.AppFlingCurveTest" time="0.066"/>
+  <testcase name="an ordinary flick follows the iOS curve" classname="com.base.app.core.designsystem.foundation.scroll.AppFlingCurveTest" time="0.058"/>
+  <testcase name="a hard throw follows the iOS curve" classname="com.base.app.core.designsystem.foundation.scroll.AppFlingCurveTest" time="0.061"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

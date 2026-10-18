@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.base.app.core.designsystem.component.collections.AppCarouselTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-18T12:21:53.902Z" hostname="SARTHAK-PC" time="19.467">
+  <properties/>
+  <testcase name="swiped right to left onto the last card, it lands on it" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="17.823"/>
+  <testcase name="right to left layout, swiped right to left, it moves to the previous card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.286"/>
+  <testcase name="right to left layout, swiped left to right, it moves to the next card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.199"/>
+  <testcase name="right to left layout, swiped left to right onto the last card, it lands on it" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.223"/>
+  <testcase name="swiped left to right, it moves to the previous card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.293"/>
+  <testcase name="swiped right to left, it moves to the next card" classname="com.base.app.core.designsystem.component.collections.AppCarouselTest" time="0.176"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

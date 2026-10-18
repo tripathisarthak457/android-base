@@ -8,9 +8,10 @@ Re-runnable: every rewrite is idempotent, so it runs again after each merge of t
 branch. It rewrites what is mechanical: typography roles, plain renames, button variants, the
 TextFieldState bridge, removed components whose replacement takes the same arguments under other
 names (CALLS, rewritten call by call with their named arguments mapped), imports of names that
-moved package, and the design-system imports a rewrite left unused. It lists what needs a hand
-edit (a removed API whose replacement has a different shape). --check rewrites nothing and exits
-1 when anything is left.
+moved package, the design-system imports a rewrite left unused, and the iOS fling on every lazy
+list, grid and scroll modifier (REQUIREMENTS 41). It lists what needs a hand edit (a removed API
+whose replacement has a different shape, a pager without the paging fling). --check rewrites
+nothing and exits 1 when anything is left.
 """
 
 import argparse
@@ -93,6 +94,22 @@ CALLS = {
     "AppTextField": ("AppTextField", None, None, {"keyboardActions": lambda value: keyboard_action(value)}, None),
     "AppSecureField": ("AppSecureField", None, None, {"keyboardActions": lambda value: keyboard_action(value)}, None),
 }
+
+
+# REQUIREMENTS 41: every scrolling container decelerates as iOS does. Android's spline fling is what a
+# container gets when it names none, so each one names the design system's. A call whose line carries
+# `allow(platform-fling)` keeps the platform's on purpose.
+FLING_CALLS = (
+    "LazyColumn", "LazyRow", "LazyVerticalGrid", "LazyHorizontalGrid",
+    "LazyVerticalStaggeredGrid", "LazyHorizontalStaggeredGrid",
+)
+FLING_MODIFIER = re.compile(r"\.(?:verticalScroll|horizontalScroll)\(")
+PAGER = re.compile(r"(?<![\w.])(?:HorizontalPager|VerticalPager)\(")
+FLING = "flingBehavior = AppScrollDefaults.flingBehavior()"
+SCROLL_DEFAULTS = "com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults"
+SCROLL_PACKAGE = "package com.base.app.core.designsystem.foundation.scroll\n"
+PLATFORM_FLING = "allow(platform-fling)"
+LINE_LIMIT = 120
 
 
 def keyboard_action(value: str) -> str:
@@ -339,6 +356,75 @@ def add_import(text: str, path: str) -> str:
     return text[:at] + "\n" + line + text[at:]
 
 
+def paren_spans(text: str, pattern: re.Pattern):
+    """`(start, after its open paren, its close paren)` of each match of a pattern ending in `(`."""
+    for match in pattern.finditer(text):
+        if re.search(r"\bfun\s+$", text[max(0, match.start() - 8):match.start()]):
+            continue
+        depth, i = 1, match.end()
+        while depth and i < len(text):
+            depth += {"(": 1, ")": -1}.get(text[i], 0)
+            i += 1
+        yield match.start(), match.end(), i - 1
+
+
+def _trimmed_end(text: str, value_at: int, value_end: int) -> int:
+    end = value_end
+    while end > value_at and text[end - 1].isspace():
+        end -= 1
+    return end
+
+
+def _keeps_platform_fling(text: str, start: int) -> bool:
+    line_start = text.rfind("\n", 0, start) + 1
+    line_end = text.find("\n", start)
+    return PLATFORM_FLING in text[line_start:line_end if line_end != -1 else len(text)]
+
+
+def _with_fling(text: str, span, wrap: bool) -> str:
+    """Names the design system's fling in one call, after its last argument."""
+    name_start, open_at, close_at = span
+    before = text[text.rfind("\n", 0, name_start) + 1:name_start].lstrip()
+    if before.startswith(("*", "//", "/*")) or _keeps_platform_fling(text, name_start):
+        return text
+    args = arguments(text, open_at, close_at)
+    if any(name == "flingBehavior" for name, *_ in args):
+        return text
+    # A list the person cannot scroll (a placeholder) never flings.
+    if any(name == "userScrollEnabled" and text[at:end].strip() == "false" for name, _, at, end in args):
+        return text
+    if not args:
+        return text[:open_at] + FLING + text[close_at:]
+    _, name_at, value_at, value_end = args[-1]
+    end = _trimmed_end(text, value_at, value_end)
+    if "\n" in text[open_at:close_at]:
+        indent = text[text.rfind("\n", 0, name_at) + 1:name_at]
+        if value_end < close_at:
+            return text[:value_end + 1] + f"\n{indent}{FLING}," + text[value_end + 1:]
+        return text[:end] + f",\n{indent}{FLING}" + text[end:]
+    line_start = text.rfind("\n", 0, name_start) + 1
+    single = text[:end] + f", {FLING}" + text[end:]
+    line_end = single.find("\n", name_start)
+    if not wrap or (line_end if line_end != -1 else len(single)) - line_start <= LINE_LIMIT:
+        return single
+    # Too long for one line: one argument a line, as the formatter lays a long call out.
+    indent = re.match(r"[ \t]*", text[line_start:]).group(0)
+    parts = [text[at:_trimmed_end(text, v_at, v_end)] for _, at, v_at, v_end in args] + [FLING]
+    body = "".join(f"{indent}    {part},\n" for part in parts)
+    return text[:open_at] + "\n" + body + indent + text[close_at:]
+
+
+def add_fling(text: str) -> str:
+    for name in FLING_CALLS:
+        for span in reversed(list(call_spans(text, name))):
+            text = _with_fling(text, span, wrap=True)
+    for span in reversed(list(paren_spans(text, FLING_MODIFIER))):
+        text = _with_fling(text, (span[0] + 1, span[1], span[2]), wrap=False)
+    if "AppScrollDefaults." in text and SCROLL_PACKAGE not in text:
+        text = add_import(text, SCROLL_DEFAULTS)
+    return text
+
+
 def rewrite(text: str) -> str:
     roles = "|".join(sorted(TYPOGRAPHY, key=len, reverse=True))
     text = re.sub(rf"(\btypography\.)({roles})\b", lambda m: m.group(1) + TYPOGRAPHY[m.group(2)], text)
@@ -368,6 +454,10 @@ def leftovers(path: Path, text: str):
             yield f"{path}:{number}: bare clickable -> pressable(onClick, feedback = …)"
         if TEXT_FIELD_VALUE.search(line):
             yield f"{path}:{number}: AppTextField(value = …) bridge -> AppTextField(state = field)"
+    for start, open_at, close_at in paren_spans(text, PAGER):
+        if "flingBehavior" not in text[open_at:close_at] and not _keeps_platform_fling(text, start):
+            number = text.count("\n", 0, start) + 1
+            yield f"{path}:{number}: pager -> flingBehavior = AppScrollDefaults.pagerFlingBehavior(state)"
 
 
 def main() -> int:
@@ -385,10 +475,14 @@ def main() -> int:
             updated = add_import(updated, "com.base.app.core.designsystem.theme.AppTheme")
         if updated != text:
             updated = sort_imports(updated)
+        # After the sort: the fling's one import goes in its place, and a file this alone changes keeps
+        # the order its imports already had.
+        updated = add_fling(updated)
         if updated != text:
             changed += 1
             if not args.check:
-                path.write_text(updated, encoding="utf-8")
+                # Never the platform's line separator: on Windows that would write CRLF.
+                path.write_text(updated, encoding="utf-8", newline="\n")
         # The catalog demonstrates the design system itself (a bare clickable with RowHighlight,
         # the pressScale token), so only its imports and renames are swept.
         if not relative.startswith("catalog/"):

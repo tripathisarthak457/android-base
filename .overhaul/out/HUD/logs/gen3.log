@@ -1,0 +1,55 @@
+..............................................................s....................s.......................................ss..FF.F......................................................................................................................................................................F.
+======================================================================
+FAIL: test_a_non_ascii_password_round_trips (tests.test_keystores.GenerationTest.test_a_non_ascii_password_round_trips)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_keystores.py", line 122, in test_a_non_ascii_password_round_trips
+    self.assertEqual(0, self.keytool_list(self.project / values["prod.storeFile"], values["prod.storePassword"]).returncode)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 3221225794
+
+======================================================================
+FAIL: test_keytool_s_refusal_names_a_non_ascii_path_as_it_is (tests.test_keystores.GenerationTest.test_keytool_s_refusal_names_a_non_ascii_path_as_it_is)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_keystores.py", line 143, in test_keytool_s_refusal_names_a_non_ascii_path_as_it_is
+    self.assertIn(str(project / "keys" / "prod.jks"), warning)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmp5r3ujyl9\\Ána\\keys\\prod.jks' not found in "Keystore 'prod' could not be created: unknown error"
+
+======================================================================
+FAIL: test_reusing_the_dev_key_for_staging_copies_it (tests.test_keystores.GenerationTest.test_reusing_the_dev_key_for_staging_copies_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_keystores.py", line 149, in test_reusing_the_dev_key_for_staging_copies_it
+    self.assertEqual(["dev", "staging"], generated)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['dev', 'staging'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'dev'
+
+- ['dev', 'staging']
++ []
+
+======================================================================
+FAIL: test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one (tests.test_zip.ZipTest.test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_zip.py", line 70, in test_the_commit_marks_the_scripts_it_holds_and_leaves_out_the_ignored_one
+    self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'`git init` failed (exit code 3221225794). The project itself is fine.'
+
+- []
++ ['`git init` failed (exit code 3221225794). The project itself is fine.']
+
+----------------------------------------------------------------------
+Ran 299 tests in 302.185s
+
+FAILED (failures=4, skipped=4)

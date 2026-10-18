@@ -1,0 +1,16 @@
+key = "forms"
+title = "Form state and validation"
+headline = "Validate forms properly"
+description = """
+Composable validators, per-field touched/error state, and server-side errors mapped back onto the
+fields that caused them."""
+group = "Screens"
+default = true
+requires = []
+implied_only = false
+owns = [
+  "core/common/src/main/kotlin/{pkg_path}/core/common/validation",
+  "core/common/src/test/kotlin/{pkg_path}/core/common/validation",
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/form",
+]
+legacy = []

@@ -1,0 +1,26 @@
+== 2026-10-18 14:17:03 phase 14
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+[locked:adb] waiting for the lock (pid 11024 since 2026-10-18 15:14:04: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r19_phone.sh 9a7c74f4)
+dl installed
+/sdcard/ff.png: 1 file pulled, 0 skipped. 23.3 MB/s (218468 bytes in 0.009s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 23.1 MB/s (222008 bytes in 0.009s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 25.8 MB/s (221121 bytes in 0.008s)
+-rw-r--r-- 1 crazyhusir 197609 13429936 Oct 18 15:19 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling-dl-1/trace.perfetto-trace
+FIRSTFLING DONE
+/sdcard/ff.png: 1 file pulled, 0 skipped. 26.0 MB/s (218468 bytes in 0.008s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 8.3 MB/s (222385 bytes in 0.026s)
+/sdcard/ff.png: 1 file pulled, 0 skipped. 20.4 MB/s (231391 bytes in 0.011s)
+-rw-r--r-- 1 crazyhusir 197609 12757112 Oct 18 15:20 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling-dl-2/trace.perfetto-trace
+FIRSTFLING DONE
+== 2026-10-18 15:20:24 PHASE14 DONE

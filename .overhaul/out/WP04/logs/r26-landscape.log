@@ -1,0 +1,10 @@
+[locked:adb] waiting for the lock (pid 11956 since 2026-10-18 13:37:59: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r18_phone.sh 9a7c74f4)
+saved: accelerometer_rotation=0 user_rotation=0 wm user-rotation='lock 0'
+Success
+rotation: mCurrentRotation=ROTATION_90
+front:   mCurrentFocus=Window{3bd15c4 u0 com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity}
+shot landscape-rest
+front:   mCurrentFocus=Window{3bd15c4 u0 com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity}
+shot landscape-end
+R26-LANDSCAPE DONE
+restored: lock 0, accelerometer_rotation 0

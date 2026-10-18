@@ -1,9 +1,9 @@
 Applications Graphics Acceleration Info:
-Uptime: 407201461 Realtime: 1018137578
+Uptime: 425820061 Realtime: 1036756178
 
-** Graphics info for pid 13920 [com.example.wp04.standard.dev] **
+** Graphics info for pid 31627 [com.example.wp04.standard.dev] **
 
-Stats since: 407196397807738ns
+Stats since: 425814955701052ns
 Total frames rendered: 0
 Janky frames: 0 (0.00%)
 Janky frames (legacy): 0 (0.00%)
@@ -33,10 +33,10 @@ Memory policy:
   GPU Context timeout: 10
 Contexts: 1 (stopped = 0)
 CPU Caches:
-  Glyph Cache: 1.42 MB (1 entry)
-  Glyph Count: 220 
+  Glyph Cache: 1.53 MB (1 entry)
+  Glyph Count: 234 
 Total CPU memory usage:
-  1485943 bytes, 1.42 MB (0.00 bytes is purgeable)
+  1599211 bytes, 1.53 MB (0.00 bytes is purgeable)
 GPU Caches:
   Other:
     Other: 381.84 KB (1 entry)
@@ -53,22 +53,22 @@ Total GPU memory usage:
 Pipeline Cache: inactive
 GraphicBufferAllocator buffers:
             Handle |         Size |     W (Stride) x H | Layers |   Format |      Usage | Requestor
-0xb400006eb5413c60 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
-0xb400006eb5413cd0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
-0xb400006eb5413d40 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
-0xb400006eb5413db0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
-0xb400006eb5413e20 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006eb50f5c60 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006eb50f5cd0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006eb50f5d40 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006eb50f5db0 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
+0xb400006eb50f5e20 | 10200.00 KiB | 1080 (1088) x 2400 |      1 |        1 | 0x10000900 | VRI[MainActivity]#0(BLAST Consumer)0
 Total allocated by GraphicBufferAllocator (estimate): 51000.00 KB
 Imported gralloc buffers:
-+ name:VRI[MainActivity]#0(BLAST Consumer)0, id:242517, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:251462, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
 	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
-+ name:VRI[MainActivity]#0(BLAST Consumer)0, id:242515, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:251461, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
 	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
-+ name:VRI[MainActivity]#0(BLAST Consumer)0, id:242514, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:251460, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
 	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
-+ name:VRI[MainActivity]#0(BLAST Consumer)0, id:242516, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:251463, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
 	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
-+ name:VRI[MainActivity]#0(BLAST Consumer)0, id:242513, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
++ name:VRI[MainActivity]#0(BLAST Consumer)0, id:251459, size:10276.00KiB, w/h:1080x2400, usage: 0x10000900, req fmt:1, fourcc/mod:875708993/0, dataspace: 0x8810000, compressed: true
 	planes: R/G/B/A:	 w/h:1080x2400, stride:4352 bytes, size:10522624
 Total imported by gralloc: 51380.00KiB
 
@@ -76,7 +76,7 @@ Profile data in ms:
 
 	com.example.wp04.standard.dev/com.example.wp04.standard.MainActivity/android.view.ViewRootImpl@80b1fa0 (visibility=0)
 Window: com.example.wp04.standard.dev/com.example.wp04.standard.MainActivity
-Stats since: 407196397805550ns
+Stats since: 425814955699125ns
 Total frames rendered: 0
 Janky frames: 0 (0.00%)
 Janky frames (legacy): 0 (0.00%)

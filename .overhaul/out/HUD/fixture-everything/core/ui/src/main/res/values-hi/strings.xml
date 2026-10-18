@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।</string>
+    <string name="common_error_offline">आप ऑफ़लाइन हैं। अपना कनेक्शन जांचें और फिर से कोशिश करें।</string>
+    <string name="common_error_unreachable">सर्वर से कनेक्ट नहीं हो सका। थोड़ी देर में फिर से कोशिश करें।</string>
+    <string name="appstatus_update_title">अपडेट ज़रूरी है</string>
+    <string name="appstatus_update_message">यह वर्शन अब समर्थित नहीं है। ऐप का उपयोग जारी रखने के लिए इसे अपडेट करें।</string>
+    <string name="appstatus_update_action">अपडेट करें</string>
+    <string name="appstatus_maintenance_title">रखरखाव जारी है</string>
+    <string name="appstatus_maintenance_message">हम सेवा पर काम कर रहे हैं। कुछ मिनट बाद फिर से कोशिश करें।</string>
+    <string name="appstatus_maintenance_action">फिर से कोशिश करें</string>
+    <string name="validation_required">यह ज़रूरी है।</string>
+    <string name="validation_email">सही ईमेल पता डालें।</string>
+    <string name="validation_mismatch">मेल नहीं खाता।</string>
+    <string name="validation_password_letter">कम से कम एक अक्षर शामिल करें।</string>
+    <string name="validation_password_digit">कम से कम एक अंक शामिल करें।</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">कम से कम %1$d वर्ण होना चाहिए।</item>
+        <item quantity="other">कम से कम %1$d वर्ण होने चाहिए।</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">कम से कम %1$d वर्ण इस्तेमाल करें।</item>
+        <item quantity="other">कम से कम %1$d वर्ण इस्तेमाल करें।</item>
+    </plurals>
+</resources>

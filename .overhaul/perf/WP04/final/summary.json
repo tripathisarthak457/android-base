@@ -3,7 +3,7 @@
   "apk": "D:\\projects\\tools\\.overhaul\\out\\WP04\\final-everything\\app\\build\\outputs\\apk\\dev\\benchmarkRelease\\app-dev-arm64-v8a-benchmarkRelease.apk",
   "variant": "devBenchmarkRelease",
   "runs": 3,
-  "seed": 315830,
+  "seed": 620709,
   "extras": {
     "perf.fakeSession": "true"
   },
@@ -28,19 +28,19 @@
   ],
   "gate": "solid",
   "gates_file": "D:\\projects\\tools\\.overhaul\\wt\\WP04\\templates\\android\\tools\\perf\\gates.toml",
-  "started": "2026-10-18T08:58:23",
+  "started": "2026-10-18T14:09:02",
   "device": {
     "serial": "9a7c74f4",
     "model": "M2101K6I",
     "sdk": "37",
-    "battery_c": 34.1
+    "battery_c": 32.7
   },
   "metrics": {
     "back_during_push.difference_ratios": {
       "value": [
         0.98,
-        0.96,
-        0.98,
+        0.97,
+        0.97,
         0.96
       ],
       "runs": [
@@ -58,8 +58,8 @@
         ],
         [
           0.98,
-          0.96,
-          0.98,
+          0.97,
+          0.97,
           0.96
         ]
       ]
@@ -83,121 +83,121 @@
     "coldstart.median_ms": {
       "value": 357,
       "runs": [
-        360,
-        356,
-        357
+        357,
+        357,
+        439
       ]
     },
     "coldstart.runs_ms": {
       "value": [
-        359,
-        364,
-        383,
-        346,
-        316,
-        356
+        414,
+        482,
+        470,
+        394,
+        426,
+        453
       ],
       "runs": [
         [
-          346,
-          353,
-          349,
-          367,
-          379,
-          378
-        ],
-        [
+          338,
           355,
-          335,
-          358,
-          361,
-          313,
+          327,
+          359,
+          423,
           360
         ],
         [
-          359,
-          364,
-          383,
-          346,
-          316,
-          356
+          358,
+          356,
+          365,
+          351,
+          385,
+          344
+        ],
+        [
+          414,
+          482,
+          470,
+          394,
+          426,
+          453
         ]
       ]
     },
     "coldstart_installed.median_ms": {
-      "value": 402,
+      "value": 416,
       "runs": [
-        406,
-        397,
-        402
+        416,
+        407,
+        423
       ]
     },
     "coldstart_installed.runs_ms": {
       "value": [
-        397,
-        398,
-        405,
-        438,
-        401,
-        403
+        530,
+        390,
+        426,
+        423,
+        412,
+        424
       ],
       "runs": [
         [
-          408,
-          405,
-          405,
-          390,
-          408,
-          428
-        ],
-        [
-          396,
-          408,
-          391,
-          403,
           399,
-          388
+          412,
+          448,
+          430,
+          421,
+          403
         ],
         [
-          397,
-          398,
-          405,
-          438,
           401,
-          403
+          448,
+          421,
+          397,
+          413,
+          380
+        ],
+        [
+          530,
+          390,
+          426,
+          423,
+          412,
+          424
         ]
       ]
     },
     "first_gesture.janky": {
       "value": 2,
       "runs": [
-        1,
-        5,
+        3,
+        2,
         2
       ]
     },
     "first_gesture_warm.janky": {
       "value": 2,
       "runs": [
+        1,
         2,
-        2,
-        3
+        2
       ]
     },
     "first_push.frame_ms": {
-      "value": 7.25,
+      "value": 7.08,
       "runs": [
-        7.25,
-        5.82,
-        12.14
+        12.67,
+        7.08,
+        5.77
       ]
     },
     "first_push_warm.frame_ms": {
-      "value": 7.32,
+      "value": 6.13,
       "runs": [
-        7.2,
-        7.32,
-        7.67
+        5.93,
+        8.47,
+        6.13
       ]
     },
     "idle.frames": {
@@ -244,24 +244,24 @@
       "value": 53.4,
       "runs": [
         53.4,
-        53.3,
-        53.4
+        53.4,
+        53.3
       ]
     },
     "meminfo.pss_app_mb": {
-      "value": 53.7,
+      "value": 55.1,
       "runs": [
-        53.0,
-        53.7,
-        55.0
+        55.1,
+        55.6,
+        54.8
       ]
     },
     "meminfo.pss_mb": {
-      "value": 107.1,
+      "value": 108.5,
       "runs": [
-        106.3,
-        107.1,
-        108.4
+        108.5,
+        108.9,
+        108.1
       ]
     },
     "nav_stress.alive": {
@@ -273,19 +273,19 @@
       ]
     },
     "nav_stress.exits": {
-      "value": 15,
+      "value": 14,
       "runs": [
-        13,
-        19,
-        15
+        14,
+        18,
+        14
       ]
     },
     "nav_stress.frames": {
-      "value": 4042,
+      "value": 3347,
       "runs": [
-        4188,
-        2651,
-        4042
+        4148,
+        3347,
+        3295
       ]
     },
     "nav_stress.gpu_p50_ms": {
@@ -301,14 +301,14 @@
       "runs": [
         10,
         10,
-        10
+        9
       ]
     },
     "nav_stress.gpu_p99_ms": {
       "value": 14,
       "runs": [
         14,
-        15,
+        16,
         14
       ]
     },
@@ -321,43 +321,43 @@
       ]
     },
     "nav_stress.janky_pct": {
-      "value": 2.97,
+      "value": 3.0,
       "runs": [
-        2.65,
-        5.32,
-        2.97
+        2.87,
+        4.06,
+        3.0
       ]
     },
     "nav_stress.p50_ms": {
       "value": 10,
       "runs": [
-        10,
-        10,
-        11
+        12,
+        9,
+        10
       ]
     },
     "nav_stress.p90_ms": {
       "value": 18,
       "runs": [
         18,
-        21,
+        19,
         18
       ]
     },
     "nav_stress.p99_ms": {
-      "value": 40,
+      "value": 44,
       "runs": [
         40,
-        48,
-        38
+        46,
+        44
       ]
     },
     "nav_stress.states": {
-      "value": 69,
+      "value": 34,
       "runs": [
-        69,
-        11,
-        77
+        48,
+        28,
+        34
       ]
     },
     "pushpop.first3_dequeue_ms.max": {
@@ -377,155 +377,155 @@
       ]
     },
     "pushpop.first3_gpu_ms.max": {
-      "value": 21.24,
+      "value": 21.53,
       "runs": [
-        20.52,
-        21.24,
-        23.38
+        23.0,
+        20.25,
+        21.53
       ]
     },
     "pushpop.first3_gpu_ms.median": {
-      "value": 10.84,
+      "value": 11.06,
       "runs": [
-        10.91,
-        10.53,
-        10.84
+        11.06,
+        10.8,
+        12.29
       ]
     },
     "pushpop.first3_issue_ms.max": {
-      "value": 6.69,
+      "value": 6.88,
       "runs": [
-        6.73,
-        6.69,
-        5.86
+        5.92,
+        8.48,
+        6.88
       ]
     },
     "pushpop.first3_issue_ms.median": {
-      "value": 1.96,
+      "value": 2.51,
       "runs": [
-        1.96,
-        1.9,
-        2.25
+        2.0,
+        2.65,
+        2.51
       ]
     },
     "pushpop.frames": {
       "value": 1020,
       "runs": [
         1021,
-        1019,
+        1017,
         1020
       ]
     },
     "pushpop.gpu_p50_ms": {
-      "value": 6,
+      "value": 7,
       "runs": [
-        6,
         7,
-        6
+        6,
+        7
       ]
     },
     "pushpop.gpu_p90_ms": {
-      "value": 9,
+      "value": 10,
       "runs": [
-        9,
         10,
-        9
+        10,
+        10
       ]
     },
     "pushpop.gpu_p99_ms": {
-      "value": 15,
+      "value": 16,
       "runs": [
-        15,
         16,
-        15
+        16,
+        16
       ]
     },
     "pushpop.hitch_ms_per_s": {
-      "value": 4.02,
+      "value": 4.04,
       "runs": [
+        5.02,
         4.04,
-        4.02,
-        3.06
+        1.01
       ]
     },
     "pushpop.janky_after_first_pct": {
       "value": 0.1,
       "runs": [
         0.1,
-        0.1,
-        0.1
+        0.2,
+        0.0
       ]
     },
     "pushpop.janky_pct": {
       "value": 1.67,
       "runs": [
         1.67,
-        1.57,
-        1.67
+        1.77,
+        1.57
       ]
     },
     "pushpop.late_first_frames": {
       "value": 16,
       "runs": [
         16,
-        15,
+        16,
         16
       ]
     },
     "pushpop.p50_ms": {
-      "value": 10,
+      "value": 11,
       "runs": [
-        10,
         11,
-        10
+        10,
+        11
       ]
     },
     "pushpop.p90_ms": {
-      "value": 16,
+      "value": 17,
       "runs": [
-        16,
         17,
-        16
+        17,
+        18
       ]
     },
     "pushpop.p99_ms": {
-      "value": 28,
+      "value": 30,
       "runs": [
         31,
-        28,
-        27
+        30,
+        30
       ]
     },
     "pushpop.pop_first_frame_ms.max": {
-      "value": 5.15,
+      "value": 5.23,
       "runs": [
-        5.15,
-        4.9,
-        5.35
+        5.23,
+        5.23,
+        5.32
       ]
     },
     "pushpop.pop_first_frame_ms.median": {
-      "value": 2.33,
+      "value": 3.62,
       "runs": [
-        2.18,
-        2.37,
-        2.33
+        3.43,
+        3.67,
+        3.62
       ]
     },
     "pushpop.push_first_frame_ms.max": {
-      "value": 15.54,
+      "value": 16.2,
       "runs": [
-        16.08,
-        15.54,
-        12.35
+        16.2,
+        16.61,
+        15.71
       ]
     },
     "pushpop.push_first_frame_ms.median": {
-      "value": 7.18,
+      "value": 9.45,
       "runs": [
-        14.37,
-        7.18,
-        6.82
+        13.06,
+        9.45,
+        7.6
       ]
     },
     "pushpop.transitions": {
@@ -537,75 +537,75 @@
       ]
     },
     "pushpop_gesture.first3_dequeue_ms.max": {
-      "value": 0.07,
+      "value": 0.06,
       "runs": [
-        0.07,
         0.06,
-        0.11
+        0.06,
+        0.06
       ]
     },
     "pushpop_gesture.first3_dequeue_ms.median": {
-      "value": 0.03,
+      "value": 0.02,
       "runs": [
-        0.03,
-        0.03,
+        0.02,
+        0.02,
         0.02
       ]
     },
     "pushpop_gesture.first3_gpu_ms.max": {
-      "value": 20.14,
+      "value": 19.1,
       "runs": [
-        18.11,
-        20.14,
-        20.87
+        17.76,
+        19.1,
+        26.05
       ]
     },
     "pushpop_gesture.first3_gpu_ms.median": {
-      "value": 10.89,
+      "value": 11.7,
       "runs": [
-        10.81,
-        12.16,
-        10.89
+        11.7,
+        11.7,
+        10.83
       ]
     },
     "pushpop_gesture.first3_issue_ms.max": {
-      "value": 9.38,
+      "value": 8.07,
       "runs": [
-        6.74,
-        9.38,
-        10.43
+        8.49,
+        6.8,
+        8.07
       ]
     },
     "pushpop_gesture.first3_issue_ms.median": {
-      "value": 2.27,
+      "value": 1.74,
       "runs": [
-        2.77,
-        2.27,
-        1.64
+        1.62,
+        1.74,
+        2.02
       ]
     },
     "pushpop_gesture.frames": {
-      "value": 749,
+      "value": 748,
       "runs": [
-        747,
-        749,
-        751
+        751,
+        748,
+        746
       ]
     },
     "pushpop_gesture.gesture_first_frame_ms.max": {
-      "value": 3.52,
+      "value": 3.69,
       "runs": [
-        7.64,
-        3.16,
-        3.52
+        3.69,
+        4.87,
+        3.32
       ]
     },
     "pushpop_gesture.gesture_first_frame_ms.median": {
-      "value": 2.65,
+      "value": 2.18,
       "runs": [
-        2.65,
-        2.24,
-        2.67
+        2.18,
+        2.02,
+        2.4
       ]
     },
     "pushpop_gesture.gpu_p50_ms": {
@@ -613,14 +613,14 @@
       "runs": [
         6,
         6,
-        6
+        7
       ]
     },
     "pushpop_gesture.gpu_p90_ms": {
       "value": 10,
       "runs": [
         10,
-        11,
+        10,
         10
       ]
     },
@@ -628,32 +628,32 @@
       "value": 15,
       "runs": [
         15,
-        16,
+        15,
         15
       ]
     },
     "pushpop_gesture.hitch_ms_per_s": {
-      "value": 17.78,
+      "value": 19.1,
       "runs": [
-        20.47,
-        17.78,
-        16.37
+        16.31,
+        19.1,
+        24.5
       ]
     },
     "pushpop_gesture.janky_after_first_pct": {
-      "value": 0.8,
+      "value": 0.93,
       "runs": [
-        1.07,
+        0.93,
         0.8,
-        0.8
+        1.21
       ]
     },
     "pushpop_gesture.janky_pct": {
-      "value": 2.4,
+      "value": 2.53,
       "runs": [
-        2.68,
-        2.4,
-        2.4
+        2.53,
+        2.41,
+        2.82
       ]
     },
     "pushpop_gesture.late_first_frames": {
@@ -669,7 +669,7 @@
       "runs": [
         10,
         10,
-        10
+        11
       ]
     },
     "pushpop_gesture.p90_ms": {
@@ -677,15 +677,15 @@
       "runs": [
         17,
         17,
-        16
+        17
       ]
     },
     "pushpop_gesture.p99_ms": {
-      "value": 26,
+      "value": 25,
       "runs": [
-        31,
-        26,
-        24
+        24,
+        25,
+        30
       ]
     },
     "pushpop_gesture.transitions": {
@@ -721,11 +721,11 @@
       ]
     },
     "rapid_back.first3_dequeue_ms.max": {
-      "value": 0.04,
+      "value": 0.09,
       "runs": [
         0.04,
-        0.04,
-        0.03
+        0.22,
+        0.09
       ]
     },
     "rapid_back.first3_dequeue_ms.median": {
@@ -737,35 +737,35 @@
       ]
     },
     "rapid_back.first3_gpu_ms.max": {
-      "value": 9.54,
+      "value": 11.07,
       "runs": [
-        9.54,
-        9.78,
-        9.14
+        11.38,
+        9.96,
+        11.07
       ]
     },
     "rapid_back.first3_gpu_ms.median": {
-      "value": 5.08,
+      "value": 5.21,
       "runs": [
-        5.28,
-        5.03,
-        5.08
+        5.05,
+        5.21,
+        5.52
       ]
     },
     "rapid_back.first3_issue_ms.max": {
-      "value": 6.98,
+      "value": 6.29,
       "runs": [
-        7.17,
-        6.98,
-        5.93
+        6.23,
+        6.29,
+        6.67
       ]
     },
     "rapid_back.first3_issue_ms.median": {
       "value": 2.1,
       "runs": [
-        2.54,
-        2.0,
-        2.1
+        2.1,
+        2.08,
+        2.15
       ]
     },
     "rapid_back.frames": {
@@ -789,47 +789,47 @@
       "runs": [
         7,
         7,
-        7
+        8
       ]
     },
     "rapid_back.gpu_p99_ms": {
-      "value": 9,
+      "value": 10,
       "runs": [
         9,
-        9,
-        9
+        10,
+        11
       ]
     },
     "rapid_back.hitch_ms_per_s": {
-      "value": 12.23,
+      "value": 10.71,
       "runs": [
-        12.23,
-        10.83,
-        15.29
+        9.24,
+        18.33,
+        10.71
       ]
     },
     "rapid_back.janky_after_first_pct": {
       "value": 0.76,
       "runs": [
+        0.46,
         0.92,
-        0.76,
-        0.61
-      ]
-    },
-    "rapid_back.janky_pct": {
-      "value": 1.07,
-      "runs": [
-        1.07,
-        1.07,
         0.76
       ]
     },
-    "rapid_back.late_first_frames": {
-      "value": 1,
+    "rapid_back.janky_pct": {
+      "value": 0.92,
       "runs": [
-        1,
+        0.76,
+        0.92,
+        1.07
+      ]
+    },
+    "rapid_back.late_first_frames": {
+      "value": 2,
+      "runs": [
         2,
-        1
+        0,
+        2
       ]
     },
     "rapid_back.p50_ms": {
@@ -845,31 +845,31 @@
       "runs": [
         12,
         12,
-        12
+        13
       ]
     },
     "rapid_back.p99_ms": {
-      "value": 14,
+      "value": 15,
       "runs": [
-        14,
-        14,
-        14
+        15,
+        15,
+        17
       ]
     },
     "rapid_back.pop_frame_ms.max": {
-      "value": 6.06,
+      "value": 5.67,
       "runs": [
-        10.27,
-        5.62,
-        6.06
+        5.67,
+        5.57,
+        7.14
       ]
     },
     "rapid_back.pop_frame_ms.median": {
-      "value": 5.49,
+      "value": 5.53,
       "runs": [
-        5.38,
-        5.55,
-        5.49
+        5.53,
+        5.46,
+        5.57
       ]
     },
     "rapid_back.transitions": {
@@ -977,7 +977,7 @@
           5,
           5,
           5,
-          4
+          5
         ],
         [
           5,
@@ -1048,8 +1048,8 @@
       "value": 1361,
       "runs": [
         1361,
-        1361,
-        1364
+        1362,
+        1349
       ]
     },
     "scroll_minimize.gpu_p50_ms": {
@@ -1077,11 +1077,11 @@
       ]
     },
     "scroll_minimize.janky_pct": {
-      "value": 0.22,
+      "value": 0.3,
       "runs": [
-        0.22,
-        0.22,
-        0.44
+        0.29,
+        0.44,
+        0.3
       ]
     },
     "scroll_minimize.p50_ms": {
@@ -1097,7 +1097,7 @@
       "runs": [
         9,
         9,
-        9
+        10
       ]
     },
     "scroll_minimize.p99_ms": {
@@ -1109,11 +1109,11 @@
       ]
     },
     "scroll_root.frames": {
-      "value": 1355,
+      "value": 1359,
       "runs": [
-        1359,
-        1327,
-        1355
+        1358,
+        1363,
+        1359
       ]
     },
     "scroll_root.gpu_p50_ms": {
@@ -1133,19 +1133,19 @@
       ]
     },
     "scroll_root.gpu_p99_ms": {
-      "value": 7,
+      "value": 8,
       "runs": [
+        9,
         7,
-        7,
-        7
+        8
       ]
     },
     "scroll_root.janky_pct": {
-      "value": 0.3,
+      "value": 0.15,
       "runs": [
         0.15,
-        0.3,
-        0.37
+        0.07,
+        0.29
       ]
     },
     "scroll_root.p50_ms": {
@@ -1165,66 +1165,66 @@
       ]
     },
     "scroll_root.p99_ms": {
-      "value": 12,
+      "value": 15,
       "runs": [
+        16,
         12,
-        12,
-        12
+        15
       ]
     },
     "tab1.first_frame_ms.max": {
-      "value": 9.19,
+      "value": 9.28,
       "runs": [
-        8.5,
-        9.19,
-        9.21
+        9.28,
+        9.59,
+        8.98
       ]
     },
     "tab1.first_frame_ms.median": {
-      "value": 4.0,
+      "value": 3.95,
       "runs": [
-        4.0,
-        4.04,
-        3.92
+        3.91,
+        3.95,
+        3.95
       ]
     },
     "tab_first_visit.first_frame_ms.max": {
-      "value": 9.39,
+      "value": 8.44,
       "runs": [
-        9.39,
-        9.98,
-        7.16
+        8.44,
+        3.98,
+        9.29
       ]
     },
     "tab_first_visit.first_frame_ms.median": {
-      "value": 3.99,
+      "value": 3.63,
       "runs": [
-        6.72,
-        3.89,
-        3.99
+        3.63,
+        3.58,
+        5.53
       ]
     },
     "tab_first_visit_warm.first_frame_ms.max": {
-      "value": 7.88,
+      "value": 9.52,
       "runs": [
-        4.34,
-        7.88,
-        8.51
+        9.98,
+        8.72,
+        9.52
       ]
     },
     "tab_first_visit_warm.first_frame_ms.median": {
-      "value": 4.0,
+      "value": 5.74,
       "runs": [
-        3.8,
-        5.52,
-        4.0
+        8.97,
+        5.74,
+        4.22
       ]
     },
     "tabs.first3_dequeue_ms.max": {
-      "value": 0.07,
+      "value": 0.06,
       "runs": [
-        0.07,
-        0.09,
+        0.06,
+        0.05,
         0.06
       ]
     },
@@ -1237,51 +1237,51 @@
       ]
     },
     "tabs.first3_gpu_ms.max": {
-      "value": 20.91,
+      "value": 19.51,
       "runs": [
-        20.91,
-        20.89,
-        22.99
+        19.77,
+        18.68,
+        19.51
       ]
     },
     "tabs.first3_gpu_ms.median": {
-      "value": 9.83,
+      "value": 10.72,
       "runs": [
-        9.72,
-        9.91,
-        9.83
+        10.72,
+        9.97,
+        10.82
       ]
     },
     "tabs.first3_issue_ms.max": {
-      "value": 4.82,
+      "value": 4.58,
       "runs": [
-        4.82,
-        4.81,
-        5.67
+        5.19,
+        4.58,
+        4.34
       ]
     },
     "tabs.first3_issue_ms.median": {
-      "value": 1.42,
+      "value": 1.35,
       "runs": [
-        1.42,
-        1.4,
-        1.61
+        1.3,
+        1.35,
+        1.36
       ]
     },
     "tabs.first_frame_ms.max": {
-      "value": 9.95,
+      "value": 9.94,
       "runs": [
-        11.94,
-        9.95,
-        9.24
+        9.76,
+        9.94,
+        10.75
       ]
     },
     "tabs.first_frame_ms.median": {
-      "value": 4.12,
+      "value": 4.23,
       "runs": [
-        4.17,
-        4.12,
-        4.11
+        6.89,
+        4.0,
+        4.23
       ]
     },
     "tabs.frames": {
@@ -1297,21 +1297,21 @@
       "runs": [
         5,
         5,
-        5
+        6
       ]
     },
     "tabs.gpu_p90_ms": {
-      "value": 8,
+      "value": 10,
       "runs": [
-        8,
+        10,
         7,
-        9
+        10
       ]
     },
     "tabs.gpu_p99_ms": {
-      "value": 14,
+      "value": 13,
       "runs": [
-        14,
+        13,
         13,
         14
       ]
@@ -1321,7 +1321,7 @@
       "runs": [
         0.0,
         0.0,
-        0.0
+        1.57
       ]
     },
     "tabs.janky_after_first_pct": {
@@ -1336,16 +1336,16 @@
       "value": 1.07,
       "runs": [
         1.07,
-        1.15,
-        1.07
+        1.07,
+        1.15
       ]
     },
     "tabs.late_first_frames": {
       "value": 14,
       "runs": [
         14,
-        15,
-        14
+        14,
+        15
       ]
     },
     "tabs.p50_ms": {
@@ -1357,19 +1357,19 @@
       ]
     },
     "tabs.p90_ms": {
-      "value": 11,
+      "value": 16,
       "runs": [
-        11,
-        11,
-        17
+        17,
+        10,
+        16
       ]
     },
     "tabs.p99_ms": {
       "value": 20,
       "runs": [
         20,
-        20,
-        20
+        19,
+        21
       ]
     },
     "tabs.transitions": {
@@ -1384,7 +1384,7 @@
       "value": 0.06,
       "runs": [
         0.06,
-        0.06,
+        0.05,
         0.06
       ]
     },
@@ -1397,59 +1397,59 @@
       ]
     },
     "tabs_tap.first3_gpu_ms.max": {
-      "value": 18.98,
+      "value": 19.81,
       "runs": [
-        17.04,
-        23.61,
-        18.98
+        21.28,
+        19.81,
+        18.78
       ]
     },
     "tabs_tap.first3_gpu_ms.median": {
-      "value": 9.66,
+      "value": 9.67,
       "runs": [
-        10.74,
-        9.65,
-        9.66
+        9.67,
+        9.78,
+        9.13
       ]
     },
     "tabs_tap.first3_issue_ms.max": {
-      "value": 5.04,
+      "value": 4.45,
       "runs": [
-        5.34,
-        4.97,
-        5.04
+        4.32,
+        4.61,
+        4.45
       ]
     },
     "tabs_tap.first3_issue_ms.median": {
-      "value": 1.42,
+      "value": 1.39,
       "runs": [
-        1.42,
-        1.56,
-        1.35
+        1.39,
+        1.36,
+        1.48
       ]
     },
     "tabs_tap.first_frame_ms.max": {
-      "value": 10.03,
+      "value": 9.62,
       "runs": [
-        9.04,
-        10.03,
-        10.29
+        9.55,
+        10.55,
+        9.62
       ]
     },
     "tabs_tap.first_frame_ms.median": {
-      "value": 4.27,
+      "value": 4.02,
       "runs": [
+        4.08,
         4.02,
-        7.81,
-        4.27
+        3.5
       ]
     },
     "tabs_tap.frames": {
-      "value": 1305,
+      "value": 1304,
       "runs": [
+        1303,
         1305,
-        1305,
-        1305
+        1304
       ]
     },
     "tabs_tap.gpu_p50_ms": {
@@ -1461,27 +1461,27 @@
       ]
     },
     "tabs_tap.gpu_p90_ms": {
-      "value": 8,
+      "value": 7,
       "runs": [
-        8,
-        9,
-        8
+        10,
+        7,
+        7
       ]
     },
     "tabs_tap.gpu_p99_ms": {
-      "value": 14,
+      "value": 13,
       "runs": [
         13,
         14,
-        14
+        13
       ]
     },
     "tabs_tap.hitch_ms_per_s": {
-      "value": 0.0,
+      "value": 0.78,
       "runs": [
         0.78,
         0.0,
-        0.0
+        0.78
       ]
     },
     "tabs_tap.janky_after_first_pct": {
@@ -1517,19 +1517,19 @@
       ]
     },
     "tabs_tap.p90_ms": {
-      "value": 11,
+      "value": 10,
       "runs": [
-        11,
-        15,
-        11
+        16,
+        10,
+        10
       ]
     },
     "tabs_tap.p99_ms": {
-      "value": 20,
+      "value": 19,
       "runs": [
+        21,
         19,
-        22,
-        20
+        19
       ]
     },
     "tabs_tap.transitions": {

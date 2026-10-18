@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">होम</string>
+    <string name="tab_feed">फ़ीड</string>
+    <string name="tab_search">खोजें</string>
+    <string name="tab_profile">प्रोफ़ाइल</string>
+    <string name="tab_settings">सेटिंग</string>
+</resources>

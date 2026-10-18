@@ -1,0 +1,3 @@
+29 frames; band (0, 100, 720, 520); differences to the last frame: 207.8 207.7 207.7 207.7 207.8 207.8 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 223.2 0.0 0.0 0.0 0.0
+first catalog frame: 26; frames after it that differ: []
+FIRST FRAME SETTLED

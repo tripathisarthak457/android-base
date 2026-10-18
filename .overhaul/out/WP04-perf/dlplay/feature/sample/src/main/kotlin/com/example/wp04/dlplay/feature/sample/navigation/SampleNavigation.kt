@@ -1,0 +1,51 @@
+package com.example.wp04.dlplay.feature.sample.navigation
+
+import com.example.wp04.dlplay.core.navigation.AppNavigator
+import com.example.wp04.dlplay.core.navigation.DeepLinkRoute
+import com.example.wp04.dlplay.core.navigation.NavGraphEntry
+import com.example.wp04.dlplay.core.navigation.NavPane
+import com.example.wp04.dlplay.core.navigation.navGraph
+import com.example.wp04.dlplay.core.navigation.navKeys
+import com.example.wp04.dlplay.feature.sample.api.SampleDetailKey
+import com.example.wp04.dlplay.feature.sample.api.SampleListKey
+import com.example.wp04.dlplay.feature.sample.detail.SampleDetailRoute
+import com.example.wp04.dlplay.feature.sample.list.SampleListRoute
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.multibindings.IntoSet
+import kotlinx.serialization.modules.SerializersModule
+
+/**
+ * How this feature joins the navigation graph, all `@IntoSet`: what to render for each key, how to
+ * serialise the keys so the back stack survives process death, and which links open them.
+ */
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+internal object SampleNavigation {
+
+    @Provides
+    @IntoSet
+    fun sampleNavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {
+        entry<SampleListKey>(pane = NavPane.List) { SampleListRoute(navigator = navigator) }
+        entry<SampleDetailKey>(pane = NavPane.Detail) { key ->
+            SampleDetailRoute(itemId = key.itemId, navigator = navigator)
+        }
+    }
+
+    @Provides
+    @IntoSet
+    fun sampleNavKeys(): SerializersModule = navKeys {
+        subclass(SampleListKey::class, SampleListKey.serializer())
+        subclass(SampleDetailKey::class, SampleDetailKey.serializer())
+    }
+
+    /** `everything://items` opens the list, `everything://items/12` the item. */
+    @Provides
+    @IntoSet
+    fun sampleLinks(): DeepLinkRoute = DeepLinkRoute { link ->
+        if (link.segments.first() != "items") return@DeepLinkRoute null
+        link.segments.getOrNull(1)?.toIntOrNull()?.let(::SampleDetailKey) ?: SampleListKey
+    }
+}

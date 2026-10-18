@@ -1,0 +1,23 @@
+[locked:adb] waiting for the lock (pid 4436 since 2026-10-18 15:19:04: bash -c 
+adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/dl/app/build/outputs/apk/dev/benchma)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 18708 since 2026-10-18 16:02:38: bash -c 
+adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/wp03/app/build/outputs/apk/dev/bench)
+fling: could not bring the lab on screen
+R19 FLING EXIT 1
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0

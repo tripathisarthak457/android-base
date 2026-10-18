@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_cancel">Annuler</string>
+    <string name="designsystem_close">Fermer</string>
+    <string name="designsystem_try_again">Réessayer</string>
+    <string name="designsystem_offline_title">Vous êtes hors ligne</string>
+    <string name="designsystem_error_title">Un problème est survenu</string>
+    <string name="designsystem_navigate_back">Retour</string>
+    <string name="designsystem_hide_password">Masquer le mot de passe</string>
+    <string name="designsystem_show_password">Afficher le mot de passe</string>
+    <string name="designsystem_search">Rechercher</string>
+    <string name="designsystem_clear_search">Effacer la recherche</string>
+    <string name="designsystem_remove_item">Retirer %1$s</string>
+    <string name="designsystem_show_more">Afficher plus</string>
+    <string name="designsystem_show_less">Afficher moins</string>
+    <string name="designsystem_expanded">Développé</string>
+    <string name="designsystem_collapsed">Réduit</string>
+    <string name="designsystem_expand">Développer</string>
+    <string name="designsystem_collapse">Réduire</string>
+    <string name="designsystem_page_of">Page %1$d sur %2$d</string>
+    <string name="designsystem_loading">Chargement</string>
+    <string name="designsystem_refresh">Actualiser</string>
+    <string name="designsystem_refreshing">Actualisation</string>
+    <string name="designsystem_show_menu">Afficher le menu</string>
+    <plurals name="designsystem_people_count">
+        <item quantity="one">%1$d personne</item>
+        <item quantity="other">%1$d personnes</item>
+    </plurals>
+    <string name="designsystem_sheet_pane">Feuille</string>
+    <string name="designsystem_sheet_grabber">Redimensionner la feuille</string>
+    <string name="designsystem_sheet_expand">Développer la feuille</string>
+    <string name="designsystem_sheet_collapse">Réduire la feuille</string>
+    <string name="designsystem_sheet_dismiss">Fermer la feuille</string>
+    <string name="designsystem_sheet_close_scrim">Fermer la feuille</string>
+    <string name="designsystem_sheet_state_expanded">Développée</string>
+    <string name="designsystem_sheet_state_partial">Partiellement développée</string>
+    <string name="designsystem_sheet_state_collapsed">Réduite</string>
+    <string name="designsystem_actions_pane">Actions</string>
+    <string name="designsystem_sheet_discard_title">Abandonner les modifications ?</string>
+    <string name="designsystem_sheet_discard">Abandonner</string>
+    <string name="designsystem_sheet_keep_editing">Continuer la modification</string>
+    <string name="designsystem_none">Aucun</string>
+    <string name="designsystem_nothing_selected">Aucune sélection</string>
+    <string name="designsystem_nothing_selected_message">Choisissez un élément dans la liste pour l’afficher ici.</string>
+</resources>

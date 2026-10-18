@@ -1,0 +1,9 @@
+== 18:33:21 catch_all
+list_catch_top: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before2\list_catch_top.mp4
+list_catch_top_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before2\list_catch_top_rtl.mp4
+list_catch_bottom: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before2\list_catch_bottom.mp4
+list_catch_bottom_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before2\list_catch_bottom_rtl.mp4
+carousel_catch_end: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before2\carousel_catch_end.mp4
+carousel_catch_end_rtl: D:/projects/tools/.overhaul/qa/bug-scroll-direction/before2\carousel_catch_end_rtl.mp4
+SCENARIOS DONE
+EXIT 0

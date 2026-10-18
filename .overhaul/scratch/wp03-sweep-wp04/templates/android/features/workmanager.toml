@@ -1,0 +1,12 @@
+key = "workmanager"
+title = "WorkManager"
+headline = "Run work in the background"
+description = """
+Deferrable background work with Hilt-injected workers, including the manifest fix that stops
+WorkManager self-initialising past the Hilt factory."""
+group = "Networking and data"
+default = false
+requires = []
+implied_only = false
+owns = []
+legacy = []

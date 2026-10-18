@@ -30,7 +30,7 @@ class CodeRulesTest {
             "lazy-key",
             CORE_UI,
             """
-            private fun List() = LazyColumn(modifier = Modifier) {
+            private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior(), modifier = Modifier) {
                 items(rows) { Row(it) } /*!*/
             }
             """.trimIndent(),
@@ -39,7 +39,7 @@ class CodeRulesTest {
             "lazy-content-type",
             CORE_UI,
             """
-            private fun List() = LazyColumn {
+            private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) {
                 item(contentType = "header") { Header() }
                 items(rows, key = { it.id }) { Row(it) } /*!*/
             }
@@ -49,7 +49,7 @@ class CodeRulesTest {
             "scroll-chrome",
             FEATURE,
             """
-            private fun List() = LazyColumn(modifier = Modifier.fillMaxSize()) { /*!*/
+            private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior(), modifier = Modifier.fillMaxSize()) { /*!*/
                 items(rows, key = { it.id }) { Row(it) }
             }
             """.trimIndent(),
@@ -190,6 +190,8 @@ class CodeRulesTest {
             }
             """.trimIndent(),
         ),
+
+        Fixture("scroll-fling", CORE_UI, "private fun Photos() = LazyRow(state = photos) { } /*!*/"),
     )
 
     @Test
@@ -255,7 +257,7 @@ class CodeRulesTest {
             /* tween(300) /* nested */ runBlocking { } */
             private val a = "Modifier.clickable { } and Color(0xFF000000)"
             private val b = ${"\"\"\""}
-                LazyColumn { items(rows) { } } and 16.dp
+                LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) { items(rows) { } } and 16.dp
             ${"\"\"\""}
             private val c = '"'
             private fun `a test named runBlocking`() = Unit

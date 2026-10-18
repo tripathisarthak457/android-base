@@ -1,0 +1,17 @@
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 18612 since 2026-10-18 14:09:00: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+[locked:adb] waiting for the lock (pid 11024 since 2026-10-18 15:14:04: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r19_phone.sh 9a7c74f4)
+prop debug.force_rtl=[false]
+global debug.force_rtl=[null]
+system locale=[en-IN]
+app locales: Unknown package com.example.wp04.everything.dev for userId 0
+RTL-PROBE DONE

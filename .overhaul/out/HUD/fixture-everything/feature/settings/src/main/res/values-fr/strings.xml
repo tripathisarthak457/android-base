@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_haptics_explanation">Une légère vibration quand une commande réagit.</string>
+    <string name="settings_about">À propos</string>
+    <string name="settings_account">Compte</string>
+    <string name="settings_appearance">Apparence</string>
+    <string name="settings_haptic_feedback">Retour haptique</string>
+    <string name="settings_analytics_explanation">Nous aide à repérer les plantages et les écrans lents. N’inclut jamais votre contenu.</string>
+    <string name="settings_no_licences_recorded">Aucune licence enregistrée</string>
+    <string name="settings_open_source_licences">Licences open source</string>
+    <string name="settings_licence_not_stated">Licence non indiquée</string>
+    <string name="settings_privacy">Confidentialité</string>
+    <string name="settings_title">Réglages</string>
+    <string name="settings_share_usage_data">Partager les données d’utilisation</string>
+    <string name="settings_sign_out">Se déconnecter</string>
+    <string name="settings_sign_out_confirm">Se déconnecter ?</string>
+    <string name="settings_stay">Rester</string>
+    <string name="settings_theme_explanation">« Système » suit le réglage de votre appareil.</string>
+    <string name="settings_licences_explanation">Les bibliothèques sur lesquelles repose cette app, et leurs conditions.</string>
+    <string name="settings_theme">Thème</string>
+    <string name="settings_theme_system">Système</string>
+    <string name="settings_theme_light">Clair</string>
+    <string name="settings_theme_dark">Sombre</string>
+    <string name="settings_no_licences_explanation">Cette version n’a pas généré de liste de licences.</string>
+    <string name="settings_sign_out_explanation">Vous devrez vous reconnecter pour utiliser l’app.</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_require_unlock">Exiger le déverrouillage</string>
+    <string name="settings_app_lock_explanation">Demander votre empreinte, votre visage ou le verrouillage de l’écran quand l’app est restée en arrière-plan.</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_notifications_on">Activées</string>
+    <string name="settings_notifications_off">Désactivées. Touchez pour les autoriser.</string>
+    <string name="settings_notifications_blocked">Désactivées dans les réglages du téléphone. Touchez pour les ouvrir.</string>
+    <string name="settings_cancel">Annuler</string>
+    <string name="settings_language">Langue</string>
+    <string name="settings_language_system">Comme votre téléphone</string>
+    <string name="settings_legal">Mentions légales</string>
+    <string name="settings_privacy_policy">Politique de confidentialité</string>
+    <string name="settings_terms">Conditions d’utilisation</string>
+</resources>

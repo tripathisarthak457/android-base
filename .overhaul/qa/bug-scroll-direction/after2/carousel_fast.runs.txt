@@ -1,0 +1,13 @@
+180 frames; runs of motion (device px; + is right):
+    1.010-  1.156 s  left      777 px   17 frames
+    3.024-  9.166 s  left     2590 px   65 frames
+    9.182-  9.190 s  left       15 px    2 frames
+    9.206-  9.631 s  right     278 px   52 frames
+    9.649-  9.659 s  right       3 px    2 frames
+    9.674-  9.674 s  right       2 px    1 frames
+    9.689-  9.689 s  right       2 px    1 frames
+    9.713-  9.713 s  right       2 px    1 frames
+    9.738-  9.738 s  right       2 px    1 frames
+    9.780-  9.780 s  right       2 px    1 frames
+    9.839-  9.839 s  right       2 px    1 frames
+    9.955-  9.955 s  right       2 px    1 frames

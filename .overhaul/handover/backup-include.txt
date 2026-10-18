@@ -72,6 +72,8 @@
 - /out/WP04-perf/s/
 # raw logcat from the user's phone records other apps and accounts; summaries carry what matters
 - logcat*.txt
+# app-usage dumps from the user's phone list their other apps
+- usagestats*.txt
 - /out/WP03/logs/r17-dbg-cp1b.log
 # zips of generated projects (one holds a google-services.json)
 - /out/**.zip

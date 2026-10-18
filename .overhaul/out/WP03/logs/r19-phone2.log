@@ -1,0 +1,17 @@
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+[locked:adb] waiting for the lock (pid 9440 since 2026-10-18 14:59:30: D:/projects/tools/.overhaul/bin/locked gradle ./gradlew :benchmark:connectedBenchmarkReleaseAndroidTest -Pandroid.testIn)
+Success
+Success
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Foundations-light.png
+Text: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Text-light.png
+Inputs: 4 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Inputs-light.png
+Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Fields-light.png
+Motion: 7 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Motion-light.png
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Foundations-2x.png
+Text: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Text-2x.png
+Inputs: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Inputs-2x.png
+Fields: 5 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Fields-2x.png
+Motion: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog-r19/raw\Motion-2x.png
+cp1: could not bring fling_lab on screen
+R19 PHONE EXIT 1
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0

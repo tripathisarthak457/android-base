@@ -1,0 +1,62 @@
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+[locked:adb] waiting for the lock (pid 9168 since 2026-10-18 15:20:26: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-dl-dlplay 15 base=com.example.wp04)
+device
+Performing Streamed Install
+Success
+Performing Streamed Install
+Success
+{
+  "listener_standard": {
+    "off": {
+      "pid": "20750",
+      "frame_metrics_thread": false,
+      "threads": 35
+    },
+    "on": {
+      "pid": "20880",
+      "frame_metrics_thread": false,
+      "threads": 43
+    },
+    "hidden_adds_no_listener": false
+  },
+  "listener_everything": {
+    "off": {
+      "pid": "21062",
+      "frame_metrics_thread": false,
+      "threads": 67
+    },
+    "on": {
+      "pid": "21329",
+      "frame_metrics_thread": false,
+      "threads": 70
+    },
+    "hidden_adds_no_listener": false
+  }
+}
+Performing Streamed Install
+Success
+{
+  "adb_path": {
+    "record_broadcast": [
+      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver (has extras) }"
+    ],
+    "export_broadcast": [
+      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver }"
+    ],
+    "pulled": [],
+    "perfhud_lines": 4,
+    "record_off_broadcast": [
+      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver (has extras) }"
+    ],
+    "without_run_as": [
+      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver }",
+      "Broadcast completed: result=0"
+    ]
+  }
+}
+PHONE OK
+EXIT 0

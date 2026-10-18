@@ -1,0 +1,295 @@
+package com.example.hud.everything.core.perfhud.report
+
+import android.content.res.Resources
+import androidx.annotation.StringRes
+import com.example.hud.everything.core.perfhud.R
+import com.example.hud.everything.core.perfhud.checks.ProfileStatus
+import com.example.hud.everything.core.perfhud.frame.FrameStats
+import com.example.hud.everything.core.perfhud.frame.ScreenFrames
+import com.example.hud.everything.core.perfhud.recording.PerformanceSnapshot
+import com.example.hud.everything.core.perfhud.score.decimal
+import com.example.hud.everything.core.perfhud.score.doc
+import com.example.hud.everything.core.perfhud.score.fix
+import com.example.hud.everything.core.perfhud.score.formatTarget
+import com.example.hud.everything.core.perfhud.score.formatValue
+import com.example.hud.everything.core.perfhud.score.title
+import com.example.hud.everything.core.perfhud.startup.StartRecord
+import java.util.Locale
+
+/**
+ * The exported report as Markdown, for a person: the score and its lost points first, because
+ * that is what to act on, then each measurement in a table. Copy comes from the module's
+ * resources, so the report and the panel say the same thing in the same words.
+ */
+internal class MarkdownReport(private val resources: Resources) {
+
+    fun write(snapshot: PerformanceSnapshot, generatedAt: String): String = buildString {
+        header(snapshot, generatedAt)
+        score(snapshot)
+        frames(snapshot)
+        memory(snapshot)
+        startup(snapshot)
+        network(snapshot)
+        strictMode(snapshot)
+        build(snapshot)
+    }
+
+    private fun StringBuilder.header(snapshot: PerformanceSnapshot, generatedAt: String) {
+        val app = snapshot.app
+        val device = snapshot.device
+        heading(1, string(R.string.perfhud_report_title, app.applicationId, app.versionName, app.environment))
+        paragraph(
+            string(
+                R.string.perfhud_report_generated,
+                generatedAt,
+                device.manufacturer,
+                device.model,
+                device.release,
+                device.sdk,
+                device.refreshRatesHz.joinToString("/") { decimal(it, 0) },
+            ) + " " + string(R.string.perfhud_report_recorded, duration(snapshot.recordedMillis)),
+        )
+        if (app.debugBuild) {
+            append("> **").append(string(R.string.perfhud_debug_title)).append("**. ")
+                .append(string(R.string.perfhud_debug_body)).append("\n\n")
+        }
+    }
+
+    private fun StringBuilder.score(snapshot: PerformanceSnapshot) {
+        val score = snapshot.score
+        heading(2, string(R.string.perfhud_score))
+        if (!score.measured) {
+            paragraph(string(R.string.perfhud_score_none))
+            return
+        }
+        paragraph("**" + string(R.string.perfhud_score_value, score.total, score.grade.name) + "**")
+        row(
+            string(R.string.perfhud_column_metric),
+            string(R.string.perfhud_column_value),
+            string(R.string.perfhud_column_target),
+            string(R.string.perfhud_column_grade),
+            string(R.string.perfhud_column_points),
+        )
+        tableRule(5)
+        score.metrics.forEach { scored ->
+            row(
+                string(scored.metric.title),
+                scored.value?.let { resources.formatValue(scored.metric, it) } ?: string(R.string.perfhud_not_measured),
+                resources.formatTarget(scored.metric),
+                scored.grade?.name ?: "–",
+                decimal(scored.points, 1) + " / " + scored.metric.weight,
+            )
+        }
+        append('\n')
+        heading(3, string(R.string.perfhud_losses))
+        val losses = score.losses
+        if (losses.isEmpty()) paragraph(string(R.string.perfhud_no_losses))
+        losses.forEach { lost ->
+            append("- **").append(string(lost.metric.title)).append("** ")
+                .append(string(R.string.perfhud_lost_points, decimal(lost.lost, 1), lost.metric.weight))
+                .append(". ").append(string(lost.metric.fix)).append(' ')
+                .append(string(R.string.perfhud_doc, "`" + lost.metric.doc + "`")).append('\n')
+        }
+        append('\n')
+    }
+
+    private fun StringBuilder.frames(snapshot: PerformanceSnapshot) {
+        val frames = snapshot.frames
+        val overall = frames.overall
+        heading(2, string(R.string.perfhud_frames))
+        table(
+            string(R.string.perfhud_frames) to overall.frames.toString(),
+            string(R.string.perfhud_fps) to decimal(frames.framesPerSecond, 1),
+            string(R.string.perfhud_display) to string(R.string.perfhud_hz, Math.round(frames.refreshHz)),
+            string(R.string.perfhud_janky) to "${overall.janky} (${percent(overall.jankyPercent)})",
+            string(R.string.perfhud_slow) to "${overall.slow} (${percent(overall.slowPercent)})",
+            string(R.string.perfhud_frozen) to overall.frozen.toString(),
+            string(R.string.perfhud_long_work) to overall.longWork.toString(),
+            string(R.string.perfhud_percentiles) to percentiles(overall),
+            string(R.string.perfhud_ui_percentiles) to
+                listOf(frames.uiP50Millis, frames.uiP90Millis, frames.uiP99Millis).joinToString(" / ") { millis(it) },
+            string(R.string.perfhud_worst) to millis(overall.worstMillis),
+        )
+        heading(3, string(R.string.perfhud_by_screen))
+        row(
+            string(R.string.perfhud_screen),
+            string(R.string.perfhud_frames),
+            string(R.string.perfhud_janky),
+            string(R.string.perfhud_percentiles),
+            string(R.string.perfhud_worst),
+        )
+        tableRule(5)
+        frames.screens.sortedByDescending { it.stats.jankyPercent }.forEach { screen ->
+            val stats = screen.stats
+            row(
+                screenName(screen),
+                stats.frames.toString(),
+                "${stats.janky} (${percent(stats.jankyPercent)})",
+                percentiles(stats),
+                millis(stats.worstMillis),
+            )
+        }
+        append('\n')
+    }
+
+    private fun StringBuilder.memory(snapshot: PerformanceSnapshot) {
+        val memory = snapshot.memory ?: return
+        heading(2, string(R.string.perfhud_memory))
+        table(
+            string(R.string.perfhud_java_heap) to
+                string(R.string.perfhud_now_peak, megabytes(memory.javaHeapMb), megabytes(memory.peakJavaHeapMb)),
+            string(R.string.perfhud_native_heap) to
+                string(R.string.perfhud_now_peak, megabytes(memory.nativeHeapMb), megabytes(memory.peakNativeHeapMb)),
+            string(R.string.perfhud_pss) to
+                string(R.string.perfhud_now_peak, megabytes(memory.pssMb), megabytes(memory.peakPssMb)),
+            string(R.string.perfhud_app_pss) to megabytes(memory.appPssMb),
+            string(R.string.perfhud_gc) to string(
+                R.string.perfhud_gc_value,
+                memory.gcCount,
+                memory.gcMillis,
+                memory.blockingGcCount,
+                memory.blockingGcMillis,
+            ),
+        )
+    }
+
+    private fun StringBuilder.startup(snapshot: PerformanceSnapshot) {
+        val startup = snapshot.startup
+        heading(2, string(R.string.perfhud_startup))
+        if (!startup.supported) {
+            paragraph(string(R.string.perfhud_startup_unsupported))
+            return
+        }
+        table(
+            string(R.string.perfhud_cold_start) to start(startup.cold),
+            string(R.string.perfhud_warm_start) to start(startup.warm),
+            string(R.string.perfhud_hot_start) to start(startup.hot),
+        )
+    }
+
+    private fun StringBuilder.network(snapshot: PerformanceSnapshot) {
+        val network = snapshot.network
+        heading(2, string(R.string.perfhud_network))
+        if (network.requests == 0) {
+            paragraph(string(R.string.perfhud_network_none))
+            return
+        }
+        table(
+            string(R.string.perfhud_requests) to "${network.requests} (${network.failures})",
+            string(R.string.perfhud_request_times) to
+                listOf(network.medianMillis, network.p90Millis, network.slowestMillis).joinToString(" / ") { "$it ms" },
+            *network.endpoints.map { endpoint ->
+                "`" + endpoint.endpoint + "`" to string(
+                    R.string.perfhud_endpoint_value,
+                    endpoint.requests,
+                    "${endpoint.medianMillis} ms",
+                    "${endpoint.slowestMillis} ms",
+                )
+            }.toTypedArray(),
+        )
+    }
+
+    private fun StringBuilder.strictMode(snapshot: PerformanceSnapshot) {
+        val strictMode = snapshot.strictMode
+        heading(2, string(R.string.perfhud_strict_mode))
+        if (!strictMode.supported) {
+            paragraph(string(R.string.perfhud_strict_mode_unsupported))
+            return
+        }
+        table(
+            string(R.string.perfhud_violations) to strictMode.violations.toString(),
+            *strictMode.byKind.map { (kind, count) -> kind to count.toString() }.toTypedArray(),
+        )
+        strictMode.examples.forEach { append("- `").append(it).append("`\n") }
+        if (strictMode.examples.isNotEmpty()) append('\n')
+    }
+
+    private fun StringBuilder.build(snapshot: PerformanceSnapshot) {
+        val build = snapshot.build
+        heading(2, string(R.string.perfhud_build))
+        table(
+            string(R.string.perfhud_minified) to yesNo(build.minified),
+            string(R.string.perfhud_profile) to string(profileText(build.profile)),
+            string(R.string.perfhud_debuggable) to yesNo(build.debuggable),
+        )
+    }
+
+    private fun StringBuilder.heading(level: Int, text: String) {
+        repeat(level) { append('#') }
+        append(' ').append(text).append("\n\n")
+    }
+
+    private fun StringBuilder.paragraph(text: String) {
+        append(text).append("\n\n")
+    }
+
+    private fun StringBuilder.table(vararg rows: Pair<String, String>) {
+        append("| | |\n|---|---|\n")
+        rows.forEach { (label, value) -> row(label, value) }
+        append('\n')
+    }
+
+    private fun StringBuilder.row(vararg cells: String) {
+        append('|')
+        cells.forEach { append(' ').append(it.replace("|", "\\|")).append(" |") }
+        append('\n')
+    }
+
+    private fun StringBuilder.tableRule(columns: Int) {
+        append('|')
+        repeat(columns) { append("---|") }
+        append('\n')
+    }
+
+    private fun string(id: Int, vararg args: Any): String = resources.getString(id, *args)
+
+    private fun screenName(screen: ScreenFrames): String = when {
+        screen.name != null -> screen.name
+        screen.isOther -> string(R.string.perfhud_screen_other)
+        else -> string(R.string.perfhud_screen_launch)
+    }
+
+    private fun start(record: StartRecord?): String = if (record == null) {
+        string(R.string.perfhud_start_none)
+    } else {
+        string(
+            R.string.perfhud_start_value,
+            millis(record.initialDisplayMillis),
+            record.fullDisplayMillis?.let(::millis) ?: string(R.string.perfhud_start_not_reported),
+        )
+    }
+
+    private fun percentiles(stats: FrameStats): String =
+        listOf(stats.p50Millis, stats.p90Millis, stats.p99Millis).joinToString(" / ") { millis(it) }
+
+    private fun yesNo(value: Boolean): String = string(if (value) R.string.perfhud_yes else R.string.perfhud_no)
+
+    private fun millis(value: Float): String = string(R.string.perfhud_value_millis, decimal(value, 1))
+
+    private fun percent(value: Float): String = string(R.string.perfhud_value_percent, decimal(value, 2))
+
+    private fun megabytes(value: Float?): String = if (value == null) {
+        string(R.string.perfhud_not_measured)
+    } else {
+        string(R.string.perfhud_value_megabytes, decimal(value, 1))
+    }
+
+    private fun duration(millis: Long): String {
+        val seconds = millis / MILLIS_PER_SECOND
+        return String.format(Locale.ROOT, "%d:%02d", seconds / SECONDS_PER_MINUTE, seconds % SECONDS_PER_MINUTE)
+    }
+
+    private companion object {
+        const val MILLIS_PER_SECOND = 1000L
+        const val SECONDS_PER_MINUTE = 60L
+    }
+}
+
+@StringRes
+internal fun profileText(status: ProfileStatus): Int = when (status) {
+    ProfileStatus.Compiled -> R.string.perfhud_profile_compiled
+    ProfileStatus.Enqueued -> R.string.perfhud_profile_enqueued
+    ProfileStatus.NotCompiled -> R.string.perfhud_profile_not_compiled
+    ProfileStatus.NotInApk -> R.string.perfhud_profile_not_in_apk
+    ProfileStatus.NotInProject -> R.string.perfhud_profile_not_in_project
+}

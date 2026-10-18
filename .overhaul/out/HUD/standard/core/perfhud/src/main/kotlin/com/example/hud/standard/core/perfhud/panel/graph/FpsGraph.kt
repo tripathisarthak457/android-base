@@ -1,0 +1,88 @@
+package com.example.hud.standard.core.perfhud.panel.graph
+
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
+import com.example.hud.standard.core.designsystem.theme.AppTheme
+import com.example.hud.standard.core.perfhud.R
+import com.example.hud.standard.core.perfhud.frame.FpsSeries
+import com.example.hud.standard.core.perfhud.frame.FrameLog
+import java.util.Locale
+import kotlin.math.max
+import kotlin.math.min
+
+/**
+ * Frames per second while drawing, one bar per second for the last [SECONDS], with the display's
+ * rate as a line. A second with nothing to draw has no bar: an idle app is not a slow one.
+ */
+@Composable
+internal fun FpsGraph(frames: FrameLog, refreshHz: () -> Float, version: () -> Int, modifier: Modifier = Modifier) {
+    val series = remember { FpsSeries(SECONDS) }
+    val measurer = rememberTextMeasurer()
+    val labelStyle = AppTheme.typography.caption
+    val hzFormat = stringResource(R.string.perfhud_hz)
+    val colors = AppTheme.colors
+    val good = colors.success.content
+    val fair = colors.warning.content
+    val poor = colors.danger.content
+    val guide = colors.contentTertiary
+    val axis = colors.divider
+
+    Spacer(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(GraphDefaults.Height)
+            .drawWithCache {
+                val dash = PathEffect.dashPathEffect(floatArrayOf(DASH_PX, DASH_PX))
+                val stroke = GraphDefaults.Stroke.toPx()
+                onDrawBehind {
+                    version()
+                    val refresh = refreshHz()
+                    frames.copyFramesPerSecond(System.nanoTime(), series)
+                    val top = max(refresh, MIN_SCALE_HZ) * HEADROOM
+                    val slot = size.width / SECONDS
+                    for (second in 0 until SECONDS) {
+                        val fps = series.perSecond[second]
+                        if (fps == FpsSeries.NONE) continue
+                        val height = min(fps / top, 1f) * size.height
+                        val color = when {
+                            refresh <= 0f || fps >= refresh * GOOD_SHARE -> good
+                            fps >= refresh * FAIR_SHARE -> fair
+                            else -> poor
+                        }
+                        drawRect(
+                            color = color,
+                            topLeft = Offset(second * slot, size.height - height),
+                            size = Size(slot * BAR_SHARE, height),
+                        )
+                    }
+                    if (refresh > 0f) {
+                        val y = size.height * (1f - refresh / top)
+                        drawLine(guide, Offset(0f, y), Offset(size.width, y), stroke, pathEffect = dash)
+                        val text = String.format(Locale.ROOT, hzFormat, Math.round(refresh))
+                        val label = measurer.measure(text, labelStyle)
+                        drawText(label, color = guide, topLeft = Offset(0f, y - label.size.height))
+                    }
+                    drawLine(axis, Offset(0f, size.height), Offset(size.width, size.height), stroke)
+                }
+            },
+    )
+}
+
+private const val SECONDS = 60
+private const val MIN_SCALE_HZ = 60f
+private const val HEADROOM = 1.15f
+private const val GOOD_SHARE = 0.95f
+private const val FAIR_SHARE = 0.75f
+private const val BAR_SHARE = 0.75f
+private const val DASH_PX = 8f

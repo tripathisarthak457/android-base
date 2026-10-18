@@ -1,0 +1,126 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:compileDebugUnitTestKotlin FROM-CACHE
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+
+ScrollDirectionTest > right-to-left row - a fling right comes to rest without coming back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:201
+
+ScrollDirectionTest > row - a fling left comes to rest without coming back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:201
+
+ScrollDirectionTest > column - pulled past the bottom and flicked back, the content carries on down the list FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:276
+
+ScrollDirectionTest > column - a fling up comes to rest without coming back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:201
+
+ScrollDirectionTest > right-to-left row - caught springing back from the end, the content follows the finger back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:240
+
+ScrollDirectionTest > right-to-left row - pulled past the start and flicked back, the content carries on along the row FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:276
+
+ScrollDirectionTest > column - a fling down comes to rest without coming back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:201
+
+ScrollDirectionTest > row - caught springing back from the start, the content follows the finger back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:240
+
+ScrollDirectionTest > column - pulled past the top and flicked back, the content carries on up the list FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:276
+
+ScrollDirectionTest > column - caught springing back from the top, the content follows the finger back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:240
+
+ScrollDirectionTest > right-to-left row - pulled past the end and flicked back, the content carries on along the row FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:276
+
+ScrollDirectionTest > row - a fling right comes to rest without coming back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:201
+
+ScrollDirectionTest > right-to-left row - caught springing back from the start, the content follows the finger back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:240
+
+ScrollDirectionTest > row - pulled past the end and flicked back, the content carries on along the row FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:276
+
+ScrollDirectionTest > row - pulled past the start and flicked back, the content carries on along the row FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:276
+
+ScrollDirectionTest > row - caught springing back from the end, the content follows the finger back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:240
+
+ScrollDirectionTest > column - caught springing back from the bottom, the content follows the finger back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:240
+
+ScrollDirectionTest > right-to-left row - a fling left comes to rest without coming back FAILED
+    java.lang.AssertionError at ScrollDirectionTest.kt:201
+
+61 tests completed, 18 failed
+
+> Task :core:designsystem:testDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 27s
+34 actionable tasks: 6 executed, 1 from cache, 27 up-to-date
+Configuration cache entry reused.
+EXIT 1

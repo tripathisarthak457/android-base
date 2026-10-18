@@ -1,0 +1,33 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "HUD Standard",
+  "package_name": "com.example.hud.standard",
+  "architecture": "compact",
+  "features": [
+    "browser",
+    "catalog",
+    "coil",
+    "database",
+    "deeplink",
+    "devtools",
+    "flags",
+    "forms",
+    "googlefonts",
+    "language",
+    "leakcanary",
+    "network",
+    "perfhud",
+    "profile",
+    "sample",
+    "settings"
+  ],
+  "feature_modules": [],
+  "languages": [],
+  "api_base_urls": {
+    "dev": "https://jsonplaceholder.typicode.com/",
+    "staging": "https://staging.example.com/api/",
+    "prod": "https://api.example.com/api/",
+    "playstore": "https://api.example.com/api/"
+  }
+}

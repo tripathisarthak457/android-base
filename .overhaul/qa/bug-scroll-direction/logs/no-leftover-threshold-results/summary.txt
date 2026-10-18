@@ -1,0 +1,61 @@
+ok   pulled right past the first card and back, it follows the finger back
+ok   swiped right to left onto the last card, it lands on it
+ok   right to left layout, swiped right to left, it moves to the previous card
+ok   right to left layout, swiped left to right, it moves to the next card
+ok   right to left layout, swiped left to right onto the last card, it lands on it
+ok   swiped left to right, it moves to the previous card
+ok   right to left layout, pulled left past the first card and back, it follows the finger back
+ok   swiped right to left, it moves to the next card
+ok   pushing up during a refresh closes the gap before the list scrolls
+ok   a pull while a refresh runs does not start another, and one after it ends does
+ok   pulling and settling recompose none of the content
+ok   a flick up during a refresh closes the gap and carries the list on without a pause
+ok   a fling that reaches the top never refreshes
+ok   the content rests below the spinner while refreshing, and returns when it ends
+ok   the release carries the finger's velocity into the settle
+ok   a pull released short of the trigger springs back without refreshing
+ok   the refresh starts as the pull crosses the trigger, before the finger lifts
+ok   a gentle fling follows the iOS curve
+ok   an ordinary flick follows the iOS curve
+ok   a hard throw follows the iOS curve
+ok   a gentle fling ends once it no longer visibly moves, and the next tap reaches a row
+ok   pulled past the top and back without letting go, the list follows the finger back
+ok   a fling into the end carries past it and springs back without a jump
+ok   pulled past the top, the content follows the finger along the rubber band
+FAIL right-to-left row - a fling right comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -1.0 px in one frame
+ok   row - the content follows a drag both ways
+FAIL row - a fling left comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -1.0 px in one frame
+ok   column - a fling into the top carries on past it at the speed it got there
+FAIL column - pulled past the bottom and flicked back, the content carries on down the list :: java.lang.AssertionError: the content moved against the flick: 1.0 px in one frame
+FAIL column - a fling up comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -1.0 px in one frame
+FAIL right-to-left row - caught springing back from the end, the content follows the finger back :: java.lang.AssertionError: caught 79.0 px past the end, the content moved against the finger: 1.0 px in one frame
+ok   column - pulled past the top and back, the band follows the finger back
+ok   row - a fling into the start carries on past it at the speed it got there
+ok   right-to-left row - pulled past the end and back, the band follows the finger back
+FAIL right-to-left row - pulled past the start and flicked back, the content carries on along the row :: java.lang.AssertionError: the content moved against the flick: 1.0 px in one frame
+ok   row - a fling into the end carries on past it at the speed it got there
+ok   row - pulled past the start and flicked further, the band springs back onto the start
+ok   right-to-left row - a fling into the end carries on past it at the speed it got there
+FAIL column - a fling down comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -1.0 px in one frame
+ok   column - a fling into the bottom carries on past it at the speed it got there
+FAIL row - caught springing back from the start, the content follows the finger back :: java.lang.AssertionError: caught 79.0 px past the end, the content moved against the finger: 1.0 px in one frame
+FAIL column - pulled past the top and flicked back, the content carries on up the list :: java.lang.AssertionError: the content moved against the flick: 1.0 px in one frame
+ok   right-to-left row - a fling into the start carries on past it at the speed it got there
+FAIL column - caught springing back from the top, the content follows the finger back :: java.lang.AssertionError: caught 79.0 px past the end, the content moved against the finger: 1.0 px in one frame
+FAIL right-to-left row - pulled past the end and flicked back, the content carries on along the row :: java.lang.AssertionError: the content moved against the flick: 1.0 px in one frame
+FAIL row - a fling right comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -1.0 px in one frame
+ok   column - pulled past the top and flicked further, the band springs back onto the top
+ok   right-to-left row - pulled past the start and back, the band follows the finger back
+ok   right-to-left row - the content follows a drag both ways
+ok   column - pulled past the bottom and back, the band follows the finger back
+FAIL right-to-left row - caught springing back from the start, the content follows the finger back :: java.lang.AssertionError: caught 79.0 px past the end, the content moved against the finger: 1.0 px in one frame
+FAIL row - pulled past the end and flicked back, the content carries on along the row :: java.lang.AssertionError: the content moved against the flick: 1.0 px in one frame
+FAIL row - pulled past the start and flicked back, the content carries on along the row :: java.lang.AssertionError: the content moved against the flick: 1.0 px in one frame
+FAIL row - caught springing back from the end, the content follows the finger back :: java.lang.AssertionError: caught 79.0 px past the end, the content moved against the finger: 1.0 px in one frame
+ok   row - pulled past the start and back, the band follows the finger back
+ok   row - pulled past the end and back, the band follows the finger back
+ok   right-to-left row - pulled past the start and flicked further, the band springs back onto the start
+FAIL column - caught springing back from the bottom, the content follows the finger back :: java.lang.AssertionError: caught 79.0 px past the end, the content moved against the finger: 1.0 px in one frame
+FAIL right-to-left row - a fling left comes to rest without coming back :: java.lang.AssertionError: the content moved against the fling: -1.0 px in one frame
+ok   column - the content follows a drag both ways
+ok   a list far down reaches the top quickly, composing only the last two screens of rows

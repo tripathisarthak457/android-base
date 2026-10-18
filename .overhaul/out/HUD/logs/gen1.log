@@ -1,0 +1,127 @@
+.......................E...................................s....................s.......................................ss.............................................................................EE..................................................................................EEE...........
+======================================================================
+ERROR: test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return (tests.test_android_target.ProjectTest.test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_android_target.py", line 320, in test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return
+    project = generate(
+        self.root, **{**everything, "feature_modules": ["orders"], "languages": languages}, accent_colour="#16A34A"
+    )
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_android_target.py", line 29, in generate
+    pipeline.build(spec(**fields), ANDROID, project, zip_output=False, commit="test")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 79, in build
+    warnings = render_template(project, spec, target)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 124, in render_template
+    rendered = render_text(text, source.relative, manifest, spec.features, known, regions, renamer)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 152, in render_text
+    rendered = markers.render(
+        text, path=relative, syntax=syntax, enabled=enabled, known=known, regions=regions
+    )
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\markers.py", line 259, in render
+    raise TemplateError(path, number, f"<opt-else:{expr}> must directly follow </opt:{expr}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:38: <opt-else:analytics> must directly follow </opt:analytics>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt', on=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_markers.py", line 239, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\markers.py", line 259, in render
+    raise TemplateError(path, number, f"<opt-else:{expr}> must directly follow </opt:{expr}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:38: <opt-else:analytics> must directly follow </opt:analytics>
+
+======================================================================
+ERROR: test_every_template_renders_both_ways (tests.test_markers.RealTemplatesTest.test_every_template_renders_both_ways) (target='android', file='core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt', on=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_markers.py", line 239, in test_every_template_renders_both_ways
+    render(
+    ~~~~~~^
+        text, path=source.relative, syntax=syntax, enabled=enabled, known=known,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        regions=regions,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\markers.py", line 259, in render
+    raise TemplateError(path, number, f"<opt-else:{expr}> must directly follow </opt:{expr}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:38: <opt-else:analytics> must directly follow </opt:analytics>
+
+======================================================================
+ERROR: test_each_module_with_strings_gets_them_in_every_language (tests.test_translations.GenerationTest.test_each_module_with_strings_gets_them_in_every_language)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_translations.py", line 128, in test_each_module_with_strings_gets_them_in_every_language
+    project = self.generate(languages=["es", "pt-BR"])
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_translations.py", line 124, in generate
+    pipeline.build(parsed.spec, ANDROID, self.project, zip_output=False, commit="test")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 79, in build
+    warnings = render_template(project, spec, target)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 124, in render_template
+    rendered = render_text(text, source.relative, manifest, spec.features, known, regions, renamer)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 152, in render_text
+    rendered = markers.render(
+        text, path=relative, syntax=syntax, enabled=enabled, known=known, regions=regions
+    )
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\markers.py", line 259, in render
+    raise TemplateError(path, number, f"<opt-else:{expr}> must directly follow </opt:{expr}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:38: <opt-else:analytics> must directly follow </opt:analytics>
+
+======================================================================
+ERROR: test_no_languages_leaves_english_alone (tests.test_translations.GenerationTest.test_no_languages_leaves_english_alone)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_translations.py", line 143, in test_no_languages_leaves_english_alone
+    project = self.generate()
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_translations.py", line 124, in generate
+    pipeline.build(parsed.spec, ANDROID, self.project, zip_output=False, commit="test")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 79, in build
+    warnings = render_template(project, spec, target)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 124, in render_template
+    rendered = render_text(text, source.relative, manifest, spec.features, known, regions, renamer)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 152, in render_text
+    rendered = markers.render(
+        text, path=relative, syntax=syntax, enabled=enabled, known=known, regions=regions
+    )
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\markers.py", line 259, in render
+    raise TemplateError(path, number, f"<opt-else:{expr}> must directly follow </opt:{expr}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:38: <opt-else:analytics> must directly follow </opt:analytics>
+
+======================================================================
+ERROR: test_the_language_picker_lists_them (tests.test_translations.GenerationTest.test_the_language_picker_lists_them)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_translations.py", line 139, in test_the_language_picker_lists_them
+    locales = next(self.generate(languages=["fr", "hi"]).rglob("AppLocales.kt")).read_text(encoding="utf-8")
+                   ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\tests\test_translations.py", line 124, in generate
+    pipeline.build(parsed.spec, ANDROID, self.project, zip_output=False, commit="test")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 79, in build
+    warnings = render_template(project, spec, target)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 124, in render_template
+    rendered = render_text(text, source.relative, manifest, spec.features, known, regions, renamer)
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\pipeline.py", line 152, in render_text
+    rendered = markers.render(
+        text, path=relative, syntax=syntax, enabled=enabled, known=known, regions=regions
+    )
+  File "D:\projects\tools\.overhaul\wt\HUD\generator\genkit\core\markers.py", line 259, in render
+    raise TemplateError(path, number, f"<opt-else:{expr}> must directly follow </opt:{expr}>")
+genkit.core.markers.TemplateError: core/perfhud/src/main/kotlin/com/base/app/core/perfhud/frame/FrameFeed.kt:38: <opt-else:analytics> must directly follow </opt:analytics>
+
+----------------------------------------------------------------------
+Ran 296 tests in 107.342s
+
+FAILED (errors=6, skipped=4)
+EXIT 1

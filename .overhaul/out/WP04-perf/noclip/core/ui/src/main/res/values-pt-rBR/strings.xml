@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">Algo deu errado. Tente de novo.</string>
+    <string name="common_error_offline">Você está off-line. Verifique a conexão e tente de novo.</string>
+    <string name="common_error_unreachable">Não foi possível falar com o servidor. Tente de novo daqui a pouco.</string>
+    <string name="validation_required">Campo obrigatório.</string>
+    <string name="validation_email">Informe um e-mail válido.</string>
+    <string name="validation_mismatch">Não confere.</string>
+    <string name="validation_password_letter">Inclua pelo menos uma letra.</string>
+    <string name="validation_password_digit">Inclua pelo menos um número.</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">Deve ter pelo menos %1$d caractere.</item>
+        <item quantity="other">Deve ter pelo menos %1$d caracteres.</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">Use pelo menos %1$d caractere.</item>
+        <item quantity="other">Use pelo menos %1$d caracteres.</item>
+    </plurals>
+</resources>

@@ -1,0 +1,180 @@
+{
+  "package": "com.example.wp04.dlplay.dev",
+  "apk": "D:\\projects\\tools\\.overhaul\\out\\WP04-perf\\dlplay\\app\\build\\outputs\\apk\\dev\\benchmarkRelease\\app-dev-arm64-v8a-benchmarkRelease.apk",
+  "variant": "devBenchmarkRelease",
+  "runs": 3,
+  "seed": 407969,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "compile": "speed-profile",
+  "scenarios": [
+    "coldstart",
+    "coldstart_installed"
+  ],
+  "gate": "solid",
+  "gates_file": "D:\\projects\\tools\\.overhaul\\wt\\WP04-perf\\templates\\android\\tools\\perf\\gates.toml",
+  "started": "2026-10-18T15:37:50",
+  "device": {
+    "serial": "9a7c74f4",
+    "model": "M2101K6I",
+    "sdk": "37",
+    "battery_c": 33.9
+  },
+  "metrics": {
+    "coldstart.median_ms": {
+      "value": 375,
+      "runs": [
+        376,
+        370,
+        375
+      ]
+    },
+    "coldstart.runs_ms": {
+      "value": [
+        377,
+        355,
+        371,
+        373,
+        393,
+        413
+      ],
+      "runs": [
+        [
+          373,
+          380,
+          360,
+          394,
+          367,
+          389
+        ],
+        [
+          376,
+          365,
+          381,
+          364,
+          382,
+          357
+        ],
+        [
+          377,
+          355,
+          371,
+          373,
+          393,
+          413
+        ]
+      ]
+    },
+    "coldstart_installed.median_ms": {
+      "value": 376,
+      "runs": [
+        375,
+        376,
+        376
+      ]
+    },
+    "coldstart_installed.runs_ms": {
+      "value": [
+        381,
+        364,
+        376,
+        377,
+        371,
+        416
+      ],
+      "runs": [
+        [
+          383,
+          329,
+          394,
+          365,
+          375,
+          375
+        ],
+        [
+          373,
+          377,
+          377,
+          375,
+          335,
+          387
+        ],
+        [
+          381,
+          364,
+          376,
+          377,
+          371,
+          416
+        ]
+      ]
+    },
+    "first_gesture.janky": {
+      "value": 2,
+      "runs": [
+        2,
+        2,
+        2
+      ]
+    },
+    "first_gesture_warm.janky": {
+      "value": 3,
+      "runs": [
+        3,
+        4,
+        2
+      ]
+    },
+    "first_push.frame_ms": {
+      "value": 5.74,
+      "runs": [
+        15.3,
+        5.68,
+        5.74
+      ]
+    },
+    "first_push_warm.frame_ms": {
+      "value": 7.43,
+      "runs": [
+        7.43,
+        7.27,
+        8.51
+      ]
+    },
+    "tab_first_visit.first_frame_ms.max": {
+      "value": 9.23,
+      "runs": [
+        11.53,
+        4.28,
+        9.23
+      ]
+    },
+    "tab_first_visit.first_frame_ms.median": {
+      "value": 5.87,
+      "runs": [
+        5.87,
+        3.98,
+        6.56
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.max": {
+      "value": 10.34,
+      "runs": [
+        10.34,
+        10.13,
+        10.81
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.median": {
+      "value": 5.56,
+      "runs": [
+        3.95,
+        8.87,
+        5.56
+      ]
+    }
+  },
+  "inapplicable": {},
+  "notes": []
+}
