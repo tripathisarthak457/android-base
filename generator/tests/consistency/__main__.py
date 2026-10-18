@@ -108,16 +108,19 @@ def main(argv: list[str] | None = None) -> int:
     started = time.perf_counter()
     directory = args.keep or Path(tempfile.mkdtemp(prefix="consistency-"))
     directory.mkdir(parents=True, exist_ok=True)
-    reference(str(directory))
-
     results: dict[str, list[str]] = {}
-    with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as pool:
-        futures = [pool.submit(run_one, name, raw, str(directory), args.keep is not None) for name, raw in runs.items()]
-        for future in concurrent.futures.as_completed(futures):
-            name, issues = future.result()
-            results[name] = issues
-    if args.keep is None:
-        shutil.rmtree(directory)
+    try:
+        reference(str(directory))
+        with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as pool:
+            futures = [
+                pool.submit(run_one, name, raw, str(directory), args.keep is not None) for name, raw in runs.items()
+            ]
+            for future in concurrent.futures.as_completed(futures):
+                name, issues = future.result()
+                results[name] = issues
+    finally:
+        if args.keep is None:
+            shutil.rmtree(directory)
 
     known = load_known()
     seen_known: set[int] = set()

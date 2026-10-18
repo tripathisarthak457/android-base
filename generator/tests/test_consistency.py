@@ -1,6 +1,6 @@
 """
-The consistency matrix's checks on hand-made modules, where every answer is known, and what its runner
-hands its worker processes.
+The consistency matrix's checks on hand-made modules, where every answer is known, and its runner's
+hand-off to worker processes and clean-up.
 """
 
 from __future__ import annotations
@@ -8,6 +8,7 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from tests.consistency import __main__ as runner
 from tests.consistency.checks import _hollow, _manifests, _resources, _translations, _unused_resources
@@ -123,6 +124,19 @@ class RunnerTest(unittest.TestCase):
         # `python -m tests.consistency` runs __main__.py as "__main__", a module that workers started
         # with spawn or forkserver never import, so a function defined there cannot be unpickled in one.
         self.assertNotEqual(runner.__name__, runner.run_one.__module__)
+
+    def test_a_failed_run_leaves_nothing_in_the_temporary_folder(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp, "consistency-run")
+            directory.mkdir()
+            with (
+                mock.patch.object(runner, "combinations", return_value={}),
+                mock.patch.object(runner.tempfile, "mkdtemp", return_value=str(directory)),
+                mock.patch.object(runner, "reference", side_effect=RuntimeError("no worker started")),
+                self.assertRaisesRegex(RuntimeError, "no worker started"),
+            ):
+                runner.main(["--quick"])
+            self.assertFalse(directory.exists())
 
 
 if __name__ == "__main__":
