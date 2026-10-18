@@ -1,6 +1,6 @@
 package com.example.hud.fixture.core.perfhud.di
 
-import com.example.hud.fixture.core.devtools.DevEnvironment
+import com.example.hud.fixture.core.common.environment.AppEnvironment
 import com.example.hud.fixture.core.devtools.page.DevToolsPage
 import com.example.hud.fixture.core.perfhud.R
 import com.example.hud.fixture.core.perfhud.overlay.PerformancePill
@@ -27,7 +27,7 @@ internal object PerfHudModule {
     fun performancePage(
         recorder: PerformanceRecorder,
         exporter: ReportExporter,
-        environment: DevEnvironment,
+        environment: AppEnvironment,
     ): DevToolsPage = DevToolsPage(
         key = PAGE_KEY,
         title = R.string.perfhud_tab,

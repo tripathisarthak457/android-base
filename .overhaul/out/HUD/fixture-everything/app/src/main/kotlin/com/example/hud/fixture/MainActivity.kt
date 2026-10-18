@@ -25,7 +25,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.hud.fixture.deeplink.DeepLinkResolver
 import com.example.hud.fixture.feature.onboarding.api.OnboardingKey
-import com.example.hud.fixture.core.devtools.DevTools
+import com.example.hud.fixture.core.ui.tooling.DevTooling
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import com.example.hud.fixture.core.applock.AppLock
@@ -67,8 +69,9 @@ class MainActivity : FragmentActivity() {
     @Inject
     lateinit var appLock: AppLock
 
+    // Present in dev-flavour and debug builds, the only ones that depend on :core:devtools.
     @Inject
-    lateinit var devTools: DevTools
+    lateinit var devTooling: Optional<DevTooling>
 
     @Inject
     lateinit var apiSignals: ApiSignals
@@ -133,7 +136,7 @@ class MainActivity : FragmentActivity() {
                 settings = resolved.settings,
                 signInKey = AppDestinations.signIn,
                 onExitRequested = { finish() },
-                devTools = devTools,
+                devTooling = devTooling.getOrNull(),
                 appLock = appLock,
                 apiSignals = apiSignals,
                 appUpdates = appUpdates,

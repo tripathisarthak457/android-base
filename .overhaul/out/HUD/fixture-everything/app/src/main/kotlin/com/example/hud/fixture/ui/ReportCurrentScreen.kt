@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import com.example.hud.fixture.core.common.navigation.AppNavKey
-import com.example.hud.fixture.core.devtools.screen.CurrentScreen
 import com.example.hud.fixture.core.navigation.NavKeySerialization
+import com.example.hud.fixture.core.ui.tooling.DevTooling
 import kotlinx.serialization.ExperimentalSerializationApi
 
 /**
- * Tells the inspector which destination is on top whenever that changes. Read in a coroutine from
+ * Tells the dev tooling which destination is on top whenever that changes. Read in a coroutine from
  * the back stack's own state, so a navigation recomposes nothing here.
  *
  * The name is the key's serial name, which R8 leaves as written, where a class name in a minified
@@ -21,11 +21,11 @@ import kotlinx.serialization.ExperimentalSerializationApi
 internal fun ReportCurrentScreen(
     top: () -> AppNavKey,
     serialization: NavKeySerialization,
-    screen: CurrentScreen,
+    tooling: DevTooling,
 ) {
     val currentTop by rememberUpdatedState(top)
-    LaunchedEffect(serialization, screen) {
-        snapshotFlow { currentTop() }.collect { key -> screen.report(serialization.screenName(key)) }
+    LaunchedEffect(serialization, tooling) {
+        snapshotFlow { currentTop() }.collect { key -> tooling.onScreenChanged(serialization.screenName(key)) }
     }
 }
 

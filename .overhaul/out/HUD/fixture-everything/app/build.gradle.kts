@@ -72,9 +72,11 @@ dependencies {
 
     implementation(project(":core:flags"))
 
-    implementation(project(":core:devtools"))
-    // Dev and debug builds only: a shippable release (prodRelease, playstoreRelease) has no trace of
-    // the overlay, not one hidden behind a flag.
+    // Dev-flavour and debug builds only. A release of any other flavour has no trace of the
+    // inspector, rather than one hidden behind a flag: the root finds no DevTooling bound and
+    // composes nothing for it. `verifyReleasesCarryNoDevTooling` fails `check` if that slips.
+    debugImplementation(project(":core:devtools"))
+    "devImplementation"(project(":core:devtools"))
     debugImplementation(project(":core:perfhud"))
     "devImplementation"(project(":core:perfhud"))
 
