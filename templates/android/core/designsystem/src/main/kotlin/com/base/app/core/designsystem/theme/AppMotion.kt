@@ -188,9 +188,10 @@ class AppSprings internal constructor(val style: AppMotionStyle) {
     /**
      * A fling's deceleration, as iOS scroll views slow down (0.998 of the velocity kept per
      * millisecond). [flingFast] is the paging and picker rate (0.99), which stops much sooner.
+     * Both end once the content no longer visibly moves.
      */
-    val fling: DecayAnimationSpec<Float> = exponentialDecay(DesignTokens.Motion.flingFriction)
-    val flingFast: DecayAnimationSpec<Float> = exponentialDecay(DesignTokens.Motion.pagingFriction)
+    val fling: DecayAnimationSpec<Float> = exponentialDecay(DesignTokens.Motion.flingFriction, FlingRestVelocity)
+    val flingFast: DecayAnimationSpec<Float> = exponentialDecay(DesignTokens.Motion.pagingFriction, FlingRestVelocity)
 
     /** Colour and opacity only; anything that moves uses a spring. */
     val fadeQuick: Int = DesignTokens.Motion.fadeShortMs
@@ -227,6 +228,14 @@ class AppSprings internal constructor(val style: AppMotionStyle) {
 
     val tabBar = TabBarMotion()
 }
+
+/**
+ * The speed, in pixels a second, at which a fling has come to rest: a quarter of a pixel a frame at
+ * 120 Hz. An exponential decay never reaches zero; at Compose's default threshold of 0.1 a gentle
+ * release would keep a list scrolling, invisibly, for four seconds and more, and a tap in that time
+ * would only stop the fling instead of reaching the row under it.
+ */
+private const val FlingRestVelocity = 30f
 
 private val SpringsByStyle = AppMotionStyle.entries.associateWith(::AppSprings)
 
