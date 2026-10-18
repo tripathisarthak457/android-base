@@ -343,9 +343,10 @@ class UiTreeTest(unittest.TestCase):
     class HangingDumpDevice(perf.Device):
         """A device whose first dump never answers, as uiautomator sometimes does on the phone."""
 
-        def __init__(self, xml):
+        def __init__(self, xml, kill_hangs=False):
             super().__init__("fake")
             self.xml = xml
+            self.kill_hangs = kill_hangs
             self.commands = []
 
         def adb(self, *args, timeout=180, check=True):
@@ -354,6 +355,8 @@ class UiTreeTest(unittest.TestCase):
                 if sum(command.startswith("exec-out uiautomator") for command in self.commands) == 1:
                     raise perf.subprocess.TimeoutExpired(["adb", *args], timeout)
                 return self.xml
+            if self.kill_hangs and args[:1] == ("shell",):
+                raise perf.subprocess.TimeoutExpired(["adb", *args], timeout)
             return ""
 
     def test_a_dump_that_never_answers_is_ended_on_the_device_and_tried_again(self):
@@ -366,6 +369,13 @@ class UiTreeTest(unittest.TestCase):
             "shell pkill -f uiautomator",
             "exec-out uiautomator dump /dev/tty",
         ])
+
+    def test_a_dump_is_tried_again_when_ending_the_hung_one_gets_no_answer_either(self):
+        device = self.HangingDumpDevice(self.XML, kill_hangs=True)
+        with mock_sleep():
+            tree = device.ui()
+        self.assertEqual(tree.first_row().bounds[1], 260)
+        self.assertEqual(device.commands[-1], "exec-out uiautomator dump /dev/tty")
 
 
 class RecomposeTraceTest(unittest.TestCase):
