@@ -340,6 +340,33 @@ class UiTreeTest(unittest.TestCase):
         self.assertEqual(tree.first_row().bounds[1], 260)
         self.assertEqual(tree.rows("missing_list"), [])
 
+    class HangingDumpDevice(perf.Device):
+        """A device whose first dump never answers, as uiautomator sometimes does on the phone."""
+
+        def __init__(self, xml):
+            super().__init__("fake")
+            self.xml = xml
+            self.commands = []
+
+        def adb(self, *args, timeout=180, check=True):
+            self.commands.append(" ".join(args))
+            if args[:2] == ("exec-out", "uiautomator dump /dev/tty"):
+                if sum(command.startswith("exec-out uiautomator") for command in self.commands) == 1:
+                    raise perf.subprocess.TimeoutExpired(["adb", *args], timeout)
+                return self.xml
+            return ""
+
+    def test_a_dump_that_never_answers_is_ended_on_the_device_and_tried_again(self):
+        device = self.HangingDumpDevice(self.XML)
+        with mock_sleep():
+            tree = device.ui()
+        self.assertEqual(tree.first_row().bounds[1], 260)
+        self.assertEqual(device.commands, [
+            "exec-out uiautomator dump /dev/tty",
+            "shell pkill -f uiautomator",
+            "exec-out uiautomator dump /dev/tty",
+        ])
+
 
 class RecomposeTraceTest(unittest.TestCase):
     def test_frames_that_recompose_are_counted_per_action(self):

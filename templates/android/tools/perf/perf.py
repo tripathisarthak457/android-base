@@ -150,10 +150,19 @@ class Device:
                 self.shell(f"settings delete {key}" if value in ("", "null") else f"settings put {key} {value}")
 
     def ui(self, attempts=4):
-        """The current UI hierarchy. Retried: uiautomator refuses while the screen keeps animating."""
+        """The current UI hierarchy. Retried: uiautomator refuses while the screen keeps animating, and
+        now and then never answers at all."""
         last = ""
         for _ in range(attempts):
-            output = self.adb("exec-out", "uiautomator dump /dev/tty", check=False, timeout=30)
+            try:
+                output = self.adb("exec-out", "uiautomator dump /dev/tty", check=False, timeout=30)
+            except subprocess.TimeoutExpired:
+                # Ending the host's adb leaves the device's dump running, holding the one UiAutomation
+                # connection the next dump needs.
+                self.shell("pkill -f uiautomator", timeout=15)
+                last = "no answer in 30 s"
+                time.sleep(1.0)
+                continue
             end = output.rfind("</hierarchy>")
             if end >= 0:
                 start = output.find("<?xml")
