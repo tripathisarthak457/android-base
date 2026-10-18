@@ -242,7 +242,7 @@ private fun DetentLab() {
     val scope = rememberCoroutineScope()
     Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
         DemoTrigger("lab", "Open the lab", onClick = { shown = true })
-        AppText(text = "Custom detent: ${(sliver * 100).toInt()} % of Large", style = AppTheme.typography.footnote)
+        AppText(text = "Custom detent: ${(sliver * 100).toInt()}% of Large", style = AppTheme.typography.footnote)
         AppSlider(value = sliver, onValueChange = { sliver = it }, valueRange = 0.05f..0.4f)
     }
     AppSheet(
