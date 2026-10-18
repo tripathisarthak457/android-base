@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ...core.copy import write_text
 from ...core.spec import Spec, module_title, pascal_case
 from . import strings
 from .tabs import tab_modules
@@ -756,4 +757,4 @@ struct {pascal}DetailStoreTests {{
 
 def _write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content, encoding="utf-8", newline="\n")
+    write_text(path, content)

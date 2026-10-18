@@ -9,6 +9,7 @@ from typing import Any
 
 from ... import tokens
 from ...core import translations
+from ...core.copy import write_text
 from ...core.manifest import TemplateManifest
 from ...core.spec import IosSettings, Spec, SpecError, Vocabulary, pascal_case
 from ...core.target import BuildContext
@@ -177,9 +178,7 @@ class IosTarget:
 
     def transform(self, project_dir: Path, spec: Spec) -> list[str]:
         scaffold.write_feature_modules(project_dir, spec)
-        (project_dir / spec.pascal_name / "Localizable.xcstrings").write_text(
-            strings.render(tabs.app_strings(spec)), encoding="utf-8", newline="\n"
-        )
+        write_text(project_dir / spec.pascal_name / "Localizable.xcstrings", strings.render(tabs.app_strings(spec)))
         return []
 
     def finish(self, project_dir: Path, spec: Spec, context: BuildContext) -> list[str]:
@@ -188,10 +187,8 @@ class IosTarget:
         resolved = tokens.resolve(spec, "ios")
         design_tokens = project_dir / swift.RELATIVE_PATH
         if design_tokens.is_file():
-            design_tokens.write_text(swift.emit(resolved), encoding="utf-8", newline="\n")
-        (project_dir / spec.pascal_name / swift.ACCENT_COLOR_PATH).write_text(
-            swift.accent_colorset(resolved), encoding="utf-8", newline="\n"
-        )
+            write_text(design_tokens, swift.emit(resolved))
+        write_text(project_dir / spec.pascal_name / swift.ACCENT_COLOR_PATH, swift.accent_colorset(resolved))
         strings.translate(
             project_dir, spec, scaffold.user_names(spec), scaffolded=frozenset(scaffold.feature_targets(spec))
         )
