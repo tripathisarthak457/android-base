@@ -1,12 +1,17 @@
-"""The consistency matrix's unused-resource check on a hand-made module, where every answer is known."""
+"""
+The consistency matrix's checks on hand-made modules, where every answer is known, and its runner's
+hand-off to worker processes and clean-up.
+"""
 
 from __future__ import annotations
 
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
-from tests.consistency.checks import _unused_resources
+from tests.consistency import __main__ as runner
+from tests.consistency.checks import _hollow, _manifests, _resources, _translations, _unused_resources
 from tests.consistency.project import Project
 
 FILES = {
@@ -77,6 +82,61 @@ class UnusedResourcesTest(unittest.TestCase):
             "UNUSED-RES app/src/main/res/values/strings.xml: string/unused",
             "UNUSED-RES app/src/main/res/values/themes.xml: color/orphan",
         ], issues)
+
+
+class IssuePathTest(unittest.TestCase):
+
+    def test_issue_lines_name_files_with_forward_slashes_on_every_host(self):
+        # known_issues.toml is matched against these lines, and the runner swaps the package's path
+        # in them for {pkg}: both are written with "/".
+        files = {
+            "app/src/main/AndroidManifest.xml": """<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application><activity android:name="x.Missing" /></application>
+</manifest>
+""",
+            "app/src/main/res/values/broken.xml": "<resources>\n",
+            "app/src/main/res/values/strings.xml": '<resources><string name="a">A</string></resources>\n',
+            "app/src/main/res/values-fr/strings.xml": "<resources />\n",
+            "app/src/main/res/xml/backup.xml": '<full-backup-content label="@string/missing" />\n',
+            "app/src/main/res/raw/empty.txt": "",
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for relative, text in files.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+            project = Project(root)
+            issues = _manifests(root, project, "x") + _resources(root, project) + _translations(root)
+            issues += _hollow(root, project)
+        self.assertEqual([
+            "MANIFEST app/src/main/AndroidManifest.xml",
+            "XML app/src/main/res/values/broken.xml",
+            "RES app/src/main/res/xml/backup.xml",
+            "TRANSLATION app/src/main/res/values-fr/strings.xml",
+            "EMPTY-FILE app/src/main/res/raw/empty.txt",
+        ], [issue.split(":", 1)[0] for issue in issues])
+
+
+class RunnerTest(unittest.TestCase):
+
+    def test_the_pool_is_handed_a_function_its_workers_can_import(self):
+        # `python -m tests.consistency` runs __main__.py as "__main__", a module that workers started
+        # with spawn or forkserver never import, so a function defined there cannot be unpickled in one.
+        self.assertNotEqual(runner.__name__, runner.run_one.__module__)
+
+    def test_a_failed_run_leaves_nothing_in_the_temporary_folder(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp, "consistency-run")
+            directory.mkdir()
+            with (
+                mock.patch.object(runner, "combinations", return_value={}),
+                mock.patch.object(runner.tempfile, "mkdtemp", return_value=str(directory)),
+                mock.patch.object(runner, "reference", side_effect=RuntimeError("no worker started")),
+                self.assertRaisesRegex(RuntimeError, "no worker started"),
+            ):
+                runner.main(["--quick"])
+            self.assertFalse(directory.exists())
 
 
 if __name__ == "__main__":
