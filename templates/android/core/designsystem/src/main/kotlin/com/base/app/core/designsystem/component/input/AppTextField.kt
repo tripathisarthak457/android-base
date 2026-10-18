@@ -49,6 +49,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.component.text.scaledLike
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.FieldTreatment
@@ -206,7 +207,15 @@ internal fun fieldDecorator(
                 verticalAlignment = if (multiline) Alignment.Top else Alignment.CenterVertically,
             ) {
                 val besideText = if (multiline) Modifier.padding(top = spacing.md) else Modifier
-                leadingIcon?.let { AppIcon(it, contentDescription = null, modifier = besideText, tint = colors.contentTertiary) }
+                leadingIcon?.let {
+                    AppIcon(
+                        it,
+                        contentDescription = null,
+                        modifier = besideText,
+                        tint = colors.contentTertiary,
+                        size = AppTheme.sizes.icon.scaledLike(textStyle),
+                    )
+                }
                 prefix?.let { AppText(text = it, modifier = besideText, style = textStyle, color = colors.contentSecondary) }
                 Box(
                     modifier = Modifier.weight(1f).padding(vertical = spacing.md),
