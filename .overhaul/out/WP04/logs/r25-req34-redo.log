@@ -1,0 +1,32 @@
+[locked:adb] waiting for the lock (pid 20024 since 2026-10-18 08:01:37: ./record.win.sh D:/projects/tools/.overhaul/out/WP04/extras/everything.apk D:/projects/tools/.overhaul/perf/WP04/run21-7)
+[locked:adb] waiting for the lock (pid 7520 since 2026-10-18 08:07:40: D:/projects/tools/.overhaul/wt/WP04/templates/android/tools/adaptive/adaptive.sh --package com.example.wp04.everything.d)
+saved: accelerometer_rotation=0 user_rotation=0 wm user-rotation='lock 0' night=yes
+Success
+shot light-pull:   mCurrentFocus=Window{58c2a9d u0 com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity}
+shot landscape-rest:   mCurrentFocus=Window{1743fcb u0 com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity}
+shot landscape-end:   mCurrentFocus=Window{1743fcb u0 com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity}
+system night mode: Night mode: no
+Starting: Intent { cmp=com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity
+TotalTime: 701
+WaitTime: 703
+Complete
+/sdcard/d9.mp4: 1 file pulled, 0 skipped. 33.6 MB/s (966031 bytes in 0.027s)
+== first: 161 frames; luma 59.4143 59.4145 59.4152 59.4154 59.415 59.415 59.4166 59.4162 59.4164 74.7498 92.8665 102.204 122.141 143.563 163.66 186.228 197.038 221.029 222.009 223.968 224.457 225.925 226.906 227.886 228.376 228.377 228.865 228.865 228.865 228.865 228.865 228.865 228.865 228.865 228.865 228.865 228.865 228.865 228.865 228.866 217.068 207.592 196.944 175.342 164.506 153.256 142.423 120.322 110.354 100.045 88.8777 77.9657 67.7656 46.5299 35.4255 35.409 35.4071 35.4071 35.432 35.4214 35.4514 42.8286 42.8536 42.8512 42.8524 42.8921 42.9252 42.9517 42.9777 42.9744 42.9838 42.9828 42.9828 42.983 42.9827 42.983
+app night mode after first: Night mode: no
+Starting: Intent { cmp=com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.example.wp04.everything.dev/com.example.wp04.everything.MainActivity
+TotalTime: 488
+WaitTime: 490
+Complete
+/sdcard/d9.mp4: 1 file pulled, 0 skipped. 35.6 MB/s (912363 bytes in 0.024s)
+== returning: 159 frames; luma 59.4127 59.413 59.4138 59.4139 59.4136 59.4152 59.4148 59.4151 59.415 58.1055 55.2612 53.6815 50.3015 47.1666 45.4624 42.4564 38.3724 35.2033 33.3714 33.1349 32.9627 32.8435 32.773 32.6834 32.5859 32.6068 32.5435 32.5506 32.5507 32.5504 32.5504 32.5506 32.5506 32.5505 32.5505 32.5507 32.5505 32.9355 33.5143 33.3675 33.6057 33.3322 34.1287 34.3694 34.2188 34.6255 34.4923 34.4091 34.7327 41.6984 42.8203 42.8197 42.8263 42.8263 42.8284 42.827 42.8288 42.8289 42.8311 42.8311 42.8734 42.8735 42.8735 42.8735 42.8735 42.8735 42.8735 42.8736 42.8736 42.8735 42.8735 42.8736 42.8736 42.8736 42.8736 42.8
+/sdcard/d9.mp4: 1 file pulled, 0 skipped. 23.7 MB/s (232701 bytes in 0.009s)
+== switch: 33 frames
+D9 DONE
+R25-REDO DONE
+restored: lock 0, night Night mode: yes

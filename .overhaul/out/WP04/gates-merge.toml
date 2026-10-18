@@ -256,9 +256,9 @@ lean = 400
 
 [[row]]
 metric = "meminfo.pss_app_mb"
-label = "PSS after the journey, less the window's graphics buffers (MB) [merge ratchet; release limit solid 48 -> 59.0 (phase3c 53.6)]"
+label = "PSS after the journey, less the window's graphics buffers (MB) [merge ratchet; release limit solid 48 -> 59.0 (phase3c 53.6); standard 48 -> 51.2 (d10ef94 remeasured Oct 18 46.5)]"
 solid = 59.0
-standard = 48
+standard = 51.2
 
 [[row]]
 metric = "meminfo.pss_mb"

@@ -1,0 +1,125 @@
+package com.example.wp04.abstd.core.designsystem.component.feedback
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.wp04.abstd.core.designsystem.component.button.AppButton
+import com.example.wp04.abstd.core.designsystem.component.button.ButtonSize
+import com.example.wp04.abstd.core.designsystem.component.button.ButtonVariant
+import com.example.wp04.abstd.core.designsystem.component.text.AppIcon
+import com.example.wp04.abstd.core.designsystem.component.text.AppText
+import com.example.wp04.abstd.core.designsystem.foundation.AppSurface
+import com.example.wp04.abstd.core.designsystem.theme.AppTheme
+
+/**
+ * A transient message bar. An error and a confirmation look different — a red-tinted surface with
+ * an error glyph versus a green one — rather than both being a neutral dark slab.
+ */
+@Composable
+fun AppSnackbar(
+    text: String,
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    tone: AppTone = AppTone.Info,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null,
+    onDismiss: (() -> Unit)? = null,
+) {
+    val statusColors = tone.colors
+
+    AppSurface(
+        modifier = modifier.fillMaxWidth(),
+        shape = AppTheme.shapes.sm,
+        color = statusColors.subtle,
+        contentColor = statusColors.content,
+        border = androidx.compose.foundation.BorderStroke(
+            AppTheme.sizes.borderWidth,
+            statusColors.border,
+        ),
+        elevation = AppTheme.elevation.overlay,
+    ) {
+        Row(
+            modifier = Modifier.padding(AppTheme.spacing.md),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AppIcon(tone.icon, contentDescription = null, tint = statusColors.content)
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                title?.let {
+                    AppText(
+                        text = it,
+                        style = AppTheme.typography.titleSmall,
+                        color = statusColors.content,
+                    )
+                }
+                AppText(
+                    text = text,
+                    style = AppTheme.typography.bodySmall,
+                    color = AppTheme.colors.contentPrimary,
+                )
+            }
+
+            if (actionLabel != null && onAction != null) {
+                AppButton(
+                    text = actionLabel,
+                    onClick = {
+                        onAction()
+                        onDismiss?.invoke()
+                    },
+                    variant = ButtonVariant.Tertiary,
+                    size = ButtonSize.Small,
+                )
+            }
+        }
+    }
+}
+
+/** Positions a snackbar over the content, above the navigation bar, and animates it in and out. */
+@Composable
+fun BoxScope.AppSnackbarHost(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = slideInVertically(
+            animationSpec = tween(AppTheme.motion.medium, easing = AppTheme.motion.enter),
+            initialOffsetY = { it },
+        ) + fadeIn(tween(AppTheme.motion.quick)),
+        exit = slideOutVertically(
+            animationSpec = tween(AppTheme.motion.quick, easing = AppTheme.motion.exit),
+            targetOffsetY = { it },
+        ) + fadeOut(tween(AppTheme.motion.instant)),
+        modifier = modifier.align(Alignment.BottomCenter),
+    ) {
+        Box(
+            modifier = Modifier
+                .widthIn(max = AppTheme.layout.sheetMaxWidth)
+                .navigationBarsPadding()
+                .padding(AppTheme.spacing.lg),
+        ) {
+            content()
+        }
+    }
+}

@@ -1,0 +1,8 @@
+[locked:gradle] waiting for the lock (pid 20084 since 2026-10-17 23:04:42: bash D:/projects/tools/.overhaul/out/WP05/scene-mutants-run15.sh)
+run 1: exit 0 after 81 s
+run 2: exit 0 after 52 s
+run 3: exit 0 after 47 s
+run 4: exit 0 after 52 s
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+run 5: exit 1 after 544 s, DUMPED
+run 6: exit 0 after 41 s

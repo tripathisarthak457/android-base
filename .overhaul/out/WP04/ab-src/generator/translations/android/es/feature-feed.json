@@ -1,0 +1,12 @@
+{
+  "feed_title": "Novedades",
+  "feed_subtitle": "Carga diez cada vez que te desplazas",
+  "feed_author": "Autor %1$d",
+  "feed_empty_title": "Nada que mostrar",
+  "feed_empty_message": "Cuando haya algo nuevo, aparecerá aquí.",
+  "feed_load_failed": "No se pudieron cargar las novedades.",
+  "feed_load_more_failed": "No se pudo cargar más.",
+  "feed_retry": "Reintentar",
+  "feed_show_more": "Ver más",
+  "feed_show_less": "Ver menos"
+}

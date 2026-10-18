@@ -1,0 +1,77 @@
+[locked:adb] waiting for the lock (pid 11372 since 2026-10-18 02:08:21: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 11372 since 2026-10-18 02:08:21: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 11372 since 2026-10-18 02:08:21: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 11372 since 2026-10-18 02:08:21: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 20136 since 2026-10-18 02:51:36: bash -c SCENARIOS='pushpop_gesture pushpop rapid_back' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip)
+[locked:adb] waiting for the lock (pid 20136 since 2026-10-18 02:51:36: bash -c SCENARIOS='pushpop_gesture pushpop rapid_back' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip)
+[locked:adb] waiting for the lock (pid 20136 since 2026-10-18 02:51:36: bash -c SCENARIOS='pushpop_gesture pushpop rapid_back' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip)
+[locked:adb] waiting for the lock (pid 20136 since 2026-10-18 02:51:36: bash -c SCENARIOS='pushpop_gesture pushpop rapid_back' D:/projects/tools/.overhaul/out/WP04-perf/measure.win.sh cardclip)
+Success
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Foundations-light.png
+Feel: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feel-light.png
+Text: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Text-light.png
+Buttons: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Buttons-light.png
+Inputs: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Inputs-light.png
+Selection: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Selection-light.png
+Lists: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Lists-light.png
+Containers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Containers-light.png
+Bars: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Bars-light.png
+Overlays: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Overlays-light.png
+Sheets: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Sheets-light.png
+Feedback: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feedback-light.png
+Loading: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Loading-light.png
+Motion: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Motion-light.png
+Adaptive: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Adaptive-light.png
+Pickers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Pickers-light.png
+Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Fields-light.png
+Data: 7 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Data-light.png
+Collections: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Collections-light.png
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Foundations-dark.png
+Feel: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feel-dark.png
+Text: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Text-dark.png
+Buttons: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Buttons-dark.png
+Inputs: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Inputs-dark.png
+Selection: 6 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Selection-dark.png
+Lists: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Lists-dark.png
+Containers: 6 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Containers-dark.png
+Bars: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Bars-dark.png
+Overlays: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Overlays-dark.png
+Sheets: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Sheets-dark.png
+Feedback: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feedback-dark.png
+Loading: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Loading-dark.png
+Motion: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Motion-dark.png
+Adaptive: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Adaptive-dark.png
+Pickers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Pickers-dark.png
+Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Fields-dark.png
+Data: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Data-dark.png
+Collections: 7 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Collections-dark.png
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Foundations-2x.png
+Feel: 5 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feel-2x.png
+Text: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Text-2x.png
+Buttons: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Buttons-2x.png
+Inputs: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Inputs-2x.png
+Selection: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Selection-2x.png
+Lists: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Lists-2x.png
+Containers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Containers-2x.png
+Bars: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Bars-2x.png
+Overlays: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Overlays-2x.png
+Sheets: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Sheets-2x.png
+Feedback: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feedback-2x.png
+Loading: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Loading-2x.png
+Motion: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Motion-2x.png
+Adaptive: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Adaptive-2x.png
+Pickers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Pickers-2x.png
+Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Fields-2x.png
+Data: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Data-2x.png
+Collections: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Collections-2x.png
+LOOK SHOTS OK
+Performing Streamed Install
+Success
+Success
+cp1: the sheet grabber was not found
+grabber before (474, 1155, 606, 1275), after (474, 1155, 606, 1275)
+last row (88, 2034, 267, 2093), Apply None, window 1080x2400
+K12 FAILED
+R16 PHONE EXIT 1
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0
+PHONE EXIT 1

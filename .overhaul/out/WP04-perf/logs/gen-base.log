@@ -1,0 +1,31 @@
+
+Summary
+───────
+         App  WP04 Base (WP04Base)
+     Package  com.example.wp04.base
+     Min SDK  API 26 · Android 8.0 (Oreo)
+  Target SDK  API 37 · Android 17 (Cinnamon Bun)
+     Version  1.0.0 (1)
+  Desugaring  off
+    Features  analytics, auth, baselineprofile, browser, catalog, coil,
+              deeplink, devtools, firebase, flags, forms, googlefonts,
+              googlesignin, language, leakcanary, media, network, paging,
+              profile, push, room, sample, search, settings, websocket,
+              widget, workmanager
+     Modules  orders, wallet
+   Languages  en, de, es, fr, hi, pt-BR
+    Typeface  DM Sans · JetBrains Mono
+     Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+       Style  Social
+      Motion  Standard, haptics on
+        Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP04-perf\base
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP04-perf\base and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json — the included one is a placeholder.
+

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallet_title">Wallet</string>
+    <string name="wallet_empty_title">Aún no hay nada</string>
+    <string name="wallet_empty_message">Cuando haya algo que mostrar, aparecerá en esta pantalla.</string>
+    <string name="wallet_reload">Recargar</string>
+</resources>

@@ -1,0 +1,57 @@
+Success
+== 08:01:39 tab_switch D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/tab-switch/light --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/tab-switch/light\tab_switch.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/tab-switch/light\tab_switch_strip.png
+122 moving frames, near-blank frames: []
+== 08:02:17 tab_switch D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/tab-switch/dark --extra perf.theme=dark
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/tab-switch/dark\tab_switch.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/tab-switch/dark\tab_switch_strip.png
+137 moving frames, near-blank frames: []
+== 08:02:56 back_slow_commit D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_commit --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_commit\back_slow_commit.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_commit\back_slow_commit_strip.png
+46 moving frames, near-blank frames: []
+== 08:03:24 back_slow_cancel D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_cancel --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_cancel\back_slow_cancel.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_cancel\back_slow_cancel_strip.png
+36 moving frames, near-blank frames: []
+== 08:03:48 back_fast_flick D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_fast_flick --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_fast_flick\back_fast_flick.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_fast_flick\back_fast_flick_strip.png
+29 moving frames, near-blank frames: []
+== 08:04:11 back_y_follow D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_y_follow --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_y_follow\back_y_follow.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_y_follow\back_y_follow_strip.png
+0 moving frames, near-blank frames: []
+== 08:04:33 back_to_home D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_to_home --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_to_home\back_to_home.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_to_home\back_to_home_strip.png
+84 moving frames, near-blank frames: []
+== 08:04:58 back_slow_commit D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_commit_right --edge right --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_commit_right\back_slow_commit.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/back_slow_commit_right\back_slow_commit_strip.png
+45 moving frames, near-blank frames: []
+== 08:05:22 back_slow_commit D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/dark/back_slow_commit --extra perf.theme=dark
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/dark/back_slow_commit\back_slow_commit.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/predictive-back/dark/back_slow_commit\back_slow_commit_strip.png
+45 moving frames, near-blank frames: []
+== 08:05:47 back_during_push D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/back-during-push/left --edge left --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/back-during-push/left\back_during_push.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/back-during-push/left\back_during_push_strip.png
+62 moving frames, near-blank frames: []
+== 08:06:09 back_during_push D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/back-during-push/right --edge right --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/back-during-push/right\back_during_push.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/back-during-push/right\back_during_push_strip.png
+62 moving frames, near-blank frames: []
+== 08:06:32 rapid_back D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/rapid-back --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/rapid-back\rapid_back.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/rapid-back\rapid_back_strip.png
+102 moving frames, near-blank frames: []
+ar-XB: 
+ar: 
+== 08:07:10 tab_switch D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/font2/tab-switch --extra perf.theme=light
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/font2/tab-switch\tab_switch.mp4
+D:/projects/tools/.overhaul/perf/WP04/run21-7fa49d5b/font2/tab-switch\tab_switch_strip.png
+163 moving frames, near-blank frames: []
+RECORD DONE
+restored: font scale 1.0, the app's own locale

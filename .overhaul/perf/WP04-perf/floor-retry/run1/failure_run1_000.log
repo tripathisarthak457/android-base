@@ -1,0 +1,3 @@
+--------- beginning of main
+I/perf.shell(29394): generation=1 tab=0 stacks=[["SampleListKey"],["FeedKey"],["SearchKey"],["ProfileKey"],["SettingsKey"]] presented=[] roots=["SampleListKey","FeedKey","SearchKey","ProfileKey","SettingsKey"] more=false chrome=Bar window=393x873dp class=CompactxMedium
+I/perf.shell(29817): generation=1 tab=0 stacks=[["SampleListKey"],["FeedKey"],["SearchKey"],["ProfileKey"],["SettingsKey"]] presented=[] roots=["SampleListKey","FeedKey","SearchKey","ProfileKey","SettingsKey"] more=false chrome=Bar window=393x873dp class=CompactxMedium

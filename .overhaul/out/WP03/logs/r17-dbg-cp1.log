@@ -1,0 +1,24 @@
+[locked:adb] waiting for the lock (pid 3732 since 2026-10-18 05:15:20: bash -c 
+set -euo pipefail
+for d in "$@"; do
+  set -- $d
+  if [ -e D:/projects/tools/.overhaul/perf/WP04/$3 ]; then mv D)
+[locked:adb] waiting for the lock (pid 3732 since 2026-10-18 05:15:20: bash -c 
+set -euo pipefail
+for d in "$@"; do
+  set -- $d
+  if [ -e D:/projects/tools/.overhaul/perf/WP04/$3 ]; then mv D)
+[locked:adb] waiting for the lock (pid 3732 since 2026-10-18 05:15:20: bash -c 
+set -euo pipefail
+for d in "$@"; do
+  set -- $d
+  if [ -e D:/projects/tools/.overhaul/perf/WP04/$3 ]; then mv D)
+[locked:adb] waiting for the lock (pid 1960 since 2026-10-18 05:33:59: bash -c 
+set -euo pipefail
+out=D:/projects/tools/.overhaul/perf/WP04/ab-standard-7fa49d5-noswipe
+if [ -e $out ]; then mv)
+button (44, 1768, 463, 1900)
+0 grabber None surface None rows None
+1 grabber None surface None rows None
+2 grabber None surface None rows None
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0

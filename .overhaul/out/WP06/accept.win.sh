@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# accept.sh on the Windows machine (native, Git Bash): paths under D:/projects/tools, Python as `python`, the generator
-# tests judged against the host baseline until package WIN merges, and the phone as the only device: this machine
-# has no emulator, so the emulator pass of accept.sh is dropped (handoff, Oct 17 note). accept.sh stays as run on Linux.
+# accept.sh on the Windows machine (native, Git Bash): paths under D:/projects/tools, Python as `python`, and the phone
+# as the only device: this machine has no emulator, so the emulator pass of accept.sh is dropped (handoff, Oct 17
+# note). accept.sh stays as run on Linux.
 set -euo pipefail
 OV=D:/projects/tools/.overhaul; W=$OV/wt/WP06; L=$OV/bin/locked; O=$OV/out/WP06; P=$OV/perf/WP06
 S=${SERIAL:-9a7c74f4}
 mkdir -p $P $O/logs
 
 cd $W/generator
-python $O/gen_tests.py .
+# Since WIN merged, every generator test passes on this host too; gen_tests.py held the six host failures before.
+python -I -m unittest discover -s tests -t .
 # `python -m tests.consistency` cannot start its workers on Windows (consistency_win.py says why).
 python $O/consistency_win.py --quick
 python -m genkit.core.catalogue --check

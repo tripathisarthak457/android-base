@@ -1,0 +1,35 @@
+
+Summary
+───────
+           App  Everything (Everything)
+       Package  com.example.wp04.everything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, auth, browser, catalog, coil,
+                composemetrics, coverage, database, deeplink, depsanalysis,
+                devtools, firebase, flags, forms, googlefonts, googlesignin,
+                language, leakcanary, licenses, lottie, media, network,
+                onboarding, paging, performance, playstore, profile, push,
+                room, sample, search, settings, websocket, widget,
+                workmanager
+       Modules  none
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP04-perf\floor
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP04-perf\floor and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+

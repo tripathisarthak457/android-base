@@ -1,0 +1,84 @@
+== 23:02:43 at 20d134a8 0 dirty
+.........................................
+----------------------------------------------------------------------
+Ran 41 tests in 0.341s
+
+OK
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+ols\.overhaul\wt\WP04\generator\tests\test_cli.py", line 45, in test_json_means_only_json_on_stdout
+    self.assertEqual(str(self.root / "p"), data["path"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'C:\\Users\\CRAZYH~1\\AppData\\Local\\Temp\\tmpa4pri1gg\\p' != 'C:\\Users\\crazyhusir\\AppData\\Local\\Temp\\tmpa4pri1gg\\p'
+- C:\Users\CRAZYH~1\AppData\Local\Temp\tmpa4pri1gg\p
+?          ^^^^^^^^
++ C:\Users\crazyhusir\AppData\Local\Temp\tmpa4pri1gg\p
+?          ^^^^^^^^^^
+
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='all')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'com.example.trail BaseApp\n' != b'com.example.trail BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='none')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'io.bare.min BaseApp\n' != b'io.bare.min BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_every_case_matches_its_golden_tree (tests.test_golden.GoldenTest.test_every_case_matches_its_golden_tree) (case='hostile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 138, in test_every_case_matches_its_golden_tree
+    self.assertEqual(expected[name], actual[name], name)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'com.base.apple BaseApp\n' != b'com.base.apple BaseApp\r\n' : transformed.txt
+
+======================================================================
+FAIL: test_the_wrapper_script_is_executable_and_nothing_else_is (tests.test_golden.GoldenTest.test_the_wrapper_script_is_executable_and_nothing_else_is)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_golden.py", line 148, in test_the_wrapper_script_is_executable_and_nothing_else_is
+    self.assertEqual({"gradlew"}, executable)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'gradlew'
+Items in the second set but not the first:
+'run.bat'
+
+======================================================================
+FAIL: test_reusing_the_dev_key_for_staging_copies_it (tests.test_keystores.GenerationTest.test_reusing_the_dev_key_for_staging_copies_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP04\generator\tests\test_keystores.py", line 141, in test_reusing_the_dev_key_for_staging_copies_it
+    self.assertEqual(["dev", "staging"], generated)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['dev', 'staging'] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+'dev'
+
+- ['dev', 'staging']
++ []
+
+----------------------------------------------------------------------
+Ran 250 tests in 187.903s
+
+FAILED (failures=6, errors=2, skipped=1)
+
+GEN-TESTS: failures beyond the Windows baseline:
+ERROR: test_a_non_ascii_password_round_trips (tests.test_keystores.GenerationTest.test_a_non_ascii_password_round_trips)
+FAIL: test_reusing_the_dev_key_for_staging_copies_it (tests.test_keystores.GenerationTest.test_reusing_the_dev_key_for_staging_copies_it)

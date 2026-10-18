@@ -26,10 +26,10 @@ Summary
 
   Done.
 
-  Project: /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04-perf/head
+  Project: D:\projects\tools\.overhaul\out\WP04-perf\head
 
   Next
-    1. cd /home/crazyhusir/Documents/projects/tools/.overhaul/out/WP04-perf/head and open it in Android Studio.
+    1. cd D:\projects\tools\.overhaul\out\WP04-perf\head and open it in Android Studio.
     2. ./gradlew :app:installDevDebug
     3. Replace app/google-services.json: the included one is a placeholder.
 

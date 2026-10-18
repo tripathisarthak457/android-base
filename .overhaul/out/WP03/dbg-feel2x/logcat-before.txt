@@ -1,0 +1,200 @@
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at pu0.W(SourceFile:41)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at pu0.A(SourceFile:185)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at dz.n(SourceFile:6)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at pu0.W(SourceFile:41)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at pu0.A(SourceFile:185)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at ca2.run(SourceFile:39)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at android.os.Looper.loopOnce(Looper.java:296)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at android.os.Looper.loop(Looper.java:397)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at java.lang.reflect.Method.invoke(Native Method)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	Suppressed: java.lang.IllegalStateException: Unable to load font Font(GoogleFont("Plus Jakarta Sans", bestEffort=true), weight=FontWeight(weight=500), style=Normal, fontVariationSettings=Settings(settings=[]))
+10-18 03:12:16.144 E/AndroidRuntime(28001): 		... 30 more
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	Caused by: ba2: Timed out waiting for 150 ms
+10-18 03:12:16.144 E/AndroidRuntime(28001): 		at ca2.run(SourceFile:36)
+10-18 03:12:16.144 E/AndroidRuntime(28001): 		... 9 more
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	Suppressed: java.lang.IllegalStateException: Unable to load font Font(GoogleFont("Plus Jakarta Sans", bestEffort=true), weight=FontWeight(weight=600), style=Normal, fontVariationSettings=Settings(settings=[]))
+10-18 03:12:16.144 E/AndroidRuntime(28001): 		... 30 more
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	Caused by: [CIRCULAR REFERENCE: ba2: Timed out waiting for 150 ms]
+10-18 03:12:16.144 E/AndroidRuntime(28001): 	Suppressed: fa0: [c12{Cancelling}@3dbcc02, Dispatchers.Main.immediate]
+10-18 03:12:16.144 E/AndroidRuntime(28001): Caused by: [CIRCULAR REFERENCE: ba2: Timed out waiting for 150 ms]
+10-18 03:12:39.279 E/AndroidRuntime(28220): FATAL EXCEPTION: main
+10-18 03:12:39.279 E/AndroidRuntime(28220): Process: com.example.wp03.look.catalog, PID: 28220
+10-18 03:12:39.279 E/AndroidRuntime(28220): java.lang.IllegalStateException: Unable to load font Font(GoogleFont("JetBrains Mono", bestEffort=true), weight=FontWeight(weight=400), style=Normal, fontVariationSettings=Settings(settings=[]))
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at r3.s(SourceFile:103)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at vs.h(SourceFile:7)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pp1.z(SourceFile:6)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at q.h(SourceFile:22)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at vs.h(SourceFile:32)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at kn.S(SourceFile:49)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at yw.p(SourceFile:91)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at yw.q(SourceFile:101)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at bz.n(SourceFile:73)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.W(SourceFile:41)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.A(SourceFile:185)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at dz.n(SourceFile:6)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.W(SourceFile:41)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.A(SourceFile:185)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at dz.n(SourceFile:6)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.W(SourceFile:41)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.A(SourceFile:185)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at dz.n(SourceFile:6)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.W(SourceFile:41)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at pu0.A(SourceFile:185)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at ca2.run(SourceFile:39)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at android.os.Looper.loopOnce(Looper.java:296)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at android.os.Looper.loop(Looper.java:397)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at java.lang.reflect.Method.invoke(Native Method)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	Suppressed: fa0: [c12{Cancelling}@cf5387c, Dispatchers.Main.immediate]
+10-18 03:12:39.279 E/AndroidRuntime(28220): Caused by: ba2: Timed out waiting for 150 ms
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	at ca2.run(SourceFile:36)
+10-18 03:12:39.279 E/AndroidRuntime(28220): 	... 9 more
+10-18 03:27:14.913 E/AndroidRuntime( 1664): FATAL EXCEPTION: main
+10-18 03:27:14.913 E/AndroidRuntime( 1664): Process: com.example.wp03.look.catalog, PID: 1664
+10-18 03:27:14.913 E/AndroidRuntime( 1664): java.lang.IllegalStateException: Unable to load font Font(GoogleFont("JetBrains Mono", bestEffort=true), weight=FontWeight(weight=400), style=Normal, fontVariationSettings=Settings(settings=[]))
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at r3.s(SourceFile:103)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at vs.h(SourceFile:7)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pp1.z(SourceFile:6)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at q.h(SourceFile:22)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at vs.h(SourceFile:32)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at kn.S(SourceFile:49)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at yw.p(SourceFile:91)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at yw.q(SourceFile:101)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at bz.n(SourceFile:73)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.W(SourceFile:41)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.A(SourceFile:185)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at dz.n(SourceFile:6)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.W(SourceFile:41)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.A(SourceFile:185)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at dz.n(SourceFile:6)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.W(SourceFile:41)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.A(SourceFile:185)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at dz.n(SourceFile:6)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.W(SourceFile:41)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at pu0.A(SourceFile:185)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at ca2.run(SourceFile:39)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at android.os.Looper.loopOnce(Looper.java:296)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at android.os.Looper.loop(Looper.java:397)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at java.lang.reflect.Method.invoke(Native Method)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	Suppressed: fa0: [c12{Cancelling}@7870505, Dispatchers.Main.immediate]
+10-18 03:27:14.913 E/AndroidRuntime( 1664): Caused by: ba2: Timed out waiting for 150 ms
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	at ca2.run(SourceFile:36)
+10-18 03:27:14.913 E/AndroidRuntime( 1664): 	... 9 more
+10-18 03:34:12.127 E/AndroidRuntime( 5408): FATAL EXCEPTION: main
+10-18 03:34:12.127 E/AndroidRuntime( 5408): Process: com.example.wp03.look.catalog, PID: 5408
+10-18 03:34:12.127 E/AndroidRuntime( 5408): java.lang.IllegalStateException: Unable to load font Font(GoogleFont("Plus Jakarta Sans", bestEffort=true), weight=FontWeight(weight=400), style=Normal, fontVariationSettings=Settings(settings=[]))
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at r3.s(SourceFile:103)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at vs.h(SourceFile:7)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pp1.z(SourceFile:6)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at q.h(SourceFile:22)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at vs.h(SourceFile:32)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at kn.S(SourceFile:49)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at yw.p(SourceFile:91)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at yw.q(SourceFile:101)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at bz.n(SourceFile:73)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.W(SourceFile:41)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.A(SourceFile:185)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at dz.n(SourceFile:6)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.W(SourceFile:41)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.A(SourceFile:185)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at dz.n(SourceFile:6)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.W(SourceFile:41)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.A(SourceFile:185)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at dz.n(SourceFile:6)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.W(SourceFile:41)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at pu0.A(SourceFile:185)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at ca2.run(SourceFile:39)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at android.os.Looper.loopOnce(Looper.java:296)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at android.os.Looper.loop(Looper.java:397)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at java.lang.reflect.Method.invoke(Native Method)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	Suppressed: java.lang.IllegalStateException: Unable to load font Font(GoogleFont("Plus Jakarta Sans", bestEffort=true), weight=FontWeight(weight=500), style=Normal, fontVariationSettings=Settings(settings=[]))
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 		... 30 more
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	Caused by: ba2: Timed out waiting for 150 ms
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 		at ca2.run(SourceFile:36)
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 		... 9 more
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	Suppressed: java.lang.IllegalStateException: Unable to load font Font(GoogleFont("Plus Jakarta Sans", bestEffort=true), weight=FontWeight(weight=600), style=Normal, fontVariationSettings=Settings(settings=[]))
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 		... 30 more
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	Caused by: [CIRCULAR REFERENCE: ba2: Timed out waiting for 150 ms]
+10-18 03:34:12.127 E/AndroidRuntime( 5408): 	Suppressed: fa0: [c12{Cancelling}@cf5387c, Dispatchers.Main.immediate]
+10-18 03:34:12.127 E/AndroidRuntime( 5408): Caused by: [CIRCULAR REFERENCE: ba2: Timed out waiting for 150 ms]
+10-18 05:37:32.972 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:37:43.049 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:37:53.106 D/ActivityManager( 1732): Skipping freeze for process 5701 com.example.wp03.look.catalog curAdj = 920(override)
+10-18 05:38:03.178 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:38:03.855 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:38:13.937 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:38:15.207 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:38:25.247 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:38:25.738 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:38:35.775 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:38:45.663 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:38:55.730 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:38:57.153 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:39:07.229 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:39:10.465 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:39:20.530 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:39:57.205 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:40:07.265 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:40:16.256 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:40:26.317 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:40:26.383 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:40:30.041 D/AndroidRuntime(11745): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-18 05:40:30.048 I/AndroidRuntime(11745): Using default boot image
+10-18 05:40:30.048 I/AndroidRuntime(11745): Leaving lock profiling enabled
+10-18 05:40:30.176 D/AndroidRuntime(11745): Calling main entry com.android.commands.uiautomator.Launcher
+10-18 05:40:31.278 D/AndroidRuntime(11745): Shutting down VM
+10-18 05:40:34.295 D/AndroidRuntime(11773): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-18 05:40:34.300 I/AndroidRuntime(11773): Using default boot image
+10-18 05:40:34.300 I/AndroidRuntime(11773): Leaving lock profiling enabled
+10-18 05:40:34.427 D/AndroidRuntime(11773): Calling main entry com.android.commands.uiautomator.Launcher
+10-18 05:40:35.517 D/AndroidRuntime(11773): Shutting down VM
+10-18 05:40:36.455 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:40:36.921 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:40:47.029 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:40:47.739 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:40:54.192 D/AndroidRuntime(12020): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-18 05:40:54.199 I/AndroidRuntime(12020): Using default boot image
+10-18 05:40:54.199 I/AndroidRuntime(12020): Leaving lock profiling enabled
+10-18 05:40:54.333 D/AndroidRuntime(12020): Calling main entry com.android.commands.uiautomator.Launcher
+10-18 05:40:55.426 D/AndroidRuntime(12020): Shutting down VM
+10-18 05:40:57.785 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:40:58.392 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:41:08.468 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:41:08.862 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:41:18.905 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:41:18.997 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:41:26.168 D/AndroidRuntime(12416): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-18 05:41:26.175 I/AndroidRuntime(12416): Using default boot image
+10-18 05:41:26.175 I/AndroidRuntime(12416): Leaving lock profiling enabled
+10-18 05:41:26.310 D/AndroidRuntime(12416): Calling main entry com.android.commands.uiautomator.Launcher
+10-18 05:41:27.420 D/AndroidRuntime(12416): Shutting down VM
+10-18 05:41:29.030 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:41:40.393 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:41:50.507 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:41:51.869 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:42:01.951 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog
+10-18 05:42:05.223 D/ActivityManager( 1732): sync unfroze 5701 com.example.wp03.look.catalog for 19
+10-18 05:42:15.280 D/ActivityManager( 1732): freezing 5701 com.example.wp03.look.catalog

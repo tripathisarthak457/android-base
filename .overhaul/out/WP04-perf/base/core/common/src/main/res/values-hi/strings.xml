@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।</string>
+    <string name="common_error_offline">आप ऑफ़लाइन हैं। अपना कनेक्शन जांचें और फिर से कोशिश करें।</string>
+    <string name="common_error_unreachable">सर्वर से कनेक्ट नहीं हो सका। थोड़ी देर में फिर से कोशिश करें।</string>
+    <string name="common_error_queued">आप ऑफ़लाइन हैं। ऑनलाइन होते ही यह भेज दिया जाएगा।</string>
+    <string name="validation_required">यह ज़रूरी है।</string>
+    <string name="validation_email">सही ईमेल पता डालें।</string>
+    <string name="validation_phone">सही फ़ोन नंबर डालें।</string>
+    <string name="validation_number">कोई संख्या डालें।</string>
+    <string name="validation_range">%1$d और %2$d के बीच होना चाहिए।</string>
+    <string name="validation_mismatch">मेल नहीं खाता।</string>
+    <string name="validation_password_letter">कम से कम एक अक्षर शामिल करें।</string>
+    <string name="validation_password_digit">कम से कम एक अंक शामिल करें।</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">कम से कम %1$d वर्ण होना चाहिए।</item>
+        <item quantity="other">कम से कम %1$d वर्ण होने चाहिए।</item>
+    </plurals>
+    <plurals name="validation_max_length">
+        <item quantity="one">ज़्यादा से ज़्यादा %1$d वर्ण हो सकता है।</item>
+        <item quantity="other">ज़्यादा से ज़्यादा %1$d वर्ण हो सकते हैं।</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">कम से कम %1$d वर्ण इस्तेमाल करें।</item>
+        <item quantity="other">कम से कम %1$d वर्ण इस्तेमाल करें।</item>
+    </plurals>
+</resources>

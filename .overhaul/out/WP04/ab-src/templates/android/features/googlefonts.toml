@@ -1,0 +1,12 @@
+key = "googlefonts"
+title = "Downloadable Google Font"
+headline = "Use any Google Font"
+description = """
+Inter and JetBrains Mono through the Play Services font provider — a real file per weight, which
+bundled variable fonts do not get on every OEM build."""
+group = "Design"
+default = true
+requires = []
+implied_only = false
+owns = ["core/designsystem/src/main/res/values/font_certs.xml"]
+legacy = []

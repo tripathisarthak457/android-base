@@ -2,7 +2,9 @@
 
 The template's gates.toml stays the release gate and is not changed. For WP04's merge, the rows escalated in runs
 15-16 (Part D 17b) are held as non-regression ratchets at the last full phone measurement before the final run,
-plus 10 % (at least 0.1 percentage points for janky shares), as CP1 section 7 did for the pop rows; every other row
+plus 10 % (at least 0.1 percentage points for janky shares), as CP1 section 7 did for the pop rows; standard's app
+PSS is held at the phase 3c tree measured again on Oct 18 (ab-standard-measure.win.sh), because the phone and the
+tools moved it by more than the code did (41.7 MB on Oct 13, 46.5 MB on Oct 18 for the same tree); every other row
 keeps its release limit. Two rows are added that the release gate does not have: the tab switch's janky frames
 other than each switch's first, the share the first-frame escalation says is the motion itself.
 
@@ -23,7 +25,7 @@ RATCHETS = {
     "scroll_minimize.janky_pct": {"solid": (0.89, "phase3c")},
     "coldstart.median_ms": {"solid": (390, "phase3c")},
     "coldstart_installed.median_ms": {"solid": (419, "phase3c")},
-    "meminfo.pss_app_mb": {"solid": (53.6, "phase3c")},
+    "meminfo.pss_app_mb": {"solid": (53.6, "phase3c"), "standard": (46.5, "d10ef94 remeasured Oct 18")},
 }
 
 ADDED = [

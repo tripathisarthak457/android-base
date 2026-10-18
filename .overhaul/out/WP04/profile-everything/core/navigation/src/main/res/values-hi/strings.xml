@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_more">और</string>
+    <string name="navigation_back">वापस</string>
+    <string name="navigation_show_sidebar">साइडबार दिखाएं</string>
+    <string name="navigation_hide_sidebar">साइडबार छिपाएं</string>
+</resources>

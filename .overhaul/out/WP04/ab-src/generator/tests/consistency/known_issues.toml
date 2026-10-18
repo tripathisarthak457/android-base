@@ -1,0 +1,59 @@
+# Issues generated projects have today, each with the package that fixes it. The runner fails on an
+# issue that is not listed, and the full run also fails on a listed one that no longer occurs, so
+# this list only shrinks. `match` is a regular expression searched in the issue line; {pkg} is the
+# package path and {package} the package.
+
+[[issue]]
+match = "^CONVENTION AndroidFirebaseConventionPlugin is never registered$"
+owner = "WP06"
+why = "the plugin's registration is fenced by <opt:firebase>, its file is not owned by firebase"
+
+[[issue]]
+match = "^CONVENTION AndroidRoomConventionPlugin is never registered$"
+owner = "WP06"
+why = "the plugin ships with room and database both off; ownership cannot say 'when both are off'"
+
+[[issue]]
+match = "^UNUSED-IMPORT app/src/main/kotlin/\\{pkg\\}/ui/AppDestinations\\.kt: \\{package\\}\\.(R|core\\.designsystem\\.icon\\.AppIcons)$"
+owner = "WP04"
+why = "the imports sit outside the <opt:> blocks of the tabs that use them"
+
+[[issue]]
+match = "^UNUSED-IMPORT feature/profile/src/main/kotlin/\\{pkg\\}/feature/profile/ProfileScreen\\.kt: androidx\\.compose\\.foundation\\.layout\\.Row$"
+owner = "WP02"
+why = "Row is used only by the media-picker block"
+
+[[issue]]
+match = "^UNUSED-IMPORT core/network/src/test/kotlin/\\{pkg\\}/core/network/KtorNetworkClientTest\\.kt: kotlinx\\.serialization\\.json\\.(JsonPrimitive|buildJsonObject)$"
+owner = "WP06"
+why = "used only by the room-gated cache tests"
+
+[[issue]]
+match = "^IMPORT (data|feature)/[a-z0-9_]+/src/(main|test)/kotlin/\\{pkg\\}/(data|feature)/[a-z0-9_]+/[A-Za-z0-9]+\\.kt: \\{package\\}\\.core\\.(common\\.AppResult|common\\.mvi\\.[A-Za-z]+|navigation\\.AppNavKey) is not declared$"
+owner = "WP02"
+why = "scaffold.py still writes the MVI shape and packages the template had before :core:mvi; WP02-M2 rewrites it"
+
+[[issue]]
+match = "^UNUSED-RES feature/settings/src/main/res/values/strings\\.xml: string/settings_(about|open_source_licences|licences_explanation|no_licences_explanation|no_licences_recorded|licence_not_stated)$"
+owner = "WP02"
+why = "the licences section's strings sit outside an <opt:licenses> fence, so they ship without the screen"
+
+[[issue]]
+match = "^UNUSED-RES feature/settings/src/main/res/values/strings\\.xml: string/settings_(require_unlock|app_lock_explanation)$"
+owner = "WP06"
+why = "the app-lock toggle's strings sit outside an <opt:applock> fence, so they ship without the toggle"
+
+[[issue]]
+match = "^UNUSED-RES feature/profile/src/main/res/values/strings\\.xml: string/profile_(change|remove)_photo$"
+owner = "WP02"
+why = "only the media-picker block uses them, and they are not fenced with it"
+
+[[issue]]
+match = "^UNUSED-RES feature/search/src/main/res/values/strings\\.xml: string/search_remove_recent$"
+owner = "WP02"
+why = "nothing in the template uses it, even with every feature on"
+
+[[issue]]
+match = "^UNUSED-RES app/src/main/res/drawable/ic_notification\\.xml: drawable/ic_notification$"
+owner = "WP06"
+why = "only push uses the notification icon, and push does not own the file"

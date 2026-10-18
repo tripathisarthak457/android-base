@@ -1,0 +1,31 @@
+[locked:gradle] waiting for the lock (pid 21836 since 2026-10-17 23:59:17: ./gradlew lint --continue --console=plain)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] 567 MB available, 2227 MB commit left; waiting for 1500 MB
+[locked:gradle] 829 MB available, 2143 MB commit left; waiting for 1500 MB
+run 1: exit 0 after 77 s
+run 2: exit 0 after 62 s
+run 3: exit 0 after 58 s
+run 4: exit 0 after 58 s
+run 5: exit 0 after 59 s
+run 6: exit 0 after 69 s
+run 7: exit 0 after 63 s
+run 8: exit 0 after 75 s

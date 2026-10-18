@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Recherche</string>
+    <string name="search_placeholder">Rechercher des publications</string>
+    <string name="search_recent">Récentes</string>
+    <string name="search_clear_recent">Effacer</string>
+    <string name="search_start_title">Trouvez ce que vous voulez</string>
+    <string name="search_start_message">Les résultats s’affichent pendant la saisie. Vos recherches sont conservées ici.</string>
+    <string name="search_no_results_title">Aucun résultat</string>
+    <string name="search_no_results_message">Rien ne correspond à « %1$s ». Essayez avec moins de mots ou d’autres mots.</string>
+    <string name="search_retry">Réessayer</string>
+    <string name="search_remove_recent">Retirer %1$s</string>
+</resources>

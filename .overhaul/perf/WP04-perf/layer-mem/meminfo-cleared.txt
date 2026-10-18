@@ -1,0 +1,78 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 396151958 Realtime: 1007088075
+
+** MEMINFO in pid 15795 [com.example.wp04.everything.dev] **
+                   Pss  Private  Private  SwapPss      Rss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------   ------
+  Native Heap    17033    17016        0       22    18284    22468    20685     1782
+  Dalvik Heap    20051    20028        0       70    21416    31954     7378    24576
+ Dalvik Other     2070     1972        0        1     2640                           
+        Stack     1656     1656        0        0     1660                           
+       Ashmem       12        0        0        0      824                           
+      Gfx dev     4376     4376        0        0     4376                           
+    Other dev       40        0       40        0      424                           
+     .so mmap     4277      208      140        3    47744                           
+    .jar mmap     1082        0       76        0    39744                           
+    .apk mmap      618        8       20        0     6896                           
+    .ttf mmap      121        0        0        0      952                           
+    .dex mmap    13820       36    13776        0    14736                           
+    .oat mmap      226        0        0        0    12752                           
+    .art mmap     3302     3056       20       80    19096                           
+   Other mmap      244       32      140        0     1840                           
+   EGL mtrack    51380    51380        0        0    51380                           
+    GL mtrack      384      384        0        0      384                           
+      Unknown      876      616      256        4     1580                           
+        TOTAL   121748   100768    14468      180   246728    54422    28063    26358
+ 
+ App Summary
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:    23104                          40512
+         Native Heap:    17016                          18284
+                Code:    14264                         123016
+               Stack:     1656                           1660
+            Graphics:    56140                          56140
+       Private Other:     3056
+              System:     6512
+             Unknown:                                    7116
+ 
+           TOTAL PSS:   121748            TOTAL RSS:   246728       TOTAL SWAP PSS:      180
+ 
+ Objects
+               Views:        9         ViewRootImpl:        1
+         AppContexts:       12           Activities:        1
+              Assets:       41        AssetManagers:        0
+       Local Binders:       74        Proxy Binders:       70
+       Parcel memory:       20         Parcel count:       70
+    Death Recipients:        3             WebViews:        0
+ 
+ Native Allocations
+                         Count                       Total(kB)
+                        ------                         ------
+   Bitmap (malloced):       52                             97
+    Other (malloced):     2406                            228
+ Other (nonmalloced):      158                            103
+ 
+ Mapped Bitmaps
+                         Count                       Size(KB)
+                        ------                         ------
+              Mapped:        0                              0
+              Unique:        0                              0
+ 
+ SQL
+         MEMORY_USED:      382
+  PAGECACHE_OVERFLOW:      194          MALLOC_SIZE:      107
+ 
+ DATABASES
+      pgsz     dbsz   Lookaside(b) cache hits cache misses cache size  Dbname
+PER CONNECTION STATS
+         4       56             18     8    54     1  /data/user/0/com.example.wp04.everything.dev/databases/network
+         4        8                    0     0     0    (attached) temp
+         4       56             24    15    23     1  /data/user/0/com.example.wp04.everything.dev/databases/network (1)
+         4       56             92    35    82    10  /data/user/0/com.example.wp04.everything.dev/databases/com.google.android.datatransport.events
+POOL STATS
+     cache hits  cache misses    cache size  Dbname
+             23            81             2  /data/user/0/com.example.wp04.everything.dev/databases/network
+             35            83            10  /data/user/0/com.example.wp04.everything.dev/databases/com.google.android.datatransport.events
+ 

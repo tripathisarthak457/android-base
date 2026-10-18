@@ -1,0 +1,179 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:navigation:testDebugUnitTest :core:navigation:lintDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:verifyComposeUsage
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:verifyApiPurity FROM-CACHE
+> Task :core:testing:preBuild
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:koverFindJar UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+> Task :core:testing:preDebugBuild
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:navigation:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:prepareLintJarForPublish
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:preDebugAndroidTestBuild
+> Task :core:navigation:prepareLintJarForPublish
+> Task :core:navigation:writeDebugLintModelMetadata
+> Task :core:testing:checkDebugAarMetadata
+> Task :core:navigation:prepareDebugArtProfile
+> Task :core:navigation:extractProguardFiles
+> Task :core:testing:mergeDebugGeneratedProguardFiles
+> Task :core:testing:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:testing:prepareDebugArtProfile
+> Task :core:testing:mergeDebugConsumerProguardFiles
+> Task :core:testing:prepareLintJarForPublish
+> Task :core:testing:createFullJarDebug
+> Task :core:testing:writeDebugLintModelMetadata
+> Task :core:testing:extractDebugAnnotations FROM-CACHE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preDebugAndroidTestBuild
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:extractProguardFiles
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin FROM-CACHE
+> Task :core:navigation:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:testing:mergeDebugJavaResource
+> Task :core:navigation:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:extractDebugAnnotations FROM-CACHE
+> Task :core:designsystem:extractDeepLinksForAarDebug FROM-CACHE
+> Task :core:designsystem:mergeDebugGeneratedProguardFiles
+> Task :core:designsystem:mergeDebugConsumerProguardFiles
+> Task :core:designsystem:prepareDebugArtProfile
+> Task :core:designsystem:mergeDebugJavaResource
+> Task :core:navigation:processDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:syncDebugLibJars FROM-CACHE
+> Task :core:designsystem:writeDebugLintModelMetadata
+> Task :core:designsystem:createFullJarDebug
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:checkDebugAarMetadata
+> Task :core:designsystem:bundleDebugLocalLintAar
+> Task :core:navigation:compileDebugKotlin FROM-CACHE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm FROM-CACHE
+> Task :core:navigation:bundleLibRuntimeToJarDebug
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug
+> Task :core:navigation:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac UP-TO-DATE
+> Task :core:navigation:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:navigation:hiltJavaCompileDebugUnitTest UP-TO-DATE
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:navigation:testDebugUnitTest FROM-CACHE
+> Task :core:designsystem:lintAnalyzeDebug FROM-CACHE
+> Task :core:designsystem:generateDebugLintModel
+> Task :core:designsystem:lintAnalyzeDebugAndroidTest FROM-CACHE
+> Task :core:designsystem:lintAnalyzeDebugUnitTest FROM-CACHE
+> Task :core:designsystem:generateDebugAndroidTestLintModel
+> Task :core:navigation:checkDebugAarMetadata
+> Task :core:navigation:mergeDebugGeneratedProguardFiles
+> Task :core:navigation:mergeDebugConsumerProguardFiles
+> Task :core:navigation:mergeDebugJavaResource
+> Task :core:navigation:extractDebugAnnotations
+> Task :core:navigation:createFullJarDebug
+> Task :core:testing:syncDebugLibJars FROM-CACHE
+> Task :core:testing:bundleDebugLocalLintAar
+> Task :core:designsystem:generateDebugUnitTestLintModel
+> Task :core:navigation:syncDebugLibJars
+> Task :core:navigation:bundleDebugLocalLintAar
+> Task :core:navigation:generateDebugLintReportModel
+> Task :core:navigation:generateDebugAndroidTestLintModel
+> Task :core:navigation:generateDebugUnitTestLintModel
+> Task :core:navigation:lintAnalyzeDebugAndroidTest
+> Task :core:navigation:lintAnalyzeDebugUnitTest
+> Task :core:navigation:lintAnalyzeDebug
+> Task :core:navigation:lintReportDebug
+> Task :core:navigation:lintDebug
+
+BUILD SUCCESSFUL in 42s
+140 actionable tasks: 47 executed, 15 from cache, 78 up-to-date
+Configuration cache entry stored.

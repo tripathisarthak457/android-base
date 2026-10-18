@@ -1,0 +1,210 @@
+vsync 60103085 ui 5.33 ms
+     2.982 ms  x1   d1  traversal
+     2.703 ms  x1   d2  draw-VRI[MainActivity]
+     2.296 ms  x1   d1  animation
+     2.060 ms  x1   d2  Recomposer:recompose
+     1.609 ms  x1   d3  Record View#draw()
+     1.068 ms  x1   d3  postAndWait
+     0.869 ms  x6   d3  Compose:recompose
+     0.827 ms  x1   d4  AndroidOwner:measureAndLayout
+     0.629 ms  x1   d4  AndroidOwner:draw
+     0.348 ms  x3   d3  Compose:applyChanges
+     0.187 ms  x3   d3  Compose:sideeffects
+     0.182 ms  x1   d2  Recomposer:animation
+     0.167 ms  x1   d2  ViewRootImpl#setFrameRateCategory high, reason requested, -
+     0.130 ms  x1   d5  Compose:onPositionedCallbacks
+vsync 60103085 rt 5.77 ms
+     4.496 ms  x1   d1  Drawing  0.00  0.00 1080.00 2400.00
+     1.912 ms  x1   d2  flush commands
+     1.517 ms  x1   d3  auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const
+     1.397 ms  x1   d2  eglSwapBuffersWithDamageKHR
+     0.959 ms  x1   d1  syncFrameState
+     0.806 ms  x1   d3  queueBuffer
+     0.773 ms  x1   d2  prepareTree
+     0.568 ms  x1   d4  queueBuffer
+     0.564 ms  x18  d4  FillRectOp
+     0.433 ms  x1   d5  onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)
+     0.415 ms  x2   d4  Clear
+     0.375 ms  x1   d6  acquireNextBufferLocked - VRI[MainActivity]#0(f:0,a:1)frame=642
+     0.304 ms  x4   d4  CircularRRectOp
+     0.210 ms  x1   d3  auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const
+vsync 60103803 ui 6.86 ms
+     4.153 ms  x1   d1  traversal
+     3.840 ms  x1   d2  draw-VRI[MainActivity]
+     2.641 ms  x1   d1  animation
+     2.359 ms  x1   d2  Recomposer:recompose
+     1.976 ms  x1   d3  postAndWait
+     1.828 ms  x1   d3  Record View#draw()
+     0.987 ms  x6   d3  Compose:recompose
+     0.946 ms  x1   d4  AndroidOwner:measureAndLayout
+     0.701 ms  x1   d4  AndroidOwner:draw
+     0.408 ms  x3   d3  Compose:applyChanges
+     0.222 ms  x1   d2  Recomposer:animation
+     0.220 ms  x3   d3  Compose:sideeffects
+     0.187 ms  x1   d2  ViewRootImpl#setFrameRateCategory high, reason requested, -
+     0.153 ms  x1   d5  Compose:onPositionedCallbacks
+vsync 60103803 rt 7.46 ms
+     5.938 ms  x1   d1  Drawing  0.00  0.00 1080.00 2400.00
+     2.847 ms  x1   d2  flush commands
+     1.888 ms  x1   d3  auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const
+     1.636 ms  x1   d2  eglSwapBuffersWithDamageKHR
+     1.124 ms  x1   d1  syncFrameState
+     0.945 ms  x1   d3  queueBuffer
+     0.911 ms  x1   d2  prepareTree
+     0.707 ms  x1   d4  queueBuffer
+     0.577 ms  x14  d4  FillRectOp
+     0.560 ms  x1   d5  onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)
+     0.503 ms  x2   d4  Clear
+     0.497 ms  x1   d6  acquireNextBufferLocked - VRI[MainActivity]#0(f:0,a:1)frame=729
+     0.437 ms  x1   d3  auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const
+     0.396 ms  x6   d4  AtlasTextOp
+vsync 60104549 ui 5.64 ms
+     2.961 ms  x1   d1  traversal
+     2.645 ms  x1   d2  draw-VRI[MainActivity]
+     2.615 ms  x1   d1  animation
+     2.312 ms  x1   d2  Recomposer:recompose
+     1.884 ms  x1   d3  Record View#draw()
+     1.038 ms  x1   d4  AndroidOwner:measureAndLayout
+     0.970 ms  x6   d3  Compose:recompose
+     0.725 ms  x1   d3  postAndWait
+     0.670 ms  x1   d4  AndroidOwner:draw
+     0.444 ms  x3   d3  Compose:applyChanges
+     0.244 ms  x1   d2  Recomposer:animation
+     0.203 ms  x3   d3  Compose:sideeffects
+     0.176 ms  x1   d2  ViewRootImpl#setFrameRateCategory high, reason requested, -
+     0.147 ms  x1   d5  Compose:onPositionedCallbacks
+vsync 60104549 rt 3.46 ms
+     2.922 ms  x1   d1  Drawing  0.00  0.00 1080.00 2400.00
+     1.492 ms  x1   d2  flush commands
+     0.879 ms  x1   d3  auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const
+     0.696 ms  x1   d2  eglSwapBuffersWithDamageKHR
+     0.403 ms  x1   d3  queueBuffer
+     0.373 ms  x8   d4  AtlasTextOp
+     0.369 ms  x1   d3  auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const
+     0.345 ms  x1   d1  syncFrameState
+     0.289 ms  x24  d4  CircularRRectOp
+     0.288 ms  x1   d4  queueBuffer
+     0.261 ms  x24  d4  FillRectOp
+     0.258 ms  x1   d2  prepareTree
+     0.217 ms  x1   d5  onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)
+     0.190 ms  x1   d6  acquireNextBufferLocked - VRI[MainActivity]#0(f:0,a:1)frame=816
+vsync 60105290 ui 10.03 ms
+     5.234 ms  x1   d1  traversal
+     4.760 ms  x1   d2  draw-VRI[MainActivity]
+     4.709 ms  x1   d1  animation
+     4.323 ms  x1   d3  Record View#draw()
+     4.304 ms  x1   d2  Recomposer:recompose
+     2.696 ms  x1   d4  AndroidOwner:measureAndLayout
+     1.858 ms  x6   d3  Compose:recompose
+     1.332 ms  x1   d4  AndroidOwner:draw
+     0.823 ms  x3   d3  Compose:applyChanges
+     0.454 ms  x1   d5  Compose:onPositionedCallbacks
+     0.381 ms  x1   d3  postAndWait
+     0.321 ms  x1   d2  Recomposer:animation
+     0.299 ms  x1   d2  ViewRootImpl#setFrameRateCategory high, reason requested, -
+     0.288 ms  x3   d3  Compose:sideeffects
+vsync 60105290 rt 2.65 ms
+     2.184 ms  x1   d1  Drawing  0.00  0.00 1080.00 2400.00
+     1.014 ms  x1   d2  flush commands
+     0.751 ms  x1   d3  auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const
+     0.631 ms  x1   d2  eglSwapBuffersWithDamageKHR
+     0.374 ms  x1   d3  queueBuffer
+     0.298 ms  x1   d1  syncFrameState
+     0.277 ms  x10  d4  AtlasTextOp
+     0.255 ms  x1   d4  queueBuffer
+     0.222 ms  x1   d2  prepareTree
+     0.211 ms  x20  d4  CircularRRectOp
+     0.203 ms  x16  d4  FillRectOp
+     0.195 ms  x1   d5  onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)
+     0.176 ms  x1   d3  auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const
+     0.174 ms  x1   d6  acquireNextBufferLocked - VRI[MainActivity]#0(f:0,a:1)frame=903
+vsync 60106002 ui 9.74 ms
+     4.885 ms  x1   d1  traversal
+     4.774 ms  x1   d1  animation
+     4.415 ms  x1   d2  Recomposer:recompose
+     4.413 ms  x1   d2  draw-VRI[MainActivity]
+     3.824 ms  x1   d3  Record View#draw()
+     2.340 ms  x1   d4  AndroidOwner:measureAndLayout
+     2.074 ms  x6   d3  Compose:recompose
+     1.189 ms  x1   d4  AndroidOwner:draw
+     0.714 ms  x3   d3  Compose:applyChanges
+     0.534 ms  x1   d3  postAndWait
+     0.345 ms  x1   d5  Compose:onPositionedCallbacks
+     0.330 ms  x3   d3  Compose:sideeffects
+     0.300 ms  x1   d2  ViewRootImpl#setFrameRateCategory high, reason requested, -
+     0.279 ms  x1   d2  Recomposer:animation
+vsync 60106002 rt 2.49 ms
+     1.896 ms  x1   d1  Drawing  0.00  0.00 1080.00 2400.00
+     0.745 ms  x1   d2  eglSwapBuffersWithDamageKHR
+     0.690 ms  x1   d2  flush commands
+     0.544 ms  x1   d3  auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const
+     0.455 ms  x1   d3  queueBuffer
+     0.355 ms  x1   d4  queueBuffer
+     0.319 ms  x1   d1  syncFrameState
+     0.292 ms  x1   d5  onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)
+     0.270 ms  x1   d6  acquireNextBufferLocked - VRI[MainActivity]#0(f:0,a:1)frame=990
+     0.243 ms  x1   d2  prepareTree
+     0.180 ms  x16  d4  FillRectOp
+     0.160 ms  x4   d4  AtlasTextOp
+     0.159 ms  x2   d4  Clear
+     0.085 ms  x1   d3  auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const
+vsync 60106764 ui 5.2 ms
+     2.945 ms  x1   d1  traversal
+     2.686 ms  x1   d2  draw-VRI[MainActivity]
+     2.196 ms  x1   d1  animation
+     1.989 ms  x1   d2  Recomposer:recompose
+     1.595 ms  x1   d3  Record View#draw()
+     1.062 ms  x1   d3  postAndWait
+     0.857 ms  x6   d3  Compose:recompose
+     0.816 ms  x1   d4  AndroidOwner:measureAndLayout
+     0.637 ms  x1   d4  AndroidOwner:draw
+     0.323 ms  x3   d3  Compose:applyChanges
+     0.173 ms  x3   d3  Compose:sideeffects
+     0.157 ms  x1   d2  Recomposer:animation
+     0.154 ms  x1   d2  ViewRootImpl#setFrameRateCategory high, reason requested, -
+     0.128 ms  x1   d5  Compose:onPositionedCallbacks
+vsync 60106764 rt 5.79 ms
+     4.538 ms  x1   d1  Drawing  0.00  0.00 1080.00 2400.00
+     1.924 ms  x1   d2  flush commands
+     1.536 ms  x1   d3  auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const
+     1.387 ms  x1   d2  eglSwapBuffersWithDamageKHR
+     0.934 ms  x1   d1  syncFrameState
+     0.810 ms  x1   d3  queueBuffer
+     0.749 ms  x1   d2  prepareTree
+     0.580 ms  x1   d4  queueBuffer
+     0.560 ms  x18  d4  FillRectOp
+     0.440 ms  x1   d5  onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)
+     0.386 ms  x2   d4  Clear
+     0.379 ms  x1   d6  acquireNextBufferLocked - VRI[MainActivity]#0(f:0,a:1)frame=1077
+     0.304 ms  x4   d4  CircularRRectOp
+     0.225 ms  x1   d3  auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const
+
+medians over 6 first frames (a frame without the slice counts 0):
+   rt   3.709 ms  in 6/6  d1  Drawing  0.00  0.00 1080.00 2400.00
+   ui   3.567 ms  in 6/6  d1  traversal
+   ui   3.271 ms  in 6/6  d2  draw-VRI[MainActivity]
+   ui   2.628 ms  in 6/6  d1  animation
+   ui   2.335 ms  in 6/6  d2  Recomposer:recompose
+   ui   1.856 ms  in 6/6  d3  Record View#draw()
+   rt   1.702 ms  in 6/6  d2  flush commands
+   rt   1.198 ms  in 6/6  d3  auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const
+   rt   1.066 ms  in 6/6  d2  eglSwapBuffersWithDamageKHR
+   ui   0.992 ms  in 6/6  d4  AndroidOwner:measureAndLayout
+   ui   0.978 ms  in 6/6  d3  Compose:recompose
+   ui   0.893 ms  in 6/6  d3  postAndWait
+   ui   0.685 ms  in 6/6  d4  AndroidOwner:draw
+   rt   0.639 ms  in 6/6  d1  syncFrameState
+   rt   0.631 ms  in 6/6  d3  queueBuffer
+   rt   0.504 ms  in 6/6  d2  prepareTree
+   rt   0.461 ms  in 6/6  d4  queueBuffer
+   ui   0.426 ms  in 6/6  d3  Compose:applyChanges
+   rt   0.411 ms  in 6/6  d4  FillRectOp
+   rt   0.362 ms  in 6/6  d5  onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)
+   rt   0.285 ms  in 6/6  d4  Clear
+   rt   0.278 ms  in 6/6  d4  CircularRRectOp
+   rt   0.244 ms  in 6/6  d4  AtlasTextOp
+   ui   0.233 ms  in 6/6  d2  Recomposer:animation
+   rt   0.217 ms  in 6/6  d3  auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const
+   ui   0.212 ms  in 6/6  d3  Compose:sideeffects
+   ui   0.181 ms  in 6/6  d2  ViewRootImpl#setFrameRateCategory high, reason requested, -
+   ui   0.150 ms  in 6/6  d5  Compose:onPositionedCallbacks

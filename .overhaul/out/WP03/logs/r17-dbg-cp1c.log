@@ -1,0 +1,8 @@
+[locked:adb] waiting for the lock (pid 11564 since 2026-10-18 05:49:09: ./heap.win.sh)
+A-tap-1s: settle 1.0s, page still moving after reveal: True, sheet opened: True
+B-tap-4s: settle 4.0s, page still moving after reveal: False, sheet opened: True
+C-press-1s: settle 1.0s, page still moving after reveal: True, sheet opened: True
+D-tap-twice: settle 1.0s, page still moving after reveal: True, sheet opened: True
+basic on screen at launch: (44, 1282, 250, 1414)
+E-sheets-no-scroll: sheet opened: True
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0

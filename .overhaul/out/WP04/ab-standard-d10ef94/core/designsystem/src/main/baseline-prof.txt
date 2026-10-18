@@ -1,0 +1,2 @@
+HSPLcom/example/wp04/abstd/core/designsystem/**->**(**)**
+Lcom/example/wp04/abstd/core/designsystem/**;

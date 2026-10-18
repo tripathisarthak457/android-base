@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">Etwas ist schiefgelaufen. Bitte versuche es noch einmal.</string>
+    <string name="common_error_offline">Du bist offline. Prüfe deine Verbindung und versuche es noch einmal.</string>
+    <string name="common_error_unreachable">Der Server ist nicht erreichbar. Versuche es gleich noch einmal.</string>
+    <string name="validation_required">Pflichtfeld.</string>
+    <string name="validation_email">Gib eine gültige E-Mail-Adresse ein.</string>
+    <string name="validation_mismatch">Stimmt nicht überein.</string>
+    <string name="validation_password_letter">Verwende mindestens einen Buchstaben.</string>
+    <string name="validation_password_digit">Verwende mindestens eine Zahl.</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">Mindestens %1$d Zeichen.</item>
+        <item quantity="other">Mindestens %1$d Zeichen.</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">Verwende mindestens %1$d Zeichen.</item>
+        <item quantity="other">Verwende mindestens %1$d Zeichen.</item>
+    </plurals>
+</resources>

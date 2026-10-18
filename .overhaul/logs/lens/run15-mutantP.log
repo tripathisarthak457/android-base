@@ -1,0 +1,90 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+
+> Task :core:designsystem:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/wt/WP05/templates/android/core/designsystem/src/test/kotlin/com/base/app/core/designsystem/foundation/glass/GlassStageTest.kt:62:16 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+
+GlassStageTest > a sample taken before its scene is recorded shows the scene once it is FAILED
+    java.lang.AssertionError at GlassStageTest.kt:137
+
+10 tests completed, 1 failed
+
+> Task :core:designsystem:testDebugUnitTest FAILED
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/wt/WP05/templates/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/wt/WP05/templates/android/core/designsystem/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 29s
+34 actionable tasks: 7 executed, 27 up-to-date
+Configuration cache entry reused.
+EXIT 1
+PASS GlassStageTest: tiers that sample nothing give chrome no scene
+PASS GlassStageTest: chrome samples the part of the scene that lies under it
+PASS GlassStageTest: a sample follows the chrome to the other end of the scene
+PASS GlassStageTest: a tier change keeps the content's composition and state
+PASS GlassStageTest: where the scene is transparent a sample shows the window background
+FAIL GlassStageTest: a sample taken before its scene is recorded shows the scene once it is :: java.lang.AssertionError
+PASS GlassStageTest: live chrome tints the scene behind it, frosted chrome all but hides it
+PASS GlassStageTest: a surface inside the scene it samples fails with a reason, not a render thread crash
+PASS GlassStageTest: a stage moved together with its chrome still samples what lies under the chrome
+PASS GlassStageTest: a stage moved together with its chrome redraws no sample of its scene

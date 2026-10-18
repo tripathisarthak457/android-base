@@ -1,0 +1,215 @@
+package com.example.wp04.base.feature.sample.list
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
+import com.example.wp04.base.core.common.mvi.LoadState
+import com.example.wp04.base.core.common.mvi.hasContent
+import com.example.wp04.base.core.common.mvi.isRefreshing
+import com.example.wp04.base.core.designsystem.animation.appAnimateItem
+import com.example.wp04.base.core.designsystem.component.container.AppCard
+import com.example.wp04.base.core.designsystem.component.container.AppScaffold
+import com.example.wp04.base.core.designsystem.component.feedback.AppBanner
+import com.example.wp04.base.core.designsystem.component.feedback.AppEmptyState
+import com.example.wp04.base.core.designsystem.component.feedback.AppErrorState
+import com.example.wp04.base.core.designsystem.component.feedback.AppSkeletonListItem
+import com.example.wp04.base.core.designsystem.component.feedback.AppTone
+import com.example.wp04.base.core.designsystem.component.input.AppSearchField
+import com.example.wp04.base.core.designsystem.component.navigation.AppLargeTitle
+import com.example.wp04.base.core.designsystem.component.refresh.AppPullToRefresh
+import com.example.wp04.base.core.designsystem.component.text.AppText
+import com.example.wp04.base.core.designsystem.icon.AppIcons
+import com.example.wp04.base.core.designsystem.theme.AppTheme
+import com.example.wp04.base.core.ui.asString
+import com.example.wp04.base.data.sample.SampleItem
+import com.example.wp04.base.feature.sample.R
+
+/**
+ * The list screen. Stateless by construction: it takes a state and emits events, and holds nothing
+ * of its own.
+ */
+@Composable
+fun SampleListScreen(
+    state: SampleListState,
+    onEvent: (SampleListEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AppScaffold(
+        contentMaxWidth = AppTheme.layout.readableMaxWidth,
+        modifier = modifier,
+        topBar = {
+            Column {
+                AppLargeTitle(
+                    title = stringResource(R.string.sample_title),
+                    subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
+                )
+                AppSearchField(
+                    value = state.query,
+                    onValueChange = { onEvent(SampleListEvent.QueryChanged(it)) },
+                    placeholder = stringResource(R.string.sample_search_titles),
+                    modifier = Modifier.padding(
+                        horizontal = AppTheme.spacing.gutter,
+                        vertical = AppTheme.spacing.sm,
+                    ),
+                )
+            }
+        },
+    ) {
+        when {
+            state.loadState is LoadState.Loading -> LoadingList()
+
+            state.loadState is LoadState.Error -> AppErrorState(
+                message = state.loadState.message.asString(),
+                isOffline = state.loadState.isOffline,
+                onRetry = { onEvent(SampleListEvent.Retry) },
+            )
+
+            state.loadState is LoadState.Empty -> AppEmptyState(
+                title = stringResource(R.string.sample_nothing_here_yet),
+                message = stringResource(R.string.sample_empty_explanation),
+                icon = AppIcons.ListView,
+                actionLabel = stringResource(R.string.sample_reload),
+                onAction = { onEvent(SampleListEvent.Retry) },
+            )
+
+            state.loadState.hasContent -> Content(state, onEvent)
+        }
+    }
+}
+
+@Composable
+private fun Content(
+    state: SampleListState,
+    onEvent: (SampleListEvent) -> Unit,
+) {
+    AppPullToRefresh(
+        isRefreshing = state.loadState.isRefreshing,
+        onRefresh = { onEvent(SampleListEvent.Refresh) },
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            if (state.isFromCache) {
+                AppBanner(
+                    text = stringResource(R.string.sample_showing_cached),
+                    tone = AppTone.Info,
+                    icon = AppIcons.WifiOff,
+                )
+            }
+
+            val visible = state.visibleItems
+            if (visible.isEmpty()) {
+                AppEmptyState(
+                    title = stringResource(R.string.sample_no_matches),
+                    message = stringResource(R.string.sample_no_matches_for_query, state.query),
+                    icon = AppIcons.Search,
+                )
+                return@Column
+            }
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(AppTheme.spacing.gutter),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+            ) {
+                // Keyed on the id so inserts keep scroll position and animations.
+                items(items = visible, key = SampleItem::id) { item ->
+                    SampleRow(
+                        item = item,
+                        onClick = { onEvent(SampleListEvent.ItemClicked(item.id)) },
+                        modifier = appAnimateItem(),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SampleRow(
+    item: SampleItem,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AppCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
+        AppText(
+            text = item.title,
+            style = AppTheme.typography.titleLarge,
+            color = AppTheme.colors.contentPrimary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        AppText(
+            text = item.preview,
+            modifier = Modifier.padding(top = AppTheme.spacing.xs),
+            style = AppTheme.typography.bodySmall,
+            color = AppTheme.colors.contentTertiary,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+/**
+ * The loading state is shaped like the content it stands in for — see
+ * [com.example.wp04.base.core.designsystem.component.feedback.AppSkeleton].
+ */
+@Composable
+private fun LoadingList() {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(AppTheme.spacing.gutter),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+    ) {
+        items(SKELETON_ROWS) {
+            AppCard { AppSkeletonListItem(showLeading = false) }
+        }
+    }
+}
+
+private const val SKELETON_ROWS = 6
+
+@Preview(name = "Content", showBackground = true)
+@Composable
+private fun SampleListContentPreview() {
+    AppTheme {
+        SampleListScreen(
+            state = SampleListState(
+                loadState = LoadState.Success,
+                items = List(4) {
+                    SampleItem(
+                        id = it,
+                        title = "A sample row number ${it + 1}",
+                        body = "Some supporting copy that gets truncated when it runs long enough.",
+                    )
+                },
+            ),
+            onEvent = {},
+        )
+    }
+}
+
+@Preview(name = "Loading", showBackground = true)
+@Composable
+private fun SampleListLoadingPreview() {
+    AppTheme {
+        SampleListScreen(state = SampleListState(loadState = LoadState.Loading), onEvent = {})
+    }
+}
+
+@Preview(name = "Empty", showBackground = true)
+@Composable
+private fun SampleListEmptyPreview() {
+    AppTheme {
+        SampleListScreen(state = SampleListState(loadState = LoadState.Empty), onEvent = {})
+    }
+}

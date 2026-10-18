@@ -28,6 +28,11 @@ def adb(serial, *args, binary=False):
     return result.stdout if binary else result.stdout.decode()
 
 
+def in_front(serial, package):
+    resumed = adb(serial, "shell", "dumpsys activity activities | grep -m1 topResumedActivity; true")
+    return f" {package}/" in resumed
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--serial", required=True)
@@ -45,11 +50,20 @@ def main():
                    f"-c android.intent.category.LAUNCHER {args.package}").strip().splitlines()[-1].strip()
     size = adb(args.serial, "shell", "wm size").strip().splitlines()[-1].split()[-1]
     width, height = (int(v) for v in size.split("x"))
+    missing = []
     for section in args.sections:
-        adb(args.serial, "shell", f"am force-stop {args.package}")
-        adb(args.serial, "shell",
-            f"am start -W -n {activity} --es section {section} --es theme {args.theme} --ef fontScale {args.font_scale}")
-        time.sleep(2.0)
+        # A page that never came to the front would be shot as whatever app was there before it.
+        for attempt in range(2):
+            adb(args.serial, "shell", f"am force-stop {args.package}")
+            adb(args.serial, "shell",
+                f"am start -W -n {activity} --es section {section} --es theme {args.theme} --ef fontScale {args.font_scale}")
+            time.sleep(2.0)
+            if in_front(args.serial, args.package):
+                break
+        else:
+            print(f"{section}: the catalog is not in front; see logcat -b crash")
+            missing.append(section)
+            continue
         shots, seen = [], set()
         for index in range(args.max_shots):
             png = adb(args.serial, "exec-out", "screencap -p", binary=True)
@@ -72,7 +86,7 @@ def main():
                         + "".join(f"[s{i}]" for i in range(len(shots))) + f"hstack=inputs={len(shots)}"
                         if len(shots) > 1 else "[0:v]scale=432:-1", tile], check=True)
         print(f"{section}: {len(shots)} shots -> {tile}")
-    return 0
+    return 1 if missing else 0
 
 
 if __name__ == "__main__":

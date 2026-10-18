@@ -1,0 +1,18 @@
+plugins {
+    id("com.example.wp04.base.android.library")
+}
+
+android {
+    namespace = "com.example.wp04.base.core.testing"
+}
+
+dependencies {
+    api(project(":core:common"))
+
+    // `api`, not `implementation`: this module exists to be a test module's single dependency,
+    // so everything it offers has to reach that module's compile classpath.
+    api(libs.junit)
+    api(libs.turbine)
+    api(libs.mockk)
+    api(libs.kotlinx.coroutines.test)
+}

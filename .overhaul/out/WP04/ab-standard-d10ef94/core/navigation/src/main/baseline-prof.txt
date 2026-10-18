@@ -1,0 +1,2 @@
+HSPLcom/example/wp04/abstd/core/navigation/**->**(**)**
+Lcom/example/wp04/abstd/core/navigation/**;

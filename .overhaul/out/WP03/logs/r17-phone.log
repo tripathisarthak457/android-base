@@ -1,0 +1,46 @@
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (holder unknown)
+[locked:adb] waiting for the lock (pid 20024 since 2026-10-18 08:01:37: ./record.win.sh D:/projects/tools/.overhaul/out/WP04/extras/everything.apk D:/projects/tools/.overhaul/perf/WP04/run21-7)
+[locked:adb] waiting for the lock (pid 20024 since 2026-10-18 08:01:37: ./record.win.sh D:/projects/tools/.overhaul/out/WP04/extras/everything.apk D:/projects/tools/.overhaul/perf/WP04/run21-7)
+Success
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Foundations-light.png
+Feel: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feel-light.png
+Text: 6 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Text-light.png
+Buttons: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Buttons-light.png
+Inputs: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Inputs-light.png
+Selection: 7 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Selection-light.png
+Lists: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Lists-light.png
+Containers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Containers-light.png
+Bars: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Bars-light.png
+Overlays: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Overlays-light.png
+Sheets: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Sheets-light.png
+Feedback: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feedback-light.png
+Loading: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Loading-light.png
+Motion: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Motion-light.png
+Adaptive: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Adaptive-light.png
+Pickers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Pickers-light.png
+Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Fields-light.png
+Data: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Data-light.png
+Collections: 6 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Collections-light.png
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Foundations-dark.png
+Feel: 7 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feel-dark.png
+Text: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Text-dark.png
+Buttons: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Buttons-dark.png
+Inputs: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Inputs-dark.png
+Selection: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Selection-dark.png
+Lists: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Lists-dark.png
+Containers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Containers-dark.png
+Bars: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Bars-dark.png
+Overlays: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Overlays-dark.png
+Sheets: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Sheets-dark.png
+Feedback: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feedback-dark.png
+Loading: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Loading-dark.png
+Motion: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Motion-dark.png
+Adaptive: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Adaptive-dark.png
+Pickers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Pickers-dark.png
+Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Fields-dark.png
+Data: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Data-dark.png
+Collections: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Collections-dark.png

@@ -1,0 +1,20 @@
+[locked:adb] waiting for the lock (pid 1960 since 2026-10-18 05:33:59: bash -c 
+set -euo pipefail
+out=D:/projects/tools/.overhaul/perf/WP04/ab-standard-7fa49d5-noswipe
+if [ -e $out ]; then mv)
+[locked:adb] waiting for the lock (pid 1960 since 2026-10-18 05:33:59: bash -c 
+set -euo pipefail
+out=D:/projects/tools/.overhaul/perf/WP04/ab-standard-7fa49d5-noswipe
+if [ -e $out ]; then mv)
+Starting: Intent { cmp=com.example.wp03.look.catalog/.CatalogActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.wp03.look.catalog/.CatalogActivity
+TotalTime: 228
+WaitTime: 231
+Complete
+    topResumedActivity=ActivityRecord{199807703 u0 com.example.wp03.look.catalog/.CatalogActivity t1869}
+    0 D:/projects/tools/.overhaul/out/WP03/dbg-feel2x/crash.txt
+   34 D:/projects/tools/.overhaul/out/WP03/dbg-feel2x/logcat.txt
+   34 total
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0

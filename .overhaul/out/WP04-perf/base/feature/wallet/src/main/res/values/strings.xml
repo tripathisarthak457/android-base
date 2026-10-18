@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Every piece of copy this feature renders. Translating means adding values-<code> beside it. -->
+<resources>
+    <string name="wallet_title">Wallet</string>
+    <string name="wallet_empty_title">Nothing here yet</string>
+    <string name="wallet_empty_message">When there is something to show, it appears on this screen.</string>
+    <string name="wallet_reload">Reload</string>
+</resources>

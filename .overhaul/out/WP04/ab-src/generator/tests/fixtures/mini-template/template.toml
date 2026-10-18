@@ -1,0 +1,29 @@
+# A toy template for the engine's golden test. It exercises every marker form, every identity
+# boundary and every kind of file, and changes only when the engine does.
+
+[target]
+key = "android"
+title = "Mini"
+status = "beta"
+status_note = "A test fixture."
+summary = "The smallest template that uses every engine feature."
+
+[identity]
+tokens = [
+  { from = "com.base.app", to = "{package}",      boundary = "dotted" },
+  { from = "com/base/app", to = "{package_path}", boundary = "path" },
+  { from = "BaseApp",      to = "{pascal}",       boundary = "prefix" },
+  { from = "base_app",     to = "{snake}",        boundary = "snake" },
+  { from = "baseapp",      to = "{lower}",        boundary = "snake" },
+]
+
+[regions]
+required = ["modules", "version", "readme-name"]
+
+[files]
+template_only = ["template.toml", "presets.toml", "removed.toml", "features"]
+binary_suffixes = [".png"]
+executable = ["gradlew", "tools/*.sh"]
+
+[groups]
+order = ["Core", "Extras"]

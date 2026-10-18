@@ -1,0 +1,596 @@
+{
+  "package": "com.example.wp04.abstd.dev",
+  "apk": "D:\\projects\\tools\\.overhaul\\out\\WP04\\ab-standard-d10ef94\\app\\build\\outputs\\apk\\dev\\release\\app-dev-arm64-v8a-release.apk",
+  "variant": "devRelease",
+  "runs": 3,
+  "seed": 440118,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "compile": "speed-profile",
+  "scenarios": [
+    "tabs",
+    "pushpop",
+    "scroll_root",
+    "idle",
+    "meminfo",
+    "coldstart"
+  ],
+  "gate": null,
+  "gates_file": "D:\\projects\\tools\\.overhaul\\out\\WP04\\ab-tools\\perf\\gates.toml",
+  "started": "2026-10-18T05:15:22",
+  "device": {
+    "serial": "9a7c74f4",
+    "model": "M2101K6I",
+    "sdk": "37",
+    "battery_c": 29.4
+  },
+  "metrics": {
+    "coldstart.median_ms": {
+      "value": 265,
+      "runs": [
+        264,
+        265,
+        267
+      ]
+    },
+    "coldstart.runs_ms": {
+      "value": [
+        246,
+        257,
+        274,
+        261,
+        284,
+        285
+      ],
+      "runs": [
+        [
+          279,
+          245,
+          286,
+          244,
+          314,
+          249
+        ],
+        [
+          239,
+          265,
+          286,
+          266,
+          288,
+          245
+        ],
+        [
+          246,
+          257,
+          274,
+          261,
+          284,
+          285
+        ]
+      ]
+    },
+    "first_gesture.janky": {
+      "value": 1,
+      "runs": [
+        1,
+        1,
+        3
+      ]
+    },
+    "first_gesture_warm.janky": {
+      "value": 2,
+      "runs": [
+        3,
+        2,
+        2
+      ]
+    },
+    "first_push.frame_ms": {
+      "value": 11.42,
+      "runs": [
+        11.42,
+        8.67,
+        20.93
+      ]
+    },
+    "first_push_warm.frame_ms": {
+      "value": 10.3,
+      "runs": [
+        19.42,
+        9.04,
+        10.3
+      ]
+    },
+    "idle.frames": {
+      "value": 0,
+      "runs": [
+        0,
+        0,
+        0
+      ]
+    },
+    "idle.frames_per_tab": {
+      "value": [
+        0,
+        0,
+        0
+      ],
+      "runs": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "meminfo.graphics_mb": {
+      "value": 54.5,
+      "runs": [
+        54.5,
+        54.5,
+        54.4
+      ]
+    },
+    "meminfo.pss_app_mb": {
+      "value": 46.5,
+      "runs": [
+        46.5,
+        46.5,
+        46.0
+      ]
+    },
+    "meminfo.pss_mb": {
+      "value": 101.0,
+      "runs": [
+        101.0,
+        101.0,
+        100.4
+      ]
+    },
+    "pushpop.first3_dequeue_ms.max": {
+      "value": 0.06,
+      "runs": [
+        0.06,
+        0.06,
+        0.14
+      ]
+    },
+    "pushpop.first3_dequeue_ms.median": {
+      "value": 0.02,
+      "runs": [
+        0.02,
+        0.02,
+        0.02
+      ]
+    },
+    "pushpop.first3_gpu_ms.max": {
+      "value": 20.94,
+      "runs": [
+        25.28,
+        20.94,
+        19.36
+      ]
+    },
+    "pushpop.first3_gpu_ms.median": {
+      "value": 13.71,
+      "runs": [
+        13.71,
+        14.09,
+        13.5
+      ]
+    },
+    "pushpop.first3_issue_ms.max": {
+      "value": 7.88,
+      "runs": [
+        7.02,
+        8.29,
+        7.88
+      ]
+    },
+    "pushpop.first3_issue_ms.median": {
+      "value": 2.56,
+      "runs": [
+        2.88,
+        2.56,
+        2.5
+      ]
+    },
+    "pushpop.frames": {
+      "value": 1009,
+      "runs": [
+        1009,
+        1009,
+        1009
+      ]
+    },
+    "pushpop.gpu_p50_ms": {
+      "value": 7,
+      "runs": [
+        8,
+        7,
+        7
+      ]
+    },
+    "pushpop.gpu_p90_ms": {
+      "value": 12,
+      "runs": [
+        12,
+        12,
+        12
+      ]
+    },
+    "pushpop.gpu_p99_ms": {
+      "value": 18,
+      "runs": [
+        18,
+        19,
+        18
+      ]
+    },
+    "pushpop.hitch_ms_per_s": {
+      "value": 8.17,
+      "runs": [
+        9.15,
+        7.15,
+        8.17
+      ]
+    },
+    "pushpop.janky_after_first_pct": {
+      "value": 0.2,
+      "runs": [
+        0.4,
+        0.2,
+        0.0
+      ]
+    },
+    "pushpop.janky_pct": {
+      "value": 1.78,
+      "runs": [
+        1.98,
+        1.78,
+        1.59
+      ]
+    },
+    "pushpop.late_first_frames": {
+      "value": 16,
+      "runs": [
+        16,
+        16,
+        16
+      ]
+    },
+    "pushpop.p50_ms": {
+      "value": 11,
+      "runs": [
+        12,
+        11,
+        11
+      ]
+    },
+    "pushpop.p90_ms": {
+      "value": 19,
+      "runs": [
+        19,
+        19,
+        18
+      ]
+    },
+    "pushpop.p99_ms": {
+      "value": 31,
+      "runs": [
+        30,
+        31,
+        31
+      ]
+    },
+    "pushpop.pop_first_frame_ms.max": {
+      "value": 11.09,
+      "runs": [
+        4.7,
+        11.09,
+        11.24
+      ]
+    },
+    "pushpop.pop_first_frame_ms.median": {
+      "value": 7.29,
+      "runs": [
+        4.59,
+        7.29,
+        10.56
+      ]
+    },
+    "pushpop.push_first_frame_ms.max": {
+      "value": 18.77,
+      "runs": [
+        18.63,
+        18.77,
+        19.04
+      ]
+    },
+    "pushpop.push_first_frame_ms.median": {
+      "value": 9.19,
+      "runs": [
+        12.7,
+        9.02,
+        9.19
+      ]
+    },
+    "pushpop.transitions": {
+      "value": 16,
+      "runs": [
+        16,
+        16,
+        16
+      ]
+    },
+    "scroll_root.frames": {
+      "value": 1358,
+      "runs": [
+        1360,
+        1358,
+        1269
+      ]
+    },
+    "scroll_root.gpu_p50_ms": {
+      "value": 6,
+      "runs": [
+        6,
+        6,
+        6
+      ]
+    },
+    "scroll_root.gpu_p90_ms": {
+      "value": 7,
+      "runs": [
+        7,
+        7,
+        7
+      ]
+    },
+    "scroll_root.gpu_p99_ms": {
+      "value": 7,
+      "runs": [
+        7,
+        7,
+        8
+      ]
+    },
+    "scroll_root.janky_pct": {
+      "value": 0.52,
+      "runs": [
+        0.37,
+        0.52,
+        0.95
+      ]
+    },
+    "scroll_root.p50_ms": {
+      "value": 9,
+      "runs": [
+        9,
+        9,
+        9
+      ]
+    },
+    "scroll_root.p90_ms": {
+      "value": 10,
+      "runs": [
+        10,
+        10,
+        11
+      ]
+    },
+    "scroll_root.p99_ms": {
+      "value": 13,
+      "runs": [
+        12,
+        13,
+        14
+      ]
+    },
+    "tab_first_visit.first_frame_ms.max": {
+      "value": 4.38,
+      "runs": [
+        4.36,
+        4.38,
+        4.39
+      ]
+    },
+    "tab_first_visit.first_frame_ms.median": {
+      "value": 4.15,
+      "runs": [
+        4.13,
+        4.3,
+        4.15
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.max": {
+      "value": 5.35,
+      "runs": [
+        5.3,
+        10.6,
+        5.35
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.median": {
+      "value": 4.78,
+      "runs": [
+        4.57,
+        6.92,
+        4.78
+      ]
+    },
+    "tabs.first3_dequeue_ms.max": {
+      "value": 0.06,
+      "runs": [
+        0.06,
+        0.06,
+        0.06
+      ]
+    },
+    "tabs.first3_dequeue_ms.median": {
+      "value": 0.02,
+      "runs": [
+        0.02,
+        0.02,
+        0.02
+      ]
+    },
+    "tabs.first3_gpu_ms.max": {
+      "value": 19.04,
+      "runs": [
+        19.09,
+        19.04,
+        17.47
+      ]
+    },
+    "tabs.first3_gpu_ms.median": {
+      "value": 13.05,
+      "runs": [
+        12.43,
+        13.05,
+        13.18
+      ]
+    },
+    "tabs.first3_issue_ms.max": {
+      "value": 5.07,
+      "runs": [
+        5.03,
+        5.69,
+        5.07
+      ]
+    },
+    "tabs.first3_issue_ms.median": {
+      "value": 1.76,
+      "runs": [
+        1.76,
+        1.66,
+        2.01
+      ]
+    },
+    "tabs.first_frame_ms.max": {
+      "value": 5.99,
+      "runs": [
+        12.22,
+        5.98,
+        5.99
+      ]
+    },
+    "tabs.first_frame_ms.median": {
+      "value": 5.2,
+      "runs": [
+        6.05,
+        5.2,
+        5.15
+      ]
+    },
+    "tabs.frames": {
+      "value": 783,
+      "runs": [
+        782,
+        783,
+        783
+      ]
+    },
+    "tabs.gpu_p50_ms": {
+      "value": 7,
+      "runs": [
+        7,
+        7,
+        7
+      ]
+    },
+    "tabs.gpu_p90_ms": {
+      "value": 11,
+      "runs": [
+        11,
+        11,
+        11
+      ]
+    },
+    "tabs.gpu_p99_ms": {
+      "value": 15,
+      "runs": [
+        16,
+        15,
+        15
+      ]
+    },
+    "tabs.hitch_ms_per_s": {
+      "value": 0.0,
+      "runs": [
+        0.0,
+        1.31,
+        0.0
+      ]
+    },
+    "tabs.janky_after_first_pct": {
+      "value": 0.0,
+      "runs": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "tabs.janky_pct": {
+      "value": 1.15,
+      "runs": [
+        1.15,
+        1.15,
+        1.15
+      ]
+    },
+    "tabs.late_first_frames": {
+      "value": 9,
+      "runs": [
+        9,
+        9,
+        9
+      ]
+    },
+    "tabs.p50_ms": {
+      "value": 9,
+      "runs": [
+        9,
+        9,
+        10
+      ]
+    },
+    "tabs.p90_ms": {
+      "value": 17,
+      "runs": [
+        17,
+        16,
+        18
+      ]
+    },
+    "tabs.p99_ms": {
+      "value": 22,
+      "runs": [
+        24,
+        21,
+        22
+      ]
+    },
+    "tabs.transitions": {
+      "value": 9,
+      "runs": [
+        9,
+        9,
+        9
+      ]
+    }
+  },
+  "inapplicable": {},
+  "notes": []
+}

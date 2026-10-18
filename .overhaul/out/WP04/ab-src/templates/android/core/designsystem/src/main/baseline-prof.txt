@@ -1,0 +1,2 @@
+HSPLcom/base/app/core/designsystem/**->**(**)**
+Lcom/base/app/core/designsystem/**;

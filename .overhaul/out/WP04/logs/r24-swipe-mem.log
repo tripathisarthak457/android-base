@@ -1,0 +1,10 @@
+[locked:adb] waiting for the lock (pid 11388 since 2026-10-18 05:43:43: bash D:/projects/tools/.overhaul/out/WP06/with_phone.sh 9a7c74f4 python D:/projects/tools/.overhaul/out/WP06/badge_qa_ch)
+p1-fresh:  Java Heap: 12424 29568  Native Heap: 8420 9708  Code: 10504 110496  Graphics: 54156 54156  TOTAL PSS: 93744 TOTAL RSS: 210612 TOTAL SWAP PSS: 341 
+p1-after-keypop:  Java Heap: 9640 32656  Native Heap: 13680 14956  Code: 10980 110340  Graphics: 54764 54764  TOTAL PSS: 101563 TOTAL RSS: 219448 TOTAL SWAP PSS: 109 
+p1-after-first-swipe:  Java Heap: 9412 32436  Native Heap: 17952 19228  Code: 11072 110540  Graphics: 54980 54980  TOTAL PSS: 105900 TOTAL RSS: 223892 TOTAL SWAP PSS: 108 
+p1-after-second-swipe:  Java Heap: 9424 32448  Native Heap: 20020 21296  Code: 11072 110540  Graphics: 54960 54960  TOTAL PSS: 107972 TOTAL RSS: 225964 TOTAL SWAP PSS: 108 
+p2-fresh:  Java Heap: 7996 24908  Native Heap: 7124 8404  Code: 11536 98056  Graphics: 53980 53980  TOTAL PSS: 86171 TOTAL RSS: 190948 TOTAL SWAP PSS: 359 
+p2-after-swipe:  Java Heap: 8576 31604  Native Heap: 16352 17616  Code: 11540 100064  Graphics: 54728 54728  TOTAL PSS: 101373 TOTAL RSS: 209680 TOTAL SWAP PSS: 113 
+p3-fresh:  Java Heap: 7980 24892  Native Heap: 7060 8340  Code: 11536 98040  Graphics: 53996 53996  TOTAL PSS: 86062 TOTAL RSS: 190824 TOTAL SWAP PSS: 359 
+p3-after-keypop:  Java Heap: 8560 31584  Native Heap: 12064 13328  Code: 11540 99940  Graphics: 54612 54612  TOTAL PSS: 96883 TOTAL RSS: 205076 TOTAL SWAP PSS: 113 
+SWIPE-MEM DONE

@@ -1,0 +1,25 @@
+[locked:gradle] waiting for the lock (pid 11712 since 2026-10-18 05:45:23: bash -c 
+set -uo pipefail
+O=D:/projects/tools/.overhaul/out/WP04-perf; W=D:/projects/tools/.overhaul/wt/WP04-perf
+cd $W/)
+[locked:gradle] waiting for the lock (pid 11712 since 2026-10-18 05:45:23: bash -c 
+set -uo pipefail
+O=D:/projects/tools/.overhaul/out/WP04-perf; W=D:/projects/tools/.overhaul/wt/WP04-perf
+cd $W/)
+[locked:gradle] waiting for the lock (pid 9312 since 2026-10-18 05:57:25: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 9312 since 2026-10-18 05:57:25: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 9312 since 2026-10-18 05:57:25: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+with the layer: exit 0
+layer line removed
+without the layer: exit 1
+layer lines after restore: 1
+TEST-SLIDE DONE

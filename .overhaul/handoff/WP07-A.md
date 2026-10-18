@@ -5,8 +5,24 @@ Branch `wp/WP07`, worktree `$OV/wt/WP07` (`OV=D:/projects/tools/.overhaul`,
 
 ## Progress
 
-Updated 2026-10-17 15:25 IST (run 4, the first on Windows). **Stopped waiting for WP04** (the shell port,
+Updated 2026-10-18 (run 6); run 4 was the first on Windows. **Stopped waiting for WP04** (the shell port,
 items 1–5 and 7 below) **and WP02-M2** (item 6). Next run: `git merge overhaul/multiplatform-v2`, then item 1.
+
+Run 6 (2026-10-18): WIN had merged, WP04 still had not. Merged the integration branch into `wp/WP07`
+(`d27ad925`; one conflict, the import line of `genkit/tokens/__main__.py`: WIN's `write_text` import kept
+beside this branch's `kotlin_common`). WIN's host test refuses `Path.write_text` in generator sources, and
+it found the three in the multiplatform target (scaffolded modules, translated `strings.xml`, the token
+copy), which wrote CRLF on Windows: `4ef0ba71` writes them through `core.copy.write_text` and adds
+`ScaffoldTest.test_only_the_batch_file_holds_a_carriage_return` (fails without the fix, passes with it).
+At `4ef0ba71` on Windows: the generator suite runs 327 tests, all pass (5 skipped; no host failures any
+more, `$O/logs/gen-tests-win2.log`); `genkit.tokens --check`, `genkit.core.catalogue --check` and
+`tools/sync_check.py` pass. Still no Gradle build (the run 4 decision stands). Stopped waiting for WP04
+(items 1–5, 7) and WP02-M2 (item 6). With WIN merged, `accept-a.sh` no longer has a known failure
+outside this package.
+
+Run 5 (2026-10-17 23:01 IST) only checked: merged tags are still WP01, WP02-M1, WP09 and WP10; `wp/WP07`
+(`fdd01b3`) already contains the integration branch (`a402d87`), the worktree is clean, and nothing was
+changed or built. Still waiting for WP04 (and WP02-M2 for item 6, WIN for `ACCEPT OK`).
 
 Run 4 did only what does not need WP04:
 - Merged the integration branch (WP10) into `wp/WP07` as `fdd01b3`. No conflicts: the only overlap
@@ -87,8 +103,8 @@ two items marked otherwise.
    when the template exists, without `agp-9-upgrade`), add the `verbatim` key it introduces to
    `template.toml`, and add the `.agents/skills` pair to `sync.toml`.
 7. **Acceptance** (`$O/accept-a.sh`, written, ported to Windows in run 4; WP07 phase A). It runs the full
-   template build and both generated fixtures; it can only end `ACCEPT OK` after items 1–4, and only after
-   package WIN has merged (until then the generator suite fails its six Windows host tests under `set -e`).
+   template build and both generated fixtures; it can only end `ACCEPT OK` after items 1–4. WIN has
+   merged (run 6), so the generator suite no longer fails on this host.
 
 ## What changed (by path)
 

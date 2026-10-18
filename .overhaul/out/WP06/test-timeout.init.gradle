@@ -1,0 +1,9 @@
+// Passed with -I by WP06's scripts: a unit test task that stops making progress fails after this long instead of
+// holding the machine-wide Gradle lock until someone notices (accept14b, Oct 17: :core:applock:testDebugUnitTest
+// sat idle for two and a half hours). Gradle stops the task's test JVMs when the timeout fires.
+def minutes = (System.getenv("WP06_TEST_TIMEOUT_MIN") ?: "15") as long
+allprojects {
+    tasks.withType(Test).configureEach {
+        timeout = java.time.Duration.ofMinutes(minutes)
+    }
+}

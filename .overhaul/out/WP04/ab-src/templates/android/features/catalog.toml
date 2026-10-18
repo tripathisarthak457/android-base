@@ -1,0 +1,12 @@
+key = "catalog"
+title = "Component catalog app"
+headline = "A second app showing every component"
+description = """
+A second installable app showing every component in both themes. Depends on the design system
+alone, so design work rebuilds two modules instead of the whole graph."""
+group = "Design"
+default = true
+requires = []
+implied_only = false
+owns = ["catalog"]
+legacy = []

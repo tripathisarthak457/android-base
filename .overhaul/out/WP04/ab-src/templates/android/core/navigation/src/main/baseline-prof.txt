@@ -1,0 +1,2 @@
+HSPLcom/base/app/core/navigation/**->**(**)**
+Lcom/base/app/core/navigation/**;

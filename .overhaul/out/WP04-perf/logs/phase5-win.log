@@ -1,0 +1,15 @@
+== 2026-10-18 03:50:47 phase 5
+== 03:50:48 tip (a256582)
+TotalTime: 480 WaitTime: 483 
+TotalTime: 426 WaitTime: 430 
+TotalTime: 406 WaitTime: 409 
+-rw-r--r-- 1 crazyhusir 197609 23331439 Oct 18 03:51 D:/projects/tools/.overhaul/perf/WP04-perf/tip-startup/trace.perfetto-trace
+STARTUP-TRACE DONE
+== 03:51:21 everything (3c9c403)
+TotalTime: 472 WaitTime: 475 
+TotalTime: 393 WaitTime: 396 
+TotalTime: 405 WaitTime: 408 
+-rw-r--r-- 1 crazyhusir 197609 24384722 Oct 18 03:51 D:/projects/tools/.overhaul/perf/WP04-perf/everything-startup/trace.perfetto-trace
+STARTUP-TRACE DONE
+STARTUP-APK DONE
+== 2026-10-18 03:51:55 PHASE5 DONE

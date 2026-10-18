@@ -1,0 +1,84 @@
+package com.example.wp04.everything.core.network.model
+
+import kotlinx.serialization.json.JsonElement
+
+/** The verbs this client speaks. An enum rather than a string, so a typo cannot reach the wire. */
+enum class HttpMethodType { GET, POST, PUT, PATCH, DELETE }
+
+/** A transport-agnostic description of one call. */
+data class NetworkRequest(
+    val method: HttpMethodType,
+    val path: String,
+    val query: Map<String, Any?> = emptyMap(),
+    val headers: Map<String, String> = emptyMap(),
+    val body: JsonElement? = null,
+    val parts: List<MultipartPart>? = null,
+    val requiresAuth: Boolean = true,
+    val cache: CachePolicy = CachePolicy.Disabled,
+    /**
+     * When true and the request fails purely for lack of connectivity — not because the server
+     * refused it — it is persisted and replayed when the network returns. Only meaningful for
+     * mutations with a JSON body; multipart bodies carry file bytes and are never queued.
+     */
+    val enqueueOnFailure: Boolean = false,
+)
+
+sealed interface MultipartPart {
+    val name: String
+
+    data class Text(override val name: String, val value: String) : MultipartPart
+
+    data class File(
+        override val name: String,
+        val fileName: String,
+        val contentType: String,
+        val bytes: ByteArray,
+    ) : MultipartPart {
+        // Generated equals on a ByteArray compares references, which makes two identical parts
+        // unequal and quietly breaks any de-duplication or test assertion built on them.
+        override fun equals(other: Any?): Boolean =
+            this === other ||
+                (
+                    other is File &&
+                        name == other.name &&
+                        fileName == other.fileName &&
+                        contentType == other.contentType &&
+                        bytes.contentEquals(other.bytes)
+                    )
+
+        override fun hashCode(): Int {
+            var result = name.hashCode()
+            result = 31 * result + fileName.hashCode()
+            result = 31 * result + contentType.hashCode()
+            result = 31 * result + bytes.contentHashCode()
+            return result
+        }
+    }
+}
+
+/** Whether, and for how long, a successful response may be served from disk. */
+sealed interface CachePolicy {
+
+    data object Disabled : CachePolicy
+
+    data class Enabled(
+        val key: String,
+        val maxAgeMillis: Long,
+        /** Serve a stale entry when the network call fails. */
+        val staleOnFailure: Boolean = true,
+        /**
+         * Ask the network even when a fresh copy is saved, still saving the answer and still
+         * falling back to the saved copy if the call fails. What pull-to-refresh wants.
+         */
+        val forceRefresh: Boolean = false,
+    ) : CachePolicy
+}
+
+/** What came back, before it has been decoded into anything. */
+data class NetworkResponse(
+    val statusCode: Int,
+    val body: String,
+    val headers: Map<String, String> = emptyMap(),
+    val fromCache: Boolean = false,
+    val cachedAtEpochMillis: Long? = null,
+)

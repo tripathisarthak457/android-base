@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">Etwas ist schiefgelaufen. Bitte versuche es noch einmal.</string>
+    <string name="common_error_offline">Du bist offline. Prüfe deine Verbindung und versuche es noch einmal.</string>
+    <string name="common_error_unreachable">Der Server ist nicht erreichbar. Versuche es gleich noch einmal.</string>
+    <string name="common_error_queued">Du bist offline. Es wird gesendet, sobald du wieder online bist.</string>
+    <string name="validation_required">Pflichtfeld.</string>
+    <string name="validation_email">Gib eine gültige E-Mail-Adresse ein.</string>
+    <string name="validation_phone">Gib eine gültige Telefonnummer ein.</string>
+    <string name="validation_number">Gib eine Zahl ein.</string>
+    <string name="validation_range">Muss zwischen %1$d und %2$d liegen.</string>
+    <string name="validation_mismatch">Stimmt nicht überein.</string>
+    <string name="validation_password_letter">Verwende mindestens einen Buchstaben.</string>
+    <string name="validation_password_digit">Verwende mindestens eine Zahl.</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">Mindestens %1$d Zeichen.</item>
+        <item quantity="other">Mindestens %1$d Zeichen.</item>
+    </plurals>
+    <plurals name="validation_max_length">
+        <item quantity="one">Höchstens %1$d Zeichen.</item>
+        <item quantity="other">Höchstens %1$d Zeichen.</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">Verwende mindestens %1$d Zeichen.</item>
+        <item quantity="other">Verwende mindestens %1$d Zeichen.</item>
+    </plurals>
+</resources>

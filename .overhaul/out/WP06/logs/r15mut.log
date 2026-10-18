@@ -1,0 +1,42 @@
+[locked:gradle] waiting for the lock (pid 12560 since 2026-10-18 00:48:54: ./gradlew :core:designsystem:testDebugUnitTest :catalog:compileDebugKotlin :feature:settings:compileDebugKotlin :core:de)
+[locked:gradle] waiting for the lock (pid 16148 since 2026-10-18 00:52:49: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+=== mutation: none
+  pass Tab reaches Unlock, and the content underneath cannot take focus off it | 
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  pass a field focused when the app locks loses focus to the cover | 
+  pass while locked, the content is out of reach of touch, keyboard and accessibility | 
+=== mutation: no-onexit
+  FAIL Tab reaches Unlock, and the content underneath cannot take focus off it | java.lang.AssertionError: Failed to assert the following: (Focused = 'true') Semantics of the node: Node #8 at (l=139.0, t=297.0, r=182.0, b=352.0)px Focused = 
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  pass a field focused when the app locks loses focus to the cover | 
+  pass while locked, the content is out of reach of touch, keyboard and accessibility | 
+=== mutation: no-onenter
+  pass Tab reaches Unlock, and the content underneath cannot take focus off it | 
+  FAIL a field under the cover never takes focus, however often it asks | java.lang.AssertionError: The locked content took focus.
+  pass unlocking hands the content back | 
+  pass a field focused when the app locks loses focus to the cover | 
+  FAIL while locked, the content is out of reach of touch, keyboard and accessibility | java.lang.AssertionError: Keyboard focus moved into the locked content.
+=== mutation: no-pointer
+  pass Tab reaches Unlock, and the content underneath cannot take focus off it | 
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  pass a field focused when the app locks loses focus to the cover | 
+  FAIL while locked, the content is out of reach of touch, keyboard and accessibility | java.lang.AssertionError: A tap reached the locked content. expected:<0> but was:<1>
+=== mutation: no-semantics
+  pass Tab reaches Unlock, and the content underneath cannot take focus off it | 
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  FAIL a field focused when the app locks loses focus to the cover | java.lang.AssertionError: Failed: assertDoesNotExist. Reason: Did not expect any node but found '1' node that satisfies: (TestTag = 'locked_content') Node found
+  FAIL while locked, the content is out of reach of touch, keyboard and accessibility | java.lang.AssertionError: Failed: assertDoesNotExist. Reason: Did not expect any node but found '1' node that satisfies: (TestTag = 'locked_content') Node found
+=== mutation: no-focus
+  FAIL Tab reaches Unlock, and the content underneath cannot take focus off it | java.lang.AssertionError: Failed to assert the following: (Focused = 'true') Semantics of the node: Node #8 at (l=139.0, t=297.0, r=182.0, b=352.0)px Focused = 
+  pass a field under the cover never takes focus, however often it asks | 
+  pass unlocking hands the content back | 
+  FAIL a field focused when the app locks loses focus to the cover | java.lang.AssertionError: The field kept focus, and the keyboard with it.
+  pass while locked, the content is out of reach of touch, keyboard and accessibility | 

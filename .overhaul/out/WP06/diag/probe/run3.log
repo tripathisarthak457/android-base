@@ -1,0 +1,28 @@
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+run 1: exit 0
+run 2: exit 0
+run 3: exit 0
+run 4: exit 0
+run 5: exit 0
+run 6: exit 0
+run 7: exit 0
+run 8: exit 0
+run 9: exit 0
+run 10: exit 0
+run 11: exit 0
+run 12: exit 0

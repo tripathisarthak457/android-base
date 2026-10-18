@@ -32,6 +32,11 @@ def shot(device, out, name):
         handle.write(png)
 
 
+def find(nodes, text):
+    """A node by its text, whatever case the design style draws its labels in (Editorial: upper)."""
+    return next((box for key, box in nodes.items() if key.casefold() == text.casefold()), None)
+
+
 def tap(device, box):
     x, y = cp1.centre(box)
     device.shell(f"input tap {x} {y}")
@@ -53,7 +58,7 @@ def main():
     shot(device, args.out, "filters-medium")
     nodes = device.nodes()
     grabber = nodes.get("sheet_grabber")
-    toggle = nodes.get(SCROLLS_FIRST)
+    toggle = find(nodes, SCROLLS_FIRST)
     if grabber is None or toggle is None:
         raise SystemExit(f"k12: the sheet did not open at Medium (grabber {grabber}, toggle {toggle})")
     tap(device, toggle)
@@ -66,8 +71,8 @@ def main():
     time.sleep(1.0)
     shot(device, args.out, "filters-medium-end")
     nodes = device.nodes()
-    last = nodes.get(LAST_ROW)
-    apply = nodes.get("Apply")
+    last = find(nodes, LAST_ROW)
+    apply = find(nodes, "Apply")
     still = nodes.get("sheet_grabber")
     lines = [
         f"grabber before {grabber}, after {still}",

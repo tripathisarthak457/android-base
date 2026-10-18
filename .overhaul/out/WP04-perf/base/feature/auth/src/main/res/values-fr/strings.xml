@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_password_rules">Au moins huit caractères, dont une lettre et un chiffre.</string>
+    <string name="auth_confirm_password">Confirmer le mot de passe</string>
+    <string name="auth_create_account">Créer un compte</string>
+    <string name="auth_email">E-mail</string>
+    <string name="auth_reset_explanation">Saisissez l’adresse e-mail utilisée à l’inscription et nous vous enverrons un lien.</string>
+    <string name="auth_forgot_password">Mot de passe oublié</string>
+    <string name="auth_reset_sent">Si cette adresse correspond à un compte, un lien de réinitialisation est en route.</string>
+    <string name="auth_name">Nom</string>
+    <string name="auth_password">Mot de passe</string>
+    <string name="auth_reset_password">Réinitialiser le mot de passe</string>
+    <string name="auth_send_reset_link">Envoyer le lien</string>
+    <string name="auth_sign_in">Se connecter</string>
+    <string name="auth_welcome_back">Bon retour</string>
+    <string name="auth_continue_with_google">Continuer avec Google</string>
+    <string name="auth_or">ou</string>
+    <string name="auth_google_not_configured">La connexion avec Google n’est pas encore configurée. Ajoutez l’ID client web dans auth_google_server_client_id.</string>
+    <string name="auth_google_sign_in_failed">Impossible de vous connecter avec Google.</string>
+    <string name="auth_google_failed">La connexion avec Google n’a pas abouti. Réessayez ou utilisez votre e-mail.</string>
+    <string name="auth_wrong_credentials">Cet e-mail et ce mot de passe ne correspondent à aucun compte.</string>
+    <string name="auth_too_many_attempts">Trop de tentatives. Réessayez dans quelques minutes.</string>
+    <string name="auth_sign_in_failed">Impossible de vous connecter.</string>
+    <string name="auth_sign_up_failed">Impossible de créer le compte.</string>
+    <string name="auth_reset_failed">Impossible d’envoyer le lien.</string>
+    <string name="auth_passwords_do_not_match">Les mots de passe ne correspondent pas.</string>
+</resources>

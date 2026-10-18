@@ -51,6 +51,13 @@ that needs another package's code first. WP13 closes every item (or records why 
   `out/WP04/logs/r22-gen.log`). Not in the generator baseline, which covers the unit tests only. Fix: move the
   runner's body into an importable module (`tests/consistency/runner.py`) and keep `__main__.py` a two-line entry
   point. Until then `out/WP06/consistency_win.py` runs the same `main()` after importing it under its own name.
+  Still open after WIN merged (Oct 18): WIN left `tests/consistency/` as it was.
+- **A time limit on every generated project's test tasks (WP02, build-logic; WP12 docs).** A unit test JVM that stops
+  making progress holds its build for ever: on Oct 17 `:core:applock:testDebugUnitTest` sat idle from 16:18 to 18:45
+  under the shared Gradle lock (`handoff/WP06.md`, Progress run 15; the test is fixed on `wp/WP06` `f8640b2`). A
+  `tasks.withType<Test>().configureEach { timeout.set(Duration.ofMinutes(15)) }` in the Android convention plugin
+  turns the next such stall into a failed task on a developer's machine and in CI instead of a hung runner. Until then
+  WP06's scripts pass `out/WP06/test-timeout.init.gradle` with `-I`, and other packages' long scripts can do the same.
 - **What to check once NET's Cronet transport lands (REQUIREMENTS 39).** Read from WP06's network module
   (`handoff/WP06.md`, "Seams for NET"): an application interceptor that short-circuits OkHttp also skips its
   `Cache` and `CertificatePinner`, so on the Cronet path check that the pins are mirrored into the engine (with

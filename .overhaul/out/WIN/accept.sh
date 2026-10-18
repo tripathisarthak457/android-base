@@ -6,7 +6,10 @@ set -euo pipefail
 OV=D:/projects/tools/.overhaul
 WT=$OV/wt/WIN
 OUT=$OV/out/WIN
-BASE=$(git -C "$WT" merge-base HEAD overhaul/multiplatform-v2)
+# Once WIN has merged, the merge-base is HEAD itself and both comparisons would be empty: pass
+# BASE=<the integration head before the merge> then.
+BASE=${BASE:-$(git -C "$WT" merge-base HEAD overhaul/multiplatform-v2)}
+test "$BASE" != "$(git -C "$WT" rev-parse HEAD)" || { echo "BASE is HEAD: nothing to compare" >&2; exit 1; }
 
 cd "$WT/generator"
 "$OV/bin/memwait" python -m unittest discover -s tests -t .

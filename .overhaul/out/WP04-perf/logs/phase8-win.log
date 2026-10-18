@@ -1,0 +1,7 @@
+== 2026-10-18 06:40:32 phase 8
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (holder unknown)
+== 2026-10-18 08:01:37 PHASE8 DONE

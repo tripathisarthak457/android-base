@@ -8,6 +8,12 @@ mkdir -p $P
 # devRelease is split per ABI: install the split the device runs.
 abi=$($L adb adb -s $S shell getprop ro.product.cpu.abi | tr -d '\r')
 apk() { ls $1/app/build/outputs/apk/dev/release/*-$abi-release.apk; }
+# Install fresh: copies built on another machine are signed with its debug key, and Android refuses an update signed
+# with this one's (accept15b: the Linux builds, INSTALL_FAILED_UPDATE_INCOMPATIBLE). Both checks clear the app's data
+# anyway.
+for pkg in com.example.wp06.everything.dev com.example.wp06.badgeqa.dev; do
+  if $L adb adb -s $S shell pm path $pkg >/dev/null 2>&1; then $L adb adb -s $S uninstall $pkg; fi
+done
 # The devtools badge follows a drag (everything has devtools; dev flavour).
 $L adb bash $O/with_phone.sh $S python $O/badge_drag_check.py --serial $S \
   --package com.example.wp06.everything.dev --apk "$(apk $O/everything)" --out $P/badge-$S

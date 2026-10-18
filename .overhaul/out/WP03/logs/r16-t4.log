@@ -1,0 +1,576 @@
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 3540 since 2026-10-17 23:38:07: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04/templates/android
+./gradlew :core:navigation:testDebug)
+[locked:gradle] waiting for the lock (pid 19376 since 2026-10-17 23:55:39: bash diag/probe/run3.sh)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] waiting for the lock (pid 21312 since 2026-10-18 00:02:45: bash -c 
+set -euo pipefail
+for n in "$@"; do
+  cd D:/projects/tools/.overhaul/out/WP04-perf/$n
+  ./gradlew :app:assemble)
+[locked:gradle] waiting for the lock (pid 18052 since 2026-10-18 00:23:14: bash diag/applock_hang2.sh)
+[locked:gradle] waiting for the lock (pid 18052 since 2026-10-18 00:23:14: bash diag/applock_hang2.sh)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest --tests com.base.app.core.designsystem.component.sheet.* :core:designsystem:tasks --all :core:designsystem:updateKotlinAbi
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :core:designsystem:internalDumpKotlinAbi UP-TO-DATE
+
+> Task :core:designsystem:tasks
+
+------------------------------------------------------------
+Tasks runnable from project ':core:designsystem'
+------------------------------------------------------------
+
+Android tasks
+-------------
+signingReport - Displays the signing info for the base and test modules
+
+Build tasks
+-----------
+assemble - Assemble main outputs for all the variants.
+assembleAndroidTest - Assembles all the Test applications.
+assembleUnitTest - Assembles all the unit test applications.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildNeeded - Assembles and tests this project and all projects it depends on.
+clean - Deletes the build directory.
+compileDebugAndroidTestSources
+compileDebugSources
+compileDebugUnitTestSources
+compileReleaseSources
+extractDebugAnnotations - Extracts Android annotations for the debug variant into the archive file
+extractReleaseAnnotations - Extracts Android annotations for the release variant into the archive file
+
+Dependency-analysis tasks
+-------------------------
+abiAnalysisDebug - Produces a report of the ABI of this project
+abiAnalysisRelease - Produces a report of the ABI of this project
+computeDominatorTreeCompileDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileDebugTest - Computes a dominator view of the dependency graph
+computeDominatorTreeCompileRelease - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDebug - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDebugAndroidTest - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeDebugTest - Computes a dominator view of the dependency graph
+computeDominatorTreeRuntimeRelease - Computes a dominator view of the dependency graph
+computeResolvedDependencies - Computes resolved external dependencies for all variants.
+discoverDuplicationForCompileDebug - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileDebugAndroidTest - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileDebugTest - Discovers duplicates on the compile classpath
+discoverDuplicationForCompileRelease - Discovers duplicates on the compile classpath
+discoverDuplicationForRuntimeDebug - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeDebugAndroidTest - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeDebugTest - Discovers duplicates on the runtime classpath
+discoverDuplicationForRuntimeRelease - Discovers duplicates on the runtime classpath
+fixDependencies - Rewrite build script for this project to match dependency advice
+printDominatorTreeCompileDebug - Prints a dominator view of the dependency graph
+printDominatorTreeCompileDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeCompileDebugTest - Prints a dominator view of the dependency graph
+printDominatorTreeCompileRelease - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDebug - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDebugAndroidTest - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeDebugTest - Prints a dominator view of the dependency graph
+printDominatorTreeRuntimeRelease - Prints a dominator view of the dependency graph
+projectGraphDebug - Generates several graph views of this project's local dependency graph
+projectGraphDebugAndroidTest - Generates several graph views of this project's local dependency graph
+projectGraphDebugTest - Generates several graph views of this project's local dependency graph
+projectGraphRelease - Generates several graph views of this project's local dependency graph
+projectHealth - Prints advice for this project
+reason - Explain how a dependency is used
+resolveExternalDependenciesDebug - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesDebugAndroidTest - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesDebugTest - Resolves external dependencies for compile and runtime classpaths.
+resolveExternalDependenciesRelease - Resolves external dependencies for compile and runtime classpaths.
+
+Help tasks
+----------
+artifactTransforms - Displays the Artifact Transforms that can be executed in project ':core:designsystem'.
+buildEnvironment - Displays all buildscript dependencies declared in project ':core:designsystem'.
+dependencies - Displays all dependencies declared in project ':core:designsystem'.
+dependencyInsight - Displays the insight into a specific dependency in project ':core:designsystem'.
+help - Displays a help message.
+javaToolchains - Displays the detected java toolchains.
+kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+outgoingVariants - Displays the outgoing variants of project ':core:designsystem'.
+projects - Displays the sub-projects of project ':core:designsystem'.
+properties - Displays the properties of project ':core:designsystem'.
+resolvableConfigurations - Displays the configurations that can be resolved in project ':core:designsystem'.
+tasks - Displays the tasks runnable from project ':core:designsystem'.
+
+Install tasks
+-------------
+installDebugAndroidTest - Installs the android (on device) tests for the Debug build.
+uninstallAll - Uninstall all applications.
+uninstallDebugAndroidTest - Uninstalls the android (on device) tests for the Debug build.
+
+Verification tasks
+------------------
+check - Runs all checks.
+checkComposeStability - Fails on a composable that recomposes when it did not need to.
+checkJetifier - Checks whether Jetifier is needed for the current project
+checkKotlinAbi - Checks that the public Application Binary Interface (ABI) of the current project code matchesthe reference dump file
+connectedAndroidTest - Installs and runs instrumentation tests for all flavors on connected devices.
+connectedCheck - Runs all device checks on currently connected devices.
+connectedDebugAndroidTest - Installs and runs the tests for debug on connected devices.
+deviceAndroidTest - Installs and runs instrumentation tests using all Device Providers.
+deviceCheck - Runs all device checks using Device Providers and Test Servers.
+koverBinaryReport - Task to generate binary coverage report in IntelliJ format for all code.
+koverBinaryReportDebug - Task to generate binary coverage report in IntelliJ format for 'debug' Android build variant
+koverBinaryReportRelease - Task to generate binary coverage report in IntelliJ format for 'release' Android build variant
+koverCachedVerify - Cacheable task for performing verification for all code.
+koverCachedVerifyDebug - Cacheable task for performing verification for 'debug' Android build variant
+koverCachedVerifyRelease - Cacheable task for performing verification for 'release' Android build variant
+koverHtmlReport - Task to generate HTML coverage report for all code.
+koverHtmlReportDebug - Task to generate HTML coverage report for 'debug' Android build variant
+koverHtmlReportRelease - Task to generate HTML coverage report for 'release' Android build variant
+koverLog - Task to print coverage to log for all code.
+koverLogDebug - Task to print coverage to log for 'debug' Android build variant
+koverLogRelease - Task to print coverage to log for 'release' Android build variant
+koverVerify
+koverVerifyDebug
+koverVerifyRelease
+koverXmlReport - Task to generate XML coverage report for all code.
+koverXmlReportDebug - Task to generate XML coverage report for 'debug' Android build variant
+koverXmlReportRelease - Task to generate XML coverage report for 'release' Android build variant
+lint - Runs lint on the default variant.
+lintDebug - Print text output from the corresponding lint report task
+lintFix - Runs lint on the default variant and applies any safe suggestions to the source code.
+lintRelease - Print text output from the corresponding lint report task
+recordComposeStability - Writes the current unskippable composables to the baseline.
+test - Run unit tests for all variants.
+testDebugUnitTest - Run unit tests for the debug build.
+updateKotlinAbi - Writes the public Application Binary Interface (ABI) of the current code to the reference dump file.
+updateLintBaseline - Updates the lint baseline using the default variant.
+verifyApiPurity - Fails if an api package imports Android, Compose, DI or another module's internals.
+verifyComposeUsage - Fails on Material, a @Composable without the compiler, or untranslatable copy.
+verifyModuleDependencies - Fails if this module depends on one it is not allowed to see.
+
+Other tasks
+-----------
+aggregatePublicTypes - Writes report of all public classes across all variants or source sets in this project
+aggregateTypeUsage - Computes type-level dependency usage, aggregating all variants or source sets in this project
+analyzeDebugAndroidTestDependencies
+analyzeDebugDependencies
+analyzeDebugUnitTestDependencies
+analyzeReleaseDependencies
+artifactsReportDebug - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportDebugAndroidTest - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportDebugTest - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportRelease - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportRuntimeDebug - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportRuntimeDebugAndroidTest - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportRuntimeDebugTest - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+artifactsReportRuntimeRelease - Produces a report that lists all direct and transitive dependencies, along with their artifacts
+assembleDebug - Assembles main output for variant debug
+assembleDebugAndroidTest - Assembles main output for variant debugAndroidTest
+assembleDebugUnitTest - Assembles main output for variant debugUnitTest
+assembleRelease - Assembles main output for variant release
+bundleDebugAar - Assembles a bundle containing the library in debug.
+bundleDebugLocalLintAar - Assembles a bundle containing the library in debug.
+bundleLibCompileToJarDebug
+bundleLibCompileToJarRelease
+bundleLibRuntimeToDirDebug
+bundleLibRuntimeToDirRelease
+bundleLibRuntimeToJarDebug
+bundleLibRuntimeToJarRelease
+bundleReleaseAar - Assembles a bundle containing the library in release.
+bundleReleaseLocalLintAar - Assembles a bundle containing the library in release.
+checkDebugAarMetadata
+checkDebugAndroidTestAarMetadata
+checkDebugAndroidTestDuplicateClasses
+checkDebugManifest
+checkDebugUnitTestAarMetadata
+checkLegacyAbi
+checkReleaseAarMetadata
+checkReleaseManifest
+compileDebugAndroidTestJavaWithJavac
+compileDebugAndroidTestKotlin
+compileDebugAndroidTestNavigationResources
+compileDebugJavaWithJavac
+compileDebugKotlin
+compileDebugLibraryResources
+compileDebugNavigationResources
+compileDebugUnitTestJavaWithJavac
+compileDebugUnitTestKotlin
+compileLint
+compileLintChecks
+compileReleaseJavaWithJavac
+compileReleaseKotlin
+compileReleaseLibraryResources
+compileReleaseNavigationResources
+compressDebugAndroidTestAssets
+computeActualUsageDebug - Computes actual dependency usage
+computeActualUsageDebugAndroidTest - Computes actual dependency usage
+computeActualUsageDebugTest - Computes actual dependency usage
+computeActualUsageRelease - Computes actual dependency usage
+computeAdvice - Merges dependency usage reports from variant-specific computations
+computeAndroidScoreDebug - Infers if Android project could instead be a JVM project
+computeAndroidScoreDebugAndroidTest - Infers if Android project could instead be a JVM project
+computeAndroidScoreDebugTest - Infers if Android project could instead be a JVM project
+computeAndroidScoreRelease - Infers if Android project could instead be a JVM project
+computeDominatorTreeDebug
+computeDominatorTreeDebugAndroidTest
+computeDominatorTreeDebugTest
+computeDominatorTreeRelease
+computeTypeUsageDebug - Computes type-level dependency usage
+computeTypeUsageDebugAndroidTest - Computes type-level dependency usage
+computeTypeUsageDebugTest - Computes type-level dependency usage
+computeTypeUsageRelease - Computes type-level dependency usage
+consumeConfigAttr
+copyDebugJniLibsProjectAndLocalJars
+copyDebugJniLibsProjectOnly
+copyReleaseJniLibsProjectAndLocalJars
+copyReleaseJniLibsProjectOnly
+createDebugAndroidTestApkListingFileRedirect
+createFullJarDebug
+createFullJarRelease
+createMockableJar
+desugarDebugAndroidTestFileDependencies
+dexBuilderDebugAndroidTest
+explodeAssetSourceDebug - Produces a report of all assets in this project
+explodeAssetSourceDebugAndroidTest - Produces a report of all assets in this project
+explodeAssetSourceDebugTest - Produces a report of all assets in this project
+explodeAssetSourceRelease - Produces a report of all assets in this project
+explodeByteCodeSourceDebug - Produces a report of all classes referenced by a given set of class files
+explodeByteCodeSourceDebugAndroidTest - Produces a report of all classes referenced by a given set of class files
+explodeByteCodeSourceDebugTest - Produces a report of all classes referenced by a given set of class files
+explodeByteCodeSourceRelease - Produces a report of all classes referenced by a given set of class files
+explodeCodeSourceDebug - Parses Java and Kotlin source to detect source-only usages
+explodeCodeSourceDebugAndroidTest - Parses Java and Kotlin source to detect source-only usages
+explodeCodeSourceDebugTest - Parses Java and Kotlin source to detect source-only usages
+explodeCodeSourceRelease - Parses Java and Kotlin source to detect source-only usages
+explodeJarDebug - Explodes a jar and exposes its capabilities
+explodeJarDebugAndroidTest - Explodes a jar and exposes its capabilities
+explodeJarDebugTest - Explodes a jar and exposes its capabilities
+explodeJarRelease - Explodes a jar and exposes its capabilities
+explodeXmlSourceDebug
+explodeXmlSourceDebugAndroidTest
+explodeXmlSourceDebugTest
+explodeXmlSourceRelease
+exportDebugConsumerProguardFiles
+exportReleaseConsumerProguardFiles
+extractDebugSupportedLocales
+extractDeepLinksDebug
+extractDeepLinksForAarDebug
+extractDeepLinksForAarRelease
+extractDeepLinksRelease
+extractPackageNameFromManifestDebug - Produces a report of packages, from other components, that are included via Android manifests
+extractPackageNameFromManifestDebugAndroidTest - Produces a report of packages, from other components, that are included via Android manifests
+extractPackageNameFromManifestDebugTest - Produces a report of packages, from other components, that are included via Android manifests
+extractPackageNameFromManifestRelease - Produces a report of packages, from other components, that are included via Android manifests
+extractProguardFiles
+extractReleaseSupportedLocales
+filterAdvice - Filter merged advice based on user preferences
+findAndroidAssetProvidersDebug - Produces a report of dependencies that supply Android assets
+findAndroidAssetProvidersDebugAndroidTest - Produces a report of dependencies that supply Android assets
+findAndroidAssetProvidersDebugTest - Produces a report of dependencies that supply Android assets
+findAndroidAssetProvidersRelease - Produces a report of dependencies that supply Android assets
+findAndroidLintersDebug - Produces a report of dependencies that supply Android linters
+findAndroidLintersDebugAndroidTest - Produces a report of dependencies that supply Android linters
+findAndroidLintersDebugTest - Produces a report of dependencies that supply Android linters
+findAndroidLintersRelease - Produces a report of dependencies that supply Android linters
+findAndroidResImportsDebug - Produces a report of all R import candidates from set of dependencies
+findAndroidResImportsDebugAndroidTest - Produces a report of all R import candidates from set of dependencies
+findAndroidResImportsDebugTest - Produces a report of all R import candidates from set of dependencies
+findAndroidResImportsRelease - Produces a report of all R import candidates from set of dependencies
+findDeclarations - Produces a report of all dependencies and the configurations on which they are declared
+findDeclaredProcsDebug - Produces a report of all supported annotation types and their annotation processors
+findDeclaredProcsDebugAndroidTest - Produces a report of all supported annotation types and their annotation processors
+findDeclaredProcsDebugTest - Produces a report of all supported annotation types and their annotation processors
+findDeclaredProcsRelease - Produces a report of all supported annotation types and their annotation processors
+findKotlinMagicDebug - Produces a report of dependencies that contribute used inline members
+findKotlinMagicDebugAndroidTest - Produces a report of dependencies that contribute used inline members
+findKotlinMagicDebugTest - Produces a report of dependencies that contribute used inline members
+findKotlinMagicRelease - Produces a report of dependencies that contribute used inline members
+findNativeLibsDebug - Produces a report of all dependencies that supply native libs
+findNativeLibsDebugAndroidTest - Produces a report of all dependencies that supply native libs
+findNativeLibsDebugTest - Produces a report of all dependencies that supply native libs
+findNativeLibsRelease - Produces a report of all dependencies that supply native libs
+generateConsoleReport - Generates console report for project health
+generateDebugAndroidTestAssets
+generateDebugAndroidTestGlobalSynthetics
+generateDebugAndroidTestLintModel
+generateDebugAndroidTestResources
+generateDebugAndroidTestRFile
+generateDebugAndroidTestSources
+generateDebugAssets
+generateDebugExternalPublicTxt
+generateDebugLintModel
+generateDebugLintReportModel
+generateDebugLintVitalModel
+generateDebugResources
+generateDebugRFile
+generateDebugSources
+generateDebugUnitTestAssets
+generateDebugUnitTestConfig
+generateDebugUnitTestLintModel
+generateDebugUnitTestResources
+generateDebugUnitTestSources
+generateMergedProjectGraph - Merges the project graphs of all variants into a single graph
+generateProjectGraphDebug - Generates several graph views of this project's local dependency graph
+generateProjectGraphDebugAndroidTest - Generates several graph views of this project's local dependency graph
+generateProjectGraphDebugTest - Generates several graph views of this project's local dependency graph
+generateProjectGraphRelease - Generates several graph views of this project's local dependency graph
+generateReleaseAssets
+generateReleaseExternalPublicTxt
+generateReleaseLintModel
+generateReleaseLintReportModel
+generateReleaseLintVitalModel
+generateReleaseResources
+generateReleaseRFile
+generateReleaseSources
+graphViewDebug - Constructs a variant-specific view of this project's dependency graph
+graphViewDebugAndroidTest - Constructs a variant-specific view of this project's dependency graph
+graphViewDebugTest - Constructs a variant-specific view of this project's dependency graph
+graphViewRelease - Constructs a variant-specific view of this project's dependency graph
+internalDumpKotlinAbi - Dumps the public Application Binary Interface (ABI) into files in the build directory.
+javaPreCompileDebug
+javaPreCompileDebugAndroidTest
+javaPreCompileDebugUnitTest
+javaPreCompileRelease
+koverFindJar
+koverGenerateArtifact
+koverGenerateArtifactDebug
+koverGenerateArtifactRelease
+koverPrintCoverage
+koverPrintCoverageDebug
+koverPrintCoverageRelease
+lintAnalyzeDebug - Run lint analysis on the debug component
+lintAnalyzeDebugAndroidTest - Run lint analysis on the debugAndroidTest component
+lintAnalyzeDebugUnitTest - Run lint analysis on the debugUnitTest component
+lintAnalyzeRelease - Run lint analysis on the release component
+lintFixDebug - Fix lint on the debug variant
+lintFixRelease - Fix lint on the release variant
+lintReportDebug - Run lint on the debug variant
+lintReportRelease - Run lint on the release variant
+lintVitalAnalyzeDebug - Run lint analysis with only the fatal issues enabled on the debug variant
+lintVitalAnalyzeRelease - Run lint analysis with only the fatal issues enabled on the release variant
+mapDebugAndroidTestSourceSetPaths
+mapDebugSourceSetPaths
+mapDebugUnitTestSourceSetPaths
+mapReleaseSourceSetPaths
+mergeDebugAndroidTestAssets
+mergeDebugAndroidTestGeneratedProguardFiles
+mergeDebugAndroidTestJavaResource
+mergeDebugAndroidTestJniLibFolders
+mergeDebugAndroidTestManifest
+mergeDebugAndroidTestNativeLibs
+mergeDebugAndroidTestResources
+mergeDebugAssets
+mergeDebugConsumerProguardFiles
+mergeDebugGeneratedProguardFiles
+mergeDebugJavaResource
+mergeDebugJniLibFolders
+mergeDebugNativeLibs
+mergeDebugResources
+mergeDebugUnitTestAssets
+mergeDebugUnitTestManifest
+mergeDebugUnitTestResources
+mergeExtDexDebugAndroidTest
+mergeLibDexDebugAndroidTest
+mergeProjectDexDebugAndroidTest
+mergeReleaseAssets
+mergeReleaseConsumerProguardFiles
+mergeReleaseGeneratedProguardFiles
+mergeReleaseJavaResource
+mergeReleaseJniLibFolders
+mergeReleaseNativeLibs
+mergeReleaseResources
+packageDebugAndroidTest
+packageDebugAndroidTestResources
+packageDebugRenderscript
+packageDebugResources
+packageDebugUnitTestForUnitTest
+packageReleaseRenderscript
+packageReleaseResources
+parseDebugAndroidTestLocalResources
+parseDebugLocalResources
+parseReleaseLocalResources
+preBuild
+preDebugAndroidTestBuild
+preDebugBuild
+preDebugUnitTestBuild
+prepareDebugArtProfile
+prepareLintJarForPublish
+prepareReleaseArtProfile
+preReleaseBuild
+processDebugAndroidTestJavaRes
+processDebugAndroidTestManifest
+processDebugAndroidTestNavigationResources
+processDebugAndroidTestResources
+processDebugJavaRes
+processDebugManifest
+processDebugNavigationResources
+processDebugUnitTestJavaRes
+processDebugUnitTestManifest
+processDebugUnitTestResources
+processReleaseJavaRes
+processReleaseManifest
+processReleaseNavigationResources
+resolveConfigAttr
+resolveExternalDependencies
+serviceLoaderDebug - Produces a report of all dependencies that include Java ServiceLoaders
+serviceLoaderDebugAndroidTest - Produces a report of all dependencies that include Java ServiceLoaders
+serviceLoaderDebugTest - Produces a report of all dependencies that include Java ServiceLoaders
+serviceLoaderRelease - Produces a report of all dependencies that include Java ServiceLoaders
+signingConfigWriterDebugAndroidTest
+stripDebugAndroidTestDebugSymbols
+stripDebugDebugSymbols
+stripReleaseDebugSymbols
+syncDebugLibJars
+syncReleaseLibJars
+synthesizeDependenciesDebug - Re-synthesize dependencies from analysis
+synthesizeDependenciesDebugAndroidTest - Re-synthesize dependencies from analysis
+synthesizeDependenciesDebugTest - Re-synthesize dependencies from analysis
+synthesizeDependenciesRelease - Re-synthesize dependencies from analysis
+synthesizeProjectViewDebug - Synthesizes project usages information into a single view
+synthesizeProjectViewDebugAndroidTest - Synthesizes project usages information into a single view
+synthesizeProjectViewDebugTest - Synthesizes project usages information into a single view
+synthesizeProjectViewRelease - Synthesizes project usages information into a single view
+updateLegacyAbi
+updateLintBaselineDebug - Update the lint baseline using the debug variant
+updateLintBaselineRelease - Update the lint baseline using the release variant
+validateSigningDebugAndroidTest
+verifyReleaseResources
+writeDebugAarMetadata
+writeDebugAndroidTestSigningConfigVersions
+writeDebugLintModelMetadata
+writeProjectMetadata - Stores the project type so the output of 'generateBuildHealth' is useful
+writeReleaseAarMetadata
+writeReleaseLintModelMetadata
+
+Rules
+-----
+Pattern: clean<TaskName>: Cleans the output files of a task.
+Pattern: build<ConfigurationName>: Assembles the artifacts of a configuration.
+
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+
+SheetScreenshotTest > a non-modal peek rests above the tab bar FAILED
+    java.lang.AssertionError at SheetScreenshotTest.kt:213
+
+142 tests completed, 1 failed
+
+> Task :core:designsystem:testDebugUnitTest FAILED
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:designsystem:updateKotlinAbi' (registered in build file 'core\designsystem\build.gradle.kts').
+> Cannot query the value of this provider because it has no value available.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:designsystem:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+BUILD FAILED in 2m 14s
+40 actionable tasks: 5 executed, 35 up-to-date
+Configuration cache entry stored.
+EXIT 1

@@ -1,0 +1,38 @@
+[locked:adb] waiting for the lock (pid 9116 since 2026-10-18 05:55:40: bash out/WP03/scripts/with_phone.sh 9a7c74f4 python out/WP03/scripts/font_swap.py --serial 9a7c74f4 --package com.exampl)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 5860 since 2026-10-18 05:55:53: bash -c 
+TAG=-p7 SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture rapid_back scroll_root scroll_minimize' D:/projec)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16640 since 2026-10-18 06:36:33: ./final-gates.win.sh)
+Success
+shot light-rest-top
+shot light-mid
+shot light-end
+shot light-pull
+shot light-settings-end
+shot dark-rest-top
+shot dark-mid
+shot dark-end
+shot dark-pull
+shot dark-settings-end
+/sdcard/r17.mp4: 1 file pulled, 0 skipped. 39.0 MB/s (3138491 bytes in 0.077s)
+shot font150-rest
+shot font150-end
+shot landscape-rest
+shot landscape-end
+R17-REQ34 DONE

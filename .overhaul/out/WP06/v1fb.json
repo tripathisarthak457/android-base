@@ -2,7 +2,7 @@
   "ok": true,
   "target": "android",
   "project_name": "FirebaseOne",
-  "path": "/home/crazyhusir/Documents/projects/tools/.overhaul/out/WP06/v1fb",
+  "path": "D:\\projects\\tools\\.overhaul\\out\\WP06\\v1fb",
   "resolved_features": [
     "analytics",
     "crashlytics",

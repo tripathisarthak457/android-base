@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_password_rules">Pelo menos oito caracteres, com uma letra e um número.</string>
+    <string name="auth_confirm_password">Confirme a senha</string>
+    <string name="auth_create_account">Criar conta</string>
+    <string name="auth_email">E-mail</string>
+    <string name="auth_reset_explanation">Informe o e-mail que você usou no cadastro e enviaremos um link.</string>
+    <string name="auth_forgot_password">Esqueci a senha</string>
+    <string name="auth_reset_sent">Se esse endereço tiver uma conta, o link para redefinir já está a caminho.</string>
+    <string name="auth_name">Nome</string>
+    <string name="auth_password">Senha</string>
+    <string name="auth_reset_password">Redefinir senha</string>
+    <string name="auth_send_reset_link">Enviar link</string>
+    <string name="auth_sign_in">Entrar</string>
+    <string name="auth_welcome_back">Que bom ver você de novo</string>
+    <string name="auth_continue_with_google">Continuar com o Google</string>
+    <string name="auth_or">ou</string>
+    <string name="auth_google_not_configured">O login com o Google ainda não foi configurado. Adicione o ID do cliente web em auth_google_server_client_id.</string>
+    <string name="auth_google_sign_in_failed">Não foi possível entrar com o Google.</string>
+    <string name="auth_google_failed">O login com o Google não foi concluído. Tente de novo ou use seu e-mail.</string>
+    <string name="auth_wrong_credentials">Esse e-mail e essa senha não correspondem a nenhuma conta.</string>
+    <string name="auth_too_many_attempts">Muitas tentativas. Tente de novo em alguns minutos.</string>
+    <string name="auth_sign_in_failed">Não foi possível entrar.</string>
+    <string name="auth_sign_up_failed">Não foi possível criar a conta.</string>
+    <string name="auth_reset_failed">Não foi possível enviar o link.</string>
+    <string name="auth_passwords_do_not_match">As senhas não conferem.</string>
+</resources>

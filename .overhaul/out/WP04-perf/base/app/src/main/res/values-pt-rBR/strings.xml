@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Início</string>
+    <string name="tab_feed">Feed</string>
+    <string name="tab_search">Buscar</string>
+    <string name="tab_profile">Perfil</string>
+    <string name="tab_settings">Configurações</string>
+    <string name="widget_default_headline">Toque para abrir</string>
+    <string name="widget_description">Seu app num relance</string>
+</resources>

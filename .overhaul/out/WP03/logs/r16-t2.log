@@ -1,0 +1,133 @@
+[locked:gradle] waiting for the lock (pid 20084 since 2026-10-17 23:04:42: bash D:/projects/tools/.overhaul/out/WP05/scene-mutants-run15.sh)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest :core:designsystem:updateKotlinAbi :core:designsystem:checkComposeStability
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:designsystem:internalDumpKotlinAbi
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:checkComposeStability
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:designsystem:testDebugUnitTest
+
+SheetPresentTest > B-4a a call site that leaves composition takes its sheet out of the stack at once FAILED
+    java.lang.AssertionError at SheetPresentTest.kt:110
+
+SheetReduceMotionTest > B-63 the sheet reaches its detent and leaves within a few frames FAILED
+    java.lang.AssertionError at SheetReduceMotionTest.kt:54
+
+SheetStackTest > B-55 the covered sheet's grabber hides and Back closes the front sheet first FAILED
+    java.lang.AssertionError at SheetStackTest.kt:67
+
+SheetScreenshotTest > a non-modal peek rests above the tab bar FAILED
+    java.lang.AssertionError at SheetScreenshotTest.kt:189
+
+SheetScreenshotTest > a long list rests the same whichever way fit-content and large are listed FAILED
+    java.lang.IllegalStateException at SheetScreenshotTest.kt:224
+
+SheetScreenshotTest > closing a dirty form asks in an action sheet over it FAILED
+    androidx.test.espresso.AppNotIdleException at SheetScreenshotTest.kt:173
+
+SheetScreenshotTest > a peek grows with the font size FAILED
+    java.lang.AssertionError at SheetScreenshotTest.kt:262
+
+SheetScreenshotTest > at large the presenter recedes into a card, halfway and all the way FAILED
+    java.lang.IllegalStateException at SheetScreenshotTest.kt:80
+
+SheetScreenshotTest > a medium sheet floats inset, solid and frosted FAILED
+    java.lang.IllegalStateException at SheetScreenshotTest.kt:64
+
+273 tests completed, 9 failed
+
+> Task :core:designsystem:testDebugUnitTest FAILED
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:designsystem:updateKotlinAbi' (registered in build file 'core\designsystem\build.gradle.kts').
+> Cannot query the value of this provider because it has no value available.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':core:designsystem:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///D:/projects/tools/.overhaul/wt/WP03/templates/android/core/designsystem/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+BUILD FAILED in 2m 44s
+40 actionable tasks: 10 executed, 30 up-to-date
+Configuration cache entry stored.
+EXIT 1

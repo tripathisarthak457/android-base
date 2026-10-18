@@ -1,0 +1,1457 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :catalog:cleanTestDebugUnitTest UP-TO-DATE
+> Task :core:applock:cleanTestDebugUnitTest
+> Task :core:database:cleanTestDebugUnitTest
+> Task :core:designsystem:cleanTestDebugUnitTest
+> Task :core:devtools:cleanTestDebugUnitTest
+> Task :core:flags:cleanTestDebugUnitTest
+> Task :core:media:cleanTestDebugUnitTest
+> Task :core:datastore:cleanTestDebugUnitTest
+> Task :core:mvi:cleanTestDebugUnitTest
+> Task :core:navigation:cleanTestDebugUnitTest
+> Task :core:playstore:cleanTestDebugUnitTest
+> Task :core:testing:cleanTestDebugUnitTest UP-TO-DATE
+> Task :core:ui:cleanTestDebugUnitTest
+> Task :data:auth:cleanTestDebugUnitTest
+> Task :data:profile:cleanTestDebugUnitTest
+> Task :data:feed:cleanTestDebugUnitTest
+> Task :data:sample:cleanTestDebugUnitTest
+> Task :data:search:cleanTestDebugUnitTest
+> Task :core:analytics:cleanTestDebugUnitTest
+> Task :feature:feed:cleanTestDebugUnitTest
+> Task :feature:auth:cleanTestDebugUnitTest
+> Task :feature:profile:cleanTestDebugUnitTest
+> Task :feature:sample:cleanTestDebugUnitTest
+> Task :feature:settings:cleanTestDebugUnitTest
+> Task :feature:search:cleanTestDebugUnitTest
+> Task :feature:onboarding:cleanTestDebugUnitTest
+> Task :catalog:verifyComposeUsage
+> Task :catalog:preBuild
+> Task :catalog:preDebugBuild
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :catalog:generateDebugBuildConfig UP-TO-DATE
+> Task :catalog:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :catalog:javaPreCompileDebug UP-TO-DATE
+> Task :catalog:mapDebugSourceSetPaths UP-TO-DATE
+> Task :catalog:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :catalog:extractDeepLinksDebug UP-TO-DATE
+> Task :catalog:packageDebugResources UP-TO-DATE
+> Task :catalog:preDebugUnitTestBuild
+> Task :catalog:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :catalog:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:analytics:verifyApiPurity UP-TO-DATE
+> Task :core:analytics:verifyComposeUsage
+> Task :core:analytics:verifyModuleDependencies UP-TO-DATE
+> Task :core:analytics:preBuild
+> Task :core:analytics:preDebugBuild
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:analytics:generateDebugResources UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:network:cleanTestDebugUnitTest
+> Task :core:analytics:processDebugNavigationResources UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:analytics:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:analytics:generateDebugAssets UP-TO-DATE
+> Task :core:analytics:packageDebugResources UP-TO-DATE
+> Task :core:analytics:parseDebugLocalResources UP-TO-DATE
+> Task :core:analytics:generateDebugRFile UP-TO-DATE
+> Task :core:analytics:javaPreCompileDebug UP-TO-DATE
+> Task :core:analytics:preDebugUnitTestBuild
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:analytics:mergeDebugAssets UP-TO-DATE
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:analytics:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:analytics:kspDebugKotlin UP-TO-DATE
+> Task :core:analytics:compileDebugKotlin UP-TO-DATE
+> Task :core:analytics:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:analytics:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:analytics:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:analytics:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:analytics:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:analytics:compileDebugLibraryResources UP-TO-DATE
+> Task :core:analytics:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:analytics:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:analytics:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:analytics:extractDeepLinksDebug UP-TO-DATE
+> Task :core:analytics:processDebugManifest UP-TO-DATE
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:analytics:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:analytics:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:analytics:processDebugJavaRes UP-TO-DATE
+> Task :core:analytics:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:analytics:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:applock:verifyApiPurity UP-TO-DATE
+> Task :core:analytics:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:applock:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:applock:verifyComposeUsage
+> Task :core:applock:preBuild
+> Task :core:applock:preDebugBuild
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:applock:generateDebugResources UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:applock:packageDebugResources UP-TO-DATE
+> Task :core:applock:processDebugNavigationResources UP-TO-DATE
+> Task :core:applock:parseDebugLocalResources UP-TO-DATE
+> Task :core:applock:generateDebugRFile UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:applock:javaPreCompileDebug UP-TO-DATE
+> Task :core:applock:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:analytics:processDebugUnitTestResources UP-TO-DATE
+> Task :core:applock:generateDebugAssets UP-TO-DATE
+> Task :core:analytics:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:analytics:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:applock:mergeDebugAssets UP-TO-DATE
+> Task :core:applock:preDebugUnitTestBuild
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:applock:writeDebugAarMetadata UP-TO-DATE
+> Task :core:applock:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:applock:compileDebugLibraryResources UP-TO-DATE
+> Task :core:applock:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:applock:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:applock:extractDeepLinksDebug UP-TO-DATE
+> Task :core:analytics:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:applock:processDebugManifest UP-TO-DATE
+> Task :core:datastore:verifyComposeUsage
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:applock:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:analytics:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :catalog:mergeDebugResources UP-TO-DATE
+> Task :catalog:checkDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :catalog:processDebugMainManifest UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :catalog:processDebugManifest UP-TO-DATE
+> Task :catalog:processDebugManifestForPackage UP-TO-DATE
+> Task :catalog:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :catalog:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:analytics:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:generateDebugResources UP-TO-DATE
+> Task :core:analytics:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:analytics:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:datastore:packageDebugResources UP-TO-DATE
+> Task :core:datastore:processDebugNavigationResources UP-TO-DATE
+> Task :core:datastore:parseDebugLocalResources UP-TO-DATE
+> Task :core:datastore:generateDebugRFile UP-TO-DATE
+> Task :core:analytics:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:analytics:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :catalog:mergeDebugAssets UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:analytics:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:datastore:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:applock:kspDebugKotlin UP-TO-DATE
+> Task :core:applock:compileDebugKotlin UP-TO-DATE
+> Task :core:applock:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :catalog:processDebugNavigationResources UP-TO-DATE
+> Task :catalog:parseDebugLocalResources UP-TO-DATE
+> Task :catalog:generateDebugRFile UP-TO-DATE
+> Task :core:applock:transformDebugClassesWithAsm UP-TO-DATE
+> Task :catalog:compileDebugNavigationResources UP-TO-DATE
+> Task :catalog:compileDebugKotlin UP-TO-DATE
+> Task :catalog:processDebugResources UP-TO-DATE
+> Task :catalog:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :catalog:generateDebugUnitTestConfig UP-TO-DATE
+> Task :catalog:processDebugJavaRes UP-TO-DATE
+> Task :core:applock:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:writeDebugAarMetadata UP-TO-DATE
+> Task :catalog:compileDebugJavaWithJavac UP-TO-DATE
+> Task :catalog:bundleDebugClassesToRuntimeJar UP-TO-DATE
+> Task :catalog:bundleDebugClassesToCompileJar UP-TO-DATE
+> Task :core:applock:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:applock:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:datastore:extractDeepLinksDebug UP-TO-DATE
+> Task :catalog:compileDebugUnitTestKotlin NO-SOURCE
+> Task :catalog:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:applock:mergeDebugUnitTestResources UP-TO-DATE
+> Task :catalog:processDebugUnitTestJavaRes NO-SOURCE
+> Task :core:datastore:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:datastore:compileDebugLibraryResources UP-TO-DATE
+> Task :core:applock:processDebugJavaRes UP-TO-DATE
+> Task :core:applock:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:processDebugJavaRes UP-TO-DATE
+> Task :core:database:verifyApiPurity UP-TO-DATE
+> Task :core:database:verifyComposeUsage
+> Task :core:database:verifyModuleDependencies UP-TO-DATE
+> Task :catalog:testDebugUnitTest NO-SOURCE
+> Task :core:database:preBuild
+> Task :core:database:preDebugBuild
+> Task :core:database:generateDebugResources UP-TO-DATE
+> Task :core:datastore:processDebugManifest UP-TO-DATE
+> Task :core:database:packageDebugResources UP-TO-DATE
+> Task :core:database:javaPreCompileDebug UP-TO-DATE
+> Task :core:database:preDebugUnitTestBuild
+> Task :core:database:writeDebugAarMetadata UP-TO-DATE
+> Task :core:database:processDebugNavigationResources UP-TO-DATE
+> Task :core:database:parseDebugLocalResources UP-TO-DATE
+> Task :core:applock:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:applock:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:database:generateDebugRFile UP-TO-DATE
+> Task :core:database:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:database:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:database:compileDebugLibraryResources UP-TO-DATE
+> Task :core:database:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:database:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:database:kspDebugKotlin UP-TO-DATE
+> Task :core:database:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:database:extractDeepLinksDebug UP-TO-DATE
+> Task :core:database:processDebugManifest UP-TO-DATE
+> Task :core:database:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:database:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:database:processDebugUnitTestResources UP-TO-DATE
+> Task :core:database:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:database:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:database:generateDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugAssets UP-TO-DATE
+> Task :core:database:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:database:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:database:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:datastore:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:datastore:preDebugUnitTestBuild
+> Task :core:datastore:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:datastore:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:database:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:database:processDebugJavaRes UP-TO-DATE
+> Task :core:datastore:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:datastore:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:datastore:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:datastore:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:datastore:processDebugUnitTestResources UP-TO-DATE
+> Task :core:datastore:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:datastore:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:datastore:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:database:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:applock:processDebugUnitTestResources UP-TO-DATE
+> Task :core:datastore:compileDebugUnitTestKotlin UP-TO-DATE
+
+> Task :core:analytics:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:database:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:database:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:applock:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:applock:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:database:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:datastore:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:datastore:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:datastore:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:applock:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:datastore:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:datastore:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:database:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:datastore:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:applock:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:applock:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:applock:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:applock:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:applock:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:applock:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:applock:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:database:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:database:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:database:copyRoomSchemas NO-SOURCE
+> Task :core:database:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:database:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:database:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:database:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:database:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+
+> Task :core:datastore:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:preDebugUnitTestBuild
+
+> Task :core:applock:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+
+> Task :core:database:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor (file:/D:/.caches/gradle/caches/modules-2/files-2.1/androidx.datastore/datastore-preferences-external-protobuf/1.2.1/200a891fd29602b4bcff8e197d243a372fb026d5/datastore-preferences-external-protobuf-1.2.1.jar)
+WARNING: Please consider reporting this to the maintainers of class androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+> Task :core:devtools:verifyApiPurity UP-TO-DATE
+> Task :core:devtools:verifyComposeUsage
+> Task :core:devtools:verifyModuleDependencies UP-TO-DATE
+> Task :core:devtools:preBuild
+> Task :core:devtools:preDebugBuild
+> Task :core:devtools:generateDebugResources UP-TO-DATE
+> Task :core:devtools:packageDebugResources UP-TO-DATE
+> Task :core:devtools:processDebugNavigationResources UP-TO-DATE
+> Task :core:devtools:parseDebugLocalResources UP-TO-DATE
+> Task :core:devtools:generateDebugRFile UP-TO-DATE
+> Task :core:flags:verifyApiPurity UP-TO-DATE
+> Task :core:flags:verifyComposeUsage
+> Task :core:flags:verifyModuleDependencies UP-TO-DATE
+> Task :core:flags:preBuild
+> Task :core:flags:preDebugBuild
+> Task :core:flags:generateDebugResources UP-TO-DATE
+> Task :core:flags:packageDebugResources UP-TO-DATE
+> Task :core:flags:processDebugNavigationResources UP-TO-DATE
+> Task :core:flags:parseDebugLocalResources UP-TO-DATE
+> Task :core:flags:generateDebugRFile UP-TO-DATE
+> Task :core:flags:kspDebugKotlin UP-TO-DATE
+> Task :core:flags:compileDebugKotlin UP-TO-DATE
+> Task :core:flags:javaPreCompileDebug UP-TO-DATE
+> Task :core:flags:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:flags:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:flags:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:devtools:kspDebugKotlin UP-TO-DATE
+> Task :core:devtools:compileDebugKotlin UP-TO-DATE
+> Task :core:devtools:javaPreCompileDebug UP-TO-DATE
+> Task :core:devtools:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:flags:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:devtools:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:devtools:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:devtools:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:devtools:generateDebugAssets UP-TO-DATE
+> Task :core:devtools:mergeDebugAssets UP-TO-DATE
+> Task :core:devtools:preDebugUnitTestBuild
+> Task :core:flags:generateDebugAssets UP-TO-DATE
+> Task :core:flags:mergeDebugAssets UP-TO-DATE
+> Task :core:devtools:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:devtools:writeDebugAarMetadata UP-TO-DATE
+> Task :core:flags:writeDebugAarMetadata UP-TO-DATE
+> Task :core:devtools:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:devtools:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:devtools:compileDebugLibraryResources UP-TO-DATE
+> Task :core:devtools:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:devtools:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:devtools:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:devtools:extractDeepLinksDebug UP-TO-DATE
+> Task :core:devtools:processDebugManifest UP-TO-DATE
+> Task :core:flags:extractDeepLinksDebug UP-TO-DATE
+> Task :core:flags:processDebugManifest UP-TO-DATE
+> Task :core:devtools:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:devtools:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:flags:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:flags:compileDebugLibraryResources UP-TO-DATE
+> Task :core:devtools:processDebugUnitTestResources UP-TO-DATE
+> Task :core:devtools:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:devtools:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:devtools:processDebugJavaRes UP-TO-DATE
+> Task :core:devtools:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:devtools:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:devtools:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:devtools:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:devtools:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:devtools:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:devtools:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:devtools:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:devtools:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:devtools:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:flags:processDebugJavaRes UP-TO-DATE
+> Task :core:flags:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:flags:preDebugUnitTestBuild
+> Task :core:flags:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:flags:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:flags:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:flags:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:flags:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:flags:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:flags:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:flags:processDebugUnitTestResources UP-TO-DATE
+> Task :core:flags:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:flags:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:flags:kspDebugUnitTestKotlin NO-SOURCE
+> Task :core:flags:compileDebugUnitTestKotlin NO-SOURCE
+> Task :core:flags:processDebugUnitTestJavaRes NO-SOURCE
+> Task :core:flags:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:flags:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:flags:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:flags:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:flags:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:flags:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:flags:testDebugUnitTest
+> Task :core:media:verifyApiPurity UP-TO-DATE
+> Task :core:media:verifyComposeUsage
+> Task :core:media:verifyModuleDependencies UP-TO-DATE
+> Task :core:media:preBuild
+> Task :core:media:preDebugBuild
+> Task :core:media:generateDebugResources UP-TO-DATE
+> Task :core:media:packageDebugResources UP-TO-DATE
+> Task :core:media:processDebugNavigationResources UP-TO-DATE
+> Task :core:media:parseDebugLocalResources UP-TO-DATE
+> Task :core:media:generateDebugRFile UP-TO-DATE
+> Task :core:media:kspDebugKotlin UP-TO-DATE
+> Task :core:media:compileDebugKotlin UP-TO-DATE
+> Task :core:media:javaPreCompileDebug UP-TO-DATE
+> Task :core:media:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:media:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:media:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:media:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:media:generateDebugAssets UP-TO-DATE
+> Task :core:media:mergeDebugAssets UP-TO-DATE
+> Task :core:media:preDebugUnitTestBuild
+> Task :core:media:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:media:writeDebugAarMetadata UP-TO-DATE
+> Task :core:media:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:media:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:media:compileDebugLibraryResources UP-TO-DATE
+> Task :core:media:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:media:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:media:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:media:extractDeepLinksDebug UP-TO-DATE
+> Task :core:media:processDebugManifest UP-TO-DATE
+> Task :core:media:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:media:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:media:processDebugUnitTestResources UP-TO-DATE
+> Task :core:media:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:media:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:media:processDebugJavaRes UP-TO-DATE
+> Task :core:media:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:media:kspDebugUnitTestKotlin NO-SOURCE
+> Task :core:media:compileDebugUnitTestKotlin NO-SOURCE
+> Task :core:media:processDebugUnitTestJavaRes NO-SOURCE
+> Task :core:media:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:media:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:media:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:media:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:media:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:media:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:media:testDebugUnitTest
+> Task :core:mvi:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:verifyComposeUsage
+> Task :core:mvi:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:generateDebugResources UP-TO-DATE
+> Task :core:mvi:packageDebugResources UP-TO-DATE
+> Task :core:mvi:processDebugNavigationResources UP-TO-DATE
+> Task :core:mvi:parseDebugLocalResources UP-TO-DATE
+> Task :core:mvi:generateDebugRFile UP-TO-DATE
+> Task :core:mvi:compileDebugKotlin UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug UP-TO-DATE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:mvi:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:mvi:preDebugUnitTestBuild
+> Task :core:mvi:writeDebugAarMetadata UP-TO-DATE
+> Task :core:mvi:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:mvi:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:mvi:compileDebugLibraryResources UP-TO-DATE
+> Task :core:mvi:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:mvi:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:mvi:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:mvi:extractDeepLinksDebug UP-TO-DATE
+> Task :core:mvi:processDebugManifest UP-TO-DATE
+> Task :core:mvi:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:mvi:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:mvi:processDebugUnitTestResources UP-TO-DATE
+> Task :core:mvi:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:mvi:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:mvi:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:mvi:generateDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugAssets UP-TO-DATE
+> Task :core:mvi:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:mvi:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:mvi:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:mvi:processDebugJavaRes UP-TO-DATE
+> Task :core:mvi:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:devtools:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:mvi:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:verifyComposeUsage
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugKotlin UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:navigation:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:navigation:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:navigation:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:extractDeepLinksDebug UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:navigation:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:navigation:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:navigation:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+
+> Task :core:navigation:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:network:verifyApiPurity UP-TO-DATE
+> Task :core:network:verifyComposeUsage
+> Task :core:network:verifyModuleDependencies UP-TO-DATE
+> Task :core:network:preBuild
+> Task :core:network:preDebugBuild
+> Task :core:network:generateDebugResources UP-TO-DATE
+> Task :core:network:packageDebugResources UP-TO-DATE
+> Task :core:network:processDebugNavigationResources UP-TO-DATE
+> Task :core:network:parseDebugLocalResources UP-TO-DATE
+> Task :core:network:generateDebugRFile UP-TO-DATE
+> Task :core:network:kspDebugKotlin UP-TO-DATE
+> Task :core:network:compileDebugKotlin UP-TO-DATE
+> Task :core:network:javaPreCompileDebug UP-TO-DATE
+> Task :core:network:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:network:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:network:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:network:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:network:generateDebugAssets UP-TO-DATE
+> Task :core:network:mergeDebugAssets UP-TO-DATE
+> Task :core:network:preDebugUnitTestBuild
+> Task :core:network:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:network:writeDebugAarMetadata UP-TO-DATE
+> Task :core:network:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:network:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:network:compileDebugLibraryResources UP-TO-DATE
+> Task :core:network:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:network:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:network:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:network:extractDeepLinksDebug UP-TO-DATE
+> Task :core:network:processDebugManifest UP-TO-DATE
+> Task :core:network:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:network:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:network:processDebugUnitTestResources UP-TO-DATE
+> Task :core:network:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:network:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:network:processDebugJavaRes UP-TO-DATE
+> Task :core:network:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:network:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:network:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:network:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:network:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:network:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:network:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:network:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:network:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:network:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:network:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: Please consider reporting this to the maintainers of class androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+> Task :core:playstore:verifyApiPurity UP-TO-DATE
+> Task :core:playstore:verifyComposeUsage
+> Task :core:playstore:verifyModuleDependencies UP-TO-DATE
+> Task :core:playstore:preBuild
+> Task :core:playstore:preDebugBuild
+> Task :core:playstore:generateDebugResources UP-TO-DATE
+> Task :core:playstore:packageDebugResources UP-TO-DATE
+> Task :core:playstore:processDebugNavigationResources UP-TO-DATE
+> Task :core:playstore:parseDebugLocalResources UP-TO-DATE
+> Task :core:playstore:generateDebugRFile UP-TO-DATE
+> Task :core:playstore:kspDebugKotlin UP-TO-DATE
+> Task :core:playstore:compileDebugKotlin UP-TO-DATE
+> Task :core:playstore:javaPreCompileDebug UP-TO-DATE
+> Task :core:playstore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:playstore:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:playstore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:playstore:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:playstore:generateDebugAssets UP-TO-DATE
+> Task :core:playstore:mergeDebugAssets UP-TO-DATE
+> Task :core:playstore:preDebugUnitTestBuild
+> Task :core:playstore:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:playstore:writeDebugAarMetadata UP-TO-DATE
+> Task :core:playstore:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:playstore:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:playstore:compileDebugLibraryResources UP-TO-DATE
+> Task :core:playstore:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:playstore:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:playstore:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:playstore:extractDeepLinksDebug UP-TO-DATE
+> Task :core:playstore:processDebugManifest UP-TO-DATE
+> Task :core:playstore:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:playstore:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:playstore:processDebugUnitTestResources UP-TO-DATE
+> Task :core:playstore:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:playstore:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:playstore:processDebugJavaRes UP-TO-DATE
+> Task :core:playstore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:playstore:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :core:playstore:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :core:playstore:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:playstore:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:playstore:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:playstore:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:playstore:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:playstore:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:playstore:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+
+> Task :core:playstore:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :core:testing:preDebugUnitTestBuild
+> Task :core:testing:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:testing:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:testing:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:testing:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:testing:processDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:compileDebugUnitTestKotlin NO-SOURCE
+> Task :core:testing:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:testing:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:testing:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:testing:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:testing:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:testing:processDebugUnitTestJavaRes NO-SOURCE
+> Task :core:testing:testDebugUnitTest NO-SOURCE
+> Task :core:ui:verifyApiPurity UP-TO-DATE
+> Task :core:ui:verifyComposeUsage
+> Task :core:ui:verifyModuleDependencies UP-TO-DATE
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources UP-TO-DATE
+> Task :core:ui:packageDebugResources UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources UP-TO-DATE
+> Task :core:ui:parseDebugLocalResources UP-TO-DATE
+> Task :core:ui:generateDebugRFile UP-TO-DATE
+> Task :core:ui:kspDebugKotlin UP-TO-DATE
+> Task :core:ui:compileDebugKotlin UP-TO-DATE
+> Task :core:ui:javaPreCompileDebug UP-TO-DATE
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:ui:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ui:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:ui:generateDebugAssets UP-TO-DATE
+> Task :core:ui:mergeDebugAssets UP-TO-DATE
+> Task :core:ui:preDebugUnitTestBuild
+> Task :core:ui:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:ui:writeDebugAarMetadata UP-TO-DATE
+> Task :core:ui:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:ui:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:ui:compileDebugLibraryResources UP-TO-DATE
+> Task :core:ui:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:ui:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:ui:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:ui:extractDeepLinksDebug UP-TO-DATE
+> Task :core:ui:processDebugManifest UP-TO-DATE
+> Task :core:ui:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:ui:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:ui:processDebugUnitTestResources UP-TO-DATE
+> Task :core:ui:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:ui:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:ui:processDebugJavaRes UP-TO-DATE
+> Task :core:ui:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:ui:kspDebugUnitTestKotlin NO-SOURCE
+> Task :core:ui:compileDebugUnitTestKotlin NO-SOURCE
+> Task :core:ui:processDebugUnitTestJavaRes NO-SOURCE
+> Task :core:ui:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:ui:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:ui:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :core:ui:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:ui:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:ui:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :core:ui:testDebugUnitTest
+> Task :data:auth:verifyApiPurity UP-TO-DATE
+> Task :data:auth:verifyComposeUsage
+> Task :data:auth:verifyModuleDependencies UP-TO-DATE
+> Task :data:auth:preBuild
+> Task :data:auth:preDebugBuild
+> Task :data:auth:generateDebugResources UP-TO-DATE
+> Task :data:auth:packageDebugResources UP-TO-DATE
+> Task :data:auth:processDebugNavigationResources UP-TO-DATE
+> Task :data:auth:parseDebugLocalResources UP-TO-DATE
+> Task :data:auth:generateDebugRFile UP-TO-DATE
+> Task :data:auth:kspDebugKotlin UP-TO-DATE
+> Task :data:auth:compileDebugKotlin UP-TO-DATE
+> Task :data:auth:javaPreCompileDebug UP-TO-DATE
+> Task :data:auth:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:auth:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:auth:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:auth:generateDebugUnitTestAssets UP-TO-DATE
+> Task :data:auth:generateDebugAssets UP-TO-DATE
+> Task :data:auth:mergeDebugAssets UP-TO-DATE
+> Task :data:auth:preDebugUnitTestBuild
+> Task :data:auth:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :data:auth:writeDebugAarMetadata UP-TO-DATE
+> Task :data:auth:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :data:auth:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:auth:compileDebugLibraryResources UP-TO-DATE
+> Task :data:auth:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :data:auth:generateDebugUnitTestResources UP-TO-DATE
+> Task :data:auth:mergeDebugUnitTestResources UP-TO-DATE
+> Task :data:auth:extractDeepLinksDebug UP-TO-DATE
+> Task :data:auth:processDebugManifest UP-TO-DATE
+> Task :data:auth:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :data:auth:processDebugUnitTestManifest UP-TO-DATE
+> Task :data:auth:processDebugUnitTestResources UP-TO-DATE
+> Task :data:auth:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :data:auth:generateDebugUnitTestConfig UP-TO-DATE
+> Task :data:auth:processDebugJavaRes UP-TO-DATE
+> Task :data:auth:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:auth:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :data:auth:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :data:auth:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :data:auth:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:auth:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:auth:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :data:auth:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :data:auth:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :data:auth:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+
+> Task :data:auth:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :data:feed:verifyApiPurity UP-TO-DATE
+> Task :data:feed:verifyComposeUsage
+> Task :data:feed:verifyModuleDependencies UP-TO-DATE
+> Task :data:feed:preBuild
+> Task :data:feed:preDebugBuild
+> Task :data:feed:generateDebugResources UP-TO-DATE
+> Task :data:feed:packageDebugResources UP-TO-DATE
+> Task :data:feed:processDebugNavigationResources UP-TO-DATE
+> Task :data:feed:parseDebugLocalResources UP-TO-DATE
+> Task :data:feed:generateDebugRFile UP-TO-DATE
+> Task :data:feed:kspDebugKotlin UP-TO-DATE
+> Task :data:feed:compileDebugKotlin UP-TO-DATE
+> Task :data:feed:javaPreCompileDebug UP-TO-DATE
+> Task :data:feed:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:feed:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:feed:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:feed:generateDebugUnitTestAssets UP-TO-DATE
+> Task :data:feed:generateDebugAssets UP-TO-DATE
+> Task :data:feed:mergeDebugAssets UP-TO-DATE
+> Task :data:feed:preDebugUnitTestBuild
+> Task :data:feed:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :data:feed:writeDebugAarMetadata UP-TO-DATE
+> Task :data:feed:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :data:feed:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:feed:compileDebugLibraryResources UP-TO-DATE
+> Task :data:feed:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :data:feed:generateDebugUnitTestResources UP-TO-DATE
+> Task :data:feed:mergeDebugUnitTestResources UP-TO-DATE
+> Task :data:feed:extractDeepLinksDebug UP-TO-DATE
+> Task :data:feed:processDebugManifest UP-TO-DATE
+> Task :data:feed:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :data:feed:processDebugUnitTestManifest UP-TO-DATE
+> Task :data:feed:processDebugUnitTestResources UP-TO-DATE
+> Task :data:feed:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :data:feed:generateDebugUnitTestConfig UP-TO-DATE
+> Task :data:feed:processDebugJavaRes UP-TO-DATE
+> Task :data:feed:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:feed:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :data:feed:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :data:feed:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :data:feed:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:feed:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:feed:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :data:feed:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :data:feed:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :data:feed:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+
+> Task :data:feed:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :data:profile:verifyApiPurity UP-TO-DATE
+> Task :data:profile:verifyComposeUsage
+> Task :data:profile:verifyModuleDependencies UP-TO-DATE
+> Task :data:profile:preBuild
+> Task :data:profile:preDebugBuild
+> Task :data:profile:generateDebugResources UP-TO-DATE
+> Task :data:profile:packageDebugResources UP-TO-DATE
+> Task :data:profile:processDebugNavigationResources UP-TO-DATE
+> Task :data:profile:parseDebugLocalResources UP-TO-DATE
+> Task :data:profile:generateDebugRFile UP-TO-DATE
+> Task :data:profile:kspDebugKotlin UP-TO-DATE
+> Task :data:profile:compileDebugKotlin UP-TO-DATE
+> Task :data:profile:javaPreCompileDebug UP-TO-DATE
+> Task :data:profile:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:profile:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:profile:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:profile:generateDebugUnitTestAssets UP-TO-DATE
+> Task :data:profile:generateDebugAssets UP-TO-DATE
+> Task :data:profile:mergeDebugAssets UP-TO-DATE
+> Task :data:profile:preDebugUnitTestBuild
+> Task :data:profile:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :data:profile:writeDebugAarMetadata UP-TO-DATE
+> Task :data:profile:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :data:profile:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:profile:compileDebugLibraryResources UP-TO-DATE
+> Task :data:profile:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :data:profile:generateDebugUnitTestResources UP-TO-DATE
+> Task :data:profile:mergeDebugUnitTestResources UP-TO-DATE
+> Task :data:profile:extractDeepLinksDebug UP-TO-DATE
+> Task :data:profile:processDebugManifest UP-TO-DATE
+> Task :data:profile:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :data:profile:processDebugUnitTestManifest UP-TO-DATE
+> Task :data:profile:processDebugUnitTestResources UP-TO-DATE
+> Task :data:profile:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :data:profile:generateDebugUnitTestConfig UP-TO-DATE
+> Task :data:profile:processDebugJavaRes UP-TO-DATE
+> Task :data:profile:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:profile:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :data:profile:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :data:profile:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :data:profile:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:profile:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:profile:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :data:profile:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :data:profile:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :data:profile:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :data:sample:verifyApiPurity UP-TO-DATE
+> Task :data:sample:verifyComposeUsage
+> Task :data:sample:verifyModuleDependencies UP-TO-DATE
+> Task :data:sample:preBuild
+> Task :data:sample:preDebugBuild
+> Task :data:sample:generateDebugResources UP-TO-DATE
+> Task :data:sample:packageDebugResources UP-TO-DATE
+> Task :data:sample:processDebugNavigationResources UP-TO-DATE
+> Task :data:sample:parseDebugLocalResources UP-TO-DATE
+> Task :data:sample:generateDebugRFile UP-TO-DATE
+> Task :data:sample:kspDebugKotlin UP-TO-DATE
+> Task :data:sample:compileDebugKotlin UP-TO-DATE
+> Task :data:sample:javaPreCompileDebug UP-TO-DATE
+> Task :data:sample:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:sample:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:sample:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:sample:generateDebugUnitTestAssets UP-TO-DATE
+> Task :data:sample:generateDebugAssets UP-TO-DATE
+> Task :data:sample:mergeDebugAssets UP-TO-DATE
+> Task :data:sample:preDebugUnitTestBuild
+> Task :data:sample:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :data:sample:writeDebugAarMetadata UP-TO-DATE
+> Task :data:sample:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :data:sample:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:sample:compileDebugLibraryResources UP-TO-DATE
+> Task :data:sample:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :data:sample:generateDebugUnitTestResources UP-TO-DATE
+> Task :data:sample:mergeDebugUnitTestResources UP-TO-DATE
+> Task :data:sample:extractDeepLinksDebug UP-TO-DATE
+> Task :data:sample:processDebugManifest UP-TO-DATE
+> Task :data:sample:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :data:sample:processDebugUnitTestManifest UP-TO-DATE
+> Task :data:sample:processDebugUnitTestResources UP-TO-DATE
+> Task :data:sample:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :data:sample:generateDebugUnitTestConfig UP-TO-DATE
+> Task :data:sample:processDebugJavaRes UP-TO-DATE
+> Task :data:sample:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:sample:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :data:sample:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :data:sample:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :data:sample:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:sample:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:sample:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :data:sample:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :data:sample:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :data:sample:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+
+> Task :data:profile:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :data:search:verifyApiPurity UP-TO-DATE
+> Task :data:search:verifyComposeUsage
+> Task :data:search:verifyModuleDependencies UP-TO-DATE
+> Task :data:search:preBuild
+> Task :data:search:preDebugBuild
+> Task :data:search:generateDebugResources UP-TO-DATE
+> Task :data:search:packageDebugResources UP-TO-DATE
+> Task :data:search:processDebugNavigationResources UP-TO-DATE
+> Task :data:search:parseDebugLocalResources UP-TO-DATE
+> Task :data:search:generateDebugRFile UP-TO-DATE
+
+> Task :data:sample:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :data:search:kspDebugKotlin UP-TO-DATE
+> Task :data:search:compileDebugKotlin UP-TO-DATE
+> Task :data:search:javaPreCompileDebug UP-TO-DATE
+> Task :data:search:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:search:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:search:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:search:generateDebugUnitTestAssets UP-TO-DATE
+> Task :data:search:generateDebugAssets UP-TO-DATE
+> Task :data:search:mergeDebugAssets UP-TO-DATE
+> Task :data:search:preDebugUnitTestBuild
+> Task :data:search:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :data:search:writeDebugAarMetadata UP-TO-DATE
+> Task :data:search:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :data:search:mapDebugSourceSetPaths UP-TO-DATE
+> Task :data:search:compileDebugLibraryResources UP-TO-DATE
+> Task :data:search:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :data:search:generateDebugUnitTestResources UP-TO-DATE
+> Task :data:search:mergeDebugUnitTestResources UP-TO-DATE
+> Task :data:search:extractDeepLinksDebug UP-TO-DATE
+> Task :data:search:processDebugManifest UP-TO-DATE
+> Task :data:search:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :data:search:processDebugUnitTestManifest UP-TO-DATE
+> Task :data:search:processDebugUnitTestResources UP-TO-DATE
+> Task :data:search:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :data:search:generateDebugUnitTestConfig UP-TO-DATE
+> Task :data:search:processDebugJavaRes UP-TO-DATE
+> Task :data:search:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:search:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :data:search:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :data:search:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :data:search:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:search:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:search:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :data:search:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :data:search:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :data:search:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:auth:verifyApiPurity UP-TO-DATE
+> Task :feature:auth:verifyComposeUsage
+> Task :feature:auth:verifyModuleDependencies UP-TO-DATE
+> Task :feature:auth:preBuild
+> Task :feature:auth:preDebugBuild
+> Task :feature:auth:generateDebugResources UP-TO-DATE
+> Task :feature:auth:packageDebugResources UP-TO-DATE
+> Task :feature:auth:processDebugNavigationResources UP-TO-DATE
+> Task :feature:auth:parseDebugLocalResources UP-TO-DATE
+> Task :feature:auth:generateDebugRFile UP-TO-DATE
+> Task :feature:auth:kspDebugKotlin UP-TO-DATE
+> Task :feature:auth:compileDebugKotlin UP-TO-DATE
+> Task :feature:auth:javaPreCompileDebug UP-TO-DATE
+> Task :feature:auth:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:auth:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:auth:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:auth:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:auth:generateDebugAssets UP-TO-DATE
+> Task :feature:auth:mergeDebugAssets UP-TO-DATE
+> Task :feature:auth:preDebugUnitTestBuild
+> Task :feature:auth:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:auth:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:auth:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:auth:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:auth:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:auth:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:auth:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:auth:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:auth:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:auth:processDebugManifest UP-TO-DATE
+
+> Task :data:search:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:auth:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:auth:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:auth:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:auth:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:auth:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:auth:processDebugJavaRes UP-TO-DATE
+> Task :feature:auth:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:auth:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:auth:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:auth:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:auth:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:auth:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:auth:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :feature:auth:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:auth:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:auth:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:feed:verifyApiPurity UP-TO-DATE
+> Task :feature:feed:verifyComposeUsage
+> Task :feature:feed:verifyModuleDependencies UP-TO-DATE
+> Task :feature:feed:preBuild
+> Task :feature:feed:preDebugBuild
+> Task :feature:feed:generateDebugResources UP-TO-DATE
+> Task :feature:feed:packageDebugResources UP-TO-DATE
+> Task :feature:feed:processDebugNavigationResources UP-TO-DATE
+> Task :feature:feed:parseDebugLocalResources UP-TO-DATE
+> Task :feature:feed:generateDebugRFile UP-TO-DATE
+> Task :feature:feed:kspDebugKotlin UP-TO-DATE
+> Task :feature:feed:compileDebugKotlin UP-TO-DATE
+> Task :feature:feed:javaPreCompileDebug UP-TO-DATE
+> Task :feature:feed:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:feed:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:feed:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:feed:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:feed:generateDebugAssets UP-TO-DATE
+> Task :feature:feed:mergeDebugAssets UP-TO-DATE
+> Task :feature:feed:preDebugUnitTestBuild
+> Task :feature:feed:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:feed:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:feed:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:feed:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:feed:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:feed:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:feed:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:feed:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:feed:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:feed:processDebugManifest UP-TO-DATE
+> Task :feature:feed:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:feed:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:feed:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:feed:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:feed:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:feed:processDebugJavaRes UP-TO-DATE
+> Task :feature:feed:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:feed:kspDebugUnitTestKotlin NO-SOURCE
+> Task :feature:feed:compileDebugUnitTestKotlin NO-SOURCE
+> Task :feature:feed:processDebugUnitTestJavaRes NO-SOURCE
+> Task :feature:feed:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:feed:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:feed:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :feature:feed:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:feed:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:feed:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:feed:testDebugUnitTest
+> Task :feature:onboarding:verifyApiPurity UP-TO-DATE
+> Task :feature:onboarding:verifyComposeUsage
+> Task :feature:onboarding:verifyModuleDependencies UP-TO-DATE
+> Task :feature:onboarding:preBuild
+> Task :feature:onboarding:preDebugBuild
+> Task :feature:onboarding:generateDebugResources UP-TO-DATE
+> Task :feature:onboarding:packageDebugResources UP-TO-DATE
+> Task :feature:onboarding:processDebugNavigationResources UP-TO-DATE
+> Task :feature:onboarding:parseDebugLocalResources UP-TO-DATE
+> Task :feature:onboarding:generateDebugRFile UP-TO-DATE
+> Task :feature:onboarding:kspDebugKotlin UP-TO-DATE
+> Task :feature:onboarding:compileDebugKotlin UP-TO-DATE
+> Task :feature:onboarding:javaPreCompileDebug UP-TO-DATE
+> Task :feature:onboarding:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:onboarding:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:onboarding:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:onboarding:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:onboarding:generateDebugAssets UP-TO-DATE
+> Task :feature:onboarding:mergeDebugAssets UP-TO-DATE
+> Task :feature:onboarding:preDebugUnitTestBuild
+> Task :feature:onboarding:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:onboarding:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:onboarding:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:onboarding:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:onboarding:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:onboarding:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:onboarding:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:onboarding:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:onboarding:processDebugManifest UP-TO-DATE
+> Task :feature:onboarding:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:onboarding:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:onboarding:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:onboarding:processDebugJavaRes UP-TO-DATE
+> Task :feature:onboarding:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:onboarding:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:profile:verifyApiPurity UP-TO-DATE
+> Task :feature:profile:verifyComposeUsage
+> Task :feature:onboarding:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:profile:verifyModuleDependencies UP-TO-DATE
+> Task :feature:onboarding:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:onboarding:kspDebugUnitTestKotlin NO-SOURCE
+> Task :feature:onboarding:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:profile:preBuild
+> Task :feature:profile:preDebugBuild
+> Task :feature:profile:generateDebugResources UP-TO-DATE
+> Task :feature:onboarding:compileDebugUnitTestKotlin NO-SOURCE
+> Task :feature:onboarding:processDebugUnitTestJavaRes NO-SOURCE
+> Task :feature:onboarding:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:onboarding:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :feature:profile:packageDebugResources UP-TO-DATE
+> Task :feature:profile:processDebugNavigationResources UP-TO-DATE
+> Task :feature:profile:parseDebugLocalResources UP-TO-DATE
+> Task :feature:onboarding:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:onboarding:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:profile:generateDebugRFile UP-TO-DATE
+> Task :feature:onboarding:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:profile:kspDebugKotlin UP-TO-DATE
+> Task :feature:profile:compileDebugKotlin UP-TO-DATE
+> Task :feature:profile:javaPreCompileDebug UP-TO-DATE
+> Task :feature:onboarding:testDebugUnitTest
+> Task :feature:profile:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:profile:generateDebugAssets UP-TO-DATE
+> Task :feature:profile:mergeDebugAssets UP-TO-DATE
+> Task :feature:profile:preDebugUnitTestBuild
+> Task :feature:profile:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:profile:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:profile:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:profile:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:profile:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:profile:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:profile:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:profile:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:profile:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:profile:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:profile:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:profile:processDebugManifest UP-TO-DATE
+> Task :feature:profile:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:profile:processDebugJavaRes UP-TO-DATE
+> Task :feature:profile:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:profile:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:profile:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:profile:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:sample:verifyApiPurity UP-TO-DATE
+> Task :feature:profile:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:profile:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:profile:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:sample:verifyComposeUsage
+> Task :feature:sample:verifyModuleDependencies UP-TO-DATE
+> Task :feature:sample:preBuild
+> Task :feature:sample:preDebugBuild
+> Task :feature:sample:generateDebugResources UP-TO-DATE
+> Task :feature:sample:packageDebugResources UP-TO-DATE
+> Task :feature:profile:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:sample:processDebugNavigationResources UP-TO-DATE
+> Task :feature:sample:parseDebugLocalResources UP-TO-DATE
+> Task :feature:sample:generateDebugRFile UP-TO-DATE
+> Task :feature:profile:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:profile:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:sample:kspDebugKotlin UP-TO-DATE
+> Task :feature:profile:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:profile:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :feature:profile:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:profile:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:profile:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:sample:compileDebugKotlin UP-TO-DATE
+> Task :feature:sample:javaPreCompileDebug UP-TO-DATE
+> Task :feature:sample:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:sample:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:sample:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:sample:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:sample:generateDebugAssets UP-TO-DATE
+> Task :feature:sample:mergeDebugAssets UP-TO-DATE
+> Task :feature:sample:preDebugUnitTestBuild
+> Task :feature:sample:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:sample:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:sample:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:sample:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:sample:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:sample:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:sample:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:sample:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:sample:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:sample:processDebugManifest UP-TO-DATE
+> Task :feature:sample:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:sample:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:sample:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:sample:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:sample:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:sample:processDebugJavaRes UP-TO-DATE
+> Task :feature:sample:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:sample:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:sample:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:sample:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:sample:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:sample:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:sample:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :feature:sample:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:sample:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:sample:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+
+> Task :feature:auth:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:profile:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:search:verifyApiPurity UP-TO-DATE
+> Task :feature:search:verifyComposeUsage
+> Task :feature:search:verifyModuleDependencies UP-TO-DATE
+> Task :feature:search:preBuild
+> Task :feature:search:preDebugBuild
+> Task :feature:search:generateDebugResources UP-TO-DATE
+> Task :feature:search:packageDebugResources UP-TO-DATE
+> Task :feature:search:processDebugNavigationResources UP-TO-DATE
+> Task :feature:search:parseDebugLocalResources UP-TO-DATE
+> Task :feature:search:generateDebugRFile UP-TO-DATE
+> Task :feature:search:kspDebugKotlin UP-TO-DATE
+
+> Task :feature:sample:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :feature:search:compileDebugKotlin UP-TO-DATE
+> Task :feature:search:javaPreCompileDebug UP-TO-DATE
+> Task :feature:search:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:search:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:search:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:search:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:search:generateDebugAssets UP-TO-DATE
+> Task :feature:search:mergeDebugAssets UP-TO-DATE
+> Task :feature:search:preDebugUnitTestBuild
+> Task :feature:search:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:search:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:search:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:search:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:search:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:search:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:search:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:search:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:search:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:search:processDebugManifest UP-TO-DATE
+> Task :feature:search:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:search:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:search:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:search:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:search:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:search:processDebugJavaRes UP-TO-DATE
+> Task :feature:search:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:search:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:search:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:search:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:search:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:search:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:search:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :feature:search:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:search:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:search:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:settings:verifyApiPurity UP-TO-DATE
+> Task :feature:settings:verifyComposeUsage
+> Task :feature:settings:verifyModuleDependencies UP-TO-DATE
+> Task :feature:settings:preBuild
+> Task :feature:settings:preDebugBuild
+> Task :feature:settings:generateDebugResources UP-TO-DATE
+> Task :feature:settings:packageDebugResources UP-TO-DATE
+> Task :feature:settings:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:parseDebugLocalResources UP-TO-DATE
+> Task :feature:settings:generateDebugRFile UP-TO-DATE
+> Task :feature:settings:kspDebugKotlin UP-TO-DATE
+> Task :feature:settings:compileDebugKotlin UP-TO-DATE
+> Task :feature:settings:javaPreCompileDebug UP-TO-DATE
+> Task :feature:settings:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:settings:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:settings:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:settings:generateDebugUnitTestAssets UP-TO-DATE
+> Task :feature:settings:generateDebugAssets UP-TO-DATE
+> Task :feature:settings:mergeDebugAssets UP-TO-DATE
+> Task :feature:settings:preDebugUnitTestBuild
+> Task :feature:settings:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :feature:settings:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :feature:settings:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:settings:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:settings:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :feature:settings:generateDebugUnitTestResources UP-TO-DATE
+> Task :feature:settings:mergeDebugUnitTestResources UP-TO-DATE
+> Task :feature:settings:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:settings:processDebugManifest UP-TO-DATE
+> Task :feature:settings:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :feature:settings:processDebugUnitTestManifest UP-TO-DATE
+> Task :feature:settings:processDebugUnitTestResources UP-TO-DATE
+> Task :feature:settings:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :feature:settings:generateDebugUnitTestConfig UP-TO-DATE
+> Task :feature:settings:processDebugJavaRes UP-TO-DATE
+> Task :feature:settings:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:settings:kspDebugUnitTestKotlin NO-SOURCE
+> Task :feature:settings:compileDebugUnitTestKotlin NO-SOURCE
+> Task :feature:settings:processDebugUnitTestJavaRes NO-SOURCE
+> Task :feature:settings:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:settings:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:settings:hiltCollectClassesDebugUnitTest UP-TO-DATE
+> Task :feature:settings:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:settings:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:settings:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:settings:testDebugUnitTest
+> Task :app:cleanTestDevDebugUnitTest
+> Task :app:verifyComposeUsage
+> Task :app:preBuild
+> Task :app:preDevDebugBuild
+> Task :app:generateDevDebugBuildConfig UP-TO-DATE
+> Task :app:extractDevDebugSupportedLocales UP-TO-DATE
+> Task :app:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :core:analytics:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:applock:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:database:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:datastore:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:designsystem:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:devtools:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:flags:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:media:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:mvi:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:navigation:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:network:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:playstore:extractDebugSupportedLocales UP-TO-DATE
+> Task :core:ui:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:auth:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:feed:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:profile:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:sample:extractDebugSupportedLocales UP-TO-DATE
+> Task :data:search:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:auth:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:feed:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:onboarding:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:profile:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:sample:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:search:extractDebugSupportedLocales UP-TO-DATE
+> Task :feature:settings:extractDebugSupportedLocales UP-TO-DATE
+> Task :app:generateDevDebugLocaleConfig UP-TO-DATE
+> Task :app:generateDevDebugResources UP-TO-DATE
+> Task :app:packageDevDebugResources UP-TO-DATE
+> Task :app:processDevDebugNavigationResources UP-TO-DATE
+> Task :app:parseDevDebugLocalResources UP-TO-DATE
+> Task :app:generateDevDebugRFile UP-TO-DATE
+> Task :app:kspDevDebugKotlin UP-TO-DATE
+> Task :app:compileDevDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDevDebug UP-TO-DATE
+> Task :app:compileDevDebugJavaWithJavac UP-TO-DATE
+> Task :app:hiltCollectClassesDevDebug UP-TO-DATE
+> Task :app:hiltAggregateDepsDevDebug UP-TO-DATE
+> Task :app:hiltJavaCompileDevDebug UP-TO-DATE
+> Task :app:checkDevDebugAarMetadata UP-TO-DATE
+> Task :app:compileDevDebugNavigationResources UP-TO-DATE
+> Task :app:mergeDevDebugResources UP-TO-DATE
+> Task :app:createDevDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDevDebug UP-TO-DATE
+> Task :app:processDevDebugMainManifest UP-TO-DATE
+> Task :app:processDevDebugManifest UP-TO-DATE
+> Task :app:processDevDebugManifestForPackage UP-TO-DATE
+> Task :app:processDevDebugResources UP-TO-DATE
+> Task :app:transformDevDebugClassesWithAsm UP-TO-DATE
+> Task :app:bundleDevDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :app:mergeDevDebugAssets UP-TO-DATE
+> Task :app:preDevDebugUnitTestBuild
+> Task :app:packageDevDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:mergeDevDebugUnitTestManifest UP-TO-DATE
+> Task :app:processDevDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateDevDebugUnitTestConfig UP-TO-DATE
+> Task :app:processDevDebugJavaRes UP-TO-DATE
+> Task :app:bundleDevDebugClassesToCompileJar UP-TO-DATE
+> Task :app:kspDevDebugUnitTestKotlin UP-TO-DATE
+> Task :app:compileDevDebugUnitTestKotlin UP-TO-DATE
+> Task :app:processDevDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltCollectClassesDevDebugUnitTest UP-TO-DATE
+> Task :app:hiltAggregateDepsDevDebugUnitTest UP-TO-DATE
+> Task :app:hiltJavaCompileDevDebugUnitTest NO-SOURCE
+> Task :app:transformDevDebugUnitTestClassesWithAsm UP-TO-DATE
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Task :feature:search:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :app:testDevDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: Please consider reporting this to the maintainers of class androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+BUILD SUCCESSFUL in 1m 26s
+1101 actionable tasks: 80 executed, 1021 up-to-date
+Configuration cache entry reused.

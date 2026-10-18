@@ -1,0 +1,1 @@
+select p.upid, p.pid, p.name, p.start_ts, (select group_concat(distinct t.name) from thread t where t.upid=p.upid and t.tid=p.pid) mainname from process p where p.start_ts is not null order by p.start_ts;

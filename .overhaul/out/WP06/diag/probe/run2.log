@@ -1,0 +1,151 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:applock:verifyApiPurity UP-TO-DATE
+> Task :core:applock:verifyComposeUsage
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:datastore:verifyComposeUsage
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:datastore:generateDebugResources UP-TO-DATE
+> Task :core:datastore:processDebugNavigationResources UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:datastore:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:applock:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:applock:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:generateDebugAssets UP-TO-DATE
+> Task :core:datastore:parseDebugLocalResources UP-TO-DATE
+> Task :core:datastore:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:generateDebugRFile UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:datastore:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:datastore:extractDeepLinksDebug UP-TO-DATE
+> Task :core:applock:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:processDebugManifest UP-TO-DATE
+> Task :core:applock:preBuild
+> Task :core:applock:preDebugBuild
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:applock:generateDebugResources UP-TO-DATE
+> Task :core:applock:processDebugNavigationResources UP-TO-DATE
+> Task :core:applock:javaPreCompileDebug UP-TO-DATE
+> Task :core:applock:mergeDebugAssets UP-TO-DATE
+> Task :core:applock:packageDebugResources UP-TO-DATE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:applock:preDebugUnitTestBuild
+> Task :core:applock:writeDebugAarMetadata UP-TO-DATE
+> Task :core:applock:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:applock:parseDebugLocalResources UP-TO-DATE
+> Task :core:applock:compileDebugLibraryResources UP-TO-DATE
+> Task :core:applock:generateDebugRFile UP-TO-DATE
+> Task :core:applock:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:applock:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:applock:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:applock:processDebugManifest UP-TO-DATE
+> Task :core:datastore:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:datastore:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:applock:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:datastore:processDebugJavaRes UP-TO-DATE
+> Task :core:datastore:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:datastore:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:applock:kspDebugKotlin UP-TO-DATE
+> Task :core:applock:compileDebugKotlin UP-TO-DATE
+> Task :core:applock:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:applock:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:applock:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:applock:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:applock:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:applock:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:applock:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:applock:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:applock:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:applock:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:applock:processDebugUnitTestResources UP-TO-DATE
+> Task :core:applock:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:applock:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:applock:kspDebugUnitTestKotlin
+
+> Task :core:applock:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/out/WP06/standard-nofirebase/core/applock/src/test/kotlin/com/example/wp06/standardnofirebase/core/applock/AppLockGateRaceProbe.kt:75:19 'fun createEmptyComposeRule(effectContext: CoroutineContext = ...): ComposeTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createEmptyComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :core:applock:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:applock:hiltCollectClassesDebugUnitTest
+> Task :core:applock:processDebugUnitTestJavaRes
+> Task :core:applock:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:applock:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:applock:transformDebugUnitTestClassesWithAsm
+
+> Task :core:applock:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::arrayBaseOffset has been called by androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: Please consider reporting this to the maintainers of class androidx.datastore.preferences.protobuf.UnsafeUtil$MemoryAccessor
+WARNING: sun.misc.Unsafe::arrayBaseOffset will be removed in a future release
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/out/WP06/standard-nofirebase/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 38s
+103 actionable tasks: 9 executed, 94 up-to-date
+Configuration cache entry reused.
+exit 0

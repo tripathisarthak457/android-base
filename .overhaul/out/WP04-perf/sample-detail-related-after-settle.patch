@@ -1,0 +1,127 @@
+diff --git a/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailContract.kt b/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailContract.kt
+index 13d0df35..ccc1ed34 100644
+--- a/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailContract.kt
++++ b/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailContract.kt
+@@ -16,6 +16,10 @@ internal data class SampleDetailState(
+ 
+ internal sealed interface SampleDetailEvent : UiEvent {
+     data object Appeared : SampleDetailEvent
++
++    /** The screen has stopped moving: what follows the item may be composed now. */
++    data object LoadRelated : SampleDetailEvent
++
+     data object Retry : SampleDetailEvent
+     data object BackClicked : SampleDetailEvent
+     data class RelatedClicked(val id: Int) : SampleDetailEvent
+diff --git a/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailRoute.kt b/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailRoute.kt
+index 6d4f947a..30e8e889 100644
+--- a/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailRoute.kt
++++ b/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailRoute.kt
+@@ -2,10 +2,13 @@ package com.base.app.feature.sample.detail
+ 
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.LaunchedEffect
++import androidx.compose.runtime.snapshotFlow
+ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+ import com.base.app.core.navigation.AppNavigator
++import com.base.app.core.navigation.LocalNavigationSettled
+ import com.base.app.core.ui.MviScreen
+ import com.base.app.feature.sample.api.SampleDetailKey
++import kotlinx.coroutines.flow.first
+ 
+ @Composable
+ internal fun SampleDetailRoute(
+@@ -16,6 +19,12 @@ internal fun SampleDetailRoute(
+     ),
+ ) {
+     LaunchedEffect(Unit) { viewModel.onEvent(SampleDetailEvent.Appeared) }
++    // The related rows wait for the push to settle, so they are not composed in a frame of the slide.
++    val settled = LocalNavigationSettled.current
++    LaunchedEffect(settled) {
++        snapshotFlow { settled() }.first { it }
++        viewModel.onEvent(SampleDetailEvent.LoadRelated)
++    }
+ 
+     MviScreen(
+         viewModel = viewModel,
+diff --git a/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModel.kt b/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModel.kt
+index 31bc807b..c8cdb682 100644
+--- a/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModel.kt
++++ b/templates/android/feature/sample/src/main/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModel.kt
+@@ -23,9 +23,19 @@ internal class SampleDetailViewModel @AssistedInject constructor(
+         fun create(itemId: Int): SampleDetailViewModel
+     }
+ 
++    /**
++     * Set once the screen has stopped moving. The related rows are three cards composed below the
++     * item; arriving in the middle of the push, they would be composed in a frame of the slide.
++     */
++    private var relatedWanted = false
++
+     override fun handleEvent(event: SampleDetailEvent) {
+         when (event) {
+             SampleDetailEvent.Appeared -> if (current.loadState == LoadState.Idle) load()
++            SampleDetailEvent.LoadRelated -> {
++                relatedWanted = true
++                if (current.item != null) loadRelated()
++            }
+             SampleDetailEvent.Retry -> load()
+             SampleDetailEvent.BackClicked -> emit(SampleDetailEffect.NavigateBack)
+             is SampleDetailEvent.RelatedClicked -> emit(SampleDetailEffect.OpenDetail(event.id))
+@@ -43,6 +53,12 @@ internal class SampleDetailViewModel @AssistedInject constructor(
+                     return@launchLatest
+                 }
+             }
++            if (relatedWanted) loadRelated()
++        }
++    }
++
++    private fun loadRelated() {
++        launchLatest(LOAD_RELATED) {
+             // The list is cached, so this costs no request after the list screen has loaded. A
+             // failure only means no related rows: the item itself is already on screen.
+             repository.items().onSuccess { all -> setState { copy(related = all.relatedTo(itemId)) } }
+@@ -51,6 +67,7 @@ internal class SampleDetailViewModel @AssistedInject constructor(
+ 
+     private companion object {
+         const val LOAD = "load"
++        const val LOAD_RELATED = "related"
+     }
+ }
+ 
+diff --git a/templates/android/feature/sample/src/test/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModelTest.kt b/templates/android/feature/sample/src/test/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModelTest.kt
+index f980185c..dbb1374e 100644
+--- a/templates/android/feature/sample/src/test/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModelTest.kt
++++ b/templates/android/feature/sample/src/test/kotlin/com/base/app/feature/sample/detail/SampleDetailViewModelTest.kt
+@@ -24,12 +24,31 @@ class SampleDetailViewModelTest {
+         val viewModel = SampleDetailViewModel(FakeSampleRepository(items), itemId = 4)
+ 
+         viewModel.onEvent(SampleDetailEvent.Appeared)
++        viewModel.onEvent(SampleDetailEvent.LoadRelated)
+         advanceUntilIdle()
+ 
+         assertEquals(items[3], viewModel.state.value.item)
+         assertEquals(listOf(5, 1, 2), viewModel.state.value.related.map { it.id })
+     }
+ 
++    @Test
++    fun `related rows wait until the screen has settled, whichever comes first`() = runTest {
++        val early = SampleDetailViewModel(FakeSampleRepository(items), itemId = 1)
++        early.onEvent(SampleDetailEvent.Appeared)
++        advanceUntilIdle()
++        assertEquals(items[0], early.state.value.item)
++        assertEquals(emptyList<SampleItem>(), early.state.value.related)
++        early.onEvent(SampleDetailEvent.LoadRelated)
++        advanceUntilIdle()
++        assertEquals(listOf(2, 3, 4), early.state.value.related.map { it.id })
++
++        val late = SampleDetailViewModel(FakeSampleRepository(items), itemId = 1)
++        late.onEvent(SampleDetailEvent.LoadRelated)
++        late.onEvent(SampleDetailEvent.Appeared)
++        advanceUntilIdle()
++        assertEquals(listOf(2, 3, 4), late.state.value.related.map { it.id })
++    }
++
+     @Test
+     fun `a failed load shows the error and no related rows`() = runTest {
+         val viewModel = SampleDetailViewModel(FakeSampleRepository(items, failing = true), itemId = 1)

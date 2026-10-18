@@ -1,0 +1,196 @@
+[locked:gradle] waiting for the lock (pid 22352 since 2026-10-18 00:35:55: bash diag/applock_hang3.sh)
+[locked:gradle] waiting for the lock (pid 22352 since 2026-10-18 00:35:55: bash diag/applock_hang3.sh)
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon, 2 stopped Daemons could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:designsystem:testDebugUnitTest :catalog:compileDebugKotlin :feature:settings:compileDebugKotlin :core:designsystem:checkComposeStability
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:koverFindJar UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :catalog:verifyComposeUsage
+> Task :catalog:preBuild
+> Task :catalog:preDebugBuild
+> Task :catalog:generateDebugBuildConfig UP-TO-DATE
+> Task :catalog:generateDebugResources UP-TO-DATE
+> Task :catalog:packageDebugResources UP-TO-DATE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:datastore:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:verifyComposeUsage
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:datastore:verifyModuleDependencies UP-TO-DATE
+> Task :core:datastore:preBuild
+> Task :core:datastore:preDebugBuild
+> Task :core:datastore:generateDebugResources UP-TO-DATE
+> Task :core:datastore:packageDebugResources UP-TO-DATE
+> Task :core:datastore:processDebugNavigationResources UP-TO-DATE
+> Task :core:datastore:parseDebugLocalResources UP-TO-DATE
+> Task :core:datastore:generateDebugRFile UP-TO-DATE
+> Task :core:datastore:javaPreCompileDebug UP-TO-DATE
+> Task :core:mvi:verifyApiPurity UP-TO-DATE
+> Task :core:mvi:verifyComposeUsage
+> Task :core:mvi:verifyModuleDependencies UP-TO-DATE
+> Task :core:mvi:preBuild
+> Task :core:mvi:preDebugBuild
+> Task :core:mvi:generateDebugResources UP-TO-DATE
+> Task :core:mvi:packageDebugResources UP-TO-DATE
+> Task :core:mvi:processDebugNavigationResources UP-TO-DATE
+> Task :core:mvi:parseDebugLocalResources UP-TO-DATE
+> Task :core:mvi:generateDebugRFile UP-TO-DATE
+> Task :core:mvi:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:verifyApiPurity UP-TO-DATE
+> Task :core:navigation:verifyComposeUsage
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:ui:verifyApiPurity UP-TO-DATE
+> Task :core:ui:verifyComposeUsage
+> Task :core:ui:verifyModuleDependencies UP-TO-DATE
+> Task :core:ui:preBuild
+> Task :core:ui:preDebugBuild
+> Task :core:ui:generateDebugResources UP-TO-DATE
+> Task :core:ui:packageDebugResources UP-TO-DATE
+> Task :core:ui:processDebugNavigationResources UP-TO-DATE
+> Task :core:ui:parseDebugLocalResources UP-TO-DATE
+> Task :core:ui:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:ui:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:designsystem:preDebugUnitTestBuild
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:mvi:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:datastore:kspDebugKotlin UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:designsystem:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestManifest UP-TO-DATE
+> Task :catalog:processDebugNavigationResources UP-TO-DATE
+> Task :catalog:parseDebugLocalResources UP-TO-DATE
+> Task :catalog:generateDebugRFile UP-TO-DATE
+> Task :core:mvi:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:mvi:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:mvi:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:settings:verifyApiPurity UP-TO-DATE
+> Task :feature:settings:verifyComposeUsage
+> Task :feature:settings:verifyModuleDependencies UP-TO-DATE
+> Task :feature:settings:preBuild
+> Task :feature:settings:preDebugBuild
+> Task :feature:settings:generateDebugResources UP-TO-DATE
+> Task :feature:settings:packageDebugResources UP-TO-DATE
+> Task :feature:settings:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:parseDebugLocalResources UP-TO-DATE
+> Task :feature:settings:generateDebugRFile UP-TO-DATE
+> Task :core:datastore:compileDebugKotlin UP-TO-DATE
+> Task :core:datastore:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:datastore:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:datastore:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:designsystem:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:checkComposeStability FAILED
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug
+> Task :core:designsystem:bundleLibRuntimeToJarDebug
+> Task :catalog:compileDebugKotlin
+> Task :core:designsystem:compileDebugUnitTestKotlin
+> Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:designsystem:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin
+
+> Task :core:designsystem:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ui:kspDebugKotlin
+> Task :core:ui:compileDebugKotlin
+> Task :core:ui:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:ui:transformDebugClassesWithAsm
+> Task :core:ui:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:settings:kspDebugKotlin
+> Task :feature:settings:compileDebugKotlin
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:designsystem:checkComposeStability' (registered by plugin 'com.base.app.android.compose').
+> :core:designsystem:checkComposeStability has 1 composable(s) taking a parameter the Compose
+  compiler cannot prove is immutable. That makes the whole composable unskippable: it
+  re-runs on every recomposition of whatever called it — in a list, once per row per
+  frame:
+  
+    AppMoneyField
+  
+  Read build/compose_reports/*-composables.txt for the parameter that caused it. It is
+  almost always one of three things: a List where a kotlinx.collections.immutable
+  PersistentList would do, a type from a module without the Compose compiler plugin, or
+  a `var` in a class being passed as a parameter. A type this project cannot change —
+  one from a library — goes in config/compose-stability.conf instead.
+  
+  If it genuinely has to stay, run :core:designsystem:checkComposeStability:recordComposeStability
+  to accept it, in a commit that says why.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3m 54s
+115 actionable tasks: 23 executed, 92 up-to-date
+Configuration cache entry stored.
+EXIT 1

@@ -1,0 +1,40 @@
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 445 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 12 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 19 ms transformThread=SDK 35 Main Thread @coroutine#78
+ok rep=0 a field focused when the app locks loses focus to the cover 22 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 15 ms transformThread=SDK 35 Main Thread @coroutine#145
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 1199 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 53 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 20 ms transformThread=SDK 35 Main Thread @coroutine#78
+ok rep=0 a field focused when the app locks loses focus to the cover 25 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 14 ms transformThread=SDK 35 Main Thread @coroutine#145
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 544 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 40 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 11 ms transformThread=SDK 35 Main Thread @coroutine#80
+ok rep=0 a field focused when the app locks loses focus to the cover 11 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 11 ms transformThread=SDK 35 Main Thread @coroutine#145
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 381 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 13 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 17 ms transformThread=SDK 35 Main Thread @coroutine#78
+ok rep=0 a field focused when the app locks loses focus to the cover 14 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 16 ms transformThread=SDK 35 Main Thread @coroutine#145
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 483 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 12 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 21 ms transformThread=SDK 35 Main Thread @coroutine#78
+ok rep=0 a field focused when the app locks loses focus to the cover 12 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 11 ms transformThread=SDK 35 Main Thread @coroutine#145
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 477 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 80 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 122 ms transformThread=SDK 35 Main Thread @coroutine#78
+ok rep=0 a field focused when the app locks loses focus to the cover 37 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 18 ms transformThread=SDK 35 Main Thread @coroutine#145
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 415 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 14 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 13 ms transformThread=SDK 35 Main Thread @coroutine#78
+ok rep=0 a field focused when the app locks loses focus to the cover 16 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 16 ms transformThread=SDK 35 Main Thread @coroutine#145
+ok rep=0 Tab reaches Unlock, and the content underneath cannot take focus off it 1171 ms transformThread=SDK 35 Main Thread @coroutine#5
+ok rep=0 a field under the cover never takes focus, however often it asks 26 ms transformThread=SDK 35 Main Thread @coroutine#48
+ok rep=0 unlocking hands the content back 22 ms transformThread=SDK 35 Main Thread @coroutine#78
+ok rep=0 a field focused when the app locks loses focus to the cover 36 ms transformThread=SDK 35 Main Thread @coroutine#113
+ok rep=0 while locked, the content is out of reach of touch, keyboard and accessibility 13 ms transformThread=SDK 35 Main Thread @coroutine#145

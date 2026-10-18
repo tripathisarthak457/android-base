@@ -1,0 +1,11 @@
+key = "ui"
+title = "Screens"
+headline = "Show something"
+description = """
+Screens that need
+the network."""
+group = "Core"
+default = false
+requires = ["net"]
+owns = []
+legacy = [{ key = "screens", schema = 1 }]

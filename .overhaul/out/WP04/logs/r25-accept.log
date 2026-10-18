@@ -1,0 +1,138 @@
+== 07:59:29 at b6c141b9 0 dirty
+..........................................
+----------------------------------------------------------------------
+Ran 42 tests in 0.108s
+
+OK
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+......................................................s....................s.......................................ss..............................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 291 tests in 130.202s
+
+OK (skipped=4)
+
+59 projects in 101 s: 0 new issues, 589 known (11 of 11 known-issue lines seen).
+CONSISTENCY OK
+web/frontend/lib/catalogue.json is current.
+
+Summary
+───────
+           App  Everything (Everything)
+       Package  com.example.wp04.everything
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  analytics, applock, auth, browser, catalog, coil,
+                composemetrics, coverage, database, deeplink, depsanalysis,
+                devtools, firebase, flags, forms, googlefonts, googlesignin,
+                language, leakcanary, licenses, lottie, media, network,
+                onboarding, paging, performance, playstore, profile, push,
+                room, sample, search, settings, websocket, widget,
+                workmanager
+       Modules  none
+     Languages  en, de, es, fr, hi, pt-BR
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP04\final-everything
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP04\final-everything and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+    3. Replace app/google-services.json: the included one is a placeholder.
+
+
+Summary
+───────
+           App  Standard (Standard)
+       Package  com.example.wp04.standard
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  auth, browser, catalog, coil, deeplink, devtools, flags,
+                forms, googlefonts, language, leakcanary, media, network,
+                onboarding, profile, room, sample, settings
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP04\final-standard
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP04\final-standard and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+
+Summary
+───────
+           App  Lean (Lean)
+       Package  com.example.wp04.lean
+        Target  android
+  Architecture  compact
+       Min SDK  API 26 · Android 8.0 (Oreo)
+    Target SDK  API 37 · Android 17 (Cinnamon Bun)
+       Version  1.0.0 (1)
+    Desugaring  off
+      Features  catalog, leakcanary, network, sample
+       Modules  none
+     Languages  en
+      Typeface  DM Sans · JetBrains Mono
+       Colours  #2C6BED (template) · #617DB8 (derived) · #AE2CED (derived)
+         Style  Utility
+        Motion  Standard, haptics on
+          Keys  debug key only
+
+  Done.
+
+  Project: D:\projects\tools\.overhaul\out\WP04\final-lean
+
+  Next
+    1. cd D:\projects\tools\.overhaul\out\WP04\final-lean and open it in Android Studio.
+    2. ./gradlew :app:installDevDebug
+
+== 08:03:39 generated
+[locked:gradle] 2443 MB available, 5298 MB commit left; waiting for 3500 MB
+[locked:gradle] 2657 MB available, 5703 MB commit left; waiting for 3500 MB
+[locked:gradle] 2732 MB available, 5807 MB commit left; waiting for 3500 MB
+[locked:gradle] 2765 MB available, 5765 MB commit left; waiting for 3500 MB
+[locked:gradle] 2708 MB available, 5821 MB commit left; waiting for 3500 MB
+[locked:gradle] 2746 MB available, 5792 MB commit left; waiting for 3500 MB
+[locked:gradle] 2716 MB available, 5757 MB commit left; waiting for 3500 MB
+[locked:gradle] 2697 MB available, 5678 MB commit left; waiting for 3500 MB
+[locked:gradle] 2842 MB available, 5686 MB commit left; waiting for 3500 MB
+[locked:gradle] 2751 MB available, 5585 MB commit left; waiting for 3500 MB
+[locked:gradle] 2836 MB available, 5571 MB commit left; waiting for 3500 MB
+[locked:gradle] 2853 MB available, 5555 MB commit left; waiting for 3500 MB
+[locked:gradle] 2897 MB available, 5558 MB commit left; waiting for 3500 MB
+[locked:gradle] 2858 MB available, 5533 MB commit left; waiting for 3500 MB
+[locked:gradle] 2826 MB available, 5481 MB commit left; waiting for 3500 MB
+[locked:gradle] 2825 MB available, 5493 MB commit left; waiting for 3500 MB
+[locked:gradle] 2832 MB available, 5500 MB commit left; waiting for 3500 MB
+[locked:gradle] 2729 MB available, 5399 MB commit left; waiting for 3500 MB
+[locked:gradle] 2741 MB available, 5427 MB commit left; waiting for 3500 MB
+[locked:gradle] 2653 MB available, 5308 MB commit left; waiting for 3500 MB
+[locked:gradle] 2540 MB available, 5618 MB commit left; waiting for 3500 MB
+[locked:gradle] 2615 MB available, 5553 MB commit left; waiting for 3500 MB
+[locked:gradle] 2534 MB available, 5429 MB commit left; waiting for 3500 MB
+[locked:gradle] 2597 MB available, 5379 MB commit left; waiting for 3500 MB

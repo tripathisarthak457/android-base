@@ -3,11 +3,11 @@
 # profile on the phone from final-everything (adb lock outside, Gradle lock inside), splits it into that project's
 # modules, then copies each module's profile into the template with the package renamed back (the generator renames
 # it again).
-#   $L adb ./profile.win.sh > logs/<step>.log 2>&1
+#   $L adb ./profile.win.sh [project] > logs/<step>.log 2>&1      (project defaults to final-everything)
 set -euo pipefail
 export ANDROID_SERIAL=9a7c74f4
 OV=D:/projects/tools/.overhaul; L=$OV/bin/locked; O=$OV/out/WP04; W=$OV/wt/WP04/templates/android
-EV=$O/final-everything
+EV=${1:-$O/final-everything}
 cd $EV
 echo "== $(date +%H:%M:%S) built from $(cat BUILT_FROM)"
 adb shell input keyevent KEYCODE_WAKEUP

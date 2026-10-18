@@ -1,0 +1,9 @@
+16264
+/data/misc/perfetto-traces/wp04-heap-key.pftrace: 1 file pulled, 0 skipped. 18.2 MB/s (175939 bytes in 0.009s)
+ Java Heap: 9168 26544  Native Heap: 12900 14164  <- key
+16425
+/data/misc/perfetto-traces/wp04-heap-swipe.pftrace: 1 file pulled, 0 skipped. 28.7 MB/s (311598 bytes in 0.010s)
+ Java Heap: 9116 26504  Native Heap: 13784 15048  <- swipe
+-rw-r--r-- 1 crazyhusir 197609 175939 Oct 18 05:50 D:/projects/tools/.overhaul/out/WP04/heap/key.pftrace
+-rw-r--r-- 1 crazyhusir 197609 311598 Oct 18 05:50 D:/projects/tools/.overhaul/out/WP04/heap/swipe.pftrace
+HEAP DONE

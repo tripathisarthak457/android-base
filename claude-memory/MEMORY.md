@@ -4,3 +4,4 @@
 - [android-base generator overhaul](android-base-generator.md) — the user's generator; overhaul resumed natively at D:\projects\tools on Oct 17; read .overhaul/handover/HANDOVER.md; standing instructions
 - [Android skills plugin](android-skills-installed.md) — 1.0.15; shallow clone with CRLF working files on Windows; vendor from git objects
 - [Laptop freezes and power-offs](laptop-memory-freeze.md) — Linux-era history; on Windows the user calls it a Linux problem; locked.py keeps a memory wait only
+- [Usage caps](usage-reserve-10-percent.md) — 90% of the 5-hour window 09:00-21:00 IST, up to 99% overnight; auto-resume after resets

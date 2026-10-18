@@ -1,0 +1,42 @@
+.......................F...................................s....................s................................F......ss..............................................................................................................................................................................
+======================================================================
+FAIL: test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return (tests.test_android_target.ProjectTest.test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP06\generator\tests\test_android_target.py", line 329, in test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return
+    self.assertEqual(["gradlew.bat"], found)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['gradlew.bat'] != ['core/database/src/main/kotlin/com/example[150 chars]bat']
+
+First differing element 0:
+'gradlew.bat'
+'core/database/src/main/kotlin/com/example[41 chars]o.kt'
+
+Second list contains 2 additional elements.
+First extra element 1:
+'core/database/src/main/kotlin/com/example/everything/core/database/orders/OrdersEntity.kt'
+
++ ['core/database/src/main/kotlin/com/example/everything/core/database/orders/OrdersDao.kt',
++  'core/database/src/main/kotlin/com/example/everything/core/database/orders/OrdersEntity.kt',
+- ['gradlew.bat']
+? ^
+
++  'gradlew.bat']
+? ^
+
+
+======================================================================
+FAIL: test_text_is_written_only_through_write_text (tests.test_host.HostTest.test_text_is_written_only_through_write_text)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\projects\tools\.overhaul\wt\WP06\generator\tests\test_host.py", line 85, in test_text_is_written_only_through_write_text
+    self.assertEqual(set(), found, "write through genkit.core.copy.write_text")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the second set but not the first:
+'generator/genkit/targets/android/database.py:59' : write through genkit.core.copy.write_text
+
+----------------------------------------------------------------------
+Ran 296 tests in 95.269s
+
+FAILED (failures=2, skipped=4)
+EXIT 1

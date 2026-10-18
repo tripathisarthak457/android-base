@@ -1,0 +1,19 @@
+== 2026-10-18 03:52:10 phase 6
+== 03:52:11 tip (a256582)
+window 1080x2400, row at 540,692
+-rw-r--r-- 1 crazyhusir 197609 46233620 Oct 18 03:53 D:/projects/tools/.overhaul/perf/WP04-perf/tip-nav/trace.perfetto-trace
+NAV-TRACE DONE
+== 03:53:09 head (fb866b3)
+window 1080x2400, row at 540,692
+-rw-r--r-- 1 crazyhusir 197609 46322082 Oct 18 03:54 D:/projects/tools/.overhaul/perf/WP04-perf/head-nav/trace.perfetto-trace
+NAV-TRACE DONE
+== 03:54:08 fixed (730f8e0)
+window 1080x2400, row at 540,692
+-rw-r--r-- 1 crazyhusir 197609 46079259 Oct 18 03:55 D:/projects/tools/.overhaul/perf/WP04-perf/fixed-nav/trace.perfetto-trace
+NAV-TRACE DONE
+== 03:55:07 everything (3c9c403)
+window 1080x2400, row at 540,692
+-rw-r--r-- 1 crazyhusir 197609 45422005 Oct 18 03:56 D:/projects/tools/.overhaul/perf/WP04-perf/everything-nav/trace.perfetto-trace
+NAV-TRACE DONE
+NAV-TRACES DONE
+== 2026-10-18 03:56:06 PHASE6 DONE

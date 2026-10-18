@@ -1,0 +1,5 @@
+[locked:gradle] waiting for the lock (pid 20744 since 2026-10-18 05:44:45: ./gradlew :core:designsystem:testDebugUnitTest --tests *SheetFooterBackingTest* --tests *SheetScreenshotTest* --tests *S)
+[locked:gradle] waiting for the lock (pid 11712 since 2026-10-18 05:45:23: bash -c 
+set -uo pipefail
+O=D:/projects/tools/.overhaul/out/WP04-perf; W=D:/projects/tools/.overhaul/wt/WP04-perf
+cd $W/)

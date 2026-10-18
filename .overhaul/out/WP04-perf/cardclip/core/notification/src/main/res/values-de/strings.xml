@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_default">Allgemein</string>
+    <string name="notification_channel_default_description">Kontoaktivität und wichtige Hinweise.</string>
+    <string name="notification_channel_urgent">Dringend</string>
+    <string name="notification_channel_urgent_description">Was jetzt deine Aufmerksamkeit braucht.</string>
+    <string name="notification_channel_promotions">Angebote</string>
+    <string name="notification_channel_promotions_description">Aktionen und Produktneuheiten.</string>
+    <string name="notification_channel_silent">Hintergrund</string>
+    <string name="notification_channel_silent_description">Synchronisierung und Fortschritt.</string>
+</resources>

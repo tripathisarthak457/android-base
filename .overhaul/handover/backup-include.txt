@@ -67,6 +67,12 @@
 - /out/WP10/api-server
 - /out/WP02/r8-data.b64
 - .git
+# source snapshots of old commits that the smoothness work builds for before/after numbers: they are in the repository's
+# history already, and 6bc38e9's web/deploy/install.sh holds a local database password
+- /out/WP04-perf/s/
+# raw logcat from the user's phone records other apps and accounts; summaries carry what matters
+- logcat*.txt
+- /out/WP03/logs/r17-dbg-cp1b.log
 # zips of generated projects (one holds a google-services.json)
 - /out/**.zip
 - /verify-gen/**.zip

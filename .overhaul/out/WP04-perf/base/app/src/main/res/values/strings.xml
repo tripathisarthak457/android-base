@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">WP04 Base</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_feed">Feed</string>
+    <string name="tab_search">Search</string>
+    <string name="tab_profile">Profile</string>
+    <string name="tab_settings">Settings</string>
+
+    <!--
+      Kept as resources rather than hardcoded in the manifest so a flavour can override them:
+      dropping a strings.xml into src/dev/res gives the dev build its own host without a second
+      intent filter.
+    -->
+    <string name="deeplink_scheme" translatable="false">acmefield</string>
+    <string name="deeplink_host" translatable="false">acmefield.example.com</string>
+
+    <string name="widget_default_headline">Tap to open</string>
+    <string name="widget_description">Your app at a glance</string>
+</resources>

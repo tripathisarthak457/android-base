@@ -1,0 +1,12 @@
+fold: window=673x841dp class=MediumxMedium chrome=Rail ok
+tablet-8: window=1024x640dp class=ExpandedxMedium chrome=Rail ok
+tablet-10: window=1280x800dp class=LargexMedium chrome=Sidebar ok
+fold-again: window=673x841dp class=MediumxMedium chrome=Rail ok
+smallest: window=320x568dp class=CompactxMedium chrome=Bar ok
+desktop: window=1920x1080dp class=ExtraLargexExpanded chrome=Sidebar ok
+reset: window=393x873dp class=CompactxMedium chrome=Bar ok
+rotate: window=873x393dp class=ExpandedxCompact chrome=Rail ok
+rotate-back: window=393x873dp class=CompactxMedium chrome=Bar ok
+second-window: window=393x873dp class=CompactxMedium chrome=Bar ok
+ctrl-2: ok
+D:/projects/tools/.overhaul/perf/WP04/adaptive/phone-7fa49d5b\summary.md: all steps passed

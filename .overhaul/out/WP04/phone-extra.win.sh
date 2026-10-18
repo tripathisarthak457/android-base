@@ -2,14 +2,21 @@
 # Run 21's phone steps besides the gates, each in its own adb lock hold: the REQUIREMENTS 34 and D9 "after" shots,
 # the recordings (record.win.sh), and adaptive.sh on the phone (sizes with display overrides, which the
 # orchestrator allowed on Oct 17 and which adaptive.py gives back; a second window; keyboard shortcuts).
-#   ./phone-extra.win.sh > logs/<step>.log 2>&1
+# With an APK and the commit it was built from, those instead of final-everything's (run 24: the 7fa49d5 build,
+# while the acceptance rebuilt final-everything).
+#   ./phone-extra.win.sh [<apk> <commit>] > logs/<step>.log 2>&1
 set -uo pipefail
 OV=D:/projects/tools/.overhaul; O=$OV/out/WP04; P=$OV/perf/WP04; L=$OV/bin/locked
 A=$OV/wt/WP04/templates/android/tools/adaptive
 cd $O
-# A copy, so a build of final-everything running beside these steps cannot replace the APK under them.
-B=$(cat final-everything/BUILT_FROM)
-mkdir -p extras; cp final-everything/app/build/outputs/apk/dev/benchmarkRelease/app-dev-arm64-v8a-benchmarkRelease.apk extras/everything.apk
+mkdir -p extras
+if [ $# -ge 2 ]; then
+  cp "$1" extras/everything.apk; B=$2
+else
+  # A copy, so a build of final-everything running beside these steps cannot replace the APK under them.
+  B=$(cat final-everything/BUILT_FROM)
+  cp final-everything/app/build/outputs/apk/dev/benchmarkRelease/app-dev-arm64-v8a-benchmarkRelease.apk extras/everything.apk
+fi
 APK=$O/extras/everything.apk
 PKG=com.example.wp04.everything.dev; ACT=com.example.wp04.everything.MainActivity
 echo "== $(date +%H:%M:%S) built $B"

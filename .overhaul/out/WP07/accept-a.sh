@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # WP07 phase A acceptance (Windows, Git Bash). Run in the background; ends with ACCEPT OK.
 # locked and memwait set JAVA_HOME, ANDROID_HOME, GRADLE_USER_HOME, KONAN_DATA_DIR and the other cache variables.
-# Until package WIN merges, the generator suite fails the six host tests of logs/windows/generator-baseline.md.
 set -euo pipefail
 OV=D:/projects/tools/.overhaul
 W=$OV/wt/WP07; L=$OV/bin/locked; M=$OV/bin/memwait; O=$OV/out/WP07

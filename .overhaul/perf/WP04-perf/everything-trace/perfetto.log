@@ -1,1 +1,4 @@
-adb: device '9a7c74f4' not found
+Warning: No PTY. CTRL+C won't gracefully stop the trace. If you are running perfetto via adb shell, use the -tt arg (adb shell -t perfetto ...) or consider using the helper script tools/record_android_trace from the Perfetto repository.
+
+[267.056]    perfetto_cmd.cc:1136 Connected to the Perfetto traced service, TTL: 22s
+[289.443]    perfetto_cmd.cc:1293 Wrote 30427019 bytes into /data/misc/perfetto-traces/dvfs.perfetto-trace

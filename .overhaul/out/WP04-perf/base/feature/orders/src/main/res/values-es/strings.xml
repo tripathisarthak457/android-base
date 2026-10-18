@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="orders_title">Orders</string>
+    <string name="orders_empty_title">Aún no hay nada</string>
+    <string name="orders_empty_message">Cuando haya algo que mostrar, aparecerá en esta pantalla.</string>
+    <string name="orders_reload">Recargar</string>
+</resources>
