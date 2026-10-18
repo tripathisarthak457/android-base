@@ -1,58 +1,58 @@
 Applications Memory Usage (in Kilobytes):
-Uptime: 396712961 Realtime: 1007649078
+Uptime: 405234878 Realtime: 1016170995
 
-** MEMINFO in pid 23643 [com.example.wp04.everything.dev] **
+** MEMINFO in pid 18058 [com.example.wp04.everything.dev] **
                    Pss  Private  Private  SwapPss      Rss     Heap     Heap     Heap
                  Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
                 ------   ------   ------   ------   ------   ------   ------   ------
-  Native Heap    14065    14032       16       38    15316    19776    18146     1629
-  Dalvik Heap    13724    13700        0      210    15088    31413     6837    24576
- Dalvik Other     1878     1852        4       12     2356                           
-        Stack     1472     1472        0        0     1476                           
+  Native Heap    14161    14128       16       38    15416    19792    18154     1637
+  Dalvik Heap    13771    13748        0      210    15136    31421     6845    24576
+ Dalvik Other     1894     1860        4       12     2380                           
+        Stack     1400     1400        0        0     1404                           
        Ashmem       13        0        0        0      824                           
-      Gfx dev     2884     2884        0        0     2884                           
-    Other dev       40        0       40        0      424                           
-     .so mmap     2309      196      432        8    39924                           
-    .jar mmap     1412        0      504        0    37556                           
-    .apk mmap      741        8       96        0     6776                           
-    .ttf mmap      190        0       16        0     1020                           
-    .dex mmap    13810       36    13768        0    14692                           
-    .oat mmap      237        0        8        0    12688                           
-    .art mmap     3288     2996       68       87    18856                           
-   Other mmap      344       72       96        0     1976                           
+      Gfx dev     2888     2888        0        0     2888                           
+    Other dev       42        0       40        0      424                           
+     .so mmap     2159      196       52        8    40420                           
+    .jar mmap     1258        0      304        0    37308                           
+    .apk mmap      741        8       68        0     7032                           
+    .ttf mmap       94        0        0        0      828                           
+    .dex mmap    13827       36    13776        0    14736                           
+    .oat mmap      234        0        4        0    12688                           
+    .art mmap     3285     2996       68       88    18856                           
+   Other mmap      349       68        8        0     2508                           
    EGL mtrack    51380    51380        0        0    51380                           
     GL mtrack      384      384        0        0      384                           
-      Unknown      637      560       72        5     1348                           
-        TOTAL   109168    89572    15120      360   224968    51189    24983    26205
+      Unknown      653      560       88        5     1364                           
+        TOTAL   108894    89652    14428      361   225976    51213    24999    26213
  
  App Summary
                        Pss(KB)                        Rss(KB)
                         ------                         ------
-           Java Heap:    16764                          33944
-         Native Heap:    14032                          15316
-                Code:    15064                         112696
-               Stack:     1472                           1476
-            Graphics:    54648                          54648
-       Private Other:     2712
-              System:     4476
-             Unknown:                                    6888
+           Java Heap:    16812                          33992
+         Native Heap:    14128                          15416
+                Code:    14448                         113072
+               Stack:     1400                           1404
+            Graphics:    54652                          54652
+       Private Other:     2640
+              System:     4814
+             Unknown:                                    7440
  
-           TOTAL PSS:   109168            TOTAL RSS:   224968       TOTAL SWAP PSS:      360
+           TOTAL PSS:   108894            TOTAL RSS:   225976       TOTAL SWAP PSS:      361
  
  Objects
                Views:        8         ViewRootImpl:        1
          AppContexts:       13           Activities:        1
               Assets:       41        AssetManagers:        0
        Local Binders:       57        Proxy Binders:       82
-       Parcel memory:       22         Parcel count:       81
+       Parcel memory:       29         Parcel count:       83
     Death Recipients:        6             WebViews:        0
  
  Native Allocations
                          Count                       Total(kB)
                         ------                         ------
-    Other (malloced):     3720                            354
- Other (nonmalloced):      141                             97
-   Bitmap (malloced):       48                             91
+    Other (malloced):     4359                            415
+ Other (nonmalloced):      155                            107
+   Bitmap (malloced):       50                             94
  
  Mapped Bitmaps
                          Count                       Size(KB)
@@ -61,19 +61,19 @@ Uptime: 396712961 Realtime: 1007649078
               Unique:        0                              0
  
  SQL
-         MEMORY_USED:      396
-  PAGECACHE_OVERFLOW:      143          MALLOC_SIZE:       46
+         MEMORY_USED:      392
+  PAGECACHE_OVERFLOW:      138          MALLOC_SIZE:       46
  
  DATABASES
       pgsz     dbsz   Lookaside(b) cache hits cache misses cache size  Dbname
 PER CONNECTION STATS
          4       56             17     0    22     1  /data/user/0/com.example.wp04.everything.dev/databases/network
          4        8                    0     0     0    (attached) temp
-         4       56             31     4    16     2  /data/user/0/com.example.wp04.everything.dev/databases/network (2)
-         4       56             62     7    23     5  /data/user/0/com.example.wp04.everything.dev/databases/network (1)
+         4       56             44     6    21     4  /data/user/0/com.example.wp04.everything.dev/databases/network (1)
+         4       56             31     3    14     2  /data/user/0/com.example.wp04.everything.dev/databases/network (2)
          4       56             68    33    31     6  /data/user/0/com.example.wp04.everything.dev/databases/com.google.android.datatransport.events
 POOL STATS
      cache hits  cache misses    cache size  Dbname
-             11            66             8  /data/user/0/com.example.wp04.everything.dev/databases/network
+              9            62             7  /data/user/0/com.example.wp04.everything.dev/databases/network
              33            32             6  /data/user/0/com.example.wp04.everything.dev/databases/com.google.android.datatransport.events
  

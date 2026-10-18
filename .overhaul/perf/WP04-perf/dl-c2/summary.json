@@ -1,0 +1,135 @@
+{
+  "package": "com.example.wp04.everything.dev",
+  "apk": "D:\\projects\\tools\\.overhaul\\out\\WP04-perf\\dl\\app\\build\\outputs\\apk\\dev\\benchmarkRelease\\app-dev-arm64-v8a-benchmarkRelease.apk",
+  "variant": "devBenchmarkRelease",
+  "runs": 3,
+  "seed": 920304,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "compile": "speed-profile",
+  "scenarios": [
+    "coldstart"
+  ],
+  "gate": "solid",
+  "gates_file": "D:\\projects\\tools\\.overhaul\\wt\\WP04-perf\\templates\\android\\tools\\perf\\gates.toml",
+  "started": "2026-10-18T09:58:34",
+  "device": {
+    "serial": "9a7c74f4",
+    "model": "M2101K6I",
+    "sdk": "37",
+    "battery_c": 35.1
+  },
+  "metrics": {
+    "coldstart.median_ms": {
+      "value": 382,
+      "runs": [
+        382,
+        396,
+        381
+      ]
+    },
+    "coldstart.runs_ms": {
+      "value": [
+        386,
+        391,
+        391,
+        376,
+        367,
+        351
+      ],
+      "runs": [
+        [
+          390,
+          379,
+          378,
+          405,
+          379,
+          386
+        ],
+        [
+          386,
+          369,
+          385,
+          407,
+          407,
+          411
+        ],
+        [
+          386,
+          391,
+          391,
+          376,
+          367,
+          351
+        ]
+      ]
+    },
+    "first_gesture.janky": {
+      "value": 3,
+      "runs": [
+        3,
+        3,
+        3
+      ]
+    },
+    "first_gesture_warm.janky": {
+      "value": 3,
+      "runs": [
+        3,
+        2,
+        3
+      ]
+    },
+    "first_push.frame_ms": {
+      "value": 13.58,
+      "runs": [
+        13.58,
+        6.45,
+        15.37
+      ]
+    },
+    "first_push_warm.frame_ms": {
+      "value": 14.51,
+      "runs": [
+        15.59,
+        12.69,
+        14.51
+      ]
+    },
+    "tab_first_visit.first_frame_ms.max": {
+      "value": 7.68,
+      "runs": [
+        10.44,
+        7.68,
+        4.33
+      ]
+    },
+    "tab_first_visit.first_frame_ms.median": {
+      "value": 3.83,
+      "runs": [
+        9.62,
+        3.83,
+        3.75
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.max": {
+      "value": 8.68,
+      "runs": [
+        9.26,
+        4.18,
+        8.68
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.median": {
+      "value": 5.73,
+      "runs": [
+        9.12,
+        3.73,
+        5.73
+      ]
+    }
+  },
+  "inapplicable": {},
+  "notes": []
+}

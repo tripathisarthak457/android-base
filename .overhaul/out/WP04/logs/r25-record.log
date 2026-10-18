@@ -2,3 +2,31 @@
 [locked:adb] waiting for the lock (pid 17036 since 2026-10-18 08:10:29: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r17_phone.sh 9a7c74f4)
 [locked:adb] waiting for the lock (pid 17036 since 2026-10-18 08:10:29: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r17_phone.sh 9a7c74f4)
 [locked:adb] waiting for the lock (pid 17036 since 2026-10-18 08:10:29: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r17_phone.sh 9a7c74f4)
+[locked:adb] waiting for the lock (pid 17036 since 2026-10-18 08:10:29: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r17_phone.sh 9a7c74f4)
+[locked:adb] waiting for the lock (pid 17036 since 2026-10-18 08:10:29: bash out/WP03/scripts/with_phone.sh 9a7c74f4 bash out/WP03/scripts/r17_phone.sh 9a7c74f4)
+[locked:adb] waiting for the lock (pid 22264 since 2026-10-18 08:35:41: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-vs-layer 15 base=com.example.wp04.)
+[locked:adb] waiting for the lock (pid 22264 since 2026-10-18 08:35:41: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-vs-layer 15 base=com.example.wp04.)
+[locked:adb] waiting for the lock (pid 22264 since 2026-10-18 08:35:41: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-vs-layer 15 base=com.example.wp04.)
+[locked:adb] waiting for the lock (pid 22264 since 2026-10-18 08:35:41: bash -c 
+KEEP=base D:/projects/tools/.overhaul/out/WP04-perf/coldstart-ab.win.sh base-vs-layer 15 base=com.example.wp04.)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 16012 since 2026-10-18 08:58:20: ./final-gates.win.sh)
+[locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
+install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
+[locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
+install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
+[locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
+install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)
+[locked:adb] waiting for the lock (pid 11528 since 2026-10-18 09:48:28: bash -c 
+install() { adb -s 9a7c74f4 install -r -t -d D:/projects/tools/.overhaul/out/WP04-perf/$1/app/build/outputs/apk)

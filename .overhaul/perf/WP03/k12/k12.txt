@@ -1,3 +1,3 @@
 grabber before (474, 1155, 606, 1275), after (474, 1155, 606, 1275)
-last row (88, 2034, 267, 2093), Apply None, window 1080x2400
-K12 FAILED
+last row (88, 2034, 267, 2093), Apply (461, 2205, 620, 2264), window 1080x2400
+K12 OK: the last row is above the footer at Medium

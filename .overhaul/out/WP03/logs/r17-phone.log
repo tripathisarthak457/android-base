@@ -44,3 +44,38 @@ Pickers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Pickers-da
 Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Fields-dark.png
 Data: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Data-dark.png
 Collections: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Collections-dark.png
+Foundations: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Foundations-2x.png
+Feel: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feel-2x.png
+Text: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Text-2x.png
+Buttons: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Buttons-2x.png
+Inputs: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Inputs-2x.png
+Selection: 5 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Selection-2x.png
+Lists: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Lists-2x.png
+Containers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Containers-2x.png
+Bars: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Bars-2x.png
+Overlays: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Overlays-2x.png
+Sheets: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Sheets-2x.png
+Feedback: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Feedback-2x.png
+Loading: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Loading-2x.png
+Motion: 6 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Motion-2x.png
+Adaptive: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Adaptive-2x.png
+Pickers: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Pickers-2x.png
+Fields: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Fields-2x.png
+Data: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Data-2x.png
+Collections: 8 shots -> D:/projects/tools/.overhaul/perf/WP03/catalog/raw\Collections-2x.png
+LOOK SHOTS OK
+Performing Streamed Install
+Success
+Success
+[image2 @ 000001dd10beeb80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 138 >= 138
+[image2 @ 000001dd10beeb80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 140 >= 140
+sheet: D:/projects/tools/.overhaul/perf/WP03/cp1-phone-r17\sheet\sheet.mp4 (249 moving frames)
+toast: D:/projects/tools/.overhaul/perf/WP03/cp1-phone-r17\toast\toast.mp4 (46 moving frames)
+CP1 SESSION OK
+grabber before (474, 1155, 606, 1275), after (474, 1155, 606, 1275)
+last row (88, 2034, 267, 2093), Apply (461, 2205, 620, 2264), window 1080x2400
+K12 OK: the last row is above the footer at Medium
+first catalog frame: 23; frames after it that differ: [(23, 12.3)]
+CHANGED AFTER THE FIRST FRAME: a font swap or a layout jump
+R17 PHONE EXIT 1
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0

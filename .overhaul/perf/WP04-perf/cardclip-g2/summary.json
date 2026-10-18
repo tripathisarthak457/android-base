@@ -1,0 +1,251 @@
+{
+  "package": "com.example.wp04.everything.dev",
+  "apk": "D:\\projects\\tools\\.overhaul\\out\\WP04-perf\\cardclip\\app\\build\\outputs\\apk\\dev\\benchmarkRelease\\app-dev-arm64-v8a-benchmarkRelease.apk",
+  "variant": "devBenchmarkRelease",
+  "runs": 3,
+  "seed": 267646,
+  "extras": {
+    "perf.fakeSession": "true"
+  },
+  "compile": "speed-profile",
+  "scenarios": [
+    "pushpop_gesture"
+  ],
+  "gate": "solid",
+  "gates_file": "D:\\projects\\tools\\.overhaul\\wt\\WP04-perf\\templates\\android\\tools\\perf\\gates.toml",
+  "started": "2026-10-18T08:54:02",
+  "device": {
+    "serial": "9a7c74f4",
+    "model": "M2101K6I",
+    "sdk": "37",
+    "battery_c": 34.1
+  },
+  "metrics": {
+    "first_gesture.janky": {
+      "value": 3,
+      "runs": [
+        4,
+        3,
+        2
+      ]
+    },
+    "first_gesture_warm.janky": {
+      "value": 3,
+      "runs": [
+        5,
+        3,
+        3
+      ]
+    },
+    "first_push.frame_ms": {
+      "value": 6.52,
+      "runs": [
+        5.86,
+        6.52,
+        6.62
+      ]
+    },
+    "first_push_warm.frame_ms": {
+      "value": 14.62,
+      "runs": [
+        14.62,
+        15.62,
+        6.2
+      ]
+    },
+    "pushpop_gesture.first3_dequeue_ms.max": {
+      "value": 0.06,
+      "runs": [
+        0.18,
+        0.05,
+        0.06
+      ]
+    },
+    "pushpop_gesture.first3_dequeue_ms.median": {
+      "value": 0.02,
+      "runs": [
+        0.02,
+        0.02,
+        0.03
+      ]
+    },
+    "pushpop_gesture.first3_gpu_ms.max": {
+      "value": 20.97,
+      "runs": [
+        20.05,
+        21.7,
+        20.97
+      ]
+    },
+    "pushpop_gesture.first3_gpu_ms.median": {
+      "value": 11.34,
+      "runs": [
+        11.7,
+        11.34,
+        11.32
+      ]
+    },
+    "pushpop_gesture.first3_issue_ms.max": {
+      "value": 10.39,
+      "runs": [
+        7.3,
+        10.39,
+        11.23
+      ]
+    },
+    "pushpop_gesture.first3_issue_ms.median": {
+      "value": 1.79,
+      "runs": [
+        1.62,
+        2.3,
+        1.79
+      ]
+    },
+    "pushpop_gesture.frames": {
+      "value": 746,
+      "runs": [
+        746,
+        749,
+        746
+      ]
+    },
+    "pushpop_gesture.gesture_first_frame_ms.max": {
+      "value": 3.4,
+      "runs": [
+        3.21,
+        3.4,
+        6.39
+      ]
+    },
+    "pushpop_gesture.gesture_first_frame_ms.median": {
+      "value": 2.76,
+      "runs": [
+        2.76,
+        2.56,
+        2.79
+      ]
+    },
+    "pushpop_gesture.gpu_p50_ms": {
+      "value": 6,
+      "runs": [
+        6,
+        6,
+        6
+      ]
+    },
+    "pushpop_gesture.gpu_p90_ms": {
+      "value": 10,
+      "runs": [
+        10,
+        9,
+        10
+      ]
+    },
+    "pushpop_gesture.gpu_p99_ms": {
+      "value": 15,
+      "runs": [
+        17,
+        15,
+        15
+      ]
+    },
+    "pushpop_gesture.hitch_ms_per_s": {
+      "value": 23.15,
+      "runs": [
+        23.16,
+        15.16,
+        23.15
+      ]
+    },
+    "pushpop_gesture.janky_after_first_pct": {
+      "value": 0.94,
+      "runs": [
+        0.94,
+        0.67,
+        0.94
+      ]
+    },
+    "pushpop_gesture.janky_pct": {
+      "value": 2.55,
+      "runs": [
+        2.55,
+        2.27,
+        2.55
+      ]
+    },
+    "pushpop_gesture.late_first_frames": {
+      "value": 12,
+      "runs": [
+        12,
+        12,
+        12
+      ]
+    },
+    "pushpop_gesture.p50_ms": {
+      "value": 10,
+      "runs": [
+        10,
+        10,
+        10
+      ]
+    },
+    "pushpop_gesture.p90_ms": {
+      "value": 17,
+      "runs": [
+        17,
+        16,
+        17
+      ]
+    },
+    "pushpop_gesture.p99_ms": {
+      "value": 26,
+      "runs": [
+        25,
+        29,
+        26
+      ]
+    },
+    "pushpop_gesture.transitions": {
+      "value": 12,
+      "runs": [
+        12,
+        12,
+        12
+      ]
+    },
+    "tab_first_visit.first_frame_ms.max": {
+      "value": 8.41,
+      "runs": [
+        9.29,
+        4.27,
+        8.41
+      ]
+    },
+    "tab_first_visit.first_frame_ms.median": {
+      "value": 3.79,
+      "runs": [
+        3.68,
+        3.79,
+        4.12
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.max": {
+      "value": 9.54,
+      "runs": [
+        4.08,
+        11.29,
+        9.54
+      ]
+    },
+    "tab_first_visit_warm.first_frame_ms.median": {
+      "value": 8.61,
+      "runs": [
+        3.75,
+        10.27,
+        8.61
+      ]
+    }
+  },
+  "inapplicable": {},
+  "notes": []
+}

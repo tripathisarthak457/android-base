@@ -16,7 +16,7 @@ This is the single file to read after a context compaction or restart. Then read
 
 ---
 
-> **Oct 17, 23:05: running overnight (§1); the user is asleep.** Resume from `SESSION-2026-10-17.md` first. Only §1's run id can be resumed, and only from the session that launched it; a new session launches fresh.
+> **Oct 18, 10:05: PAUSED by the user (§1 says how to resume).** Resume from `SESSION-2026-10-17.md` first. Only §1's run id can be resumed, and only from the session that launched it; a new session launches fresh.
 > **Resume from `SESSION-2026-10-16.md` first** (latest: power-offs, thermal sensor), then `SESSION-2026-10-15.md` (its Oct 16 sections at the end), then `SESSION-2026-10-14.md`. Fable's findings: `FABLE-FINDINGS.md`. **Every agent runs on Opus 5.5 only** (the user, Oct 15 20:55).
 > Previously: `SESSION-2026-10-14.md` (latest; then `SESSION-2026-10-13.md` for background).
 > Older note: `SESSION-2026-10-13.md` (written 16:58 Oct 13): what was achieved on Oct 12–13, resume steps, the order of what comes next.
@@ -27,33 +27,41 @@ The laptop rebooted at 14:57 on Oct 12 and again at 10:41 on Oct 13, then slept 
 The 18:03 one-shot never fired, so nothing ran between Oct 12, 14:50 and Oct 13, 13:20. Every package's commits are
 intact.
 
-**Resumed 05:13 on Oct 18 after the usage pause (03:00-05:13): release `wg14qe5jm`, smoothness `wnpv3c78t`. This window (05:10-10:10) runs past 09:00, so its cap is 90%.**
+## 1. PAUSED (Oct 18, 10:05) by the user
 
-## 1. Running overnight (resumed Oct 17, 23:05 IST; the user: "continue and keep working through the night i will sleep")
+The user (08:22): "Save progress properly and stop the work after 95 mins" (moved to 10:05; over the 90% cap allowed
+this once). At 10:05 both workflows were stopped and every schedule removed (autopilot, resume one-shots): nothing
+relaunches by itself. Usage was about 85% of the window that resets at 10:10.
 
-| Workflow | Task id | Run id | Script | Notes |
+| Workflow | Last task id | Run id | Script | In flight at the stop |
 |---|---|---|---|---|
-| Release (all packages) | `wg14qe5jm` (resumed Oct 18 05:13; before: `whd05nhmo` 23:05; before: `wf32czekj` 14:15, `w4f2f2lwb` 14:37, paused 16:42) | `wf_dca0df06-58a` | `D:/projects/tools/.overhaul/scripts/to-release.js` | Resume replays the completed calls (WIN run and fixes 1-2, the first runs of WP08, WP02-M2, WP07-A); WIN goes to review round 3, then the first merge. NET (Cronet + Brotli) waits for WP06 and WP02-M2 |
-| Deep smoothness | `wnpv3c78t` (resumed Oct 18 05:13; first `w7quli9q3`, launched Oct 17, 23:58: the user asked to use the window's last ~50% before the 00:10 reset) | `wf_04982e22-7b2` | `D:/projects/tools/.overhaul/scripts/deep-smoothness-fable.js` | One deep-work agent on `wp/WP04-perf` (Opus; Fable is off in the script): round 1's pending measurement first, then root causes and fixes, Opus review loop; WP04 merges the branch. Shares the phone and the Gradle lock with the release run |
+| Release (all packages) | `wg14qe5jm` (task history: `wf32czekj`, `w4f2f2lwb`, `whd05nhmo`, `wg14qe5jm`) | `wf_dca0df06-58a` | `D:/projects/tools/.overhaul/scripts/to-release.js` | WP04 run 25 (final phone gates, REQ 34 recordings), WP03 run (sheet fixes, phone checks), WP05 run. Waiting with results recorded: WP06 (accepted, merges after WP04 and WP03), WP02-M2, WP07-A, WP08 |
+| Deep smoothness | `wnpv3c78t` (first `w7quli9q3`) | `wf_04982e22-7b2` | `D:/projects/tools/.overhaul/scripts/deep-smoothness-fable.js` | The deep-work agent (round 1 measured on the phone; proving the first-fling scroll hitch after `pm clear`) |
 
-- **Resume after a cutoff (this session only):** `Workflow({scriptPath, resumeFromRunId})` with the values above. A new
-  session launches the script fresh.
-- **Autopilot:** cron `b41aeb4f` (handles both workflows) at :13, :33 and :53 (session-only, expires Oct 24). Usage caps (the user, 23:10): 90% of the
-  5-hour window during 09:00-21:00 IST, up to 99% overnight (stops at ~97%); at the cap it pauses and schedules a one-shot
-  resume 3 minutes after the reset; kill a hung build (gradle lock held > 75 min with
-  the CPU under 15% for 30 min) and note it in the owning handoff, back up after merges.
-- **Cronet/Brotli groundwork for NET:** done 00:25: `research/NET-CRONET-BROTLI-NOTES.md` (50 KB), linked from REQUIREMENTS 39.
-- **Morning summary:** one-shot cron `138d1d8c` at 07:57 on Oct 18.
-- **Heat and memory history:** `bin/thermlog` as background task `b7nanas02` (`logs/thermal-windows.log`); the hung-build
-  check reads it. No memory Monitor overnight (its 30-minute re-arms would cost usage; `locked` waits for memory before
-  every build).
-- **The afternoon's hang:** WP06's acceptance build stalled at 16:20 with an idle CPU and held the Gradle lock until about
-  18:45, so WP04's phone step and the queued WP03 and WP05 builds never ran. Notes are at the top of the WP06, WP04, WP03,
-  WP05 and WIN handoffs.
-- **Worktrees at 23:00:** WIN `91ba5d7b` (22 ahead), WP02 `13eb1f14` (44), WP03 `e80fe436` (80, 50 dirty: the sheet WIP),
-  WP04 `20d134a8` (98), WP05 `f11af5da` (17), WP06 `4b1a8fc1` (37), WP07 `fdd01b3d` (16), WP08 `e5bb8cfe` (66).
-- **Merged so far:** WP01, WP02-M1, WP09, WP10 (`a402d87`).
-- **Usage at 23:00:** 20% of the window that resets at 00:10 IST.
+**To resume:**
+- In this orchestrator session (`8d80ef9d`): `Workflow({scriptPath: "D:/projects/tools/.overhaul/scripts/to-release.js",
+  resumeFromRunId: "wf_dca0df06-58a"})` and `Workflow({scriptPath: "D:/projects/tools/.overhaul/scripts/deep-smoothness-fable.js",
+  resumeFromRunId: "wf_04982e22-7b2"})`. Completed calls replay from cache; the interrupted ones re-run from their handoffs.
+- In a new session: launch both scripts fresh (no `resumeFromRunId`).
+- Then re-create the autopilot (`CronList` first; `13,33,53 * * * *`) from `scripts/AUTOPILOT-PROMPT.md` plus the rules
+  used on Oct 17-18: apply every step to both workflows; usage caps 90% of the 5-hour window during 09:00-21:00 IST (and
+  before 09:00 for a window that resets after 09:00), up to 99% at night (stop at ~97%); at a cap, stop the workflows and
+  schedule a one-shot resume 3 minutes after the reset; kill a build that holds the Gradle lock over 75 minutes with the
+  CPU under 15% for 30 minutes and note it in the owning handoff; restart `bin/thermlog` if its log goes stale; back up
+  after merges. Optional: the memory watch (Monitor running the session scratchpad's `memwatch.py`; it expires every 30
+  minutes) and the morning summary one-shot.
+
+**Phone jobs still finishing after the stop (10:05), queued on the adb lock:** WP04 `record-r25.win.sh` and
+`r25-landscape.sh` (`perf/WP04/run25-*`), the smoothness branch's install + `:benchmark:connectedBenchmarkReleaseAndroidTest`
+run, WP03 `out/WP03/scripts/r18_phone.sh`. A background watcher records each result in the owning handoff when they end.
+
+- **Worktrees at 10:05 (all clean):** WIN `5a16778b` (merged), WP02 `13eb1f14` (44 ahead), WP03 `0ac820a2` (100), WP04
+  `f60c0c7f` (108), WP04-perf `e2fdb081` (110), WP05 `dee21ca5` (18), WP06 `7b14c0d2` (40), WP07 `4ef0ba71` (18),
+  WP08 `e5bb8cfe` (66).
+- **Merged:** WP01, WP02-M1, WP09, WP10, **WIN (Oct 18 01:40, `5a16778`)**.
+- **Backups:** branches and `overhaul-workspace` pushed at 08:30 and again in this wind-down.
+- **Decisions in force:** REQUIREMENTS 39 (Cronet) and Brotli-by-default in the Android release (package NET, groundwork
+  `research/NET-CRONET-BROTLI-NOTES.md`); usage caps by time of day (memory `usage-reserve-10-percent`).
 
 ### Historical (Linux, Oct 12): the release workflow's first launch; these ids are dead, do not resume them
 

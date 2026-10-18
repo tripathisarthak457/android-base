@@ -1,0 +1,103 @@
+{
+  "before": {
+    "generation": 1,
+    "tab": 0,
+    "stacks": [
+      [
+        "SampleListKey",
+        "SampleDetailKey(itemId=1)"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "ProfileKey",
+      "SettingsKey"
+    ],
+    "more": false,
+    "chrome": "Bar",
+    "window": "393x873dp",
+    "class": "CompactxMedium"
+  },
+  "after": {
+    "generation": 1,
+    "tab": 0,
+    "stacks": [
+      [
+        "SampleListKey",
+        "SampleDetailKey(itemId=1)"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "ProfileKey",
+      "SettingsKey"
+    ],
+    "more": false,
+    "chrome": "Bar",
+    "window": "393x873dp",
+    "class": "CompactxMedium"
+  },
+  "after_back": {
+    "generation": 1,
+    "tab": 0,
+    "stacks": [
+      [
+        "SampleListKey"
+      ],
+      [
+        "FeedKey"
+      ],
+      [
+        "SearchKey"
+      ],
+      [
+        "ProfileKey"
+      ],
+      [
+        "SettingsKey"
+      ]
+    ],
+    "presented": [],
+    "roots": [
+      "SampleListKey",
+      "FeedKey",
+      "SearchKey",
+      "ProfileKey",
+      "SettingsKey"
+    ],
+    "more": false,
+    "chrome": "Bar",
+    "window": "393x873dp",
+    "class": "CompactxMedium"
+  }
+}

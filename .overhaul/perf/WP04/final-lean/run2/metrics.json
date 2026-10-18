@@ -1,0 +1,56 @@
+{
+  "metrics": {
+    "first_push.frame_ms": 7.84,
+    "first_gesture.janky": 3,
+    "first_push_warm.frame_ms": 6.52,
+    "first_gesture_warm.janky": 2,
+    "pushpop.janky_pct": 1.56,
+    "pushpop.p50_ms": 10,
+    "pushpop.p90_ms": 16,
+    "pushpop.p99_ms": 23,
+    "pushpop.gpu_p50_ms": 6,
+    "pushpop.gpu_p90_ms": 9,
+    "pushpop.gpu_p99_ms": 15,
+    "pushpop.frames": 1024,
+    "pushpop.hitch_ms_per_s": 2.0,
+    "pushpop.late_first_frames": 15,
+    "pushpop.transitions": 16,
+    "pushpop.first3_issue_ms.median": 2.46,
+    "pushpop.first3_issue_ms.max": 6.64,
+    "pushpop.first3_gpu_ms.median": 11.14,
+    "pushpop.first3_gpu_ms.max": 20.07,
+    "pushpop.first3_dequeue_ms.median": 0.02,
+    "pushpop.first3_dequeue_ms.max": 0.07,
+    "pushpop.janky_after_first_pct": 0.1,
+    "pushpop.push_first_frame_ms.median": 6.37,
+    "pushpop.push_first_frame_ms.max": 14.82,
+    "pushpop.pop_first_frame_ms.median": 2.27,
+    "pushpop.pop_first_frame_ms.max": 5.01,
+    "idle.frames": 0,
+    "idle.frames_per_tab": [
+      0
+    ],
+    "coldstart.median_ms": 280,
+    "coldstart.runs_ms": [
+      292,
+      257,
+      257,
+      280,
+      314,
+      280
+    ],
+    "coldstart_installed.median_ms": 294,
+    "coldstart_installed.runs_ms": [
+      300,
+      289,
+      307,
+      287,
+      281,
+      314
+    ]
+  },
+  "inapplicable": {
+    "tabs": "the app has one tab"
+  },
+  "notes": []
+}

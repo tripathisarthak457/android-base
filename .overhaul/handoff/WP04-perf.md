@@ -88,7 +88,19 @@ every push) is WP02-M3's item 1, not this package's: it is saved as
 restored in this worktree on Oct 17.
 
 Round 2 (Oct 18): `22a9ada` (the bar's back-card cutout as a rounded rect, §4a), then `wp/WP04` merged at `a256582`
-(its Windows perf tools, `janky_after_first_pct`, re-recorded baseline profiles).
+(its Windows perf tools, `janky_after_first_pct`, re-recorded baseline profiles); `55e144d` (the page beneath the
+back card drawn only around it, §2a); `wp/WP04` merged again (`0ec58cc`, then a fast-forward to `f60c0c7`: WIN's
+generator fixes, a uiautomator dump that hangs is ended and retried, the y-follow swipe); `7da2c84` (each screen in a
+layer under the slide's clip and scrim, §2b); `e2fdb08` (the dev launch hook checks for a stored session without
+decrypting it, §2e).
+
+| Fix (round 2) | Files | Why |
+|---|---|---|
+| The bar's back-card cutout is a rounded rect | `shell/BarAnchor.kt` | analytic clips around and inside the card on every gesture frame |
+| The page beneath the back card is drawn only around it | `stack/StackScene.kt` (`drawAroundCard`), `stack/StackLayout.kt` (`widths`) | the opaque card hid 81–100 % of a page and a scrim drawn on every gesture frame |
+| Each screen is a layer below the scene's draw | `stack/StackLayout.kt` (`sceneDraw`) | a slide frame no longer records both screens again; the RenderThread prepares no new display lists |
+| The dev launch hook reads no token | `app/src/dev/.../perf/DevLaunchOptions.kt` | five Keystore binder calls on the main thread in every measured cold start, none in a user's |
+| Tests | `back/BackCardDrawingTest.kt`, `stack/SlideRecordingTest.kt` | pixels around and under the card; no screen recorded on the frames a pop or a gesture moves it |
 
 ## 2a. Back gesture: the page beneath the card (done, `55e144d`)
 
@@ -127,7 +139,7 @@ Round 2 (Oct 18): `22a9ada` (the bar's back-card cutout as a rounded rect, §4a)
   move (1.66 % / 1.07 % janky, within the runs' spread). The UI time rose by 0.18 ms: the strips' bounds read the
   card's pose, so the page beneath is recorded again on every frame of the gesture; §2b removes that cost.
 
-## 2b. Every frame of a slide recorded both screens again (in progress)
+## 2b. Every frame of a slide recorded both screens again (done, `7da2c84`)
 
 - **Measured** (`$P/tip-nav/trace.perfetto-trace`, four push / Back / push / back-swipe cycles from idle,
   `$O/sql/mainslices.sql`): over 1010 frames the main thread spent 0.87 ms per frame in `Record View#draw()` and
@@ -140,7 +152,7 @@ Round 2 (Oct 18): `22a9ada` (the bar's back-card cutout as a rounded rect, §4a)
   content draws straight into the same RenderNode. So every frame of a push, a pop or a back gesture recorded both
   screens' whole drawing again on the UI thread and handed the new display lists to the RenderThread, though only
   the clip, the scrim and the shadow over them changed.
-- **Fix (uncommitted until its tests and the phone A/B):** `stack/StackLayout.kt`, `sceneDraw()`: the screen goes
+- **Fix (commit `7da2c84`):** `stack/StackLayout.kt`, `sceneDraw()`: the screen goes
   in a layer of its own after the scene's draw (`.graphicsLayer()`), so a slide frame records the few operations
   around each screen and draws the screens from the display lists they already have. Both slots (entries and the
   empty detail pane) build the same chain, now in one function. Test `stack/SlideRecordingTest.kt`: a pop and a
@@ -171,6 +183,24 @@ Round 2 (Oct 18): `22a9ada` (the bar's back-card cutout as a rounded rect, §4a)
   measures the gesture alone in both orders to tell the fix from drift before this is committed. Phase 8 never
   reached the phone (it was still waiting for the adb lock at 08:01 when the session that queued it ended; its log
   holds only the waits); its steps run again as phase 9 (`$O/phase9.win.sh`, `$O/logs/phase9-win.log`).
+- **Phase 9** (`$O/phase9.win.sh`, 08:40–09:02): `pushpop_gesture` alone, cardclip then layer, then layer then
+  cardclip, three runs each (`$P/<build>-g1`, `-g2`), read with `$O/abstats.py` (frames after each dump's first; a
+  hitch is a present more than 1.5 vsyncs after the one before):
+
+  | `pushpop_gesture`, three runs each | cardclip g1 | layer g1 | layer g2 | cardclip g2 |
+  |---|---|---|---|---|
+  | Pop half: late frames / RenderThread ≥ 6 ms / hitches | 18 / 92 / 32 | 18 / 86 / 32 | 20 / 104 / 27 | 17 / 60 / 38 |
+  | Pop half: hitch (ms/s), UI median (ms) | 32.7, 1.19 | 30.0, 0.83 | 26.4, 0.87 | 35.4, 1.18 |
+  | Push half: RenderThread ≥ 6 ms (of about 1127 frames), p90 (ms) | 206, 6.40 | **63, 2.73** | **68, 3.05** | 181, 6.33 |
+  | perf.py janky / after the first / p99 / hitch (ms/s) | 2.67 / 1.07 / 26 / 19.2 | 2.94 / 1.34 / 25 / 20.5 | 2.53 / 0.93 / 28 / 15.0 | 2.55 / 0.94 / 26 / 23.2 |
+
+  The gesture's own frames are the same with and without the layer: the spread between the two orders of one build
+  (cardclip: 92 against 60 slow RenderThread frames) is wider than the difference between the builds, so phase 7's
+  rise was drift. The push that precedes each gesture is where the layer shows on the RenderThread: without it every
+  slide frame hands the RenderThread two new display lists to prepare, and a fifth to a sixth of the push's frames
+  take 6 ms or more there; with it, 6 %. Phase 7's push and pop rows agree (RenderThread ≥ 6 ms, push 280 → 221,
+  pop 29 → 13; rapid Back hitches 18 → 11). Committed as `7da2c84` after 130 navigation unit tests and
+  `:core:navigation:lintDebug` passed with it (`$O/logs/tests-nav-layer2.log`).
 
 ## 2d. What the display shows: where the remaining hitches are (Oct 18)
 
@@ -188,8 +218,9 @@ every dump with its position in the transition and the frame's stages (UI, Rende
 | Back gesture, pop half (1102) | 40 | 33 while the card follows the finger, 7 in the commit fade |
 | Scroll, root and minimizing (720) | 10 | one 34–43 ms RenderThread frame in every run of both scenarios, one 17 ms one in four of six (§2f) |
 
-So a tab switch's 1.07 % janky is HWUI's count of a late first frame, which the display never shows as a stutter: no
-earlier motion frame is held on screen. The back gesture is the one motion that still hitches mid-way:
+So a tab switch's 1.07 % janky is HWUI's count of a late first frame, which the display shows as the switch starting
+one vsync later, never as a stutter inside it: no motion frame is held on screen. The same holds for the pops. The
+back gesture is the one motion that still hitches mid-way:
 
 - **While the card follows the finger** (frames 2–28): every hitch is a RenderThread frame of 6–12 ms
   (`$O/abstats.py`: 6.5–8.6 % of gesture frames reach 6 ms). On a big core the RenderThread spends 3.2–3.5 ms on a
@@ -205,28 +236,76 @@ earlier motion frame is held on screen. The back gesture is the one motion that 
   median per frame (max 12.9) against 5–6 ms while dragging and 4–4.5 ms once the list is alone. The card is
   translucent, so the page beneath, the scrim and the card are each drawn whole (§2a's strips need an opaque card):
   about three full-screen layers of fill, at the clock the gesture left the GPU at. Seven of the 40 hitches.
+- **Overdraw, checked on the phone** (phase 9, `$O/overdraw.win.sh` → `$P/layer-overdraw/`: HWUI's overdraw view
+  of `layer`, dark theme, `debug.hwui.overdraw` set and put back to `false`): the list's background is drawn once
+  and its cards twice; the detail's body once, its top bar and cards twice; with the back card held at about 40 % the
+  page beneath shows only around the card (its cards three times: background, card, scrim), the card's interior
+  draws as the detail does, and only two bands the height of the card's corner radius, along its top and bottom
+  edges, reach four or more (page beneath, scrim, card background, top bar or tab bar): about 6 % of the screen,
+  the price of §2a's strips leaving the corners to the page beneath. No fill is drawn twice for nothing.
 
-## 2e. Cold start: a dev-only Keystore read before the first frame
+## 2e. Cold start against the old template
 
-- **Measured** (`$P/tip-startup/trace.perfetto-trace`, three cold starts as perf.sh makes them; `$O/sql/startline.sql`,
-  `$O/sql/window.sql`, `$O/sql/mainbinder.sql`, `$O/sql/startstates.sql`): from the process's fork, `bindApplication`
-  ends at 205 ms (Firebase's eager components 63 ms of it: Crashlytics 41, sessions 13, the rest 9; androidx.startup
-  7.6), the activity is created, started and resumed by 277 ms, the splash frame lays the window out at 287–305 ms,
-  and the first frame with content runs at 325–424 ms: composition 12.7 ms, measure 32.5 ms (the tab's
-  subcomposition 8.5, text layout about 16), layout 2.3, recording 14.8 ms (on a little core), then the main thread
-  waits 31.8 ms for the RenderThread's first frame: 12 ms recording into Skia (first glyphs) and nine GL programs
-  loaded from HWUI's disk cache at 0.6–1.7 ms each.
-- **Cause found:** between the splash frame and the first content frame the main thread makes five binder calls to
-  `keystore2` (311–322 ms, 8.2 ms) and one to `servicemanager`. They are `DevLaunchOptions.beforeStart` (the dev
-  flavour's launch hook, which the start waits for): with `perf.fakeSession`, every launch read the access token to
-  see whether a session existed, and reading it decrypts it through the Keystore, on the main thread. No user's start
-  does this (release flavours bind no launch hook, and `StartupViewModel` reads only whether the tokens are present),
-  so every measured cold start paid about 9 ms that no user pays.
-- **Fix (uncommitted until the phone A/B, `dl` in phase 10):** `app/src/dev/.../perf/DevLaunchOptions.kt` asks
-  `tokens.isAuthenticated.first()` (the stored keys, no decryption) and saves the synthetic session only when none is
-  stored.
-- The old template's tree (`6bc38e9`, as `$O/base` regenerates it) has no launch hook, so its measured starts made
-  no such call. Phase 9 captures the phone's build of it (`$P/base-startup`) to compare the two stage by stage.
+- **Interleaved A/B** (phase 9, `$O/coldstart-ab.win.sh`, 15 rounds of one start each, the old template as the phone
+  has it from Oct 9 and `layer`; `$P/coldstart-ab/base-vs-layer.tsv`): old template **382 ms** median, `layer`
+  **403 ms**; `layer` is slower in 13 of 15 rounds, by 22 ms at the median round. Both are above the 336 / 355 ms of
+  earlier sessions: the phone was warmer, which is why only a same-session A/B compares them.
+- **Where a start's time goes** (`$P/tip-startup`, `$P/layer-startup`, `$P/base-startup`, three starts each as perf.sh
+  makes them; `$O/sql/startstages.sql`, `startline.sql`, `window.sql`, `mainbinder2.sql` + `$O/binderphases.py`,
+  `startstates.sql`): from the fork, `bindApplication` ends at about 205 ms (Firebase's eager components 63 ms of it:
+  Crashlytics 41, sessions 13, the rest 9; androidx.startup 7.6), the activity is created, started and resumed by
+  about 277 ms, the splash frame lays the window out, and the first frame with content runs from about 330 ms for
+  77–98 ms: composition 13–17 ms, measure 31–39 ms (the tab's subcomposition 8.5, text layout about 16), recording
+  7–15 ms, then the main thread waits for the RenderThread's first frame (12–33 ms: recording into Skia with the first
+  glyphs, and nine GL programs loaded from HWUI's disk cache at 0.6–1.7 ms each).
+- **Stage by stage, `layer` against the old template** (medians of three traced starts each): `bindApplication` 120 /
+  124 ms, activity start 48 / 58, resume 38 / 28, first content frame at 344 / 348 ms lasting 89 / 91 ms (composition
+  14 / 26, measure 37 / 22, recording 7 / 6.5, RenderThread 31 / 32), the main thread running 239 / 221 ms. Its
+  synchronous binder calls take 91 ms per start against 75 (`binderphases.py`: 15 calls to system_server inside
+  `bindApplication` against 10, two more in the activity's start, the same number in the resume but 6.6 ms longer).
+  Three traced starts each differ by less than their own spread (traced, `layer` 428 ms median against 441), so the
+  traces do not yet show where the A/B's 22 ms is; phase 10 alternates the two in one capture (`$O/startup-ab-trace.win.sh`,
+  six of each, `$P/startab-base-layer`).
+- **A dev-only Keystore read in every measured start (found; fixed for the next measurement):** between the splash
+  frame and the first content frame both apps' main threads make five binder calls to `keystore2` (8–13 ms) after
+  loading `OpenSSLAeadCipherAES$GCM`. In the new template that is `DevLaunchOptions.beforeStart` (the dev flavour's
+  launch hook, which `StartupViewModel` waits for before the first frame): with `perf.fakeSession`, every launch read
+  the access token to see whether a session existed, and reading it decrypts it through the Keystore, on the main
+  thread. The phone's build of the old template does the same at the same moment, so the A/B above is even on it,
+  but no user's start does it: release flavours bind no launch hook, and `StartupViewModel` reads only whether the
+  token keys are present. `app/src/dev/.../perf/DevLaunchOptions.kt` now asks `tokens.isAuthenticated.first()` (the
+  stored keys, no decryption) and saves the synthetic session only when none is stored (commit `e2fdb08`; the
+  dev build compiles with it, `$O/logs/build-dl.log`). Phase 10 measures it: `dl` = `layer` plus this, perf.sh's
+  cold start on both in both orders, and a capture of `dl` alternated with the old template.
+
+## 2f. Scroll: shaders compiled on first use (after `pm clear`)
+
+- **Measured** (phase 10, `$O/scroll-trace.win.sh` → `$P/layer-scroll/first.perfetto-trace` and
+  `cached.perfetto-trace`: perf.py's scroll, six flings down the root list and six back up, right after `pm clear`
+  and a launch, then the same flings again; `$O/sql/shadercomp.sql`): the first pass has four RenderThread frames with
+  shader compiles, all `cache_miss` → `driver_compile_shader` → `driver_link_program`: one `CircularRRectOp` on the
+  first fling down (28 ms, a 37 ms frame), and when the flings reach the top of the list a `FillRectOp`, three
+  `CircleOp`s and a `TextureOp` in one frame (49 ms of compiles, a 52 ms frame), then two more `CircleOp` frames (16
+  and 16 ms; 20 and 19 ms frames). The second pass compiles nothing; its slowest RenderThread frame is 12.8 ms.
+- **Cause:** the frames at the top edge are `AppPullToRefresh`'s indicator (`core/designsystem/.../refresh/
+  AppPullToRefresh.kt`, unchanged since the old template): its `onPostScroll` takes any source, so the leftover of a
+  fling that reaches the top pulls the indicator out (a pill `AppSurface` with an elevation shadow, faded in with
+  layer alpha, so drawn offscreen and then as a texture, around `AppCircularProgress`'s arcs), and nothing retracts
+  it until the next scroll: the cached pass's first fling down still draws it (its `CircleOp`s start in that pass's
+  first frames). Each of those draws is a GL program nothing earlier in a run uses. `pm clear` empties HWUI's shader
+  cache, so every perf.py run meets them inside the scroll scenario: they are the 34–43 ms frame in every run of
+  `scroll_root` and `scroll_minimize` and the 17 ms one in four of six (§2d). A user meets the compiles once per
+  install or update (HWUI keeps compiled programs on disk; the second pass compiles nothing), but meets the
+  indicator on every fling to the top.
+- **Not changed here:** the indicator is WP03's, and `wp/WP03` has already rewritten it: its `onPreScroll` and
+  `onPostScroll` act on `NestedScrollSource.UserInput` only (and the old one's coroutine launched per scroll event,
+  A11.3's forbidden pattern, is gone), so after WP03 merges a fling no longer draws it and these compiles leave the
+  scroll rows. Until then the steady scroll is clean: in the second pass no frame needs more than 12.8 ms of
+  RenderThread, and `scroll_root` / `scroll_minimize` pass their `solid` rows (0.22–0.37 % janky against 0.5, GPU
+  p90 6 against 7) with these frames included. After the merge, re-measure the scroll rows and check whether WP03's
+  rubber-band edge has first-use programs of its own; if it does, perf.py's warm-up can pay one overscroll and report
+  it as a first use, as it does for the first back swipe (`first_gesture`), which is the user's and WP04's call
+  because it changes what the scroll rows measure.
 
 ## 2c. PSS: which process the row measures, and the floor
 
@@ -384,22 +463,34 @@ screens (`SampleListScreen`, `SampleDetailScreen`, `SampleRow`).
 
 ## 5. Scripts
 
-- `$O/build.sh <preset>`: generate from the worktree and build `devBenchmarkRelease`.
-- `$O/test-then-build.sh <name>`: the navigation tests that cover the fixes, then the build.
-- `$O/floor-build.sh`: the floor experiment from `$O/fixed`.
-- `$O/dvfs-trace.sh <out> [package]`: Perfetto capture (FrameTimeline, cpufreq, sched, the app's sections) of
-  plain taps and 250 ms press-holds on the tabs from idle. GPU frequency is not readable on this phone
-  (`/sys/class/kgsl` is denied to shell and traced_probes; `power/gpu_frequency` and `kgsl/*` produce nothing).
-- `$O/measure.sh <name>...`: `perf.sh --runs 3` on each build, then a trace.
-- Windows (Oct 18): `$O/build.win.sh <name>=<commit>...` (floor included), `$O/measure.win.sh <name>...`
-  (retries a harness failure once into `$P/<name>-retry`), `$O/dvfs-trace.win.sh`, `$O/pipeline.win.sh`, and
-  `$O/firstframes.win.py <trace>` (trace_processor with `USERPROFILE=D:\.caches\perfetto`).
+Linux originals (Oct 16; kept as written): `$O/build.sh`, `test-then-build.sh`, `floor-build.sh`, `dvfs-trace.sh`,
+`measure.sh`, `startup-trace.sh`. Windows (Oct 18), all run from `$O`, phone steps under `$L adb`:
+
+- Builds: `build.win.sh <name>=<commit>...` (a `git archive` of each commit under `$O/s/<commit>`, floor included),
+  `build-wt.win.sh <name>` (the worktree as it is, uncommitted changes included: the B side of an A/B).
+- Phone: `measure.win.sh <name>...` (`perf.sh --runs 3 --gate solid` with this worktree's tooling; `SCENARIOS`,
+  `TAG`, `NOTRACE`; a harness failure is retried once into `<name>-retry`), `coldstart-ab.win.sh` (cold starts of two
+  packages interleaved), `startup-trace.win.sh` (three cold starts, traced), `startup-ab-trace.win.sh` (two packages'
+  cold starts alternated in one capture), `dvfs-trace.win.sh` (tab switches from idle), `nav-trace.win.sh` /
+  `nav-traces.win.sh` (push, Back, push, back swipe from idle), `scroll-trace.win.sh` (perf.py's flings after
+  `pm clear`, then again with the shaders cached), `overdraw.win.sh` (HWUI's overdraw view; puts the property back),
+  `rec-gesture.win.sh`, `mem-ab.win.sh`. Each `phase<N>.win.sh` is one session's builds and adb hold, logged in
+  `$O/logs/phase<N>-win.log`.
+- Reading results: `gap-table.py` (the §3 table), `afterfirst.py`, `abstats.py <regex> <perf dir>...` (late frames,
+  RenderThread ≥ 6 ms, GPU over a vsync, display hitches), `hitchpos.py <run dir>... <regex>` (each hitch's position
+  and stages), `latestage.py`, `gesturestats.py`, `firstframes.win.py`, `framebreak.win.py`, `bursts.py`
+  (`rtframes.sql` output grouped into transitions), `binderphases.py` (`mainbinder2.sql` output by start phase).
+- `tp.sh <query.sql> <trace>`: the android-profiler skill's trace_processor with `USERPROFILE=D:\.caches\perfetto`.
 
 ## 6. Queries
 
-In the scratchpad (`/tmp/claude-1000/.../scratchpad/q*.sql`, `d*.sql`); the per-frame one joins
-`Choreographer#doFrame` (UI), `DrawFrames` (RenderThread) and `waiting for GPU completion` (GPU) by vsync id and
-reports the gap since the previous frame, so the first frame after idle is the row with a gap over 300 ms.
+`$O/sql/*.sql` (PerfettoSQL; `{pkg}` and `{short}` are filled in with `sed` for another package):
+`startstages.sql` (each cold start's stages), `startline.sql` and `window.sql` (a start's slices and thread states
+by offset), `mainbinder.sql` / `mainbinder2.sql` (the main thread's binder calls, with the slices around them),
+`startstates.sql`, `startup-slices.sql`, `bindapp.sql`, `firecls.sql`, `firstdraw*.sql`; `rtframes.sql` (each
+RenderThread frame's stages and big-core share), `rtlong.sql` (RenderThread frames over 7 ms: running on a little or
+big core, runnable, sleeping), `rtchildren.sql`, `rtslices.sql`, `rtslow.sql`, `burstfirst.sql`, `shadercomp.sql`
+(shader compiles inside long frames); `mainslices.sql`, `heavyframes.sql`, `framedetail.sql`.
 
 ## Orchestrator note (Oct 15, 20:50): Android skills v1.0.15 (REQUIREMENTS 38)
 
