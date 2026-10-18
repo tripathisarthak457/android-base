@@ -82,3 +82,40 @@ fun MasonryColumns(
         }
     }
 }
+
+/**
+ * Tiles in reading order, in as many equal columns as fit at [minTileWidth] or wider, sharing the
+ * whole width: a row of fixed-width tiles leaves a ragged gap at its end, half the page at 2x text.
+ * Each row is as tall as its tallest tile, so a label that wraps never pushes its neighbours out of
+ * line. Placed relative to the layout direction.
+ */
+@Composable
+fun TileGrid(
+    minTileWidth: Dp,
+    spacing: Dp,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Layout(content = content, modifier = modifier) { measurables, constraints ->
+        val gap = spacing.roundToPx()
+        val width = constraints.maxWidth
+        val columns = ((width + gap) / (minTileWidth.roundToPx() + gap)).coerceAtLeast(1)
+        val tileWidth = (width - gap * (columns - 1)) / columns
+        val tile = Constraints(minWidth = tileWidth, maxWidth = tileWidth)
+        val placeables = measurables.map { it.measure(tile) }
+        val rowHeights = IntArray((placeables.size + columns - 1) / columns)
+        placeables.forEachIndexed { index, placeable ->
+            val row = index / columns
+            rowHeights[row] = maxOf(rowHeights[row], placeable.height)
+        }
+        val height = (rowHeights.sum() + gap * (rowHeights.size - 1)).coerceAtLeast(0)
+        layout(width, height) {
+            var y = 0
+            placeables.forEachIndexed { index, placeable ->
+                val column = index % columns
+                if (index > 0 && column == 0) y += rowHeights[index / columns - 1] + gap
+                placeable.placeRelative(column * (tileWidth + gap), y)
+            }
+        }
+    }
+}

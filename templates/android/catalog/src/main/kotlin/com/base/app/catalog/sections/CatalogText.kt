@@ -3,8 +3,6 @@ package com.base.app.catalog.sections
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
@@ -19,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.base.app.catalog.CatalogGroup
+import com.base.app.catalog.TileGrid
 import com.base.app.catalog.fontScaled
 import com.base.app.catalog.wrappableIdentifier
 import com.base.app.core.designsystem.component.button.AppButton
@@ -65,10 +64,9 @@ fun TextSection() {
         )
     }
     CatalogGroup("Icons", caption = "Built the first time they are drawn. Directional ones mirror in right-to-left layouts; tab glyphs have filled forms.") {
-        val cell = fontScaled(72.dp)
-        FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
+        TileGrid(minTileWidth = fontScaled(72.dp), spacing = AppTheme.spacing.md) {
             AllIcons.forEach { (name, icon) ->
-                Column(Modifier.width(cell), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     AppIcon(icon, contentDescription = null, size = AppTheme.sizes.iconLarge)
                     AppText(
                         text = remember(name) { wrappableIdentifier(name) },

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.base.app.catalog.CatalogGroup
+import com.base.app.catalog.TileGrid
 import com.base.app.catalog.fontScaled
 import com.base.app.catalog.wrappableIdentifier
 import com.base.app.core.designsystem.component.button.AppButton
@@ -177,10 +178,9 @@ fun FoundationsSection() {
 
 @Composable
 private fun Swatches(vararg roles: Pair<String, Color>) {
-    val width = fontScaled(96.dp)
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
+    TileGrid(minTileWidth = fontScaled(96.dp), spacing = AppTheme.spacing.sm) {
         roles.forEach { (name, color) ->
-            Column(Modifier.width(width), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Box(Modifier.fillMaxWidth().height(40.dp).background(color, AppTheme.shapes.sm).border(1.dp, AppTheme.colors.separator, AppTheme.shapes.sm))
                 AppText(
                     text = remember(name) { wrappableIdentifier(name) },
