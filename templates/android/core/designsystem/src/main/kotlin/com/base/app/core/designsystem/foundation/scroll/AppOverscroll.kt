@@ -79,7 +79,7 @@ private class RubberBandOverscroll : OverscrollEffect {
         catchRelease()
         // Scrolling back towards the content takes up the pull before it moves the content again.
         val relaxed = Offset(relax(pull.x, delta.x), relax(pull.y, delta.y))
-        pull -= relaxed
+        pull += relaxed
         val remaining = delta - relaxed
         val consumed = performScroll(remaining)
         val left = remaining - consumed
@@ -88,7 +88,10 @@ private class RubberBandOverscroll : OverscrollEffect {
     }
 
     override suspend fun applyToFling(velocity: Velocity, performFling: suspend (Velocity) -> Velocity) {
+        // Read before the fling: the container can leave composition while it runs, and a detached
+        // node has no composition locals to read.
         val springs = placement.springs()
+        val minimum = placement.minimumReleaseVelocity()
         if (pull != Offset.Zero) {
             // Let go while pulled: what is showing springs back from where it is, moving as fast as
             // the content was under the finger, which is the finger's speed through the band.
@@ -96,7 +99,7 @@ private class RubberBandOverscroll : OverscrollEffect {
                 velocity.x * slope(pull.x, placement.size.width),
                 velocity.y * slope(pull.y, placement.size.height),
             )
-            val spec = if (moving.getDistance() < placement.minimumReleaseVelocity()) {
+            val spec = if (moving.getDistance() < minimum) {
                 springs.overscrollRelease.forOffset()
             } else {
                 springs.bounceBack.offsetSpec()
@@ -104,12 +107,11 @@ private class RubberBandOverscroll : OverscrollEffect {
             settle(from = offset, velocity = moving, spec = spec)
             return
         }
-        val left = performFling(velocity)
-        if (left != Velocity.Zero) {
-            val carried = Offset(
-                left.x.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity),
-                left.y.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity),
-            )
+        // performFling answers with the velocity the content and its parents used, so the rest is
+        // how fast the content was still moving when it met the end.
+        val left = velocity - performFling(velocity)
+        val carried = Offset(left.x.carriedPastEnd(minimum), left.y.carriedPastEnd(minimum))
+        if (carried != Offset.Zero) {
             settle(from = released, velocity = carried, spec = springs.bounceBack.offsetSpec())
         }
     }
@@ -135,9 +137,18 @@ private class RubberBandOverscroll : OverscrollEffect {
         pull = Offset(unresist(shown.x, placement.size.width), unresist(shown.y, placement.size.height))
     }
 
+    /** The part of [delta] that heads back towards the content and so eases the band; it has [delta]'s sign. */
     private fun relax(pulled: Float, delta: Float): Float =
         if (pulled == 0f || sign(pulled) == sign(delta)) 0f else -sign(pulled) * minOf(abs(pulled), abs(delta))
 }
+
+/**
+ * The speed a fling's leftover carries past the end, capped at [MaxEdgeVelocity]. Below [minimum] it
+ * carries none: a fling that slows to rest by itself still reports its decay's resting speed, and a
+ * band set moving by it would keep the container "in progress", so the next tap only stops it.
+ */
+private fun Float.carriedPastEnd(minimum: Float): Float =
+    if (abs(this) < minimum) 0f else coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity)
 
 /** The rubber band iOS uses: the further past the edge, the less the content follows. */
 private fun resist(distance: Float, dimension: Int): Float {
