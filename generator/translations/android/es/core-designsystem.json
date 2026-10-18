@@ -16,6 +16,7 @@
   "designsystem_increase": "Aumentar",
   "designsystem_select": "Seleccionar",
   "designsystem_phone_number": "Número de teléfono",
+  "designsystem_dialling_code": "Prefijo",
   "designsystem_add_a_tag": "Añade una etiqueta",
   "designsystem_tag_limit_reached": "Límite alcanzado",
   "designsystem_remove_item": "Quitar %1$s",

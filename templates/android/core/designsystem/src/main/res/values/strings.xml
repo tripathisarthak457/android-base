@@ -52,6 +52,7 @@
     <string name="designsystem_increase">Increase</string>
     <string name="designsystem_select">Select</string>
     <string name="designsystem_phone_number">Phone number</string>
+    <string name="designsystem_dialling_code">Code</string>
     <string name="designsystem_add_a_tag">Add a tag</string>
     <string name="designsystem_tag_limit_reached">Limit reached</string>
     <string name="designsystem_step_of">Step %1$d of %2$d: %3$s</string>

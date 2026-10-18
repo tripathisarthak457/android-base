@@ -43,6 +43,9 @@ import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -53,6 +56,7 @@ import com.base.app.core.designsystem.component.text.scaledLike
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.FieldTreatment
+import kotlin.math.min
 
 /**
  * A text field over a [TextFieldState] the ViewModel owns, so the text survives process death and is
@@ -197,6 +201,7 @@ internal fun fieldDecorator(
             }
             Row(
                 modifier = Modifier
+                    .fieldBoxTop()
                     .fillMaxWidth()
                     .heightIn(min = AppTheme.sizes.fieldHeight)
                     .fieldBox(treatment, shape, fill, edge, strokeWidth.value)
@@ -250,6 +255,19 @@ internal fun fieldDecorator(
             }
         }
     }
+}
+
+/**
+ * The top edge of a field's box, below its label. Fields set side by side align by it, so their boxes
+ * stay level when one label wraps at a large font size and the other does not, or only one has a label.
+ */
+internal val FieldBoxTop = HorizontalAlignmentLine(::min)
+
+private val BoxTopAtZero: Map<AlignmentLine, Int> = mapOf(FieldBoxTop to 0)
+
+private fun Modifier.fieldBoxTop(): Modifier = layout { measurable, constraints ->
+    val placeable = measurable.measure(constraints)
+    layout(placeable.width, placeable.height, BoxTopAtZero) { placeable.place(0, 0) }
 }
 
 private fun Modifier.fieldBox(

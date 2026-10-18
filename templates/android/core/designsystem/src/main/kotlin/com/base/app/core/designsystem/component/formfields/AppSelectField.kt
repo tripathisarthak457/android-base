@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.input.AppTextField
+import com.base.app.core.designsystem.component.input.FieldBoxTop
 import com.base.app.core.designsystem.component.input.fieldDecorator
 import com.base.app.core.designsystem.component.overlay.AppMenu
 import com.base.app.core.designsystem.component.overlay.AppMenuItem
@@ -97,7 +97,8 @@ fun <T> AppSelectField(
 
 /**
  * A phone number: a dialling code chosen from [dialCodes] beside the number itself, typed into a
- * [TextFieldState] that accepts digits only.
+ * [TextFieldState] that accepts digits only. Each part carries its own label, so a screen reader
+ * names both.
  */
 @Composable
 fun AppPhoneField(
@@ -107,6 +108,7 @@ fun AppPhoneField(
     modifier: Modifier = Modifier,
     dialCodes: List<String> = DefaultDialCodes,
     label: String? = stringResource(R.string.designsystem_phone_number),
+    dialCodeLabel: String? = stringResource(R.string.designsystem_dialling_code),
     helper: String? = null,
     error: String? = null,
     enabled: Boolean = true,
@@ -114,19 +116,20 @@ fun AppPhoneField(
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
-        verticalAlignment = Alignment.Bottom,
     ) {
         AppSelectField(
             value = dialCode,
             options = dialCodes,
             onSelect = onDialCodeChange,
-            modifier = Modifier.width(DialCodeWidth),
-            label = label,
+            // The code and its chevron grow with the text, so a fixed box would cut the longest code.
+            modifier = Modifier.alignBy(FieldBoxTop).width(DialCodeWidth.scaledLike(AppTheme.typography.body)),
+            label = dialCodeLabel,
             enabled = enabled,
         )
         AppTextField(
             state = number,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.alignBy(FieldBoxTop).weight(1f),
+            label = label,
             helper = helper,
             error = error,
             enabled = enabled,
