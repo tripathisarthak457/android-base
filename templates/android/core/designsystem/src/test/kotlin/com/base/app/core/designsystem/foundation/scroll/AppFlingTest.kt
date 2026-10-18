@@ -45,7 +45,7 @@ class AppFlingTest {
                 state = list,
                 flingBehavior = AppScrollDefaults.flingBehavior(),
             ) {
-                items(200, key = { it }) { index ->
+                items(200, key = { it }, contentType = { "row" }) { index ->
                     Box(
                         Modifier
                             .fillMaxWidth()

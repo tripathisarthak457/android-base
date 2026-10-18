@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
-import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.platform.InspectorInfo
 import com.base.app.core.designsystem.component.sheet.SheetController
 import com.base.app.core.designsystem.component.sheet.SheetSurface
@@ -30,7 +29,6 @@ private data class SheetFooterBackingElement(val surface: SheetSurface, val colo
     override fun update(node: SheetFooterBackingNode) {
         node.surface = surface
         node.color = color
-        node.invalidateDraw()
     }
 
     override fun InspectorInfo.inspectableProperties() {
