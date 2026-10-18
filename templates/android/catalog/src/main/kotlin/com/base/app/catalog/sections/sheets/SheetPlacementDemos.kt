@@ -33,6 +33,7 @@ import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 
@@ -80,7 +81,7 @@ private fun MapsDemo() {
             )
         },
     ) {
-        LazyColumn(contentPadding = contentPadding) {
+        LazyColumn(contentPadding = contentPadding, flingBehavior = AppScrollDefaults.flingBehavior()) {
             items(Places, key = { it }, contentType = { "place" }) { place ->
                 AppRow(title = place, subtitle = "Open now", onClick = { pin = place })
             }
@@ -131,7 +132,10 @@ private fun PlacementDemo() {
         properties = AppSheetProperties(placement = Placements[placement]),
         header = { AppSheetHeader(title = PlacementNames[placement]) },
     ) {
-        LazyColumn(contentPadding = contentPadding) { sampleRows(30) }
+        LazyColumn(
+            contentPadding = contentPadding,
+            flingBehavior = AppScrollDefaults.flingBehavior(),
+        ) { sampleRows(30) }
     }
 }
 

@@ -32,6 +32,7 @@ import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -72,7 +73,7 @@ internal fun AuthFrame(
                     modifier = Modifier
                         .widthIn(max = AppTheme.layout.formMaxWidth)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior()),
                 ) {
                     Column(
                         modifier = Modifier

@@ -21,12 +21,16 @@ import kotlin.math.pow
 import kotlin.math.sign
 
 /**
- * How the design system's scrolling containers fling, for a screen's own `LazyColumn`, `LazyRow`,
- * grid or `verticalScroll` to match them:
+ * How every scrolling container in the app flings. Compose gives a container Android's spline fling
+ * unless it names another, so each `LazyColumn`, `LazyRow`, grid, `verticalScroll` and
+ * `horizontalScroll` names this one, and each pager [pagerFlingBehavior]:
  *
  * ```
- * LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) { … }
+ * LazyColumn(state = listState, flingBehavior = AppScrollDefaults.flingBehavior()) { … }
+ * Column(Modifier.verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())) { … }
  * ```
+ *
+ * The edge needs nothing: `AppTheme` installs [AppOverscroll]'s rubber band for every container.
  */
 object AppScrollDefaults {
 

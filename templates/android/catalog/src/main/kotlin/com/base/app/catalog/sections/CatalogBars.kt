@@ -36,6 +36,7 @@ import com.base.app.core.designsystem.component.navigation.BottomNavItem
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.foundation.scroll.edgeProtection
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -74,7 +75,12 @@ fun BarsSection() {
                     ) { AppIconButton(AppIcons.Edit, contentDescription = "Compose", onClick = {}) }
                 },
             ) {
-                LazyColumn(state = list, modifier = Modifier.fillMaxSize(), contentPadding = chromeContentPadding()) {
+                LazyColumn(
+                    state = list,
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = chromeContentPadding(),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
+                ) {
                     items((1..30).toList(), key = { it }) { AppRow(title = "Message $it", subtitle = "Preview of the message", onClick = {}) }
                 }
             }
@@ -89,7 +95,11 @@ fun BarsSection() {
         val barHeight = 48.dp
         val background = AppTheme.colors.background
         Box(Modifier.fillMaxWidth().height(240.dp).background(background)) {
-            LazyColumn(state = list, modifier = Modifier.fillMaxSize().edgeProtection({ background }, top = { barHeight })) {
+            LazyColumn(
+                state = list,
+                modifier = Modifier.fillMaxSize().edgeProtection({ background }, top = { barHeight }),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
+            ) {
                 items((1..30).toList(), key = { it }) { AppRow(title = "Row $it") }
             }
             Box(Modifier.fillMaxWidth().height(barHeight), contentAlignment = Alignment.Center) {

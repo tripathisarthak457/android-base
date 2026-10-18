@@ -34,6 +34,7 @@ import com.base.app.core.designsystem.component.selection.AppSwitch
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
@@ -234,7 +235,7 @@ internal fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scroll)
+                .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                 .padding(horizontal = AppTheme.spacing.gutter),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {

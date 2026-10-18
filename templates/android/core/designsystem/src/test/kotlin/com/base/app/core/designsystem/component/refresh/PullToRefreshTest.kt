@@ -21,6 +21,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeDown
+import androidx.compose.ui.test.swipeUp
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.setThemed
@@ -155,6 +156,35 @@ class PullToRefreshTest {
     }
 
     @Test
+    fun `a flick up during a refresh closes the gap and carries the list on without a pause`() {
+        setList()
+        val top = firstRowTop()
+        rule.onNodeWithTag("list").performTouchInput { swipeDown(startY = top + 10f, endY = bottom, durationMillis = 600) }
+        rule.mainClock.advanceTimeBy(1_000)
+        rule.waitForIdle()
+        val rowPx = with(rule.density) { RowHeight.toPx() }
+        // How far the content has gone up: through the gap first (negative while it shows), then the list.
+        fun travelled(): Float =
+            if (list.firstVisibleItemIndex == 0 && list.firstVisibleItemScrollOffset == 0) {
+                top - firstRowTop()
+            } else {
+                list.firstVisibleItemIndex * rowPx + list.firstVisibleItemScrollOffset
+            }
+
+        rule.mainClock.autoAdvance = false
+        rule.onNodeWithTag("list").performTouchInput { swipeUp(startY = top + RestPx + 40f, endY = top + RestPx, durationMillis = 40) }
+        rule.mainClock.advanceTimeByFrame()
+        val positions = List(HandOverFrames) {
+            rule.mainClock.advanceTimeByFrame()
+            travelled()
+        }
+        rule.mainClock.autoAdvance = true
+        val steps = positions.zipWithNext { a, b -> b - a }
+        assertTrue("the content paused in its fling: $steps", steps.all { it > 0.5f })
+        assertTrue("the fling never reached the list: $positions", positions.last() > 0f)
+    }
+
+    @Test
     fun `a pull released short of the trigger springs back without refreshing`() {
         setList()
         val top = firstRowTop()
@@ -236,6 +266,7 @@ class PullToRefreshTest {
         const val ShortPullSteps = 8
         const val FlingFromRow = 15
         const val SettlePauseSteps = 6
+        const val HandOverFrames = 10
         const val PullStep = 20f
 
         /** The resting gap, 60dp, at Robolectric's default density of 1. */

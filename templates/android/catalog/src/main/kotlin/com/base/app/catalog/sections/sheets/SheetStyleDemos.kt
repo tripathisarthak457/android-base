@@ -38,6 +38,7 @@ import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.SheetMaterial
 
@@ -144,7 +145,10 @@ private fun HeaderDemos() {
         paneTitle = if (HeaderSamples[kind] == null) "Shared album" else null,
         header = HeaderSamples[kind],
     ) {
-        LazyColumn(contentPadding = contentPadding) { sampleRows(20) }
+        LazyColumn(
+            contentPadding = contentPadding,
+            flingBehavior = AppScrollDefaults.flingBehavior(),
+        ) { sampleRows(20) }
     }
 }
 

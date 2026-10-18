@@ -10,6 +10,7 @@ import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.preview.AppScreenPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.SheetMaterial
@@ -26,7 +27,10 @@ private fun TwoDetentSheetPreview() {
         state = rememberAppSheetState(listOf(SheetDetent.Medium, SheetDetent.Large)),
         header = { AppSheetHeader(title = "Filters") },
     ) {
-        LazyColumn(contentPadding = contentPadding) { sampleRows(40) }
+        LazyColumn(
+            contentPadding = contentPadding,
+            flingBehavior = AppScrollDefaults.flingBehavior(),
+        ) { sampleRows(40) }
     }
 }
 
@@ -57,6 +61,9 @@ private fun PersistentSheetPreview() {
         style = AppSheetDefaults.style(material = SheetMaterial.Frosted),
         header = { AppSheetHeader(title = "Places", trailing = null) },
     ) {
-        LazyColumn(contentPadding = contentPadding) { sampleRows(20, prefix = "Place") }
+        LazyColumn(
+            contentPadding = contentPadding,
+            flingBehavior = AppScrollDefaults.flingBehavior(),
+        ) { sampleRows(20, prefix = "Place") }
     }
 }

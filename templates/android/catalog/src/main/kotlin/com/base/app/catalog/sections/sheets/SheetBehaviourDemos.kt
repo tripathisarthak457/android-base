@@ -42,6 +42,7 @@ import com.base.app.core.designsystem.component.sheet.content.SheetDismissGuard
 import com.base.app.core.designsystem.component.sheet.content.sheetDragExclusion
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.SheetMaterial
 
@@ -240,7 +241,10 @@ private fun CrossFadeDemo() {
         properties = AppSheetProperties(transition = SheetTransition.CrossFade),
         header = { AppSheetHeader(title = "Fades in and out") },
     ) {
-        LazyColumn(contentPadding = contentPadding) { sampleRows(20) }
+        LazyColumn(
+            contentPadding = contentPadding,
+            flingBehavior = AppScrollDefaults.flingBehavior(),
+        ) { sampleRows(20) }
     }
 }
 

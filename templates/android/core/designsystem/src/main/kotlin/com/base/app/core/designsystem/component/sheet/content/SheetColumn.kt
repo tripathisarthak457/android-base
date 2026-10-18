@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
 import com.base.app.core.designsystem.component.sheet.SheetController
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 
 /** The enclosing sheet's contentPadding; zero outside a sheet. */
 @Composable
@@ -40,7 +41,7 @@ fun SheetColumn(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .verticalScroll(state)
+            .verticalScroll(state, flingBehavior = AppScrollDefaults.flingBehavior())
             .padding(contentPadding),
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,

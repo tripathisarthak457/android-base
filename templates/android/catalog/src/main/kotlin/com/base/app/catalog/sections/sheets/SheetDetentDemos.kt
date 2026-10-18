@@ -48,6 +48,7 @@ import com.base.app.core.designsystem.component.sheet.content.SheetColumn
 import com.base.app.core.designsystem.component.sheet.content.sheetFooterItem
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -79,7 +80,10 @@ private fun BasicDemo() {
         onDismissRequest = { shown = false },
         header = { AppSheetHeader(title = "Inbox") },
     ) {
-        LazyColumn(contentPadding = contentPadding) { sampleRows(60, prefix = "Message") }
+        LazyColumn(
+            contentPadding = contentPadding,
+            flingBehavior = AppScrollDefaults.flingBehavior(),
+        ) { sampleRows(60, prefix = "Message") }
     }
 }
 
@@ -103,7 +107,7 @@ private fun FiltersDemo() {
             }
         },
     ) {
-        LazyColumn(contentPadding = contentPadding) {
+        LazyColumn(contentPadding = contentPadding, flingBehavior = AppScrollDefaults.flingBehavior()) {
             item(key = "mode", contentType = "mode") {
                 AppToggleRow(title = "List scrolls before the sheet grows", checked = scrollsFirst, onCheckedChange = { scrollsFirst = it })
             }

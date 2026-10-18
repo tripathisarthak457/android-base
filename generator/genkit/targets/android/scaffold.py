@@ -249,6 +249,7 @@ import {pkg}.core.designsystem.component.navigation.AppLargeTitleTopBar
 import {pkg}.core.designsystem.component.navigation.scrolledFromTop
 import {pkg}.core.designsystem.component.text.AppText
 import {pkg}.core.designsystem.foundation.chromeContentPadding
+import {pkg}.core.designsystem.foundation.scroll.AppScrollDefaults
 import {pkg}.core.designsystem.theme.AppTheme
 import {pkg}.core.ui.asString
 import {pkg}.data.{name}.{class_name}Item
@@ -292,6 +293,7 @@ fun {class_name}Screen(
                 state = listState,
                 contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
             ) {{
                 // Keyed on the id so inserts keep scroll position.
                 items(items = state.items, key = {class_name}Item::id) {{ item ->

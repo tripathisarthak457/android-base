@@ -44,6 +44,7 @@ import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.selection.AppChip
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
@@ -197,6 +198,7 @@ private fun Results(results: List<SearchResult>, listState: LazyListState, onEve
         state = listState,
         contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+        flingBehavior = AppScrollDefaults.flingBehavior(),
     ) {
         items(results, key = SearchResult::id) { result ->
             ResultCard(

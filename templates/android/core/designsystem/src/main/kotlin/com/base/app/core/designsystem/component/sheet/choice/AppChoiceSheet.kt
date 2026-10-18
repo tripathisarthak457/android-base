@@ -21,6 +21,7 @@ import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.sheetFooterItem
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
 import com.base.app.core.designsystem.foundation.content.rememberCurrentLocale
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
@@ -102,7 +103,7 @@ private fun <T : Any> AppSheetScope.ChoiceList(
             choices.filter { ChoiceSearch.matches(text, label(it), supportingText?.invoke(it), locale) }
         }
     }
-    LazyColumn(contentPadding = contentPadding) {
+    LazyColumn(contentPadding = contentPadding, flingBehavior = AppScrollDefaults.flingBehavior()) {
         if (searching) {
             item(key = SearchKey, contentType = SearchKey) {
                 AppSearchField(state = query, modifier = Modifier.padding(bottom = AppTheme.spacing.sm))

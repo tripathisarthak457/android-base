@@ -17,6 +17,7 @@ import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.navigation.AppTopBar
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
@@ -152,6 +153,7 @@ internal fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Un
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
                 AppTheme.spacing.sm,
             ),
+            flingBehavior = AppScrollDefaults.flingBehavior(),
         ) {
             items(state.artifacts, key = { it.coordinates }) { artifact ->
                 AppCard(contentPadding = PaddingValues(0.dp)) {

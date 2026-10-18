@@ -35,6 +35,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.draw.HairlineEdge
 import com.base.app.core.designsystem.foundation.draw.groupItem
 import com.base.app.core.designsystem.foundation.draw.hairline
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
@@ -109,7 +110,7 @@ fun ListsSection() {
             }
         }
         AppPullToRefresh(isRefreshing = refreshing, onRefresh = { refreshing = true }, modifier = Modifier.fillMaxWidth().height(240.dp)) {
-            LazyColumn(Modifier.fillMaxSize()) {
+            LazyColumn(Modifier.fillMaxSize(), flingBehavior = AppScrollDefaults.flingBehavior()) {
                 itemsIndexed((1..20).toList(), key = { _, it -> it }) { _, item -> AppRow(title = "Item $item") }
             }
         }

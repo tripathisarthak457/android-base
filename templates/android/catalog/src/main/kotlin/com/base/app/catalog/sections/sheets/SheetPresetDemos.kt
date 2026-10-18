@@ -23,6 +23,7 @@ import com.base.app.core.designsystem.component.sheet.choice.AppChoiceSheet
 import com.base.app.core.designsystem.component.sheet.chrome.AppSheetHeader
 import com.base.app.core.designsystem.component.sheet.content.sheetFooterItem
 import com.base.app.core.designsystem.component.sheet.rememberAppSheetState
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 
 /** The ready-made sheets: an action sheet and a choice sheet, and a multi-select built from AppSheet. */
@@ -110,7 +111,7 @@ private fun MultiChoiceDemo() {
             }
         },
     ) {
-        LazyColumn(contentPadding = contentPadding) {
+        LazyColumn(contentPadding = contentPadding, flingBehavior = AppScrollDefaults.flingBehavior()) {
             items(Languages, key = { it.name }, contentType = { "language" }) { language ->
                 AppToggleRow(
                     title = language.name,

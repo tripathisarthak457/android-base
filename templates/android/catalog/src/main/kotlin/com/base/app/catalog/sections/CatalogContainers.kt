@@ -26,6 +26,7 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.AppTwoPane
 import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.foundation.content.AppSurface
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
 @Composable
@@ -60,7 +61,11 @@ fun ContainersSection() {
                 topBar = { AppTopBar(title = "Checkout", onBack = {}, windowInsets = WindowInsets(0)) },
                 bottomBar = { AppBottomActionBar { AppButton(text = "Pay $24.00", onClick = {}, modifier = Modifier.fillMaxWidth()) } },
             ) {
-                LazyColumn(Modifier.fillMaxSize(), contentPadding = chromeContentPadding()) {
+                LazyColumn(
+                    Modifier.fillMaxSize(),
+                    contentPadding = chromeContentPadding(),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
+                ) {
                     items((1..12).toList(), key = { it }) { AppRow(title = "Line item $it", value = "$2.00") }
                 }
             }

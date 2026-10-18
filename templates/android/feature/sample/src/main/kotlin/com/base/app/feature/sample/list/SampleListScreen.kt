@@ -32,6 +32,7 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.preview.AppScreenPreviews
 import com.base.app.core.designsystem.theme.AppTheme
@@ -119,6 +120,7 @@ private fun Content(
                 state = listState,
                 contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
             ) {
                 // Keyed on the id so inserts keep scroll position and animations.
                 items(items = visible, key = SampleItem::id) { item ->

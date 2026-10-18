@@ -24,6 +24,7 @@ import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
@@ -113,7 +114,7 @@ internal fun SearchResultRoute(
                 else -> Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
                         .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
                 ) {

@@ -25,6 +25,7 @@ import com.base.app.core.designsystem.component.feedback.AppAvatar
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
 // <opt:coil>
@@ -75,7 +76,7 @@ internal fun ProfileScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scroll)
+                    .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                     .padding(AppTheme.spacing.gutter),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
             ) {

@@ -38,6 +38,7 @@ import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import java.time.Instant
 import java.time.ZoneId
@@ -150,6 +151,7 @@ private fun RequestList(
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+        flingBehavior = AppScrollDefaults.flingBehavior(),
     ) {
         items(exchanges, key = { it.id }) { exchange ->
             AppCard(contentPadding = PaddingValues(0.dp)) {
@@ -189,7 +191,7 @@ private fun StatusPill(exchange: NetworkExchange) {
 private fun StatsTab(stats: NetworkStats) {
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
@@ -210,7 +212,7 @@ private fun StatsTab(stats: NetworkStats) {
 private fun BuildTab(environment: DevEnvironment) {
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
@@ -249,7 +251,7 @@ private fun ExchangeDetail(exchange: NetworkExchange) {
     SelectionContainer {
         Column(
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
                 .padding(AppTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
