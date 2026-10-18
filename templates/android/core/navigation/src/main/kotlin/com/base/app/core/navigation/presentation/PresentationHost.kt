@@ -8,6 +8,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -79,8 +80,10 @@ internal fun PresentationHost(
             sheetStrategy == null || registry.presentationOf(key) == Presentation.Cover
         }
     }
-    // A committed card fades out over the shell after its cover has gone.
-    if (presented.size == 0 && live == 0 && !host.card.active) return
+    // A committed card fades out over the shell after its cover has gone. Derived, so a frame that
+    // counts itself in or out recomposes the host only when that decides whether the host stays.
+    val gone by remember(presented, host) { derivedStateOf { presented.size == 0 && live == 0 && !host.card.active } }
+    if (gone) return
     SideEffect { host.motion = motion }
 
     // The host starts with only its empty base, so the first presentation slides in rather than

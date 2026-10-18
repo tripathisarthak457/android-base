@@ -1,7 +1,10 @@
 package com.base.app.core.navigation.shell
 
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -32,12 +35,19 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = { AppTopBar(title = stringResource(R.string.navigation_more)) },
     ) {
-        val listState = rememberLazyListState()
-        ReportScrollEdge(listState)
-        LazyColumn(state = listState, contentPadding = chromeContentPadding()) {
-            // Keys are saved with the list's state, so they must fit in a Bundle: the tab's index.
-            items(count = tabs.size - from, key = { from + it }) { offset ->
-                val index = from + offset
+        val scroll = rememberScrollState()
+        ReportScrollEdge(scroll)
+        val accent = AppTheme.colors.accent
+        val tertiary = AppTheme.colors.contentTertiary
+        // At most the few tabs the chrome has no room for, so a plain column: a lazy list would
+        // measure and prefetch for nothing.
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scroll)
+                .padding(chromeContentPadding()),
+        ) {
+            for (index in from until tabs.size) {
                 val tab = tabs[index]
                 AppListItem(
                     title = labels[index],
@@ -45,11 +55,11 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
                     onClick = { onSelect(index) },
                     leading = {
                         AppBadgedBox(count = tab.badgeCount) {
-                            AppIcon(imageVector = tab.icon, contentDescription = null, tint = AppTheme.colors.accent)
+                            AppIcon(imageVector = tab.icon, contentDescription = null, tint = accent)
                         }
                     },
                     trailing = {
-                        AppIcon(imageVector = chevron, contentDescription = null, tint = AppTheme.colors.contentTertiary)
+                        AppIcon(imageVector = chevron, contentDescription = null, tint = tertiary)
                     },
                 )
             }
