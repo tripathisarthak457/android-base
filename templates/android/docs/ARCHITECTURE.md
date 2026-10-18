@@ -98,6 +98,9 @@ the cart repository, not the cart feature.
 <!-- <opt:devtools> -->
 | `:core:devtools` | The in-app network inspector and environment badge. |
 <!-- </opt:devtools> -->
+<!-- <opt:perfhud> -->
+| `:core:perfhud` | The live performance overlay beside the badge, its Perf tab, log, report and score; dev and debug builds only ([PERFORMANCE-OVERLAY.md](PERFORMANCE-OVERLAY.md)). |
+<!-- </opt:perfhud> -->
 
 ## MVI
 

@@ -1,5 +1,5 @@
 {
-  "generator_commit": "420cc88f481b",
+  "generator_commit": "7b14c0d22d48",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -662,6 +662,23 @@
           "title": "Feature flag seam"
         },
         {
+          "default": true,
+          "description": "Frames per second at the display's real rate and the janky-frame share under the DEV badge, and a Performance tab in the inspector: frame times against the 60, 90 and 120 Hz budgets, frames per second over time, a frame-time histogram, jank by screen, memory over time, start-up and request timings, and an optimisation score from 0 to 100 with a fix for every lost point. A structured logcat summary and an exported JSON and Markdown report. On in debug builds, a switch away in dev release builds, and absent from production builds; while it is off it puts nothing on the window.",
+          "group": "observability",
+          "headline": "FPS, jank, graphs and a score beside the DEV badge",
+          "implied_only": false,
+          "implies": [
+            "devtools"
+          ],
+          "key": "perfhud",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "devtools"
+          ],
+          "title": "Live performance overlay"
+        },
+        {
           "default": false,
           "description": "Feature flags read from Remote Config: fetched at start-up, updated while the app is open when the console publishes a change, and fetched on every start in a debug build.",
           "group": "observability",
@@ -1314,6 +1331,7 @@
             "leakcanary",
             "network",
             "onboarding",
+            "perfhud",
             "profile",
             "sample",
             "settings"
@@ -1355,6 +1373,7 @@
             "offlinequeue",
             "onboarding",
             "paging",
+            "perfhud",
             "playstore",
             "profile",
             "push",

@@ -14,7 +14,7 @@ profile tab. What most projects want on day one."""
 features = [
   "network", "leakcanary", "sample", "catalog",
   "database", "coil", "googlefonts", "forms", "auth", "settings", "onboarding", "deeplink",
-  "flags", "devtools", "profile", "browser", "language",
+  "flags", "devtools", "perfhud", "profile", "browser", "language",
 ]
 
 [everything]

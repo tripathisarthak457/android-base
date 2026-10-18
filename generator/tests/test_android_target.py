@@ -328,6 +328,42 @@ class ProjectTest(unittest.TestCase):
         )
         self.assertEqual(["gradlew.bat"], found)
 
+    def test_the_performance_overlay_reaches_dev_and_debug_builds_only(self):
+        project = generate(self.root, features=["devtools", "perfhud"])
+        app_build = (project / "app/build.gradle.kts").read_text(encoding="utf-8")
+        wiring = [line.strip() for line in app_build.splitlines() if ":core:perfhud" in line]
+        self.assertEqual(
+            ['debugImplementation(project(":core:perfhud"))', '"devImplementation"(project(":core:perfhud"))'], wiring
+        )
+        # Nothing a shippable release compiles may name it: :app's main sources would pull it in.
+        naming = [
+            path.relative_to(project).as_posix()
+            for path in (project / "app/src/main").rglob("*")
+            if path.suffix in (".kt", ".xml") and "perfhud" in path.read_text(encoding="utf-8").lower()
+        ]
+        self.assertEqual([], naming)
+        manifest = (project / "core/perfhud/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
+        self.assertIn('android:permission="android.permission.DUMP"', manifest)
+        self.assertTrue((project / "docs/PERFORMANCE-OVERLAY.md").is_file())
+
+    def test_the_overlay_shares_the_analytics_jankstats_or_brings_its_own(self):
+        feed = "core/perfhud/src/main/kotlin/com/acme/field/core/perfhud/frame/FrameFeed.kt"
+        without = (generate(self.root / "without", features=["devtools", "perfhud"]) / feed).read_text(encoding="utf-8")
+        shared = (generate(self.root / "with", features=["devtools", "perfhud", "analytics"]) / feed).read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("JankStats.createAndTrack(activity.window, listener)", without)
+        self.assertNotIn("FrameJankRecorder", without)
+        self.assertIn("jankRecorder.frameListener = listener", shared)
+        self.assertNotIn("createAndTrack", shared)
+
+    def test_without_the_overlay_nothing_of_it_is_left(self):
+        project = generate(self.root, features=["devtools"])
+        self.assertFalse((project / "core/perfhud").exists())
+        self.assertFalse((project / "docs/PERFORMANCE-OVERLAY.md").exists())
+        for name in ("settings.gradle.kts", "app/build.gradle.kts", "docs/ARCHITECTURE.md"):
+            self.assertNotIn("perfhud", (project / name).read_text(encoding="utf-8"), name)
+
     def test_a_module_name_that_is_a_template_token_stays_itself(self):
         project = generate(self.root, app_name="Store", feature_modules=["database_app"])
         settings_text = (project / "settings.gradle.kts").read_text(encoding="utf-8")
