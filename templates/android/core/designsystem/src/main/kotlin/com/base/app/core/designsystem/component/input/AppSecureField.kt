@@ -22,8 +22,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.base.app.core.designsystem.R
-import com.base.app.core.designsystem.component.button.AppIconButton
-import com.base.app.core.designsystem.component.button.ButtonSize
+import com.base.app.core.designsystem.component.button.FieldIconButton
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -72,13 +71,13 @@ fun AppSecureField(
             isError = error != null,
             leadingIcon = AppIcons.Lock,
             trailing = {
-                AppIconButton(
+                FieldIconButton(
                     icon = if (revealed) AppIcons.EyeOff else AppIcons.Eye,
                     contentDescription = stringResource(
                         if (revealed) R.string.designsystem_hide_password else R.string.designsystem_show_password,
                     ),
                     onClick = { revealed = !revealed },
-                    size = ButtonSize.Small,
+                    textStyle = AppTheme.typography.body,
                 )
             },
         ),

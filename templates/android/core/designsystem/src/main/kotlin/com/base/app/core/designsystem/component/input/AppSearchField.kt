@@ -42,9 +42,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.animation.rememberAppTransitions
-import com.base.app.core.designsystem.component.button.AppIconButton
 import com.base.app.core.designsystem.component.button.AppLinkButton
-import com.base.app.core.designsystem.component.button.ButtonSize
+import com.base.app.core.designsystem.component.button.FieldIconButton
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
@@ -138,11 +137,11 @@ fun AppSearchField(
                                 enter = transitions.popIn,
                                 exit = transitions.popOut,
                             ) {
-                                AppIconButton(
+                                FieldIconButton(
                                     icon = AppIcons.XCircle,
                                     contentDescription = stringResource(R.string.designsystem_clear_search),
                                     onClick = { state.clearText() },
-                                    size = ButtonSize.Small,
+                                    textStyle = AppTheme.typography.body,
                                 )
                             }
                         }

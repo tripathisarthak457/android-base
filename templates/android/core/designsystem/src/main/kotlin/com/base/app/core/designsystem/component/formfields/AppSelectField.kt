@@ -27,6 +27,7 @@ import com.base.app.core.designsystem.component.overlay.AppMenu
 import com.base.app.core.designsystem.component.overlay.AppMenuItem
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.component.text.scaledLike
 import com.base.app.core.designsystem.foundation.draw.disabledAlpha
 import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.pressable
@@ -59,7 +60,14 @@ fun <T> AppSelectField(
         placeholder = placeholder,
         supporting = error ?: helper,
         isError = error != null,
-        trailing = { AppIcon(AppIcons.ChevronDown, contentDescription = null, tint = AppTheme.colors.contentSecondary, size = 16.dp) },
+        trailing = {
+            AppIcon(
+                AppIcons.ChevronDown,
+                contentDescription = null,
+                tint = AppTheme.colors.contentSecondary,
+                size = AppTheme.sizes.iconSmall.scaledLike(AppTheme.typography.body),
+            )
+        },
     )
     Box(modifier = modifier) {
         Box(

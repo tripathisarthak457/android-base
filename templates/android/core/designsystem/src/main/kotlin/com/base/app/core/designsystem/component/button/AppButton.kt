@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.em
 import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.component.text.scaledLike
 import com.base.app.core.designsystem.foundation.content.ProvideContentColor
 import com.base.app.core.designsystem.foundation.draw.ContentUnderBone
 import com.base.app.core.designsystem.foundation.draw.LocalRedacted
@@ -155,7 +156,58 @@ fun AppIconButton(
     enabled: Boolean = true,
     colors: ButtonColors = AppButtonDefaults.iconButtonColors(variant),
 ) {
-    val diameter = AppButtonDefaults.iconButtonSize(size)
+    IconButton(
+        icon = icon,
+        contentDescription = contentDescription,
+        onClick = onClick,
+        modifier = modifier,
+        variant = variant,
+        diameter = AppButtonDefaults.iconButtonSize(size),
+        glyphSize = AppButtonDefaults.metrics(size).iconSize,
+        enabled = enabled,
+        colors = colors,
+    )
+}
+
+/**
+ * A plain icon button inside a field, beside text in [textStyle]: it grows with that text at the
+ * person's font scale, as the field's leading glyph does, rather than staying a small mark at the
+ * end of a line twice its size. Bar buttons keep a fixed size, which is why [AppIconButton] does not.
+ */
+@Composable
+internal fun FieldIconButton(
+    icon: ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    textStyle: TextStyle,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+) {
+    IconButton(
+        icon = icon,
+        contentDescription = contentDescription,
+        onClick = onClick,
+        modifier = modifier,
+        variant = ButtonVariant.Plain,
+        diameter = AppButtonDefaults.iconButtonSize(ButtonSize.Small).scaledLike(textStyle),
+        glyphSize = AppButtonDefaults.metrics(ButtonSize.Small).iconSize.scaledLike(textStyle),
+        enabled = enabled,
+        colors = AppButtonDefaults.iconButtonColors(ButtonVariant.Plain),
+    )
+}
+
+@Composable
+private fun IconButton(
+    icon: ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    modifier: Modifier,
+    variant: ButtonVariant,
+    diameter: Dp,
+    glyphSize: Dp,
+    enabled: Boolean,
+    colors: ButtonColors,
+) {
     val container = colors.container(enabled)
     val bone = LocalRedacted.current && container.alpha > 0f
     val redacted = if (bone) Modifier.skeleton(CircleShape) else Modifier
@@ -177,7 +229,7 @@ fun AppIconButton(
                 icon,
                 contentDescription = contentDescription,
                 tint = colors.content(enabled),
-                size = AppButtonDefaults.metrics(size).iconSize,
+                size = glyphSize,
             )
         }
     }
