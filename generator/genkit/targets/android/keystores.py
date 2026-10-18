@@ -5,6 +5,7 @@ Signing keys: validated before `keytool` sees anything, generated as PKCS12, and
 
 from __future__ import annotations
 
+import locale
 import os
 import re
 import shutil
@@ -175,7 +176,16 @@ def generate(project: Path, keystores: tuple[KeystoreSpec, ...]) -> tuple[list[s
             "-storetype", "PKCS12",
         ]
         environment = {**os.environ, "GENKIT_STORE_PASSWORD": keystore.store_password}
-        result = subprocess.run(command, capture_output=True, text=True, check=False, env=environment)
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            # keytool writes to a pipe in the ANSI code page on Windows, as Java does, not in the
+            # UTF-8 Python 3.15 reads by default, and its messages can name the project's path.
+            encoding=locale.getencoding(),
+            errors="replace",
+            check=False,
+            env=environment,
+        )
         if result.returncode == 0:
             generated.append(keystore.name)
             made[keystore] = target

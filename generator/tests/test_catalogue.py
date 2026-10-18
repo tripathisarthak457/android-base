@@ -5,8 +5,11 @@ from __future__ import annotations
 import io
 import json
 import re
+import tempfile
 import unittest
 from contextlib import redirect_stdout
+from pathlib import Path
+from unittest import mock
 
 from genkit.core import catalogue
 from genkit.core.spec import MAX_FEATURE_MODULES, MAX_SPEC_BYTES
@@ -92,6 +95,21 @@ class WebsiteCopyTest(unittest.TestCase):
         with redirect_stdout(output):
             code = catalogue.main(["--check"])
         self.assertEqual(0, code, output.getvalue()[-2000:])
+
+    def test_a_copy_with_crlf_line_endings_is_stale_until_written_again(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repository = Path(temp)
+            copy = repository / catalogue.WEBSITE_COPY.relative_to(catalogue.record.REPOSITORY)
+            copy.parent.mkdir(parents=True)
+            copy.write_bytes(catalogue.WEBSITE_COPY.read_bytes().replace(b"\n", b"\r\n"))
+            with mock.patch.object(catalogue, "WEBSITE_COPY", copy), \
+                    mock.patch.object(catalogue.record, "REPOSITORY", repository), \
+                    redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(1, catalogue.main(["--check"]))
+                self.assertIn("not laid out as --write writes it", output.getvalue())
+                self.assertEqual(0, catalogue.main(["--write"]))
+                self.assertEqual(0, catalogue.main(["--check"]))
+            self.assertNotIn(b"\r", copy.read_bytes())
 
     def test_the_commit_is_ignored_when_comparing(self):
         copy = json.loads(catalogue.WEBSITE_COPY.read_text(encoding="utf-8"))

@@ -22,6 +22,7 @@ from typing import Any
 
 from genkit import targets
 from genkit.core import catalogue, pipeline, prompts
+from genkit.core.copy import is_link, write_text
 from genkit.core.headless import internal, invalid
 from genkit.core.markers import TemplateError
 from genkit.core.spec import SpecError, to_json
@@ -116,7 +117,7 @@ def main(argv: list[str] | None = None) -> int:
     except SpecError as error:
         return fail(args.json, invalid(error), str(error), EXIT_INVALID)
     except (RenderError, TemplateError, TranslationError, OSError) as error:
-        return fail(args.json, internal(), str(error), EXIT_FAILED)
+        return fail(args.json, internal(), described(error), EXIT_FAILED)
     except (KeyboardInterrupt, EOFError):
         print("\nCancelled.", file=sys.stderr)
         return EXIT_CANCELLED
@@ -150,6 +151,15 @@ def fail(as_json: bool, payload: dict[str, Any], message: str, code: int) -> int
     else:
         print(prompts.red(message), file=sys.stderr)
     return code
+
+
+def described(error: BaseException) -> str:
+    """
+    `error`'s message, then the notes that name what the failure left behind: on `error`, or on its
+    cause when an explanation, such as that of a path past Windows' length limit, took its place.
+    """
+    notes = [*getattr(error, "__notes__", []), *getattr(error.__cause__, "__notes__", [])]
+    return "\n".join([str(error), *notes])
 
 
 def write_json(data: object) -> None:
@@ -189,7 +199,7 @@ def load_raw(args: argparse.Namespace, target) -> object:
 
 def save_spec(spec, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(to_json(spec, keystores=True), indent=2) + "\n", encoding="utf-8")
+    write_text(path, json.dumps(to_json(spec, keystores=True), indent=2) + "\n")
     note = f"  Answers written to {path}."
     if spec.android is not None and spec.android.keystores:
         note += " It holds the keystore passwords: keep it out of version control."
@@ -253,12 +263,13 @@ def resolve_destination(project_name: str, args: argparse.Namespace) -> Path | N
 
 def confirm_replace(destination: Path, force: bool, unattended: bool) -> bool:
     """
-    Whether something at `destination` is to be replaced. The build deletes that exact path, and
-    nothing else, once the new project is complete. Raises SpecError when it may not be replaced.
+    Whether something at `destination` is to be replaced. Only that exact path is: the build moves
+    it aside once the new project is complete and deletes it once the new one is in its place,
+    leaving what cannot be deleted beside it with a warning. Raises SpecError when it may not be.
     """
-    if not destination.exists() and not destination.is_symlink():
+    if not destination.exists() and not is_link(destination):
         return False
-    if destination.is_dir() and not destination.is_symlink() and not any(destination.iterdir()):
+    if destination.is_dir() and not is_link(destination) and not any(destination.iterdir()):
         return True
 
     refusal = _unsafe_to_delete(destination)
@@ -274,8 +285,10 @@ def confirm_replace(destination: Path, force: bool, unattended: bool) -> bool:
 
 def absolute(path: Path) -> Path:
     """
-    `path` made absolute with its directories resolved but not its last part, so that a symbolic
-    link given as the destination is what gets replaced, never the directory it points at.
+    `path` made absolute with its directories resolved but not its last part, so that a link given
+    as the destination is what gets replaced, never the directory it points at. It is also the path
+    the result reports, so its directories have one spelling however the caller named them: through
+    a link, with `..`, or by a Windows 8.3 short name like the one `%TEMP%` often holds.
     """
     path = path.expanduser().absolute()
     if path.name in ("", ".."):
@@ -291,9 +304,18 @@ def _unsafe_to_delete(destination: Path) -> str | None:
         return "it is a filesystem root"
     for name, place in (("your home directory", Path.home()), ("the current directory", Path.cwd()), ("the generator", HERE)):
         for form in {place, place.resolve()}:
-            if any(path == form or path in form.parents for path in paths):
+            # By identity, not spelling: on a case-insensitive file system, the default on macOS,
+            # /users/me is the home directory too, while two POSIX paths compare case by case.
+            if any(_same_file(destination, ancestor) for ancestor in (form, *form.parents)):
                 return f"it is or contains {name}"
     return None
+
+
+def _same_file(path: Path, other: Path) -> bool:
+    try:
+        return path.samefile(other)
+    except OSError:
+        return False
 
 
 def ask_save_location(default_name: str, zip_output: bool) -> Path | None:
