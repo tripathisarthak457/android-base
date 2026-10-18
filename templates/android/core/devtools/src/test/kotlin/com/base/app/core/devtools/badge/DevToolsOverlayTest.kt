@@ -1,23 +1,32 @@
 package com.base.app.core.devtools.badge
 
 import android.view.View
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.toComposeRect
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipe
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.devtools.DevEnvironment
 import com.base.app.core.devtools.DevTools
 import com.base.app.core.devtools.log.DevToolsLog
+import com.base.app.core.devtools.page.DevToolsPage
+import com.base.app.core.devtools.screen.CurrentScreen
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -73,7 +82,24 @@ class DevToolsOverlayTest {
         assertExcluded(view, badge)
     }
 
-    private fun devTools() = DevTools(
+    @Test
+    fun `a page's line under the badge opens the panel on that page`() {
+        val page = DevToolsPage(
+            key = "probe",
+            title = android.R.string.ok,
+            content = { BasicText("probe page content") },
+            badgeContent = { openPage ->
+                BasicText("probe line", Modifier.testTag("probe_line").appClickable(onClick = openPage))
+            },
+        )
+        compose.setContent { AppTheme { DevToolsOverlay(devTools(pages = setOf(page))) } }
+
+        compose.onNodeWithTag("probe_line").performClick()
+
+        compose.onNodeWithText("probe page content").assertIsDisplayed()
+    }
+
+    private fun devTools(pages: Set<DevToolsPage> = emptySet()) = DevTools(
         environment = DevEnvironment(
             name = "dev",
             versionName = "1.0",
@@ -83,6 +109,8 @@ class DevToolsOverlayTest {
             isShippable = false,
         ),
         log = DevToolsLog(),
+        currentScreen = CurrentScreen(),
+        pages = pages,
         // <opt:flags>
         flags = LocalFeatureFlags(FlagOverrides()),
         flagOverrides = FlagOverrides(),

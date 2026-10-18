@@ -91,6 +91,13 @@ fun AppRoot(
                     navigator = navigator,
                     onExitRequested = onExitRequested,
                 )
+                // <opt:devtools>
+                ReportCurrentScreen(
+                    top = { backStack.current },
+                    serialization = serialization,
+                    screen = devTools.currentScreen,
+                )
+                // </opt:devtools>
             } else {
                 val shellState = rememberShellState(tabs = tabs, serialization = serialization)
 
@@ -110,6 +117,13 @@ fun AppRoot(
                     navigator = navigator,
                     onExitRequested = onExitRequested,
                 )
+                // <opt:devtools>
+                ReportCurrentScreen(
+                    top = { shellState.current.current },
+                    serialization = serialization,
+                    screen = devTools.currentScreen,
+                )
+                // </opt:devtools>
             }
 
             // <opt:appstatus>

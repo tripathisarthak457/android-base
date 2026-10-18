@@ -12,5 +12,6 @@ implied_only = false
 owns = [
   "core/devtools",
   "app/src/main/kotlin/{pkg_path}/di/DevToolsModule.kt",
+  "app/src/main/kotlin/{pkg_path}/ui/ReportCurrentScreen.kt",
 ]
 legacy = []
