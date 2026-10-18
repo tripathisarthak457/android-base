@@ -18,8 +18,10 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.SubcomposeLayoutState
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -44,7 +46,9 @@ import com.base.app.core.designsystem.theme.rememberReduceMotion
  * that acts on being seen does not act out of sight; [LocalTabVisible] tells clocks to stop.
  *
  * A hidden tab also stops answering Back: its dispatcher is disabled, or a tab left a few screens
- * deep would take the swipe meant for the visible one.
+ * deep would take the swipe meant for the visible one. A field focused in it loses focus, whatever
+ * switched tabs (the bar, a shortcut, a link, Back at a root), so the keyboard and the keys typed
+ * next do not stay with a tab nobody sees.
  *
  * The tabs in [warmUp] that nobody opened yet are built while the app is idle ([TabWarmUp]), so
  * the first visit to one costs what a switch to a kept tab costs.
@@ -75,7 +79,7 @@ internal fun KeptTabs(
         // the tabs out again without composing anything.
         val front = selected()
         val opened = remember { mutableStateListOf<Int>() }
-        if (front !in opened) SideEffect { opened += front }
+        SideEffect { if (front !in opened) opened += front }
 
         val selection = rememberUpdatedState(selected)
         val reveal = remember { TabReveal(front) }
@@ -123,6 +127,9 @@ private fun KeptTab(
     // Derived, so a switch recomposes only the two tabs it changes.
     val active by remember { derivedStateOf { selection.value() == index } }
     val visibility = remember { TabVisibility { selection.value() == index } }
+    val focusManager = LocalFocusManager.current
+    val focus = remember { TabFocus() }
+    SideEffect(active) { if (!active && focus.within) focusManager.clearFocus() }
     CompositionLocalProvider(
         LocalLifecycleOwner provides rememberTabLifecycle(active),
         LocalTabVisible provides visibility,
@@ -131,12 +138,18 @@ private fun KeptTab(
         Box(
             Modifier
                 .keptTab(parked = !active, reveal = reveal, warming = warming, index = index)
+                .onFocusChanged { focus.within = it.hasFocus }
                 .focusProperties { onEnter = { if (selection.value() != index) cancelFocusChange() } }
                 .focusGroup(),
         ) {
             content()
         }
     }
+}
+
+/** Whether focus is inside a tab, kept outside snapshot state since only the switch reads it. */
+private class TabFocus {
+    var within = false
 }
 
 /** One tab's own back dispatcher, switched off while the tab is hidden. */
