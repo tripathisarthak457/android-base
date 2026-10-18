@@ -151,6 +151,10 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 withFrameNanos {}
                 (window.decorView.background?.mutate() as? ColorDrawable)?.color = Color.TRANSPARENT
+                // <opt:playstore>
+                // Posted, so Play's work runs in a message of its own rather than in this frame.
+                window.decorView.post(::followPlayStore)
+                // </opt:playstore>
             }
             AppRoot(
                 startup = current,
@@ -167,17 +171,6 @@ class MainActivity : ComponentActivity() {
                 // </opt:devtools>
             )
         }
-
-        // <opt:playstore>
-        // On resume rather than onCreate: Play drops a review sheet launched against a stopped
-        // Activity.
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                launch { appUpdates.updates().collect(::onUpdate) }
-                launch { reviewPrompt.onLaunch(this@MainActivity) }
-            }
-        }
-        // </opt:playstore>
 
         // Only a fresh launch carries a new link. A recreation (rotation, theme, language) restores
         // the stack the link already built, and a launch from Recents replays the original intent:
@@ -208,6 +201,23 @@ class MainActivity : ComponentActivity() {
     }
 
     // <opt:playstore>
+    /**
+     * Started once the first frame with content is on screen. Run in a cold start's resume, the
+     * classes both checks load on the main thread, the update check's binding to Play's service and
+     * the Play Store process waking to answer it held that frame back, for answers nobody is
+     * waiting for.
+     */
+    private fun followPlayStore() {
+        lifecycleScope.launch {
+            // On resume rather than onCreate: Play drops a review sheet launched against a stopped
+            // Activity.
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                launch { appUpdates.updates().collect(::onUpdate) }
+                launch { reviewPrompt.onLaunch(this@MainActivity) }
+            }
+        }
+    }
+
     private suspend fun onUpdate(result: AppUpdateResult) {
         when (result) {
             is AppUpdateResult.Available -> appUpdates.start(result, this)
