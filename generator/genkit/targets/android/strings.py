@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from ...core import translations
+from ...core.copy import write_text
 from ...core.spec import Spec, module_title
 from ...core.translations import Text, TranslationError, module_slug
 
@@ -64,7 +65,7 @@ def write(project: Path, spec: Spec, modules: set[str] | None = None) -> None:
                 )
             target = source.parent.parent / f"values-{resource_qualifier(tag)}" / "strings.xml"
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(strings_xml(names, texts), encoding="utf-8")
+            write_text(target, strings_xml(names, texts))
 
 
 def _module(project: Path, strings: Path) -> str:
