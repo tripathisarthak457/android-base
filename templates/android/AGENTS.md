@@ -273,20 +273,27 @@ with this file, this file wins; the known differences are in the last column.
 | `r8-analyzer` | change keep rules or chase app size | upstream ships no `scripts/`: run `./gradlew :app:analyzeProdReleaseR8Config` (one task per variant; the report is `app/build/reports/r8/`), then follow its manual path |
 | `android-intent-security`, `android-permissions-security` | touch the manifest, deep links, notifications or permissions | links land in `LinkActivity` and become typed keys in a `DeepLinkRoute` |
 | `agp-9-upgrade` | bump AGP or Gradle | the project is already on AGP 9 with built-in Kotlin |
+| `jetpack-compose-performance` | change a composable, a modifier chain or a lazy list, and again before you call that change done: run its audit over every composable you touched | read the category's `references/*.md` before you change what it flags; Compose is 1.12, so `derivedStateOf`, not `computedStateOf`; ViewModel state stays on `collectAsStateWithLifecycle()`, because `MviViewModel.observe` runs its flows only while a screen collects; `List`, `Set` and `Map` are in `config/compose-stability.conf`, so never `ImmutableList`, and never `@Immutable` on a model that carries a large list into a lazy layout |
+| `android-cli` | look up an API (`android docs`), run the app, inspect a screen (`android layout`, `android screen`) | never run its install line, which pipes a downloaded script into a shell: if `android` is not on the PATH, ask the person to install it; measure performance on release builds, never through it |
 <!-- <opt:auth> -->
 | `restore-credentials`, `verified-email` | change sign-in or sign-up | flows live in `:feature:auth`, credentials in `:data:auth` |
 <!-- </opt:auth> -->
+<!-- <opt:media> -->
+| `camerax` | add capture inside the app (a viewfinder, `ImageCapture`, `VideoCapture`) | `:core:media` hands photos and video to the system camera (`TakePicture`, `CaptureVideo`) and needs no CameraX; add it only for in-app capture |
+<!-- </opt:media> -->
 
-Not vendored on purpose: `styles` (experimental; the design system stays on stable foundation APIs) and
-`android-cli` (install it yourself if you want it).
+Not vendored on purpose: `styles` (experimental; the design system stays on stable foundation APIs). Before a Play
+submission, add Google's `play-policy-insights` audit with `android skills` and run it.
 
 ## 9. Before you say it is done
 
 1. `./gradlew build` is green, or you have said exactly what fails and why.
 2. Every new screen has loading, empty, error and offline states, and works in dark theme.
-3. Every new string is in `strings.xml`; every new colour, size and duration is a token.
-4. New logic has a test beside the existing ones; no test was deleted or weakened.
-5. The diff contains only what the task needed, with comments that explain decisions, not the
+3. A change to Compose UI has been through the `jetpack-compose-performance` audit (§8), and its findings are
+   fixed.
+4. Every new string is in `strings.xml`; every new colour, size and duration is a token.
+5. New logic has a test beside the existing ones; no test was deleted or weakened.
+6. The diff contains only what the task needed, with comments that explain decisions, not the
    change.
 
 ## 10. Never

@@ -61,7 +61,7 @@ class TemplateCopyTest(unittest.TestCase):
 
     def test_it_ships_the_planned_set_and_nothing_else(self):
         self.assertEqual({skill.name for skill in TOOL.SKILLS}, skill_folders(self.root))
-        for excluded in ("styles", "android-cli", "camerax", "play-policy-insights"):
+        for excluded in ("styles", "play-policy-insights"):
             self.assertNotIn(excluded, skill_folders(self.root))
 
     def test_every_skill_has_its_skill_file_and_licence(self):
@@ -88,15 +88,38 @@ class TemplateCopyTest(unittest.TestCase):
         for name in skill_folders(self.root):
             self.assertIn(f"| `{name}` |", text)
 
-    def test_identity_skills_belong_to_auth(self):
-        owns = set(ANDROID.manifest.features["auth"].owns)
-        for skill in TOOL.SKILLS:
-            for directory in (SKILLS, POINTERS):
-                with self.subTest(skill=skill.name, directory=directory):
-                    self.assertEqual(skill.feature == "auth", f"{directory}/{skill.name}" in owns)
+    def test_every_feature_skill_is_owned_by_its_feature_and_no_other(self):
+        for key, feature in ANDROID.manifest.features.items():
+            owns = set(feature.owns)
+            for skill in TOOL.SKILLS:
+                for directory in (SKILLS, POINTERS):
+                    with self.subTest(feature=key, skill=skill.name, directory=directory):
+                        self.assertEqual(skill.feature == key, f"{directory}/{skill.name}" in owns)
+
+    def test_every_page_a_code_rule_cites_ships_with_every_project(self):
+        guard = self.root / "build-logic/convention/src/main/kotlin/com/base/app/buildlogic/guard"
+        cited = {page for path in guard.glob("*.kt") for page in re.findall(r'\breference = "([^"]+)"', path.read_text(encoding="utf-8"))}
+        self.assertTrue(cited)
+        always = {skill.name for skill in TOOL.SKILLS if skill.feature is None}
+        for page in cited:
+            with self.subTest(page=page):
+                self.assertIn(page.split("/")[0], always)
+                self.assertTrue((self.root / SKILLS / page).is_file())
 
     def test_the_vendored_tree_is_copied_verbatim(self):
         self.assertIn(".agents/skills/**", ANDROID.manifest.verbatim)
+
+
+class ToolTest(unittest.TestCase):
+
+    def test_a_checkout_with_converted_line_endings_is_named(self):
+        listing = "\n".join([
+            "i/lf    w/lf    attr/                 \tLICENSE.txt",
+            "i/lf    w/crlf  attr/                 \tsystem/edge-to-edge/SKILL.md",
+            "i/crlf  w/crlf  attr/                 \ttesting/testing-setup/data.bat",
+            "i/none  w/none  attr/                 \tprofilers/android-profiler/logo.png",
+        ])
+        self.assertEqual(["system/edge-to-edge/SKILL.md"], TOOL.converted_line_endings(listing))
 
 
 class RepositoryPointerTest(unittest.TestCase):
@@ -147,7 +170,7 @@ class GeneratedProjectTest(unittest.TestCase):
             }
             project = Path(cls.temp.name) / name
             pipeline.build(pipeline.read_spec(raw, ANDROID)[0].spec, ANDROID, project, zip_output=False, commit="test")
-            cls.projects[name] = (project, "auth" in features)
+            cls.projects[name] = (project, features)
 
     @classmethod
     def tearDownClass(cls):
@@ -159,11 +182,19 @@ class GeneratedProjectTest(unittest.TestCase):
                 self.assertEqual(skill_folders(project), agents_table(project))
                 self.assertEqual(skill_folders(project), {path.name for path in (project / POINTERS).iterdir()})
 
-    def test_identity_skills_come_only_with_sign_in(self):
-        for name, (project, auth) in self.projects.items():
-            with self.subTest(preset=name):
-                self.assertEqual(auth, "restore-credentials" in skill_folders(project))
-                self.assertEqual(auth, "verified-email" in skill_folders(project))
+    def test_a_skill_ships_always_or_exactly_with_its_feature(self):
+        for name, (project, features) in self.projects.items():
+            for skill in TOOL.SKILLS:
+                with self.subTest(preset=name, skill=skill.name):
+                    expected = skill.feature is None or skill.feature in features
+                    self.assertEqual(expected, skill.name in skill_folders(project))
+
+    def test_the_presets_bracket_each_feature_skill(self):
+        for skill in TOOL.SKILLS:
+            if skill.feature is not None:
+                with self.subTest(skill=skill.name):
+                    shipped = {skill.feature in features for _, features in self.projects.values()}
+                    self.assertEqual({True, False}, shipped)
 
     def test_the_copies_are_byte_identical_to_the_template(self):
         for name, (project, _) in self.projects.items():

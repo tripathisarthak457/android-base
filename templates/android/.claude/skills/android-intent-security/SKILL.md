@@ -6,7 +6,7 @@ description: Best practices for Android Intent security. Use this skill when aud
   Intent Redirection and unauthorized access.
 ---
 
-Google's `android-intent-security` skill is vendored at `.agents/skills/android-intent-security/` (Android skills v1.0.13, Apache-2.0).
+Google's `android-intent-security` skill is vendored at `.agents/skills/android-intent-security/` (Android skills v1.0.15, Apache-2.0).
 First read the `android-intent-security` row of the "Google's Android skills" table in `AGENTS.md`: it lists where this project
 differs, and `AGENTS.md` wins wherever the two disagree. Then read `.agents/skills/android-intent-security/SKILL.md` and resolve every
 relative path in it from that folder.

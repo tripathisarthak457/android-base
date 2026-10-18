@@ -1,7 +1,7 @@
 # Google's Android skills
 
-Google's official Android skills for AI agents, from https://github.com/android/skills at tag v1.0.13
-(commit 42dc2270e96032bd860bb94511e440aa00a43125), under the Apache License 2.0 in `LICENSE.txt`.
+Google's official Android skills for AI agents, from https://github.com/android/skills at tag v1.0.15
+(commit 5bda39f154fb859a08d45e2392f3568e049f83fb), under the Apache License 2.0 in `LICENSE.txt`.
 
 | Skill | Upstream folder | Shipped |
 |---|---|---|
@@ -15,8 +15,11 @@ Google's official Android skills for AI agents, from https://github.com/android/
 | `android-intent-security` | `security/android-intent-security` | always |
 | `android-permissions-security` | `security/android-permissions-security` | always |
 | `agp-9-upgrade` | `build-system/agp/agp-9-upgrade` | always |
+| `jetpack-compose-performance` | `jetpack-compose/jetpack-compose-performance` | always |
+| `android-cli` | `devtools/android-cli` | always |
 | `restore-credentials` | `identity/restore-credentials` | with the `auth` feature |
 | `verified-email` | `identity/verified-email` | with the `auth` feature |
+| `camerax` | `camera/camerax` | with the `media` feature |
 
 Each skill folder is an unmodified upstream copy. The only addition is `LICENSE.txt` beside each `SKILL.md`,
 which the skill's front matter points at. `MANIFEST.sha256` holds the SHA-256 of every file below the skill

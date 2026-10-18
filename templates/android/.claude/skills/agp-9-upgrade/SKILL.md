@@ -5,7 +5,7 @@ description: Upgrades, or migrates, an Android project to use Android Gradle Plu
   projects.
 ---
 
-Google's `agp-9-upgrade` skill is vendored at `.agents/skills/agp-9-upgrade/` (Android skills v1.0.13, Apache-2.0).
+Google's `agp-9-upgrade` skill is vendored at `.agents/skills/agp-9-upgrade/` (Android skills v1.0.15, Apache-2.0).
 First read the `agp-9-upgrade` row of the "Google's Android skills" table in `AGENTS.md`: it lists where this project
 differs, and `AGENTS.md` wins wherever the two disagree. Then read `.agents/skills/agp-9-upgrade/SKILL.md` and resolve every
 relative path in it from that folder.

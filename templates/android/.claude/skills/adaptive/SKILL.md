@@ -9,7 +9,7 @@ description: Instructions to make or update an app's UI so that it adapts to dif
   areas - nav rails and nav bars) using the Compose Grid and FlexBox APIs.
 ---
 
-Google's `adaptive` skill is vendored at `.agents/skills/adaptive/` (Android skills v1.0.13, Apache-2.0).
+Google's `adaptive` skill is vendored at `.agents/skills/adaptive/` (Android skills v1.0.15, Apache-2.0).
 First read the `adaptive` row of the "Google's Android skills" table in `AGENTS.md`: it lists where this project
 differs, and `AGENTS.md` wins wherever the two disagree. Then read `.agents/skills/adaptive/SKILL.md` and resolve every
 relative path in it from that folder.

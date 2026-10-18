@@ -7,7 +7,7 @@ description: Provides a complete workflow for implementing verified email retrie
   providers like Google.
 ---
 
-Google's `verified-email` skill is vendored at `.agents/skills/verified-email/` (Android skills v1.0.13, Apache-2.0).
+Google's `verified-email` skill is vendored at `.agents/skills/verified-email/` (Android skills v1.0.15, Apache-2.0).
 First read the `verified-email` row of the "Google's Android skills" table in `AGENTS.md`: it lists where this project
 differs, and `AGENTS.md` wins wherever the two disagree. Then read `.agents/skills/verified-email/SKILL.md` and resolve every
 relative path in it from that folder.

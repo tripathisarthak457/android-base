@@ -3,13 +3,15 @@
 Refreshes the Google Android skills the templates vendor, from a checkout of
 https://github.com/android/skills:
 
-    python3 tools/update_android_skills.py ~/src/android-skills --tag v1.0.14
+    python3 tools/update_android_skills.py ~/src/android-skills --tag v1.0.15
 
 Each skill folder is copied unmodified into `templates/<template>/.agents/skills/<name>/`, with
 upstream's LICENSE.txt beside its SKILL.md, because the skill's front matter points there and
 upstream keeps the file only at its root. README.md, MANIFEST.sha256 and the `.claude/skills/`
 pointers are rewritten, and so are this repository's own pointers into the Android copy. A
-template that does not exist yet is skipped.
+template that does not exist yet is skipped, and so is a feature's skill in a template without
+that feature. The copies are the checkout's working files, so a checkout whose git converted
+line endings on the way out (`core.autocrlf` on Windows) is refused.
 
 The generator never runs this: run it by hand, read the summary and the diff, and update the
 "Google's Android skills" table in each template's AGENTS.md when a skill is added or dropped.
@@ -46,9 +48,10 @@ class Skill:
     feature: str | None = None
 
 
-#: What the templates ship (STANDARDS-PLAN 4.1). `styles` is left out because it builds on an
-#: experimental API, `android-cli` because its install step pipes a downloaded script into a shell,
-#: and the rest because no template feature uses them.
+#: What the templates ship. `styles` is left out because it builds on an experimental API,
+#: `play-policy-insights` because it is an audit to install before a Play submission rather than a
+#: reference, and the rest because no template feature uses them (`glance-canonical-layouts` waits
+#: for a widget feature, `play-billing-library-version-upgrade` for a billing one).
 SKILLS = (
     Skill("navigation-3", "navigation/navigation-3"),
     Skill("navigation-event", "navigation/navigation-event"),
@@ -61,8 +64,11 @@ SKILLS = (
     Skill("android-permissions-security", "security/android-permissions-security"),
     # The skill itself says it does not apply to Kotlin Multiplatform projects.
     Skill("agp-9-upgrade", "build-system/agp/agp-9-upgrade", multiplatform=False),
+    Skill("jetpack-compose-performance", "jetpack-compose/jetpack-compose-performance"),
+    Skill("android-cli", "devtools/android-cli"),
     Skill("restore-credentials", "identity/restore-credentials", feature="auth"),
     Skill("verified-email", "identity/verified-email", feature="auth"),
+    Skill("camerax", "camera/camerax", feature="media"),
 )
 
 TEMPLATES = {"android": False, "multiplatform": True}
@@ -86,6 +92,13 @@ def main(argv: list[str] | None = None) -> int:
         missing = [skill.upstream for skill in SKILLS if not (checkout / skill.upstream / "SKILL.md").is_file()]
         if missing:
             raise SystemExit(f"{checkout} has no SKILL.md under: {', '.join(missing)}")
+        listing = git(checkout, "ls-files", "--eol", "--", "LICENSE.txt", *(skill.upstream for skill in SKILLS))
+        converted = converted_line_endings(listing)
+        if converted:
+            raise SystemExit(
+                f"{checkout} has {len(converted)} files whose line endings git converted on checkout "
+                f"({converted[0]} first); clone it again with -c core.autocrlf=false"
+            )
     except SystemExit as error:
         print(error, file=sys.stderr)
         return 1
@@ -95,7 +108,11 @@ def main(argv: list[str] | None = None) -> int:
         if not root.is_dir():
             print(f"templates/{template}: not present, skipped")
             continue
-        skills = [skill for skill in SKILLS if skill.multiplatform or not multiplatform]
+        skills = [
+            skill for skill in SKILLS
+            if (skill.multiplatform or not multiplatform)
+            and (skill.feature is None or (root / "features" / f"{skill.feature}.toml").is_file())
+        ]
         before = snapshot(root)
         vendor(checkout, root, skills, release)
         report(f"templates/{template}", before, snapshot(root))
@@ -106,20 +123,32 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-def read_release(checkout: Path, expected_tag: str | None) -> Release:
-    def git(*command: str) -> str:
-        result = subprocess.run(["git", "-C", str(checkout), *command], capture_output=True, text=True)
-        if result.returncode != 0:
-            raise SystemExit(f"{checkout} is not a git checkout of {UPSTREAM}: {result.stderr.strip()}")
-        return result.stdout.strip()
+def git(checkout: Path, *command: str) -> str:
+    result = subprocess.run(["git", "-C", str(checkout), *command], capture_output=True, text=True)
+    if result.returncode != 0:
+        raise SystemExit(f"{checkout} is not a git checkout of {UPSTREAM}: {result.stderr.strip()}")
+    return result.stdout.strip()
 
-    commit = git("rev-parse", "HEAD")
-    tag = git("tag", "--points-at", "HEAD").splitlines()
+
+def read_release(checkout: Path, expected_tag: str | None) -> Release:
+    commit = git(checkout, "rev-parse", "HEAD")
+    tag = git(checkout, "tag", "--points-at", "HEAD").splitlines()
     if expected_tag is not None and expected_tag not in tag:
         raise SystemExit(f"{checkout} is at {commit[:12]}, not at {expected_tag}")
     if not tag:
         raise SystemExit(f"{checkout} is at {commit[:12]}, which no release tag names; check out a tag")
     return Release(tag=expected_tag or sorted(tag)[-1], commit=commit)
+
+
+def converted_line_endings(eol_listing: str) -> list[str]:
+    """The paths `git ls-files --eol` shows stored with LF and checked out with CRLF."""
+    paths = []
+    for line in eol_listing.splitlines():
+        info, _, path = line.partition("\t")
+        index, working = info.split()[:2]
+        if index == "i/lf" and working == "w/crlf":
+            paths.append(path)
+    return paths
 
 
 def vendor(checkout: Path, root: Path, skills: list[Skill], release: Release) -> None:
