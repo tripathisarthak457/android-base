@@ -15,6 +15,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,7 +46,10 @@ class DevLaunchOptions @Inject constructor(
     override suspend fun beforeStart(intent: Intent) {
         val fakeSession = intent.isOn(FAKE_SESSION)
         if (fakeSession || intent.isOn(SKIP_ONBOARDING)) settings.setOnboardingCompleted(true)
-        if (fakeSession && tokens.accessToken() == null) tokens.save(SYNTHETIC_TOKEN, SYNTHETIC_TOKEN)
+        // Whether a session is stored, not what it holds: reading the token decrypts it through the
+        // Keystore, binder calls on the main thread before the first frame that every measured cold
+        // start would pay and no user's start does.
+        if (fakeSession && !tokens.isAuthenticated.first()) tokens.save(SYNTHETIC_TOKEN, SYNTHETIC_TOKEN)
         intent.getStringExtra(THEME)?.takeIf { it in THEMES }?.let { settings.setThemeMode(it) }
         screenResponse = intent.getStringExtra(SCREEN_RESPONSE)?.toFloatOrNull()?.takeIf { it > 0f }
         barMinimize = intent.getStringExtra(BAR_MINIMIZE)?.let { name -> BarMinimize.entries.firstOrNull { it.name == name } }
