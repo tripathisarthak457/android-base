@@ -158,8 +158,12 @@ class Device:
                 output = self.adb("exec-out", "uiautomator dump /dev/tty", check=False, timeout=30)
             except subprocess.TimeoutExpired:
                 # Ending the host's adb leaves the device's dump running, holding the one UiAutomation
-                # connection the next dump needs.
-                self.shell("pkill -f uiautomator", timeout=15)
+                # connection the next dump needs. A device too busy to answer that either gets the
+                # next attempt anyway.
+                try:
+                    self.shell("pkill -f uiautomator", timeout=15)
+                except subprocess.TimeoutExpired:
+                    pass
                 last = "no answer in 30 s"
                 time.sleep(1.0)
                 continue
