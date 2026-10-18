@@ -1,8 +1,9 @@
 package com.base.app.core.designsystem.foundation.scroll
 
+import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.VectorConverter
-import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.animateTo
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.OverscrollEffect
 import androidx.compose.foundation.OverscrollFactory
@@ -92,39 +93,71 @@ private class RubberBandOverscroll : OverscrollEffect {
         // node has no composition locals to read.
         val springs = placement.springs()
         val minimum = placement.minimumReleaseVelocity()
+        var fling = velocity
         if (pull != Offset.Zero) {
-            // Let go while pulled: what is showing springs back from where it is, moving as fast as
-            // the content was under the finger, which is the finger's speed through the band.
+            // Let go while pulled: what is showing moves on from where it is as fast as the content
+            // was under the finger, which is the finger's speed through the band.
+            val shown = offset
             val moving = Offset(
                 velocity.x * slope(pull.x, placement.size.width),
                 velocity.y * slope(pull.y, placement.size.height),
             )
-            val spec = if (moving.getDistance() < minimum) {
-                springs.overscrollRelease.forOffset()
-            } else {
-                springs.bounceBack.offsetSpec()
+            if (abs(moving.x) < minimum && abs(moving.y) < minimum) {
+                settle(from = shown, initialVelocity = moving, spec = springs.overscrollRelease.forOffset())
+                return
             }
-            settle(from = offset, velocity = moving, spec = spec)
-            return
+            val spec = springs.bounceBack.offsetSpec()
+            val outward = moving.x * shown.x + moving.y * shown.y >= 0f
+            if (outward) {
+                settle(from = shown, initialVelocity = moving, spec = spec)
+                return
+            }
+            // Thrown back towards the content: a spring started this fast swings the content past
+            // its place and back, against the throw. It stops at its place instead, and the speed
+            // it still has there carries the content on, as an iOS scroll view does.
+            val through = settle(from = shown, initialVelocity = moving, spec = spec, stopAtRest = true)
+            fling = Velocity(through.x.orNoneBelow(minimum), through.y.orNoneBelow(minimum))
+            if (fling == Velocity.Zero) return
         }
-        // performFling answers with the velocity the content and its parents used, so the rest is
-        // how fast the content was still moving when it met the end.
-        val left = velocity - performFling(velocity)
-        val carried = Offset(left.x.carriedPastEnd(minimum), left.y.carriedPastEnd(minimum))
+        // performFling answers with the velocity the content and its parents used. What is left is
+        // the speed the content met the end with, or, for a fling that stopped short of it, the
+        // decay's resting speed, which carries nothing.
+        val left = fling - performFling(fling)
+        val carried = Offset(left.x.orNoneBelow(minimum), left.y.orNoneBelow(minimum))
         if (carried != Offset.Zero) {
-            settle(from = released, velocity = carried, spec = springs.bounceBack.offsetSpec())
+            settle(from = released, initialVelocity = carried.capped(), spec = springs.bounceBack.offsetSpec())
         }
     }
 
-    private suspend fun settle(from: Offset, velocity: Offset, spec: SpringSpec<Offset>) {
+    /**
+     * Springs what is showing from [from] back to rest. With [stopAtRest] it stops on reaching rest
+     * rather than passing it, and answers with how fast it was still moving there; otherwise, or if
+     * a finger catches it first, it answers zero.
+     */
+    private suspend fun settle(
+        from: Offset,
+        initialVelocity: Offset,
+        spec: SpringSpec<Offset>,
+        stopAtRest: Boolean = false,
+    ): Offset {
         settling?.cancel()
         pull = Offset.Zero
         released = from
+        var through = Offset.Zero
         coroutineScope {
             settling = launch {
-                animate(Offset.VectorConverter, from, Offset.Zero, velocity, spec) { value, _ -> released = value }
+                AnimationState(Offset.VectorConverter, from, initialVelocity).animateTo(Offset.Zero, spec) {
+                    if (stopAtRest && value.x * from.x <= 0f && value.y * from.y <= 0f) {
+                        released = Offset.Zero
+                        through = velocity
+                        cancelAnimation()
+                    } else {
+                        released = value
+                    }
+                }
             }
         }
+        return through
     }
 
     /** A finger landing on content still springing back takes it from where it is. */
@@ -143,12 +176,15 @@ private class RubberBandOverscroll : OverscrollEffect {
 }
 
 /**
- * The speed a fling's leftover carries past the end, capped at [MaxEdgeVelocity]. Below [minimum] it
- * carries none: a fling that slows to rest by itself still reports its decay's resting speed, and a
- * band set moving by it would keep the container "in progress", so the next tap only stops it.
+ * This speed, or none below [minimum]: a fling that slows to rest by itself still reports its decay's
+ * resting speed, and a band or fling set moving by it would keep the container "in progress", so the
+ * next tap only stops it.
  */
-private fun Float.carriedPastEnd(minimum: Float): Float =
-    if (abs(this) < minimum) 0f else coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity)
+private fun Float.orNoneBelow(minimum: Float): Float = if (abs(this) < minimum) 0f else this
+
+/** A fling's leftover as it carries past the end, at most [MaxEdgeVelocity] on each axis. */
+private fun Offset.capped(): Offset =
+    Offset(x.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity), y.coerceIn(-MaxEdgeVelocity, MaxEdgeVelocity))
 
 /** The rubber band iOS uses: the further past the edge, the less the content follows. */
 private fun resist(distance: Float, dimension: Int): Float {
@@ -200,7 +236,12 @@ private class RubberBandNode(private val effect: RubberBandOverscroll) :
 private val Resistance = DesignTokens.Motion.rubberBand
 private val OffsetThreshold = Offset(0.5f, 0.5f)
 
-/** Below this a release is a let-go, not a throw: it decays back instead of carrying a speed in. */
+/**
+ * The slowest movement that counts as one, in each axis. A release slower than this is a let-go, not a
+ * throw: the band decays back instead of carrying a speed in. Slower than this, what is left of a fling
+ * at the end, or of a throw when the band comes back to rest, is the fling's resting speed or near
+ * enough, and moves nothing further.
+ */
 private val MinimumReleaseVelocity = 50.dp
 
 /**

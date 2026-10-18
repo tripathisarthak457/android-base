@@ -106,6 +106,49 @@ class AppCarouselTest {
         assertEquals("the card did not come to rest in its place", 0f, path.last(), 0.5f)
     }
 
+    /**
+     * The first card pulled away from the start and brought back without lifting the finger, slowly
+     * enough that letting go there is not a flick: it follows the finger out and back, and stays.
+     */
+    private fun pulledPastTheFirstCardAndBack(direction: LayoutDirection) {
+        show(direction, page = 0)
+        val start = -next
+        fun drag(towards: Float, distance: Float): Float {
+            rule.onNodeWithTag("carousel").performTouchInput {
+                repeat((distance / DragStepPx).toInt()) { moveBy(Offset(towards * DragStepPx, 0f)) }
+            }
+            rule.mainClock.advanceTimeByFrame()
+            return fromRest(0)
+        }
+        rule.onNodeWithTag("carousel").performTouchInput {
+            down(center)
+            moveBy(Offset(start * (viewConfiguration.touchSlop + 1f), 0f))
+        }
+        val stretched = drag(start, PullPx)
+        assertTrue("pulled away from the start, the first card did not follow: $stretched px", stretched > 1f)
+        val halfway = drag(-start, PullPx / 2)
+        assertTrue(
+            "taken halfway back, the first card went from $stretched to $halfway px instead of following the finger",
+            halfway < stretched && halfway >= -0.5f,
+        )
+        drag(-start, PullPx / 2)
+        rule.onNodeWithTag("carousel").performTouchInput { up() }
+        val path = List(SettleFrames) {
+            rule.mainClock.advanceTimeByFrame()
+            fromRest(0)
+        }
+        assertEquals("settled on card ${pager.settledPage}", 0, pager.settledPage)
+        assertEquals("the first card did not come to rest in its place", 0f, path.last(), 0.5f)
+    }
+
+    @Test
+    fun `pulled right past the first card and back, it follows the finger back`() =
+        pulledPastTheFirstCardAndBack(LayoutDirection.Ltr)
+
+    @Test
+    fun `right to left layout, pulled left past the first card and back, it follows the finger back`() =
+        pulledPastTheFirstCardAndBack(LayoutDirection.Rtl)
+
     @Test
     fun `swiped right to left, it moves to the next card`() =
         swipesOneCard(LayoutDirection.Ltr, from = 0, forward = true)
@@ -135,6 +178,13 @@ class AppCarouselTest {
 
         /** Pixels a second: a quick flick, well past the paging threshold. */
         const val Flick = 2_000f
+
+        /**
+         * A slow pull: one step an event, 250 px/s, under the pager's 400 dp/s flick so the release
+         * at the start is a let-go.
+         */
+        const val PullPx = 120f
+        const val DragStepPx = 4f
         const val SettleFrames = 90
     }
 }

@@ -73,6 +73,38 @@ class AppOverscrollTest {
     }
 
     @Test
+    fun `pulled past the top and back without letting go, the list follows the finger back`() {
+        val state = LazyListState()
+        list(state)
+        val pull = with(rule.density) { ListHeight.toPx() } / 2
+        rule.onNodeWithTag("list").performTouchInput {
+            down(center)
+            moveBy(Offset(0f, viewConfiguration.touchSlop + 1f))
+            moveBy(Offset(0f, pull - 1f))
+        }
+        rule.waitForIdle()
+        val stretched = rowTop(0)
+        rule.onNodeWithTag("list").performTouchInput { moveBy(Offset(0f, -pull / 2)) }
+        rule.waitForIdle()
+        val halfway = rowTop(0)
+        assertTrue(
+            "taken halfway back, the band went from $stretched to $halfway dp instead of easing back with the finger",
+            halfway < stretched && halfway >= 0f,
+        )
+        rule.onNodeWithTag("list").performTouchInput { moveBy(Offset(0f, -pull / 2 - IntoTheListPx)) }
+        rule.waitForIdle()
+        val rowPx = with(rule.density) { RowHeight.roundToPx() }
+        val scrolled = rule.runOnIdle { state.firstVisibleItemIndex * rowPx + state.firstVisibleItemScrollOffset }
+        assertEquals(
+            "past where the drag began, the list did not follow the finger",
+            IntoTheListPx,
+            scrolled.toFloat(),
+            2f,
+        )
+        rule.onNodeWithTag("list").performTouchInput { up() }
+    }
+
+    @Test
     fun `a fling into the end carries past it and springs back without a jump`() {
         val state = LazyListState(firstVisibleItemIndex = Rows - 12)
         list(state)
@@ -102,6 +134,9 @@ class AppOverscrollTest {
         val RowHeight = 56.dp
         const val Rows = 40
         const val Resistance = 0.55f
+
+        /** Pixels the finger goes on into the list once the band has eased. */
+        const val IntoTheListPx = 60f
 
         /** Pixels a second, a firm flick; the list is a few rows from its end. */
         const val HardFling = 6_000f
