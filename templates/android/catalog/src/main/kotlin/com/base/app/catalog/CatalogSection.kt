@@ -50,7 +50,7 @@ enum class CatalogSection(val title: String, val summary: String) {
     Sheets("Sheets", "Detents, the card stack, non-modal and side sheets, materials, action and choice sheets"),
     Feedback("Feedback", "States, banners, skeletons, spinners, progress, badges, avatars"),
     Loading("Loading screen", "Redacted rows under a large title: one sweep, and the swap to content"),
-    Motion("Animation", "Transitions, first appearance, list placement, emphasis, rubber band"),
+    Motion("Animation", "Transitions, first appearance, list placement, emphasis, deceleration, rubber band"),
     Adaptive("Adaptive", "Panes of any width, foldable postures, the hardware keyboard"),
     // <opt:pickers>
     Pickers("Pickers", "Calendar, wheels, time, compact date and time pills"),
