@@ -20,9 +20,9 @@ restore() {
 }
 trap restore EXIT
 shot() {
-  $A shell screencap -p /sdcard/od.png
-  $A pull /sdcard/od.png "$out/$1.png" > /dev/null
-  $A shell rm -f /sdcard/od.png
+  $A shell screencap -p /data/local/tmp/od.png
+  $A pull /data/local/tmp/od.png "$out/$1.png" > /dev/null
+  $A shell rm -f /data/local/tmp/od.png
 }
 $A shell setprop debug.hwui.overdraw show
 $A shell input keyevent KEYCODE_WAKEUP; sleep 0.5

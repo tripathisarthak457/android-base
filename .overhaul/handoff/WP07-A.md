@@ -5,8 +5,12 @@ Branch `wp/WP07`, worktree `$OV/wt/WP07` (`OV=D:/projects/tools/.overhaul`,
 
 ## Progress
 
-Updated 2026-10-18 (run 6); run 4 was the first on Windows. **Stopped waiting for WP04** (the shell port,
+Updated 2026-10-19 (run 7); run 4 was the first on Windows. **Stopped waiting for WP04** (the shell port,
 items 1–5 and 7 below) **and WP02-M2** (item 6). Next run: `git merge overhaul/multiplatform-v2`, then item 1.
+
+Run 7 (2026-10-19) only checked: merged tags are WIN, WP01, WP02-M1, WP09 and WP10 (no WP04, no WP02-M2);
+the integration branch is still at `5a16778b`, already contained in `wp/WP07` (`4ef0ba71`); the worktree
+is clean. Nothing was changed or built (the run 4 no-build decision stands until the port).
 
 Run 6 (2026-10-18): WIN had merged, WP04 still had not. Merged the integration branch into `wp/WP07`
 (`d27ad925`; one conflict, the import line of `genkit/tokens/__main__.py`: WIN's `write_text` import kept

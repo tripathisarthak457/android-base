@@ -57,9 +57,11 @@ most two cells. 34 navigation tests pass.
   - `KeptTabs.kt`: the hidden tab's lifecycle change moves to the frame after the switch.
   - Sample detail: the related rows wait for `LocalNavigationSettled`. They had composed 185 composables 220 ms into
     every push.
-- **Phone measurement finished on Oct 16 at 10:27** (`out/WP04-perf/logs/measure2.log`; raw runs in
-  `perf/WP04-perf/everything/`, traces in `everything-trace/`, `fixed-trace/`, `fixed-startup/`). The Opus agent
-  analyses it next. It compares three builds:
+- **Correction (Oct 19): the Oct 16 phone measurement did not finish.** `out/WP04-perf/logs/measure2.log` shows the
+  HEAD build ran two of its three runs, then `perf.sh` exited 2 when uiautomator could not dump the screen; fixed and
+  floor were never measured. Every build was rebuilt from its commit and measured on Windows on Oct 18
+  (`handoff/WP04-perf.md` §0 and §3: the fixed build's first frame is within 1–3 ms of the floor's, which misses the
+  deadline on 7 of 7 switches). The plan it was part of compares three builds:
   - **HEAD** (before the fixes);
   - **fixed**;
   - **floor**: the fixed build with every screen's content removed. This shows the irreducible cost of a switch: one

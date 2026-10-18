@@ -1,0 +1,18 @@
+== 2026-10-19 02:05:28 phase 17e
+noclip installed
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 25.5 MB/s (217821 bytes in 0.008s)
+D:/projects/tools/.overhaul/out/WP04-perf/ffdrag.sh: 1 file pushed, 0 skipped. 0.8 MB/s (819 bytes in 0.001s)
+/data/local/tmp/ffsteps.txt: 1 file pulled, 0 skipped. 0.1 MB/s (648 bytes in 0.007s)
+/data/local/tmp/ff1.png: 1 file pulled, 0 skipped. 6.2 MB/s (221070 bytes in 0.034s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 15.2 MB/s (230593 bytes in 0.014s)
+-rw-r--r-- 1 crazyhusir 197609 12367717 Oct 19 02:06 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling4-noclip/trace.perfetto-trace
+FIRSTFLING DONE
+dl installed
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 5.8 MB/s (217624 bytes in 0.036s)
+D:/projects/tools/.overhaul/out/WP04-perf/ffdrag.sh: 1 file pushed, 0 skipped. 0.6 MB/s (819 bytes in 0.001s)
+/data/local/tmp/ffsteps.txt: 1 file pulled, 0 skipped. 0.3 MB/s (648 bytes in 0.002s)
+/data/local/tmp/ff1.png: 1 file pulled, 0 skipped. 11.5 MB/s (220770 bytes in 0.018s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 12.0 MB/s (234126 bytes in 0.019s)
+-rw-r--r-- 1 crazyhusir 197609 12281220 Oct 19 02:07 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling4-dl/trace.perfetto-trace
+FIRSTFLING DONE
+== 2026-10-19 02:07:27 PHASE17E DONE

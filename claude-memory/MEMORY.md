@@ -7,3 +7,4 @@
 - [Usage caps](usage-reserve-10-percent.md) — 90% of the 5-hour window 09:00-21:00 IST, up to 99% overnight; auto-resume after resets
 - [Rust Nuvio rewrite plan](rust-nuvio-rewrite-plan.md) — Phase-0 done 2026-10-18, ON HOLD until the user says start; plan in ~/.claude/plans/rust-nuvio-phase0/
 - [Workflow model routing](workflow-model-routing.md) — Sonnet readers, Opus super-mod/advisors/dev; reader agents must not write files
+- [Working rules: Opus and Sonnet](working-rules-opus-sonnet.md) — Opus for code and decisions; Sonnet only for supervised mechanical work (device runs, lookups); decision log

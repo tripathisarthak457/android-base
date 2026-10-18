@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BaseApp</string>
+    <!-- <opt:ui> -->
+    <string name="screen_title">Screens</string>
+    <!-- </opt:ui> -->
+    <!-- <opt-else:ui> -->
+    <!--~ <string name="screen_title">None</string> -->
+    <!-- </opt-else:ui> -->
+    <!-- <opt:net> --><string name="endpoint">https://baseapp.example.com</string>
+</resources>

@@ -1,0 +1,1 @@
+select (select min(ts)/1e9 from slice) s0, (select max(ts)/1e9 from slice) s1, (select count(*) from actual_frame_timeline_slice) ftl, (select count(*) from slice where name like 'DrawFrames%') rt, (select group_concat(distinct name) from process where name like '%wp04%') procs;

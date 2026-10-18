@@ -1,0 +1,26 @@
+== 2026-10-19 01:36:22 phase 17a
+noclip installed
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 5.4 MB/s (217404 bytes in 0.039s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 18.4 MB/s (220280 bytes in 0.011s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 10.6 MB/s (229291 bytes in 0.021s)
+-rw-r--r-- 1 crazyhusir 197609 7800086 Oct 19 01:37 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling2-noclip-1/trace.perfetto-trace
+FIRSTFLING DONE
+dl installed
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 7.7 MB/s (216793 bytes in 0.027s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 3.1 MB/s (219938 bytes in 0.068s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 1.5 MB/s (233623 bytes in 0.149s)
+-rw-r--r-- 1 crazyhusir 197609 2683794 Oct 19 01:38 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling2-dl-1/trace.perfetto-trace
+FIRSTFLING DONE
+noclip installed
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 5.9 MB/s (217573 bytes in 0.035s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 9.6 MB/s (220804 bytes in 0.022s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 3.8 MB/s (227134 bytes in 0.058s)
+-rw-r--r-- 1 crazyhusir 197609 2035040 Oct 19 01:39 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling2-noclip-2/trace.perfetto-trace
+FIRSTFLING DONE
+dl installed
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 8.9 MB/s (217082 bytes in 0.023s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 4.3 MB/s (220069 bytes in 0.048s)
+/data/local/tmp/ff.png: 1 file pulled, 0 skipped. 11.8 MB/s (231162 bytes in 0.019s)
+-rw-r--r-- 1 crazyhusir 197609 2011711 Oct 19 01:40 D:/projects/tools/.overhaul/perf/WP04-perf/firstfling2-dl-2/trace.perfetto-trace
+FIRSTFLING DONE
+== 2026-10-19 01:40:08 PHASE17A DONE

@@ -27,14 +27,14 @@ y=$((h / 2)); far=$((w * 45 / 100)); drift=120
 moves="input motionevent DOWN 2 $y"
 for i in $(seq 1 24); do moves="$moves; input motionevent MOVE $((2 + far * i / 24)) $((y + drift * i / 24))"; done
 moves="$moves; sleep 1; input motionevent UP $((2 + far)) $((y + drift))"
-$A shell rm -f /sdcard/gesture.mp4
-$A shell screenrecord --size 720x1600 --time-limit 10 /sdcard/gesture.mp4 &
+$A shell rm -f /data/local/tmp/gesture.mp4
+$A shell screenrecord --size 720x1600 --time-limit 10 /data/local/tmp/gesture.mp4 &
 rec=$!
 sleep 1
 $A shell "$moves"
 wait $rec
-$A pull /sdcard/gesture.mp4 "$out/gesture.mp4" >/dev/null 2>&1
-$A shell rm -f /sdcard/gesture.mp4
+$A pull /data/local/tmp/gesture.mp4 "$out/gesture.mp4" >/dev/null 2>&1
+$A shell rm -f /data/local/tmp/gesture.mp4
 ffmpeg -v error -y -i "$out/gesture.mp4" -vf fps=30 "$out/frames/f%03d.png"
 ls "$out/frames" | wc -l
 echo REC-GESTURE DONE

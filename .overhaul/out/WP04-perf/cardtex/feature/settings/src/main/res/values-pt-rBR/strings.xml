@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_haptics_explanation">Uma vibração leve quando um controle responde.</string>
+    <string name="settings_about">Sobre</string>
+    <string name="settings_account">Conta</string>
+    <string name="settings_appearance">Aparência</string>
+    <string name="settings_app_lock_explanation">Pedir sua digital, seu rosto ou o bloqueio de tela quando o app ficar em segundo plano.</string>
+    <string name="settings_haptic_feedback">Resposta tátil</string>
+    <string name="settings_analytics_explanation">Ajuda a encontrar falhas e telas lentas. Nunca inclui o seu conteúdo.</string>
+    <string name="settings_no_licences_recorded">Nenhuma licença registrada</string>
+    <string name="settings_open_source_licences">Licenças de código aberto</string>
+    <string name="settings_licence_not_stated">Licença não informada</string>
+    <string name="settings_privacy">Privacidade</string>
+    <string name="settings_require_unlock">Exigir desbloqueio</string>
+    <string name="settings_title">Configurações</string>
+    <string name="settings_share_usage_data">Compartilhar dados de uso</string>
+    <string name="settings_sign_out">Sair</string>
+    <string name="settings_sign_out_confirm">Sair da conta?</string>
+    <string name="settings_stay">Ficar</string>
+    <string name="settings_theme_explanation">“Sistema” acompanha a configuração do aparelho.</string>
+    <string name="settings_licences_explanation">As bibliotecas usadas neste app e seus termos.</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Escuro</string>
+    <string name="settings_no_licences_explanation">Esta versão não gerou uma lista de licenças.</string>
+    <string name="settings_sign_out_explanation">Você vai precisar entrar de novo para usar o app.</string>
+    <string name="settings_version">Versão %1$s</string>
+    <string name="settings_cancel">Cancelar</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_system">Igual ao do celular</string>
+    <string name="settings_legal">Informações legais</string>
+    <string name="settings_privacy_policy">Política de privacidade</string>
+    <string name="settings_terms">Termos de uso</string>
+</resources>

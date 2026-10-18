@@ -1,0 +1,13 @@
+key = "coil"
+title = "Image loading (Coil)"
+headline = "Load images from URLs"
+description = """
+Remote images with a skeleton placeholder and a failure glyph."""
+group = "Networking and data"
+default = true
+requires = []
+implied_only = false
+owns = [
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/AppNetworkImage.kt",
+]
+legacy = []

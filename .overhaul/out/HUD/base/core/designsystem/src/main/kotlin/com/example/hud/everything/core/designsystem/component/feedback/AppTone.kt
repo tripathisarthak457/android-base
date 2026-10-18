@@ -1,0 +1,38 @@
+package com.example.hud.everything.core.designsystem.component.feedback
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.hud.everything.core.designsystem.icon.AppIcons
+import com.example.hud.everything.core.designsystem.theme.AppTheme
+import com.example.hud.everything.core.designsystem.theme.StatusColors
+
+/** The visual severity of a message, banner or pill. */
+enum class AppTone {
+    Success,
+    Error,
+    Warning,
+    Info,
+    Neutral,
+    ;
+
+    val colors: StatusColors
+        @Composable
+        @ReadOnlyComposable
+        get() = when (this) {
+            Success -> AppTheme.colors.success
+            Error -> AppTheme.colors.danger
+            Warning -> AppTheme.colors.warning
+            Info -> AppTheme.colors.info
+            Neutral -> AppTheme.colors.neutral
+        }
+
+    val icon: ImageVector
+        get() = when (this) {
+            Success -> AppIcons.CheckCircle
+            Error -> AppIcons.XCircle
+            Warning -> AppIcons.AlertTriangle
+            Info -> AppIcons.Info
+            Neutral -> AppIcons.Info
+        }
+}

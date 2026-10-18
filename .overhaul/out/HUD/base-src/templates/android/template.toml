@@ -1,0 +1,35 @@
+[target]
+key = "android"
+title = "Android Native"
+status = "available"                        # available | beta | coming_soon | hidden; `beta` carries `status_note`
+summary = "Jetpack Compose, Navigation 3, Hilt, Ktor. Compact or modular."
+
+[identity]                                  # any order: the renamer tries longer tokens first and enforces boundaries
+tokens = [
+  { from = "com.base.app", to = "{package}",      boundary = "dotted" },
+  { from = "com/base/app", to = "{package_path}", boundary = "path" },
+  { from = "BaseApp",      to = "{pascal}",       boundary = "prefix" },   # BaseAppApplication → TrailNotesApplication
+  { from = "base_app",     to = "{snake}",        boundary = "snake" },    # base_app_default → trail_notes_default
+  { from = "baseapp",      to = "{lower}",        boundary = "snake" },
+]
+
+[regions]                                   # every point and region the target fills
+required = [
+  "app-config", "app-version",                                                   # AppConfig.kt
+  "api-url-dev", "api-url-staging", "api-url-prod", "api-url-playstore",
+  "socket-url-dev", "socket-url-staging", "socket-url-prod", "socket-url-playstore",
+  "app-name", "deeplink-strings", "launcher-background", "supported-locales",
+  "data-modules", "feature-modules", "app-feature-dependencies",
+  "database-imports", "database-entities", "database-daos",                       # AppDatabase.kt
+  "shell-tabs", "start-destination", "start-destination-import",
+  "readme-title", "readme-styles", "readme-theme-call", "readme-version", "readme-modules",
+  "readme-signing-generated", "readme-signing-manual", "readme-features",
+]
+
+[files]
+template_only = ["catalog/src/test/screenshots", "template.toml", "presets.toml", "removed.toml", "features"]
+binary_suffixes = [".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".jks", ".keystore", ".ico"]
+executable = ["gradlew", "tools/perf/*.sh"]
+
+[groups]                                    # display order of catalogue groups
+order = ["Networking and data", "Sign-in and account", "Screens", "Platform", "Observability", "Design", "Build and quality"]

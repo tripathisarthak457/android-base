@@ -1,0 +1,8 @@
+[locked:memwait] 1183 MB available, 2311 MB commit left; waiting for 3500 MB
+[locked:memwait] 513 MB available, 1903 MB commit left; waiting for 3500 MB
+[locked:memwait] 1467 MB available, 4662 MB commit left; waiting for 3500 MB
+[locked:memwait] 2332 MB available, 4620 MB commit left; waiting for 3500 MB
+[locked:memwait] 3162 MB available, 4404 MB commit left; waiting for 3500 MB
+
+58 projects in 201 s: 0 new issues, 575 known (12 of 12 known-issue lines seen).
+CONSISTENCY OK

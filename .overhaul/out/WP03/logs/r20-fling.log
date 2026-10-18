@@ -1,0 +1,24 @@
+[locked:adb] waiting for the lock (pid 11372 since 2026-10-19 02:07:28: bash out/HUD/overhead.win.sh D:/projects/tools/.overhaul/out/HUD/everything/app/build/outputs/apk/dev/release/app-dev-ar)
+[locked:adb] waiting for the lock (pid 20648 since 2026-10-19 02:15:39: bash -c 
+NOTRACE=1 TAG=-head SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture back_during_push rapid_back scroll_ro)
+[locked:adb] waiting for the lock (pid 20648 since 2026-10-19 02:15:39: bash -c 
+NOTRACE=1 TAG=-head SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture back_during_push rapid_back scroll_ro)
+[locked:adb] waiting for the lock (pid 20648 since 2026-10-19 02:15:39: bash -c 
+NOTRACE=1 TAG=-head SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture back_during_push rapid_back scroll_ro)
+[locked:adb] waiting for the lock (pid 20648 since 2026-10-19 02:15:39: bash -c 
+NOTRACE=1 TAG=-head SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture back_during_push rapid_back scroll_ro)
+[locked:adb] waiting for the lock (pid 20648 since 2026-10-19 02:15:39: bash -c 
+NOTRACE=1 TAG=-head SCENARIOS='tabs tabs_tap tab1 pushpop pushpop_gesture back_during_push rapid_back scroll_ro)
+Success
+Success
+swipe 700 ms: Released at 395 dp/s: 192 dp in 1.81 s. iOS: 197 dp in 1.79 s. (-2.5% distance, +1.1% duration)
+swipe 400 ms: Released at 695 dp/s: 342 dp in 2.08 s. iOS: 347 dp in 2.07 s. (-1.4% distance, +0.5% duration)
+swipe 250 ms: Released at 1099 dp/s: 543 dp in 2.32 s. iOS: 549 dp in 2.30 s. (-1.1% distance, +0.9% duration)
+swipe 160 ms: Released at 1713 dp/s: 850 dp in 2.54 s. iOS: 855 dp in 2.53 s. (-0.6% distance, +0.4% duration)
+swipe 110 ms: Released at 2511 dp/s: 1249 dp in 2.72 s. iOS: 1254 dp in 2.72 s. (-0.4% distance, +0.0% duration)
+swipe 80 ms: Released at 3401 dp/s: 1693 dp in 2.88 s. iOS: 1699 dp in 2.87 s. (-0.4% distance, +0.3% duration)
+edge: D:/projects/tools/.overhaul/perf/WP03/fling-91cb638\edge\edge.mp4 (505 moving frames)
+FLING CURVE OK
+R20 FLING EXIT 0
+restored: night yes, auto-rotate 0, rotation 0, stay-on 7, font scale 1.0
+EXIT 0

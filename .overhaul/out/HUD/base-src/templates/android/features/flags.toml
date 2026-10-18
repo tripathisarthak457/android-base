@@ -1,0 +1,15 @@
+key = "flags"
+title = "Feature flag seam"
+headline = "Turn a feature on without shipping"
+description = """
+Typed flags declared in one file with their defaults beside them, read or observed through an
+interface that resolves locally until a vendor is bound, and overridable by hand in the inspector."""
+group = "Observability"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "core/flags",
+  "core/devtools/src/main/kotlin/{pkg_path}/core/devtools/panel/FlagsTab.kt",
+]
+legacy = []

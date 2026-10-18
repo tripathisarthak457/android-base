@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+import com.example.hud.standard.core.common.environment.AppEnvironment
 import com.example.hud.standard.core.designsystem.component.button.AppButton
 import com.example.hud.standard.core.designsystem.component.button.ButtonSize
 import com.example.hud.standard.core.designsystem.component.button.ButtonVariant
@@ -49,11 +50,9 @@ import com.example.hud.standard.core.designsystem.component.text.AppMonoText
 import com.example.hud.standard.core.designsystem.component.text.AppText
 import com.example.hud.standard.core.designsystem.theme.AppTheme
 import com.example.hud.standard.core.designsystem.theme.WindowWidth
-import com.example.hud.standard.core.devtools.DevEnvironment
 import com.example.hud.standard.core.devtools.DevTools
 import com.example.hud.standard.core.devtools.log.NetworkExchange
 import com.example.hud.standard.core.devtools.log.NetworkStats
-import com.example.hud.standard.core.devtools.page.DevToolsPage
 import com.example.hud.standard.core.devtools.screen.CurrentScreen
 import java.time.Instant
 import java.time.ZoneId
@@ -66,7 +65,7 @@ import java.util.Locale
  * from an Expanded width, with the app still visible beside it. Back inside a request returns to
  * the list.
  *
- * @param initialTab the key of the tab to open on: a [DevToolsPage.key] or a built-in tab's name.
+ * @param initialTab the key of the tab to open on: a contributed page's key or a built-in tab's name.
  */
 @Composable
 internal fun DevToolsPanel(devTools: DevTools, initialTab: String?, onClose: () -> Unit) {
@@ -258,7 +257,7 @@ private fun StatsTab(exchanges: List<NetworkExchange>) {
 }
 
 @Composable
-private fun BuildTab(environment: DevEnvironment, currentScreen: CurrentScreen) {
+private fun BuildTab(environment: AppEnvironment, currentScreen: CurrentScreen) {
     val screen by currentScreen.name.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier

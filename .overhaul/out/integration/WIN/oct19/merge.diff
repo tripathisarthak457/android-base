@@ -1,0 +1,293 @@
+diff --git a/generator/tests/consistency/__main__.py b/generator/tests/consistency/__main__.py
+index a4a26102..6c9e34c7 100644
+--- a/generator/tests/consistency/__main__.py
++++ b/generator/tests/consistency/__main__.py
+@@ -21,19 +21,15 @@ import sys
+ import tempfile
+ import time
+ import tomllib
+-from functools import cache
+ from pathlib import Path
+ 
+-from genkit.core import pipeline, translations
++from genkit.core import translations
+ from genkit.targets import get
+ from genkit.targets.android import modes
+ 
+-from .checks import check
+-from .hilt import missing_bindings
+-from .project import Project
++from .worker import PACKAGE, reference, run_one
+ 
+ ROOT = Path(__file__).resolve().parents[3]
+-PACKAGE = "com.example.consistency"
+ KNOWN_ISSUES = Path(__file__).resolve().parent / "known_issues.toml"
+ SEED = 20261009
+ 
+@@ -94,36 +90,6 @@ def combinations(quick: bool) -> dict[str, dict]:
+     return runs
+ 
+ 
+-@cache
+-def reference(directory: str) -> Project:
+-    """Every feature on: what a stripped symbol is checked against."""
+-    project = Path(directory) / "reference"
+-    if not project.exists():
+-        target = get("android")
+-        keys = [feature.key for feature in target.manifest.selectable]
+-        raw = {"app_name": "Consistency", "package_name": PACKAGE, "features": keys, "feature_modules": ["orders"]}
+-        parsed, _ = pipeline.read_spec(raw, target)
+-        pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
+-    return Project(project)
+-
+-
+-def run_one(name: str, raw: dict, directory: str, keep: bool) -> tuple[str, list[str]]:
+-    target = get("android")
+-    project = Path(directory) / name
+-    try:
+-        parsed, _ = pipeline.read_spec(raw, target)
+-        pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
+-    except Exception as error:  # noqa: BLE001 - a crash is itself the finding
+-        return name, [f"GENERATION {type(error).__name__}: {error}"]
+-    hostile = name.startswith("hostile-")
+-    issues = check(project, raw["package_name"], None if hostile else reference(directory), identity=not hostile)
+-    issues += missing_bindings(project)
+-    if not keep:
+-        shutil.rmtree(project)
+-    package = raw["package_name"]
+-    return name, [issue.replace(package.replace(".", "/"), "{pkg}").replace(package, "{package}") for issue in issues]
+-
+-
+ def load_known() -> list[dict]:
+     entries = tomllib.loads(KNOWN_ISSUES.read_text(encoding="utf-8")).get("issue", [])
+     for entry in entries:
+@@ -142,16 +108,19 @@ def main(argv: list[str] | None = None) -> int:
+     started = time.perf_counter()
+     directory = args.keep or Path(tempfile.mkdtemp(prefix="consistency-"))
+     directory.mkdir(parents=True, exist_ok=True)
+-    reference(str(directory))
+-
+     results: dict[str, list[str]] = {}
+-    with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as pool:
+-        futures = [pool.submit(run_one, name, raw, str(directory), args.keep is not None) for name, raw in runs.items()]
+-        for future in concurrent.futures.as_completed(futures):
+-            name, issues = future.result()
+-            results[name] = issues
+-    if args.keep is None:
+-        shutil.rmtree(directory)
++    try:
++        reference(str(directory))
++        with concurrent.futures.ProcessPoolExecutor(max_workers=args.jobs) as pool:
++            futures = [
++                pool.submit(run_one, name, raw, str(directory), args.keep is not None) for name, raw in runs.items()
++            ]
++            for future in concurrent.futures.as_completed(futures):
++                name, issues = future.result()
++                results[name] = issues
++    finally:
++        if args.keep is None:
++            shutil.rmtree(directory)
+ 
+     known = load_known()
+     seen_known: set[int] = set()
+diff --git a/generator/tests/consistency/checks.py b/generator/tests/consistency/checks.py
+index 0b11627e..09165bd4 100644
+--- a/generator/tests/consistency/checks.py
++++ b/generator/tests/consistency/checks.py
+@@ -243,7 +243,7 @@ def _manifests(root: Path, project: Project, package: str) -> list[str]:
+                 continue
+             owner, _, simple = name.rpartition(".")
+             if simple not in project.declared.get(owner, ()):
+-                issues.append(f"MANIFEST {manifest.relative_to(root)}: {match.group(1)} {name} is not declared")
++                issues.append(f"MANIFEST {project.relative(manifest)}: {match.group(1)} {name} is not declared")
+     return issues
+ 
+ 
+@@ -260,7 +260,7 @@ def _resources(root: Path, project: Project) -> list[str]:
+                     try:
+                         elements = ET.parse(path).getroot()
+                     except ET.ParseError as error:
+-                        issues.append(f"XML {path.relative_to(root)}: {error}")
++                        issues.append(f"XML {project.relative(path)}: {error}")
+                         continue
+                     for element in elements:
+                         name = element.get("name")
+@@ -278,7 +278,7 @@ def _resources(root: Path, project: Project) -> list[str]:
+                         try:
+                             ET.parse(path)
+                         except ET.ParseError as error:
+-                            issues.append(f"XML {path.relative_to(root)}: {error}")
++                            issues.append(f"XML {project.relative(path)}: {error}")
+     kinds = "string|plurals|drawable|mipmap|raw|color|dimen|font|xml|array|bool|integer|style|layout|anim"
+     for path in project.kotlin:
+         for match in re.finditer(rf"(?<![\w.])(?:\w+R|R)\.({kinds}|id)\.(\w+)", project.code[path]):
+@@ -290,7 +290,7 @@ def _resources(root: Path, project: Project) -> list[str]:
+             name = match.group(2).replace(".", "_")
+             # Glance's default layouts come from the library, not from any module here.
+             if name not in names.get(match.group(1), set()) and not name.startswith("glance_"):
+-                issues.append(f"RES {path.relative_to(root)}: @{match.group(1)}/{match.group(2)}")
++                issues.append(f"RES {project.relative(path)}: @{match.group(1)}/{match.group(2)}")
+     return issues
+ 
+ 
+@@ -381,14 +381,15 @@ def _translations(root: Path) -> list[str]:
+             got = sorted(e.get("name") for e in ET.parse(translated).getroot())
+             if got != wanted:
+                 issues.append(
+-                    f"TRANSLATION {translated.relative_to(root)}: missing {sorted(set(wanted) - set(got))}, "
++                    f"TRANSLATION {translated.relative_to(root).as_posix()}: missing {sorted(set(wanted) - set(got))}, "
+                     f"extra {sorted(set(got) - set(wanted))}"
+                 )
+     return issues
+ 
+ 
+ def _hollow(root: Path, project: Project) -> list[str]:
+-    issues = [f"EMPTY-FILE {path.relative_to(root)}" for path in root.rglob("*") if path.is_file() and path.stat().st_size == 0]
++    empty = (path for path in root.rglob("*") if path.is_file() and path.stat().st_size == 0)
++    issues = [f"EMPTY-FILE {project.relative(path)}" for path in empty]
+     for path in project.gradle:
+         for match in re.finditer(r"\b(dependencies|plugins|android)\s*\{\s*\}", project.code[path]):
+             issues.append(f"EMPTY-BLOCK {project.relative(path)}: {match.group(1)} {{}}")
+diff --git a/generator/tests/consistency/worker.py b/generator/tests/consistency/worker.py
+new file mode 100644
+index 00000000..392cbe17
+--- /dev/null
++++ b/generator/tests/consistency/worker.py
+@@ -0,0 +1,52 @@
++"""
++One run of the matrix: a project generated and checked, in a worker process.
++
++The pool pickles `run_one` by module name. On a host that starts workers with spawn (Windows, macOS)
++or forkserver (Linux from Python 3.14), a worker imports that module afresh, and `multiprocessing`
++never imports a package's `__main__` there, so the function cannot live in `__main__.py`.
++"""
++
++from __future__ import annotations
++
++import shutil
++from functools import cache
++from pathlib import Path
++
++from genkit.core import pipeline
++from genkit.targets import get
++
++from .checks import check
++from .hilt import missing_bindings
++from .project import Project
++
++PACKAGE = "com.example.consistency"
++
++
++@cache
++def reference(directory: str) -> Project:
++    """Every feature on: what a stripped symbol is checked against."""
++    project = Path(directory) / "reference"
++    if not project.exists():
++        target = get("android")
++        keys = [feature.key for feature in target.manifest.selectable]
++        raw = {"app_name": "Consistency", "package_name": PACKAGE, "features": keys, "feature_modules": ["orders"]}
++        parsed, _ = pipeline.read_spec(raw, target)
++        pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
++    return Project(project)
++
++
++def run_one(name: str, raw: dict, directory: str, keep: bool) -> tuple[str, list[str]]:
++    target = get("android")
++    project = Path(directory) / name
++    try:
++        parsed, _ = pipeline.read_spec(raw, target)
++        pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
++    except Exception as error:  # noqa: BLE001 - a crash is itself the finding
++        return name, [f"GENERATION {type(error).__name__}: {error}"]
++    hostile = name.startswith("hostile-")
++    issues = check(project, raw["package_name"], None if hostile else reference(directory), identity=not hostile)
++    issues += missing_bindings(project)
++    if not keep:
++        shutil.rmtree(project)
++    package = raw["package_name"]
++    return name, [issue.replace(package.replace(".", "/"), "{pkg}").replace(package, "{package}") for issue in issues]
+diff --git a/generator/tests/test_consistency.py b/generator/tests/test_consistency.py
+index ca1e4a19..08a47515 100644
+--- a/generator/tests/test_consistency.py
++++ b/generator/tests/test_consistency.py
+@@ -1,12 +1,17 @@
+-"""The consistency matrix's unused-resource check on a hand-made module, where every answer is known."""
++"""
++The consistency matrix's checks on hand-made modules, where every answer is known, and its runner's
++hand-off to worker processes and clean-up.
++"""
+ 
+ from __future__ import annotations
+ 
+ import tempfile
+ import unittest
+ from pathlib import Path
++from unittest import mock
+ 
+-from tests.consistency.checks import _unused_resources
++from tests.consistency import __main__ as runner
++from tests.consistency.checks import _hollow, _manifests, _resources, _translations, _unused_resources
+ from tests.consistency.project import Project
+ 
+ FILES = {
+@@ -79,5 +84,60 @@ class UnusedResourcesTest(unittest.TestCase):
+         ], issues)
+ 
+ 
++class IssuePathTest(unittest.TestCase):
++
++    def test_issue_lines_name_files_with_forward_slashes_on_every_host(self):
++        # known_issues.toml is matched against these lines, and the runner swaps the package's path
++        # in them for {pkg}: both are written with "/".
++        files = {
++            "app/src/main/AndroidManifest.xml": """<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++    <application><activity android:name="x.Missing" /></application>
++</manifest>
++""",
++            "app/src/main/res/values/broken.xml": "<resources>\n",
++            "app/src/main/res/values/strings.xml": '<resources><string name="a">A</string></resources>\n',
++            "app/src/main/res/values-fr/strings.xml": "<resources />\n",
++            "app/src/main/res/xml/backup.xml": '<full-backup-content label="@string/missing" />\n',
++            "app/src/main/res/raw/empty.txt": "",
++        }
++        with tempfile.TemporaryDirectory() as temp:
++            root = Path(temp)
++            for relative, text in files.items():
++                path = root / relative
++                path.parent.mkdir(parents=True, exist_ok=True)
++                path.write_text(text, encoding="utf-8")
++            project = Project(root)
++            issues = _manifests(root, project, "x") + _resources(root, project) + _translations(root)
++            issues += _hollow(root, project)
++        self.assertEqual([
++            "MANIFEST app/src/main/AndroidManifest.xml",
++            "XML app/src/main/res/values/broken.xml",
++            "RES app/src/main/res/xml/backup.xml",
++            "TRANSLATION app/src/main/res/values-fr/strings.xml",
++            "EMPTY-FILE app/src/main/res/raw/empty.txt",
++        ], [issue.split(":", 1)[0] for issue in issues])
++
++
++class RunnerTest(unittest.TestCase):
++
++    def test_the_pool_is_handed_a_function_its_workers_can_import(self):
++        # `python -m tests.consistency` runs __main__.py as "__main__", a module that workers started
++        # with spawn or forkserver never import, so a function defined there cannot be unpickled in one.
++        self.assertNotEqual(runner.__name__, runner.run_one.__module__)
++
++    def test_a_failed_run_leaves_nothing_in_the_temporary_folder(self):
++        with tempfile.TemporaryDirectory() as temp:
++            directory = Path(temp, "consistency-run")
++            directory.mkdir()
++            with (
++                mock.patch.object(runner, "combinations", return_value={}),
++                mock.patch.object(runner.tempfile, "mkdtemp", return_value=str(directory)),
++                mock.patch.object(runner, "reference", side_effect=RuntimeError("no worker started")),
++                self.assertRaisesRegex(RuntimeError, "no worker started"),
++            ):
++                runner.main(["--quick"])
++            self.assertFalse(directory.exists())
++
++
+ if __name__ == "__main__":
+     unittest.main()

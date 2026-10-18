@@ -38,8 +38,9 @@ class FrameIntakeTest {
         val push = StateInfo("nav", "push")
 
         repeat(3) { intake.onFrame(api31(states = listOf(home))) }
-        // The frame that spans the navigation carries both routes: it is the new screen's.
-        intake.onFrame(api31(states = listOf(home, push, detail), overrunMillis = 4f))
+        // JankStats keeps a key's newest value only, so the frame that spans the navigation carries
+        // the new route: it is the new screen's.
+        intake.onFrame(api31(states = listOf(push, detail), overrunMillis = 4f))
         repeat(2) { intake.onFrame(api31(states = listOf(detail))) }
         intake.onFrame(api31(states = listOf(push)))
 

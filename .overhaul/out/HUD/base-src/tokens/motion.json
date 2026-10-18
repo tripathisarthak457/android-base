@@ -1,0 +1,22 @@
+{
+  "styles": {
+    "Standard": { "bounce": 0.15, "speed": 1.0, "description": "Crisp, a trace of overshoot. Lively without asking for attention." },
+    "Bouncy": { "bounce": 0.35, "speed": 1.0, "description": "Springy, with a visible overshoot. Playful; wrong for anything financial." },
+    "Calm": { "bounce": 0.0, "speed": 0.87, "description": "No overshoot, slightly longer. For dense, professional interfaces." },
+    "Snappy": { "bounce": 0.1, "speed": 1.15, "description": "The shortest response that still reads as motion. For utilities." }
+  },
+  "springs": {
+    "press": { "response": 0.16, "bounceScale": 0, "bySpeed": false },
+    "release": { "response": 0.32, "bounceScale": 1, "bySpeed": false },
+    "selection": { "response": 0.3, "bounceScale": 0.6, "bySpeed": false },
+    "screen": { "response": 0.24, "bounceScale": 0, "bySpeed": true },
+    "sheet": { "response": 0.34, "bounceScale": 0, "bySpeed": true },
+    "layout": { "response": 0.36, "bounceScale": 0, "bySpeed": true },
+    "emphasis": { "response": 0.5, "bounceScale": 1, "bySpeed": false }
+  },
+  "visibilityThreshold": { "float": 0.001, "offsetPx": 1 },
+  "fades": { "shortMs": 120, "longMs": 200 },
+  "stagger": { "stepMs": 24, "maxItems": 6 },
+  "press": { "scale": 0.96, "scaleLarge": 0.98, "scaleIcon": 0.9, "dimAlpha": 0.45, "highlightFadeOutMs": 220 },
+  "navigation": { "parallax": 0.3, "scrimAlpha": { "light": 0.1, "dark": 0.24 }, "edgeShadow": 8 }
+}

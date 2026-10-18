@@ -1,0 +1,61 @@
+[locked:memwait] 318 MB available, 1366 MB commit left; waiting for 1500 MB
+[locked:memwait] 393 MB available, 1415 MB commit left; waiting for 1500 MB
+[locked:memwait] 325 MB available, 1351 MB commit left; waiting for 1500 MB
+[locked:memwait] 413 MB available, 1326 MB commit left; waiting for 1500 MB
+[locked:memwait] 274 MB available, 1202 MB commit left; waiting for 1500 MB
+...........................................................s....................s.......................................ss..............................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 296 tests in 309.753s
+
+OK (skipped=4)
+only-analytics:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-browser:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-catalog:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-crashlytics:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-deeplink:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-devtools:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-firebaseanalytics:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-flags:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-googlefonts:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-media:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-playstore:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-push:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-remoteconfig:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-sample:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-search:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+only-settings:
+  IMPORT app/src/test/kotlin/{pkg}/session/SessionBackupRulesTest.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+  IMPORT core/datastore/src/main/kotlin/{pkg}/core/datastore/di/DataStoreModule.kt: {package}.core.datastore.session.SESSION_TOKENS_FILE is not declared
+
+61 projects in 77 s: 32 new issues, 418 known (7 of 7 known-issue lines seen).
+EXIT 1

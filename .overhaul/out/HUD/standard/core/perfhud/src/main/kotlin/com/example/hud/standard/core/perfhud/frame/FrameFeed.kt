@@ -9,6 +9,9 @@ import android.view.Window
 import androidx.metrics.performance.JankStats
 import androidx.metrics.performance.PerformanceMetricsState
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,10 +32,15 @@ internal class FrameFeed @Inject constructor(
     private var listener: JankStats.OnFrameListener? = null
     private var resumed: WeakReference<Activity>? = null
     private var route: String? = null
+    private var started = 0
+    private val _foreground = MutableStateFlow(false)
     private var jankStats: JankStats? = null
 
     /** Given the intent of each activity started by a fresh launch, rather than restored. */
     var onLaunch: ((Intent) -> Unit)? = null
+
+    /** Whether any of the app's activities is started: what the app shows can be seen. */
+    val foreground: StateFlow<Boolean> = _foreground.asStateFlow()
 
     init {
         (context as Application).registerActivityLifecycleCallbacks(this)
@@ -70,9 +78,15 @@ internal class FrameFeed @Inject constructor(
         if (listener != null) stopFrames()
     }
 
-    override fun onActivityStarted(activity: Activity) = Unit
+    override fun onActivityStarted(activity: Activity) {
+        started++
+        _foreground.value = true
+    }
 
-    override fun onActivityStopped(activity: Activity) = Unit
+    override fun onActivityStopped(activity: Activity) {
+        started = (started - 1).coerceAtLeast(0)
+        _foreground.value = started > 0
+    }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 

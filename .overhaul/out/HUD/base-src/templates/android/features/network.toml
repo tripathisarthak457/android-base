@@ -1,0 +1,18 @@
+key = "network"
+title = "REST networking (Ktor)"
+headline = "Talk to a REST API"
+description = """
+One HTTP client for the whole app: typed results, the session's token read for every request and
+refreshed one call at a time, every failure classified (offline, timeout, the server's own error
+code, an unreadable body), and the connection state as a hint a screen can show."""
+group = "Networking and data"
+default = true
+requires = []
+implied_only = false
+owns = [
+  "core/network",
+  # AppModule exists only to supply NetworkConfig from BuildConfig. Without the network module
+  # there is nothing for it to provide, and leaving it behind fails Hilt.
+  "app/src/main/kotlin/{pkg_path}/di/AppModule.kt",
+]
+legacy = []

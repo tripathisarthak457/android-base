@@ -1,19 +1,36 @@
 {
   "adb_path": {
     "record_broadcast": [
-      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver (has extras) }"
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver (has extras) }",
+      "Broadcast completed: result=0"
     ],
     "export_broadcast": [
-      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver }"
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+      "Broadcast completed: result=0, data=\"/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-032211.json\""
     ],
-    "pulled": [],
+    "pulled": [
+      "D:/projects/tools/.overhaul/perf/HUD/checks\\perf-report-20261019-032211.json",
+      "D:/projects/tools/.overhaul/perf/HUD/checks\\perf-report-20261019-032211.md"
+    ],
     "perfhud_lines": 4,
     "record_off_broadcast": [
-      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver (has extras) }"
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver (has extras) }",
+      "Broadcast completed: result=0"
     ],
     "without_run_as": [
-      "Broadcasting: Intent { act=com.android.internal.app.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.android.internal.app.core.perfhud.report.ReportReceiver }",
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
       "Broadcast completed: result=0"
-    ]
+    ],
+    "without_run_as_delivered": false
+  },
+  "adb_path_release": {
+    "run_as": [
+      "run-as: package not debuggable: com.example.hud.everything.dev"
+    ],
+    "direct": [
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+      "Broadcast completed: result=0"
+    ],
+    "reached": false
   }
 }

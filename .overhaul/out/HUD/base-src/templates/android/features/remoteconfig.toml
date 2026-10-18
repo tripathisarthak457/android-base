@@ -1,0 +1,12 @@
+key = "remoteconfig"
+title = "Firebase Remote Config"
+headline = "Change feature flags from the console"
+description = """
+Feature flags read from Remote Config: fetched at start-up, updated while the app is open when the
+console publishes a change, and fetched on every start in a debug build."""
+group = "Observability"
+default = false
+requires = ["flags", "firebase"]
+implied_only = false
+owns = ["core/flags/src/main/kotlin/{pkg_path}/core/flags/remoteconfig"]
+legacy = [{ key = "firebase", schema = 1 }, "flags-remote"]

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Every phone step of package HUD in one hold of the adb lock:
-#   bin/locked adb bash out/HUD/phone.win.sh [overhead|checks|inspect|all]
+#   bin/locked adb bash out/HUD/phone.win.sh [inspect|overhead|checks|prod|all]
 # Changes no device setting. The test apps are uninstalled before installing, since builds signed on
 # another machine cannot be updated in place.
 set -euo pipefail
@@ -8,6 +8,7 @@ OV=D:/projects/tools/.overhaul; O=$OV/out/HUD; P=$OV/perf/HUD; S=${SERIAL:-9a7c7
 step=${1:-all}
 EV=$O/everything/app/build/outputs/apk
 ST=$O/standard/app/build/outputs/apk
+BASE=$O/base/app/build/outputs/apk
 EV_ID=com.example.hud.everything.dev
 ST_ID=com.example.hud.standard.dev
 
@@ -18,19 +19,13 @@ install() {
 }
 
 adb -s "$S" get-state
-mkdir -p "$P"
+mkdir -p "$P/checks"
 if [ "$step" = inspect ] || [ "$step" = all ]; then
-  python -I "$O/apk_inspect.py" "$(apk "$EV/prod/release")" "$(apk "$EV/dev/release")" "$(apk "$EV/dev/debug")" \
-    | tee "$P/apk-inspection.json"
+  python -I "$O/apk_inspect.py" "$(apk "$EV/prod/release")" "$(apk "$BASE/prod/release")" "$(apk "$EV/dev/release")" \
+    "$(apk "$EV/dev/debug")" | tee "$P/checks/apk-inspection.json"
 fi
 if [ "$step" = overhead ] || [ "$step" = all ]; then
-  install "$(apk "$EV/dev/release")" "$EV_ID"
-  # What Play does on install: compile with the profile the APK ships, as perf.sh does.
-  adb -s "$S" shell am broadcast -a androidx.profileinstaller.action.INSTALL_PROFILE \
-    -n "$EV_ID/androidx.profileinstaller.ProfileInstallReceiver" >/dev/null
-  adb -s "$S" shell am force-stop "$EV_ID"
-  adb -s "$S" shell cmd package compile -f -m speed-profile "$EV_ID"
-  python -I "$O/overhead.py" --serial "$S" --package "$EV_ID" --rounds "${ROUNDS:-4}" --out "$P/overhead-everything"
+  bash "$O/overhead.win.sh" "$(apk "$EV/dev/release")" "$P/overhead-everything" "${ROUNDS:-6}"
 fi
 if [ "$step" = checks ] || [ "$step" = all ]; then
   install "$(apk "$ST/dev/release")" "$ST_ID"
@@ -39,6 +34,10 @@ if [ "$step" = checks ] || [ "$step" = all ]; then
     --out "$P/checks"
   install "$(apk "$EV/dev/debug")" "$EV_ID"
   python -I "$O/device_checks.py" --serial "$S" --standard "$ST_ID" --everything "$EV_ID" --adb-only \
-    --out "$P/checks"
+    --release-apk "$(apk "$EV/dev/release")" --out "$P/checks"
+fi
+if [ "$step" = prod ] || [ "$step" = all ]; then
+  python -I "$O/device_checks.py" --serial "$S" --standard "$ST_ID" --everything "$EV_ID" \
+    --prod-before "$(apk "$BASE/prod/release")" --prod-after "$(apk "$EV/prod/release")" --out "$P/checks"
 fi
 echo PHONE OK

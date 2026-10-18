@@ -1,0 +1,1 @@
+select c.id, c.parent_id, f.name fn from stack_profile_callsite c join stack_profile_frame f on c.frame_id=f.id

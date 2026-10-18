@@ -1,0 +1,213 @@
+# perf.sh: com.example.wp04.dlplay.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\dlplay\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 31.2 °C at the start
+- Runs: 3, seed 780364, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: tabs, tabs_tap, tab1, pushpop, pushpop_gesture, back_during_push, rapid_back, scroll_root, meminfo, scroll_minimize, recompose, coldstart, coldstart_installed
+
+| Metric | Median | Runs |
+|---|---|---|
+| back_during_push.difference_ratios | [0.98, 0.96, 0.98, 0.96] | [0.98, 0.96, 0.98, 0.96], [0.98, 0.96, 0.98, 0.96], [0.98, 0.96, 0.98, 0.96] |
+| Back swipe during a push: lands on the list | yes | yes, yes, yes |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes, yes, yes |
+| Cold start, speed-profile, median (ms) | 337 | 337, 344, 329 |
+| coldstart.runs_ms | [339, 371, 321, 320, 337, 296] | [356, 328, 338, 386, 296, 337], [335, 363, 376, 354, 333, 319], [339, 371, 321, 320, 337, 296] |
+| Cold start as installed (profile from the APK only), median (ms) | 370 | 370, 388, 369 |
+| coldstart_installed.runs_ms | [386, 342, 407, 356, 368, 371] | [359, 386, 354, 374, 366, 375], [412, 385, 383, 361, 391, 393], [386, 342, 407, 356, 368, 371] |
+| First back swipe after pm clear (cold), janky frames | 2 | 2, 3, 2 |
+| First back swipe after a restart (warm), janky frames | 3 | 3, 3, 4 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.15 | 7.12, 15.03, 7.15 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.11 | 7.11, 7.11, 7.11 |
+| meminfo.graphics_mb | 55.2 | 55.3, 55.1, 55.2 |
+| PSS after the journey, less the window's graphics buffers (MB) | 84 | 84, 86.5, 83.9 |
+| PSS after the journey (MB) | 139.3 | 139.3, 141.6, 139.1 |
+| pushpop.first3_dequeue_ms.max | 0.07 | 0.07, 0.06, 0.08 |
+| pushpop.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| pushpop.first3_gpu_ms.max | 19.92 | 19.92, 18.51, 21.5 |
+| pushpop.first3_gpu_ms.median | 12.09 | 12.44, 12.09, 12.02 |
+| pushpop.first3_issue_ms.max | 5.19 | 4.31, 5.19, 5.79 |
+| pushpop.first3_issue_ms.median | 2.02 | 1.79, 2.13, 2.02 |
+| pushpop.frames | 1024 | 1024, 1024, 1023 |
+| pushpop.gpu_p50_ms | 7 | 7, 7, 7 |
+| pushpop.gpu_p90_ms | 9 | 9, 10, 9 |
+| pushpop.gpu_p99_ms | 15 | 15, 15, 15 |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | 1 | 0, 2.03, 1 |
+| pushpop.janky_after_first_pct | 0 | 0, 0, 0 |
+| Push/pop with the Back key, janky frames (%) | 1.56 | 1.56, 1.56, 1.56 |
+| pushpop.late_first_frames | 16 | 16, 16, 16 |
+| pushpop.p50_ms | 11 | 11, 10, 11 |
+| pushpop.p90_ms | 16 | 16, 17, 16 |
+| Push/pop with the Back key, p99 frame (ms) | 26 | 26, 25, 27 |
+| Pop, first frame max (ms) | 5.3 | 5.07, 5.3, 5.84 |
+| Pop, first frame median (ms) | 2.47 | 2.41, 2.47, 4.68 |
+| Push, the frame that composes the screen, max (ms) | 15.66 | 16.51, 15.65, 15.66 |
+| Push, the frame that composes the screen, median (ms) | 13.65 | 14.54, 13.65, 10.51 |
+| pushpop.transitions | 16 | 16, 16, 16 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.06 | 0.06, 0.06, 0.08 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.03 | 0.03, 0.03, 0.03 |
+| pushpop_gesture.first3_gpu_ms.max | 18.75 | 18.98, 18.75, 17.73 |
+| pushpop_gesture.first3_gpu_ms.median | 11.7 | 11.7, 10.23, 12.26 |
+| pushpop_gesture.first3_issue_ms.max | 5.75 | 7.76, 4.66, 5.75 |
+| pushpop_gesture.first3_issue_ms.median | 1.71 | 1.64, 1.79, 1.71 |
+| pushpop_gesture.frames | 753 | 750, 753, 754 |
+| pushpop_gesture.gesture_first_frame_ms.max | 2.7 | 2.7, 3.8, 2.64 |
+| Back gesture, slowest of its first three frames, median (ms) | 2.25 | 2.4, 2.04, 2.25 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 10, 10 |
+| pushpop_gesture.gpu_p99_ms | 15 | 15, 15, 15 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 14.98 | 16.4, 14.98, 13.58 |
+| pushpop_gesture.janky_after_first_pct | 0.8 | 0.93, 0.66, 0.8 |
+| Push/pop with the back gesture, janky frames (%) | 2.39 | 2.53, 2.26, 2.39 |
+| pushpop_gesture.late_first_frames | 12 | 12, 12, 12 |
+| pushpop_gesture.p50_ms | 10 | 10, 10, 10 |
+| pushpop_gesture.p90_ms | 17 | 17, 17, 17 |
+| pushpop_gesture.p99_ms | 26 | 29, 26, 24 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| Rapid Back: the app is still running | yes | yes, yes, yes |
+| rapid_back.depth | 4 | 4, 4, 4 |
+| Rapid Back: lands on the expected screen | yes | yes, yes, yes |
+| rapid_back.first3_dequeue_ms.max | 0.05 | 0.07, 0.05, 0.05 |
+| rapid_back.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| rapid_back.first3_gpu_ms.max | 10.93 | 10.93, 10.33, 11.74 |
+| rapid_back.first3_gpu_ms.median | 6.04 | 6.21, 5.72, 6.04 |
+| rapid_back.first3_issue_ms.max | 7.11 | 9.02, 6.66, 7.11 |
+| rapid_back.first3_issue_ms.median | 2.21 | 2.7, 2.09, 2.21 |
+| rapid_back.frames | 654 | 654, 654, 654 |
+| rapid_back.gpu_p50_ms | 6 | 6, 6, 6 |
+| rapid_back.gpu_p90_ms | 8 | 8, 8, 8 |
+| rapid_back.gpu_p99_ms | 10 | 10, 10, 9 |
+| Rapid Back, hitch time per second of motion (ms/s) | 10.74 | 10.76, 9.34, 10.74 |
+| rapid_back.janky_after_first_pct | 0.46 | 0.46, 0.76, 0.46 |
+| Rapid Back, janky frames (%) | 1.07 | 1.07, 1.38, 0.92 |
+| rapid_back.late_first_frames | 4 | 4, 4, 3 |
+| rapid_back.p50_ms | 10 | 10, 10, 10 |
+| rapid_back.p90_ms | 12 | 12, 12, 12 |
+| rapid_back.p99_ms | 16 | 16, 16, 14 |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) | 6.71 | 7.21, 5.5, 6.71 |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) | 5.48 | 5.48, 5.34, 5.8 |
+| rapid_back.transitions | 6 | 6, 6, 6 |
+| recompose.back_gesture.max | 4 | 4, 4, 4 |
+| recompose.back_gesture.runs | [4, 4] | [4, 4], [4, 4], [4, 4] |
+| Back gesture, frames that recompose while the card follows the finger | 0 | 0, 0, 0 |
+| Pop, frames that recompose (most in one pop) | 2 | 2, 2, 2 |
+| recompose.pop.runs | [2, 2, 2] | [2, 2, 2], [2, 2, 2], [2, 2, 2] |
+| Push, frames that recompose (most in one push) | 5 | 5, 5, 5 |
+| recompose.push.runs | [5, 5, 5, 5, 5] | [5, 5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5] |
+| Tab switch, frames that recompose (most in one switch) | 1 | 1, 1, 1 |
+| recompose.tab_switch.runs | [1, 1, 1, 1, 1] | [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1] |
+| scroll_minimize.frames | 1360 | 1360, 1302, 1362 |
+| scroll_minimize.gpu_p50_ms | 6 | 6, 6, 6 |
+| Scroll with the bar minimizing, GPU p90 (ms) | 6 | 6, 6, 6 |
+| scroll_minimize.gpu_p99_ms | 7 | 9, 7, 7 |
+| Scroll with the bar minimizing, janky frames (%) | 0.51 | 0.37, 0.61, 0.51 |
+| scroll_minimize.p50_ms | 8 | 8, 8, 8 |
+| scroll_minimize.p90_ms | 9 | 9, 11, 9 |
+| scroll_minimize.p99_ms | 15 | 17, 15, 12 |
+| scroll_root.frames | 1331 | 1331, 1324, 1361 |
+| scroll_root.gpu_p50_ms | 6 | 6, 6, 6 |
+| Scroll a root list, GPU p90 (ms) | 6 | 6, 6, 6 |
+| scroll_root.gpu_p99_ms | 9 | 10, 7, 9 |
+| Scroll a root list, janky frames (%) | 0.44 | 0.15, 0.53, 0.44 |
+| scroll_root.p50_ms | 8 | 8, 8, 8 |
+| scroll_root.p90_ms | 9 | 9, 9, 9 |
+| scroll_root.p99_ms | 16 | 17, 13, 16 |
+| tab1.first_frame_ms.max | 9.45 | 9.3, 9.46, 9.45 |
+| tab1.first_frame_ms.median | 4 | 8, 4, 3.97 |
+| First visit to a tab, first frame max (ms) | 7.77 | 9.1, 4.05, 7.77 |
+| First visit to a tab, first frame median (ms) | 3.93 | 4.09, 3.79, 3.93 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 5.41 | 5.41, 10.1, 5.18 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.21 | 4.15, 9, 4.21 |
+| tabs.first3_dequeue_ms.max | 0.06 | 0.06, 0.06, 0.06 |
+| tabs.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| tabs.first3_gpu_ms.max | 19.73 | 19.73, 20.89, 18.41 |
+| tabs.first3_gpu_ms.median | 10.13 | 9.56, 10.15, 10.13 |
+| tabs.first3_issue_ms.max | 5.16 | 5.16, 4.52, 5.16 |
+| tabs.first3_issue_ms.median | 1.4 | 1.4, 1.47, 1.37 |
+| Tab switch to a visited tab, first frame max (ms) | 10.07 | 10.44, 9.99, 10.07 |
+| Tab switch to a visited tab, first frame median (ms) | 4.12 | 4.03, 4.29, 4.12 |
+| tabs.frames | 1305 | 1304, 1305, 1305 |
+| tabs.gpu_p50_ms | 5 | 5, 5, 5 |
+| tabs.gpu_p90_ms | 9 | 9, 10, 9 |
+| tabs.gpu_p99_ms | 14 | 14, 14, 13 |
+| Tab switch, hitch time per second of motion (ms/s) | 0 | 0.77, 0, 0 |
+| tabs.janky_after_first_pct | 0 | 0, 0, 0 |
+| Tab switch, janky frames (%) | 1.15 | 1.15, 1.15, 1.07 |
+| tabs.late_first_frames | 15 | 15, 15, 14 |
+| tabs.p50_ms | 8 | 8, 8, 8 |
+| tabs.p90_ms | 15 | 15, 16, 15 |
+| tabs.p99_ms | 20 | 21, 20, 19 |
+| tabs.transitions | 15 | 15, 15, 15 |
+| tabs_tap.first3_dequeue_ms.max | 0.06 | 0.1, 0.06, 0.05 |
+| tabs_tap.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| tabs_tap.first3_gpu_ms.max | 19.61 | 21.2, 19.61, 19.53 |
+| tabs_tap.first3_gpu_ms.median | 9.99 | 9.4, 9.99, 10.5 |
+| tabs_tap.first3_issue_ms.max | 5 | 5.96, 5, 4.34 |
+| tabs_tap.first3_issue_ms.median | 1.52 | 1.52, 1.88, 1.5 |
+| Tab switch with plain taps, first frame max (ms) | 9.8 | 9.8, 10.55, 9.62 |
+| Tab switch with plain taps, first frame median (ms) | 4.08 | 4.02, 4.08, 4.18 |
+| tabs_tap.frames | 1305 | 1305, 1305, 1305 |
+| tabs_tap.gpu_p50_ms | 5 | 5, 5, 5 |
+| tabs_tap.gpu_p90_ms | 10 | 10, 8, 10 |
+| tabs_tap.gpu_p99_ms | 14 | 14, 14, 13 |
+| tabs_tap.hitch_ms_per_s | 0 | 0.79, 0, 0 |
+| tabs_tap.janky_after_first_pct | 0 | 0, 0, 0 |
+| Tab switch with plain taps, janky frames (%) | 1.15 | 1.15, 1.15, 1.15 |
+| tabs_tap.late_first_frames | 15 | 15, 15, 15 |
+| tabs_tap.p50_ms | 8 | 8, 8, 8 |
+| tabs_tap.p90_ms | 17 | 17, 12, 17 |
+| tabs_tap.p99_ms | 20 | 21, 20, 20 |
+| tabs_tap.transitions | 15 | 15, 15, 15 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 3.93 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 7.77 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.21 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 5.41 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.15 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.11 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 3 | ratchet | report |
+| Tab switch, janky frames (%) | 1.15 | 1 | fail |
+| Tab switch to a visited tab, first frame median (ms) | 4.12 | 8 | pass |
+| Tab switch to a visited tab, first frame max (ms) | 10.07 | 16 | pass |
+| Tab switch, hitch time per second of motion (ms/s) | 0 | ratchet | report |
+| Tab switch with plain taps, janky frames (%) | 1.15 | 1 | fail |
+| Tab switch with plain taps, first frame median (ms) | 4.08 | 8 | pass |
+| Tab switch with plain taps, first frame max (ms) | 9.8 | 16 | pass |
+| Push, the frame that composes the screen, median (ms) | 13.65 | ratchet | report |
+| Push, the frame that composes the screen, max (ms) | 15.66 | ratchet | report |
+| Pop, first frame median (ms) | 2.47 | 8 | pass |
+| Pop, first frame max (ms) | 5.3 | 16 | pass |
+| Push/pop with the Back key, janky frames (%) | 1.56 | 2 | pass |
+| Push/pop with the Back key, p99 frame (ms) | 26 | 25 | fail |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | 1 | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) | 2.39 | 2 | fail |
+| Back gesture, slowest of its first three frames, median (ms) | 2.25 | 8 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 14.98 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes | pass |
+| Back swipe during a push: lands on the list | yes | yes | pass |
+| Rapid Back: the app is still running | yes | yes | pass |
+| Rapid Back: lands on the expected screen | yes | yes | pass |
+| Rapid Back, janky frames (%) | 1.07 | 4 | pass |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) | 5.48 | 8 | pass |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) | 6.71 | 16 | pass |
+| Rapid Back, hitch time per second of motion (ms/s) | 10.74 | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | 0.44 | 0.5 | pass |
+| Scroll a root list, GPU p90 (ms) | 6 | 7 | pass |
+| Scroll with the bar minimizing, janky frames (%) | 0.51 | 0.5 | fail |
+| Scroll with the bar minimizing, GPU p90 (ms) | 6 | 7 | pass |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | 337 | 380 | pass |
+| Cold start as installed (profile from the APK only), median (ms) | 370 | 400 | pass |
+| PSS after the journey, less the window's graphics buffers (MB) | 84 | 48 | fail |
+| PSS after the journey (MB) | 139.3 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | 1 | 2 | pass |
+| Push, frames that recompose (most in one push) | 5 | ratchet | report |
+| Pop, frames that recompose (most in one pop) | 2 | 2 | pass |
+| Back gesture, frames that recompose while the card follows the finger | 0 | 0 | pass |

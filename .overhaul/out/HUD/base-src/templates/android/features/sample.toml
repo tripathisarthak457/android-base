@@ -1,0 +1,19 @@
+key = "sample"
+title = "Reference feature"
+headline = "A working screen to learn from"
+description = """
+A working list + detail feature against a live public API, with its tests. Proves every wire on
+first run; delete it once your own first feature exists."""
+group = "Screens"
+default = true
+requires = ["network"]
+implied_only = false
+owns = [
+  "data/sample",
+  "feature/sample",
+  "core/database/src/main/kotlin/{pkg_path}/core/database/sample",
+  "core/database/src/test/kotlin/{pkg_path}/core/database/sample",
+  # The exported schema holds the samples table only; without it the first build exports a new one.
+  "core/database/schemas/com.base.app.core.database.AppDatabase",
+]
+legacy = []

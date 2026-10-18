@@ -1,0 +1,16 @@
+buffers { size_kb: 65536 fill_policy: RING_BUFFER }
+data_sources { config { name: "android.surfaceflinger.frametimeline" } }
+data_sources { config { name: "linux.process_stats" target_buffer: 0 process_stats_config { scan_all_processes_on_start: true } } }
+data_sources {
+  config {
+    name: "linux.ftrace"
+    ftrace_config {
+      ftrace_events: "sched/sched_switch"
+      atrace_categories: "gfx"
+      atrace_categories: "view"
+      atrace_categories: "input"
+      atrace_apps: "com.example.wp04.everything.dev"
+    }
+  }
+}
+duration_ms: 50000

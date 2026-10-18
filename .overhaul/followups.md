@@ -52,6 +52,12 @@ that needs another package's code first. WP13 closes every item (or records why 
   runner's body into an importable module (`tests/consistency/runner.py`) and keep `__main__.py` a two-line entry
   point. Until then `out/WP06/consistency_win.py` runs the same `main()` after importing it under its own name.
   Still open after WIN merged (Oct 18): WIN left `tests/consistency/` as it was.
+  Fixed on `wp/WIN` on Oct 19, not yet merged (`6a22433`: `run_one` and `reference` in `tests/consistency/worker.py`;
+  `fbac839`: issue lines with "/" on Windows; `3b892f4`: a failed run deletes its `%TEMP%` folder). `merged/WIN`
+  predates these commits, so `wp/WIN` needs one more merge; then this item is closed (`handoff/WIN.md`, Progress).
+  **Closed Oct 19:** merged into `overhaul/multiplatform-v2` as `4dd3aca` (`merges.md`); `python -m tests.consistency
+  --quick --jobs 2` on the merged checkout: CONSISTENCY OK, no `%TEMP%` folder left behind
+  (`out/integration/WIN/oct19/`). `out/WP06/consistency_win.py` is no longer needed.
 - **A time limit on every generated project's test tasks (WP02, build-logic; WP12 docs).** A unit test JVM that stops
   making progress holds its build for ever: on Oct 17 `:core:applock:testDebugUnitTest` sat idle from 16:18 to 18:45
   under the shared Gradle lock (`handoff/WP06.md`, Progress run 15; the test is fixed on `wp/WP06` `f8640b2`). A
@@ -64,6 +70,15 @@ that needs another package's code first. WP13 closes every item (or records why 
   its bypass for user-installed trust anchors off), that the engine keeps no disk cache sign-out cannot empty
   (the OkHttp cache is a `SessionScopedStore`), that WebSockets still connect over plain OkHttp, and that images
   go through it too (Coil is on the shared client since `wp/WP06` `10e2916`).
+- **The DEV badge docked over a navigation rail or sidebar (WP04's shell, then one line in WP06's badge).** WP04's
+  landscape shots (`perf/WP04/req34/after-7fa49d5b-landscape/landscape-rest.png`) show the badge on the rail's first
+  item; that build still has the integration branch's old `DevBadge`, which starts at the top-start corner. WP06's
+  badge rests docked to the end edge, clear of a start-side rail or sidebar, but a badge the developer throws to the
+  start edge docks over the rail, and nothing above the shell knows how wide the rail is. Fix: the shell publishes
+  its start chrome window-wide the way it publishes `LocalWindowTopChrome` (a `ChromeInset`, written only while a
+  rail or sidebar shows, 0 otherwise), and the badge's `bounds()` adds it to `start`, read in `offset { }` like the
+  top bound. Navigation is WP04's code, so WP06 cannot add the seam itself; check it on the phone in landscape with
+  the badge thrown both ways (`out/WP06/badge_qa_check.py`).
 
 ## WP04
 

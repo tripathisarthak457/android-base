@@ -1,0 +1,35 @@
+[locked:memwait] 180 MB available, 1152 MB commit left; waiting for 1500 MB
+[locked:memwait] 614 MB available, 1459 MB commit left; waiting for 1500 MB
+[locked:memwait] 284 MB available, 1257 MB commit left; waiting for 1500 MB
+[locked:memwait] 325 MB available, 908 MB commit left; waiting for 1500 MB
+[locked:memwait] 297 MB available, 1112 MB commit left; waiting for 1500 MB
+[locked:memwait] 465 MB available, 1310 MB commit left; waiting for 1500 MB
+[locked:memwait] 354 MB available, 1410 MB commit left; waiting for 1500 MB
+[locked:memwait] 355 MB available, 1486 MB commit left; waiting for 1500 MB
+[locked:memwait] 355 MB available, 1518 MB commit left; waiting for 1500 MB
+[locked:memwait] 317 MB available, 1365 MB commit left; waiting for 1500 MB
+[locked:memwait] 452 MB available, 1414 MB commit left; waiting for 1500 MB
+[locked:memwait] 399 MB available, 1422 MB commit left; waiting for 1500 MB
+[locked:memwait] 435 MB available, 1525 MB commit left; waiting for 1500 MB
+[locked:memwait] 340 MB available, 1403 MB commit left; waiting for 1500 MB
+[locked:memwait] 325 MB available, 1383 MB commit left; waiting for 1500 MB
+[locked:memwait] 331 MB available, 1095 MB commit left; waiting for 1500 MB
+[locked:memwait] 1447 MB available, 3813 MB commit left; waiting for 1500 MB
+......................................................s.......................s.......................................ss.............................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 293 tests in 224.355s
+
+OK (skipped=4)
+0 token copies current.
+web/frontend/lib/catalogue.json is current.
+added lines with CR: 0
+[locked:memwait] 1098 MB available, 2669 MB commit left; waiting for 1500 MB
+[locked:memwait] 562 MB available, 2503 MB commit left; waiting for 1500 MB
+[locked:memwait] 1218 MB available, 3196 MB commit left; waiting for 1500 MB
+standard: 314 files; the old generator wrote CRLF into 4 of them on Windows; template sources that are CRLF themselves: ['gradle/wrapper/gradle-wrapper.jar', 'gradlew.bat']
+  zip: 314 entries under Standard/, executable: ['Standard/gradlew']
+everything-brand: 469 files; the old generator wrote CRLF into 96 of them on Windows; template sources that are CRLF themselves: ['gradle/wrapper/gradle-wrapper.jar', 'gradlew.bat']
+  zip: 469 entries under TrailNotes/, executable: ['TrailNotes/gradlew']
+COMPARE OK
+ACCEPT OK
+exit 0

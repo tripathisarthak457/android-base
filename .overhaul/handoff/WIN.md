@@ -7,6 +7,21 @@ Nothing pushed. There is no WP file: the scope in the orchestrator's task is the
 
 - **Orchestrator note (Oct 17, 23:05).** Fix round 2 (the two blocking findings in the `--force` swap) returned done at about 16:40; the run was then paused for the user's usage reserve. Next: review round 3, then the merge.
 
+Updated 2026-10-19 (run "run", replayed by the release workflow's resume after the merge). The integration branch
+had not moved since WIN merged (`overhaul/multiplatform-v2` = `merged/WIN` = `5a16778`), so there was nothing to merge
+in. One Windows host bug in the generator was still open, recorded by the orchestrator in `followups.md`
+("`python -m tests.consistency` cannot run on Windows (WIN, the generator)"), and two more sat beside it. All three
+are fixed on `wp/WIN`, each with a test that fails on the old code: the matrix's pool work moved to an importable
+module (`6a22433`), issue lines name files with "/" on every host (`fbac839`), and a failed run deletes its folder in
+`%TEMP%` (`3b892f4`). The quick matrix now runs here: CONSISTENCY OK. Acceptance at `3b892f4` against `a402d87`:
+**ACCEPT OK**. Worktree clean; nothing pushed. **`wp/WIN` is now 3 commits ahead of
+`merged/WIN` and those commits need a merge of their own**: the integrator's step 0 returns as soon as the
+`merged/WIN` tag exists, so they reach the integration branch only if the integrator or the orchestrator merges
+`wp/WIN` again on purpose. The integration branch is still at their parent, so that merge has no conflict, and
+`git merge-tree` of `wp/WIN` against every open package branch shows
+no conflict beyond the ones `merged/WIN` already has with `wp/WP02`, `wp/WP03-skel` and `wp/WP05-glass`. Acceptance and
+the numbers: Measurements, "Run after the merge (Oct 19)".
+
 Updated 2026-10-18 (the orchestrator's run "fix#1", after WIN merged: `merged/WIN` is `5a16778`). Nothing to change
 in the repository. The run's findings are, word for word, those of the third fresh-context review (of `91ba5d7`,
 table "Review fix#3"): the blocking one (the other-volume test no longer reached `shutil.move`) and the seven
@@ -116,6 +131,12 @@ and found and fixed five more host bugs.
 | fix#5: acceptance re-run | **ACCEPT OK** at `696e210` (`logs/WIN/accept.log`) |
 | after the merge: fix#3's findings replayed; blocking one re-verified against `shutil.move` | done, no change needed |
 | after the merge: acceptance at `5a16778` against `a402d87` | **ACCEPT OK** (`logs/WIN/accept-fix6.log`) |
+| Oct 19: the consistency matrix's pool work in `tests/consistency/worker.py` (spawn, forkserver) | done (`6a22433`) |
+| Oct 19: consistency issue lines name files with "/" on every host | done (`fbac839`) |
+| Oct 19: the consistency runner deletes its `%TEMP%` folder when a run fails | done (`3b892f4`) |
+| Oct 19: quick consistency matrix on this machine | CONSISTENCY OK (`logs/WIN/consistency-after.log`) |
+| Oct 19: acceptance at `3b892f4` against `a402d87` | **ACCEPT OK** (`logs/WIN/accept-oct19.log`) |
+| Oct 19: merge of the 3 new commits | done by the integrator (`4dd3aca`; `merges.md`, `out/integration/WIN/oct19/`) |
 
 ## What changed (by path)
 
@@ -217,6 +238,21 @@ and found and fixed five more host bugs.
   either volume; `WindowsLongPathsTest`: a zip past the limit refused before anything is written; the deletion test
   now covers the unplaced output, named in a note), `test_cli` (without `--json`, the note on the error and on its
   cause both printed).
+- Oct 19 (after the merge), `generator/tests/consistency/` (WP01's path; WP13 extends it): `worker.py` (new) holds
+  `run_one` and `reference`, moved unchanged from `__main__.py` with the `PACKAGE` they use. `python -m
+  tests.consistency` runs `__main__.py` as `__main__`; workers started with spawn (Windows, macOS) or forkserver (Linux
+  from Python 3.14) unpickle `run_one` by module name, and `multiprocessing.spawn._fixup_main_from_name` never imports a
+  package's `__main__` in a worker (forkserver preloads `__main__` only from a path, and `-m` gives a name), so every
+  worker died on "module '__main__' has no attribute 'run_one'" and the run ended in `BrokenProcessPool`. WP06 and WP04
+  ran the matrix only through `out/WP06/consistency_win.py`, which imports the runner under its own name; that wrapper
+  is no longer needed once this merges. `__main__.py` also deletes its `%TEMP%` folder in a `finally`, so a failed run
+  no longer leaves the reference project behind. `checks.py`: MANIFEST, XML (two sites), RES (the XML half),
+  TRANSLATION and EMPTY-FILE issue lines name the file through `Project.relative` or `as_posix()`, as every other kind
+  already did; with `Path.relative_to` they read `app\src\...` on Windows, which `known_issues.toml` (written with
+  "/") and the runner's `{pkg}` substitution do not match. Tests in `tests/test_consistency.py`: `IssuePathTest` (each
+  of those kinds on a hand-made module, file part compared exactly), `RunnerTest` (the function the pool gets is not
+  defined in the runner's module; a run that fails before the pool leaves no folder). The `__main__.py` changes avoid
+  the two hunks `wp/WP02` has in that file (an import and the architecture list), so WP02-M2's merge stays clean.
 
 ## Public APIs added, changed, removed (signatures)
 
@@ -241,8 +277,20 @@ and found and fixed five more host bugs.
   Windows' limit is refused before anything is written, naming the destination; a failed build's note names the
   unplaced output itself ("The new output was left at ..."), and a success never warns about a folder of its own.
   `create_project.described(error) -> str` is new (module-level, used by `main`).
+- Oct 19: no generator API changed. In the test tooling, `tests.consistency.worker.run_one(name, raw, directory, keep)
+  -> tuple[str, list[str]]` and `tests.consistency.worker.reference(directory) -> Project` (moved, same signatures),
+  and `tests.consistency.worker.PACKAGE`, all three imported by `tests.consistency.__main__`.
 
 ## Decisions
+
+- **Oct 19: the consistency runner's Windows failure fixed here, not left for WP13.** `followups.md` routed it to
+  WP13, which runs last; but it is a host bug in the generator, the class this package exists for, and every package
+  that runs the matrix on this machine before WP13 needs it (WP06 and WP04 carried a wrapper). The fix is the
+  smallest one that keeps `wp/WP02`'s two hunks in `__main__.py` mergeable: only the worker's functions moved, not the
+  whole runner the follow-up suggested (`runner.py` with a two-line `__main__.py` would have conflicted with WP02-M2's
+  merge). The structural test (the function's module is not the runner's) is what can run in a unit suite: the
+  failure needs `-m` and a spawned worker, and the quick matrix that shows it takes minutes, so the matrix runs before
+  and after are recorded in Measurements instead.
 
 - **Which path the CLI reports: the canonical one, directories resolved, last part as given.** `absolute()` already
   resolved the directories so that `--force` replaces a link rather than what it points at, and that is the path the
@@ -418,6 +466,10 @@ and found and fixed five more host bugs.
 | newline translation | JSON written to stdout (`create_project --json`, `generate_headless`, `catalogue --json`) is CRLF on Windows | checked, left: stdout is the caller's stream, and every reader parses JSON with CR as whitespace (Decisions, fix#5) |
 | other | `Path.rename` in `icons.py` would fail on Windows over an existing target | checked: the target (`drawable/ic_launcher_monochrome.xml`) never exists in the template |
 | other | `keytool` lookup | checked: already tries `keytool.exe` |
+| process start | `python -m tests.consistency` hands its pool a function defined in the package's `__main__` (spawn on Windows and macOS, forkserver on Linux from 3.14) | fixed Oct 19 (`6a22433`): `tests/consistency/worker.py`; tested; quick matrix run here |
+| separators | five consistency issue kinds printed `Path.relative_to` (backslashes on Windows) | fixed Oct 19 (`fbac839`); tested |
+| other | a failed consistency run left its reference project in `%TEMP%` | fixed Oct 19 (`3b892f4`); tested |
+| process start | other pools in `generator/` and `tools/` | checked: the only other is `check_versions.py`'s `ThreadPoolExecutor`, which pickles nothing |
 
 ## Deviations
 
@@ -514,9 +566,34 @@ and found and fixed five more host bugs.
 
 ## Lock time used
 
-None: no Gradle or adb in any run of this package. The suite and the host comparison ran through `memwait` only.
+None: no Gradle or adb in any run of this package. The suite, the host comparison and (Oct 19) the consistency
+matrix ran through `memwait` only.
 
 ## Measurements
+
+- **Run after the merge (Oct 19)**, at `3b892f4` (`wp/WIN`, 3 commits on `merged/WIN`):
+  - Acceptance (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-oct19.log`, against the integration head before
+    WIN, so the CR check and the host comparison cover the whole package): the whole suite through `memwait`, 293
+    tests in 224.4 s, OK, 4 skipped (Pillow; the two symlink tests; the filesystem exec-bit test); the time is the
+    machine's load (180 to 800 MB free while other packages built and ran the matrix), not the 4 new tests, which take
+    about 1 s. `genkit.tokens --check` and `genkit.core.catalogue --check` current. 0 added lines with a CR byte. Host
+    comparison COMPARE OK (standard: 314 files; everything-and-brand: 469; only `gradlew` executable in either zip).
+    Worktree clean. **ACCEPT OK.** `git diff --check 5a16778..HEAD` clean; the 3 commits: 4 files, 135 insertions,
+    53 deletions, each with the noreply author and the trailer.
+  - Quick consistency matrix, `python -m tests.consistency --quick --jobs 2` through `memwait` from the branch's
+    `generator/` (`logs/WIN/consistency-after.log`): 58 projects in 201 s, 0 new issues, 575 known (12 of 12
+    known-issue lines seen), **CONSISTENCY OK**; two workers started with spawn; its `%TEMP%` folder deleted. The
+    same command on `git archive 5a16778` (`logs/WIN/consistency-before.log`, with `--keep` under `$O` so the expected
+    failure left nothing in `%TEMP%`): the reference project built, then `AttributeError: module '__main__' has no
+    attribute 'run_one'` in a worker and `BrokenProcessPool`, exit 1. Both scratch trees went to the Recycle Bin.
+  - Each new test fails on the old code here: `IssuePathTest` with `checks.py` at `5a16778` (`'MANIFEST
+    app\\src\\main\\AndroidManifest.xml'` and four more with backslashes), `RunnerTest`'s pool test with `__main__.py`
+    at `5a16778` (`'tests.consistency.__main__' == 'tests.consistency.__main__'`), its clean-up test with `__main__.py`
+    at `fbac839` (the folder still exists).
+  - `git merge-tree --write-tree wp/<b> wp/WIN` for every open package branch (WP02, WP03, WP03-skel, WP04, WP04-perf,
+    WP05, WP05-glass, WP06, WP07, WP08, HUD): clean for 8; for WP02, WP03-skel and WP05-glass exactly the conflicts
+    they already have with `merged/WIN` (in `pipeline.py`, `scaffold.py`, `add_feature.py`, `look.py`, `target.py`),
+    none in `tests/consistency/` (WP02 also edits `__main__.py` and `checks.py`; both auto-merge).
 
 - **Acceptance after the merge** (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-fix6.log`, at `5a16778`): the
   whole suite through `memwait`, 290 tests in 72.1 s, OK, 4 skipped (Pillow; the two symlink tests; the filesystem
@@ -660,8 +737,21 @@ For WP12 (generator README/AGENTS and the generated projects' docs where they ta
   itself `git init` sets `core.fileMode=false`, so the working tree shows no mode change.
 - A symbolic link as `--out` needs Developer Mode on Windows; a junction works for any account, and `--force`
   replaces the link or junction, never what it points at.
+- For the generator repository's contributor docs: `python -m tests.consistency` (the static matrix) runs on Windows,
+  macOS and Linux alike once the Oct 19 commits merge. Whatever a script hands a process pool must be defined in an
+  importable module, never in a package's `__main__.py` run with `-m` (a script run by its path is re-imported in the
+  worker, a package's `__main__` is not): Windows and macOS start workers with spawn, and Linux starts them with
+  forkserver from Python 3.14, so the `fork` that hid this on older Linux Pythons is gone. Issue and report lines name files with "/" (`as_posix()`), so lists written on one host match on another.
 
 ## Open issues (with the reason they are open)
+
+- Closed Oct 19: the three Oct 19 commits (`6a22433`, `fbac839`, `3b892f4`) merged as `4dd3aca`. `merged/WIN` stays
+  on the first merge (`5a16778`, already pushed); `git merge-base --is-ancestor wp/WIN overhaul/multiplatform-v2`
+  is what shows the follow-up is in.
+- Five `consistency-*` folders (2.4 to 3.8 MB each, about 15 MB, each holding a `reference` project) sit in this
+  machine's `%TEMP%`, made between Oct 17 14:49 and Oct 18 05:16 by other packages' runs that ended in
+  `BrokenProcessPool`. Not deleted here: they are not this run's, and temporary files are the user's to clear
+  (Settings, System, Storage, Temporary files).
 
 - The MAX_PATH case is explained, not avoided: staging under `%TEMP%` costs about 58 characters that the destination
   might not need. Staging beside the destination would change the API's cleanup model (pipeline docstring: staging

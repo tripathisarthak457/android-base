@@ -7,7 +7,7 @@ import android.os.BadParcelableException
 import android.os.SystemClock
 import com.example.hud.standard.core.common.coroutines.AppDispatchers
 import com.example.hud.standard.core.common.coroutines.ApplicationScope
-import com.example.hud.standard.core.devtools.DevEnvironment
+import com.example.hud.standard.core.common.environment.AppEnvironment
 import com.example.hud.standard.core.devtools.log.DevToolsLog
 import com.example.hud.standard.core.devtools.screen.CurrentScreen
 import com.example.hud.standard.core.perfhud.checks.BuildChecks
@@ -32,6 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,7 +55,7 @@ internal class PerformanceRecorder @Inject constructor(
     @ApplicationContext context: Context,
     private val feed: FrameFeed,
     private val settings: RecordingSettings,
-    private val environment: DevEnvironment,
+    private val environment: AppEnvironment,
     private val currentScreen: CurrentScreen,
     private val requests: DevToolsLog,
     private val memorySampler: MemorySampler,
@@ -188,7 +189,11 @@ internal class PerformanceRecorder @Inject constructor(
         if (environment.isDebugBuild) logcat.note(DEBUG_NOTE)
         work = scope.launch(dispatchers.main) {
             launch { currentScreen.name.filterNotNull().collect(feed::setRoute) }
-            launch(dispatchers.default) { sampleEverySecond() }
+            // Nothing is drawn in the background, and PSS there would only measure what the
+            // system trimmed: the sampler stops until an activity is started again.
+            launch(dispatchers.default) {
+                feed.foreground.collectLatest { visible -> if (visible) sampleEverySecond() }
+            }
         }
     }
 

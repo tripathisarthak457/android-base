@@ -5,6 +5,7 @@ import com.example.hud.standard.buildlogic.configureFlavors
 import com.example.hud.standard.buildlogic.configureSigning
 import com.example.hud.standard.buildlogic.configureVariants
 import com.example.hud.standard.buildlogic.registerDistributionTasks
+import com.example.hud.standard.buildlogic.verifyReleasesCarryNoDevTooling
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -26,5 +27,6 @@ class AndroidApplicationFlavorsConventionPlugin : Plugin<Project> {
         val components = extensions.getByType<ApplicationAndroidComponentsExtension>()
         configureVariants(components)
         registerDistributionTasks(components)
+        verifyReleasesCarryNoDevTooling(components)
     }
 }

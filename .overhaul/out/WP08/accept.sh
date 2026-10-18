@@ -7,24 +7,7 @@ O=$OV/out/WP08
 
 cd "$W/generator"
 python3 -m unittest tests.test_target_ios -v
-case "$(uname -s)" in
-  MINGW*|MSYS*|CYGWIN*)
-    # Until package WIN merges, six tests of the suite fail on Windows with no change at all
-    # (logs/windows/generator-baseline.md); a failure beyond them fails acceptance.
-    mkdir -p "$O/logs"
-    set +e
-    python3 -m unittest discover -s tests -t . > "$O/logs/accept-suite.log" 2>&1
-    suite=$?
-    set -e
-    tail -n 3 "$O/logs/accept-suite.log"
-    if [ "$suite" -ne 0 ]; then
-      python3 -I "$O/windows_suite_baseline.py" "$O/logs/accept-suite.log"
-    fi
-    ;;
-  *)
-    python3 -m unittest discover -s tests -t .
-    ;;
-esac
+python3 -m unittest discover -s tests -t .
 python3 -m genkit.tokens --check
 python3 -m genkit.core.catalogue --check
 # --target ios is explicit: inferring the target from the spec's platform is a CLI change for WP01

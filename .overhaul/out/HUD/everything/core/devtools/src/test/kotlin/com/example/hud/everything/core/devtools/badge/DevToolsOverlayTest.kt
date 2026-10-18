@@ -20,9 +20,9 @@ import androidx.compose.ui.test.swipe
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.hud.everything.core.common.environment.AppEnvironment
 import com.example.hud.everything.core.designsystem.foundation.appClickable
 import com.example.hud.everything.core.designsystem.theme.AppTheme
-import com.example.hud.everything.core.devtools.DevEnvironment
 import com.example.hud.everything.core.devtools.DevTools
 import com.example.hud.everything.core.devtools.log.DevToolsLog
 import com.example.hud.everything.core.devtools.page.DevToolsPage
@@ -98,13 +98,12 @@ class DevToolsOverlayTest {
     }
 
     private fun devTools(pages: Set<DevToolsPage> = emptySet()) = DevTools(
-        environment = DevEnvironment(
+        environment = AppEnvironment(
             name = "dev",
             versionName = "1.0",
             applicationId = "com.example",
             apiBaseUrl = "https://api.example.com",
             isDebugBuild = true,
-            isShippable = false,
         ),
         log = DevToolsLog(),
         currentScreen = CurrentScreen(),

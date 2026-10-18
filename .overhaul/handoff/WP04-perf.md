@@ -1,5 +1,18 @@
 # WP04-perf: deep smoothness (branch `wp/WP04-perf`, worktree `$OV/wt/WP04-perf`)
 
+- **Oct 19 run (01:30–), in short.** (1) The first-fling hitch of REQUIREMENTS 41 is proven to be the card's own
+  rounded clip once the list's edge cuts it (`CircularRRectOp` compiled in 6 of 6 runs of HEAD, none in 6 of 6 with
+  the fill drawn outside the clip); WP03's `AppSurface` rewrite removes it, so it is fixed by WP03's merge (§2i).
+  (2) A harness artifact: screenshots in `/sdcard` woke Google Photos, which then ran on the GPU and four cores inside
+  the captures (33–37 ms GPU frames); `perf.py` wrote four of them right before `rapid_back` and `scroll_root` —
+  fixed in `2b91187f` (§2i). (3) The back gesture's last lever, built and measured for the user's decision (not
+  committed, `$O/backcard-texture.patch`): drawing the card from a texture while it is up takes the RenderThread-caused
+  mid-gesture hitches from 38 to 2 in six runs and the hitch ratio from ~20 to 8–16 ms/s, for one vsync of start
+  latency (§2h). (4) The phase 11 `cardclip-t1` measurement the 13:40 note asked about did finish (three runs and
+  `summary.md`); §2b's table stands. (5) `FABLE-FINDINGS.md` §1 corrected: the Oct 16 measurement did not finish. (6) HEAD measured whole with
+  the fixed perf.py (§3, phase 18): cold start 337 / 370 ms. Commits this run: `2b91187f`, then `wp/WP04` merged at
+  `392020f9` (its `39a6546d`, a dump retry; 44 `test_perf` tests green after the merge).
+
 - **Orchestrator note (Oct 18, 14:00).** New REQUIREMENTS 41 (iOS-like scrolling by default): this branch owns the scroll jank (≤ 0.5% at 120 Hz, aim ~0%) and the first-fling hitch after a cold start or `pm clear`; WP03 owns the physics defaults. Read item 41.
 
 
@@ -39,7 +52,7 @@ this load, and HWUI's own ADPF hints do not move them.
 `*.late_first_frames` reported; keep the current `*.janky_pct`, first-frame and p99 rows as non-regression
 ratchets at the values below (as WP04's `gates-merge.toml` already does for its merge). Numbers in §3.
 
-### 0a. Every gap, where it stands (Oct 18)
+### 0a. Every gap, where it stands (Oct 18, with Oct 19's results)
 
 Phase 2 and the old template from `STATUS.md` §4; "now" is this branch (`layer` = `7da2c84`'s tree, `$P/layer-p7`,
 three runs; tab rows also `$P/layer-t1`, `layer-t2`), the same tools and phone.
@@ -51,10 +64,11 @@ three runs; tab rows also `$P/layer-t1`, `layer-t2`), the same tools and phone.
 | Push/pop, janky / p99 | 4.03 % / 34 ms; 2.34 % / 57 ms | 1.56 % / 26 ms; after the first 0 %, hitch 2.0 ms/s | ~0–0.5 % / ≤ 16 ms | p99 is the push's composing frame and the pop's first frame from idle: device limit (§0) |
 | Pop, first frame UI median / max | 19.1 / 27.6; 15.0 / 36.9 ms | 2.3 / 5.1 ms | ≤ 8 / 16 ms | met |
 | Rapid Back, janky | 5.32 % / 2.62 % | 0.92 %; after the first 0.31 % | ≤ 1 % | met |
-| Back gesture, janky | 3.54 % / 2.82 % | 2.4–2.9 %; after the first 0.9–1.3 %, hitch 15–23 ms/s | ~0 % | open: RenderThread frames on a little core while the card follows the finger, and the commit fade's GPU time (§2d, §2h) |
-| Scroll, janky / GPU p90 | 0.22 % / 6 ms; 0.15 % / 6 ms | 0.22–0.44 % / 6 ms | ≤ 0.5 % (aim ~0) / ≤ 7 ms | met; the janky frames left are GPU programs compiled on first use after `pm clear` (§2f, §2i) |
-| Cold start | 336 ms (Oct 9) / 355 ms | interleaved with the old template on one day: old 393, before the fix 396, **with it 365 ms** (§2e) | below the old template | met: the Play Store checks start after the first frame (`9ed16d25`) |
-| PSS | 109.8 / 93.8 MB | total 107 MB, app share 54 MB (WP04 `final`) | 70 MB total | the 70 MB total is below the window's own buffers on this phone (§2c) |
+| Back gesture, janky | 3.54 % / 2.82 % | 2.4–2.9 %; after the first 0.9–1.3 %, hitch 15–23 ms/s. With the card as a texture (not committed): 2.0–2.1 %, after the first 0.4–0.53 %, hitch 8–16 ms/s, RenderThread-caused hitches 38 → 2 in six runs | ~0 % | the user's decision (§2h: A11.3 rule 1); what remains with it is 7 GPU-bound frames in six runs, the first frame from idle and perf.py's own input cadence |
+| Scroll, janky / GPU p90 | 0.22 % / 6 ms; 0.15 % / 6 ms | 0.22–0.44 % / 6 ms; HEAD (phase 18) root 0.44 %, minimizing 0.51 % (runs 0.37, 0.61, 0.51) / 6 ms | ≤ 0.5 % (aim ~0) / ≤ 7 ms | at the line; every janky scroll frame is a GPU program compiled on first use after `pm clear` (one 37–43 ms and one 17–18 ms RenderThread frame per scenario: the pull-to-refresh indicator a fling pulls out, §2f), which WP03's indicator removes; steady scrolling has none |
+| First fling after `pm clear` (REQUIREMENTS 41) | – | one `CircularRRectOp` compile, 11–31 ms, in 6 of 6 runs | no hitch | cause proven (the card's own clip, §2i); WP03's `AppSurface` removes it at its merge; re-check then |
+| Cold start | 336 ms (Oct 9) / 355 ms | interleaved with the old template on one day: old 393, before the fix 396, **with it 365 ms** (§2e) | below the old template | met: the Play Store checks start after the first frame (`9ed16d25`); HEAD's perf.sh row on Oct 19: 337 / 370 ms (§3, phase 18) |
+| PSS | 109.8 / 93.8 MB | total 107 MB, app share 54 MB (WP04 `final`); after the journey at HEAD 139.3 / 84 MB (phase 18) | 70 MB total | the 70 MB total is below the window's own buffers on this phone (§2c); the journey's native heap is glyph caches and GPU programs, not a leak (§2c, phase 19) |
 
 ## 1. What the first frame of a transition is made of (measured)
 
@@ -303,8 +317,65 @@ back gesture is the one motion that still hitches mid-way:
   the gesture's length, one extra full-screen pass on its first frame, and text drawn from a texture scaled to
   0.9–1.0 (filtered, as the system's own cross-activity back animation scales the closing window's buffer). A11.3 rule 1 forbids an
   offscreen layer on a whole screen, written against fades that re-render the layer every frame; this one would be
-  rendered once per gesture unless the screen's own content animates under the card. Not built: it changes a
+  rendered once per gesture unless the screen's own content animates under the card. Not committed: it changes a
   project rule, which is the user's call.
+- **Built and measured for that decision (phase 17b, Oct 19 01:43–02:02, `$O/phase17b.win.sh`,
+  `$O/logs/phase17b-win.log`):** `cardtex` is HEAD (`9ed16d25`) plus `$O/backcard-texture.patch` (in
+  `BackCardState.applyCard`, `compositingStrategy = CompositingStrategy.Offscreen` for the whole time the card is
+  active, in place of `ModulateAlpha` during the fade only; `git apply` from the repository root), built by
+  `build-wt.win.sh`; `dlplay` is the same tree without it (phase 13's build of `e2fdb08` + `9ed16d25`'s change).
+  `pushpop_gesture` alone, `dlplay` then `cardtex`, then `cardtex` then `dlplay`, three runs each
+  (`$P/dlplay-g1`, `cardtex-g1`, `cardtex-g2`, `dlplay-g2`); read with `$O/abstats.py 'gesture_pop_\d+\.txt'`,
+  `$O/hitchpos.py`, `$O/gesturephases.py` (frames after each dump's first unless named):
+
+  | Back gesture, three runs per order | `dlplay` g1 / g2 | `cardtex` g1 / g2 |
+  |---|---|---|
+  | perf.sh janky / after the first / p99 | 2.41 / 0.8 / 27; 2.51 / 0.93 / 25 | 2.13 / 0.53 / 27; 2.01 / 0.4 / 25 |
+  | perf.sh hitch (ms/s, median of 3) | 20.37; 19.02 | **8.29; 16.47** |
+  | Pop half: late frames / RenderThread ≥ 6 ms (of ~1085) | 20 / 85; 20 / 90 | **11 / 15; 8 / 11** |
+  | Pop half: display hitches, ms/s | 38, 37.2; 34, 32.5 | **18, 16.6; 24, 22.1** |
+  | Gesture frames: RenderThread median / p90 / p99 (ms) | 2.24 / 5.12 / 10.5; 2.21 / 5.31 / 10.3 | **1.50 / 4.08 / 6.27; 1.50 / 4.04 / 6.12** |
+  | Gesture frames: GPU median / p90 (ms) | 5.09 / 8.50; 5.34 / 8.86 | 5.40 / 8.49; 5.30 / 8.18 |
+  | First frame (from idle), vsync to GPU done, median / max (ms) | 18.4 / 25.2; 17.0 / 23.8 | 23.8 / 25.8; 21.0 / 29.3 |
+  | First frame GPU median (ms) | 10.9; 10.7 | 14.9; 14.9 |
+
+  Every hitch of the six runs of each, by cause (`hitchpos.py`; a frame done within 10.5 ms of its vsync is not late
+  in the app: the display had no new frame because the injected moves skipped a vsync, the same in both builds):
+
+  | Hitches in the pop half | `dlplay` | `cardtex` |
+  |---|---|---|
+  | All | 72 | 42 |
+  | Frame on time (input cadence) | 20 | 24 |
+  | Frame late, RenderThread ≥ 6 ms | **38** | **2** |
+  | Frame late, GPU ≥ 8.3 ms | 6 | 7 |
+  | Frame late, other (RenderThread 3.8–5.5 plus GPU 6–7 ms) | 8 | 9 |
+
+  The nav captures agree (`$O/sql/rtframes.sql` + `$O/bursts.py`, `$P/layer-nav` against `$P/cardtex-nav`): a gesture
+  frame's RenderThread median 3.2–4.0 ms → 2.3–2.7 ms (display-list preparation 0.20 → 0.12 ms, execution 0.71–0.77 →
+  0.59–0.69 ms) on the same cores; push and pop frames unchanged.
+- **What it costs, measured:** the gesture's first frame renders the screen into the texture: +4 ms of GPU at the idle
+  clock (10.8 → 14.9 ms), so the card starts following the finger about one vsync later (first frame 17–18 → 21–24 ms
+  from its vsync; it was already late in 18 of 18 gestures in both builds, the idle-clock limit of §0). Gesture
+  frames take 0.0–0.3 ms more GPU (a scaled full-screen texture against the screen's own draws). About 10 MB of GPU
+  memory while the card is up. Text: a full-resolution screenshot of the card held at 45 %
+  (`$O/heldshot.win.sh` → `$P/cardtex-held/dlplay.png`, `cardtex.png`, crop `ab-text.png`) shows the same layout
+  with glyph edges very slightly softer on close inspection (bilinear filtering of the 0.9–1.0 scale); the 720 px
+  recording (`$P/cardtex-rec`, sheet `contact.png`, `ab-topleft.png` against `cardclip-rec`) shows the card's
+  corners, the page beneath and the scrim as before. The commit fade is now a true group fade of the screen (with
+  `ModulateAlpha` each draw faded on its own). If the screen's own content animates under the card (a spinner, a
+  list still flinging), the texture is redrawn on every such frame and the gesture costs more than today; the
+  sample screens hold still.
+- **Tests:** with the patch applied, all 130 `:core:navigation` unit tests pass, `BackCardDrawingTest` (pixels around
+  and under the card) and `SlideRecordingTest` (no screen recorded on a gesture frame) among them
+  (`$O/tests-nav.win.sh` → `$O/logs/tests-nav-cardtex.log`); the worktree was restored afterwards.
+- **Recommendation (the user's call: A11.3 rule 1):** adopt it. It removes 36 of the 38 mid-gesture hitches the
+  RenderThread caused, halves the gesture's late frames and cuts its hitch ratio from about 20 to 8–16 ms/s, at the
+  price of one vsync of start latency on a frame that is late on this phone either way. Rule 1's reason ("alpha < 1
+  renders the screen offscreen every frame") does not hold here: the layer is rendered once per gesture. If the user
+  agrees, rule 1 gets an exception for the back card (rendered once, released when the gesture ends), the patch goes
+  in with an allow marker if `verifyCodeRules` ever checks it (it does not today), and `BackCardDrawingTest` /
+  `SlideRecordingTest` keep guarding it. What would still be left of the gesture: 7 GPU-bound frames in six runs and
+  the input-cadence hitches perf.py's swipe itself makes.
 
 ## 2e. Cold start against the old template
 
@@ -460,6 +531,42 @@ back gesture is the one motion that still hitches mid-way:
 - **Phase 16** (`$O/phase16.win.sh`) tests the reading directly: `noclip` is HEAD's everything project with one
   change made in the generated copy only (`AppClickableSurface` draws the fill and border before `.clip(shape)`),
   `firstfling.win.sh` twice.
+- **Result (phases 16, 17a, 17c and 17e, Oct 18–19; `$O/ffcompile.py`, `$O/ffjank.py`):**
+
+  | First drag after `pm clear` | GPU programs compiled before the flings | RenderThread frame with it |
+  |---|---|---|
+  | `dl` (HEAD's card), `$P/firstfling-dl-1`, `-2`, `firstfling2-dl-1`, `-2`, `firstfling3-dl`, `firstfling4-dl` | `CircularRRectOp` in **6 of 6**, always between the 60 and 80 px steps (25.3, 25.2, 26.9, 12.2, 11.3, 30.5 ms) | 32, 32, 35, 15.6, 14.3, 39.1 ms |
+  | `noclip` (fill and border outside the clip), `$P/firstfling-noclip-1`, `-2`, `firstfling2-noclip-1`, `-2`, `firstfling3-noclip`, `firstfling4-noclip` | **none in 6 of 6** | none over 13.8 ms |
+
+  **Proven: the card's own rounded clip, once the list's edge cuts the card, is the first fling's only first-use GPU
+  program.** The one other compile in any run is a 1.2–2.1 ms `FillRectOp`.
+- **A harness artifact found on the way (fixed):** phase 16's two `noclip` captures still had a 31–32 ms frame in the
+  flings, with no compile in it: the RenderThread ran 2.2 ms and waited 29–30 ms in `eglSwapBuffers`, because the
+  frame before had waited **33–37 ms for the GPU** (`waiting for GPU completion`, 4 ms for the same frame before
+  it). `$O/sql/gpuothers.sql` and `photosgpu.sql`: Google Photos (`com.google.android.apps.photos`) ran up to 3.7
+  cores of CPU and its `drishti_gl_runner` (MediaPipe on the GPU) from about 10 s after the script's first
+  screenshot, for the rest of every capture. `firstfling.win.sh` wrote its screenshots to `/sdcard`, the media
+  scanner indexed them and Photos processed them, on the GPU, while the app flung. `dl-1`'s 37 ms GPU frame after
+  fling 2 was the same. With the screenshots in `/data/local/tmp` (phase 17a) Photos never ran in any capture and
+  no frame of the drag or of the flings waits on the GPU for more than 13.2 ms (the single frames of the slow drag at
+  the GPU's idle clock); `firstfling2-noclip-1` (the only phase 17a capture long enough to hold the lift's fling and
+  fling 1: adb ran slowly beside a Gradle build) has **no frame SurfaceFlinger blames on the app** from the first
+  move on, longest 23 ms (the lift's first frame from idle, `Non Animating`). `perf.py` itself wrote
+  `back_during_push`'s four screenshots to `/sdcard` right before `rapid_back` and `scroll_root` (in the full
+  scenario list, not in `measure.win.sh`'s), and `record` its video: both now go to `/data/local/tmp` (commit
+  `2b91187f`, 43 `test_perf` tests green). `overdraw.win.sh` and `rec-gesture.win.sh` were moved the same way. A
+  full `perf.sh` run (WP04's `final`) may have measured `rapid_back` and `scroll_root` beside Photos; re-measure them
+  with `2b91187f` before reading those rows as the app's.
+- **The fix is WP03's surface, not a change here:** WP03's `foundation/content/AppSurface.kt` draws a card's fill
+  without clipping it (`clipContent = false` by default), which is what `noclip` does, so the program goes away
+  when WP03 merges. A copy of that change on this branch would collide with the rewrite. **After WP03 merges:** run
+  `$O/firstfling.win.sh` on the merged tree (it needs the dev flavour's `perf.fakeSession` hook, which WP03's own
+  branch lacks) and expect no compile; check WP03's rubber band the same way with a fling into the top edge.
+  The whole first scroll, drag, lift and both flings in one capture (phase 17e: `firstfling.win.sh` now runs the
+  drag on the phone, `$O/ffdrag.sh`, because adb on the busy host had stretched it past the capture in 17a and 17c):
+  `firstfling4-noclip` has 340 frames from the first move on, **none blamed on the app** by SurfaceFlinger, the longest
+  24.2 ms (a first frame from idle); `firstfling4-dl` the same but for the compile's 52.7 ms frame. So with WP03's
+  surface the first fling after `pm clear` has no hitch of the app's on this phone.
 
 ## 2c. PSS: which process the row measures, and the floor
 
@@ -488,6 +595,20 @@ back gesture is the one motion that still hitches mid-way:
   (`showmap`, root), which this session did not take; it is open.
   I did not change `perf.py`: moving `meminfo` before `restore` changes what the release row measures, which is a
   gate decision (the user's and WP04's).
+- **The journey's native heap, attributed (phase 19, Oct 19 02:53–02:59, `$O/heapprof.win.sh`: heapprofd sampling
+  every 4 KiB of native allocation over perf.sh's journey on HEAD, `$P/dlplay-heapprof2`; `$O/heapsum.py`):** the
+  process alive at the end held **19.4 MB** of sampled native allocations (its `meminfo` native heap PSS 26.0 MB; the
+  rest is the allocator's own pages). By the library that asked: **HWUI/Skia 11.8 MB**, almost all of it text:
+  rasterised glyph images in Skia's strike cache 3.8 MB (`SkGlyph::allocImage` from `AtlasTextOp`), FreeType's glyph
+  loaders about 2 MB (`tt_glyph_load`, with `TT_Set_Var_Design`: the variable font gives every weight a strike of its
+  own), glyph atlas uploads 1.1 MB, strike digests 0.5 MB; then the Adreno GL driver 3.3 MB and its shader compiler
+  (`libllvm-glnext`) 0.6 MB (the programs compiled in the process after `pm clear`), resources (`libandroidfw`)
+  1.0 MB, text layout (`libminikin`) 0.5 MB, SQLite 0.4 MB. A restored process has drawn one screen's text and
+  compiled nothing, which is where its 14 MB less comes from. Nothing here grows per transition (no leak): it is
+  the glyph cache of every text size and weight the journey drew and the GPU programs it compiled. HWUI already
+  purges both on `onTrimMemory`; the levers, if the app share must come down, are fewer weights and sizes in the
+  type scale (a design decision) and a smaller Skia font-cache budget (a platform setting, not an app API). The
+  first capture (`dlplay-heapprof`) was lost to a script bug (the trace was pulled before perfetto wrote it).
 - **The 70 MB total cannot be met on this phone by any app.** Graphics is 53–55 MB in every dump of every build,
   the old template's included: EGL mtrack is 51.4 MB, the window's buffers at 1080×2400 and 120 Hz (WP04 Deviation
   20 measured the same). That leaves 15–17 MB for the Java heap, native heap, code and stacks together, less than the
@@ -537,6 +658,63 @@ computed from the same runs' gfxinfo dumps by `$O/afterfirst.py`, which applies 
 | Cold start, speed-profile / as installed (ms) | 354 / 408 | 385 / 441 | 368 / 403 | 355 / 408 | 380 / 400 |
 | PSS app / total (MB) | 79 / 133.7 | 84.7 / 140.1 | 80.5 / 135.6 | 82.2 / 137.2 | 48 / – |
 
+**HEAD, Oct 19 (phase 18, `$O/phase18.win.sh`, 02:15–02:43):** `dlplay` (HEAD `9ed16d25`'s tree) with every
+`measure.win.sh` scenario plus `back_during_push` in perf.py's order, perf.py at `2b91187f` (its mid-swipe
+screenshots now come from `/data/local/tmp`: `back_during_push` passed in all three runs, ratios 0.96–0.98, one
+opaque card), three runs, `$P/dlplay-head/summary.md`; `Layer` is phase 7's `$P/layer-p7`:
+
+| Row | Tip a256582 | Layer 7da2c84 | Head 9ed16d25 | `solid` limit |
+
+|---|---|---|---|---|
+
+| Tab switch, janky (%) / after the first (%) | 1.07 / 0 | 1.07 / 0 | 1.15 / 0 | 1 |
+
+| Tab switch, late first frames / switches | 14 / 15 | 14 / 15 | 15 / 15 |  |
+
+| Tab switch, hitch (ms/s) | 0 | 0 | 0 | ratchet |
+
+| Tab switch, first frame UI median / max (ms) | 3.95 / 9.41 | 4.2 / 10.42 | 4.12 / 10.07 | 8 / 16 |
+
+| Tab switch, p99 / GPU p90 (ms) | 20 / 7 | 21 / 9 | 20 / 9 |  |
+
+| Plain taps, janky (%) / after the first (%) | 1.07 / 0 | 1.15 / 0 | 1.15 / 0 | 1 |
+
+| First visit to a tab, first frame median / max (ms) | 3.86 / 8.69 | 3.91 / 8.59 | 4 / 9.45 | ratchet |
+
+| Push, composing frame median / max (ms) | 10.04 / 15.59 | 9.57 / 15.32 | 13.65 / 15.66 | ratchet |
+
+| Pop, first frame median / max (ms) | 2.34 / 5.16 | 2.3 / 5.11 | 2.47 / 5.3 | 8 / 16 |
+
+| Push/pop (Back key), janky (%) / after the first (%) / p99 (ms) | 1.57 / 0 / 29 | 1.56 / 0 / 26 | 1.56 / 0 / 26 | 2 / – / 25 |
+
+| Push/pop, hitch (ms/s) / GPU p90 (ms) | 3.01 / 10 | 2.02 / 9 | 1 / 9 |  |
+
+| Back gesture, janky (%) / after the first (%) / p99 (ms) | 2.4 / 0.8 / 26 | 2.67 / 1.2 / 28 | 2.39 / 0.8 / 26 | 2 / – / – |
+
+| Back gesture, hitch (ms/s) / GPU p90 (ms) | 16.4 / 10 | 23 / 10 | 14.98 / 10 |  |
+
+| Rapid Back, janky (%) / after the first (%) / p99 (ms) | 1.07 / 0.46 / 14 | 0.92 / 0.31 / 14 | 1.07 / 0.46 / 16 | 4 |
+
+| Rapid Back, coalesced pop slowest frame median / max (ms) | 5.58 / 5.83 | 5.18 / 5.56 | 5.48 / 6.71 | 8 / 16 |
+
+| Scroll root, janky (%) / GPU p90 (ms) | 0.22 / 6 | 0.44 / 6 | 0.44 / 6 | 0.5 / 7 |
+
+| Scroll with minimize, janky (%) / GPU p90 (ms) | 0.37 / 6 | 0.37 / 6 | 0.51 / 6 | 0.5 / 7 |
+
+| Recompositions per switch / push / pop | 1 / 5 / 2 | - / - / - | 1 / 5 / 2 | 2 / – / 2 |
+
+| Cold start, speed-profile / as installed (ms) | 355 / 408 | - / - | 337 / 370 | 380 / 400 |
+
+| PSS app / total (MB) | 82.2 / 137.2 | - / - | 84 / 139.3 | 48 / – |
+
+What fails `solid` at HEAD, and why: tab switches 1.15 % (the first frame of each switch, the device limit of §0);
+push/pop p99 26 ms against 25 (a pop's first frame from idle, §0); the back gesture 2.39 % (§2h: RenderThread frames
+on a little core; the texture patch takes it to about 2.0–2.1 %, still over 2 % because of each gesture's first frame
+from idle); scroll with the bar minimizing 0.51 % against 0.5 (`$O/hitchpos.py`: one 37–43 ms and one 17–18 ms
+RenderThread frame per scroll scenario per run, the pull-to-refresh programs compiled after `pm clear`, §2f, which
+WP03's indicator removes); app PSS 84 MB against 48 (§2c). Cold start is now **337 / 370 ms** (speed-profile / as
+installed) against the 380 / 400 ms rows and the old template's 336 ms of Oct 9.
+
 `Tip` is this branch at `a256582` (`wp/WP04` at `7fa49d5`, with its re-recorded baseline profiles, plus `22a9ada`);
 table from `$O/gap-table.py`. Two rows move between runs for a reason that is not the code: the push's composing
 frame and the first visit's first frame are bimodal, 6–7 ms with the main thread on a big core and 12–16 ms on a
@@ -576,16 +754,24 @@ press-hold taps after a warm pass, `$O/firstframes.win.py` → `firstframes.txt`
 - Before → fixed: round 1 took 1.4 ms off the first frame's recomposition, 0.9 ms off measure and layout, 1.1 ms
   off the RenderThread and 1.3 ms off the GPU (medians), and every push/pop and back row improved.
 
-## 4. Still open
+## 4. Still open (Oct 19)
 
-- `head` (`fb866b3`, KeptTabs) and `tip` (this branch at `a256582`: `wp/WP04`'s re-recorded baseline profiles and
-  Windows perf tools, plus `22a9ada`) are being measured the same way (`$O/logs/pipeline-win.log`,
-  `$O/logs/phase2-win.log`), then a push/pop/gesture capture of each build (`$O/nav-traces.win.sh` →
-  `$P/<build>-nav`).
-- Cold start and PSS regressed from before to fixed on this machine's builds (354 → 385 ms, 79 → 85 MB app PSS);
-  `tip` carries the re-recorded profiles, so it decides whether this is the stale profile.
-- The back gesture's own jank (0.94 % after the first frame, GPU 7–14 ms per frame while the card follows the
-  finger): see §2a.
+- **Back gesture:** the user's decision on `$O/backcard-texture.patch` (§2h). Without it the gesture's RenderThread
+  frames on a little core stay (0.8–0.93 % janky after the first frame, hitch about 20 ms/s); with it 0.4–0.53 % and
+  8–16 ms/s, and what remains is GPU-bound frames, the first frame from idle and perf.py's own input cadence.
+- **First fling after `pm clear`:** closed by WP03's surface at its merge (§2i); re-run `$O/firstfling.win.sh` on the
+  merged tree, and fling into the top edge once to check WP03's rubber band for first-use programs.
+- **Scroll rows:** the pull-to-refresh programs a fling to the top compiles (§2f) leave with WP03's indicator; re-measure
+  `scroll_root` and `scroll_minimize` after that merge, with perf.py at `2b91187f` or later.
+- **PSS:** the 70 MB total is below this phone's window buffers (§2c). The app's share after perf.sh's journey is 84 MB
+  at HEAD against `solid`'s 48: its native heap is now attributed (§2c, phase 19: glyph caches of a variable font's
+  weights and sizes, and the GPU driver's compiled programs; no leak); the private `.so` pages still need a
+  per-mapping view (root). Whether the 48 MB row should read a process after the journey or after `restore` is a gate
+  decision for WP04 and the user.
+- **Tab switch, push/pop first frames, cold start, Rapid Back:** device limit (§0) or met (§0a); nothing open in code.
+- **Not measured this round:** the large-window scenarios (`tabs_large`, `pushpop_large`, `listdetail_select`,
+  `scroll_large`, `sidebar_toggle`) need an Expanded window, which this phone does not have without `wm size`; the
+  user's phone settings were not changed for it.
 
 ## 4a. jetpack-compose-performance audit (Oct 18)
 
@@ -628,12 +814,16 @@ Linux originals (Oct 16; kept as written): `$O/build.sh`, `test-then-build.sh`, 
   cold starts alternated in one capture), `dvfs-trace.win.sh` (tab switches from idle), `nav-trace.win.sh` /
   `nav-traces.win.sh` (push, Back, push, back swipe from idle), `scroll-trace.win.sh` (perf.py's flings after
   `pm clear`, then again with the shaders cached), `overdraw.win.sh` (HWUI's overdraw view; puts the property back),
-  `rec-gesture.win.sh`, `mem-ab.win.sh`. Each `phase<N>.win.sh` is one session's builds and adb hold, logged in
+  `rec-gesture.win.sh`, `mem-ab.win.sh`, `firstfling.win.sh` (the first scroll after `pm clear`, traced; the drag runs on
+  the phone from `ffdrag.sh`), `heldshot.win.sh` (a full-resolution screenshot of the back card held at 45 %). Every
+  device-side screenshot or video goes to `/data/local/tmp`, never `/sdcard` (§2i: Google Photos). Each `phase<N>.win.sh` is one session's builds and adb hold, logged in
   `$O/logs/phase<N>-win.log`.
 - Reading results: `gap-table.py` (the §3 table), `afterfirst.py`, `abstats.py <regex> <perf dir>...` (late frames,
   RenderThread ≥ 6 ms, GPU over a vsync, display hitches), `hitchpos.py <run dir>... <regex>` (each hitch's position
   and stages), `latestage.py`, `gesturestats.py`, `firstframes.win.py`, `framebreak.win.py`, `bursts.py`
-  (`rtframes.sql` output grouped into transitions), `binderphases.py` (`mainbinder2.sql` output by start phase).
+  (`rtframes.sql` output grouped into transitions), `binderphases.py` (`mainbinder2.sql` output by start phase),
+  `ffcompile.py` and `ffjank.py` (a first-fling capture's compiles, and the frames SurfaceFlinger blames on the app),
+  `gesturephases.py` (the back gesture's first frame, its frames and the list's frames after the pop).
 - `tp.sh <query.sql> <trace>`: the android-profiler skill's trace_processor with `USERPROFILE=D:\.caches\perfetto`.
 
 ## 6. Queries
@@ -644,7 +834,9 @@ by offset), `mainbinder.sql` / `mainbinder2.sql` (the main thread's binder calls
 `startstates.sql`, `startup-slices.sql`, `bindapp.sql`, `firecls.sql`, `firstdraw*.sql`; `rtframes.sql` (each
 RenderThread frame's stages and big-core share), `rtlong.sql` (RenderThread frames over 7 ms: running on a little or
 big core, runnable, sleeping), `rtchildren.sql`, `rtslices.sql`, `rtslow.sql`, `burstfirst.sql`, `shadercomp.sql`
-(shader compiles inside long frames); `mainslices.sql`, `heavyframes.sql`, `framedetail.sql`.
+(shader compiles inside long frames); `mainslices.sql`, `heavyframes.sql`, `framedetail.sql`; `longframe.sql` (what
+is inside each RenderThread frame over 12 ms, and where it ran), `gpuothers.sql` (other processes' GL threads during
+each GPU wait over 12 ms), `photosgpu.sql` (Google Photos and MediaProvider CPU per 250 ms).
 
 ## Orchestrator note (Oct 15, 20:50): Android skills v1.0.15 (REQUIREMENTS 38)
 

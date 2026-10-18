@@ -39,24 +39,21 @@ data_sources {
     }
   }
 }
-duration_ms: 28000
+duration_ms: 45000
 CFG
 $A shell "perfetto --txt -c - -o /data/misc/perfetto-traces/firstfling.perfetto-trace" < "$out/config.pbtxt" > "$out/perfetto.log" 2>&1 &
 sleep 2
-step() { echo -e "$1\t$($A shell cat /proc/uptime | awk '{print $1}')" >> "$out/steps.txt"; }
-shot() { $A shell screencap -p /sdcard/ff.png; $A pull /sdcard/ff.png "$out/$1.png" > /dev/null; }
-: > "$out/steps.txt"
-shot 0-rest; step rest
-$A shell input motionevent DOWN $x $y0; step down; sleep 0.6
+shot() { $A shell screencap -p /data/local/tmp/ff.png; $A pull /data/local/tmp/ff.png "$out/$1.png" > /dev/null; }
+shot 0-rest
+$A push "$(dirname "$0")/ffdrag.sh" /data/local/tmp/ffdrag.sh > /dev/null
+$A shell rm -f /data/local/tmp/ffsteps.txt
 # 20 px at a time, each step's time recorded, so a compile lands between two known positions of the list.
-for i in $(seq 1 30); do $A shell input motionevent MOVE $x $((y0 - i * 20)); step "move$((i * 20))"; sleep 0.15; done
-shot 1-move600
-$A shell input motionevent UP $x $((y0 - 600)); step up; sleep 1
-$A shell input swipe $x $y0 $x $((h * 29 / 100)) 140; step fling1; sleep 1
-$A shell input swipe $x $y0 $x $((h * 29 / 100)) 140; step fling2; sleep 1
+$A shell sh /data/local/tmp/ffdrag.sh $x $y0 $h
+$A pull /data/local/tmp/ffsteps.txt "$out/steps.txt" > /dev/null
+$A pull /data/local/tmp/ff1.png "$out/1-move600.png" > /dev/null
 shot 5-end
 wait
 $A pull /data/misc/perfetto-traces/firstfling.perfetto-trace "$out/trace.perfetto-trace" > /dev/null 2>&1
-$A shell rm -f /data/misc/perfetto-traces/firstfling.perfetto-trace /sdcard/ff.png
+$A shell rm -f /data/misc/perfetto-traces/firstfling.perfetto-trace /data/local/tmp/ff.png /data/local/tmp/ff1.png /data/local/tmp/ffsteps.txt /data/local/tmp/ffdrag.sh
 ls -la "$out/trace.perfetto-trace"
 echo FIRSTFLING DONE

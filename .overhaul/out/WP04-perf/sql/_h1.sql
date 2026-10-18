@@ -1,0 +1,1 @@
+select a.callsite_id, sum(a.size) bytes from heap_profile_allocation a join process p using(upid) where p.pid=13008 group by 1 having bytes>0

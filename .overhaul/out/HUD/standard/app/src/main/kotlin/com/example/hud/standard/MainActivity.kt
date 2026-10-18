@@ -24,7 +24,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.hud.standard.deeplink.DeepLinkResolver
-import com.example.hud.standard.core.devtools.DevTools
+import com.example.hud.standard.core.ui.tooling.DevTooling
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 import androidx.activity.ComponentActivity
 import android.content.Intent
 import android.content.Context
@@ -55,8 +57,9 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var deepLinkResolver: DeepLinkResolver
 
+    // Present in dev-flavour and debug builds, the only ones that depend on :core:devtools.
     @Inject
-    lateinit var devTools: DevTools
+    lateinit var devTooling: Optional<DevTooling>
 
     private val startup = MutableStateFlow<Startup?>(null)
 
@@ -95,7 +98,7 @@ class MainActivity : ComponentActivity() {
                 settings = resolved.settings,
                 signInKey = AppDestinations.signIn,
                 onExitRequested = { finish() },
-                devTools = devTools,
+                devTooling = devTooling.getOrNull(),
             )
         }
 

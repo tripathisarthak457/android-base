@@ -1,0 +1,14 @@
+[locked:gradle] waiting for the lock (pid 14676 since 2026-10-19 02:05:39: bash -c cd D:/projects/tools/.overhaul/wt/WP04/templates/android && ./gradlew :core:navigation:testDebugUnitTest :app:te)
+[locked:gradle] waiting for the lock (pid 12700 since 2026-10-19 02:10:18: bash -c 
+set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP04-perf/templates/android
+./gradlew :core:navigation:test)
+[locked:gradle] waiting for the lock (pid 22380 since 2026-10-19 02:12:16: bash -c timeout --kill-after=2m 45m ./gradlew -Pandroid.builder.sdkDownload=false --console=plain --continue :build-logi)
+KILLED m1-no-flowon: AuthTokenStoreTest > the cipher runs on the io dispatcher whoever calls FAILED;
+KILLED m2-save-on-caller: AuthTokenStoreTest > the cipher runs on the io dispatcher whoever calls FAILED;
+KILLED m3-replace-on-caller: AuthTokenStoreTest > the cipher runs on the io dispatcher whoever calls FAILED;
+KILLED m4-decrypting-isauthenticated: AuthTokenStoreTest > tokens that cannot be decrypted read as signed out, and the first read deletes them FAILED;AuthTokenStoreTest > whether someone is signed in is answered without unsealing the tokens FAILED;
+KILLED m5-no-discard: AuthTokenStoreTest > tokens that cannot be decrypted read as signed out, and the first read deletes them FAILED;
+KILLED m6-stale-transfer-rule: SessionBackupRulesTest > the session's tokens stay out of every backup and device transfer FAILED;
+MUTATIONS DONE
+EXIT 0

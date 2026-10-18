@@ -76,11 +76,41 @@ NON-BLOCKING: nits. Do not modify anything. Cite file and line.`, { label: `revi
 }
 
 phase('Show')
-const show = await agent(`The user wants to SEE the new performance overlay (package HUD, branch wp/HUD in ${WT}) on their phone. ${ORCH}
-1. Build the everything preset from wp/HUD twice: devDebug and devRelease (application id com.example.hud.everything), through ${L} gradle.
-2. Install both on the phone through ${L} adb. Open the devRelease build, show the pill, open the Performance tab, use the app for a minute (tabs, push and pop, scrolling, a sheet) so the graphs fill, and capture screenshots of the pill, each graph, the per-screen bars and the score, plus one screen recording (screenrecord --size 720x1600, under 60 s) of the overlay while navigating. Do the same briefly on the devDebug build to show its "debug numbers are pessimistic" notice. Save everything under ${OV}/perf/HUD/show/ with readable names.
-3. Export the report (the panel action) and copy the JSON and Markdown into ${OV}/perf/HUD/show/.
-4. Write ${OV}/perf/HUD/SHOW.md for the user in plain English: what each part of the overlay and each graph means, the measured overhead (shown vs hidden), the optimisation score of the everything preset and its biggest lost points, and how to open it on the phone.
-5. Leave the devRelease build installed and open on its Performance tab so the user can pick up the phone and look. Restore any device setting you changed.
-Return a short summary with the overhead numbers and the score.`, { label: 'HUD:show', phase: 'Show' })
-return { state: r.state, summary: r.summary, reviewClean: clean, openFindings: clean ? [] : open, show }
+// The user's working rules (Oct 18 23:10): Sonnet may do the mechanical device work (builds through the lock, installs,
+// screenshots, recordings, exports, raw numbers) to save tokens, but never unsupervised: an Opus agent verifies everything
+// it gathered and writes what the user reads, then a separate Opus agent reviews that for real problems only.
+const CAPTURE = { type: 'object', properties: {
+  apks: { type: 'array', items: { type: 'string' } },
+  screenshots: { type: 'array', items: { type: 'string' } },
+  recording: { type: 'string' },
+  report_json: { type: 'string' }, report_md: { type: 'string' },
+  overhead_raw: { type: 'string' },
+  device_settings_restored: { type: 'boolean' },
+  problems: { type: 'array', items: { type: 'string' } },
+}, required: ['apks', 'screenshots', 'recording', 'report_json', 'report_md', 'overhead_raw', 'device_settings_restored', 'problems'] }
+const VERDICT = { type: 'object', properties: { ok: { type: 'boolean' }, summary: { type: 'string' }, problems: { type: 'array', items: { type: 'string' } } }, required: ['ok', 'summary', 'problems'] }
+
+const capture = await agent(`You are a careful device operator. Follow these steps exactly and report facts only; do not judge quality, do not edit code, do not commit. The user wants to SEE the new performance overlay (package HUD, branch wp/HUD in ${WT}) on their phone. ${ORCH}
+1. Build the everything preset from wp/HUD twice, devDebug and devRelease (application id com.example.hud.everything), through ${L} gradle in the background with logs under ${OV}/perf/HUD/show/logs/, polled.
+2. Install both on the phone through ${L} adb. On the devRelease build: show the pill, open the Performance tab, use the app for a minute (switch tabs, push and pop a screen, scroll a list, open and close a sheet) so the graphs fill. Capture screenshots of the pill, each graph, the per-screen bars and the score, and one screen recording (screenrecord --size 720x1600, under 60 s) of the overlay while navigating. Briefly do the same on the devDebug build to capture its "debug numbers are pessimistic" notice. Save everything under ${OV}/perf/HUD/show/ with readable names.
+3. Export the report from the panel and copy the JSON and the Markdown into ${OV}/perf/HUD/show/.
+4. Copy the raw overlay-overhead measurement files the HUD package produced (shown vs hidden, under ${OV}/perf/HUD/) into ${OV}/perf/HUD/show/overhead/ and name the folder in overhead_raw.
+5. Leave the devRelease build open on its Performance tab. Restore any device setting you changed and say whether you did.
+Return the paths, and in problems anything that failed or looked wrong.`, { label: 'HUD:show-capture', phase: 'Show', schema: CAPTURE, model: 'sonnet' })
+if (!capture) throw new Error('HUD capture failed')
+
+let verdict = await agent(`You are the Opus verifier for the device capture of the HUD overlay (package HUD, branch wp/HUD). A Sonnet operator gathered it; trust nothing until you check it. Its report: ${JSON.stringify(capture)}
+1. Check every listed file exists and is what it claims: open every screenshot and look at it (the pill beside the DEV badge, each graph drawn and filled, the per-screen bars, the score, the debug notice), extract a few frames of the recording with ffmpeg and look at them, read the exported JSON and Markdown and check they agree with the screenshots.
+2. Re-derive the overhead numbers yourself from the raw files in the overhead folder (shown vs hidden janky %, ms per frame) and compare them with REQUIREMENTS 40's limits (at most +0.3 points of jank, under 0.5 ms per frame). Check that the APKs were built from wp/HUD's current head.
+3. Check the phone state through ${L} adb (the devRelease build in front on its Performance tab; wm size, density and font scale at their defaults).
+4. Re-capture anything missing or wrong yourself, through the same locks.
+5. Write ${OV}/perf/HUD/SHOW.md for the user in plain English: what each part of the overlay and each graph means, the measured overhead with your own numbers, the everything preset's optimisation score and its biggest lost points, how to open it on the phone, and the screenshot paths.
+Return ok=true only if everything checks out; list real problems.`, { label: 'HUD:show-verify', phase: 'Show', schema: VERDICT })
+if (!verdict) throw new Error('HUD verify failed')
+
+const audit = await agent(`You are a separate Opus reviewer. Read ${OV}/perf/HUD/SHOW.md and check its claims against the evidence in ${OV}/perf/HUD/show/ (screenshots, recording frames, the exported report, the overhead files) and against ${OV}/REQUIREMENTS.md item 40. Report a problem only if it is real: a claim the evidence does not support, a number that does not match, a limit that is not met but is reported as met, a screenshot that does not show what SHOW.md says. There is no pressure to find something; ok=true with an empty list is a fine answer. Do not modify anything.`, { label: 'HUD:show-review', phase: 'Show', schema: VERDICT })
+if (audit && !audit.ok && audit.problems.length) {
+  log(`HUD show review: ${audit.problems.length} problems`)
+  verdict = await agent(`You are the Opus verifier for the HUD device capture. A separate reviewer found these real problems in ${OV}/perf/HUD/SHOW.md or its evidence; fix each one (re-capture through ${L} adb where needed, correct SHOW.md) and return the verdict: ${JSON.stringify(audit.problems)}`, { label: 'HUD:show-fix', phase: 'Show', schema: VERDICT })
+}
+return { state: r.state, summary: r.summary, reviewClean: clean, openFindings: clean ? [] : open, capture, verdict, audit }

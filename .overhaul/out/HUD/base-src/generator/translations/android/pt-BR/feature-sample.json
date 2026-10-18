@@ -1,0 +1,13 @@
+{
+  "sample_no_matches": "Nenhum resultado",
+  "sample_no_matches_for_query": "Nada corresponde a “%1$s”.",
+  "sample_nothing_here_yet": "Nada por aqui ainda",
+  "sample_pulled_from_a_live_api": "Dados de uma API real",
+  "sample_reload": "Recarregar",
+  "sample_refresh_failed": "Não foi possível atualizar.",
+  "sample_detail_title": "Detalhes",
+  "sample_related": "Relacionados",
+  "sample_title": "Exemplos",
+  "sample_search_titles": "Buscar títulos",
+  "sample_empty_explanation": "Quando houver algo para mostrar, aparecerá nesta tela."
+}

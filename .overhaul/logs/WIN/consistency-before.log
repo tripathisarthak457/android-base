@@ -1,0 +1,55 @@
+[locked:memwait] 428 MB available, 918 MB commit left; waiting for 1500 MB
+[locked:memwait] 437 MB available, 812 MB commit left; waiting for 1500 MB
+[locked:memwait] 206 MB available, 475 MB commit left; waiting for 1500 MB
+[locked:memwait] 747 MB available, 1260 MB commit left; waiting for 1500 MB
+[locked:memwait] 395 MB available, 1383 MB commit left; waiting for 1500 MB
+[locked:memwait] 340 MB available, 1162 MB commit left; waiting for 1500 MB
+[locked:memwait] 362 MB available, 578 MB commit left; waiting for 1500 MB
+[locked:memwait] 269 MB available, 1082 MB commit left; waiting for 1500 MB
+[locked:memwait] 428 MB available, 1260 MB commit left; waiting for 1500 MB
+[locked:memwait] 333 MB available, 1405 MB commit left; waiting for 1500 MB
+[locked:memwait] 328 MB available, 1460 MB commit left; waiting for 1500 MB
+[locked:memwait] 311 MB available, 1420 MB commit left; waiting for 1500 MB
+[locked:memwait] 368 MB available, 1407 MB commit left; waiting for 1500 MB
+[locked:memwait] 379 MB available, 1338 MB commit left; waiting for 1500 MB
+[locked:memwait] 356 MB available, 1401 MB commit left; waiting for 1500 MB
+[locked:memwait] 397 MB available, 1404 MB commit left; waiting for 1500 MB
+[locked:memwait] 324 MB available, 1324 MB commit left; waiting for 1500 MB
+[locked:memwait] 392 MB available, 1268 MB commit left; waiting for 1500 MB
+[locked:memwait] 270 MB available, 1035 MB commit left; waiting for 1500 MB
+Process SpawnProcess-1:
+Traceback (most recent call last):
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\process.py", line 243, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\multiprocessing\queues.py", line 120, in get
+    return _ForkingPickler.loads(res)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^
+AttributeError: module '__main__' has no attribute 'run_one'
+concurrent.futures.process._RemoteTraceback: 
+'''
+Process 17140 terminated abruptly with exit code 1'''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 201, in _run_module_as_main
+  File "<frozen runpy>", line 87, in _run_code
+  File "D:\projects\tools\.overhaul\out\WIN\old\generator\tests\consistency\__main__.py", line 189, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "D:\projects\tools\.overhaul\out\WIN\old\generator\tests\consistency\__main__.py", line 151, in main
+    name, issues = future.result()
+                   ~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\_base.py", line 447, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\crazyhusir\AppData\Local\Python\pythoncore-3.15-64\Lib\concurrent\futures\_base.py", line 396, in __get_result
+    raise self._exception
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.
+exit 1

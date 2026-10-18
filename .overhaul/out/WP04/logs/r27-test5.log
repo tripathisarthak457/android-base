@@ -1,0 +1,23 @@
+[locked:gradle] waiting for the lock (pid 20912 since 2026-10-19 02:35:51: bash out/HUD/phone_builds.win.sh)
+[locked:gradle] waiting for the lock (pid 20912 since 2026-10-19 02:35:51: bash out/HUD/phone_builds.win.sh)
+[locked:gradle] waiting for the lock (pid 20912 since 2026-10-19 02:35:51: bash out/HUD/phone_builds.win.sh)
+[locked:gradle] waiting for the lock (pid 5404 since 2026-10-19 02:51:30: bash D:/projects/tools/.overhaul/out/WP02/gw.win.sh :build-logic:convention:test --console=plain)
+[locked:gradle] waiting for the lock (pid 17588 since 2026-10-19 02:53:44: bash -c set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP03/templates/android
+./gradlew build :core:designsystem:te)
+[locked:gradle] waiting for the lock (pid 17588 since 2026-10-19 02:53:44: bash -c set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP03/templates/android
+./gradlew build :core:designsystem:te)
+[locked:gradle] waiting for the lock (pid 17588 since 2026-10-19 02:53:44: bash -c set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP03/templates/android
+./gradlew build :core:designsystem:te)
+[locked:gradle] waiting for the lock (pid 17588 since 2026-10-19 02:53:44: bash -c set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP03/templates/android
+./gradlew build :core:designsystem:te)
+[locked:gradle] waiting for the lock (pid 17588 since 2026-10-19 02:53:44: bash -c set -euo pipefail
+cd D:/projects/tools/.overhaul/wt/WP03/templates/android
+./gradlew build :core:designsystem:te)
+[locked:gradle] waiting for the lock (pid 1240 since 2026-10-19 03:19:27: bash out/HUD/accept_builds.win.sh)
+[locked:gradle] waiting for the lock (pid 1240 since 2026-10-19 03:19:27: bash out/HUD/accept_builds.win.sh)
+[locked:gradle] waiting for the lock (pid 1240 since 2026-10-19 03:19:27: bash out/HUD/accept_builds.win.sh)
+[locked:gradle] waiting for the lock (pid 1240 since 2026-10-19 03:19:27: bash out/HUD/accept_builds.win.sh)

@@ -50,20 +50,15 @@ import com.example.hud.everything.core.devtools.panel.DevToolsPanel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/**
- * The environment badge, and the inspector it opens. Place it last in the root, over every screen.
- * Absent from a production build.
- */
+/** The environment badge, and the inspector it opens. Placed last in the root, over every screen. */
 @Composable
-fun DevToolsOverlay(devTools: DevTools) {
-    if (!devTools.environment.visible) return
-
+internal fun DevToolsOverlay(devTools: DevTools) {
     var panelOpen by rememberSaveable { mutableStateOf(false) }
     // The tab a badge line asked for; the panel opens on its own first tab otherwise.
     var requestedTab by rememberSaveable { mutableStateOf<String?>(null) }
 
     EdgeBadge(
-        label = devTools.environment.label,
+        label = devTools.label,
         pages = devTools.pages,
         onClick = { panelOpen = true },
         onOpenPage = { key ->
