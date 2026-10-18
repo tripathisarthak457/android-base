@@ -116,6 +116,12 @@ dependencies {
     // <opt:devtools>
     implementation(project(":core:devtools"))
     // </opt:devtools>
+    // <opt:perfhud>
+    // Dev and debug builds only: a shippable release (prodRelease, playstoreRelease) has no trace of
+    // the overlay, not one hidden behind a flag.
+    debugImplementation(project(":core:perfhud"))
+    "devImplementation"(project(":core:perfhud"))
+    // </opt:perfhud>
 
     // <opt:database>
     implementation(project(":core:database"))

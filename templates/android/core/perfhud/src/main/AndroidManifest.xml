@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <!--
+          The overlay's adb path (see ReportReceiver). DUMP is a signature, privileged and development
+          permission: adb's shell holds it and no app a person installs can, so the receiver answers adb
+          and nothing else. This module is a dependency of dev and debug builds only, so a shippable
+          release has no such receiver at all.
+        -->
+        <receiver
+            android:name="com.base.app.core.perfhud.report.ReportReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP" />
+    </application>
+
+</manifest>
