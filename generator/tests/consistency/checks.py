@@ -250,7 +250,7 @@ def _manifests(root: Path, project: Project, package: str) -> list[str]:
                 continue
             owner, _, simple = name.rpartition(".")
             if simple not in project.declared.get(owner, ()):
-                issues.append(f"MANIFEST {manifest.relative_to(root)}: {match.group(1)} {name} is not declared")
+                issues.append(f"MANIFEST {project.relative(manifest)}: {match.group(1)} {name} is not declared")
     return issues
 
 
@@ -267,7 +267,7 @@ def _resources(root: Path, project: Project) -> list[str]:
                     try:
                         elements = ET.parse(path).getroot()
                     except ET.ParseError as error:
-                        issues.append(f"XML {path.relative_to(root)}: {error}")
+                        issues.append(f"XML {project.relative(path)}: {error}")
                         continue
                     for element in elements:
                         name = element.get("name")
@@ -285,7 +285,7 @@ def _resources(root: Path, project: Project) -> list[str]:
                         try:
                             ET.parse(path)
                         except ET.ParseError as error:
-                            issues.append(f"XML {path.relative_to(root)}: {error}")
+                            issues.append(f"XML {project.relative(path)}: {error}")
     kinds = "string|plurals|drawable|mipmap|raw|color|dimen|font|xml|array|bool|integer|style|layout|anim"
     for path in project.kotlin:
         for match in re.finditer(rf"(?<![\w.])(?:\w+R|R)\.({kinds}|id)\.(\w+)", project.code[path]):
@@ -297,7 +297,7 @@ def _resources(root: Path, project: Project) -> list[str]:
             name = match.group(2).replace(".", "_")
             # Glance's default layouts come from the library, not from any module here.
             if name not in names.get(match.group(1), set()) and not name.startswith("glance_"):
-                issues.append(f"RES {path.relative_to(root)}: @{match.group(1)}/{match.group(2)}")
+                issues.append(f"RES {project.relative(path)}: @{match.group(1)}/{match.group(2)}")
     return issues
 
 
@@ -388,14 +388,15 @@ def _translations(root: Path) -> list[str]:
             got = sorted(e.get("name") for e in ET.parse(translated).getroot())
             if got != wanted:
                 issues.append(
-                    f"TRANSLATION {translated.relative_to(root)}: missing {sorted(set(wanted) - set(got))}, "
+                    f"TRANSLATION {translated.relative_to(root).as_posix()}: missing {sorted(set(wanted) - set(got))}, "
                     f"extra {sorted(set(got) - set(wanted))}"
                 )
     return issues
 
 
 def _hollow(root: Path, project: Project) -> list[str]:
-    issues = [f"EMPTY-FILE {path.relative_to(root)}" for path in root.rglob("*") if path.is_file() and path.stat().st_size == 0]
+    empty = (path for path in root.rglob("*") if path.is_file() and path.stat().st_size == 0)
+    issues = [f"EMPTY-FILE {project.relative(path)}" for path in empty]
     for path in project.gradle:
         for match in re.finditer(r"\b(dependencies|plugins|android)\s*\{\s*\}", project.code[path]):
             issues.append(f"EMPTY-BLOCK {project.relative(path)}: {match.group(1)} {{}}")
