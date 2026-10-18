@@ -32,6 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -188,7 +189,11 @@ internal class PerformanceRecorder @Inject constructor(
         if (environment.isDebugBuild) logcat.note(DEBUG_NOTE)
         work = scope.launch(dispatchers.main) {
             launch { currentScreen.name.filterNotNull().collect(feed::setRoute) }
-            launch(dispatchers.default) { sampleEverySecond() }
+            // Nothing is drawn in the background, and PSS there would only measure what the
+            // system trimmed: the sampler stops until an activity is started again.
+            launch(dispatchers.default) {
+                feed.foreground.collectLatest { visible -> if (visible) sampleEverySecond() }
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.base.app.core.perfhud.checks
 import android.os.Build
 import android.os.StrictMode
 import android.os.strictmode.Violation
+import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.RequiresApi
 import kotlinx.serialization.Serializable
 import java.util.concurrent.Executor
@@ -25,6 +26,7 @@ internal class StrictModeWatch @Inject constructor() {
     private val examples = ArrayList<String>()
     private var previous: StrictMode.ThreadPolicy? = null
 
+    @get:ChecksSdkIntAtLeast(api = Build.VERSION_CODES.P)
     val supported: Boolean get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
 
     fun start() {
