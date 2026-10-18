@@ -4,11 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,6 +21,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
+import com.base.app.catalog.catalogContentPadding
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -34,7 +32,6 @@ import com.base.app.core.designsystem.component.feedback.AppRedacted
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -66,22 +63,13 @@ fun LoadingScreen(onBack: (() -> Unit)?) {
             )
         },
     ) {
-        // The catalog has no tab bar to report as chrome, so the list clears the navigation bar itself.
-        val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         LazyColumn(
             state = list,
             modifier = Modifier
                 .fillMaxSize()
                 .testTag("loading_list")
                 .then(if (loaded) Modifier else Modifier.clearAndSetSemantics { contentDescription = "Loading" }),
-            contentPadding = chromeContentPadding(
-                PaddingValues(
-                    start = AppTheme.spacing.gutter,
-                    top = AppTheme.spacing.gutter,
-                    end = AppTheme.spacing.gutter,
-                    bottom = AppTheme.spacing.gutter + navigationBar,
-                ),
-            ),
+            contentPadding = catalogContentPadding(PaddingValues(AppTheme.spacing.gutter)),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
             userScrollEnabled = loaded,
         ) {

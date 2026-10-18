@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.base.app.catalog.CatalogGroup
+import com.base.app.catalog.fontScaled
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -63,9 +64,10 @@ fun TextSection() {
         )
     }
     CatalogGroup("Icons", caption = "Built the first time they are drawn. Directional ones mirror in right-to-left layouts; tab glyphs have filled forms.") {
+        val cell = fontScaled(72.dp)
         FlowRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
             AllIcons.forEach { (name, icon) ->
-                Column(Modifier.width(72.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Column(Modifier.width(cell), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     AppIcon(icon, contentDescription = null, size = AppTheme.sizes.iconLarge)
                     AppText(
                         text = name,

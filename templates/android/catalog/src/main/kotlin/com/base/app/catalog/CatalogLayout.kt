@@ -1,10 +1,46 @@
 package com.base.app.catalog
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import com.base.app.core.designsystem.foundation.chromeContentPadding
+
+/**
+ * A page's scroll padding: [base] and the top bar, and at the bottom the navigation bar and the
+ * frame-time readout standing on it, so the end of every page scrolls clear of the readout.
+ */
+@Composable
+fun catalogContentPadding(base: PaddingValues): PaddingValues {
+    val chrome = chromeContentPadding(base)
+    val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val direction = LocalLayoutDirection.current
+    return PaddingValues(
+        start = chrome.calculateStartPadding(direction),
+        top = chrome.calculateTopPadding(),
+        end = chrome.calculateEndPadding(direction),
+        bottom = chrome.calculateBottomPadding() + navigationBar + frameTimesReadoutReach(),
+    )
+}
+
+/**
+ * A width that holds a label at the person's font scale: token and icon names are identifiers with
+ * no spaces to wrap at, so a fixed width breaks them mid-word at large text. Linear in the scale,
+ * because Android 14's nonlinear scaling would barely grow a width given in sp.
+ */
+@Composable
+@ReadOnlyComposable
+fun fontScaled(width: Dp): Dp = width * LocalDensity.current.fontScale
 
 /**
  * Children in as many columns as fit at [minColumnWidth] or wider, each placed in whichever column

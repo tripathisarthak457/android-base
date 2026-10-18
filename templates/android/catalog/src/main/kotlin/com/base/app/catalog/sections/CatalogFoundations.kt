@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.base.app.catalog.CatalogGroup
+import com.base.app.catalog.fontScaled
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -175,9 +176,10 @@ fun FoundationsSection() {
 
 @Composable
 private fun Swatches(vararg roles: Pair<String, Color>) {
+    val width = fontScaled(96.dp)
     FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
         roles.forEach { (name, color) ->
-            Column(Modifier.width(96.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(Modifier.width(width), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Box(Modifier.fillMaxWidth().height(40.dp).background(color, AppTheme.shapes.sm).border(1.dp, AppTheme.colors.separator, AppTheme.shapes.sm))
                 AppText(
                     text = name,
@@ -218,7 +220,7 @@ private fun TypeRow(name: String, style: TextStyle) {
 @Composable
 private fun MeasureRow(name: String, size: Dp) {
     Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.md), verticalAlignment = Alignment.CenterVertically) {
-        AppText(text = name, modifier = Modifier.width(120.dp), style = AppTheme.typography.footnote)
+        AppText(text = name, modifier = Modifier.width(fontScaled(120.dp)), style = AppTheme.typography.footnote)
         Box(Modifier.width(size).height(12.dp).background(AppTheme.colors.accent, AppTheme.shapes.xs))
         AppFiguresText(text = "${size.value.roundToInt()}", style = AppTheme.typography.caption1, color = AppTheme.colors.contentSecondary)
     }

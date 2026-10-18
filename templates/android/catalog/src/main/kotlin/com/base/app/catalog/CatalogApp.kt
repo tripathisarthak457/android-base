@@ -17,11 +17,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -55,7 +52,6 @@ import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
-import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
 import com.base.app.core.designsystem.theme.AppDesignStyle
@@ -122,7 +118,7 @@ fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvir
                 }
             }
             // Bottom-leading, where no page puts a title or a bar action for it to cover.
-            FrameTimesReadout(frames, Modifier.align(Alignment.BottomStart).navigationBarsPadding().padding(start = 8.dp, bottom = 4.dp))
+            FrameTimesReadout(frames, Modifier.align(Alignment.BottomStart).navigationBarsPadding().padding(start = 8.dp))
         }
     }
 }
@@ -155,8 +151,6 @@ private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
     }
     val scroll = rememberScrollState()
     AppScaffold(topBar = { AppTopBar(title = section.title, onBack = onBack, scrolled = { scroll.value }) }) {
-        val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-        val chrome = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))
         MasonryColumns(
             minColumnWidth = GroupMinWidth,
             spacing = AppTheme.spacing.section,
@@ -164,8 +158,7 @@ private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
                 .fillMaxSize()
                 .appScrollIndicator(scroll)
                 .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
-                .padding(chrome)
-                .padding(bottom = navigationBar),
+                .padding(catalogContentPadding(PaddingValues(AppTheme.spacing.gutter))),
         ) {
             section.Content()
         }
@@ -184,12 +177,11 @@ private fun SectionIndex(
         background = AppTheme.colors.backgroundGrouped,
         topBar = { AppLargeTitleTopBar(title = "Catalog", subtitle = "Every component, in this project's style", scrolled = { list.scrolledFromTop() }) },
     ) {
-        val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         LazyColumn(
             state = list,
             modifier = Modifier.fillMaxSize().appScrollIndicator(list),
             flingBehavior = AppScrollDefaults.flingBehavior(),
-            contentPadding = chromeContentPadding(PaddingValues(bottom = navigationBar + AppTheme.spacing.xl)),
+            contentPadding = catalogContentPadding(PaddingValues(bottom = AppTheme.spacing.xl)),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
         ) {
             item(key = "environment") { EnvironmentBar(environment, onEnvironment) }

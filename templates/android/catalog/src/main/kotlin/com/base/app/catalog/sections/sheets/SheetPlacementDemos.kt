@@ -52,7 +52,7 @@ internal fun PlacementDemos() {
     }
     CatalogGroup(
         "Placement",
-        caption = "Automatic is a bottom sheet on a phone, a centred card on a larger window and a panel at the start " +
+        caption = "Auto is a bottom sheet on a phone, a centred card on a larger window and a panel at the start " +
             "edge of a wide one. Resize the window, or force one here.",
     ) {
         PlacementDemo()
@@ -179,7 +179,7 @@ private val RouteSteps = listOf(
     "The station is on your right",
 )
 
-private val PlacementNames = listOf("Automatic", "Bottom", "Center", "Start", "End")
+private val PlacementNames = listOf("Auto", "Bottom", "Center", "Start", "End")
 
 private val Placements = listOf(
     SheetPlacement.Automatic, SheetPlacement.Bottom, SheetPlacement.Center, SheetPlacement.Start, SheetPlacement.End,
