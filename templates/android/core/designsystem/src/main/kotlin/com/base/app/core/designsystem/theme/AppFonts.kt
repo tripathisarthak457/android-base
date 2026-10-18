@@ -11,7 +11,10 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
 // </opt:googlefonts>
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.withTimeout
 
 /**
  * The two typefaces the app draws with: a sans for everything and a mono for codes and figures that
@@ -52,16 +55,31 @@ class FontPreload(private val downloaded: AppFonts) {
     private var arrived = false
     private var chosen: AppFonts? = null
 
-    /** Fetches the families, waiting at most [budget]. True when the theme will draw with them. */
+    /**
+     * Fetches the families, waiting at most [budget]. True when the theme will draw with them. A
+     * device with no font provider, or one that answers late, gets the platform families; it never
+     * fails the launch.
+     */
     suspend fun run(resolver: FontFamily.Resolver, budget: Duration = PreloadBudget): Boolean =
         run(budget) { resolver.preload(it) }
 
     internal suspend fun run(budget: Duration, load: suspend (FontFamily) -> Unit): Boolean {
         chosen?.let { return it === downloaded }
-        arrived = withTimeoutOrNull(budget) {
-            load(downloaded.sans)
-            load(downloaded.mono)
-        } != null
+        arrived = try {
+            withTimeout(budget) {
+                load(downloaded.sans)
+                load(downloaded.mono)
+            }
+            true
+        } catch (late: TimeoutCancellationException) {
+            currentCoroutineContext().ensureActive()
+            false
+        } catch (failed: IllegalStateException) {
+            // The resolver reports every font it could not fetch this way, the budget running out
+            // included: it catches the cancellation and throws IllegalStateException in its place.
+            currentCoroutineContext().ensureActive()
+            false
+        }
         return arrived
     }
 

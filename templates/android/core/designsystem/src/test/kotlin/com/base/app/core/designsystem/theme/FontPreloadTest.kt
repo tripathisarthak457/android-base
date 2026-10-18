@@ -5,8 +5,13 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.text.font.FontFamily
 import com.base.app.core.designsystem.TestSdk
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -35,6 +40,35 @@ class FontPreloadTest {
     }
 
     @Test
+    fun `a device with no font provider launches with the platform's`() = runTest {
+        val preload = FontPreload(downloaded)
+        assertFalse(preload.run(150.milliseconds) { throw IllegalStateException("Unable to load font") })
+        assertSame(PlatformFonts, preload.fonts)
+    }
+
+    @Test
+    fun `the budget running out inside the resolver leaves the platform's`() = runTest {
+        val preload = FontPreload(downloaded)
+        assertFalse(preload.run(150.milliseconds) { resolverThatWrapsCancellation() })
+        assertSame(PlatformFonts, preload.fonts)
+    }
+
+    @Test
+    fun `cancelling the launch cancels the preload rather than settling on the platform's`() = runTest {
+        val preload = FontPreload(downloaded)
+        var returned = false
+        val startup = launch {
+            preload.run(10.seconds) { resolverThatWrapsCancellation() }
+            returned = true
+        }
+        runCurrent()
+        startup.cancel()
+        startup.join()
+        assertTrue(startup.isCancelled)
+        assertFalse(returned)
+    }
+
+    @Test
     fun `fonts that never arrive leave the platform's, and nothing recomposes when they turn up later`() {
         val arrival = CompletableDeferred<Unit>()
         val preload = FontPreload(downloaded)
@@ -56,5 +90,17 @@ class FontPreloadTest {
         rule.waitForIdle()
         assertEquals(before, compositions)
         assertSame(PlatformFonts, preload.fonts)
+    }
+
+    /**
+     * What Compose's FontFamily.Resolver.preload does with a font still loading when its caller is
+     * cancelled: it catches the cancellation and throws IllegalStateException in its place.
+     */
+    private suspend fun resolverThatWrapsCancellation() {
+        try {
+            awaitCancellation()
+        } catch (cancelled: CancellationException) {
+            throw IllegalStateException("Unable to load font", cancelled)
+        }
     }
 }
