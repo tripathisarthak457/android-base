@@ -34,6 +34,13 @@ data class AuthTokens(
     val owner: String,
 )
 
+/**
+ * The preferences file the session's tokens are kept in. The app's backup and device-transfer rules
+ * leave it out by this name: the Keystore key that seals the tokens never leaves the device, so a
+ * copy elsewhere is ciphertext nothing can read.
+ */
+const val SESSION_TOKENS_FILE = "session_tokens"
+
 /** Where the session's tokens live. */
 interface AuthTokenStore {
 
