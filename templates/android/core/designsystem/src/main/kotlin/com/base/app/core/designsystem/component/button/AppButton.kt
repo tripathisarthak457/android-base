@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -121,6 +121,8 @@ fun AppButton(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
+                    // A label wider than the button wraps rather than losing its end, so at twice the
+                    // text size a long label still reads whole.
                     AppText(
                         text = label,
                         style = if (style.uppercaseLabels) {
@@ -128,8 +130,7 @@ fun AppButton(
                         } else {
                             metrics.textStyle
                         },
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center,
                     )
                     trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
                 }
