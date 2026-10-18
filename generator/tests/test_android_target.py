@@ -343,7 +343,8 @@ class ProjectTest(unittest.TestCase):
         ]
         self.assertEqual([], naming)
         manifest = (project / "core/perfhud/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
-        self.assertIn('android:permission="android.permission.DUMP"', manifest)
+        self.assertIn('android:exported="false"', manifest)
+        self.assertNotIn('android:exported="true"', manifest)
         self.assertTrue((project / "docs/PERFORMANCE-OVERLAY.md").is_file())
 
     def test_the_overlay_shares_the_analytics_jankstats_or_brings_its_own(self):

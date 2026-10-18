@@ -164,20 +164,24 @@ directory. adb can read them from a release build too:
 adb pull /sdcard/Android/data/<applicationId>/files/perfhud/
 ```
 
-The same from a script, without touching the phone:
+On a debug build, the same from a script, without touching the phone:
 
 ```bash
 # Turn recording on or off, then export; the broadcast's result data is the JSON's path.
-adb shell am broadcast -n <applicationId>/com.base.app.core.perfhud.report.ReportReceiver \
+adb shell run-as <applicationId> am broadcast \
+    -n <applicationId>/com.base.app.core.perfhud.report.ReportReceiver \
     -a com.base.app.core.perfhud.action.RECORD --ez recording true
-adb shell am broadcast -n <applicationId>/com.base.app.core.perfhud.report.ReportReceiver \
+adb shell run-as <applicationId> am broadcast \
+    -n <applicationId>/com.base.app.core.perfhud.report.ReportReceiver \
     -a com.base.app.core.perfhud.action.EXPORT
 ```
 
-The receiver is exported to adb only: it requires `android.permission.DUMP`, which the shell holds
-and no installed app can, as androidx's `ProfileInstallReceiver` does. A launch with
-`--es perf.hud on` (or `off`) switches recording for that process, which is how `tools/perf/perf.sh`
-measures the overlay's own cost (`--extra perf.hud=on`).
+The receiver is not exported: no other app can reach it, and adb reaches it only through `run-as`,
+which works on a debuggable build alone. A release-like dev build exports from the tab.
+
+A launch with `--es perf.hud on` (or `off`) switches recording for that process, whatever the
+build, which is how `tools/perf/perf.sh` measures the overlay's own cost (`--extra perf.hud=on`).
+It does nothing else, and nothing in a shippable release reads it.
 
 The JSON has a `schema` number that changes when a field is renamed or removed.
 

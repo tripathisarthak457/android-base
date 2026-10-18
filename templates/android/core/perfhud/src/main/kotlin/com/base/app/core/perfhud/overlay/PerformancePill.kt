@@ -70,7 +70,8 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
     }
 
     val measurer = rememberTextMeasurer(cacheSize = TEXT_CACHE)
-    val style = AppTheme.typography.mono.merge(TextStyle(fontSize = AppTheme.typography.labelSmall.fontSize))
+    val typography = AppTheme.typography
+    val style = remember(typography) { typography.mono.merge(TextStyle(fontSize = typography.labelSmall.fontSize)) }
     val fpsFormat = stringResource(R.string.perfhud_pill_fps)
     val idleFormat = stringResource(R.string.perfhud_pill_idle)
     val jankyFormat = stringResource(R.string.perfhud_pill_janky)

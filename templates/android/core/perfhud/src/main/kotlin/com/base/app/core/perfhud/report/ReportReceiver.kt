@@ -11,21 +11,20 @@ import java.io.IOException
 import javax.inject.Inject
 
 /**
- * The adb path to the overlay, for scripts and CI:
+ * The adb path to the overlay, for scripts on a debug build:
  *
  * ```
- * adb shell am broadcast -n <applicationId>/com.base.app.core.perfhud.report.ReportReceiver -a <action>
+ * adb shell run-as <applicationId> am broadcast \
+ *     -n <applicationId>/com.base.app.core.perfhud.report.ReportReceiver -a <action>
  * ```
  *
  * with [ACTION_EXPORT] to write a report (the result data is the JSON file's path, or the error
- * with result code [RESULT_FAILED]), or
- * [ACTION_RECORD] with `--ez recording true|false` to switch recording.
+ * with result code [RESULT_FAILED]), or [ACTION_RECORD] with `--ez recording true|false` to switch
+ * recording.
  *
- * Exported, because adb's shell is another app as far as the system is concerned, and guarded by
- * `android.permission.DUMP` in the manifest: a signature, privileged and development permission
- * the shell holds and no installed app can, which is how androidx's `ProfileInstallReceiver`
- * takes its adb broadcast too. It exists only in the builds that carry this module, never in a
- * shippable release.
+ * Not exported, so no other app can reach it: `run-as` gives adb the app's own uid, and only on a
+ * debuggable build. A release-like dev build exports its report from the Perf tab instead, and a
+ * shippable release has no receiver at all.
  */
 @AndroidEntryPoint
 internal class ReportReceiver : BroadcastReceiver() {
