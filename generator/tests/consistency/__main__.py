@@ -21,19 +21,15 @@ import sys
 import tempfile
 import time
 import tomllib
-from functools import cache
 from pathlib import Path
 
-from genkit.core import pipeline, translations
+from genkit.core import translations
 from genkit.targets import get
 from genkit.targets.android import modes
 
-from .checks import check
-from .hilt import missing_bindings
-from .project import Project
+from .worker import PACKAGE, reference, run_one
 
 ROOT = Path(__file__).resolve().parents[3]
-PACKAGE = "com.example.consistency"
 KNOWN_ISSUES = Path(__file__).resolve().parent / "known_issues.toml"
 SEED = 20261009
 
@@ -92,36 +88,6 @@ def combinations(quick: bool) -> dict[str, dict]:
     for index, (app, package, modules) in enumerate(HOSTILE):
         runs[f"hostile-{index}"] = spec(keys, modules, app=app, package=package)
     return runs
-
-
-@cache
-def reference(directory: str) -> Project:
-    """Every feature on: what a stripped symbol is checked against."""
-    project = Path(directory) / "reference"
-    if not project.exists():
-        target = get("android")
-        keys = [feature.key for feature in target.manifest.selectable]
-        raw = {"app_name": "Consistency", "package_name": PACKAGE, "features": keys, "feature_modules": ["orders"]}
-        parsed, _ = pipeline.read_spec(raw, target)
-        pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
-    return Project(project)
-
-
-def run_one(name: str, raw: dict, directory: str, keep: bool) -> tuple[str, list[str]]:
-    target = get("android")
-    project = Path(directory) / name
-    try:
-        parsed, _ = pipeline.read_spec(raw, target)
-        pipeline.build(parsed.spec, target, project, zip_output=False, commit="consistency")
-    except Exception as error:  # noqa: BLE001 - a crash is itself the finding
-        return name, [f"GENERATION {type(error).__name__}: {error}"]
-    hostile = name.startswith("hostile-")
-    issues = check(project, raw["package_name"], None if hostile else reference(directory), identity=not hostile)
-    issues += missing_bindings(project)
-    if not keep:
-        shutil.rmtree(project)
-    package = raw["package_name"]
-    return name, [issue.replace(package.replace(".", "/"), "{pkg}").replace(package, "{package}") for issue in issues]
 
 
 def load_known() -> list[dict]:

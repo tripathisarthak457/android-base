@@ -1,4 +1,7 @@
-"""The consistency matrix's unused-resource check on a hand-made module, where every answer is known."""
+"""
+The consistency matrix's unused-resource check on a hand-made module, where every answer is known, and what
+its runner hands its worker processes.
+"""
 
 from __future__ import annotations
 
@@ -6,6 +9,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tests.consistency import __main__ as runner
 from tests.consistency.checks import _unused_resources
 from tests.consistency.project import Project
 
@@ -77,6 +81,14 @@ class UnusedResourcesTest(unittest.TestCase):
             "UNUSED-RES app/src/main/res/values/strings.xml: string/unused",
             "UNUSED-RES app/src/main/res/values/themes.xml: color/orphan",
         ], issues)
+
+
+class RunnerTest(unittest.TestCase):
+
+    def test_the_pool_is_handed_a_function_its_workers_can_import(self):
+        # `python -m tests.consistency` runs __main__.py as "__main__", a module that workers started
+        # with spawn or forkserver never import, so a function defined there cannot be unpickled in one.
+        self.assertNotEqual(runner.__name__, runner.run_one.__module__)
 
 
 if __name__ == "__main__":
