@@ -7,12 +7,20 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.GraphicsLayerScope
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
+import androidx.compose.ui.node.DrawModifierNode
+import androidx.compose.ui.node.LayoutModifierNode
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import com.base.app.core.designsystem.component.navigation.AppTabBarDefaults
 import com.base.app.core.designsystem.theme.rememberReduceMotion
@@ -60,21 +68,58 @@ internal fun rememberChromeSlide(): ChromeSlide {
 }
 
 /** Moves the content with [slide], mirrored on a right-to-left layout. */
-@Composable
-internal fun Modifier.followSlide(slide: ChromeSlide): Modifier {
-    val toward = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f
-    return graphicsLayer { translationX = toward * slide.offset.value }
+internal fun Modifier.followSlide(slide: ChromeSlide): Modifier = this then FollowSlideElement(slide)
+
+private data class FollowSlideElement(val slide: ChromeSlide) : ModifierNodeElement<FollowSlideNode>() {
+    override fun create() = FollowSlideNode(slide)
+
+    override fun update(node: FollowSlideNode) {
+        node.slide = slide
+    }
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "followSlide"
+    }
 }
 
-/** Paints the chrome's surface into the gap the content leaves while the sidebar folds. */
-@Composable
-internal fun Modifier.fillGap(slide: ChromeSlide): Modifier {
-    val surface = AppTabBarDefaults.surface()
-    return drawBehind {
+private class FollowSlideNode(var slide: ChromeSlide) : Modifier.Node(), LayoutModifierNode {
+
+    private var toward = 1f
+
+    // Reads the offset in the layer, so a frame of the slide changes one layer property.
+    private val layer: GraphicsLayerScope.() -> Unit = { translationX = toward * slide.offset.value }
+
+    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        val placeable = measurable.measure(constraints)
+        toward = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
+        return layout(placeable.width, placeable.height) { placeable.placeWithLayer(0, 0, layerBlock = layer) }
+    }
+}
+
+/** Paints [color], the chrome's surface, into the gap the content leaves while the sidebar folds. */
+internal fun Modifier.fillGap(slide: ChromeSlide, color: Color): Modifier = this then FillGapElement(slide, color)
+
+private data class FillGapElement(val slide: ChromeSlide, val color: Color) : ModifierNodeElement<FillGapNode>() {
+    override fun create() = FillGapNode(slide, color)
+
+    override fun update(node: FillGapNode) {
+        node.slide = slide
+        node.color = color
+    }
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "fillGap"
+    }
+}
+
+private class FillGapNode(var slide: ChromeSlide, var color: Color) : Modifier.Node(), DrawModifierNode {
+    override fun ContentDrawScope.draw() {
         val gap = slide.offset.value
-        if (gap <= 0f) return@drawBehind
-        val left = if (layoutDirection == LayoutDirection.Rtl) -gap else size.width
-        drawRect(surface, topLeft = Offset(left, 0f), size = Size(gap, size.height))
+        if (gap > 0f) {
+            val left = if (layoutDirection == LayoutDirection.Rtl) -gap else size.width
+            drawRect(color, topLeft = Offset(left, 0f), size = Size(gap, size.height))
+        }
+        drawContent()
     }
 }
 

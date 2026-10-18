@@ -5,24 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.LocalActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.navigationevent.NavigationEventInfo
-import androidx.navigationevent.compose.NavigationBackHandler
-import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.datastore.AppSettings
 // <opt:devtools>
@@ -36,6 +27,7 @@ import com.base.app.core.navigation.AppNavigationHost
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShortcuts
 import com.base.app.core.navigation.AppShell
+import com.base.app.core.navigation.HostCrossfade
 import com.base.app.core.navigation.LocalAppShortcuts
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
@@ -92,11 +84,7 @@ fun AppRoot(
     }
 }
 
-/**
- * Onboarding, the signed-out screens and the signed-in shell are separate hosts. Moving between them
- * is the one whole-screen crossfade in the app, at most once per session; a Back pressed during it
- * is swallowed, since it would act on a host that is leaving.
- */
+/** Onboarding, the signed-out screens and the signed-in shell are separate hosts. */
 @Composable
 private fun EntryHost(
     identity: EntryIdentity,
@@ -107,17 +95,14 @@ private fun EntryHost(
     shellConfig: ShellConfig,
     shellObservers: Set<ShellObserver>,
 ) {
-    val swap = updateTransition(targetState = identity, label = "identity")
-    val background = AppTheme.colors.background
-    swap.AnimatedContent(
-        // The window has no background of its own once the app has drawn (MainActivity), and two
-        // hosts half faded in and out would show it through each other.
-        modifier = Modifier.drawBehind { if (swap.isRunning) drawRect(background) },
-        transitionSpec = { fadeIn(tween(IDENTITY_FADE_MS)) togetherWith fadeOut(tween(IDENTITY_FADE_MS)) },
-    ) { shown ->
+    HostCrossfade(target = identity) { shown, receivesCommands ->
         when (shown) {
-            EntryIdentity.Onboarding -> SingleStack(AppDestinations.onboarding, navigator, registry, serialization, shellConfig)
-            EntryIdentity.SignedOut -> SingleStack(AppDestinations.signIn, navigator, registry, serialization, shellConfig)
+            EntryIdentity.Onboarding -> SingleStack(
+                AppDestinations.onboarding, navigator, registry, serialization, shellConfig, receivesCommands,
+            )
+            EntryIdentity.SignedOut -> SingleStack(
+                AppDestinations.signIn, navigator, registry, serialization, shellConfig, receivesCommands,
+            )
             is EntryIdentity.SignedIn -> SignedIn(
                 generation = shown.generation,
                 navigator = navigator,
@@ -126,11 +111,10 @@ private fun EntryHost(
                 pendingDeepLink = pendingDeepLink,
                 shellConfig = shellConfig,
                 shellObservers = shellObservers,
+                receivesCommands = receivesCommands,
             )
         }
     }
-    val idle = rememberNavigationEventState(NavigationEventInfo.None)
-    NavigationBackHandler(state = idle, isBackEnabled = swap.isRunning, onBackCompleted = {})
 }
 
 @Composable
@@ -140,9 +124,16 @@ private fun SingleStack(
     registry: NavRegistry,
     serialization: NavKeySerialization,
     config: ShellConfig,
+    receivesCommands: Boolean,
 ) {
     val backStack = rememberAppBackStack(startKey = startKey, serialization = serialization)
-    AppNavigationHost(backStack = backStack, registry = registry, navigator = navigator, config = config)
+    AppNavigationHost(
+        backStack = backStack,
+        registry = registry,
+        navigator = navigator,
+        config = config,
+        receivesCommands = receivesCommands,
+    )
 }
 
 @Composable
@@ -154,10 +145,11 @@ private fun SignedIn(
     pendingDeepLink: PendingDeepLink,
     shellConfig: ShellConfig,
     shellObservers: Set<ShellObserver>,
+    receivesCommands: Boolean,
 ) {
     val tabs = AppDestinations.tabs
     if (tabs.isEmpty()) {
-        SingleStack(AppDestinations.start, navigator, registry, serialization, shellConfig)
+        SingleStack(AppDestinations.start, navigator, registry, serialization, shellConfig, receivesCommands)
         return
     }
     val shellState = rememberShellState(tabs = tabs, registry = registry, serialization = serialization, generation = generation)
@@ -165,7 +157,14 @@ private fun SignedIn(
     LaunchedEffect(shellState, shellObservers) {
         shellObservers.forEach { observer -> launch { observer.observe(shellState) } }
     }
-    AppShell(tabs = tabs, state = shellState, registry = registry, navigator = navigator, config = shellConfig)
+    AppShell(
+        tabs = tabs,
+        state = shellState,
+        registry = registry,
+        navigator = navigator,
+        config = shellConfig,
+        receivesCommands = receivesCommands,
+    )
 }
 
 /**
@@ -175,7 +174,8 @@ private fun SignedIn(
 @Composable
 private fun SystemBarIcons(dark: Boolean) {
     val activity = LocalActivity.current as? ComponentActivity ?: return
-    LaunchedEffect(activity, dark) {
+    // Before the frame is laid out and drawn, so no frame shows the previous theme's icons.
+    SideEffect(activity, dark) {
         val style = if (dark) {
             SystemBarStyle.dark(Color.TRANSPARENT)
         } else {
@@ -191,5 +191,3 @@ fun AppSettings.themeMode(): ThemeMode = when (themeMode) {
     AppSettings.THEME_DARK -> ThemeMode.Dark
     else -> ThemeMode.System
 }
-
-private const val IDENTITY_FADE_MS = 200
