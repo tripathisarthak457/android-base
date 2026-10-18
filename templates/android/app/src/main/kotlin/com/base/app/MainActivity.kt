@@ -30,7 +30,9 @@ import com.base.app.deeplink.DeepLinkResolver
 import com.base.app.feature.onboarding.api.OnboardingKey
 // </opt:onboarding>
 // <opt:devtools>
-import com.base.app.core.devtools.DevTools
+import com.base.app.core.ui.tooling.DevTooling
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 // </opt:devtools>
 // <opt:applock>
 import android.view.WindowManager
@@ -97,8 +99,9 @@ class MainActivity : FragmentActivity() {
     // </opt:applock>
 
     // <opt:devtools>
+    // Present in dev-flavour and debug builds, the only ones that depend on :core:devtools.
     @Inject
-    lateinit var devTools: DevTools
+    lateinit var devTooling: Optional<DevTooling>
     // </opt:devtools>
 
     // <opt:appstatus>
@@ -177,7 +180,7 @@ class MainActivity : FragmentActivity() {
                 signInKey = AppDestinations.signIn,
                 onExitRequested = { finish() },
                 // <opt:devtools>
-                devTools = devTools,
+                devTooling = devTooling.getOrNull(),
                 // </opt:devtools>
                 // <opt:applock>
                 appLock = appLock,

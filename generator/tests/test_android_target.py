@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 import json
+import re
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -328,20 +329,31 @@ class ProjectTest(unittest.TestCase):
         )
         self.assertEqual(["gradlew.bat"], found)
 
-    def test_the_performance_overlay_reaches_dev_and_debug_builds_only(self):
+    def test_dev_tooling_reaches_dev_and_debug_builds_only(self):
         project = generate(self.root, features=["devtools", "perfhud"])
         app_build = (project / "app/build.gradle.kts").read_text(encoding="utf-8")
-        wiring = [line.strip() for line in app_build.splitlines() if ":core:perfhud" in line]
-        self.assertEqual(
-            ['debugImplementation(project(":core:perfhud"))', '"devImplementation"(project(":core:perfhud"))'], wiring
-        )
-        # Nothing a shippable release compiles may name it: :app's main sources would pull it in.
+        for module in (":core:devtools", ":core:perfhud"):
+            wiring = [line.strip() for line in app_build.splitlines() if f'project("{module}")' in line]
+            self.assertEqual(
+                [f'debugImplementation(project("{module}"))', f'"devImplementation"(project("{module}"))'], wiring
+            )
+        # Nothing a shippable release compiles may name them: :app's main sources would pull them in, and
+        # so would any other module that every build has.
         naming = [
             path.relative_to(project).as_posix()
             for path in (project / "app/src/main").rglob("*")
-            if path.suffix in (".kt", ".xml") and "perfhud" in path.read_text(encoding="utf-8").lower()
+            if path.suffix in (".kt", ".xml") and re.search(r"core\.devtools|perfhud", path.read_text(encoding="utf-8"))
         ]
         self.assertEqual([], naming)
+        dependents = sorted(
+            path.parent.relative_to(project).as_posix()
+            for path in project.rglob("build.gradle.kts")
+            if re.search(r'project\(":core:(devtools|perfhud)"\)', path.read_text(encoding="utf-8"))
+        )
+        self.assertEqual(["app", "core/perfhud"], dependents)
+        self.assertTrue(
+            (project / "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/DevToolingGuard.kt").is_file()
+        )
         manifest = (project / "core/perfhud/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
         self.assertIn('android:exported="false"', manifest)
         self.assertNotIn('android:exported="true"', manifest)
@@ -358,11 +370,28 @@ class ProjectTest(unittest.TestCase):
         self.assertIn("jankRecorder.frameListener = listener", shared)
         self.assertNotIn("createAndTrack", shared)
 
+    def test_without_the_inspector_the_root_has_no_tooling_seam(self):
+        project = generate(self.root, features=["network"])
+        package = "com/acme/field"
+        for owned in (
+            "core/devtools",
+            f"core/ui/src/main/kotlin/{package}/core/ui/tooling",
+            f"core/common/src/main/kotlin/{package}/core/common/environment",
+            f"build-logic/convention/src/main/kotlin/{package}/buildlogic/DevToolingGuard.kt",
+        ):
+            self.assertFalse((project / owned).exists(), owned)
+        for name in ("MainActivity.kt", "ui/AppRoot.kt"):
+            source = (project / f"app/src/main/kotlin/{package}" / name).read_text(encoding="utf-8")
+            self.assertNotIn("DevTooling", source, name)
+        flavors = (project / "build-logic/convention/src/main/kotlin/AndroidApplicationFlavorsConventionPlugin.kt")
+        self.assertNotIn("DevTooling", flavors.read_text(encoding="utf-8"))
+
     def test_without_the_overlay_nothing_of_it_is_left(self):
         project = generate(self.root, features=["devtools"])
         self.assertFalse((project / "core/perfhud").exists())
         self.assertFalse((project / "docs/PERFORMANCE-OVERLAY.md").exists())
-        for name in ("settings.gradle.kts", "app/build.gradle.kts", "docs/ARCHITECTURE.md"):
+        guard = "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/DevToolingGuard.kt"
+        for name in ("settings.gradle.kts", "app/build.gradle.kts", "docs/ARCHITECTURE.md", guard):
             self.assertNotIn("perfhud", (project / name).read_text(encoding="utf-8"), name)
 
     def test_a_module_name_that_is_a_template_token_stays_itself(self):

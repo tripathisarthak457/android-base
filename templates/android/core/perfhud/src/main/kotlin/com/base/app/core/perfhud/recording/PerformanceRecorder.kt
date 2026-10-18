@@ -7,7 +7,7 @@ import android.os.BadParcelableException
 import android.os.SystemClock
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.coroutines.ApplicationScope
-import com.base.app.core.devtools.DevEnvironment
+import com.base.app.core.common.environment.AppEnvironment
 import com.base.app.core.devtools.log.DevToolsLog
 import com.base.app.core.devtools.screen.CurrentScreen
 import com.base.app.core.perfhud.checks.BuildChecks
@@ -55,7 +55,7 @@ internal class PerformanceRecorder @Inject constructor(
     @ApplicationContext context: Context,
     private val feed: FrameFeed,
     private val settings: RecordingSettings,
-    private val environment: DevEnvironment,
+    private val environment: AppEnvironment,
     private val currentScreen: CurrentScreen,
     private val requests: DevToolsLog,
     private val memorySampler: MemorySampler,

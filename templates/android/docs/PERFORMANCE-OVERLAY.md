@@ -188,5 +188,5 @@ The JSON has a `schema` number that changes when a field is renamed or removed.
 ## Turning it off
 
 The overlay is the generator's `perfhud` feature. To remove it from a project, delete
-`core/perfhud`, its `include` in `settings.gradle.kts` and the two `:core:perfhud` lines in
-`app/build.gradle.kts`.
+`core/perfhud`, its `include` in `settings.gradle.kts`, the two `:core:perfhud` lines in
+`app/build.gradle.kts` and its entry in `build-logic`'s `DevToolingGuard.kt`.

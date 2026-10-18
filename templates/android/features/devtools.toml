@@ -2,16 +2,20 @@ key = "devtools"
 title = "On-device inspector"
 headline = "See every request the app made"
 description = """
-A badge docked to the screen's edge on every build except production, which can be dragged out of
-the way, and a panel behind it with the last 200 requests (credentials redacted), their timing and
-failure rate, and the build's details. Absent from a production build rather than hidden in one."""
+A badge docked to the screen's edge in dev and debug builds, which can be dragged out of the way,
+and a panel behind it with the last 200 requests (credentials redacted), their timing and failure
+rate, and the build's details. Absent from a production build rather than hidden in one."""
 group = "Observability"
 default = false
 requires = []
 implied_only = false
 owns = [
   "core/devtools",
-  "app/src/main/kotlin/{pkg_path}/di/DevToolsModule.kt",
+  "core/common/src/main/kotlin/{pkg_path}/core/common/environment",
+  "core/ui/src/main/kotlin/{pkg_path}/core/ui/tooling",
+  "app/src/main/kotlin/{pkg_path}/di/AppEnvironmentModule.kt",
   "app/src/main/kotlin/{pkg_path}/ui/ReportCurrentScreen.kt",
+  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/DevToolingGuard.kt",
+  "build-logic/convention/src/test/kotlin/{pkg_path}/buildlogic/DevToolingGuardTest.kt",
 ]
 legacy = []

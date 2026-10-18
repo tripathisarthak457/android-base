@@ -1,5 +1,5 @@
 {
-  "generator_commit": "7b14c0d22d48",
+  "generator_commit": "e39f005df0ed",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -605,7 +605,7 @@
         },
         {
           "default": false,
-          "description": "A badge docked to the screen's edge on every build except production, which can be dragged out of the way, and a panel behind it with the last 200 requests (credentials redacted), their timing and failure rate, and the build's details. Absent from a production build rather than hidden in one.",
+          "description": "A badge docked to the screen's edge in dev and debug builds, which can be dragged out of the way, and a panel behind it with the last 200 requests (credentials redacted), their timing and failure rate, and the build's details. Absent from a production build rather than hidden in one.",
           "group": "observability",
           "headline": "See every request the app made",
           "implied_only": false,

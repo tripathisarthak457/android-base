@@ -8,10 +8,6 @@ import androidx.compose.ui.Modifier
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.common.session.SessionState
 import com.base.app.core.datastore.settings.AppSettings
-// <opt:devtools>
-import com.base.app.core.devtools.DevTools
-import com.base.app.core.devtools.badge.DevToolsOverlay
-// </opt:devtools>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import com.base.app.core.navigation.AppNavigationHost
@@ -23,6 +19,9 @@ import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.rememberAppBackStack
 import com.base.app.core.navigation.rememberShellState
+// <opt:devtools>
+import com.base.app.core.ui.tooling.DevTooling
+// </opt:devtools>
 import com.base.app.session.SessionCoordinator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.drop
@@ -59,7 +58,7 @@ fun AppRoot(
     signInKey: AppNavKey = startKey,
     onExitRequested: () -> Unit = {},
     // <opt:devtools>
-    devTools: DevTools,
+    devTooling: DevTooling?,
     // </opt:devtools>
     // <opt:applock>
     appLock: AppLock,
@@ -92,11 +91,13 @@ fun AppRoot(
                     onExitRequested = onExitRequested,
                 )
                 // <opt:devtools>
-                ReportCurrentScreen(
-                    top = { backStack.current },
-                    serialization = serialization,
-                    screen = devTools.currentScreen,
-                )
+                if (devTooling != null) {
+                    ReportCurrentScreen(
+                        top = { backStack.current },
+                        serialization = serialization,
+                        tooling = devTooling,
+                    )
+                }
                 // </opt:devtools>
             } else {
                 val shellState = rememberShellState(tabs = tabs, serialization = serialization)
@@ -118,11 +119,13 @@ fun AppRoot(
                     onExitRequested = onExitRequested,
                 )
                 // <opt:devtools>
-                ReportCurrentScreen(
-                    top = { shellState.current.current },
-                    serialization = serialization,
-                    screen = devTools.currentScreen,
-                )
+                if (devTooling != null) {
+                    ReportCurrentScreen(
+                        top = { shellState.current.current },
+                        serialization = serialization,
+                        tooling = devTooling,
+                    )
+                }
                 // </opt:devtools>
             }
 
@@ -135,8 +138,8 @@ fun AppRoot(
             // </opt:playstore>
 
             // <opt:devtools>
-            // Last in the Box so the badge floats over every screen; a no-op in production builds.
-            DevToolsOverlay(devTools)
+            // Last in the Box so the badge floats over every screen.
+            devTooling?.Overlay()
             // </opt:devtools>
         }
     }

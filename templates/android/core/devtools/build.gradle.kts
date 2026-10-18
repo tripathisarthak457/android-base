@@ -1,5 +1,6 @@
 /*
- * The on-device inspector: the environment badge, and everything behind it.
+ * The on-device inspector: the environment badge, and everything behind it. :app depends on it from
+ * dev-flavour and debug builds only, so a shippable release carries none of it.
  */
 plugins {
     id("com.base.app.android.library")
@@ -17,6 +18,10 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
+    // <opt:network>
+    implementation(project(":core:network"))
+    // </opt:network>
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigationevent.compose)
 
