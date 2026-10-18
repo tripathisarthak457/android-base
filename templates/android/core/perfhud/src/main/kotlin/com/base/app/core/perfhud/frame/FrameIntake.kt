@@ -48,12 +48,12 @@ internal class FrameIntake(
     }
 
     /**
-     * The route the frame was drawn for. A frame that spans a navigation carries both routes, the
-     * old one first; it counts for the new one, so a push's first frames land on the screen it
-     * opens.
+     * The route the frame was drawn for. JankStats keeps only the newest value of a key for each
+     * frame, so a frame that spans a navigation counts for the screen it opens.
      */
     private fun screenOf(states: List<StateInfo>): String? {
-        for (index in states.lastIndex downTo 0) {
+        // Indexed: an iterator would be an allocation per frame.
+        for (index in states.indices) {
             val state = states[index]
             if (state.key == ROUTE_STATE) return state.value
         }
