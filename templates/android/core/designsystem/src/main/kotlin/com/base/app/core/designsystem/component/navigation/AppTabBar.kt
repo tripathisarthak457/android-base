@@ -233,6 +233,7 @@ fun AppFloatingToolbar(
     }
 }
 
+/** The tab bar's and the rail's fixed measurements, and the surface they share with the sidebar. */
 object AppTabBarDefaults {
 
     /** The floating bar's own height, without its margins or the navigation bar. */

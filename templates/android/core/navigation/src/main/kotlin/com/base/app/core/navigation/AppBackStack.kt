@@ -31,6 +31,7 @@ class AppBackStack internal constructor(
 
     val size: Int get() = entries.size
 
+    /** A copy of the stack, bottom first, which later changes to the stack leave alone. */
     val keys: List<AppNavKey> get() = entries.toList()
 
     fun contains(key: AppNavKey): Boolean = entries.contains(key)
@@ -116,11 +117,11 @@ private fun backStackSaver(
 
 private val stackSerializer = ListSerializer(PolymorphicSerializer(AppNavKey::class))
 
-/*
- * A key missing from its feature's navKeys block cannot be encoded, and the whole stack is lost with
- * it; logged, so the gap shows up in development rather than as an app that forgets where it was.
+/**
+ * The stack as saved state, or null when a key cannot be encoded. A key missing from its feature's
+ * navKeys block loses the whole stack with it, so the failure is logged: the gap shows up in
+ * development rather than as an app that forgets where it was.
  */
-
 internal fun NavKeySerialization.encodeStack(keys: List<AppNavKey>): String? =
     runCatching { json.encodeToString(stackSerializer, keys) }
         .onFailure { Log.e("Back stack not saved", it, NAV_LOG_TAG) }

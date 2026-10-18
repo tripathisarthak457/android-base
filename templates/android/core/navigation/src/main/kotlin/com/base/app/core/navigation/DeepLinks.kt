@@ -18,6 +18,9 @@ import javax.inject.Inject
  * A link, normalised: `baseapp://items/12` and `https://baseapp.example.com/items/12` both read as
  * segments `["items", "12"]`. Path segments rather than a regex, so trailing slashes and tracking
  * parameters do not matter.
+ *
+ * @param segments the link's path, its first token first, with empty segments dropped.
+ * @param parameters the link's query parameters by name; an empty string for a name with no value.
  */
 class DeepLink(val segments: List<String>, val parameters: Map<String, String>) {
 
@@ -49,6 +52,7 @@ class DeepLink(val segments: List<String>, val parameters: Map<String, String>) 
  * ```
  */
 fun interface DeepLinkRoute {
+    /** The destination [link] opens, or null when it is not one of this feature's links. */
     fun keyFor(link: DeepLink): AppNavKey?
 }
 
