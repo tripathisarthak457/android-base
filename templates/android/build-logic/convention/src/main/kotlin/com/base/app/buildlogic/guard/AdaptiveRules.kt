@@ -65,6 +65,7 @@ internal object AdaptiveRules {
             advice = "BoxWithConstraints subcomposes and costs a frame; use containerClass or a custom Layout",
             applies = { it.inFeature && it.isProduction },
             lines = pattern(Regex("""\bBoxWithConstraints\b""")),
+            reference = "jetpack-compose-performance/references/layouts.md",
         ),
         Rule(
             id = "adaptive-mediaquery",

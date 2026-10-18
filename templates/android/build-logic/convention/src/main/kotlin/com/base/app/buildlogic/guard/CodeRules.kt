@@ -145,7 +145,11 @@ internal object CodeRules {
         val advice: String,
         val applies: (Location) -> Boolean,
         val lines: (KotlinSource, Location) -> List<Int>,
-    )
+        /** The page under `.agents/skills/` that explains the rule and its fix, for whoever has to make it. */
+        val reference: String? = null,
+    ) {
+        val message: String = if (reference == null) advice else "$advice (read .agents/skills/$reference)"
+    }
 
     val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL
 
@@ -162,7 +166,7 @@ internal object CodeRules {
         val source = KotlinSource(text)
 
         val found = ALL.filter { it.applies(location) }
-            .flatMap { rule -> rule.lines(source, location).map { Finding(it, rule.id, rule.advice) } }
+            .flatMap { rule -> rule.lines(source, location).map { Finding(it, rule.id, rule.message) } }
             .toMutableList()
         if (!composeCompilerApplied) {
             source.codeLines.indexOfFirst { "@Composable" in it }.takeIf { it >= 0 }?.let {

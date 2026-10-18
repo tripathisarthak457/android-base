@@ -161,6 +161,17 @@ class CodeRulesTest {
     }
 
     @Test
+    fun `a finding names the skill page that explains its fix`() {
+        val finding = CodeRules.check(CORE_UI, "private fun List() = LazyColumn {\n    items(rows) { Row(it) }\n}").single()
+
+        assertEquals("lazy-key", finding.rule)
+        assertTrue(
+            finding.message,
+            finding.message.endsWith("(read .agents/skills/jetpack-compose-performance/references/lazy-layouts.md)"),
+        )
+    }
+
+    @Test
     fun `an allow marker without a reason fails, and silences nothing`() {
         val source = "// allow(raw-dp)\nprivate val p = 16.dp"
 

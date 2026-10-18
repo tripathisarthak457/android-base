@@ -35,6 +35,7 @@ internal object ComposeRules {
             advice = "Modifier.composed allocates per call site; write a Modifier.Node (ModifierNodeElement)",
             applies = { true },
             lines = pattern(Regex("""(?<![\w.])composed\s*[({]|\.\s*composed\s*[({]""")),
+            reference = "jetpack-compose-performance/references/android/develop/ui/compose/custom-modifiers.md",
         ),
         Rule(
             id = "nav-fade",
@@ -47,6 +48,7 @@ internal object ComposeRules {
             advice = "collectAsState keeps collecting in the background; use collectAsStateWithLifecycle()",
             applies = uiCode,
             lines = pattern(Regex("""\bcollectAsState\s*\(""")),
+            reference = "jetpack-compose-performance/references/effects-and-threading.md",
         ),
         Rule(
             id = "raw-tween",
@@ -71,6 +73,7 @@ internal object ComposeRules {
             advice = "SubcomposeAsyncImage composes per load state and stutters in lists; use AsyncImage",
             applies = uiCode,
             lines = pattern(Regex("""\bSubcomposeAsyncImage\b""")),
+            reference = "jetpack-compose-performance/references/layouts.md",
         ),
         Rule(
             id = "bare-clickable",
@@ -83,12 +86,14 @@ internal object ComposeRules {
             advice = "give lazy rows a stable key = { … } so they keep their state and the scroll position",
             applies = uiCode,
             lines = { source, _ -> LazyScopes.unkeyed(source) },
+            reference = "jetpack-compose-performance/references/lazy-layouts.md",
         ),
         Rule(
             id = "lazy-content-type",
             advice = "a lazy scope with more than one kind of item gives each a contentType, so rows are reused by kind",
             applies = uiCode,
             lines = { source, _ -> LazyScopes.untyped(source) },
+            reference = "jetpack-compose-performance/references/lazy-layouts.md",
         ),
         Rule(
             id = "scroll-chrome",
@@ -103,6 +108,7 @@ internal object ComposeRules {
             advice = "take a () -> T provider instead of State<T>, so the read happens where it is needed",
             applies = composeApi,
             lines = { source, _ -> parameters(source) { _, parameter -> STATE_TYPE.containsMatchIn(parameter.type) } },
+            reference = "jetpack-compose-performance/references/state-and-stability.md",
         ),
         Rule(
             id = "vm-forwarding",
@@ -119,6 +125,7 @@ internal object ComposeRules {
             advice = "write val x = animate…(…) and read x.value inside a layout or draw lambda; `by` invites a read in composition",
             applies = designedCode,
             lines = pattern(Regex("""\bby\s+(?:[\w.]+\.)?animate\w*\s*(?:<[^>]*>)?\s*\(""")),
+            reference = "jetpack-compose-performance/references/animation.md",
         ),
         Rule(
             id = "layer-alpha-fill",
@@ -126,6 +133,7 @@ internal object ComposeRules {
                 "CompositingStrategy.ModulateAlpha",
             applies = designedCode,
             lines = { source, _ -> layerAlphaOnFill(source) },
+            reference = "jetpack-compose-performance/references/animation.md",
         ),
         Rule(
             id = "legacy-back",
