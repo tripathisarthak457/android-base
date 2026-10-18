@@ -13,6 +13,7 @@ import re
 from pathlib import Path
 
 from ... import brand
+from ...core.copy import write_text
 from ...core.spec import Spec
 from ...core.target import RenderError
 from .strings import escape
@@ -33,7 +34,7 @@ def apply_fonts(project: Path, spec: Spec) -> None:
     text = path.read_text(encoding="utf-8")
     text = _substitute(path, text, r'(const val Sans = )"[^"]*"', lambda m: f'{m.group(1)}"{spec.font_name}"')
     text = _substitute(path, text, r'(const val Mono = )"[^"]*"', lambda m: f'{m.group(1)}"{spec.mono_font_name}"')
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def apply_feel(project: Path, spec: Spec) -> None:
@@ -61,7 +62,7 @@ def apply_feel(project: Path, spec: Spec) -> None:
         style_import = f"import {spec.package_name}.core.designsystem.theme.{name}\n"
         if style_import not in text:
             text = text.replace(theme_import, style_import + theme_import, 1)
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def apply_accent(project: Path, spec: Spec) -> None:
@@ -86,7 +87,7 @@ def apply_accent(project: Path, spec: Spec) -> None:
                 path, text, rf"(internal val {name} = Color\()0x[0-9A-Fa-f]{{8}}(\))",
                 lambda m, v=value: f"{m.group(1)}{v}{m.group(2)}",
             )
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
     path = _theme_file(project, spec, "AppColors.kt")
     text = path.read_text(encoding="utf-8")
@@ -103,7 +104,7 @@ def apply_accent(project: Path, spec: Spec) -> None:
             path, text, rf"({role}Subtle = {prefix}SubtleDark,\s*\n(?:\s*//[^\n]*\n)*\s*on{prefix} = )[^,\n]+",
             lambda m, on=on_dark: m.group(1) + on,
         )
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def apply_catalog_identity(project: Path, spec: Spec) -> None:
@@ -116,7 +117,7 @@ def apply_catalog_identity(project: Path, spec: Spec) -> None:
         strings, _read(strings), r'(<string name="app_name"[^>]*>).*?(</string>)',
         lambda m: m.group(1) + label + m.group(2),
     )
-    strings.write_text(text, encoding="utf-8")
+    write_text(strings, text)
 
     if not (spec.accent_colour or spec.secondary_colour or spec.tertiary_colour):
         return
@@ -126,7 +127,7 @@ def apply_catalog_identity(project: Path, spec: Spec) -> None:
         colors, _read(colors), r'(<color name="launcher_background">)#[0-9A-Fa-f]{6,8}(</color>)',
         lambda m: f"{m.group(1)}#FF{accent[1:]}{m.group(2)}",
     )
-    colors.write_text(text, encoding="utf-8")
+    write_text(colors, text)
 
 
 def _theme_file(project: Path, spec: Spec, name: str) -> Path:

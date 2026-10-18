@@ -2,8 +2,13 @@
 
 from __future__ import annotations
 
+import ctypes
+import errno
 import io
 import json
+import os
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -11,11 +16,14 @@ import unittest
 import zipfile
 from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
 from unittest import mock
 
 import create_project
 from genkit import targets
-from genkit.core import pipeline
+from genkit.core import pipeline, placement
+from genkit.core.target import RenderError
+from tests.links import junction, symlink_or_skip
 
 GENERATOR = Path(__file__).resolve().parent.parent
 SPEC = {"schema": 2, "platform": "android", "app_name": "Json Check", "package_name": "com.example.jsoncheck"}
@@ -26,6 +34,13 @@ def run(*arguments: str, cwd: Path | None = None) -> subprocess.CompletedProcess
         [sys.executable, str(GENERATOR / "create_project.py"), *arguments],
         capture_output=True, text=True, check=False, cwd=cwd or GENERATOR, stdin=subprocess.DEVNULL,
     )
+
+
+def short_path(path: Path) -> str:
+    """The 8.3 spelling Windows gives `path`, or `path` itself where its volume makes none."""
+    buffer = ctypes.create_unicode_buffer(32_768)
+    length = ctypes.windll.kernel32.GetShortPathNameW(str(path), buffer, len(buffer))
+    return buffer.value if 0 < length < len(buffer) else str(path)
 
 
 class CliTest(unittest.TestCase):
@@ -42,8 +57,26 @@ class CliTest(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stderr)
         data = json.loads(result.stdout)
         self.assertTrue(data["ok"])
-        self.assertEqual(str(self.root / "p"), data["path"])
+        # The temporary directory may be named through a link (macOS) or an 8.3 short name (Windows).
+        self.assertEqual(str(self.root.resolve() / "p"), data["path"])
         self.assertTrue((self.root / "p/settings.gradle.kts").is_file())
+
+    def test_the_reported_path_spells_the_directories_one_way(self):
+        (self.root / "sub").mkdir()
+        result = run("--spec", str(self.spec), "--out", str(self.root / "sub" / ".." / "p"), "--no-zip", "--json")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(str(self.root.resolve() / "p"), json.loads(result.stdout)["path"])
+
+    @unittest.skipUnless(os.name == "nt", "8.3 short names exist only on Windows")
+    def test_the_reported_path_spells_out_a_short_name(self):
+        directory = self.root / "a long directory name"
+        directory.mkdir()
+        short = short_path(directory)
+        if short == str(directory):
+            self.skipTest(f"the volume holding {directory} does not make 8.3 short names")
+        result = run("--spec", str(self.spec), "--out", str(Path(short) / "p"), "--no-zip", "--json")
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(str(directory.resolve() / "p"), json.loads(result.stdout)["path"])
 
     def test_a_refusal_with_json_is_the_headless_shape(self):
         self.spec.write_text(json.dumps({**SPEC, "package_name": "com.example.null"}), encoding="utf-8")
@@ -88,16 +121,29 @@ class CliTest(unittest.TestCase):
         self.assertTrue((sibling / "important.txt").exists())
 
     def test_force_replaces_a_link_and_not_the_directory_it_points_at(self):
+        real = self.precious_directory()
+        link = self.root / "link"
+        symlink_or_skip(self, link, real)
+        self.assert_force_replaces_only(link, real)
+
+    @unittest.skipUnless(os.name == "nt", "junctions exist only on Windows")
+    def test_force_replaces_a_junction_and_not_the_directory_it_points_at(self):
+        real = self.precious_directory()
+        link = self.root / "junction"
+        junction(link, real)
+        self.assert_force_replaces_only(link, real)
+
+    def precious_directory(self) -> Path:
         real = self.root / "real"
         real.mkdir()
         (real / "precious.txt").write_text("keep", encoding="utf-8")
-        link = self.root / "link"
-        link.symlink_to(real, target_is_directory=True)
+        return real
 
+    def assert_force_replaces_only(self, link: Path, real: Path) -> None:
         result = run("--spec", str(self.spec), "--out", str(link), "--no-zip", "--force", "--json")
         self.assertEqual(0, result.returncode, result.stderr)
-        self.assertEqual(str(link), json.loads(result.stdout)["path"])
-        self.assertFalse(link.is_symlink())
+        self.assertEqual(str(self.root.resolve() / link.name), json.loads(result.stdout)["path"])
+        self.assertEqual(self.root.resolve() / link.name, link.resolve(), "still a link")
         self.assertTrue((link / "settings.gradle.kts").is_file())
         self.assertEqual(["precious.txt"], [path.name for path in real.iterdir()])
         self.assertEqual("keep", (real / "precious.txt").read_text(encoding="utf-8"))
@@ -108,6 +154,18 @@ class CliTest(unittest.TestCase):
         (working / "keep.txt").write_text("keep", encoding="utf-8")
         result = run("--spec", str(self.spec), "--out", ".", "--no-zip", "--force", cwd=working)
         self.assertNotEqual(0, result.returncode)
+        self.assertIn("the current directory", result.stderr + result.stdout)
+        self.assertTrue((working / "keep.txt").exists())
+
+    def test_force_never_deletes_the_current_directory_spelled_in_another_case(self):
+        working = self.root / "work"
+        working.mkdir()
+        (working / "keep.txt").write_text("keep", encoding="utf-8")
+        if not (self.root / "WORK").exists():
+            self.skipTest(f"the file system holding {self.root} tells WORK from work")
+        result = run("--spec", str(self.spec), "--out", str(self.root / "WORK"), "--no-zip", "--force", cwd=working)
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn("the current directory", result.stderr + result.stdout)
         self.assertTrue((working / "keep.txt").exists())
 
     def test_set_overrides_after_the_spec_is_read(self):
@@ -211,6 +269,38 @@ class FailedReplaceTest(unittest.TestCase):
         self.assertEqual((1, "internal"), (code, answer["kind"]))
         self.assertEqual(b"old", destination.read_bytes())
         self.assertEqual(["app.zip", "spec.json"], sorted(path.name for path in self.root.iterdir()))
+
+    def test_without_json_a_failure_names_the_output_it_could_not_delete(self):
+        # The note is on the error, or on its cause when the explanation of a path past Windows'
+        # length limit took its place, as it does here on any host shown a Windows one.
+        for patch in (
+            mock.patch.object(placement, "os", SimpleNamespace(**{**vars(os), "name": "nt"})),
+            mock.patch.object(placement, "_windows_long_paths_on", return_value=False),
+            mock.patch.object(placement, "_delete_tree", side_effect=PermissionError(errno.EACCES, "in use")),
+        ):
+            patch.start()
+            self.addCleanup(patch.stop)
+        destination = self.root / "Mine"
+        destination.mkdir()
+        (destination / "old.txt").write_text("keep", encoding="utf-8")
+        failures = {
+            "the error": RenderError("Mine could not be replaced."),
+            "its cause": FileNotFoundError(errno.ENOENT, "No such file", "C:/" + "x" * 300),
+        }
+        for where, failure in failures.items():
+            with self.subTest(where), mock.patch.object(placement, "_swap", side_effect=failure), redirect_stdout(
+                io.StringIO()
+            ), redirect_stderr(io.StringIO()) as errors:
+                code = create_project.main(["--spec", str(self.spec), "--out", str(destination), "--no-zip", "--force"])
+            self.assertEqual(1, code)
+            [left] = [path for path in self.root.resolve().iterdir() if path.name not in ("Mine", "spec.json")]
+            self.assertRegex(
+                errors.getvalue(),
+                rf"(could not be replaced|a path of 303 characters).*\n"
+                rf"The new output was left at {re.escape(str(left))}: it could not be deleted \(in use\)\. ",
+            )
+            self.assertTrue((destination / "old.txt").exists())
+            shutil.rmtree(left)
 
     def test_a_forced_regenerate_replaces_a_zip(self):
         destination = self.root / "app.zip"

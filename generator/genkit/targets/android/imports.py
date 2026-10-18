@@ -11,6 +11,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from ...core.copy import write_text
+
 _IMPORT = re.compile(r"import [\w.]+(?: as \w+)?")
 
 
@@ -53,4 +55,4 @@ def sort_sources(project: Path) -> None:
         text = path.read_text(encoding="utf-8")
         ordered = sort(text)
         if ordered != text:
-            path.write_text(ordered, encoding="utf-8")
+            write_text(path, ordered)

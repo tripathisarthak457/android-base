@@ -14,6 +14,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from ...core.copy import write_text
 from ...core.spec import Spec, module_title, pascal_case
 from . import imports
 
@@ -160,7 +161,7 @@ def _accept_unpreviewed_screens(project: Path, spec: Spec, name: str, pascal: st
         return
     base = f"feature/{name}/src/main/kotlin/{spec.package_path}/feature/{name}"
     lines = [f"{base}/{screen.format(P=pascal)} adaptive-preview 1\n" for screen in _SCREENS]
-    with baseline.open("a", encoding="utf-8") as file:
+    with baseline.open("a", encoding="utf-8", newline="") as file:
         file.writelines(lines)
 
 
@@ -175,7 +176,7 @@ def _render(snippet: str, destination: Path, tokens: dict[str, str], themed: boo
     if destination.suffix == ".kt":
         text = imports.sort(text)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(text, encoding="utf-8")
+    write_text(destination, text)
 
 
 def _fit(text: str, snippet: str) -> str:
@@ -218,4 +219,3 @@ def _theme_previews(text: str, themed: bool) -> str:
             continue
         out.append(line[4:] if inside and not themed and line.startswith("    ") else line)
     return "".join(out)
-

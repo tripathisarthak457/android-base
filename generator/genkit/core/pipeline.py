@@ -16,18 +16,16 @@ leaves nothing behind that the API does not delete.
 
 from __future__ import annotations
 
-import os
 import re
-import shutil
 import tempfile
 from dataclasses import dataclass
 from functools import cache
 from pathlib import Path
 from typing import Any
 
-from . import markers, package, record
+from . import markers, package, placement, record
 from . import spec as specs
-from .copy import is_executable, is_verbatim, mark_executable, prune_empty_directories, template_files
+from .copy import is_executable, is_verbatim, mark_executable, prune_empty_directories, template_files, write_text
 from .manifest import TemplateManifest
 from .markers import MARKER_TEXT, TemplateError
 from .rename import IdentityRenamer
@@ -63,7 +61,8 @@ def build(
 ) -> Generated:
     """
     Generates `spec` into `destination`: a zip file, or a project directory that must not exist yet.
-    With `replace`, whatever is at `destination` is deleted, but only once the new project is complete.
+    With `replace`, whatever is at `destination` is deleted, but only once the new project has taken
+    its place; what of it cannot be deleted then is left beside it, and a warning says where.
     """
     if not replace and not zip_output and destination.exists():
         raise RenderError(f"{destination} already exists.")
@@ -71,7 +70,10 @@ def build(
         raise RenderError(f"{destination} is a directory, not a path for the zip.")
 
     manifest = target.manifest
-    with tempfile.TemporaryDirectory(prefix=f"{target.key}-gen-") as staging:
+    with (
+        placement.windows_path_limit_explained("app name or package name"),
+        tempfile.TemporaryDirectory(prefix=f"{target.key}-gen-") as staging,
+    ):
         project = Path(staging) / spec.pascal_name
         project.mkdir()
         warnings = render_template(project, spec, target)
@@ -81,31 +83,16 @@ def build(
         record.write(project, spec, commit or record.generator_commit())
         if git_init:
             warnings += package.git_init(
-                project, f"Initial commit: {spec.app_name} generated from the {manifest.title} template"
+                project,
+                f"Initial commit: {spec.app_name} generated from the {manifest.title} template",
+                manifest.executable,
             )
 
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        # The result is finished beside the destination and renamed over it, so a failure never
-        # leaves half a project where a caller expects a whole one, nor costs the one it replaces.
-        with tempfile.TemporaryDirectory(prefix=f".{destination.name}.", dir=destination.parent) as beside:
-            finished = Path(beside) / destination.name
-            if zip_output:
-                package.zip_project(project, finished, manifest.executable)
-            else:
-                shutil.move(str(project), str(finished))
-            if replace:
-                _remove(destination)
-            os.replace(finished, destination)
+        warnings += placement.place(
+            project, destination, zip_output=zip_output, replace=replace, executable=manifest.executable
+        )
 
     return Generated(destination, spec.pascal_name, warnings, context.summary)
-
-
-def _remove(path: Path) -> None:
-    """Deletes `path` itself: a symbolic link is unlinked, never followed."""
-    if path.is_dir() and not path.is_symlink():
-        shutil.rmtree(path)
-    elif path.exists() or path.is_symlink():
-        path.unlink()
 
 
 def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str]:
@@ -138,7 +125,7 @@ def render_template(project: Path, spec: specs.Spec, target: Target) -> list[str
                 rendered = render_text(text, source.relative, manifest, spec.features, known, regions, renamer)
                 if rendered is None:
                     continue
-                destination.write_bytes(rendered.encode("utf-8"))
+                write_text(destination, rendered)
 
         if is_executable(relative, manifest.executable):
             mark_executable(destination)

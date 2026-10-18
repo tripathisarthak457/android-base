@@ -26,6 +26,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 REPOSITORY = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPOSITORY / "generator"))
+
+from genkit.core.copy import write_text  # noqa: E402
+
 UPSTREAM = "https://github.com/android/skills"
 SKILLS_DIR = ".agents/skills"
 POINTERS_DIR = ".claude/skills"
@@ -234,7 +238,7 @@ def manifest(target: Path) -> str:
 
 def write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def snapshot(root: Path, directories: tuple[str, ...] = (SKILLS_DIR, POINTERS_DIR)) -> dict[str, str]:

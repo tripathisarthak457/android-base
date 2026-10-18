@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import os
+import stat
 from collections.abc import Iterator
 from dataclasses import dataclass
-from fnmatch import fnmatch
+from fnmatch import fnmatchcase
 from pathlib import Path
 
 #: Never copied out of a template: build output, IDE state, machine-local settings and keys.
@@ -60,13 +61,38 @@ def _join(directory: str, name: str) -> str:
     return name if directory == "." else f"{directory}/{name}"
 
 
+def write_text(path: Path, text: str) -> None:
+    """
+    Writes `text` as UTF-8 with exactly the line endings it has. `Path.write_text` turns every `\\n`
+    into `\\r\\n` on Windows, and what the generator writes must be the same bytes on every host.
+    """
+    path.write_bytes(text.encode("utf-8"))
+
+
+def is_link(path: Path) -> bool:
+    """A symbolic link, or a junction: the directory link Windows lets any account make."""
+    try:
+        status = path.lstat()
+    except OSError:
+        return False
+    if stat.S_ISLNK(status.st_mode):
+        return True
+    # The reparse tag is how Path.is_junction tells, which needs Python 3.12; this runs on 3.11.
+    # Both the tag and its constant exist only on Windows.
+    return os.name == "nt" and status.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT
+
+
 def is_executable(relative: str, patterns: tuple[str, ...]) -> bool:
-    return any(fnmatch(relative, pattern) for pattern in patterns)
+    # fnmatch ignores case on Windows alone, and the zip and the commit must mark the same files everywhere.
+    return any(fnmatchcase(relative, pattern) for pattern in patterns)
 
 
 def is_verbatim(relative: str, patterns: tuple[str, ...]) -> bool:
-    """True for a path the manifest's `verbatim` globs cover; `**` and `*` both cross directories."""
-    return any(fnmatch(relative, pattern) for pattern in patterns)
+    """
+    True for a path the manifest's `verbatim` globs cover; `**` and `*` both cross directories. Case
+    counts on every host, as for `is_executable`, so a project's bytes do not depend on where it was made.
+    """
+    return any(fnmatchcase(relative, pattern) for pattern in patterns)
 
 
 def mark_executable(path: Path) -> None:

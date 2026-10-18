@@ -18,7 +18,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from string import Template
 
-SNIPPETS = Path(__file__).parent / "snippets"
+from ...core.copy import write_text
+
+SNIPPETS =Path(__file__).parent / "snippets"
 TIERS = ("feature", "data")
 
 _NAMESPACE = re.compile(r'^\s*namespace\s*=\s*"([\w.]+)"', re.MULTILINE)
@@ -115,7 +117,7 @@ def _split_module(project: Path, package: str, package_path: str, module: Module
     if "import kotlinx.serialization" in imports and "api(libs.kotlinx.serialization.core)" not in extra:
         extra.append("api(libs.kotlinx.serialization.core)")
     api.mkdir(exist_ok=True)
-    (api / "build.gradle.kts").write_text(_api_build_file(package, module, extra), encoding="utf-8")
+    write_text(api / "build.gradle.kts", _api_build_file(package, module, extra))
 
     _add_dependency(impl / "build.gradle.kts", f'api(project("{module.path}:api"))')
 
@@ -188,7 +190,7 @@ def _rewrite_references(project: Path, build_file: Path, modules: list[Module]) 
     text = build_file.read_text(encoding="utf-8")
     rewritten = _ACCESSOR.sub(accessor, _PROJECT.sub(project_call, text))
     if rewritten != text:
-        build_file.write_text(rewritten, encoding="utf-8")
+        write_text(build_file, rewritten)
 
 
 def _rewrite_settings(settings: Path) -> None:
@@ -197,7 +199,7 @@ def _rewrite_settings(settings: Path) -> None:
         lambda match: f'{match.group(1)}include("{match.group(2)}:api")\n{match.group(1)}include("{match.group(2)}:impl")',
         text,
     )
-    settings.write_text(rewritten, encoding="utf-8")
+    write_text(settings, rewritten)
 
 
 def _app_depends_on_data(build_file: Path, data: list[Module]) -> None:
@@ -225,11 +227,11 @@ def _add_dependency(build_file: Path, line: str, after: str | None = None) -> No
         block = _DEPENDENCIES.search(text)
         if block is None:
             separator = "" if text.endswith("\n\n") or not text else "\n"
-            build_file.write_text(f"{text}{separator}dependencies {{\n    {line}\n}}\n", encoding="utf-8")
+            write_text(build_file, f"{text}{separator}dependencies {{\n    {line}\n}}\n")
             return
         index = text.count("\n", 0, block.end()) + 1
         lines.insert(index, f"    {line}\n")
-    build_file.write_text("".join(lines), encoding="utf-8")
+    write_text(build_file, "".join(lines))
 
 
 def _move_tree(source: Path, target: Path) -> None:

@@ -20,6 +20,7 @@ from string import Template
 
 from genkit import targets
 from genkit.core import prompts, translations
+from genkit.core.copy import write_text
 from genkit.core.record import RECORD_NAME
 from genkit.core.spec import Spec, SpecError, validate_module_name
 from genkit.targets.android import scaffold, strings, tabs
@@ -102,13 +103,13 @@ def add_domain(project: Path, raw_name: str) -> int:
 
     snippet = (Path(scaffold.__file__).parent / "snippets" / "domain.build.gradle.kts").read_text(encoding="utf-8")
     (root / "src/main/kotlin" / package_name.replace(".", "/") / "domain" / name).mkdir(parents=True)
-    (root / "build.gradle.kts").write_text(Template(snippet).substitute(package=package_name), encoding="utf-8")
+    write_text(root / "build.gradle.kts", Template(snippet).substitute(package=package_name))
 
     settings = project / "settings.gradle.kts"
     text = settings.read_text(encoding="utf-8")
     include = f'include(":domain:{name}")\n'
     anchor = 'include(":domain:' if 'include(":domain:' in text else 'include(":data:'
-    settings.write_text(insert_after_last(text, anchor, include), encoding="utf-8")
+    write_text(settings, insert_after_last(text, anchor, include))
 
     print()
     print(prompts.green(prompts.bold("  Done.")))
@@ -184,7 +185,7 @@ def register_modules(project: Path, names: tuple[str, ...]) -> None:
         additions = "".join(f'include("{prefix}{name}")\n' for name in names)
         text = insert_after_last(text, f'include("{prefix}', additions)
 
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def register_dependencies(project: Path, names: tuple[str, ...]) -> None:
@@ -200,7 +201,7 @@ def register_dependencies(project: Path, names: tuple[str, ...]) -> None:
         additions,
         fallback=insert_into_dependencies_block,
     )
-    path.write_text(text, encoding="utf-8")
+    write_text(path, text)
 
 
 def insert_into_dependencies_block(text: str, addition: str) -> str:
@@ -251,7 +252,7 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
         closing = next((index for index in range(opening + 1, len(lines)) if lines[index].strip() == ")"), None)
     if closing is None:
         print(prompts.yellow(f"  ! No tab list in {path}; add the tabs by hand."))
-        path.write_text(text, encoding="utf-8")
+        write_text(path, text)
         return
 
     entries = [index for index in range(opening + 1, closing) if lines[index].strip().startswith("ShellTab(")]
@@ -262,7 +263,7 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
     taken = set(_ICON.findall("".join(lines[opening:closing])))
     chosen = tabs.icons(names, taken, tabs.available_glyphs(project))
     lines.insert(anchor + 1, "".join(tabs.shell_tab(name, *chosen[name]) for name in names))
-    path.write_text("".join(lines), encoding="utf-8")
+    write_text(path, "".join(lines))
 
 
 def insert_after_last(
