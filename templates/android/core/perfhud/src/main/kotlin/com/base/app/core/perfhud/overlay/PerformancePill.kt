@@ -58,7 +58,7 @@ internal fun PerformancePill(
 }
 
 @Composable
-private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modifier: Modifier) {
+private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modifier: Modifier = Modifier) {
     val numbers = remember { PillNumbers() }
     LaunchedEffect(frames) {
         val live = LiveStats()
