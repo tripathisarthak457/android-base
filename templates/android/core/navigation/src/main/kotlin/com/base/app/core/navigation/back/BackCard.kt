@@ -206,13 +206,12 @@ internal class BackCardState {
         scaleY = scale
         translationX += shiftX(size.width)
         translationY = shiftY(size.height)
+        // The screen under the card is drawn once into a texture when the gesture starts; every later
+        // frame of the gesture and of the commit fade moves, scales and fades that one texture instead
+        // of replaying the whole screen's drawing on the RenderThread and the GPU.
+        compositingStrategy = CompositingStrategy.Offscreen
         val alpha = contentAlpha.value
-        if (alpha < 1f) {
-            this.alpha = alpha
-            // A 100 ms fade of a whole screen without an offscreen buffer: each draw is faded on its
-            // own, which overlapping draws inside an opaque screen cannot show.
-            compositingStrategy = CompositingStrategy.ModulateAlpha
-        }
+        if (alpha < 1f) this.alpha = alpha
         val corner = corner().roundToInt()
         if (corner > 0) {
             shape = CardShapes.of(corner)
