@@ -8,6 +8,7 @@ scope in the orchestrator's task is the specification.
 
 ## Progress
 
+- **Orchestrator note (Oct 19, 15:56): Linux CI green.** PR #2 (ci/linux-check at `070a91b`): every GitHub check passed on Linux (Generator, API, Frontend, generated-project builds none/lean/all/everything); only Vercel's preview failed (its cause needs the user's Vercel login). PR #2 closed unmerged as planned. `a5db7b0` and `070a91b` reach the integration line through the staging consolidation (REQUIREMENTS 44), not a separate merge into overhaul/multiplatform-v2.
 - **Orchestrator note (Oct 19, 15:32): PR #1 and PR #2.** PR #1 shows "merged": GitHub marked it so at 14:16 when the integration branch, pushed as a backup with WIN's merge `3a0d38e`, came to contain its head; nothing was merged through GitHub. With the user's OK (15:30), PR #2 https://github.com/tripathisarthak457/android-base/pull/2 runs Linux CI on `a5db7b0` and `070a91b` from the throwaway branch `ci/linux-check`; it is closed before these fixes are merged and pushed, so GitHub cannot mark it merged.
 - **Orchestrator note (Oct 19, 13:02): the third Linux CI run (39214194825, `4746a0b`).** API green. Generator: 1 failure on Linux, `tests.test_zip.ZipTest.test_the_commit_holds_a_file_past_windows_path_limit`: right after the `--git` commit, `git status` shows ` M gradlew` and ` M tools/perf/perf.sh` (Tuples differ: (0, '', '') != (0, ' M gradlew
  M tools/perf/perf.sh

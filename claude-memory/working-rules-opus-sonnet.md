@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 8d80ef9d-4533-47d0-b348-d4c6caaeb696
-  modified: 2026-10-19T00:48:20.789Z
+  modified: 2026-10-19T10:29:40.302Z
 ---
 
 The user's working rules (Oct 18 23:10, ultracode on; they adopted my adjustments the same evening):
@@ -30,6 +30,10 @@ The user's working rules (Oct 18 23:10, ultracode on; they adopted my adjustment
 
 **Why:** the user's pasted "Working instructions" plus "if u think its a good approach specially device checks and
 controlling the device ... opus can supervise"; they asked for the adjustments to share with another project's session.
+**Checklist for every new workflow script (the user had to remind me on Oct 19 at 15:58, after three scripts ran capture and test
+runs on Opus):** go through each agent() call; a step that only runs commands or drives the phone (test matrices, builds,
+installs, screenshots, recordings, perf harness runs, log pulls, inventories) gets `model: 'sonnet'` and returns facts plus
+log paths, followed by an Opus verifier; steps that edit code, merge, judge or review stay on Opus.
 **How to apply:** new workflow steps that drive the phone follow the capture -> verify -> review pattern in
 `scripts/hud-first.js` (Show phase); add `model: 'sonnet'` only to such capture steps, never to a call already in a run
 you may resume. Related: [[android-base-windows-decisions]], [[usage-reserve-10-percent]].
