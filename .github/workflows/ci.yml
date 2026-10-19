@@ -35,7 +35,7 @@ jobs:
         run: python -m unittest discover -s tests -t .
       - name: The catalogue is valid JSON
         working-directory: generator
-        run: python -m genkit.catalogue | python -m json.tool > /dev/null
+        run: python -m genkit.core.catalogue --json | python -m json.tool > /dev/null
 
   api:
     name: API
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
-          go-version: "1.24"
+          go-version-file: web/api/go.mod
           cache-dependency-path: web/api/go.sum
       - working-directory: web/api
         run: |
@@ -96,32 +96,24 @@ jobs:
       - uses: gradle/actions/setup-gradle@v5
 
       - name: Generate
+        # Through the command line, not the generator's modules: it is what users run, and it
+        # changes less.
+        working-directory: generator
+        env:
+          EVERY_LANGUAGE: |
+            import json
+            from genkit.core.translations import available
+            print(json.dumps(sorted(available("android"))))
         run: |
-          cd generator
-          python - <<'PY'
-          import json, pathlib, sys
-          sys.path.insert(0, ".")
-          from genkit.spec import FEATURES, preset_features, resolve_features
-          chosen = "${{ matrix.preset }}"
-          if chosen == "all":
-              features = resolve_features({f.key for f in FEATURES if not f.implied_only})
-          elif chosen == "none":
-              features = set()
-          else:
-              features = preset_features(chosen)
-          spec = {
-              "app_name": "Ci Check",
-              "package_name": "com.example.cicheck",
-              "features": sorted(features),
-              "feature_modules": ["orders"],
-          }
-          if chosen == "all":
-              # Every language too, so lint checks each translation against the strings it ships.
-              from genkit.translations import available
-              spec["languages"] = sorted(available())
-          pathlib.Path("ci-spec.json").write_text(json.dumps(spec))
-          PY
-          python create_project.py --spec ci-spec.json --out "$GITHUB_WORKSPACE/out" --no-zip
+          echo '{"schema": 2, "platform": "android", "app_name": "Ci Check", "package_name": "com.example.cicheck",
+            "features": [], "feature_modules": ["orders"]}' > ci-spec.json
+          case "${{ matrix.preset }}" in
+            none) chosen=() ;;
+            # Every language too, so lint checks each translation against the strings it ships.
+            all) chosen=(--all --set "languages=$(python -c "$EVERY_LANGUAGE")") ;;
+            *) chosen=(--preset "${{ matrix.preset }}") ;;
+          esac
+          python create_project.py --spec ci-spec.json "${chosen[@]}" --out "$GITHUB_WORKSPACE/out" --no-zip
 
       - name: The wrapper is executable
         # Exit 126 here means the generator lost the bit. It is the first command the README
