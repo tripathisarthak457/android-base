@@ -353,7 +353,8 @@ function SigningPanel({ model, field, rules, available }: { model: ConfiguratorM
               <label key={name} className="flex items-center gap-3">
                 <span className="w-20 shrink-0 font-mono text-xs text-ink-400">{name}</span>
                 {/* Not a password input: the value is written to keystore.properties in plain text in the same zip,
-                    and it has to be read and saved somewhere before the tab closes. */}
+                    and it has to be read and saved somewhere before the tab closes. Each password is checked as a
+                    generated key's: the API refuses a key the visitor brings, so every key here is one it makes. */}
                 <TextInput
                   aria-describedby={message}
                   aria-invalid={error !== undefined && passwordProblem(signing.passwords[name] ?? "", rules, true) !== undefined ? true : undefined}
