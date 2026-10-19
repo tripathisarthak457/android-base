@@ -126,8 +126,16 @@ dependencies {
     // </opt:flags>
 
     // <opt:devtools>
-    implementation(project(":core:devtools"))
+    // Dev-flavour and debug builds only. A release of any other flavour has no trace of the
+    // inspector, rather than one hidden behind a flag: the root finds no DevTooling bound and
+    // composes nothing for it. `verify<Variant>CarriesNoDevTooling` fails `check` if that slips.
+    debugImplementation(project(":core:devtools"))
+    "devImplementation"(project(":core:devtools"))
     // </opt:devtools>
+    // <opt:perfhud>
+    debugImplementation(project(":core:perfhud"))
+    "devImplementation"(project(":core:perfhud"))
+    // </opt:perfhud>
 
     // <opt:database>
     implementation(project(":core:database"))

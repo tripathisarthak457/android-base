@@ -96,8 +96,11 @@ the cart repository, not the cart feature.
 | `:core:database` | The app's own Room database, separate from the network cache. |
 <!-- </opt:database> -->
 <!-- <opt:devtools> -->
-| `:core:devtools` | The in-app network inspector and environment badge. |
+| `:core:devtools` | The in-app network inspector and environment badge; dev and debug builds only (below). |
 <!-- </opt:devtools> -->
+<!-- <opt:perfhud> -->
+| `:core:perfhud` | The live performance overlay beside the badge, its Perf tab, log, report and score; dev and debug builds only ([PERFORMANCE-OVERLAY.md](PERFORMANCE-OVERLAY.md)). |
+<!-- </opt:perfhud> -->
 
 ## MVI
 
@@ -412,13 +415,12 @@ same second after a server restart.
 <!-- <opt:devtools> -->
 ### Network inspector
 
-In builds where dev tools are visible (debug builds, and release builds of dev and staging), the
-app binds a `NetworkObserver` that hands each exchange to `DevToolsLog`, which the in-app inspector
-reads; `:core:network` knows only the observer interface. Headers such as `Authorization` and
-`Cookie`, and token and password fields in JSON bodies, are redacted when an exchange is recorded,
-not when it is shown, so a token never sits in memory in the log; the bodies of sign-in and
-refresh calls are not kept at all. Bodies are truncated and the log keeps a fixed number of
-entries. In production no observer is installed.
+`:core:devtools` binds a `NetworkObserver` that hands each exchange to `DevToolsLog`, which the
+in-app inspector reads; `:core:network` knows only the observer interface. Headers such as
+`Authorization` and `Cookie`, and token and password fields in JSON bodies, are redacted when an
+exchange is recorded, not when it is shown, so a token never sits in memory in the log; the bodies
+of sign-in and refresh calls are not kept at all. Bodies are truncated and the log keeps a fixed
+number of entries. A build without the inspector has no observer, so its clients record nothing.
 <!-- </opt:devtools> -->
 <!-- </opt:network> -->
 
@@ -608,6 +610,9 @@ These tasks run as part of `./gradlew build` and fail it:
 |---|---|
 | `verifyModuleDependencies` | The module tier rules above. |
 | `verifyComposeUsage` | No Material import. Every module that declares a `@Composable` applies the Compose compiler. No prose literal passed to `text =`, `title =`, `label =` and similar parameters in feature code. |
+<!-- <opt:devtools> -->
+| `verify<Variant>CarriesNoDevTooling` | A release-like build outside the dev flavour (any build type but debug: stagingRelease, prodRelease, playstoreRelease and, with baseline profiles, their benchmark builds) depends on no dev tooling module, directly or through another module. Also runs before that build. |
+<!-- </opt:devtools> -->
 <!-- <opt:composemetrics> -->
 | `checkComposeStability` | No composable in the design system or `:core:ui` becomes unskippable compared with `config/compose-stability-baseline.txt`. After an intended change, run `recordComposeStability` to update the baseline. |
 <!-- </opt:composemetrics> -->
@@ -624,6 +629,18 @@ library module.
 Every build except a prod or playstore release adds its variant to the version name
 (`1.0.0-stagingRelease`), so a screenshot or crash report shows which backend it was using.
 
+<!-- <opt:devtools> -->
+### Dev tooling is absent from shippable builds
+
+The inspector (`:core:devtools`) and what plugs into it are `debugImplementation` and
+`"devImplementation"` dependencies of `:app`, so devDebug, devRelease, stagingDebug and prodDebug
+carry them and stagingRelease, prodRelease and playstoreRelease do not: no class, resource,
+manifest entry or thread, rather than tooling switched off at run time. The root reaches it through
+`DevTooling` in `:core:ui`, injected as an `Optional`; empty, the root composes nothing for it.
+`:app` provides `AppEnvironment` (`:core:common`) from its `BuildConfig` for the inspector to show,
+and only the inspector reads it.
+
+<!-- </opt:devtools> -->
 ### No library has a BuildConfig
 
 A library that reads `BuildConfig.DEBUG` behaves differently depending on which variant compiled

@@ -60,5 +60,28 @@ class AskAndroidTest(unittest.TestCase):
         self.assertEqual(min(API_LEVELS), parsed.spec.android.min_sdk)
 
 
+class AskFeaturesTest(unittest.TestCase):
+
+    def choose_individually(self, answers: dict[str, str]) -> set[str]:
+        """Answers the one-by-one feature questions: `answers` by feature key, Enter for the rest."""
+        target = targets.get("android")
+        manifest = target.manifest
+        menu = str(len(manifest.presets) + 1)
+        replies = iter([menu] + [answers.get(feature.key, "") for feature in manifest.selectable])
+        with mock.patch("builtins.input", lambda _prompt: next(replies)), redirect_stdout(io.StringIO()):
+            selected = prompts.ask_features(target, select_all=False, preset=None)
+        self.assertIsNone(next(replies, None), "the wizard asked fewer questions than expected")
+        return selected
+
+    def test_a_feature_on_by_default_does_not_bring_back_a_requirement_left_out(self):
+        selected = self.choose_individually({"devtools": "n"})
+        self.assertNotIn("devtools", selected)
+        self.assertNotIn("perfhud", selected)
+
+    def test_a_yes_still_includes_a_feature_whose_requirement_was_left_out(self):
+        selected = self.choose_individually({"devtools": "n", "perfhud": "y"})
+        self.assertIn("perfhud", selected)
+
+
 if __name__ == "__main__":
     unittest.main()

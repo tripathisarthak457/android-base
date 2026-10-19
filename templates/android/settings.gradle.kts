@@ -66,6 +66,9 @@ include(":core:flags")
 // <opt:devtools>
 include(":core:devtools")
 // </opt:devtools>
+// <opt:perfhud>
+include(":core:perfhud")
+// </opt:perfhud>
 // <opt:database>
 include(":core:database")
 // </opt:database>

@@ -5,6 +5,9 @@ import com.base.app.buildlogic.configureFlavors
 import com.base.app.buildlogic.configureSigning
 import com.base.app.buildlogic.configureVariants
 import com.base.app.buildlogic.registerDistributionTasks
+// <opt:devtools>
+import com.base.app.buildlogic.verifyReleasesCarryNoDevTooling
+// </opt:devtools>
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -26,5 +29,8 @@ class AndroidApplicationFlavorsConventionPlugin : Plugin<Project> {
         val components = extensions.getByType<ApplicationAndroidComponentsExtension>()
         configureVariants(components)
         registerDistributionTasks(components)
+        // <opt:devtools>
+        verifyReleasesCarryNoDevTooling(components)
+        // </opt:devtools>
     }
 }

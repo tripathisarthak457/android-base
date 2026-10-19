@@ -16,10 +16,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.datastore.settings.AppSettings
-// <opt:devtools>
-import com.base.app.core.devtools.DevTools
-import com.base.app.core.devtools.badge.DevToolsOverlay
-// </opt:devtools>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import com.base.app.core.navigation.AppNavigationHost
@@ -35,6 +31,9 @@ import com.base.app.core.navigation.PendingDeepLink
 import com.base.app.core.navigation.ShellConfig
 import com.base.app.core.navigation.rememberAppBackStack
 import com.base.app.core.navigation.rememberShellState
+// <opt:devtools>
+import com.base.app.core.ui.tooling.DevTooling
+// </opt:devtools>
 import com.base.app.startup.EntryIdentity
 import com.base.app.startup.ShellObserver
 import com.base.app.startup.Startup
@@ -67,7 +66,7 @@ fun AppRoot(
     shellObservers: Set<ShellObserver>,
     shortcuts: AppShortcuts,
     // <opt:devtools>
-    devTools: DevTools,
+    devTooling: DevTooling?,
     // </opt:devtools>
     // <opt:applock>
     appLock: AppLock,
@@ -95,6 +94,9 @@ fun AppRoot(
                     pendingDeepLink = pendingDeepLink,
                     shellConfig = shellConfig,
                     shellObservers = shellObservers,
+                    // <opt:devtools>
+                    devTooling = devTooling,
+                    // </opt:devtools>
                 )
             }
 
@@ -107,8 +109,8 @@ fun AppRoot(
             // </opt:playstore>
 
             // <opt:devtools>
-            // Last in the Box so the badge floats over every screen; a no-op in production builds.
-            DevToolsOverlay(devTools)
+            // Last in the Box so the badge floats over every screen.
+            devTooling?.Overlay()
             // </opt:devtools>
         }
     }
@@ -135,14 +137,23 @@ private fun EntryHost(
     pendingDeepLink: PendingDeepLink,
     shellConfig: ShellConfig,
     shellObservers: Set<ShellObserver>,
+    // <opt:devtools>
+    devTooling: DevTooling?,
+    // </opt:devtools>
 ) {
     HostCrossfade(target = identity) { shown, receivesCommands ->
         when (shown) {
             EntryIdentity.Onboarding -> SingleStack(
                 AppDestinations.onboarding, navigator, registry, serialization, shellConfig, receivesCommands,
+                // <opt:devtools>
+                devTooling = devTooling,
+                // </opt:devtools>
             )
             EntryIdentity.SignedOut -> SingleStack(
                 AppDestinations.signIn, navigator, registry, serialization, shellConfig, receivesCommands,
+                // <opt:devtools>
+                devTooling = devTooling,
+                // </opt:devtools>
             )
             is EntryIdentity.SignedIn -> SignedIn(
                 generation = shown.generation,
@@ -153,6 +164,9 @@ private fun EntryHost(
                 shellConfig = shellConfig,
                 shellObservers = shellObservers,
                 receivesCommands = receivesCommands,
+                // <opt:devtools>
+                devTooling = devTooling,
+                // </opt:devtools>
             )
         }
     }
@@ -166,6 +180,9 @@ private fun SingleStack(
     serialization: NavKeySerialization,
     config: ShellConfig,
     receivesCommands: Boolean,
+    // <opt:devtools>
+    devTooling: DevTooling?,
+    // </opt:devtools>
 ) {
     val backStack = rememberAppBackStack(startKey = startKey, serialization = serialization)
     AppNavigationHost(
@@ -175,6 +192,12 @@ private fun SingleStack(
         config = config,
         receivesCommands = receivesCommands,
     )
+    // <opt:devtools>
+    // Only the host the app is on reports: during the identity crossfade the departing one is still composed.
+    if (devTooling != null && receivesCommands) {
+        ReportCurrentScreen(top = { backStack.current }, serialization = serialization, tooling = devTooling)
+    }
+    // </opt:devtools>
 }
 
 @Composable
@@ -187,10 +210,18 @@ private fun SignedIn(
     shellConfig: ShellConfig,
     shellObservers: Set<ShellObserver>,
     receivesCommands: Boolean,
+    // <opt:devtools>
+    devTooling: DevTooling?,
+    // </opt:devtools>
 ) {
     val tabs = AppDestinations.tabs
     if (tabs.isEmpty()) {
-        SingleStack(AppDestinations.start, navigator, registry, serialization, shellConfig, receivesCommands)
+        SingleStack(
+            AppDestinations.start, navigator, registry, serialization, shellConfig, receivesCommands,
+            // <opt:devtools>
+            devTooling = devTooling,
+            // </opt:devtools>
+        )
         return
     }
     val shellState = rememberShellState(tabs = tabs, registry = registry, serialization = serialization, generation = generation)
@@ -206,6 +237,16 @@ private fun SignedIn(
         config = shellConfig,
         receivesCommands = receivesCommands,
     )
+    // <opt:devtools>
+    // The destination on top: a presented cover or sheet, else the front tab's top.
+    if (devTooling != null && receivesCommands) {
+        ReportCurrentScreen(
+            top = { shellState.presentedKeys.lastOrNull() ?: shellState.current.current },
+            serialization = serialization,
+            tooling = devTooling,
+        )
+    }
+    // </opt:devtools>
 }
 
 /**

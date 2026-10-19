@@ -299,7 +299,8 @@ dead code behind.
 | Component catalog app | on | A second installable app showing every component in both themes and all four design styles |
 | Compose stability check | off | Reads the Compose compiler's own report and fails on a design-system composable that restarts without skipping, or takes a parameter it cannot prove immutable. A baseline holds what is already there, so it starts green and can only improve |
 | LeakCanary | on | Debug builds only |
-| On-device inspector | on | A draggable badge naming the environment on every build except production, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
+| On-device inspector | on | A draggable badge naming the environment in dev and debug builds, and a panel behind it with the last 200 requests, their full bodies, timings and failure rate |
+| Live performance overlay | on | Frames per second and the janky-frame share under the inspector's badge, a Performance tab with frame-time, frames-per-second, histogram, per-screen jank and memory graphs, an optimisation score from 0 to 100 with a fix for each lost point, a logcat summary and an exported report. Dev and debug builds only, and nothing on the window while it is off |
 | Coverage floor (Kover) | off | One merged number for the whole project with a floor `koverVerify` enforces, generated code excluded so the report is about code somebody wrote |
 | Dependency health report | off | Every module declaring a dependency it never uses, or using one it only gets transitively. A report rather than a gate — see the note in the root `build.gradle.kts` for why, and what it would take to make it a gate |
 | Baseline profile | off | A profile generator and a macrobenchmark that measures cold start with and without it |

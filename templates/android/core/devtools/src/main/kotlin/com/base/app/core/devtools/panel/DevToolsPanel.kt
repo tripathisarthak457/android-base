@@ -20,7 +20,6 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -28,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+import com.base.app.core.common.environment.AppEnvironment
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
@@ -50,22 +51,25 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.devtools.DevEnvironment
 import com.base.app.core.devtools.DevTools
 import com.base.app.core.devtools.log.NetworkExchange
 import com.base.app.core.devtools.log.NetworkStats
+import com.base.app.core.devtools.screen.CurrentScreen
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /**
- * Everything the badge opens onto: the requests, what they cost, the feature flags, and what this
- * build is. Full screen on a phone; a panel at the side from an Expanded width, with the app still
- * visible beside it. Back inside a request returns to the list.
+ * Everything the badge opens onto: the requests, what they cost, the feature flags, what this
+ * build is, and the tabs other modules contribute. Full screen on a phone; a panel at the side
+ * from an Expanded width, with the app still visible beside it. Back inside a request returns to
+ * the list.
+ *
+ * @param initialTab the key of the tab to open on: a contributed page's key or a built-in tab's name.
  */
 @Composable
-internal fun DevToolsPanel(devTools: DevTools, onClose: () -> Unit) {
+internal fun DevToolsPanel(devTools: DevTools, initialTab: String?, onClose: () -> Unit) {
     Dialog(
         onDismissRequest = onClose,
         // The panel draws its own background behind the system bars and pads its content inside
@@ -88,16 +92,23 @@ internal fun DevToolsPanel(devTools: DevTools, onClose: () -> Unit) {
                     .pointerInput(Unit) { detectTapGestures { } }
                     .safeDrawingPadding(),
             ) {
-                PanelContent(devTools, onClose)
+                PanelContent(devTools, initialTab, onClose)
             }
         }
     }
 }
 
 @Composable
-private fun PanelContent(devTools: DevTools, onClose: () -> Unit) {
+private fun PanelContent(devTools: DevTools, initialTab: String?, onClose: () -> Unit) {
     val exchanges by devTools.log.exchanges.collectAsStateWithLifecycle()
-    var tab by rememberSaveable { mutableIntStateOf(0) }
+    val pages = devTools.pages
+    val tabKeys = remember(pages) { PanelTab.entries.map { it.name } + pages.map { it.key } }
+    val pageTitles = pages.map { stringResource(it.title) }
+    // The same list instance while the titles hold, so the tab row skips the recomposition every new
+    // request in the log brings.
+    val tabTitles = remember(pageTitles) { PanelTabTitles + pageTitles }
+    var tabKey by rememberSaveable { mutableStateOf(initialTab ?: PanelTab.entries.first().name) }
+    val tab = tabKeys.indexOf(tabKey).coerceAtLeast(0)
     var inspectingId by rememberSaveable { mutableStateOf<Long?>(null) }
     val inspecting = inspectingId?.let { id -> exchanges.firstOrNull { it.id == id } }
 
@@ -116,12 +127,16 @@ private fun PanelContent(devTools: DevTools, onClose: () -> Unit) {
     }
 
     AppSegmentedControl(
-        options = PanelTabTitles,
+        options = tabTitles,
         selected = tab,
-        onSelect = { tab = it },
+        onSelect = { tabKey = tabKeys[it] },
         modifier = Modifier.padding(horizontal = AppTheme.spacing.lg),
     )
 
+    if (tab >= PanelTab.entries.size) {
+        pages[tab - PanelTab.entries.size].content()
+        return
+    }
     when (PanelTab.entries[tab]) {
         PanelTab.Network -> RequestList(
             exchanges = exchanges,
@@ -133,7 +148,7 @@ private fun PanelContent(devTools: DevTools, onClose: () -> Unit) {
         // <opt:flags>
         PanelTab.Flags -> FlagsTab(flags = devTools.flags, overrides = devTools.flagOverrides)
         // </opt:flags>
-        PanelTab.Build -> BuildTab(devTools.environment)
+        PanelTab.Build -> BuildTab(devTools.environment, devTools.currentScreen)
     }
 }
 
@@ -248,7 +263,8 @@ private fun StatsTab(exchanges: List<NetworkExchange>) {
 }
 
 @Composable
-private fun BuildTab(environment: DevEnvironment) {
+private fun BuildTab(environment: AppEnvironment, currentScreen: CurrentScreen) {
+    val screen by currentScreen.name.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
@@ -260,6 +276,7 @@ private fun BuildTab(environment: DevEnvironment) {
         StatRow("Application id", environment.applicationId)
         StatRow("API", environment.apiBaseUrl)
         StatRow("Debuggable", environment.isDebugBuild.toString())
+        screen?.let { StatRow("Screen", it) }
     }
 }
 

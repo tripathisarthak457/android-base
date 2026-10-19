@@ -231,6 +231,7 @@ def ask_features(target: Target, select_all: bool, preset: str | None) -> set[st
 
     print(dim("  Anything you skip can be added later; each is one module or one file."))
     selected: set[str] = set()
+    asked: set[str] = set()
     for feature in manifest.selectable:
         print()
         print(f"  {bold(feature.title)}")
@@ -238,8 +239,13 @@ def ask_features(target: Target, select_all: bool, preset: str | None) -> set[st
             print(dim(f"    {line}"))
         if feature.requires:
             print(dim(f"    Requires: {', '.join(feature.requires)}"))
-        if ask_yes_no("  Include?", feature.default):
+        # A yes adds the requirements back, so a feature on by default must not undo an earlier no.
+        declined = [key for key in feature.requires if key in asked and key not in selected]
+        if declined:
+            print(dim(f"    You left out {', '.join(declined)}; including this adds it back."))
+        if ask_yes_no("  Include?", feature.default and not declined):
             selected.add(feature.key)
+        asked.add(feature.key)
     return selected
 
 

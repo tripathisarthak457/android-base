@@ -23,6 +23,8 @@ _PROVIDER = re.compile(
     r"@(Provides|Binds)\b((?:\s*@\w+(?:\([^)]*\))?)*)\s*(?:(?:internal|public|abstract|suspend)\s+)*fun\s+(\w+)\s*\("
 )
 _MULTIBINDS = re.compile(r"@Multibinds\s*(?:abstract\s+)?fun\s+\w+\(\)\s*:\s*([\w.<>, ?]+)")
+#: `@BindsOptionalOf fun x(): T` lets anything inject `Optional<T>`, bound or not.
+_OPTIONAL = re.compile(r"@BindsOptionalOf\s*(?:abstract\s+)?fun\s+\w+\(\)\s*:\s*([\w.<>, ?]+)")
 _FIELD = re.compile(r"@Inject\s+(?:lateinit\s+)?(?:internal\s+)?var\s+\w+\s*:\s*([\w.<>, ?@]+)")
 
 
@@ -79,6 +81,7 @@ def missing_bindings(root: Path) -> list[str]:
             provided.add(f"Set<{type_name}>" if into_set else type_name)
             needed += [(parameter, relative, match.group(3)) for parameter in _parameters(code[match.end():end - 1])]
         provided.update(_normal(match.group(1)) for match in _MULTIBINDS.finditer(code))
+        provided.update(f"Optional<{_normal(match.group(1))}>" for match in _OPTIONAL.finditer(code))
         needed += [(_normal(match.group(1)), relative, "field") for match in _FIELD.finditer(code)]
 
     missing = set()

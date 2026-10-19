@@ -1,5 +1,8 @@
 package com.base.app.core.analytics.jank
 
+import androidx.metrics.performance.FrameData
+import androidx.metrics.performance.JankStats
+import androidx.metrics.performance.StateInfo
 import com.base.app.core.analytics.AnalyticsEvent
 import com.base.app.core.analytics.AnalyticsTracker
 import org.junit.Assert.assertEquals
@@ -38,6 +41,28 @@ class FrameJankRecorderTest {
         recorder.report()
 
         assertTrue(tracked.isEmpty())
+    }
+
+    @Test
+    fun `a frame is counted under its states and handed to the listener`() {
+        val seen = mutableListOf<Long>()
+        recorder.frameListener = JankStats.OnFrameListener { seen += it.frameStartNanos }
+        val push = StateInfo("nav", "push:DetailKey")
+
+        recorder.onFrame(FrameData(1L, 4_000_000L, false, listOf(push)))
+        recorder.onFrame(FrameData(2L, 30_000_000L, true, emptyList()))
+        recorder.frameListener = null
+        recorder.onFrame(FrameData(3L, 4_000_000L, false, emptyList()))
+        recorder.report()
+
+        assertEquals(listOf(1L, 2L), seen)
+        assertEquals(
+            setOf(
+                mapOf("state" to "nav=push:DetailKey", "frames" to 1, "janky" to 0),
+                mapOf("state" to "idle", "frames" to 2, "janky" to 1),
+            ),
+            tracked.map { it.parameters }.toSet(),
+        )
     }
 
     private class RecordingTracker(private val events: MutableList<AnalyticsEvent>) : AnalyticsTracker {

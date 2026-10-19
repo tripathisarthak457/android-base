@@ -3,6 +3,7 @@ package com.base.app.core.devtools.badge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.displayCutout
@@ -45,24 +46,37 @@ import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.devtools.DevTools
+import com.base.app.core.devtools.page.DevToolsPage
 import com.base.app.core.devtools.panel.DevToolsPanel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/**
- * The environment badge, and the inspector it opens. Place it last in the root, over every screen.
- * Absent from a production build.
- */
+/** The environment badge, and the inspector it opens. Placed last in the root, over every screen. */
 @Composable
-fun DevToolsOverlay(devTools: DevTools) {
-    if (!devTools.environment.visible) return
-
+internal fun DevToolsOverlay(devTools: DevTools) {
     var panelOpen by rememberSaveable { mutableStateOf(false) }
+    // The tab a badge line asked for; the panel opens on its own first tab otherwise.
+    var requestedTab by rememberSaveable { mutableStateOf<String?>(null) }
 
-    EdgeBadge(label = devTools.environment.label, onClick = { panelOpen = true })
+    EdgeBadge(
+        label = devTools.label,
+        pages = devTools.pages,
+        onClick = { panelOpen = true },
+        onOpenPage = { key ->
+            requestedTab = key
+            panelOpen = true
+        },
+    )
 
     if (panelOpen) {
-        DevToolsPanel(devTools = devTools, onClose = { panelOpen = false })
+        DevToolsPanel(
+            devTools = devTools,
+            initialTab = requestedTab,
+            onClose = {
+                panelOpen = false
+                requestedTab = null
+            },
+        )
     }
 }
 
@@ -74,7 +88,12 @@ fun DevToolsOverlay(devTools: DevTools) {
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun EdgeBadge(label: String, onClick: () -> Unit) {
+private fun EdgeBadge(
+    label: String,
+    pages: List<DevToolsPage>,
+    onClick: () -> Unit,
+    onOpenPage: (key: String) -> Unit,
+) {
     val position = rememberSaveable(saver = BadgePosition.Saver) { BadgePosition() }
     var window by remember { mutableStateOf(IntSize.Zero) }
     var badge by remember { mutableStateOf(IntSize.Zero) }
@@ -169,8 +188,8 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
                 .pressable(onClick = onClick, feedback = PressFeedback.Scale)
                 .semantics { contentDescription = "$label build. Opens the developer inspector." },
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .defaultMinSize(minWidth = AppTheme.sizes.minTouchTarget)
                     .background(AppTheme.colors.warning.subtle, shape)
@@ -181,6 +200,9 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
                     style = AppTheme.typography.caption2,
                     color = AppTheme.colors.warning.content,
                 )
+                pages.forEach { page ->
+                    page.badgeContent?.invoke { onOpenPage(page.key) }
+                }
             }
         }
     }

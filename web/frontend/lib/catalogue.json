@@ -1,5 +1,5 @@
 {
-  "generator_commit": "cf5ac425ff14",
+  "generator_commit": "d5a1c89841db",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -606,7 +606,7 @@
         },
         {
           "default": false,
-          "description": "A badge docked to the screen's edge on every build except production, which can be dragged out of the way, and a panel behind it with the last 200 requests (credentials redacted), their timing and failure rate, and the build's details. Absent from a production build rather than hidden in one.",
+          "description": "A badge docked to the screen's edge in dev and debug builds, which can be dragged out of the way, and a panel behind it with the last 200 requests (credentials redacted), their timing and failure rate, and the build's details. Absent from a production build rather than hidden in one.",
           "group": "observability",
           "headline": "See every request the app made",
           "implied_only": false,
@@ -661,6 +661,23 @@
           "platforms": [],
           "requires": [],
           "title": "Feature flag seam"
+        },
+        {
+          "default": true,
+          "description": "Frames per second at the display's real rate and the janky-frame share under the DEV badge, and a Performance tab in the inspector: frame times against the 60, 90 and 120 Hz budgets, frames per second over time, a main-thread time histogram, jank by screen, memory over time, start-up and request timings, and an optimisation score from 0 to 100 with a fix for every lost point. A structured logcat summary and an exported JSON and Markdown report. On in debug builds, a switch away in dev release builds, and absent from production builds; while it is off it puts nothing on the window. It lives in the on-device inspector, so it is on by default wherever the inspector is chosen, as in the Standard preset.",
+          "group": "observability",
+          "headline": "FPS, jank, graphs and a score beside the DEV badge",
+          "implied_only": false,
+          "implies": [
+            "devtools"
+          ],
+          "key": "perfhud",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "devtools"
+          ],
+          "title": "Live performance overlay"
         },
         {
           "default": false,
@@ -1367,6 +1384,7 @@
             "leakcanary",
             "network",
             "onboarding",
+            "perfhud",
             "profile",
             "sample",
             "settings"
@@ -1410,6 +1428,7 @@
             "offlinequeue",
             "onboarding",
             "paging",
+            "perfhud",
             "performance",
             "pickers",
             "playstore",

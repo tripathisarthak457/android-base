@@ -32,6 +32,14 @@ class FrameJankRecorder @Inject internal constructor(
     private val counts = HashMap<String, FrameCounts>()
     private var reportingWhenHidden = false
 
+    /**
+     * Given every frame as well, on JankStats' thread, while set. Debug tooling reads the frames
+     * here rather than putting a second JankStats on the window, which would repeat its per-frame
+     * work. The [FrameData] is reused for the next frame once the call returns.
+     */
+    @Volatile
+    var frameListener: JankStats.OnFrameListener? = null
+
     /** Counts the frames of [window] while [lifecycle] is resumed. Call from `Activity.onCreate`. */
     fun track(window: Window, lifecycle: Lifecycle) {
         if (!reportingWhenHidden) {
@@ -42,7 +50,7 @@ class FrameJankRecorder @Inject internal constructor(
                 },
             )
         }
-        val stats = JankStats.createAndTrack(window) { frame -> record(frame.stateKey(), frame.isJank) }
+        val stats = JankStats.createAndTrack(window, ::onFrame)
         lifecycle.addObserver(
             object : DefaultLifecycleObserver {
                 override fun onResume(owner: LifecycleOwner) {
@@ -54,6 +62,11 @@ class FrameJankRecorder @Inject internal constructor(
                 }
             },
         )
+    }
+
+    internal fun onFrame(frame: FrameData) {
+        record(frame.stateKey(), frame.isJank)
+        frameListener?.onFrame(frame)
     }
 
     internal fun record(state: String, janky: Boolean) {
