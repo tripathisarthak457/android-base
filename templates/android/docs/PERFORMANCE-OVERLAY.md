@@ -80,9 +80,9 @@ The overlay is built so that watching does not change what is watched:
 Measured on a Redmi Note 10 Pro Max (M2101K6I) at 120 Hz with `devRelease`, alternating launches with
 the overlay hidden and shown, each scrolling a list, switching every tab and pushing and popping a
 screen, `dumpsys gfxinfo` read around every step. Without `analytics`, where the overlay brings the
-only JankStats, 13,688 frames hidden and 13,495 shown were 1.37 % and 1.32 % janky, and the main
-thread spent 0.07 ms more per frame shown. With `analytics`, whose JankStats it shares, 14,148 frames
-hidden and 14,068 shown were 1.55 % and 1.61 % janky, again 0.07 ms more per frame. The budget the
+only JankStats, 13,998 frames hidden and 13,796 shown were 1.52 % and 1.51 % janky, and the main
+thread spent 0.06 ms more per frame shown. With `analytics`, whose JankStats it shares, 14,881 frames
+hidden and 14,686 shown were 1.62 % and 1.63 % janky, and 0.02 ms more per frame. The budget the
 overlay is held to is 0.3 percentage points of janky frames and 0.5 ms per frame.
 
 **Measure the app with the overlay off.** The perf gates, `tools/perf/perf.sh` and any number you
