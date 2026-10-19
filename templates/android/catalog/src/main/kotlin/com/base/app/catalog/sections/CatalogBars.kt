@@ -32,7 +32,7 @@ import com.base.app.core.designsystem.component.navigation.AppTabRow
 import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.foundation.scroll.edgeProtection
 import com.base.app.core.designsystem.icon.AppIcons

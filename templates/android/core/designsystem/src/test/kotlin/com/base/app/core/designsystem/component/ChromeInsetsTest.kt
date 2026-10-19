@@ -15,7 +15,7 @@ import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.AppTopBar
-import com.base.app.core.designsystem.foundation.LocalTopChrome
+import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.setThemed
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals

@@ -167,7 +167,7 @@ private fun Frame(height: Int, content: @Composable BoxScope.() -> Unit) {
             .fillMaxWidth()
             .height(height.dp)
             .clip(shape)
-            .border(AppTheme.sizes.borderWidth, AppTheme.colors.border, shape)
+            .border(AppTheme.style.borderWidth, AppTheme.colors.outline, shape)
             .consumeWindowInsets(WindowInsets.safeDrawing),
         content = content,
     )
@@ -201,7 +201,7 @@ private fun demoRegistry(navigator: AppNavigator) = NavRegistry(
                     modifier = Modifier.fillMaxSize().padding(AppTheme.spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
                 ) {
-                    AppText("Detail ${key.row}", style = AppTheme.typography.headingMedium)
+                    AppText("Detail ${key.row}", style = AppTheme.typography.headline)
                     AppButton(text = "Push the next one", onClick = { navigator.navigate(DemoDetail(key.row + 1)) })
                     AppButton(text = "Open a cover", onClick = { navigator.navigate(DemoCover) })
                     AppButton(text = "Back", onClick = navigator::navigateUp)
@@ -212,7 +212,7 @@ private fun demoRegistry(navigator: AppNavigator) = NavRegistry(
                     modifier = Modifier.fillMaxSize().padding(AppTheme.spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
                 ) {
-                    AppText("A cover, over the bar", style = AppTheme.typography.headingMedium)
+                    AppText("A cover, over the bar", style = AppTheme.typography.headline)
                     AppButton(text = "Close", onClick = navigator::navigateUp)
                 }
             }

@@ -181,7 +181,7 @@ private fun UnlockScreen(lock: AppLock) {
         )
         AppText(
             text = title,
-            style = AppTheme.typography.headingMedium,
+            style = AppTheme.typography.headline,
             color = AppTheme.colors.contentPrimary,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = AppTheme.spacing.lg),
@@ -189,7 +189,7 @@ private fun UnlockScreen(lock: AppLock) {
         problem?.let {
             AppText(
                 text = it,
-                style = AppTheme.typography.bodyMedium,
+                style = AppTheme.typography.callout,
                 color = AppTheme.colors.contentSecondary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

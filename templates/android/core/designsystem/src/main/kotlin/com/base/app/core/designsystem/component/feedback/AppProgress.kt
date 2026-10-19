@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
-import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -50,11 +50,12 @@ fun AppActivityIndicator(
     color: Color = AppTheme.colors.contentSecondary,
 ) {
     var head by remember { mutableIntStateOf(0) }
-    val visible = LocalTabVisible.current
+    val visibility = LocalTabVisible.current
     val step = if (AppTheme.reduceMotion) StepMillis * 2 else StepMillis
-    if (visible) {
-        LaunchedEffect(step) {
-            while (true) {
+    // The holder's value is read in the effect, so hiding the screen stops the steps without a recomposition.
+    LaunchedEffect(visibility, step) {
+        snapshotFlow { visibility.isVisible }.collectLatest { visible ->
+            while (visible) {
                 delay(step)
                 head = (head + 1) % ActivitySpokes
             }

@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
+import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.network.appstatus.AppStatus
@@ -50,7 +50,7 @@ fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = M
             .safeDrawingPadding(),
     ) {
         when (status) {
-            AppStatus.UpdateRequired -> AppEmptyState(
+            AppStatus.UpdateRequired -> AppStateView(
                 title = stringResource(R.string.appstatus_update_title),
                 message = stringResource(R.string.appstatus_update_message),
                 icon = AppIcons.Download,
@@ -58,7 +58,7 @@ fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = M
                 onAction = { context.openStoreListing() },
             )
 
-            AppStatus.Maintenance -> AppEmptyState(
+            AppStatus.Maintenance -> AppStateView(
                 title = stringResource(R.string.appstatus_maintenance_title),
                 message = stringResource(R.string.appstatus_maintenance_message),
                 icon = AppIcons.Clock,

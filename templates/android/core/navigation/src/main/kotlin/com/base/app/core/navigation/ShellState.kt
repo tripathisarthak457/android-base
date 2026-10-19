@@ -14,8 +14,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.designsystem.foundation.adaptive.SizeClass
+import com.base.app.core.designsystem.foundation.adaptive.WindowMetrics
 import com.base.app.core.designsystem.foundation.layout.ScreenChrome
-import com.base.app.core.designsystem.theme.AppWindowSize
 import com.base.app.core.navigation.back.StackChange
 import com.base.app.core.navigation.back.Verdict
 import com.base.app.core.navigation.back.guard
@@ -75,8 +76,12 @@ class ShellState internal constructor(
     var chrome by mutableStateOf(NavigationChrome.Bar)
         private set
 
-    /** The window the shell is laid out for, which [chrome] follows. */
-    var window: AppWindowSize? by mutableStateOf(null)
+    /** The size class of the window the shell is laid out for, which [chrome] follows. */
+    var window: SizeClass? by mutableStateOf(null)
+        private set
+
+    /** The exact size of that window; read [WindowMetrics.sizeDp] in a lambda, never in composition. */
+    var windowMetrics: WindowMetrics? by mutableStateOf(null)
         private set
 
     /** Whether the person opened (true) or folded (false) the sidebar; null until they do. */
@@ -177,8 +182,9 @@ class ShellState internal constructor(
     }
 
     /** The chrome [window] shows, and so where tabs start going under More. */
-    internal fun useChrome(window: AppWindowSize, chrome: NavigationChrome) {
+    internal fun useChrome(window: SizeClass, metrics: WindowMetrics, chrome: NavigationChrome) {
         this.window = window
+        this.windowMetrics = metrics
         this.chrome = chrome
         overflowFrom = chrome.tabsShown(tabs.size)
         if (overflowFrom >= tabs.size) moreShown = false

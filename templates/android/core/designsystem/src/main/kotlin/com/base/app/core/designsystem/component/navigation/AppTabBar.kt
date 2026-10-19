@@ -3,9 +3,7 @@ package com.base.app.core.designsystem.component.navigation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,13 +52,14 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import com.base.app.core.designsystem.foundation.HapticEffect
-import com.base.app.core.designsystem.foundation.pressScale
-import com.base.app.core.designsystem.foundation.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.BarIndicator
 import com.base.app.core.designsystem.theme.BarTreatment
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -130,7 +129,7 @@ fun AppTabBar(
 ) {
     val haptics = rememberAppHaptics()
     val scope = rememberCoroutineScope()
-    val reduceMotion = rememberReduceMotion()
+    val reduceMotion = AppTheme.reduceMotion
     val bounce = remember(items.size) { TabBounce(items.size) }
     val edges = remember { IndicatorEdges(selected) }
     LaunchedEffect(edges, selected) { edges.moveTo(selected) }
@@ -143,7 +142,7 @@ fun AppTabBar(
             state.collapse > 0f -> scope.launch { state.expand() }
             index == current.value -> onReselect(index)
             else -> {
-                haptics.perform(HapticEffect.Select)
+                haptics.perform(AppHaptic.Selection)
                 if (!reduceMotion) scope.launch { bounce.play(index) }
                 onSelect(index)
             }
@@ -267,34 +266,48 @@ internal class BarLook(
 internal fun barLook(treatment: BarTreatment): BarLook {
     val colors = AppTheme.colors
     val shape = AppTheme.shapes.pill
+    val indicator = AppTheme.style.indicator
     val uppercase = AppTheme.style.uppercaseLabels
-    return remember(treatment, colors, shape, uppercase) { barLookFor(treatment, colors, shape, uppercase) }
+    return remember(treatment, indicator, colors, shape, uppercase) {
+        barLookFor(treatment, indicator, colors, shape, uppercase)
+    }
 }
 
 /*
  * The selected tab is tinted, as iOS tints it, rather than filled with the accent: a saturated pill
- * nearly the bar's height crowds it. Chunky keeps its solid pill, Minimal its rule. In dark theme a
- * floating bar sits on the lighter surface with a faint light outline, since the same colour as the
- * cards under it would merge with them, and it casts no shadow, which would be invisible there and
- * still cost a blur.
+ * nearly the bar's height crowds it. A style whose indicator is a pill keeps a solid one in
+ * barIndicator. Floating and Translucent are both the capsule; Translucent lets the content show
+ * faintly through its surface. In dark theme a capsule sits on the elevated surface with a faint
+ * light outline, since the same colour as the cards under it would merge with them, and it casts no
+ * shadow, which would be invisible there and still cost a blur.
  */
-private fun barLookFor(treatment: BarTreatment, colors: AppColors, shape: Shape, uppercase: Boolean): BarLook {
-    val floating = treatment == BarTreatment.Floating
+private fun barLookFor(
+    treatment: BarTreatment,
+    indicator: BarIndicator,
+    colors: AppColors,
+    shape: Shape,
+    uppercase: Boolean,
+): BarLook {
+    val floating = treatment != BarTreatment.Docked
     val raisedInDark = floating && !colors.isLight
-    val solid = treatment == BarTreatment.Chunky
+    val solid = indicator == BarIndicator.Pill
+    val surface = if (raisedInDark) colors.surfaceElevated else colors.surface
     return BarLook(
         floating = floating,
-        surface = if (raisedInDark) colors.surfaceVariant else colors.surface,
-        border = if (raisedInDark) DarkOutline else colors.divider,
+        surface = if (treatment == BarTreatment.Translucent) surface.copy(alpha = TranslucentAlpha) else surface,
+        border = if (raisedInDark) DarkOutline else colors.separator,
         shadow = floating && colors.isLight,
         shape = shape,
-        indicator = if (solid || treatment == BarTreatment.Minimal) colors.accent else colors.accentSubtle,
-        rule = treatment == BarTreatment.Minimal,
-        selectedContent = if (solid) colors.onAccent else colors.accent,
+        indicator = if (solid) colors.barIndicator else colors.accentSubtle,
+        rule = false,
+        selectedContent = if (solid) colors.onAccent else colors.accentContent,
         content = colors.contentSecondary,
-        uppercaseLabels = uppercase || treatment == BarTreatment.Minimal,
+        uppercaseLabels = uppercase,
     )
 }
+
+/** The Translucent capsule's surface opacity (WP03's BarTreatment.Translucent). */
+private const val TranslucentAlpha = 0.88f
 
 @Composable
 internal fun BarSurface(look: BarLook, modifier: Modifier, content: @Composable () -> Unit) {
@@ -303,7 +316,7 @@ internal fun BarSurface(look: BarLook, modifier: Modifier, content: @Composable 
             .then(if (look.shadow) Modifier.dropShadow(look.shape, BarShadow) else Modifier)
             .clip(look.shape)
             .background(look.surface)
-            .border(AppTheme.sizes.borderWidth, look.border, look.shape)
+            .border(AppTheme.style.borderWidth, look.border, look.shape)
     } else {
         modifier
             .background(look.surface)
@@ -419,19 +432,16 @@ internal fun Modifier.clipToPill(
 internal class BarActions(private val look: BarLook) : BarActionScope {
     @Composable
     override fun Action(icon: ImageVector, contentDescription: String, onClick: () -> Unit, tag: String?) {
-        val interactions = remember { MutableInteractionSource() }
         val filter = remember(look) { ColorFilter.tint(look.content) }
         Box(
             modifier = Modifier
                 .size(ActionSize)
                 .then(if (tag != null) Modifier.testTag(tag) else Modifier)
-                .pressScale(interactions)
-                .clickable(
-                    interactionSource = interactions,
-                    indication = null,
+                .pressable(
+                    onClick = onClick,
+                    feedback = PressFeedback.Scale,
                     role = Role.Button,
                     onClickLabel = contentDescription,
-                    onClick = onClick,
                 )
                 .semantics { this.contentDescription = contentDescription },
             contentAlignment = Alignment.Center,

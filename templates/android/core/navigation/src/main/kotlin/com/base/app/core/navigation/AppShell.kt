@@ -30,6 +30,7 @@ import com.base.app.core.designsystem.component.navigation.BarActionScope
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.designsystem.component.navigation.rememberAppTabBarState
+import com.base.app.core.designsystem.foundation.adaptive.LocalWindowMetrics
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.back.ShellRootBack
@@ -105,13 +106,14 @@ fun AppShell(
 ) {
     require(tabs.isNotEmpty()) { "AppShell needs at least one tab." }
 
-    val window = AppTheme.windowSize
+    val window = AppTheme.windowClass
+    val metrics = LocalWindowMetrics.current
     val chrome = chromeFor(window.width, window.height, state.sidebarOpen)
     // Written before anything below reads it, as rememberUpdatedState writes its value: the first
     // frame and the frame of every window change are composed with the chrome they are drawn with.
     // Written after composition instead, they would be composed with the previous one and again on
     // the next frame.
-    state.useChrome(window, chrome)
+    state.useChrome(window, metrics, chrome)
 
     if (receivesCommands) {
         // A ViewModel inside a tab has no idea it is in one; commands go to the tab in front, or to

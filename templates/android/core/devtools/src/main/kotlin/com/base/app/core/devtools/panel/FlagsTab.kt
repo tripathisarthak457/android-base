@@ -65,12 +65,12 @@ private fun FlagRow(
     ) {
         AppText(
             text = flag.key,
-            style = AppTheme.typography.bodyMedium,
+            style = AppTheme.typography.callout,
             color = if (isOverridden) AppTheme.colors.warning.content else AppTheme.colors.contentPrimary,
             modifier = Modifier.weight(1f),
         )
         if (isOverridden) {
-            AppButton(text = "Reset", onClick = onReset, variant = ButtonVariant.Ghost, size = ButtonSize.Small)
+            AppButton(text = "Reset", onClick = onReset, variant = ButtonVariant.Plain, size = ButtonSize.Small)
         }
         if (onToggle != null) {
             AppSwitch(checked = value == true, onCheckedChange = onToggle)

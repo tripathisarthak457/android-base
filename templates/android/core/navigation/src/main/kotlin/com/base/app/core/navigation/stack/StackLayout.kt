@@ -34,7 +34,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation3.runtime.NavEntry
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.R
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
+import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.foundation.layout.LocalPaneContext
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.foundation.layout.PaneContext
@@ -126,7 +126,7 @@ private fun EntrySlot(
     val lifecycle = rememberEntryLifecycle(scene, key)
     val visibility = remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
     val divided = plan.followsAnotherPane(key)
-    val divider = AppTheme.colors.divider
+    val divider = AppTheme.colors.separator
     val draw = remember(scene, key, isLight, divided, divider) {
         Modifier.sceneDraw(scene, key, isLight, divided, divider)
     }
@@ -141,7 +141,7 @@ private fun EntrySlot(
 
 @Composable
 private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan, isLight: Boolean) {
-    val divider = AppTheme.colors.divider
+    val divider = AppTheme.colors.separator
     val background = AppTheme.colors.background
     val divided = plan.followsAnotherPane(key)
     // Opaque, as every entry is (EntryFrame): the pane slides with its page over another one.
@@ -149,7 +149,7 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
         Modifier.sceneDraw(scene, key, isLight, divided, divider).background(background)
     }
     Box(draw) {
-        AppEmptyState(
+        AppStateView(
             title = stringResource(R.string.designsystem_nothing_selected),
             message = stringResource(R.string.designsystem_nothing_selected_message),
             icon = AppIcons.ListView,

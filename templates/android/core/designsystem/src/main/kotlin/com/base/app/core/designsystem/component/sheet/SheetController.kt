@@ -26,10 +26,10 @@ import com.base.app.core.designsystem.component.sheet.layout.SheetLayers
 import com.base.app.core.designsystem.component.sheet.layout.SheetMeasureEnvironment
 import com.base.app.core.designsystem.component.sheet.stack.SheetStack
 import com.base.app.core.designsystem.component.sheet.stack.StackedSheet
-import com.base.app.core.designsystem.foundation.ChromeInset
 import com.base.app.core.designsystem.foundation.adaptive.SizeClass
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.AppHaptics
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.EntryVisibility
 import com.base.app.core.designsystem.foundation.layout.HostMotion
 import com.base.app.core.designsystem.theme.AppMotionStyle

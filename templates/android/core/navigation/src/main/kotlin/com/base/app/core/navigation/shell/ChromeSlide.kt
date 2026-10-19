@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import com.base.app.core.designsystem.component.navigation.AppTabBarDefaults
-import com.base.app.core.designsystem.theme.rememberReduceMotion
+import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.NavigationChrome
 import com.base.app.core.navigation.ShellState
 import kotlinx.coroutines.CoroutineScope
@@ -45,7 +45,7 @@ internal class ChromeSlide(private val scope: CoroutineScope) {
     @Composable
     fun toggle(state: ShellState, chrome: NavigationChrome): () -> Unit {
         val delta = with(LocalDensity.current) { (sidebarWidth() - AppTabBarDefaults.RailWidth).toPx() }
-        val reduceMotion = rememberReduceMotion()
+        val reduceMotion = AppTheme.reduceMotion
         return remember(state, chrome, delta, reduceMotion) {
             {
                 val opening = chrome != NavigationChrome.Sidebar

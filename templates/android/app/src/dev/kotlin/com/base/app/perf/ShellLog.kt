@@ -30,7 +30,8 @@ class ShellLog @Inject constructor() : ShellObserver {
         "generation=${state.generation} tab=${state.selectedIndex} " +
             "stacks=${JsonArray(state.stacks.map(::keys))} presented=${keys(state.presentedKeys)} roots=${keys(state.roots)} " +
             "more=${state.moreShown} chrome=${state.chrome}" +
-            state.window?.let { " window=${it.widthDp.roundToInt()}x${it.heightDp.roundToInt()}dp class=${it.width}x${it.height}" }.orEmpty()
+            state.windowMetrics?.sizeDp?.let { " window=${it.width.value.roundToInt()}x${it.height.value.roundToInt()}dp" }.orEmpty() +
+            state.window?.let { " class=${it.width}x${it.height}" }.orEmpty()
 
     private fun keys(stack: List<AppNavKey>): JsonArray = JsonArray(stack.map { JsonPrimitive(it.toString()) })
 

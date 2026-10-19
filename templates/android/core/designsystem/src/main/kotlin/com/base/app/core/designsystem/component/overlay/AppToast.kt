@@ -50,11 +50,11 @@ import com.base.app.core.designsystem.component.button.AppLinkButton
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.ChromeInset
-import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.content.AppSurface
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first

@@ -7,7 +7,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 import com.base.app.core.navigation.ShellState
 import kotlinx.coroutines.flow.collectLatest
 
@@ -20,11 +19,11 @@ import kotlinx.coroutines.flow.collectLatest
  */
 @Composable
 internal fun rememberScrolledUnder(state: ShellState): () -> Float {
-    val reduceMotion = rememberReduceMotion()
-    val motion = AppTheme.motion
+    val reduceMotion = AppTheme.reduceMotion
+    val motion = AppTheme.springs
     val shown = remember { Animatable(1f) }
     LaunchedEffect(state, shown, reduceMotion, motion) {
-        val spec = tween<Float>(motion.quick, easing = motion.standard)
+        val spec = tween<Float>(motion.fadeQuick, easing = motion.enterEasing)
         snapshotFlow { state.tabFront?.contentBelow ?: true }.collectLatest { below ->
             val target = if (below) 1f else 0f
             if (reduceMotion) shown.snapTo(target) else shown.animateTo(target, spec)

@@ -36,7 +36,6 @@ import com.base.app.core.designsystem.foundation.layout.LocalPaintedBackground
 import com.base.app.core.designsystem.foundation.layout.LocalScreenChrome
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 import com.base.app.core.navigation.Destination
 import com.base.app.core.navigation.LocalNavigationSettled
 import com.base.app.core.navigation.NavRegistry
@@ -125,7 +124,7 @@ internal fun PresentationHost(
         entries = remember(shown, provider) { shown.toNavEntries(provider) },
         entryDecorators = decorators,
     )
-    val reduceMotion = rememberReduceMotion()
+    val reduceMotion = AppTheme.reduceMotion
     val strategies = remember(sheetStrategy) { listOfNotNull(sheetStrategy) }
     val sceneState = rememberSceneState(entries, strategies, emptyList(), null, onBack = { gate.onBack(pop) })
     // Bound to no handler, so NavDisplay never seeks a predictive pop of its own: the back card

@@ -21,7 +21,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.feedback.AppSkeleton
-import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.TabVisibility
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppColors
 import com.base.app.core.designsystem.theme.ThemeMode
@@ -57,7 +58,7 @@ class SkeletonStillnessTest {
     @Test
     fun `in a hidden tab a bone holds still`() = assertStill { content ->
         AppTheme(mode = ThemeMode.Light, reduceMotion = false) {
-            CompositionLocalProvider(LocalTabVisible provides false) { content() }
+            CompositionLocalProvider(LocalTabVisible provides TabVisibility { false }) { content() }
         }
     }
 

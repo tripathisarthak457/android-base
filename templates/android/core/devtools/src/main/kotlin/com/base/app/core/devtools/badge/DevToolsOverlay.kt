@@ -40,7 +40,8 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.appClickable
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.devtools.DevTools
@@ -87,7 +88,7 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
     // of a standard one: dragged to the top, it must not land on a back button.
     val topBar = AppTheme.sizes.topBarHeight
     val margin = AppTheme.spacing.sm
-    val settleSpec = AppTheme.motion.sheet<Float>()
+    val settleSpec = AppTheme.springs.sheet.unit
     val scope = rememberCoroutineScope()
 
     // Read only while placing and dragging, so a moving badge is re-placed rather than recomposed.
@@ -165,7 +166,7 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
                     )
                 }
                 .graphicsLayer { alpha = if (position.held) 1f else RestAlpha }
-                .appClickable(onClick = onClick)
+                .pressable(onClick = onClick, feedback = PressFeedback.Scale)
                 .semantics { contentDescription = "$label build. Opens the developer inspector." },
         ) {
             Box(
@@ -177,7 +178,7 @@ private fun EdgeBadge(label: String, onClick: () -> Unit) {
             ) {
                 AppText(
                     text = label,
-                    style = AppTheme.typography.labelSmall,
+                    style = AppTheme.typography.caption2,
                     color = AppTheme.colors.warning.content,
                 )
             }

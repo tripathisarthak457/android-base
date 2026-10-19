@@ -46,8 +46,8 @@ import com.base.app.core.designsystem.component.sheet.LocalSheetSurface
 import com.base.app.core.designsystem.component.sheet.chrome.AppSheetCloseButton
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.component.text.grownWithFontScale
-import com.base.app.core.designsystem.foundation.ChromeInset
-import com.base.app.core.designsystem.foundation.LocalTopChrome
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
+import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 

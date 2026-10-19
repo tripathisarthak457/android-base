@@ -30,7 +30,7 @@ import androidx.compose.ui.node.requireLayoutCoordinates
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.LayoutDirection
-import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.theme.LocalAppColors
 import com.base.app.core.designsystem.theme.LocalAppShapes
 import com.base.app.core.designsystem.theme.LocalReduceMotion
@@ -194,7 +194,7 @@ private class SkeletonNode(private var bones: Bones) :
     override fun onSweepFrame() = invalidateDraw()
 
     private fun follow() = observeReads {
-        val sweeps = currentValueOf(LocalTabVisible) &&
+        val sweeps = currentValueOf(LocalTabVisible).isVisible &&
             !currentValueOf(LocalReduceMotion).value &&
             !currentValueOf(LocalInspectionMode)
         val next = if (sweeps) currentValueOf(LocalShimmerClock) else null

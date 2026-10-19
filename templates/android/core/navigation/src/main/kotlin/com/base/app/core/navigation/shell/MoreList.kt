@@ -11,9 +11,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
-import com.base.app.core.designsystem.component.container.AppListItem
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
@@ -49,10 +49,11 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
         ) {
             for (index in from until tabs.size) {
                 val tab = tabs[index]
-                AppListItem(
+                AppRow(
                     title = labels[index],
                     modifier = Modifier.testTag("more_$index"),
                     onClick = { onSelect(index) },
+                    showChevron = false,
                     leading = {
                         AppBadgedBox(count = tab.badgeCount) {
                             AppIcon(imageVector = tab.icon, contentDescription = null, tint = accent)

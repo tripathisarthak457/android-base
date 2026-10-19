@@ -54,11 +54,11 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.R
 import com.base.app.core.designsystem.component.feedback.ActivitySpokes
 import com.base.app.core.designsystem.component.feedback.drawActivitySpokes
-import com.base.app.core.designsystem.foundation.ChromeInset
-import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
 import com.base.app.core.designsystem.foundation.interaction.constant
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
+import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import com.base.app.core.designsystem.theme.LocalReduceMotion

@@ -17,9 +17,9 @@ import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.foundation.LocalBottomChrome
-import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.foundation.adaptive.LocalInputTraits
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
 import com.base.app.core.designsystem.theme.LocalAppColors
 import com.base.app.core.designsystem.theme.LocalAppSprings
 import kotlinx.coroutines.Job

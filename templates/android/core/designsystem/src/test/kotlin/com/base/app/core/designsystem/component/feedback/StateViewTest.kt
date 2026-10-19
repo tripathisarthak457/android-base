@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.TestSdk
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.navigation.AppTopBar
-import com.base.app.core.designsystem.foundation.LocalTopChrome
-import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.setThemed
 import com.base.app.core.designsystem.theme.AppTheme
 import org.junit.Assert.assertTrue

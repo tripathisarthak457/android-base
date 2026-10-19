@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -49,10 +50,11 @@ import com.base.app.core.designsystem.component.sheet.AppSheet
 import com.base.app.core.designsystem.component.sheet.AppSheetState
 import com.base.app.core.designsystem.component.sheet.SheetDetent
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.LocalTabVisible
-import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.foundation.draw.LocalShimmerClock
 import com.base.app.core.designsystem.foundation.draw.ShimmerClock
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.TabVisibility
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
@@ -256,7 +258,8 @@ class RecompositionJourneysTest {
             key(style) {
                 AppTheme(mode = ThemeMode.Light, motionStyle = style, reduceMotion = false) {
                     clock = LocalShimmerClock.current
-                    CompositionLocalProvider(LocalTabVisible provides visible) { SkeletonJourneyScreen() }
+                    val visibility = remember { TabVisibility { visible } }
+                    CompositionLocalProvider(LocalTabVisible provides visibility) { SkeletonJourneyScreen() }
                 }
             }
         }

@@ -24,7 +24,7 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 

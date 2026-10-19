@@ -1,7 +1,7 @@
 package com.base.app.core.navigation.shell
 
-import com.base.app.core.designsystem.theme.WindowHeight
-import com.base.app.core.designsystem.theme.WindowWidth
+import com.base.app.core.designsystem.foundation.adaptive.WindowHeight
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.navigation.NavigationChrome
 
 /**

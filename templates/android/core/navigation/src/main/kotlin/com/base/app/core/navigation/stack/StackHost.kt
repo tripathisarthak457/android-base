@@ -15,10 +15,9 @@ import androidx.navigation3.runtime.NavEntryDecorator
 import androidx.navigation3.runtime.rememberDecoratedNavEntries
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import com.base.app.core.common.navigation.AppNavKey
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
 import com.base.app.core.designsystem.foundation.layout.ScreenChrome
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.WindowWidth
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.LocalNavigationSettled
 import com.base.app.core.navigation.NavPane
@@ -58,13 +57,13 @@ internal fun StackHost(
         entryDecorators = rememberEntryDecorators(),
     )
     val scene = remember(stack) { StackScene(gate) }
-    val window = AppTheme.windowSize
+    val window = AppTheme.windowClass
     val columns = when {
         window.width >= WindowWidth.Large -> 3
         window.hasRoomForTwoPanes -> 2
         else -> 1
     }
-    val reduceMotion = rememberReduceMotion()
+    val reduceMotion = AppTheme.reduceMotion
     val keys = entries.map { it.contentKey }
     val plan = remember(keys, columns, reduceMotion) {
         val gestured = gate.lastChange == StackChange.GesturePop

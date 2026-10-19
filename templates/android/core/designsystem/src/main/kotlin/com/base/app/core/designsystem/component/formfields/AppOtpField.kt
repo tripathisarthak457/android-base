@@ -15,10 +15,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
@@ -48,7 +48,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -147,7 +147,7 @@ fun AppOtpField(
  */
 @Composable
 private fun Caret() {
-    val blinking = LocalTabVisible.current && !AppTheme.reduceMotion
+    val blinking = LocalTabVisible.current.isVisible && !AppTheme.reduceMotion
     val alpha = if (blinking) {
         rememberInfiniteTransition(label = "otpCaret").animateFloat(
             initialValue = 1f,

@@ -32,7 +32,7 @@ import androidx.navigationevent.NavigationEventDispatcherOwner
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
 import com.base.app.core.designsystem.foundation.layout.TabVisibility
-import com.base.app.core.designsystem.theme.rememberReduceMotion
+import com.base.app.core.designsystem.theme.AppTheme
 
 /**
  * Every tab opened in this session stays composed, and a switch shows another one instead of
@@ -83,7 +83,7 @@ internal fun KeptTabs(
 
         val selection = rememberUpdatedState(selected)
         val reveal = remember { TabReveal(front) }
-        val reduceMotion = rememberReduceMotion()
+        val reduceMotion = AppTheme.reduceMotion
         // Applied with the composition that switches, before that frame is laid out and drawn, so
         // the first frame of the incoming tab is already nudged.
         SideEffect { reveal.switchTo(front, animate = revealSwitch() && !reduceMotion, position = positionOf) }

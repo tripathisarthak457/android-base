@@ -244,7 +244,7 @@ private fun TabCell(
                 // at that size (a long word, a long translation) is set a little smaller rather than
                 // cut, as UIKit's tab bar does, and keeps its distance from the pill and the edge.
                 val density = LocalDensity.current
-                val style = AppTheme.typography.labelSmall
+                val style = AppTheme.typography.caption2
                 CompositionLocalProvider(
                     LocalDensity provides Density(density.density, density.fontScale.coerceAtMost(MAX_LABEL_SCALE)),
                 ) {

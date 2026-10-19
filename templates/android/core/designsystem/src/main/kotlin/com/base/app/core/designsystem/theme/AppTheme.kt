@@ -16,8 +16,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import com.base.app.core.designsystem.component.overlay.AppOverlayHost
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
-import com.base.app.core.designsystem.foundation.ChromeInset
-import com.base.app.core.designsystem.foundation.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.adaptive.AppLayout
 import com.base.app.core.designsystem.foundation.adaptive.InputTraits
 import com.base.app.core.designsystem.foundation.adaptive.LocalAppLayout
@@ -36,6 +34,8 @@ import com.base.app.core.designsystem.foundation.draw.LocalShimmerClock
 import com.base.app.core.designsystem.foundation.draw.ShimmerClock
 import com.base.app.core.designsystem.foundation.interaction.LocalHapticsEnabled
 import com.base.app.core.designsystem.foundation.interaction.NoIndication
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.scroll.AppOverscroll
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 

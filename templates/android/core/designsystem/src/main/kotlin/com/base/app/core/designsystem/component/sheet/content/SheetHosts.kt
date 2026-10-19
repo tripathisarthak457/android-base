@@ -26,14 +26,15 @@ import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.sheet.AppSheetScope
 import com.base.app.core.designsystem.component.sheet.SheetController
 import com.base.app.core.designsystem.component.sheet.layout.sheetBringIntoView
-import com.base.app.core.designsystem.foundation.ChromeInset
-import com.base.app.core.designsystem.foundation.LocalBottomChrome
-import com.base.app.core.designsystem.foundation.LocalTabVisible
-import com.base.app.core.designsystem.foundation.LocalTopChrome
 import com.base.app.core.designsystem.foundation.adaptive.ProvideContainerWidth
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.EntryVisibility
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
 import com.base.app.core.designsystem.foundation.layout.LocalEntryVisibility
 import com.base.app.core.designsystem.foundation.layout.LocalPresentationLevel
+import com.base.app.core.designsystem.foundation.layout.LocalTabVisible
+import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
+import com.base.app.core.designsystem.foundation.layout.TabVisibility
 import com.base.app.core.designsystem.theme.tokens.DesignTokens
 
 /**
@@ -131,7 +132,8 @@ internal fun sheetOwnerVisibility(): EntryVisibility {
 @Composable
 private fun SheetLocals(controller: SheetController, content: @Composable () -> Unit) {
     val owner = sheetOwnerVisibility()
-    val covered = controller.isCovered
+    val tab = LocalTabVisible.current
+    val visibility = remember(tab, controller) { TabVisibility { tab.isVisible && !controller.isCovered } }
     val presenting = remember(controller, owner) {
         SheetPresenting(
             content = EntryVisibility(
@@ -152,7 +154,7 @@ private fun SheetLocals(controller: SheetController, content: @Composable () -> 
             LocalPresentationLevel provides controller.stacked.level,
             LocalEntryVisibility provides presenting.content,
             LocalSheetPresenting provides presenting,
-            LocalTabVisible provides (LocalTabVisible.current && !covered),
+            LocalTabVisible provides visibility,
             LocalTopChrome provides remember { ChromeInset() },
             LocalBottomChrome provides controller.bottomChrome,
             content = content,

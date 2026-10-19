@@ -181,4 +181,5 @@ private val FeedPlaceholder = FeedPost(
     1,
     "Placeholder post title",
     "The body of a post is clamped to two lines until it is expanded, and this one runs past them.",
+    "The body of a post is clamped to two lines until it is expanded, and this one runs past them.",
 )

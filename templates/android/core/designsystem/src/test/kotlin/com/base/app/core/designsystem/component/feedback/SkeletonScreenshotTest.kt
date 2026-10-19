@@ -39,12 +39,12 @@ import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.ChromeInset
-import com.base.app.core.designsystem.foundation.LocalBottomChrome
-import com.base.app.core.designsystem.foundation.LocalTopChrome
-import com.base.app.core.designsystem.foundation.chromeContentPadding
 import com.base.app.core.designsystem.foundation.draw.LocalShimmerClock
 import com.base.app.core.designsystem.foundation.draw.ShimmerClock
+import com.base.app.core.designsystem.foundation.layout.ChromeInset
+import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
+import com.base.app.core.designsystem.foundation.layout.LocalTopChrome
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 import org.junit.Assert.assertEquals

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppCard
-import com.base.app.core.designsystem.component.container.AppListItem
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
@@ -22,9 +22,9 @@ internal fun NotificationsRow() {
     val permission = rememberNotificationPermission()
     val access = permission.access
     AppCard(contentPadding = PaddingValues(0.dp)) {
-        AppListItem(
+        AppRow(
             title = stringResource(R.string.settings_notifications),
-            supporting = stringResource(
+            subtitle = stringResource(
                 when (access) {
                     NotificationAccess.Granted -> R.string.settings_notifications_on
                     NotificationAccess.NotGranted -> R.string.settings_notifications_off
