@@ -122,7 +122,8 @@ These are the places where the inventories were wrong or incomplete. The rest of
   - while loading before showing, a token with a wider list is force-released after 800 ms (CA:20638-20646).
   - postpones didReceiveNewMessages for its own dialog while firstLoading (CA:1298-1309, registered at 2916).
 - **[C]** The chat item animator holds an account token with a 19-id allow-list, without the heavy-ops stop (CA:1266-1287, 6492-6500). Its onAnimationStart also starts any delayed keyboard animation, so both move together (CA:6508).
-- **[C]** ProfileActivity holds a token during open (ProfileActivity.java:9730-9735).
+- **[C]** ProfileActivity holds a token during open (ProfileActivity.java:9730-9735). TopicsFragment locks in onTransitionAnimationStart (TopicsFragment.java:3990-3995). DialogsActivity locks for its search animation (DialogsActivity.java:7656).
+- **[C]** ActionBarLayout itself takes a token only for theme animations (ABL:642, 3038-3043). A tapped push or pop gets a gate only through the fragments' onTransitionAnimationStart (push ABL:2164-2302, pop ABL:2617-2618); the classic swipe's prepareForMoving calls none of them (ABL:1358-1409). LaunchActivity's predictive back holds a null-list token from start to invoke or cancel (LaunchActivity.java:741, 780-783).
 
 ### 3.2 Heavy-operations pause (flag 512)
 - **[C]** The first token posts stopAllHeavyOperations(512). The last release posts start (NC:467-478, 530-535).
@@ -136,7 +137,7 @@ These are the places where the inventories were wrong or incomplete. The rest of
 
 ### 4.1 Performance class
 - **[C]** The class is measured once per process, and can be overridden from settings (SharedConfig.java:1625-1633).
-- **[C]** An SoC hash deny list forces LOW on SDK 31+ (SharedConfig.java:1640-1647, list at 360+: Exynos 850, 7872, ...).
+- **[C]** An SoC hash deny list forces LOW on SDK 31+ (SharedConfig.java:1640-1647). It compares the hash of the upper-cased `Build.SOC_MODEL` with 11 values whose comments name the chips (SharedConfig.java:360-372): Exynos 850, 7872, 7880, 7870; MSM8953, MSM8937, MSM8940, MSM8992, MSM8952, MSM8917; SDM439. SM7150 (the Redmi's Snapdragon 732G family) is not on it. Recorded here because the download goes to the Recycle Bin after the research (REQUIREMENTS 48).
 - **[C]** Frequency input: the **mean** of cpuinfo_max_freq over cores, in MHz (1649-1662).
 - **[C]** LOW if any of: SDK < 21; cores <= 2; memoryClass <= 100; cores <= 4 with freq <= 1250; two old-SDK combos; total RAM < 2 GiB (1672-1681).
 - **[C]** AVERAGE if any of: cores < 8; memoryClass <= 160; freq <= 2055; unknown freq with 8 cores on SDK <= 23 (1682-1688). Otherwise HIGH.

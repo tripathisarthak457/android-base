@@ -1,6 +1,6 @@
 ---
 name: usage-reserve-10-percent
-description: "Usage caps for the overhaul - since Oct 19 09:25: every 5-hour window until the Android release, 80% by day (09:00-21:00 IST), 98% at night, auto-resume after each reset"
+description: "Usage caps for the overhaul - since Oct 20 01:12: full quota every 5-hour window day and night (pause started at 95%, lands ~98%), auto-resume after each reset, hourly backups"
 metadata:
   node_type: memory
   type: feedback
@@ -8,8 +8,10 @@ metadata:
   modified: 2026-10-19T14:17:53.872Z
 ---
 
-**Current rule (the user, Oct 19 09:25, chosen from options with pros and cons): run in every 5-hour window until the
-Android release, 80% by day, 98% at night, resuming by itself.**
+**Current rule (the user, Oct 20 01:12: "always work till 99-98 while keeping saving work. Utilise fukl quotes every 5 hr"): every 5-hour window, day and night, until the Android release: cap 99%, start the pause at 95% (it lands near 98%), resume 3 minutes after each reset, and back up every hour even without a merge.** The 80% day / 98% night rule below is history.
+
+**Previous rule (Oct 19 09:25):** run in every 5-hour window until the
+Android release, 80% by day, 98% at night, resuming by itself.
 - **09:00-21:00 IST (the user's working hours): cap 80%**, so 20% stays free for the user's own work. This also applies
   before 09:00 to a window that resets after 09:00, so 20% is free when the day starts.
 - **21:00-09:00 (the user is asleep): cap 98%** (97% until Oct 19 10:47: "next reset in working hours 80% else night etc 98% ok?").

@@ -54,3 +54,5 @@ Newest last. Format: date time | decision | options considered | reasoning | adv
   - Approved downloads: the npm security upgrades for web/frontend (next 15.5.27, postcss 8.5.23, sharp/libvips; done on staging as its own commit, npm cache D:\.caches
 pm); the Gradle 9.8.1 distribution through the wrapper into D:\.caches\gradle (WP02-M2 Deviation 1); protobuf in a project-only venv under .overhaul for the r8-analyzer scoring.
   - Foldables: run 12's emulator results plus the unit tests and the Redmi's display-size overrides are enough for the Android release.
+
+- Oct 20 01:17 (the user): full quota every window, day and night; the 08:55 wind-down one-shot is cancelled (work continues; a closed lid only pauses it, and the hourly save means nothing is lost); the pause starts at 95 % because the pause itself costs about 3 points with several runs and a large orchestrator context.
