@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import functools
+import os
 import shutil
 import subprocess
+import tempfile
 import zipfile
 from pathlib import Path
 
@@ -45,31 +48,32 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
     if shutil.which("git") is None:
         return ["git was not found on PATH, so the repository was not initialised."]
 
-    # The project's .gitattributes decides line endings, never this machine's core.autocrlf (true
-    # by default in Git for Windows), so the commit holds the same blobs on every host. It applies
-    # to each command that hashes the files.
-    as_written = ("-c", "core.autocrlf=false")
-    # The commit is the generator's, under its own name, so it is never signed with the user's key:
-    # with commit.gpgSign set, signing would fail it or wait on a passphrase prompt nobody sees.
-    as_the_generator = (
-        "-c", "user.name=Project generator", "-c", "user.email=generator@localhost", "-c", "commit.gpgSign=false"
-    )
-    try:
-        # Not `--initial-branch`: that needs git 2.28, and an older git fails with a usage error
-        # rather than falling back to master.
-        _git(project, (), "init")
-        _git(project, (), "symbolic-ref", "HEAD", "refs/heads/main")
-        _git(project, as_written, "add", ".")
-        # Taken from the index: update-index refuses a path it does not hold, such as a script the
-        # project's .gitignore keeps out.
-        staged = _git(project, (), "ls-files", "-z").split("\0")
-        scripts = [relative for relative in staged if relative and is_executable(relative, executable)]
-        # On Windows `git init` sets core.fileMode to false and `git add` records every file as
-        # 100644, so without this a clone on Linux or macOS could not run ./gradlew.
-        _git(project, as_written, "update-index", "--chmod=+x", "--", *scripts)
-        _git(project, as_the_generator, "commit", "--no-verify", "-m", message)
-    except _GitFailed as failure:
-        return [f"{failure} The project itself is fine."]
+    # The commit is the generator's, under its own name, and holds the project alone, so git runs
+    # with none of the caller's configuration. A system or global file can commit CRLF (Git for
+    # Windows sets core.autocrlf=true), drop gradle-wrapper.jar (an excludes file), refuse or
+    # rewrite the commit (hooks, prepare-commit-msg among them, which --no-verify does not skip),
+    # sign it or change its format; a template brings hooks and an info/exclude of its own; and a
+    # GIT_ variable, such as the GIT_DIR git exports to every hook, can point each command at
+    # another repository. The project's own .gitattributes and .gitignore still apply.
+    as_the_generator = ("-c", "user.name=Project generator", "-c", "user.email=generator@localhost")
+    with tempfile.TemporaryDirectory(prefix="git-home-") as home:
+        git = functools.partial(_git, project, _without_the_callers_configuration(Path(home)))
+        try:
+            # Not `--initial-branch`: that needs git 2.28, and an older git fails with a usage error
+            # rather than falling back to master.
+            git((), "init", "--template=")
+            git((), "symbolic-ref", "HEAD", "refs/heads/main")
+            git((), "add", ".")
+            # Taken from the index: update-index refuses a path it does not hold, such as a script
+            # the project's .gitignore keeps out.
+            staged = git((), "ls-files", "-z").split("\0")
+            scripts = [relative for relative in staged if relative and is_executable(relative, executable)]
+            # On Windows `git init` sets core.fileMode to false and `git add` records every file as
+            # 100644, so without this a clone on Linux or macOS could not run ./gradlew.
+            git((), "update-index", "--chmod=+x", "--", *scripts)
+            git(as_the_generator, "commit", "-m", message)
+        except _GitFailed as failure:
+            return [f"{failure} The project itself is fine."]
     return []
 
 
@@ -77,15 +81,26 @@ class _GitFailed(Exception):
     pass
 
 
-def _git(project: Path, config: tuple[str, ...], *arguments: str) -> str:
+def _without_the_callers_configuration(home: Path) -> dict[str, str]:
+    """This process's environment for git, with no configuration but the repository's own."""
+    environment = {
+        name: value
+        for name, value in os.environ.items()
+        # GIT_EXEC_PATH only says where this git's own programs are.
+        if not name.upper().startswith("GIT_") or name.upper() == "GIT_EXEC_PATH"
+    }
+    # An empty home holds no global configuration for git of any version (GIT_CONFIG_GLOBAL needs
+    # 2.32), and git looks for its default excludes and attributes files there too.
+    environment.update(HOME=str(home), XDG_CONFIG_HOME=str(home), GIT_CONFIG_NOSYSTEM="1")
+    return environment
+
+
+def _git(project: Path, environment: dict[str, str], config: tuple[str, ...], *arguments: str) -> str:
     """Runs `git <arguments>` in `project` and returns what it printed. Raises _GitFailed."""
     result = subprocess.run(
-        # Without the user's file system monitor: its hook would run on every command here, and its
-        # daemon (Git for Windows starts one for core.fsmonitor=true) would hold the project open
-        # while it is moved into place or deleted. Empty, not "false": git before 2.36 reads the
-        # value as a hook path.
-        ["git", "-c", "core.fsmonitor=", *config, *arguments],
+        ["git", *config, *arguments],
         cwd=project,
+        env=environment,
         capture_output=True,
         # git prints UTF-8 on every host, and its messages can hold the project's path, which
         # Python 3.14 and older would read in the ANSI code page on Windows.
