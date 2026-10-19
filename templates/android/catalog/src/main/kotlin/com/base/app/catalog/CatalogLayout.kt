@@ -1,36 +1,42 @@
 package com.base.app.catalog
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 
 /**
- * A page's scroll padding: [base] and the top bar, and at the bottom the navigation bar and the
- * frame-time readout standing on it, so the end of every page scrolls clear of the readout.
+ * A page's scroll padding: [chromeContentPadding] of [base], with the frame-time readout's reach
+ * added at the bottom, so the end of every page scrolls clear of the readout standing on the
+ * navigation bar. The chrome's bottom already includes that bar, and the chrome is still read when
+ * the container measures, so a bar settling lays the page out again without recomposing it.
  */
 @Composable
 fun catalogContentPadding(base: PaddingValues): PaddingValues {
     val chrome = chromeContentPadding(base)
-    val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    val direction = LocalLayoutDirection.current
-    return PaddingValues(
-        start = chrome.calculateStartPadding(direction),
-        top = chrome.calculateTopPadding(),
-        end = chrome.calculateEndPadding(direction),
-        bottom = chrome.calculateBottomPadding() + navigationBar + frameTimesReadoutReach(),
-    )
+    val reach = frameTimesReadoutReach()
+    return remember(chrome, reach) { ReadoutClearance(chrome, reach) }
+}
+
+@Stable
+private class ReadoutClearance(private val chrome: PaddingValues, private val reach: Dp) : PaddingValues {
+    override fun calculateLeftPadding(layoutDirection: LayoutDirection): Dp =
+        chrome.calculateLeftPadding(layoutDirection)
+
+    override fun calculateRightPadding(layoutDirection: LayoutDirection): Dp =
+        chrome.calculateRightPadding(layoutDirection)
+
+    override fun calculateTopPadding(): Dp = chrome.calculateTopPadding()
+
+    override fun calculateBottomPadding(): Dp = chrome.calculateBottomPadding() + reach
 }
 
 /**
