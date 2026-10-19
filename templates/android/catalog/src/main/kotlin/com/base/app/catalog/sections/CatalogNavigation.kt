@@ -31,6 +31,7 @@ import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.navigation.AppFloatingToolbar
+import com.base.app.core.designsystem.component.navigation.AppSidebar
 import com.base.app.core.designsystem.component.navigation.AppTabBar
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.BarOrientation
@@ -114,6 +115,21 @@ fun NavigationSection() {
                 onSelect = { selected = it },
                 onReselect = {},
                 orientation = BarOrientation.Vertical,
+            )
+        }
+    }
+
+    CatalogGroup(
+        title = "Sidebar",
+        caption = "The same tabs as a sidebar, as the shell shows them beside a large window.",
+    ) {
+        Frame(height = 380) {
+            var selected by remember { mutableIntStateOf(0) }
+            AppSidebar(
+                items = DemoItems,
+                selected = selected,
+                onSelect = { selected = it },
+                onReselect = {},
             )
         }
     }
