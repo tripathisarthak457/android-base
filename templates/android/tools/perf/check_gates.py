@@ -44,10 +44,10 @@ def evaluate(summary, rows, column, baseline=None):
         value = _value(summary, row["metric"])
         scenario = row["metric"].split(".")[0]
         result = {"metric": row["metric"], "label": row["label"], "value": value, "limit": limit}
-        if limit == "ratchet":
-            result["status"] = "report"
-        elif value is None and scenario in inapplicable:
+        if value is None and scenario in inapplicable:
             result["status"] = f"not applicable ({inapplicable[scenario]})"
+        elif limit == "ratchet":
+            result["status"] = "report"
         elif value is None:
             result["status"] = "not measured"
         elif isinstance(limit, bool):

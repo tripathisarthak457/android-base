@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.base.app.catalog.sections.NavigationSection
 import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.catalog.sections.NavigationSection
 import com.base.app.core.designsystem.theme.AppTheme
 
 /** The catalog's pages. */

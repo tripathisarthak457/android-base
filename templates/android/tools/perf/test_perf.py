@@ -224,10 +224,29 @@ class GatesTest(unittest.TestCase):
     def test_the_janky_template_fails_solid(self):
         results = check_gates.evaluate(janky_summary(), gate_rows(), "solid")
         failing = {r["metric"] for r in results if r["status"] == "fail"}
-        self.assertEqual(failing, {
-            "tabs.janky_pct", "pushpop.janky_pct", "pushpop.p99_ms", "pushpop.pop_first_frame_ms.median",
-        })
+        # The p99 row holds the merge's own worst run, which moves with each acceptance; these three are far
+        # past anything the rewrite measured.
+        self.assertLessEqual({"tabs.janky_pct", "pushpop.janky_pct", "pushpop.pop_first_frame_ms.median"}, failing)
         self.assertFalse(check_gates.passed(results))
+
+    def test_a_motion_that_hitches_fails_whatever_its_total(self):
+        for metric in ("tabs.hitch_ms_per_s", "pushpop.janky_after_first_pct", "pushpop_gesture.hitch_ms_per_s",
+                       "rapid_back.janky_after_first_pct"):
+            summary = clean_summary()
+            summary["metrics"][metric] = {"value": 50.0}
+            results = check_gates.evaluate(summary, gate_rows(), "solid")
+            self.assertEqual([r["metric"] for r in results if r["status"] == "fail"], [metric])
+
+    def test_every_motion_gates_its_hitches_and_reports_its_first_frames(self):
+        rows = {row["metric"]: row for row in gate_rows()}
+        for scenario in ("tabs", "tabs_tap", "pushpop", "pushpop_gesture", "rapid_back"):
+            columns = {column for column in ("solid", "standard", "lean") if column in rows[f"{scenario}.janky_pct"]}
+            for metric in ("hitch_ms_per_s", "janky_after_first_pct"):
+                row = rows[f"{scenario}.{metric}"]
+                for column in columns:
+                    self.assertIsInstance(row.get(column), float, f"{scenario}.{metric} {column}")
+            late = rows[f"{scenario}.late_first_frames"]
+            self.assertEqual({late.get(column) for column in columns}, {"ratchet"}, scenario)
 
     def test_a_skipped_scenario_fails(self):
         summary = clean_summary()
@@ -254,9 +273,9 @@ class GatesTest(unittest.TestCase):
 
     def test_ratchet_rows_are_reported(self):
         summary = clean_summary()
-        summary["metrics"]["pushpop.push_first_frame_ms.median"] = {"value": 99.0}
+        summary["metrics"]["tabs.late_first_frames"] = {"value": 99}
         results = check_gates.evaluate(summary, gate_rows(), "solid")
-        row = next(r for r in results if r["metric"] == "pushpop.push_first_frame_ms.median")
+        row = next(r for r in results if r["metric"] == "tabs.late_first_frames")
         self.assertEqual(row["status"], "report")
         self.assertTrue(check_gates.passed(results))
 

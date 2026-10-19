@@ -1,20 +1,20 @@
 package com.base.app.core.navigation.shell
 
+import android.graphics.Path.Direction
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.clipRect
@@ -198,11 +198,12 @@ private class FollowCoveredNode(
  * The card's outline as a rounded rect, which the renderer recognises as one and clips analytically,
  * as the card's own shape is clipped. The same outline built from lines and cubic arcs is a general
  * path, so both clips of the bar would be masked on every frame of the gesture, and its corners
- * would only approximate the card's.
+ * would only approximate the card's. Added to the platform path by its coordinates, since the
+ * RoundRect that Compose's overload takes would be allocated on each of those frames.
  */
 private fun Path.setRoundedRect(left: Float, top: Float, right: Float, bottom: Float, radius: Float) {
     rewind()
     if (right <= left || bottom <= top) return
     val r = radius.coerceIn(0f, minOf(right - left, bottom - top) / 2f)
-    addRoundRect(RoundRect(left, top, right, bottom, CornerRadius(r)))
+    asAndroidPath().addRoundRect(left, top, right, bottom, r, r, Direction.CW)
 }

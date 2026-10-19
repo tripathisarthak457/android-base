@@ -63,6 +63,7 @@ class TabVisibility(private val visible: () -> Boolean) {
     val isVisible: Boolean get() = visible()
 }
 
+/** Whether the content here is on screen: false inside a hidden tab or a covered screen; see [TabVisibility]. */
 val LocalTabVisible = staticCompositionLocalOf { AlwaysVisible }
 
 private val AlwaysVisible = TabVisibility { true }

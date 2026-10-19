@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -15,16 +14,14 @@ import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.node.LayoutModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.ObserverModifierNode
 import androidx.compose.ui.node.SemanticsModifierNode
 import androidx.compose.ui.node.invalidateSemantics
 import androidx.compose.ui.node.observeReads
+import androidx.compose.ui.node.requireDensity
 import androidx.compose.ui.platform.InspectorInfo
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
@@ -47,6 +44,7 @@ import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.ShellTab
 import com.base.app.core.navigation.stack.coverScrimAlpha
 import com.base.app.core.navigation.transition.ScreenMotion
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 /**
@@ -85,13 +83,7 @@ internal fun ShellBar(
         }
     }
     val selected = if (hasMore && (state.moreShown || state.selectedIndex >= shown)) shown else state.selectedIndex
-    val focus = LocalFocusManager.current
-    val onSelect: (Int) -> Unit = { index ->
-        // A field focused in the tab being left would keep the keyboard up over the next one.
-        focus.clearFocus()
-        if (hasMore && index == shown) state.showMore() else state.select(index)
-    }
-    val onReselect: (Int) -> Unit = { index -> if (hasMore && index == shown) state.showMore() else state.select(index) }
+    val onSelect: (Int) -> Unit = { index -> if (hasMore && index == shown) state.showMore() else state.select(index) }
     val sideHeader: (@Composable BarActionScope.() -> Unit)? =
         if (onToggleSidebar == null && trailingAction == null) {
             null
@@ -109,11 +101,11 @@ internal fun ShellBar(
             items = items,
             selected = selected,
             onSelect = onSelect,
-            onReselect = onReselect,
+            onReselect = onSelect,
             modifier = modifier
                 .testTag("tab_bar")
                 .followCovered(state.barAnchor, motion.parallax, coverScrimAlpha(AppTheme.colors.isLight))
-                .hideUnderKeyboard(motion.fraction)
+                .hideUnderKeyboard(WindowInsets.ime, motion.fraction)
                 .parkWhenCovered(state.barAnchor),
             labels = config.barLabels,
             minimize = config.barMinimize,
@@ -126,7 +118,7 @@ internal fun ShellBar(
             items = items,
             selected = selected,
             onSelect = onSelect,
-            onReselect = onReselect,
+            onReselect = onSelect,
             modifier = modifier.testTag("rail"),
             orientation = BarOrientation.Vertical,
             labels = config.barLabels,
@@ -138,7 +130,7 @@ internal fun ShellBar(
             items = items,
             selected = selected,
             onSelect = onSelect,
-            onReselect = onReselect,
+            onReselect = onSelect,
             modifier = modifier.testTag("sidebar"),
             width = sidebarWidth(),
             header = sideHeader,
@@ -159,30 +151,50 @@ internal fun sidebarWidth(): Dp =
  * Before Android 11 the system does not animate the keyboard's inset, which jumps to its full
  * height in one frame; there the bar sinks on [spring] instead of jumping with it.
  */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun Modifier.hideUnderKeyboard(spring: AnimationSpec<Float>): Modifier {
-    val ime = WindowInsets.ime
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        return layout { measurable, constraints ->
-            val placeable = measurable.measure(constraints)
-            val density = this
-            layout(placeable.width, placeable.height) {
-                val keyboard = ime.getBottom(density).coerceAtMost(placeable.height)
-                placeable.placeWithLayer(0, keyboard) { alpha = if (keyboard >= placeable.height) 0f else 1f }
-            }
+private fun Modifier.hideUnderKeyboard(ime: WindowInsets, spring: AnimationSpec<Float>): Modifier =
+    this then HideUnderKeyboardElement(ime, spring)
+
+private data class HideUnderKeyboardElement(
+    val ime: WindowInsets,
+    val spring: AnimationSpec<Float>,
+) : ModifierNodeElement<HideUnderKeyboardNode>() {
+    override fun create() = HideUnderKeyboardNode(ime, spring)
+
+    override fun update(node: HideUnderKeyboardNode) {
+        node.ime = ime
+        node.spring = spring
+    }
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "hideUnderKeyboard"
+    }
+}
+
+private class HideUnderKeyboardNode(var ime: WindowInsets, var spring: AnimationSpec<Float>) :
+    Modifier.Node(), LayoutModifierNode {
+
+    private val animated = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+
+    /** How far the bar has sunk where the inset jumps: 0 in place, 1 under the keyboard. */
+    private val sunk = Animatable(0f)
+
+    override fun onAttach() {
+        if (animated) return
+        val density = requireDensity()
+        coroutineScope.launch {
+            snapshotFlow { ime.getBottom(density) > 0 }.collect { up -> sunk.animateTo(if (up) 1f else 0f, spring) }
         }
     }
-    val density = LocalDensity.current
-    val sunk = remember { Animatable(0f) }
-    LaunchedEffect(ime, density, spring) {
-        snapshotFlow { ime.getBottom(density) > 0 }.collect { up -> sunk.animateTo(if (up) 1f else 0f, spring) }
-    }
-    return layout { measurable, constraints ->
+
+    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
         val placeable = measurable.measure(constraints)
-        layout(placeable.width, placeable.height) {
-            val covered = sunk.value
-            placeable.placeWithLayer(0, (placeable.height * covered).roundToInt()) { alpha = if (covered >= 1f) 0f else 1f }
+        return layout(placeable.width, placeable.height) {
+            val keyboard = if (animated) {
+                ime.getBottom(this@measure).coerceAtMost(placeable.height)
+            } else {
+                (placeable.height * sunk.value).roundToInt()
+            }
+            placeable.placeWithLayer(0, keyboard) { alpha = if (keyboard >= placeable.height) 0f else 1f }
         }
     }
 }

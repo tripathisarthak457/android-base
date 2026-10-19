@@ -1,5 +1,6 @@
 package com.base.app.core.navigation.shell
 
+import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.layout.ChromeInset
 import com.base.app.core.designsystem.foundation.layout.LocalBottomChrome
@@ -59,6 +63,9 @@ import org.robolectric.annotation.Config
 private val ACTION_BAR = 72.dp
 private val TOP_BAR = 104.dp
 private const val FEED_LIST = "feed_list"
+
+/** Taller than the bar with its margins, so the keyboard covers all of it. */
+private const val KEYBOARD_PX = 900
 
 /**
  * The layering contract: content < tab bar < presented sheets and covers. Presented screens win
@@ -251,6 +258,26 @@ class ChromeLayeringTest {
         rule.runOnUiThread { rule.activity.onBackPressedDispatcher.onBackPressed() }
         rule.waitForIdle()
         rule.onNodeWithTag("tab_0").assertExists()
+    }
+
+    @Test
+    fun `the keyboard sinks the bar under it and becomes the bottom chrome`() {
+        showShell(shell())
+        val before = bounds("tab_0")
+
+        rule.runOnUiThread {
+            val content = rule.activity.findViewById<ViewGroup>(android.R.id.content)
+            val composeView = (content.getChildAt(0) as ViewGroup).getChildAt(0)
+            val insets = WindowInsetsCompat.Builder()
+                .setInsets(WindowInsetsCompat.Type.ime(), Insets.of(0, 0, 0, KEYBOARD_PX))
+                .setVisible(WindowInsetsCompat.Type.ime(), true)
+                .build()
+            ViewCompat.dispatchApplyWindowInsets(composeView, insets)
+        }
+        rule.waitForIdle()
+
+        assertTrue("the bar has gone down under the keyboard", bounds("tab_0").top >= before.bottom)
+        assertEquals(with(rule.density) { KEYBOARD_PX.toDp() }, bottomChrome.value)
     }
 
     @Test

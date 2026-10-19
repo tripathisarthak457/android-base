@@ -1,5 +1,6 @@
 package com.base.app.core.designsystem.component.navigation
 
+import android.graphics.Path.Direction
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
@@ -18,12 +19,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -415,16 +414,19 @@ internal fun Path.setPill(
 /**
  * A capsule as a rounded rectangle, not as lines and arcs: a path the renderer recognises as one is
  * filled and clipped analytically, while an equal path of cubics is a general path, which the two
- * layers clipped to the pill would have to mask on every frame it moves.
+ * layers clipped to the pill would have to mask on every frame it moves. Added to the platform path
+ * by its coordinates, since the Rect and RoundRect that Compose's overloads take would be allocated
+ * on each of those frames.
  */
 private fun Path.addCapsule(left: Float, top: Float, right: Float, bottom: Float, round: Boolean) {
     if (right <= left || bottom <= top) return
+    val path = asAndroidPath()
     if (!round) {
-        addRect(Rect(left, top, right, bottom))
+        path.addRect(left, top, right, bottom, Direction.CW)
         return
     }
-    val radius = CornerRadius(min(right - left, bottom - top) / 2f)
-    addRoundRect(RoundRect(left, top, right, bottom, radius))
+    val radius = min(right - left, bottom - top) / 2f
+    path.addRoundRect(left, top, right, bottom, radius, radius, Direction.CW)
 }
 
 /** Where a cell's content (its label, or its glyph without one) starts, so the pill can fit it. */

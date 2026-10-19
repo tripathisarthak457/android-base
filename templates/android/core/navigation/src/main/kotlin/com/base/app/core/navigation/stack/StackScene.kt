@@ -70,6 +70,11 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
     var hidingBar: Set<Any> by mutableStateOf(emptySet())
         private set
 
+    // Whether an entry of [upper] or of [lower] hides the bar: worked out when they change, since
+    // [barCover] is read several times on every frame of a slide.
+    private var upperHidesBar by mutableStateOf(false)
+    private var lowerHidesBar by mutableStateOf(false)
+
     /** 0: the upper page off the window, 1: in place over the lower one. */
     var cover by mutableFloatStateOf(1f)
         private set
@@ -133,6 +138,7 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
         beneath = plan.beneath?.shown?.keys.orEmpty()
         upper = plan.upper
         lower = plan.lower
+        updateBarHiding()
         velocity = 0f
         when (plan.slide) {
             Slide.None -> {
@@ -166,6 +172,7 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
             val plan = applied ?: return
             upper = plan.top.shown
             lower = plan.beneath?.shown.orEmpty()
+            updateBarHiding()
             cover = 1f
             moving = false
             settled = plan
@@ -174,10 +181,15 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
         }
     }
 
+    private fun updateBarHiding() {
+        upperHidesBar = upper.keys.any { it in hidingBar }
+        lowerHidesBar = lower.keys.any { it in hidingBar }
+    }
+
     /** How far the screen that hides the tab bar covers the last one that shows it, for [BarAnchor]. */
     fun barCover(): Float {
-        val upperHides = upper.keys.any { it in hidingBar }
-        val lowerHides = lower.keys.any { it in hidingBar }
+        val upperHides = upperHidesBar
+        val lowerHides = lowerHidesBar
         val covered = when {
             upperHides && lowerHides -> 1f
             upperHides -> cover

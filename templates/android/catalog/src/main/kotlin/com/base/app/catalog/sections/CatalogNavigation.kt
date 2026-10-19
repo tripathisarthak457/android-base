@@ -27,6 +27,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.base.app.catalog.CatalogGroup
 import com.base.app.catalog.R
+import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.navigation.AppFloatingToolbar
@@ -40,7 +41,6 @@ import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
-import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell
 import com.base.app.core.navigation.NavKeySerialization
@@ -88,7 +88,7 @@ fun NavigationSection() {
                 contentPadding = PaddingValues(AppTheme.spacing.lg),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
             ) {
-                items(items = (1..40).toList(), key = { it }) { row -> AppText("Row $row") }
+                items(items = (1..40).toList(), key = { it }, contentType = { DemoRow }) { row -> AppText("Row $row") }
             }
             AppTabBar(
                 items = DemoItems,
@@ -189,7 +189,7 @@ private fun demoRegistry(navigator: AppNavigator) = NavRegistry(
                     contentPadding = PaddingValues(AppTheme.spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
                 ) {
-                    items(items = (1..20).toList(), key = { it }) { row ->
+                    items(items = (1..20).toList(), key = { it }, contentType = { DemoRow }) { row ->
                         AppCard(onClick = { navigator.navigate(DemoDetail(row)) }, modifier = Modifier.fillMaxWidth()) {
                             AppText("Row $row")
                         }
@@ -257,3 +257,5 @@ private val DemoItems = listOf(
     TabItem("Alerts", AppIcons.Bell),
     TabItem("Profile", AppIcons.User),
 )
+
+private const val DemoRow = "row"

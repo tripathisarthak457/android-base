@@ -61,8 +61,9 @@ internal fun StackLayout(
     val isLight = AppTheme.colors.isLight
     // Slides and the card move layers only, which cast no frame-rate vote of their own: without
     // one, a phone with an adaptive refresh rate may draw them at 60 Hz. Raised only while they
-    // move, since the vote passes down to every layer of every screen in the stack, and read from
-    // what changes on a transition's first and last frames anyway, so it adds no composition.
+    // move, since the vote passes down to every layer of every screen in the stack. A push or a
+    // pop changes it on frames that compose anyway; a back gesture composes this layout again as
+    // it starts and as it ends, never on the frames between.
     val sliding = plan.slide != Slide.None && scene.settled !== plan
     val rate = if (sliding || scene.card.active) FrameRateCategory.High else FrameRateCategory.Default
     val panes = rememberPaneContexts(plan, shown)
@@ -125,7 +126,9 @@ private fun EntrySlot(
     val visibility = remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
     val divided = plan.followsAnotherPane(key)
     val divider = AppTheme.colors.divider
-    val draw = remember(scene, key, isLight, divided, divider) { sceneDraw(scene, key, isLight, divided, divider) }
+    val draw = remember(scene, key, isLight, divided, divider) {
+        Modifier.sceneDraw(scene, key, isLight, divided, divider)
+    }
     CompositionLocalProvider(
         LocalLifecycleOwner provides lifecycle,
         LocalTabVisible provides visibility,
@@ -142,7 +145,7 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
     val divided = plan.followsAnotherPane(key)
     // Opaque, as every entry is (EntryFrame): the pane slides with its page over another one.
     val draw = remember(scene, key, isLight, divided, divider, background) {
-        sceneDraw(scene, key, isLight, divided, divider).background(background)
+        Modifier.sceneDraw(scene, key, isLight, divided, divider).background(background)
     }
     Box(draw) {
         AppEmptyState(
@@ -159,8 +162,14 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
  * that layer each of those frames would record the whole screen again, not the few operations
  * around it.
  */
-private fun sceneDraw(scene: StackScene, key: Any, isLight: Boolean, divided: Boolean, divider: Color): Modifier =
-    Modifier
+private fun Modifier.sceneDraw(
+    scene: StackScene,
+    key: Any,
+    isLight: Boolean,
+    divided: Boolean,
+    divider: Color,
+): Modifier =
+    this
         .graphicsLayer { with(scene) { pose(key) } }
         .drawWithContent {
             with(scene) { drawOver(key, isLight) }

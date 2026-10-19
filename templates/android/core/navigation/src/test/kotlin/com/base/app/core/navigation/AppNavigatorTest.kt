@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.base.app.core.testing.MainDispatcherRule
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -49,5 +50,46 @@ class AppNavigatorTest {
 
         host.lifecycle.currentState = Lifecycle.State.STARTED
         assertEquals(listOf(NavCommand.Navigate(Post(1))), host.applied)
+    }
+
+    @Test
+    fun `a command still waiting for the screens to settle when the window stops is applied when it returns`() =
+        runTest(main.testDispatcher) {
+            val host = Host(Lifecycle.State.STARTED)
+            val settled = CompletableDeferred<Unit>()
+            backgroundScope.launch {
+                navigator.applyWhileStarted(host.lifecycle) { command ->
+                    settled.await()
+                    host.applied += command
+                }
+            }
+
+            navigator.navigate(Post(1))
+            host.lifecycle.currentState = Lifecycle.State.CREATED
+            settled.complete(Unit)
+            assertEquals(emptyList<NavCommand>(), host.applied)
+
+            host.lifecycle.currentState = Lifecycle.State.STARTED
+            assertEquals(listOf(NavCommand.Navigate(Post(1))), host.applied)
+        }
+
+    @Test
+    fun `a command its host was still waiting to apply when the host left goes with it`() = runTest(main.testDispatcher) {
+        val leaving = Host(Lifecycle.State.STARTED)
+        val arriving = Host(Lifecycle.State.STARTED)
+        val never = CompletableDeferred<Unit>()
+        val host = backgroundScope.launch {
+            navigator.applyWhileStarted(leaving.lifecycle) { command ->
+                never.await()
+                leaving.applied += command
+            }
+        }
+
+        navigator.navigate(Post(1))
+        host.cancel()
+        backgroundScope.launch { navigator.applyWhileStarted(arriving.lifecycle) { arriving.applied += it } }
+        navigator.navigate(Post(2))
+
+        assertEquals(listOf(NavCommand.Navigate(Post(2))), arriving.applied)
     }
 }

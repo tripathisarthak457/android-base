@@ -63,6 +63,10 @@ import kotlin.math.floor
  *
  * The selection highlight slides to the new row in the draw phase; the rows only change colour on
  * the frame that selects, so a selection recomposes two rows and nothing per frame.
+ *
+ * @param width the rows' width. A parameter rather than a width modifier, because the sidebar adds
+ *   the display cutout on its start side and its 1 dp border to it; [AppSidebarDefaults] has the
+ *   widths for each window size.
  */
 @Composable
 fun AppSidebar(
@@ -161,6 +165,7 @@ fun AppSidebar(
     }
 }
 
+/** The sidebar's widths, for the `width` of [AppSidebar] on each window size. */
 object AppSidebarDefaults {
 
     /** The sidebar's width on a large window. */

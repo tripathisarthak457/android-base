@@ -63,6 +63,7 @@ class ShellState internal constructor(
     private val isPresented: (AppNavKey) -> Boolean,
     private val sameGraph: (AppNavKey, AppNavKey) -> Boolean,
 ) {
+    /** The selected tab, by its place in the list of tabs; the More list may be in front of it ([moreShown]). */
     var selectedIndex by mutableIntStateOf(initialTab)
         private set
 
@@ -129,10 +130,13 @@ class ShellState internal constructor(
     /** Whether the host in front is still moving, so a deep link waits before it is opened. */
     val moving: Boolean get() = presented.gate.moving || current.gate.moving
 
+    /** A copy of every tab's stack, one list per tab in tab order, root first. */
     val stacks: List<List<AppNavKey>> get() = tabs.map { it.keys }
 
+    /** A copy of the presentation stack, bottom first; empty when nothing is presented. */
     val presentedKeys: List<AppNavKey> get() = presented.keys
 
+    /** Each tab's root destination, in tab order. */
     val roots: List<AppNavKey> get() = rootKeys
 
     /**
@@ -341,7 +345,8 @@ private fun shellSaver(
             SIDEBAR_FOLDED in flags -> false
             else -> null
         }
-        newShellState(rootKeys, registry, generation, selected, MORE_SHOWN in flags, sidebar, stacks, decoded.getOrNull(1).orEmpty())
+        val presented = decoded.getOrNull(1).orEmpty()
+        newShellState(rootKeys, registry, generation, selected, MORE_SHOWN in flags, sidebar, stacks, presented)
     },
 )
 

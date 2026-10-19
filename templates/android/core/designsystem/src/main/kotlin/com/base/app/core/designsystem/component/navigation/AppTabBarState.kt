@@ -104,6 +104,7 @@ class AppTabBarState internal constructor(private val density: Density, private 
     }
 }
 
+/** An [AppTabBarState] kept for as long as the caller is composed, with the bar open. */
 @Composable
 fun rememberAppTabBarState(): AppTabBarState {
     val density = LocalDensity.current

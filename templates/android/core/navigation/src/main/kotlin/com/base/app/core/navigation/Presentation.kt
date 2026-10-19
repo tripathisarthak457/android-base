@@ -7,7 +7,11 @@ package com.base.app.core.navigation
  */
 sealed interface Presentation {
 
-    /** A sheet over the current screen, which stays composed and visible beneath it. */
+    /**
+     * A sheet over the current screen, which stays composed and visible beneath it. Drawn by the
+     * shell's `sheetStrategy`; a shell without one presents it as a [Cover], and [detents] then
+     * have no effect.
+     */
     data class Sheet(val detents: List<SheetDetent> = listOf(SheetDetent.Large)) : Presentation
 
     /** A full-screen cover that rises from the bottom edge and hides the tab bar while it is up. */

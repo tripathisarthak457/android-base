@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -28,6 +30,9 @@ internal fun WindowChromeWriter(state: ShellState, barState: AppTabBarState, wid
     val top = LocalWindowTopChrome.current
     val density = LocalDensity.current
     val keyboard = WindowInsets.imeAnimationTarget
+    // Derived, so the last stretch of a slide, after the gate has let go, runs the block below once
+    // as the bar is covered or uncovered rather than on each of its frames.
+    val barCovered = remember(state) { derivedStateOf { state.barAnchor.progress() >= 1f } }
     // The holders are the window's: once the shell is gone (signed out), nothing covers either edge.
     DisposableEffect(bottom, top) {
         onDispose {
@@ -35,7 +40,7 @@ internal fun WindowChromeWriter(state: ShellState, barState: AppTabBarState, wid
             top.value = 0.dp
         }
     }
-    LaunchedEffect(state, barState, wide, bottom, density) {
+    LaunchedEffect(state, barState, wide, bottom, density, barCovered) {
         snapshotFlow {
             if (state.moving) {
                 null
@@ -44,7 +49,7 @@ internal fun WindowChromeWriter(state: ShellState, barState: AppTabBarState, wid
                     bottomChrome(
                         presented = state.presentedScreens[state.presentedKeys.lastContentKey()]?.bottomBar,
                         keyboard = keyboard.getBottom(this).toDp(),
-                        screenBar = state.tabFront?.takeIf { state.barAnchor.progress() >= 1f }?.bottomBar,
+                        screenBar = state.tabFront?.takeIf { barCovered.value }?.bottomBar,
                         bar = if (wide) 0.dp else barState.settledHeight.toDp(),
                     )
                 }

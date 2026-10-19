@@ -84,6 +84,7 @@ fun AppScaffold(
     }
 }
 
+/** The values [AppScaffold] takes when the caller passes none. */
 object AppScaffoldDefaults {
 
     /**
