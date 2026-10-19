@@ -1,5 +1,5 @@
 {
-  "app_lock_title": "Déverrouillez pour continuer",
-  "app_lock_subtitle": "Utilisez votre empreinte, votre visage ou le verrouillage de l’écran.",
-  "app_lock_action": "Déverrouiller"
+  "applock_title": "Déverrouillez pour continuer",
+  "applock_subtitle": "Utilisez votre empreinte, votre visage ou le verrouillage de l’écran.",
+  "applock_action": "Déverrouiller"
 }

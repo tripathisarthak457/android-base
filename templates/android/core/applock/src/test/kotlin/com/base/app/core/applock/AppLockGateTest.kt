@@ -133,7 +133,7 @@ class AppLockGateTest {
     @Test
     fun `Tab reaches Unlock, and the content underneath cannot take focus off it`() {
         show(lockedApp())
-        val unlock = compose.onNodeWithText(activity.get().getString(R.string.app_lock_action))
+        val unlock = compose.onNodeWithText(activity.get().getString(R.string.applock_action))
 
         compose.runOnIdle { focusManager.moveFocus(FocusDirection.Next) }
         unlock.assertIsFocused()

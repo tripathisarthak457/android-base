@@ -1,5 +1,5 @@
 {
-  "app_lock_title": "Zum Fortfahren entsperren",
-  "app_lock_subtitle": "Mit Fingerabdruck, Gesicht oder Displaysperre.",
-  "app_lock_action": "Entsperren"
+  "applock_title": "Zum Fortfahren entsperren",
+  "applock_subtitle": "Mit Fingerabdruck, Gesicht oder Displaysperre.",
+  "applock_action": "Entsperren"
 }

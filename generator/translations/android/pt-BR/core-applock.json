@@ -1,5 +1,5 @@
 {
-  "app_lock_title": "Desbloqueie para continuar",
-  "app_lock_subtitle": "Use sua digital, seu rosto ou o bloqueio de tela.",
-  "app_lock_action": "Desbloquear"
+  "applock_title": "Desbloqueie para continuar",
+  "applock_subtitle": "Use sua digital, seu rosto ou o bloqueio de tela.",
+  "applock_action": "Desbloquear"
 }

@@ -86,8 +86,8 @@ private fun UnlockScreen(lock: AppLock) {
     val challenge by lock.challenges.collectAsStateWithLifecycle()
     var problem by rememberSaveable { mutableStateOf<String?>(null) }
 
-    val title = stringResource(R.string.app_lock_title)
-    val subtitle = stringResource(R.string.app_lock_subtitle)
+    val title = stringResource(R.string.applock_title)
+    val subtitle = stringResource(R.string.applock_subtitle)
     val currentLock by rememberUpdatedState(lock)
 
     // Made again with the activity after a rotation: the prompt itself survives it, and reports to
@@ -198,7 +198,7 @@ private fun UnlockScreen(lock: AppLock) {
             )
         }
         AppButton(
-            text = stringResource(R.string.app_lock_action),
+            text = stringResource(R.string.applock_action),
             onClick = { prompt.authenticate(info) },
             modifier = Modifier.padding(top = AppTheme.spacing.xl),
         )
