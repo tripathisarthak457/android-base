@@ -209,7 +209,7 @@ def _free_sibling(destination: Path) -> Path:
     is as long as at `destination`: what Windows' length limit lets anyone write, open or delete at
     one, it does at the other.
     """
-    length = len(destination.name)
+    length = _windows_length(destination.name)
     for _ in range(100):
         name = "".join(random.choices(string.ascii_lowercase + string.digits, k=max(length - 1, 1)))
         # Linux and macOS leave a name with a leading dot out of listings, where it has room for one.

@@ -582,6 +582,32 @@ class WindowsLongPathsTest(unittest.TestCase):
             generate("all", destination, zip_output=True)
         self.assertEqual([], list(destination.parent.iterdir()))
 
+    def test_a_character_outside_the_bmp_counts_twice_in_a_project(self):
+        # As deep as the project fits as Python counts the destination, one code unit past it as Windows does.
+        temp = Path(tempfile.mkdtemp())
+        self.addCleanup(delete_tree, temp)
+        destination = at_length(temp, deepest_destination("all"), "all \N{PACKAGE}")
+        with self.assertRaisesRegex(
+            RenderError, rf"^At .* the project would hold a path of {placement._WINDOWS_MAX_FILE + 1} characters: "
+        ):
+            generate("all", destination)
+        self.assertEqual([], list(destination.parent.iterdir()))
+
+    def test_a_character_outside_the_bmp_counts_twice_in_a_failure(self):
+        # 247 characters as Python counts them, past a folder's limit in UTF-16 code units.
+        long = "D:/" + "y" * 243 + "\N{PACKAGE}"
+        with self.assertRaises(RenderError) as raised, placement.windows_path_limit_explained("destination"):
+            raise FileNotFoundError(errno.ENOENT, "No such file", "D:/short", None, long)
+        self.assertIn(f"a path of {placement._WINDOWS_MAX_DIRECTORY + 1} characters: {long}.", str(raised.exception))
+
+    def test_the_sibling_is_as_long_as_the_destination_as_windows_counts(self):
+        temp = Path(tempfile.mkdtemp())
+        self.addCleanup(delete_tree, temp)
+        for name in ("all", "all \N{PACKAGE}"):
+            with self.subTest(name):
+                sibling = placement._free_sibling(temp / name)
+                self.assertEqual(placement._windows_length(name), placement._windows_length(sibling.name))
+
 
 if __name__ == "__main__":
     unittest.main()
