@@ -107,7 +107,8 @@ def _motion(motion: dict[str, Any]) -> list[str]:
             for name, spring in values["springs"].items()
         )
         lines.append(f"    static let {_lower(style)} = MotionStyle({springs})")
-    navigation = motion["navigation"]
+    navigation, skeleton = motion["navigation"], motion["skeleton"]
+    easing = skeleton["easing"]
     lines += [
         f"    static let fadeShort: Double = {number(motion['fades']['shortMs'] / 1000)}",
         f"    static let fadeLong: Double = {number(motion['fades']['longMs'] / 1000)}",
@@ -122,6 +123,16 @@ def _motion(motion: dict[str, Any]) -> list[str]:
         f"    static let navigationScrimAlphaLight: Double = {number(navigation['scrimAlpha']['light'])}",
         f"    static let navigationScrimAlphaDark: Double = {number(navigation['scrimAlpha']['dark'])}",
         f"    static let navigationEdgeShadow: CGFloat = {number(navigation['edgeShadow'])}",
+        f"    static let skeletonBandWidth: CGFloat = {number(skeleton['bandWidth'])}",
+        f"    static let skeletonTiltDegrees: Double = {number(skeleton['tiltDegrees'])}",
+        f"    static let skeletonSweep: Double = {number(skeleton['sweepMs'] / 1000)}",
+        f"    static let skeletonPause: Double = {number(skeleton['pauseMs'] / 1000)}",
+        "    static let skeletonEasing = UnitCurve.bezier(",
+        f"        startControlPoint: UnitPoint(x: {number(easing[0])}, y: {number(easing[1])}),",
+        f"        endControlPoint: UnitPoint(x: {number(easing[2])}, y: {number(easing[3])})",
+        "    )",
+        f"    static let skeletonReferenceTravel: CGFloat = {number(skeleton['referenceTravel'])}",
+        f"    static let skeletonMaxSlowdown: Double = {number(skeleton['maxSlowdown'])}",
         "}",
     ]
     return lines

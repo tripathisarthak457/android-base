@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- <generated:catalog-name> -->
     <string name="app_name" translatable="false">BaseApp Catalog</string>
+    <!-- </generated:catalog-name> -->
     <string name="catalog_demo_list" translatable="false">List</string>
     <string name="catalog_demo_settings" translatable="false">Settings</string>
 </resources>

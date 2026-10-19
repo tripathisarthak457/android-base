@@ -14,14 +14,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
+import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppErrorState
-import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
-import com.base.app.core.designsystem.component.navigation.AppBackTopBar
+import com.base.app.core.designsystem.component.feedback.AppRedacted
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.feedback.StateKind
+import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.text
 import com.base.app.data.sample.api.model.SampleItem
@@ -38,7 +41,7 @@ internal fun SampleDetailScreen(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
-            AppBackTopBar(
+            AppTopBar(
                 title = state.item?.title ?: stringResource(R.string.sample_detail_title),
                 onBack = { onEvent(SampleDetailEvent.BackClicked) },
             )
@@ -47,48 +50,52 @@ internal fun SampleDetailScreen(
         val scroll = rememberScrollState()
         ReportScrollEdge(scroll)
         when (val loadState = state.loadState) {
-            is LoadState.Error -> AppErrorState(
+            is LoadState.Error -> AppStateView(
                 message = loadState.error.text(),
-                isOffline = loadState.error == AppError.Offline,
-                onRetry = { onEvent(SampleDetailEvent.Retry) },
+                kind = if (loadState.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                onAction = { onEvent(SampleDetailEvent.Retry) },
             )
 
             else -> Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scroll)
+                    .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                     .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
             ) {
                 val item = state.item
-                if (item == null) {
-                    repeat(SKELETON_LINES) {
-                        AppSkeletonLine(
-                            modifier = Modifier.padding(bottom = AppTheme.spacing.sm),
-                            widthFraction = if (it == SKELETON_LINES - 1) 0.5f else 1f,
-                        )
-                    }
-                    return@Column
+                // The same composables before and after the item arrives: the text takes the place
+                // its placeholder held, and nothing above it moves.
+                AppRedacted(
+                    active = item == null,
+                    contentDescription = stringResource(DesignSystemR.string.designsystem_loading),
+                ) {
+                    Header(item ?: SampleDetailPlaceholder)
                 }
-
-                AppMonoText(
-                    text = "#${item.id}",
-                    color = AppTheme.colors.contentTertiary,
-                )
-                AppText(
-                    text = item.title,
-                    modifier = Modifier.padding(top = AppTheme.spacing.sm),
-                    style = AppTheme.typography.displaySmall,
-                    color = AppTheme.colors.contentPrimary,
-                )
-                AppText(
-                    text = item.body,
-                    modifier = Modifier.padding(top = AppTheme.spacing.lg),
-                    style = AppTheme.typography.bodyLarge,
-                    color = AppTheme.colors.contentSecondary,
-                )
                 Related(state.related, onEvent)
             }
         }
+    }
+}
+
+@Composable
+private fun Header(item: SampleItem) {
+    Column {
+        AppMonoText(
+            text = "#${item.id}",
+            color = AppTheme.colors.contentTertiary,
+        )
+        AppText(
+            text = item.title,
+            modifier = Modifier.padding(top = AppTheme.spacing.sm),
+            style = AppTheme.typography.title2,
+            color = AppTheme.colors.contentPrimary,
+        )
+        AppText(
+            text = item.body,
+            modifier = Modifier.padding(top = AppTheme.spacing.lg),
+            style = AppTheme.typography.body,
+            color = AppTheme.colors.contentSecondary,
+        )
     }
 }
 
@@ -103,7 +110,7 @@ private fun Related(items: List<SampleItem>, onEvent: (SampleDetailEvent) -> Uni
     ) {
         AppText(
             text = stringResource(R.string.sample_related),
-            style = AppTheme.typography.titleSmall,
+            style = AppTheme.typography.footnote,
             color = AppTheme.colors.contentSecondary,
         )
         items.forEach { item ->
@@ -116,7 +123,14 @@ private fun Related(items: List<SampleItem>, onEvent: (SampleDetailEvent) -> Uni
     }
 }
 
-private const val SKELETON_LINES = 5
+// Never shown (see AppRedacted). A title on one line and a body of about four, as the samples have,
+// and a two-digit id, as most of theirs are, for the `#id` line.
+private val SampleDetailPlaceholder = SampleItem(
+    10,
+    "Placeholder sample title",
+    "The body of a sample runs to about four lines on a phone, and this placeholder is about as " +
+        "long, so its bones take close to the room the real text will take when it arrives.",
+)
 
 @Preview(showBackground = true)
 @Composable

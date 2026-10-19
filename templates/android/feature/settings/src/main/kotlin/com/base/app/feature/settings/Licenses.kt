@@ -14,12 +14,13 @@ import com.base.app.core.common.LoadState
 import com.base.app.core.common.coroutines.AppDispatchers
 import com.base.app.core.common.log.Log
 import com.base.app.core.designsystem.component.container.AppCard
-import com.base.app.core.designsystem.component.container.AppListItem
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
-import com.base.app.core.designsystem.component.navigation.AppBackTopBar
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
@@ -136,14 +137,14 @@ internal fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Un
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         topBar = {
-            AppBackTopBar(
+            AppTopBar(
                 title = stringResource(R.string.settings_open_source_licences),
                 onBack = { onEvent(LicensesEvent.BackClicked) },
             )
         },
     ) {
         if (state.loadState == LoadState.Empty) {
-            AppEmptyState(
+            AppStateView(
                 title = stringResource(R.string.settings_no_licences_recorded),
                 message = stringResource(R.string.settings_no_licences_explanation),
             )
@@ -158,12 +159,13 @@ internal fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Un
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
                 AppTheme.spacing.sm,
             ),
+            flingBehavior = AppScrollDefaults.flingBehavior(),
         ) {
             items(state.artifacts, key = { it.coordinates }) { artifact ->
                 AppCard(contentPadding = PaddingValues(0.dp)) {
-                    AppListItem(
+                    AppRow(
                         title = artifact.name,
-                        supporting = artifact.licences.joinToString()
+                        subtitle = artifact.licences.joinToString()
                             .ifBlank { stringResource(R.string.settings_licence_not_stated) },
                     )
                 }

@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,12 +23,12 @@ import com.base.app.core.designsystem.animation.AppAppear
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppAvatar
-import com.base.app.core.designsystem.component.input.AppTextArea
 import com.base.app.core.designsystem.component.input.AppTextField
-import com.base.app.core.designsystem.component.navigation.AppLargeTitle
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
 // <opt:coil>
@@ -63,22 +63,24 @@ internal fun ProfileScreen(
 ) {
     val displayName = state.saved.name.ifBlank { stringResource(R.string.profile_unnamed) }
 
+    val scroll = rememberScrollState()
     AppScaffold(
         contentMaxWidth = AppTheme.layout.formMaxWidth,
         modifier = modifier,
-        topBar = { AppLargeTitle(title = stringResource(R.string.profile_title)) },
+        topBar = {
+            AppLargeTitleTopBar(title = stringResource(R.string.profile_title), scrolled = { scroll.value })
+        },
     ) {
         // Nothing is drawn until the stored profile has been read, so the fields never flash
         // empty and then fill in.
         if (!state.loaded) return@AppScaffold
 
         AppAppear {
-            val scroll = rememberScrollState()
             ReportScrollEdge(scroll)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scroll)
+                    .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                     .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
             ) {
@@ -98,7 +100,7 @@ internal fun ProfileScreen(
                     )
                     AppText(
                         text = displayName,
-                        style = AppTheme.typography.headingSmall,
+                        style = AppTheme.typography.headline,
                         color = AppTheme.colors.contentPrimary,
                         textAlign = TextAlign.Center,
                     )
@@ -108,25 +110,24 @@ internal fun ProfileScreen(
                 }
 
                 AppTextField(
-                    value = name.text.toString(),
-                    onValueChange = name::setTextAndPlaceCursorAtEnd,
+                    state = name,
                     label = stringResource(R.string.profile_name),
                     placeholder = stringResource(R.string.profile_name_placeholder),
                     error = if (state.nameError) stringResource(R.string.profile_name_required) else null,
                     maxLength = ProfileViewModel.NAME_LIMIT,
                 )
-                AppTextArea(
-                    value = bio.text.toString(),
-                    onValueChange = bio::setTextAndPlaceCursorAtEnd,
+                AppTextField(
+                    state = bio,
                     label = stringResource(R.string.profile_bio),
                     placeholder = stringResource(R.string.profile_bio_placeholder),
+                    lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 4, maxHeightInLines = 8),
                     maxLength = ProfileViewModel.BIO_LIMIT,
                 )
                 AppButton(
                     text = stringResource(R.string.profile_save),
                     onClick = { onEvent(ProfileEvent.Save) },
                     enabled = state.isDirty,
-                    fillWidth = true,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
@@ -143,14 +144,14 @@ private fun PhotoActions(hasPhoto: Boolean, onEvent: (ProfileEvent) -> Unit) {
         AppButton(
             text = stringResource(R.string.profile_change_photo),
             onClick = picker::pickImage,
-            variant = ButtonVariant.Secondary,
+            variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
         )
         if (hasPhoto) {
             AppButton(
                 text = stringResource(R.string.profile_remove_photo),
                 onClick = { onEvent(ProfileEvent.PhotoPicked(null)) },
-                variant = ButtonVariant.Ghost,
+                variant = ButtonVariant.Plain,
                 size = ButtonSize.Small,
             )
         }

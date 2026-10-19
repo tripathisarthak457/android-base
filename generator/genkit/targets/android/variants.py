@@ -14,9 +14,7 @@ from ...core.target import RenderError
 VARIANTS_DIR = Path(__file__).resolve().parents[3] / "variants"
 
 #: Feature → the variant directory used when it is off.
-VARIANTS: dict[str, str] = {
-    "googlefonts": "googlefonts-off",
-}
+VARIANTS: dict[str, str] = {}
 
 
 def overlays(spec: Spec) -> dict[str, Path]:

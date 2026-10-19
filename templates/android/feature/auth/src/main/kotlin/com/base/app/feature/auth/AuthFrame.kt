@@ -30,9 +30,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.text.AppText
-import com.base.app.core.designsystem.foundation.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
+import com.base.app.core.designsystem.foundation.adaptive.shouldUseTwoPanes
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.WindowWidth
 
 /**
  * The frame the sign-in, sign-up and reset screens share.
@@ -59,7 +60,7 @@ internal fun AuthFrame(
             val formCutout = if (twoPanes) WindowInsetsSides.End else WindowInsetsSides.Horizontal
             // On a phone the form starts at the top, under the thumb; with room to spare it sits in
             // the middle of the window, where a short form on a tall screen looks placed, not lost.
-            val centred = AppTheme.windowSize.width >= WindowWidth.Medium
+            val centred = AppTheme.containerClass.width >= WindowWidth.Medium
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(1f)
@@ -72,7 +73,7 @@ internal fun AuthFrame(
                     modifier = Modifier
                         .widthIn(max = AppTheme.layout.formMaxWidth)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior()),
                 ) {
                     Column(
                         modifier = Modifier
@@ -110,7 +111,7 @@ private fun BrandPanel(modifier: Modifier) {
     ) {
         AppText(
             text = appName,
-            style = AppTheme.typography.displayMedium,
+            style = AppTheme.typography.title1,
             color = AppTheme.colors.onAccent,
         )
     }

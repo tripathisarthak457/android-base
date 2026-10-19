@@ -113,7 +113,7 @@ fun AppRoot(
         }
     }
 
-    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
+    AppTheme(mode = themeMode, hapticsEnabled = AppTheme.defaults.hapticsEnabled && settings.hapticsEnabled) {
         SystemBarIcons(dark = !AppTheme.colors.isLight)
         // <opt:applock>
         // Over the inspector too: what the app sent is as private as what it shows.

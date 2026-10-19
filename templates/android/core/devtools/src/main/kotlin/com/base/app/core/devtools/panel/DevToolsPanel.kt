@@ -41,14 +41,15 @@ import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppDivider
-import com.base.app.core.designsystem.component.container.AppListItem
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
+import com.base.app.core.designsystem.component.feedback.AppStateView
 import com.base.app.core.designsystem.component.feedback.AppStatusPill
+import com.base.app.core.designsystem.component.list.AppRow
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.adaptive.WindowWidth
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
-import com.base.app.core.designsystem.theme.WindowWidth
 import com.base.app.core.devtools.DevEnvironment
 import com.base.app.core.devtools.DevTools
 import com.base.app.core.devtools.log.NetworkExchange
@@ -71,7 +72,7 @@ internal fun DevToolsPanel(devTools: DevTools, onClose: () -> Unit) {
         // them, rather than leaving the platform's grey bands above and below.
         properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
     ) {
-        val beside = AppTheme.windowSize.width >= WindowWidth.Expanded
+        val beside = AppTheme.windowClass.width >= WindowWidth.Expanded
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -116,7 +117,7 @@ private fun PanelContent(devTools: DevTools, onClose: () -> Unit) {
 
     AppSegmentedControl(
         options = PanelTabTitles,
-        selectedIndex = tab,
+        selected = tab,
         onSelect = { tab = it },
         modifier = Modifier.padding(horizontal = AppTheme.spacing.lg),
     )
@@ -149,13 +150,13 @@ private fun PanelHeader(title: String, onBack: (() -> Unit)?, onClose: () -> Uni
             AppButton(
                 text = "Back",
                 onClick = onBack,
-                variant = ButtonVariant.Ghost,
+                variant = ButtonVariant.Plain,
                 size = ButtonSize.Small,
             )
         }
         AppText(
             text = title,
-            style = AppTheme.typography.headingSmall,
+            style = AppTheme.typography.headline,
             color = AppTheme.colors.contentPrimary,
             modifier = Modifier.weight(1f),
             maxLines = 1,
@@ -164,7 +165,7 @@ private fun PanelHeader(title: String, onBack: (() -> Unit)?, onClose: () -> Uni
         AppButton(
             text = "Close",
             onClick = onClose,
-            variant = ButtonVariant.Secondary,
+            variant = ButtonVariant.Tinted,
             size = ButtonSize.Small,
         )
     }
@@ -177,7 +178,7 @@ private fun RequestList(
     onClear: () -> Unit,
 ) {
     if (exchanges.isEmpty()) {
-        AppEmptyState(
+        AppStateView(
             title = "No requests yet",
             message = "Anything the app sends will appear here, newest first.",
         )
@@ -187,12 +188,13 @@ private fun RequestList(
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+        flingBehavior = AppScrollDefaults.flingBehavior(),
     ) {
         items(exchanges, key = { it.id }, contentType = { ExchangeContentType }) { exchange ->
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = exchange.method + " " + exchange.path,
-                    supporting = listOf(
+                    subtitle = listOf(
                         exchange.durationMillis.toString() + " ms",
                         formatBytes(exchange.responseBytes),
                         timeOf(exchange.startedAtMillis),
@@ -207,9 +209,8 @@ private fun RequestList(
             AppButton(
                 text = "Clear",
                 onClick = onClear,
-                variant = ButtonVariant.Secondary,
-                fillWidth = true,
-                modifier = Modifier.padding(top = AppTheme.spacing.md),
+                variant = ButtonVariant.Tinted,
+                modifier = Modifier.padding(top = AppTheme.spacing.md).fillMaxWidth(),
             )
         }
     }
@@ -231,7 +232,7 @@ private fun StatsTab(exchanges: List<NetworkExchange>) {
     val stats = remember(exchanges) { NetworkStats.of(exchanges) }
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
@@ -250,7 +251,7 @@ private fun StatsTab(exchanges: List<NetworkExchange>) {
 private fun BuildTab(environment: DevEnvironment) {
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
     ) {
@@ -270,7 +271,7 @@ internal fun StatRow(label: String, value: String) {
     ) {
         AppText(
             text = label,
-            style = AppTheme.typography.bodyMedium,
+            style = AppTheme.typography.callout,
             color = AppTheme.colors.contentSecondary,
             modifier = Modifier.weight(1f),
         )
@@ -289,7 +290,7 @@ private fun ExchangeDetail(exchange: NetworkExchange) {
     SelectionContainer {
         Column(
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
                 .padding(AppTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
@@ -317,7 +318,7 @@ private fun Section(title: String, body: String?) {
     if (body.isNullOrBlank()) return
     AppText(
         text = title,
-        style = AppTheme.typography.labelSmall,
+        style = AppTheme.typography.caption2,
         color = AppTheme.colors.contentTertiary,
     )
     AppMonoText(

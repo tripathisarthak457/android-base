@@ -8,9 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from ... import tokens
-from ...tokens import kotlin
 from ...core import translations
-from ...core.copy import write_text
 from ...core.manifest import TemplateManifest
 from ...core.spec import (
     HOST_PATTERN,
@@ -136,9 +134,6 @@ class AndroidTarget:
     def finish(self, project: Path, spec: Spec, context: BuildContext) -> list[str]:
         # The template ships its token copy emitted for its own defaults; the project's carries
         # the user's brand and choices.
-        design_tokens = project / kotlin.RELATIVE_PATH.format(package_path=spec.package_path)
-        if design_tokens.is_file():
-            write_text(design_tokens, kotlin.emit(tokens.resolve(spec), spec.package_name))
         look.apply(project, spec)
         strings.write(project, spec)
         warnings = keystores.write(project, (spec.android or AndroidSettings()).keystores, context.summary)

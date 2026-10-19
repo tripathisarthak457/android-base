@@ -15,21 +15,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.session.SessionController
 import com.base.app.core.datastore.settings.AppSettings
 import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppDivider
-import com.base.app.core.designsystem.component.container.AppListItem
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.data.AppSectionHeader
-import com.base.app.core.designsystem.component.feedback.AppTone
-import com.base.app.core.designsystem.component.navigation.AppLargeTitle
-import com.base.app.core.designsystem.component.overlay.AppAlertDialog
+import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.list.AppSectionHeader
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.base.app.core.designsystem.component.overlay.AppAlert
 import com.base.app.core.designsystem.component.selection.AppSegmentedControl
 import com.base.app.core.designsystem.component.selection.AppSwitch
 import com.base.app.core.designsystem.component.text.AppIcon
@@ -37,6 +36,7 @@ import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
@@ -52,8 +52,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 // <opt:language>
 import androidx.compose.ui.platform.LocalContext
-import com.base.app.core.designsystem.component.overlay.AppActionSheet
-import com.base.app.core.designsystem.component.overlay.SheetAction
+import com.base.app.core.designsystem.component.sheet.action.AppActionSheet
+import com.base.app.core.designsystem.component.sheet.action.SheetAction
 import com.base.app.core.ui.locale.AppLocales
 // </opt:language>
 // <opt:browser>
@@ -226,17 +226,19 @@ internal fun SettingsScreen(
     val openInApp = rememberInAppBrowser()
     // </opt:browser>
 
+    val scroll = rememberScrollState()
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
-        topBar = { AppLargeTitle(title = stringResource(R.string.settings_title)) },
+        topBar = {
+            AppLargeTitleTopBar(title = stringResource(R.string.settings_title), scrolled = { scroll.value })
+        },
     ) {
-        val scroll = rememberScrollState()
         ReportScrollEdge(scroll)
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scroll)
+                .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                 .padding(chromeContentPadding(PaddingValues(horizontal = AppTheme.spacing.gutter))),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
         ) {
@@ -245,13 +247,13 @@ internal fun SettingsScreen(
             AppCard {
                 AppText(
                     text = stringResource(R.string.settings_theme),
-                    style = AppTheme.typography.titleMedium,
+                    style = AppTheme.typography.subheadline,
                     color = AppTheme.colors.contentPrimary,
                 )
                 AppText(
                     text = stringResource(R.string.settings_theme_explanation),
                     modifier = Modifier.padding(bottom = AppTheme.spacing.md),
-                    style = AppTheme.typography.caption,
+                    style = AppTheme.typography.caption1,
                     color = AppTheme.colors.contentTertiary,
                 )
                 AppSegmentedControl(
@@ -260,15 +262,15 @@ internal fun SettingsScreen(
                         stringResource(R.string.settings_theme_light),
                         stringResource(R.string.settings_theme_dark),
                     ),
-                    selectedIndex = state.themeIndex,
+                    selected = state.themeIndex,
                     onSelect = { onEvent(SettingsEvent.ThemeSelected(it)) },
                 )
             }
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_haptic_feedback),
-                    supporting = stringResource(R.string.settings_haptics_explanation),
+                    subtitle = stringResource(R.string.settings_haptics_explanation),
                     leading = {
                         AppIcon(
                             AppIcons.Bell,
@@ -287,9 +289,9 @@ internal fun SettingsScreen(
 
             // <opt:language>
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_language),
-                    supporting = state.languageTag?.let(AppLocales::displayName)
+                    subtitle = state.languageTag?.let(AppLocales::displayName)
                         ?: stringResource(R.string.settings_language_system),
                     onClick = { pickLanguage = true },
                     leading = {
@@ -305,9 +307,9 @@ internal fun SettingsScreen(
 
             // <opt:applock>
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_require_unlock),
-                    supporting = stringResource(R.string.settings_app_lock_explanation),
+                    subtitle = stringResource(R.string.settings_app_lock_explanation),
                     leading = {
                         AppIcon(
                             AppIcons.Lock,
@@ -332,9 +334,9 @@ internal fun SettingsScreen(
             AppSectionHeader(title = stringResource(R.string.settings_privacy))
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_share_usage_data),
-                    supporting = stringResource(R.string.settings_analytics_explanation),
+                    subtitle = stringResource(R.string.settings_analytics_explanation),
                     leading = {
                         AppIcon(
                             AppIcons.Info,
@@ -354,7 +356,7 @@ internal fun SettingsScreen(
             AppSectionHeader(title = stringResource(R.string.settings_account))
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_sign_out),
                     onClick = { confirmSignOut = true },
                     leading = {
@@ -371,9 +373,9 @@ internal fun SettingsScreen(
             AppSectionHeader(title = stringResource(R.string.settings_about))
 
             AppCard(contentPadding = PaddingValues(0.dp)) {
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_open_source_licences),
-                    supporting = stringResource(R.string.settings_licences_explanation),
+                    subtitle = stringResource(R.string.settings_licences_explanation),
                     onClick = { onEvent(SettingsEvent.LicensesClicked) },
                     leading = {
                         AppIcon(
@@ -392,7 +394,7 @@ internal fun SettingsScreen(
             AppCard(contentPadding = PaddingValues(0.dp)) {
                 val privacyUrl = stringResource(R.string.settings_privacy_url)
                 val termsUrl = stringResource(R.string.settings_terms_url)
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_privacy_policy),
                     onClick = { openInApp(privacyUrl) },
                     leading = {
@@ -402,7 +404,7 @@ internal fun SettingsScreen(
                         AppIcon(AppIcons.ExternalLink, contentDescription = null, tint = AppTheme.colors.contentTertiary)
                     },
                 )
-                AppListItem(
+                AppRow(
                     title = stringResource(R.string.settings_terms),
                     onClick = { openInApp(termsUrl) },
                     leading = {
@@ -426,37 +428,35 @@ internal fun SettingsScreen(
     }
 
     // <opt:language>
-    if (pickLanguage) {
-        val systemLabel = stringResource(R.string.settings_language_system)
-        AppActionSheet(
-            title = stringResource(R.string.settings_language),
-            actions = listOf(
-                SheetAction(label = systemLabel, onClick = { onEvent(SettingsEvent.LanguagePicked(null)) }),
-            ) +
-                AppLocales.supported.map { tag ->
-                    SheetAction(
-                        label = AppLocales.displayName(tag),
-                        onClick = { onEvent(SettingsEvent.LanguagePicked(tag)) },
-                    )
-                },
-            onDismissRequest = { pickLanguage = false },
-            cancelLabel = stringResource(R.string.settings_cancel),
-        )
-    }
+    val systemLabel = stringResource(R.string.settings_language_system)
+    AppActionSheet(
+        visible = pickLanguage,
+        title = stringResource(R.string.settings_language),
+        actions = listOf(
+            SheetAction(label = systemLabel, onClick = { onEvent(SettingsEvent.LanguagePicked(null)) }),
+        ) +
+            AppLocales.supported.map { tag ->
+                SheetAction(
+                    label = AppLocales.displayName(tag),
+                    onClick = { onEvent(SettingsEvent.LanguagePicked(tag)) },
+                )
+            },
+        onDismissRequest = { pickLanguage = false },
+        cancelLabel = stringResource(R.string.settings_cancel),
+    )
     // </opt:language>
 
-    if (confirmSignOut) {
-        AppAlertDialog(
-            title = stringResource(R.string.settings_sign_out_confirm),
-            message = stringResource(R.string.settings_sign_out_explanation),
-            onDismissRequest = { confirmSignOut = false },
-            confirmLabel = stringResource(R.string.settings_sign_out),
-            onConfirm = { onEvent(SettingsEvent.SignOutConfirmed) },
-            dismissLabel = stringResource(R.string.settings_stay),
-            icon = AppIcons.Logout,
-            tone = AppTone.Error,
-        )
-    }
+    AppAlert(
+        visible = confirmSignOut,
+        title = stringResource(R.string.settings_sign_out_confirm),
+        message = stringResource(R.string.settings_sign_out_explanation),
+        onDismissRequest = { confirmSignOut = false },
+        confirmLabel = stringResource(R.string.settings_sign_out),
+        onConfirm = { onEvent(SettingsEvent.SignOutConfirmed) },
+        dismissLabel = stringResource(R.string.settings_stay),
+        icon = AppIcons.Logout,
+        destructive = true,
+    )
 }
 
 @Preview(showBackground = true)

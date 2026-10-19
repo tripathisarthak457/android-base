@@ -1,203 +1,239 @@
 package com.base.app.catalog
 
-import androidx.activity.compose.BackHandler
+import android.graphics.Color
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.compose.LocalActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
-import com.base.app.core.designsystem.component.button.AppIconButton
-import com.base.app.core.designsystem.component.container.AppListItem
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
+import com.base.app.catalog.sections.LoadingScreen
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.container.AppVerticalDivider
-import com.base.app.core.designsystem.component.navigation.AppBackTopBar
-import com.base.app.core.designsystem.component.navigation.AppLargeTitle
-import com.base.app.core.designsystem.component.selection.AppChip
-import com.base.app.core.designsystem.component.text.AppIcon
-import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.component.list.AppRow
+import com.base.app.core.designsystem.component.list.AppSection
+import com.base.app.core.designsystem.component.list.AppToggleRow
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.base.app.core.designsystem.component.navigation.AppTopBar
+import com.base.app.core.designsystem.component.navigation.scrolledFromTop
+import com.base.app.core.designsystem.component.selection.AppSegmentedControl
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
+import com.base.app.core.designsystem.foundation.scroll.appScrollIndicator
 import com.base.app.core.designsystem.theme.AppDesignStyle
+import com.base.app.core.designsystem.theme.AppMotionStyle
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
 
 /**
  * The catalog's own navigation: one nullable selection. With room for two panes the index stays
- * beside the page it opened; otherwise the page replaces it and Back returns.
+ * beside the page it opened; otherwise the page slides over the index on the screen spring, as a
+ * pushed screen does in the app, and Back returns.
  */
 @Composable
-fun CatalogApp() {
-    var themeMode by rememberSaveable { mutableStateOf(ThemeMode.System) }
-    var section by rememberSaveable { mutableStateOf<CatalogSection?>(null) }
-    var designStyle by rememberSaveable { mutableStateOf(AppDesignStyle.Utility) }
+fun CatalogApp(initialSection: CatalogSection?, initialEnvironment: CatalogEnvironment, frames: FrameTimes) {
+    var environment by rememberSaveable(stateSaver = CatalogEnvironment.Saver) { mutableStateOf(initialEnvironment) }
+    var section by rememberSaveable { mutableStateOf(initialSection) }
 
-    AppTheme(mode = themeMode, designStyle = designStyle) {
-        val index: @Composable (CatalogSection?) -> Unit = { selected ->
-            SectionIndex(
-                themeMode = themeMode,
-                designStyle = designStyle,
-                selected = selected,
-                onDesignStyle = { designStyle = it },
-                onToggleTheme = { themeMode = themeMode.next() },
-                onSelect = { section = it },
-            )
-        }
-
-        if (AppTheme.windowSize.hasRoomForTwoPanes) {
-            val shown = section ?: CatalogSection.entries.first()
-            Row(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.width(AppTheme.layout.listPaneWidth).fillMaxHeight()) { index(shown) }
-                AppVerticalDivider()
-                Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
-                    key(shown) { SectionPage(section = shown, onBack = null) }
+    ProvideEnvironment(environment) {
+        SystemBarIcons(dark = !AppTheme.colors.isLight)
+        // An opaque floor under both pages, so the window's own colour never shows mid-transition.
+        // Test tags are resource ids here, so device scripts can find what to tap.
+        Box(Modifier.fillMaxSize().background(AppTheme.colors.background).semantics { testTagsAsResourceId = true }) {
+            val index: @Composable () -> Unit = {
+                SectionIndex(environment = environment, onEnvironment = { environment = it }, selected = section, onSelect = { section = it })
+            }
+            if (AppTheme.containerClass.hasRoomForTwoPanes) {
+                val shown = section ?: CatalogSection.entries.first()
+                Row(Modifier.fillMaxSize()) {
+                    Box(Modifier.width(AppTheme.layout.listPaneWidth).fillMaxHeight()) { index() }
+                    AppVerticalDivider()
+                    Box(Modifier.weight(1f).fillMaxHeight()) { key(shown) { SectionPage(shown, onBack = null) } }
+                }
+            } else {
+                NavigationBackHandler(
+                    state = rememberNavigationEventState(NavigationEventInfo.None),
+                    isBackEnabled = section != null,
+                    onBackCompleted = { section = null },
+                )
+                val spring = AppTheme.springs.screen.offset
+                val reduceMotion = AppTheme.reduceMotion
+                val parallax = AppTheme.springs.navigation.parallax
+                // The index leaves composition while a page covers it; its scroll position is kept.
+                val saved = rememberSaveableStateHolder()
+                AnimatedContent(
+                    targetState = section,
+                    transitionSpec = {
+                        val forward = targetState != null
+                        if (reduceMotion) {
+                            EnterTransition.None togetherWith ExitTransition.None
+                        } else if (forward) {
+                            slideInHorizontally(spring) { it } togetherWith slideOutHorizontally(spring) { -(it * parallax).toInt() }
+                        } else {
+                            slideInHorizontally(spring) { -(it * parallax).toInt() } togetherWith slideOutHorizontally(spring) { it }
+                        }
+                    },
+                    contentKey = { it?.name },
+                    label = "catalogPage",
+                ) { current ->
+                    Box(Modifier.fillMaxSize().background(AppTheme.colors.background)) {
+                        saved.SaveableStateProvider(current?.name ?: IndexKey) {
+                            if (current == null) index() else SectionPage(current, onBack = { section = null })
+                        }
+                    }
                 }
             }
-            return@AppTheme
+            // Bottom-leading, where no page puts a title or a bar action for it to cover.
+            FrameTimesReadout(frames, Modifier.align(Alignment.BottomStart).navigationBarsPadding().padding(start = 8.dp))
         }
+    }
+}
 
-        BackHandler(enabled = section != null) { section = null }
-
-        // Captured out of the transitionSpec: it is not a composable scope, so the theme's
-        // composable accessors cannot be read from inside it.
-        val enterDuration = AppTheme.motion.medium
-        val exitDuration = AppTheme.motion.quick
-
-        AnimatedContent(
-            targetState = section,
-            transitionSpec = {
-                fadeIn(tween(enterDuration)) togetherWith fadeOut(tween(exitDuration))
-            },
-            label = "catalogSection",
-        ) { current ->
-            if (current == null) index(null) else SectionPage(section = current, onBack = { section = null })
+/**
+ * Status and navigation bar icons follow the catalog's theme rather than the system's: a page shown
+ * dark on a light phone would otherwise draw dark icons on a dark screen. Applied while the frame
+ * that first draws the theme is composed, so no frame shows the wrong icons.
+ */
+@Composable
+private fun SystemBarIcons(dark: Boolean) {
+    val activity = LocalActivity.current as? ComponentActivity ?: return
+    SideEffect(activity, dark) {
+        val style = if (dark) {
+            SystemBarStyle.dark(Color.TRANSPARENT)
+        } else {
+            SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
         }
+        activity.enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
     }
 }
 
 /** One section's groups, in as many columns as the pane has room for. */
 @Composable
 private fun SectionPage(section: CatalogSection, onBack: (() -> Unit)?) {
-    AppScaffold(
-        topBar = {
-            if (onBack != null) {
-                AppBackTopBar(title = section.title, onBack = onBack)
-            } else {
-                AppLargeTitle(title = section.title, subtitle = section.summary)
-            }
-        },
-    ) {
+    // A screen with its own title and list, as an app has, so it is measured as an app would be.
+    if (section == CatalogSection.Loading) {
+        LoadingScreen(onBack)
+        return
+    }
+    val scroll = rememberScrollState()
+    AppScaffold(topBar = { AppTopBar(title = section.title, onBack = onBack, scrolled = { scroll.value }) }) {
         MasonryColumns(
-            minColumnWidth = GROUP_MIN_WIDTH,
+            minColumnWidth = GroupMinWidth,
             spacing = AppTheme.spacing.section,
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(AppTheme.spacing.gutter),
+                .appScrollIndicator(scroll)
+                .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
+                .padding(catalogContentPadding(PaddingValues(AppTheme.spacing.gutter))),
         ) {
             section.Content()
         }
     }
 }
 
-private val GROUP_MIN_WIDTH = 340.dp
-
 @Composable
 private fun SectionIndex(
-    themeMode: ThemeMode,
-    designStyle: AppDesignStyle,
+    environment: CatalogEnvironment,
+    onEnvironment: (CatalogEnvironment) -> Unit,
     selected: CatalogSection?,
-    onDesignStyle: (AppDesignStyle) -> Unit,
-    onToggleTheme: () -> Unit,
     onSelect: (CatalogSection) -> Unit,
 ) {
+    val list = rememberLazyListState()
     AppScaffold(
-        topBar = {
-            AppLargeTitle(
-                title = "Catalog",
-                subtitle = "Every component, in both themes and all four styles",
-                actions = {
-                    AppIconButton(
-                        icon = when (themeMode) {
-                            ThemeMode.Light -> AppIcons.Sun
-                            ThemeMode.Dark -> AppIcons.Moon
-                            ThemeMode.System -> AppIcons.Settings
-                        },
-                        contentDescription = "Theme: ${themeMode.name}. Tap to change.",
-                        onClick = onToggleTheme,
-                    )
-                },
-            )
-        },
+        background = AppTheme.colors.backgroundGrouped,
+        topBar = { AppLargeTitleTopBar(title = "Catalog", subtitle = "Every component, in this project's style", scrolled = { list.scrolledFromTop() }) },
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = AppTheme.spacing.xxl),
+            state = list,
+            modifier = Modifier.fillMaxSize().appScrollIndicator(list),
+            flingBehavior = AppScrollDefaults.flingBehavior(),
+            contentPadding = catalogContentPadding(PaddingValues(bottom = AppTheme.spacing.xl)),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
         ) {
-            // The style is chosen here rather than per page, so every page below is seen in the
-            // same one and a mismatch between two components shows up as you browse.
-            item {
-                FlowRow(
-                    modifier = Modifier.padding(
-                        horizontal = AppTheme.spacing.gutter,
-                        vertical = AppTheme.spacing.sm,
-                    ),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
-                ) {
-                    AppDesignStyle.entries.forEach { option ->
-                        AppChip(
-                            label = option.name,
-                            selected = option == designStyle,
-                            onClick = { onDesignStyle(option) },
+            item(key = "environment") { EnvironmentBar(environment, onEnvironment) }
+            item(key = "sections") {
+                AppSection(header = "Sections") {
+                    CatalogSection.entries.forEach { entry ->
+                        AppRow(
+                            title = entry.title,
+                            subtitle = entry.summary,
+                            value = if (entry == selected) "Open" else null,
+                            onClick = { onSelect(entry) },
                         )
                     }
                 }
-            }
-            items(CatalogSection.entries.size) { index ->
-                val entry = CatalogSection.entries[index]
-                AppListItem(
-                    title = entry.title,
-                    supporting = entry.summary,
-                    modifier = if (entry == selected) {
-                        Modifier.background(AppTheme.colors.accentSubtle)
-                    } else {
-                        Modifier
-                    },
-                    onClick = { onSelect(entry) },
-                    trailing = {
-                        AppIcon(
-                            AppIcons.ChevronRight,
-                            contentDescription = null,
-                            tint = AppTheme.colors.contentTertiary,
-                        )
-                    },
-                )
             }
         }
     }
 }
 
-private fun ThemeMode.next(): ThemeMode = when (this) {
-    ThemeMode.System -> ThemeMode.Light
-    ThemeMode.Light -> ThemeMode.Dark
-    ThemeMode.Dark -> ThemeMode.System
+/**
+ * Everything a page is seen in, chosen once here, so every page below is seen the same way and a
+ * mismatch between two components shows up as you browse.
+ */
+@Composable
+private fun EnvironmentBar(environment: CatalogEnvironment, onChange: (CatalogEnvironment) -> Unit) {
+    AppSection(header = "Seen in", footer = "Starts in the style and motion this project was generated with.") {
+        Column(Modifier.padding(AppTheme.spacing.md), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md)) {
+            AppSegmentedControl(
+                options = ThemeMode.entries.map { it.name },
+                selected = environment.themeMode.ordinal,
+                onSelect = { onChange(environment.copy(themeMode = ThemeMode.entries[it])) },
+            )
+            AppSegmentedControl(
+                options = AppDesignStyle.entries.map { it.name },
+                selected = environment.designStyle.ordinal,
+                onSelect = { onChange(environment.copy(designStyle = AppDesignStyle.entries[it])) },
+            )
+            AppSegmentedControl(
+                options = AppMotionStyle.entries.map { it.name },
+                selected = environment.motionStyle.ordinal,
+                onSelect = { onChange(environment.copy(motionStyle = AppMotionStyle.entries[it])) },
+            )
+            AppSegmentedControl(
+                options = CatalogEnvironment.FontScales.map { "${it}x" },
+                selected = CatalogEnvironment.FontScales.indexOf(environment.fontScale).coerceAtLeast(0),
+                onSelect = { onChange(environment.copy(fontScale = CatalogEnvironment.FontScales[it])) },
+            )
+        }
+        AppToggleRow(title = "Right to left", checked = environment.rtl, onCheckedChange = { onChange(environment.copy(rtl = it)) })
+        AppToggleRow(title = "Reduce motion", checked = environment.reduceMotion, onCheckedChange = { onChange(environment.copy(reduceMotion = it)) })
+    }
 }
+
+private val GroupMinWidth = 340.dp
+private const val IndexKey = "index"

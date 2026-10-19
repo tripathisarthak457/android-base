@@ -4,34 +4,38 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.hasContent
 import com.base.app.core.common.isRefreshing
 import com.base.app.core.common.result.AppError
+import com.base.app.core.designsystem.R as DesignSystemR
 import com.base.app.core.designsystem.animation.appAnimateItem
-import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppScaffold
-import com.base.app.core.designsystem.component.feedback.AppEmptyState
-import com.base.app.core.designsystem.component.feedback.AppErrorState
-import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
+import com.base.app.core.designsystem.component.feedback.AppRedacted
+import com.base.app.core.designsystem.component.feedback.AppStateView
+import com.base.app.core.designsystem.component.feedback.StateKind
 import com.base.app.core.designsystem.component.input.AppSearchField
-import com.base.app.core.designsystem.component.navigation.AppLargeTitle
+import com.base.app.core.designsystem.component.navigation.AppLargeTitleTopBar
+import com.base.app.core.designsystem.component.navigation.scrolledFromTop
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
+import com.base.app.core.designsystem.preview.AppScreenPreviews
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.ScrollToTopOnReselect
 import com.base.app.core.ui.text
@@ -50,40 +54,32 @@ internal fun SampleListScreen(
     onEvent: (SampleListEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val listState = rememberLazyListState()
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
-            Column {
-                AppLargeTitle(
-                    title = stringResource(R.string.sample_title),
-                    subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
-                )
-                // The design-system field takes a String: the text is read from the ViewModel's
-                // field and written straight back, so nothing is copied into the state.
-                AppSearchField(
-                    value = query.text.toString(),
-                    onValueChange = query::setTextAndPlaceCursorAtEnd,
-                    placeholder = stringResource(R.string.sample_search_titles),
-                    modifier = Modifier.padding(
-                        horizontal = AppTheme.spacing.gutter,
-                        vertical = AppTheme.spacing.sm,
-                    ),
-                )
-            }
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.sample_title),
+                scrolled = { listState.scrolledFromTop() },
+                subtitle = stringResource(R.string.sample_pulled_from_a_live_api),
+                accessory = {
+                    AppSearchField(state = query, placeholder = stringResource(R.string.sample_search_titles))
+                },
+            )
         },
     ) {
         when {
             // Idle is the first frame, before the route's Appeared has started the load.
             state.loadState == LoadState.Idle || state.loadState == LoadState.Loading -> LoadingList()
 
-            state.loadState is LoadState.Error -> AppErrorState(
+            state.loadState is LoadState.Error -> AppStateView(
                 message = state.loadState.error.text(),
-                isOffline = state.loadState.error == AppError.Offline,
-                onRetry = { onEvent(SampleListEvent.Retry) },
+                kind = if (state.loadState.error == AppError.Offline) StateKind.Offline else StateKind.Error,
+                onAction = { onEvent(SampleListEvent.Retry) },
             )
 
-            state.loadState is LoadState.Empty -> AppEmptyState(
+            state.loadState is LoadState.Empty -> AppStateView(
                 title = stringResource(R.string.sample_nothing_here_yet),
                 message = stringResource(R.string.sample_empty_explanation),
                 icon = AppIcons.ListView,
@@ -91,7 +87,7 @@ internal fun SampleListScreen(
                 onAction = { onEvent(SampleListEvent.Retry) },
             )
 
-            state.loadState.hasContent -> Content(state, query, onEvent)
+            state.loadState.hasContent -> Content(state, query, listState, onEvent)
         }
     }
 }
@@ -100,6 +96,7 @@ internal fun SampleListScreen(
 private fun Content(
     state: SampleListState,
     query: TextFieldState,
+    listState: LazyListState,
     onEvent: (SampleListEvent) -> Unit,
 ) {
     AppPullToRefresh(
@@ -110,7 +107,7 @@ private fun Content(
         Column(modifier = Modifier.fillMaxSize()) {
             val visible = state.visibleItems
             if (visible.isEmpty()) {
-                AppEmptyState(
+                AppStateView(
                     title = stringResource(R.string.sample_no_matches),
                     message = stringResource(R.string.sample_no_matches_for_query, query.text.trim()),
                     icon = AppIcons.Search,
@@ -118,7 +115,6 @@ private fun Content(
                 return@Column
             }
 
-            val listState = rememberLazyListState()
             ScrollToTopOnReselect(listState)
             ReportScrollEdge(listState)
             LazyColumn(
@@ -128,6 +124,7 @@ private fun Content(
                 state = listState,
                 contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
             ) {
                 // Keyed on the id so inserts keep scroll position and animations.
                 items(items = visible, key = SampleItem::id) { item ->
@@ -143,23 +140,36 @@ private fun Content(
 }
 
 /**
- * The loading state is shaped like the content it stands in for — see
- * [com.base.app.core.designsystem.component.feedback.AppSkeleton].
+ * The loading state: real rows, redacted, in a list with the loaded list's padding. The first row
+ * starts below the large title exactly where the first loaded row will, and the swap to content is
+ * one frame with nothing moving or fading. It keeps a list state of its own, as `AppRedacted` asks.
  */
 @Composable
 private fun LoadingList() {
+    val loading = stringResource(DesignSystemR.string.designsystem_loading)
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .clearAndSetSemantics { contentDescription = loading },
         contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+        userScrollEnabled = false,
     ) {
-        items(SKELETON_ROWS) {
-            AppCard { AppSkeletonListItem(showLeading = false) }
+        items(PlaceholderRows) {
+            AppRedacted(active = true) { SampleRow(item = SampleRowPlaceholder, onClick = {}) }
         }
     }
 }
 
-private const val SKELETON_ROWS = 6
+/** Enough for the tallest window; a lazy list composes only the rows that show. */
+private const val PlaceholderRows = 12
+
+// Never shown (see AppRedacted). A one-line title and a two-line preview, as most samples show.
+private val SampleRowPlaceholder = SampleItem(
+    -1,
+    "Placeholder sample title",
+    "The preview of a sample runs to about two lines on a phone, which is what this one is for.",
+)
 
 @Preview(name = "Content", showBackground = true)
 @Composable
@@ -180,16 +190,14 @@ private fun SampleListContentPreview() {
     }
 }
 
-@Preview(name = "Loading", showBackground = true)
+@AppScreenPreviews
 @Composable
 private fun SampleListLoadingPreview() {
-    AppTheme {
-        SampleListScreen(
-            state = SampleListState(loadState = LoadState.Loading),
-            query = rememberTextFieldState(),
-            onEvent = {},
-        )
-    }
+    SampleListScreen(
+        state = SampleListState(loadState = LoadState.Loading),
+        query = rememberTextFieldState(),
+        onEvent = {},
+    )
 }
 
 @Preview(name = "Empty", showBackground = true)

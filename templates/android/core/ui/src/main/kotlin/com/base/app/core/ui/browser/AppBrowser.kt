@@ -18,7 +18,7 @@ import com.base.app.core.designsystem.theme.AppTheme
  *
  * ```
  * val openInApp = rememberInAppBrowser()
- * AppListItem(title = "Privacy policy", onClick = { openInApp("https://…") })
+ * AppRow(title = "Privacy policy", onClick = { openInApp("https://…") })
  * ```
  */
 @Composable

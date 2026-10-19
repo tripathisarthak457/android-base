@@ -20,7 +20,7 @@ internal fun SampleRow(
     AppCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
         AppText(
             text = item.title,
-            style = AppTheme.typography.titleLarge,
+            style = AppTheme.typography.headline,
             color = AppTheme.colors.contentPrimary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -28,7 +28,7 @@ internal fun SampleRow(
         AppText(
             text = item.preview,
             modifier = Modifier.padding(top = AppTheme.spacing.xs),
-            style = AppTheme.typography.bodySmall,
+            style = AppTheme.typography.subheadline,
             color = AppTheme.colors.contentTertiary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,

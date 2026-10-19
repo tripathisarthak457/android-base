@@ -1,5 +1,5 @@
 {
-  "generator_commit": "a6332dc4b416",
+  "generator_commit": "cf5ac425ff14",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -194,7 +194,7 @@
       },
       "design_styles": [
         {
-          "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
+          "description": "Cool neutrals, hairline outlines, a floating tab bar. Tools, finance, admin.",
           "key": "Utility",
           "requires": [],
           "title": "Utility"
@@ -683,7 +683,7 @@
         },
         {
           "default": true,
-          "description": "A second installable app showing every component in both themes. Depends on the design system alone, so design work rebuilds two modules instead of the whole graph.",
+          "description": "A second installable app showing every component and token, in the project's own design and motion style. A bar switches theme, style, motion, right-to-left, font scale and reduced motion live; each page opens directly with `--es section <Name>`, and a frame-time readout shows what each interaction costs. Depends on the design system alone, so design work rebuilds two modules.",
           "group": "design",
           "headline": "A second app showing every component",
           "implied_only": false,
@@ -695,8 +695,47 @@
           "title": "Component catalog app"
         },
         {
+          "default": false,
+          "description": "A paging carousel that peeks at its neighbours, a list whose rows lift and reorder under the finger or with accessibility actions, and a full-screen image viewer with pinch zoom and swipe to dismiss.",
+          "group": "design",
+          "headline": "Carousels, drag to reorder, zoomable images",
+          "implied_only": false,
+          "implies": [],
+          "key": "collections",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Carousel, reorderable list and image viewer"
+        },
+        {
+          "default": false,
+          "description": "Stat tiles with a trend, a sparkline and a bar chart drawn in one pass each, key-value grids, a timeline, a data table with sticky totals and measured column widths, an animated counter and a star rating.",
+          "group": "design",
+          "headline": "Show numbers, charts and tables",
+          "implied_only": false,
+          "implies": [],
+          "key": "datadisplay",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Data display"
+        },
+        {
+          "default": false,
+          "description": "A one-time-code field, decimal and money fields that keep the caret where the user typed, a phone field with a dial code, a stepper, a tag field, a select field, a range slider and a step indicator for multi-page forms.",
+          "group": "design",
+          "headline": "Fields for codes, money and more",
+          "implied_only": false,
+          "implies": [],
+          "key": "formfields",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Specialised form fields"
+        },
+        {
           "default": true,
-          "description": "Inter and JetBrains Mono through the Play Services font provider — a real file per weight, which bundled variable fonts do not get on every OEM build.",
+          "description": "The typefaces the spec names (DM Sans and JetBrains Mono unless you choose others), downloaded through the Play Services font provider in exactly the weights the design style draws with. They are fetched while the splash is up; a launch where they take longer than 150 ms draws in the platform font throughout, so text never swaps under the reader.",
           "group": "design",
           "headline": "Use any Google Font",
           "implied_only": false,
@@ -719,6 +758,19 @@
           "platforms": [],
           "requires": [],
           "title": "Lottie animations"
+        },
+        {
+          "default": false,
+          "description": "An inline month calendar with limits and disabled days, iOS-style wheel pickers for any list, a time picker built from wheels, and compact date and time pills that open them in a sheet.",
+          "group": "design",
+          "headline": "Pick dates and times inline",
+          "implied_only": false,
+          "implies": [],
+          "key": "pickers",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Date and time pickers"
         },
         {
           "default": false,
@@ -1274,7 +1326,7 @@
           "title": "Bouncy"
         },
         {
-          "description": "No overshoot, slightly longer. For dense, professional interfaces.",
+          "description": "No overshoot anywhere, slightly longer. For dense, professional interfaces.",
           "key": "Calm",
           "title": "Calm"
         },
@@ -1333,16 +1385,19 @@
             "browser",
             "catalog",
             "coil",
+            "collections",
             "composemetrics",
             "coverage",
             "crashlytics",
             "database",
+            "datadisplay",
             "deeplink",
             "depsanalysis",
             "devtools",
             "firebase",
             "firebaseanalytics",
             "flags",
+            "formfields",
             "forms",
             "googlefonts",
             "googlesignin",
@@ -1356,6 +1411,7 @@
             "onboarding",
             "paging",
             "performance",
+            "pickers",
             "playstore",
             "profile",
             "push",
@@ -1429,12 +1485,26 @@
     },
     "motion": {
       "fades": {
+        "enterEasing": [
+          0.05,
+          0.7,
+          0.1,
+          1
+        ],
+        "exitEasing": [
+          0.3,
+          0,
+          0.8,
+          0.15
+        ],
         "longMs": 200,
         "shortMs": 120
       },
       "navigation": {
+        "backGateRelease": 0.99,
         "edgeShadow": 8,
-        "parallax": 0.3,
+        "edgeShadowAlpha": 0.04,
+        "parallax": 0.333,
         "scrimAlpha": {
           "dark": 0.24,
           "light": 0.1
@@ -1447,20 +1517,201 @@
         "scaleIcon": 0.9,
         "scaleLarge": 0.98
       },
+      "scroll": {
+        "flingFriction": 0.4767,
+        "overscrollRelease": {
+          "dampingRatio": 158.1,
+          "stiffness": 9800000
+        },
+        "pagingFriction": 2.393,
+        "rubberBand": 0.55
+      },
+      "sheet": {
+        "actionSheet": {
+          "cardWidth": 320,
+          "maxFitFraction": 0.6,
+          "rowHeight": 56
+        },
+        "back": {
+          "easing": [
+            0.1,
+            0.1,
+            0.0,
+            1.0
+          ],
+          "formScale": 0.9,
+          "guardedShare": 0.2,
+          "persistentFollow": 24,
+          "shrinkX": 48,
+          "shrinkY": 24
+        },
+        "cardStack": {
+          "corner": 12,
+          "deviceCornerFactor": 0.9,
+          "deviceCornerMin": 20,
+          "overlayAlpha": 0.1,
+          "overlayColor": {
+            "dark": "#C8C8C8",
+            "light": "#000000"
+          },
+          "scale": 0.9165,
+          "statusBarFlip": 0.5
+        },
+        "choice": {
+          "maxFitFraction": 0.6,
+          "searchFrom": 6
+        },
+        "detent": {
+          "largeTopGap": 10,
+          "mediumFraction": 0.5,
+          "mediumMinGap": 48,
+          "minHeight": 48
+        },
+        "form": {
+          "heightFraction": 0.85,
+          "maxHeight": 620
+        },
+        "frosted": {
+          "bodyAlpha": {
+            "dark": 0.94,
+            "light": 0.92
+          }
+        },
+        "glass": {
+          "blur": 16,
+          "bodyAlpha": {
+            "dark": 0.5,
+            "light": 0.55
+          },
+          "opaqueAt": 0.5
+        },
+        "grabber": {
+          "alpha": 0.45,
+          "contentTop": 15,
+          "contrastAlpha": 0.7,
+          "height": 5,
+          "hoverAlpha": 0.7,
+          "top": 5,
+          "touchBand": 14,
+          "touchTarget": 48,
+          "width": 36
+        },
+        "haptic": {
+          "arrivalShare": 0.02
+        },
+        "header": {
+          "minHeight": 44,
+          "scrollEdgeHeight": 24,
+          "scrollEdgeRamp": 8,
+          "top": 14
+        },
+        "keyboard": {
+          "dragHidesAfter": 24,
+          "formLiftGap": 16
+        },
+        "release": {
+          "detentFlick": 400,
+          "dismissFlick": 2.0,
+          "dismissPosition": 0.48,
+          "projectionSeconds": 0.099
+        },
+        "rim": {
+          "solidDarkAlpha": 0.08
+        },
+        "shadow": {
+          "alpha": 0.1,
+          "blur": 20,
+          "faintScrimAlpha": 0.2,
+          "y": 6
+        },
+        "side": {
+          "backGrow": 12,
+          "backShrink": 24,
+          "backY": 48,
+          "inset": 16
+        },
+        "stack": {
+          "coveredLift": 0.005,
+          "coveredScale": 0.9165,
+          "maxCoveredDrawn": 2,
+          "peek": 10
+        },
+        "stretch": {
+          "aboveLarge": 0.008
+        }
+      },
+      "skeleton": {
+        "bandWidth": 240,
+        "easing": [
+          0.3,
+          0,
+          0.7,
+          1
+        ],
+        "maxSlowdown": 2,
+        "pauseMs": 800,
+        "referenceTravel": 900,
+        "sweepMs": 1200,
+        "tiltDegrees": 20
+      },
       "stagger": {
         "maxItems": 6,
+        "offset": 12,
         "stepMs": 24
       },
       "styles": {
         "Bouncy": {
           "bounce": 0.35,
+          "description": "Springy, with a visible overshoot. Playful; wrong for anything financial.",
           "speed": 1.0,
           "springs": {
+            "bounceBack": {
+              "bounce": -0.1,
+              "dampingRatio": 1.1,
+              "response": 0.444,
+              "stiffness": 200.26
+            },
+            "dialog": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.275,
+              "stiffness": 522.03
+            },
             "emphasis": {
               "bounce": 0.35,
               "dampingRatio": 0.65,
               "response": 0.5,
               "stiffness": 157.91
+            },
+            "iconBounceDown": {
+              "bounce": 0,
+              "dampingRatio": 1,
+              "response": 0.1622,
+              "stiffness": 1500.58
+            },
+            "iconBounceUp": {
+              "bounce": 0.55,
+              "dampingRatio": 0.45,
+              "response": 0.281,
+              "stiffness": 499.97
+            },
+            "indicatorLead": {
+              "bounce": 0.35,
+              "dampingRatio": 0.65,
+              "response": 0.22,
+              "stiffness": 815.67
+            },
+            "indicatorTrail": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "interactive": {
+              "bounce": 0.14,
+              "dampingRatio": 0.86,
+              "response": 0.15,
+              "stiffness": 1754.6
             },
             "layout": {
               "bounce": 0.0,
@@ -1483,32 +1734,75 @@
             "screen": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
-              "response": 0.24,
-              "stiffness": 685.39
-            },
-            "selection": {
-              "bounce": 0.21,
-              "dampingRatio": 0.79,
-              "response": 0.3,
-              "stiffness": 438.65
+              "response": 0.344,
+              "stiffness": 333.61
             },
             "sheet": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
               "response": 0.34,
               "stiffness": 341.51
+            },
+            "thumb": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.28,
+              "stiffness": 503.55
             }
           }
         },
         "Calm": {
           "bounce": 0.0,
+          "description": "No overshoot anywhere, slightly longer. For dense, professional interfaces.",
           "speed": 0.87,
           "springs": {
+            "bounceBack": {
+              "bounce": -0.1,
+              "dampingRatio": 1.1,
+              "response": 0.444,
+              "stiffness": 200.26
+            },
+            "dialog": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.3161,
+              "stiffness": 395.12
+            },
             "emphasis": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
               "response": 0.5,
               "stiffness": 157.91
+            },
+            "iconBounceDown": {
+              "bounce": 0,
+              "dampingRatio": 1,
+              "response": 0.1622,
+              "stiffness": 1500.58
+            },
+            "iconBounceUp": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.281,
+              "stiffness": 499.97
+            },
+            "indicatorLead": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.22,
+              "stiffness": 815.67
+            },
+            "indicatorTrail": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "interactive": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.15,
+              "stiffness": 1754.6
             },
             "layout": {
               "bounce": 0.0,
@@ -1531,32 +1825,75 @@
             "screen": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
-              "response": 0.2759,
-              "stiffness": 518.77
-            },
-            "selection": {
-              "bounce": 0.0,
-              "dampingRatio": 1.0,
-              "response": 0.3,
-              "stiffness": 438.65
+              "response": 0.3954,
+              "stiffness": 252.51
             },
             "sheet": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
               "response": 0.3908,
               "stiffness": 258.49
+            },
+            "thumb": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.28,
+              "stiffness": 503.55
             }
           }
         },
         "Snappy": {
           "bounce": 0.1,
+          "description": "The shortest response that still reads as motion. For utilities.",
           "speed": 1.15,
           "springs": {
+            "bounceBack": {
+              "bounce": -0.1,
+              "dampingRatio": 1.1,
+              "response": 0.444,
+              "stiffness": 200.26
+            },
+            "dialog": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.2391,
+              "stiffness": 690.38
+            },
             "emphasis": {
               "bounce": 0.1,
               "dampingRatio": 0.9,
               "response": 0.5,
               "stiffness": 157.91
+            },
+            "iconBounceDown": {
+              "bounce": 0,
+              "dampingRatio": 1,
+              "response": 0.1622,
+              "stiffness": 1500.58
+            },
+            "iconBounceUp": {
+              "bounce": 0.55,
+              "dampingRatio": 0.45,
+              "response": 0.281,
+              "stiffness": 499.97
+            },
+            "indicatorLead": {
+              "bounce": 0.1,
+              "dampingRatio": 0.9,
+              "response": 0.22,
+              "stiffness": 815.67
+            },
+            "indicatorTrail": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "interactive": {
+              "bounce": 0.14,
+              "dampingRatio": 0.86,
+              "response": 0.15,
+              "stiffness": 1754.6
             },
             "layout": {
               "bounce": 0.0,
@@ -1579,32 +1916,75 @@
             "screen": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
-              "response": 0.2087,
-              "stiffness": 906.43
-            },
-            "selection": {
-              "bounce": 0.06,
-              "dampingRatio": 0.94,
-              "response": 0.3,
-              "stiffness": 438.65
+              "response": 0.2991,
+              "stiffness": 441.2
             },
             "sheet": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
               "response": 0.2957,
               "stiffness": 451.65
+            },
+            "thumb": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.28,
+              "stiffness": 503.55
             }
           }
         },
         "Standard": {
           "bounce": 0.15,
+          "description": "Crisp, a trace of overshoot. Lively without asking for attention.",
           "speed": 1.0,
           "springs": {
+            "bounceBack": {
+              "bounce": -0.1,
+              "dampingRatio": 1.1,
+              "response": 0.444,
+              "stiffness": 200.26
+            },
+            "dialog": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.275,
+              "stiffness": 522.03
+            },
             "emphasis": {
               "bounce": 0.15,
               "dampingRatio": 0.85,
               "response": 0.5,
               "stiffness": 157.91
+            },
+            "iconBounceDown": {
+              "bounce": 0,
+              "dampingRatio": 1,
+              "response": 0.1622,
+              "stiffness": 1500.58
+            },
+            "iconBounceUp": {
+              "bounce": 0.55,
+              "dampingRatio": 0.45,
+              "response": 0.281,
+              "stiffness": 499.97
+            },
+            "indicatorLead": {
+              "bounce": 0.15,
+              "dampingRatio": 0.85,
+              "response": 0.22,
+              "stiffness": 815.67
+            },
+            "indicatorTrail": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.32,
+              "stiffness": 385.53
+            },
+            "interactive": {
+              "bounce": 0.14,
+              "dampingRatio": 0.86,
+              "response": 0.15,
+              "stiffness": 1754.6
             },
             "layout": {
               "bounce": 0.0,
@@ -1627,23 +2007,32 @@
             "screen": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
-              "response": 0.24,
-              "stiffness": 685.39
-            },
-            "selection": {
-              "bounce": 0.09,
-              "dampingRatio": 0.91,
-              "response": 0.3,
-              "stiffness": 438.65
+              "response": 0.344,
+              "stiffness": 333.61
             },
             "sheet": {
               "bounce": 0.0,
               "dampingRatio": 1.0,
               "response": 0.34,
               "stiffness": 341.51
+            },
+            "thumb": {
+              "bounce": 0.0,
+              "dampingRatio": 1.0,
+              "response": 0.28,
+              "stiffness": 503.55
             }
           }
         }
+      },
+      "tabBar": {
+        "iconBounceScale": 0.84,
+        "indicatorHeight": 44,
+        "indicatorMaxStretch": 1.5,
+        "indicatorSquash": 0.06,
+        "minimizeHysteresis": 10,
+        "revealShift": 12,
+        "revealVeilAlpha": 0.6
       },
       "visibilityThreshold": {
         "float": 0.001,
@@ -1659,52 +2048,48 @@
           "accentSubtle": "#FF16233B",
           "background": "#FF12110F",
           "backgroundGrouped": "#FF12110F",
-          "border": "#FF34302A",
-          "borderStrong": "#FF4A443B",
+          "barIndicator": "#FF5B8DEF",
           "contentDisabled": "#FF565F6E",
           "contentInverse": "#FF0B0E14",
           "contentPrimary": "#FFF4EFE6",
           "contentSecondary": "#FFCBC2B4",
-          "contentTertiary": "#FF999080",
+          "contentTertiary": "#FFA0978A",
           "danger": {
             "base": "#FFF0666D",
-            "border": "#FF4E2126",
             "content": "#FFF0666D",
             "on": "#FF06101F",
             "subtle": "#FF2B1416"
           },
-          "divider": "#FF27241F",
-          "fill": "#FF25221E",
-          "focusRing": "#735B8DEF",
-          "highlight": "#FF34302A",
+          "fill": "#FF2E2A25",
+          "focusRing": "#FF5B8DEF",
+          "highlight": "#17FFFFFF",
           "info": {
             "base": "#FF6FA6FF",
-            "border": "#FF1E3862",
             "content": "#FF6FA6FF",
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
           "neutral": {
             "base": "#FFB4BCCA",
-            "border": "#FF2C3441",
             "content": "#FFB4BCCA",
             "on": "#FF06101F",
-            "subtle": "#FF1A202B"
+            "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
-          "scrim": "#99000000",
+          "outline": "#FF7A7164",
+          "scrim": "#8F000000",
           "secondary": "#FF879BC5",
-          "secondaryContent": "#FF879BC5",
           "secondaryPressed": "#FFA4B3D0",
           "secondarySubtle": "#FF171F31",
+          "segmentThumb": "#FF414957",
           "separator": "#FF34302A",
           "shadow": "#66000000",
-          "skeleton": "#FF27241F",
+          "skeleton": "#FF37332E",
+          "skeletonHighlight": "#FF443F3A",
           "success": {
             "base": "#FF3DD4A0",
-            "border": "#FF1E4638",
             "content": "#FF3DD4A0",
             "on": "#FF06101F",
             "subtle": "#FF10271F"
@@ -1713,14 +2098,11 @@
           "surfaceElevated": "#FF25221E",
           "surfaceGrouped": "#FF1B1916",
           "surfaceInverse": "#FFF2F4F8",
-          "surfaceVariant": "#FF25221E",
           "tertiary": "#FFBE60EB",
-          "tertiaryContent": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
           "warning": {
             "base": "#FFE9A23B",
-            "border": "#FF4A3616",
             "content": "#FFE9A23B",
             "on": "#FF06101F",
             "subtle": "#FF2A1F0E"
@@ -1728,39 +2110,34 @@
         },
         "light": {
           "accent": "#FF2C6BED",
-          "accentContent": "#FF1C60EC",
+          "accentContent": "#FF2863DD",
           "accentPressed": "#FF1F52C4",
           "accentSubtle": "#FFE8EFFD",
           "background": "#FFF7F4EE",
-          "backgroundGrouped": "#FFEFEAE1",
-          "border": "#FFE2DBCF",
-          "borderStrong": "#FFCCC2B1",
+          "backgroundGrouped": "#FFF1EDE5",
+          "barIndicator": "#FF2C6BED",
           "contentDisabled": "#FFA3AAB6",
           "contentInverse": "#FFFFFFFF",
           "contentPrimary": "#FF15130F",
           "contentSecondary": "#FF3F3931",
-          "contentTertiary": "#FF6A6256",
+          "contentTertiary": "#FF655D51",
           "danger": {
             "base": "#FFC42B32",
-            "border": "#FFF3C9CB",
             "content": "#FFC42B32",
             "on": "#FFFFFFFF",
             "subtle": "#FFFCE9E9"
           },
-          "divider": "#FFEAE4DA",
           "fill": "#FFEAE4DA",
-          "focusRing": "#662C6BED",
-          "highlight": "#FFEAE4DA",
+          "focusRing": "#FF2C6BED",
+          "highlight": "#120B0F1A",
           "info": {
             "base": "#FF1E5FBF",
-            "border": "#FFC3D8F7",
             "content": "#FF1E5FBF",
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
           "neutral": {
             "base": "#FF5A6472",
-            "border": "#FFE3E6EC",
             "content": "#FF5A6472",
             "on": "#FFFFFFFF",
             "subtle": "#FFEFF1F5"
@@ -1768,18 +2145,19 @@
           "onAccent": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
-          "scrim": "#730B0F1A",
+          "outline": "#FF8C8273",
+          "scrim": "#660B0F1A",
           "secondary": "#FF617DB8",
-          "secondaryContent": "#FF4D6BAB",
           "secondaryPressed": "#FF445F97",
           "secondarySubtle": "#FFEFF2F8",
+          "segmentThumb": "#FFFFFFFF",
           "separator": "#FFE2DBCF",
-          "shadow": "#1F000000",
-          "skeleton": "#FFEAE4DA",
+          "shadow": "#240B0F1A",
+          "skeleton": "#FFDAD4CA",
+          "skeletonHighlight": "#FFE8E2D8",
           "success": {
             "base": "#FF117C59",
-            "border": "#FFB7E2D2",
-            "content": "#FF117C59",
+            "content": "#FF0F7353",
             "on": "#FFFFFFFF",
             "subtle": "#FFE4F5EE"
           },
@@ -1787,15 +2165,12 @@
           "surfaceElevated": "#FFFFFDF9",
           "surfaceGrouped": "#FFFFFDF9",
           "surfaceInverse": "#FF0B0F1A",
-          "surfaceVariant": "#FFEFEAE1",
           "tertiary": "#FFAE2CED",
-          "tertiaryContent": "#FFA81CEC",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
           "warning": {
             "base": "#FFA35B00",
-            "border": "#FFF2DDB8",
-            "content": "#FFA35B00",
+            "content": "#FF985400",
             "on": "#FFFFFFFF",
             "subtle": "#FFFDF1E0"
           }
@@ -1809,52 +2184,48 @@
           "accentSubtle": "#FF16233B",
           "background": "#FF15120D",
           "backgroundGrouped": "#FF15120D",
-          "border": "#FF3A3224",
-          "borderStrong": "#FF514634",
+          "barIndicator": "#FF5B8DEF",
           "contentDisabled": "#FF565F6E",
           "contentInverse": "#FF0B0E14",
           "contentPrimary": "#FFFBF3E4",
           "contentSecondary": "#FFD6C8B0",
-          "contentTertiary": "#FFA3947B",
+          "contentTertiary": "#FFA99A80",
           "danger": {
             "base": "#FFF0666D",
-            "border": "#FF4E2126",
             "content": "#FFF0666D",
             "on": "#FF06101F",
             "subtle": "#FF2B1416"
           },
-          "divider": "#FF2B2519",
-          "fill": "#FF2A2419",
-          "focusRing": "#735B8DEF",
-          "highlight": "#FF3A3224",
+          "fill": "#FF332C20",
+          "focusRing": "#FF5B8DEF",
+          "highlight": "#17FFFFFF",
           "info": {
             "base": "#FF6FA6FF",
-            "border": "#FF1E3862",
             "content": "#FF6FA6FF",
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
           "neutral": {
             "base": "#FFB4BCCA",
-            "border": "#FF2C3441",
             "content": "#FFB4BCCA",
             "on": "#FF06101F",
-            "subtle": "#FF1A202B"
+            "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
-          "scrim": "#99000000",
+          "outline": "#FF7E715A",
+          "scrim": "#8F000000",
           "secondary": "#FF879BC5",
-          "secondaryContent": "#FF879BC5",
           "secondaryPressed": "#FFA4B3D0",
           "secondarySubtle": "#FF171F31",
+          "segmentThumb": "#FF414957",
           "separator": "#FF3A3224",
           "shadow": "#66000000",
-          "skeleton": "#FF2B2519",
+          "skeleton": "#FF3B3427",
+          "skeletonHighlight": "#FF484033",
           "success": {
             "base": "#FF3DD4A0",
-            "border": "#FF1E4638",
             "content": "#FF3DD4A0",
             "on": "#FF06101F",
             "subtle": "#FF10271F"
@@ -1863,14 +2234,11 @@
           "surfaceElevated": "#FF2A2419",
           "surfaceGrouped": "#FF1F1A13",
           "surfaceInverse": "#FFF2F4F8",
-          "surfaceVariant": "#FF2A2419",
           "tertiary": "#FFBE60EB",
-          "tertiaryContent": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
           "warning": {
             "base": "#FFE9A23B",
-            "border": "#FF4A3616",
             "content": "#FFE9A23B",
             "on": "#FF06101F",
             "subtle": "#FF2A1F0E"
@@ -1878,39 +2246,34 @@
         },
         "light": {
           "accent": "#FF2C6BED",
-          "accentContent": "#FF1C60EC",
+          "accentContent": "#FF2863DD",
           "accentPressed": "#FF1F52C4",
           "accentSubtle": "#FFE8EFFD",
           "background": "#FFFFF7EA",
-          "backgroundGrouped": "#FFFFEFD6",
-          "border": "#FFF0DFC2",
-          "borderStrong": "#FFDDC59D",
+          "backgroundGrouped": "#FFFCF1DE",
+          "barIndicator": "#FF2C6BED",
           "contentDisabled": "#FFA3AAB6",
           "contentInverse": "#FFFFFFFF",
           "contentPrimary": "#FF1A1206",
           "contentSecondary": "#FF45392A",
-          "contentTertiary": "#FF6F6048",
+          "contentTertiary": "#FF6A5B43",
           "danger": {
             "base": "#FFC42B32",
-            "border": "#FFF3C9CB",
             "content": "#FFC42B32",
             "on": "#FFFFFFFF",
             "subtle": "#FFFCE9E9"
           },
-          "divider": "#FFF6E8D0",
           "fill": "#FFF6E8D0",
-          "focusRing": "#662C6BED",
-          "highlight": "#FFF6E8D0",
+          "focusRing": "#FF2C6BED",
+          "highlight": "#120B0F1A",
           "info": {
             "base": "#FF1E5FBF",
-            "border": "#FFC3D8F7",
             "content": "#FF1E5FBF",
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
           "neutral": {
             "base": "#FF5A6472",
-            "border": "#FFE3E6EC",
             "content": "#FF5A6472",
             "on": "#FFFFFFFF",
             "subtle": "#FFEFF1F5"
@@ -1918,17 +2281,18 @@
           "onAccent": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
-          "scrim": "#730B0F1A",
+          "outline": "#FF94855F",
+          "scrim": "#660B0F1A",
           "secondary": "#FF617DB8",
-          "secondaryContent": "#FF4D6BAB",
           "secondaryPressed": "#FF445F97",
           "secondarySubtle": "#FFEFF2F8",
+          "segmentThumb": "#FFFFFFFF",
           "separator": "#FFF0DFC2",
-          "shadow": "#1F000000",
-          "skeleton": "#FFF6E8D0",
+          "shadow": "#240B0F1A",
+          "skeleton": "#FFE6D8C1",
+          "skeletonHighlight": "#FFF5E7CF",
           "success": {
             "base": "#FF117C59",
-            "border": "#FFB7E2D2",
             "content": "#FF117C59",
             "on": "#FFFFFFFF",
             "subtle": "#FFE4F5EE"
@@ -1937,14 +2301,11 @@
           "surfaceElevated": "#FFFFFFFF",
           "surfaceGrouped": "#FFFFFFFF",
           "surfaceInverse": "#FF0B0F1A",
-          "surfaceVariant": "#FFFFEFD6",
           "tertiary": "#FFAE2CED",
-          "tertiaryContent": "#FFAE2CED",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
           "warning": {
             "base": "#FFA35B00",
-            "border": "#FFF2DDB8",
             "content": "#FFA35B00",
             "on": "#FFFFFFFF",
             "subtle": "#FFFDF1E0"
@@ -1957,70 +2318,63 @@
           "accentContent": "#FF5B8DEF",
           "accentPressed": "#FF7BA5F5",
           "accentSubtle": "#FF16233B",
-          "background": "#FF0F131D",
+          "background": "#FF0E131C",
           "backgroundGrouped": "#FF0F131D",
-          "border": "#FF2B364A",
-          "borderStrong": "#FF38414F",
+          "barIndicator": "#FF5B8DEF",
           "contentDisabled": "#FF565F6E",
           "contentInverse": "#FF0B0E14",
           "contentPrimary": "#FFF2F4F8",
           "contentSecondary": "#FFB4BCCA",
-          "contentTertiary": "#FF7F8899",
+          "contentTertiary": "#FF8A93A3",
           "danger": {
             "base": "#FFF0666D",
-            "border": "#FF4E2126",
             "content": "#FFF0666D",
             "on": "#FF06101F",
             "subtle": "#FF2B1416"
           },
-          "divider": "#FF232D3E",
-          "fill": "#FF1D232E",
-          "focusRing": "#735B8DEF",
-          "highlight": "#FF262D3A",
+          "fill": "#FF2A3345",
+          "focusRing": "#FF5B8DEF",
+          "highlight": "#17FFFFFF",
           "info": {
             "base": "#FF6FA6FF",
-            "border": "#FF1E3862",
             "content": "#FF6FA6FF",
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
           "neutral": {
             "base": "#FFB4BCCA",
-            "border": "#FF2C3441",
             "content": "#FFB4BCCA",
             "on": "#FF06101F",
-            "subtle": "#FF1A202B"
+            "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
-          "scrim": "#99000000",
+          "outline": "#FF687183",
+          "scrim": "#8F000000",
           "secondary": "#FF879BC5",
-          "secondaryContent": "#FF879BC5",
           "secondaryPressed": "#FFA4B3D0",
           "secondarySubtle": "#FF171F31",
-          "separator": "#FF262D3A",
+          "segmentThumb": "#FF49515F",
+          "separator": "#FF2B364A",
           "shadow": "#66000000",
-          "skeleton": "#FF222B3B",
+          "skeleton": "#FF313A4B",
+          "skeletonHighlight": "#FF3C4557",
           "success": {
             "base": "#FF3DD4A0",
-            "border": "#FF1E4638",
             "content": "#FF3DD4A0",
             "on": "#FF06101F",
             "subtle": "#FF10271F"
           },
           "surface": "#FF171E2B",
-          "surfaceElevated": "#FF1D232E",
-          "surfaceGrouped": "#FF141922",
+          "surfaceElevated": "#FF202836",
+          "surfaceGrouped": "#FF171E2B",
           "surfaceInverse": "#FFF2F4F8",
-          "surfaceVariant": "#FF212A3A",
           "tertiary": "#FFBE60EB",
-          "tertiaryContent": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
           "warning": {
             "base": "#FFE9A23B",
-            "border": "#FF4A3616",
             "content": "#FFE9A23B",
             "on": "#FF06101F",
             "subtle": "#FF2A1F0E"
@@ -2028,39 +2382,34 @@
         },
         "light": {
           "accent": "#FF2C6BED",
-          "accentContent": "#FF1C60EC",
+          "accentContent": "#FF2863DD",
           "accentPressed": "#FF1F52C4",
           "accentSubtle": "#FFE8EFFD",
           "background": "#FFEEF2FA",
-          "backgroundGrouped": "#FFE1E8F6",
-          "border": "#FFD0DBEE",
-          "borderStrong": "#FFCBD1DB",
+          "backgroundGrouped": "#FFE8EDF7",
+          "barIndicator": "#FF2C6BED",
           "contentDisabled": "#FFA3AAB6",
           "contentInverse": "#FFFFFFFF",
           "contentPrimary": "#FF0B0F1A",
           "contentSecondary": "#FF3D4552",
-          "contentTertiary": "#FF6B7280",
+          "contentTertiary": "#FF626A78",
           "danger": {
             "base": "#FFC42B32",
-            "border": "#FFF3C9CB",
             "content": "#FFC42B32",
             "on": "#FFFFFFFF",
             "subtle": "#FFFCE9E9"
           },
-          "divider": "#FFDAE2F2",
-          "fill": "#FFE9ECF1",
-          "focusRing": "#662C6BED",
-          "highlight": "#FFE9ECF1",
+          "fill": "#FFDBE4F2",
+          "focusRing": "#FF2C6BED",
+          "highlight": "#120B0F1A",
           "info": {
             "base": "#FF1E5FBF",
-            "border": "#FFC3D8F7",
             "content": "#FF1E5FBF",
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
           "neutral": {
             "base": "#FF5A6472",
-            "border": "#FFE3E6EC",
             "content": "#FF5A6472",
             "on": "#FFFFFFFF",
             "subtle": "#FFEFF1F5"
@@ -2068,18 +2417,19 @@
           "onAccent": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
-          "scrim": "#730B0F1A",
+          "outline": "#FF7A818F",
+          "scrim": "#660B0F1A",
           "secondary": "#FF617DB8",
-          "secondaryContent": "#FF4D6BAB",
           "secondaryPressed": "#FF445F97",
           "secondarySubtle": "#FFEFF2F8",
-          "separator": "#FFE3E6EC",
-          "shadow": "#1F000000",
-          "skeleton": "#FFDAE2F2",
+          "segmentThumb": "#FFFFFFFF",
+          "separator": "#FFD0DBEE",
+          "shadow": "#240B0F1A",
+          "skeleton": "#FFC9D2E1",
+          "skeletonHighlight": "#FFD7E0EF",
           "success": {
             "base": "#FF117C59",
-            "border": "#FFB7E2D2",
-            "content": "#FF117C59",
+            "content": "#FF0F7353",
             "on": "#FFFFFFFF",
             "subtle": "#FFE4F5EE"
           },
@@ -2087,15 +2437,12 @@
           "surfaceElevated": "#FFFFFFFF",
           "surfaceGrouped": "#FFFFFFFF",
           "surfaceInverse": "#FF0B0F1A",
-          "surfaceVariant": "#FFE1E8F6",
           "tertiary": "#FFAE2CED",
-          "tertiaryContent": "#FFA81CEC",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
           "warning": {
             "base": "#FFA35B00",
-            "border": "#FFF2DDB8",
-            "content": "#FFA35B00",
+            "content": "#FF985400",
             "on": "#FFFFFFFF",
             "subtle": "#FFFDF1E0"
           }
@@ -2109,52 +2456,48 @@
           "accentSubtle": "#FF16233B",
           "background": "#FF0B0E14",
           "backgroundGrouped": "#FF0B0E14",
-          "border": "#FF262D3A",
-          "borderStrong": "#FF38414F",
+          "barIndicator": "#FF5B8DEF",
           "contentDisabled": "#FF565F6E",
           "contentInverse": "#FF0B0E14",
           "contentPrimary": "#FFF2F4F8",
           "contentSecondary": "#FFB4BCCA",
-          "contentTertiary": "#FF7F8899",
+          "contentTertiary": "#FF8A93A3",
           "danger": {
             "base": "#FFF0666D",
-            "border": "#FF4E2126",
             "content": "#FFF0666D",
             "on": "#FF06101F",
             "subtle": "#FF2B1416"
           },
-          "divider": "#FF1E2531",
-          "fill": "#FF1D232E",
-          "focusRing": "#735B8DEF",
-          "highlight": "#FF262D3A",
+          "fill": "#FF262D3A",
+          "focusRing": "#FF5B8DEF",
+          "highlight": "#17FFFFFF",
           "info": {
             "base": "#FF6FA6FF",
-            "border": "#FF1E3862",
             "content": "#FF6FA6FF",
             "on": "#FF06101F",
             "subtle": "#FF10203A"
           },
           "neutral": {
             "base": "#FFB4BCCA",
-            "border": "#FF2C3441",
             "content": "#FFB4BCCA",
             "on": "#FF06101F",
-            "subtle": "#FF1A202B"
+            "subtle": "#FF1D232E"
           },
           "onAccent": "#FF06101F",
           "onSecondary": "#FF06101F",
           "onTertiary": "#FF06101F",
-          "scrim": "#99000000",
+          "outline": "#FF687183",
+          "scrim": "#8F000000",
           "secondary": "#FF879BC5",
-          "secondaryContent": "#FF879BC5",
           "secondaryPressed": "#FFA4B3D0",
           "secondarySubtle": "#FF171F31",
+          "segmentThumb": "#FF414957",
           "separator": "#FF262D3A",
           "shadow": "#66000000",
-          "skeleton": "#FF1D232E",
+          "skeleton": "#FF2D333E",
+          "skeletonHighlight": "#FF393F4B",
           "success": {
             "base": "#FF3DD4A0",
-            "border": "#FF1E4638",
             "content": "#FF3DD4A0",
             "on": "#FF06101F",
             "subtle": "#FF10271F"
@@ -2163,14 +2506,11 @@
           "surfaceElevated": "#FF1D232E",
           "surfaceGrouped": "#FF141922",
           "surfaceInverse": "#FFF2F4F8",
-          "surfaceVariant": "#FF1D232E",
           "tertiary": "#FFBE60EB",
-          "tertiaryContent": "#FFBE60EB",
           "tertiaryPressed": "#FFCB89EC",
           "tertiarySubtle": "#FF221438",
           "warning": {
             "base": "#FFE9A23B",
-            "border": "#FF4A3616",
             "content": "#FFE9A23B",
             "on": "#FF06101F",
             "subtle": "#FF2A1F0E"
@@ -2178,39 +2518,34 @@
         },
         "light": {
           "accent": "#FF2C6BED",
-          "accentContent": "#FF1C60EC",
+          "accentContent": "#FF2863DD",
           "accentPressed": "#FF1F52C4",
           "accentSubtle": "#FFE8EFFD",
           "background": "#FFF7F8FA",
-          "backgroundGrouped": "#FFEFF1F5",
-          "border": "#FFE3E6EC",
-          "borderStrong": "#FFCBD1DB",
+          "backgroundGrouped": "#FFF2F3F7",
+          "barIndicator": "#FF2C6BED",
           "contentDisabled": "#FFA3AAB6",
           "contentInverse": "#FFFFFFFF",
           "contentPrimary": "#FF0B0F1A",
           "contentSecondary": "#FF3D4552",
-          "contentTertiary": "#FF6B7280",
+          "contentTertiary": "#FF626A78",
           "danger": {
             "base": "#FFC42B32",
-            "border": "#FFF3C9CB",
             "content": "#FFC42B32",
             "on": "#FFFFFFFF",
             "subtle": "#FFFCE9E9"
           },
-          "divider": "#FFE9ECF1",
           "fill": "#FFE9ECF1",
-          "focusRing": "#662C6BED",
-          "highlight": "#FFE9ECF1",
+          "focusRing": "#FF2C6BED",
+          "highlight": "#120B0F1A",
           "info": {
             "base": "#FF1E5FBF",
-            "border": "#FFC3D8F7",
             "content": "#FF1E5FBF",
             "on": "#FFFFFFFF",
             "subtle": "#FFE7F0FD"
           },
           "neutral": {
             "base": "#FF5A6472",
-            "border": "#FFE3E6EC",
             "content": "#FF5A6472",
             "on": "#FFFFFFFF",
             "subtle": "#FFEFF1F5"
@@ -2218,17 +2553,18 @@
           "onAccent": "#FFFFFFFF",
           "onSecondary": "#FF0B0E14",
           "onTertiary": "#FFFFFFFF",
-          "scrim": "#730B0F1A",
+          "outline": "#FF838B99",
+          "scrim": "#660B0F1A",
           "secondary": "#FF617DB8",
-          "secondaryContent": "#FF4D6BAB",
           "secondaryPressed": "#FF445F97",
           "secondarySubtle": "#FFEFF2F8",
+          "segmentThumb": "#FFFFFFFF",
           "separator": "#FFE3E6EC",
-          "shadow": "#1F000000",
-          "skeleton": "#FFE9ECF1",
+          "shadow": "#240B0F1A",
+          "skeleton": "#FFD7DADF",
+          "skeletonHighlight": "#FFE5E8ED",
           "success": {
             "base": "#FF117C59",
-            "border": "#FFB7E2D2",
             "content": "#FF117C59",
             "on": "#FFFFFFFF",
             "subtle": "#FFE4F5EE"
@@ -2237,14 +2573,11 @@
           "surfaceElevated": "#FFFFFFFF",
           "surfaceGrouped": "#FFFFFFFF",
           "surfaceInverse": "#FF0B0F1A",
-          "surfaceVariant": "#FFEFF1F5",
           "tertiary": "#FFAE2CED",
-          "tertiaryContent": "#FFAE2CED",
           "tertiaryPressed": "#FF8E11CA",
           "tertiarySubtle": "#FFF7EAFD",
           "warning": {
             "base": "#FFA35B00",
-            "border": "#FFF2DDB8",
             "content": "#FFA35B00",
             "on": "#FFFFFFFF",
             "subtle": "#FFFDF1E0"
@@ -2267,18 +2600,20 @@
         "100": "#FFEFF1F5",
         "150": "#FFE9ECF1",
         "200": "#FFE3E6EC",
-        "300": "#FFCBD1DB",
         "400": "#FFA3AAB6",
+        "450": "#FF838B99",
         "50": "#FFF7F8FA",
-        "500": "#FF6B7280",
+        "550": "#FF626A78",
         "600": "#FF5A6472",
         "700": "#FF3D4552",
+        "75": "#FFF2F3F7",
         "900": "#FF0B0F1A"
       },
       "ink": {
         "100": "#FFF2F4F8",
         "200": "#FFB4BCCA",
-        "300": "#FF7F8899",
+        "300": "#FF8A93A3",
+        "350": "#FF687183",
         "400": "#FF565F6E",
         "500": "#FF38414F",
         "600": "#FF262D3A",
@@ -2290,17 +2625,18 @@
     "sizes": {
       "buttonLarge": 52,
       "buttonMedium": 44,
-      "buttonSmall": 36,
-      "fieldHeight": 52,
+      "buttonSmall": 32,
+      "fieldHeight": 48,
       "icon": 20,
       "iconLarge": 24,
       "iconSmall": 16,
       "minTouchTarget": 44,
+      "rowHeight": 48,
       "tabBarHeight": 64,
       "tabBarLift": 12,
       "tabBarMaxWidth": 480,
       "tabBarSideMargin": 20,
-      "topBarHeight": 56
+      "topBarHeight": 52
     },
     "spacing": {
       "gutter": 16,
@@ -2317,13 +2653,14 @@
     },
     "styles": {
       "Editorial": {
-        "bar": "Minimal",
+        "bar": "Translucent",
         "borderWidth": 1,
         "borderWidthStrong": 1.5,
         "buttonRadius": 2,
         "card": "Outlined",
         "chipRadius": 2,
         "field": "Underlined",
+        "indicator": "Subtle",
         "offsetShadow": 0,
         "radii": {
           "lg": 6,
@@ -2334,18 +2671,21 @@
           "xs": 2
         },
         "requires": [],
+        "sheetInset": 0,
+        "sheetMaterial": "Solid",
         "surfaces": "Paper",
         "uppercaseLabels": true,
         "voice": "Editorial"
       },
       "Playful": {
-        "bar": "Chunky",
+        "bar": "Floating",
         "borderWidth": 2,
         "borderWidthStrong": 2.5,
         "buttonRadius": 14,
         "card": "Offset",
         "chipRadius": 12,
         "field": "Outlined",
+        "indicator": "Pill",
         "offsetShadow": 4,
         "radii": {
           "lg": 22,
@@ -2356,6 +2696,8 @@
           "xs": 8
         },
         "requires": [],
+        "sheetInset": 10,
+        "sheetMaterial": "Solid",
         "surfaces": "Cream",
         "uppercaseLabels": false,
         "voice": "Rounded"
@@ -2368,6 +2710,7 @@
         "card": "Raised",
         "chipRadius": "pill",
         "field": "Filled",
+        "indicator": "Pill",
         "offsetShadow": 0,
         "radii": {
           "lg": 26,
@@ -2378,18 +2721,21 @@
           "xs": 10
         },
         "requires": [],
+        "sheetInset": 8,
+        "sheetMaterial": "Solid",
         "surfaces": "BrandTint",
         "uppercaseLabels": false,
         "voice": "Bold"
       },
       "Utility": {
-        "bar": "Docked",
+        "bar": "Floating",
         "borderWidth": 1,
         "borderWidthStrong": 1.5,
         "buttonRadius": 10,
         "card": "Outlined",
         "chipRadius": "pill",
         "field": "Outlined",
+        "indicator": "Subtle",
         "offsetShadow": 0,
         "radii": {
           "lg": 20,
@@ -2400,6 +2746,8 @@
           "xs": 6
         },
         "requires": [],
+        "sheetInset": 8,
+        "sheetMaterial": "Solid",
         "surfaces": "Cool",
         "uppercaseLabels": false,
         "voice": "Neutral"
@@ -2410,7 +2758,7 @@
         "body": {
           "lineHeight": 22,
           "size": 17,
-          "tracking": 0,
+          "tracking": -0.15,
           "weight": {
             "Bold": 400,
             "Editorial": 400,
@@ -2421,7 +2769,7 @@
         "callout": {
           "lineHeight": 21,
           "size": 16,
-          "tracking": 0,
+          "tracking": -0.1,
           "weight": {
             "Bold": 400,
             "Editorial": 400,
@@ -2432,20 +2780,20 @@
         "caption1": {
           "lineHeight": 16,
           "size": 12,
-          "tracking": 0.1,
+          "tracking": 0.05,
           "weight": {
-            "Bold": 500,
+            "Bold": 400,
             "Editorial": 400,
             "Neutral": 400,
-            "Rounded": 500
+            "Rounded": 400
           }
         },
         "caption2": {
           "lineHeight": 13,
           "size": 11,
-          "tracking": 0.2,
+          "tracking": 0.1,
           "weight": {
-            "Bold": 600,
+            "Bold": 500,
             "Editorial": 500,
             "Neutral": 500,
             "Rounded": 600
@@ -2456,30 +2804,30 @@
           "size": 13,
           "tracking": 0,
           "weight": {
-            "Bold": 500,
+            "Bold": 400,
             "Editorial": 400,
             "Neutral": 400,
-            "Rounded": 500
+            "Rounded": 400
           }
         },
         "headline": {
           "lineHeight": 22,
           "size": 17,
-          "tracking": -0.2,
+          "tracking": -0.15,
           "weight": {
-            "Bold": 800,
+            "Bold": 700,
             "Editorial": 600,
             "Neutral": 600,
-            "Rounded": 800
+            "Rounded": 700
           }
         },
         "largeTitle": {
           "lineHeight": 41,
           "size": 34,
-          "tracking": -0.8,
+          "tracking": -0.6,
           "weight": {
-            "Bold": 900,
-            "Editorial": 600,
+            "Bold": 800,
+            "Editorial": 500,
             "Neutral": 700,
             "Rounded": 900
           }
@@ -2498,7 +2846,7 @@
         "subheadline": {
           "lineHeight": 20,
           "size": 15,
-          "tracking": 0,
+          "tracking": -0.05,
           "weight": {
             "Bold": 400,
             "Editorial": 400,
@@ -2509,10 +2857,10 @@
         "title1": {
           "lineHeight": 34,
           "size": 28,
-          "tracking": -0.6,
+          "tracking": -0.5,
           "weight": {
-            "Bold": 900,
-            "Editorial": 600,
+            "Bold": 800,
+            "Editorial": 500,
             "Neutral": 700,
             "Rounded": 900
           }
@@ -2520,20 +2868,20 @@
         "title2": {
           "lineHeight": 28,
           "size": 22,
-          "tracking": -0.5,
+          "tracking": -0.35,
           "weight": {
             "Bold": 800,
-            "Editorial": 600,
+            "Editorial": 500,
             "Neutral": 700,
-            "Rounded": 900
+            "Rounded": 800
           }
         },
         "title3": {
           "lineHeight": 25,
           "size": 20,
-          "tracking": -0.3,
+          "tracking": -0.25,
           "weight": {
-            "Bold": 800,
+            "Bold": 700,
             "Editorial": 600,
             "Neutral": 600,
             "Rounded": 800

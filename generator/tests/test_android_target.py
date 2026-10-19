@@ -1,4 +1,4 @@
-"""The Android target: its settings regions, tabs, scaffolding, legacy look appliers and project scripts."""
+"""The Android target: its settings regions, tabs, scaffolding, the look it writes, and project scripts."""
 
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ from genkit.core.record import RECORD_NAME
 from genkit.core.target import RenderError
 from genkit.targets import get
 from genkit.targets.android import database, look, scaffold, settings, tabs, variants
+from genkit.tokens import kotlin
 
 ANDROID = get("android")
 
@@ -79,28 +80,6 @@ class SettingsTest(unittest.TestCase):
         self.assertIn('name="deeplink_host" translatable="false">example.com<', strings)
         self.assertTrue(readme.startswith("# Café Olé\n"))
         self.assertIn("- language\n", readme)
-
-
-class TokenCopyTest(unittest.TestCase):
-
-    def test_a_shipped_token_copy_is_re_emitted_with_the_specs_brand(self):
-        import shutil
-        from unittest import mock
-
-        from genkit.tokens import kotlin
-
-        with tempfile.TemporaryDirectory() as temp:
-            template = Path(temp) / "android"
-            shutil.copytree(ANDROID.template_dir, template, ignore=shutil.ignore_patterns("build", ".gradle"))
-            copy = template / kotlin.RELATIVE_PATH.format(package_path="com/base/app")
-            copy.parent.mkdir(parents=True)
-            copy.write_text("// emitted for the template's defaults\n", encoding="utf-8")
-            with mock.patch.object(type(ANDROID), "template_dir", template):
-                project = generate(Path(temp), accent_colour="#16A34A")
-            text = (project / kotlin.RELATIVE_PATH.format(package_path="com/acme/field")).read_text(encoding="utf-8")
-        self.assertTrue(text.startswith(kotlin.HEADER))
-        self.assertIn("package com.acme.field.core.designsystem.theme.tokens", text)
-        self.assertIn(f"accent = Color({brand.to_argb(brand.brand_ramps('#16A34A')['Accent'].base)}),", text)
 
 
 class TabsTest(unittest.TestCase):
@@ -193,60 +172,43 @@ class DatabaseTest(unittest.TestCase):
 
 
 class LookTest(unittest.TestCase):
-    """The legacy appliers fail loudly when the template line they rewrite is gone."""
+    """The look reaches a project through its DesignTokens, never through edits to the theme's code."""
 
-    def setUp(self):
-        temp = tempfile.TemporaryDirectory()
-        self.addCleanup(temp.cleanup)
-        self.project = Path(temp.name)
+    def test_a_project_without_its_token_copy_is_an_error(self):
+        with tempfile.TemporaryDirectory() as temp, self.assertRaises(RenderError):
+            look.apply(Path(temp), spec())
 
-    def write(self, relative: str, text: str) -> Path:
-        path = self.project / relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8")
-        return path
-
-    def test_the_styles_go_into_the_one_theme_call(self):
-        root = self.write(
-            "app/src/main/kotlin/com/acme/field/ui/AppRoot.kt",
-            "import com.acme.field.core.designsystem.theme.AppTheme\n"
-            "    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {\n",
-        )
-        look.apply_feel(self.project, spec(design_style="Playful", motion_style="Bouncy", haptics_enabled=False))
-        text = root.read_text(encoding="utf-8")
-        self.assertIn("designStyle = AppDesignStyle.Playful", text)
-        self.assertIn("motionStyle = AppMotionStyle.Bouncy", text)
-        self.assertIn("hapticsEnabled = false", text)
-        self.assertIn("import com.acme.field.core.designsystem.theme.AppDesignStyle", text)
-
-    def test_a_missing_theme_call_is_an_error(self):
-        self.write("app/src/main/kotlin/com/acme/field/ui/AppRoot.kt", "import com.acme.field.core.designsystem.theme.AppTheme\n")
-        with self.assertRaises(RenderError):
-            look.apply_feel(self.project, spec())
-
-    def test_a_font_constant_that_moved_is_an_error(self):
-        self.write("core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/theme/AppFonts.kt", 'const val Sans = "DM Sans"\n')
-        with self.assertRaises(RenderError):
-            look.apply_fonts(self.project, spec())
-
-    def test_backslashes_in_a_font_name_do_not_reach_the_regex_engine(self):
-        fonts = self.write(
-            "core/designsystem/src/main/kotlin/com/acme/field/core/designsystem/theme/AppFonts.kt",
-            'const val Sans = "DM Sans"\nconst val Mono = "JetBrains Mono"\n',
-        )
-        look.apply_fonts(self.project, spec(font_name="M PLUS 1p"))
-        self.assertIn('const val Sans = "M PLUS 1p"', fonts.read_text(encoding="utf-8"))
-
-    def test_every_brand_shade_is_written_into_a_real_project(self):
+    def test_the_spec_s_choices_become_the_project_s_tokens(self):
         with tempfile.TemporaryDirectory() as temp:
-            project = generate(Path(temp), accent_colour="#16A34A", features=["catalog"])
-            palette = next(project.rglob("Palette.kt")).read_text(encoding="utf-8")
+            project = generate(
+                Path(temp), accent_colour="#16A34A", design_style="Playful", motion_style="Bouncy",
+                haptics_enabled=False, font_name="M PLUS 1p", features=["catalog", "googlefonts"],
+            )
+            tokens = next(project.rglob("DesignTokens.kt")).read_text(encoding="utf-8")
+            theme = next(project.rglob("AppTheme.kt")).read_text(encoding="utf-8")
             catalog_colors = (project / "catalog/src/main/res/values/colors.xml").read_text(encoding="utf-8")
             catalog_label = (project / "catalog/src/main/res/values/strings.xml").read_text(encoding="utf-8")
+        self.assertTrue(tokens.startswith(kotlin.PROJECT_HEADER))
+        self.assertIn("package com.acme.field.core.designsystem.theme.tokens\n", tokens)
+        self.assertIn("val designStyle: AppDesignStyle = AppDesignStyle.Playful\n", tokens)
+        self.assertIn("val motionStyle: AppMotionStyle = AppMotionStyle.Bouncy\n", tokens)
+        self.assertIn("const val hapticsEnabled: Boolean = false\n", tokens)
+        self.assertIn('const val fontName: String = "M PLUS 1p"\n', tokens)
         ramp = brand.brand_ramps("#16A34A")["Accent"]
-        self.assertIn(f"internal val Accent = Color({brand.to_argb(ramp.base)})", palette)
+        self.assertIn(f"accent = Color(0xFF{brand.to_hex(ramp.base)[1:]}),", tokens)
+        self.assertIn("designStyle: AppDesignStyle = AppTheme.defaults.designStyle", theme)
         self.assertIn(f"#FF{brand.to_hex(ramp.base)[1:]}", catalog_colors)
         self.assertIn(">Acme Field Catalog<", catalog_label)
+        self.assertNotIn("<generated:", catalog_label)
+
+    def test_without_downloadable_fonts_the_project_names_the_platform_families(self):
+        with tempfile.TemporaryDirectory() as temp:
+            project = generate(Path(temp), font_name="M PLUS 1p")
+            tokens = next(project.rglob("DesignTokens.kt")).read_text(encoding="utf-8")
+            fonts = next(project.rglob("AppFonts.kt")).read_text(encoding="utf-8")
+        self.assertIn('const val fontName: String = "sans-serif"\n', tokens)
+        self.assertIn("val AppFontPreload = FontPreload(PlatformFonts)\n", fonts)
+        self.assertNotIn("googlefonts", fonts)
 
 
 class BrandTest(unittest.TestCase):
@@ -310,7 +272,7 @@ class ProjectTest(unittest.TestCase):
         self.assertIn("NoOpCrashReporter()", modules["CrashModule.kt"])
         self.assertNotIn("FlagsModule.kt", modules)
         self.assertFalse(any(project.rglob("firebase")))
-        self.assertEqual({"googlefonts"}, set(variants.VARIANTS))
+        self.assertEqual({}, variants.VARIANTS)
 
     def test_only_the_batch_file_of_a_generated_project_holds_a_carriage_return(self):
         # Newline translation on Windows, or a template checked out with CRLF, shows up here as a

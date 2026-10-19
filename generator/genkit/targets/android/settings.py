@@ -28,6 +28,9 @@ def regions(spec: Spec) -> Regions:
             f'    <string name="deeplink_host" translatable="false">{android.deeplink_host or "example.com"}</string>\n',
         ],
         "launcher-background": _launcher_background(spec),
+        # The catalog app is the same brand's second app: its label and launcher follow the app's.
+        "catalog-name": [f'    <string name="app_name" translatable="false">{escape(f"{spec.label} Catalog")}</string>\n'],
+        "catalog-launcher-background": _launcher_background(spec),
         "supported-locales": [
             "    val supported: List<String> = listOf("
             + ", ".join(f'"{tag}"' for tag in (SOURCE_LANGUAGE, *spec.languages))

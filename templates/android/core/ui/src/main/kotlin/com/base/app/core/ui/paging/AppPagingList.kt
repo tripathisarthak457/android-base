@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,9 +21,11 @@ import com.base.app.core.designsystem.animation.appAnimateItem
 import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
-import com.base.app.core.designsystem.component.feedback.AppCircularProgress
+import com.base.app.core.designsystem.component.feedback.AppActivityIndicator
 import com.base.app.core.designsystem.component.refresh.AppPullToRefresh
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -35,6 +38,11 @@ import com.base.app.core.designsystem.theme.AppTheme
  * - The next page failed: a short line and a retry under the last row, keeping every row already
  *   loaded. Replacing a long list with a full-screen error because page seven failed is the
  *   most irritating thing a feed can do.
+ *
+ * Hoist [state] to drive a large title from the list: `scrolled = { state.scrolledFromTop() }`. A
+ * [loading] list keeps a state of its own, never [state], for the reason `AppRedacted` gives. The
+ * list starts under the screen's top bar and ends above its bottom chrome unless [contentPadding]
+ * says otherwise; [modifier] applies to whichever state is showing.
  */
 @Composable
 fun <T : Any> AppPagingList(
@@ -43,7 +51,8 @@ fun <T : Any> AppPagingList(
     loadMoreFailedLabel: String,
     retryLabel: String,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(AppTheme.spacing.gutter),
+    state: LazyListState = rememberLazyListState(),
+    contentPadding: PaddingValues = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
     loading: @Composable () -> Unit = {},
     failed: @Composable (error: Throwable, retry: () -> Unit) -> Unit = { _, _ -> },
     empty: @Composable () -> Unit = {},
@@ -53,9 +62,11 @@ fun <T : Any> AppPagingList(
     val nothingYet = items.itemCount == 0
 
     when {
-        nothingYet && refresh is LoadState.Loading -> loading()
-        nothingYet && refresh is LoadState.Error -> failed(refresh.error) { items.retry() }
-        nothingYet && refresh is LoadState.NotLoading && items.loadState.append.endOfPaginationReached -> empty()
+        nothingYet && refresh is LoadState.Loading -> StateBox(modifier) { loading() }
+        nothingYet && refresh is LoadState.Error -> StateBox(modifier) { failed(refresh.error) { items.retry() } }
+        nothingYet && refresh is LoadState.NotLoading && items.loadState.append.endOfPaginationReached -> {
+            StateBox(modifier) { empty() }
+        }
         else -> AppPullToRefresh(
             isRefreshing = refresh is LoadState.Loading && !nothingYet,
             onRefresh = items::refresh,
@@ -63,9 +74,10 @@ fun <T : Any> AppPagingList(
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                state = rememberLazyListState(),
+                state = state,
                 contentPadding = contentPadding,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
             ) {
                 items(count = items.itemCount, key = items.itemKey(key)) { index ->
                     val item = items[index] ?: return@items
@@ -88,6 +100,11 @@ fun <T : Any> AppPagingList(
 }
 
 @Composable
+private fun StateBox(modifier: Modifier, content: @Composable () -> Unit) {
+    Box(modifier = modifier.fillMaxSize(), propagateMinConstraints = true) { content() }
+}
+
+@Composable
 private fun AppendFooter(
     loading: Boolean,
     failed: Boolean,
@@ -102,7 +119,7 @@ private fun AppendFooter(
                 .padding(vertical = AppTheme.spacing.lg),
             contentAlignment = Alignment.Center,
         ) {
-            AppCircularProgress(size = AppTheme.sizes.iconLarge)
+            AppActivityIndicator(size = AppTheme.sizes.iconLarge)
         }
 
         failed -> Row(
@@ -114,14 +131,14 @@ private fun AppendFooter(
         ) {
             AppText(
                 text = failedLabel,
-                style = AppTheme.typography.bodySmall,
+                style = AppTheme.typography.subheadline,
                 color = AppTheme.colors.contentSecondary,
                 modifier = Modifier.weight(1f),
             )
             AppButton(
                 text = retryLabel,
                 onClick = onRetry,
-                variant = ButtonVariant.Secondary,
+                variant = ButtonVariant.Tinted,
                 size = ButtonSize.Small,
             )
         }
