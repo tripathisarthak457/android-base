@@ -95,6 +95,29 @@ class PropertiesTest(unittest.TestCase):
         self.assertEqual("keypass1", values["prod.keyPassword"])
 
 
+class RefusalTest(unittest.TestCase):
+
+    def test_the_warning_quotes_keytool_s_error_not_its_progress(self):
+        # What keytool printed on Linux for a folder where the key should go: it found that out only
+        # when it wrote the key pair it had generated.
+        path = "/tmp/x/Ána/keys/prod.jks"
+        refused = subprocess.CompletedProcess(
+            [],
+            1,
+            stdout=f"keytool error: java.io.FileNotFoundException: {path} (Is a directory)\n",
+            stderr="Generating 2,048 bit RSA key pair and self-signed certificate (SHA384withRSA) with a validity of "
+            "90 days\n\tfor: CN=Acme, O=Acme, C=US\n",
+        )
+        with (
+            tempfile.TemporaryDirectory() as temp,
+            mock.patch.object(keystores, "find_keytool", return_value="keytool"),
+            mock.patch.object(keystores.subprocess, "run", return_value=refused),
+        ):
+            _, skipped, [warning] = keystores.generate(Path(temp), (keystore(),))
+        self.assertEqual(["prod"], skipped)
+        self.assertEqual(f"Keystore 'prod' could not be created: {refused.stdout.strip()}", warning)
+
+
 @unittest.skipIf(KEYTOOL is None, "keytool is not installed")
 class GenerationTest(unittest.TestCase):
 
@@ -117,7 +140,11 @@ class GenerationTest(unittest.TestCase):
 
     def test_a_non_ascii_password_round_trips(self):
         password = "pässwörd1"
-        keystores.write(self.project, (keystore(store_password=password),), [])
+        warnings = keystores.write(self.project, (keystore(store_password=password),), [])
+        # The PBE key factory of older JDKs, behind their PKCS12 store, takes printable ASCII only.
+        if any("Password is not ASCII" in warning for warning in warnings):
+            self.skipTest(f"this keytool refuses a PKCS12 password outside ASCII: {warnings[0]}")
+        self.assertEqual([], warnings)
         values = load_properties((self.project / "keystore.properties").read_text(encoding="iso-8859-1"))
         self.assertEqual(0, self.keytool_list(self.project / values["prod.storeFile"], values["prod.storePassword"]).returncode)
 

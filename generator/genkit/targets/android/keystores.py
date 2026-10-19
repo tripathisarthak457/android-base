@@ -191,7 +191,9 @@ def generate(project: Path, keystores: tuple[KeystoreSpec, ...]) -> tuple[list[s
             made[keystore] = target
         else:
             skipped.append(keystore.name)
-            output = (result.stderr or result.stdout).strip().splitlines()
+            # keytool prints its error on stdout and its progress on stderr, which a failure after
+            # the key pair was generated (writing it, on Linux, to a folder in its way) leaves set.
+            output = (result.stdout or result.stderr).strip().splitlines()
             warnings.append(
                 f"Keystore '{keystore.name}' could not be created: {output[-1] if output else 'unknown error'}"
             )
