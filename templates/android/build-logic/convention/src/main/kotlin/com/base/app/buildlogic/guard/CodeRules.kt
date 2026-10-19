@@ -151,7 +151,7 @@ internal object CodeRules {
         val message: String = if (reference == null) advice else "$advice (read .agents/skills/$reference)"
     }
 
-    val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL
+    val ALL: List<Rule> = ComposeRules.ALL + KotlinRules.ALL + StructureRules.ALL + AdaptiveRules.ALL + SheetRules.ALL + ScrollRules.ALL
 
     /** Not a source pattern: a `@Composable` built without the Compose compiler crashes when first called. */
     private const val COMPOSE_COMPILER = "compose-compiler"

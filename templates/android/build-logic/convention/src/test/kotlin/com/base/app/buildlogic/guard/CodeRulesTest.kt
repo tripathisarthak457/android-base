@@ -30,7 +30,7 @@ class CodeRulesTest {
             "lazy-key",
             CORE_UI,
             """
-            private fun List() = LazyColumn(modifier = Modifier) {
+            private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior(), modifier = Modifier) {
                 items(rows) { Row(it) } /*!*/
             }
             """.trimIndent(),
@@ -39,7 +39,7 @@ class CodeRulesTest {
             "lazy-content-type",
             CORE_UI,
             """
-            private fun List() = LazyColumn {
+            private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) {
                 item(contentType = "header") { Header() }
                 items(rows, key = { it.id }) { Row(it) } /*!*/
             }
@@ -49,7 +49,7 @@ class CodeRulesTest {
             "scroll-chrome",
             FEATURE,
             """
-            private fun List() = LazyColumn(modifier = Modifier.fillMaxSize()) { /*!*/
+            private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior(), modifier = Modifier.fillMaxSize()) { /*!*/
                 items(rows, key = { it.id }) { Row(it) }
             }
             """.trimIndent(),
@@ -131,6 +131,67 @@ class CodeRulesTest {
             internal fun OrdersScreen() {} /*!*/
             """.trimIndent(),
         ),
+        Fixture(
+            "sheet-ime-padding",
+            FEATURE,
+            """
+            @Composable
+            private fun Rename() = AppSheet(visible = true, onDismissRequest = {}) {
+                SheetColumn(Modifier.imePadding()) { } /*!*/
+            }
+            """.trimIndent(),
+        ),
+        Fixture("sheet-shadow", SHEET, "private fun Modifier.card() = this.shadow(8.dp) /*!*/"),
+        Fixture("sheet-raw-delta", SHEET, "fun drag(s: AnchoredDraggableState<Int>) = s.dispatchRawDelta(1f) /*!*/"),
+        Fixture("sheet-window", SHEET, "@Composable fun Card() { Popup(onDismissRequest = {}) { } } /*!*/"),
+        Fixture(
+            "sheet-conditional",
+            FEATURE,
+            """
+            @Composable
+            private fun Orders(show: Boolean) {
+                if (show) {
+                    AppSheet(visible = true, onDismissRequest = {}) { } /*!*/
+                }
+            }
+            """.trimIndent(),
+        ),
+        Fixture(
+            "sheet-modifier",
+            FEATURE,
+            """
+            @Composable
+            private fun Orders() {
+                AppSheet(visible = true, onDismissRequest = {}, modifier = Modifier.fillMaxWidth()) { } /*!*/
+            }
+            """.trimIndent(),
+        ),
+        Fixture(
+            "sheet-root",
+            FEATURE,
+            """
+            @Composable
+            private fun Orders() {
+                AppSheet(visible = true, onDismissRequest = {}) {
+                    Header()
+                    Body() /*!*/
+                }
+            }
+            """.trimIndent(),
+        ),
+        Fixture("shell-seam", FEATURE, "@OptIn(ShellSeamApi::class) /*!*/"),
+        Fixture(
+            "sheet-when-else",
+            FEATURE,
+            """
+            private fun label(d: SheetDetent) = when (d) { /*!*/
+                SheetDetent.Large -> "large"
+                SheetDetent.Medium -> "medium"
+            }
+            """.trimIndent(),
+        ),
+
+        Fixture("scroll-fling", CORE_UI, "private fun Photos() = LazyRow(state = photos) { } /*!*/"),
     )
 
     @Test
@@ -162,7 +223,7 @@ class CodeRulesTest {
 
     @Test
     fun `a finding names the skill page that explains its fix`() {
-        val finding = CodeRules.check(CORE_UI, "private fun List() = LazyColumn {\n    items(rows) { Row(it) }\n}").single()
+        val finding = CodeRules.check(CORE_UI, "private fun List() = LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) {\n    items(rows) { Row(it) }\n}").single()
 
         assertEquals("lazy-key", finding.rule)
         assertTrue(
@@ -207,7 +268,7 @@ class CodeRulesTest {
             /* tween(300) /* nested */ runBlocking { } */
             private val a = "Modifier.clickable { } and Color(0xFF000000)"
             private val b = ${"\"\"\""}
-                LazyColumn { items(rows) { } } and 16.dp
+                LazyColumn(flingBehavior = AppScrollDefaults.flingBehavior()) { items(rows) { } } and 16.dp
             ${"\"\"\""}
             private val c = '"'
             private fun `a test named runBlocking`() = Unit
@@ -257,5 +318,6 @@ class CodeRulesTest {
         const val CORE_UI = "core/ui/src/main/kotlin/A.kt"
         const val CORE_COMMON = "core/common/src/main/kotlin/A.kt"
         const val DESIGN_SYSTEM = "core/designsystem/src/main/kotlin/A.kt"
+        const val SHEET = "core/designsystem/src/main/kotlin/com/acme/core/designsystem/component/sheet/A.kt"
     }
 }
