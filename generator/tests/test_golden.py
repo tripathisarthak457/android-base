@@ -571,6 +571,17 @@ class WindowsLongPathsTest(unittest.TestCase):
             generate("all", destination, zip_output=True)
         self.assertEqual([], list(destination.parent.iterdir()))
 
+    def test_a_character_outside_the_bmp_counts_twice(self):
+        # 259 characters as Python counts them, 260 UTF-16 code units as Windows does.
+        temp = Path(tempfile.mkdtemp())
+        self.addCleanup(delete_tree, temp)
+        destination = at_length(temp, placement._WINDOWS_MAX_FILE, "TrailNotes \N{PACKAGE}.zip")
+        with self.assertRaisesRegex(
+            RenderError, rf"^The zip would be a path of {placement._WINDOWS_MAX_FILE + 1} characters: "
+        ):
+            generate("all", destination, zip_output=True)
+        self.assertEqual([], list(destination.parent.iterdir()))
+
 
 if __name__ == "__main__":
     unittest.main()
