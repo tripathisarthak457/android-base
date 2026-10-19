@@ -198,7 +198,8 @@ class GlassStageTest {
         var quality by mutableStateOf(GlassQuality.Live)
         rule.setContent {
             Stage(quality = quality, chrome = {}) {
-                remember { created++ }
+                // Typed, or the content lambda's Unit would make this remember a Unit.
+                remember<Int> { created++ }
             }
         }
         for (tier in GlassQuality.entries + GlassQuality.Live) {
