@@ -138,6 +138,21 @@ class ZipTest(unittest.TestCase):
         self.assertNotEqual(0, head.returncode, "the other repository has a commit")
         self.assertFalse((self.root / "index").exists())
 
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_the_commit_holds_a_file_past_windows_path_limit(self):
+        # A project holds one where Windows' long paths are on, and Git for Windows skips it
+        # unless told otherwise.
+        relative = f"{'d' * 130}/{'e' * 130}/deep.txt"
+        self.addCleanup(shutil.rmtree, extended(self.project / ("d" * 130)), ignore_errors=True)
+        folder = self.project
+        for name in relative.split("/")[:-1]:
+            folder = folder / name
+            os.mkdir(extended(folder))
+        with open(extended(folder / "deep.txt"), "wb") as deep:
+            deep.write(b"deep\n")
+        self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+        self.assertIn(relative, committed(self.project))
+
     def assert_is_the_generators_commit(self, project: Path, hostile: Hostile) -> None:
         on_disk = {
             path.relative_to(project).as_posix()
@@ -233,3 +248,11 @@ def environment(variables: dict[str, str | None]) -> Iterator[None]:
                 os.environ[name] = value
         yield
 
+
+def extended(path: Path) -> str:
+    """`path` in the form Windows does not hold to MAX_PATH, and as it is on other hosts."""
+    return "\\\\?\\" + str(path) if os.name == "nt" else str(path)
+
+
+if __name__ == "__main__":
+    unittest.main()

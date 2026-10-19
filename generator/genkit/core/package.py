@@ -98,7 +98,10 @@ def _without_the_callers_configuration(home: Path) -> dict[str, str]:
 def _git(project: Path, environment: dict[str, str], config: tuple[str, ...], *arguments: str) -> str:
     """Runs `git <arguments>` in `project` and returns what it printed. Raises _GitFailed."""
     result = subprocess.run(
-        ["git", *config, *arguments],
+        # Git for Windows skips a path past MAX_PATH unless core.longPaths is on, and `git add`
+        # still exits 0: where Windows' long paths are on, the commit would lack the project's
+        # deepest files. Other gits ignore the setting.
+        ["git", "-c", "core.longPaths=true", *config, *arguments],
         cwd=project,
         env=environment,
         capture_output=True,
