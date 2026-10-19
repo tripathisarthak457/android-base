@@ -354,7 +354,9 @@ class ProjectTest(unittest.TestCase):
         self.assertTrue(
             (project / "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/DevToolingGuard.kt").is_file()
         )
-        manifest = (project / "core/perfhud/src/main/AndroidManifest.xml").read_text(encoding="utf-8")
+        # The adb receiver is the debug manifest's alone: run-as, its only way in, needs a debuggable build.
+        self.assertFalse((project / "core/perfhud/src/main/AndroidManifest.xml").exists())
+        manifest = (project / "core/perfhud/src/debug/AndroidManifest.xml").read_text(encoding="utf-8")
         self.assertIn('android:exported="false"', manifest)
         self.assertNotIn('android:exported="true"', manifest)
         self.assertTrue((project / "docs/PERFORMANCE-OVERLAY.md").is_file())

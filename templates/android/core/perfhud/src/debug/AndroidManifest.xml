@@ -3,9 +3,9 @@
 
     <application>
         <!--
-          The overlay's adb path (see ReportReceiver). Not exported: only the app's own uid reaches it,
-          which adb gets through run-as on a debuggable build and on nothing else. This module is a
-          dependency of dev and debug builds only, so a shippable release has no such receiver at all.
+          The overlay's adb path (see ReportReceiver), in debug builds only: adb reaches it through
+          run-as, which works on a debuggable build alone, so a release-like dev build has no use for
+          it. Not exported: only the app's own uid reaches it.
         -->
         <receiver
             android:name="com.base.app.core.perfhud.report.ReportReceiver"

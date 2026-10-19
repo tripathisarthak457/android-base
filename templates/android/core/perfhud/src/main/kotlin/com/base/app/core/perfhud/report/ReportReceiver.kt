@@ -6,8 +6,8 @@ import android.content.Intent
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.perfhud.recording.PerformanceRecorder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -22,11 +22,11 @@ import javax.inject.Inject
  * with result code [RESULT_FAILED]), or [ACTION_RECORD] with `--ez recording true|false` to switch
  * recording.
  *
- * Not exported, so no other app can reach it: `run-as` gives adb the app's own uid, and only on a
- * debuggable build. `--user` names the app's own user because a broadcast to the default, the
- * current user, needs a cross-user permission the app's uid does not hold. A release-like dev
- * build exports its report from the Perf tab instead, and a shippable release has no receiver at
- * all.
+ * Declared in the debug manifest only, and not exported, so no other app can reach it: `run-as`
+ * gives adb the app's own uid, and only on a debuggable build. `--user` names the app's own user
+ * because a broadcast to the default, the current user, needs a cross-user permission the app's
+ * uid does not hold. A release-like dev build exports its report from the Perf tab instead, and a
+ * shippable release has no receiver at all.
  */
 @AndroidEntryPoint
 internal class ReportReceiver : BroadcastReceiver() {
@@ -53,7 +53,11 @@ internal class ReportReceiver : BroadcastReceiver() {
                         val report = exporter.export(recorder.snapshot())
                         recorder.logExport(report)
                         pending.resultData = report.json.absolutePath
-                    } catch (failure: IOException) {
+                    } catch (cancelled: CancellationException) {
+                        throw cancelled
+                    } catch (failure: Exception) {
+                        // The script on the other end learns of any failure from the result, and
+                        // nothing escapes into the application scope.
                         pending.resultCode = RESULT_FAILED
                         pending.resultData = failure.toString()
                     } finally {
