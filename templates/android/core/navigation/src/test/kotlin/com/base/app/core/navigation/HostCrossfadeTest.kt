@@ -31,7 +31,7 @@ class HostCrossfadeTest {
     /** Host 0 starts at the feed, host 1 at the profile, whose screen runs [onBuilt] as it is built. */
     private fun showHosts(onBuilt: () -> Unit = {}) {
         val registry = testRegistry { key ->
-            if (key == ProfileTab) remember { onBuilt() }
+            if (key == ProfileTab) remember { CreatedWithScreen(onBuilt) }
             Screen(key)
         }
         rule.setContent {
@@ -86,6 +86,13 @@ class HostCrossfadeTest {
 
         assertEquals(listOf(FeedTab, Post(1)), stacks[0]!!.keys)
         assertEquals(listOf(ProfileTab), stacks[1]!!.keys)
+    }
+}
+
+/** Runs [onCreated] as it is created, as a ViewModel created with its screen runs its `init`. */
+private class CreatedWithScreen(onCreated: () -> Unit) {
+    init {
+        onCreated()
     }
 }
 
