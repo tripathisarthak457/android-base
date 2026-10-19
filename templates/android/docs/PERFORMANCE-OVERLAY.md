@@ -43,9 +43,12 @@ Tap them to open the Perf tab. It shows, from the top:
 
 The overlay is built so that watching does not change what is watched:
 
-- **No listener while off.** With Live stats off, no frame listener is on the window and nothing is
-  sampled or allocated. Off is the default in `devRelease` and `devBenchmarkRelease`, the builds the
-  perf gates measure.
+- **No listener while off.** With Live stats off, no frame listener is on the window, nothing is
+  sampled and no recording buffer is allocated. Off is the default in `devRelease` and
+  `devBenchmarkRelease`, the builds the perf gates measure. The recorder itself is built at launch
+  with the inspector, so that a launch extra or a stored choice can turn it on from the first
+  screen; measured, a hidden `devRelease` cold start was within noise of the same app without the
+  overlay (517 against 507 ms median over 30 launches each).
 - **One listener while on.** Frames come from JankStats. With the `analytics` feature, the overlay
   shares the analytics recorder's JankStats instead of adding a second.
 - **Nothing per frame on the main thread.** JankStats hands each frame over on its own thread; the
