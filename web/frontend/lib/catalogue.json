@@ -1,5 +1,5 @@
 {
-  "generator_commit": "6bc38e9e7358",
+  "generator_commit": "9228ddd562ff",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -19,6 +19,7 @@
     "keystore_alias": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
     "keystore_country": "^[A-Za-z]{2}$",
     "keystore_dname_forbidden": ",=+<>#;\\\"",
+    "keystore_generated_password": "^[ -~]*$",
     "keystore_names": [
       "dev",
       "staging",

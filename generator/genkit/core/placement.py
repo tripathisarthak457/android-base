@@ -74,7 +74,9 @@ def windows_path_limit_explained(shorter: str) -> Iterator[None]:
         path = _path_too_long(error)
         if os.name != "nt" or path is None or _windows_long_paths_on():
             raise
-        raise _past_windows_limit(f"Windows refused a path of {len(path)} characters: {path}.", shorter) from error
+        raise _past_windows_limit(
+            f"Windows refused a path of {_windows_length(path)} characters: {path}.", shorter
+        ) from error
 
 
 def _check_windows_path_limit(project: Path, destination: Path, zip_output: bool) -> None:
@@ -88,7 +90,9 @@ def _check_windows_path_limit(project: Path, destination: Path, zip_output: bool
     root = os.path.abspath(destination)
     if zip_output:
         if _past_limit(root, folder=False):
-            raise _past_windows_limit(f"The zip would be a path of {len(root)} characters: {root}.", "destination")
+            raise _past_windows_limit(
+                f"The zip would be a path of {_windows_length(root)} characters: {root}.", "destination"
+            )
         return
     past: list[str] = []
     for folder, folders, files in os.walk(project):
@@ -98,9 +102,9 @@ def _check_windows_path_limit(project: Path, destination: Path, zip_output: bool
             if _past_limit(path, name in folders):
                 past.append(path)
     if past:
-        longest = max(past, key=len)
+        longest = max(past, key=_windows_length)
         raise _past_windows_limit(
-            f"At {destination} the project would hold a path of {len(longest)} characters: {longest}.",
+            f"At {destination} the project would hold a path of {_windows_length(longest)} characters: {longest}.",
             "destination, app name or package name",
         )
 
@@ -127,16 +131,22 @@ def _path_too_long(error: OSError) -> str | None:
         # A rename names both its paths, and either can be the one too long, a folder as well as a file.
         paths = [
             str(name) for name in (error.filename, error.filename2)
-            if name is not None and len(str(name)) > _WINDOWS_MAX_DIRECTORY
+            if name is not None and _windows_length(str(name)) > _WINDOWS_MAX_DIRECTORY
         ]
     else:
         return None
-    return max(paths, key=len, default=None)
+    return max(paths, key=_windows_length, default=None)
 
 
 def _past_limit(path: str, folder: bool) -> bool:
     limit = _WINDOWS_MAX_DIRECTORY if folder else _WINDOWS_MAX_FILE
-    return len(path) > limit or len(os.path.dirname(path)) > _WINDOWS_MAX_DIRECTORY
+    return _windows_length(path) > limit or _windows_length(os.path.dirname(path)) > _WINDOWS_MAX_DIRECTORY
+
+
+def _windows_length(path: str) -> int:
+    # Windows measures a path in UTF-16 code units, two for a character outside the Basic
+    # Multilingual Plane, such as an emoji in a folder name.
+    return len(path.encode("utf-16-le", "surrogatepass")) // 2
 
 
 def _windows_long_paths_on() -> bool:
@@ -199,7 +209,7 @@ def _free_sibling(destination: Path) -> Path:
     is as long as at `destination`: what Windows' length limit lets anyone write, open or delete at
     one, it does at the other.
     """
-    length = len(destination.name)
+    length = _windows_length(destination.name)
     for _ in range(100):
         name = "".join(random.choices(string.ascii_lowercase + string.digits, k=max(length - 1, 1)))
         # Linux and macOS leave a name with a leading dot out of listings, where it has room for one.

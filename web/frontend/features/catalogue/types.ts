@@ -129,6 +129,7 @@ export type Rules = {
   keystore_country: string;
   keystore_dname_forbidden: string;
   keystore_password_min: number;
+  keystore_generated_password: string;
   keystore_validity_max_days: number;
 };
 

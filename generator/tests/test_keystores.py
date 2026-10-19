@@ -52,10 +52,17 @@ class ValidationTest(unittest.TestCase):
         with self.assertRaises(SpecError):
             keystores.validate(keystore(existing_path="/tmp/x.jks", key_password="short"))
 
+    def test_a_generated_key_takes_every_printable_ascii_character(self):
+        keystores.validate(keystore(store_password="".join(map(chr, range(0x20, 0x7F)))))
+
+    def test_an_existing_key_keeps_passwords_outside_ascii(self):
+        keystores.validate(keystore(existing_path="/tmp/x.jks", store_password="pässwörd1", key_password="schlüssel1"))
+
     def test_what_keytool_or_the_certificate_would_refuse(self):
         for bad in (
             keystore(name="release"),
             keystore(store_password="short"),
+            keystore(store_password="pässwörd1"),
             keystore(alias="-storetype"),
             keystore(common_name="Acme, O=Somebody Else"),
             keystore(country="USA"),
@@ -80,19 +87,44 @@ class PropertiesTest(unittest.TestCase):
     def test_a_generated_key_records_the_store_password_for_both(self):
         with tempfile.TemporaryDirectory() as temp:
             project = Path(temp)
-            keystores.write_properties(project, [keystore(key_password="different", store_password="pässwörd1")])
+            keystores.write_properties(project, [keystore(key_password="different", store_password="hunter22")])
+            values = load_properties((project / "keystore.properties").read_text(encoding="iso-8859-1"))
+        self.assertEqual("hunter22", values["prod.storePassword"])
+        self.assertEqual("hunter22", values["prod.keyPassword"])
+
+    def test_an_existing_key_keeps_its_own_passwords_outside_ascii_too(self):
+        with tempfile.TemporaryDirectory() as temp:
+            project = Path(temp)
+            existing = keystore(existing_path="/x.jks", store_password="pässwörd1", key_password="schlüssel1")
+            keystores.write_properties(project, [existing])
             raw = (project / "keystore.properties").read_bytes()
             raw.decode("ascii")
             values = load_properties(raw.decode("iso-8859-1"))
         self.assertEqual("pässwörd1", values["prod.storePassword"])
-        self.assertEqual("pässwörd1", values["prod.keyPassword"])
+        self.assertEqual("schlüssel1", values["prod.keyPassword"])
 
-    def test_an_existing_key_keeps_its_own_key_password(self):
-        with tempfile.TemporaryDirectory() as temp:
-            project = Path(temp)
-            keystores.write_properties(project, [keystore(existing_path="/x.jks", key_password="keypass1")])
-            values = load_properties((project / "keystore.properties").read_text(encoding="iso-8859-1"))
-        self.assertEqual("keypass1", values["prod.keyPassword"])
+
+class RefusalTest(unittest.TestCase):
+
+    def test_the_warning_quotes_keytool_s_error_not_its_progress(self):
+        # What keytool printed on Linux for a folder where the key should go: it found that out only
+        # when it wrote the key pair it had generated.
+        path = "/tmp/x/Ána/keys/prod.jks"
+        refused = subprocess.CompletedProcess(
+            [],
+            1,
+            stdout=f"keytool error: java.io.FileNotFoundException: {path} (Is a directory)\n",
+            stderr="Generating 2,048 bit RSA key pair and self-signed certificate (SHA384withRSA) with a validity of "
+            "90 days\n\tfor: CN=Acme, O=Acme, C=US\n",
+        )
+        with (
+            tempfile.TemporaryDirectory() as temp,
+            mock.patch.object(keystores, "find_keytool", return_value="keytool"),
+            mock.patch.object(keystores.subprocess, "run", return_value=refused),
+        ):
+            _, skipped, [warning] = keystores.generate(Path(temp), (keystore(),))
+        self.assertEqual(["prod"], skipped)
+        self.assertEqual(f"Keystore 'prod' could not be created: {refused.stdout.strip()}", warning)
 
 
 @unittest.skipIf(KEYTOOL is None, "keytool is not installed")
@@ -115,10 +147,14 @@ class GenerationTest(unittest.TestCase):
         self.assertTrue(any("PKCS12" in warning for warning in warnings))
         self.assertEqual(0, self.keytool_list(self.project / "keys/prod.jks", "hunter22").returncode)
 
-    def test_a_non_ascii_password_round_trips(self):
-        password = "pässwörd1"
-        keystores.write(self.project, (keystore(store_password=password),), [])
+    def test_a_password_the_properties_file_escapes_round_trips(self):
+        # Leading spaces and a backslash need escapes; separators and comment marks inside a value do not.
+        password = "  pass\\word=1:#!"
+        keystores.validate(keystore(store_password=password))
+        warnings = keystores.write(self.project, (keystore(store_password=password),), [])
+        self.assertEqual([], warnings)
         values = load_properties((self.project / "keystore.properties").read_text(encoding="iso-8859-1"))
+        self.assertEqual(password, values["prod.storePassword"])
         self.assertEqual(0, self.keytool_list(self.project / values["prod.storeFile"], values["prod.storePassword"]).returncode)
 
     def test_passwords_never_appear_on_the_command_line(self):

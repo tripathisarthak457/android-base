@@ -27,12 +27,18 @@ export function checkKeystoreShape(check: Checker, raw: unknown, where: string):
   return true;
 }
 
-/** What keytool would refuse in a store or key password, worded to follow "The prod store password", or undefined. */
-export function passwordProblem(password: string, rules: Rules): string | undefined {
+/**
+ * What keytool would refuse in a store or key password, worded to follow "The prod store password", or undefined.
+ * `generated` is false only for a key the visitor brings, which already opens wherever they use it.
+ */
+export function passwordProblem(password: string, rules: Rules, generated: boolean): string | undefined {
   if (codePoints(password) < rules.keystore_password_min) {
     return `must be at least ${rules.keystore_password_min} characters: keytool refuses anything shorter.`;
   }
   if (NOT_PRINTABLE.test(password)) return "cannot contain control characters.";
+  if (generated && !matches(rules.keystore_generated_password, password)) {
+    return "can only use letters, digits, spaces and the symbols on a US keyboard: JDK 17 cannot make or open a PKCS12 keystore with any other character.";
+  }
   return undefined;
 }
 
@@ -47,10 +53,11 @@ export function keystoreProblem(keystore: Json, rules: Rules): string | undefine
   if (!matches(rules.keystore_alias, text("alias", ""))) {
     return `The ${name} key alias must be letters, digits, dots, hyphens or underscores, and start with a letter or digit.`;
   }
+  const existing = typeof keystore.existing_path === "string" && keystore.existing_path !== "";
   const passwords: [string, string][] = [["store", text("store_password", "")]];
-  if (typeof keystore.existing_path === "string" && keystore.existing_path) passwords.push(["key", text("key_password", "")]);
+  if (existing) passwords.push(["key", text("key_password", "")]);
   for (const [label, password] of passwords) {
-    const problem = passwordProblem(password, rules);
+    const problem = passwordProblem(password, rules, !existing);
     if (problem) return `The ${name} ${label} password ${problem}`;
   }
   const subject: [string, string][] = [

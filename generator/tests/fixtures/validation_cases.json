@@ -1370,6 +1370,47 @@
       }
     },
     {
+      "name": "generated keystore password outside ASCII",
+      "valid": false,
+      "field": "android.keystores",
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "store_password": "pässwörd1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "existing keystore with passwords outside ASCII",
+      "valid": true,
+      "spec": {
+        "schema": 2,
+        "platform": "android",
+        "app_name": "Trail Notes",
+        "package_name": "com.example.trail",
+        "android": {
+          "keystores": [
+            {
+              "name": "prod",
+              "alias": "upload",
+              "existing_path": "keys/prod.jks",
+              "store_password": "pässwörd1",
+              "key_password": "schlüssel1"
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "alias that reads as a flag",
       "valid": false,
       "field": "android.keystores",

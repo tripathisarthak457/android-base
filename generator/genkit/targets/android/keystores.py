@@ -27,6 +27,12 @@ MAX_VALIDITY_DAYS = 36_500
 ALIAS_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
 COUNTRY_PATTERN = r"^[A-Za-z]{2}$"
 
+#: Printable ASCII, the only password JDK 17's PKCS12 store takes: its PBE key refuses any other
+#: character, so keytool there makes no key, and a key made by a newer JDK does not open in a
+#: build running on 17, the oldest JDK the project supports. A key the user brings is theirs and
+#: already opens wherever they use it.
+GENERATED_PASSWORD_PATTERN = r"^[ -~]*$"
+
 #: Characters with a meaning inside an X.500 distinguished name. Left in, they do not escape a
 #: shell (keytool runs from a list, never a string), but they split one DN field into two and
 #: produce a certificate whose subject is not what was asked for.
@@ -34,6 +40,7 @@ DNAME_SPECIALS = ',=+<>#;\\"'
 
 _ALIAS = re.compile(ALIAS_PATTERN)
 _COUNTRY = re.compile(COUNTRY_PATTERN)
+_GENERATED_PASSWORD = re.compile(GENERATED_PASSWORD_PATTERN)
 
 
 def validate(keystore: KeystoreSpec) -> None:
@@ -64,6 +71,12 @@ def validate(keystore: KeystoreSpec) -> None:
             )
         if not password.isprintable():
             raise SpecError(f"The {keystore.name} {label} password cannot contain control characters.", where)
+        if keystore.existing_path is None and not _GENERATED_PASSWORD.fullmatch(password):
+            raise SpecError(
+                f"The {keystore.name} {label} password can only use letters, digits, spaces and the symbols on "
+                "a US keyboard: JDK 17 cannot make or open a PKCS12 keystore with any other character.",
+                where,
+            )
 
     validate_dname_part(f"{keystore.name} common name", keystore.common_name)
     validate_dname_part(f"{keystore.name} organisation", keystore.organisation)
@@ -191,7 +204,9 @@ def generate(project: Path, keystores: tuple[KeystoreSpec, ...]) -> tuple[list[s
             made[keystore] = target
         else:
             skipped.append(keystore.name)
-            output = (result.stderr or result.stdout).strip().splitlines()
+            # keytool prints its error on stdout and its progress on stderr, which a failure after
+            # the key pair was generated (writing it, on Linux, to a folder in its way) leaves set.
+            output = (result.stdout or result.stderr).strip().splitlines()
             warnings.append(
                 f"Keystore '{keystore.name}' could not be created: {output[-1] if output else 'unknown error'}"
             )

@@ -217,6 +217,7 @@ class AndroidTarget:
                 "flavours": list(FLAVOURS),
                 "keystore_names": list(keystores.KEYSTORE_NAMES),
                 "keystore_password_min": keystores.MIN_KEYSTORE_PASSWORD,
+                "keystore_generated_password": keystores.GENERATED_PASSWORD_PATTERN,
                 "keystore_alias": keystores.ALIAS_PATTERN,
                 "keystore_country": keystores.COUNTRY_PATTERN,
                 "keystore_dname_forbidden": keystores.DNAME_SPECIALS,
