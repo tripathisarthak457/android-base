@@ -8,6 +8,7 @@ scope in the orchestrator's task is the specification.
 
 ## Progress
 
+- **Orchestrator note (Oct 19, 15:32): PR #1 and PR #2.** PR #1 shows "merged": GitHub marked it so at 14:16 when the integration branch, pushed as a backup with WIN's merge `3a0d38e`, came to contain its head; nothing was merged through GitHub. With the user's OK (15:30), PR #2 https://github.com/tripathisarthak457/android-base/pull/2 runs Linux CI on `a5db7b0` and `070a91b` from the throwaway branch `ci/linux-check`; it is closed before these fixes are merged and pushed, so GitHub cannot mark it merged.
 - **Orchestrator note (Oct 19, 13:02): the third Linux CI run (39214194825, `4746a0b`).** API green. Generator: 1 failure on Linux, `tests.test_zip.ZipTest.test_the_commit_holds_a_file_past_windows_path_limit`: right after the `--git` commit, `git status` shows ` M gradlew` and ` M tools/perf/perf.sh` (Tuples differ: (0, '', '') != (0, ' M gradlew
  M tools/perf/perf.sh
 ', '')): the generated repository is dirty on Linux, most likely the executable bit (the index says one mode, the working files have another, or core.fileMode differs). A user who generates with --git on Linux or macOS would start with two modified files. The four generated-project builds still fail (see the 12:18 note: `AppResult` in data/orders). Fix both with tests; the orchestrator pushes and reads the next run.
@@ -15,6 +16,62 @@ scope in the orchestrator's task is the specification.
 - **Orchestrator note (Oct 19, 11:35): the Linux CI run (PR #1, run 39206352955) failed; fix before WIN's next merge.** (1) **Real Linux bugs, WIN's:** the generator suite on ubuntu (Python 3.12): 1 failure + 1 error in `tests/test_keystores.py`: `test_a_non_ascii_password_round_trips` (FileNotFoundError: `/tmp/.../keystore.properties` was never written) and `test_keytool_s_refusal_names_a_non_ascii_path_as_it_is` (the message does not name `/tmp/.../Ána/keys/prod.jks`; keytool's output was `Keystore 'prod' could not be created: 	for: CN=Acme, O=Acme, C=US`). Everything else passed (10 skipped). (2) **`.github/workflows/ci.yml` is stale against the overhaul** (unchanged since main's `b12122b`): the API job pins Go 1.24 while `api/go.mod` needs 1.27 ("go.mod requires go >= 1.27"), and the four generated-project jobs run `from genkit.spec import FEATURES, preset_features, resolve_features` (and `genkit.translations`), modules the generator no longer has. Decision (orchestrator): WIN updates `ci.yml` now (Go version from go.mod, the generate steps on the current generator API), so every later merge can be checked on Linux; WP13 still owns the final CI review. (3) The Vercel preview of the PR failed (`npx vercel inspect dpl_H54c7TfBopDctPGWfE9xpMArHyrz --logs` needs the user's Vercel login; cause not read). Push fixes to `wp/WIN` through the orchestrator; the PR re-runs CI on each push while it is open.
 - **Orchestrator note (Oct 19, 11:22): the Linux CI run.** The user approved (asked in chat with pros and cons) a draft PR from `wp/WIN` (c91798a) into `overhaul/multiplatform-v2`, only to run CI on Linux: https://github.com/tripathisarthak457/android-base/pull/1 (draft, "do not merge"). The app's CI monitor reports the result to the orchestrator, which records the Generator job's result here and closes the PR unmerged.
 - **Orchestrator note (Oct 17, 23:05).** Fix round 2 (the two blocking findings in the `--force` swap) returned done at about 16:40; the run was then paused for the user's usage reserve. Next: review round 3, then the merge.
+
+Updated 2026-10-19 (the orchestrator's run "fix#5", on the two Linux failures left after WIN's merge `3a0d38e`: CI
+runs 39214194825 at `4746a0b` and 39216375280 at `2ce104a`). Step 0: `wp/WIN` fast-forwarded to the integration head
+`3a0d38e` (WIN's own merge; nothing else had landed). Both failures are fixed at their root, each with a test that
+fails on the old code:
+
+1. **The `--git` repository was dirty on Linux** (`test_zip`'s long-path test: ` M gradlew`, ` M tools/perf/perf.sh`
+   right after the commit). Root cause: `git_init` (`generator/genkit/core/package.py:80-83` at `3a0d38e`) records
+   every script `executable` names as 100755 with `update-index --chmod=+x` whatever the file's own mode, and left the
+   file as it found it. Where `core.fileMode` is true (Linux, macOS; Windows' `git init` sets it false) `git status`
+   compares the two, so the tree was clean only if the caller had already set the bit. The pipeline does
+   (`genkit/core/pipeline.py:129-130`), so `create_project.py --git` was clean; the suite's fixture
+   (`tests/test_zip.py` `setUp`, written 0644) does not, and that is what CI caught. Fixed in `a5db7b0`: `git_init`
+   marks the scripts it records (`package.py:84-85`, `copy.mark_executable`), so the tree it hands over is clean by
+   construction on every host, whatever its caller did. The long-path test's clean-status assertion is unchanged; the
+   new `test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit` (`test_zip.py:86`) asserts a clean
+   `git status` and, where the OS has the bit, `S_IXUSR` on both scripts (Decisions, fix#5).
+2. **Every generated project with a feature module failed at `:data:orders`** (`Unresolved reference 'AppResult'`,
+   `OrdersRepository.kt` 3, 18, 26; in `none`, without network, 3, 16, 22, 23). Origin: not a `ci.yml` step. Its
+   spec asks for `"feature_modules": ["orders"]`, and `generator/genkit/targets/android/scaffold.py` writes that
+   `:data:orders` and `:feature:orders` pair from Python strings (`add_feature.py` writes the same files). Root
+   cause: `scaffold.py` still wrote the APIs from before `c3895f86` (Oct 9). At `3a0d38e`: `core.common.AppResult` (lines 56, 68, 172, 395; now
+   `core.common.result`), `core.common.mvi.*` (147-150, 173-174, 238, 396; now `core.common.LoadState` and
+   `core.mvi.*`), `core.navigation.AppNavKey` (133; now `core.common.navigation`), a suspending `handleEvent` with
+   `updateState` and `emitEffect` (189-207; now non-suspending, with `setState`, `emit`, `launchLatest`),
+   `result.data` and `toLoadState()` (202-207; now `value` and `LoadState.Error(error)`),
+   `loadState.message.asString()` (247, 264; now `error.text()`), `AppResult.Failure(message = …)` (435; now
+   `Failure(AppError)`). Reproduced here first: CI's spec, `--preset lean`, `locked gradle
+   :data:orders:compileDebugKotlin` stopped at CI's three errors (`logs/WIN/orders-before.log`). Fixed in `070a91b`,
+   the smallest change that builds against today's template, not a redesign (WP02-M2 replaces this file); with
+   network on, the item is also `@Serializable`, because the client decodes it with kotlinx.serialization and the
+   scaffold gave it no serializer. The consistency matrix had reported the stale imports all along, under a WP02
+   known issue; it no longer occurs, so its entry is gone (a full run fails on a listed issue that no longer occurs).
+   Regression test: `ScaffoldTest.test_a_scaffolded_module_names_only_what_the_project_declares`
+   (`tests/test_android_target.py:165`) generates the project with and without the module, network off and on, runs
+   the consistency checks over both and fails on any issue the module adds: 12 on the old scaffold in each subtest,
+   none now. It catches every import that resolves to nothing; a wrong member or argument needs a compile, which this
+   run did through Gradle and CI's four jobs do on every pull request (their spec is this module).
+
+Ran here: the suite through `memwait`, 307 tests OK, 4 skipped (`logs/WIN/suite-oct19-fix5.log`); the quick
+consistency matrix, CONSISTENCY OK, 58 projects, 0 new issues, 323 known (575 before), 11 of 11 lines seen
+(`logs/WIN/consistency-oct19-fix5.log`); `tokens --check` and `catalogue --check` current; 0 added lines with CR, none
+past 120 columns, `git diff --check` clean; the host comparison against `3a0d38e`: "standard" identical, the
+everything-and-brand project differs in exactly the 12 scaffolded files, zip modes the same
+(`logs/WIN/compare-hosts-fix5.log`; COMPARE FAILED by design, so `accept.sh` was not used); `create_project.py --git`
+on CI's spec: a clean tree here. Gradle (`locked gradle`, `--offline`) on CI's spec generated into `out/WIN/ci/`:
+lean, the two orders modules assembled and their 3 ViewModel tests passed (`logs/WIN/orders-lean-modules.log`); lean
+with CI's own tasks, `check assembleDevDebug assembleProdRelease` (every module's lint, unit tests and guards, the R8
+release build), BUILD SUCCESSFUL in 7 min 42 s (`logs/WIN/ci-lean-full.log`); none (the scaffold's network-off
+branch), `:data:orders:compileReleaseKotlin :feature:orders:testDebugUnitTest :app:assembleDevDebug`, BUILD
+SUCCESSFUL, 3 tests passed (`logs/WIN/ci-none-orders.log`).
+**Not verified here:** the `git_init` change on Linux or macOS (no POSIX host; Windows has no executable bit to
+compare), and the `all` and `everything` presets' builds; the next CI run shows both. **For the integrator at
+WP02-M2's merge:** `scaffold.py` will conflict; take WP02's version whole and keep the new `ScaffoldTest` test, which
+then checks WP02's scaffold. `out/WIN/ci/` keeps the spec and the four projects this run generated (about 650 MB
+with build output; nothing refers to them once this entry is read). This run pushed nothing.
 
 Updated 2026-10-19 (the orchestrator's run "fix#4", after the fresh-context review of `4746a0b`; table "Review
 fix#4 of Oct 19"). The integration branch had not moved (`4dd3aca`), so nothing was merged in. The blocking finding:
@@ -242,6 +299,11 @@ and found and fixed five more host bugs.
 | Oct 19 fix#4: the caller's git template installed after the commit; warnings for what is not; `GIT_DIR` comments; `git status` isolation; cleanup errors | done (`976a7e2`) |
 | Oct 19 fix#4: CI's interim Generate comment; the website's bare `true`; the catalogue stamp | done (`dcb0ce4`, `9228ddd`, `2ce104a`) |
 | Oct 19 fix#4: acceptance at `2ce104a` against `a402d87`; website tests and typecheck | **ACCEPT OK** (`logs/WIN/accept-oct19-fix4.log`, `logs/WIN/web-tests-fix4.log`, `logs/WIN/tsc-fix4.log`) |
+| Oct 19: merge of the 15 commits `4ba27fc`..`2ce104a` | done by the integrator (`3a0d38e`; `merges.md`, `out/integration/WIN/oct19c/`); the open `test_zip` finding on POSIX went to `followups.md` (WIN) for WP13 |
+| Oct 19 fix#5: `wp/WIN` fast-forwarded to the integration head | done (`3a0d38e`) |
+| Oct 19 fix#5: `git_init` makes the scripts it records as 100755 executable on disk; a clean-tree test | done (`a5db7b0`); **Linux: next CI run** |
+| Oct 19 fix#5: the scaffolded modules on the template's current packages and MVI; known issue dropped; a test over the consistency checks | done (`070a91b`) |
+| Oct 19 fix#5: suite, quick consistency matrix, CI's spec built with Gradle | suite 307 OK; CONSISTENCY OK; lean with CI's tasks and none's modules and app BUILD SUCCESSFUL (Measurements) |
 
 ## What changed (by path)
 
@@ -468,6 +530,24 @@ Each entry keeps the names of its round. fix#5 (`c1bd711`) moved every placement
   template that was not copied or whose `config` was not applied.
 
 ## Decisions
+
+- **Oct 19 fix#5: `git_init` owns the executable bit on disk, not only in the commit.** The review at the merge
+  (`followups.md`, WIN) proposed fixing the fixture instead: mark the test's scripts in `setUp`, as
+  `render_template` does. That makes the test pass by copying what today's caller happens to do, and leaves
+  `git_init`'s result depending on it: any caller that writes a script after `render_template` (a target's
+  `transform` or `finish`), or calls `git_init` on its own as the tests do, would hand the user a dirty tree on Linux
+  and macOS with no failure anywhere. The function that decides the commit's modes now makes the files agree with
+  them; marking an already executable file again changes nothing. The marking happens after `git add`, on the paths
+  the index holds, as the `--chmod` does; the changed ctime only makes git re-read those two files once, and their
+  content and mode match the commit.
+- **Oct 19 fix#5: the scaffold fixed here, in WP02's path, at the orchestrator's direction.** fix#3 left it to
+  WP02-M2 (Decisions, fix#3), whose rewrite on `wp/WP02` (`snippets/scaffold/**`) targets WP02's own template and
+  cannot merge before WP02 does; until then every generated-project CI job, and every user who names a feature
+  module or runs `add_feature.py`, gets a project that does not compile. The change is the touch-for-compile kind:
+  the same files and shape, only the names and calls the current template has, plus `@Serializable` on a
+  network-backed item, which the client decodes with kotlinx.serialization and which had no serializer. The test sits on the
+  consistency checks rather than on a Gradle build, because the suite has no Gradle; it compares against the same
+  project without the module so that the template's own known issues do not count against the scaffold.
 
 - **Oct 19: the consistency runner's Windows failure fixed here, not left for WP13.** `followups.md` routed it to
   WP13, which runs last; but it is a host bug in the generator, the class this package exists for, and every package
@@ -980,10 +1060,42 @@ Each entry keeps the names of its round. fix#5 (`c1bd711`) moved every placement
 
 ## Lock time used
 
-None: no Gradle or adb in any run of this package. The suite, the host comparison and (Oct 19) the consistency
-matrix ran through `memwait` only.
+No adb in any run of this package. No Gradle before fix#5; the suite, the host comparison and (Oct 19) the
+consistency matrix ran through `memwait` only. Fix#5 (Oct 19), `locked gradle` on CI's spec generated into
+`out/WIN/ci/`, all `--offline`: the reproduction on the old scaffold, 1 min 4 s; lean's two orders modules, 1 min
+20 s; lean with CI's tasks, 7 min 42 s; none's orders modules and dev debug app, 1 min 18 s.
 
 ## Measurements
+
+- **Run fix#5 of Oct 19 (the two Linux failures after `3a0d38e`)**, at `070a91b` (`wp/WIN`, 2 commits on `3a0d38e`):
+  - Suite (`memwait python -m unittest discover -s tests -t .`, `logs/WIN/suite-oct19-fix5.log`): 307 tests in
+    134.2 s, OK, 4 skipped (the same four as before). Two tests are new: `test_zip`'s clean-tree test and
+    `ScaffoldTest`'s; the second, against `3a0d38e`'s `scaffold.py` (put back, then restored): 2 subtests, 2
+    failures, 12 issues each, the first "IMPORT data/orders/…/OrdersRepository.kt:
+    com.acme.field.core.common.AppResult is not declared"; on `070a91b`: OK. `tests.test_zip` alone: 10 tests OK.
+  - Quick consistency matrix (`memwait python -m tests.consistency --quick`, `logs/WIN/consistency-oct19-fix5.log`):
+    58 projects in 73 s, 0 new issues, 323 known (575 at the last run, `consistency-after.log`; the difference is the
+    scaffold's stale imports), 11 of 11 known-issue lines seen. CONSISTENCY OK.
+  - `genkit.tokens --check`, `genkit.core.catalogue --check`: current. `git diff 3a0d38e..HEAD`: 0 added lines with
+    CR, none past 120 columns, `--check` clean; 2 commits, each with the trailer.
+  - Host comparison against `3a0d38e` (`compare_hosts.py`, `logs/WIN/compare-hosts-fix5.log`): standard 314 files
+    identical; everything-and-brand 469 files, 12 differ, the six scaffolded files of `orders` and of
+    `order_history`, nothing else; only `gradlew` executable in either zip. `accept.sh` stops at that comparison by
+    design (it expects no output change), so its other steps were run one by one, as above.
+  - `create_project.py --spec ci-spec.json --out out/WIN/ci/git-none --no-zip --git`: `git status --porcelain`
+    empty, `gradlew` 100755 in the index (Windows; the POSIX half is the next CI run's).
+  - Gradle on CI's spec (`"feature_modules": ["orders"]`, `out/WIN/ci/ci-spec.json`): the old scaffold, lean,
+    `:data:orders:compileDebugKotlin :feature:orders:compileDebugKotlin --continue`: FAILED with CI's three errors
+    (`OrdersRepository.kt:3:40`, `18:26`, `26:35`; `logs/WIN/orders-before.log`). Fixed, lean:
+    `:data:orders:assembleDebug :feature:orders:assembleDebug :feature:orders:testDebugUnitTest`, BUILD SUCCESSFUL,
+    `OrdersViewModelTest` 3 tests, 0 failures (`logs/WIN/orders-lean-modules.log`); `check assembleDevDebug
+    assembleProdRelease` as CI runs it (without `--no-daemon`), BUILD SUCCESSFUL in 7 min 42 s, 1188 tasks, the
+    orders modules' lint, guards and unit tests among them, dev debug and prod release APKs written
+    (`logs/WIN/ci-lean-full.log`). None (no
+    features, so the repository's network-off branch): `:data:orders:compileReleaseKotlin
+    :feature:orders:testDebugUnitTest :app:assembleDevDebug`, BUILD SUCCESSFUL in 1 min 18 s, the same 3 tests pass,
+    Hilt's app graph compiled with the module in it (`logs/WIN/ci-none-orders.log`). Not built here: `all` and
+    `everything`.
 
 - **Run fix#4 of Oct 19 (after the review of `4746a0b`)**, at `2ce104a` (`wp/WIN`, 4 commits on `4746a0b`):
   - Acceptance (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-oct19-fix4.log`): the whole suite through
@@ -1280,6 +1392,11 @@ For WP12 (generator README/AGENTS and the generated projects' docs where they ta
 
 ## Open issues (with the reason they are open)
 
+- Closed Oct 19 (14:05): the fix#1 to fix#4 commits (`4ba27fc`..`2ce104a`) merged as `3a0d38e`, `merged/WIN` again
+  left on `5a16778`. Still open after it: the user's confirmation of the printable ASCII rule (below), and
+  `test_zip`'s long-path test failing on POSIX (`followups.md`, WIN; fixed in fix#5, `a5db7b0`, not yet run on
+  Linux). `3a0d38e` holds PR #1's head, so a push of
+  the integration branch shows PR #1 as merged on GitHub unless it is closed first.
 - Closed Oct 19: the three Oct 19 commits (`6a22433`, `fbac839`, `3b892f4`) merged as `4dd3aca`. `merged/WIN` stays
   on the first merge (`5a16778`, already pushed); `git merge-base --is-ancestor wp/WIN overhaul/multiplatform-v2`
   is what shows the follow-up is in.
@@ -1313,6 +1430,12 @@ For WP12 (generator README/AGENTS and the generated projects' docs where they ta
   template), not about `ci.yml`'s module names. Second run (39210292751 at `ae886b5`, the orchestrator's 12:18 note):
   Generator and API pass; the four generated projects stop at `:data:orders` (`AppResult`), which is WP02's
   (Decisions, fix#3) and stays red until WP02-M2 merges, so PR #1 cannot be all green before then. Close the PR unmerged once read, as planned.
+  Third and fourth runs (39214194825 at `4746a0b`, 39216375280 at `2ce104a`): one Generator failure, `test_zip`'s
+  long-path test on the `--git` tree's executable bits, and the same `:data:orders` stop. Both fixed in fix#5
+  (`a5db7b0`, `070a91b`; Progress), the second here rather than by WP02 at the orchestrator's direction. Expected in
+  the next run: Generator green, including the new clean-tree test (it fails on Linux without `a5db7b0`), and the
+  four generated-project jobs past `:data:orders`; a failure after that point is news. Since `3a0d38e` holds PR #1's
+  head, the next Linux run may need a new pull request (`followups.md`, WIN).
 - **For the orchestrator, to ask the user before WIN merges (a confirmation): a password for a signing key the
   generator makes must be printable ASCII** (fix#3, `ee311a8`; the reviewer asked for this rule to be settled with
   the user, and the fix#4 review repeated it as the merge gate). A suggested question: "JDK 17, the oldest JDK generated projects support and the one CI uses, cannot

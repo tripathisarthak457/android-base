@@ -33,7 +33,7 @@ internal data class NetworkTimings(
                 p90Millis = durations.atFraction(P90),
                 slowestMillis = durations.last(),
                 endpoints = exchanges
-                    .groupBy { it.method + " " + it.path }
+                    .groupBy(::endpointOf)
                     .map { (endpoint, calls) ->
                         val sorted = calls.map { it.durationMillis }.sorted()
                         EndpointTimings(
@@ -51,6 +51,20 @@ internal data class NetworkTimings(
 
         private const val MEDIAN = 0.5
         private const val P90 = 0.9
+        private const val ID_SEGMENT = "{id}"
+        private val UUID = Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+
+        /**
+         * `GET /posts/42/comments` as `GET /posts/{id}/comments`: one endpoint whichever item it was
+         * called for, or a list of the most called would be the same route once per item.
+         */
+        private fun endpointOf(exchange: NetworkExchange): String =
+            exchange.method + " " + exchange.path.split('/').joinToString("/") { segment ->
+                if (segment.isIdentifier()) ID_SEGMENT else segment
+            }
+
+        private fun String.isIdentifier(): Boolean =
+            isNotEmpty() && (all(Char::isDigit) || UUID.matches(this))
 
         /** Nearest rank: the smallest value with at least [fraction] of the values at or below it. */
         private fun List<Long>.atFraction(fraction: Double): Long =
@@ -60,7 +74,7 @@ internal data class NetworkTimings(
 
 @Serializable
 internal data class EndpointTimings(
-    /** The method and the path without its query, such as `GET /posts`. */
+    /** The method and the path without its query, ids as `{id}`, such as `GET /posts/{id}`. */
     val endpoint: String,
     val requests: Int,
     val failures: Int,

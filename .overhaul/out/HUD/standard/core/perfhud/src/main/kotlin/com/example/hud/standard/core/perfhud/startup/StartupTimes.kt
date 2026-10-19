@@ -33,7 +33,8 @@ internal class StartupTimes @Inject constructor(@ApplicationContext private val 
     }
 
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    private fun recordOf(info: ApplicationStartInfo): StartRecord? = startRecordOf(info.startType, info.startupTimestamps)
+    private fun recordOf(info: ApplicationStartInfo): StartRecord? =
+        startRecordOf(info.startType, info.startupTimestamps)
 
     private companion object {
         /** The system keeps the most recent starts first; the latest of each kind is what is shown. */

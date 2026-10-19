@@ -3,7 +3,6 @@ package com.example.hud.fixture.core.perfhud.frame
 import android.hardware.display.DisplayManager
 import androidx.metrics.performance.FrameDataApi24
 import androidx.metrics.performance.FrameDataApi31
-import androidx.metrics.performance.StateInfo
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -11,7 +10,8 @@ import org.junit.Test
 class FrameIntakeTest {
 
     private val log = FrameLog(capacity = 64)
-    private val intake = FrameIntake(log, RefreshRate(mockk<DisplayManager>(relaxed = true)))
+    private val screens = ScreenTimeline()
+    private val intake = FrameIntake(log, RefreshRate(mockk<DisplayManager>(relaxed = true)), screens)
 
     @Test
     fun `a frame past its deadline is janky, however far past`() {
@@ -32,39 +32,39 @@ class FrameIntakeTest {
     }
 
     @Test
-    fun `each frame counts for the route it was drawn for`() {
-        val home = StateInfo(FrameIntake.ROUTE_STATE, "Home")
-        val detail = StateInfo(FrameIntake.ROUTE_STATE, "Detail")
-        val push = StateInfo("nav", "push")
+    fun `each frame counts for the screen in front when its main-thread work ended`() {
+        intake.onFrame(api31(startMillis = 0f))
+        screens.enter("Home", atNanos = millis(10f))
+        repeat(3) { intake.onFrame(api31(startMillis = 10f + 8 * it)) }
+        screens.enter("Detail", atNanos = millis(41f))
+        // Reported after the navigation, as JankStats reports every frame a little late, but its
+        // main-thread part (3 ms) ended before it.
+        intake.onFrame(api31(startMillis = 34f))
+        // Started before the navigation, ended after it: the frame that opens the new screen.
+        intake.onFrame(api31(startMillis = 39f, overrunMillis = 4f))
+        repeat(2) { intake.onFrame(api31(startMillis = 50f + 8 * it)) }
 
-        repeat(3) { intake.onFrame(api31(states = listOf(home))) }
-        // JankStats keeps a key's newest value only, so the frame that spans the navigation carries
-        // the new route: it is the new screen's.
-        intake.onFrame(api31(states = listOf(push, detail), overrunMillis = 4f))
-        repeat(2) { intake.onFrame(api31(states = listOf(detail))) }
-        intake.onFrame(api31(states = listOf(push)))
-
-        val screens = log.summary().screens.associate { it.name to it.stats }
-        assertEquals(3, screens.getValue("Home").frames)
-        assertEquals(0, screens.getValue("Home").janky)
-        assertEquals(3, screens.getValue("Detail").frames)
-        assertEquals(1, screens.getValue("Detail").janky)
-        assertEquals(1, screens.getValue(null).frames)
+        val counted = log.summary().screens.associate { it.name to it.stats }
+        assertEquals(1, counted.getValue(null).frames)
+        assertEquals(4, counted.getValue("Home").frames)
+        assertEquals(0, counted.getValue("Home").janky)
+        assertEquals(3, counted.getValue("Detail").frames)
+        assertEquals(1, counted.getValue("Detail").janky)
     }
 
     private fun api31(
+        startMillis: Float = 0f,
         totalMillis: Float = 6f,
         overrunMillis: Float = -2f,
-        states: List<StateInfo> = emptyList(),
     ) = FrameDataApi31(
         // Start, UI time, CPU time, total, overrun past the deadline, JankStats' own verdict, states.
-        0L,
+        millis(startMillis),
         millis(totalMillis / 2),
         millis(totalMillis * 0.8f),
         millis(totalMillis),
         millis(overrunMillis),
         false,
-        states,
+        emptyList(),
     )
 
     private fun millis(value: Float): Long = (value * 1_000_000).toLong()

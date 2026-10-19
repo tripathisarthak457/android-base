@@ -24,7 +24,10 @@
 
     <string name="perfhud_score">Optimisation score</string>
     <string name="perfhud_score_value">%1$d / 100 · %2$s</string>
-    <string name="perfhud_score_none">Not enough recorded to score yet: the score needs %1$d frames of drawing.</string>
+    <plurals name="perfhud_score_none">
+        <item quantity="one">Not enough recorded to score yet: the score needs %1$d frame of drawing.</item>
+        <item quantity="other">Not enough recorded to score yet: the score needs %1$d frames of drawing.</item>
+    </plurals>
     <string name="perfhud_losses">Where the points went</string>
     <string name="perfhud_no_losses">Every measured metric meets its target.</string>
     <string name="perfhud_column_metric">Metric</string>

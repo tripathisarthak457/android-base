@@ -149,7 +149,7 @@ internal enum class Metric(val weight: Int, val unit: MetricUnit, val limits: Li
     BlockingGc(5, MetricUnit.Count, Limits(0f, 1f, 3f, 10f)) {
         override fun valueOf(inputs: ScoreInputs) = inputs.memory?.blockingGcCount?.toFloat()
     },
-    StrictModeClean(5, MetricUnit.Count, Limits(0f, 0f, 2f, 5f)) {
+    StrictModeClean(5, MetricUnit.Count, Limits(0f, 1f, 2f, 5f)) {
         override fun valueOf(inputs: ScoreInputs) =
             inputs.strictMode?.takeIf { it.supported }?.violations?.toFloat()
     },

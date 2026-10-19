@@ -75,6 +75,14 @@ class ReportFormatsTest {
     }
 
     @Test
+    fun `each screen's row counts its slow, frozen and long frames`() {
+        val markdown = MarkdownReport(resources).write(snapshot(), GENERATED_AT)
+
+        val detail = markdown.lines().single { it.startsWith("| Detail |") }.split('|').map(String::trim)
+        assertEquals(listOf("4 (4.00%)", "1", "2"), detail.subList(4, 7))
+    }
+
+    @Test
     fun `before the frames are graded neither format gives a score`() {
         val snapshot = snapshot(frameCount = 120)
 
@@ -116,7 +124,11 @@ class ReportFormatsTest {
             refreshHz = 120f,
             screens = listOf(
                 ScreenFrames("Home", isOther = false, stats = stats(frames = 900, janky = 5)),
-                ScreenFrames("Detail", isOther = false, stats = stats(frames = 100, janky = 10)),
+                ScreenFrames(
+                    "Detail",
+                    isOther = false,
+                    stats = stats(frames = 100, janky = 10, slow = 4, frozen = 1, longWork = 2),
+                ),
             ),
         )
         val build = BuildFacts(debuggable = debugBuild, minified = !debugBuild, profile = ProfileStatus.Compiled)
@@ -140,12 +152,12 @@ class ReportFormatsTest {
         )
     }
 
-    private fun stats(frames: Int, janky: Int) = FrameStats(
+    private fun stats(frames: Int, janky: Int, slow: Int = 0, frozen: Int = 0, longWork: Int = 0) = FrameStats(
         frames = frames,
         janky = janky,
-        slow = 0,
-        frozen = 0,
-        longWork = 0,
+        slow = slow,
+        frozen = frozen,
+        longWork = longWork,
         p50Millis = 3f,
         p90Millis = 4f,
         p99Millis = 7f,

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import com.example.hud.everything.core.designsystem.component.container.AppCard
 import com.example.hud.everything.core.designsystem.component.container.AppDivider
@@ -41,7 +42,7 @@ internal fun ScoreSection(score: OptimisationScore) {
         val grade = score.grade
         if (total == null || grade == null) {
             AppText(
-                text = stringResource(R.string.perfhud_score_none, Metric.MIN_FRAMES),
+                text = pluralStringResource(R.plurals.perfhud_score_none, Metric.MIN_FRAMES, Metric.MIN_FRAMES),
                 style = AppTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = AppTheme.spacing.sm),
             )

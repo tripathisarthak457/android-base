@@ -1,0 +1,19 @@
+=== mutant every-pre-draw:  1 file changed, 1 insertion(+), 1 deletion(-)
+exit 1
+   pass the node stops listening when it leaves the composition
+   pass time passing without a pre-draw pass redraws nothing
+   FAIL a frame without the period over reuses the layer
+   FAIL pre-draw passes redraw at most once a period
+=== mutant timer:  1 file changed, 2 insertions(+)
+exit 1
+   pass the node stops listening when it leaves the composition
+   FAIL time passing without a pre-draw pass redraws nothing
+   pass a frame without the period over reuses the layer
+   pass pre-draw passes redraw at most once a period
+=== mutant keeps-listening:  1 file changed, 1 deletion(-)
+exit 1
+   FAIL the node stops listening when it leaves the composition
+   pass time passing without a pre-draw pass redraws nothing
+   pass a frame without the period over reuses the layer
+   pass pre-draw passes redraw at most once a period
+RESTORED

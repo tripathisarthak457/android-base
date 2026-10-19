@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.hud.standard.core.designsystem.component.text.AppMonoText
@@ -22,6 +23,7 @@ import com.example.hud.standard.core.designsystem.theme.AppTheme
 import com.example.hud.standard.core.perfhud.R
 import com.example.hud.standard.core.perfhud.checks.BuildFacts
 import com.example.hud.standard.core.perfhud.checks.StrictModeSummary
+import com.example.hud.standard.core.perfhud.checks.strictModeExample
 import com.example.hud.standard.core.perfhud.memory.MemorySummary
 import com.example.hud.standard.core.perfhud.network.NetworkTimings
 import com.example.hud.standard.core.perfhud.panel.graph.MemoryGraph
@@ -117,15 +119,13 @@ internal fun StrictModeSection(strictMode: StrictModeSummary) {
         ValueRow(R.string.perfhud_violations, strictMode.violations.toString())
         strictMode.byKind.forEach { (kind, count) -> ValueRow(label = kind, value = count.toString()) }
         if (strictMode.examples.isNotEmpty()) {
+            // Worded by the same function as the report's, so the two cannot drift apart.
+            val resources = LocalResources.current
             SelectionContainer {
                 Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xxs)) {
                     strictMode.examples.forEach { example ->
                         AppMonoText(
-                            text = stringResource(
-                                R.string.perfhud_strict_mode_example,
-                                example.kind,
-                                example.frame ?: stringResource(R.string.perfhud_strict_mode_unknown_frame),
-                            ),
+                            text = resources.strictModeExample(example),
                             color = AppTheme.colors.contentSecondary,
                             maxLines = 2,
                         )

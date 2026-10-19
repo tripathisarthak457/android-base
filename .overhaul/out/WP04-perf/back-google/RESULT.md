@@ -4,10 +4,19 @@ The measurement of `research/back-google/DESIGN.md` §5 on the Redmi `9a7c74f4` 
 It answers the user's 06:25 request: "That back gesture fix or implementation do what google says n check also for
 better idea how to do it smoothly".
 
+**Revised at 14:30 after a review.** Four fixes; no phone number changed and no new phone run was needed:
+1. The release limit that T + C1 still fails is now stated (Verdict, "The release limit", For WP04).
+2. Navigation 3's built-in predictive back is named as a difference from Google's guidance (the guidance table).
+3. `visual.txt` is regenerated with a fixed parser, and the commit-fade and cancel numbers are corrected (Visual
+   checks).
+4. `c1.patch` gains a layer-level test of the one texture render, and the A11.3 exception wording names what each
+   guard covers (Builds, For WP04).
+
 ## Verdict
 
 **Ship T + C1:** `out/WP04-perf/backcard-texture.patch`, then `out/WP04-perf/back-google/c1.patch`. Both apply
-cleanly to `wp/WP04` at `4a15dda6`, from the repository root.
+cleanly to `wp/WP04` at `4a15dda6`, from the repository root. **T + C1 still fails one release limit:** the back
+gesture's hitch row (6.9 against 5.0 ms/s; see "The release limit" below).
 
 - C1 is the texture the user adopted, made frame-exact. The look does not change: the held card is pixel-identical
   to T.
@@ -24,7 +33,13 @@ cleanly to `wp/WP04` at `4a15dda6`, from the repository root.
   | Card latency, slow drags and cancels (ms) | 36.6 | **28.4** |
 
 - **Nothing got worse.** Memory, PSS, the first frame, `back_during_push` and the tests are the same as T or better.
-- **No decision for the user:** C1 is an improvement on T with no trade-off.
+- **No decision on C1 itself:** it is an improvement on T with no trade-off.
+- **But the back gesture's release limit stays red after T + C1.** `gates.toml` on `wp/WP04` (`4a15dda6`) sets
+  `pushpop_gesture.hitch_ms_per_s` at 5.0 ms/s (the user's 06:18 "gate what users feel"). C1's block medians are
+  6.91 and 6.91, and only 1 of its 6 runs is under 5 (4.12, 6.91, 6.91, 8.28, 6.91, 5.51). Its own `summary.md`
+  prints `6.91 | 5 | fail` (`perf/WP04-perf/bg-c1-bg1`, `bg-c1-bg2`). The row WP04's handoff expected the back-card
+  change to close is not closed. The next step is more work on the gesture first (below); the user's call on the
+  limit is needed only if that falls short.
 
 **C2 (C1 plus a texture prewarm on an edge touch-down) is not shipped.**
 - What it does well: it makes slow starts better. Their first ten frames reach the screen 9.6 ms sooner, and the
@@ -50,6 +65,13 @@ Four builds of one commit, as a ladder (`research/back-google/bin/build-ladder.w
 | `bg-tex` | + T (`backcard-texture.patch`) | 139 green |
 | `bg-c1` | + `back-google/c1.patch` | 149 green (10 new) |
 | `bg-c2` | + `back-google/c2.patch` | 160 green (11 more) |
+
+**`c1.patch` was updated after the phone session (Oct 19, 14:30) with tests only.** It adds the layer-level guard
+the measured version lacked (see "For WP04"): `LayerProbe.kt`, two `SlideRecordingTest` cases and one
+`PresentationCardTest` case. Its six main-source sections are byte-identical to the measured patch's (compared
+section by section), so every phone number here holds for it. On `4a15dda6` + T + the new `c1.patch` (scratch tree
+`out/WP04-perf/s/bgfix-4a15dda6`, a `git archive`), `:core:navigation` runs **152 tests, all green**
+(`logs/bgfix-tests-clean.log`); `c2.patch` still applies on top.
 
 **C1, per DESIGN §2.2:**
 - **a.** The texture moves onto each screen's own inner `graphicsLayer` (`BackCardState.textures(key)`; covers get
@@ -96,7 +118,7 @@ Two captures per build give 16 traced gestures per build.
 | perf.sh rows | `research/back-google/bin/bg-perfrows.py` → `perfrows.md` |
 | Dumps of both blocks, pooled into six runs per build | `abstats.py`, `gesturephases.py`, `hitchpos.py` |
 | Traces | `research/back-google/bin/bg-analyze.py` → `traces.md` |
-| Visuals | `bg-visual.sh` → `visual.txt` and `visual/` |
+| Visuals | `bg-visual.sh` → `visual.txt` and `visual/` (regenerated 14:18; see below) |
 
 `bg-analyze.py` runs `backlat2.sql`, `layerts.sql`, `startframes.sql`, `presentlat.sql` and `releaseframes.sql` per
 `bgsteps.sh` step.
@@ -106,6 +128,14 @@ Two captures per build give 16 traced gestures per build.
   pause. That is about half of all writes, and every step of a slow start or cancel.
 - A repeated value changes no state, so nothing draws it, and the query counted it as "drawn late".
 - `research/back-google/sql/backlat2.sql` drops repeated values. Everything else is unchanged.
+
+**One script fix.** The first `visual.txt` (12:11) misprinted every small luma step.
+- `bg-visual.sh` read ffmpeg's `YAVG` with `grep -oE 'YAVG=[0-9.]+'`, which drops an exponent: 6.07639e-05 printed as
+  6.07639. So the file showed 12–13 cancel-tail frames with steps of 2–8, which the frames do not have.
+- The grep now keeps the exponent (`YAVG=[0-9.]+(e[-+]?[0-9]+)?`), and a section on the card region alone was added.
+- `visual.txt` was regenerated over the same recordings (14:18). It now starts with the crop rectangles, which the
+  first run did not record; they were recovered by locating the 12:10 crops in `bg-head-held/held.png`. The held-card
+  SSIM and PSNR values come out identical.
 
 ## Results
 
@@ -129,6 +159,46 @@ Each cell is the median of three runs: block 1 / block 2. Block 2 ran in reverse
 - Likely cause (not verified): head redraws the screen's text at a new scale on every gesture frame, so Skia caches
   glyphs at many sizes (§2c of the handoff).
 - A texture draws the text once, at 1.0.
+- The `summary.md` gate tables also print `fail` on the PSS ratchet (`meminfo.pss_app_mb` ≤ 58.4) in every build,
+  head's 70.3 included. That ratchet was set after the acceptance run's whole journey; this session's `meminfo` came
+  after `pushpop_gesture` alone, so the row is not comparable here.
+
+### The release limit: `pushpop_gesture.hitch_ms_per_s` ≤ 5.0, still red
+
+perf.sh gates the median of each block's three runs. Every other back-gesture row passes in both of C1's blocks
+(`janky_after_first_pct` 0.4 / 0.27 against 1.0; the non-regression rows `janky_pct` and the first-three-frames UI
+median), and `back_during_push` passes 3 of 3. The hitch row fails in both:
+
+| Build | Block medians (ms/s) | The six runs | Runs under 5.0 |
+|---|---|---|---|
+| head | 24.5 / 24.6 | 25.7 24.5 17.8 24.6 21.9 26.6 | 0 |
+| T | 11.0 / 13.8 | 8.3 19.2 11.0 13.8 4.2 13.8 | 1 |
+| **T + C1** | **6.9 / 6.9** | 4.1 6.9 6.9 8.3 6.9 5.5 | **1** |
+| T + C1 + C2 | 5.5 / 10.9 | 11.0 5.5 0.0 9.6 10.9 10.9 | 1 |
+
+**Where C1's hitch time is** (`parse_framestats.hitch_time` over each run's dumps, pooled over the six runs; a
+hitch is one vsync, 8.3 ms):
+- The row pools the scenario's two halves: 36 tap pushes and 36 gesture pops, about 18 s of motion each.
+- **Push half: 10 hitches, 107.9 ms, 3.0 of the pooled 6.4 ms/s.** The same in every build (2.8–3.6 ms/s); no
+  candidate touches the push. All 10 are in a push's first three frames: one in each run's first push (6; UI 4–12 ms
+  and GPU 6.6–14 ms with the clocks still low, handoff §0), 3 in the frame that composes the pushed screen (UI
+  13–16.5 ms), and 1 GPU frame of 18 ms.
+- **Pop half (the gesture): 15 hitches, 124.8 ms, 3.45 of the 6.4 ms/s** (T 8.9 of 11.7, head 20.6 of 23.5; on
+  its own time the pop half runs at 7.0 ms/s, the "Display hitches" row below). Placed against the start of the
+  commit's fade (the first of three frames over 6.8 ms of GPU; the drag runs at 5.2–6.0 ms, the fade at 7.2–8.5):
+  - **8 in the three frames around the release**, 3 of them the commit's first frame at 9.3–9.6 ms of GPU, where the
+    page beneath is first drawn whole under a fading card;
+  - 3 in the fade (GPU 8.0–8.5 ms, or RenderThread 6.6 ms);
+  - 3 in the drag (RenderThread about 4 ms plus GPU about 5 ms, done 10.5–11.3 ms after the vsync);
+  - 1 at the pop (UI 9.0 ms).
+- **What closing the row takes.** Under 5.0 pooled means at most about 180 ms of hitches in these 36 s. With the push
+  half as it is, the gesture must lose at least 7 of its 15 hitches. Its 5 GPU-bound ones (41.6 ms) alone would leave
+  about 5.3 ms/s.
+
+**Next step, more work on the gesture first.** The lever already designed for those frames is DESIGN §6's scrim fold
+(about 0.8 of a full-screen fill less on every fade frame, the commit's first frame included); the release frames'
+RenderThread time is the second target. Built and measured like C1, through the locks. If the row is still red
+after that, the limit is the user's call (handoff §0 names the push's first frames from idle as a device limit).
 
 ### Dumps pooled (36 gestures per build, frames after each dump's first)
 
@@ -203,8 +273,8 @@ Medians over gestures; `n` = 8 fast, 4 slow, 4 cancels. Full tables are in `trac
 | Corners (6×) | Smooth anti-aliased arcs, no fringe, the same in all four. The bottom corners sit under the shell's bar. |
 | Page beneath (strips) | Identical to head: PSNR ∞ / 62 dB on the left and right strips. |
 | Shadows | None drawn on the detail or around the card in any build; nothing to compare. |
-| Commit fade (720 px recording, every composed frame) | head and T: the card region is unchanged for the first 3 composed frames after the lift (luma steps ≤ 0.04), then fades. C1 and C2: it already changes on the second composed frame (step 0.88). The trace confirms it: the first frame after the release draws alpha 0.92–0.99 in C1, 1.0 in T. One group fade from T onward. |
-| Cancel end | No flash in any build. C1 and C2 end 3 frames after the full-size frame (luma steps 0.16, 0.01, 0.002). T and head add 12 more frames that change nothing visible (≤ 0.0007). |
+| Commit fade (720 px recording, every composed frame) | Mean luma step (0–255) of the card region (570:1350:130:90) over the first four composed frames after the lift: head 0.13, 0.006, 6.4, 6.5; T 0.28, 0.009, 6.3, 6.6; C1 0.23, **0.68**, 5.6, 7.0; C2 0.30, 0.23, 5.1, 5.9. The first frame changes a little in every build, so it is not the fade. In head and T the second is unchanged and the fade starts on the third. In C1 the second is already the fade's first step: C1 fades one composed frame earlier. C2's second step is no larger than the first frame's, so this one recording does not separate C2 from T; the trace does (the first frame after the release draws alpha 0.92–0.99 in C1 and C2, 1.0 in T). One group fade from T onward. |
+| Cancel end | No flash in any build. After the finger lifts, C1 composes 3 frames (whole-frame luma steps 0.16, 0.008, 0.0003) and C2 3 (0.23, 0.015, 0.004). Head and T compose the same first three (0.12 / 0.11, 0.0005 / 0.0019, 0.0046 / 0.0020), then 12 (head) and 13 (T) more whose steps are at most 0.00008: nothing visible. |
 | GPU memory, `gfxinfo` total | before 3.5–3.6 MB in all. Held: head 2.8 MB, T, C1 and C2 12.3 MB (+8.7, the 10.1 MB texture). 1.5 s and 35 s after: 12.3 MB with 10.1 MB purgeable (HWUI keeps the texture in its cache, freed on trim), the same in T, C1 and C2. C2's edge hold: the 10.1 MB is in use (purgeable 64 B) and is purgeable again 0.4 s after the touch. |
 | meminfo Graphics / GL | Identical across builds (54.9–55.1 MB; GL 0.4 MB). |
 
@@ -251,11 +321,31 @@ touch-down and the gesture than perf.py's injected swipe, which is where C2 wins
 | Release velocity from `BackEvent.frameTimeMillis` | API 36+ | API 36+ | API 34+ (frame-clock fallback) | API 34+ |
 | Cancel: the surface quickly returns to edge-to-edge (predictive-back design page) | +12 frames of invisible scrim | the same, holding the texture | **ends at once** | ends at once |
 | The system's own back animation starts from a buffer it already has | – | – | – | the in-app analogue |
-| Predictive back through `NavigationEventHandler`, `enableOnBackInvokedCallback`, no interception at the root | yes | yes | yes | yes |
+| With Navigation 3 in use, use its built-in predictive back instead of a hand-built handler (navigation-event skill, Step 1 item 2; its handle-back guide's note) | **no** | **no** | **no** | **no** |
+| Predictive back through the documented APIs: a `NavigationEventHandler`, `enableOnBackInvokedCallback`, no interception at the root | yes | yes | yes | yes |
 | No Material required | yes | yes | yes | yes |
 
-Where Google's design-page text differs from Gmail (the commit direction and the y-follow curve), the template keeps
-the user's REQ 24 Gmail card (DESIGN §1). Nothing here changes the look.
+**Where the template does not do what Google says** (all three recorded in DESIGN §1 and §4, none changed here):
+1. **Navigation 3's own predictive back is not used.** Google's navigation-event skill (Step 1, item 2) says an app on
+   Navigation 3 should use Navigation 3's built-in back support rather than the skill's low-level handlers. Its
+   handle-back guide says the same: use Navigation 3's predictive back instead of building one on `NavigationEvent`.
+   The template does not.
+   - Its tab stacks use their own host (`StackHost` and `StackScene`), not `NavDisplay`: `NavDisplay` moves an entry
+     into a new scene on every push and pop, and the move detaches it.
+   - On covers it does use `NavDisplay`, but binds it to an inert navigation-event state and sets
+     `predictivePopTransitionSpec` to none, so the back card takes the gesture (`StackBackHandler`).
+   - Why (DESIGN §1 and §4): Navigation 3 1.2.0's predictive hook passes only the swipe edge, with no touch Y, so it
+     cannot drive a card that follows the finger. It also recomposes and launches a seek on every event. Its default
+     animation fades a whole screen with `Auto` compositing, which is an offscreen pass on every frame: A11.3 rule 1's
+     case.
+   - What differing costs: the template owns the gesture's code and tests, and should re-check Navigation 3's hook
+     on each update, in case a later release passes the touch position.
+2. **The commit direction.** Google's design page says to absorb the release velocity toward the maximum preview.
+   The template grows the card back to full size while it fades, as Gmail does (REQ 24).
+3. **The y-follow curve.** Google's design page decelerates it. The template keeps Material Components' linear
+   24 dp (REQ 24).
+
+Items 2 and 3 are the user's REQ 24 look. Item 1 is a difference in structure that the user does not see.
 
 ## For WP04
 
@@ -264,13 +354,44 @@ Two steps, in this order:
 2. Apply `out/WP04-perf/back-google/c1.patch`.
 
 Both run with `git apply` from the repository root. Then:
-- **Write the A11.3 rule 1 exception** with DESIGN §1's wording. The "one `drawLayer` per gesture" it cites is now
-  measured, in 16 of 16 gestures.
+- **The back gesture's hitch row stays red** (6.91 / 6.91 against 5.0 ms/s, "The release limit" above). T + C1 is
+  the best build measured, but it does not close the row. Report it as still failing at the next acceptance; do not
+  treat the row as closed by this change.
+- **Write the A11.3 rule 1 exception** with this wording (it replaces DESIGN §1's, which named `SlideRecordingTest` as
+  the guard of the one render when that test alone did not guard it):
+
+  > "Exception: the back card. While the card is up, the screen under it is drawn from its own innermost layer as a
+  > hardware layer (`CompositingStrategy.Offscreen`), from the gesture's first frame until the card is gone, and
+  > released then (Google's 'hardware layer for the animation's duration'). It is rendered once per gesture while the
+  > screen's own content is still. The unit tests guard the two conditions for that. `SlideRecordingTest` checks
+  > that the texture is the screen's innermost layer for exactly the card's span (`PresentationCardTest` checks a cover only partly: no texture before
+  > the gesture, one after two progress events, none after a cancel), and that the screen is not recorded again between the start and the pop, so that layer never changes
+  > while the card is up. That HWUI then renders it once is shown only by a trace: one `drawLayer` per gesture,
+  > 16 of 16 on the Redmi (Oct 19)."
 - **Re-record the baseline profile.** The experiment builds compiled the touched classes from wildcard rules; the
   patches carry no profile change.
-- **Keep the tests C1 adds:** `BackCardStateTest` (new), and one new test each in `BackCardTest` (same-frame apply),
-  `BackCardDrawingTest` (the commit fades the screen as one group) and `SlideRecordingTest` (the screen is not
-  recorded between the start and the pop). C1 changes no existing test.
+- **Keep the tests C1 adds** (152 green on `4a15dda6` + T + C1):
+  - `BackCardStateTest` (new);
+  - one new test each in `BackCardTest` (same-frame apply) and `BackCardDrawingTest` (the commit fades the screen as
+    one group);
+  - three in `SlideRecordingTest`:
+    - the screen is not recorded between the start and the pop;
+    - the screen's texture is its innermost layer from the gesture's first frame until the pop, and the page beneath
+      has none;
+    - a settled cancel gives the plain layer back within one frame;
+  - one in `PresentationCardTest`: the cover's texture is its innermost layer while the card is up, and gone after a
+    cancel;
+  - `LayerProbe.kt`, the test helper that reads which layers around a screen are `Offscreen`.
+- C1 changes no existing assertion. `SlideRecordingTest`'s test screens gain a test tag, so the layer check can find
+  them.
+- **What the new layer checks catch** (mutation runs on the scratch tree, then restored; logs
+  `logs/bgfix-mutation-{a,b,c}.log`):
+
+  | Mutation | Tests that fail (of 152) |
+  |---|---|
+  | a. T's placement: `Offscreen` back on the pose layer, the screen's own layer plain (stacks and covers) | the 3 layer checks; the other 149 pass, so before this update nothing caught it |
+  | b. The card's drawing moved inside the texture, over a plain layer of its own | the 2 stack layer checks |
+  | c. The card's drawing moved inside the texture, straight over the screen | 2 recording tests: the page beneath is recorded on every frame (120 and 32 times). The subject's own texture is not rendered again in c, because what the scene draws over the subject changes only as the card comes and goes. |
 - **Not traced:** the cover card (`PresentationCard`) path and mid-push gestures. `back_during_push` passes 3 of 3 in
   every build.
 
@@ -280,8 +401,11 @@ All paths are under `D:/projects/tools/.overhaul/`.
 
 | Path | What |
 |---|---|
-| `out/WP04-perf/back-google/c1.patch`, `c2.patch` | the candidates (apply after `backcard-texture.patch`) |
-| `out/WP04-perf/back-google/perfrows.md`, `traces.md`, `visual.txt`, `visual/` | the tables and crops above |
+| `out/WP04-perf/back-google/c1.patch`, `c2.patch` | the candidates (apply after `backcard-texture.patch`); `c1.patch` updated 14:30 with tests only, and the measured version is in the Recycle Bin |
+| `out/WP04-perf/back-google/perfrows.md`, `traces.md`, `visual.txt`, `visual/` | the tables and crops above (`visual.txt` regenerated 14:18) |
+| `out/WP04-perf/s/bgfix-4a15dda6` | `4a15dda6` + T + the updated `c1.patch`, where the 152 tests and the mutation runs ran |
+| `out/WP04-perf/logs/bgfix-tests-clean.log`, `bgfix-mutation-{a,b,c}.log` | those runs |
 | `perf/WP04-perf/bg-{head,tex,c1,c2}-{bg1,bg2,bgp,t1,t2,held,rec,cancel}` | raw results |
 | `research/back-google/sql/backlat2.sql` | `backlat.sql` without repeated progress values |
+| `research/back-google/bin/bg-visual.sh` | the visual checks, with the exponent kept, the card-region section and the Oct 19 crop rectangles |
 | `out/WP04-perf/logs/bg-build.log`, `bg-phone.log` | the build and phone logs |

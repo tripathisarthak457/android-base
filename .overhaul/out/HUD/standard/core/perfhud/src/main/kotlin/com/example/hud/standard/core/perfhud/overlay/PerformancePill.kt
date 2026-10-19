@@ -34,9 +34,9 @@ import kotlin.math.roundToInt
  *
  * The lines are drawn straight from the frame log, at most four times a second and only within
  * frames the app draws anyway ([redrawDuringFrames]): the pill holds no state, never recomposes
- * and never draws a frame of its own, and a redraw allocates nothing ([PillText]). While the app is idle it shows the numbers of its last
- * drawing. In a debug build the numbers are drawn without a verdict colour, since a debug build's
- * frames say little about the release's.
+ * and never draws a frame of its own, and a redraw allocates nothing ([PillText]). While the app
+ * is idle it shows the numbers of its last drawing. In a debug build the numbers are drawn without
+ * a verdict colour, since a debug build's frames say little about the release's.
  */
 @Composable
 internal fun PerformancePill(

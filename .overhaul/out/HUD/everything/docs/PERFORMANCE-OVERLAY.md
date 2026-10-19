@@ -51,10 +51,18 @@ The overlay is built so that watching does not change what is watched:
   screen; measured, a hidden `devRelease` cold start was within noise of the same app without the
   overlay (517 against 507 ms median over 30 launches each).
 - **One listener while on.** Frames come from JankStats. With the `analytics` feature, the overlay
-  shares the analytics recorder's JankStats instead of adding a second.
-- **Nothing per frame on the main thread.** JankStats hands each frame over on its own thread; the
-  overlay copies a few numbers into fixed-size arrays and returns. No allocation, no boxing and no
-  log line per frame.
+  shares the analytics recorder's JankStats instead of adding a second. Without it, the overlay's
+  own JankStats leaves its frame-metrics thread idle in the process once recording stops; a launch
+  with the overlay off has none.
+- **Nothing put on the window.** The screen each frame belongs to is kept by the overlay, timed as
+  JankStats times a state, rather than put on the window as a JankStats state: every JankStats on
+  the window reads those, and the analytics recorder keys each frame by them, so a route there
+  would have it build a string every frame and change the events it sends while the overlay
+  records.
+- **Nothing per frame on the main thread but a clock check.** JankStats hands each frame over on
+  its own thread; the overlay copies a few numbers into fixed-size arrays and returns. No
+  allocation, no boxing and no log line per frame. On the main thread, the pill's pre-draw listener
+  reads the clock once a frame to decide whether its quarter second is up.
 - **No frame of its own.** The two lines under the badge are drawn straight from the recording,
   with no state and no recomposition, and redrawn at most four times a second from the window's
   pre-draw pass, so only inside a frame the app draws anyway. A redraw on a timer would cost a
@@ -69,14 +77,13 @@ The overlay is built so that watching does not change what is watched:
   second; an app that draws without a pause gets its PSS read late rather than its frames delayed.
   The same goes for your own code: never call `Debug.getMemoryInfo` while the app is animating.
 
-Measured on a Redmi Note 10 Pro Max (M2101K6I) at 120 Hz with `devRelease`, alternating launches with the overlay
-hidden and shown, each scrolling a list, switching every tab and pushing and popping a screen,
-`dumpsys gfxinfo` read around every step. Without `analytics`, where the overlay brings the only
-JankStats, 13,770 frames hidden and 13,764 shown were 1.34 % and 1.43 % janky, and the main thread
-spent 0.09 ms more per frame shown. With `analytics`, whose JankStats it shares, 14,126 frames
-hidden and 14,113 shown were 1.46 % and 1.41 % janky, with no change in main-thread time per
-frame (+0.003 ms). The budget the overlay is held to is 0.3 percentage points of janky frames and
-0.5 ms per frame.
+Measured on a Redmi Note 10 Pro Max (M2101K6I) at 120 Hz with `devRelease`, alternating launches with
+the overlay hidden and shown, each scrolling a list, switching every tab and pushing and popping a
+screen, `dumpsys gfxinfo` read around every step. Without `analytics`, where the overlay brings the
+only JankStats, 13,688 frames hidden and 13,495 shown were 1.37 % and 1.32 % janky, and the main
+thread spent 0.07 ms more per frame shown. With `analytics`, whose JankStats it shares, 14,148 frames
+hidden and 14,068 shown were 1.55 % and 1.61 % janky, again 0.07 ms more per frame. The budget the
+overlay is held to is 0.3 percentage points of janky frames and 0.5 ms per frame.
 
 **Measure the app with the overlay off.** The perf gates, `tools/perf/perf.sh` and any number you
 quote are taken hidden. Your choice of Live stats is kept across launches, and across reinstalls
@@ -226,13 +233,19 @@ adb shell run-as <applicationId> am broadcast --user 0 \
 ```
 
 The receiver is declared in the debug manifest only, and not exported: no other app can reach it,
-and adb reaches it only through `run-as`, which works on a debuggable build alone. `--user 0` is the app's own user (on a phone with several
-users, the one it runs as): `run-as` cannot broadcast to the default, "current", which needs a
-cross-user permission. A release-like dev build exports from the tab.
+and adb reaches it only through `run-as`, which works on a debuggable build alone. `--user 0` is the
+app's own user (on a phone with several users, the one it runs as): `run-as` cannot broadcast to the
+default, "current", which needs a cross-user permission. A release-like dev build exports from the
+tab.
 
 A launch with `--es perf.hud on` (or `off`) switches recording for that process, whatever the
 build, which is how `tools/perf/perf.sh` measures the overlay's own cost (`--extra perf.hud=on`).
 It does nothing else, and nothing in a shippable release reads it.
+
+Frame numbers are reported for each screen as well as overall: frames, janky, slow and frozen
+frames, long main-thread work, percentiles and the worst frame. Memory, garbage collections,
+start-up and requests are the process's over the whole recording, since none of them belongs to one
+screen: a heap grown on one screen is still there on the next.
 
 The JSON has a `schema` number that changes when a field is renamed or removed.
 

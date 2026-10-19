@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import com.example.hud.standard.core.designsystem.theme.AppTheme
@@ -49,6 +50,9 @@ internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifi
                 val line = Stroke(width = GraphDefaults.LineWidth.toPx())
                 val stroke = GraphDefaults.Stroke.toPx()
                 val dot = GraphDefaults.LineWidth.toPx() * DotScale
+                // Laid out again only when the scale's whole megabytes change, not on every refresh.
+                var scaleMb = -1
+                var scale: TextLayoutResult? = null
                 onDrawBehind {
                     version()
                     memory.copyRecent(series)
@@ -71,9 +75,12 @@ internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifi
                         drawCircle(pss, radius = dot, center = Offset(start + i * step, yOf(value, top)))
                     }
                     drawLine(axis, Offset(0f, size.height), Offset(size.width, size.height), stroke)
-                    val scaleText = String.format(Locale.ROOT, megabytes, Math.round(top).toString())
-                    val scale = measurer.measure(scaleText, labelStyle)
-                    drawText(scale, color = label, topLeft = Offset.Zero)
+                    val topMb = Math.round(top)
+                    val scaleLayout = scale?.takeIf { topMb == scaleMb }
+                        ?: measurer.measure(String.format(Locale.ROOT, megabytes, topMb.toString()), labelStyle)
+                    scaleMb = topMb
+                    scale = scaleLayout
+                    drawText(scaleLayout, color = label, topLeft = Offset.Zero)
                 }
             },
     )

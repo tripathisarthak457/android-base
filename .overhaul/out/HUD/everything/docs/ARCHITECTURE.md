@@ -578,7 +578,7 @@ These tasks run as part of `./gradlew build` and fail it:
 |---|---|
 | `verifyModuleDependencies` | The module tier rules above. |
 | `verifyComposeUsage` | No Material import. Every module that declares a `@Composable` applies the Compose compiler. No prose literal passed to `text =`, `title =`, `label =` and similar parameters in feature code. |
-| `verify<Variant>CarriesNoDevTooling` | A release outside the dev flavour (stagingRelease, prodRelease, playstoreRelease) depends on no dev tooling module, directly or through another module. Also runs before that release builds. |
+| `verify<Variant>CarriesNoDevTooling` | A release-like build outside the dev flavour (any build type but debug: stagingRelease, prodRelease, playstoreRelease and, with baseline profiles, their benchmark builds) depends on no dev tooling module, directly or through another module. Also runs before that build. |
 | `checkComposeStability` | No composable in the design system or `:core:ui` becomes unskippable compared with `config/compose-stability-baseline.txt`. After an intended change, run `recordComposeStability` to update the baseline. |
 
 ### Flavours are only on the application modules

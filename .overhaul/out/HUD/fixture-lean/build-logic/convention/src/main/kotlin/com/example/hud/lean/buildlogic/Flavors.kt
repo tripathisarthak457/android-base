@@ -17,7 +17,6 @@ internal fun Project.configureFlavors(extension: ApplicationExtension) {
             buildConfigField("String", "API_BASE_URL", "\"${flavor.apiBaseUrl}\"")
             buildConfigField("String", "WEB_SOCKET_URL", "\"${flavor.webSocketUrl}\"")
             buildConfigField("String", "ENVIRONMENT", "\"${flavor.flavorName}\"")
-            buildConfigField("boolean", "IS_SHIPPABLE", flavor.isShippable.toString())
         }
     }
 }

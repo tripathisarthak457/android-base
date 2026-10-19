@@ -86,6 +86,22 @@ class OptimisationScoreTest {
     }
 
     @Test
+    fun `a single StrictMode violation is a B, not a step straight to C`() {
+        fun gradeOf(violations: Int) = OptimisationScore.of(
+            healthy.copy(
+                strictMode = StrictModeSummary(
+                    supported = true,
+                    violations = violations,
+                    byKind = emptyMap(),
+                    examples = emptyList(),
+                ),
+            ),
+        ).metrics.single { it.metric == Metric.StrictModeClean }.grade
+
+        assertEquals(listOf(Grade.A, Grade.B, Grade.C), (0..2).map(::gradeOf))
+    }
+
+    @Test
     fun `what was not measured is left out rather than counted as lost`() {
         val score = OptimisationScore.of(healthy.copy(startup = StartupSummary.Unsupported, memory = null))
 

@@ -65,7 +65,7 @@ three runs; tab rows also `$P/layer-t1`, `layer-t2`), the same tools and phone.
 | Push/pop, janky / p99 | 4.03 % / 34 ms; 2.34 % / 57 ms | 1.56 % / 26 ms; after the first 0 %, hitch 2.0 ms/s | ~0–0.5 % / ≤ 16 ms | p99 is the push's composing frame and the pop's first frame from idle: device limit (§0) |
 | Pop, first frame UI median / max | 19.1 / 27.6; 15.0 / 36.9 ms | 2.3 / 5.1 ms | ≤ 8 / 16 ms | met |
 | Rapid Back, janky | 5.32 % / 2.62 % | 0.92 %; after the first 0.31 % | ≤ 1 % | met |
-| Back gesture, janky | 3.54 % / 2.82 % | 2.4–2.9 %; after the first 0.9–1.3 %, hitch 15–23 ms/s. With the card as a texture (not committed): 2.0–2.1 %, after the first 0.4–0.53 %, hitch 8–16 ms/s, RenderThread-caused hitches 38 → 2 in six runs | ~0 % | the user's decision (§2h: A11.3 rule 1); what remains with it is 7 GPU-bound frames in six runs, the first frame from idle and perf.py's own input cadence |
+| Back gesture, janky | 3.54 % / 2.82 % | 2.4–2.9 %; after the first 0.9–1.3 %, hitch 15–23 ms/s. With the card as a texture (not committed): 2.0–2.1 %, after the first 0.4–0.53 %, hitch 8–16 ms/s, RenderThread-caused hitches 38 → 2 in six runs | ~0 % | adopted by the user (06:16): ship T + C1 (§2j); hitch row still red at 6.91 ms/s against 5.0, next the scrim fold (DESIGN §6) |
 | Scroll, janky / GPU p90 | 0.22 % / 6 ms; 0.15 % / 6 ms | 0.22–0.44 % / 6 ms; HEAD (phase 18) root 0.44 %, minimizing 0.51 % (runs 0.37, 0.61, 0.51) / 6 ms | ≤ 0.5 % (aim ~0) / ≤ 7 ms | at the line; every janky scroll frame is a GPU program compiled on first use after `pm clear` (one 37–43 ms and one 17–18 ms RenderThread frame per scenario: the pull-to-refresh indicator a fling pulls out, §2f), which WP03's indicator removes; steady scrolling has none |
 | First fling after `pm clear` (REQUIREMENTS 41) | – | one `CircularRRectOp` compile, 11–31 ms, in 6 of 6 runs | no hitch | cause proven (the card's own clip, §2i); WP03's `AppSurface` removes it at its merge; re-check then |
 | Cold start | 336 ms (Oct 9) / 355 ms | interleaved with the old template on one day: old 393, before the fix 396, **with it 365 ms** (§2e) | below the old template | met: the Play Store checks start after the first frame (`9ed16d25`); HEAD's perf.sh row on Oct 19: 337 / 370 ms (§3, phase 18) |
@@ -386,6 +386,26 @@ it smoothly". Design: `$OV/research/back-google/DESIGN.md`. Full result: `$O/bac
 **Result: ship T + C1.** Apply `$O/backcard-texture.patch` (T, adopted by the user at 06:16), then
 `$O/back-google/c1.patch`. Both apply with `git apply` to `wp/WP04` `4a15dda6`.
 
+**The back gesture's release limit stays red after T + C1.** `gates.toml` on `wp/WP04` (`4a15dda6`) sets
+`pushpop_gesture.hitch_ms_per_s` at 5.0 ms/s, per the user's 06:18 "gate what users feel".
+- C1's block medians are 6.91 and 6.91; 1 of its 6 runs is under 5 (4.12, 6.91, 6.91, 8.28, 6.91, 5.51). Its
+  `summary.md` prints `6.91 | 5 | fail`.
+- The other back-gesture limits pass (`janky_after_first_pct` 0.4 / 0.27 against 1.0), and so does
+  `back_during_push`.
+- **Where the 6.4 ms/s (pooled) is.** The row pools tap pushes and gesture pops.
+  - The push half gives 3.0 of it in every build (10 hitches, all in a push's first three frames). No candidate
+    touches the push.
+  - The gesture gives 3.45 (15 hitches). 8 of them are in the three frames around the release, 3 of those the
+    commit's first frame at 9.3–9.6 ms of GPU, where the page beneath is first drawn whole. 3 are in the fade, 3 in
+    the drag and 1 at the pop.
+  - To pass, the gesture must lose at least 7 of its 15 hitches. Its 5 GPU-bound ones alone would leave about
+    5.3 ms/s.
+- **Next:** more work on the gesture. DESIGN §6's scrim fold targets the fade's GPU frames, the release frame
+  included; the release frames' RenderThread time is the second target. The user's call on the limit comes only if
+  the row is still red after that.
+- Details: RESULT.md, "The release limit".
+
+**What T, C1 and C2 are:**
 - **T is Google's own technique.** Google's docs say to draw an animated complex view from a hardware layer, for the
   animation's length. The system's back animation moves a buffer it already has.
 - **C1 makes T frame-exact, with no change to the look.** The held card is pixel-identical to T. It does five things:
@@ -407,6 +427,8 @@ it smoothly". Design: `$OV/research/back-google/DESIGN.md`. Full result: `$O/bac
 trace counters.
 - Built by `$OV/research/back-google/bin/build-ladder.win.sh` from `git archive`s; no worktree was edited. Tests: 139,
   139, 149 and 160 green.
+- `c1.patch` was updated at 14:30 with tests only. Its main-source sections are byte-identical to the measured
+  version's, and `4a15dda6` + T + the new patch runs 152 tests, all green (`$O/logs/bgfix-tests-clean.log`).
 - One `locked adb` hold, 10:45–12:10 (`$OV/research/back-google/bin/bg-phone.win.sh`, `$O/logs/bg-phone.log`):
   - perf.sh `pushpop_gesture`, three runs per build in each order;
   - `back_during_push`;
@@ -416,7 +438,7 @@ trace counters.
 
 | Back gesture | head | T | T + C1 | T + C1 + C2 |
 |---|---|---|---|---|
-| perf.sh hitch ms/s, block 1 / 2 (gate) | 24.5 / 24.6 | 11.0 / 13.8 | **6.9 / 6.9** | 5.5 / 10.9 |
+| perf.sh hitch ms/s, block 1 / 2 (gate ≤ 5.0: fails in every build) | 24.5 / 24.6 | 11.0 / 13.8 | **6.9 / 6.9** | 5.5 / 10.9 |
 | perf.sh janky after the first %, block 1 / 2 (gate) | 1.2 / 1.43 | 0.4 / 0.67 | 0.4 / 0.27 | 0.4 / 0.27 |
 | perf.sh janky % / p99 ms, block 1 | 2.68 / 32 | 2.01 / 26 | 2.0 / 28 | 1.85 / 27 |
 | 36 gestures: display hitches / late frames | 82 / 48 | 38 / 22 | **15 / 7** | 18 / 9 |
@@ -447,10 +469,31 @@ trace counters.
   progress jumps (0.30 → 0 in one event, with injected input). It needs a real-thumb check.
 - **PSS.** Head's perf.sh PSS "less the window's buffers" is about 10 MB above every texture build. Likely cause (not
   verified): glyph caches at many scales.
+- **Where the template does not do what Google says** (the user asked for Google's way; all three are in DESIGN §1
+  and §4):
+  1. **Navigation 3's built-in predictive back is not used.** Google's navigation-event skill (Step 1, item 2) and
+     its handle-back guide say an app on Navigation 3 should use Navigation 3's own predictive back instead of a
+     hand-built handler.
+     - The template draws its stacks with its own host (`StackHost`, `StackScene`), not `NavDisplay`.
+     - On covers it binds `NavDisplay` to an inert state and turns its predictive animation off, so the back card
+       takes the gesture.
+     - The reason: Navigation 3 1.2.0's hook passes only the swipe edge, with no touch Y, recomposes per event, and
+       its default fades a whole screen offscreen every frame (A11.3 rule 1's case).
+  2. **The commit direction:** Gmail's grow-back, by REQ 24.
+  3. **The y-follow curve:** Gmail's linear 24 dp, by REQ 24.
+- **Visual numbers corrected.** The first `visual.txt` dropped exponents (`bg-visual.sh`'s `YAVG` grep), so small
+  luma steps printed as 2–8. It is regenerated; RESULT's commit-fade and cancel numbers now match the frames. The
+  conclusion is unchanged: C1 fades one composed frame earlier than T.
 
 **For WP04:**
-- Apply T, then C1.
-- Write the A11.3 rule 1 exception: one `drawLayer` per gesture is now measured, in 16 of 16 gestures.
+- Apply T, then C1 (the 14:30 `c1.patch`).
+- **Do not count the back gesture's hitch row as closed:** it still fails (6.91 / 6.91 against 5.0 ms/s).
+- Write the A11.3 rule 1 exception with RESULT.md's wording, not DESIGN §1's.
+  - The layer-level tests guard that the texture is the screen's innermost layer for exactly the card's span:
+    `SlideRecordingTest` (and, for covers, `PresentationCardTest` only partly: no texture before the gesture, one after two progress events, none after a cancel), with the helper `LayerProbe.kt`.
+  - `SlideRecordingTest`'s recording count guards that this layer never changes while the card is up.
+  - Only the phone trace shows the single `drawLayer` per gesture (16 of 16).
+  - A mutation run with T's placement fails exactly the 3 new layer checks and passes the other 149.
 - Re-record the baseline profile.
 - Not traced: covers and mid-push gestures. `back_during_push` passes 3 of 3 in every build.
 
@@ -833,9 +876,10 @@ press-hold taps after a warm pass, `$O/firstframes.win.py` → `firstframes.txt`
 
 ## 4. Still open (Oct 19)
 
-- **Back gesture:** the user's decision on `$O/backcard-texture.patch` (§2h). Without it the gesture's RenderThread
-  frames on a little core stay (0.8–0.93 % janky after the first frame, hitch about 20 ms/s); with it 0.4–0.53 % and
-  8–16 ms/s, and what remains is GPU-bound frames, the first frame from idle and perf.py's own input cadence.
+- **Back gesture (updated Oct 19, see §2j):** the user adopted the texture at 06:16; ship T + C1 (`$O/backcard-texture.patch`,
+  then `$O/back-google/c1.patch`). The hitch row is still red after it (6.91 / 6.91 ms/s against 5.0); the next step is
+  DESIGN §6's scrim fold, and the user decides the limit only if the row is still red after that. The "input cadence"
+  hitches were the one-frame lag that C1 removes (21 of 23).
 - **First fling after `pm clear`:** closed by WP03's surface at its merge (§2i); re-run `$O/firstfling.win.sh` on the
   merged tree, and fling into the top edge once to check WP03's rubber band for first-use programs.
 - **Scroll rows:** the pull-to-refresh programs a fling to the top compiles (§2f) leave with WP03's indicator; re-measure

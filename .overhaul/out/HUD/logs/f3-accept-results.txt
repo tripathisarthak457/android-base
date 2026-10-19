@@ -1,0 +1,5 @@
+  app: 5 tests, 0 failed
+  core:perfhud: 114 tests, 0 failed
+tests: 119 run after the build started, 0 failed (43 result files older, not counted)
+  lint app\build\reports\lint-results-devDebug.xml: 0 errors, 17 warnings
+lint: 0 errors, 17 warnings

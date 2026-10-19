@@ -47,9 +47,9 @@ class FrameJankRecorderTest {
     fun `a frame is counted under its states and handed to the listener`() {
         val seen = mutableListOf<Long>()
         recorder.frameListener = JankStats.OnFrameListener { seen += it.frameStartNanos }
-        val route = StateInfo("route", "Home")
+        val push = StateInfo("nav", "push:DetailKey")
 
-        recorder.onFrame(FrameData(1L, 4_000_000L, false, listOf(route)))
+        recorder.onFrame(FrameData(1L, 4_000_000L, false, listOf(push)))
         recorder.onFrame(FrameData(2L, 30_000_000L, true, emptyList()))
         recorder.frameListener = null
         recorder.onFrame(FrameData(3L, 4_000_000L, false, emptyList()))
@@ -58,7 +58,7 @@ class FrameJankRecorderTest {
         assertEquals(listOf(1L, 2L), seen)
         assertEquals(
             setOf(
-                mapOf("state" to "route=Home", "frames" to 1, "janky" to 0),
+                mapOf("state" to "nav=push:DetailKey", "frames" to 1, "janky" to 0),
                 mapOf("state" to "idle", "frames" to 2, "janky" to 1),
             ),
             tracked.map { it.parameters }.toSet(),

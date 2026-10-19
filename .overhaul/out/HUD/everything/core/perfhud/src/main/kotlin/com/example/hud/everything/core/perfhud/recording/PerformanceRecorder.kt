@@ -17,6 +17,7 @@ import com.example.hud.everything.core.perfhud.frame.FrameFeed
 import com.example.hud.everything.core.perfhud.frame.FrameIntake
 import com.example.hud.everything.core.perfhud.frame.FrameLog
 import com.example.hud.everything.core.perfhud.frame.RefreshRate
+import com.example.hud.everything.core.perfhud.frame.ScreenTimeline
 import com.example.hud.everything.core.perfhud.log.PerfLogcat
 import com.example.hud.everything.core.perfhud.memory.MemoryLog
 import com.example.hud.everything.core.perfhud.memory.MemorySampler
@@ -53,9 +54,9 @@ import javax.inject.Singleton
  *
  * Until the first recording starts nothing listens to the window and nothing is sampled; the rings
  * are allocated by the first recording, or by the Perf tab's first read of them. The recorder is
- * built with the inspector, on the main thread
- * during the launch: that costs the launch an activity-lifecycle callback, a DataStore and one
- * read of the stored choice, whose file I/O runs on the I/O dispatcher.
+ * built with the inspector, on the main thread during the launch: that costs the launch an
+ * activity-lifecycle callback, a DataStore and one read of the stored choice, whose file I/O runs
+ * on the I/O dispatcher.
  */
 @Singleton
 internal class PerformanceRecorder @Inject constructor(
@@ -74,6 +75,7 @@ internal class PerformanceRecorder @Inject constructor(
     private val dispatchers: AppDispatchers,
 ) {
     private val refreshRate = RefreshRate(context.getSystemService(DisplayManager::class.java))
+    private val screens = ScreenTimeline()
     private val pssSchedule = PssSchedule()
     private val _recording = MutableStateFlow(false)
     private var work: Job? = null
@@ -133,13 +135,19 @@ internal class PerformanceRecorder @Inject constructor(
     }
 
     /** Everything recorded so far. Reads the start-up record and the build's profile state: main-safe. */
-    suspend fun snapshot(): PerformanceSnapshot = withContext(dispatchers.default) {
+    suspend fun snapshot(): PerformanceSnapshot {
+        // The profile check writes a file and the start record is a binder call: both block.
+        val (build, startup) = withContext(dispatchers.io) {
+            (buildFacts ?: buildChecks.read().also { buildFacts = it }) to startupSummary()
+        }
+        return withContext(dispatchers.default) { snapshotOf(build, startup) }
+    }
+
+    private fun snapshotOf(build: BuildFacts, startup: StartupSummary): PerformanceSnapshot {
         val frames = frames.summary()
         val memory = memory.summary()
-        val startup = startupSummary()
-        val build = buildFacts ?: buildChecks.read().also { buildFacts = it }
         val strictMode = strictMode.summary()
-        PerformanceSnapshot(
+        return PerformanceSnapshot(
             frames = frames,
             memory = memory,
             startup = startup,
@@ -195,13 +203,14 @@ internal class PerformanceRecorder @Inject constructor(
     private fun start() {
         refreshRate.start()
         strictMode.start()
-        feed.start(FrameIntake(frames, refreshRate))
+        screens.restart(currentScreen.name.value)
+        feed.start(FrameIntake(frames, refreshRate, screens))
         recordingSince = SystemClock.elapsedRealtime()
         _recording.value = true
         if (environment.isDebugBuild) logcat.note(DEBUG_NOTE)
         val previous = stopping
         work = scope.launch(dispatchers.main) {
-            launch { currentScreen.name.filterNotNull().collect(feed::setRoute) }
+            launch { currentScreen.name.filterNotNull().collect { screens.enter(it, System.nanoTime()) } }
             // Nothing is drawn in the background, and PSS there would only measure what the
             // system trimmed: the sampler stops until an activity is started again.
             launch(dispatchers.default) {

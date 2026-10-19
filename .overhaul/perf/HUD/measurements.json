@@ -1,10 +1,590 @@
 {
- "head": "d46a98f2",
+ "head": "9fdc634c",
  "device": "Redmi Note 10 Pro Max 9a7c74f4, 120 Hz",
  "method": "out/HUD/overhead.py: 6 rounds alternating hidden/shown launches (perf.hud=off|on); per step dumpsys gfxinfo reset + framestats dump, parsed with WP04's parse_gfx/parse_framestats; journey per launch: 5 s idle, 12 scroll flings, 5 tab taps, 4 push+pop",
  "limits": {
   "janky_pp_max": 0.3,
   "ms_per_frame_max": 0.5
+ },
+ "fix3_standard": {
+  "build": "standard preset less auth/onboarding (out/HUD/specs/hud-standard.json): no analytics, so the overlay's own JankStats; hidden has no frame listener at all; devRelease arm64 from 9fdc634c, installed fresh, profile installed, compiled speed-profile",
+  "shown_minus_hidden": {
+   "scroll": {
+    "janky_pp": 0.01,
+    "ui_mean_ms": 0.057,
+    "total_mean_ms": 0.002
+   },
+   "tabs": {
+    "janky_pp": -0.27,
+    "ui_mean_ms": 0.077,
+    "total_mean_ms": -0.16
+   },
+   "pushpop": {
+    "janky_pp": -0.07,
+    "ui_mean_ms": 0.04,
+    "total_mean_ms": 0.308
+   },
+   "all": {
+    "janky_pp": -0.01,
+    "ui_mean_ms": 0.055,
+    "total_mean_ms": 0.061
+   }
+  },
+  "frame_total_mean_valid_ms": {
+   "hidden_scroll": 8.708,
+   "hidden_tabs": 13.077,
+   "hidden_pushpop": 10.645,
+   "hidden_all": 9.405,
+   "shown_scroll": 8.71,
+   "shown_tabs": 12.917,
+   "shown_pushpop": 10.953,
+   "shown_all": 9.466
+  },
+  "janky_scroll_per_launch": {
+   "hidden": [
+    14,
+    7,
+    11,
+    8,
+    12,
+    12
+   ],
+   "shown": [
+    10,
+    11,
+    10,
+    9,
+    10,
+    14
+   ]
+  },
+  "ui_scroll_p99_ms": {
+   "hidden": 1.78,
+   "shown": 3.68
+  },
+  "hidden_all": {
+   "frames": 13998,
+   "janky": 213,
+   "janky_pct": 1.52,
+   "p50_ms": 8,
+   "p90_ms": 9,
+   "p99_ms": 24,
+   "gpu_p90_ms": 7,
+   "framestats_rows": 11924,
+   "ui_mean_ms": 1.17,
+   "ui_p90_ms": 1.61,
+   "total_mean_ms": 9.405
+  },
+  "shown_all": {
+   "frames": 13796,
+   "janky": 209,
+   "janky_pct": 1.51,
+   "p50_ms": 8,
+   "p90_ms": 10,
+   "p99_ms": 25,
+   "gpu_p90_ms": 7,
+   "framestats_rows": 11908,
+   "ui_mean_ms": 1.225,
+   "ui_p90_ms": 1.64,
+   "total_mean_ms": 9.466
+  },
+  "idle_frames_5s": {
+   "hidden": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "shown": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "per_journey": {
+   "hidden": {
+    "scroll": {
+     "frames": 10687,
+     "janky": 64,
+     "janky_pct": 0.6,
+     "p50_ms": 8,
+     "p90_ms": 9,
+     "p99_ms": 16,
+     "gpu_p90_ms": 6,
+     "framestats_rows": 8613,
+     "ui_mean_ms": 0.929,
+     "ui_p90_ms": 1.125,
+     "total_mean_ms": 8.708
+    },
+    "tabs": {
+     "frames": 760,
+     "janky": 26,
+     "janky_pct": 3.42,
+     "p50_ms": 9,
+     "p90_ms": 18,
+     "p99_ms": 65,
+     "gpu_p90_ms": 11,
+     "framestats_rows": 760,
+     "ui_mean_ms": 2.451,
+     "ui_p90_ms": 2.505,
+     "total_mean_ms": 13.077
+    },
+    "pushpop": {
+     "frames": 2551,
+     "janky": 123,
+     "janky_pct": 4.82,
+     "p50_ms": 8,
+     "p90_ms": 16,
+     "p99_ms": 38,
+     "gpu_p90_ms": 9,
+     "framestats_rows": 2551,
+     "ui_mean_ms": 1.601,
+     "ui_p90_ms": 2.259,
+     "total_mean_ms": 10.645
+    }
+   },
+   "shown": {
+    "scroll": {
+     "frames": 10485,
+     "janky": 64,
+     "janky_pct": 0.61,
+     "p50_ms": 8,
+     "p90_ms": 9,
+     "p99_ms": 17,
+     "gpu_p90_ms": 6,
+     "framestats_rows": 8597,
+     "ui_mean_ms": 0.986,
+     "ui_p90_ms": 1.25,
+     "total_mean_ms": 8.71
+    },
+    "tabs": {
+     "frames": 761,
+     "janky": 24,
+     "janky_pct": 3.15,
+     "p50_ms": 8,
+     "p90_ms": 18,
+     "p99_ms": 69,
+     "gpu_p90_ms": 11,
+     "framestats_rows": 761,
+     "ui_mean_ms": 2.528,
+     "ui_p90_ms": 2.415,
+     "total_mean_ms": 12.917
+    },
+    "pushpop": {
+     "frames": 2550,
+     "janky": 121,
+     "janky_pct": 4.75,
+     "p50_ms": 8,
+     "p90_ms": 16,
+     "p99_ms": 38,
+     "gpu_p90_ms": 9,
+     "framestats_rows": 2550,
+     "ui_mean_ms": 1.641,
+     "ui_p90_ms": 2.36,
+     "total_mean_ms": 10.953
+    }
+   }
+  },
+  "verdict": "pass"
+ },
+ "fix3_everything": {
+  "build": "everything preset less auth/onboarding/googlesignin (out/HUD/specs/hud-everything.json): analytics' JankStats shared; the overlay keeps each frame's screen itself and puts no state on the window, so analytics keys every frame idle whether or not it records; devRelease arm64 from 9fdc634c, installed fresh, profile installed, compiled speed-profile",
+  "shown_minus_hidden": {
+   "scroll": {
+    "janky_pp": 0.0,
+    "ui_mean_ms": 0.045,
+    "total_mean_ms": 0.102
+   },
+   "tabs": {
+    "janky_pp": 0.17,
+    "ui_mean_ms": -0.04,
+    "total_mean_ms": 0.636
+   },
+   "pushpop": {
+    "janky_pp": -0.04,
+    "ui_mean_ms": -0.016,
+    "total_mean_ms": 0.026
+   },
+   "all": {
+    "janky_pp": 0.01,
+    "ui_mean_ms": 0.02,
+    "total_mean_ms": 0.135
+   }
+  },
+  "frame_total_mean_valid_ms": {
+   "hidden_scroll": 8.721,
+   "hidden_tabs": 13.302,
+   "hidden_pushpop": 10.834,
+   "hidden_all": 9.651,
+   "shown_scroll": 8.823,
+   "shown_tabs": 13.938,
+   "shown_pushpop": 10.86,
+   "shown_all": 9.786
+  },
+  "janky_scroll_per_launch": {
+   "hidden": [
+    12,
+    12,
+    13,
+    12,
+    13,
+    12
+   ],
+   "shown": [
+    13,
+    11,
+    13,
+    11,
+    13,
+    12
+   ]
+  },
+  "ui_scroll_p99_ms": {
+   "hidden": 2.02,
+   "shown": 4.03
+  },
+  "hidden_all": {
+   "frames": 14881,
+   "janky": 241,
+   "janky_pct": 1.62,
+   "p50_ms": 8,
+   "p90_ms": 10,
+   "p99_ms": 28,
+   "gpu_p90_ms": 7,
+   "framestats_rows": 12489,
+   "ui_mean_ms": 1.273,
+   "ui_p90_ms": 1.748,
+   "total_mean_ms": 9.651
+  },
+  "shown_all": {
+   "frames": 14686,
+   "janky": 240,
+   "janky_pct": 1.63,
+   "p50_ms": 8,
+   "p90_ms": 11,
+   "p99_ms": 26,
+   "gpu_p90_ms": 7,
+   "framestats_rows": 12484,
+   "ui_mean_ms": 1.293,
+   "ui_p90_ms": 1.782,
+   "total_mean_ms": 9.786
+  },
+  "idle_frames_5s": {
+   "hidden": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "shown": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "per_journey": {
+   "hidden": {
+    "scroll": {
+     "frames": 10977,
+     "janky": 74,
+     "janky_pct": 0.67,
+     "p50_ms": 8,
+     "p90_ms": 9,
+     "p99_ms": 18,
+     "gpu_p90_ms": 6,
+     "framestats_rows": 8590,
+     "ui_mean_ms": 0.944,
+     "ui_p90_ms": 1.124,
+     "total_mean_ms": 8.721
+    },
+    "tabs": {
+     "frames": 1367,
+     "janky": 47,
+     "janky_pct": 3.44,
+     "p50_ms": 9,
+     "p90_ms": 18,
+     "p99_ms": 61,
+     "gpu_p90_ms": 10,
+     "framestats_rows": 1362,
+     "ui_mean_ms": 2.587,
+     "ui_p90_ms": 2.603,
+     "total_mean_ms": 13.302
+    },
+    "pushpop": {
+     "frames": 2537,
+     "janky": 120,
+     "janky_pct": 4.73,
+     "p50_ms": 8,
+     "p90_ms": 16,
+     "p99_ms": 40,
+     "gpu_p90_ms": 8,
+     "framestats_rows": 2537,
+     "ui_mean_ms": 1.683,
+     "ui_p90_ms": 2.387,
+     "total_mean_ms": 10.834
+    }
+   },
+   "shown": {
+    "scroll": {
+     "frames": 10819,
+     "janky": 73,
+     "janky_pct": 0.67,
+     "p50_ms": 8,
+     "p90_ms": 9,
+     "p99_ms": 18,
+     "gpu_p90_ms": 6,
+     "framestats_rows": 8617,
+     "ui_mean_ms": 0.989,
+     "ui_p90_ms": 1.246,
+     "total_mean_ms": 8.823
+    },
+    "tabs": {
+     "frames": 1328,
+     "janky": 48,
+     "janky_pct": 3.61,
+     "p50_ms": 10,
+     "p90_ms": 18,
+     "p99_ms": 48,
+     "gpu_p90_ms": 11,
+     "framestats_rows": 1328,
+     "ui_mean_ms": 2.547,
+     "ui_p90_ms": 2.623,
+     "total_mean_ms": 13.938
+    },
+    "pushpop": {
+     "frames": 2539,
+     "janky": 119,
+     "janky_pct": 4.69,
+     "p50_ms": 8,
+     "p90_ms": 16,
+     "p99_ms": 40,
+     "gpu_p90_ms": 9,
+     "framestats_rows": 2539,
+     "ui_mean_ms": 1.667,
+     "ui_p90_ms": 2.524,
+     "total_mean_ms": 10.86
+    }
+   }
+  },
+  "verdict": "pass"
+ },
+ "fix3_listener": {
+  "listener_standard": {
+   "off": {
+    "pid": "5703",
+    "frame_metrics_thread": false,
+    "threads": 39,
+    "thread_names": [
+     "ConscryptStatsL",
+     "DefaultDispatch",
+     "FinalizerDaemon",
+     "FinalizerWatchd",
+     "HeapTaskDaemon",
+     "Jit thread pool",
+     "Okio Watchdog",
+     "Profile Saver",
+     "ProtoLogBackgro",
+     "ReferenceQueueD",
+     "RenderThread",
+     "Signal Catcher",
+     "SurfaceSyncGrou",
+     "TracingMuxer",
+     "binder##",
+     "er.typicode.com",
+     "hwuiTask#",
+     "perfetto_hprof_",
+     "ud.standard.dev",
+     "vy# ConnectionP",
+     "vy# Dispatcher",
+     "vy# TaskRunner"
+    ],
+    "perfhud_lines": 0
+   },
+   "on": {
+    "pid": "5837",
+    "frame_metrics_thread": true,
+    "threads": 45,
+    "thread_names": [
+     "ConscryptStatsL",
+     "DefaultDispatch",
+     "DefaultExecutor",
+     "FinalizerDaemon",
+     "FinalizerWatchd",
+     "FrameMetricsAgg",
+     "HeapTaskDaemon",
+     "Jit thread pool",
+     "Okio Watchdog",
+     "Profile Saver",
+     "ProtoLogBackgro",
+     "ReferenceQueueD",
+     "RenderThread",
+     "Signal Catcher",
+     "SurfaceSyncGrou",
+     "TracingMuxer",
+     "binder##",
+     "er.typicode.com",
+     "hwuiTask#",
+     "perfetto_hprof_",
+     "ud.standard.dev",
+     "vy# ConnectionP",
+     "vy# Dispatcher",
+     "vy# TaskRunner"
+    ],
+    "perfhud_lines": 3
+   },
+   "threads_only_on": [
+    "DefaultExecutor",
+    "FrameMetricsAgg"
+   ],
+   "threads_only_off": []
+  },
+  "listener_everything": {
+   "off": {
+    "pid": "5958",
+    "frame_metrics_thread": true,
+    "threads": 69,
+    "thread_names": [
+     ".everything.dev",
+     "AppUpdateServic",
+     "ConscryptStatsL",
+     "DefaultDispatch",
+     "FileObserver",
+     "FinalizerDaemon",
+     "FinalizerWatchd",
+     "Firebase Backgr",
+     "Firebase Blocki",
+     "Firebase Schedu",
+     "Firebase-Messag",
+     "FrameMetricsAgg",
+     "GmsDynamite",
+     "GoogleApiHandle",
+     "HeapTaskDaemon",
+     "Jit thread pool",
+     "Measurement Wor",
+     "MessengerIpcCli",
+     "OkHttp Connecti",
+     "Okio Watchdog",
+     "ProcessStablePh",
+     "Profile Saver",
+     "ProtoLogBackgro",
+     "ReferenceQueueD",
+     "RenderThread",
+     "ScionFrontendAp",
+     "Signal Catcher",
+     "SurfaceSyncGrou",
+     "TAG",
+     "TracingMuxer",
+     "binder##",
+     "c# ConnectionP",
+     "c# Dispatcher",
+     "c# TaskRunner",
+     "er.typicode.com",
+     "hwuiTask#",
+     "perfetto_hprof_",
+     "pool#-thread-",
+     "queued-work-loo"
+    ],
+    "perfhud_lines": 0
+   },
+   "on": {
+    "pid": "6122",
+    "frame_metrics_thread": true,
+    "threads": 68,
+    "thread_names": [
+     ".everything.dev",
+     "AppUpdateServic",
+     "ConscryptStatsL",
+     "DefaultDispatch",
+     "DefaultExecutor",
+     "FileObserver",
+     "FinalizerDaemon",
+     "FinalizerWatchd",
+     "Firebase Backgr",
+     "Firebase Blocki",
+     "Firebase Schedu",
+     "Firebase-Messag",
+     "FrameMetricsAgg",
+     "GmsDynamite",
+     "GoogleApiHandle",
+     "HeapTaskDaemon",
+     "Jit thread pool",
+     "Measurement Wor",
+     "MessengerIpcCli",
+     "OkHttp Connecti",
+     "Okio Watchdog",
+     "ProcessStablePh",
+     "Profile Saver",
+     "ProtoLogBackgro",
+     "ReferenceQueueD",
+     "RenderThread",
+     "ScionFrontendAp",
+     "Signal Catcher",
+     "SurfaceSyncGrou",
+     "TAG",
+     "TracingMuxer",
+     "binder##",
+     "c# ConnectionP",
+     "c# Dispatcher",
+     "c# TaskRunner",
+     "er.typicode.com",
+     "hwuiTask#",
+     "perfetto_hprof_",
+     "pool#-thread-",
+     "queued-work-loo"
+    ],
+    "perfhud_lines": 3
+   },
+   "threads_only_on": [
+    "DefaultExecutor"
+   ],
+   "threads_only_off": []
+  }
+ },
+ "fix3_adb": {
+  "adb_path": {
+   "record_broadcast": [
+    "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver (has extras) }",
+    "Broadcast completed: result=0"
+   ],
+   "export_broadcast": [
+    "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+    "Broadcast completed: result=0, data=\"/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-151602.json\""
+   ],
+   "pulled": [
+    "D:/projects/tools/.overhaul/perf/HUD/checks-f3\\perf-report-20261019-151602.json",
+    "D:/projects/tools/.overhaul/perf/HUD/checks-f3\\perf-report-20261019-151602.md"
+   ],
+   "perfhud_lines": 5,
+   "record_off_broadcast": [
+    "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver (has extras) }",
+    "Broadcast completed: result=0"
+   ],
+   "without_run_as": [
+    "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+    "Broadcast completed: result=0"
+   ],
+   "without_run_as_delivered": false
+  },
+  "adb_path_release": {
+   "run_as": [
+    "run-as: package not debuggable: com.example.hud.everything.dev"
+   ],
+   "direct": [
+    "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+    "Broadcast completed: result=0"
+   ],
+   "reached": false
+  }
  },
  "fix2_standard": {
   "build": "standard preset less auth/onboarding (out/HUD/specs/hud-standard.json): no analytics, so the overlay's own JankStats; hidden has no frame listener at all; devRelease arm64 from d46a98f2, installed fresh, profile installed, compiled speed-profile",

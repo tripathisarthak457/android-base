@@ -1,0 +1,21 @@
+--------- beginning of main
+10-19 15:04:48.078 30095 30120 I PerfHud : window=5s frames=9 fps=53.0 janky=55.6% frameP50=28.6 frameP90=43.1 frameP99=43.9 uiP50=8.9 uiP90=26.5 uiP99=26.7 slow=9 frozen=0 long=0 heapMb=10.7 nativeMb=12.0 pssMb=18.3 gc=0 screen=SampleListKey
+10-19 15:04:58.091 30095 30115 I PerfHud : window=5s frames=340 fps=117.6 janky=0.9% frameP50=9.1 frameP90=10.4 frameP99=21.2 uiP50=2.2 uiP90=2.9 uiP99=5.2 slow=22 frozen=0 long=0 heapMb=6.8 nativeMb=12.1 pssMb=18.3 gc=1 screen=SampleListKey
+10-19 15:05:03.181 30095 30115 I PerfHud : window=5s frames=433 fps=117.8 janky=0.7% frameP50=9.1 frameP90=9.7 frameP99=16.9 uiP50=2.2 uiP90=2.7 uiP99=3.5 slow=5 frozen=0 long=0 heapMb=9.7 nativeMb=12.8 pssMb=87.3 gc=0 screen=SampleListKey
+10-19 15:05:08.186 30095 30115 I PerfHud : window=5s frames=462 fps=118.5 janky=0.6% frameP50=8.7 frameP90=9.6 frameP99=18.4 uiP50=2.1 uiP90=2.7 uiP99=4.6 slow=10 frozen=0 long=0 heapMb=12.9 nativeMb=13.6 pssMb=87.3 gc=0 screen=SampleListKey
+10-19 15:05:13.191 30095 30115 I PerfHud : window=5s frames=544 fps=117.9 janky=0.6% frameP50=8.7 frameP90=9.6 frameP99=18.7 uiP50=2.1 uiP90=2.8 uiP99=4.3 slow=10 frozen=0 long=0 heapMb=16.9 nativeMb=14.7 pssMb=87.3 gc=0 screen=SampleListKey
+10-19 15:05:17.197 30095 30118 I PerfHud : screen=SampleListKey frames=1839 janky=1.0% frameP50=8.9 frameP90=9.7 frameP99=21.2 worst=43.6 slow=57 frozen=0
+10-19 15:05:18.198 30095 30118 I PerfHud : window=5s frames=135 fps=109.5 janky=3.0% frameP50=8.5 frameP90=11.9 frameP99=71.3 uiP50=2.3 uiP90=3.5 uiP99=61.3 slow=7 frozen=0 long=2 heapMb=19.9 nativeMb=16.2 pssMb=87.3 gc=0 screen=SettingsKey
+10-19 15:05:18.199 30095 30118 I PerfHud : screen=ProfileKey frames=41 janky=4.9% frameP50=10.0 frameP90=14.0 frameP99=26.9 worst=27.0 slow=3 frozen=0
+10-19 15:05:19.200 30095 30118 I PerfHud : screen=SettingsKey frames=43 janky=2.3% frameP50=8.3 frameP90=11.9 frameP99=73.1 worst=72.9 slow=3 frozen=0
+10-19 15:05:23.237 30095 30114 I PerfHud : window=5s frames=83 fps=113.2 janky=3.6% frameP50=9.5 frameP90=18.9 frameP99=40.3 uiP50=2.3 uiP90=4.4 uiP99=26.3 slow=32 frozen=0 long=0 heapMb=22.1 nativeMb=16.8 pssMb=102.8 gc=0 screen=SampleDetailKey
+10-19 15:05:23.238 30095 30114 I PerfHud : screen=SampleListKey frames=1882 janky=1.0% frameP50=8.9 frameP90=9.8 frameP99=21.8 worst=43.6 slow=86 frozen=0
+10-19 15:05:25.240 30095 30114 I PerfHud : screen=SampleDetailKey frames=54 janky=5.6% frameP50=9.1 frameP90=14.1 frameP99=22.1 worst=22.1 slow=4 frozen=0
+10-19 15:05:26.242 30095 30114 I PerfHud : screen=SampleListKey frames=1935 janky=1.1% frameP50=9.0 frameP90=9.9 frameP99=22.0 worst=43.6 slow=93 frozen=0
+10-19 15:05:28.244 30095 30114 I PerfHud : window=5s frames=173 fps=104.8 janky=4.0% frameP50=9.1 frameP90=16.3 frameP99=40.3 uiP50=2.1 uiP90=2.9 uiP99=27.1 slow=20 frozen=0 long=0 heapMb=25.4 nativeMb=17.3 pssMb=102.8 gc=0 screen=SampleListKey
+10-19 15:05:28.245 30095 30114 I PerfHud : screen=SampleDetailKey frames=108 janky=4.6% frameP50=9.1 frameP90=14.0 frameP99=22.0 worst=22.1 slow=8 frozen=0
+10-19 15:05:29.246 30095 30114 I PerfHud : screen=SampleListKey frames=1988 janky=1.2% frameP50=9.0 frameP90=10.0 frameP99=22.2 worst=43.6 slow=102 frozen=0
+10-19 15:05:31.248 30095 30114 I PerfHud : screen=SampleDetailKey frames=162 janky=4.3% frameP50=9.1 frameP90=14.2 frameP99=22.0 worst=22.1 slow=12 frozen=0
+10-19 15:05:33.251 30095 30114 I PerfHud : window=5s frames=157 fps=107.0 janky=3.8% frameP50=9.1 frameP90=15.6 frameP99=38.9 uiP50=2.1 uiP90=4.4 uiP99=21.9 slow=14 frozen=0 long=0 heapMb=28.2 nativeMb=17.8 pssMb=102.8 gc=0 screen=SampleDetailKey
+10-19 15:05:33.252 30095 30114 I PerfHud : screen=SampleListKey frames=2041 janky=1.3% frameP50=9.0 frameP90=10.0 frameP99=22.4 worst=46.9 slow=106 frozen=0
+10-19 15:05:35.255 30095 30114 I PerfHud : screen=SampleDetailKey frames=216 janky=4.2% frameP50=9.1 frameP90=15.5 frameP99=22.2 worst=23.0 slow=18 frozen=0

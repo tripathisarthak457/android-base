@@ -1,0 +1,8 @@
+Merge WIN fixes of Oct 19: an isolated --git commit, long paths, and CI on the overhauled generator
+
+WIN exists so the generator writes the same project on a native Windows host as on Linux; these commits close
+what its reviews and PR #1's first Linux CI runs found: the --git commit no longer sees the caller's git
+configuration and holds files past MAX_PATH, path limits count UTF-16 units, a generated key's password must be
+printable ASCII so JDK 17 can open it, and ci.yml runs the current generator on go.mod's Go.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

@@ -1,0 +1,9 @@
+com.example.hud.everything.core.analytics.jank.FrameJankRecorder -> on1:
+    com.example.hud.everything.core.analytics.AnalyticsTracker analytics -> a
+    java.util.HashMap counts -> b
+    boolean reportingWhenHidden -> c
+    3:5:void <init>(com.example.hud.everything.core.analytics.AnalyticsTracker):28:28 -> <init>
+    6:7:void <init>(com.example.hud.everything.core.analytics.AnalyticsTracker):30:30 -> <init>
+    8:15:void <init>(com.example.hud.everything.core.analytics.AnalyticsTracker):32:32 -> <init>
+frameListener kept on FrameJankRecorder: False
+onFrame source lines kept wherever inlined (69 is the listener call): [':68']

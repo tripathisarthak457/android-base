@@ -5,16 +5,12 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Window
 import androidx.metrics.performance.JankStats
-import androidx.metrics.performance.PerformanceMetricsState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.lang.ref.WeakReference
-import java.util.Collections
-import java.util.WeakHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,10 +18,8 @@ import javax.inject.Singleton
  * The app's frames, while [start]ed, from the window of the activity in front; nothing at all
  * otherwise, so an overlay that is not recording puts no listener on any window.
  *
- * While it runs it also keeps the current route in that window's `PerformanceMetricsState`, which
- * is how JankStats tells each frame which screen it belongs to, and on [stop] it takes the route
- * out of every window it put it on, in front or not, so the state exists only while something
- * records. All calls on the main thread.
+ * It only listens: nothing is put on the window, whose `PerformanceMetricsState` other JankStats
+ * read too (see [ScreenTimeline]). All calls on the main thread.
  */
 @Singleton
 internal class FrameFeed @Inject constructor(
@@ -34,13 +28,9 @@ internal class FrameFeed @Inject constructor(
 
     private var listener: JankStats.OnFrameListener? = null
     private var resumed: WeakReference<Activity>? = null
-    private var route: String? = null
     private var started = 0
     private val _foreground = MutableStateFlow(false)
     private var jankStats: JankStats? = null
-
-    // Weak, so a destroyed activity's window is not kept for a recording that never stops.
-    private val routeWindows: MutableSet<Window> = Collections.newSetFromMap(WeakHashMap())
 
     /** Given the intent of each activity started by a fresh launch, rather than restored. */
     var onLaunch: ((Intent) -> Unit)? = null
@@ -54,20 +44,12 @@ internal class FrameFeed @Inject constructor(
 
     fun start(listener: JankStats.OnFrameListener) {
         this.listener = listener
-        resumed?.get()?.let(::attach)
+        if (resumed?.get() != null) attach()
     }
 
     fun stop() {
         listener = null
         stopFrames()
-        routeWindows.forEach { metricsState(it)?.removeState(FrameIntake.ROUTE_STATE) }
-        routeWindows.clear()
-    }
-
-    /** Labels the frames that follow with [name]. */
-    fun setRoute(name: String) {
-        route = name
-        if (listener != null) resumed?.get()?.let { putRoute(it.window) }
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -76,7 +58,7 @@ internal class FrameFeed @Inject constructor(
 
     override fun onActivityResumed(activity: Activity) {
         resumed = WeakReference(activity)
-        if (listener != null) attach(activity)
+        if (listener != null) attach()
     }
 
     override fun onActivityPaused(activity: Activity) {
@@ -99,29 +81,18 @@ internal class FrameFeed @Inject constructor(
 
     override fun onActivityDestroyed(activity: Activity) = Unit
 
-    private fun attach(activity: Activity) {
+    private fun attach() {
         val listener = listener ?: return
+        val window = resumed?.get()?.window ?: return
         // Two of the app's activities can be resumed at once (split screen, Android 10's
         // multi-resume), and the first one's pause then finds another in front and leaves its
         // JankStats alone: one window is watched at a time, the one resumed last.
         jankStats?.isTrackingEnabled = false
-        jankStats = JankStats.createAndTrack(activity.window, listener)
-        putRoute(activity.window)
+        jankStats = JankStats.createAndTrack(window, listener)
     }
 
     private fun stopFrames() {
         jankStats?.isTrackingEnabled = false
         jankStats = null
     }
-
-    private fun putRoute(window: Window) {
-        val name = route ?: return
-        val state = metricsState(window) ?: return
-        state.putState(FrameIntake.ROUTE_STATE, name)
-        routeWindows += window
-    }
-
-    /** Null until a JankStats on the window has created it. */
-    private fun metricsState(window: Window): PerformanceMetricsState? =
-        PerformanceMetricsState.getHolderForHierarchy(window.decorView).state
 }

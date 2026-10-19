@@ -12,6 +12,8 @@
 # right of the system's back arrow and above the tab bar.
 # A difference is the mean luma change (0-255), printed as ffmpeg gives it, exponent included: 6.08e-06 is 0.00000608.
 #   TEXT1=... TEXT2=... ICON=... CORNERS="tl tr bl br" ./bg-visual.sh > $O/back-google/visual.txt
+# The Oct 19 run: TEXT1=680:62:110:452 TEXT2=880:56:108:768 ICON=60:60:110:235
+#   CORNERS="70:70:66:96 70:70:995:96 70:70:66:2225 70:70:995:2225" (CARD the default).
 set -uo pipefail
 P=D:/projects/tools/.overhaul/perf/WP04-perf; V=D:/projects/tools/.overhaul/out/WP04-perf/back-google/visual
 mkdir -p $V
@@ -39,6 +41,7 @@ after_hold() {
           for (i = g; i < g + 4 && i <= n; i++) printf "%s:%s ", t[i], d[i]; print "" }'
 }
 CARD=${CARD:-570:1350:130:90}
+echo "== crops: TEXT1=${TEXT1:-} TEXT2=${TEXT2:-} ICON=${ICON:-} CORNERS=\"${CORNERS:-}\" CARD=$CARD"
 echo "== held.png crops: SSIM PSNR(dB) against bg-tex, then against bg-head"
 [ -n "${TEXT1:-}" ] || echo "(skipped: no TEXT1, TEXT2, ICON and CORNERS given)"
 [ -n "${TEXT1:-}" ] && for n in $builds; do

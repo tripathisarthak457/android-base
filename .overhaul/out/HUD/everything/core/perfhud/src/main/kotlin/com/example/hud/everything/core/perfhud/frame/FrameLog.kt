@@ -8,8 +8,8 @@ import kotlin.math.min
  * and the live numbers, and all of them counted per screen, for the summaries.
  *
  * Written on JankStats' thread and read from the main thread and the sampler's, under one lock
- * that the writer holds for a few array stores. Nothing here allocates after construction, so
- * recording a frame costs no garbage and no more than a microsecond.
+ * that the writer holds for a few array stores. Recording a frame and the live reads allocate
+ * nothing, so a frame costs no garbage and no more than a microsecond; only [summary] allocates.
  */
 internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
 
@@ -188,7 +188,10 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         uiHistogram.copyInto(into.uiHistogram)
     }
 
-    /** Everything recorded, summed up. Allocates; called a few times a minute at most. */
+    /**
+     * Everything recorded, summed up. Allocates, so it is never called per frame: twice a second
+     * while the Perf tab is open, once per screen the log reports leaving, and once per export.
+     */
     fun summary(): FrameSummary = synchronized(lock) {
         val perScreen = ArrayList<ScreenFrames>(screens.size)
         for (index in 0 until screens.size) {

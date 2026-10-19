@@ -101,7 +101,9 @@ Where Google's design-page text differs from Gmail and Material Components, §1 
 
 **The A11.3 rule 1 exception (the user decided it on Oct 19).**
 - The rule text is in `design/MASTER-PLAN.md`, around line 2025, and `handover/HANDOVER.md`, item 41. It is not in the template's own docs.
-- Proposed wording:
+- Proposed wording. Superseded (Oct 19, 14:30) by the wording in `out/WP04-perf/back-google/RESULT.md`, "For WP04":
+  `SlideRecordingTest`'s recording count alone did not guard the one render, since T's placement passed it too. The
+  updated `c1.patch` adds a layer-level check, and that wording says what each guard covers.
 
   > "Exception: the back card. The screen under the card is drawn from its own hardware layer (`CompositingStrategy.Offscreen`) from the gesture's first frame until the card is gone, and released then (Google's 'hardware layer for the animation's duration'). It is rendered once per gesture while the screen's own content is still. `SlideRecordingTest` guards that the screen is not recorded again between the start and the pop; a trace shows one `drawLayer` per gesture."
 

@@ -33,9 +33,9 @@ import com.example.hud.standard.core.perfhud.R
 import com.example.hud.standard.core.perfhud.recording.PerformanceRecorder
 import com.example.hud.standard.core.perfhud.recording.PerformanceSnapshot
 import com.example.hud.standard.core.perfhud.report.ReportExporter
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 /**
  * The Performance tab of the inspector: the score, the graphs and every number behind them.
@@ -121,7 +121,11 @@ private fun Controls(recorder: PerformanceRecorder, exporter: ReportExporter, re
                             val report = exporter.export(recorder.snapshot())
                             recorder.logExport(report)
                             String.format(exportedFormat, report.json.absolutePath)
-                        } catch (failure: IOException) {
+                        } catch (cancelled: CancellationException) {
+                            throw cancelled
+                        } catch (failure: Exception) {
+                            // A failed export is reported where it was asked for; nothing escapes to
+                            // crash the app being inspected.
                             String.format(failedFormat, failure.message.orEmpty())
                         } finally {
                             exporting = false

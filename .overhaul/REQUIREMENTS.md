@@ -222,3 +222,23 @@ If it runs smooth there, it runs smooth on most phones.
       of the phone itself.
     - **Owners:** WP04 (applies the patch, the A11.3 exception, `gates.toml`, re-runs acceptance), WP04-perf (supplies
       the exact limits from its §3), QA2 and the final matrix (use these gates), WP12 (docs).
+43. **The catalog app shows everything the overhaul built, at the Google bar (the user, Oct 19 15:40: "update the quality of catalog app with all the changes we have done thats in the plan").**
+    - **Now: a preview build** (`scripts/catalog-preview.js`): every package done so far (WP03 with the scroll fix and iOS scrolling,
+      WP04 with the back card T + C1, WP06, HUD) combined on a throwaway local branch, the catalog release APK built,
+      installed on the Redmi and sent to the user. Never pushed, never merged; rough edges are reported, not hidden.
+    - **Then: the content, properly** (package CAT in `scripts/to-release.js`, after WP03, WP04, WP05, WP06 and HUD merge): a page
+      for every piece a developer should see and feel (design system, iOS scrolling, sheets and toasts, carousel and pickers,
+      glass tiers, the navigation shell and the back card, adaptive layouts, the performance overlay in dev builds, and
+      whatever else merged). Real interactive demos, AppTheme only, no Material, light and dark, RTL, font scale, TalkBack.
+      Proven on the phone with a release build (screenshots of every page, a tour recording, perf.sh rows within the
+      release gates). QA2 checks it; WP12 documents it.
+44. **Staging first: every package combined, tested and shown before new work (the user, Oct 19 15:50).** "FIRST TARGET IN NEXT SESSION IS TO FINISH UP WORK AND MERGE ALL CODE TO A SINGLE BRANCH "STAGING" U NEED TO CREATED AND THEN CREATE WP AND OTHER BRANCHES FOR THAT STAGING TO CONTINUE WORK, I WANNA SEE ALL CHANGES COMBINED AND TESTED AND THEN ONLY NEXT WORK CONTINUES".
+    - Their choices, asked with pros and cons: every package with work goes in (PeriFlow never); one combined Google/AOSP-level
+      review of the merged code replaces the per-package reviews still open (their open points move to the new branches);
+      staging is pushed as a backup; old branches stay untouched as history and new work branches `staging-wp/<package>` are
+      cut from staging, which becomes the integration branch.
+    - Done by `scripts/consolidate-staging.js`: clean stop points (WIP commits), the merge plan, the merges with compile
+      checks and notes, the desktop matrix and the combined app on the phone (perf gates, scroll direction, back gesture,
+      overlay, every catalog page), a review by area with a fix loop, the new branches, and `staging/STAGING-REPORT.md`.
+    - No package work continues until the user has seen the report and says go; then the release workflow is re-based on
+      staging.

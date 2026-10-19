@@ -1,0 +1,7 @@
+standard: 314 files; the old generator wrote CRLF into 0 of them on Windows; template sources that are CRLF themselves: ['gradle/wrapper/gradle-wrapper.jar', 'gradlew.bat']
+  zip: 314 entries under Standard/, executable: ['Standard/gradlew']
+everything-brand: 469 files; the old generator wrote CRLF into 0 of them on Windows; template sources that are CRLF themselves: ['gradle/wrapper/gradle-wrapper.jar', 'gradlew.bat']
+  12 files differ from the Linux bytes: ['data/order_history/src/main/kotlin/com/example/win/trail/data/order_history/OrderHistoryRepository.kt', 'data/orders/src/main/kotlin/com/example/win/trail/data/orders/OrdersRepository.kt', 'feature/order_history/src/main/kotlin/com/example/win/trail/feature/order_history/OrderHistoryContract.kt', 'feature/order_history/src/main/kotlin/com/example/win/trail/feature/order_history/OrderHistoryNavKeys.kt', 'feature/order_history/src/main/kotlin/com/example/win/trail/feature/order_history/OrderHistoryScreen.kt', 'feature/order_history/src/main/kotlin/com/example/win/trail/feature/order_history/OrderHistoryViewModel.kt', 'feature/order_history/src/test/kotlin/com/example/win/trail/feature/order_history/OrderHistoryViewModelTest.kt', 'feature/orders/src/main/kotlin/com/example/win/trail/feature/orders/OrdersContract.kt', 'feature/orders/src/main/kotlin/com/example/win/trail/feature/orders/OrdersNavKeys.kt', 'feature/orders/src/main/kotlin/com/example/win/trail/feature/orders/OrdersScreen.kt']
+  zip: 469 entries under TrailNotes/, executable: ['TrailNotes/gradlew']
+COMPARE FAILED (1)
+exit 1

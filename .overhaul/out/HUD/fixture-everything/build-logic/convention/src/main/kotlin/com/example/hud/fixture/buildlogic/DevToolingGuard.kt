@@ -16,8 +16,9 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
 
 /**
- * Fails the build of a release outside the dev flavour, and `check`, when that release would carry
- * dev tooling.
+ * Fails the build of a release-like variant outside the dev flavour, and `check`, when it would
+ * carry dev tooling. Release-like is every build type but debug: release, and the benchmarkRelease
+ * and nonMinifiedRelease the baseline profile plugin adds, which measure what ships.
  *
  * :app wires those modules with `debugImplementation` and `devImplementation` only, and the root
  * draws whatever tooling is bound. One `implementation(...)`, in :app or in any module a shippable
@@ -25,7 +26,8 @@ import org.gradle.kotlin.dsl.register
  * run time to stop it.
  */
 internal fun Project.verifyReleasesCarryNoDevTooling(components: ApplicationAndroidComponentsExtension) {
-    components.onVariants(components.selector().withBuildType("release")) { variant ->
+    components.onVariants { variant ->
+        if (variant.buildType == DEBUG_BUILD_TYPE) return@onVariants
         if (variant.productFlavors.any { it.second == AppFlavor.DEV.flavorName }) return@onVariants
 
         val capitalised = variant.name.replaceFirstChar { it.uppercase() }
@@ -80,6 +82,8 @@ private fun devToolingIn(root: ResolvedComponentResult): List<String> {
     }
     return found.toList()
 }
+
+private const val DEBUG_BUILD_TYPE = "debug"
 
 private val DEV_TOOLING_MODULES = setOf(
     ":core:devtools",

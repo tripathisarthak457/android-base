@@ -18,9 +18,9 @@ import org.robolectric.annotation.Config
 import org.robolectric.shadows.FrameMetricsBuilder
 
 /**
- * What the feed puts on the window decides whether the perf gates measure the app with the
- * overlay or without it, so it is checked on a real window: frames are reported through it as the
- * platform would, and a JankStats of the test's own reads the route the way every listener does.
+ * What the feed does to the window decides whether the perf gates measure the app with the overlay
+ * or without it, so it is checked on a real window: frames are reported through it as the platform
+ * would, and a JankStats of the test's own reads the window's states the way every listener does.
  */
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [ROBOLECTRIC_SDK])
@@ -32,7 +32,7 @@ class FrameFeedTest {
 
     private lateinit var activity: ActivityController<Activity>
     private val received = mutableListOf<Long>()
-    private val routes = mutableListOf<String?>()
+    private val statesPerFrame = mutableListOf<Int>()
     private var vsync = Long.MAX_VALUE / 2
 
     private val listener = JankStats.OnFrameListener { frame -> received += frame.frameStartNanos }
@@ -43,20 +43,15 @@ class FrameFeedTest {
         // A plain activity creates its decor view only when asked, and JankStats needs one.
         activity.get().window.decorView
         activity.start().postCreate(null).resume().visible()
-        JankStats.createAndTrack(activity.get().window) { frame ->
-            routes += frame.states.firstOrNull { it.key == FrameIntake.ROUTE_STATE }?.value
-        }
+        JankStats.createAndTrack(activity.get().window) { frame -> statesPerFrame += frame.states.size }
         settle()
     }
 
     @Test
     fun `nothing reaches the feed's listener before it starts`() {
-        feed.setRoute("Home")
-
         drawFrame()
 
         assertEquals(0, received.size)
-        assertEquals(listOf<String?>(null), routes)
     }
 
     @Test
@@ -108,35 +103,16 @@ class FrameFeedTest {
     }
 
     @Test
-    fun `the route is on the window only while recording, and follows the screen`() {
-        feed.setRoute("Home")
+    fun `a recording puts no state on the window`() {
         feed.start(listener)
         settle()
 
-        drawFrame()
-        feed.setRoute("Detail")
-        drawFrame()
-        feed.stop()
-        settle()
-        drawFrame()
+        repeat(3) { drawFrame() }
 
-        assertEquals(listOf("Home", "Detail", null), routes)
-    }
-
-    @Test
-    fun `a stop while the activity is paused still takes the route off its window`() {
-        feed.setRoute("Home")
-        feed.start(listener)
-        settle()
-        activity.pause()
-        settle()
-
-        feed.stop()
-        activity.resume()
-        settle()
-        drawFrame()
-
-        assertEquals(listOf<String?>(null), routes)
+        assertEquals(3, received.size)
+        // The analytics recorder keys each frame by these states: none keeps its frames under
+        // "idle", with no key to build, whether or not the overlay records.
+        assertEquals(listOf(0, 0, 0), statesPerFrame)
     }
 
     @Test

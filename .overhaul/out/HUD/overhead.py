@@ -113,6 +113,9 @@ class Journey:
                 sink["pushpop"].append(self.segment(mode, "pop", "input keyevent 4", 1.2))
         log = shell(self.serial, "logcat -d -s PerfHud:I")
         sink["perfhud_lines"].append(len([l for l in log.splitlines() if "PerfHud" in l and "window=" in l]))
+        # Kept for its screen lines: which screen each frame was counted for.
+        with open(os.path.join(self.out, f"{mode}_{self.counter:04d}_perfhud.txt"), "w", encoding="utf-8") as f:
+            f.write(log)
 
 
 def summarize(segments):

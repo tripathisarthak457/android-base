@@ -129,6 +129,8 @@ that needs another package's code first. WP13 closes every item (or records why 
   Oct 19, WIN fix#2: it ran once (PR #1 at `c91798a`): two `test_keystores` failures, fixed or explained on
   `wp/WIN` (`e323eed`). It has not run on the new head: push `wp/WIN` so PR #1 re-runs, read the Generator job,
   record it in `handoff/WIN.md` (Open issues), then close the PR unmerged.
+  Oct 19, merge `3a0d38e`: it holds PR #1's head, so close PR #1 unmerged before the integration branch's next
+  backup push if it should not read as merged (the `test_zip` item below).
 - **Whether keystore passwords must be printable ASCII (the keystores' owner; the website's rules).** Oct 19, WIN
   fix#3: decided on `wp/WIN` (`ee311a8`) after the review found the skip hid the defect: a key the generator makes
   needs a printable ASCII password (generator, wizard, website; a key the user brings is unchecked), because JDK 17
@@ -139,6 +141,26 @@ that needs another package's code first. WP13 closes every item (or records why 
   Windows checkout) run only on a developer's machine, and `_delete_tree`'s Python 3.11 `onerror` branch runs only on
   Windows under 3.11 and has never run. The same two steps as the ubuntu job; `WindowsPathLimitTest` skips with its
   reason on an image with long paths on. Details: `handoff/WIN.md`, Open issues.
+- **`test_zip`'s long-path test fails on Linux and macOS (open review finding at the Oct 19 merge `3a0d38e`, for
+  WP13).** `generator/tests/test_zip.py:145-163`, `test_the_commit_holds_a_file_past_windows_path_limit`. `setUp`
+  (lines 29-47) writes `gradlew` and `tools/perf/perf.sh` with `write_text`, so they are 0644 on disk, while
+  `git_init` records them as 100755 with `update-index --chmod=+x` (`genkit/core/package.py:83`). On a POSIX host the
+  repository has `core.fileMode=true`, so `git status --porcelain` prints ` M gradlew` and ` M tools/perf/perf.sh` and
+  the assertion at line 163, `(0, '', '')`, fails: CI run 39214194825 at `4746a0b`. `976a7e2` and `2ce104a` changed
+  only the test's environment (`isolated(home)`), so it still fails at `2ce104a`; the reviewer reproduced it here
+  with `git -c core.fileMode=true status --porcelain` on the same fixture. It passes on Windows (`core.fileMode=false`),
+  so the integrator's suite at `3a0d38e` is green (305 OK, 4 skipped). The product is fine: `pipeline.render_template`
+  marks those scripts executable on disk (`genkit/core/pipeline.py:129-130`, `copy.mark_executable`); the fixture just
+  does not match what the generator hands `git_init`. Fix: in `ZipTest.setUp`, after writing the fixture, call
+  `genkit.core.copy.mark_executable` on every file `is_executable(relative, EXECUTABLE)` matches, as `render_template`
+  does; keep the clean-status assertion exactly as it is (no loosening, no skip). Until then the Generator job of any
+  Linux CI run on the integration branch or a branch built on it is red. Getting that run: PR #1's head (`2ce104a`) is
+  now inside the integration branch, so pushing the integration branch makes GitHub show PR #1 as merged and a later
+  push to `wp/WIN` re-runs nothing; the fix's Linux run needs a new pull request, so the user's yes (global CLAUDE.md
+  section 8). Record the Generator job's result in `handoff/WIN.md`.
+  Oct 19, WIN fix#5: fixed on `wp/WIN` (`a5db7b0`) in `git_init` rather than in the fixture: it now marks the scripts
+  it records as 100755 executable on disk too, so its tree is clean whatever its caller did; the assertion is
+  unchanged and a clean-tree test was added (`handoff/WIN.md`, Decisions, fix#5). Waits on a Linux run.
 
 ## CI (Oct 19, from the Linux run of PR #1)
 - `ci.yml` is stale against the overhaul: Go 1.24 vs go.mod 1.27; the generated-project jobs import `genkit.spec` and `genkit.translations`, which no longer exist. WIN fixes it now; WP13 reviews CI for the release. Oct 19, WIN fix#2: updated on `wp/WIN` (`ae886b5`: Go from go.mod, the catalogue step on `genkit.core.catalogue`, Generate through `create_project.py`). Second run (39210292751, Oct 19 12:18): the Generator and API jobs pass; the generated-project jobs generate and stop at the compile (next item but one). For WP13's rewrite: the interim Generate step runs `create_project.py`; MASTER-PLAN A12.7 generates the matrix through `generate_headless.py` as the API does, and the interim choice carries no rationale to keep (WIN fix#4 review, Oct 19; the comment that gave one is gone).
@@ -153,3 +175,7 @@ that needs another package's code first. WP13 closes every item (or records why 
   the same after `:data:orders`. Not fixed on `wp/WIN`: it would duplicate WP02-M2's rewrite in WP02's path and
   conflict with it. WP02: after the merge, the CI spec (`feature_modules: ["orders"]`) is the regression test;
   confirm it compiles in the next CI run.
+  Oct 19, WIN fix#5 (the orchestrator's direction): fixed on `wp/WIN` (`070a91b`) as a touch-for-compile change to
+  `scaffold.py` (the current packages and MVI calls, `@Serializable` on a network-backed item), the known issue
+  dropped, and `ScaffoldTest.test_a_scaffolded_module_names_only_what_the_project_declares` added. **WP02-M2's merge
+  will conflict in `scaffold.py`: take WP02's version whole and keep that test.**

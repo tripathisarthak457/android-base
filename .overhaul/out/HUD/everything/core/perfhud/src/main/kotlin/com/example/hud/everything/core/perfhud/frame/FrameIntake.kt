@@ -4,10 +4,10 @@ import androidx.metrics.performance.FrameData
 import androidx.metrics.performance.FrameDataApi24
 import androidx.metrics.performance.FrameDataApi31
 import androidx.metrics.performance.JankStats
-import androidx.metrics.performance.StateInfo
 
 /**
- * Turns each frame JankStats reports into a [FrameLog] entry, on JankStats' thread.
+ * Turns each frame JankStats reports into a [FrameLog] entry, on JankStats' thread, counted for the
+ * screen [ScreenTimeline] had in front when it was drawn.
  *
  * A frame is janky when it missed its deadline, which on API 31 and later is what the platform's
  * FrameTimeline counts and so what `perf.sh` and `dumpsys gfxinfo` report; JankStats' own
@@ -16,6 +16,7 @@ import androidx.metrics.performance.StateInfo
 internal class FrameIntake(
     private val log: FrameLog,
     private val refresh: RefreshRate,
+    private val screens: ScreenTimeline,
 ) : JankStats.OnFrameListener {
 
     override fun onFrame(volatileFrameData: FrameData) {
@@ -43,25 +44,8 @@ internal class FrameIntake(
             totalNanos = total,
             intervalNanos = interval,
             missedDeadline = missedDeadline,
-            screen = screenOf(frame.states),
+            // JankStats' own end of a frame for its states: its start plus the main thread's part.
+            screen = screens.screenAt(frame.frameStartNanos + frame.frameDurationUiNanos),
         )
-    }
-
-    /**
-     * The route the frame was drawn for. JankStats keeps only the newest value of a key for each
-     * frame, so a frame that spans a navigation counts for the screen it opens.
-     */
-    private fun screenOf(states: List<StateInfo>): String? {
-        // Indexed: an iterator would be an allocation per frame.
-        for (index in states.indices) {
-            val state = states[index]
-            if (state.key == ROUTE_STATE) return state.value
-        }
-        return null
-    }
-
-    companion object {
-        /** The `PerformanceMetricsState` key the current route's name is put under. */
-        const val ROUTE_STATE = "route"
     }
 }
