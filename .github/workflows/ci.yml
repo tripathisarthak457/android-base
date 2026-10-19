@@ -97,20 +97,22 @@ jobs:
 
       - name: Generate
         # Through the command line, not the generator's modules: it is what users run, and it
-        # changes less.
+        # changes less. The languages come from the catalogue the website reads.
         working-directory: generator
         env:
           EVERY_LANGUAGE: |
-            import json
-            from genkit.core.translations import available
-            print(json.dumps(sorted(available("android"))))
+            import json, sys
+            android = next(target for target in json.load(sys.stdin)["targets"] if target["key"] == "android")
+            print(json.dumps(sorted(language["tag"] for language in android["languages"])))
         run: |
           echo '{"schema": 2, "platform": "android", "app_name": "Ci Check", "package_name": "com.example.cicheck",
             "features": [], "feature_modules": ["orders"]}' > ci-spec.json
           case "${{ matrix.preset }}" in
             none) chosen=() ;;
             # Every language too, so lint checks each translation against the strings it ships.
-            all) chosen=(--all --set "languages=$(python -c "$EVERY_LANGUAGE")") ;;
+            all)
+              languages=$(python -m genkit.core.catalogue --json | python -c "$EVERY_LANGUAGE")
+              chosen=(--all --set "languages=$languages") ;;
             *) chosen=(--preset "${{ matrix.preset }}") ;;
           esac
           python create_project.py --spec ci-spec.json "${chosen[@]}" --out "$GITHUB_WORKSPACE/out" --no-zip
