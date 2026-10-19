@@ -609,7 +609,7 @@ These tasks run as part of `./gradlew build` and fail it:
 | Task | Checks |
 |---|---|
 | `verifyModuleDependencies` | The module tier rules above. |
-| `verifyCodeRules` | The forbidden patterns, each rule in `build-logic/…/guard/`: no Material or ripple, no raw tweens, colours or sizes in screens, keyed lazy rows, no `Dispatchers.IO` in a class, no orientation or screen-size branching, every `@Composable` module on the Compose compiler, no prose literal in a copy parameter, and the rest. A justified exception is `// allow(<rule>): <reason>` on the line above. |
+| `verifyCodeRules` | The forbidden patterns, each rule in `build-logic/…/guard/`: no Material or ripple, no raw tweens, colours or sizes in screens, keyed lazy rows, no `Dispatchers.IO` in a class, no orientation or screen-size branching, every `@Composable` module on the Compose compiler, no prose literal in a copy parameter, and the rest. A justified exception is `// allow(<rule>): <reason>` on the line above. No whole screen is rendered offscreen (`layer-alpha-fill`) except by the back gesture's card, which draws the screen under it from one texture for the gesture's span and releases it after (`BackCardState.textures` in `:core:navigation`). |
 <!-- <opt:devtools> -->
 | `verify<Variant>CarriesNoDevTooling` | A release-like build outside the dev flavour (any build type but debug: stagingRelease, prodRelease, playstoreRelease and, with baseline profiles, their benchmark builds) depends on no dev tooling module, directly or through another module. Also runs before that build. |
 <!-- </opt:devtools> -->
