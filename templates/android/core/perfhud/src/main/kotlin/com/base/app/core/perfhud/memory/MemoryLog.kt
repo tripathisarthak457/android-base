@@ -23,9 +23,6 @@ internal class MemoryLog(val capacity: Int = DEFAULT_CAPACITY) {
     private var firstGc: GcCounters? = null
     private var lastGc: GcCounters? = null
 
-    /** Samples ever added. Changes on every sample, so a reader can tell when to redraw. */
-    val count: Long get() = synchronized(lock) { written }
-
     /** Adds one sample. A sample without PSS leaves the last measured PSS standing. */
     fun add(reading: MemoryReading) = synchronized(lock) {
         val at = (written % capacity).toInt()

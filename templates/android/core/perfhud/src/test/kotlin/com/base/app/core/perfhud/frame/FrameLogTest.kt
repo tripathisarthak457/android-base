@@ -144,7 +144,6 @@ class FrameLogTest {
         val summary = log.summary()
         assertEquals(0, summary.overall.frames)
         assertTrue(summary.screens.isEmpty())
-        assertEquals(0L, log.count)
     }
 
     @Test

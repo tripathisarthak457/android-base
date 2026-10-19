@@ -114,7 +114,15 @@ internal fun StrictModeSection(strictMode: StrictModeSummary) {
             SelectionContainer {
                 Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xxs)) {
                     strictMode.examples.forEach { example ->
-                        AppMonoText(text = example, color = AppTheme.colors.contentSecondary, maxLines = 2)
+                        AppMonoText(
+                            text = stringResource(
+                                R.string.perfhud_strict_mode_example,
+                                example.kind,
+                                example.frame ?: stringResource(R.string.perfhud_strict_mode_unknown_frame),
+                            ),
+                            color = AppTheme.colors.contentSecondary,
+                            maxLines = 2,
+                        )
                     }
                 }
             }

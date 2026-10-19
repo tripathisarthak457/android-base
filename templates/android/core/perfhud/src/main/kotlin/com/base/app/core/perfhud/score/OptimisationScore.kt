@@ -14,27 +14,30 @@ import kotlin.math.roundToInt
  * about no janky frames, and the build facts every fast release shares.
  *
  * A metric that was not measured, such as start-up on a release without start records, is left
- * out of the total rather than counted as lost.
+ * out of the total rather than counted as lost. The frames are what the score is about, so there
+ * is no score until they are graded: the build checks alone would rate an app nobody has used.
  */
 internal data class OptimisationScore(
-    val total: Int,
-    val grade: Grade,
+    /** Null until [Metric.MIN_FRAMES] frames have been recorded. */
+    val total: Int?,
+    /** Null with [total]. */
+    val grade: Grade?,
     val metrics: List<MetricScore>,
 ) {
     /** The measured metrics that lost points, most points first. */
     val losses: List<MetricScore>
         get() = metrics.filter { it.lost > 0f }.sortedByDescending { it.lost }
 
-    /** Whether anything was measured at all; a score of nothing is no score. */
-    val measured: Boolean get() = metrics.any { it.grade != null }
-
     companion object {
         fun of(inputs: ScoreInputs): OptimisationScore {
             val metrics = Metric.entries.map { it.score(inputs) }
+            if (metrics.single { it.metric == Metric.JankyFrames }.grade == null) {
+                return OptimisationScore(total = null, grade = null, metrics = metrics)
+            }
             val graded = metrics.filter { it.grade != null }
             val possible = graded.sumOf { it.metric.weight }
             val earned = graded.sumOf { it.points.toDouble() }
-            val total = if (possible == 0) 0 else (earned * MAX_SCORE / possible).roundToInt()
+            val total = (earned * MAX_SCORE / possible).roundToInt()
             return OptimisationScore(total = total, grade = Grade.forScore(total), metrics = metrics)
         }
 
@@ -102,8 +105,13 @@ internal class Limits(val a: Float, val b: Float, val c: Float, val d: Float) {
  * Each metric, its weight in the score and how it is graded. The limits come from
  * `tools/perf/gates.toml` where it has one (janky frames 0.5 % on a scroll, cold start 380 ms, the
  * app's own PSS 48 MB), from Android vitals for slow and frozen frames, and otherwise from the
- * nearest gate: a warm start in half the cold-start limit, the 90th percentile frame well inside
- * its budget and the 99th within it.
+ * nearest gate: a warm start in half the cold-start limit.
+ *
+ * The percentiles are of each frame's main-thread time against one refresh interval, the time
+ * the main thread has before the next frame starts; `gates.toml` measures frame times on the UI
+ * thread too. A frame's full duration, vsync to GPU done, is no measure of this: the render
+ * pipeline gives a frame more than one interval, so on-time frames routinely run past one.
+ * Whether a frame made its deadline is [JankyFrames].
  *
  * A check is 1 when it passes and 0 when it fails; a baseline profile waiting for compilation is
  * 0.5, a C.
@@ -112,11 +120,11 @@ internal enum class Metric(val weight: Int, val unit: MetricUnit, val limits: Li
     JankyFrames(25, MetricUnit.Percent, Limits(0.5f, 1f, 2f, 4f)) {
         override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.overall.jankyPercent }
     },
-    FrameTimeP90(10, MetricUnit.BudgetShare, Limits(0.6f, 0.8f, 1f, 1.5f)) {
-        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.overall.p90Millis / it.budgetMillis }
+    UiThreadP90(10, MetricUnit.BudgetShare, Limits(0.6f, 0.8f, 1f, 1.5f)) {
+        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.uiP90Millis / it.budgetMillis }
     },
-    FrameTimeP99(10, MetricUnit.BudgetShare, Limits(1f, 1.5f, 2f, 3f)) {
-        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.overall.p99Millis / it.budgetMillis }
+    UiThreadP99(10, MetricUnit.BudgetShare, Limits(1f, 1.5f, 2f, 3f)) {
+        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.uiP99Millis / it.budgetMillis }
     },
     SlowFrames(5, MetricUnit.Percent, Limits(0.5f, 1f, 5f, 25f)) {
         override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.overall.slowPercent }

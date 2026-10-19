@@ -17,6 +17,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
 
     private val starts = LongArray(capacity)
     private val totalMillis = FloatArray(capacity)
+    private val uiMillis = FloatArray(capacity)
     private val intervalMillis = FloatArray(capacity)
     private val janky = BooleanArray(capacity)
     private val screenOfFrame = ByteArray(capacity)
@@ -33,9 +34,6 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     private val longWorkCount = IntArray(SLOTS)
     private val worstMillis = FloatArray(SLOTS)
     private var busyNanos = 0L
-
-    /** Frames ever added, including those the ring no longer holds. Changes on every frame. */
-    val count: Long get() = synchronized(lock) { written }
 
     /**
      * Records one frame. [totalNanos] is the frame from its intended vsync to the end of its GPU
@@ -59,6 +57,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
             val at = slot(written)
             starts[at] = startNanos
             totalMillis[at] = total
+            uiMillis[at] = ui
             intervalMillis[at] = intervalNanos / NANOS_PER_MILLI
             janky[at] = missedDeadline
             screenOfFrame[at] = index.toByte()
@@ -127,6 +126,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         for (i in 0 until n) {
             val at = slot(written - n + i)
             into.totalMillis[i] = totalMillis[at]
+            into.uiMillis[i] = uiMillis[at]
             into.intervalMillis[i] = intervalMillis[at]
             into.janky[i] = janky[at]
         }
@@ -238,7 +238,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     private fun slot(frame: Long): Int = (frame % capacity).toInt()
 
     companion object {
-        /** About 68 seconds of uninterrupted drawing at 120 Hz, in about 150 KB. */
+        /** About 68 seconds of uninterrupted drawing at 120 Hz, in about 180 KB. */
         const val DEFAULT_CAPACITY = 8192
 
         /** Android vitals' thresholds. */

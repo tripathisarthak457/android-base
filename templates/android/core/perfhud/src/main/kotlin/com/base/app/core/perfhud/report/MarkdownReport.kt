@@ -4,9 +4,11 @@ import android.content.res.Resources
 import androidx.annotation.StringRes
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.checks.ProfileStatus
+import com.base.app.core.perfhud.checks.strictModeExample
 import com.base.app.core.perfhud.frame.FrameStats
 import com.base.app.core.perfhud.frame.ScreenFrames
 import com.base.app.core.perfhud.recording.PerformanceSnapshot
+import com.base.app.core.perfhud.score.Metric
 import com.base.app.core.perfhud.score.decimal
 import com.base.app.core.perfhud.score.doc
 import com.base.app.core.perfhud.score.fix
@@ -58,11 +60,13 @@ internal class MarkdownReport(private val resources: Resources) {
     private fun StringBuilder.score(snapshot: PerformanceSnapshot) {
         val score = snapshot.score
         heading(2, string(R.string.perfhud_score))
-        if (!score.measured) {
-            paragraph(string(R.string.perfhud_score_none))
+        val total = score.total
+        val grade = score.grade
+        if (total == null || grade == null) {
+            paragraph(string(R.string.perfhud_score_none, Metric.MIN_FRAMES))
             return
         }
-        paragraph("**" + string(R.string.perfhud_score_value, score.total, score.grade.name) + "**")
+        paragraph("**" + string(R.string.perfhud_score_value, total, grade.name) + "**")
         row(
             string(R.string.perfhud_column_metric),
             string(R.string.perfhud_column_value),
@@ -177,13 +181,14 @@ internal class MarkdownReport(private val resources: Resources) {
         table(
             string(R.string.perfhud_requests) to "${network.requests} (${network.failures})",
             string(R.string.perfhud_request_times) to
-                listOf(network.medianMillis, network.p90Millis, network.slowestMillis).joinToString(" / ") { "$it ms" },
+                listOf(network.medianMillis, network.p90Millis, network.slowestMillis)
+                    .joinToString(" / ") { wholeMillis(it) },
             *network.endpoints.map { endpoint ->
                 "`" + endpoint.endpoint + "`" to string(
                     R.string.perfhud_endpoint_value,
                     endpoint.requests,
-                    "${endpoint.medianMillis} ms",
-                    "${endpoint.slowestMillis} ms",
+                    wholeMillis(endpoint.medianMillis),
+                    wholeMillis(endpoint.slowestMillis),
                 )
             }.toTypedArray(),
         )
@@ -200,7 +205,7 @@ internal class MarkdownReport(private val resources: Resources) {
             string(R.string.perfhud_violations) to strictMode.violations.toString(),
             *strictMode.byKind.map { (kind, count) -> kind to count.toString() }.toTypedArray(),
         )
-        strictMode.examples.forEach { append("- `").append(it).append("`\n") }
+        strictMode.examples.forEach { append("- `").append(resources.strictModeExample(it)).append("`\n") }
         if (strictMode.examples.isNotEmpty()) append('\n')
     }
 
@@ -265,6 +270,8 @@ internal class MarkdownReport(private val resources: Resources) {
     private fun yesNo(value: Boolean): String = string(if (value) R.string.perfhud_yes else R.string.perfhud_no)
 
     private fun millis(value: Float): String = string(R.string.perfhud_value_millis, decimal(value, 1))
+
+    private fun wholeMillis(value: Long): String = string(R.string.perfhud_value_millis, value.toString())
 
     private fun percent(value: Float): String = string(R.string.perfhud_value_percent, decimal(value, 2))
 

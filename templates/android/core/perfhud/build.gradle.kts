@@ -22,6 +22,7 @@ dependencies {
     implementation(project(":core:analytics"))
     // </opt:analytics>
 
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.metrics.performance)
     implementation(libs.kotlinx.serialization.json)
     // <opt:baselineprofile>

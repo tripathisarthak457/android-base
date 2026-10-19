@@ -23,8 +23,12 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * The last frames as bars, against the frame budget at 60, 90 and 120 Hz: green inside the
- * display's budget, amber over it, red for a frame that missed its deadline.
+ * The last frames as bars against the frame budget at 60, 90 and 120 Hz. Each bar is the frame's
+ * full duration, vsync to GPU done, in a faded tone, with its main-thread time solid at the foot:
+ * red for a frame that missed its deadline, amber for one that made it although its main thread
+ * took longer than the display's budget, green otherwise. The full duration is not judged against
+ * one budget, since the render pipeline gives a frame more time than that and on-time frames
+ * routinely run past it.
  *
  * Drawn from [frames] in the draw phase each time [version] changes, into a series allocated once.
  */
@@ -38,6 +42,9 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
     val good = colors.success.content
     val over = colors.warning.content
     val missed = colors.danger.content
+    val goodFaded = good.copy(alpha = FADED_ALPHA)
+    val overFaded = over.copy(alpha = FADED_ALPHA)
+    val missedFaded = missed.copy(alpha = FADED_ALPHA)
     val guide = colors.contentTertiary
     val axis = colors.divider
 
@@ -62,16 +69,31 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
                     val start = size.width - series.count * barWidth
                     for (i in 0 until series.count) {
                         val total = series.totalMillis[i]
-                        val height = min(total / SCALE_MILLIS, 1f) * size.height
-                        val color = when {
-                            series.janky[i] -> missed
-                            total > series.intervalMillis[i] -> over
+                        val ui = min(series.uiMillis[i], total)
+                        val missedDeadline = series.janky[i]
+                        val uiOver = ui > series.intervalMillis[i]
+                        val solid = when {
+                            missedDeadline -> missed
+                            uiOver -> over
                             else -> good
                         }
+                        val faded = when {
+                            missedDeadline -> missedFaded
+                            uiOver -> overFaded
+                            else -> goodFaded
+                        }
+                        val left = start + i * barWidth
+                        val totalHeight = min(total / SCALE_MILLIS, 1f) * size.height
+                        val uiHeight = min(ui / SCALE_MILLIS, 1f) * size.height
                         drawRect(
-                            color = color,
-                            topLeft = Offset(start + i * barWidth, size.height - height),
-                            size = Size(barWidth - gap, height),
+                            color = faded,
+                            topLeft = Offset(left, size.height - totalHeight),
+                            size = Size(barWidth - gap, totalHeight - uiHeight),
+                        )
+                        drawRect(
+                            color = solid,
+                            topLeft = Offset(left, size.height - uiHeight),
+                            size = Size(barWidth - gap, uiHeight),
                         )
                     }
                     var labelBottom = Float.NEGATIVE_INFINITY
@@ -100,5 +122,6 @@ private const val SCALE_MILLIS = 33.3f
 private val BUDGET_HZ = intArrayOf(60, 90, 120)
 private const val MILLIS_PER_SECOND = 1000f
 private const val DASH_PX = 8f
+private const val FADED_ALPHA = 0.4f
 private const val MIN_GAPPED_BAR_PX = 3f
 private val LABEL_GAP = 4.dp

@@ -3,7 +3,6 @@ package com.base.app.core.perfhud.overlay
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.base.app.core.designsystem.foundation.appClickable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
@@ -48,7 +48,7 @@ internal fun PerformancePill(
     onOpen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val recording by recorder.recording.collectAsState()
+    val recording by recorder.recording.collectAsStateWithLifecycle()
     if (!recording) return
     LivePill(frames = recorder.frames, judged = !debugBuild, onOpen = onOpen, modifier = modifier)
 }
