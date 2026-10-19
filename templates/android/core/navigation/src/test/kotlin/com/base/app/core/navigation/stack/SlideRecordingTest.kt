@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.layout.LayoutInfo
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigationevent.DirectNavigationEventInput
 import androidx.navigationevent.NavigationEvent
@@ -16,7 +18,9 @@ import com.base.app.core.navigation.FeedTab
 import com.base.app.core.navigation.NavCommand
 import com.base.app.core.navigation.Post
 import com.base.app.core.navigation.ROBOLECTRIC_SDK
+import com.base.app.core.navigation.screenNode
 import com.base.app.core.navigation.testRegistry
+import com.base.app.core.navigation.texturesAround
 import com.base.app.core.navigation.transition.ScreenMotion
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -50,7 +54,8 @@ class SlideRecordingTest {
     private val window = RenderNode("window")
 
     private val registry = testRegistry { key ->
-        Box(Modifier.fillMaxSize().drawBehind { recordings.merge(key.toString(), 1, Int::plus) })
+        val name = key.toString()
+        Box(Modifier.fillMaxSize().testTag(name).drawBehind { recordings.merge(name, 1, Int::plus) })
     }
 
     private fun show() {
@@ -119,6 +124,92 @@ class SlideRecordingTest {
 
         assertRecordedAtMost(1, FeedTab.toString())
         assertRecordedAtMost(1, Post(1).toString())
+    }
+
+    @Test
+    fun `the screen under the card is recorded neither while it follows the finger nor while it fades`() {
+        show()
+        rule.runOnUiThread { input.backStarted(event(0f)) }
+        frame()
+        rule.runOnUiThread { recordings.clear() }
+
+        for (step in 1..20) {
+            rule.runOnUiThread { input.backProgressed(event(step / 40f)) }
+            frame()
+        }
+        rule.runOnUiThread { input.backCompleted() }
+        var frames = 0
+        while (stack.keys.size > 1 && frames < MAX_FRAMES) {
+            frame()
+            frames++
+        }
+
+        assertEquals(listOf(FeedTab), stack.keys)
+        assertRecordedAtMost(0, Post(1).toString())
+    }
+
+    /**
+     * The other half of rendering the screen once per gesture: what is not recorded again must also
+     * be what the texture holds. Only the screen's innermost layer may be the texture, and only
+     * while the card is up; one layer further out it would also hold what the scene draws over the
+     * card, and be rendered again whenever that changes.
+     */
+    @Test
+    fun `the screen under the card is a texture in its innermost layer from the gesture's start until the pop`() {
+        show()
+        val top = rule.screenNode(Post(1))
+        val beneath = rule.screenNode(FeedTab)
+        assertTextures("before the gesture", top, none = true)
+
+        rule.runOnUiThread { input.backStarted(event(0f)) }
+        assertTextures("on the gesture's first frame", top)
+        frame()
+        for (step in 1..20) {
+            rule.runOnUiThread { input.backProgressed(event(step / 40f)) }
+            frame()
+            assertTextures("while the card follows the finger", top)
+            assertTextures("beneath the card", beneath, none = true)
+        }
+        rule.runOnUiThread { input.backCompleted() }
+        var frames = 0
+        while (stack.keys.size > 1 && frames < MAX_FRAMES) {
+            assertTextures("through the commit's fade", top)
+            frame()
+            frames++
+        }
+
+        assertEquals(listOf(FeedTab), stack.keys)
+        assertTextures("after the pop", beneath, none = true)
+    }
+
+    @Test
+    fun `a cancel back at full size gives the screen its plain layer back at once`() {
+        show()
+        val top = rule.screenNode(Post(1))
+        rule.runOnUiThread { input.backStarted(event(0f)) }
+        frame()
+        for (progress in listOf(0.1f, 0.2f, 0.3f, 0.2f, 0.1f, 0f)) {
+            rule.runOnUiThread { input.backProgressed(event(progress)) }
+            frame()
+        }
+        assertTextures("back at full size, the finger still down", top)
+
+        rule.runOnUiThread { input.backCancelled() }
+        var frames = 0
+        while (rule.texturesAround(top).isNotEmpty() && frames < MAX_FRAMES) {
+            frame()
+            frames++
+        }
+
+        assertEquals(listOf(FeedTab, Post(1)), stack.keys)
+        assertTextures("after the cancel", top, none = true)
+        assertTrue("the texture was held $frames frames after the cancel", frames <= 1)
+    }
+
+    private fun assertTextures(moment: String, screen: LayoutInfo, none: Boolean = false) {
+        val expected = if (none) emptyList() else listOf(0)
+        val textures = rule.texturesAround(screen)
+        assertEquals("$moment: the layers around the screen that are textures, 0 the innermost", expected, textures)
     }
 
     private fun assertRecordedAtMost(times: Int, screen: String) {

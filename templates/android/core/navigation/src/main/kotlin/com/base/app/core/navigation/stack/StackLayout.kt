@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
@@ -161,6 +162,12 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
  * and the back card change what [StackScene.drawOver] clips and dims on every frame, and without
  * that layer each of those frames would record the whole screen again, not the few operations
  * around it.
+ *
+ * Under the back card that layer is also a texture ([com.base.app.core.navigation.back.BackCardState.textures]):
+ * the screen is rendered into it once as the gesture starts, and every later frame of the gesture
+ * and of the commit's fade moves, scales and fades that one texture instead of replaying the whole
+ * screen's drawing. It sits below what the scene draws over the card, so whatever that draws can
+ * change on any frame without rendering the screen again.
  */
 private fun Modifier.sceneDraw(
     scene: StackScene,
@@ -175,7 +182,9 @@ private fun Modifier.sceneDraw(
             with(scene) { drawOver(key, isLight) }
             if (divided) drawPaneDivider(divider)
         }
-        .graphicsLayer()
+        .graphicsLayer {
+            compositingStrategy = if (scene.card.textures(key)) CompositingStrategy.Offscreen else CompositingStrategy.Auto
+        }
 
 private fun DrawScope.drawPaneDivider(color: Color) {
     val width = 1f.coerceAtLeast(density)

@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -15,16 +17,19 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.unit.dp
 import androidx.navigationevent.DirectNavigationEventInput
 import androidx.navigationevent.NavigationEvent
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.FeedTab
+import com.base.app.core.navigation.NavRegistry
 import com.base.app.core.navigation.Post
 import com.base.app.core.navigation.ROBOLECTRIC_SDK
 import com.base.app.core.navigation.stack.StackHost
 import com.base.app.core.navigation.testRegistry
 import com.base.app.core.navigation.transition.ScreenMotion
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -55,6 +60,36 @@ class BackCardDrawingTest {
         Box(Modifier.fillMaxSize().background(fill).testTag(key.toString()))
     }
 
+    /**
+     * One colour channel each: the page beneath green, the card red, and a square drawn over the
+     * card's own fill blue. How the square fades tells a fade of the screen as one from a fade of
+     * each of its draws, through which the red under the square would show.
+     */
+    private val overlapping = testRegistry { key ->
+        if (key == FeedTab) {
+            Box(Modifier.fillMaxSize().background(Color.Green).testTag(key.toString()))
+        } else {
+            Box(Modifier.fillMaxSize().background(Color.Red).testTag(key.toString())) {
+                Box(Modifier.align(Alignment.Center).size(48.dp).background(Color.Blue))
+            }
+        }
+    }
+
+    private fun showCard(registry: NavRegistry) {
+        rule.setContent {
+            AppTheme {
+                StackHost(stack = AppBackStack(mutableStateListOf(FeedTab, Post(1))), registry = registry, motion = ScreenMotion())
+            }
+        }
+        rule.runOnIdle { rule.activity.navigationEventDispatcher.addInput(input) }
+        rule.waitForIdle()
+        rule.runOnIdle {
+            input.backStarted(event(0f))
+            input.backProgressed(event(0.6f))
+        }
+        rule.waitForIdle()
+    }
+
     @Test
     fun `the page beneath shows everywhere around the card and nowhere through it`() {
         rule.setContent {
@@ -82,6 +117,24 @@ class BackCardDrawingTest {
         assertColor("beneath, in the card's top end corner", dimmed, image, (card.right - 3).roundToInt(), (card.top + 2).roundToInt())
         assertColor("the card, at its centre", Card, image, card.center.x.roundToInt(), card.center.y.roundToInt())
         assertColor("the card, at its start edge", Card, image, (card.left + 3).roundToInt(), card.center.y.roundToInt())
+    }
+
+    @Test
+    fun `the commit fades the screen as one, so nothing drawn under its own content shows through`() {
+        showCard(overlapping)
+        rule.mainClock.autoAdvance = false
+        rule.runOnIdle { input.backCompleted() }
+        rule.mainClock.advanceTimeBy(FADE_SAMPLE_MILLIS)
+
+        val card = rule.onNodeWithTag(Post(1).toString(), useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        val image = rule.onRoot().captureToImage().asAndroidBitmap()
+        val faded = Color(image.getPixel((card.left + card.width / 8).roundToInt(), card.center.y.roundToInt()))
+        val over = Color(image.getPixel(card.center.x.roundToInt(), card.center.y.roundToInt()))
+
+        assertTrue("mid-fade, the card's red at ${faded.red}", faded.red > 0.1f && faded.red < 0.9f)
+        assertEquals("the square as faded as the card", faded.red, over.blue, TOLERANCE)
+        assertTrue("the card's red shows through the square: ${over.red}", over.red < TOLERANCE)
+        rule.mainClock.autoAdvance = true
     }
 
     private fun event(progress: Float) = NavigationEvent(
@@ -123,5 +176,6 @@ class BackCardDrawingTest {
         val Beneath = Color(0xFFD03030)
         val Card = Color(0xFF3050D0)
         const val TOLERANCE = 0.05f
+        const val FADE_SAMPLE_MILLIS = 56L
     }
 }

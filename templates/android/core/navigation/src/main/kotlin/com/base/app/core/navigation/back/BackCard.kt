@@ -1,5 +1,6 @@
 package com.base.app.core.navigation.back
 
+import android.view.animation.AnimationUtils
 import androidx.collection.MutableIntObjectMap
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
@@ -8,6 +9,7 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.MonotonicFrameClock
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -21,9 +23,12 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.navigationevent.NavigationEvent
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -55,6 +60,9 @@ internal object BackCard {
     const val MIN_COMMIT_VELOCITY = 1f
     const val MAX_COMMIT_VELOCITY = 4f
 
+    /** A pose this close to 0 leaves less than a pixel of the page beneath in view, on any screen. */
+    const val FULL_SIZE_POSE = 0.001f
+
     val ProgressEasing = CubicBezierEasing(0.1f, 0.1f, 0f, 1f)
 }
 
@@ -67,11 +75,19 @@ internal class BackCardState {
 
     enum class Phase { Idle, Tracking, Settling }
 
-    var phase by mutableStateOf(Phase.Idle)
+    /**
+     * Read only by the Back handler as its events arrive, never in composition, layout or drawing,
+     * so it is a plain field: a change of phase invalidates nothing.
+     */
+    var phase = Phase.Idle
         private set
 
-    /** True from the first progress event until the card is gone, commit and cancel included. */
-    val active: Boolean get() = phase != Phase.Idle
+    /**
+     * True from the first progress event until the card is gone, commit and cancel included. Its own
+     * state, written only as the card comes and goes, so the commit and the cancel compose nothing.
+     */
+    var active by mutableStateOf(false)
+        private set
 
     /** The content key of the entry that shrinks. */
     var subject: Any? by mutableStateOf(null)
@@ -117,6 +133,7 @@ internal class BackCardState {
         startY = event.touchY
         tracker.resetTracking()
         phase = Phase.Tracking
+        active = true
         reveal = if (midPush) 0f else 1f
         track(event)
         scrimJob = scope.launch {
@@ -128,34 +145,58 @@ internal class BackCardState {
     fun track(event: NavigationEvent) {
         progress = BackCard.ProgressEasing.transform(event.progress)
         deltaY = event.touchY - startY
-        tracker.addDataPoint(event.frameTimeMillis, event.progress)
+        // Before API 36 the platform passes no frame time. The animation clock then reads the frame
+        // the platform's progress spring is ticking in, so the release velocity is still measured.
+        val frameMillis = event.frameTimeMillis.takeIf { it > 0L } ?: AnimationUtils.currentAnimationTimeMillis()
+        tracker.addDataPoint(frameMillis, event.progress)
     }
+
+    /** Progress per second at the release, within what the commit's spring may be seeded with. */
+    fun releaseVelocity(): Float =
+        tracker.calculateVelocity().coerceIn(BackCard.MIN_COMMIT_VELOCITY, BackCard.MAX_COMMIT_VELOCITY)
 
     /**
      * Brings the card back to full size, seeded with the release velocity, and fades it out. Returns
      * once the card is invisible; the scrim keeps fading over the screen beneath, which the caller
      * pops to.
+     *
+     * Timed from [releasedNanos], when the finger lifted ([System.nanoTime]): the first frame drawn
+     * after the release is already that far into the commit, rather than the release pose again.
      */
-    suspend fun commit(spring: SpringSpec<Float>, scope: CoroutineScope) = coroutineScope {
+    suspend fun commit(spring: SpringSpec<Float>, releasedNanos: Long, scope: CoroutineScope) = coroutineScope {
         phase = Phase.Settling
-        val velocity = tracker.calculateVelocity()
-            .coerceIn(BackCard.MIN_COMMIT_VELOCITY, BackCard.MAX_COMMIT_VELOCITY)
-        val unwinding = launch { unwind.animateTo(1f, spring, initialVelocity = velocity) }
+        val velocity = releaseVelocity()
+        val frames = coroutineContext[MonotonicFrameClock]
+        val fromRelease = { frames?.let { FromRelease(releasedNanos, it) } ?: EmptyCoroutineContext }
+        // Undispatched, so all three are running before the next frame starts.
+        val unwinding = launch(fromRelease(), CoroutineStart.UNDISPATCHED) {
+            unwind.animateTo(1f, spring, initialVelocity = velocity)
+        }
         scrimJob?.cancel()
-        scrimJob = scope.launch {
+        scrimJob = scope.launch(fromRelease(), CoroutineStart.UNDISPATCHED) {
             scrim.animateTo(0f, tween(BackCard.SCRIM_OUT_MILLIS, easing = LinearEasing))
         }
-        contentAlpha.animateTo(0f, tween(BackCard.COMMIT_FADE_MILLIS, easing = LinearEasing))
+        withContext(fromRelease()) {
+            contentAlpha.animateTo(0f, tween(BackCard.COMMIT_FADE_MILLIS, easing = LinearEasing))
+        }
         unwinding.cancel()
     }
 
     /**
      * The system has already sprung the progress back to 0; the scrim follows, and the page beneath
-     * returns to where a push still running puts it, then parks.
+     * returns to where a push still running puts it, then parks. [fullWidth]: the card is as wide as
+     * its host.
      */
-    suspend fun cancel(midPush: Boolean) = coroutineScope {
+    suspend fun cancel(midPush: Boolean, fullWidth: Boolean) = coroutineScope {
         phase = Phase.Settling
         scrimJob?.cancel()
+        // Back at full size over a settled stack, the card hides everything its scrim dims: fading
+        // the scrim out would draw frames that show nothing new, and hold the card's texture and the
+        // high frame rate through them.
+        if (!midPush && fullWidth && pose < BackCard.FULL_SIZE_POSE) {
+            reset()
+            return@coroutineScope
+        }
         if (midPush) launch { animate(reveal, 0f, animationSpec = tween(BackCard.CANCEL_MILLIS, easing = LinearEasing)) { value, _ -> reveal = value } }
         scrim.animateTo(0f, tween(BackCard.CANCEL_MILLIS, easing = LinearEasing))
         reset()
@@ -168,6 +209,7 @@ internal class BackCardState {
 
     private suspend fun reset() {
         phase = Phase.Idle
+        active = false
         subject = null
         beneath = emptySet()
         progress = 0f
@@ -177,6 +219,13 @@ internal class BackCardState {
         contentAlpha.snapTo(1f)
         scrim.snapTo(0f)
     }
+
+    /**
+     * Whether [key]'s screen is drawn from a texture of its own: the card's subject, from the
+     * gesture's first frame until the card is gone. It is rendered once, on that first frame, and
+     * the card's pose above it moves, scales and fades it.
+     */
+    fun textures(key: Any): Boolean = active && key == subject
 
     /** How far the card is shrunk, 0 to 1: the eased progress, unwound on commit. */
     private val pose: Float get() = progress * (1f - unwind.value)
@@ -206,12 +255,13 @@ internal class BackCardState {
         scaleY = scale
         translationX += shiftX(size.width)
         translationY = shiftY(size.height)
-        // The screen under the card is drawn once into a texture when the gesture starts; every later
-        // frame of the gesture and of the commit fade moves, scales and fades that one texture instead
-        // of replaying the whole screen's drawing on the RenderThread and the GPU.
-        compositingStrategy = CompositingStrategy.Offscreen
         val alpha = contentAlpha.value
-        if (alpha < 1f) this.alpha = alpha
+        if (alpha < 1f) {
+            this.alpha = alpha
+            // What this layer draws is the screen's texture ([textures]), one draw that overlaps
+            // nothing, so fading each of its draws fades the screen as one, with no offscreen pass.
+            compositingStrategy = CompositingStrategy.ModulateAlpha
+        }
         val corner = corner().roundToInt()
         if (corner > 0) {
             shape = CardShapes.of(corner)
@@ -228,13 +278,49 @@ internal suspend fun BackCardState.commitPop(
     gate: BackGate,
     spring: SpringSpec<Float>,
     pop: (Int) -> Int,
+    releasedNanos: Long,
     scope: CoroutineScope,
 ) {
     gate.hold {
-        commit(spring, scope)
+        commit(spring, releasedNanos, scope)
         if (pop(1) > 0) gate.changed(StackChange.GesturePop)
     }
     finish()
+}
+
+/**
+ * The composition's frame clock, seen from [releasedNanos], a moment already past: the first frame
+ * an animation asks for is that moment itself, and every later one is the composition's. Started
+ * on it, an animation is as far along on its first drawn frame as the time since then.
+ *
+ * Choreographer's frame times and [System.nanoTime] are one clock. A first frame from before the
+ * moment, or further from it than [MAX_LEAD_NANOS], is not on that clock (a test's virtual one) or
+ * not a frame that follows it: the animation then starts at that frame, as it would without this
+ * clock.
+ */
+private class FromRelease(private val releasedNanos: Long, private val frames: MonotonicFrameClock) : MonotonicFrameClock {
+    private var started = false
+    private var aligned = false
+    private var shift = 0L
+
+    override suspend fun <R> withFrameNanos(onFrame: (frameTimeNanos: Long) -> R): R {
+        if (!started) {
+            started = true
+            return onFrame(releasedNanos)
+        }
+        return frames.withFrameNanos { frameNanos ->
+            if (!aligned) {
+                aligned = true
+                val lead = frameNanos - releasedNanos
+                if (lead !in 0L..MAX_LEAD_NANOS) shift = lead
+            }
+            onFrame(frameNanos - shift)
+        }
+    }
+
+    private companion object {
+        const val MAX_LEAD_NANOS = 50_000_000L
+    }
 }
 
 /** One shape per whole-pixel radius, so a gesture allocates none per frame. */

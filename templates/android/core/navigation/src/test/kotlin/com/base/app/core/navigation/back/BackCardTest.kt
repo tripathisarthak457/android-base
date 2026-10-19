@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -87,6 +88,25 @@ class BackCardTest {
         val card = bounds(Post(1))
         assertEquals("scale at a 44.8 % swipe", 0.9135f, card.width / width, 0.002f)
         assertTrue("it drifts toward the far edge", card.center.x > width / 2)
+    }
+
+    @Test
+    fun `each progress step is applied as it arrives, so the frame it arrives in draws it`() {
+        show(AppBackStack(mutableStateListOf(FeedTab, Post(1))))
+        swipe(0.2f)
+
+        val applied = rule.runOnUiThread {
+            var applied = 0
+            val observer = Snapshot.registerApplyObserver { changed, _ -> if (changed.isNotEmpty()) applied++ }
+            try {
+                input.backProgressed(event(0.5f, NavigationEvent.EDGE_LEFT))
+                applied
+            } finally {
+                observer.dispose()
+            }
+        }
+
+        assertTrue("the step was left for Compose to apply after the frame", applied > 0)
     }
 
     @Test

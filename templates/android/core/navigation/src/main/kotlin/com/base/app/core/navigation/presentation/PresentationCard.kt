@@ -38,10 +38,10 @@ internal class PresentationCard(
     }
 
     override suspend fun cancelCard() {
-        card.cancel(midPush = false)
+        card.cancel(midPush = false, fullWidth = true)
     }
 
-    override suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope) {
-        card.commitPop(presented.gate, motion.fraction, pop, scope)
+    override suspend fun commitCard(pop: (Int) -> Int, releasedNanos: Long, scope: CoroutineScope) {
+        card.commitPop(presented.gate, motion.fraction, pop, releasedNanos, scope)
     }
 }

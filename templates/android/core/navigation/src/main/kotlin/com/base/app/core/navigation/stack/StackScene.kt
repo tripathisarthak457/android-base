@@ -241,11 +241,13 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
     }
 
     override suspend fun cancelCard() {
-        card.cancel(midPush = moving)
+        // A pane narrower than the host leaves the page beside it under the scrim, still in view.
+        val fullWidth = (card.subject?.let { widths[it] } ?: width) >= width
+        card.cancel(midPush = moving, fullWidth = fullWidth)
     }
 
-    override suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope) {
-        card.commitPop(gate, motion.fraction, pop, scope)
+    override suspend fun commitCard(pop: (Int) -> Int, releasedNanos: Long, scope: CoroutineScope) {
+        card.commitPop(gate, motion.fraction, pop, releasedNanos, scope)
     }
 
     fun GraphicsLayerScope.pose(key: Any) {

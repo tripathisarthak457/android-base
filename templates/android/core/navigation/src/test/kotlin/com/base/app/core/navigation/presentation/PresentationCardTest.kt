@@ -18,9 +18,11 @@ import com.base.app.core.navigation.ROBOLECTRIC_SDK
 import com.base.app.core.navigation.ShellState
 import com.base.app.core.navigation.back.submit
 import com.base.app.core.navigation.rememberShellState
+import com.base.app.core.navigation.screenNode
 import com.base.app.core.navigation.testRegistry
 import com.base.app.core.navigation.testSerialization
 import com.base.app.core.navigation.testTabs
+import com.base.app.core.navigation.texturesAround
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -109,5 +111,23 @@ class PresentationCardTest {
 
         assertEquals(listOf<AppNavKey>(Compose), state.presentedKeys)
         assertEquals(width, bounds(Compose).width, 0.5f)
+    }
+
+    @Test
+    fun `the cover under the back card is a texture in its innermost layer while the card is up`() {
+        showCover()
+        val cover = rule.screenNode(Compose)
+        assertEquals("before the gesture", emptyList<Int>(), rule.texturesAround(cover))
+
+        swipe(0.3f, 0.6f)
+        assertEquals("while the card is up, 0 the innermost layer", listOf(0), rule.texturesAround(cover))
+
+        rule.runOnIdle {
+            input.backProgressed(event(0.2f))
+            input.backProgressed(event(0f))
+            input.backCancelled()
+        }
+        rule.waitForIdle()
+        assertEquals("after the cancel", emptyList<Int>(), rule.texturesAround(cover))
     }
 }

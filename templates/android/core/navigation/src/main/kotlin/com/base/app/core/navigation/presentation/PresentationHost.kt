@@ -18,6 +18,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
@@ -194,6 +195,8 @@ private fun PresentedFrame(
             Modifier
                 .fillMaxSize()
                 .graphicsLayer { if (card.active && card.subject == key) with(card) { applyCard() } }
+                // The cover's own layer: under the back card, a texture the card's pose moves and fades.
+                .graphicsLayer { compositingStrategy = if (card.textures(key)) CompositingStrategy.Offscreen else CompositingStrategy.Auto }
                 .background(background),
         ) {
             content()
