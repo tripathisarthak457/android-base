@@ -46,7 +46,7 @@ class MoreTabTest {
     @get:Rule
     val rule = createAndroidComposeRule<ComponentActivity>()
 
-    private val tabs = List(6) { ShellTab(Tab(it), R.string.designsystem_select, AppIcons.Home) }
+    private val tabs = List(6) { ShellTab(Tab(it), R.string.designsystem_search, AppIcons.Home) }
     private val registry = NavRegistry(setOf(navGraph { entry<Tab> { Screen(it) } }))
     private val serialization = NavKeySerialization(setOf(navKeys { subclass(Tab::class, Tab.serializer()) }))
 

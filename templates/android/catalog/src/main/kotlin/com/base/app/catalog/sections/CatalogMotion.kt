@@ -159,9 +159,10 @@ private class FlingRun(val velocity: Float, val distance: Float, val millis: Lon
         val rate = 1000.0 * ln(1.0 / 0.998)
         val iosDistance = velocity / rate
         val iosSeconds = ln(velocity / RestVelocity) / rate
+        val took = "%.2f".format(Locale.ROOT, millis / 1000.0)
+        val iosTook = "%.2f".format(Locale.ROOT, iosSeconds)
         return "Released at ${(velocity / density).roundToInt()} dp/s: ${(distance / density).roundToInt()} dp in " +
-            "${"%.2f".format(Locale.ROOT, millis / 1000.0)} s. iOS: ${(iosDistance / density).roundToInt()} dp in " +
-            "${"%.2f".format(Locale.ROOT, iosSeconds)} s."
+            "$took s. iOS: ${(iosDistance / density).roundToInt()} dp in $iosTook s."
     }
 }
 

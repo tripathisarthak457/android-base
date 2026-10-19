@@ -7,3 +7,8 @@
 match = "^UNUSED-IMPORT app/src/main/kotlin/\\{pkg\\}/ui/AppDestinations\\.kt: \\{package\\}\\.(R|core\\.designsystem\\.icon\\.AppIcons)$"
 owner = "WP04"
 why = "the imports sit outside the <opt:> blocks of the tabs that use them"
+
+[[issue]]
+match = "^RES core/designsystem/src/test/kotlin/\\{pkg\\}/core/designsystem/component/sheet/shape/SheetApiShapeTest\\.kt: R\\.string\\.(orders_filters|lists_rename)$"
+owner = "WP03"
+why = "the API-shape test writes its call sites against a stand-in R object of its own, which the check reads as missing resources"

@@ -32,8 +32,8 @@ internal fun testRegistry(screen: @Composable (AppNavKey) -> Unit = { Screen(it)
 
 /** Feed and Profile tabs. The labels only need to be some string the test can resolve. */
 internal val testTabs = listOf(
-    ShellTab(FeedTab, R.string.designsystem_previous_month, AppIcons.Home),
-    ShellTab(ProfileTab, R.string.designsystem_next_month, AppIcons.User),
+    ShellTab(FeedTab, R.string.designsystem_search, AppIcons.Home),
+    ShellTab(ProfileTab, R.string.designsystem_refresh, AppIcons.User),
 )
 
 internal val testSerialization = NavKeySerialization(
