@@ -17,6 +17,9 @@ _TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 _UNIX = 3
 _REGULAR_FILE = 0o100000
 
+#: What points a git command at another repository's files, or `git config` at another file.
+_ANOTHER_REPOSITORY = ("GIT_DIR", "GIT_COMMON_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_CONFIG")
+
 
 def zip_project(project: Path, archive: Path, executable: tuple[str, ...]) -> Path:
     """
@@ -53,10 +56,12 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
     # a clean filter (a global attributes file), drop gradle-wrapper.jar (an excludes file), refuse
     # or rewrite the commit (hooks, prepare-commit-msg among them, which --no-verify does not skip),
     # sign it or change its format; a template brings hooks and an info/exclude of its own; and a
-    # GIT_ variable, such as the GIT_DIR git exports to every hook, can point each command at
-    # another repository. The project's own .gitattributes and .gitignore still apply.
+    # GIT_ variable can point each command at another repository's files: git gives a commit hook
+    # GIT_INDEX_FILE, and GIT_DIR too in a linked worktree. The project's own .gitattributes and
+    # .gitignore still apply.
     as_the_generator = ("-c", "user.name=Project generator", "-c", "user.email=generator@localhost")
-    with tempfile.TemporaryDirectory(prefix="git-home-") as home:
+    # A home the system will not let go of (an indexer holding it) must not fail a finished project.
+    with tempfile.TemporaryDirectory(prefix="git-home-", ignore_cleanup_errors=True) as home:
         git = functools.partial(_git, project, _without_the_callers_configuration(Path(home)))
         try:
             # Not `--initial-branch`: that needs git 2.28, and an older git fails with a usage error
@@ -79,11 +84,82 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
             git(as_the_generator, "commit", "-m", message)
         except _GitFailed as failure:
             return [f"{failure} The project itself is fine."]
+    # From here the repository is the user's, and a template is how tools such as pre-commit and
+    # git-secrets put their hooks into every new one. A second `git init` would copy it, but under
+    # the caller's init.defaultObjectFormat it also rewrites the format of a repository that
+    # already holds a commit, which breaks it.
+    return _install_the_callers_template(project)
+
+
+def _install_the_callers_template(project: Path) -> list[str]:
+    """
+    Copies into `project`'s .git the hooks and info entries it lacks from the template the
+    caller's own `git init` would use, as that command copies them. Returns warnings.
+    """
+    try:
+        template = _callers_template(project)
+    except _GitFailed as failure:
+        return [f"{failure} Your git template, if you have one, was not copied into the new repository."]
+    if template is None or not template.is_dir():
+        return []
+    try:
+        for part in ("hooks", "info"):
+            if (template / part).is_dir():
+                _copy_missing(template / part, project / ".git" / part)
+    except OSError as error:
+        return [
+            f"Your git template ({template}) could not be copied into the new repository "
+            f"({error.strerror or error}), so its hooks do not run there: copy them into .git/hooks yourself."
+        ]
+    if (template / "config").is_file():
+        # `git init` starts the repository's configuration from this file, before the repository
+        # has a format; applied now, it could name an object format the repository does not have.
+        return [f"Your git template's configuration ({template / 'config'}) was not applied to the new repository."]
     return []
 
 
+def _callers_template(project: Path) -> Path | None:
+    """
+    The template folder `git init` would use in this process's environment, or None for none or
+    for git's own, which holds only sample hooks. Raises _GitFailed.
+    """
+    if "GIT_TEMPLATE_DIR" in os.environ:
+        chosen = os.environ["GIT_TEMPLATE_DIR"]
+    else:
+        # `git init` reads init.templateDir from the system and global files and -c; asked inside
+        # the new repository, whose own file holds no init key, `git config` reads the same.
+        environment = {name: value for name, value in os.environ.items() if name.upper() not in _ANOTHER_REPOSITORY}
+        try:
+            chosen = _git(project, environment, (), "config", "--path", "--get", "init.templateDir")
+        except _GitFailed as failure:
+            if failure.returncode == 1:
+                return None
+            raise
+        chosen = chosen.removesuffix("\n")
+    # An empty one is git's own way to say "no template".
+    return Path(chosen) if chosen else None
+
+
+def _copy_missing(source: Path, target: Path) -> None:
+    """
+    Copies what `target` lacks from `source` as `git init` copies a template: names starting with a
+    dot left out, folders merged, files kept where they exist, modes and links copied as they are.
+    """
+    target.mkdir(exist_ok=True)
+    for entry in source.iterdir():
+        if entry.name.startswith("."):
+            continue
+        destination = target / entry.name
+        if entry.is_dir() and not entry.is_symlink():
+            _copy_missing(entry, destination)
+        elif not os.path.lexists(destination):
+            shutil.copy(entry, destination, follow_symlinks=False)
+
+
 class _GitFailed(Exception):
-    pass
+    def __init__(self, message: str, returncode: int):
+        super().__init__(message)
+        self.returncode = returncode
 
 
 def _without_the_callers_configuration(home: Path) -> dict[str, str]:
@@ -116,5 +192,5 @@ def _git(project: Path, environment: dict[str, str], config: tuple[str, ...], *a
     if result.returncode != 0:
         detail = (result.stderr or result.stdout).strip().splitlines()
         reason = detail[-1] if detail else f"exit code {result.returncode}"
-        raise _GitFailed(f"`git {arguments[0]}` failed ({reason}).")
+        raise _GitFailed(f"`git {arguments[0]}` failed ({reason}).", result.returncode)
     return result.stdout

@@ -1,6 +1,7 @@
 """
 What a user receives: the zip, with the same bytes for the same project, executable bits and one
-root folder, or the first commit, with the same executable bits.
+root folder, or the first commit, with the same executable bits, in a repository that then has the
+user's own git template.
 """
 
 from __future__ import annotations
@@ -112,9 +113,10 @@ class ZipTest(unittest.TestCase):
 
     @unittest.skipIf(shutil.which("git") is None, "git is not installed")
     def test_the_commit_is_the_same_whatever_git_variables_the_caller_has(self):
-        # A hook's git commands find the repository through variables git exports to it, such as
-        # GIT_DIR, and GIT_INDEX_FILE in the commit hooks; a generator run from one, such as a test
-        # suite in pre-commit, inherits them. The others configure git by themselves.
+        # A hook's git commands find the repository's files through variables git exports to it:
+        # GIT_INDEX_FILE in the commit hooks, and GIT_DIR too in a linked worktree. A generator run
+        # from one, such as a test suite in pre-commit, inherits them. The others configure git by
+        # themselves.
         hostile = Hostile(self.root / "hostile")
         other = self.root / "other"
         subprocess.run(["git", "init", "--template=", str(other)], capture_output=True, check=True)
@@ -154,12 +156,83 @@ class ZipTest(unittest.TestCase):
         self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
         self.assertIn(relative, committed(self.project))
         # And the user's next command sees it, whatever their own git configuration says.
-        with tempfile.TemporaryDirectory() as home, environment({"HOME": home, "XDG_CONFIG_HOME": home}):
+        with tempfile.TemporaryDirectory() as home, environment(isolated(Path(home))):
             status = subprocess.run(
-                ["git", "status", "--porcelain"], cwd=self.project, capture_output=True, text=True,
-                env={**os.environ, "GIT_CONFIG_NOSYSTEM": "1"},
+                ["git", "status", "--porcelain"], cwd=self.project, capture_output=True, text=True
             )
         self.assertEqual((0, "", ""), (status.returncode, status.stdout, status.stderr))
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_the_repository_gets_the_users_template_once_the_commit_is_made(self):
+        # A template is how pre-commit and git-secrets put their hooks into every new repository,
+        # so they must run on the user's own commits, though not on the generator's.
+        for route in ("init.templateDir", "GIT_TEMPLATE_DIR"):
+            with self.subTest(route=route):
+                hostile = Hostile(self.root / route / "hostile")
+                home = self.root / route / "home"
+                home.mkdir()
+                variables = isolated(home)
+                if route == "GIT_TEMPLATE_DIR":
+                    variables["GIT_TEMPLATE_DIR"] = str(hostile.template)
+                else:
+                    # `~` too, which only `git config --path` expands.
+                    shutil.copytree(hostile.template, home / "template")
+                    (home / ".gitconfig").write_bytes(b"[init]\n\ttemplateDir = ~/template\n")
+                project = self.root / route / self.project.name
+                shutil.copytree(self.project, project)
+                with environment(variables):
+                    self.assertEqual([], git_init(project, "Initial commit", EXECUTABLE))
+                    self.assertFalse(hostile.trace.exists(), "a hook ran for the generator's commit")
+                    later = subprocess.run(
+                        ["git", "-c", "user.name=Real Person", "-c", "user.email=real@example.com",
+                         "commit", "--allow-empty", "-m", "Later"],
+                        cwd=project, capture_output=True,
+                    )
+                self.assertIn("gradle/wrapper/gradle-wrapper.jar", committed(project))
+                for name in Hostile.HOOKS:
+                    installed = project / ".git" / "hooks" / name
+                    self.assertEqual((hostile.template / "hooks" / name).read_bytes(), installed.read_bytes())
+                    if os.name != "nt":
+                        self.assertEqual(0o755, stat.S_IMODE(installed.stat().st_mode), name)
+                self.assertEqual(b"*.jar\n", (project / ".git" / "info" / "exclude").read_bytes())
+                self.assertNotEqual(0, later.returncode, "the user's pre-commit hook let the commit through")
+                self.assertIn("pre-commit", hostile.trace.read_text(encoding="utf-8"))
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_a_template_the_repository_cannot_take_whole_is_a_warning(self):
+        hostile = Hostile(self.root / "hostile")
+        configured = self.root / "configured"
+        shutil.copytree(hostile.template, configured)
+        (configured / "config").write_bytes(b"[core]\n\thooksPath = elsewhere\n")
+        empty, unreadable = self.root / "empty", self.root / "unreadable"
+        empty.mkdir()
+        unreadable.mkdir()
+        (unreadable / ".gitconfig").write_bytes(b"[init\n")
+        for case, variables, patch, reason in (
+            (
+                "a copy refused",
+                {**isolated(empty), "GIT_TEMPLATE_DIR": str(hostile.template)},
+                mock.patch("shutil.copy", side_effect=PermissionError(13, "Access is denied")),
+                "Access is denied",
+            ),
+            ("a configuration git cannot read", isolated(unreadable), contextlib.nullcontext(), "`git config` failed"),
+            (
+                "a template with a configuration",
+                {**isolated(empty), "GIT_TEMPLATE_DIR": str(configured)},
+                contextlib.nullcontext(),
+                str(configured / "config"),
+            ),
+        ):
+            with self.subTest(case=case):
+                project = self.root / case / self.project.name
+                shutil.copytree(self.project, project)
+                with environment(variables), patch:
+                    warnings = git_init(project, "Initial commit", EXECUTABLE)
+                self.assertEqual(1, len(warnings), warnings)
+                self.assertIn(reason, warnings[0])
+                self.assertIn("gradle/wrapper/gradle-wrapper.jar", committed(project))
+                self.assertNotIn("hooksPath", (project / ".git" / "config").read_text(encoding="utf-8"))
+        self.assertFalse(hostile.trace.exists(), "a hook ran for the generator's commit")
 
     def assert_is_the_generators_commit(self, project: Path, hostile: Hostile) -> None:
         on_disk = {
@@ -243,6 +316,18 @@ def committed(project: Path) -> dict[str, str]:
     ).stdout
     entries = (entry.split("\t", 1) for entry in listed.split("\0") if entry)
     return {path: meta.split(" ", 1)[0] for meta, path in entries}
+
+
+def isolated(home: Path) -> dict[str, str | None]:
+    """
+    Variables for a git that takes its user's configuration from `home` alone: no system file and
+    no GIT_ variable of this process's, such as the GIT_DIR of a hook the suite runs in.
+    """
+    variables: dict[str, str | None] = {
+        name: None for name in os.environ if name.upper().startswith("GIT_") and name.upper() != "GIT_EXEC_PATH"
+    }
+    variables.update(HOME=str(home), XDG_CONFIG_HOME=str(home), GIT_CONFIG_NOSYSTEM="1")
+    return variables
 
 
 @contextlib.contextmanager
