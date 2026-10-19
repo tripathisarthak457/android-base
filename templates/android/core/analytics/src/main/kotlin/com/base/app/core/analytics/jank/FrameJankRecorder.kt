@@ -30,6 +30,7 @@ class FrameJankRecorder @Inject internal constructor(
     private val analytics: AnalyticsTracker,
 ) {
     private val counts = HashMap<String, FrameCounts>()
+    private val stateKeys = StateKeys()
     private var reportingWhenHidden = false
 
     /**
@@ -65,7 +66,7 @@ class FrameJankRecorder @Inject internal constructor(
     }
 
     internal fun onFrame(frame: FrameData) {
-        record(frame.stateKey(), frame.isJank)
+        record(stateKeys.of(frame.states), frame.isJank)
         frameListener?.onFrame(frame)
     }
 
@@ -89,14 +90,6 @@ class FrameJankRecorder @Inject internal constructor(
         }
     }
 
-    private fun FrameData.stateKey(): String =
-        if (states.isEmpty()) {
-            IDLE_STATE
-        } else {
-            // Analytics vendors cap a parameter value at about a hundred characters.
-            states.joinToString(separator = ",") { it.key + "=" + it.value }.take(MAX_STATE_LENGTH)
-        }
-
     private class FrameCounts {
         var frames = 0
         var janky = 0
@@ -104,7 +97,5 @@ class FrameJankRecorder @Inject internal constructor(
 
     private companion object {
         const val EVENT_NAME = "frame_jank"
-        const val IDLE_STATE = "idle"
-        const val MAX_STATE_LENGTH = 100
     }
 }
