@@ -42,20 +42,7 @@ internal class FrameHistogram {
      * The frame time below which [fraction] of the frames fall, interpolated within the bucket
      * it lands in; 0 with no frames.
      */
-    fun percentile(fraction: Float): Float {
-        if (total == 0) return 0f
-        val rank = fraction.coerceIn(0f, 1f) * total
-        var below = 0
-        for (bucket in 0 until BUCKETS) {
-            val inBucket = counts[bucket]
-            if (inBucket > 0 && below + inBucket >= rank) {
-                val within = ((rank - below) / inBucket).coerceIn(0f, 1f)
-                return lowerEdge(bucket) + within * (upperEdge(bucket) - lowerEdge(bucket))
-            }
-            below += inBucket
-        }
-        return lowerEdge(BUCKETS - 1)
-    }
+    fun percentile(fraction: Float): Float = percentileOf(counts, total, fraction, ::lowerEdge, ::upperEdge)
 
     companion object {
         private const val FINE_END = 32f
@@ -90,4 +77,29 @@ internal class FrameHistogram {
         /** The last bucket has no upper edge; a frame in it is reported at [COARSE_END]. */
         fun upperEdge(bucket: Int): Float = if (bucket >= BUCKETS - 1) COARSE_END else lowerEdge(bucket + 1)
     }
+}
+
+/**
+ * The value below which [fraction] of the [total] counted fall, interpolated within the bucket it
+ * lands in; 0 with nothing counted. The last bucket is open-ended and reads as its lower edge.
+ */
+internal inline fun percentileOf(
+    counts: IntArray,
+    total: Int,
+    fraction: Float,
+    lowerEdge: (bucket: Int) -> Float,
+    upperEdge: (bucket: Int) -> Float,
+): Float {
+    if (total == 0) return 0f
+    val rank = fraction.coerceIn(0f, 1f) * total
+    var below = 0
+    for (bucket in counts.indices) {
+        val inBucket = counts[bucket]
+        if (inBucket > 0 && below + inBucket >= rank) {
+            val within = ((rank - below) / inBucket).coerceIn(0f, 1f)
+            return lowerEdge(bucket) + within * (upperEdge(bucket) - lowerEdge(bucket))
+        }
+        below += inBucket
+    }
+    return lowerEdge(counts.size - 1)
 }

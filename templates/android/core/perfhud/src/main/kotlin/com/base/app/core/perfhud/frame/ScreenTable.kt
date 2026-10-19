@@ -1,7 +1,7 @@
 package com.base.app.core.perfhud.frame
 
 /**
- * Screen names to small indexes, so a frame stores its screen as one byte. Index [UNKNOWN] holds
+ * Screen names to small indexes into [FrameLog]'s per-screen counts. Index [UNKNOWN] holds
  * frames drawn before any screen was reported, and the last index every screen past the first
  * [CAPACITY] - 2, which an app with that many destinations shares as "other".
  *

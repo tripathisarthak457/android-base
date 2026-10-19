@@ -42,7 +42,7 @@
     <string name="perfhud_fps_graph">Frames per second</string>
     <string name="perfhud_fps_graph_caption">While drawing, for each of the last 60 seconds; a gap is a second with nothing to draw. The line is the display\'s rate.</string>
     <string name="perfhud_histogram">Main-thread time histogram</string>
-    <string name="perfhud_histogram_caption">Every frame recorded, by its main-thread time in milliseconds. The line is one refresh interval: the time the main thread has for each frame.</string>
+    <string name="perfhud_histogram_caption">Every frame recorded, by its main-thread time in milliseconds; the last bar is 32 ms and slower. The line is one refresh interval at the display\'s rate while drawing: the time the main thread has for each frame.</string>
     <string name="perfhud_by_screen">Janky frames by screen</string>
     <string name="perfhud_memory">Memory</string>
     <string name="perfhud_memory_caption">Java heap and native heap each second; PSS at most every 15 seconds, in a pause in the drawing.</string>
