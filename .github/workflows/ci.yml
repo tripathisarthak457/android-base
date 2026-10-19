@@ -96,8 +96,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v5
 
       - name: Generate
-        # Through the command line, not the generator's modules: it is what users run, and it
-        # changes less. The languages come from the catalogue the website reads.
+        # The languages come from the catalogue the website reads.
         working-directory: generator
         env:
           EVERY_LANGUAGE: |
