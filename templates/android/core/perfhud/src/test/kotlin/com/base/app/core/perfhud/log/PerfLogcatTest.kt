@@ -51,6 +51,35 @@ class PerfLogcatTest {
     }
 
     @Test
+    fun `a window line does not count the collections of a quiet window before it`() {
+        memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(1, 2, 0, 0)))
+        logcat.begin(frames, memory)
+        draw(frames = 600, screen = "Home")
+        repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }
+        memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(5, 20, 0, 0)))
+        repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }
+        memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(6, 22, 0, 0)))
+        draw(frames = 600, screen = "Home")
+
+        repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }
+
+        assertEquals(2, lines.size)
+        assertTrue(lines[1], lines[1].contains(" gc=1 "))
+    }
+
+    @Test
+    fun `a window line gives full-duration and main-thread percentiles apart`() {
+        logcat.begin(frames, memory)
+        draw(frames = 600, screen = "Home")
+
+        repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }
+
+        val line = lines.single()
+        assertTrue(line, line.contains(" frameP50=6.1 "))
+        assertTrue(line, line.contains(" uiP50=3.1 "))
+    }
+
+    @Test
     fun `a window with nothing drawn writes nothing`() {
         draw(frames = 10, screen = "Home")
         logcat.begin(frames, memory)
@@ -70,7 +99,7 @@ class PerfLogcatTest {
         logcat.onSecond(frames, memory, screen = "Detail")
 
         assertEquals(1, lines.size)
-        assertTrue(lines.single(), lines.single().startsWith("screen=Home frames=100 janky=1.0% p50="))
+        assertTrue(lines.single(), lines.single().startsWith("screen=Home frames=100 janky=1.0% frameP50="))
     }
 
     @Test

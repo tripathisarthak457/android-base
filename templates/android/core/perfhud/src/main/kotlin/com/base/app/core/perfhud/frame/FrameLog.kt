@@ -185,6 +185,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         into.longWork = longWorkCount[ALL]
         into.busyNanos = busyNanos
         histograms[ALL].copyInto(into.histogram)
+        uiHistogram.copyInto(into.uiHistogram)
     }
 
     /** Everything recorded, summed up. Allocates; called a few times a minute at most. */

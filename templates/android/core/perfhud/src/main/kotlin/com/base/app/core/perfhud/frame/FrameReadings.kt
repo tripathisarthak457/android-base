@@ -46,7 +46,12 @@ internal class FrameTotals {
     var frozen: Int = 0
     var longWork: Int = 0
     var busyNanos: Long = 0L
+
+    /** Full durations. */
     val histogram = FrameHistogram()
+
+    /** Main-thread time. */
+    val uiHistogram = FrameHistogram()
 }
 
 /**
