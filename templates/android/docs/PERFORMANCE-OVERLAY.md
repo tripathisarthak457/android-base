@@ -226,9 +226,10 @@ adb shell run-as <applicationId> am broadcast --user 0 \
 ```
 
 The receiver is declared in the debug manifest only, and not exported: no other app can reach it,
-and adb reaches it only through `run-as`, which works on a debuggable build alone. `--user 0` is the app's own user (on a phone with several
-users, the one it runs as): `run-as` cannot broadcast to the default, "current", which needs a
-cross-user permission. A release-like dev build exports from the tab.
+and adb reaches it only through `run-as`, which works on a debuggable build alone. `--user 0` is the
+app's own user (on a phone with several users, the one it runs as): `run-as` cannot broadcast to the
+default, "current", which needs a cross-user permission. A release-like dev build exports from the
+tab.
 
 A launch with `--es perf.hud on` (or `off`) switches recording for that process, whatever the
 build, which is how `tools/perf/perf.sh` measures the overlay's own cost (`--extra perf.hud=on`).
