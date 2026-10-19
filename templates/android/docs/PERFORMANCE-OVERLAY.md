@@ -69,14 +69,13 @@ The overlay is built so that watching does not change what is watched:
   second; an app that draws without a pause gets its PSS read late rather than its frames delayed.
   The same goes for your own code: never call `Debug.getMemoryInfo` while the app is animating.
 
-Measured on a Redmi Note 10 Pro Max (M2101K6I) at 120 Hz with `devRelease`, alternating launches with the overlay
-hidden and shown, each scrolling a list, switching every tab and pushing and popping a screen,
-`dumpsys gfxinfo` read around every step. Without `analytics`, where the overlay brings the only
-JankStats, 13,770 frames hidden and 13,764 shown were 1.34 % and 1.43 % janky, and the main thread
-spent 0.09 ms more per frame shown. With `analytics`, whose JankStats it shares, 14,126 frames
-hidden and 14,113 shown were 1.46 % and 1.41 % janky, with no change in main-thread time per
-frame (+0.003 ms). The budget the overlay is held to is 0.3 percentage points of janky frames and
-0.5 ms per frame.
+Measured on a Redmi Note 10 Pro Max (M2101K6I) at 120 Hz with `devRelease`, alternating launches with
+the overlay hidden and shown, each scrolling a list, switching every tab and pushing and popping a
+screen, `dumpsys gfxinfo` read around every step. Without `analytics`, where the overlay brings the
+only JankStats, 13,688 frames hidden and 13,495 shown were 1.37 % and 1.32 % janky, and the main
+thread spent 0.07 ms more per frame shown. With `analytics`, whose JankStats it shares, 14,148 frames
+hidden and 14,068 shown were 1.55 % and 1.61 % janky, again 0.07 ms more per frame. The budget the
+overlay is held to is 0.3 percentage points of janky frames and 0.5 ms per frame.
 
 **Measure the app with the overlay off.** The perf gates, `tools/perf/perf.sh` and any number you
 quote are taken hidden. Your choice of Live stats is kept across launches, and across reinstalls
