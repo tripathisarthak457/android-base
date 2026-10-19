@@ -10,6 +10,12 @@ name = "core/common"
 android = "core/common/src/main/kotlin/com/base/app/core/common"
 multiplatform = "core/common/src/commonMain/kotlin/com/base/app/core/common"
 
+[[pair.android_only]]
+file = "environment/AppEnvironment.kt"
+reason = """
+The build facts the Android app's BuildConfig states, for its dev tooling (the devtools feature),
+which only the Android template has."""
+
 [[pair]]
 name = "core/mvi"
 android = "core/mvi/src/main/kotlin/com/base/app/core/mvi"
