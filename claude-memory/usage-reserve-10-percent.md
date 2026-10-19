@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 8d80ef9d-4533-47d0-b348-d4c6caaeb696
-  modified: 2026-10-19T03:51:15.557Z
+  modified: 2026-10-19T10:58:47.498Z
 ---
 
 **Current rule (the user, Oct 19 09:25, chosen from options with pros and cons): run in every 5-hour window until the
@@ -23,7 +23,8 @@ Android release, 80% by day, 98% at night, resuming by itself.**
 **History:** Oct 17 16:40 "leave 10% of usage for my personal work"; Oct 17 23:10 "u can consume full 99% in overnight as i
 am sleeping just working hours 9 am to 9 pm mai 90% kiya karo make sure u dont get stuck and auto resume on times" (90%
 day / 99% night until Oct 19); Oct 19 09:25 the current rule.
-- The user can override a single window (Oct 18: 45% for their own work; Oct 19: 95% for the window ending 11:10) or ask
+- The user can override a single window (Oct 18: 45% for their own work; Oct 19: 95% for the windows ending 11:10, 16:10
+  and 21:09: "CAP IS 95% FOR THIS SESSION AND AFTER 9 ITS 98%"; stop at 93%) or ask
   that nothing restarts by itself (Oct 18 16:55: "i will begin next session manually u dont auto start it"); then
   delete every resume one-shot and the autopilot, and wait for their message.
 - A cap "then stop" (Oct 19 06:20: "run till I hit 95% cap", later replaced by the current rule): stop about 4 points

@@ -242,3 +242,13 @@ If it runs smooth there, it runs smooth on most phones.
       overlay, every catalog page), a review by area with a fix loop, the new branches, and `staging/STAGING-REPORT.md`.
     - No package work continues until the user has seen the report and says go; then the release workflow is re-based on
       staging.
+
+45. **Learn from District by Zomato's motion, with the user's approval for every change (the user, Oct 19 17:00).** "the animations fluidity of one app that i use is so great and amazing and everything polished in that app ... its called District by Zomato ... i like its bottom sheet and other components as well ... what we can incoporate from there to here. Every change suggested from that app in my project should go through my approval and i wanna know what they are doing diffrently. u can even install that app on my device after ur resaerch".
+    - `scripts/research-district.js`: public sources (Sonnet lookups, an Opus verifier), a gap analysis against the template and
+      proposals (`research/district/RESEARCH.md`), a phone-study procedure (`research/district/PHONE-STUDY.md`), an Opus review.
+      No code changes.
+    - Every proposal is asked in chat (pros, cons, catches, recommended first); only approved ones become work, on
+      `staging-wp/*` after staging.
+    - The phone study runs after the bug fix and staging free the phone, once the user has installed District from the Play
+      Store and signed in themselves (I never sign in or create accounts). It only observes: no decompiling, no copying of the
+      app's code or assets, no taps that buy, book, pay or change the account.
