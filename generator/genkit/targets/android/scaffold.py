@@ -260,7 +260,7 @@ import {pkg}.core.designsystem.component.feedback.StateKind
 import {pkg}.core.designsystem.component.navigation.AppLargeTitleTopBar
 import {pkg}.core.designsystem.component.navigation.scrolledFromTop
 import {pkg}.core.designsystem.component.text.AppText
-import {pkg}.core.designsystem.foundation.chromeContentPadding
+import {pkg}.core.designsystem.foundation.layout.chromeContentPadding
 import {pkg}.core.designsystem.foundation.scroll.AppScrollDefaults
 import {pkg}.core.designsystem.theme.AppTheme
 import {pkg}.core.ui.text
