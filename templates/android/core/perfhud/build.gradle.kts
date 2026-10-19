@@ -11,6 +11,9 @@ plugins {
 
 android {
     namespace = "com.base.app.core.perfhud"
+
+    // The pill's redraw test composes under Robolectric, which needs the merged manifest.
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
@@ -32,4 +35,6 @@ dependencies {
     testImplementation(project(":core:testing"))
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
