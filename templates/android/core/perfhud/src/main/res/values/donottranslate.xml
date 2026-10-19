@@ -66,7 +66,7 @@
     <string name="perfhud_screen">Screen</string>
     <string name="perfhud_screen_launch">(before the first screen)</string>
     <string name="perfhud_screen_other">(other screens)</string>
-    <string name="perfhud_screen_row">%1$s janky of %2$d · p90 %3$s</string>
+    <string name="perfhud_screen_row">%1$s janky of %2$d · frame p90 %3$s</string>
 
     <string name="perfhud_java_heap">Java heap (peak)</string>
     <string name="perfhud_native_heap">Native heap (peak)</string>
@@ -109,7 +109,10 @@
     <string name="perfhud_profile_not_in_apk">not in the APK</string>
     <string name="perfhud_profile_not_in_project">not set up in this project</string>
 
-    <string name="perfhud_value_percent">%1$s %%</string>
+    <string name="perfhud_value_percent">%1$s%%</string>
+    <string name="perfhud_count_and_part">%1$d (%2$s)</string>
+    <string name="perfhud_three_values">%1$s / %2$s / %3$s</string>
+    <string name="perfhud_points_of">%1$s / %2$d</string>
     <string name="perfhud_value_budget">%1$s× budget</string>
     <string name="perfhud_value_per_thousand">%1$s per 1,000 frames</string>
     <string name="perfhud_value_millis">%1$s ms</string>

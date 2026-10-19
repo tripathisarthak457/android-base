@@ -81,7 +81,7 @@ internal class MarkdownReport(private val resources: Resources) {
                 scored.value?.let { resources.formatValue(scored.metric, it) } ?: string(R.string.perfhud_not_measured),
                 resources.formatTarget(scored.metric),
                 scored.grade?.name ?: "–",
-                decimal(scored.points, 1) + " / " + scored.metric.weight,
+                string(R.string.perfhud_points_of, decimal(scored.points, 1), scored.metric.weight),
             )
         }
         append('\n')
@@ -105,13 +105,17 @@ internal class MarkdownReport(private val resources: Resources) {
             string(R.string.perfhud_frames) to overall.frames.toString(),
             string(R.string.perfhud_fps) to decimal(frames.framesPerSecond, 1),
             string(R.string.perfhud_display) to string(R.string.perfhud_hz, Math.round(frames.refreshHz)),
-            string(R.string.perfhud_janky) to "${overall.janky} (${percent(overall.jankyPercent)})",
-            string(R.string.perfhud_slow) to "${overall.slow} (${percent(overall.slowPercent)})",
+            string(R.string.perfhud_janky) to countAndPercent(overall.janky, overall.jankyPercent),
+            string(R.string.perfhud_slow) to countAndPercent(overall.slow, overall.slowPercent),
             string(R.string.perfhud_frozen) to overall.frozen.toString(),
             string(R.string.perfhud_long_work) to overall.longWork.toString(),
             string(R.string.perfhud_percentiles) to percentiles(overall),
-            string(R.string.perfhud_ui_percentiles) to
-                listOf(frames.uiP50Millis, frames.uiP90Millis, frames.uiP99Millis).joinToString(" / ") { millis(it) },
+            string(R.string.perfhud_ui_percentiles) to string(
+                R.string.perfhud_three_values,
+                millis(frames.uiP50Millis),
+                millis(frames.uiP90Millis),
+                millis(frames.uiP99Millis),
+            ),
             string(R.string.perfhud_worst) to millis(overall.worstMillis),
         )
         heading(3, string(R.string.perfhud_by_screen))
@@ -128,7 +132,7 @@ internal class MarkdownReport(private val resources: Resources) {
             row(
                 screenName(screen),
                 stats.frames.toString(),
-                "${stats.janky} (${percent(stats.jankyPercent)})",
+                countAndPercent(stats.janky, stats.jankyPercent),
                 percentiles(stats),
                 millis(stats.worstMillis),
             )
@@ -179,10 +183,14 @@ internal class MarkdownReport(private val resources: Resources) {
             return
         }
         table(
-            string(R.string.perfhud_requests) to "${network.requests} (${network.failures})",
-            string(R.string.perfhud_request_times) to
-                listOf(network.medianMillis, network.p90Millis, network.slowestMillis)
-                    .joinToString(" / ") { wholeMillis(it) },
+            string(R.string.perfhud_requests) to
+                string(R.string.perfhud_count_and_part, network.requests, network.failures.toString()),
+            string(R.string.perfhud_request_times) to string(
+                R.string.perfhud_three_values,
+                wholeMillis(network.medianMillis),
+                wholeMillis(network.p90Millis),
+                wholeMillis(network.slowestMillis),
+            ),
             *network.endpoints.map { endpoint ->
                 "`" + endpoint.endpoint + "`" to string(
                     R.string.perfhud_endpoint_value,
@@ -264,8 +272,15 @@ internal class MarkdownReport(private val resources: Resources) {
         )
     }
 
-    private fun percentiles(stats: FrameStats): String =
-        listOf(stats.p50Millis, stats.p90Millis, stats.p99Millis).joinToString(" / ") { millis(it) }
+    private fun percentiles(stats: FrameStats): String = string(
+        R.string.perfhud_three_values,
+        millis(stats.p50Millis),
+        millis(stats.p90Millis),
+        millis(stats.p99Millis),
+    )
+
+    private fun countAndPercent(count: Int, share: Float): String =
+        string(R.string.perfhud_count_and_part, count, percent(share))
 
     private fun yesNo(value: Boolean): String = string(if (value) R.string.perfhud_yes else R.string.perfhud_no)
 

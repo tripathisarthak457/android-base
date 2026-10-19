@@ -45,7 +45,12 @@ internal fun FrameSections(recorder: PerformanceRecorder, snapshot: PerformanceS
         ValueRow(R.string.perfhud_percentiles, percentiles(overall))
         ValueRow(
             R.string.perfhud_ui_percentiles,
-            listOf(frames.uiP50Millis, frames.uiP90Millis, frames.uiP99Millis).map { millis(it) }.joinToString(" / "),
+            stringResource(
+                R.string.perfhud_three_values,
+                millis(frames.uiP50Millis),
+                millis(frames.uiP90Millis),
+                millis(frames.uiP99Millis),
+            ),
         )
         ValueRow(R.string.perfhud_worst, millis(overall.worstMillis))
     }
@@ -119,12 +124,19 @@ private fun screenName(screen: ScreenFrames): String = when {
 }
 
 @Composable
-private fun countAndPercent(count: Int, percent: Float): String =
-    "$count (" + stringResource(R.string.perfhud_value_percent, decimal(percent, 2)) + ")"
+private fun countAndPercent(count: Int, percent: Float): String = stringResource(
+    R.string.perfhud_count_and_part,
+    count,
+    stringResource(R.string.perfhud_value_percent, decimal(percent, 2)),
+)
 
 @Composable
-private fun percentiles(stats: FrameStats): String =
-    listOf(stats.p50Millis, stats.p90Millis, stats.p99Millis).map { millis(it) }.joinToString(" / ")
+private fun percentiles(stats: FrameStats): String = stringResource(
+    R.string.perfhud_three_values,
+    millis(stats.p50Millis),
+    millis(stats.p90Millis),
+    millis(stats.p99Millis),
+)
 
 @Composable
 internal fun millis(value: Float): String = stringResource(R.string.perfhud_value_millis, decimal(value, 1))
