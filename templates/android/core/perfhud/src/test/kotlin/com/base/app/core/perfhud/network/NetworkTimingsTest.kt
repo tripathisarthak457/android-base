@@ -27,10 +27,28 @@ class NetworkTimingsTest {
             ),
         )
 
-        assertEquals(listOf("GET /posts", "GET /users/1", "POST /posts"), timings.endpoints.map { it.endpoint })
+        assertEquals(listOf("GET /posts", "GET /users/{id}", "POST /posts"), timings.endpoints.map { it.endpoint })
         assertEquals(2, timings.endpoints.first().requests)
         assertEquals(1, timings.failures)
-        assertEquals(1, timings.endpoints.single { it.endpoint == "GET /users/1" }.failures)
+        assertEquals(1, timings.endpoints.single { it.endpoint == "GET /users/{id}" }.failures)
+    }
+
+    @Test
+    fun `calls for different items are one endpoint`() {
+        val timings = NetworkTimings.of(
+            listOf(
+                exchange("/posts/1/comments", 100),
+                exchange("/posts/2/comments", 300),
+                exchange("/orders/3f2b8c1e-9a4d-4e6f-8b7a-1c2d3e4f5a6b", 50),
+                exchange("/orders/2c9d7e10-1b2a-4c3d-9e8f-7a6b5c4d3e2f", 70),
+                exchange("/posts/v2", 80),
+            ),
+        )
+
+        assertEquals(
+            listOf("GET /posts/{id}/comments" to 2, "GET /orders/{id}" to 2, "GET /posts/v2" to 1),
+            timings.endpoints.map { it.endpoint to it.requests },
+        )
     }
 
     @Test
