@@ -62,6 +62,11 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
             # Not `--initial-branch`: that needs git 2.28, and an older git fails with a usage error
             # rather than falling back to master.
             git((), "init", "--template=")
+            if os.name == "nt":
+                # Git for Windows skips a path past MAX_PATH unless this is on, and `git add` still
+                # exits 0: where Windows' long paths are on, the commit would lack the project's
+                # deepest files, and each later command in the repository would call them too long.
+                git((), "config", "core.longPaths", "true")
             git((), "symbolic-ref", "HEAD", "refs/heads/main")
             git((), "add", ".")
             # Taken from the index: update-index refuses a path it does not hold, such as a script
@@ -98,10 +103,7 @@ def _without_the_callers_configuration(home: Path) -> dict[str, str]:
 def _git(project: Path, environment: dict[str, str], config: tuple[str, ...], *arguments: str) -> str:
     """Runs `git <arguments>` in `project` and returns what it printed. Raises _GitFailed."""
     result = subprocess.run(
-        # Git for Windows skips a path past MAX_PATH unless core.longPaths is on, and `git add`
-        # still exits 0: where Windows' long paths are on, the commit would lack the project's
-        # deepest files. Other gits ignore the setting.
-        ["git", "-c", "core.longPaths=true", *config, *arguments],
+        ["git", *config, *arguments],
         cwd=project,
         env=environment,
         capture_output=True,

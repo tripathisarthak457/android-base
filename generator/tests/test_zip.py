@@ -152,6 +152,13 @@ class ZipTest(unittest.TestCase):
             deep.write(b"deep\n")
         self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
         self.assertIn(relative, committed(self.project))
+        # And the user's next command sees it, whatever their own git configuration says.
+        with tempfile.TemporaryDirectory() as home, environment({"HOME": home, "XDG_CONFIG_HOME": home}):
+            status = subprocess.run(
+                ["git", "status", "--porcelain"], cwd=self.project, capture_output=True, text=True,
+                env={**os.environ, "GIT_CONFIG_NOSYSTEM": "1"},
+            )
+        self.assertEqual((0, "", ""), (status.returncode, status.stdout, status.stderr))
 
     def assert_is_the_generators_commit(self, project: Path, hostile: Hostile) -> None:
         on_disk = {
