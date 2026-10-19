@@ -20,10 +20,11 @@ test("unticking any feature leaves nothing on that needs it", () => {
 });
 
 test("unticking a transitive requirement takes every dependent with it", () => {
-  const selected = closeOver(["push"], target);
-  const { next, alsoRemoved } = toggleFeature(selected, "analytics", target);
-  assert.deepEqual([...next].sort(), ["flags"]);
-  assert.deepEqual(alsoRemoved.sort(), ["firebase", "push"]);
+  // Google sign-in needs auth, which needs forms: unticking forms takes both.
+  const selected = closeOver(["googlesignin"], target);
+  const { next, alsoRemoved } = toggleFeature(selected, "forms", target);
+  assert.deepEqual([...next].sort(), ["network"]);
+  assert.deepEqual(alsoRemoved.sort(), ["auth", "googlesignin"]);
 });
 
 test("ticking a feature adds what it needs and says which", () => {
@@ -39,13 +40,20 @@ test("a feature nobody can tick leaves with the last feature that brought it", (
   const lean = presetFeatures(target, "lean");
   const ticked = toggleFeature(lean, "push", target);
   assert.ok(ticked.next.has("firebase"));
-  assert.deepEqual(ticked.alsoAdded.sort(), ["analytics", "firebase", "flags"]);
+  assert.deepEqual(ticked.alsoAdded.sort(), ["firebase"]);
   const unticked = toggleFeature(ticked.next, "push", target);
   assert.equal(unticked.next.has("firebase"), false);
   assert.deepEqual(unticked.alsoRemoved, ["firebase"]);
-  assert.deepEqual([...unticked.next].sort(), [...lean, "analytics", "flags"].sort());
+  assert.deepEqual([...unticked.next].sort(), [...lean].sort());
 
-  const fromEverything = toggleFeature(everything, "push", target).next;
+  // Several features bring Firebase: it stays while any of them is on and leaves with the last.
+  const bringers = target.features.filter((feature) => feature.requires.includes("firebase")).map((feature) => feature.key);
+  assert.ok(bringers.length > 1);
+  let fromEverything = everything;
+  for (const key of bringers) {
+    assert.ok(fromEverything.has("firebase"), `firebase left before ${key}`);
+    fromEverything = toggleFeature(fromEverything, key, target).next;
+  }
   assert.equal(fromEverything.has("firebase"), false);
   assert.ok(fromEverything.has("analytics") && fromEverything.has("flags"));
 });

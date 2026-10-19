@@ -22,13 +22,13 @@ export function androidTarget(catalogue: Catalogue = loadCatalogue()): Target {
 /**
  * The checked-in catalogue plus the two targets the platform step is built for: a beta
  * multiplatform target with a smaller feature set and no signing keys, and an iOS target that is
- * coming soon. Their `ios` fields and rules are the ones the iOS generator declares. The generator
- * ships only Android so far, so the platform logic is tested on these.
+ * coming soon. Their `ios` fields and rules are the ones the iOS generator declares. The platform
+ * logic is tested on these fixed targets rather than on whichever the generator ships.
  */
 export function threePlatformCatalogue(): Catalogue {
   const catalogue = loadCatalogue();
   const android = androidTarget(catalogue);
-  const kept = new Set(["network", "coil", "database", "room", "sample", "settings", "onboarding", "language", "catalog"]);
+  const kept = new Set(["network", "coil", "database", "sample", "settings", "onboarding", "language", "catalog"]);
   const features = android.features.filter((feature) => kept.has(feature.key));
   const multiplatform: Target = {
     ...android,

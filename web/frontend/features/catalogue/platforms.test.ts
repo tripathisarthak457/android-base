@@ -39,7 +39,8 @@ test("offering a target does not make one the generator holds back selectable", 
 });
 
 test("announced platforms are shown as coming soon until the catalogue has them", () => {
-  const androidOnly = platformsOf(loadCatalogue(), ANNOUNCED);
+  const loaded = loadCatalogue();
+  const androidOnly = platformsOf({ ...loaded, targets: loaded.targets.filter((target) => target.key === "android") }, ANNOUNCED);
   assert.deepEqual(
     androidOnly.map((platform) => [platform.key, platform.status]),
     [

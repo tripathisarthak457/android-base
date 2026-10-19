@@ -21,7 +21,9 @@ test("a licensed feature offered on two platforms is listed once", () => {
       features: target.features.map((feature) => (feature.key === "coil" ? { ...feature, licence } : feature)),
     })),
   };
-  assert.deepEqual(licensedFeatures(catalogue).map((feature) => feature.key), ["coil"]);
+  const keys = licensedFeatures(catalogue).map((feature) => feature.key);
+  assert.deepEqual(keys.filter((key) => key === "coil"), ["coil"]);
+  assert.equal(new Set(keys).size, keys.length, `listed twice: ${keys}`);
 });
 
 test("a licensed feature only a coming-soon target offers is not named", () => {
@@ -31,10 +33,10 @@ test("a licensed feature only a coming-soon target offers is not named", () => {
     ...base,
     targets: base.targets.map((target) =>
       target.status === "coming_soon"
-        ? { ...target, features: target.features.map((feature) => (feature.key === "room" ? { ...feature, licence } : feature)) }
+        ? { ...target, features: target.features.map((feature) => (feature.key === "database" ? { ...feature, licence } : feature)) }
         : target,
     ),
   };
   assert.ok(catalogue.targets.some((target) => target.status === "coming_soon"));
-  assert.deepEqual(licensedFeatures(catalogue), []);
+  assert.deepEqual(licensedFeatures(catalogue), licensedFeatures(base));
 });

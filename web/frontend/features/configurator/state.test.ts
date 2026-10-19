@@ -63,7 +63,7 @@ test("an untick that takes dependents with it can be undone", () => {
   const everything = state.features;
   state = run(state, { type: "feature", key: "analytics" });
   assert.equal(state.hint?.on, false);
-  assert.deepEqual([...(state.hint?.alsoRemoved ?? [])].sort(), ["firebase", "push"]);
+  assert.deepEqual([...(state.hint?.alsoRemoved ?? [])].sort(), ["crashlytics", "firebaseanalytics"]);
   state = run(state, { type: "undoToggle" });
   assert.deepEqual(state.features, everything);
   assert.equal(state.hint, null);
@@ -130,7 +130,7 @@ test("a customised feature set keeps what the new platform also has", () => {
   state = reducer(state, { type: "preset", key: "lean" }, three);
   state = reducer(state, { type: "feature", key: "database" }, three);
   state = reducer(state, { type: "target", target: "multiplatform" }, three);
-  assert.deepEqual(state.features, ["coil", "database", "network", "room"]);
+  assert.deepEqual(state.features, ["coil", "database", "network"]);
 });
 
 test("a design style that needs a feature turns it on", () => {
@@ -146,7 +146,13 @@ test("a design style that needs a feature turns it on", () => {
 
 test("Firebase is not sent once the feature that brought it is unticked", () => {
   const tickedAndUnticked = run(initialState(catalogue), { type: "preset", key: "lean" }, { type: "feature", key: "push" }, { type: "feature", key: "push" });
-  const fromEverything = run(initialState(catalogue), { type: "preset", key: "everything" }, { type: "feature", key: "push" });
+  // Several features bring Firebase; from everything, unticking them all is what leaves it out.
+  const bringers = findTarget(catalogue, "android").features.filter((feature) => feature.requires.includes("firebase"));
+  const fromEverything = run(
+    initialState(catalogue),
+    { type: "preset", key: "everything" },
+    ...bringers.map((feature) => ({ type: "feature" as const, key: feature.key })),
+  );
   for (const state of [tickedAndUnticked, fromEverything]) {
     assert.deepEqual((toSpecV2(state, catalogue).features as string[]).filter((key) => key === "push" || key === "firebase"), []);
   }
