@@ -356,7 +356,7 @@ function SigningPanel({ model, field, rules, available }: { model: ConfiguratorM
                     and it has to be read and saved somewhere before the tab closes. */}
                 <TextInput
                   aria-describedby={message}
-                  aria-invalid={error !== undefined && passwordProblem(signing.passwords[name] ?? "", rules) !== undefined ? true : undefined}
+                  aria-invalid={error !== undefined && passwordProblem(signing.passwords[name] ?? "", rules, true) !== undefined ? true : undefined}
                   value={signing.passwords[name] ?? ""}
                   onChange={(event) => dispatch({ type: "signing", value: { passwords: { ...signing.passwords, [name]: event.target.value } } })}
                   className="h-9 font-mono text-xs"
