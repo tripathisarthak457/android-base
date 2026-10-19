@@ -1,0 +1,279 @@
+== held.png crops: SSIM PSNR(dB) against bg-tex, then against bg-head
+bg-head  TEXT1  vs tex: 0.925409 23.006057       vs head: 1.000000 inf
+bg-head  TEXT2  vs tex: 0.958959 25.818561       vs head: 1.000000 inf
+bg-head  ICON   vs tex: 0.999974 64.745132       vs head: 1.000000 inf
+bg-tex   TEXT1  vs tex: 1.000000 inf             vs head: 0.925409 23.006057
+bg-tex   TEXT2  vs tex: 1.000000 inf             vs head: 0.958959 25.818561
+bg-tex   ICON   vs tex: 1.000000 inf             vs head: 0.999974 64.745132
+bg-c1    TEXT1  vs tex: 1.000000 inf             vs head: 0.925409 23.006057
+bg-c1    TEXT2  vs tex: 1.000000 inf             vs head: 0.958959 25.818561
+bg-c1    ICON   vs tex: 1.000000 inf             vs head: 0.999974 64.745132
+bg-c2    TEXT1  vs tex: 1.000000 inf             vs head: 0.925409 23.006057
+bg-c2    TEXT2  vs tex: 1.000000 inf             vs head: 0.958959 25.818561
+bg-c2    ICON   vs tex: 1.000000 inf             vs head: 0.999974 64.745132
+== commit recording: mean luma difference of each composed frame from the one before (frame time s: diff)
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 62 >= 62
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 94 >= 94
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 95 >= 95
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 96 >= 96
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+    Last message repeated 1 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+    Last message repeated 3 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+    Last message repeated 2 times
+[image2 @ 000002800809b3c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 102 >= 102
+    Last message repeated 2 times
+-- bg-head (103 frames)
+1.333556:0.0399488 1.348389:0.00529948 1.355078:0.00205469 1.367878:0.0286328 1.383844:0.0500434 1.393844:0.393898 1.402611:0.0851259 1.412222:5.26783 1.419222:9.25232 1.430378:0.0207161 1.442111:0.00946701 1.454922:10.5908 1.462544:0.015283 1.471844:0.0263793 1.480544:10.0553 1.487256:0.0327969 1.504011:0.397431 1.5127:9.24303 1.520789:0.0252092 1.5376:0.197318 1.5529:8.32434 1.562378:0.0483707 1.5708:0.0186094 1.579511:7.5511 1.586944:0.0215009 1.595722:0.021737 1.6045:6.62375 1.611789:0.0321814 1.635667:0.0713212 1.646956:6.18464 1.656033:0.0635694 1.669778:0.0203698 1.680144:5.66439 1.689244:0.146244 1.702078:0.0227951 1.720689:5.25054 1.729489:0.0273212 1.7375:4.66845 1.745167:0.152398 1.769511:0.194171 1.778311:4.27274 1.787411:0.205041 1.7952:0.017921 1.811878:4.03609 1.821133:0.0183481 1.828256:0.0242708 1.845756:3.78209 1.856044:0.0212005 1.863033:3.724 1.8734:0.242468 1.896267:0.203091 1.913389:3.25367 1.923022:0.214049 1.930056:3.00298 1.936956:0.143782 1.946456:0.024171 1.954122:3.11556 1.9694:0.241854 1.979044:2.48171 1.9872:0.060441 1.995822:0.0311927 2.013378:2.43891 2.020489:0.0129878 2.038011:0.0186589 2.045722:2.51642 2.0529:0.0306571 2.069144:0.252377 2.078744:2.18342 2.086178:0.00861024 3.112:0.106758 3.121478:0.00737934 3.137567:5.27792 3.146067:5.26215 3.153733:5.44036 3.162044:5.94104 3.171333:5.39786 3.183944:5.36767 3.194256:4.14553 3.202789:3.9752 3.213311:3.75754 3.223456:2.71751 3.231644:2.22876 3.239233:2.32387 3.246644:0.746217 3.253889:0.673317 3.262578:0.623048 3.270211:0.694417 3.279256:0.649306 3.287511:0.231854 3.295767:0.344964 3.303311:0.11319 3.312844:0.274794 3.320156:0.070178 3.329178:0.0774175 3.336744:0.0372813 3.345978:0.065934 3.353711:0.0445998 3.362844:0.0423776 3.370144:0.0229366 3.378256:0.0137257 3.386256:0.00769792 3.395767:0.00113802 
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 52 >= 52
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 53 >= 53
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 58 >= 58
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 59 >= 59
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 60 >= 60
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 61 >= 61
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 62 >= 62
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 97 >= 97
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 98 >= 98
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 99 >= 99
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 100 >= 100
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 101 >= 101
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 102 >= 102
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 103 >= 103
+    Last message repeated 2 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+    Last message repeated 1 times
+[image2 @ 00000233d9caa8c0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 105 >= 105
+    Last message repeated 2 times
+-- bg-tex (106 frames)
+1.106111:0.0400347 1.121056:0.00530208 1.128:0.00205469 1.142689:0.0286936 1.149889:0.306277 1.1601:0.139556 1.169667:5.30373 1.181089:0.249465 1.191022:8.89352 1.199178:0.140285 1.208656:0.0194705 1.219856:10.448 1.227656:0.0295885 1.241456:0.0224349 1.250456:9.90688 1.259722:0.013276 1.283089:0.318128 1.293189:8.99376 1.301322:0.032395 1.315578:0.0118385 1.324833:8.07599 1.333422:0.171287 1.342811:7.45256 1.349189:0.178312 1.375478:0.208769 1.384167:6.46666 1.393822:0.184122 1.401422:0.0213663 1.409844:5.87539 1.417967:0.0184531 1.425344:0.0134583 1.434844:5.38782 1.442633:0.0137717 1.467556:0.0524931 1.474378:5.13381 1.4832:0.170661 1.499522:0.209379 1.509278:4.47188 1.517622:0.118988 1.540756:0.159114 1.550111:4.11281 1.560889:0.095447 1.569689:0.010145 1.576833:3.79261 1.583489:0.0084401 1.6088:0.0111988 1.617822:3.72144 1.625478:0.0901363 1.6416:0.160986 1.649322:3.27578 1.658922:0.182161 1.668867:0.0226024 1.676822:3.07549 1.684778:0.0158568 1.701433:0.0219957 1.708811:2.89564 1.716578:0.198422 1.733456:0.0701858 1.744489:2.8344 1.753856:0.123339 1.762422:0.0269696 1.770389:2.51519 1.778589:0.0141424 1.791344:0.0264661 1.800133:2.37669 1.808467:0.231186 1.8176:0.0207474 1.825089:2.21956 1.8408:0.00658507 1.851656:0.00955035 1.858133:2.2081 1.866089:0.109182 2.891156:0.215991 2.900778:0.00888715 2.908467:5.22147 2.9163:5.33817 2.925233:5.40704 2.933789:5.94761 2.942344:5.28653 2.9504:4.8317 2.959122:4.59432 2.967367:3.81469 2.975789:3.38274 2.986689:2.83603 2.997067:2.20966 3.005944:1.76568 3.012844:0.327918 3.020689:1.02229 3.028:0.557465 3.035022:0.46675 3.042156:0.506587 3.050056:0.211186 3.059611:0.435816 3.067189:0.110069 3.074767:0.186522 3.083833:0.0816293 3.091156:0.0676467 3.100689:0.0399288 3.107878:0.0579714 3.117022:0.0469028 3.124322:0.035158 3.135467:0.0255191 3.142911:0.0219245 3.149444:0.0196181 3.158633:0.0125399 
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+    Last message repeated 2 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 33 >= 33
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 77 >= 77
+    Last message repeated 1 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 78 >= 78
+    Last message repeated 2 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 79 >= 79
+    Last message repeated 2 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 80 >= 80
+    Last message repeated 2 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 81 >= 81
+    Last message repeated 2 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 82 >= 82
+    Last message repeated 2 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 83 >= 83
+    Last message repeated 2 times
+[image2 @ 000001a3a65eea80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 84 >= 84
+    Last message repeated 3 times
+-- bg-c1 (85 frames)
+0.918222:0.0395816 0.935078:0.00528819 0.943389:0.00205208 0.959067:0.0285061 0.967156:0.306371 0.979378:0.139343 0.987733:5.30362 0.995789:0.0701398 1.012678:8.92968 1.037867:0.216933 1.0495:10.4138 1.064456:0.222494 1.072567:9.91054 1.089022:0.250933 1.0976:9.02583 1.114044:0.146077 1.124:8.11365 1.138011:0.167609 1.146778:7.46954 1.155378:0.178144 1.163367:6.47161 1.196822:0.238126 1.2074:5.9017 1.231189:0.296352 1.238456:5.34727 1.264311:0.298217 1.272622:5.10766 1.288344:0.264112 1.298378:4.49593 1.331811:0.363108 1.3394:4.12478 1.346344:0.283666 1.355122:3.83598 1.388889:0.369449 1.397733:3.70521 1.4126:0.396464 1.424333:3.24429 1.438933:0.376082 1.448378:3.03743 1.473156:0.380539 1.479833:2.8666 1.5042:0.369991 1.513556:2.80365 1.530533:0.398425 1.539:2.49509 1.571311:0.387174 1.580789:2.36942 1.6059:0.387995 1.614944:2.19454 1.6543:0.391416 1.662711:2.15864 2.688233:0.177891 2.704622:0.660228 2.713722:4.5114 2.721867:5.5894 2.730211:5.21609 2.738367:5.36536 2.747289:5.51903 2.758989:4.69119 2.767189:4.13186 2.775022:3.67607 2.783467:3.48181 2.791344:2.71244 2.802067:2.26443 2.812944:1.74233 2.821189:0.169516 2.829433:0.838749 2.838989:0.468655 2.846411:0.599397 2.855656:0.48037 2.863978:0.283769 2.8721:0.228865 2.879989:0.101 2.889111:0.178866 2.897522:0.0810286 2.905767:0.0739583 2.913267:0.0449852 2.922511:0.0604931 2.931222:0.0474878 2.9388:0.0450825 2.946756:0.0257778 2.955556:0.0115903 2.962489:0.00391319 2.971989:0.00126736 
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 29 >= 29
+    Last message repeated 1 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+    Last message repeated 1 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 33 >= 33
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+    Last message repeated 1 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 41 >= 41
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+    Last message repeated 2 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 44 >= 44
+    Last message repeated 1 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 1 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 50 >= 50
+    Last message repeated 1 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 51 >= 51
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 81 >= 81
+    Last message repeated 1 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 82 >= 82
+    Last message repeated 2 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 83 >= 83
+    Last message repeated 2 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 84 >= 84
+    Last message repeated 2 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 85 >= 85
+    Last message repeated 2 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 86 >= 86
+    Last message repeated 3 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 87 >= 87
+    Last message repeated 2 times
+[image2 @ 0000018beac69a00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 88 >= 88
+    Last message repeated 2 times
+-- bg-c2 (89 frames)
+0.952411:0.0400799 0.9771:0.00529514 0.9923:0.00205382 0.997256:0.0286823 1.009178:0.0500799 1.020856:0.147209 1.032978:0.275106 1.049:0.228145 1.060911:0.298556 1.069189:5.25229 1.087911:0.182213 1.097056:8.85694 1.129711:0.235868 1.1386:10.4459 1.171822:0.0804991 1.181278:9.92041 1.204733:0.371187 1.215067:8.99745 1.238344:0.249332 1.248011:8.07653 1.263211:0.244899 1.279267:7.44805 1.296733:0.253222 1.306133:6.43667 1.321056:0.265957 1.332756:5.8706 1.354433:0.280681 1.366689:5.34029 1.3883:0.287436 1.397867:5.06111 1.420822:0.301957 1.430533:4.45982 1.465344:0.340306 1.473489:4.13406 1.489944:0.183733 1.497644:0.191517 1.506956:3.84899 1.514822:0.265174 1.529989:3.80385 1.5464:0.375826 1.555489:3.16925 1.571589:0.377039 1.580044:3.07536 1.603767:0.396898 1.614856:2.8731 1.6381:0.365834 1.647667:2.78063 1.662589:0.389609 1.673144:2.48465 1.705122:0.374114 1.715656:2.32964 1.7307:0.340885 1.739222:2.19661 1.754144:0.366958 1.7636:2.1638 2.781311:0.235214 2.796244:0.29272 2.805811:4.14821 2.813767:4.73636 2.822511:5.45691 2.8308:5.19827 2.838711:5.21345 2.847133:5.25242 2.855889:4.20437 2.863811:3.67708 2.873122:3.8077 2.884:2.6971 2.894489:2.17838 2.9036:1.65229 2.911367:0.613158 2.918244:0.951019 2.925511:0.547218 2.9334:0.56294 2.940489:0.236151 2.948144:0.390137 2.956144:0.131314 2.963822:0.2597 2.971956:0.0595981 2.980589:0.18026 2.989044:0.0441068 2.9964:0.0506814 3.005544:0.0530069 3.014278:0.0482474 3.021578:0.0312752 3.0311:0.0231658 3.038356:0.0157023 3.046489:0.00754253 3.056922:0.00256076 
+== cancel recording: the same
+-- bg-head (76 frames)
+0.792933:0.0534575 1.068722:0.00536979 1.081644:0.00205469 1.093022:0.0294384 1.100522:0.0343646 1.1067:0.023934 1.114011:0.143049 1.126489:5.3549 1.138656:0.520717 1.146111:0.0290165 1.162044:9.22073 1.2144:10.5005 1.254033:10.0613 1.263944:0.170067 1.287878:9.15526 1.305033:0.0372899 1.320644:8.09603 1.337622:0.244237 1.356278:7.81151 1.364267:0.0205035 1.380333:6.46436 1.396156:0.135121 1.413489:5.98599 1.438311:0.193681 1.4551:5.44508 1.463989:0.119554 1.481967:4.93521 1.497156:0.141483 1.512111:4.69111 1.529356:0.190911 1.555133:4.20411 1.572544:3.97655 1.587489:0.0184297 1.6133:3.67499 1.630367:0.0362153 1.655467:3.58854 1.671744:2.85144 1.688022:0.0124219 1.714456:3.14004 1.723011:0.0187326 1.737578:2.77778 1.755111:0.138418 1.770789:2.67679 1.7803:0.196676 1.795667:2.26735 1.821389:0.149644 1.845833:2.50735 1.855189:0.0125833 1.8791:1.9659 2.505589:0.10951 2.522278:1.94839 2.539433:0.0919297 2.554578:2.48106 2.578811:0.0924852 2.596478:2.2164 2.621044:0.0801276 2.639211:2.59239 2.655944:0.323212 2.672367:16.5979 3.421722:0.115569 3.434367:0.000529514 3.444133:0.00457292 3.451367:2.69097 3.458167:7.20486 3.464422:6.07639 3.471078:6.07639 3.482533:6.07639 3.489222:6.07639 3.496678:6.07639 3.508044:6.07639 3.516478:6.07639 3.523644:6.07639 3.532022:6.07639 3.538778:6.07639 4.881111:0.0946771 
+-- bg-tex (77 frames)
+1.058122:0.0399227 1.074089:0.00529601 1.086956:0.00205382 1.095967:0.302028 1.101411:0.00371441 1.108033:0.073224 1.126033:5.30525 1.134633:0.0685885 1.151878:8.89327 1.176022:10.459 1.186389:0.183753 1.202178:9.84282 1.210867:0.0324957 1.226089:8.96698 1.242867:0.23247 1.2593:8.04231 1.276311:0.201133 1.293911:7.41314 1.310522:0.175226 1.328356:6.39699 1.335867:0.145982 1.351189:5.81172 1.370411:0.178033 1.384122:5.29166 1.401278:0.185363 1.419611:5.01061 1.435456:0.155803 1.451022:4.39777 1.4612:0.141836 1.476233:4.05378 1.485389:0.167145 1.503556:3.73604 1.527133:0.157689 1.542556:3.6073 1.560544:0.142065 1.5757:3.19874 1.592911:0.1643 1.609811:2.99195 1.620489:0.105065 1.634189:2.82256 1.6428:0.170082 1.660444:2.72711 1.676789:0.154503 1.692822:2.43206 1.710456:0.149152 1.726478:2.29475 1.744111:0.146141 1.761233:2.15307 1.768956:0.0389722 1.784078:2.10222 2.410856:0.111348 2.436189:2.10006 2.454444:0.11228 2.469389:2.14201 2.485011:0.104612 2.5038:2.27796 2.526856:0.0896719 2.543567:2.4097 2.561711:0.333356 2.576633:16.5752 3.294533:0.110288 3.306444:0.00188976 3.317644:0.00200868 3.327644:4.86111 3.338022:7.98611 3.346833:0 3.353433:2.08333 3.3616:0 3.368744:2.08333 3.381833:0 3.389644:2.08333 3.399244:0 3.406711:2.08333 3.414822:0 3.422178:2.08333 3.433444:0 
+-- bg-c1 (63 frames)
+0.984356:0.0399201 0.998156:0.00529427 1.010322:0.00205469 1.017478:0.0285773 1.032044:0.32341 1.040656:0.123761 1.048633:5.2904 1.058711:0.28997 1.071189:0.0303533 1.079189:8.85882 1.102422:10.439 1.127444:9.87758 1.161067:8.98388 1.1781:0.169028 1.188144:8.03594 1.202233:0.185243 1.213978:7.41864 1.2369:0.242264 1.245133:6.44121 1.262244:0.0666684 1.269789:5.88322 1.286833:0.168831 1.296978:5.3317 1.319867:0.203377 1.328356:5.03584 1.344611:0.156677 1.354156:4.46263 1.3637:0.243728 1.370744:4.10137 1.394478:0.0750773 1.403111:3.80799 1.419822:0.194984 1.4288:3.68825 1.454189:0.0715208 1.462311:3.2737 1.485611:0.0725773 1.496667:3.07229 1.518944:0.202464 1.529856:2.85859 1.5525:0.168099 1.563344:2.77015 1.577244:0.210964 1.589811:2.47731 1.610456:0.194865 1.627289:2.32109 1.635622:0.0151875 1.644844:2.17895 1.677089:0.188559 1.685978:2.14413 2.330489:0.182034 2.345178:2.15226 2.369189:0.197059 2.3795:2.18362 2.410811:0.170941 2.420478:2.3213 2.454411:0.183843 2.468856:2.4596 2.477489:0.263724 2.4878:16.6257 3.246456:0.157025 3.257178:0.00807118 3.2679:0.000297743 
+-- bg-c2 (65 frames)
+0.0285222:0.232415 0.891289:0.00611285 0.900167:0.00203299 0.911211:0.0326502 0.918722:0.0346623 0.934844:0.140575 0.947189:0.0834375 0.959789:0.336128 0.971311:0.188925 0.979:5.53827 0.993456:0.244375 1.003522:8.88119 1.0436:10.4536 1.077733:9.87962 1.1026:0.360878 1.113567:8.94997 1.128078:0.218878 1.144178:8.04697 1.160622:0.188028 1.169078:7.40209 1.185011:0.196669 1.194356:6.43913 1.227922:0.183591 1.237711:5.86405 1.261111:0.191337 1.270167:5.33496 1.285189:0.204068 1.294633:5.06229 1.3194:0.18833 1.328222:4.47483 1.352289:0.196316 1.368789:4.10958 1.377956:0.0309141 1.3856:3.78648 1.409989:0.178505 1.4221:3.67909 1.4443:0.198339 1.455089:3.22499 1.469622:0.21796 1.484378:3.02616 1.494956:0.179201 1.510678:2.83005 1.529556:0.175794 1.537789:2.72091 1.5615:0.170313 1.577233:2.45352 1.587556:2.30663 1.611767:0.121978 1.620056:2.16153 1.634411:0.162764 1.6459:2.12467 2.286:0.195012 2.302422:2.11883 2.337589:0.146839 2.347167:2.1673 2.3612:0.166356 2.378933:2.30725 2.394178:0.164642 2.403956:2.44058 2.426389:0.388172 2.436867:16.6159 3.1786:0.228976 3.189022:0.0149054 3.199678:0.00390278 
+== GPU memory (Total GPU memory usage, then its purgeable line) at each point
+bg-head  before     3737799 bytes, 3.56 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 3737799 bytes, 3.56 MB (64.00 bytes is purgeable);
+bg-head  held       2894359 bytes, 2.76 MB (64.00 bytes is purgeable) |  1501401 bytes, 1.43 MB (0.00 bytes is purgeable); 2894359 bytes, 2.76 MB (64.00 bytes is purgeable);
+bg-head  after1     2331079 bytes, 2.22 MB (3.02 KB is purgeable) |  2023050 bytes, 1.93 MB (0.00 bytes is purgeable); 2331079 bytes, 2.22 MB (3.02 KB is purgeable);
+bg-head  after35    2331079 bytes, 2.22 MB (3.02 KB is purgeable) |  2023050 bytes, 1.93 MB (0.00 bytes is purgeable); 2331079 bytes, 2.22 MB (3.02 KB is purgeable);
+bg-head  edgehold   5371639 bytes, 5.12 MB (64.00 bytes is purgeable) |  2023050 bytes, 1.93 MB (0.00 bytes is purgeable); 5371639 bytes, 5.12 MB (64.00 bytes is purgeable);
+bg-head  edgeafter  5371639 bytes, 5.12 MB (64.00 bytes is purgeable) |  2023050 bytes, 1.93 MB (0.00 bytes is purgeable); 5371639 bytes, 5.12 MB (64.00 bytes is purgeable);
+bg-tex   before     3710695 bytes, 3.54 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 3710695 bytes, 3.54 MB (64.00 bytes is purgeable);
+bg-tex   held       12916855 bytes, 12.32 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12916855 bytes, 12.32 MB (64.00 bytes is purgeable);
+bg-tex   after1     12915143 bytes, 12.32 MB (10.10 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12915143 bytes, 12.32 MB (10.10 MB is purgeable);
+bg-tex   after35    12915143 bytes, 12.32 MB (10.10 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12915143 bytes, 12.32 MB (10.10 MB is purgeable);
+bg-tex   edgehold   15905991 bytes, 15.17 MB (10.09 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 15905991 bytes, 15.17 MB (10.09 MB is purgeable);
+bg-tex   edgeafter  15905991 bytes, 15.17 MB (10.09 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 15905991 bytes, 15.17 MB (10.09 MB is purgeable);
+bg-c1    before     3816151 bytes, 3.64 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 3816151 bytes, 3.64 MB (64.00 bytes is purgeable);
+bg-c1    held       12913895 bytes, 12.32 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12913895 bytes, 12.32 MB (64.00 bytes is purgeable);
+bg-c1    after1     12912183 bytes, 12.31 MB (10.10 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12912183 bytes, 12.31 MB (10.10 MB is purgeable);
+bg-c1    after35    12912183 bytes, 12.31 MB (10.10 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12912183 bytes, 12.31 MB (10.10 MB is purgeable);
+bg-c1    edgehold   15930135 bytes, 15.19 MB (10.09 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 15930135 bytes, 15.19 MB (10.09 MB is purgeable);
+bg-c1    edgeafter  15930135 bytes, 15.19 MB (10.09 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 15930135 bytes, 15.19 MB (10.09 MB is purgeable);
+bg-c2    before     3764903 bytes, 3.59 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 3764903 bytes, 3.59 MB (64.00 bytes is purgeable);
+bg-c2    held       12916855 bytes, 12.32 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12916855 bytes, 12.32 MB (64.00 bytes is purgeable);
+bg-c2    after1     12915143 bytes, 12.32 MB (10.10 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12915143 bytes, 12.32 MB (10.10 MB is purgeable);
+bg-c2    after35    12915143 bytes, 12.32 MB (10.10 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 12915143 bytes, 12.32 MB (10.10 MB is purgeable);
+bg-c2    edgehold   15910487 bytes, 15.17 MB (64.00 bytes is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 15910487 bytes, 15.17 MB (64.00 bytes is purgeable);
+bg-c2    edgeafter  15910487 bytes, 15.17 MB (10.09 MB is purgeable) |  163898 bytes, 160.06 KB (0.00 bytes is purgeable); 15910487 bytes, 15.17 MB (10.09 MB is purgeable);
+== meminfo: Graphics and GL mtrack (kB) at each point
+bg-head  before    Graphics: 54848 54848 |  GL mtrack 384 384 0 0 384  |  TOTAL 105585 83320 15616 214 224232 50286 24219 26066
+bg-head  held      Graphics: 56192 56192 |  GL mtrack 384 384 0 0 384  |  TOTAL 114739 86420 21200 130 234812 53746 27733 26012
+bg-head  after1    Graphics: 55256 55256 |  GL mtrack 384 384 0 0 384  |  TOTAL 115781 87460 21204 130 235848 55418 28681 26736
+bg-head  after35   Graphics: 55256 55256 |  GL mtrack 384 384 0 0 384  |  TOTAL 115731 87372 21236 130 235800 55510 28806 26703
+bg-tex   before    Graphics: 54880 54880 |  GL mtrack 384 384 0 0 384  |  TOTAL 106234 83492 15944 214 225356 50166 24275 25890
+bg-tex   held      Graphics: 55040 55040 |  GL mtrack 384 384 0 0 384  |  TOTAL 109348 80560 21532 130 229880 48966 22592 26373
+bg-tex   after1    Graphics: 55072 55072 |  GL mtrack 384 384 0 0 384  |  TOTAL 109455 80680 21516 130 229988 48782 22453 26328
+bg-tex   after35   Graphics: 55072 55072 |  GL mtrack 384 384 0 0 384  |  TOTAL 109520 80688 21560 130 230432 48854 22556 26297
+bg-c1    before    Graphics: 54856 54856 |  GL mtrack 384 384 0 0 384  |  TOTAL 105861 83144 15980 214 224772 51514 23919 27594
+bg-c1    held      Graphics: 55040 55040 |  GL mtrack 384 384 0 0 384  |  TOTAL 109709 80968 21532 130 230048 49230 22572 26657
+bg-c1    after1    Graphics: 55068 55068 |  GL mtrack 384 384 0 0 384  |  TOTAL 109624 80888 21524 130 229964 49054 22430 26623
+bg-c1    after35   Graphics: 55068 55068 |  GL mtrack 384 384 0 0 384  |  TOTAL 108988 80204 21584 130 229316 48922 22310 26611
+bg-c2    before    Graphics: 54852 54852 |  GL mtrack 384 384 0 0 384  |  TOTAL 105514 83152 15636 214 224436 51446 23938 27507
+bg-c2    held      Graphics: 55032 55032 |  GL mtrack 384 384 0 0 384  |  TOTAL 109481 81100 21172 130 229840 49178 22624 26553
+bg-c2    after1    Graphics: 55060 55060 |  GL mtrack 384 384 0 0 384  |  TOTAL 109356 80972 21188 130 229700 49046 22484 26561
+bg-c2    after35   Graphics: 55060 55060 |  GL mtrack 384 384 0 0 384  |  TOTAL 108899 80476 21232 130 229240 48898 22360 26537

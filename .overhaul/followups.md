@@ -115,3 +115,41 @@ that needs another package's code first. WP13 closes every item (or records why 
   posing the arriving page from the source's bounds, the slide as the fall-back), so no `sharedTransitions` option
   and no `SharedTransitionLayout` lookahead; WP02-M2's handoff waits on this. Then WP02-M3's sample opens a row's
   detail with it, and `perf.sh pushpop` and a `record.sh push` strip verify it (composing frame within +1 ms).
+
+## WIN
+
+- **The generator suite has never run on a POSIX host (for the orchestrator, before the next merge onto
+  `4dd3aca`).** WIN changed host-dependent code on every host (placement through `placement.place`, which the API's
+  zips take on Linux in production; `is_link`; `_delete_tree`; `git_init`; tests shown a Windows host on
+  `posixpath`), and all of it has run only on this Windows machine. `ci.yml` starts only on a push to `main` and on
+  a pull request, so backup pushes never run it. Route: a draft pull request from `wp/WIN` into
+  `overhaul/multiplatform-v2` (it fires `pull_request`; `deploy` cannot run), which needs the user's yes (global
+  CLAUDE.md section 8). The command, what it starts, and how to read the Generator job: `handoff/WIN.md`, Open
+  issues. Record the result there.
+  Oct 19, WIN fix#2: it ran once (PR #1 at `c91798a`): two `test_keystores` failures, fixed or explained on
+  `wp/WIN` (`e323eed`). It has not run on the new head: push `wp/WIN` so PR #1 re-runs, read the Generator job,
+  record it in `handoff/WIN.md` (Open issues), then close the PR unmerged.
+- **Whether keystore passwords must be printable ASCII (the keystores' owner; the website's rules).** Oct 19, WIN
+  fix#3: decided on `wp/WIN` (`ee311a8`) after the review found the skip hid the defect: a key the generator makes
+  needs a printable ASCII password (generator, wizard, website; a key the user brings is unchecked), because JDK 17
+  cannot make or open a PKCS12 store with any other character. Waiting only on the user's confirmation through the
+  orchestrator (question in `handoff/WIN.md`, Open issues); declining means reverting `ee311a8`.
+- **A `windows-latest` generator job in `ci.yml`, on Python 3.12 and 3.11 (WP13, owner of `.github/workflows/**`).**
+  The tests that need Windows' own file system (junction, 8.3 short name, `WindowsPathLimitTest`, the CR guards on a
+  Windows checkout) run only on a developer's machine, and `_delete_tree`'s Python 3.11 `onerror` branch runs only on
+  Windows under 3.11 and has never run. The same two steps as the ubuntu job; `WindowsPathLimitTest` skips with its
+  reason on an image with long paths on. Details: `handoff/WIN.md`, Open issues.
+
+## CI (Oct 19, from the Linux run of PR #1)
+- `ci.yml` is stale against the overhaul: Go 1.24 vs go.mod 1.27; the generated-project jobs import `genkit.spec` and `genkit.translations`, which no longer exist. WIN fixes it now; WP13 reviews CI for the release. Oct 19, WIN fix#2: updated on `wp/WIN` (`ae886b5`: Go from go.mod, the catalogue step on `genkit.core.catalogue`, Generate through `create_project.py`). Second run (39210292751, Oct 19 12:18): the Generator and API jobs pass; the generated-project jobs generate and stop at the compile (next item but one). For WP13's rewrite: the interim Generate step runs `create_project.py`; MASTER-PLAN A12.7 generates the matrix through `generate_headless.py` as the API does, and the interim choice carries no rationale to keep (WIN fix#4 review, Oct 19; the comment that gave one is gone).
+- The Vercel preview build of PR #1 failed; cause not read (needs the user's Vercel login). WP10 / WP13 to check before the release.
+- The four generated-project jobs (second run, 39210292751 at `ae886b5`) generate but fail to compile:
+  `:data:orders` reports `Unresolved reference 'AppResult'` (`OrdersRepository.kt` lines 3, 18, 26). Owner WP02:
+  the integration branch's `scaffold.py` still writes the packages and MVI shape from before `c3895f86` (Oct 9,
+  `AppResult` moved to `core.common.result`, MVI to `:core:mvi`), a known issue in
+  `tests/consistency/known_issues.toml` ("WP02-M2 rewrites it"). `wp/WP02` already has that rewrite
+  (`snippets/scaffold/**`, importing `core.common.result.AppResult`, `core.mvi.*`, `core.common.navigation.AppNavKey`)
+  and drops the known issue, so these jobs can pass only once WP02-M2 merges; `:feature:orders` may show more of
+  the same after `:data:orders`. Not fixed on `wp/WIN`: it would duplicate WP02-M2's rewrite in WP02's path and
+  conflict with it. WP02: after the merge, the CI spec (`feature_modules: ["orders"]`) is the regression test;
+  confirm it compiles in the next CI run.

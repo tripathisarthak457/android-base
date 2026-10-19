@@ -46,7 +46,12 @@ internal class FrameTotals {
     var frozen: Int = 0
     var longWork: Int = 0
     var busyNanos: Long = 0L
+
+    /** Full durations. */
     val histogram = FrameHistogram()
+
+    /** Main-thread time. */
+    val uiHistogram = FrameHistogram()
 }
 
 /**
@@ -86,8 +91,16 @@ internal data class FrameSummary(
     val uiP50Millis: Float,
     val uiP90Millis: Float,
     val uiP99Millis: Float,
+    /** Main-thread time as a share of each frame's own refresh interval. */
+    val uiP90BudgetShare: Float,
+    val uiP99BudgetShare: Float,
     /** While the app was drawing; idle time does not lower it. */
     val framesPerSecond: Float,
+    /**
+     * The highest rate any frame was drawn at: what the display runs at while the app draws. An
+     * adaptive display drops its rate for a lone frame after idle, so the newest frame's rate
+     * would often read low.
+     */
     val refreshHz: Float,
     val screens: List<ScreenFrames>,
 )

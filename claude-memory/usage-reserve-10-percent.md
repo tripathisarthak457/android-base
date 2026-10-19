@@ -1,6 +1,6 @@
 ---
 name: usage-reserve-10-percent
-description: "Usage caps for the overhaul - since Oct 19 09:25: every 5-hour window until the Android release, 80% by day (09:00-21:00 IST), 97% at night, auto-resume after each reset"
+description: "Usage caps for the overhaul - since Oct 19 09:25: every 5-hour window until the Android release, 80% by day (09:00-21:00 IST), 98% at night, auto-resume after each reset"
 metadata:
   node_type: memory
   type: feedback
@@ -9,11 +9,11 @@ metadata:
 ---
 
 **Current rule (the user, Oct 19 09:25, chosen from options with pros and cons): run in every 5-hour window until the
-Android release, 80% by day, 97% at night, resuming by itself.**
+Android release, 80% by day, 98% at night, resuming by itself.**
 - **09:00-21:00 IST (the user's working hours): cap 80%**, so 20% stays free for the user's own work. This also applies
   before 09:00 to a window that resets after 09:00, so 20% is free when the day starts.
-- **21:00-09:00 (the user is asleep): cap 97%.**
-- Stop about 4 points under the cap (day 76%, night 93%) and add 7-minute one-shot checks from about 17 points under:
+- **21:00-09:00 (the user is asleep): cap 98%** (97% until Oct 19 10:47: "next reset in working hours 80% else night etc 98% ok?").
+- Stop about 4 points under the cap (day 76%, night 94%) and add 7-minute one-shot checks from about 17 points under:
   usage rose up to ~15 points per 20 minutes and ~5 per 7 minutes with three workflows.
 - At the cap: stop the workflows (running builds finish), note it, back up, and schedule a one-shot resume 3 minutes
   after the window's reset, so the work never sits idle.

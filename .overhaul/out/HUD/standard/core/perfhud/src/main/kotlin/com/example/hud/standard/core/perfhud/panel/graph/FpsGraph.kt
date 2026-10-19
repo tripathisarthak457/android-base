@@ -45,9 +45,15 @@ internal fun FpsGraph(frames: FrameLog, refreshHz: () -> Float, version: () -> I
             .drawWithCache {
                 val dash = PathEffect.dashPathEffect(floatArrayOf(DashPx, DashPx))
                 val stroke = GraphDefaults.Stroke.toPx()
+                // The rate changes only with the display's, which hands this modifier a new lambda.
+                val refresh = refreshHz()
+                val rateLabel = if (refresh > 0f) {
+                    measurer.measure(String.format(Locale.ROOT, hzFormat, Math.round(refresh)), labelStyle)
+                } else {
+                    null
+                }
                 onDrawBehind {
                     version()
-                    val refresh = refreshHz()
                     frames.copyFramesPerSecond(System.nanoTime(), series)
                     val top = max(refresh, MinScaleHz) * Headroom
                     val slot = size.width / Seconds
@@ -66,12 +72,10 @@ internal fun FpsGraph(frames: FrameLog, refreshHz: () -> Float, version: () -> I
                             size = Size(slot * BarShare, height),
                         )
                     }
-                    if (refresh > 0f) {
+                    if (rateLabel != null) {
                         val y = size.height * (1f - refresh / top)
                         drawLine(guide, Offset(0f, y), Offset(size.width, y), stroke, pathEffect = dash)
-                        val text = String.format(Locale.ROOT, hzFormat, Math.round(refresh))
-                        val label = measurer.measure(text, labelStyle)
-                        drawText(label, color = guide, topLeft = Offset(0f, y - label.size.height))
+                        drawText(rateLabel, color = guide, topLeft = Offset(0f, y - rateLabel.size.height))
                     }
                     drawLine(axis, Offset(0f, size.height), Offset(size.width, size.height), stroke)
                 }

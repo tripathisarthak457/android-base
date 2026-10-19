@@ -80,12 +80,18 @@ internal fun NetworkSection(network: NetworkTimings) {
             Caption(R.string.perfhud_network_none)
             return@Section
         }
-        ValueRow(R.string.perfhud_requests, "${network.requests} (${network.failures})")
+        ValueRow(
+            R.string.perfhud_requests,
+            stringResource(R.string.perfhud_count_and_part, network.requests, network.failures.toString()),
+        )
         ValueRow(
             R.string.perfhud_request_times,
-            listOf(network.medianMillis, network.p90Millis, network.slowestMillis)
-                .map { stringResource(R.string.perfhud_value_millis, it.toString()) }
-                .joinToString(" / "),
+            stringResource(
+                R.string.perfhud_three_values,
+                stringResource(R.string.perfhud_value_millis, network.medianMillis.toString()),
+                stringResource(R.string.perfhud_value_millis, network.p90Millis.toString()),
+                stringResource(R.string.perfhud_value_millis, network.slowestMillis.toString()),
+            ),
         )
         network.endpoints.forEach { endpoint ->
             ValueRow(

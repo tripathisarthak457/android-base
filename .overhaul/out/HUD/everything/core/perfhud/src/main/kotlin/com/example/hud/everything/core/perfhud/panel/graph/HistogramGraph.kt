@@ -20,9 +20,14 @@ import java.util.Locale
 import kotlin.math.min
 
 /**
- * Every frame recorded, counted by duration: one bar per millisecond up to [LastMillis], and one
- * for everything slower, with the current frame budget as a line. A healthy app is a tall bar
- * left of the line and almost nothing right of it.
+ * Every frame recorded, counted by its main-thread time: one bar per millisecond below
+ * [LastMillis], and one for [LastMillis] and slower, with one refresh interval as a line, the time
+ * the main thread has for each frame. A healthy app is a tall bar left of the line and almost
+ * nothing right of it. Main-thread time rather than the full duration, which the render pipeline
+ * lets run past one interval in frames that are on time.
+ *
+ * [budgetMillis] is the interval at the display's rate while drawing (`FrameSummary.refreshHz`):
+ * a frame that an adaptive display drew at a lower rate had more time than the line shows.
  */
 @Composable
 internal fun HistogramGraph(
@@ -55,7 +60,7 @@ internal fun HistogramGraph(
                 val stroke = GraphDefaults.Stroke.toPx()
                 onDrawBehind {
                     version()
-                    frames.copyHistogram(histogram)
+                    frames.copyMainThreadHistogram(histogram)
                     binByMillisecond(histogram, bins)
                     val plotHeight = size.height - labelHeight
                     val slot = size.width / Bins
@@ -84,7 +89,11 @@ internal fun HistogramGraph(
     )
 }
 
-/** Folds the histogram's quarter-millisecond buckets into whole milliseconds, the last one open-ended. */
+/**
+ * Folds the histogram's buckets into whole milliseconds, the last bin open-ended. The buckets are
+ * a quarter of a millisecond wide below [LastMillis] and start at or past it from there on, so none
+ * straddles a bin's edge.
+ */
 private fun binByMillisecond(histogram: FrameHistogram, into: IntArray) {
     into.fill(0)
     for (bucket in 0 until FrameHistogram.BUCKETS) {
@@ -95,7 +104,7 @@ private fun binByMillisecond(histogram: FrameHistogram, into: IntArray) {
     }
 }
 
-private const val LastMillis = 33
+private const val LastMillis = 32
 private const val Bins = LastMillis + 1
 private val Ticks = intArrayOf(0, 8, 16, 24, 32)
 private const val BarShare = 0.8f

@@ -1,0 +1,5 @@
+--------- beginning of main
+10-19 12:31:48.200 14026 14082 I PerfHud : window=5s frames=212 fps=67.4 janky=18.4% frameP50=14.8 frameP90=35.9 frameP99=59.8 uiP50=8.1 uiP90=28.2 uiP99=49.8 slow=93 frozen=0 long=2 heapMb=10.3 nativeMb=14.0 pssMb=94.9 gc=1 screen=SampleListKey
+10-19 12:31:53.211 14026 14082 I PerfHud : window=5s frames=466 fps=98.0 janky=14.6% frameP50=12.6 frameP90=29.1 frameP99=38.7 uiP50=5.9 uiP90=22.5 uiP99=29.6 slow=155 frozen=0 long=1 heapMb=15.3 nativeMb=15.7 pssMb=94.9 gc=0 screen=SampleListKey
+10-19 12:31:58.330 14026 14082 I PerfHud : window=5s frames=463 fps=104.2 janky=12.1% frameP50=12.8 frameP90=25.8 frameP99=33.4 uiP50=5.7 uiP90=18.8 uiP99=25.8 slow=169 frozen=0 long=0 heapMb=19.8 nativeMb=16.7 pssMb=179.2 gc=0 screen=SampleListKey
+10-19 12:32:03.284 14026 14082 I PerfHud : exported json=/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-123203.json markdown=/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-123203.md

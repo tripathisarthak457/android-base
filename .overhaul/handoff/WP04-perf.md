@@ -378,6 +378,82 @@ back gesture is the one motion that still hitches mid-way:
   `SlideRecordingTest` keep guarding it. What would still be left of the gesture: 7 GPU-bound frames in six runs and
   the input-cadence hitches perf.py's swipe itself makes.
 
+## 2j. Back gesture, Google's way (Oct 19)
+
+The user, 06:25: "That back gesture fix or implementation do what google says n check also for better idea how to do
+it smoothly". Design: `$OV/research/back-google/DESIGN.md`. Full result: `$O/back-google/RESULT.md`.
+
+**Result: ship T + C1.** Apply `$O/backcard-texture.patch` (T, adopted by the user at 06:16), then
+`$O/back-google/c1.patch`. Both apply with `git apply` to `wp/WP04` `4a15dda6`.
+
+- **T is Google's own technique.** Google's docs say to draw an animated complex view from a hardware layer, for the
+  animation's length. The system's back animation moves a buffer it already has.
+- **C1 makes T frame-exact, with no change to the look.** The held card is pixel-identical to T. It does five things:
+  - **a.** The texture sits on each screen's own inner layer, so it is rendered once per gesture, not twice. `active`
+    is its own state, so the commit composes nothing.
+  - **b.** `Snapshot.sendApplyNotifications()` after each progress write, so each step is drawn in the frame it
+    arrives in.
+  - **c.** The commit is timed from the release instant, so the first frame after the lift already fades.
+  - **d.** A settled cancel ends at once.
+  - **e.** The velocity falls back to the frame clock below API 36.
+- **C2 (a texture prewarm on an edge touch-down) is not shipped.**
+  - It wins slow starts: the first ten frames are presented 9.6 ms sooner, and the first shrink comes 26 ms sooner.
+  - It fails DESIGN §5.7 rule 5: perf.sh's hitch ratio in block 2 was 10.9 ms/s, above all six C1 runs (4.1–8.3).
+  - Its gesture frames take +0.7 ms of GPU.
+  - Every non-gesture touch at the back edge draws two invisible frames (about 22 ms of GPU).
+  - Its numbers are recorded in RESULT.md, worth a re-measure with more runs and a real thumb.
+
+**Method.** Phase 17b's: a ladder of four builds of `e404e391` (`wp/WP04` `4a15dda6` merged here), each with identical
+trace counters.
+- Built by `$OV/research/back-google/bin/build-ladder.win.sh` from `git archive`s; no worktree was edited. Tests: 139,
+  139, 149 and 160 green.
+- One `locked adb` hold, 10:45–12:10 (`$OV/research/back-google/bin/bg-phone.win.sh`, `$O/logs/bg-phone.log`):
+  - perf.sh `pushpop_gesture`, three runs per build in each order;
+  - `back_during_push`;
+  - two Perfetto captures per build of fast swipes, slow starts, cancels, edge touches and edge scrolls;
+  - a held card at 45 %, with GPU memory;
+  - commit and cancel recordings.
+
+| Back gesture | head | T | T + C1 | T + C1 + C2 |
+|---|---|---|---|---|
+| perf.sh hitch ms/s, block 1 / 2 (gate) | 24.5 / 24.6 | 11.0 / 13.8 | **6.9 / 6.9** | 5.5 / 10.9 |
+| perf.sh janky after the first %, block 1 / 2 (gate) | 1.2 / 1.43 | 0.4 / 0.67 | 0.4 / 0.27 | 0.4 / 0.27 |
+| perf.sh janky % / p99 ms, block 1 | 2.68 / 32 | 2.01 / 26 | 2.0 / 28 | 1.85 / 27 |
+| 36 gestures: display hitches / late frames | 82 / 48 | 38 / 22 | **15 / 7** | 18 / 9 |
+| Hitches "on time" (input cadence) | 16 | 23 | **2** | 2 |
+| Texture renders per gesture (16 traced) | 0 | 2 | **1** | 1 |
+| Progress steps drawn a frame late | 161 / 175 | 159 / 173 | **0 / 179** | 0 / 177 |
+| Write → present, fast / slow (ms) | 40.8 / 36.7 | 37.0 / 36.6 | 36.7 / **28.4** | 36.7 / 28.4 |
+| First frame after the release draws alpha | 1.0 | 1.0 | **0.92–0.99** | 0.92–0.99 |
+| Frames after a cancel's release | 13.5 | 14 | **0** | 0 |
+| First gesture frame GPU, slow start (ms) | 9.4 | 12.5 | 13.2 | **3.5** |
+| GPU memory with the card up / after it (MB) | 2.8 / 2.2 | 12.3 / 12.3 (10.1 purgeable) | the same as T | the same as T |
+
+**The input-cadence hitches were the one-frame lag (§2h was wrong about them).**
+- §2h called them perf.py's own input pattern. In fact they were vsyncs in which the platform ticked the progress but
+  Compose applied the write only after the frame, so nothing was drawn.
+- C1-b removed 21 of T's 23.
+- With every vsync drawn, the buffer queue stays as deep as the late first frame made it (frames 11–30: 37.6 ms
+  against T's 31.0 ms).
+- So on a fast swipe C1's touch-to-screen latency equals T's, with 60 % fewer hitches. On slow drags and cancels it
+  is 8.2 ms lower.
+
+**Other findings:**
+- **Text against head.** Text under the texture is softer: SSIM 0.925 and 0.959 against head. Glyphs are in the same
+  place; only the bilinear filtering differs. This is T's known cost, and C1 and C2 add nothing.
+- **Query fix.** `research/back-google/sql/backlat2.sql` drops the repeated progress values this ROM sends, about half
+  of all writes. `backlat.sql` counted them as late.
+- **Cancel jump.** In every build, head included, a cancel's card jumps back to full size where the platform's
+  progress jumps (0.30 → 0 in one event, with injected input). It needs a real-thumb check.
+- **PSS.** Head's perf.sh PSS "less the window's buffers" is about 10 MB above every texture build. Likely cause (not
+  verified): glyph caches at many scales.
+
+**For WP04:**
+- Apply T, then C1.
+- Write the A11.3 rule 1 exception: one `drawLayer` per gesture is now measured, in 16 of 16 gestures.
+- Re-record the baseline profile.
+- Not traced: covers and mid-push gestures. `back_during_push` passes 3 of 3 in every build.
+
 ## 2e. Cold start against the old template
 
 - **Interleaved A/B** (phase 9, `$O/coldstart-ab.win.sh`, 15 rounds of one start each, the old template as the phone

@@ -190,7 +190,7 @@ class PerformanceRecorderTest {
             memorySampler = MemorySampler(),
             startupTimes = StartupTimes(application),
             buildChecks = BuildChecks(application),
-            strictMode = StrictModeWatch(),
+            strictMode = StrictModeWatch(dispatchers),
             logcat = PerfLogcat(),
             scope = scope,
             dispatchers = dispatchers,

@@ -22,6 +22,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -47,6 +48,11 @@ class PerformanceRecorderTest {
 
     // One file, as in the app: every launch in a test reads what the one before it kept.
     private lateinit var settings: RecordingSettings
+    private val launched = mutableListOf<PerformanceRecorder>()
+
+    // A recorder that records has replaced the main thread's StrictMode policy; it gives it back on stop.
+    @After
+    fun stopRecording() = launched.forEach { it.setRecording(false) }
 
     @Test
     fun `a debug build records from launch`() = runTest {
@@ -55,7 +61,6 @@ class PerformanceRecorderTest {
         runCurrent()
 
         assertTrue(recorder.recording.value)
-        recorder.setRecording(false)
     }
 
     @Test
@@ -68,16 +73,21 @@ class PerformanceRecorderTest {
     }
 
     @Test
-    fun `the developer's stored choice wins over the build's default`() = runTest {
-        val releaseLike = launch(debugBuild = false, stored = true)
-        runCurrent()
-        assertTrue(releaseLike.recording.value)
-        releaseLike.setRecording(false)
+    fun `a stored choice to record wins over a release-like build's default`() = runTest {
+        val recorder = launch(debugBuild = false, stored = true)
+
         runCurrent()
 
-        val debug = launch(debugBuild = true, stored = false)
+        assertTrue(recorder.recording.value)
+    }
+
+    @Test
+    fun `a stored choice not to record wins over a debug build's default`() = runTest {
+        val recorder = launch(debugBuild = true, stored = false)
+
         runCurrent()
-        assertFalse(debug.recording.value)
+
+        assertFalse(recorder.recording.value)
     }
 
     @Test
@@ -85,7 +95,6 @@ class PerformanceRecorderTest {
         val recorder = launch(debugBuild = true, stored = true)
 
         createActivity(extra = "off")
-        assertFalse(recorder.recording.value)
         runCurrent()
 
         assertFalse(recorder.recording.value)
@@ -99,7 +108,6 @@ class PerformanceRecorderTest {
         runCurrent()
 
         assertTrue(recorder.recording.value)
-        recorder.setRecording(false)
     }
 
     @Test
@@ -122,7 +130,6 @@ class PerformanceRecorderTest {
 
         assertTrue(recorder.recording.value)
         assertEquals(true, settings.stored())
-        recorder.setRecording(false)
     }
 
     @Test
@@ -142,7 +149,6 @@ class PerformanceRecorderTest {
 
         assertTrue(recorder.recording.value)
         assertEquals(0, recorder.frames.summary().overall.frames)
-        recorder.setRecording(false)
     }
 
     @Test
@@ -168,7 +174,7 @@ class PerformanceRecorderTest {
         }
         if (stored != null) settings.save(stored)
         val feed: FrameFeed = frameFeed(application)
-        return PerformanceRecorder(
+        val recorder = PerformanceRecorder(
             context = application,
             feed = feed,
             settings = settings,
@@ -184,11 +190,13 @@ class PerformanceRecorderTest {
             memorySampler = MemorySampler(),
             startupTimes = StartupTimes(application),
             buildChecks = BuildChecks(application),
-            strictMode = StrictModeWatch(),
+            strictMode = StrictModeWatch(dispatchers),
             logcat = PerfLogcat(),
             scope = scope,
             dispatchers = dispatchers,
         )
+        launched += recorder
+        return recorder
     }
 
     private fun createActivity(extra: String) {

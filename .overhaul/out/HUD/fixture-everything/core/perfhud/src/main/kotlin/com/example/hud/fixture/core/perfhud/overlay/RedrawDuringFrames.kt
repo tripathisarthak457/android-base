@@ -16,9 +16,10 @@ import androidx.compose.ui.platform.InspectorInfo
  *
  * It asks for the redraw from the window's pre-draw pass, which runs only for a frame that is
  * already being drawn, and the layer is recorded again in that same frame; it never schedules a
- * frame of its own. A redraw on a timer would: on the phone a lone frame after idle misses its
- * deadline more often than not, so a performance readout refreshed that way makes the jank it
- * reports, four times a second, and keeps an idle app drawing.
+ * frame of its own. A redraw on a timer would, and a lone frame after idle is drawn by a CPU and GPU
+ * that have clocked down and often misses its deadline (measured in `docs/PERFORMANCE-OVERLAY.md`):
+ * a performance readout refreshed that way makes the jank it reports, four times a second, and
+ * keeps an idle app drawing.
  *
  * The invalidation also schedules one more traversal for the next vsync, since the pre-draw pass
  * runs after the view root stopped expecting one. That traversal finds nothing left to draw and

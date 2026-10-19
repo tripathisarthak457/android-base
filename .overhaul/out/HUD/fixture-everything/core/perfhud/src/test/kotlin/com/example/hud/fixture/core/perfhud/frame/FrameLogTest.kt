@@ -9,6 +9,7 @@ import kotlin.math.abs
 class FrameLogTest {
 
     private val log = FrameLog(capacity = 1024)
+    private var clock = 1_000_000_000L
 
     @Test
     fun `frames are counted per screen and in total`() {
@@ -147,6 +148,18 @@ class FrameLogTest {
     }
 
     @Test
+    fun `main-thread time is a share of each frame's own interval`() {
+        // 4 ms is 0.48 of a 120 Hz interval; held to the newest frames' 60 Hz it would read 0.24.
+        draw(frames = 100, screen = "Home", uiMillis = 4f)
+        draw(frames = 100, screen = "Home", uiMillis = 4f, interval = INTERVAL_60_HZ)
+
+        val summary = log.summary()
+
+        assertEquals(0.48f, summary.uiP90BudgetShare, BudgetShareHistogram.STEP)
+        assertEquals(120f, summary.refreshHz, 0.1f)
+    }
+
+    @Test
     fun `clear starts the recording over`() {
         draw(frames = 10, screen = "Home", missedDeadline = true)
 
@@ -180,9 +193,7 @@ class FrameLogTest {
         assertFalse(log.drewWithin(nowNanos = clock + window, withinNanos = window))
     }
 
-    private var clock = 1_000_000_000L
-
-    /** [frames] frames, each starting [intervals] refresh intervals after the one before. */
+    /** [frames] frames at [interval], each starting [intervals] refresh intervals after the one before. */
     private fun draw(
         frames: Int,
         screen: String?,
@@ -190,14 +201,15 @@ class FrameLogTest {
         uiMillis: Float = totalMillis / 2,
         missedDeadline: Boolean = false,
         intervals: Int = 1,
+        interval: Long = INTERVAL,
     ) {
         repeat(frames) {
-            clock += INTERVAL * intervals
+            clock += interval * intervals
             log.add(
                 startNanos = clock,
                 uiNanos = (uiMillis * MILLI).toLong(),
                 totalNanos = (totalMillis * MILLI).toLong(),
-                intervalNanos = INTERVAL,
+                intervalNanos = interval,
                 missedDeadline = missedDeadline,
                 screen = screen,
             )
@@ -210,5 +222,6 @@ class FrameLogTest {
     private companion object {
         const val MILLI = 1_000_000L
         const val INTERVAL = 8_333_333L
+        const val INTERVAL_60_HZ = 16_666_667L
     }
 }

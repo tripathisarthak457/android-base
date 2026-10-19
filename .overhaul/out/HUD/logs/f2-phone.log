@@ -1,0 +1,377 @@
+11:42:23
+[locked:adb] waiting for the lock (pid 3892 since 2026-10-19 10:45:52: bash -c 
+set -uo pipefail
+export MSYS_NO_PATHCONV=1
+NOTRACE=1 TAG=-bg1 SCENARIOS='pushpop_gesture meminfo' D:/projects/t)
+[locked:adb] waiting for the lock (pid 3892 since 2026-10-19 10:45:52: bash -c 
+set -uo pipefail
+export MSYS_NO_PATHCONV=1
+NOTRACE=1 TAG=-bg1 SCENARIOS='pushpop_gesture meminfo' D:/projects/t)
+[locked:adb] waiting for the lock (pid 3892 since 2026-10-19 10:45:52: bash -c 
+set -uo pipefail
+export MSYS_NO_PATHCONV=1
+NOTRACE=1 TAG=-bg1 SCENARIOS='pushpop_gesture meminfo' D:/projects/t)
+[locked:adb] waiting for the lock (pid 3892 since 2026-10-19 10:45:52: bash -c 
+set -uo pipefail
+export MSYS_NO_PATHCONV=1
+NOTRACE=1 TAG=-bg1 SCENARIOS='pushpop_gesture meminfo' D:/projects/t)
+[locked:adb] waiting for the lock (pid 3892 since 2026-10-19 10:45:52: bash -c 
+set -uo pipefail
+export MSYS_NO_PATHCONV=1
+NOTRACE=1 TAG=-bg1 SCENARIOS='pushpop_gesture meminfo' D:/projects/t)
+[locked:adb] waiting for the lock (pid 3892 since 2026-10-19 10:45:52: bash -c 
+set -uo pipefail
+export MSYS_NO_PATHCONV=1
+NOTRACE=1 TAG=-bg1 SCENARIOS='pushpop_gesture meminfo' D:/projects/t)
+device
+device
+Performing Streamed Install
+Success
+Success
+round 1 hidden done
+round 1 shown done
+round 2 shown done
+round 2 hidden done
+round 3 hidden done
+round 3 shown done
+round 4 shown done
+round 4 hidden done
+round 5 hidden done
+round 5 shown done
+round 6 shown done
+round 6 hidden done
+{
+  "scroll": {
+    "janky_pp": -0.08,
+    "ui_mean_ms": 0.091,
+    "total_mean_ms": -0.046
+  },
+  "tabs": {
+    "janky_pp": -0.01,
+    "ui_mean_ms": 0.05,
+    "total_mean_ms": 0.603
+  },
+  "pushpop": {
+    "janky_pp": -0.05,
+    "ui_mean_ms": 0.02,
+    "total_mean_ms": 0.096
+  },
+  "all": {
+    "janky_pp": -0.05,
+    "ui_mean_ms": 0.074,
+    "total_mean_ms": 0.032
+  }
+}
+{
+  "hidden": {
+    "frames": 13688,
+    "janky": 188,
+    "janky_pct": 1.37,
+    "p50_ms": 8,
+    "p90_ms": 9,
+    "p99_ms": 23,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 11949,
+    "ui_mean_ms": 1.172,
+    "ui_p90_ms": 1.616,
+    "total_mean_ms": 9.423
+  },
+  "shown": {
+    "frames": 13495,
+    "janky": 178,
+    "janky_pct": 1.32,
+    "p50_ms": 8,
+    "p90_ms": 10,
+    "p99_ms": 24,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 11889,
+    "ui_mean_ms": 1.246,
+    "ui_p90_ms": 1.674,
+    "total_mean_ms": 9.455
+  }
+}
+OVERHEAD OK
+STANDARD OVERHEAD OK
+device
+Performing Streamed Install
+Success
+Success
+round 1 hidden done
+round 1 shown done
+round 2 shown done
+round 2 hidden done
+round 3 hidden done
+round 3 shown done
+round 4 shown done
+round 4 hidden done
+round 5 hidden done
+round 5 shown done
+round 6 shown done
+round 6 hidden done
+{
+  "scroll": {
+    "janky_pp": 0.06,
+    "ui_mean_ms": 0.076,
+    "total_mean_ms": 0.083
+  },
+  "tabs": {
+    "janky_pp": 0.04,
+    "ui_mean_ms": 0.115,
+    "total_mean_ms": -0.125
+  },
+  "pushpop": {
+    "janky_pp": 0.0,
+    "ui_mean_ms": 0.036,
+    "total_mean_ms": 0.288
+  },
+  "all": {
+    "janky_pp": 0.06,
+    "ui_mean_ms": 0.07,
+    "total_mean_ms": 0.099
+  }
+}
+{
+  "hidden": {
+    "frames": 14148,
+    "janky": 220,
+    "janky_pct": 1.55,
+    "p50_ms": 8,
+    "p90_ms": 10,
+    "p99_ms": 29,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12487,
+    "ui_mean_ms": 1.295,
+    "ui_p90_ms": 1.813,
+    "total_mean_ms": 9.634
+  },
+  "shown": {
+    "frames": 14068,
+    "janky": 226,
+    "janky_pct": 1.61,
+    "p50_ms": 8,
+    "p90_ms": 11,
+    "p99_ms": 29,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12461,
+    "ui_mean_ms": 1.365,
+    "ui_p90_ms": 1.887,
+    "total_mean_ms": 9.733
+  }
+}
+OVERHEAD OK
+EVERYTHING OVERHEAD OK
+{
+  "listener_standard": {
+    "off": {
+      "pid": "13291",
+      "frame_metrics_thread": false,
+      "threads": 41,
+      "thread_names": [
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Okio Watchdog",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TracingMuxer",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "ud.standard.dev",
+        "vy# ConnectionP",
+        "vy# Dispatcher",
+        "vy# TaskRunner"
+      ],
+      "perfhud_lines": 0
+    },
+    "on": {
+      "pid": "13497",
+      "frame_metrics_thread": true,
+      "threads": 43,
+      "thread_names": [
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "DefaultExecutor",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "FrameMetricsAgg",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Okio Watchdog",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TracingMuxer",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "ud.standard.dev",
+        "vy# ConnectionP",
+        "vy# Dispatcher",
+        "vy# TaskRunner"
+      ],
+      "perfhud_lines": 3
+    },
+    "threads_only_on": [
+      "DefaultExecutor",
+      "FrameMetricsAgg"
+    ],
+    "threads_only_off": []
+  },
+  "listener_everything": {
+    "off": {
+      "pid": "13616",
+      "frame_metrics_thread": true,
+      "threads": 69,
+      "thread_names": [
+        ".everything.dev",
+        "AppUpdateServic",
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "FileObserver",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "Firebase Backgr",
+        "Firebase Blocki",
+        "Firebase Schedu",
+        "Firebase-Messag",
+        "FrameMetricsAgg",
+        "GmsDynamite",
+        "GoogleApiHandle",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Measurement Wor",
+        "MessengerIpcCli",
+        "OkHttp Connecti",
+        "Okio Watchdog",
+        "ProcessStablePh",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "ScionFrontendAp",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TAG",
+        "TracingMuxer",
+        "b# ConnectionP",
+        "b# Dispatcher",
+        "b# TaskRunner",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "pool#-thread-",
+        "queued-work-loo"
+      ],
+      "perfhud_lines": 0
+    },
+    "on": {
+      "pid": "13778",
+      "frame_metrics_thread": true,
+      "threads": 70,
+      "thread_names": [
+        ".everything.dev",
+        "AppUpdateServic",
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "DefaultExecutor",
+        "FileObserver",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "Firebase Backgr",
+        "Firebase Blocki",
+        "Firebase Schedu",
+        "Firebase-Messag",
+        "FrameMetricsAgg",
+        "GmsDynamite",
+        "GoogleApiHandle",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Measurement Wor",
+        "MessengerIpcCli",
+        "OkHttp Connecti",
+        "Okio Watchdog",
+        "ProcessStablePh",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "ScionFrontendAp",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TAG",
+        "TracingMuxer",
+        "b# ConnectionP",
+        "b# Dispatcher",
+        "b# TaskRunner",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "pool#-thread-",
+        "queued-work-loo"
+      ],
+      "perfhud_lines": 3
+    },
+    "threads_only_on": [
+      "DefaultExecutor"
+    ],
+    "threads_only_off": []
+  }
+}
+LISTENER OK
+Performing Streamed Install
+Success
+{
+  "adb_path": {
+    "record_broadcast": [
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver (has extras) }",
+      "Broadcast completed: result=0"
+    ],
+    "export_broadcast": [
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+      "Broadcast completed: result=0, data=\"/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-123203.json\""
+    ],
+    "pulled": [
+      "D:/projects/tools/.overhaul/perf/HUD/checks-f2\\perf-report-20261019-123203.json",
+      "D:/projects/tools/.overhaul/perf/HUD/checks-f2\\perf-report-20261019-123203.md"
+    ],
+    "perfhud_lines": 4,
+    "record_off_broadcast": [
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.RECORD flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver (has extras) }",
+      "Broadcast completed: result=0"
+    ],
+    "without_run_as": [
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+      "Broadcast completed: result=0"
+    ],
+    "without_run_as_delivered": false
+  },
+  "adb_path_release": {
+    "run_as": [
+      "run-as: package not debuggable: com.example.hud.everything.dev"
+    ],
+    "direct": [
+      "Broadcasting: Intent { act=com.example.hud.everything.core.perfhud.action.EXPORT flg=0x400000 cmp=com.example.hud.everything.dev/com.example.hud.everything.core.perfhud.report.ReportReceiver }",
+      "Broadcast completed: result=0"
+    ],
+    "reached": false
+  }
+}
+ADB PATH OK
+PHONE OK
+EXIT 0
+12:32:09

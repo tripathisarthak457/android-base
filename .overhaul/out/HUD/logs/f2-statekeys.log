@@ -1,0 +1,139 @@
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :core:analytics:testDebugUnitTest :core:analytics:lintDebug
+
+> Configure project :
+The Dependency Analysis plugin is only known to work with versions of AGP between 8.10.0 and 9.3.1. You are using 9.4.1. Proceed at your own risk.
+
+> Task :build-logic:convention:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:convention:compileKotlin UP-TO-DATE
+> Task :build-logic:convention:compileJava NO-SOURCE
+> Task :build-logic:convention:pluginDescriptors UP-TO-DATE
+> Task :build-logic:convention:processResources UP-TO-DATE
+> Task :build-logic:convention:classes UP-TO-DATE
+> Task :build-logic:convention:jar UP-TO-DATE
+
+> Configure project :app
+[signing] No key configured for dev, staging, prod, playstore — those variants will be signed with the debug key. Copy keystore.properties.template to keystore.properties and fill it in before cutting a release.
+
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:analytics:verifyModuleDependencies UP-TO-DATE
+> Task :core:analytics:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:analytics:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:analytics:verifyComposeUsage
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:testing:preBuild
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:testing:preDebugBuild
+> Task :core:common:classes UP-TO-DATE
+> Task :core:analytics:koverFindJar UP-TO-DATE
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:analytics:verifyApiPurity
+> Task :core:analytics:preBuild
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:analytics:preDebugBuild
+> Task :core:analytics:preDebugUnitTestBuild
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:analytics:generateDebugResources UP-TO-DATE
+> Task :core:analytics:javaPreCompileDebug UP-TO-DATE
+> Task :core:analytics:processDebugNavigationResources UP-TO-DATE
+> Task :core:analytics:mergeDebugAssets UP-TO-DATE
+> Task :core:analytics:writeDebugAarMetadata UP-TO-DATE
+> Task :core:analytics:packageDebugResources UP-TO-DATE
+> Task :core:analytics:prepareLintJarForPublish UP-TO-DATE
+> Task :core:analytics:parseDebugLocalResources UP-TO-DATE
+> Task :core:analytics:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:analytics:generateDebugRFile UP-TO-DATE
+> Task :core:analytics:compileDebugLibraryResources UP-TO-DATE
+> Task :core:analytics:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:analytics:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:analytics:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:analytics:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:analytics:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:analytics:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:analytics:processDebugManifest UP-TO-DATE
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:analytics:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:analytics:checkDebugAarMetadata UP-TO-DATE
+> Task :core:analytics:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:analytics:prepareDebugArtProfile UP-TO-DATE
+> Task :core:analytics:preDebugAndroidTestBuild
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:analytics:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:analytics:extractProguardFiles UP-TO-DATE
+> Task :core:testing:checkDebugAarMetadata UP-TO-DATE
+> Task :core:testing:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :core:testing:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:testing:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:testing:prepareDebugArtProfile UP-TO-DATE
+> Task :core:testing:prepareLintJarForPublish UP-TO-DATE
+> Task :core:testing:mergeDebugJavaResource UP-TO-DATE
+> Task :core:testing:createFullJarDebug UP-TO-DATE
+> Task :core:testing:writeDebugLintModelMetadata UP-TO-DATE
+> Task :core:testing:extractDebugAnnotations UP-TO-DATE
+> Task :core:testing:syncDebugLibJars UP-TO-DATE
+> Task :core:testing:bundleDebugLocalLintAar UP-TO-DATE
+> Task :core:analytics:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:analytics:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:analytics:processDebugUnitTestResources UP-TO-DATE
+> Task :core:analytics:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:analytics:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:analytics:kspDebugKotlin
+> Task :core:analytics:extractDebugAnnotations
+> Task :core:analytics:compileDebugKotlin
+> Task :core:analytics:processDebugJavaRes UP-TO-DATE
+> Task :core:analytics:mergeDebugJavaResource UP-TO-DATE
+> Task :core:analytics:compileDebugJavaWithJavac
+> Task :core:analytics:transformDebugClassesWithAsm
+> Task :core:analytics:bundleLibCompileToJarDebug
+> Task :core:analytics:bundleLibRuntimeToJarDebug
+> Task :core:analytics:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :core:analytics:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :core:analytics:syncDebugLibJars
+> Task :core:analytics:bundleDebugLocalLintAar
+> Task :core:analytics:createFullJarDebug
+> Task :core:analytics:generateDebugLintReportModel
+> Task :core:analytics:generateDebugAndroidTestLintModel
+> Task :core:analytics:generateDebugUnitTestLintModel
+> Task :core:analytics:kspDebugUnitTestKotlin
+> Task :core:analytics:compileDebugUnitTestKotlin
+> Task :core:analytics:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:analytics:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:analytics:hiltCollectClassesDebugUnitTest
+> Task :core:analytics:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:analytics:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :core:analytics:transformDebugUnitTestClassesWithAsm
+
+> Task :core:analytics:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+> Task :core:analytics:lintAnalyzeDebugAndroidTest
+> Task :core:analytics:lintAnalyzeDebugUnitTest
+> Task :core:analytics:lintAnalyzeDebug
+> Task :core:analytics:lintReportDebug
+> Task :core:analytics:lintDebug
+
+BUILD SUCCESSFUL in 49s
+100 actionable tasks: 25 executed, 75 up-to-date
+Configuration cache entry stored.
+GRADLE OK

@@ -20,14 +20,19 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     private val uiMillis = FloatArray(capacity)
     private val intervalMillis = FloatArray(capacity)
     private val janky = BooleanArray(capacity)
-    private val screenOfFrame = ByteArray(capacity)
     private var written = 0L
+    private var shortestIntervalMillis = Float.MAX_VALUE
 
     private val screens = ScreenTable()
 
     // One slot per screen index, and one more for the whole recording.
     private val histograms = Array(SLOTS) { FrameHistogram() }
     private val uiHistogram = FrameHistogram()
+
+    // What the score grades. An adaptive display draws a session's frames at more than one rate,
+    // and each frame is held to the interval it had rather than to the newest frame's.
+    private val uiShareHistogram = BudgetShareHistogram()
+
     private val jankyCount = IntArray(SLOTS)
     private val slowCount = IntArray(SLOTS)
     private val frozenCount = IntArray(SLOTS)
@@ -50,6 +55,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     ) {
         val total = totalNanos / NANOS_PER_MILLI
         val ui = uiNanos / NANOS_PER_MILLI
+        val interval = intervalNanos / NANOS_PER_MILLI
         synchronized(lock) {
             val index = screens.indexOf(screen)
             if (written > 0) busyNanos += busyOf(slot(written - 1), nextStart = startNanos)
@@ -58,12 +64,13 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
             starts[at] = startNanos
             totalMillis[at] = total
             uiMillis[at] = ui
-            intervalMillis[at] = intervalNanos / NANOS_PER_MILLI
+            intervalMillis[at] = interval
             janky[at] = missedDeadline
-            screenOfFrame[at] = index.toByte()
             written++
+            if (interval < shortestIntervalMillis) shortestIntervalMillis = interval
 
             uiHistogram.add(ui)
+            uiShareHistogram.add(ui / interval)
             count(index, total, ui, missedDeadline)
             count(ALL, total, ui, missedDeadline)
         }
@@ -71,10 +78,12 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
 
     fun clear() = synchronized(lock) {
         written = 0
+        shortestIntervalMillis = Float.MAX_VALUE
         busyNanos = 0
         screens.clear()
         histograms.forEach(FrameHistogram::clear)
         uiHistogram.clear()
+        uiShareHistogram.clear()
         jankyCount.fill(0)
         slowCount.fill(0)
         frozenCount.fill(0)
@@ -176,6 +185,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         into.longWork = longWorkCount[ALL]
         into.busyNanos = busyNanos
         histograms[ALL].copyInto(into.histogram)
+        uiHistogram.copyInto(into.uiHistogram)
     }
 
     /** Everything recorded, summed up. Allocates; called a few times a minute at most. */
@@ -195,8 +205,10 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
             uiP50Millis = uiHistogram.percentile(P50),
             uiP90Millis = uiHistogram.percentile(P90),
             uiP99Millis = uiHistogram.percentile(P99),
+            uiP90BudgetShare = uiShareHistogram.percentile(P90),
+            uiP99BudgetShare = uiShareHistogram.percentile(P99),
             framesPerSecond = if (busyNanos == 0L) 0f else (all - 1).coerceAtLeast(0) * NANOS_PER_SECOND / busyNanos,
-            refreshHz = if (written == 0L) 0f else MILLIS_PER_SECOND / intervalMillis[slot(written - 1)],
+            refreshHz = if (written == 0L) 0f else MILLIS_PER_SECOND / shortestIntervalMillis,
             screens = perScreen,
         )
     }

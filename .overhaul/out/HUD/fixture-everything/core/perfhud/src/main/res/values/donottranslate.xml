@@ -9,7 +9,7 @@
     <string name="perfhud_pill_description">Live frame rate and janky frames. Opens the Performance tab.</string>
     <string name="perfhud_pill_fps">%1$d/%2$d fps</string>
     <string name="perfhud_pill_idle">idle · %1$d Hz</string>
-    <string name="perfhud_pill_janky">%1$s%% janky</string>
+    <string name="perfhud_pill_janky">%1$d.%2$d%% janky</string>
 
     <string name="perfhud_live_stats">Live stats</string>
     <string name="perfhud_live_stats_summary">Records every frame while on, and puts nothing on the window while off.</string>
@@ -42,7 +42,7 @@
     <string name="perfhud_fps_graph">Frames per second</string>
     <string name="perfhud_fps_graph_caption">While drawing, for each of the last 60 seconds; a gap is a second with nothing to draw. The line is the display\'s rate.</string>
     <string name="perfhud_histogram">Main-thread time histogram</string>
-    <string name="perfhud_histogram_caption">Every frame recorded, by its main-thread time in milliseconds. The line is one refresh interval: the time the main thread has for each frame.</string>
+    <string name="perfhud_histogram_caption">Every frame recorded, by its main-thread time in milliseconds; the last bar is 32 ms and slower. The line is one refresh interval at the display\'s rate while drawing: the time the main thread has for each frame.</string>
     <string name="perfhud_by_screen">Janky frames by screen</string>
     <string name="perfhud_memory">Memory</string>
     <string name="perfhud_memory_caption">Java heap and native heap each second; PSS at most every 15 seconds, in a pause in the drawing.</string>
@@ -66,7 +66,7 @@
     <string name="perfhud_screen">Screen</string>
     <string name="perfhud_screen_launch">(before the first screen)</string>
     <string name="perfhud_screen_other">(other screens)</string>
-    <string name="perfhud_screen_row">%1$s janky of %2$d · p90 %3$s</string>
+    <string name="perfhud_screen_row">%1$s janky of %2$d · frame p90 %3$s</string>
 
     <string name="perfhud_java_heap">Java heap (peak)</string>
     <string name="perfhud_native_heap">Native heap (peak)</string>
@@ -109,7 +109,10 @@
     <string name="perfhud_profile_not_in_apk">not in the APK</string>
     <string name="perfhud_profile_not_in_project">not set up in this project</string>
 
-    <string name="perfhud_value_percent">%1$s %%</string>
+    <string name="perfhud_value_percent">%1$s%%</string>
+    <string name="perfhud_count_and_part">%1$d (%2$s)</string>
+    <string name="perfhud_three_values">%1$s / %2$s / %3$s</string>
+    <string name="perfhud_points_of">%1$s / %2$d</string>
     <string name="perfhud_value_budget">%1$s× budget</string>
     <string name="perfhud_value_per_thousand">%1$s per 1,000 frames</string>
     <string name="perfhud_value_millis">%1$s ms</string>

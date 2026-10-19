@@ -6,7 +6,9 @@ import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.RequiresApi
+import com.example.hud.everything.core.common.coroutines.AppDispatchers
 import com.example.hud.everything.core.perfhud.R
+import kotlinx.coroutines.asExecutor
 import kotlinx.serialization.Serializable
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -18,14 +20,22 @@ import javax.inject.Singleton
  * [stop]. Counting needs a penalty listener, which arrived in API 28; earlier releases report
  * nothing rather than a count that cannot be taken.
  *
- * The checks are added to the app's own policy, penalties included, so the app keeps what it
- * asked for. An app whose policy has `penaltyDeath` therefore also dies of the checks added here;
- * one that sets its own policy while recording replaces these checks until the next [start].
+ * The checks are added to the app's own policy, penalties included, so the app keeps the checks and
+ * penalties it asked for. An app whose policy has `penaltyDeath` therefore also dies of the checks
+ * added here, and one that sets its own policy while recording replaces these checks until the next
+ * [start]. A penalty listener of the app's own is the exception: a policy holds one listener, and
+ * the platform offers no way to read the app's to pass violations on, so it hears nothing while
+ * recording.
  *
  * [start] and [stop] on the main thread: a thread policy belongs to the thread that sets it.
  */
 @Singleton
-internal class StrictModeWatch @Inject constructor() {
+internal class StrictModeWatch @Inject constructor(dispatchers: AppDispatchers) {
+
+    // Counting needs nothing from the thread that broke the rule, usually the main one: the
+    // violation carries its stack.
+    private val counting: Executor = dispatchers.default.asExecutor()
+
 
     private val lock = Any()
     private val byKind = LinkedHashMap<String, Int>()
@@ -70,8 +80,7 @@ internal class StrictModeWatch @Inject constructor() {
             .detectCustomSlowCalls()
             .detectResourceMismatches()
             .detectUnbufferedIo()
-            // Run on the thread that broke the rule, after the fact: counting is all that happens.
-            .penaltyListener(Executor(Runnable::run), ::record)
+            .penaltyListener(counting, ::record)
             .build()
 
     @RequiresApi(Build.VERSION_CODES.P)

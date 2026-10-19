@@ -1,6 +1,6 @@
 """bg-analyze.py [builds...]: the Perfetto half of DESIGN.md §5.5 over back-trace.win.sh's captures.
 
-For each perf/WP04-perf/bg-<build>-t1 and -t2 capture it runs research/back-google/sql/{backlat,layerts,
+For each perf/WP04-perf/bg-<build>-t1 and -t2 capture it runs research/back-google/sql/{backlat2,layerts,
 releaseframes,presentlat,startframes}.sql once (output cached next to the trace as <query>.csv), puts every row in
 the bgsteps.sh step it falls in (steps.txt: device uptime, the trace's CLOCK_BOOTTIME), and prints one table per
 question with both captures of a build pooled: fast swipes, slow starts and cancels apart, edge touches and edge
@@ -19,7 +19,8 @@ P = f"{OV}/perf/WP04-perf"
 SQL = f"{OV}/research/back-google/sql"
 TP = ("C:/Users/crazyhusir/.claude/plugins/marketplaces/android-skills/profilers/android-profiler/references/"
       "perfetto/bin/trace_processor")
-QUERIES = ("backlat", "layerts", "releaseframes", "presentlat", "startframes")
+QUERIES = ("backlat2", "layerts", "releaseframes", "presentlat", "startframes")
+# backlat2.sql is backlat.sql without the repeated progress values the platform sends (see its header).
 TAGS = tuple(os.environ.get("BG_TAGS", "t1 t2").split())
 
 
@@ -102,12 +103,12 @@ def main(builds):
         pushes = sum(n for k in ("push", "push_slow", "push_cancel", "push_edge") for n, _ in counts.get(k, []))
         print(f"| {build} | {cell('fast')} | {cell('slow')} | {cell('cancel')} | {pushes} in all | {cell('edgetouch')} | {scroll or '–'} |")
 
-    print("\n## Progress to screen, start, release, cancel tail (backlat.sql; medians over gestures)\n")
+    print("\n## Progress to screen, start, release, cancel tail (backlat2.sql; medians over gestures)\n")
     print("| build | kind | n | start_to_shrink | write_to_trav | write_to_present | late_draws / writes | release_to_fade | frames_after_settle |")
     print("|---|---|---|---|---|---|---|---|---|")
     for build, rows in pooled.items():
         for k in ("fast", "slow", "cancel"):
-            g = [r for r in rows["backlat"] if r["step"] and kind(r["step"]) == k]
+            g = [r for r in rows["backlat2"] if r["step"] and kind(r["step"]) == k]
             if not g:
                 continue
             late = sum(int(num(r["late_draws"]) or 0) for r in g)

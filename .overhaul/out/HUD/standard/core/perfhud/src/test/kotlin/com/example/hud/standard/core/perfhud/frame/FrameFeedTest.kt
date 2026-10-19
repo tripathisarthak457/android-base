@@ -139,6 +139,22 @@ class FrameFeedTest {
         assertEquals(listOf<String?>(null), routes)
     }
 
+    @Test
+    fun `a stop with two activities resumed leaves neither window feeding the listener`() {
+        feed.start(listener)
+        settle()
+        val second = Robolectric.buildActivity(Activity::class.java).create()
+        second.get().window.decorView
+        second.start().postCreate(null).resume().visible()
+        settle()
+
+        feed.stop()
+        settle()
+        drawFrame()
+
+        assertEquals(0, received.size)
+    }
+
     private fun drawFrame() {
         // Far past any clock the states were stamped with, so a frame sees every state put
         // before it and none removed before it; each one later than the last, as frames are.

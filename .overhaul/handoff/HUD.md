@@ -122,7 +122,103 @@ merged tags unchanged; WP04's `final-gates.win.sh` held the adb lock from 08:14 
   the no-analytics branch); lean `assembleDevDebug`: BUILDS OK, no Metaspace retry needed. The fixture's
   `:core:perfhud` ran the same 76 tests, all green. Worktree clean at `4405b78`.
 
+Run 5, started 2026-10-19 about 11:00 IST (workflow `hud-first`, fix #2: a fresh-context review's 3 blocking
+findings and 22 non-blocking ones). Worktree clean at `4405b78`; `wp/WP06` unchanged (`08c0d0a`, merged); merged
+tags unchanged (WIN, WP01, WP02-M1, WP09, WP10). Another workflow's perf run held the adb lock from 10:45.
+
+- 11:20 `d598a2f` (blocking 1, 2): the per-frame screen byte nothing read is gone; main-thread percentiles are
+  graded per frame against its own interval (`BudgetShareHistogram`), the summary's display rate is the highest
+  drawn at; the histogram graph's last bar is 32 ms and slower (non-blocking). `2852d51` (blocking 3): the log's
+  GC baseline moves every window; `frameP*`/`uiP*` keys. `868c993`: counts, triples and points from resources,
+  one percent-sign style. Tests that fail against the old code by construction: the mixed-rate score test (old:
+  0.72, A, for the 60-Hz-last order) and the quiet-window GC test (old: `gc=5`). `logs/f2-t1.log`: `:core:perfhud`
+  84 tests green.
+- 11:22 `9c2f8a2` the wizard's default for a feature whose requirement was declined (generator); `6adb04c` WP06's
+  analytics key code back (StateKeys out of `wp/HUD`), and `1945b94` on the new local branch `wp/HUD-statekeys`
+  (StateKeys in its own file with `StateKeysTest`; `logs/f2-statekeys.log`: analytics tests and lint green).
+- 11:35 the remaining non-blocking findings, one commit each: `62cbae2` (the pill without text layout),
+  `dca7a12` (sampler runs joined), `b6b64bf` (tab refresh only while started), `36fc70b` (multi-resume feed, with a
+  test), `03a7152` (StrictMode counted off-thread; `StrictModeWatchTest`), `4edc558` (`startRecordOf` and
+  `StartupTimesTest`), `feb1894` (receiver in the debug manifest; every failure reported), `d46a98f` (comments,
+  the FPS label, the inspector's tab titles), `5f929d6` (doc). `logs/f2-t2.log`: `:core:perfhud` 102 tests,
+  `:core:devtools` 6, `:core:analytics` 3, all green; lint of both modules: one warning, the run-4
+  `PluralsCandidate` on `perfhud_score_none` (always 300); `:app` devRelease and prodRelease compile. Generator
+  tests (`logs/f2-gen.log`): 302 run, 0 failures, 4 skipped.
+- 11:28-11:41 phone builds from `d46a98f` (`logs/f2-builds.log`, `out/HUD/f2_builds.win.sh`, APKs copied to
+  `out/HUD/apks-f2/`): the standard preset's `:core:perfhud` 102 tests on the no-analytics branch, with the
+  multi-resume test, green; APK inspection (`perf/HUD/checks-f2/apk-inspection-f2.json`): everything prodRelease
+  clean on all five looks; devRelease carries the tooling, and no longer the receiver (manifest: none).
+- 11:42-12:07 acceptance on `5f929d6` (`logs/f2-accept.log`, `out/HUD/f2_accept.win.sh`): template `build
+  --continue` (every variant, unit tests, lint, the three release guards) in 15 min; the guard wiring the unit
+  test does not reach: `:app:tasks --all` lists exactly `verifyPlaystoreRelease`, `verifyProdRelease` and
+  `verifyStagingReleaseCarriesNoDevTooling` (none for a dev-flavour release), and `--dry-run
+  :app:assembleProdRelease` schedules the guard and `preProdReleaseBuild`; the everything fixture `check
+  assembleDevDebug` (its `:core:perfhud` 102 tests); the standard preset regenerated, `check assembleDevDebug`
+  (102 tests, no-analytics branch); lean `assembleDevDebug`: BUILDS OK. `3ba43b5` after it wraps three lines
+  (KDoc, one adapter line, a doc paragraph); no code changed.
+- 12:07-12:09 mutation check (`logs/f2-mutation.log`, `out/HUD/f2_mutation.win.sh`): with the two blocking bugs
+  put back (pooled percentiles over the newest interval and the newest rate; the GC baseline moved on written
+  windows only), the mixed-rate score test, the per-frame share test and the quiet-window GC test fail (and
+  `clear starts the recording over`, on the mutant's index into an empty ring); restored from git, clean.
+  Generator tests again on the final code (`logs/f2-gen2.log`): 302 run, 0 failures, 4 skipped; consistency
+  matrix (`logs/f2-cons.log`): 151 projects, 0 new issues, 1023 known.
+- 12:10-12:32 phone (`logs/f2-phone.log`, `out/HUD/f2_phone.win.sh`; the adb lock was another workflow's from
+  10:45): overhead on both presets (6 rounds each), the listener check, the adb path on devDebug and its refusal on
+  devRelease. 12:32-12:33 one system trace for the main-thread p99 question. 12:38 the pill on the phone
+  (`perf/HUD/show-f2/`): `PillText` draws it the same as the old text layout did (same mono face, size and
+  centring as `perf/HUD/show-f1/1-pill-after-fling.png`). Measurements below. `680c6e2` puts the new numbers in the
+  doc. The everything devRelease is left installed on the phone; no device setting was changed.
+
 ## Design and decisions (recorded because the user is not to be asked)
+
+- **Each frame against its own interval (run 5).** `UiThreadP90`/`P99` grade `FrameSummary.uiP90BudgetShare` and
+  `uiP99BudgetShare`, percentiles of a new `BudgetShareHistogram` (main-thread time / that frame's own refresh
+  interval, 0.02-wide buckets up to 4 intervals and one overflow bucket, 201 ints) that `FrameLog.add` fills per
+  frame. Before, pooled millisecond percentiles were divided by the newest frame's interval, so on an adaptive
+  60/120 Hz display the last frame's rate decided the grade (the review's example: 12 ms p99 graded B at 120 Hz,
+  A after one lone 60 Hz frame). Per-frame cost: one float division and one array increment under the existing
+  lock. Chosen over a percentile per rate (more state, no single number to grade) and over grading against the
+  fastest rate (holds a 60 Hz frame to 8.3 ms it never had). `FrameSummary.refreshHz` ("Display") is now the
+  highest rate any frame was drawn at, kept as the shortest interval seen; the pill's live rate stays the newest
+  frame's, which is what "current" means there. The histogram graph keeps milliseconds (what developers read) with
+  its line at that highest rate's interval; its KDoc and caption say a frame drawn at a lower rate had more time.
+- **The log's percentiles named (run 5).** `p50/p90/p99` were full durations; the keys are `frameP50/90/99` now,
+  and a window line adds `uiP50/90/99` from a main-thread histogram `FrameTotals` carries (copied every 5 s). A
+  screen line keeps full durations only (a per-screen main-thread histogram would be 33 more histograms and a
+  second add per frame). The panel's per-screen row says "frame p90".
+- **`gc=` per window, written or not (run 5).** The GC baseline moves every 5 s window whether or not the window
+  drew, as the frame totals always did.
+- **StateKeys split out (run 5; for the user).** REQUIREMENTS 40: the existing jank analytics "stays as it is
+  and gains nothing from this package". `StateKeys` (build the analytics key once per change of states, not per
+  frame) changed prodRelease code, so `wp/HUD` now carries WP06's key code unchanged plus only the
+  `frameListener` hook the task asks for ("extend the existing FrameJankRecorder rather than adding a second
+  listener"; nothing sets it in prodRelease and R8 strips it). `StateKeys`, in its own file with
+  `StateKeysTest`, is commit `1945b94` on the local branch `wp/HUD-statekeys`, one commit on top of `wp/HUD`
+  `6adb04c`; `:core:analytics` tests and lint green there (`logs/f2-statekeys.log`). What `wp/HUD` pays without it:
+  while the overlay records, analytics builds `"route=<name>"` once per frame on JankStats' thread in builds with
+  `analytics` (the overlay's route state is a state); hidden, no state, no string. The everything preset's
+  numbers below are measured that way. Whether to take `wp/HUD-statekeys` is the user's call.
+- **The pill draws without text layout (run 5).** `PillText` writes the numbers into reused `CharArray`s through
+  `LineFormat` (parses the same resource formats, `%n$d` and `%%` only, into literal runs and argument slots; ASCII
+  digits whatever the locale, as before) and draws each line with one `TextPaint` (`nativeCanvas.drawText`),
+  built from `AppTheme.typography.mono` at `labelSmall`'s size and the typeface `LocalFontFamilyResolver`
+  resolves (a downloaded font that arrives later rebuilds it once). No allocation per redraw; widest lines
+  measured once for the size. `perfhud_pill_janky` takes whole and tenths as two `%d`s. Chosen over a glyph cache
+  of Compose `TextLayoutResult`s (one `drawText` per digit, still a layout per glyph) and over keeping
+  `TextMeasurer` (a layout per new number).
+- **Sampler runs serialised (run 5).** `stop()` keeps the cancelled job; the next run's sampler `join()`s it
+  before starting, and the loop checks `ensureActive()` after the blocking memory read, so a run cancelled mid-PSS
+  never adds a stale reading or calls `PerfLogcat`/`PssSchedule` beside the new run.
+- **StrictMode counted on the default dispatcher (run 5).** The penalty listener's executor is
+  `dispatchers.default.asExecutor()`; the app's own penalty listener cannot be chained (a `ThreadPolicy` holds one
+  and has no getter), so it hears nothing while recording: KDoc and the doc say so.
+- **Receiver in the debug manifest (run 5).** `core/perfhud/src/debug/AndroidManifest.xml`; the main manifest is
+  gone. devRelease has no receiver now (it could never be reached there: `run-as` needs a debuggable build).
+- **Wizard (run 5).** Asked one feature at a time, a feature whose requirement was declined above defaults to no
+  and says a yes adds the requirement back (`prompts.ask_features`, two tests). `devtools` stays default-off
+  and `perfhud` default-on (WP06's and the task's defaults, and the standard preset carries both).
+- **Strings (run 5).** `perfhud_count_and_part`, `perfhud_three_values`, `perfhud_points_of` replace the
+  templates and `" / "` joins; `perfhud_value_percent` is `%1$s%%`, no space, as the pill and the log write it.
 
 - **No score before the frames (run 4).** `OptimisationScore.total` and `grade` are null until `JankyFrames` is
   graded (300 frames at a known refresh rate); the tab, the Markdown and the JSON (`score.total: null`) say "the
@@ -161,7 +257,7 @@ merged tags unchanged; WP04's `final-gates.win.sh` held the adb lock from 08:14 
   `:core:devtools`; the non-UI packages keep `UPPER_SNAKE_CASE`.
 - **Pill (run 4).** Measured for its idle line too ("idle · 120 Hz" was wider than the box); debug builds draw it
   in `contentSecondary`, not the warning amber that "fair" also uses.
-- **Accepted: `StateKeys` in prodRelease (run 4, recorded explicitly).** REQUIREMENTS 40 says the prod analytics
+- **Superseded in run 5 (see "StateKeys split out"): `StateKeys` in prodRelease (run 4).** REQUIREMENTS 40 says the prod analytics
   stays as it is. `StateKeys` changes how the analytics key is built (once per change of states instead of once
   per frame), not what it is; its tests pin the keys. It is the one HUD change a prodRelease carries (R8 strips
   `frameListener`, which nothing sets there).
@@ -255,8 +351,8 @@ merged tags unchanged; WP04's `final-gates.win.sh` held the adb lock from 08:14 
 
 Paths under `templates/android/` unless they start with `generator/` or `web/`.
 
-- `core/analytics/.../jank/FrameJankRecorder.kt`: `frameListener` (volatile, called per frame after counting);
-  `StateKeys` builds a frame's analytics key only when its `StateInfo` instances change.
+- `core/analytics/.../jank/FrameJankRecorder.kt`: `frameListener` (volatile, called per frame after counting).
+  Runs 1-4 also had `StateKeys` (the key built once per change of states); run 5 moved it to `wp/HUD-statekeys`.
 - `core/devtools`: `page/DevToolsPage.kt` (key, title, content, optional badge line), `di/DevToolsPagesModule.kt`
   (`@Multibinds`), `screen/CurrentScreen.kt`; `DevTools` takes `currentScreen` and `pages`; the badge shows each page's
   line under its label and opens the panel on that page; the panel lists contributed tabs after the built-in ones and
@@ -305,6 +401,24 @@ Paths under `templates/android/` unless they start with `generator/` or `web/`.
   `f1_accept.win.sh`, `startup.py` (new), `overhead.win.sh` (`ID` from the environment), `apk_inspect.py` (the
   seam names).
 
+- Run 5: perfhud `frame/BudgetShareHistogram.kt` (new) and its test, `frame/FrameHistogram.kt` (`percentileOf`
+  shared), `frame/FrameLog.kt` (no `screenOfFrame`; share histogram; shortest interval; `copyTotals` copies the
+  main-thread histogram), `frame/FrameReadings.kt` (`FrameSummary.uiP90BudgetShare`/`uiP99BudgetShare`,
+  `FrameTotals.uiHistogram`), `frame/ScreenTable.kt` (KDoc), `frame/FrameFeed.kt` (previous JankStats disabled
+  on attach), `score/OptimisationScore.kt`, `log/PerfLogcat.kt`, `overlay/LineFormat.kt` and `PillText.kt` (new),
+  `overlay/PerformancePill.kt`, `overlay/RedrawDuringFrames.kt` and `memory/PssSchedule.kt` (comments),
+  `panel/PerformanceTab.kt` (`repeatOnLifecycle`), `panel/FrameSections.kt`, `panel/DetailSections.kt`,
+  `panel/graph/FpsGraph.kt` (label cached), `panel/graph/HistogramGraph.kt` (last bin 32+),
+  `recording/PerformanceRecorder.kt` (runs joined, `ensureActive`), `checks/StrictModeWatch.kt` (executor,
+  KDoc), `startup/StartupTimes.kt` (`startRecordOf`), `report/MarkdownReport.kt`, `report/ReportReceiver.kt`,
+  `src/debug/AndroidManifest.xml` (new; main manifest deleted), `res/values/donottranslate.xml`; tests
+  `BudgetShareHistogramTest`, `LineFormatTest`, `StrictModeWatchTest`, `StartupTimesTest` (new),
+  `OptimisationScoreTest`, `FrameLogTest`, `PerfLogcatTest`, `FrameFeedTest`, `ReportFormatsTest`,
+  `PerformanceRecorderTest`. `:core:analytics` `FrameJankRecorder.kt` and its test (StateKeys out). `:core:devtools`
+  `DevToolsPanel.kt` (tab titles remembered). `generator/genkit/core/prompts.py`, `tests/test_prompts.py`,
+  `tests/test_android_target.py`; `docs/PERFORMANCE-OVERLAY.md`. Workspace: `out/HUD/f2_gradle.win.sh`,
+  `f2_builds.win.sh`, `f2_phone.win.sh`, `f2_accept.win.sh`. Branch `wp/HUD-statekeys` (one commit).
+
 ## Public APIs added, changed, removed (signatures)
 
 ```kotlin
@@ -324,6 +438,11 @@ internal class DevTools(environment: AppEnvironment, log, currentScreen, pages, 
 // build-logic: verify<Variant>CarriesNoDevTooling for stagingRelease, prodRelease, playstoreRelease
 // :core:perfhud: internal throughout; its surface is the @IntoSet DevToolsPage and the receiver's actions
 //   <package>.core.perfhud.action.EXPORT / RECORD (--ez recording), and the launch extra perf.hud=on|off.
+// Run 5: FrameSummary gains uiP90BudgetShare and uiP99BudgetShare (main-thread time over each frame's own
+//   interval; what UiThreadP90/P99 grade); refreshHz is the highest rate drawn at, not the newest frame's.
+//   Added fields only, so the JSON stays schema 2 (never released). The PerfHud log's p50/p90/p99 keys are
+//   frameP50/90/99; window lines add uiP50/90/99. ReportReceiver is declared only in debug builds.
+//   FrameJankRecorder has no StateKeys (wp/HUD-statekeys has it).
 // The exported JSON (run 4): schema 2. score.total and score.grade null before 300 frames; metrics
 //   FrameTimeP90/P99 renamed UiThreadP90/P99 (main-thread time against one interval); strictMode.examples
 //   are {kind, frame|null} objects, not strings; memory.gc* count only while the sampler ran.
@@ -331,7 +450,74 @@ internal class DevTools(environment: AppEnvironment, log, currentScreen, pages, 
 
 ## Measurements
 
-### Run 4 (fix #1; final head; read these first)
+### Run 5 (fix #2; read these first)
+
+Same method as runs 3 and 4 (`out/HUD/overhead.py`, 6 rounds alternating hidden/shown launches of a devRelease
+installed fresh and compiled `speed-profile`; `dumpsys gfxinfo` reset and dumped around every step), APKs built
+from `d46a98f` (`out/HUD/apks-f2/`; the commits after it change a doc and wrap three lines). Limits: +0.3 points of
+jank, under 0.5 ms per frame. Summary: `perf/HUD/measurements.json` (`fix2_*` keys; run 4's `fix1_*` kept);
+`out/HUD/f2_summary.py` prints the tables, per-launch janky scroll frames and main-thread scroll p99.
+
+**Standard preset, no analytics: the overlay's own JankStats** (`perf/HUD/overhead-standard-f2/`,
+`com.example.hud.standard.dev`):
+
+| Journey | Frames hidden / shown | Janky % hidden → shown | Δ points | UI thread mean Δ | Frame total mean Δ |
+|---|---|---|---|---|---|
+| Scroll | 10375 / 10177 | 0.42 → 0.34 | −0.08 | +0.091 ms | −0.046 ms |
+| Tabs | 759 / 761 | 3.16 → 3.15 | −0.01 | +0.050 ms | +0.603 ms |
+| Push/pop | 2554 / 2557 | 4.70 → 4.65 | −0.05 | +0.020 ms | +0.096 ms |
+| **All** | 13688 / 13495 | 1.37 → 1.32 | **−0.05** | **+0.074 ms** | +0.032 ms |
+
+Both limits met. Janky scroll frames per launch, hidden 11, 10, 3, 8, 8, 4 (mean 7.3) vs shown 10, 7, 6, 4, 3, 5
+(5.8). Idle: 0 frames in 5 s, hidden and shown, every launch. PerfHud window lines: none hidden, 8 per shown
+launch.
+
+**Everything preset, analytics on, its JankStats shared, without StateKeys** (`perf/HUD/overhead-everything-f2/`,
+`com.example.hud.everything.dev`):
+
+| Journey | Frames hidden / shown | Janky % hidden → shown | Δ points | UI thread mean Δ | Frame total mean Δ |
+|---|---|---|---|---|---|
+| Scroll | 10300 / 10235 | 0.48 → 0.54 | +0.06 | +0.076 ms | +0.083 ms |
+| Tabs | 1301 / 1286 | 3.54 → 3.58 | +0.04 | +0.115 ms | −0.125 ms |
+| Push/pop | 2547 / 2547 | 4.91 → 4.91 | 0.00 | +0.036 ms | +0.288 ms |
+| **All** | 14148 / 14068 | 1.55 → 1.61 | **+0.06** | **+0.070 ms** | +0.100 ms |
+
+Both limits met. Janky scroll frames per launch, hidden 11, 7, 7, 10, 6, 8 (8.2) vs shown 10, 7, 9, 7, 7, 15 (9.2).
+Idle: 0 frames in 5 s, hidden and shown. PerfHud window lines: none hidden, 9 per shown launch. The UI-thread
+mean moved +0.003 ms in run 4 (with StateKeys) and +0.070 ms here (without it); within the run-to-run spread seen
+before (±0.05 ms), but in the direction of the key string analytics now builds per frame while recording.
+
+**The main-thread scroll p99 (the review's question).** Per launch, hidden vs shown: standard 1.75-1.79 ms in all
+six hidden launches; shown 3.67, 4.07, 4.07, 1.79, 1.78, 4.07 ms. Everything: hidden 3.86, 1.86, 1.86, 1.83, 1.87,
+4.22; shown 4.04, 1.89, 1.90, 4.29, 3.78, 4.14. So it is bimodal per launch, about 1.8 or about 4 ms, in hidden
+launches too, and not from the pill's text layout, which run 5 removed with no change to it. One system trace of
+the standard preset shown (`perf/HUD/trace-f2/`: `standard-shown.pftrace.gz`, four queries, `results.txt`; the
+device's own `perfetto`, `trace_processor` v57.2 from `D:/.caches/perfetto`): 3137 `Choreographer#doFrame`, 82 over
+3 ms. In those, every phase is about twice as long as in normal frames (animation 1.22 vs 0.56 ms, traversal 1.72
+vs 1.00, draw 1.61 vs 0.91), 56 of the 82 carry input (fling starts after the script's one-second pauses), and the
+main thread ran 87 ms of them on little cores (CPUs 0-5) against 31 ms in all 2765 normal frames, while both big
+cores (6, 7) sat idle for 143 ms of that time. No slice inside them is the overlay's. Reading: fling-start frames
+the scheduler started on a little core after the pause; the overlay's share of it is not separable here (shown
+launches hit it more often: 15 of 24 launches over runs 4-5 against 5 of 24 hidden), and the frames still made
+their deadlines (janky share unchanged). For WP13: the gates' scroll scenario has the same pauses, so its p99 will
+show the same split; judge it per launch.
+
+**Hidden adds no frame listener** (`perf/HUD/checks-f2/checks-listener.json`, both presets from `d46a98f`):
+standard hidden has no `FrameMetricsAgg` and no PerfHud line; shown has `FrameMetricsAgg`, `DefaultExecutor` and
+3 lines. Everything has `FrameMetricsAgg` either way (analytics'); shown adds `DefaultExecutor` and the lines.
+
+**adb path** (`perf/HUD/checks-f2/checks-adb.json`, everything devDebug, receiver from the debug manifest):
+`run-as … am broadcast --user 0 … RECORD --ez recording true`, then `EXPORT`: the result data is the JSON's path,
+both files pulled (`perf-report-20261019-123203.{json,md}`: `uiP90BudgetShare`/`uiP99BudgetShare` present, schema
+2), the log has `frameP*`/`uiP*` keys (`perfhud-logcat.txt`); without `run-as` not delivered. devRelease: `run-as:
+package not debuggable`, and the direct broadcast reaches nothing (no receiver there now).
+
+**APK inspection** (`perf/HUD/checks-f2/apk-inspection-f2.json`): everything prodRelease from `d46a98f` clean on
+all five looks (0 R8 mapping classes, seams included; 0 dex classes, manifest entries, resources, strings);
+devRelease carries the tooling (175 mapping classes, 138 resources, 10 string markers) and, with the receiver
+gone, no manifest entry.
+
+### Run 4 (fix #1)
 
 Same method as run 3 (`out/HUD/overhead.py`, 6 rounds alternating hidden/shown launches of a devRelease installed
 fresh and compiled `speed-profile`, `dumpsys gfxinfo` reset and dumped around every step), APKs built from `0cea54c`
@@ -534,6 +720,11 @@ Run 2, over every composable and modifier this package wrote or changed, after r
 | `FrameSections` → `FpsGraph`, `HistogramGraph` (run 4) | The rate lambdas captured the snapshot, so each 500 ms refresh made new lambda instances and `drawWithCache` rebuilt its dash effect and labels; they now capture the `Float` rate, which strong skipping memoises (cat. 1, 6). | **Fixed.** |
 | `PerformancePill`, `PerformanceTab` (run 4) | `collectAsStateWithLifecycle` (A-2); the pill's size remembered on all three formats; no new state. | Clean. |
 | `ScoreSection`, `StrictModeSection` (run 4) | Null-checked total and grade read once into locals; at most 10 StrictMode examples worded with `stringResource` in a bounded `forEach`. | Clean. |
+| `PerformancePill` / `LivePill`, `PillText` (run 5) | Each redraw formatted two strings and laid out two new `TextLayoutResult`s (cat. 6: allocation in the draw phase, inside measured app frames). `PillText` holds one `TextPaint` and per-line `CharArray`s, remembered on every input it reads (formats, style, resolved typeface, density; state-and-stability's explicit keys); the typeface `State` from `LocalFontFamilyResolver` is read in composition so a late font rebuilds it once. Size from the widest lines, measured once (cat. 2). | **Fixed**: no allocation per redraw. |
+| `PerformanceTab` (run 5) | The 500 ms snapshot loop ran in a plain `LaunchedEffect` while the app was in the background (cat. 5, lifecycle-aware work). | **Fixed**: `repeatOnLifecycle(STARTED)` inside the effect, keyed on the recorder and the lifecycle owner, as `MessageHost` does. |
+| `FpsGraph` (run 5) | The rate label was formatted and measured in `onDrawBehind`, twice a second (cat. 6). | **Fixed**: measured in `drawWithCache`; the rate lambda is new only when the rate changes. |
+| `PanelContent` (devtools, run 5) | `tabTitles` was a new list on every recomposition (each new request), so `AppSegmentedControl` could not skip under strong skipping's instance equality (cat. 1). | **Fixed**: `remember(pageTitles)`. |
+| `HistogramGraph` (run 5) | Bins changed (last bin 32+); no new allocation, the draw loop unchanged. | Clean. |
 | `AppRoot`, `ReportCurrentScreen` (app) | Optional effect guarded with `if (devTooling != null)` (cat. 5); the screen reported from a `snapshotFlow` over the back stack in a `LaunchedEffect`, with `rememberUpdatedState` for the lambda, so a navigation recomposes nothing (cat. 1, 5). A `SideEffect` would read the top key in composition and recompose the root on every navigation. | Clean. |
 
 ## Rules and gotchas the docs must state
@@ -557,7 +748,8 @@ For WP12 (REQUIREMENTS 25); `templates/android/docs/PERFORMANCE-OVERLAY.md` alre
   flavour. A staging release has no badge; give QA a stagingDebug or a devRelease.
 - **One JankStats per window.** Dev tooling that wants frames takes them from `FrameJankRecorder.frameListener` when
   analytics is on; it never adds a second JankStats.
-- **Hidden means no listener.** The overlay off puts nothing on the window, samples nothing and allocates no ring;
+- **Hidden means no listener.** The overlay off puts nothing on the window and samples nothing; its rings are
+  allocated by the first recording or the Perf tab's first read (run 5 corrected "allocates no ring");
   the recorder starts JankStats (or the shared listener) only while recording. It is still built at launch, with
   the inspector, on the main thread: an activity-lifecycle callback, a DataStore and one read of the stored choice
   (Measurements, run 4, for what that costs a cold start).
@@ -595,9 +787,43 @@ For WP12 (REQUIREMENTS 25); `templates/android/docs/PERFORMANCE-OVERLAY.md` alre
   penalties included: a policy with `penaltyDeath` dies of the added disk-read checks too, and a policy the app sets
   while recording replaces the overlay's until the next start.
 - **The log's scopes.** A window line's counts (`gc=` included) are that window's and its memory sizes the latest
-  sample's; a screen line sums every visit to the screen since recording began.
+  sample's; a screen line sums every visit to the screen since recording began. `frameP50/90/99` are full
+  durations (vsync to GPU done; on-time frames run past one interval), `uiP50/90/99` main-thread time, the part
+  the score grades; screen lines have the full durations only.
+- **Adaptive displays (run 5).** The score holds each frame to its own refresh interval, so a phone that drops
+  to 60 Hz for a lone frame after idle does not change a scroll's grade. "Display" is the highest rate drawn at;
+  the pill shows the newest frame's rate; the histogram's line is the highest rate's interval.
+- **An app's own StrictMode penalty listener is silent while recording (run 5).** A thread policy holds one
+  listener and the platform cannot hand back the app's; the overlay's replaces it until recording stops.
+- **The adb receiver exists in debug builds only (run 5).** devRelease exports from the tab; `run-as` would refuse
+  it anyway.
+- **Budget shares cap at 4 (run 5).** A main-thread p90/p99 of four intervals or more reads as `4.0× budget` (the
+  histogram's last bucket); it is an F either way.
+- **Judge a scroll's main-thread p99 per launch (run 5).** On the Redmi it is about 1.8 or about 4 ms depending on
+  the launch, hidden or shown: fling-start frames after a pause that the scheduler starts on a little core
+  (`perf/HUD/trace-f2/`). A pooled p99 over a few launches mostly counts how many launches drew that lot.
 
 ## Open issues
+
+- **For the user (run 5): take `wp/HUD-statekeys` or not.** REQUIREMENTS 40 says the existing jank analytics stays
+  as it is, so `wp/HUD` no longer changes how prodRelease builds the analytics key (see Decisions, "StateKeys split
+  out"). The branch's one commit (`1945b94`, on `wp/HUD` `6adb04c`) makes the key once per change of states
+  instead of once per frame, in every build with `analytics`, prodRelease included; keys pinned by tests. Without
+  it, a dev build with `analytics` builds one short string per frame on JankStats' thread while the overlay
+  records (its route is a state); prodRelease is as WP06 left it.
+- **Not done in run 5, with reasons:** a `RedrawDuringFrames` test needs Compose UI testing in `:core:perfhud`
+  (`ui-test-junit4` and its manifest, new test dependencies) to drive pre-draw passes; its behaviour is measured
+  instead (idle: 0 frames in 5 s, shown and hidden; the pill refreshes in the demo). A `ReportReceiver` action
+  test needs Hilt's test runner for an `@AndroidEntryPoint` receiver; the adb path is checked on the phone
+  (`perf/HUD/checks-f2/checks-adb.json`). `FrameFeeds.kt` keeps building `FrameJankRecorder` by reflection: a
+  `testFixtures` factory in `:core:analytics` needs AGP's experimental Kotlin test-fixtures flag in
+  `gradle.properties`, a project-wide switch for one test helper; the reflection names the constructor's one
+  parameter type, so a change there fails every FrameFeedTest at once, loudly. `DevToolingGuardTest` stays a
+  graph-walk test; the dev-flavour skip and the `check`/`pre<Variant>Build` hooks are checked in acceptance
+  instead (`out/HUD/f2_accept.win.sh`: the three guard tasks exist and no dev one, and `--dry-run
+  assembleProdRelease` schedules the guard), since a ProjectBuilder test would have to apply AGP. The pill's
+  `minTouchTarget = 0.dp` and static description, and `DevToolsPanel`'s literal "Screen", are kept as recorded in
+  run 4.
 
 - **`perf.sh` has not measured the overlay yet**, by design of the branch: `wp/HUD` is cut from `wp/WP06`, whose
   template has none of the `tab_<i>`/`primary_list` test tags or the `perf.fakeSession` launch hook that `perf.sh`
@@ -618,12 +844,9 @@ For WP12 (REQUIREMENTS 25); `templates/android/docs/PERFORMANCE-OVERLAY.md` alre
   KDoc, `perfhud_fix_app_memory`, `PERFORMANCE-OVERLAY.md`'s table) copies `meminfo.pss_app_mb` as it was. On
   `wp/WP04` (`4a15dda`, Oct 19 07:45) that row is now 58.4 (solid) / 53.3 (standard), non-regression. Re-sync these
   four copies when HUD merges after WP04 (to-release order), not before: WP04's numbers still move.
-- **Pill redraw cost (run 4, kept):** each pill redraw formats two strings (`String.format`, boxing two Ints) and
-  lays out two `TextLayoutResult`s, at most four times a second inside app frames. The main-thread scroll p99 does
-  not isolate it: 1.80 → 3.69 ms (run 3, everything), 1.78 → 3.91 ms (run 4, standard), but 3.91 → 3.73 ms (run 4,
-  everything), so it moves by 2 ms between runs either way, while the mean moves +0.003 to +0.09 ms and the jank not
-  at all beyond noise. Within the limits; a glyph cache (digits laid out once in the mono font, drawn at fixed
-  advances from a reused `CharArray`) would remove the cost if a later package wants it gone.
+- **Pill redraw cost (run 4; removed in run 5):** each redraw formatted two strings and laid out two text
+  layouts; run 5's `PillText` draws from reused buffers with one paint (Decisions). Run 5's measurements below are
+  the check.
 - **Hidden start-up cost (run 4, measured, kept):** +10 ms median cold start in devRelease against `wp/WP06`
   (within noise, Measurements). If a cold-start gate ever needs it back: provide the page with
   `dagger.Lazy<PerformanceRecorder>` and build the recorder after the first frame, keeping only `FrameFeed` (the
@@ -637,6 +860,11 @@ For WP12 (REQUIREMENTS 25); `templates/android/docs/PERFORMANCE-OVERLAY.md` alre
   literal-copy convention, kept from WP06).
 
 ## Lock time used
+
+- Run 5: Gradle 11:16-11:19 (`:core:perfhud` tests), 11:20-11:21 (`wp/HUD-statekeys` analytics tests and lint),
+  11:24-11:27 (targeted tests, lint, `:app` compiles), 11:28-11:41 (`f2_builds`), 11:42-12:07 (`f2_accept`),
+  12:07-12:09 (mutation check). adb: another workflow's perf run held it 10:45-12:10; 12:10-12:32
+  (`f2_phone.win.sh`), 12:32-12:33 (the trace).
 
 - Run 4: Gradle 08:24-08:25 (perfhud compile), 08:30-08:31 (perfhud tests), 08:31-08:32 (the mutation check),
   08:36-08:37 (first `f1_builds`, failed in lint on Metaspace), 08:39-08:50 (`f1_builds`), 08:53-09:07 (perfhud

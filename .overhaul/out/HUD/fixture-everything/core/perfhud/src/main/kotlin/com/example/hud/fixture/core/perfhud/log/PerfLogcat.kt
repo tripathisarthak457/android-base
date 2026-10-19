@@ -17,6 +17,9 @@ import javax.inject.Inject
  * garbage collections included, are that window's; the memory sizes are the latest sample's. A
  * screen line sums every visit to the screen since recording began, not only the one just left.
  *
+ * `frameP*` are percentiles of each frame's full duration, vsync to GPU done, which on-time frames
+ * routinely run past one interval; `uiP*` of its main-thread time, the part the score grades.
+ *
  * Written straight to logcat, not through the app's `Log` seam: that drops informational lines from
  * release builds, and devRelease is where these numbers are real. Called from the sampler's thread.
  */
@@ -28,6 +31,7 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
     private val previous = FrameTotals()
     private val current = FrameTotals()
     private val window = FrameHistogram()
+    private val windowUi = FrameHistogram()
     private var lastScreen: String? = null
     private var seconds = 0
     private var gcBefore = 0L
@@ -50,8 +54,12 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
         seconds++
         if (seconds % WINDOW_SECONDS == 0) {
             frames.copyTotals(current)
-            if (current.frames > previous.frames) write(windowLine(memory.summary(), screen))
+            val memoryNow = memory.summary()
+            if (current.frames > previous.frames) write(windowLine(memoryNow, screen))
             current.copyInto(previous)
+            // Moved on whether or not the window was written, so a line never counts the
+            // collections of a quiet window before it.
+            if (memoryNow != null) gcBefore = memoryNow.gcCount
         }
         if (screen != lastScreen) {
             val left = lastScreen
@@ -65,6 +73,7 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
 
     private fun windowLine(memory: MemorySummary?, screen: String?): String {
         current.histogram.subtract(previous.histogram, into = window)
+        current.uiHistogram.subtract(previous.uiHistogram, into = windowUi)
         val frames = current.frames - previous.frames
         val busy = current.busyNanos - previous.busyNanos
         // A frame's busy time is known once the next one starts, so the totals hold one fewer than
@@ -75,9 +84,12 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
             append(" frames=").append(frames)
             append(" fps=").append(if (busy > 0) format(timedFrames * NANOS_PER_SECOND / busy) else "-")
             append(" janky=").append(format(percent(current.janky - previous.janky, frames))).append('%')
-            append(" p50=").append(format(window.percentile(P50)))
-            append(" p90=").append(format(window.percentile(P90)))
-            append(" p99=").append(format(window.percentile(P99)))
+            append(" frameP50=").append(format(window.percentile(P50)))
+            append(" frameP90=").append(format(window.percentile(P90)))
+            append(" frameP99=").append(format(window.percentile(P99)))
+            append(" uiP50=").append(format(windowUi.percentile(P50)))
+            append(" uiP90=").append(format(windowUi.percentile(P90)))
+            append(" uiP99=").append(format(windowUi.percentile(P99)))
             append(" slow=").append(current.slow - previous.slow)
             append(" frozen=").append(current.frozen - previous.frozen)
             append(" long=").append(current.longWork - previous.longWork)
@@ -86,7 +98,6 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
                 append(" nativeMb=").append(format(memory.nativeHeapMb))
                 memory.pssMb?.let { append(" pssMb=").append(format(it)) }
                 append(" gc=").append(memory.gcCount - gcBefore)
-                gcBefore = memory.gcCount
             }
             append(" screen=").append(screen ?: "-")
         }
@@ -96,9 +107,9 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
         append("screen=").append(screen)
         append(" frames=").append(stats.frames)
         append(" janky=").append(format(stats.jankyPercent)).append('%')
-        append(" p50=").append(format(stats.p50Millis))
-        append(" p90=").append(format(stats.p90Millis))
-        append(" p99=").append(format(stats.p99Millis))
+        append(" frameP50=").append(format(stats.p50Millis))
+        append(" frameP90=").append(format(stats.p90Millis))
+        append(" frameP99=").append(format(stats.p99Millis))
         append(" worst=").append(format(stats.worstMillis))
         append(" slow=").append(stats.slow)
         append(" frozen=").append(stats.frozen)
@@ -112,6 +123,7 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
         other.longWork = longWork
         other.busyNanos = busyNanos
         histogram.copyInto(other.histogram)
+        uiHistogram.copyInto(other.uiHistogram)
     }
 
     companion object {

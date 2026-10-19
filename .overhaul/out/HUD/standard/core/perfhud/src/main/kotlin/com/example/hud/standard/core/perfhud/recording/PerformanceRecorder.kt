@@ -29,7 +29,9 @@ import com.example.hud.standard.core.perfhud.startup.StartupSummary
 import com.example.hud.standard.core.perfhud.startup.StartupTimes
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -49,8 +51,9 @@ import javax.inject.Singleton
  * `perf.hud=on|off` overrides both for that process: that is how `perf.sh` measures what the
  * overlay itself costs.
  *
- * Until the first recording starts nothing listens to the window, nothing is sampled and the
- * frame rings are not allocated. The recorder is built with the inspector, on the main thread
+ * Until the first recording starts nothing listens to the window and nothing is sampled; the rings
+ * are allocated by the first recording, or by the Perf tab's first read of them. The recorder is
+ * built with the inspector, on the main thread
  * during the launch: that costs the launch an activity-lifecycle callback, a DataStore and one
  * read of the stored choice, whose file I/O runs on the I/O dispatcher.
  */
@@ -74,6 +77,10 @@ internal class PerformanceRecorder @Inject constructor(
     private val pssSchedule = PssSchedule()
     private val _recording = MutableStateFlow(false)
     private var work: Job? = null
+
+    // A stopped run may still be inside a PSS read; the next one waits for it to end, since the log,
+    // the memory log's GC baseline and the PSS schedule each take one caller at a time.
+    private var stopping: Job? = null
     private var launchOverride = false
 
     // Written on the main thread, read by snapshot() on a background one.
@@ -192,18 +199,20 @@ internal class PerformanceRecorder @Inject constructor(
         recordingSince = SystemClock.elapsedRealtime()
         _recording.value = true
         if (environment.isDebugBuild) logcat.note(DEBUG_NOTE)
+        val previous = stopping
         work = scope.launch(dispatchers.main) {
             launch { currentScreen.name.filterNotNull().collect(feed::setRoute) }
             // Nothing is drawn in the background, and PSS there would only measure what the
             // system trimmed: the sampler stops until an activity is started again.
             launch(dispatchers.default) {
+                previous?.join()
                 feed.foreground.collectLatest { visible -> if (visible) sampleEverySecond() }
             }
         }
     }
 
     private fun stop() {
-        work?.cancel()
+        stopping = work?.also { it.cancel() }
         work = null
         feed.stop()
         strictMode.stop()
@@ -220,7 +229,11 @@ internal class PerformanceRecorder @Inject constructor(
                 nowMillis = SystemClock.elapsedRealtime(),
                 drawing = frames.drewWithin(System.nanoTime(), PssSchedule.QUIET_NANOS),
             )
-            memory.add(memorySampler.read(withPss))
+            val reading = memorySampler.read(withPss)
+            // The read blocks for as long as a PSS walk takes, and a reset meanwhile has cleared the
+            // log this reading is from.
+            currentCoroutineContext().ensureActive()
+            memory.add(reading)
             logcat.onSecond(frames, memory, currentScreen.name.value)
             delay(SAMPLE_MILLIS)
         }

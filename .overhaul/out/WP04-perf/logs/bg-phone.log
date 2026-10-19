@@ -1,0 +1,1524 @@
+== 2026-10-19 10:45:51 bg phone
+== 10:45:52 bg-head built from e404e391 (instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-head\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.4 °C at the start
+- Runs: 3, seed 940566, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 3 | 4, 3, 3 |
+| First back swipe after a restart (warm), janky frames | 3 | 4, 2, 3 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.07 | 6.23, 7.07, 7.29 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.28 | 7.3, 7.28, 7.28 |
+| meminfo.graphics_mb | 54.8 | 54.8, 54.7, 54.9 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 70.3 | 68.4, 70.7, 70.3 |
+| PSS after the journey (MB) | 125.2 | 123.2, 125.4, 125.2 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.06 | 0.06, 0.05, 0.11 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| pushpop_gesture.first3_gpu_ms.max | 20.48 | 19.8, 24.43, 20.48 |
+| pushpop_gesture.first3_gpu_ms.median | 10.88 | 10.88, 12.16, 10.83 |
+| pushpop_gesture.first3_issue_ms.max | 6.44 | 4.79, 7.76, 6.44 |
+| pushpop_gesture.first3_issue_ms.median | 1.58 | 1.56, 1.58, 1.71 |
+| pushpop_gesture.frames | 747 | 747, 747, 749 |
+| pushpop_gesture.gesture_first_frame_ms.max | 2.74 | 2.74, 2.52, 2.89 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.02 | 2.02, 2.22, 1.98 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 11, 10 |
+| pushpop_gesture.gpu_p99_ms | 16 | 15, 16, 16 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 24.47 | 25.74, 24.47, 17.81 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 1.2 | 1.47, 1.2, 0.8 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.68 | 3.08, 2.68, 2.4 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 12, 11, 12 |
+| pushpop_gesture.p50_ms | 9 | 9, 10, 9 |
+| pushpop_gesture.p90_ms | 17 | 17, 17, 16 |
+| pushpop_gesture.p99_ms | 32 | 32, 29, 32 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 8.7 | 9.48, 8.7, 8.57 |
+| First visit to a tab, first frame median (ms) | 4.2 | 6.65, 4.2, 3.93 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 8.98 | 3.9, 10.21, 8.98 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.26 | 3.44, 4.26, 8.46 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 4.2 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 8.7 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.26 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 8.98 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.07 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.28 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 3 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 3 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.68 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.02 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 24.47 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 1.2 | 1 | fail |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 70.3 | 58.4 | fail |
+| PSS after the journey (MB) | 125.2 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 10:50:05 bg-head attempt 1: perf.sh exit 1
+== 10:50:05 bg-tex built from e404e391 (texture instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-tex\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 34.4 °C at the start
+- Runs: 3, seed 495915, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 2 | 2, 2, 2 |
+| First back swipe after a restart (warm), janky frames | 2 | 2, 2, 3 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 8.18 | 6.52, 8.18, 14.98 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.68 | 6.76, 15.12, 7.68 |
+| meminfo.graphics_mb | 54.8 | 54.8, 54.8, 54.8 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.5 | 59.2, 59.5, 59.6 |
+| PSS after the journey (MB) | 114.3 | 114, 114.3, 114.4 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.06 | 0.06, 0.06, 0.06 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| pushpop_gesture.first3_gpu_ms.max | 20.01 | 21.05, 19.57, 20.01 |
+| pushpop_gesture.first3_gpu_ms.median | 14.3 | 14.36, 13.57, 14.3 |
+| pushpop_gesture.first3_issue_ms.max | 8.28 | 8.28, 6.24, 9.4 |
+| pushpop_gesture.first3_issue_ms.median | 1.71 | 1.62, 1.78, 1.71 |
+| pushpop_gesture.frames | 746 | 747, 745, 746 |
+| pushpop_gesture.gesture_first_frame_ms.max | 3.23 | 3.23, 4.08, 2.71 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.59 | 2.67, 2.59, 2.43 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 10, 10 |
+| pushpop_gesture.gpu_p99_ms | 16 | 16, 17, 16 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 11.03 | 8.26, 19.2, 11.03 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.4 | 0.27, 0.94, 0.4 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.01 | 1.87, 2.55, 2.01 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 12, 12, 12 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 17 | 14, 17, 17 |
+| pushpop_gesture.p99_ms | 26 | 26, 29, 26 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 4.47 | 3.91, 9.53, 4.47 |
+| First visit to a tab, first frame median (ms) | 3.78 | 3.78, 3.67, 4.18 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 6.85 | 9.11, 4.38, 6.85 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.45 | 6.46, 4.22, 4.45 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 3.78 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 4.47 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.45 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 6.85 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 8.18 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.68 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.01 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.59 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 11.03 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.4 | 1 | pass |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.5 | 58.4 | fail |
+| PSS after the journey (MB) | 114.3 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 10:54:15 bg-tex attempt 1: perf.sh exit 1
+== 10:54:15 bg-c1 built from e404e391 (texture c1 instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-c1\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 34.2 °C at the start
+- Runs: 3, seed 241772, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 2 | 1, 2, 2 |
+| First back swipe after a restart (warm), janky frames | 2 | 3, 2, 2 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.31 | 15.34, 7.31, 6.16 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.61 | 19.03, 7.61, 7.43 |
+| meminfo.graphics_mb | 54.7 | 54.7, 54.7, 54.8 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.8 | 61.3, 59.8, 59.8 |
+| PSS after the journey (MB) | 114.6 | 116.1, 114.6, 114.6 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.05 | 0.05, 0.11, 0.05 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| pushpop_gesture.first3_gpu_ms.max | 18.64 | 18.64, 19.04, 17.86 |
+| pushpop_gesture.first3_gpu_ms.median | 13.78 | 13.77, 13.84, 13.78 |
+| pushpop_gesture.first3_issue_ms.max | 4.83 | 4.83, 5.43, 4.82 |
+| pushpop_gesture.first3_issue_ms.median | 1.66 | 1.52, 1.9, 1.66 |
+| pushpop_gesture.frames | 749 | 755, 749, 747 |
+| pushpop_gesture.gesture_first_frame_ms.max | 2.83 | 2.83, 3.16, 2.53 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.06 | 2.06, 2.15, 1.94 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 10, 10 |
+| pushpop_gesture.gpu_p99_ms | 16 | 17, 16, 16 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 6.91 | 4.12, 6.91, 6.91 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.4 | 0.13, 0.4, 0.4 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2 | 1.72, 2, 2.01 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 12, 12, 12 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 17 | 17, 17, 17 |
+| pushpop_gesture.p99_ms | 28 | 24, 30, 28 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 4.38 | 8.41, 4.18, 4.38 |
+| First visit to a tab, first frame median (ms) | 3.88 | 3.74, 3.88, 4.07 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.03 | 10.48, 7.52, 9.03 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 3.94 | 3.94, 3.88, 6.61 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 3.88 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 4.38 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 3.94 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.03 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.31 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.61 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.06 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 6.91 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.4 | 1 | pass |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.8 | 58.4 | fail |
+| PSS after the journey (MB) | 114.6 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 10:58:25 bg-c1 attempt 1: perf.sh exit 1
+== 10:58:25 bg-c2 built from e404e391 (texture c1 c2 instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-c2\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 34.2 °C at the start
+- Runs: 3, seed 535984, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 2 | 2, 2, 2 |
+| First back swipe after a restart (warm), janky frames | 2 | 2, 2, 2 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.36 | 14.82, 5.61, 7.36 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.62 | 7.78, 7.59, 7.62 |
+| meminfo.graphics_mb | 54.8 | 54.8, 54.8, 54.8 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.3 | 59.3, 59.2, 60.8 |
+| PSS after the journey (MB) | 114.1 | 114.1, 114, 115.6 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.06 | 0.05, 0.23, 0.06 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.02 | 0.03, 0.02, 0.02 |
+| pushpop_gesture.first3_gpu_ms.max | 18.16 | 26.24, 17.67, 18.16 |
+| pushpop_gesture.first3_gpu_ms.median | 13.46 | 13.65, 13.02, 13.46 |
+| pushpop_gesture.first3_issue_ms.max | 6.31 | 6.31, 6.45, 5.39 |
+| pushpop_gesture.first3_issue_ms.median | 1.55 | 1.65, 1.55, 1.55 |
+| pushpop_gesture.frames | 756 | 754, 756, 758 |
+| pushpop_gesture.gesture_first_frame_ms.max | 2.73 | 2.73, 3.6, 1.65 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 1.61 | 1.68, 1.61, 1.04 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 10, 9 |
+| pushpop_gesture.gpu_p99_ms | 15 | 17, 15, 15 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 5.5 | 10.95, 5.5, 0 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.4 | 0.53, 0.4, 0 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 1.85 | 2.12, 1.85, 1.58 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 12, 11, 12 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 16 | 17, 16, 13 |
+| pushpop_gesture.p99_ms | 27 | 28, 24, 27 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 8.57 | 8.57, 4.51, 8.65 |
+| First visit to a tab, first frame median (ms) | 4.37 | 4.6, 4.19, 4.37 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.57 | 4.5, 9.63, 9.57 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.16 | 4.16, 4.1, 4.19 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 4.37 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 8.57 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.16 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.57 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.36 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.62 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 1.85 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 1.61 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 5.5 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.4 | 1 | pass |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.3 | 58.4 | fail |
+| PSS after the journey (MB) | 114.1 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:02:38 bg-c2 attempt 1: perf.sh exit 1
+MEASURE DONE
+== 11:02:39 bg-c2 built from e404e391 (texture c1 c2 instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-c2\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 34.1 °C at the start
+- Runs: 3, seed 62057, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 2 | 2, 2, 2 |
+| First back swipe after a restart (warm), janky frames | 2 | 1, 2, 2 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.24 | 5.77, 8.3, 7.24 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 8.44 | 7.22, 12.2, 8.44 |
+| meminfo.graphics_mb | 54.8 | 54.8, 54.8, 54.8 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.1 | 59.1, 59.3, 58.4 |
+| PSS after the journey (MB) | 113.8 | 113.8, 114.1, 113.2 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.07 | 0.05, 0.15, 0.07 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| pushpop_gesture.first3_gpu_ms.max | 18.46 | 18.46, 19.14, 17.33 |
+| pushpop_gesture.first3_gpu_ms.median | 12.59 | 12.67, 12.59, 12.2 |
+| pushpop_gesture.first3_issue_ms.max | 6.01 | 5.31, 8.99, 6.01 |
+| pushpop_gesture.first3_issue_ms.median | 1.56 | 1.56, 1.58, 1.46 |
+| pushpop_gesture.frames | 754 | 754, 753, 754 |
+| pushpop_gesture.gesture_first_frame_ms.max | 2.49 | 2.49, 2.32, 2.78 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 1.73 | 2.21, 1.73, 1.55 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 9 | 10, 9, 9 |
+| pushpop_gesture.gpu_p99_ms | 16 | 16, 16, 16 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 10.92 | 9.62, 10.92, 10.92 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.27 | 0.53, 0.27, 0.27 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 1.86 | 2.12, 1.86, 1.86 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 12, 12, 12 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 15 | 16, 14, 15 |
+| pushpop_gesture.p99_ms | 25 | 26, 23, 25 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 8.84 | 8.84, 3.92, 9.61 |
+| First visit to a tab, first frame median (ms) | 4.31 | 4.33, 3.88, 4.31 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.09 | 10.2, 9.09, 9.02 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 6.42 | 7.13, 6.42, 6.25 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 4.31 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 8.84 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 6.42 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.09 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.24 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 8.44 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 1.86 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 1.73 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 10.92 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.27 | 1 | pass |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.1 | 58.4 | fail |
+| PSS after the journey (MB) | 113.8 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:06:58 bg-c2 attempt 1: perf.sh exit 1
+== 11:06:58 bg-c1 built from e404e391 (texture c1 instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-c1\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.9 °C at the start
+- Runs: 3, seed 108266, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 1 | 1, 1, 2 |
+| First back swipe after a restart (warm), janky frames | 2 | 2, 2, 2 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.13 | 6.23, 7.17, 7.13 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 9.13 | 9.13, 6.4, 12.25 |
+| meminfo.graphics_mb | 54.8 | 54.8, 54.7, 54.8 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 60.5 | 60.2, 60.5, 60.7 |
+| PSS after the journey (MB) | 115.2 | 115, 115.2, 115.5 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.06 | 0.06, 0.05, 0.06 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.03 | 0.02, 0.03, 0.03 |
+| pushpop_gesture.first3_gpu_ms.max | 20.2 | 27.08, 17.56, 20.2 |
+| pushpop_gesture.first3_gpu_ms.median | 13.73 | 13.73, 13.7, 14.31 |
+| pushpop_gesture.first3_issue_ms.max | 5 | 5.12, 4.73, 5 |
+| pushpop_gesture.first3_issue_ms.median | 1.81 | 1.5, 1.85, 1.81 |
+| pushpop_gesture.frames | 747 | 747, 745, 749 |
+| pushpop_gesture.gesture_first_frame_ms.max | 3.59 | 4.11, 3.4, 3.59 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.21 | 1.71, 2.22, 2.21 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 10, 10 |
+| pushpop_gesture.gpu_p99_ms | 16 | 16, 16, 16 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 6.91 | 8.28, 6.91, 5.51 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.27 | 0, 0.4, 0.27 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 1.87 | 1.61, 2.01, 1.87 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 12, 12, 12 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 16 | 17, 15, 16 |
+| pushpop_gesture.p99_ms | 28 | 28, 28, 29 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 9.55 | 8.87, 10.23, 9.55 |
+| First visit to a tab, first frame median (ms) | 6.28 | 6.42, 6.28, 6.21 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.16 | 8.45, 9.19, 9.16 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.17 | 5.17, 4.59, 8.65 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 6.28 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 9.55 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.17 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.16 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 7.13 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 9.13 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 1 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 1.87 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.21 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 6.91 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.27 | 1 | pass |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 60.5 | 58.4 | fail |
+| PSS after the journey (MB) | 115.2 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:11:18 bg-c1 attempt 1: perf.sh exit 1
+== 11:11:18 bg-tex built from e404e391 (texture instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-tex\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.8 °C at the start
+- Runs: 3, seed 99795, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 2 | 2, 1, 3 |
+| First back swipe after a restart (warm), janky frames | 2 | 3, 2, 2 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 10.34 | 7.95, 10.34, 15.87 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 6.78 | 6.78, 7.23, 5.89 |
+| meminfo.graphics_mb | 54.8 | 54.8, 54.8, 54.8 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.6 | 61.7, 58.6, 59.6 |
+| PSS after the journey (MB) | 114.3 | 116.4, 113.4, 114.3 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.06 | 0.06, 0.06, 0.17 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.02 | 0.02, 0.02, 0.02 |
+| pushpop_gesture.first3_gpu_ms.max | 20.55 | 17.45, 20.95, 20.55 |
+| pushpop_gesture.first3_gpu_ms.median | 13.4 | 13.4, 13.81, 13.3 |
+| pushpop_gesture.first3_issue_ms.max | 9.3 | 9.3, 9.66, 7.28 |
+| pushpop_gesture.first3_issue_ms.median | 1.67 | 2.08, 1.67, 1.59 |
+| pushpop_gesture.frames | 749 | 745, 755, 749 |
+| pushpop_gesture.gesture_first_frame_ms.max | 2.78 | 2.46, 5.66, 2.78 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.38 | 2.12, 2.38, 2.39 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 10, 10 |
+| pushpop_gesture.gpu_p99_ms | 16 | 16, 16, 16 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 13.76 | 13.8, 4.16, 13.76 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.67 | 0.81, 0.13, 0.67 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.14 | 2.42, 1.72, 2.14 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 12, 12, 11 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 16 | 17, 16, 14 |
+| pushpop_gesture.p99_ms | 25 | 24, 25, 28 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 10.59 | 10.59, 10.22, 11.54 |
+| First visit to a tab, first frame median (ms) | 6.86 | 6.86, 8.84, 5.79 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 8.5 | 8.5, 9.77, 7.69 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.51 | 4.51, 6.38, 4.32 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 6.86 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 10.59 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.51 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 8.5 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 10.34 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 6.78 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.14 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.38 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 13.76 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 0.67 | 1 | pass |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 59.6 | 58.4 | fail |
+| PSS after the journey (MB) | 114.3 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:15:43 bg-tex attempt 1: perf.sh exit 1
+== 11:15:43 bg-head built from e404e391 (instrument)
+run 1/3: install, profile, warm-up
+run 1/3: pushpop_gesture
+run 1/3: meminfo
+run 2/3: install, profile, warm-up
+run 2/3: pushpop_gesture
+run 2/3: meminfo
+run 3/3: install, profile, warm-up
+run 3/3: pushpop_gesture
+run 3/3: meminfo
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-head\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.7 °C at the start
+- Runs: 3, seed 96068, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: pushpop_gesture, meminfo
+
+| Metric | Median | Runs |
+|---|---|---|
+| First back swipe after pm clear (cold), janky frames | 2 | 2, 1, 3 |
+| First back swipe after a restart (warm), janky frames | 2 | 2, 2, 4 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 15.84 | 15.84, 16.25, 5.83 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.64 | 6.42, 7.71, 7.64 |
+| meminfo.graphics_mb | 54.9 | 54.9, 55.7, 54.9 |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 68.8 | 68.8, 69.7, 68.3 |
+| PSS after the journey (MB) | 123.7 | 123.7, 125.3, 123.2 |
+| pushpop_gesture.first3_dequeue_ms.max | 0.07 | 0.38, 0.07, 0.05 |
+| pushpop_gesture.first3_dequeue_ms.median | 0.02 | 0.02, 0.03, 0.02 |
+| pushpop_gesture.first3_gpu_ms.max | 18.64 | 18.73, 16.75, 18.64 |
+| pushpop_gesture.first3_gpu_ms.median | 10.8 | 11.08, 10.71, 10.8 |
+| pushpop_gesture.first3_issue_ms.max | 7.82 | 5.22, 10.6, 7.82 |
+| pushpop_gesture.first3_issue_ms.median | 1.52 | 1.44, 2.76, 1.52 |
+| pushpop_gesture.frames | 745 | 745, 744, 768 |
+| pushpop_gesture.gesture_first_frame_ms.max | 2.71 | 2.47, 3.01, 2.71 |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.26 | 1.12, 2.44, 2.26 |
+| pushpop_gesture.gpu_p50_ms | 6 | 6, 6, 6 |
+| pushpop_gesture.gpu_p90_ms | 10 | 10, 10, 10 |
+| pushpop_gesture.gpu_p99_ms | 15 | 15, 15, 15 |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 24.58 | 24.58, 21.86, 26.57 |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 1.43 | 0.81, 1.61, 1.43 |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.99 | 2.15, 3.23, 2.99 |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | 10, 12, 12 |
+| pushpop_gesture.p50_ms | 9 | 9, 9, 9 |
+| pushpop_gesture.p90_ms | 16 | 14, 17, 16 |
+| pushpop_gesture.p99_ms | 25 | 23, 25, 28 |
+| pushpop_gesture.transitions | 12 | 12, 12, 12 |
+| First visit to a tab, first frame max (ms) | 10.45 | 4.57, 10.45, 10.86 |
+| First visit to a tab, first frame median (ms) | 6.08 | 4.18, 6.08, 6.22 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 7.19 | 7.19, 4.52, 10.05 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.12 | 5.12, 3.81, 8.83 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 6.08 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 10.45 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.12 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 7.19 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 15.84 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.64 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | 2.99 | 3.1 | pass |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | 2.26 | 2.7 | pass |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | 24.58 | 5 | fail |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | 1.43 | 1 | fail |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | 12 | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | — | yes | not measured |
+| Back swipe during a push: lands on the list | — | yes | not measured |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | 68.8 | 58.4 | fail |
+| PSS after the journey (MB) | 123.7 | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:19:52 bg-head attempt 1: perf.sh exit 1
+MEASURE DONE
+== 11:19:52 bg-head built from e404e391 (instrument)
+run 1/3: install, profile, warm-up
+run 1/3: back_during_push
+run 2/3: install, profile, warm-up
+run 2/3: back_during_push
+run 3/3: install, profile, warm-up
+run 3/3: back_during_push
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-head\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.7 °C at the start
+- Runs: 3, seed 641855, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: back_during_push
+
+| Metric | Median | Runs |
+|---|---|---|
+| back_during_push.difference_ratios | [0.98, 0.96, 0.98, 0.96] | [0.98, 0.96, 0.98, 0.96], [0.98, 0.96, 0.98, 0.96], [0.98, 0.96, 0.98, 0.96] |
+| Back swipe during a push: lands on the list | yes | yes, yes, yes |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes, yes, yes |
+| First back swipe after pm clear (cold), janky frames | 2 | 3, 2, 1 |
+| First back swipe after a restart (warm), janky frames | 2 | 3, 2, 1 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 15.32 | 15.32, 15.56, 14.8 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.26 | 7.26, 7.18, 14.94 |
+| First visit to a tab, first frame max (ms) | 9.21 | 9.21, 9.71, 3.97 |
+| First visit to a tab, first frame median (ms) | 3.89 | 3.89, 6.07, 3.71 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 8.92 | 8.04, 8.92, 9.82 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.42 | 4.42, 4.12, 6.07 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 3.89 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 9.21 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.42 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 8.92 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 15.32 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.26 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | — | 3.1 | not measured |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | — | 2.7 | not measured |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes | pass |
+| Back swipe during a push: lands on the list | yes | yes | pass |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | — | 58.4 | not measured |
+| PSS after the journey (MB) | — | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:25:31 bg-head attempt 1: perf.sh exit 1
+== 11:25:32 bg-tex built from e404e391 (texture instrument)
+run 1/3: install, profile, warm-up
+run 1/3: back_during_push
+run 2/3: install, profile, warm-up
+run 2/3: back_during_push
+run 3/3: install, profile, warm-up
+run 3/3: back_during_push
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-tex\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.5 °C at the start
+- Runs: 3, seed 619261, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: back_during_push
+
+| Metric | Median | Runs |
+|---|---|---|
+| back_during_push.difference_ratios | [0.97, 0.95, 0.97, 0.95] | [0.97, 0.96, 0.97, 0.95], [0.97, 0.95, 0.97, 0.95], [0.97, 0.95, 0.97, 0.95] |
+| Back swipe during a push: lands on the list | yes | yes, yes, yes |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes, yes, yes |
+| First back swipe after pm clear (cold), janky frames | 2 | 1, 2, 4 |
+| First back swipe after a restart (warm), janky frames | 2 | 2, 2, 3 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 12.41 | 5.69, 12.41, 15.29 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.28 | 7.28, 7.07, 7.67 |
+| First visit to a tab, first frame max (ms) | 8.32 | 6.65, 8.32, 8.62 |
+| First visit to a tab, first frame median (ms) | 4.38 | 4.38, 4.22, 4.68 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.56 | 3.86, 9.89, 9.56 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.12 | 3.5, 4.12, 5.84 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 4.38 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 8.32 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 4.12 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.56 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 12.41 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.28 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | — | 3.1 | not measured |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | — | 2.7 | not measured |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes | pass |
+| Back swipe during a push: lands on the list | yes | yes | pass |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | — | 58.4 | not measured |
+| PSS after the journey (MB) | — | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:31:46 bg-tex attempt 1: perf.sh exit 1
+== 11:31:46 bg-c1 built from e404e391 (texture c1 instrument)
+run 1/3: install, profile, warm-up
+run 1/3: back_during_push
+run 2/3: install, profile, warm-up
+run 2/3: back_during_push
+run 3/3: install, profile, warm-up
+run 3/3: back_during_push
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-c1\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.5 °C at the start
+- Runs: 3, seed 979627, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: back_during_push
+
+| Metric | Median | Runs |
+|---|---|---|
+| back_during_push.difference_ratios | [0.97, 0.95, 0.97, 0.95] | [0.97, 0.95, 0.97, 0.95], [0.97, 0.95, 0.97, 0.95], [0.97, 0.95, 0.97, 0.95] |
+| Back swipe during a push: lands on the list | yes | yes, yes, yes |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes, yes, yes |
+| First back swipe after pm clear (cold), janky frames | 3 | 3, 2, 3 |
+| First back swipe after a restart (warm), janky frames | 2 | 3, 2, 2 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 6.06 | 5.85, 6.06, 7.37 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.72 | 15.85, 7.72, 6.58 |
+| First visit to a tab, first frame max (ms) | 9.39 | 9.39, 9.55, 8.88 |
+| First visit to a tab, first frame median (ms) | 4.07 | 6.63, 4.07, 4 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.16 | 9.16, 4.58, 9.57 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.77 | 6.1, 3.71, 5.77 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 4.07 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 9.39 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.77 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.16 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 6.06 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 7.72 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 3 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | — | 3.1 | not measured |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | — | 2.7 | not measured |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes | pass |
+| Back swipe during a push: lands on the list | yes | yes | pass |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | — | 58.4 | not measured |
+| PSS after the journey (MB) | — | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:39:00 bg-c1 attempt 1: perf.sh exit 1
+== 11:39:01 bg-c2 built from e404e391 (texture c1 c2 instrument)
+run 1/3: install, profile, warm-up
+run 1/3: back_during_push
+run 2/3: install, profile, warm-up
+run 2/3: back_during_push
+run 3/3: install, profile, warm-up
+run 3/3: back_during_push
+# perf.sh: com.example.wp04.everything.dev
+
+- APK: `D:\projects\tools\.overhaul\out\WP04-perf\bg-c2\app\build\outputs\apk\dev\benchmarkRelease\app-dev-arm64-v8a-benchmarkRelease.apk`
+- Device: M2101K6I (9a7c74f4), battery 33.5 °C at the start
+- Runs: 3, seed 539360, extras {"perf.fakeSession": "true"}, compiled `speed-profile`
+- Scenarios: back_during_push
+
+| Metric | Median | Runs |
+|---|---|---|
+| back_during_push.difference_ratios | [0.97, 0.95, 0.97, 0.95] | [0.97, 0.95, 0.97, 0.95], [0.97, 0.95, 0.97, 0.95], [0.97, 0.95, 0.97, 0.95] |
+| Back swipe during a push: lands on the list | yes | yes, yes, yes |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes, yes, yes |
+| First back swipe after pm clear (cold), janky frames | 2 | 2, 2, 2 |
+| First back swipe after a restart (warm), janky frames | 2 | 1, 2, 2 |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 6.22 | 6.12, 6.22, 18.47 |
+| First push after a restart (warm), the frame that composes the screen (ms) | 6.45 | 6.45, 22.73, 6.21 |
+| First visit to a tab, first frame max (ms) | 9.93 | 10.35, 7.9, 9.93 |
+| First visit to a tab, first frame median (ms) | 4.47 | 6.76, 4.47, 4.15 |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.68 | 10.04, 4.5, 9.68 |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.53 | 5.59, 4.45, 5.53 |
+
+| Gate `solid` | Value | Limit | Result |
+|---|---|---|---|
+| First visit to a tab, first frame median (ms) | 4.47 | ratchet | report |
+| First visit to a tab, first frame max (ms) | 9.93 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame median (ms) | 5.53 | ratchet | report |
+| First visit to a tab after a restart (warm), first frame max (ms) | 9.68 | ratchet | report |
+| First push after pm clear (cold), the frame that composes the screen (ms) | 6.22 | ratchet | report |
+| First push after a restart (warm), the frame that composes the screen (ms) | 6.45 | ratchet | report |
+| First back swipe after pm clear (cold), janky frames | 2 | ratchet | report |
+| First back swipe after a restart (warm), janky frames | 2 | ratchet | report |
+| Tab switch, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch to a visited tab, first frame median (ms) [non-regression] | — | 7.6 | not measured |
+| Tab switch to a visited tab, first frame max (ms) [non-regression] | — | 11.9 | not measured |
+| Tab switch, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Tab switch with plain taps, janky frames (%) [non-regression] | — | 1.26 | not measured |
+| Tab switch with plain taps, first frame median (ms) [non-regression] | — | 4.5 | not measured |
+| Tab switch with plain taps, first frame max (ms) [non-regression] | — | 11.7 | not measured |
+| Tab switch with plain taps, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Tab switch with plain taps, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Tab switch with plain taps, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push, the frame that composes the screen, median (ms) [non-regression] | — | 14.4 | not measured |
+| Push, the frame that composes the screen, max (ms) [non-regression] | — | 18.3 | not measured |
+| Pop, first frame median (ms) [non-regression] | — | 4.1 | not measured |
+| Pop, first frame max (ms) [non-regression] | — | 5.9 | not measured |
+| Push/pop with the Back key, janky frames (%) [non-regression] | — | 1.95 | not measured |
+| Push/pop with the Back key, p99 frame (ms) [non-regression] | — | 35 | not measured |
+| Push/pop with the Back key, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the Back key, janky frames other than each motion's first (%) | — | 0.5 | not measured |
+| Push/pop with the Back key, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Push/pop with the back gesture, janky frames (%) [non-regression] | — | 3.1 | not measured |
+| Back gesture, slowest of its first three frames, median (ms) [non-regression] | — | 2.7 | not measured |
+| Push/pop with the back gesture, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Push/pop with the back gesture, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Push/pop with the back gesture, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Back swipe during a push: one opaque card, no double exposure | yes | yes | pass |
+| Back swipe during a push: lands on the list | yes | yes | pass |
+| Rapid Back: the app is still running | — | yes | not measured |
+| Rapid Back: lands on the expected screen | — | yes | not measured |
+| Rapid Back, janky frames (%) [non-regression] | — | 1.18 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression] | — | 6.2 | not measured |
+| Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression] | — | 7.9 | not measured |
+| Rapid Back, hitch time per second of motion (ms/s) | — | 5 | not measured |
+| Rapid Back, janky frames other than each motion's first (%) | — | 1 | not measured |
+| Rapid Back, motions whose first frame missed its deadline (count) | — | ratchet | report |
+| Navigation stress: the app is still running | — | yes | not measured |
+| Navigation stress: stack invariants hold | — | yes | not measured |
+| Navigation stress, janky frames (%) | — | 4 | not measured |
+| Process death: tab, stacks and presented sheet restored | — | yes | not measured |
+| Process death: Back pops the restored stack | — | yes | not measured |
+| Scroll a root list, janky frames (%) | — | 0.5 | not measured |
+| Scroll a root list, GPU p90 (ms) | — | 7 | not measured |
+| Scroll with the bar minimizing, janky frames (%) | — | 0.5 | not measured |
+| Scroll with the bar minimizing, GPU p90 (ms) | — | 7 | not measured |
+| Idle 5 s on every tab, frames rendered | — | 0 | not measured |
+| Cold start, speed-profile, median (ms) | — | 380 | not measured |
+| Cold start as installed (profile from the APK only), median (ms) | — | 400 | not measured |
+| PSS after the journey, less the window's graphics buffers (MB) [non-regression] | — | 58.4 | not measured |
+| PSS after the journey (MB) | — | ratchet | report |
+| Tab switch, frames that recompose (most in one switch) | — | 2 | not measured |
+| Push, frames that recompose (most in one push) | — | ratchet | report |
+| Pop, frames that recompose (most in one pop) | — | 2 | not measured |
+| Back gesture, frames that recompose while the card follows the finger | — | 0 | not measured |
+
+== 11:45:28 bg-c2 attempt 1: perf.sh exit 1
+MEASURE DONE
+== 11:45:29 bg-head (e404e391 + instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-head-t1
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 0.2 MB/s (2273 bytes in 0.012s)
+-rw-r--r-- 1 crazyhusir 197609 63111133 Oct 19 11:47 D:/projects/tools/.overhaul/perf/WP04-perf/bg-head-t1/trace.perfetto-trace
+== 11:47:41 bg-tex (e404e391 + texture instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-tex-t1
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 6.9 MB/s (2273 bytes in 0.000s)
+-rw-r--r-- 1 crazyhusir 197609 61466622 Oct 19 11:49 D:/projects/tools/.overhaul/perf/WP04-perf/bg-tex-t1/trace.perfetto-trace
+== 11:49:52 bg-c1 (e404e391 + texture c1 instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-c1-t1
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 7.6 MB/s (2273 bytes in 0.000s)
+-rw-r--r-- 1 crazyhusir 197609 60432317 Oct 19 11:51 D:/projects/tools/.overhaul/perf/WP04-perf/bg-c1-t1/trace.perfetto-trace
+== 11:52:00 bg-c2 (e404e391 + texture c1 c2 instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-c2-t1
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 7.2 MB/s (2273 bytes in 0.000s)
+-rw-r--r-- 1 crazyhusir 197609 65163919 Oct 19 11:53 D:/projects/tools/.overhaul/perf/WP04-perf/bg-c2-t1/trace.perfetto-trace
+BACK-TRACE DONE
+== 11:53:57 bg-c2 (e404e391 + texture c1 c2 instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-c2-t2
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 7.4 MB/s (2273 bytes in 0.000s)
+-rw-r--r-- 1 crazyhusir 197609 61913864 Oct 19 11:55 D:/projects/tools/.overhaul/perf/WP04-perf/bg-c2-t2/trace.perfetto-trace
+== 11:55:52 bg-c1 (e404e391 + texture c1 instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-c1-t2
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 7.7 MB/s (2273 bytes in 0.000s)
+-rw-r--r-- 1 crazyhusir 197609 62762479 Oct 19 11:57 D:/projects/tools/.overhaul/perf/WP04-perf/bg-c1-t2/trace.perfetto-trace
+== 11:57:45 bg-tex (e404e391 + texture instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-tex-t2
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 3.8 MB/s (2273 bytes in 0.001s)
+-rw-r--r-- 1 crazyhusir 197609 63626901 Oct 19 11:59 D:/projects/tools/.overhaul/perf/WP04-perf/bg-tex-t2/trace.perfetto-trace
+== 11:59:38 bg-head (e404e391 + instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-head-t2
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 6.6 MB/s (2273 bytes in 0.000s)
+-rw-r--r-- 1 crazyhusir 197609 64307697 Oct 19 12:01 D:/projects/tools/.overhaul/perf/WP04-perf/bg-head-t2/trace.perfetto-trace
+BACK-TRACE DONE
+before      3737799 bytes, 3.56 MB (64.00 bytes is purgeable)
+held        2894359 bytes, 2.76 MB (64.00 bytes is purgeable)
+after1      2331079 bytes, 2.22 MB (3.02 KB is purgeable)
+after35     2331079 bytes, 2.22 MB (3.02 KB is purgeable)
+edgehold    5371639 bytes, 5.12 MB (64.00 bytes is purgeable)
+edgeafter   5371639 bytes, 5.12 MB (64.00 bytes is purgeable)
+HELDMEM D:/projects/tools/.overhaul/perf/WP04-perf/bg-head-held
+102
+REC-GESTURE DONE
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 13 >= 13
+    Last message repeated 2 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 14 >= 14
+    Last message repeated 4 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 15 >= 15
+    Last message repeated 1 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 16 >= 16
+    Last message repeated 2 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 17 >= 17
+    Last message repeated 3 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 18 >= 18
+    Last message repeated 4 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 19 >= 19
+    Last message repeated 2 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 20 >= 20
+    Last message repeated 2 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 21 >= 21
+    Last message repeated 3 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 22 >= 22
+    Last message repeated 2 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+    Last message repeated 1 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+    Last message repeated 3 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+    Last message repeated 2 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 42 >= 42
+    Last message repeated 5 times
+[image2 @ 00000179361f4580] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 43 >= 43
+    Last message repeated 6 times
+76
+REC-CANCEL DONE
+before      3710695 bytes, 3.54 MB (64.00 bytes is purgeable)
+held        12916855 bytes, 12.32 MB (64.00 bytes is purgeable)
+after1      12915143 bytes, 12.32 MB (10.10 MB is purgeable)
+after35     12915143 bytes, 12.32 MB (10.10 MB is purgeable)
+edgehold    15905991 bytes, 15.17 MB (10.09 MB is purgeable)
+edgeafter   15905991 bytes, 15.17 MB (10.09 MB is purgeable)
+HELDMEM D:/projects/tools/.overhaul/perf/WP04-perf/bg-tex-held
+95
+REC-GESTURE DONE
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+    Last message repeated 2 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+    Last message repeated 2 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+    Last message repeated 2 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 29 >= 29
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 33 >= 33
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 34 >= 34
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 35 >= 35
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 36 >= 36
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 37 >= 37
+    Last message repeated 2 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 38 >= 38
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 39 >= 39
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 40 >= 40
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 54 >= 54
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 55 >= 55
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 56 >= 56
+    Last message repeated 1 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 57 >= 57
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 74 >= 74
+    Last message repeated 2 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 75 >= 75
+    Last message repeated 3 times
+[image2 @ 00000196a1582dc0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 76 >= 76
+    Last message repeated 4 times
+77
+REC-CANCEL DONE
+before      3816151 bytes, 3.64 MB (64.00 bytes is purgeable)
+held        12913895 bytes, 12.32 MB (64.00 bytes is purgeable)
+after1      12912183 bytes, 12.31 MB (10.10 MB is purgeable)
+after35     12912183 bytes, 12.31 MB (10.10 MB is purgeable)
+edgehold    15930135 bytes, 15.19 MB (10.09 MB is purgeable)
+edgeafter   15930135 bytes, 15.19 MB (10.09 MB is purgeable)
+HELDMEM D:/projects/tools/.overhaul/perf/WP04-perf/bg-c1-held
+89
+REC-GESTURE DONE
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 19 >= 19
+    Last message repeated 1 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 20 >= 20
+    Last message repeated 3 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 21 >= 21
+    Last message repeated 1 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 22 >= 22
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+    Last message repeated 2 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+    Last message repeated 2 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+    Last message repeated 1 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+    Last message repeated 3 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+    Last message repeated 2 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 29 >= 29
+    Last message repeated 2 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+    Last message repeated 1 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+    Last message repeated 2 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+    Last message repeated 1 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 45 >= 45
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 46 >= 46
+    Last message repeated 1 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+    Last message repeated 1 times
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+[image2 @ 000001d5c63e6300] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 63 >= 63
+63
+REC-CANCEL DONE
+before      3764903 bytes, 3.59 MB (64.00 bytes is purgeable)
+held        12916855 bytes, 12.32 MB (64.00 bytes is purgeable)
+after1      12915143 bytes, 12.32 MB (10.10 MB is purgeable)
+after35     12915143 bytes, 12.32 MB (10.10 MB is purgeable)
+edgehold    15910487 bytes, 15.17 MB (64.00 bytes is purgeable)
+edgeafter   15910487 bytes, 15.17 MB (10.09 MB is purgeable)
+HELDMEM D:/projects/tools/.overhaul/perf/WP04-perf/bg-c2-held
+92
+REC-GESTURE DONE
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 18 >= 18
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 19 >= 19
+    Last message repeated 2 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 20 >= 20
+    Last message repeated 2 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 22 >= 22
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 23 >= 23
+    Last message repeated 2 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 24 >= 24
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 25 >= 25
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 26 >= 26
+    Last message repeated 2 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 27 >= 27
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 28 >= 28
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 29 >= 29
+    Last message repeated 2 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 31 >= 31
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 32 >= 32
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 33 >= 33
+    Last message repeated 2 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 47 >= 47
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 48 >= 48
+    Last message repeated 2 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 49 >= 49
+    Last message repeated 1 times
+[image2 @ 000001907179ad00] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 65 >= 65
+65
+REC-CANCEL DONE
+== 2026-10-19 12:10:12 BG PHONE DONE

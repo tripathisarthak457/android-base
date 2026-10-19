@@ -110,6 +110,8 @@ class ReportFormatsTest {
             uiP50Millis = 2f,
             uiP90Millis = 3f,
             uiP99Millis = 5f,
+            uiP90BudgetShare = 0.36f,
+            uiP99BudgetShare = 0.6f,
             framesPerSecond = 118f,
             refreshHz = 120f,
             screens = listOf(

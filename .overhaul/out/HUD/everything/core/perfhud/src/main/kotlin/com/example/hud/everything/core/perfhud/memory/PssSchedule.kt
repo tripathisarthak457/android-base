@@ -5,10 +5,11 @@ package com.example.hud.everything.core.perfhud.memory
  * drawing.
  *
  * Reading PSS walks every memory mapping of the process while holding the kernel's lock on its
- * address space, and a thread that faults in a page or maps memory meanwhile waits for it. On a
- * 120 Hz phone, reads made during scroll flings cost about one janky frame each, so a read waits for
- * a pause in the drawing: an app that draws without pause has its PSS read later, never its frames
- * delayed. Not thread-safe; the sampler's loop is its only caller.
+ * address space, and a thread that faults in a page or maps memory meanwhile waits for it, the
+ * render thread included: a read during drawing can hold a frame past its deadline (measured in
+ * `docs/PERFORMANCE-OVERLAY.md`). So a read waits for a pause in the drawing: an app that draws
+ * without pause has its PSS read later, never its frames delayed. Not thread-safe; the sampler's
+ * loop is its only caller.
  */
 internal class PssSchedule(private val intervalMillis: Long = DEFAULT_INTERVAL_MILLIS) {
 

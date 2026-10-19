@@ -4,7 +4,7 @@
 - [android-base generator overhaul](android-base-generator.md) — the user's generator; overhaul resumed natively at D:\projects\tools on Oct 17; read .overhaul/handover/HANDOVER.md; standing instructions
 - [Android skills plugin](android-skills-installed.md) — 1.0.15; shallow clone with CRLF working files on Windows; vendor from git objects
 - [Laptop freezes and power-offs](laptop-memory-freeze.md) — Linux-era history; on Windows the user calls it a Linux problem; locked.py keeps a memory wait only
-- [Usage caps](usage-reserve-10-percent.md) — since Oct 19: every window until the Android release, 80% by day, 97% at night, auto-resume after resets
+- [Usage caps](usage-reserve-10-percent.md) — since Oct 19: every window until the Android release, 80% by day, 98% at night, auto-resume after resets
 - [Rust Nuvio rewrite plan](rust-nuvio-rewrite-plan.md) — Phase-0 done 2026-10-18, ON HOLD until the user says start; plan in ~/.claude/plans/rust-nuvio-phase0/
 - [Workflow model routing](workflow-model-routing.md) — Sonnet readers, Opus super-mod/advisors/dev; reader agents must not write files
 - [Working rules: Opus and Sonnet](working-rules-opus-sonnet.md) — Opus for code and decisions; Sonnet only for supervised mechanical work (device runs, lookups); ask the user's decisions in chat with pros, cons and catches; decision log

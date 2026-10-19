@@ -18,7 +18,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.hud.standard.core.designsystem.component.button.AppButton
 import com.example.hud.standard.core.designsystem.component.button.ButtonSize
 import com.example.hud.standard.core.designsystem.component.button.ButtonVariant
@@ -38,8 +41,8 @@ import java.io.IOException
  * The Performance tab of the inspector: the score, the graphs and every number behind them.
  *
  * Composed only while the tab is open, and everything it draws is read from the recording here,
- * twice a second: closing the tab stops all of it, so the graphs cost the app nothing when nobody
- * is looking at them.
+ * twice a second while the app is in front: closing the tab stops all of it, so the graphs cost the
+ * app nothing when nobody is looking at them.
  */
 @Composable
 internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExporter, debugBuild: Boolean) {
@@ -47,11 +50,15 @@ internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExpor
     var snapshot by remember { mutableStateOf<PerformanceSnapshot?>(null) }
     // Read by the graphs in their draw phase: a new reading redraws them without recomposing them.
     var version by remember { mutableIntStateOf(0) }
-    LaunchedEffect(recorder) {
-        while (true) {
-            snapshot = recorder.snapshot()
-            version++
-            delay(RefreshMillis)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    // A panel left open while the app goes to the background would otherwise keep taking snapshots.
+    LaunchedEffect(recorder, lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            while (true) {
+                snapshot = recorder.snapshot()
+                version++
+                delay(RefreshMillis)
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.hud.everything.core.perfhud.score
 import com.example.hud.everything.core.perfhud.checks.BuildFacts
 import com.example.hud.everything.core.perfhud.checks.ProfileStatus
 import com.example.hud.everything.core.perfhud.checks.StrictModeSummary
+import com.example.hud.everything.core.perfhud.frame.FrameLog
 import com.example.hud.everything.core.perfhud.frame.FrameStats
 import com.example.hud.everything.core.perfhud.frame.FrameSummary
 import com.example.hud.everything.core.perfhud.memory.MemorySummary
@@ -15,6 +16,33 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class OptimisationScoreTest {
+
+    private val healthy = ScoreInputs(
+        frames = frames(),
+        memory = MemorySummary(
+            javaHeapMb = 20f,
+            peakJavaHeapMb = 24f,
+            nativeHeapMb = 15f,
+            peakNativeHeapMb = 16f,
+            pssMb = 90f,
+            peakPssMb = 95f,
+            appPssMb = 40f,
+            gcCount = 3,
+            gcMillis = 12,
+            blockingGcCount = 0,
+            blockingGcMillis = 0,
+        ),
+        startup = StartupSummary(
+            supported = true,
+            cold = StartRecord(StartType.Cold, initialDisplayMillis = 350f, fullDisplayMillis = null),
+            warm = StartRecord(StartType.Warm, initialDisplayMillis = 150f, fullDisplayMillis = null),
+            hot = null,
+        ),
+        build = BuildFacts(debuggable = false, minified = true, profile = ProfileStatus.Compiled),
+        strictMode = StrictModeSummary(supported = true, violations = 0, byKind = emptyMap(), examples = emptyList()),
+    )
+
+    private var clock = 0L
 
     @Test
     fun `an app that meets every target scores 100`() {
@@ -121,6 +149,30 @@ class OptimisationScoreTest {
     }
 
     @Test
+    fun `a frame is judged against the interval it was drawn at, whichever rate came last`() {
+        // A 120 Hz scroll whose slowest frames keep the main thread busy for 12 ms, 1.44 of the
+        // interval, and one lone frame at 60 Hz, as an adaptive display draws after idle. Pooled
+        // times over the newest frame's interval would grade the p99 an A or a B by that order.
+        val lastAt60 = FrameLog().apply {
+            drawScroll()
+            drawFrame(uiMillis = 2f, intervalNanos = INTERVAL_60_HZ)
+        }.summary()
+        val lastAt120 = FrameLog().apply {
+            drawFrame(uiMillis = 2f, intervalNanos = INTERVAL_60_HZ)
+            drawScroll()
+        }.summary()
+
+        val grades = listOf(lastAt60, lastAt120).map { frames ->
+            OptimisationScore.of(healthy.copy(frames = frames)).metrics.single { it.metric == Metric.UiThreadP99 }
+        }
+
+        assertEquals(1.44f, grades[0].value!!, 0.03f)
+        assertEquals(Grade.B, grades[0].grade)
+        assertEquals(grades[0], grades[1])
+        assertEquals(120f, lastAt60.refreshHz, 0.1f)
+    }
+
+    @Test
     fun `a limit is inclusive`() {
         val limits = Limits(0.5f, 1f, 2f, 4f)
 
@@ -128,6 +180,23 @@ class OptimisationScoreTest {
         assertEquals(Grade.B, limits.grade(0.51f))
         assertEquals(Grade.D, limits.grade(4f))
         assertEquals(Grade.F, limits.grade(4.01f))
+    }
+
+    private fun FrameLog.drawScroll() {
+        repeat(970) { drawFrame(uiMillis = 2f, intervalNanos = INTERVAL_120_HZ) }
+        repeat(30) { drawFrame(uiMillis = 12f, intervalNanos = INTERVAL_120_HZ) }
+    }
+
+    private fun FrameLog.drawFrame(uiMillis: Float, intervalNanos: Long) {
+        clock += intervalNanos
+        add(
+            startNanos = clock,
+            uiNanos = (uiMillis * MILLI).toLong(),
+            totalNanos = (uiMillis * 2 * MILLI).toLong(),
+            intervalNanos = intervalNanos,
+            missedDeadline = false,
+            screen = "Home",
+        )
     }
 
     private fun frames(
@@ -152,33 +221,17 @@ class OptimisationScoreTest {
         uiP50Millis = 2f,
         uiP90Millis = uiP90,
         uiP99Millis = uiP99,
+        uiP90BudgetShare = uiP90 / INTERVAL_120_HZ_MILLIS,
+        uiP99BudgetShare = uiP99 / INTERVAL_120_HZ_MILLIS,
         framesPerSecond = 119f,
         refreshHz = 120f,
         screens = emptyList(),
     )
 
-    private val healthy = ScoreInputs(
-        frames = frames(),
-        memory = MemorySummary(
-            javaHeapMb = 20f,
-            peakJavaHeapMb = 24f,
-            nativeHeapMb = 15f,
-            peakNativeHeapMb = 16f,
-            pssMb = 90f,
-            peakPssMb = 95f,
-            appPssMb = 40f,
-            gcCount = 3,
-            gcMillis = 12,
-            blockingGcCount = 0,
-            blockingGcMillis = 0,
-        ),
-        startup = StartupSummary(
-            supported = true,
-            cold = StartRecord(StartType.Cold, initialDisplayMillis = 350f, fullDisplayMillis = null),
-            warm = StartRecord(StartType.Warm, initialDisplayMillis = 150f, fullDisplayMillis = null),
-            hot = null,
-        ),
-        build = BuildFacts(debuggable = false, minified = true, profile = ProfileStatus.Compiled),
-        strictMode = StrictModeSummary(supported = true, violations = 0, byKind = emptyMap(), examples = emptyList()),
-    )
+    private companion object {
+        const val MILLI = 1_000_000f
+        const val INTERVAL_120_HZ = 8_333_333L
+        const val INTERVAL_60_HZ = 16_666_667L
+        const val INTERVAL_120_HZ_MILLIS = 8.333333f
+    }
 }

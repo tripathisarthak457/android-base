@@ -107,8 +107,9 @@ internal class Limits(val a: Float, val b: Float, val c: Float, val d: Float) {
  * app's own PSS 48 MB), from Android vitals for slow and frozen frames, and otherwise from the
  * nearest gate: a warm start in half the cold-start limit.
  *
- * The percentiles are of each frame's main-thread time against one refresh interval, the time
- * the main thread has before the next frame starts; `gates.toml` measures frame times on the UI
+ * The percentiles are of each frame's main-thread time against its own refresh interval, the time
+ * the main thread has before the next frame starts, so a display that moves between 60 and
+ * 120 Hz holds each frame to the rate it was drawn at; `gates.toml` measures frame times on the UI
  * thread too. A frame's full duration, vsync to GPU done, is no measure of this: the render
  * pipeline gives a frame more than one interval, so on-time frames routinely run past one.
  * Whether a frame made its deadline is [JankyFrames].
@@ -121,10 +122,10 @@ internal enum class Metric(val weight: Int, val unit: MetricUnit, val limits: Li
         override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.overall.jankyPercent }
     },
     UiThreadP90(10, MetricUnit.BudgetShare, Limits(0.6f, 0.8f, 1f, 1.5f)) {
-        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.uiP90Millis / it.budgetMillis }
+        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.uiP90BudgetShare }
     },
     UiThreadP99(10, MetricUnit.BudgetShare, Limits(1f, 1.5f, 2f, 3f)) {
-        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.uiP99Millis / it.budgetMillis }
+        override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.uiP99BudgetShare }
     },
     SlowFrames(5, MetricUnit.Percent, Limits(0.5f, 1f, 5f, 25f)) {
         override fun valueOf(inputs: ScoreInputs) = inputs.ofFrames { it.overall.slowPercent }
@@ -202,7 +203,3 @@ private inline fun ScoreInputs.ofFrames(value: (FrameSummary) -> Float): Float? 
     val frames = frames?.takeIf { it.overall.frames >= Metric.MIN_FRAMES && it.refreshHz > 0f } ?: return null
     return value(frames)
 }
-
-private val FrameSummary.budgetMillis: Float get() = MILLIS_PER_SECOND / refreshHz
-
-private const val MILLIS_PER_SECOND = 1000f

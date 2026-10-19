@@ -31,7 +31,7 @@ Tap them to open the Perf tab. It shows, from the top:
 | Optimisation score | 0 to 100, each lost point with its fix (see [The score](#the-score)). |
 | Frame times | The last frames as bars against the 60, 90 and 120 Hz budgets: the full frame faded, its main-thread time solid. Red missed its deadline; amber made it with the main thread over the budget. |
 | Frames per second | One bar for each of the last 60 seconds of drawing, against the display's rate. |
-| Main-thread time histogram | Every frame recorded, by main-thread time, with one refresh interval as a line. |
+| Main-thread time histogram | Every frame recorded, by main-thread time, with one refresh interval at the display's rate while drawing as a line. |
 | Janky frames by screen | Which destination the janky frames were drawn on, worst first. |
 | Memory | Java and native heap each second, PSS at most every 15 seconds and only in a pause in the drawing, garbage collections. |
 | Start-up | Cold, warm and hot start as the system timed them (Android 15 and later). |
@@ -43,8 +43,9 @@ Tap them to open the Perf tab. It shows, from the top:
 
 The overlay is built so that watching does not change what is watched:
 
-- **No listener while off.** With Live stats off, no frame listener is on the window, nothing is
-  sampled and no recording buffer is allocated. Off is the default in `devRelease` and
+- **No listener while off.** With Live stats off, no frame listener is on the window and nothing
+  is sampled; the recording buffers are allocated when recording first starts, or when the Perf
+  tab first reads them. Off is the default in `devRelease` and
   `devBenchmarkRelease`, the builds the perf gates measure. The recorder itself is built at launch
   with the inspector, so that a launch extra or a stored choice can turn it on from the first
   screen; measured, a hidden `devRelease` cold start was within noise of the same app without the
@@ -58,7 +59,9 @@ The overlay is built so that watching does not change what is watched:
   with no state and no recomposition, and redrawn at most four times a second from the window's
   pre-draw pass, so only inside a frame the app draws anyway. A redraw on a timer would cost a
   frame each time while the app is idle, and on a phone a lone frame after idle usually misses its
-  deadline: the overlay would make the jank it reports.
+  deadline: the overlay would make the jank it reports. A redraw allocates nothing either: the
+  numbers are written into reused buffers and drawn with one paint, with no string formatted and
+  no text laid out inside the app's frame.
 - **Graphs only on request.** The Perf tab draws its graphs only while it is open.
 - **PSS only in a pause.** Reading PSS walks every memory mapping of the process under the kernel's
   lock on its address space, and on a phone a read during a scroll costs about one janky frame. The
@@ -66,7 +69,7 @@ The overlay is built so that watching does not change what is watched:
   second; an app that draws without a pause gets its PSS read late rather than its frames delayed.
   The same goes for your own code: never call `Debug.getMemoryInfo` while the app is animating.
 
-Measured on a Redmi Note 10 Pro at 120 Hz with `devRelease`, alternating launches with the overlay
+Measured on a Redmi Note 10 Pro Max (M2101K6I) at 120 Hz with `devRelease`, alternating launches with the overlay
 hidden and shown, each scrolling a list, switching every tab and pushing and popping a screen,
 `dumpsys gfxinfo` read around every step. Without `analytics`, where the overlay brings the only
 JankStats, 13,770 frames hidden and 13,764 shown were 1.34 % and 1.43 % janky, and the main thread
@@ -103,7 +106,7 @@ app nobody has used.
 | Metric | Points | A, the target | Source |
 |---|---|---|---|
 | Janky frames | 25 | at most 0.5 % | `tools/perf/gates.toml` scroll rows; the target is about 0 % |
-| Main-thread time p90 | 10 | at most 0.6 of the budget | one refresh interval at the display's rate; `gates.toml` frame times are UI-thread time too |
+| Main-thread time p90 | 10 | at most 0.6 of the budget | each frame's own refresh interval; `gates.toml` frame times are UI-thread time too |
 | Main-thread time p99 | 10 | at most the budget | |
 | Slow frames (over 16 ms) | 5 | at most 0.5 % | Android vitals |
 | Frozen frames (over 700 ms) | 10 | none | Android vitals |
@@ -126,9 +129,11 @@ builds a whole screen. A trace from the android-profiler skill names the cause.
 
 ### Main-thread percentiles
 
-Each frame's main-thread time (input, animation, composition, layout, draw and sync) against one
-refresh interval, 8.3 ms at 120 Hz: the time the main thread has before the next frame starts. The
-p90 says how heavy ordinary frames are, the p99 how heavy the worst ones are. A frame's full
+Each frame's main-thread time (input, animation, composition, layout, draw and sync) against its
+own refresh interval, 8.3 ms at 120 Hz and 16.7 ms at 60: the time the main thread had before the
+next frame started. A display with an adaptive rate draws a scroll at 120 Hz and a lone frame after
+idle at 60, and each frame is held to the deadline it had. The p90 says how heavy ordinary frames
+are, the p99 how heavy the worst ones are. A frame's full
 duration, from its vsync to the GPU finishing, is not graded against one interval: the render
 pipeline gives a frame more time than that, so frames that make their deadline routinely run past
 one interval. Whether a frame made its deadline is **Janky frames**.
@@ -166,9 +171,11 @@ allocating fast, typically objects created on every frame.
 While recording, StrictMode watches the main thread for disk reads and writes, network, unbuffered
 I/O, resource mismatches and calls marked slow, and counts them with the first frame of your own
 code on the stack. Android 9 and later. The checks are added to your own policy, penalties
-included, and your policy is put back when recording stops. Two consequences: a policy with
-`penaltyDeath` also dies of the added checks while recording, and a policy you set while recording
-replaces the overlay's checks until recording starts again.
+included, and your policy is put back when recording stops. Three consequences: a policy with
+`penaltyDeath` also dies of the added checks while recording; a `penaltyListener` of your own is
+not called while recording, since a policy holds one listener and the platform offers no way to
+read yours to pass violations on; and a policy you set while recording replaces the overlay's
+checks until recording starts again.
 
 ### Build checks
 
@@ -182,11 +189,15 @@ idle maintenance; `adb shell cmd package compile -f -m speed-profile <applicatio
 One logcat tag, `PerfHud`, a line for every five seconds in which the app drew and a line for each
 screen it leaves. Never a line per frame. Lines are `key=value` pairs. A window line's counts,
 garbage collections included, are that window's, and its memory sizes the latest sample's; a
-screen line sums every visit to that screen since recording began:
+screen line sums every visit to that screen since recording began. `frameP50`, `frameP90` and
+`frameP99` are percentiles of each frame's full duration, from its vsync to the GPU finishing,
+which frames on time routinely run past one interval; `uiP50`, `uiP90` and `uiP99` of its
+main-thread time, the part [the score](#main-thread-percentiles) grades. Times are in
+milliseconds:
 
 ```
-PerfHud: window=5s frames=598 fps=119.6 janky=0.2% p50=5.1 p90=6.8 p99=9.9 slow=0 frozen=0 long=0 heapMb=21.4 nativeMb=17.0 gc=1 screen=SampleListKey
-PerfHud: screen=SampleDetailKey frames=412 janky=0.5% p50=5.0 p90=7.2 p99=12.4 worst=19.8 slow=1 frozen=0
+PerfHud: window=5s frames=598 fps=119.6 janky=0.2% frameP50=5.1 frameP90=6.8 frameP99=9.9 uiP50=1.2 uiP90=1.6 uiP99=2.9 slow=0 frozen=0 long=0 heapMb=21.4 nativeMb=17.0 gc=1 screen=SampleListKey
+PerfHud: screen=SampleDetailKey frames=412 janky=0.5% frameP50=5.0 frameP90=7.2 frameP99=12.4 worst=19.8 slow=1 frozen=0
 ```
 
 ```bash
@@ -214,8 +225,8 @@ adb shell run-as <applicationId> am broadcast --user 0 \
     -a com.example.hud.fixture.core.perfhud.action.EXPORT
 ```
 
-The receiver is not exported: no other app can reach it, and adb reaches it only through `run-as`,
-which works on a debuggable build alone. `--user 0` is the app's own user (on a phone with several
+The receiver is declared in the debug manifest only, and not exported: no other app can reach it,
+and adb reaches it only through `run-as`, which works on a debuggable build alone. `--user 0` is the app's own user (on a phone with several
 users, the one it runs as): `run-as` cannot broadcast to the default, "current", which needs a
 cross-user permission. A release-like dev build exports from the tab.
 

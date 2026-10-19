@@ -1,11 +1,98 @@
 # WIN handoff
 
 Branch `wp/WIN` in `$OV/wt/WIN` (`OV=D:/projects/tools/.overhaul`, `O=$OV/out/WIN`). Logs in `$OV/logs/WIN/`.
-Nothing pushed. There is no WP file: the scope in the orchestrator's task is the specification.
+This package's agents never push. Backup pushes do not start CI (`ci.yml` runs on a push to `main` and on a pull
+request, nothing else); the draft PR #1 (`wp/WIN` into the integration branch, approved by the user on Oct 19) ran
+the suite on Linux once, at `c91798a`, and re-runs when `wp/WIN` is pushed (Open issues). There is no WP file: the
+scope in the orchestrator's task is the specification.
 
 ## Progress
 
+- **Orchestrator note (Oct 19, 13:02): the third Linux CI run (39214194825, `4746a0b`).** API green. Generator: 1 failure on Linux, `tests.test_zip.ZipTest.test_the_commit_holds_a_file_past_windows_path_limit`: right after the `--git` commit, `git status` shows ` M gradlew` and ` M tools/perf/perf.sh` (Tuples differ: (0, '', '') != (0, ' M gradlew
+ M tools/perf/perf.sh
+', '')): the generated repository is dirty on Linux, most likely the executable bit (the index says one mode, the working files have another, or core.fileMode differs). A user who generates with --git on Linux or macOS would start with two modified files. The four generated-project builds still fail (see the 12:18 note: `AppResult` in data/orders). Fix both with tests; the orchestrator pushes and reads the next run.
+- **Orchestrator note (Oct 19, 12:18): the second Linux CI run (39210292751, `ae886b5`).** Generator and API jobs now pass. The four generated-project builds (none, lean, all, everything) generate fine now but fail to compile: `:data:orders:compileReleaseKotlin` / `compileDebugKotlin`: `Unresolved reference 'AppResult'` in `out/data/orders/src/main/kotlin/com/example/cicheck/data/orders/OrdersRepository.kt` lines 3, 18, 26. Find where the `orders` data module comes from (ci.yml's add-feature step or a generator template) and why `AppResult` is missing; if the generator's add-feature data template is stale on the integration branch, fix it here with a regression test (a generated project with an added data feature must compile), else record it for the owning package in followups.md. Vercel's preview still fails (needs the user's login to read).
+- **Orchestrator note (Oct 19, 11:35): the Linux CI run (PR #1, run 39206352955) failed; fix before WIN's next merge.** (1) **Real Linux bugs, WIN's:** the generator suite on ubuntu (Python 3.12): 1 failure + 1 error in `tests/test_keystores.py`: `test_a_non_ascii_password_round_trips` (FileNotFoundError: `/tmp/.../keystore.properties` was never written) and `test_keytool_s_refusal_names_a_non_ascii_path_as_it_is` (the message does not name `/tmp/.../Ána/keys/prod.jks`; keytool's output was `Keystore 'prod' could not be created: 	for: CN=Acme, O=Acme, C=US`). Everything else passed (10 skipped). (2) **`.github/workflows/ci.yml` is stale against the overhaul** (unchanged since main's `b12122b`): the API job pins Go 1.24 while `api/go.mod` needs 1.27 ("go.mod requires go >= 1.27"), and the four generated-project jobs run `from genkit.spec import FEATURES, preset_features, resolve_features` (and `genkit.translations`), modules the generator no longer has. Decision (orchestrator): WIN updates `ci.yml` now (Go version from go.mod, the generate steps on the current generator API), so every later merge can be checked on Linux; WP13 still owns the final CI review. (3) The Vercel preview of the PR failed (`npx vercel inspect dpl_H54c7TfBopDctPGWfE9xpMArHyrz --logs` needs the user's Vercel login; cause not read). Push fixes to `wp/WIN` through the orchestrator; the PR re-runs CI on each push while it is open.
+- **Orchestrator note (Oct 19, 11:22): the Linux CI run.** The user approved (asked in chat with pros and cons) a draft PR from `wp/WIN` (c91798a) into `overhaul/multiplatform-v2`, only to run CI on Linux: https://github.com/tripathisarthak457/android-base/pull/1 (draft, "do not merge"). The app's CI monitor reports the result to the orchestrator, which records the Generator job's result here and closes the PR unmerged.
 - **Orchestrator note (Oct 17, 23:05).** Fix round 2 (the two blocking findings in the `--force` swap) returned done at about 16:40; the run was then paused for the user's usage reserve. Next: review round 3, then the merge.
+
+Updated 2026-10-19 (the orchestrator's run "fix#4", after the fresh-context review of `4746a0b`; table "Review
+fix#4 of Oct 19"). The integration branch had not moved (`4dd3aca`), so nothing was merged in. The blocking finding:
+`04510e3`'s `git init --template=` kept the user's git template out of the generated repository for good, so the
+hooks that pre-commit or git-secrets install through `init.templateDir` / `GIT_TEMPLATE_DIR` never ran on the user's
+own later commits (the integration head's plain `git init` installed them), and the Rules line saying the user's
+settings apply "from the next command" was false for a template. Fixed in `976a7e2`: the generator's commands stay
+template-free; once the commit is made, the template the caller's own `git init` would use is resolved in the
+caller's environment and its `hooks/` and `info/` entries are copied into `.git` as git copies them. Not a second
+`git init` (it turns the SHA-1 repository into SHA-256 under the caller's `init.defaultObjectFormat=sha256`;
+reproduced here). A template's own `config`, a copy that fails and a configuration git cannot read are each a
+warning, and the commit stands (Decisions, fix#4). The two new tests fail on the previous code (5 failures and
+errors). Non-blocking: the comments on which hooks get `GIT_DIR` corrected (code, test, Decisions) after checking
+git 2.55 here; the long-path test's `git status` drops every `GIT_` variable; the temporary home's cleanup cannot
+fail a finished project; CI's interim Generate step lost its rationale (`dcb0ce4`, and a `followups.md` note for
+WP13); the website's bare `true` explained (`9228ddd`); the catalogue stamp names a commit with its rules
+(`2ce104a`). Still open, for the orchestrator: the user's confirmation of `ee311a8` before WIN merges (Open issues).
+Acceptance at `2ce104a` against `a402d87`: **ACCEPT OK**, 305 tests; website: 222 tests, `tsc --noEmit` clean
+(Measurements). Worktree clean. **Not verified:** any of it on Linux; PR #1 re-runs once `wp/WIN` is pushed. This
+run pushed nothing.
+
+Updated 2026-10-19 (the orchestrator's run "fix#3", after the fresh-context review of `ae886b5`; table "Review
+fix#3 of Oct 19"). The integration branch had not moved (`4dd3aca`), so nothing was merged in. The blocking finding:
+fix#2 made the non-ASCII password test skip on keytool's ASCII refusal, which hid a product defect (Part D rule 15):
+on JDK 17, the JDK `ci.yml` installs and the oldest the generated project supports, the generator accepted a spec it
+could not carry out (no key, a warning after the fact). The skip is gone, and the defect is fixed rather than kept as
+a known Linux failure: a key the generator makes now needs a printable ASCII password, refused up front by
+`keystores.validate` (so by the wizard too) and by the website through a new catalogue rule,
+`keystore_generated_password` (`ee311a8`); a key the user brings keeps any printable password. The old test asserted
+what the product cannot deliver on JDK 17, so it is replaced: the refusal in `ValidationTest` and in a shared
+validation case that the generator and the website both run (each fails on the old code), and a keytool round trip of
+a password with every character the properties file escapes. **This is a product rule the reviewer wanted settled
+with the user before WIN merges. It is decided here because the one alternative that keeps such passwords means
+downgrading every generated key to JKS (Decisions, fix#3). For the orchestrator: put the confirmation question in
+Open issues to the user; if they decline, revert `ee311a8`.** Non-blocking: the `--git` repository keeps
+`core.longPaths=true` in its own config on Windows (`1ffa268`; the test fails on the old code with "Filename too
+long"), two comments corrected (`f3d5c3d`), CI takes its languages from `catalogue --json` (`4746a0b`), and the `HOME`
+side effect is recorded. The orchestrator's 12:18 note (the generated-project jobs stop at `Unresolved reference
+'AppResult'` in `:data:orders`) is WP02's, not fixed here: the integration branch's `scaffold.py` writes the packages
+from before `c3895f86`, a known issue owned by WP02 whose rewrite is already on `wp/WP02`; recorded in
+`followups.md` (Decisions, fix#3). Acceptance at `4746a0b` against `a402d87`: **ACCEPT OK**, 303 tests; website: 222 tests,
+`tsc --noEmit` clean (Measurements). Worktree clean. **Not verified:** any of it on Linux; PR #1 re-runs once `wp/WIN`
+is pushed (Open issues). This run pushed nothing.
+
+Updated 2026-10-19 (the orchestrator's run "fix#2", after the fresh-context review of `c91798a`; table "Review fix#2
+of Oct 19"). The integration branch had not moved (`4dd3aca`, an ancestor of `wp/WIN`), so nothing was merged in.
+Both blocking findings were about the `--git` commit still depending on the user's git setup: global or default
+excludes files dropped `gradle-wrapper.jar` from it silently, and hooks `--no-verify` does not skip
+(`prepare-commit-msg`, `reference-transaction`) refused or rewrote it. Rather than override two more settings, git
+now runs with none of the caller's configuration (`04510e3`): an empty temporary home, no system file, no `GIT_`
+variable but `GIT_EXEC_PATH`, no template; that closes the non-blocking `GIT_DIR`/identity finding too. Found on the
+way and fixed: Git for Windows' `git add` silently skipped files past MAX_PATH (`0c7825b`, `core.longPaths=true`).
+The cheap non-blocking findings are fixed (`5bff1e9`: the sibling's length and two more astral tests; the test probe
+and name in `04510e3`), the rest recorded. The orchestrator's 11:35 note is handled too: keytool's error is now taken
+from stdout, which the Linux run showed (`e323eed`), the older non-ASCII password test says why it fails or skips on
+keytool's ASCII refusal (whether passwords must be ASCII is left open for the keystores' owner), and `ci.yml` runs
+the current generator and go.mod's Go (`ae886b5`). Every new test fails on the old code here, except the two astral
+ones, which pin `c91798a`'s change and fail on the code before it. Acceptance at `ae886b5` against `a402d87`:
+**ACCEPT OK**, 301 tests (Measurements); worktree clean. **Not verified:**
+any of it on Linux; PR #1 re-runs once `wp/WIN` is pushed (Open issues). This run pushed nothing.
+
+Updated 2026-10-19 (the orchestrator's run "fix#1" after the fresh-context review of `4dd3aca`; table "Review of the
+follow-up merge"). `wp/WIN` fast-forwarded to `4dd3aca` first. The blocking finding was in this handoff, not in the
+code: its plan for the first Linux run could not happen. `ci.yml` starts on a push to `main` and on a pull request,
+nothing else, so the orchestrator's backup pushes of `wp/*` and `overhaul/*` never run it; both branches have been on
+origin since 03:35 today, `gh run list` shows the last CI run on 2026-09-24 (`main`) and `gh pr list --state all` no
+pull request at all. Corrected in the header, here, Deviations and Open issues, with a correction appended to the WIN
+entry in `merges.md` and an item in `followups.md`. **The suite has still never run on a POSIX host.** From this
+machine (no WSL, no Docker) only a pull request starts that run, and creating one is the user's call (global
+CLAUDE.md section 8), so none was opened (Decisions). **For the orchestrator, before the next package merges onto
+`4dd3aca`:** ask the user for the draft pull request in Open issues (the command, and what it starts), then record
+its Generator job here. Of the seven non-blocking findings, two are fixed in code, each with a test that fails on
+the old code (the `--git` commit no longer takes the user's `core.fsmonitor` or `commit.gpgSign`, `4ba27fc`; path
+lengths counted in UTF-16 code units as Windows counts them, `c91798a`), the stale names are corrected here, two are
+recorded (Python 3.11's `onerror` branch for WP13's Windows job; mapped and `subst` drives in the reported path, for
+WP12), and two need nothing. Acceptance at `c91798a` against `a402d87`: **ACCEPT OK** (Measurements). Worktree
+clean; this run pushed nothing. **`wp/WIN` is 2 commits ahead of the integration branch, and they need a merge of
+their own** (the integrator's step 0 returns once `merged/WIN` exists, as on the earlier Oct 19 follow-up).
 
 Updated 2026-10-19 (run "run", replayed by the release workflow's resume after the merge). The integration branch
 had not moved since WIN merged (`overhaul/multiplatform-v2` = `merged/WIN` = `5a16778`), so there was nothing to merge
@@ -14,7 +101,7 @@ in. One Windows host bug in the generator was still open, recorded by the orches
 are fixed on `wp/WIN`, each with a test that fails on the old code: the matrix's pool work moved to an importable
 module (`6a22433`), issue lines name files with "/" on every host (`fbac839`), and a failed run deletes its folder in
 `%TEMP%` (`3b892f4`). The quick matrix now runs here: CONSISTENCY OK. Acceptance at `3b892f4` against `a402d87`:
-**ACCEPT OK**. Worktree clean; nothing pushed. **`wp/WIN` is now 3 commits ahead of
+**ACCEPT OK**. Worktree clean; this run pushed nothing. **`wp/WIN` is now 3 commits ahead of
 `merged/WIN` and those commits need a merge of their own**: the integrator's step 0 returns as soon as the
 `merged/WIN` tag exists, so they reach the integration branch only if the integrator or the orchestrator merges
 `wp/WIN` again on purpose. The integration branch is still at their parent, so that merge has no conflict, and
@@ -137,8 +224,32 @@ and found and fixed five more host bugs.
 | Oct 19: quick consistency matrix on this machine | CONSISTENCY OK (`logs/WIN/consistency-after.log`) |
 | Oct 19: acceptance at `3b892f4` against `a402d87` | **ACCEPT OK** (`logs/WIN/accept-oct19.log`) |
 | Oct 19: merge of the 3 new commits | done by the integrator (`4dd3aca`; `merges.md`, `out/integration/WIN/oct19/`) |
+| Oct 19 fix#1: what starts CI corrected here, in `merges.md` and in `followups.md` | done; **the POSIX run itself waits on the user's yes to a pull request** |
+| Oct 19 fix#1: the `--git` commit without the user's `core.fsmonitor` and `commit.gpgSign` | done (`4ba27fc`) |
+| Oct 19 fix#1: Windows path lengths in UTF-16 code units | done (`c91798a`) |
+| Oct 19 fix#1: acceptance at `c91798a` against `a402d87` | **ACCEPT OK** (`logs/WIN/accept-oct19-fix.log`) |
+| Oct 19 fix#2: the `--git` commit with none of the caller's git configuration (home, system file, `GIT_` variables, template) | done (`04510e3`) |
+| Oct 19 fix#2: `core.longPaths=true` for the `--git` commands | done (`0c7825b`) |
+| Oct 19 fix#2: `_free_sibling` in UTF-16 units; astral tests for the walk and a rename's failure | done (`5bff1e9`) |
+| Oct 19 fix#2: the Linux CI failures: keytool's error from stdout; the non-ASCII password test | done (`e323eed`); the password question is open |
+| Oct 19 fix#2: `ci.yml` on the current generator and go.mod's Go | done (`ae886b5`); **not run: needs a CI run of the new head** |
+| Oct 19 fix#2: acceptance at `ae886b5` against `a402d87` | **ACCEPT OK** (`logs/WIN/accept-oct19-fix2.log`) |
+| Oct 19 fix#3: the skip removed; a generated key's password must be printable ASCII (generator, wizard, website, a shared validation case) | done (`ee311a8`); **to be confirmed by the user through the orchestrator** |
+| Oct 19 fix#3: the `--git` repository keeps `core.longPaths=true` in its config on Windows | done (`1ffa268`) |
+| Oct 19 fix#3: two overstated comments corrected; CI's languages from `catalogue --json` | done (`f3d5c3d`, `4746a0b`) |
+| Oct 19 fix#3: the 12:18 note (generated projects stop at `AppResult` in `:data:orders`) | WP02's: recorded in `followups.md`, not fixed here (Decisions) |
+| Oct 19 fix#3: acceptance at `4746a0b` against `a402d87`; website tests and typecheck | **ACCEPT OK** (`logs/WIN/accept-oct19-fix3.log`, `logs/WIN/tsc-fix3.log`) |
+| Oct 19 fix#4: the caller's git template installed after the commit; warnings for what is not; `GIT_DIR` comments; `git status` isolation; cleanup errors | done (`976a7e2`) |
+| Oct 19 fix#4: CI's interim Generate comment; the website's bare `true`; the catalogue stamp | done (`dcb0ce4`, `9228ddd`, `2ce104a`) |
+| Oct 19 fix#4: acceptance at `2ce104a` against `a402d87`; website tests and typecheck | **ACCEPT OK** (`logs/WIN/accept-oct19-fix4.log`, `logs/WIN/web-tests-fix4.log`, `logs/WIN/tsc-fix4.log`) |
 
 ## What changed (by path)
+
+Each entry keeps the names of its round. fix#5 (`c1bd711`) moved every placement helper listed under
+`genkit/core/pipeline.py` below (`_move`, `_swap`, `_aside`, `_delete_replaced`, `_delete_tree`, `_delete_file`,
+`_path_too_long`, `_past_limit`, `_check_windows_path_limit`, `_past_windows_limit`, `_windows_long_paths_on`) to
+`genkit/core/placement.py`, where `_aside` is `_free_sibling` and `_windows_path_limit_explained` is the public
+`windows_path_limit_explained`; `_delete_beside` is gone. The test helper is `seen_by_placement` since then.
 
 - `.gitattributes` (new, repository root): `* text=auto eol=lf`, `*.bat`/`*.cmd` CRLF, the golden fixtures `-text`.
   Git for Windows sets `core.autocrlf=true` system-wide (it is set on this machine, `C:/Program Files/Git/etc/gitconfig`),
@@ -178,19 +289,19 @@ and found and fixed five more host bugs.
 - Tests: `test_golden` (zip and commit exec bits, commit blobs equal the generated bytes, `git status` clean after
   `--git`, placement across volumes and over a `--git` project, a failed swap keeps the old project, a double failure
   keeps it beside, the Windows path limit in staging and beside the destination, the error left alone with long paths
-  on; the placement fakes patch `os` only as the pipeline sees it, `seen_by_pipeline(...)`), `test_cli` (resolved path for
-  `..` and an 8.3 short name, junction replace, symlink skip, case-insensitive guard, the current-directory guard
-  checks its reason), `test_translations` (language order), `test_tokens` (a CRLF token copy is stale until
+  on; the placement fakes patch `os` only as the pipeline sees it, `seen_by_placement(...)`), `test_cli` (resolved
+  path for `..` and an 8.3 short name, junction replace, symlink skip, case-insensitive guard, the current-directory
+  guard checks its reason), `test_translations` (language order), `test_tokens` (a CRLF token copy is stale until
   `--write`), `test_android_target` (every feature, a module, a brand and every language: a CR byte only in
-  `gradlew.bat`), `test_host` (new: the `write_text` source rule; `is_link` of a directory, a file, nothing, a symlink,
-  a junction, and of a directory with a stat module that has no reparse tags, as on Linux; no CR in any text file the
-  generator copies from the real templates and variants, batch files excepted). fix#2: `tests/links.py` (not a test
-  module) holds `symlink_or_skip` and `junction` for `test_cli` and `test_host`; `test_golden`'s placement fakes go
-  through `seen_by_pipeline(module, ...)` (`os` or `shutil` as the pipeline sees it) and add: a deletion that fails
-  after the swap keeps the new project and warns; destinations named `a`, `ab` and `replaced` replaced whole as a
-  folder and as a zip; on Windows with long paths off, an old project with one file at the in-place limit and one past
-  it deleted whole; the kept output no longer than the destination's name; the path named from `filename2` and from a
-  `shutil.Error`. `test_catalogue`: a CRLF website copy is stale until `--write`.
+  `gradlew.bat`), `test_host` (new: the `write_text` source rule; `is_link` of a directory, a file, nothing, a
+  symlink, a junction, and of a directory with a stat module that has no reparse tags, as on Linux; no CR in any text
+  file the generator copies from the real templates and variants, batch files excepted). fix#2: `tests/links.py` (not
+  a test module) holds `symlink_or_skip` and `junction` for `test_cli` and `test_host`; `test_golden`'s placement
+  fakes go through `seen_by_placement(module, ...)` (`os` or `shutil` as placement sees it) and add: a deletion that
+  fails after the swap keeps the new project and warns; destinations named `a`, `ab` and `replaced` replaced whole as
+  a folder and as a zip; on Windows with long paths off, an old project with one file at the in-place limit and one
+  past it deleted whole; the kept output no longer than the destination's name; the path named from `filename2` and
+  from a `shutil.Error`. `test_catalogue`: a CRLF website copy is stale until `--write`.
 - fix#3: `genkit/core/copy.py` `is_executable` uses `fnmatchcase` (`fnmatch` folds case on Windows only).
   `genkit/core/package.py` `git_init` runs each step through `_git` (UTF-8 with `errors="replace"`; a failure raises the
   private `_GitFailed`, which becomes the same one warning as before) and lists the scripts to mark from the index
@@ -217,7 +328,7 @@ and found and fixed five more host bugs.
   `delete_tree`; `PlacementTest`: a held-open destination, the folder beside named when it cannot be deleted, as a
   warning and as a note, a read-only old zip; `WindowsPathLimitTest`: a refused swap with the new project at the
   deepest destination it fits; `WindowsLongPathsTest` now runs on every host, shown a Windows host by
-  `seen_by_pipeline(os, name="nt")` and a patched `_windows_long_paths_on`, with forward-slash paths, plus a project
+  `seen_by_placement(os, name="nt")` and a patched `_windows_long_paths_on`, with forward-slash paths, plus a project
   one character too deep for its destination), `test_tokens` (the line-endings message), `test_host` (`io.open` and
   `codecs.open` take the mode second).
 - fix#5: `genkit/core/placement.py` (new) holds everything about putting the staged project in place, moved from
@@ -253,6 +364,66 @@ and found and fixed five more host bugs.
   of those kinds on a hand-made module, file part compared exactly), `RunnerTest` (the function the pool gets is not
   defined in the runner's module; a run that fails before the pool leaves no folder). The `__main__.py` changes avoid
   the two hunks `wp/WP02` has in that file (an import and the architecture list), so WP02-M2's merge stays clean.
+- Oct 19 fix#1: `genkit/core/package.py`: every `_git` call passes `-c core.fsmonitor=` (empty, which every git
+  reads as off), and the commit passes `-c commit.gpgSign=false` with the generator's identity (`as_the_generator`,
+  was `identity`). `genkit/core/placement.py`: `_windows_length(path)` (UTF-16 code units, `surrogatepass` for a lone
+  surrogate) in `_past_limit`, `_path_too_long`, the choice of the longest path and the three messages that give a
+  length. Tests: `test_zip` (a `GIT_CONFIG_GLOBAL` with a monitor hook that leaves a trace and `commit.gpgSign`
+  through a gpg that is not there: no warning, no trace, the commit made; skips on a git older than 2.32, which does
+  not read that variable), `test_golden` (`WindowsLongPathsTest`, every host: a zip path of 259 code points ending in
+  an emoji, 260 UTF-16 code units, refused before anything is written, as 260).
+- Oct 19 fix#2: `genkit/core/package.py`: `git_init` runs every git command with `_without_the_callers_configuration(home)`
+  (this process's environment without any `GIT_` variable but `GIT_EXEC_PATH`, with `HOME` and `XDG_CONFIG_HOME`
+  set to an empty temporary folder and `GIT_CONFIG_NOSYSTEM=1`), `git init --template=`, and
+  `-c core.longPaths=true`; the `core.fsmonitor`, `core.autocrlf` and `commit.gpgSign` overrides and `--no-verify`
+  are gone. `_git(project, environment, config, *arguments)` takes the environment. `genkit/targets/android/keystores.py`:
+  a refused key's warning quotes keytool's stdout first. `genkit/core/placement.py`: `_free_sibling` sizes by
+  `_windows_length`. `.github/workflows/ci.yml`: Go from `web/api/go.mod`, the catalogue step on
+  `genkit.core.catalogue --json`, the Generate step through `create_project.py`. Tests: `test_zip` (the fixture
+  gains `gradle/wrapper/gradle-wrapper.jar`; `Hostile`, a configuration that would cost, change or leave a trace on
+  the commit, given through `GIT_CONFIG_GLOBAL` and through `HOME`/`XDG_CONFIG_HOME`; the variables a hook
+  inherits plus `GIT_TEMPLATE_DIR`, `GIT_CONFIG_COUNT` and `GIT_DEFAULT_HASH`; a file 300 characters deep; each
+  commit must hold every file on disk, the generator's identity and message, no `gpgsig` or `encoding` header, a
+  SHA-1 tree, and no hook may have run), `test_golden` (`WindowsLongPathsTest`: an emoji in a project's destination,
+  in a rename's failed path, and in `_free_sibling`'s destination), `test_keystores` (`RefusalTest`; the non-ASCII
+  password test asserts no warnings and skips on keytool's ASCII refusal).
+- Oct 19 fix#3: `genkit/targets/android/keystores.py`: `GENERATED_PASSWORD_PATTERN` (`^[ -~]*$`, printable ASCII);
+  `validate` refuses a generated key's store password outside it. `genkit/targets/android/target.py`: the catalogue
+  rule `keystore_generated_password`. `web/frontend/lib/catalogue.json`: regenerated with `--write`.
+  `web/frontend/features/catalogue/types.ts`: `Rules.keystore_generated_password`.
+  `web/frontend/features/configurator/validation/keystores.ts`: `passwordProblem(password, rules, generated)` applies
+  the rule to a generated key; `keystoreProblem` passes whether the entry brings its own key. `BuildStep.tsx`: the
+  signing panel's fields are generated keys (`true`). `tests/fixtures/validation_cases.json`: "generated keystore
+  password outside ASCII" (refused) and "existing keystore with passwords outside ASCII" (accepted), run by
+  `test_spec` and the website's `validate.test.ts`. `tests/test_keystores.py`: the skip is gone;
+  `test_a_non_ascii_password_round_trips` is replaced by `test_a_password_the_properties_file_escapes_round_trips`
+  (`"  pass\\word=1:#!"` through `write` and `keytool -list`); `ValidationTest` gains the refusal, every printable
+  ASCII character for a generated key, and a brought key's non-ASCII passwords; the properties test with non-ASCII
+  passwords is now about a brought key. `genkit/core/package.py`: `git config core.longPaths true` right after
+  `git init` on Windows, in place of `-c core.longPaths=true` on every command; the configuration comment names a
+  clean filter instead of CRLF. `tests/test_zip.py`: the long-path test also runs `git status --porcelain` with no
+  system or global configuration and expects no output; the variables test's comment. `.github/workflows/ci.yml`:
+  the Generate step takes the languages from `python -m genkit.core.catalogue --json`.
+- Oct 19 fix#4: `genkit/core/package.py`: after the commit, `git_init` returns `_install_the_callers_template(project)`:
+  `_callers_template` takes `GIT_TEMPLATE_DIR` from this process's environment, else runs `git config --path --get
+  init.templateDir` in the new repository with this process's environment minus `_ANOTHER_REPOSITORY` (`GIT_DIR`,
+  `GIT_COMMON_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE`, `GIT_CONFIG`); exit 1 or an empty value means none.
+  `_copy_missing` copies the template's `hooks/` and `info/` into `.git` as `git init` does (dot names skipped,
+  folders merged, existing files kept, `shutil.copy` with `follow_symlinks=False`, so modes and links as they are).
+  Warnings: a failed copy (with the reason), a `git config` failure, and a template `config` file, which is not
+  applied. `_GitFailed` carries `returncode`. The temporary home is a `TemporaryDirectory(...,
+  ignore_cleanup_errors=True)`. The configuration comment says which hooks get which `GIT_` variable.
+  `tests/test_zip.py`: `test_the_repository_gets_the_users_template_once_the_commit_is_made` (through
+  `init.templateDir = ~/template` in an isolated home and through `GIT_TEMPLATE_DIR`: no hook ran for the commit,
+  which holds the jar; `.git/hooks/*` byte-equal to the template's and 0755 where the OS has exec bits;
+  `.git/info/exclude` is the template's; the user's next commit runs their `pre-commit`, which refuses it),
+  `test_a_template_the_repository_cannot_take_whole_is_a_warning` (a refused copy, an unreadable global
+  configuration, a template `config` holding `core.hooksPath`: one warning each, the commit made, `.git/config`
+  without `hooksPath`), the helper `isolated(home)` (no system file, no `GIT_` variable but `GIT_EXEC_PATH`, the home
+  for `HOME` and `XDG_CONFIG_HOME`), used by the long-path test's `git status` too; the variables test's comment.
+  `.github/workflows/ci.yml`: the Generate step's comment keeps only where the languages come from.
+  `web/frontend/features/configurator/steps/BuildStep.tsx`: the comment beside the password input says why every
+  password is checked as a generated key's. `web/frontend/lib/catalogue.json`: regenerated with `--write` (the stamp).
 
 ## Public APIs added, changed, removed (signatures)
 
@@ -265,7 +436,8 @@ and found and fixed five more host bugs.
 - fix#2 changed no public signature. With `replace`, `pipeline.build` no longer raises once the new output is in
   place: an old output it cannot delete completely is a warning in `Generated.warnings` naming the hidden sibling that
   holds the rest. The double-failure `RenderError` names that same sibling, no longer a `<name>.previous.*` folder.
-- fix#3 changed no public signature (`package._git`, `package._GitFailed` and `pipeline._past_limit` are private).
+- fix#3 changed no public signature (`package._git`, `package._GitFailed` and `pipeline._past_limit`, now
+  `placement._past_limit`, are private).
 - fix#4 changed no public signature (the new `pipeline` functions are private). `pipeline.build` can now raise
   `RenderError` for a destination it cannot move aside ("nothing was changed"; it was a raw `PermissionError`) and,
   on Windows with long paths off, for a directory output too deep at its destination (it placed it). A failed
@@ -280,6 +452,20 @@ and found and fixed five more host bugs.
 - Oct 19: no generator API changed. In the test tooling, `tests.consistency.worker.run_one(name, raw, directory, keep)
   -> tuple[str, list[str]]` and `tests.consistency.worker.reference(directory) -> Project` (moved, same signatures),
   and `tests.consistency.worker.PACKAGE`, all three imported by `tests.consistency.__main__`.
+- Oct 19 fix#1: none (`package._git` and `placement._windows_length` are private). `pipeline.build` with `git_init`
+  now commits whatever the user's `core.fsmonitor` and `commit.gpgSign` say.
+- Oct 19 fix#2: none public (`package._git`'s parameters and `package._without_the_callers_configuration` are
+  private). `pipeline.build` with `git_init` now commits with no system, global or template configuration and no
+  `GIT_` variable of the caller's, and with files past MAX_PATH on Windows.
+- Oct 19 fix#3: added `genkit.targets.android.keystores.GENERATED_PASSWORD_PATTERN`, published as the catalogue rule
+  `rules.keystore_generated_password`. `keystores.validate` raises `SpecError` (field `android.keystores`) for a
+  generated key's store password outside printable ASCII. Website: `passwordProblem(password, rules, generated)`
+  (was `passwordProblem(password, rules)`). `pipeline.build` with `git_init` leaves `core.longPaths=true` in the new
+  repository's config on Windows.
+- Oct 19 fix#4: none public (`package._install_the_callers_template`, `_callers_template`, `_copy_missing`,
+  `_ANOTHER_REPOSITORY` and `_GitFailed.returncode` are private). `pipeline.build` with `git_init`: after the commit
+  the repository has the hooks and `info/` of the caller's git template, and the result's warnings can name a
+  template that was not copied or whose `config` was not applied.
 
 ## Decisions
 
@@ -292,12 +478,167 @@ and found and fixed five more host bugs.
   failure needs `-m` and a spawned worker, and the quick matrix that shows it takes minutes, so the matrix runs before
   and after are recorded in Measurements instead.
 
+- **Oct 19 fix#1: no pull request opened for the first POSIX run.** A pull request is the only event short of a push
+  to `main` that starts `ci.yml`, and creating one needs the user's yes (global CLAUDE.md section 8: ask before
+  creating or merging PRs; the standing OK of Oct 17 covers non-main backup pushes only). Agents in these workflows ask
+  nobody, so the request goes to the orchestrator, with the command, under Open issues. The form recommended there is
+  a draft pull request from `wp/WIN` into `overhaul/multiplatform-v2` rather than the review's into `main`:
+  `pull_request:` has no branch filter, GitHub runs it on the merge of head into base, which is exactly the next merge
+  of this branch, the `deploy` job needs a push to `main`, and nothing about it reads as a release. A cloud session on
+  the repository would be Linux too, but the app reports no cloud environment for this project folder
+  (`no_readable_git_checkout`), and starting one is also the user's call. A local POSIX run is not possible: Git
+  Bash's tools are MSYS, and Python here is the Windows build.
+- **Oct 19 fix#2 (supersedes fix#1's entry on the monitor and signing): the `--git` commit runs git with none of the
+  caller's configuration.** Fix#1 overrode settings one at a time (`core.autocrlf`, `core.fsmonitor`,
+  `commit.gpgSign`) and said these were "the rest of the user's configuration that could change or cost the first
+  commit", and that hooks could stay the user's because `--no-verify` skips the two that can refuse the commit. Both
+  were wrong (fix#2 review): a global excludes file, git's default one (`$XDG_CONFIG_HOME/git/ignore`) or a
+  template's `info/exclude` holding `*.jar` left `gradle-wrapper.jar` out of the commit with no warning;
+  `prepare-commit-msg` is not skipped by `--no-verify` and refused or rewrote the commit, and `reference-transaction`
+  refuses even `git init` (seen in this run's test on the old code). The environment was the caller's too: with
+  `GIT_DIR`, `GIT_WORK_TREE` or `GIT_INDEX_FILE` set, each command ran against another repository's files and the run
+  reported success; `GIT_AUTHOR_*` replaced the identity. Which hooks get which (corrected in fix#3 and again in
+  fix#4, checked here with git 2.55.0.windows.5): `pre-commit`, `commit-msg` and `post-commit` get `GIT_INDEX_FILE`,
+  `GIT_AUTHOR_*` and `GIT_CONFIG_PARAMETERS` (with a `-c`), and `GIT_DIR` only in a linked worktree (the setup this
+  overhaul uses) or a bare repository; `post-checkout` and `pre-push` get none of them; `GIT_WORK_TREE` comes only
+  from whoever set it. So `04510e3`'s message ("a generator run from one (the suite in pre-push) committed the
+  project into that other repository") overstates it: from a `pre-push` hook in a main worktree it did not; from a
+  commit hook in a linked worktree it did. The fix strips every `GIT_` variable either way. The commit is on origin,
+  so it is not reworded. So the class is closed rather than
+  its members: every git command in `git_init` runs with an empty temporary home (`HOME` and `XDG_CONFIG_HOME`: no
+  `~/.gitconfig`, no XDG config, excludes or attributes file, on every git version; `GIT_CONFIG_GLOBAL` would need
+  2.32), `GIT_CONFIG_NOSYSTEM=1`, no `GIT_` variable but `GIT_EXEC_PATH` (which only says where git's own programs
+  are), and `git init --template=` (no hooks, no `info/exclude`). What the commit holds depends on the project's own
+  `.gitattributes` and `.gitignore` alone; the per-setting overrides and `--no-verify` went, being moot. Considered
+  and rejected: the review's narrower `-c core.excludesFile= -c core.hooksPath=<missing>`, which closes the two
+  routes found and leaves `core.attributesFile` (a filter on every file), `init.defaultObjectFormat` (a SHA-256
+  repository older tools cannot read), `i18n.commitEncoding` and the next one; all of those are in the test now.
+  Turning off hooks the user installed is now the generator's call: the commit is the generator's, under its own name,
+  and a hook written for the user's repositories has nothing to check in a project that did not exist a second ago.
+  (Fix#4: for that one commit only. `--template=` also kept the user's template out of the repository for good,
+  which was wrong; the next entry installs it once the commit is made.)
+  Without the system file `core.autocrlf` is unset, which is false on every host, Git for Windows included (its `true`
+  comes from that file), so line endings are as before.
+  Side effect (fix#3 review): `HOME` is the empty folder for every git child, so a git that is an asdf or mise shim,
+  which finds its data under `$HOME`, fails to run, and `--git` warns that the project is fine and leaves it without
+  a repository. Accepted: such shims for git are rare, the failure is graceful and says so, and passing the real home
+  back would bring `~/.gitconfig` back for every git older than 2.32 (no `GIT_CONFIG_GLOBAL`). A behaviour change
+  from inheriting `HOME`, so it is in the Rules too.
+- **Oct 19 fix#4: the repository gets the caller's git template once the commit is made.** A template
+  (`init.templateDir`, `GIT_TEMPLATE_DIR`) is how pre-commit (`init-templatedir`) and git-secrets put their hooks into
+  every new repository, so the commit-time isolation must not outlive the commit (the review reproduced the loss
+  against the integration head, which installed them). Options: (1) copy the template's entries after the commit,
+  chosen; (2) run `git init` again in the caller's environment, rejected: under `init.defaultObjectFormat=sha256` a
+  re-init rewrites a SHA-1 repository's `extensions.objectformat` and `git log` then fails with "your current branch
+  appears to be broken" (reproduced here, git 2.55.0.windows.5); (3) leave it out and say so, rejected: the user's
+  secret scanning would silently not run until they noticed. The template is resolved as the caller's `git init`
+  would: `GIT_TEMPLATE_DIR` first (an empty one means none), else `git config --path --get init.templateDir` run in
+  the new repository (its own file holds no `init` key, so this reads the system and global files and `-c`, as `init`
+  does; `--path` expands `~`) with the caller's environment minus `GIT_DIR`, `GIT_COMMON_DIR`, `GIT_WORK_TREE`,
+  `GIT_INDEX_FILE` and `GIT_CONFIG` (which would point it at another repository's configuration or, for
+  `GIT_CONFIG`, make `git config` alone read another file); the caller's `GIT_CONFIG_GLOBAL`, `GIT_CONFIG_NOSYSTEM`
+  and `GIT_CONFIG_PARAMETERS` stay, since `git init` honours them. git's built-in template (no setting) holds only
+  `*.sample` hooks and a comment-only `info/exclude`, so it is not copied; a template that does not exist is skipped,
+  as git only warns about it. What is copied is `hooks/` and `info/`, the parts tools use, with `git init`'s rules:
+  names starting with a dot left out, folders merged, files `.git` already has kept (it has none there after
+  `--template=`), modes and symbolic links as they are. The template's `config` is not applied: `git init` starts the
+  repository's configuration from it before any format is set, and merged in afterwards it could declare an object
+  format or repository version the repository does not have; it is named in a warning instead. Its `description`
+  (gitweb) and legacy `branches/` are not copied, silently, as nothing reads them. A failed copy and a configuration
+  git cannot read are warnings too, and the commit stands. Side effect: since `04510e3` a generated repository has no
+  `.git/hooks`, `.git/info` or `.git/description` unless the user has a template; before it, git's default template
+  gave the sample hooks and a comment-only `info/exclude`, so `echo x >> .git/info/exclude` there now needs the
+  folder first. Accepted: nothing reads the samples, and a template's `info/exclude` is copied.
+- **Oct 19 fix#2: the `--git` commands take `core.longPaths=true`.** Ignoring the user's configuration also drops a
+  global `core.longPaths=true`, and without it Git for Windows skips a file past MAX_PATH with "Filename too long"
+  and `git add` still exits 0 (checked here, git 2.55, `LongPathsEnabled=0`). With long paths on in Windows the
+  generator writes such files in staging, so the commit silently lacked them, before this package too for anyone
+  without that global setting. With the key Git for Windows reaches them in the extended-length form whatever the
+  registry says; other gits ignore it. Tested on every host (`test_zip`).
+  Since fix#3 (`1ffa268`, a non-blocking review finding) the key is in the new repository's own config on Windows,
+  written right after `git init`, rather than on each command line: the user's later commands there need it as much
+  as the commit did. Without it, `git status` under Git for Windows' defaults printed "Filename too long" for each such
+  file (the extended test on the old code). The other hosts' repositories keep git's default config.
+- **Oct 19 fix#1: a path's length is what Windows counts.** MAX_PATH counts UTF-16 code units, two for a character
+  outside the Basic Multilingual Plane, so placement measures with `_windows_length` and reports that number, which
+  keeps "a path of N characters" consistent with the limit the same message quotes. Since fix#2 `_free_sibling` sizes
+  its ASCII name by `_windows_length` too, so the sibling is exactly as long as the destination as Windows counts
+  (never longer in UTF-8 bytes either, for a POSIX file system's name limit); before, it erred short for an emoji.
+- **Oct 19 fix#2: keytool's error is on stdout.** The first Linux CI run failed WIN's own keytool test: the warning
+  quoted keytool's progress ("for: CN=...") from stderr. keytool prints `keytool error: ...` on stdout; on Linux a
+  folder where the key should go has a non-zero length, so keytool generates the key pair, says so on stderr and fails
+  on the write, while on Windows the folder reads as an empty keystore and fails before any progress. The warning
+  now takes stdout first; `RefusalTest` replays the Linux output on every host.
+- **Oct 19 fix#2: the non-ASCII password test skips where keytool refuses such a password, and says why otherwise.**
+  (Superseded by fix#3, next entry. The skip was wrong: it hid a product defect, which Part D rule 15 forbids, and the
+  plan to read its reason in CI could not work: `ci.yml` runs unittest at verbosity 1, which prints `OK (skipped=N)`
+  and no reasons.)
+  `test_a_non_ascii_password_round_trips` is older than WIN (`ff9c777`) and failed on the CI's Linux runner (Temurin
+  17 is that image's default JDK) with no message: keytool made no key. Most likely older JDKs' PKCS12 store goes
+  through the "PBE" key factory, whose `PBEKey` refuses any character outside printable ASCII ("Password is not
+  ASCII"); JBR 25 here accepts it. Not reproducible on this machine (no other JDK, and installing one is not granted),
+  so the test now asserts no warnings (a failure quotes keytool) and skips only on that exact refusal. Not decided
+  here, because it changes the spec and the website's rules: whether the generator should refuse non-ASCII keystore
+  passwords up front, since a key made with a newer JDK may not open under the JDK a project's Gradle runs on (Open
+  issues).
+- **Oct 19 fix#3: the generated-project CI jobs' compile error is left to WP02 (the orchestrator's 12:18 note).**
+  CI run 39210292751 (`ae886b5`) generated all four projects and stopped at `:data:orders`: `Unresolved reference
+  'AppResult'`. `orders` is the CI spec's `feature_modules` entry, so the code is `scaffold.py`'s, which still imports
+  `{pkg}.core.common.AppResult` (and `core.common.mvi.*`, `core.navigation.AppNavKey`), while `c3895f86` (Oct 9, in
+  the integration branch) moved `AppResult` to `core.common.result` and MVI to `:core:mvi`. That is a known issue:
+  `tests/consistency/known_issues.toml` matches exactly these IMPORT findings, owner WP02, "WP02-M2 rewrites it", which
+  is why the matrix and the suite pass. `wp/WP02` has the rewrite (`snippets/scaffold/**` with the current packages)
+  and drops that entry. The note asked for a fix here if the template was stale on the integration branch, else a
+  follow-up for its owner. It is stale, but the fix is the owner's and already exists. Patching the imports here
+  would not be enough, because the scaffold writes the old MVI shape and not only the old packages. It would
+  duplicate WP02-M2's rewrite in WP02's own `scaffold.py` and conflict with that merge, where the owner wins. So it is
+  recorded in `followups.md` (CI section): those four jobs pass only once WP02-M2 merges, and the CI spec is the
+  regression test. Removing `feature_modules` from the CI spec to turn it green would weaken CI, so it was not done.
+- **Oct 19 fix#3: a key the generator makes takes a printable ASCII password; a key the user brings keeps any
+  printable one.** Evidence: on Temurin 17 (the JDK `ci.yml` installs, and the floor the generated project's
+  `AGENTS.md` names, "any JDK 17+") keytool made no key from `pässwörd1`, while every ASCII password in the same run
+  worked (run 39206352955). JDK 17's PKCS12 store gets its keys from the "PBE" `SecretKeyFactory`, whose
+  `com.sun.crypto.provider.PBEKey` throws "Password is not ASCII" for any character outside 0x20-0x7E, and its MAC
+  check on load takes the same key, so such a store can be neither made nor opened there. That part comes from the
+  JDK 17 sources and was not run: there is no JDK 17 on this machine, and installing one is not granted. JBR 25 has
+  dropped the check: a probe here (the "PBE" factory, and a PKCS12 store and load with `pässwörd1` and with U+007F)
+  passes on 25.0.3. Options: (1) refuse up front, chosen; (2) keep such passwords and make the round trip pass on JDK
+  17, which needs a store format JDK 17 opens with them, i.e. the legacy JKS (keytool warns that it is proprietary),
+  for every generated key because of a rare password; (3) record a known failure and wait. (3) leaves the generator
+  accepting a spec it cannot carry out on a supported JDK, and PR #1 red until someone decides, while the user asked
+  to keep the PR open until Linux CI is green (decision log, 11:40). Pros of (1): one error, with its reason, in the
+  CLI, the wizard and the website alike; no format change; the round trip holds on every JDK from 17. Cons and
+  catches: a non-ASCII password typed by hand is refused (the passwords the wizard and the website invent are ASCII
+  already); a key the user brings is not checked, because the generator never opens it and it already works where
+  they use it (JKS takes any password on every JDK), so a non-ASCII PKCS12 key brought from a newer JDK still fails
+  under a Gradle on 17, as it would without the generator; an old cached copy of the website's catalogue lacks the
+  rule, and the generator behind the API still refuses. Where: `keystores.validate` with `GENERATED_PASSWORD_PATTERN`,
+  exported by the Android target as `rules.keystore_generated_password`; `passwordProblem(password, rules, generated)`
+  on the website; two cases in `tests/fixtures/validation_cases.json` that both sides run. The replaced test was not
+  weakened: it asserted what the product cannot deliver on its oldest JDK; the refusal is now tested on both sides, and
+  the keytool round trip uses `"  pass\\word=1:#!"`, the characters `keystore.properties` must escape or leave alone.
+  `properties_value` keeps its `\uXXXX` branch, which a brought key's password still needs (tested). The paths are
+  WP02's (`keystores.py`, `target.py`, after WP01) and WP10's (the website, merged), one hunk each; against every open
+  branch the only new merge conflict is `web/frontend/lib/catalogue.json`, which is regenerated with `--write`
+  (Measurements). **Not yet the user's:** the reviewer asked for this product rule to be settled with the user through
+  the orchestrator before WIN merges. It is decided here because the orchestrator's instruction for this run is to
+  decide soundly while the user is away and (2) is not a real alternative; the question is in Open issues, and if the
+  user declines it, reverting `ee311a8` brings back the JDK 17 failure as a known Linux failure.
+- **Oct 19 fix#2: `ci.yml` updated by this package.** The orchestrator's decision (Progress, Oct 19 11:35). The
+  smallest change that lets every job reach its real work: Go from `web/api/go.mod` (`go-version-file`), the catalogue
+  step on `genkit.core.catalogue --json`, and the Generate step through `create_project.py` (`--all`, `--preset`, or
+  no features; every language for `all`) rather than the generator's modules, which is what changed under it. The
+  matrix, Java 17 and the build step are unchanged: WP13 owns the workflows and reviews them last.
+
 - **Which path the CLI reports: the canonical one, directories resolved, last part as given.** `absolute()` already
   resolved the directories so that `--force` replaces a link rather than what it points at, and that is the path the
   build acts on, so it is the honest answer. The test expected the caller's spelling, which held only where `%TEMP%`
   has one name (on this machine it is `C:\Users\CRAZYH~1\...`, and on macOS `/var` is a link to `/private/var`). The
   tests now compare with `Path.resolve()` of the directory they made, and pin `..` and a deliberate 8.3 name. Not
-  loosened: each comparison is still exact.
+  loosened: each comparison is still exact. On Windows resolving also turns a mapped network drive (`Z:\...`) into
+  its UNC form (`\\server\share\...`) and a `subst` drive into the folder behind it (Oct 19 review). Kept: that is
+  the path the build writes to and the path-limit check measures, so a refusal names what was measured. WP12's
+  gotchas say so. Not reproduced here: making a mapped or `subst` drive is a system change.
 - **The symlink test skips only on `WinError 1314`** (no SeCreateSymbolicLinkPrivilege, i.e. no Developer Mode), with
   that reason; any other `OSError` still fails it, and it runs on Linux and in CI. A junction test (any Windows
   account can make one, `mklink /J`) covers links on Windows instead.
@@ -407,7 +748,7 @@ and found and fixed five more host bugs.
   `os.replace` (only the pipeline calls it) but wrong for the other-volume fake: the bug it guards was inside
   `shutil.move`, which reaches `os.rename` through its own `os`. That fake now replaces `os.rename` for the process and
   refuses only a rename whose source sits in an `android-gen-*` staging folder, so nothing else in the process is
-  touched. The other fakes keep `seen_by_pipeline`.
+  touched. The other fakes keep `seen_by_placement`.
 - **fix#3: each child process's output is read in the encoding that program writes.** git writes UTF-8 on every host
   (Git for Windows too), so `encoding="utf-8"`. keytool, as any Java program on Windows, writes to a pipe in the ANSI
   code page (`native.encoding`; checked here: "Á" arrives as `0xC1`), so `locale.getencoding()`, which is the ANSI
@@ -470,6 +811,14 @@ and found and fixed five more host bugs.
 | separators | five consistency issue kinds printed `Path.relative_to` (backslashes on Windows) | fixed Oct 19 (`fbac839`); tested |
 | other | a failed consistency run left its reference project in `%TEMP%` | fixed Oct 19 (`3b892f4`); tested |
 | process start | other pools in `generator/` and `tools/` | checked: the only other is `check_versions.py`'s `ThreadPoolExecutor`, which pickles nothing |
+| path length | lengths counted in code points where Windows counts UTF-16 code units (an emoji counts twice) | fixed Oct 19 (`c91798a`); tested on every host |
+| other | the user's `core.fsmonitor` (a hook, or Git for Windows' daemon on the staged repository) and `commit.gpgSign` reached the `--git` commit | fixed Oct 19 (`4ba27fc`); tested. Fix#1 called these the rest of the configuration that could change the commit, which was wrong: see the next row |
+| other | everything else of the caller's git setup reached the `--git` commit: excludes files (the wrapper's jar left out), hooks `--no-verify` does not skip, a template, attributes and filters, the object format, the commit encoding, and the `GIT_` variables a hook exports (the commit made in another repository) | fixed Oct 19 fix#2 (`04510e3`): no system, global or template configuration and no `GIT_` variable; tested through `GIT_CONFIG_GLOBAL`, `HOME`/`XDG_CONFIG_HOME` and the variables |
+| other | `04510e3`'s `--template=` kept the user's template (pre-commit's or git-secrets' hooks, `info/exclude`) out of the repository for good, not only out of the commit | fixed Oct 19 fix#4 (`976a7e2`): its `hooks/` and `info/` copied after the commit; what is not applied is a warning; tested through `init.templateDir` and `GIT_TEMPLATE_DIR` |
+| file systems | the empty home also drops a global `safe.directory`, which users of FAT, exFAT or network drives set because git cannot see an owner there ("detected dubious ownership") | checked Oct 19 fix#4, no change: `git_init` runs in staging under the temp folder (`pipeline.build`), which the user owns, before the project is moved; only a temp folder on such a drive would refuse it, gracefully (the "project itself is fine" warning). `-c safe.directory=*` would cover that on git 2.55 (checked here with `GIT_TEST_ASSUME_DIFFERENT_OWNER=1`), but not on gits that ignore it on the command line, and it was not worth an untestable path |
+| path length | Git for Windows' `git add` skips a file past MAX_PATH and exits 0, so with long paths on the `--git` commit lacked the deepest files | fixed Oct 19 fix#2 (`0c7825b`): `core.longPaths=true`; tested on every host. Fix#3 (`1ffa268`): kept in the new repository's config on Windows, so the user's next command sees those files |
+| other | a generated key's password outside ASCII: JDK 17's keytool makes no key, and a newer JDK's key does not open in a build on 17 (Linux CI) | fixed Oct 19 fix#3 (`ee311a8`): refused up front by the generator and the website; tested on both |
+| process output | keytool's error is on stdout, its progress on stderr; the warning quoted stderr's last line (seen on Linux CI) | fixed Oct 19 fix#2 (`e323eed`); tested on every host |
 
 ## Deviations
 
@@ -491,6 +840,16 @@ and found and fixed five more host bugs.
   standard preset's limit with no word about the volume. From staging on another volume the project was copied into
   a folder `len(name) + 11` characters deeper than the destination, so a project that fits was refused there, and the
   142 held only on the volume it was measured on. True on both since `8858f08` (fix#5); the 142 is now checked on D:.
+- Correction to the Oct 18 and Oct 19 updates (Open issues, Review fix#5's last row) and to the integrator's 01:35
+  WIN entry in `merges.md`: they expected the ubuntu CI job to run after the next backup push. `ci.yml` starts on a
+  push to `main` and on a pull request only, so no backup push runs it, and both branches were already on origin
+  without a run. The first POSIX run needs a pull request (Decisions, Open issues).
+- Correction to fix#2 of Oct 19: the non-ASCII password test's skip and the plan to confirm its cause from the CI log
+  (verbosity 1 prints no skip reasons). Replaced in fix#3 by the rule above; the cause stays inferred (Decisions).
+- Oct 19 fix#3 edits paths owned by others beyond touch-for-compile: `keystores.py` and `target.py` (WP02), the
+  website's validation and type (WP10, merged), and the shared validation fixture (WP01's). The orchestrator routed
+  the Linux keystore failure to this package (Progress, 11:35); a rule the generator and the website enforce has to
+  change in both, and one hunk each keeps the merges simple.
 
 ## Review fix#1 (fresh-context review of `84b2530`)
 
@@ -564,12 +923,166 @@ and found and fixed five more host bugs.
 | JSON on stdout newline-translated on Windows, not recorded | non-blocking | recorded: Decisions (fix#5) and the host audit, with why it is left |
 | `WindowsLongPathsTest` never run on Linux | non-blocking | recorded under Open issues: the WP13 request stands, and the orchestrator reads the first ubuntu run before the next merge on top |
 
+## Review of the follow-up merge (fresh-context review of `4dd3aca`, Oct 19)
+
+| Finding | Severity | Outcome |
+|---|---|---|
+| handoff and `merges.md`: the first Linux run expected from the next backup push, but `ci.yml` starts only on a push to `main` and on a pull request; "Nothing pushed" stale | blocking | corrected: header, Progress, Deviations and Open issues here, a correction appended to the 01:35 WIN entry in `merges.md`, an item for the orchestrator in `followups.md`. The run itself needs a pull request, so the user's yes (Decisions); none opened. Checked: `ci.yml` (`push: branches: [main]`, `pull_request:`), `origin/wp/WIN` = `3b892f4` and `origin/overhaul/multiplatform-v2` = `4dd3aca` (both pushed Oct 19 03:35, local reflog), `gh pr list --state all` empty, `gh run list` last run 2026-09-24 on `main` |
+| handoff: `seen_by_pipeline` and the placement helpers under `pipeline.py` | non-blocking | fixed: `seen_by_placement` where "What changed" and Decisions describe the tests; one paragraph at the top of "What changed" says where fix#5 moved the helpers; the review tables keep their round's names |
+| `placement.py:91,103,137-139` lengths in code points, Windows counts UTF-16 units | non-blocking | fixed `c91798a` (Decisions). `WindowsLongPathsTest` case (every host): a zip path of 259 code points and 260 units refused up front as 260; on the old code Windows refused the final rename and the message called the finished sibling "a path of 259 characters" |
+| `placement.py:280-283` the Python 3.11 `onerror` branch has never run | non-blocking | recorded: the WP13 request (Open issues, `followups.md`) now asks for a Python 3.11 run in the `windows-latest` job. Not run here: this machine has 3.15 only, and installing 3.11 is not granted |
+| `package.py:51-67` the user's `core.fsmonitor` and `commit.gpgSign` reach the first commit | non-blocking | fixed `4ba27fc` (Decisions). `test_zip` case: fails on the old code ("`git commit` failed (fatal: failed to write commit object)"), and with only the signing half fixed on the monitor's trace |
+| `create_project.py:286-296` a mapped or `subst` drive is reported (and written to) in its resolved form | non-blocking | recorded: Decisions (which path the CLI reports) and WP12's "Rules and gotchas" |
+| edits outside `generator/` core, accepted at the merge | non-blocking (information) | nothing to do |
+| the reviewer's scratch (`win-review-suite.log`, `upd-idx`) | non-blocking (information) | nothing to do: another session's scratchpad |
+
+## Review fix#2 of Oct 19 (fresh-context review of `c91798a`)
+
+| Finding | Severity | Outcome |
+|---|---|---|
+| `package.py:62` global excludes (`core.excludesFile`, `$XDG_CONFIG_HOME/git/ignore`, a template's `info/exclude`) drop `gradle-wrapper.jar` from the first commit, silently; the commit title, test name, Decisions and host-audit row claimed independence from the user's configuration | blocking | fixed `04510e3`, more widely than suggested (Decisions, fix#2): no system, global or template configuration and no `GIT_` variable, so attributes files, filters, object format and encoding are closed with it. `test_zip`: the fixture has the jar; a hostile configuration through `GIT_CONFIG_GLOBAL` (named excludes and attributes files) and through `HOME`/`XDG_CONFIG_HOME` (the default `git/ignore` and `git/attributes`); each asserts every file on disk is committed. Decisions entry and host-audit row corrected (the old row kept, marked wrong) |
+| `WIN.md:355` hooks left to the user on the premise that `--no-verify` skips those that can refuse the commit; `prepare-commit-msg` and `reference-transaction` are not skipped | blocking | fixed `04510e3`: no hooks run (no global or system `core.hooksPath`, no template, no `GIT_CONFIG_*` variable). `Hostile` installs six hooks (among them `prepare-commit-msg` and `reference-transaction`) and a monitor, each recording that it ran and exiting 1, in a global hooks folder, a template and through `GIT_CONFIG_COUNT`; the tests assert no trace and the plain message. On the old code a `reference-transaction` hook refused even `git init`. Decision and the Rules line corrected |
+| `package.py:82-95` `_git` inherits `GIT_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE` (the commit lands in another repository) and `GIT_AUTHOR_*`/`GIT_COMMITTER_*` | non-blocking | fixed `04510e3`: no `GIT_` variable but `GIT_EXEC_PATH` reaches git. `test_the_commit_is_the_same_whatever_git_variables_the_caller_has`: the other repository stays without a commit, no stray index, the generator's identity; fails on the old code |
+| `test_zip.py:82` the test name claims more than it checks | non-blocking | the test now checks what the name says (hooks, excludes, template, filter, signing, monitor, identity, encoding, object format, by two routes); variables have their own test |
+| `test_zip.py:95-99` the `GIT_CONFIG_GLOBAL` probe reads `commit.gpgSign`, which a real global configuration may hold | non-blocking | fixed: the probe reads `generatortest.marker`, which only the test's file holds, for each route |
+| `placement.py:206-214` `_free_sibling` sizes by code points | non-blocking | fixed `5bff1e9`; test fails on the old code (6 != 5) |
+| `test_golden.py:574-583` the astral test covers the zip only | non-blocking | fixed `5bff1e9`: an emoji in a project destination (the walk) and in a rename's failed path (`_path_too_long`), both every host; on the code before `c91798a` the first places the project ("RenderError not raised") and the second re-raises the `FileNotFoundError` (checked here) |
+| `package.py:83-86` the fsmonitor comment names Git for Windows only | non-blocking | moot: the comment and the override are gone |
+| `c91798a`'s message: "fails on the old code with that message" holds on Windows only | non-blocking | recorded here: on Linux the old code fails with "RenderError not raised", because the final rename succeeds there. The commit is on origin (`wp/WIN`, PR #1), so it is not reworded |
+| (found while fixing) Git for Windows skips files past MAX_PATH in `git add`, exit 0 | not in the review | fixed `0c7825b` (Decisions) |
+| (orchestrator, Oct 19 11:35) the Linux CI run: two `test_keystores` failures, `ci.yml` stale | not in the review | `e323eed` and `ae886b5` (Decisions); one of the two tests is older than WIN; the Vercel preview failure was not looked at (it needs the user's Vercel login) |
+
+## Review fix#3 of Oct 19 (fresh-context review of `ae886b5`)
+
+| Finding | Severity | Outcome |
+|---|---|---|
+| `test_keystores.py:144` skips on keytool's ASCII refusal, hiding that the generator accepts a spec it cannot carry out on JDK 17 (rule 15); the comment states an unverified cause as fact; the handoff's plan to read the skip reason in CI cannot work (verbosity 1) | blocking | fixed `ee311a8`: skip and comment gone. The product defect is fixed rather than kept as a known failure: a generated key's password must be printable ASCII, in the generator, the wizard and the website (Decisions, fix#3, which separates the evidence from the inference). The new tests fail on the old code: generator `ValidationTest` and the shared case; website the shared case. The two WIN.md lines are corrected (Open issues); no skip reason is expected from CI. The rule waits for the user's confirmation through the orchestrator (Open issues) |
+| `package.py:52-53` the `core.autocrlf` rationale is wrong (autocrlf stores LF; the project's `eol=lf` overrides it) | non-blocking | fixed `f3d5c3d`: a clean filter through a global attributes file is the example |
+| `package.py:101-104` `core.longPaths` only on the generator's command lines, so the user's next command in the repository fails on the files it let in | non-blocking | fixed `1ffa268`: in the new repository's config on Windows. The long-path test runs `git status` with no system or global configuration; on the old code it printed "Filename too long" on stderr (exit 0), which the test catches. Rules line updated |
+| `package.py:94` the empty `HOME` breaks a git that is an asdf or mise shim | non-blocking | recorded: Decisions (fix#2's entry) and Rules |
+| `ci.yml:99-106` the comment says "not the generator's modules" while `EVERY_LANGUAGE` imports one | non-blocking | fixed `4746a0b`: the languages come from `python -m genkit.core.catalogue --json` (the same five tags here); the bash branch dry-run in Git Bash; an assignment, so a failing catalogue fails the step |
+| `test_zip.py:115` "git exports the first three to every hook" | non-blocking | fixed `f3d5c3d`; the same words in Decisions (fix#2) corrected |
+| `ci.yml` is WP13's path | information | nothing to do (the orchestrator's decision) |
+| the reviewer's verification at `ae886b5` | information | nothing to do |
+
+## Review fix#4 of Oct 19 (fresh-context review of `4746a0b`)
+
+| Finding | Severity | Outcome |
+|---|---|---|
+| `package.py:64` `git init --template=` leaves the user's `init.templateDir` / `GIT_TEMPLATE_DIR` out of the generated repository for good, so pre-commit's or git-secrets' hooks never run on the user's later commits (a regression from the integration head); WIN.md's Rules line says the user's settings apply from the next command, which a template never does | blocking | fixed `976a7e2` as suggested (Decisions, fix#4): resolved in the caller's environment, `hooks/` and `info/` copied after the commit as git copies them, no second `git init` (its SHA-256 rewrite reproduced here). Warnings for a template `config` (not applied), a failed copy and an unreadable configuration. `test_zip`: the template through `init.templateDir` (a `~` path) and `GIT_TEMPLATE_DIR`, with recording hooks and an `info/exclude` of `*.jar`: the commit holds the jar, no hook ran, `.git/hooks/*` and `.git/info/exclude` exist with the template's bytes, and the user's next commit runs their `pre-commit`; the three warning cases. With the previous `package.py` the two tests give 3 failures and 2 errors (Measurements). The Rules line corrected |
+| `package.py:56`, `test_zip.py:115-117`, `WIN.md:449`: "the GIT_DIR git exports to every hook" is overstated; `04510e3`'s message on pre-push too | non-blocking | fixed in `976a7e2` (code and test comments) and in Decisions (fix#2's entry), after checking git 2.55.0.windows.5 here: commit hooks get `GIT_INDEX_FILE`, `GIT_AUTHOR_*`, `GIT_CONFIG_PARAMETERS`, and `GIT_DIR` only in a linked worktree; `post-checkout` none of them. The commit message is on origin and is not reworded; the correction is recorded in Decisions |
+| merge gate: `ee311a8`'s printable-ASCII rule needs the user's confirmation before WIN merges | non-blocking | still open, for the orchestrator (Open issues), unchanged: nothing on this branch can settle it |
+| `test_zip.py:157-161` `git status` passes the runner's `GIT_CONFIG_GLOBAL` through | non-blocking | fixed `976a7e2`: `isolated(home)` drops every `GIT_` variable but `GIT_EXEC_PATH` and sets `GIT_CONFIG_NOSYSTEM=1`; the new template tests use it too, so their later `git commit` can never reach a hook's `GIT_DIR` |
+| `package.py:59` `TemporaryDirectory` cleanup can raise after a finished project | non-blocking | fixed `976a7e2`: `ignore_cleanup_errors=True`. Not tested: forcing a refused deletion of a folder that git just used needs a held handle on another thread, for a one-argument change |
+| `ci.yml:98-118` the interim Generate step's rationale ("what users run") would be inherited by WP13, whose A12.7 goes through `generate_headless.py` | non-blocking | fixed `dcb0ce4`: the rationale is gone, the step unchanged; `followups.md` (CI) tells WP13. The generated-project jobs stay red on WP02's stale scaffold until WP02-M2 merges, as recorded |
+| `BuildStep.tsx:359` the bare `true` | non-blocking | fixed `9228ddd`: the comment beside the input says every key there is one the generator makes, because the API refuses `existing_path`. A named constant would be a one-use flag; the file has no parameter-comment idiom to match |
+| `catalogue.json:2` the stamp names `ee311a8`'s parent | non-blocking | fixed `2ce104a`: regenerated with `--write` after the code commits; it names `9228ddd`, which has the rule. Any later `--write` before its commit lags the same way, by design of the stamp |
+
 ## Lock time used
 
 None: no Gradle or adb in any run of this package. The suite, the host comparison and (Oct 19) the consistency
 matrix ran through `memwait` only.
 
 ## Measurements
+
+- **Run fix#4 of Oct 19 (after the review of `4746a0b`)**, at `2ce104a` (`wp/WIN`, 4 commits on `4746a0b`):
+  - Acceptance (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-oct19-fix4.log`): the whole suite through
+    `memwait`, 305 tests in 63.9 s, OK, 4 skipped (the same four: Pillow, the two symlink tests, the filesystem
+    exec-bit test). `genkit.tokens --check` and `genkit.core.catalogue --check` current. 0 added lines with a CR
+    byte. Host comparison COMPARE OK (standard: 314 files; everything-and-brand: 469; only `gradlew` executable in
+    either zip). Worktree clean. **ACCEPT OK.** `git diff --check 4746a0b..HEAD` clean; the 4 commits: 5 files, 177
+    insertions, 16 deletions, each with the noreply author and the trailer; no added generator or test line passes
+    120 columns.
+  - The new tests against the previous `package.py` (`4746a0b`'s, put back and then restored): `tests.test_zip` 9
+    tests, 3 failures and 2 errors, all in the two new tests: both template routes `FileNotFoundError` on
+    `.git\hooks\pre-commit`, and each warning case "1 != 0 : []". On `976a7e2`: 9 tests OK in 3.9 s.
+  - Website (`web/frontend`, `node_modules` from fix#3's `npm ci`): `memwait node --test "features/**/*.test.ts"`
+    222 tests, 222 pass (`logs/WIN/web-tests-fix4.log`); `memwait npx tsc --noEmit` exit 0
+    (`logs/WIN/tsc-fix4.log`). The change there is a comment and the catalogue's stamp.
+  - Scratch checks (git 2.55.0.windows.5, in the folder `t1` of this session's scratchpad, about 100 KB, left
+    there): `git init --template=`
+    makes only `HEAD`, `config`, `objects/` and `refs/`, and a commit adds no `hooks/` or `info/`. Hooks in a main
+    worktree: `pre-commit`, `commit-msg`, `post-commit` got `GIT_AUTHOR_DATE`, `GIT_AUTHOR_EMAIL`, `GIT_AUTHOR_NAME`,
+    `GIT_CONFIG_PARAMETERS`, `GIT_EDITOR`, `GIT_EXEC_PATH`, `GIT_INDEX_FILE`, `GIT_PREFIX`; the same in a linked
+    worktree plus `GIT_DIR`; `post-checkout` (from `worktree add`) `GIT_EDITOR`, `GIT_EXEC_PATH`, `GIT_PREFIX`. A
+    `git -c init.defaultObjectFormat=sha256 init` in a SHA-1 repository with a commit set `extensions.objectformat`
+    to `sha256`, and `git log` then failed with "your current branch appears to be broken".
+  - Merge check: of the files this run changed, only `web/frontend/lib/catalogue.json` is also changed on open
+    branches (twelve, as before), on the stamp line `ee311a8` already changed, so no new conflict; it is regenerated
+    with `--write` on a merge.
+
+- **Run fix#3 of Oct 19 (after the review of `ae886b5`)**, at `4746a0b` (`wp/WIN`, 4 commits on `ae886b5`):
+  - Acceptance (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-oct19-fix3.log`): the whole suite through
+    `memwait`, 303 tests in 128.4 s, OK, 4 skipped (the same four: Pillow, the two symlink tests, the filesystem
+    exec-bit test). `genkit.tokens --check` and `genkit.core.catalogue --check` current. 0 added lines with a CR
+    byte. Host comparison COMPARE OK (standard: 314 files; everything-and-brand: 469; only `gradlew` executable in
+    either zip). Worktree clean. **ACCEPT OK.** `git diff --check ae886b5..HEAD` clean; the 4 commits: 11 files, 119
+    insertions, 34 deletions, each with the noreply author and the trailer. No added generator or test line passes
+    120 columns; the website lines follow their files' own longer lines.
+  - Website (`web/frontend`, after `memwait npm ci --prefer-offline`, log `logs/WIN/npm-ci-fix3.log`; `node_modules`
+    is ignored): `node --test "features/**/*.test.ts"` 222 tests, 222 pass, among them "refuses: generated keystore
+    password outside ASCII" and "accepts: existing keystore with passwords outside ASCII"; `memwait npx tsc --noEmit`
+    exit 0 (`logs/WIN/tsc-fix3.log`). `next build` not run: the change is a validation function, its type and one call
+    argument, all of which `tsc` covers.
+  - Each new test against the old code here: with `keystores.py` at `ae886b5`, `ValidationTest` fails on
+    `pässwörd1` ("SpecError not raised") and `test_spec`'s shared case "generated keystore password outside ASCII"
+    fails; with `keystores.ts` at `ae886b5`, the website's same case fails (1 of 110 in `validate.test.ts`); with
+    `package.py` at `ae886b5`, the long-path test fails on `git status`'s stderr (`...deep.txt: Filename too long`,
+    exit 0), as this machine has no system or global `core.longPaths`.
+  - Probe on JBR 25.0.3 (`Probe.java` in this session's scratchpad, run as a single-file source): the "PBE"
+    `SecretKeyFactory` accepts `pässwörd1` and a password holding U+007F, and a PKCS12 store saved and loaded with
+    each opens. No JDK 17 on this machine, so its refusal is from its sources (Decisions, fix#3).
+  - `git merge-tree` of `wp/WIN` against every other `wp/*` branch, compared with `ae886b5`: the only new conflict is
+    `web/frontend/lib/catalogue.json` (12 branches; the emitted file, regenerated with `--write` on a conflict, rule
+    17a). `wp/WP03-skel` and `wp/WP05-glass` keep their earlier conflicts in `look.py` and `target.py`; no other
+    file is new.
+  - The CI Generate step's `all` branch, dry-run in Git Bash with the new `EVERY_LANGUAGE`: `--all --set
+    languages=["de", "es", "fr", "hi", "pt-BR"]`, the same list `genkit.core.translations.available("android")` gives.
+
+- **Run fix#2 of Oct 19 (after the review of `c91798a`)**, at `ae886b5` (`wp/WIN`, 5 commits on `c91798a`):
+  - Acceptance (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-oct19-fix2.log`): the whole suite through
+    `memwait`, 301 tests in 150.1 s, OK, 4 skipped (the same four as before: Pillow, the two symlink tests, the
+    filesystem exec-bit test; the non-ASCII password test runs and passes here on JBR 25). `genkit.tokens --check`
+    and `genkit.core.catalogue --check` current. 0 added lines with a CR byte. Host comparison COMPARE OK (standard:
+    314 files; everything-and-brand: 469; only `gradlew` executable in either zip). Worktree clean. **ACCEPT OK.**
+    `git diff --check c91798a..HEAD` clean; the 5 commits: 7 files, 296 insertions, 82 deletions, each with the
+    noreply author and the trailer.
+  - Each new test against the old code here: with `package.py` at `c91798a`, the configuration test fails on both
+    routes ("`git init` failed (fatal: in 'preparing' phase, update aborted by the reference-transaction hook)"), the
+    variables test fails ("`git symbolic-ref` failed", the same hook through `GIT_CONFIG_COUNT`), and the long-path
+    test fails with the 300-character file missing from the commit; with `keystores.py` at `c91798a`, `RefusalTest`
+    fails with the CI's own message ("could not be created: \tfor: CN=Acme, O=Acme, C=US"); with `placement.py` at
+    `c91798a`, the sibling test fails (6 != 5); with `placement.py` at `c91798a^`, the project-walk astral test fails
+    ("RenderError not raised") and the failure astral test re-raises the `FileNotFoundError`.
+  - Scratch checks (git 2.55.0.windows.5, in `%TEMP%\wlp`, deleted afterwards): `git init --template=` makes only
+    `HEAD`, `config`, `objects` and `refs`; with the isolated environment `git config --list --show-origin` shows the
+    repository's own file alone; `git add` of a 307-character path printed "Filename too long" and exited 0 without
+    `core.longPaths`, and committed it with the key; git reads `$XDG_CONFIG_HOME/git/ignore` and `git/attributes` as
+    the test's home route assumes (`check-ignore`, `check-attr`); keytool (JBR 25) on a folder where the key goes
+    prints its error on stdout and nothing on stderr. The new Generate step of `ci.yml` was run in Git Bash for each
+    matrix entry (`--dry-run --json`; `all` also generated): 0, 4, 36 and 36 features, five languages for `all`.
+  - PR #1's Generator job log (run 39206352955, job 117909925610) was read with `gh run view --log` (read-only):
+    ubuntu-24.04, Python 3.12, git 2.55.0; the two `test_keystores` failures, nothing else.
+
+- **Run after the review of the follow-up merge (Oct 19, fix#1)**, at `c91798a` (`wp/WIN`, 2 commits on `4dd3aca`):
+  - Acceptance (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-oct19-fix.log`): the whole suite through
+    `memwait`, 295 tests in 152.6 s, OK, 4 skipped (Pillow; the two symlink tests; the filesystem exec-bit test).
+    `genkit.tokens --check` and `genkit.core.catalogue --check` current. 0 added lines with a CR byte. Host comparison
+    COMPARE OK (standard: 314 files; everything-and-brand: 469; only `gradlew` executable in either zip). Worktree
+    clean. **ACCEPT OK.** `git diff --check 4dd3aca..HEAD` clean; the 2 commits: 4 files, 66 insertions, 10
+    deletions, each with the noreply author and the trailer.
+  - Each new test fails on the old code here: `test_zip`'s configuration test with `package.py` at `4dd3aca`
+    ("`git commit` failed (fatal: failed to write commit object). The project itself is fine."), and with only
+    `core.fsmonitor=` taken out of the fix ("the user's file system monitor ran"); `test_golden`'s emoji test with
+    `placement.py` at `4dd3aca` ("Windows refused a path of 259 characters: ...\.5m9v37bnsvq1unv", the finished
+    sibling, after the final rename failed).
+  - Scratch repository (`scratchpad/fsm`, git 2.55.0.windows.5) with a global configuration holding a monitor hook
+    and signing through a missing gpg: the hook ran twice on each of `add`, `ls-files`, `update-index` and `commit`,
+    and the commit failed on gpg; with `-c core.fsmonitor= -c commit.gpgSign=false` no hook ran and the commit was
+    made.
+  - A slip while testing: a backup copy of `package.py` landed in `%LOCALAPPDATA%\package.py.keep` (a `$TEMP/..`
+    path); it was compared with the restored file (identical) and sent to the Recycle Bin. Nothing else outside the
+    worktree, `$OV/logs/WIN` and the session scratchpad was written.
 
 - **Run after the merge (Oct 19)**, at `3b892f4` (`wp/WIN`, 3 commits on `merged/WIN`):
   - Acceptance (`BASE=a402d87 $O/accept.sh`, log `logs/WIN/accept-oct19.log`, against the integration head before
@@ -732,7 +1245,29 @@ For WP12 (generator README/AGENTS and the generated projects' docs where they ta
   on D:): nothing is written deeper than the destination on the way. A zip `--out` is measured the same way: up to
   259 characters, its folder at most 247. Building any Android project on Windows needs long paths for the same reason (Gradle's build
   directories are deeper still).
+- On Windows the generator reports, measures and writes the `--out` folder with its directories resolved: a mapped
+  network drive appears as its UNC path (`\\server\share\...`), a `subst` drive as the folder behind it, an 8.3
+  short name in full. The length limit counts that form, so an output that fits at `Z:\x` can be refused at
+  `\\server\share\x`, and the message names the UNC path.
+- `--git` makes the first commit as "Project generator <generator@localhost>", unsigned, with none of the user's
+  git setup: no system or global configuration (hooks, excludes and attributes files, file system monitor,
+  signing, object format), no `init.templateDir` and no `GIT_` environment variable, so the commit holds exactly
+  the project's files under its own `.gitattributes` and `.gitignore`, on every host. The user's hooks do not run
+  for it. Once it is made, the repository gets the user's git template (`init.templateDir` or `GIT_TEMPLATE_DIR`):
+  its `hooks/` and `info/` are copied into `.git` as `git init` would copy them, so hooks that pre-commit or
+  git-secrets install through a template run on the user's own commits. The template's `config` file is not
+  applied (`--git` says so in a warning), and neither is git's built-in template, so without a template of their
+  own the repository has no sample hooks and no `.git/info` folder. The repository's own `.git/config` is git's
+  default, plus `core.longPaths=true` on Windows (so a file past MAX_PATH that the commit holds stays usable); the
+  user's system and global settings and their `GIT_` variables apply from the next command they run. A
+  git that is an asdf or mise shim (it finds its data under `HOME`) cannot run for the commit: `--git` then warns and
+  leaves the project without a repository; run `git init` there yourself. To make the commit theirs: `git commit --amend --reset-author --no-edit` (add `-S` to sign it).
 - In cmd.exe the wrapper is `.\gradlew` or `gradlew`; `./gradlew` works in PowerShell and Git Bash.
+- A signing key the generator makes needs a password of printable ASCII (letters, digits, spaces and the symbols on
+  a US keyboard): JDK 17, the oldest JDK the project supports, can neither make nor open a PKCS12 keystore with any
+  other character (newer JDKs can). A key you bring keeps its own password, any printable one; a PKCS12 one with
+  other characters opens only on a JDK that accepts them. The generated README's `keytool` commands are under the
+  same rule on JDK 17.
 - `--git` on Windows records `gradlew` as executable (`100755`), so a clone on macOS or Linux runs it; on Windows
   itself `git init` sets `core.fileMode=false`, so the working tree shows no mode change.
 - A symbolic link as `--out` needs Developer Mode on Windows; a junction works for any account, and `--force`
@@ -751,7 +1286,10 @@ For WP12 (generator README/AGENTS and the generated projects' docs where they ta
 - Five `consistency-*` folders (2.4 to 3.8 MB each, about 15 MB, each holding a `reference` project) sit in this
   machine's `%TEMP%`, made between Oct 17 14:49 and Oct 18 05:16 by other packages' runs that ended in
   `BrokenProcessPool`. Not deleted here: they are not this run's, and temporary files are the user's to clear
-  (Settings, System, Storage, Temporary files).
+  (Settings, System, Storage, Temporary files). A sixth, `consistency-leswribp`, appeared on Oct 19 at 09:11, after
+  `4dd3aca`: the runner that leaves one is still on the branches without `3b892f4` (`wp/HUD`, `wp/WP06`, `wp/WP03`,
+  `wp/WP08` as of this run; `out/HUD` was being written at that minute) and goes once they merge the integration
+  branch. No consistency run was in progress when this was checked.
 
 - The MAX_PATH case is explained, not avoided: staging under `%TEMP%` costs about 58 characters that the destination
   might not need. Staging beside the destination would change the API's cleanup model (pipeline docstring: staging
@@ -760,19 +1298,40 @@ For WP12 (generator README/AGENTS and the generated projects' docs where they ta
   generator tests fail on this machine are stale, and `logs/windows/generator-baseline.md` is history.
 - The case-insensitive guard test only fails before the fix on macOS (Windows already compared paths without case);
   no macOS host was available to run it there.
-- The suite has still run only on Windows. The non-Windows branches (`is_link` without reparse tags, the skipped
-  Windows-only tests, the filesystem exec-bit test, `_delete_tree`'s plain `rmtree`, and since fix#4
-  `WindowsLongPathsTest` shown a Windows host on Linux, since fix#5 also `test_cli`'s notes test) are covered by the
-  simulation in `test_host` and by reading; the ubuntu CI job is the first real Linux run. Nothing is pushed, so it
-  has not run. **For the orchestrator:** read that first ubuntu run's generator job before the next package merges
-  on top of WIN, so a Linux-only failure is pinned on this package rather than on the one after it.
+- **The suite has run on Linux twice, at `c91798a` and at `ae886b5`, and not yet at this run's head.** PR #1 (draft, into the
+  integration branch; the user approved it on Oct 19) ran CI as run 39206352955: Generator on ubuntu-24.04, Python
+  3.12, git 2.55: every test passed but two in `test_keystores` (10 skipped), both now fixed (Decisions, fix#2 and
+  fix#3). The other failed jobs failed in `ci.yml` itself, now updated (`ae886b5`). **For the orchestrator:** push
+  `wp/WIN` (the backup push it makes anyway) so PR #1 re-runs on the new head, then read the Generator job (`gh run
+  view <run id> --log --job <id>`) and record it here. Expected there and not checkable here: the new `test_zip`
+  tests on git 2.55 Linux (hooks as `/bin/sh` scripts, `HOME` redirected; since fix#4 also the template tests, which
+  assert mode 0755 on the copied hooks only where the OS has exec bits), `RefusalTest`, and a pass for the
+  replaced keystore tests on Temurin 17 (no test skips on keytool's account any more); anything else in it is this
+  package's. `ci.yml` runs unittest at verbosity 1, which prints `OK (skipped=N)` and no reasons, so a skip count
+  above run 39206352955's 10 is worth a `-v` run before reading anything into it. The API
+  and Generated project jobs now reach their real work, so what they say next is about those parts (WP10's API, the
+  template), not about `ci.yml`'s module names. Second run (39210292751 at `ae886b5`, the orchestrator's 12:18 note):
+  Generator and API pass; the four generated projects stop at `:data:orders` (`AppResult`), which is WP02's
+  (Decisions, fix#3) and stays red until WP02-M2 merges, so PR #1 cannot be all green before then. Close the PR unmerged once read, as planned.
+- **For the orchestrator, to ask the user before WIN merges (a confirmation): a password for a signing key the
+  generator makes must be printable ASCII** (fix#3, `ee311a8`; the reviewer asked for this rule to be settled with
+  the user, and the fix#4 review repeated it as the merge gate). A suggested question: "JDK 17, the oldest JDK generated projects support and the one CI uses, cannot
+  make or open a PKCS12 keystore whose password has a character outside printable ASCII (JBR 25 can). Should the
+  generator refuse such passwords for the keys it makes?" Recommended, and done: refuse. Pros: an up-front error in
+  the CLI, the wizard and the website; the keys open on every JDK from 17; the passwords the wizard and the website
+  invent are ASCII already. Catches: a non-ASCII password typed by hand is refused; a key the user brings is not
+  checked (it already works where they use it). Alternatives: allow them and generate JKS keys (a legacy,
+  proprietary format keytool warns about, for every generated key); or allow them as before and accept that JDK 17
+  makes no key (a warning only, and Linux CI stays red on `test_keystores`). On either alternative, revert `ee311a8`
+  and decide what replaces it.
 - **For WP13 (owner of `.github/workflows/**`):** add a `windows-latest` generator job (the same two steps as the
-  ubuntu one). Without it the tests that need Windows' own file system (junction, 8.3 short name, `WindowsPathLimitTest`:
-  the path limit in staging, the deep-file deletion and the failed swap beside a deep destination; the CR guards on a
-  Windows checkout) run only on a developer's machine. Since fix#4 the pure path-limit logic (`WindowsLongPathsTest`,
-  including the destination-depth refusal) runs on every host. `WindowsPathLimitTest` probes for long paths and skips
-  with that reason where they are on, so the job is valid on either kind of runner image. Not done here because the
-  path is WP13's and A12.7 rewrites `ci.yml`.
+  ubuntu one), on Python 3.12 and on 3.11, the oldest the generator supports: `_delete_tree`'s `onerror` branch runs
+  only on Windows under 3.11 and has never run (Oct 19 review). Without it the tests that need Windows' own file
+  system (junction, 8.3 short name, `WindowsPathLimitTest`: the path limit in staging, the deep-file deletion and the
+  failed swap beside a deep destination; the CR guards on a Windows checkout) run only on a developer's machine. Since
+  fix#4 the pure path-limit logic (`WindowsLongPathsTest`, including the destination-depth refusal) runs on every
+  host. `WindowsPathLimitTest` probes for long paths and skips with that reason where they are on, so the job is valid
+  on either kind of runner image. Not done here because the path is WP13's and A12.7 rewrites `ci.yml`.
 - `--json` reports every `RenderError` as `kind: internal`, "The generator failed.", with the message only as the
   traceback's last line in `detail` (the headless contract in `genkit/core/headless.py`, WP01's). A held-open
   destination or a path past the limit is the user's to fix, not a generator bug; a separate `kind` for such errors

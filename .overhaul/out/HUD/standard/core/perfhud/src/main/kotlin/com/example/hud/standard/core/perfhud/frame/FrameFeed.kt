@@ -101,6 +101,10 @@ internal class FrameFeed @Inject constructor(
 
     private fun attach(activity: Activity) {
         val listener = listener ?: return
+        // Two of the app's activities can be resumed at once (split screen, Android 10's
+        // multi-resume), and the first one's pause then finds another in front and leaves its
+        // JankStats alone: one window is watched at a time, the one resumed last.
+        jankStats?.isTrackingEnabled = false
         jankStats = JankStats.createAndTrack(activity.window, listener)
         putRoute(activity.window)
     }

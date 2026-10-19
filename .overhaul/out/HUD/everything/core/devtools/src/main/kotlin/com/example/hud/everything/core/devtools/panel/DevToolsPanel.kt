@@ -102,7 +102,10 @@ private fun PanelContent(devTools: DevTools, initialTab: String?, onClose: () ->
     val exchanges by devTools.log.exchanges.collectAsStateWithLifecycle()
     val pages = devTools.pages
     val tabKeys = remember(pages) { PanelTab.entries.map { it.name } + pages.map { it.key } }
-    val tabTitles = PanelTabTitles + pages.map { stringResource(it.title) }
+    val pageTitles = pages.map { stringResource(it.title) }
+    // The same list instance while the titles hold, so the tab row skips the recomposition every new
+    // request in the log brings.
+    val tabTitles = remember(pageTitles) { PanelTabTitles + pageTitles }
     var tabKey by rememberSaveable { mutableStateOf(initialTab ?: PanelTab.entries.first().name) }
     val tab = tabKeys.indexOf(tabKey).coerceAtLeast(0)
     var inspectingId by rememberSaveable { mutableStateOf<Long?>(null) }
