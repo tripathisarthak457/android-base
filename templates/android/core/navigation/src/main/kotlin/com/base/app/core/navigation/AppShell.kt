@@ -25,8 +25,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation3.scene.SceneStrategy
 import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.common.navigation.FullScreenKey
-import com.base.app.core.designsystem.component.navigation.BarActionScope
 import com.base.app.core.designsystem.component.navigation.AppTabBarDefaults
+import com.base.app.core.designsystem.component.navigation.BarActionScope
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.designsystem.component.navigation.rememberAppTabBarState
