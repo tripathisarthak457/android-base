@@ -1,7 +1,6 @@
-# Formatting, read by Android Studio and by most other editors without a plugin.
-#
-# Kotlin's official style with the line length and trailing commas this project already uses,
-# so a file reformatted in the IDE produces no diff beyond what was actually changed.
+# Formatting, read by Android Studio, by most other editors without a plugin, and by ktlint when
+# the project has the formatting feature: one set of rules, so a file reformatted in the IDE
+# passes the check unchanged.
 
 root = true
 
@@ -14,7 +13,10 @@ indent_style = space
 indent_size = 4
 
 [*.{kt,kts}]
-max_line_length = 120
+max_line_length = 100
+ktlint_code_style = android_studio
+# Composables are nouns in PascalCase, which ktlint's function-naming rule would otherwise reject.
+ktlint_function_naming_ignore_when_annotated_with = Composable
 ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
 ij_kotlin_allow_trailing_comma = true
 ij_kotlin_allow_trailing_comma_on_call_site = true

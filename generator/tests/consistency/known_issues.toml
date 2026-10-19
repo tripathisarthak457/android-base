@@ -7,23 +7,3 @@
 match = "^UNUSED-IMPORT app/src/main/kotlin/\\{pkg\\}/ui/AppDestinations\\.kt: \\{package\\}\\.(R|core\\.designsystem\\.icon\\.AppIcons)$"
 owner = "WP04"
 why = "the imports sit outside the <opt:> blocks of the tabs that use them"
-
-[[issue]]
-match = "^UNUSED-IMPORT feature/profile/src/main/kotlin/\\{pkg\\}/feature/profile/ProfileScreen\\.kt: androidx\\.compose\\.foundation\\.layout\\.Row$"
-owner = "WP02"
-why = "Row is used only by the media-picker block"
-
-[[issue]]
-match = "^UNUSED-RES feature/settings/src/main/res/values/strings\\.xml: string/settings_(about|open_source_licences|licences_explanation|no_licences_explanation|no_licences_recorded|licence_not_stated)$"
-owner = "WP02"
-why = "the licences section's strings sit outside an <opt:licenses> fence, so they ship without the screen"
-
-[[issue]]
-match = "^UNUSED-RES feature/profile/src/main/res/values/strings\\.xml: string/profile_(change|remove)_photo$"
-owner = "WP02"
-why = "only the media-picker block uses them, and they are not fenced with it"
-
-[[issue]]
-match = "^UNUSED-RES feature/search/src/main/res/values/strings\\.xml: string/search_remove_recent$"
-owner = "WP02"
-why = "nothing in the template uses it, even with every feature on"

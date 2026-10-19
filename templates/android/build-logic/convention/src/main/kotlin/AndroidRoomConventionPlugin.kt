@@ -1,6 +1,6 @@
 import androidx.room3.gradle.RoomExtension
-import com.base.app.buildlogic.libs
 import com.base.app.buildlogic.library
+import com.base.app.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

@@ -6,6 +6,7 @@ build that ships a language with a string missing, so a gap here is an error, no
 
 from __future__ import annotations
 
+import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from ...core import translations
 from ...core.copy import write_text
 from ...core.spec import Spec, module_title
 from ...core.translations import Text, TranslationError, module_slug
+from . import scaffold
 
 _RES = "src/main/res"
 
@@ -45,7 +47,7 @@ def write(project: Path, spec: Spec, modules: set[str] | None = None) -> None:
     for tag in spec.languages:
         translation = translations.load("android", tag)
         entries: dict[str, dict[str, Text]] = dict(translation.modules)
-        for name in spec.feature_modules:
+        for name in scaffold.modules(spec):
             texts = {key.replace("{name}", name): value for key, value in translation.scaffold.items()}
             # The feature's name as the user typed it, which is also its tab label: a name, so it
             # reads the same in every language until someone chooses otherwise.
@@ -69,7 +71,12 @@ def write(project: Path, spec: Spec, modules: set[str] | None = None) -> None:
 
 
 def _module(project: Path, strings: Path) -> str:
-    return strings.parent.parent.relative_to(project).as_posix().removesuffix(f"/{_RES}")
+    """The module that owns `strings`, by its compact path: a modular `:impl` holds its module's copy."""
+    module = strings.parent.parent.relative_to(project).as_posix().removesuffix(f"/{_RES}")
+    return _IMPL.sub(r"\1", module)
+
+
+_IMPL = re.compile(r"^((?:feature|data)/[a-z0-9_]+)/impl$")
 
 
 def strings_xml(names: list[str], texts: dict[str, Text]) -> str:

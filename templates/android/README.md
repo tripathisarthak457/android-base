@@ -53,27 +53,23 @@ depends on `:core:designsystem` alone, so working on a component rebuilds two mo
 the whole graph.
 <!-- </opt:catalog> -->
 
-<!-- <opt:composemetrics> -->
-
 ### Compose stability
 
 ```bash
 ./gradlew checkComposeStability
 ```
 
-Reads the Compose compiler's own report for `:core:designsystem` and `:core:ui` and fails on a
-composable that restarts without being able to skip, or that takes a parameter the compiler cannot
-prove immutable. Either one costs a frame every time the parent recomposes — in a list, once per
-row per frame — and neither is visible in a diff.
+Part of `check`. Reads the Compose compiler's own report for `:core:designsystem`, `:core:ui` and
+`:core:navigation` and fails on a composable parameter whose type the compiler cannot prove stable.
+Under strong skipping such a parameter is compared by identity, so the composable reruns whenever
+its caller passes a new instance, even an equal one, and nothing in a diff shows it.
 
-`config/compose-stability-baseline.txt` holds what was already there when the check was turned on.
-Deleting a line is how a fix is recorded; the check fails again if it comes back. When the cause is
-a type from a library this project cannot change, declare it immutable in
-`config/compose-stability.conf` rather than accepting it into the baseline.
-
-To accept a new one deliberately: `./gradlew :core:designsystem:recordComposeStability`, in a
+Pass a stable type, a `() -> T` provider, or declare a type immutable in
+`config/compose-stability.conf`. `config/compose-stability-baseline.txt` accepts the rest, one
+`fqName(parameter)  # reason` per line; deleting a line records a fix. To accept a new one
+deliberately: `./gradlew :core:designsystem:recordComposeStability`, then write the reason, in a
 commit that says why.
-<!-- </opt:composemetrics> -->
+
 <!-- <opt:coverage> -->
 
 ### Coverage
@@ -252,7 +248,7 @@ file per flavour under `app/src/<flavour>/`.
 
 - **No Material.** `:core:designsystem` is built on `foundation` + `ui` and supplies its own
   indication, typography, components and icons. An `androidx.compose.material` import fails the
-  build — see the `verifyComposeUsage` task, which also catches `@Composable` in a module that
+  build — see the `verifyCodeRules` task, which also catches `@Composable` in a module that
   forgot the Compose compiler plugin.
 - **Library modules have no `BuildConfig`.** Anything that varies per environment is injected
   from `:app`, so a library cannot behave differently depending on which variant compiled it.

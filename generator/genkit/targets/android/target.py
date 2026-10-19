@@ -23,7 +23,7 @@ from ...core.spec import (
     Vocabulary,
 )
 from ...core.target import BuildContext
-from . import database, icons, keystores, look, modes, scaffold, settings, strings, tabs, variants
+from . import database, icons, imports, keystores, look, modes, scaffold, settings, strings, tabs, variants
 from .settings import FLAVOURS
 
 TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "android"
@@ -108,8 +108,7 @@ class AndroidTarget:
                     "always included.",
                     "languages",
                 )
-        modes.check(spec)
-        return []
+        return tabs.warnings(spec) + scaffold.notes(spec)
 
     def identity(self, spec: Spec) -> dict[str, str]:
         return {
@@ -129,6 +128,8 @@ class AndroidTarget:
     def transform(self, project: Path, spec: Spec) -> list[str]:
         scaffold.write_feature_modules(project, spec)
         database.write_tables(project, spec)
+        if spec.architecture == "modular":
+            modes.split(project)
         return []
 
     def finish(self, project: Path, spec: Spec, context: BuildContext) -> list[str]:
@@ -136,6 +137,7 @@ class AndroidTarget:
         # the user's brand and choices.
         look.apply(project, spec)
         strings.write(project, spec)
+        imports.sort_sources(project)
         warnings = keystores.write(project, (spec.android or AndroidSettings()).keystores, context.summary)
         if context.icon_source is not None:
             warnings += icons.generate(context.icon_source, project, spec)
@@ -143,7 +145,12 @@ class AndroidTarget:
 
     def outline(self, spec: Spec) -> dict[str, list[str]]:
         return {
-            "modules": [f":{tier}:{name}" for tier in ("data", "feature") for name in spec.feature_modules],
+            "modules": [
+                f":{tier}:{name}{half}"
+                for tier in ("data", "feature")
+                for name in scaffold.modules(spec)
+                for half in ((":api", ":impl") if spec.architecture == "modular" else ("",))
+            ],
             "tabs": tabs.labels(spec),
         }
 
@@ -204,7 +211,7 @@ class AndroidTarget:
                     "key": "modular",
                     "title": "Modular",
                     "description": "Each feature and data module split into :api and :impl, for larger teams.",
-                    "available": modes.MODULAR_AVAILABLE,
+                    "available": True,
                 },
             ],
             "reserved_module_names": sorted(self.reserved_module_names),

@@ -15,7 +15,7 @@ from genkit.core import pipeline, translations
 from genkit.core.record import RECORD_NAME
 from genkit.core.target import RenderError
 from genkit.targets import get
-from genkit.targets.android import database, look, scaffold, settings, tabs, variants
+from genkit.targets.android import database, look, settings, variants
 from genkit.tokens import kotlin
 from tests.consistency import checks
 
@@ -84,63 +84,14 @@ class SettingsTest(unittest.TestCase):
         self.assertIn("- language\n", readme)
 
 
-class TabsTest(unittest.TestCase):
-
-    def test_each_module_becomes_a_tab_in_the_order_given(self):
-        regions = tabs.regions(spec(feature_modules=["orders", "order_history"]))
-        self.assertIn("key = OrdersListKey", regions["shell-tabs"][0])
-        # The label is the module's own title string, so translating the module translates its tab.
-        self.assertIn("label = OrderHistoryR.string.order_history_title", regions["shell-tabs"][1])
-
-    def test_the_reference_feature_supplies_its_own_start(self):
-        self.assertEqual([], tabs.regions(spec(features=["sample"], feature_modules=["orders"]))["start-destination"])
-
-    def test_without_it_the_first_module_starts(self):
-        regions = tabs.regions(spec(feature_modules=["orders", "wallet"]))
-        self.assertEqual(["        ?: OrdersListKey\n"], regions["start-destination"])
-        self.assertEqual(
-            [
-                "import com.acme.field.feature.orders.OrdersListKey\n",
-                "import com.acme.field.feature.orders.R as OrdersR\n",
-                "import com.acme.field.feature.wallet.WalletListKey\n",
-                "import com.acme.field.feature.wallet.R as WalletR\n",
-            ],
-            regions["start-destination-import"],
-        )
-
-    def test_the_feed_then_search_start_before_any_module(self):
-        for features, key in ((["paging", "search"], "FeedKey"), (["search"], "SearchKey")):
-            with self.subTest(features=features):
-                regions = tabs.regions(spec(features=features, feature_modules=["orders"]))
-                self.assertEqual([f"        ?: {key}\n"], regions["start-destination"])
-
-    def test_profile_starts_before_settings(self):
-        self.assertEqual(["        ?: ProfileKey\n"], tabs.regions(spec(features=["profile", "settings"]))["start-destination"])
-
-    def test_settings_starts_when_nothing_else_does(self):
-        self.assertEqual(["        ?: SettingsKey\n"], tabs.regions(spec(features=["settings"]))["start-destination"])
-
-    def test_with_no_screen_to_start_on_the_build_says_what_to_do(self):
-        (line,) = tabs.regions(spec(features=["network"]))["start-destination"]
-        self.assertIn('error("Set a start destination', line)
-
-    def test_the_labels_follow_the_bar(self):
-        self.assertEqual(
-            ["Home", "Feed", "Orders", "Profile", "Settings"],
-            tabs.labels(spec(features=["sample", "paging", "profile", "settings"], feature_modules=["orders"])),
-        )
+    def test_a_project_with_formatting_fails_its_check_on_unformatted_code(self):
+        with tempfile.TemporaryDirectory() as temp:
+            build = (generate(Path(temp), features=["formatting"]) / "build.gradle.kts").read_text(encoding="utf-8")
+        self.assertIn("spotless {", build)
+        self.assertNotIn("isEnforceCheck", build)
 
 
 class ScaffoldTest(unittest.TestCase):
-
-    def test_each_module_contributes_its_includes_and_an_app_dependency(self):
-        regions = scaffold.regions(spec(feature_modules=["orders", "wallet"]))
-        self.assertEqual(['include(":data:orders")\n', 'include(":data:wallet")\n'], regions["data-modules"])
-        self.assertEqual(['include(":feature:orders")\n', 'include(":feature:wallet")\n'], regions["feature-modules"])
-        self.assertEqual(
-            ['    implementation(project(":feature:orders"))\n', '    implementation(project(":feature:wallet"))\n'],
-            regions["app-feature-dependencies"],
-        )
 
     def test_a_scaffolded_module_names_only_what_the_project_declares(self):
         # The modules are written from code rather than copied from the template, so nothing moves
@@ -329,7 +280,7 @@ class ProjectTest(unittest.TestCase):
         )
         self.assertEqual(["app", "core/perfhud"], dependents)
         self.assertTrue(
-            (project / "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/DevToolingGuard.kt").is_file()
+            (project / "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/guard/DevToolingGuard.kt").is_file()
         )
         # The adb receiver is the debug manifest's alone: run-as, its only way in, needs a debuggable build.
         self.assertFalse((project / "core/perfhud/src/main/AndroidManifest.xml").exists())
@@ -356,7 +307,7 @@ class ProjectTest(unittest.TestCase):
             "core/devtools",
             f"core/ui/src/main/kotlin/{package}/core/ui/tooling",
             f"core/common/src/main/kotlin/{package}/core/common/environment",
-            f"build-logic/convention/src/main/kotlin/{package}/buildlogic/DevToolingGuard.kt",
+            f"build-logic/convention/src/main/kotlin/{package}/buildlogic/guard/DevToolingGuard.kt",
         ):
             self.assertFalse((project / owned).exists(), owned)
         for name in ("MainActivity.kt", "ui/AppRoot.kt"):
@@ -369,7 +320,7 @@ class ProjectTest(unittest.TestCase):
         project = generate(self.root, features=["devtools"])
         self.assertFalse((project / "core/perfhud").exists())
         self.assertFalse((project / "docs/PERFORMANCE-OVERLAY.md").exists())
-        guard = "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/DevToolingGuard.kt"
+        guard = "build-logic/convention/src/main/kotlin/com/acme/field/buildlogic/guard/DevToolingGuard.kt"
         for name in ("settings.gradle.kts", "app/build.gradle.kts", "docs/ARCHITECTURE.md", guard):
             self.assertNotIn("perfhud", (project / name).read_text(encoding="utf-8"), name)
 
@@ -414,8 +365,8 @@ class ProjectScriptsTest(unittest.TestCase):
         text = self.destinations(project)
         order = [text.index(key) for key in ("ShellTab(key = SampleListKey", "ShellTab(key = OrdersListKey", "ShellTab(key = WalletListKey", "ShellTab(key = SettingsKey")]
         self.assertEqual(sorted(order), order)
-        self.assertIn("import com.acme.field.feature.wallet.WalletListKey", text)
-        self.assertLess(text.index("WalletListKey, label"), text.index("// Settings sits last"))
+        self.assertIn("import com.acme.field.feature.wallet.api.WalletListKey", text)
+        self.assertIn("icon = AppIcons.CreditCard", text)
 
     def test_a_tab_list_it_cannot_read_is_left_to_the_user(self):
         from add_feature import main

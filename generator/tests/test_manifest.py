@@ -60,6 +60,15 @@ class RealManifestTest(unittest.TestCase):
         for target in REGISTRY.values():
             self.assertFalse(set(target.manifest.removed) & set(target.manifest.features))
 
+    def test_a_wrapped_description_reaches_the_catalogue_as_one_line(self):
+        for target in REGISTRY.values():
+            manifest = target.manifest
+            descriptions = [feature.description for feature in manifest.features.values()]
+            descriptions += [preset.description for preset in manifest.presets.values()]
+            for description in descriptions:
+                with self.subTest(target=target.key, description=description[:40]):
+                    self.assertEqual(" ".join(description.split()), description)
+
     def test_a_headline_says_something_the_title_does_not(self):
         for target in REGISTRY.values():
             for feature in target.manifest.features.values():

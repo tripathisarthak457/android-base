@@ -5,10 +5,12 @@
   "package_name": "com.example.lean",
   "architecture": "compact",
   "features": [
-    "catalog",
+    "ci",
+    "coil",
+    "deeplink",
+    "googlefonts",
     "leakcanary",
-    "network",
-    "sample"
+    "network"
   ],
   "feature_modules": [],
   "languages": []

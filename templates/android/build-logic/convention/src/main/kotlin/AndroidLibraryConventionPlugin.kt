@@ -1,49 +1,58 @@
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.base.app.buildlogic.configureAndroidCommon
-import com.base.app.buildlogic.libs
-import com.base.app.buildlogic.library
-import com.base.app.buildlogic.registerComposeGuards
-import com.base.app.buildlogic.verifyApiPurity
-import com.base.app.buildlogic.verifyModuleDependencies
+import com.base.app.buildlogic.android.configureAndroidCommon
+import com.base.app.buildlogic.android.configureTestDependencies
+import com.base.app.buildlogic.guard.verifyApiPurity
+import com.base.app.buildlogic.guard.verifyCodeRules
+import com.base.app.buildlogic.guard.verifyModuleDependencies
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 
-/** Every `:core:*`, `:data:*` and `:feature:*` module. */
+/**
+ * Every `:core:*`, `:data:*` and `:feature:*` module.
+ *
+ * Resource processing, unit tests, device tests and test fixtures are switched on only for modules
+ * that have the matching source directory: most modules have none of them, and each costs tasks on
+ * every build.
+ */
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.library")
 
+        val hasResources = file("src/main/res").exists()
+        val hasUnitTests = file("src/test").exists()
+        val hasDeviceTests = file("src/androidTest").exists()
+        // Fakes that other modules' tests share through `testFixtures(project(…))`.
+        val hasTestFixtures = file("src/testFixtures").exists()
+
         extensions.configure<LibraryExtension> {
             configureAndroidCommon(this)
-
-            // Library instrumentation tests only run on debug; building release would cost an extra
-            // R8 pass.
-            buildTypes.getByName("release").isMinifyEnabled = false
+            androidResources.enable = hasResources
+            testFixtures.enable = hasTestFixtures
         }
 
         extensions.configure<LibraryAndroidComponentsExtension> {
-            // Release compiles the same sources as debug, so its unit tests would only run them twice.
-            beforeVariants(selector().withBuildType("release")) { variant ->
-                variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
+            // Resource names share one namespace across the app, so each module prefixes its own
+            // with its name (`orders_title`), and lint's ResourceName holds it to that. The
+            // namespace is set by the module's build file, after this convention has run.
+            if (hasResources) {
+                finalizeDsl { library ->
+                    library.resourcePrefix = checkNotNull(library.namespace) { "$path sets no namespace" }
+                        .substringAfterLast('.') + "_"
+                }
+            }
+            beforeVariants { variant ->
+                // Release compiles the same sources as debug, so its unit tests would only run them twice.
+                variant.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = hasUnitTests && variant.buildType == "debug"
+                variant.deviceTests[DeviceTestBuilder.ANDROID_TEST_TYPE]?.enable = hasDeviceTests
             }
         }
 
-        dependencies {
-            add("implementation", libs.library("kotlinx-coroutines-core"))
-
-            add("testImplementation", libs.library("junit"))
-            add("testImplementation", libs.library("kotlinx-coroutines-test"))
-            add("testImplementation", libs.library("turbine"))
-            add("testImplementation", libs.library("mockk"))
-            add("androidTestImplementation", libs.library("androidx-test-ext-junit"))
-            add("androidTestImplementation", libs.library("androidx-test-runner"))
-        }
-
-        registerComposeGuards()
+        configureTestDependencies()
+        verifyCodeRules()
         verifyModuleDependencies()
         verifyApiPurity()
     }

@@ -30,26 +30,20 @@ android {
         generateLocaleConfig = true
     }
     // </opt:language>
-
-    buildTypes {
-        release {
-            // `getDefaultProguardFile` is only reachable from a build script, which is why this one
-            // block stays here rather than in the convention plugin.
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
-    }
 }
 
 // <opt:performance>
 // One profile, recorded on the dev flavour and merged into main so every flavour ships it. It is
 // generated only on request (`:app:generateBaselineProfile`), because that needs a connected phone.
+// Only dev has the benchmark and non-minified build types, so the other flavours' missing variants
+// are expected and not warned about.
 baselineProfile {
     mergeIntoMain = true
     saveInSrc = true
     automaticGenerationDuringBuild = false
+    warnings {
+        disabledVariants = false
+    }
 }
 // </opt:performance>
 
@@ -114,9 +108,11 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     // </opt:coil>
 
-    // Installs the checked-in baseline profiles on first launch for sideloaded and pre-Play installs;
-    // every preset ships those profiles, with or without the benchmark module.
+    // Hands the baseline profiles the app and its libraries ship to ART when the app is installed
+    // outside Play, so a sideloaded or CI build starts compiled rather than interpreted. Every preset
+    // ships the checked-in profiles, with or without the benchmark module.
     implementation(libs.androidx.profileinstaller)
+
     // <opt:performance>
     baselineProfile(project(":benchmark"))
     // </opt:performance>
@@ -141,11 +137,13 @@ dependencies {
     implementation(project(":core:database"))
     // </opt:database>
 
+    // Names each composable in a Perfetto trace, so a slow frame shows what composed in it. Only
+    // the dev flavour, where traces and benchmarks are taken; it costs nothing until one records.
+    devImplementation(libs.androidx.compose.runtime.tracing)
+
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)
     // </opt:leakcanary>
-
-    testImplementation(project(":core:testing"))
 }
 
 // <opt:licenses>

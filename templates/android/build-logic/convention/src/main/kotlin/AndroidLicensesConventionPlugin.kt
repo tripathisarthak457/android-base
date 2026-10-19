@@ -1,5 +1,5 @@
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
-import com.base.app.buildlogic.BundleLicensesTask
+import com.base.app.buildlogic.licenses.BundleLicensesTask
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project

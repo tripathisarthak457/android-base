@@ -58,12 +58,12 @@ class SchemaOneTest(unittest.TestCase):
         self.assertEqual(("existing_path",), parsed.ignored_fields)
 
     def test_legacy_feature_keys_map_across_with_a_note(self):
-        parsed = read({"app_name": "Acme", "package_name": "com.acme.x", "features": ["flags-remote", "ci", "network"]})
+        parsed = read({"app_name": "Acme", "package_name": "com.acme.x", "features": ["flags-remote", "staticanalysis", "network"]})
         self.assertIn("remoteconfig", parsed.spec.features)
         self.assertIn("firebase", parsed.spec.features)
-        self.assertNotIn("ci", parsed.spec.features)
+        self.assertNotIn("staticanalysis", parsed.spec.features)
         self.assertIn("'flags-remote' is now part of 'remoteconfig'.", parsed.notes)
-        self.assertIn("'ci' is no longer a feature and was left out.", parsed.notes)
+        self.assertIn("'staticanalysis' is no longer a feature and was left out.", parsed.notes)
 
     def test_schema_one_firebase_becomes_the_three_sdks_it_used_to_bundle(self):
         parsed = read({"app_name": "Acme", "package_name": "com.acme.x", "features": ["firebase", "room"]})
@@ -269,16 +269,11 @@ class ValidationCasesTest(unittest.TestCase):
 
 class FixtureTest(unittest.TestCase):
 
-    def test_the_v2_fixtures_read_and_modular_is_refused_for_now(self):
+    def test_the_v2_fixtures_read(self):
         for path in sorted((FIXTURES / "v2").glob("*.json")):
             raw = json.loads(path.read_text(encoding="utf-8"))
             with self.subTest(fixture=path.name):
-                if raw.get("architecture") == "modular":
-                    with self.assertRaises(SpecError) as caught:
-                        read(raw)
-                    self.assertEqual("modular is not available yet; generate compact for now.", str(caught.exception))
-                else:
-                    self.assertEqual(f"com.example.{path.stem.replace('-', '')}", read(raw).spec.package_name)
+                self.assertEqual(f"com.example.{path.stem.replace('-', '')}", read(raw).spec.package_name)
 
 
 if __name__ == "__main__":

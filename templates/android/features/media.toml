@@ -8,5 +8,9 @@ group = "Platform"
 default = false
 requires = []
 implied_only = false
-owns = ["core/media"]
+owns = [
+  "core/media",
+  ".agents/skills/camerax",
+  ".claude/skills/camerax",
+]
 legacy = []

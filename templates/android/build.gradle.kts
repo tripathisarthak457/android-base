@@ -16,6 +16,7 @@ plugins {
     // <opt:database>
     alias(libs.plugins.room3) apply false
     // </opt:database>
+    alias(libs.plugins.roborazzi) apply false
     // <opt:firebase>
     alias(libs.plugins.google.services) apply false
     // </opt:firebase>
@@ -33,7 +34,34 @@ plugins {
     // <opt:depsanalysis>
     alias(libs.plugins.dependency.analysis)
     // </opt:depsanalysis>
+    // <opt:formatting>
+    alias(libs.plugins.spotless)
+    // </opt:formatting>
 }
+
+// <opt:formatting>
+/*
+ * Formatting: `./gradlew spotlessApply` fixes it and `check` fails on what it would change. The
+ * rules are ktlint's Android Studio style, read from .editorconfig, so the IDE formats the same way.
+ */
+spotless {
+    // <generated:formatting-check>
+    // The template's own sources move to this style in one mechanical commit once the UI work has
+    // merged; until then its check leaves formatting out. Generated projects always enforce it.
+    isEnforceCheck = false
+    // </generated:formatting-check>
+    kotlin {
+        target("**/src/**/*.kt")
+        targetExclude("**/build/**")
+        ktlint(libs.versions.ktlint.get())
+    }
+    kotlinGradle {
+        target("*.gradle.kts", "*/**/*.gradle.kts")
+        targetExclude("**/build/**")
+        ktlint(libs.versions.ktlint.get())
+    }
+}
+// </opt:formatting>
 
 // <opt:coverage>
 /*
@@ -92,9 +120,10 @@ kover {
 
 // <opt:depsanalysis>
 /*
- * What each module actually uses, against what it declares.
- */
-/*
+ * What each module actually uses, against what it declares: `./gradlew buildHealth` writes the
+ * report to build/reports/dependency-analysis. It reports rather than fails: the advice is for a
+ * person to weigh, and an unused declaration is not worth stopping a build over.
+ *
  * Applied to every module, not only the root. The root plugin aggregates; it does not analyse.
  */
 subprojects {
@@ -104,12 +133,9 @@ subprojects {
 dependencyAnalysis {
     issues {
         all {
-            onAny { severity("fail") }
-            // Two exceptions the plugin cannot see the reason for: annotation processors and
-            // platforms have no classes to detect, and the design system exposes Compose as `api`
-            // on purpose.
+            onAny { severity("warn") }
+            // Annotation processors have no classes for the plugin to detect in the module's code.
             onUnusedAnnotationProcessors { severity("ignore") }
-            onUsedTransitiveDependencies { severity("warn") }
         }
     }
 }

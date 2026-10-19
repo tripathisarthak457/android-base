@@ -5,6 +5,7 @@ Add a feature module to an Android project that already exists.
     py add_feature.py orders                      # in the current project
     py add_feature.py orders profile --tab         # two modules, both as bottom-nav tabs
     py add_feature.py orders --project ../MyApp
+    py add_feature.py --domain pricing            # a pure-Kotlin :domain:pricing, modular projects only
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ import re
 import sys
 from collections.abc import Callable
 from pathlib import Path
+from string import Template
 
 from genkit import targets
 from genkit.core import prompts, translations
@@ -29,7 +31,12 @@ def main(argv: list[str] | None = None) -> int:
         prog="add_feature",
         description="Scaffold a data + feature module pair into an existing project.",
     )
-    parser.add_argument("names", nargs="+", help="Module names, lower_snake_case.")
+    parser.add_argument("names", nargs="*", help="Module names, lower_snake_case.")
+    parser.add_argument(
+        "--domain",
+        metavar="NAME",
+        help="Add a pure-Kotlin :domain:NAME module instead, for rules several features share. Modular projects only.",
+    )
     parser.add_argument(
         "--project",
         type=Path,
@@ -44,6 +51,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     project = args.project.expanduser().resolve()
+    if args.domain is not None:
+        if args.names or args.tab:
+            parser.error("--domain adds one domain module and takes no feature names or --tab.")
+        return add_domain(project, args.domain)
+    if not args.names:
+        parser.error("name at least one module, or use --domain.")
 
     try:
         names = tuple(normalise(name) for name in args.names)
@@ -66,6 +79,43 @@ def main(argv: list[str] | None = None) -> int:
         register_tabs(project, spec.package_name, names)
 
     report(names, spec.languages, tabs_added=args.tab)
+    return 0
+
+
+def add_domain(project: Path, raw_name: str) -> int:
+    """Writes `domain/<name>`, which only the modular shape has a place for (MASTER-PLAN A2.4)."""
+    try:
+        name = normalise(raw_name)
+        package_name = find_package_name(project)
+    except SpecError as error:
+        print(prompts.red(str(error)))
+        return 1
+    if not any(project.glob("feature/*/impl/build.gradle.kts")) and not any(project.glob("data/*/impl/build.gradle.kts")):
+        print(prompts.red(
+            "Domain modules belong to modular projects, where features see data only through :api modules. "
+            "In a compact project, put shared rules in the data module that owns them."
+        ))
+        return 1
+    root = project / "domain" / name
+    if root.exists():
+        print(prompts.red(f"Already present: domain/{name}."))
+        return 1
+
+    snippet = (Path(scaffold.__file__).parent / "snippets" / "domain.build.gradle.kts").read_text(encoding="utf-8")
+    (root / "src/main/kotlin" / package_name.replace(".", "/") / "domain" / name).mkdir(parents=True)
+    write_text(root / "build.gradle.kts", Template(snippet).substitute(package=package_name))
+
+    settings = project / "settings.gradle.kts"
+    text = settings.read_text(encoding="utf-8")
+    include = f'include(":domain:{name}")\n'
+    anchor = 'include(":domain:' if 'include(":domain:' in text else 'include(":data:'
+    write_text(settings, insert_after_last(text, anchor, include))
+
+    print()
+    print(prompts.green(prompts.bold("  Done.")))
+    print(f"    :domain:{name}")
+    print(prompts.dim("    Add the data :api modules it reads to its build file, and depend on it from the features that use it."))
+    print()
     return 0
 
 
@@ -173,22 +223,21 @@ def insert_into_dependencies_block(text: str, addition: str) -> str:
 
 
 _MODULE_TAB = re.compile(r"^\s*ShellTab\(key = \w+ListKey, label = \w+R\.string\.")
-_TRAILING_TAB = re.compile(r"^\s*ShellTab\(key = (ProfileKey|SettingsKey),")
+_HOME_TAB = re.compile(r"^\s*ShellTab\(key = SampleListKey,")
+_ICON = re.compile(r"\bAppIcons\.(\w+)")
 
 
 def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> None:
     """
     Adds each module to `AppDestinations.tabs` where generation would have put it: after the
-    module tabs already there, before profile and settings. The first tab is the start
-    destination, so a new tab never goes in front.
+    module tabs already there, or after Home. The first tab is the start destination, so a new tab
+    never goes in front of it, and each gets a glyph no other tab uses.
     """
     path = project / "app/src/main/kotlin" / package_name.replace(".", "/") / "ui/AppDestinations.kt"
     if not path.is_file():
         print(prompts.yellow(f"  ! No AppDestinations.kt at {path}; add the tabs by hand."))
         return
-
     text = path.read_text(encoding="utf-8")
-
     imports = "".join(
         line
         for name in names
@@ -196,7 +245,6 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
         for line in tabs.shell_tab_imports(package_name, name)
     )
     text = insert_after_last(text, f"import {package_name}.", imports)
-
     lines = text.splitlines(keepends=True)
     opening = next((index for index, line in enumerate(lines) if "val tabs: List<ShellTab> = listOf(" in line), None)
     closing = None
@@ -206,16 +254,15 @@ def register_tabs(project: Path, package_name: str, names: tuple[str, ...]) -> N
         print(prompts.yellow(f"  ! No tab list in {path}; add the tabs by hand."))
         write_text(path, text)
         return
-    position = closing
-    for index in range(opening + 1, closing):
-        if _MODULE_TAB.match(lines[index]):
-            position = index + 1
-        elif _TRAILING_TAB.match(lines[index]) and position == closing:
-            position = index
-            # A comment above the trailing tab is about that tab, so the new one goes above both.
-            while position > opening + 1 and lines[position - 1].strip().startswith("//"):
-                position -= 1
-    lines.insert(position, "".join(tabs.shell_tab(name) for name in names))
+
+    entries = [index for index in range(opening + 1, closing) if lines[index].strip().startswith("ShellTab(")]
+    modules = [index for index in entries if _MODULE_TAB.match(lines[index])]
+    home = [index for index in entries if _HOME_TAB.match(lines[index])]
+    anchor = (modules or home or entries[:1] or [opening])[-1]
+
+    taken = set(_ICON.findall("".join(lines[opening:closing])))
+    chosen = tabs.icons(names, taken, tabs.available_glyphs(project))
+    lines.insert(anchor + 1, "".join(tabs.shell_tab(name, *chosen[name]) for name in names))
     write_text(path, "".join(lines))
 
 

@@ -492,7 +492,7 @@ gate: every request is attempted, and a failure is classified from what actually
 
 `:core:designsystem` depends on `androidx.compose.foundation` and `androidx.compose.ui`. The
 project has no `material` or `material3` artifact, and importing one fails the build (see
-`verifyComposeUsage`).
+`verifyCodeRules`).
 
 The module therefore supplies what Material would otherwise provide: the indication every
 clickable draws (`AppIndication`), the inherited content colour and text style, the text selection
@@ -609,13 +609,11 @@ These tasks run as part of `./gradlew build` and fail it:
 | Task | Checks |
 |---|---|
 | `verifyModuleDependencies` | The module tier rules above. |
-| `verifyComposeUsage` | No Material import. Every module that declares a `@Composable` applies the Compose compiler. No prose literal passed to `text =`, `title =`, `label =` and similar parameters in feature code. |
+| `verifyCodeRules` | The forbidden patterns, each rule in `build-logic/…/guard/`: no Material or ripple, no raw tweens, colours or sizes in screens, keyed lazy rows, no `Dispatchers.IO` in a class, no orientation or screen-size branching, every `@Composable` module on the Compose compiler, no prose literal in a copy parameter, and the rest. A justified exception is `// allow(<rule>): <reason>` on the line above. |
 <!-- <opt:devtools> -->
 | `verify<Variant>CarriesNoDevTooling` | A release-like build outside the dev flavour (any build type but debug: stagingRelease, prodRelease, playstoreRelease and, with baseline profiles, their benchmark builds) depends on no dev tooling module, directly or through another module. Also runs before that build. |
 <!-- </opt:devtools> -->
-<!-- <opt:composemetrics> -->
-| `checkComposeStability` | No composable in the design system or `:core:ui` becomes unskippable compared with `config/compose-stability-baseline.txt`. After an intended change, run `recordComposeStability` to update the baseline. |
-<!-- </opt:composemetrics> -->
+| `checkComposeStability` | No composable parameter in the design system, `:core:ui` or `:core:navigation` is compared by identity beyond `config/compose-stability-baseline.txt`, where each accepted entry carries its reason. |
 
 ### Flavours are only on the application modules
 

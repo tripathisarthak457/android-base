@@ -37,13 +37,6 @@ import com.base.app.core.ui.asString
 import com.base.app.data.auth.api.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.drop
-// <opt:lottie>
-import androidx.compose.foundation.layout.size
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.unit.dp
-import com.base.app.core.ui.AppLottie
-import com.base.app.core.ui.LottieSource
-// </opt:lottie>
 import javax.inject.Inject
 
 @Immutable
@@ -166,17 +159,6 @@ internal fun PasswordResetScreen(
         },
     ) {
         if (state.sent) {
-            // <opt:lottie>
-            AppLottie(
-                source = LottieSource.Success,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(SENT_ANIMATION_SIZE)
-                    .align(Alignment.CenterHorizontally),
-                iterations = 1,
-                tint = AppTheme.colors.success.content,
-            )
-            // </opt:lottie>
             AppBanner(
                 text = stringResource(R.string.auth_reset_sent),
                 tone = AppTone.Success,
@@ -226,7 +208,3 @@ private fun PasswordResetPreview() {
         )
     }
 }
-// <opt:lottie>
-
-private val SENT_ANIMATION_SIZE = 96.dp
-// </opt:lottie>

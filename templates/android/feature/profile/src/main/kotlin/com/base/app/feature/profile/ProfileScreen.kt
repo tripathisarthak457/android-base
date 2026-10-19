@@ -3,7 +3,6 @@ package com.base.app.feature.profile
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,6 +34,7 @@ import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.AppNetworkImage
 // </opt:coil>
 // <opt:media>
+import androidx.compose.foundation.layout.Row
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.media.picker.rememberMediaPicker

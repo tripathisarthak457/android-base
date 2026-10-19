@@ -1,0 +1,24 @@
+{
+  "schema": 2,
+  "platform": "android",
+  "app_name": "Modules Compact",
+  "package_name": "com.example.modulescompact",
+  "architecture": "compact",
+  "features": [
+    "ci",
+    "coil",
+    "deeplink",
+    "googlefonts",
+    "leakcanary",
+    "network"
+  ],
+  "feature_modules": [
+    "orders",
+    "trips",
+    "wallet"
+  ],
+  "languages": [
+    "de",
+    "hi"
+  ]
+}

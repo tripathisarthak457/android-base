@@ -27,7 +27,8 @@ type AppPreviewProps = {
  * opaque sits between the bar and the bottom edge, and a fade softens the content under the bar.
  */
 export const AppPreview = memo(function AppPreview({ theme, font, tabs, screen, options, live = false, onSelectTab }: AppPreviewProps) {
-  const selected = tabs.findIndex((tab) => tab.key === screen.key);
+  // A tab listed under More keeps More selected, as the shell does.
+  const selected = tabs.findIndex((tab) => tab.key === screen.key || tab.listed?.some((listed) => listed.key === screen.key));
   const showBar = screen.screen !== "signin" && tabs.length > 0;
   const bar = theme.style.bar;
   const background = theme.colour("background");

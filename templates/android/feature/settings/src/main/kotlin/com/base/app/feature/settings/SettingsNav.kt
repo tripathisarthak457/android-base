@@ -7,7 +7,6 @@ import com.base.app.core.navigation.navKeys
 // <opt:licenses>
 import com.base.app.feature.settings.api.LicensesKey
 // </opt:licenses>
-import com.base.app.feature.settings.api.SettingsAppInfo
 import com.base.app.feature.settings.api.SettingsKey
 import dagger.Module
 import dagger.Provides
@@ -16,19 +15,15 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
-/** The version string is supplied by whoever registers this graph. */
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 internal object SettingsNavModule {
 
     @Provides
     @IntoSet
-    fun settingsNavGraph(
-        navigator: AppNavigator,
-        appInfo: SettingsAppInfo,
-    ): NavGraphEntry = navGraph {
+    fun settingsNavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {
         entry<SettingsKey> {
-            SettingsRoute(navigator = navigator, appVersion = appInfo.versionName)
+            SettingsRoute(navigator = navigator)
         }
         // <opt:licenses>
         entry<LicensesKey> {

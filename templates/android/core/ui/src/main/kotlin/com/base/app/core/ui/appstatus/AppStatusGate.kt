@@ -51,18 +51,18 @@ fun AppStatusGate(status: AppStatus, onRetry: () -> Unit, modifier: Modifier = M
     ) {
         when (status) {
             AppStatus.UpdateRequired -> AppStateView(
-                title = stringResource(R.string.appstatus_update_title),
-                message = stringResource(R.string.appstatus_update_message),
+                title = stringResource(R.string.ui_appstatus_update_title),
+                message = stringResource(R.string.ui_appstatus_update_message),
                 icon = AppIcons.Download,
-                actionLabel = stringResource(R.string.appstatus_update_action),
+                actionLabel = stringResource(R.string.ui_appstatus_update_action),
                 onAction = { context.openStoreListing() },
             )
 
             AppStatus.Maintenance -> AppStateView(
-                title = stringResource(R.string.appstatus_maintenance_title),
-                message = stringResource(R.string.appstatus_maintenance_message),
+                title = stringResource(R.string.ui_appstatus_maintenance_title),
+                message = stringResource(R.string.ui_appstatus_maintenance_message),
                 icon = AppIcons.Clock,
-                actionLabel = stringResource(R.string.appstatus_maintenance_action),
+                actionLabel = stringResource(R.string.ui_appstatus_maintenance_action),
                 onAction = onRetry,
             )
 

@@ -7,6 +7,5 @@
   "search_start_message": "टाइप करते ही नतीजे दिखते हैं। आपकी खोजें यहां सेव रहती हैं।",
   "search_no_results_title": "कोई नतीजा नहीं",
   "search_no_results_message": "“%1$s” से कुछ भी मेल नहीं खाता। कम या अलग शब्द आज़माएं।",
-  "search_retry": "फिर से कोशिश करें",
-  "search_remove_recent": "%1$s हटाएं"
+  "search_retry": "फिर से कोशिश करें"
 }

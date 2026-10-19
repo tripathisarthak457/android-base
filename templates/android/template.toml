@@ -15,7 +15,7 @@ tokens = [
 
 [regions]                                   # every point and region the target fills
 required = [
-  "app-config", "app-version",                                                   # AppConfig.kt
+  "app-config", "app-version", "locale-filters",                                 # AppConfig.kt
   "api-url-dev", "api-url-staging", "api-url-prod", "api-url-playstore",
   "socket-url-dev", "socket-url-staging", "socket-url-prod", "socket-url-playstore",
   "app-name", "deeplink-strings", "launcher-background", "supported-locales",
@@ -25,12 +25,15 @@ required = [
   "shell-tabs", "start-destination", "start-destination-import",
   "readme-title", "readme-styles", "readme-theme-call", "readme-version", "readme-modules",
   "readme-signing-generated", "readme-signing-manual", "readme-features",
+  "formatting-check",                                                             # build.gradle.kts
 ]
 
 [files]
 template_only = ["catalog/src/test/screenshots", "template.toml", "presets.toml", "removed.toml", "features"]
 binary_suffixes = [".jar", ".png", ".jpg", ".jpeg", ".webp", ".ttf", ".otf", ".jks", ".keystore", ".ico"]
 executable = ["gradlew", "tools/adaptive/*.sh", "tools/perf/*.sh"]
+# Upstream files the project vendors, copied byte for byte: never renamed, never marker-parsed.
+verbatim = [".agents/skills/**"]
 
 [groups]                                    # display order of catalogue groups
 order = ["Networking and data", "Sign-in and account", "Screens", "Platform", "Observability", "Design", "Build and quality"]

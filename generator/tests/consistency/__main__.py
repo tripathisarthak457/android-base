@@ -25,7 +25,6 @@ from pathlib import Path
 
 from genkit.core import translations
 from genkit.targets import get
-from genkit.targets.android import modes
 
 from .worker import PACKAGE, reference, run_one
 
@@ -63,7 +62,7 @@ def combinations(quick: bool) -> dict[str, dict]:
             "languages": languages,
         }
 
-    architectures = ["compact", "modular"] if modes.MODULAR_AVAILABLE else ["compact"]
+    architectures = ["compact", "modular"]
     runs = {
         f"preset-{preset}-{architecture}": spec(manifest.preset_features(preset), architecture=architecture)
         for preset in manifest.presets

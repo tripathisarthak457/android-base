@@ -95,6 +95,8 @@ class TemplateManifest:
         self.template_only: tuple[str, ...] = data["template_only"]
         self.binary_suffixes: frozenset[str] = data["binary_suffixes"]
         self.executable: tuple[str, ...] = data["executable"]
+        #: Paths copied byte for byte: no renaming, no markers. Upstream files the project vendors.
+        self.verbatim: tuple[str, ...] = data["verbatim"]
         self.syntax: dict[str, str] = data["syntax"]
         self.groups: tuple[str, ...] = data["groups"]
         self.features: dict[str, Feature] = data["features"]
@@ -118,7 +120,7 @@ class TemplateManifest:
         identity = tuple(_identity(source, entry) for entry in document["identity"].get("tokens", []))
         files = document["files"]
         _expect_keys(
-            source, "[files]", files, set(), {"template_only", "binary_suffixes", "executable", "syntax"}
+            source, "[files]", files, set(), {"template_only", "binary_suffixes", "executable", "verbatim", "syntax"}
         )
         groups = tuple(document["groups"].get("order", []))
         if not groups:
@@ -138,6 +140,7 @@ class TemplateManifest:
                 "template_only": tuple(files.get("template_only", [])),
                 "binary_suffixes": frozenset(suffix.lower() for suffix in files.get("binary_suffixes", [])),
                 "executable": tuple(files.get("executable", [])),
+                "verbatim": tuple(files.get("verbatim", [])),
                 "syntax": dict(files.get("syntax", {})),
                 "groups": groups,
                 "features": features,
@@ -355,7 +358,7 @@ def _load_presets(path: Path, features: dict[str, Feature]) -> tuple[dict[str, P
         for feature in listed:
             if feature not in features:
                 raise TemplateError(path, None, f"[{key}] lists unknown feature '{feature}'")
-        presets[key] = Preset(key, table["title"], table["description"].strip(), listed, everything)
+        presets[key] = Preset(key, table["title"], " ".join(table["description"].split()), listed, everything)
     if default not in presets:
         raise TemplateError(path, None, f"default = '{default}' is not a preset")
     return presets, default

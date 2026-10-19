@@ -15,7 +15,7 @@ owns = [
   "core/ui/src/main/kotlin/{pkg_path}/core/ui/tooling",
   "app/src/main/kotlin/{pkg_path}/di/AppEnvironmentModule.kt",
   "app/src/main/kotlin/{pkg_path}/ui/ReportCurrentScreen.kt",
-  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/DevToolingGuard.kt",
-  "build-logic/convention/src/test/kotlin/{pkg_path}/buildlogic/DevToolingGuardTest.kt",
+  "build-logic/convention/src/main/kotlin/{pkg_path}/buildlogic/guard/DevToolingGuard.kt",
+  "build-logic/convention/src/test/kotlin/{pkg_path}/buildlogic/guard/DevToolingGuardTest.kt",
 ]
 legacy = []

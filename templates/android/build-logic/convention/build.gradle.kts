@@ -21,23 +21,26 @@ kotlin {
 }
 
 dependencies {
+    // Only plugins whose classes the conventions name. The rest are applied by id, from the
+    // classpath the root build's `apply false` entries give every module.
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
-    compileOnly(libs.kotlin.serialization.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
-    compileOnly(libs.hilt.gradlePlugin)
-    // <opt:firebase>
-    compileOnly(libs.google.services.gradlePlugin)
-    // </opt:firebase>
     // <opt:crashlytics>
     compileOnly(libs.firebase.crashlytics.gradlePlugin)
     // </opt:crashlytics>
     // <opt:database>
     compileOnly(libs.room3.gradlePlugin)
     // </opt:database>
+    compileOnly(libs.roborazzi.gradlePlugin)
 
     testImplementation(libs.junit)
+}
+
+tasks.validatePlugins {
+    enableStricterValidation = true
+    failOnWarning = true
 }
 
 gradlePlugin {
@@ -61,6 +64,10 @@ gradlePlugin {
         register("androidHilt") {
             id = "com.base.app.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
+        }
+        register("androidScreenshots") {
+            id = "com.base.app.android.screenshots"
+            implementationClass = "AndroidScreenshotsConventionPlugin"
         }
         register("androidFeature") {
             id = "com.base.app.android.feature"

@@ -43,7 +43,7 @@ Do not report success on a build you did not run.
 
 These fail the build. Working around them is never the fix.
 
-- **No Material.** Any `androidx.compose.material*` import fails `verifyComposeUsage`. Build from
+- **No Material.** Any `androidx.compose.material*` import fails `verifyCodeRules`. Build from
   `:core:designsystem`, and from `foundation` and `ui` when it lacks something.
 - **Layering.** `feature → feature` and `data → data` fail `verifyModuleDependencies`. When two
   features need the same thing, it belongs in `core/` or in a `data/` module both depend on.
@@ -262,16 +262,47 @@ This is what separates a good agent change from a typical one. Follow it exactly
 | Call an API | a `data/` module, through `NetworkClient` |
 | Store something | `core/database` for the app's data, `core/datastore` for preferences: a file per concern, cleared on sign-out through `SessionScopedStore` when it belongs to the person |
 
-## 8. Before you say it is done
+## 8. Google's Android skills
+
+`.agents/skills/` holds Google's official Android skills (Apache-2.0, unmodified; `.agents/skills/README.md` says
+which version). Before work in one of these areas, read that skill's `SKILL.md` and follow it. Where it disagrees
+with this file, this file wins; the known differences are in the last column.
+
+| Skill | Read it before you… | This project differs |
+|---|---|---|
+| `navigation-3` | add a destination, scene, deep link or result | register in `navigation/<Feature>Navigation.kt` with `navGraph { entry<K>(pane = …) }`; never call `NavDisplay`, a scene strategy or transition metadata from a feature |
+| `navigation-event` | handle Back anywhere outside a screen pop | `NavigationBackHandler` only, one state per handler, overlays at overlay priority; never `BackHandler` (the build fails) |
+| `adaptive` | build or change any screen | no `NavigationSuiteScaffold` or Material components: the shell's bar, rail and sidebar; panes through `NavPane`; `LazyVerticalGrid`, not `Grid`/`FlexBox` (experimental in Compose 1.12); `AppTheme.containerClass`, `posture` and `input`, not `MediaQuery`; Roborazzi, not `com.android.compose.screenshot`; `AppLargeTitleTopBar`, not M3 scroll behaviours |
+| `edge-to-edge` | touch insets, the keyboard or system bars | pad scrolling content with `chromeContentPadding()` as `contentPadding`, never on the list's parent |
+| `testing-setup` | add tests or test infrastructure | fakes in `testFixtures`; screenshots with Roborazzi at the sizes in `docs/ADAPTIVE.md`; never re-record goldens to make a test pass |
+| `android-profiler` | investigate jank, startup or memory | release builds only, through `tools/perf/perf.sh`; its `trace_processor` script downloads Google's binary on first run |
+| `r8-analyzer` | change keep rules or chase app size | upstream ships no `scripts/`: run `./gradlew :app:analyzeProdReleaseR8Config` (one task per variant; the report is `app/build/reports/r8/`), then follow its manual path |
+| `android-intent-security`, `android-permissions-security` | touch the manifest, deep links, notifications or permissions | links land in `LinkActivity` and become typed keys in a `DeepLinkRoute` |
+| `agp-9-upgrade` | bump AGP or Gradle | the project is already on AGP 9 with built-in Kotlin |
+| `jetpack-compose-performance` | change a composable, a modifier chain or a lazy list, and again before you call that change done: run its audit over every composable you touched | read the category's `references/*.md` before you change what it flags; Compose is 1.12, so `derivedStateOf`, not `computedStateOf`; ViewModel state stays on `collectAsStateWithLifecycle()`, because `MviViewModel.observe` runs its flows only while a screen collects; `List`, `Set` and `Map` are in `config/compose-stability.conf`, so never `ImmutableList`, and never `@Immutable` on a model that carries a large list into a lazy layout |
+| `android-cli` | look up an API (`android docs`), run the app, inspect a screen (`android layout`, `android screen`) | never run its install line, which pipes a downloaded script into a shell: if `android` is not on the PATH, ask the person to install it; measure performance on release builds, never through it |
+<!-- <opt:auth> -->
+| `restore-credentials`, `verified-email` | change sign-in or sign-up | flows live in `:feature:auth`, credentials in `:data:auth` |
+<!-- </opt:auth> -->
+<!-- <opt:media> -->
+| `camerax` | add capture inside the app (a viewfinder, `ImageCapture`, `VideoCapture`) | `:core:media` hands photos and video to the system camera (`TakePicture`, `CaptureVideo`) and needs no CameraX; add it only for in-app capture |
+<!-- </opt:media> -->
+
+Not vendored on purpose: `styles` (experimental; the design system stays on stable foundation APIs). Before a Play
+submission, add Google's `play-policy-insights` audit with `android skills` and run it.
+
+## 9. Before you say it is done
 
 1. `./gradlew build` is green, or you have said exactly what fails and why.
 2. Every new screen has loading, empty, error and offline states, and works in dark theme.
-3. Every new string is in `strings.xml`; every new colour, size and duration is a token.
-4. New logic has a test beside the existing ones; no test was deleted or weakened.
-5. The diff contains only what the task needed, with comments that explain decisions, not the
+3. A change to Compose UI has been through the `jetpack-compose-performance` audit (§8), and its findings are
+   fixed.
+4. Every new string is in `strings.xml`; every new colour, size and duration is a token.
+5. New logic has a test beside the existing ones; no test was deleted or weakened.
+6. The diff contains only what the task needed, with comments that explain decisions, not the
    change.
 
-## 9. Never
+## 10. Never
 
 - Commit `keystore.properties`, `keys/`, `local.properties` or a real `google-services.json`.
 - Print tokens, passwords or personal data to the log.

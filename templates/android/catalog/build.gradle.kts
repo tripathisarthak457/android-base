@@ -6,6 +6,7 @@ plugins {
     id("com.base.app.android.application")
     id("com.base.app.android.compose")
     alias(libs.plugins.kotlin.serialization)
+    id("com.base.app.android.screenshots")
 }
 
 android {

@@ -1,503 +1,221 @@
-"""Scaffolding for the feature modules a user names at generation time."""
+"""
+The feature modules a spec names, each a `:feature:<name>` with a list and a detail screen over its
+own `:data:<name>`, in the shape of the template's sample (STANDARDS-PLAN 2.1). The Kotlin lives in
+`snippets/scaffold/` with `__TOKEN__` placeholders, so it reads as the code it becomes.
+
+A module's name sets the length of most lines, and ktlint (the `formatting` feature) wants a
+signature or call on one line exactly when it fits in 100 columns. So where the layout depends on
+the name, a snippet lists ktlint's layouts from the most compact, between `__FIT__`, `__ELSE__` and
+`__END_FIT__` lines, and the first one whose lines all fit is kept.
+"""
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from ...core.copy import write_text
 from ...core.spec import Spec, module_title, pascal_case
+from . import imports
+
+SNIPPETS = Path(__file__).parent / "snippets" / "scaffold"
+TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "android"
+
+#: The module scaffolded when nothing else gives the shell a tab: the shell needs at least one.
+HOME = "home"
+
+#: The tab sources the template has of its own.
+TEMPLATE_TABS = ("sample", "paging", "search", "profile", "settings")
+
+#: The design system's multi-size preview annotation, once the template has it.
+_SCREEN_PREVIEWS = TEMPLATE_DIR / "core/designsystem/src/main/kotlin/com/base/app/core/designsystem/preview/AppScreenPreviews.kt"
+
+_BASELINE = "config/code-rules-baseline.txt"
+
+#: ktlint's `max_line_length` in the template's `.editorconfig`.
+MAX_LINE_LENGTH = 100
+
+#: Snippet → path inside the module's package directory, for the feature module.
+_FEATURE_SOURCES = {
+    "Keys.kt": "api/{P}Keys.kt",
+    "Navigation.kt": "navigation/{P}Navigation.kt",
+    "ListContract.kt": "list/{P}ListContract.kt",
+    "ListViewModel.kt": "list/{P}ListViewModel.kt",
+    "ListRoute.kt": "list/{P}ListRoute.kt",
+    "ListScreen.kt": "list/{P}ListScreen.kt",
+    "DetailContract.kt": "detail/{P}DetailContract.kt",
+    "DetailViewModel.kt": "detail/{P}DetailViewModel.kt",
+    "DetailRoute.kt": "detail/{P}DetailRoute.kt",
+    "DetailScreen.kt": "detail/{P}DetailScreen.kt",
+}
+_FEATURE_TESTS = {
+    "ListViewModelTest.kt": "list/{P}ListViewModelTest.kt",
+    "RecompositionTest.kt": "{P}RecompositionTest.kt",
+}
+_SCREENS = ("list/{P}ListScreen.kt", "detail/{P}DetailScreen.kt")
+
+
+def modules(spec: Spec) -> tuple[str, ...]:
+    """The modules to scaffold: the spec's, plus `home` when no feature or module would give a tab."""
+    if spec.feature_modules or any(spec.has(feature) for feature in TEMPLATE_TABS):
+        return spec.feature_modules
+    return (HOME,)
+
+
+def notes(spec: Spec) -> list[str]:
+    if modules(spec) == (HOME,) and HOME not in spec.feature_modules:
+        return [
+            "No feature gives the app a tab, so a 'home' module was scaffolded under feature/home and "
+            "data/home. Its repository has no source yet: give it one, or rename the module."
+        ]
+    return []
 
 
 def regions(spec: Spec) -> dict[str, list[str] | None]:
     """Each module's settings includes and its dependency from :app."""
+    names = modules(spec)
     return {
-        "data-modules": [f'include(":data:{name}")\n' for name in spec.feature_modules],
-        "feature-modules": [f'include(":feature:{name}")\n' for name in spec.feature_modules],
-        "app-feature-dependencies": [
-            f'    implementation(project(":feature:{name}"))\n' for name in spec.feature_modules
-        ],
+        "data-modules": [f'include(":data:{name}")\n' for name in names],
+        "feature-modules": [f'include(":feature:{name}")\n' for name in names],
+        "app-feature-dependencies": [f'    implementation(project(":feature:{name}"))\n' for name in names],
     }
 
 
-def write_feature_modules(destination: Path, spec: Spec) -> None:
-    for name in spec.feature_modules:
-        _write_data_module(destination, spec, name)
-        _write_feature_module(destination, spec, name)
+def write_feature_modules(project: Path, spec: Spec) -> None:
+    for name in modules(spec):
+        tokens = _tokens(spec, name)
+        _write_data_module(project, spec, name, tokens)
+        _write_feature_module(project, spec, name, tokens)
 
 
-def _write_data_module(destination: Path, spec: Spec, name: str) -> None:
-    pkg = spec.package_name
-    root = destination / "data" / name
+def _tokens(spec: Spec, name: str) -> dict[str, str]:
+    pascal = pascal_case(name)
+    title = module_title(name)
+    return {
+        "__PKG__": spec.package_name,
+        "__NAME__": name,
+        "__P__": pascal,
+        "__CAMEL__": pascal[0].lower() + pascal[1:],
+        "__TITLE__": title,
+        "__TITLE_LOWER__": title.lower(),
+    }
+
+
+def _write_data_module(project: Path, spec: Spec, name: str, tokens: dict[str, str]) -> None:
+    root = project / "data" / name
     source = root / "src/main/kotlin" / spec.package_path / "data" / name
+    tests = root / "src/test/kotlin" / spec.package_path / "data" / name
+    fixtures = root / "src/testFixtures/kotlin" / spec.package_path / "data" / name
+    remote = spec.has("network") and name != HOME
 
-    _write(root / "build.gradle.kts", f"""plugins {{
-    id("{pkg}.android.data")
-}}
-
-android {{
-    namespace = "{pkg}.data.{name}"
-}}
-""")
-
-    class_name = pascal_case(name)
-    if spec.has("network"):
-        repository_impl = f"""@Singleton
-class Default{class_name}Repository @Inject constructor(
-    private val networkClient: NetworkClient,
-) : {class_name}Repository {{
-
-    override suspend fun items(): AppResult<List<{class_name}Item>> =
-        networkClient.get<List<{class_name}Item>>(path = ITEMS_PATH)
-
-    private companion object {{
-        const val ITEMS_PATH = "{name}"
-    }}
-}}"""
-        imports = f"""import {pkg}.core.common.result.AppResult
-import {pkg}.core.network.client.NetworkClient
-import {pkg}.core.network.client.get
-import kotlinx.serialization.Serializable
-import javax.inject.Inject
-import javax.inject.Singleton"""
-        # The item is the wire format until a DTO is added, and the client decodes with
-        # kotlinx.serialization, which fails every response for a class without a serializer.
-        wire_format = "@Serializable\n"
-    else:
-        repository_impl = f"""@Singleton
-class Default{class_name}Repository @Inject constructor() : {class_name}Repository {{
-
-    override suspend fun items(): AppResult<List<{class_name}Item>> =
-        AppResult.Success(emptyList())
-}}"""
-        imports = f"""import {pkg}.core.common.result.AppResult
-import javax.inject.Inject
-import javax.inject.Singleton"""
-        wire_format = ""
-
-    _write(source / f"{class_name}Repository.kt", f"""package {pkg}.data.{name}
-
-{imports}
-
-/** The domain model for {module_title(name)}. Add a DTO and a mapper once the wire format differs. */
-{wire_format}data class {class_name}Item(
-    val id: Int,
-    val title: String,
-)
-
-/** Everything the app can ask about {module_title(name)}. An interface, so tests can use a fake. */
-interface {class_name}Repository {{
-
-    suspend fun items(): AppResult<List<{class_name}Item>>
-}}
-
-{repository_impl}
-""")
-
-    _write(source / "di" / f"{class_name}DataModule.kt", f"""package {pkg}.data.{name}.di
-
-import {pkg}.data.{name}.Default{class_name}Repository
-import {pkg}.data.{name}.{class_name}Repository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-
-@Module
-@InstallIn(SingletonComponent::class)
-interface {class_name}DataModule {{
-
-    @Binds
-    fun bind{class_name}Repository(impl: Default{class_name}Repository): {class_name}Repository
-}}
-""")
+    _render("data/build.remote.gradle.kts" if remote else "data/build.local.gradle.kts", root / "build.gradle.kts", tokens)
+    _render("data/Item.kt", source / "api" / f"{tokens['__P__']}Item.kt", tokens)
+    _render("data/Repository.kt", source / "api" / f"{tokens['__P__']}Repository.kt", tokens)
+    _render(
+        "data/DefaultRepository.remote.kt" if remote else "data/DefaultRepository.local.kt",
+        source / f"Default{tokens['__P__']}Repository.kt",
+        tokens,
+    )
+    _render("data/DataModule.kt", source / "di" / f"{tokens['__P__']}DataModule.kt", tokens)
+    # Beside the interface it fakes, so a modular split moves it into `:data:<name>:api` with it.
+    _render("data/FakeRepository.kt", fixtures / "api" / f"Fake{tokens['__P__']}Repository.kt", tokens)
+    if remote:
+        _render("data/Dto.kt", source / "remote" / f"{tokens['__P__']}Dto.kt", tokens)
+        _render("data/DtoTest.kt", tests / "remote" / f"{tokens['__P__']}DtoTest.kt", tokens)
+        _render("data/fixture.json", root / "src/test/resources" / f"{name}.json", tokens)
 
 
-def _write_feature_module(destination: Path, spec: Spec, name: str) -> None:
-    pkg = spec.package_name
-    class_name = pascal_case(name)
-    screen_title = module_title(name)
-    root = destination / "feature" / name
+def _write_feature_module(project: Path, spec: Spec, name: str, tokens: dict[str, str]) -> None:
+    root = project / "feature" / name
     source = root / "src/main/kotlin" / spec.package_path / "feature" / name
     tests = root / "src/test/kotlin" / spec.package_path / "feature" / name
+    annotated = _SCREEN_PREVIEWS.is_file()
+    previews = {
+        "__PREVIEW_IMPORTS__": (
+            f"import {spec.package_name}.core.designsystem.preview.AppScreenPreviews"
+            if annotated
+            else "import androidx.compose.ui.tooling.preview.Preview"
+        ),
+        "__PREVIEW__": f"{'@AppScreenPreviews' if annotated else '@Preview(showBackground = true)'}\n@Composable",
+    }
 
-    _write(root / "build.gradle.kts", f"""plugins {{
-    id("{pkg}.android.feature")
-}}
+    _render("feature/build.gradle.kts", root / "build.gradle.kts", tokens)
+    _render("feature/strings.xml", root / "src/main/res/values/strings.xml", tokens)
+    for snippet, relative in _FEATURE_SOURCES.items():
+        # `@AppScreenPreviews` applies the theme itself; a plain `@Preview` needs it written out.
+        _render(f"feature/{snippet}", source / relative.format(P=tokens["__P__"]), {**tokens, **previews}, themed=not annotated)
+    for snippet, relative in _FEATURE_TESTS.items():
+        _render(f"feature/{snippet}", tests / relative.format(P=tokens["__P__"]), tokens)
 
-android {{
-    namespace = "{pkg}.feature.{name}"
-}}
-
-dependencies {{
-    implementation(project(":data:{name}"))
-}}
-""")
-
-    _write(source / f"{class_name}NavKeys.kt", f"""package {pkg}.feature.{name}
-
-import {pkg}.core.common.navigation.AppNavKey
-import kotlinx.serialization.Serializable
-
-/** This feature's destinations. Keys carry ids, never models: they are saved in the bundle. */
-@Serializable
-data object {class_name}ListKey : AppNavKey
-
-@Serializable
-data class {class_name}DetailKey(val itemId: Int) : AppNavKey
-""")
-
-    _write(source / f"{class_name}Contract.kt", f"""package {pkg}.feature.{name}
-
-import androidx.compose.runtime.Immutable
-import {pkg}.core.common.LoadState
-import {pkg}.core.mvi.UiEffect
-import {pkg}.core.mvi.UiEvent
-import {pkg}.core.mvi.UiState
-import {pkg}.data.{name}.{class_name}Item
-
-@Immutable
-data class {class_name}State(
-    val loadState: LoadState = LoadState.Idle,
-    val items: List<{class_name}Item> = emptyList(),
-) : UiState
-
-sealed interface {class_name}Event : UiEvent {{
-    data object Load : {class_name}Event
-    data object Retry : {class_name}Event
-    data class ItemClicked(val id: Int) : {class_name}Event
-}}
-
-sealed interface {class_name}Effect : UiEffect {{
-    data class OpenDetail(val id: Int) : {class_name}Effect
-}}
-""")
-
-    _write(source / f"{class_name}ViewModel.kt", f"""package {pkg}.feature.{name}
-
-import {pkg}.core.common.LoadState
-import {pkg}.core.common.result.AppResult
-import {pkg}.core.mvi.MviViewModel
-import {pkg}.data.{name}.{class_name}Repository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-
-/** Loads in `init`, which runs once per screen, rather than from a `LaunchedEffect`. */
-@HiltViewModel
-class {class_name}ViewModel @Inject constructor(
-    private val repository: {class_name}Repository,
-) : MviViewModel<{class_name}State, {class_name}Event, {class_name}Effect>({class_name}State()) {{
-
-    init {{
-        onEvent({class_name}Event.Load)
-    }}
-
-    override fun handleEvent(event: {class_name}Event) {{
-        when (event) {{
-            {class_name}Event.Load, {class_name}Event.Retry -> load()
-            is {class_name}Event.ItemClicked -> emit({class_name}Effect.OpenDetail(event.id))
-        }}
-    }}
-
-    private fun load() {{
-        launchLatest(LOAD) {{
-            setState {{ copy(loadState = LoadState.Loading) }}
-
-            when (val result = repository.items()) {{
-                is AppResult.Success -> setState {{
-                    copy(
-                        loadState = if (result.value.isEmpty()) LoadState.Empty else LoadState.Success,
-                        items = result.value,
-                    )
-                }}
-
-                is AppResult.Failure -> setState {{ copy(loadState = LoadState.Error(result.error)) }}
-            }}
-        }}
-    }}
-
-    private companion object {{
-        const val LOAD = "load"
-    }}
-}}
-""")
-
-    # Copy in resources rather than in the Kotlin, because the feature convention plugin fails
-    # the build on a literal in a composable — a scaffolded module that could not compile would
-    # be a poor advertisement for the scaffolder.
-    _write(root / "src/main/res/values/strings.xml", f"""<?xml version="1.0" encoding="utf-8"?>
-<!-- Every piece of copy this feature renders. Translating means adding values-<code> beside it. -->
-<resources>
-    <string name="{name}_title">{screen_title}</string>
-    <string name="{name}_empty_title">Nothing here yet</string>
-    <string name="{name}_empty_message">When there is something to show, it appears on this screen.</string>
-    <string name="{name}_reload">Reload</string>
-</resources>
-""")
-
-    _write(source / f"{class_name}Screen.kt", f"""package {pkg}.feature.{name}
-
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.tooling.preview.Preview
-import {pkg}.core.common.LoadState
-import {pkg}.core.common.result.AppError
-import {pkg}.core.designsystem.R as DesignSystemR
-import {pkg}.core.designsystem.component.container.AppCard
-import {pkg}.core.designsystem.component.container.AppScaffold
-import {pkg}.core.designsystem.component.feedback.AppRedacted
-import {pkg}.core.designsystem.component.feedback.AppStateView
-import {pkg}.core.designsystem.component.feedback.StateKind
-import {pkg}.core.designsystem.component.navigation.AppLargeTitleTopBar
-import {pkg}.core.designsystem.component.navigation.scrolledFromTop
-import {pkg}.core.designsystem.component.text.AppText
-import {pkg}.core.designsystem.foundation.layout.chromeContentPadding
-import {pkg}.core.designsystem.foundation.scroll.AppScrollDefaults
-import {pkg}.core.designsystem.theme.AppTheme
-import {pkg}.core.ui.text
-import {pkg}.data.{name}.{class_name}Item
-
-/** Stateless, so the previews below need no ViewModel or network. */
-@Composable
-fun {class_name}Screen(
-    state: {class_name}State,
-    onEvent: ({class_name}Event) -> Unit,
-    modifier: Modifier = Modifier,
-) {{
-    val listState = rememberLazyListState()
-    AppScaffold(
-        modifier = modifier,
-        contentMaxWidth = AppTheme.layout.readableMaxWidth,
-        topBar = {{
-            AppLargeTitleTopBar(
-                title = stringResource(R.string.{name}_title),
-                scrolled = {{ listState.scrolledFromTop() }},
-            )
-        }},
-    ) {{
-        when (val loadState = state.loadState) {{
-            is LoadState.Error -> AppStateView(
-                kind = if (loadState.error == AppError.Offline) StateKind.Offline else StateKind.Error,
-                message = loadState.error.text(),
-                onAction = {{ onEvent({class_name}Event.Retry) }},
-            )
-
-            LoadState.Empty -> AppStateView(
-                title = stringResource(R.string.{name}_empty_title),
-                message = stringResource(R.string.{name}_empty_message),
-                actionLabel = stringResource(R.string.{name}_reload),
-                onAction = {{ onEvent({class_name}Event.Retry) }},
-            )
-
-            LoadState.Loading, LoadState.Idle -> LoadingList()
-
-            else -> LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                state = listState,
-                contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
-                flingBehavior = AppScrollDefaults.flingBehavior(),
-            ) {{
-                // Keyed on the id so inserts keep scroll position.
-                items(items = state.items, key = {class_name}Item::id) {{ item ->
-                    {class_name}Row(item = item, onClick = {{ onEvent({class_name}Event.ItemClicked(item.id)) }})
-                }}
-            }}
-        }}
-    }}
-}}
-
-@Composable
-private fun {class_name}Row(item: {class_name}Item, onClick: () -> Unit) {{
-    AppCard(onClick = onClick, modifier = Modifier.fillMaxWidth()) {{
-        AppText(
-            text = item.title,
-            style = AppTheme.typography.headline,
-            color = AppTheme.colors.contentPrimary,
-        )
-    }}
-}}
-
-/**
- * The real rows, redacted, in a list with the loaded list's padding: the first row starts where the
- * first loaded row will, and the swap to content moves nothing. It keeps a list state of its own,
- * as `AppRedacted` asks.
- */
-@Composable
-private fun LoadingList() {{
-    val loading = stringResource(DesignSystemR.string.designsystem_loading)
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .clearAndSetSemantics {{ contentDescription = loading }},
-        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
-        userScrollEnabled = false,
-    ) {{
-        items(PlaceholderRows) {{
-            AppRedacted(active = true) {{ {class_name}Row(item = Placeholder, onClick = {{}}) }}
-        }}
-    }}
-}}
-
-/** Enough for the tallest window; a lazy list composes only the rows that show. */
-private const val PlaceholderRows = 12
-
-// Never shown (see AppRedacted): only its length matters.
-private val Placeholder = {class_name}Item(-1, "Placeholder title")
-
-@Preview(showBackground = true)
-@Composable
-private fun {class_name}ScreenPreview() {{
-    AppTheme {{
-        {class_name}Screen(
-            state = {class_name}State(
-                loadState = LoadState.Success,
-                items = List(3) {{ {class_name}Item(id = it, title = "Row ${{it + 1}}") }},
-            ),
-            onEvent = {{}},
-        )
-    }}
-}}
-""")
-
-    _write(source / f"{class_name}Route.kt", f"""package {pkg}.feature.{name}
-
-import androidx.compose.runtime.Composable
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import {pkg}.core.navigation.AppNavigator
-import {pkg}.core.ui.MviScreen
-
-/** Connects the ViewModel, the screen and navigation, keeping the screen previewable. */
-@Composable
-fun {class_name}ListRoute(
-    navigator: AppNavigator,
-    viewModel: {class_name}ViewModel = hiltViewModel(),
-) {{
-    MviScreen(
-        viewModel = viewModel,
-        onEffect = {{ effect ->
-            when (effect) {{
-                is {class_name}Effect.OpenDetail -> navigator.navigate({class_name}DetailKey(effect.id))
-            }}
-        }},
-    ) {{ state, onEvent ->
-        {class_name}Screen(state = state, onEvent = onEvent)
-    }}
-}}
-""")
-
-    _write(source / "di" / f"{class_name}NavModule.kt", f"""package {pkg}.feature.{name}.di
-
-import {pkg}.core.navigation.AppNavigator
-import {pkg}.core.navigation.NavGraphEntry
-import {pkg}.core.navigation.NavPane
-import {pkg}.core.navigation.navGraph
-import {pkg}.core.navigation.navKeys
-import {pkg}.feature.{name}.{class_name}DetailKey
-import {pkg}.feature.{name}.{class_name}ListKey
-import {pkg}.feature.{name}.{class_name}ListRoute
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.multibindings.IntoSet
-import kotlinx.serialization.modules.SerializersModule
-
-/**
- * Registers this feature's screens and key serializers. Without the serializers the back stack
- * does not survive process death.
- *
- * `{class_name}DetailKey` has no screen yet: add `entry<{class_name}DetailKey>(pane = NavPane.Detail) {{ … }}`
- * with it, and on a wide window it opens beside the list.
- */
-@Module
-@InstallIn(ActivityRetainedComponent::class)
-object {class_name}NavModule {{
-
-    @Provides
-    @IntoSet
-    fun {name}NavGraph(navigator: AppNavigator): NavGraphEntry = navGraph {{
-        entry<{class_name}ListKey>(pane = NavPane.List) {{ {class_name}ListRoute(navigator = navigator) }}
-    }}
-
-    @Provides
-    @IntoSet
-    fun {name}NavKeys(): SerializersModule = navKeys {{
-        subclass({class_name}ListKey::class, {class_name}ListKey.serializer())
-        subclass({class_name}DetailKey::class, {class_name}DetailKey.serializer())
-    }}
-}}
-""")
-
-    _write(tests / f"{class_name}ViewModelTest.kt", f"""package {pkg}.feature.{name}
-
-import {pkg}.core.common.LoadState
-import {pkg}.core.common.result.AppError
-import {pkg}.core.common.result.AppResult
-import {pkg}.core.testing.MainDispatcherRule
-import {pkg}.data.{name}.{class_name}Item
-import {pkg}.data.{name}.{class_name}Repository
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Rule
-import org.junit.Test
-
-class {class_name}ViewModelTest {{
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
-    @Test
-    fun `loads on creation`() = runTest {{
-        val items = listOf({class_name}Item(1, "One"))
-        val viewModel = {class_name}ViewModel(Fake{class_name}Repository(AppResult.Success(items)))
-
-        advanceUntilIdle()
-
-        assertEquals(LoadState.Success, viewModel.state.value.loadState)
-        assertEquals(items, viewModel.state.value.items)
-    }}
-
-    @Test
-    fun `an empty response is Empty, not Success with no rows`() = runTest {{
-        val viewModel = {class_name}ViewModel(Fake{class_name}Repository(AppResult.Success(emptyList())))
-
-        advanceUntilIdle()
-
-        assertEquals(LoadState.Empty, viewModel.state.value.loadState)
-    }}
-
-    @Test
-    fun `a failure surfaces as an error state`() = runTest {{
-        val viewModel = {class_name}ViewModel(
-            Fake{class_name}Repository(AppResult.Failure(AppError.Offline)),
-        )
-
-        advanceUntilIdle()
-
-        assertEquals(LoadState.Error(AppError.Offline), viewModel.state.value.loadState)
-    }}
-}}
-
-private class Fake{class_name}Repository(
-    private val result: AppResult<List<{class_name}Item>>,
-) : {class_name}Repository {{
-    override suspend fun items(): AppResult<List<{class_name}Item>> = result
-}}
-""")
+    if not annotated:
+        _accept_unpreviewed_screens(project, spec, name, tokens["__P__"])
 
 
-def _write(path: Path, content: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    write_text(path, content)
+def _accept_unpreviewed_screens(project: Path, spec: Spec, name: str, pascal: str) -> None:
+    """
+    Until the design system has `@AppScreenPreviews`, `adaptive-preview` cannot be met; the scaffolded
+    screens join the template's own in the code-rule baseline, which shrinks as screens move to it.
+    """
+    baseline = project / _BASELINE
+    if not baseline.is_file():
+        return
+    base = f"feature/{name}/src/main/kotlin/{spec.package_path}/feature/{name}"
+    lines = [f"{base}/{screen.format(P=pascal)} adaptive-preview 1\n" for screen in _SCREENS]
+    with baseline.open("a", encoding="utf-8", newline="") as file:
+        file.writelines(lines)
+
+
+def _render(snippet: str, destination: Path, tokens: dict[str, str], themed: bool = True) -> None:
+    text = (SNIPPETS / snippet).read_text(encoding="utf-8")
+    for token, value in tokens.items():
+        text = text.replace(token, value)
+    text = _fit(_theme_previews(text, themed), snippet)
+    leftover = re.search(r"__[A-Z_]+__", text)
+    if leftover:
+        raise ValueError(f"{snippet} has an unfilled {leftover.group(0)}")
+    if destination.suffix == ".kt":
+        text = imports.sort(text)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    write_text(destination, text)
+
+
+def _fit(text: str, snippet: str) -> str:
+    """Keeps, of each `__FIT__` block, the first layout whose lines all fit, or else its last one."""
+    out: list[str] = []
+    layouts: list[list[str]] | None = None
+    for line in text.splitlines(keepends=True):
+        marker = line.strip()
+        if marker == "__FIT__":
+            if layouts is not None:
+                raise ValueError(f"{snippet} opens a __FIT__ block inside another")
+            layouts = [[]]
+        elif layouts is None:
+            if marker in ("__ELSE__", "__END_FIT__"):
+                raise ValueError(f"{snippet} has {marker} outside a __FIT__ block")
+            out.append(line)
+        elif marker == "__ELSE__":
+            layouts.append([])
+        elif marker == "__END_FIT__":
+            fitting = (layout for layout in layouts if all(len(row.rstrip("\n")) <= MAX_LINE_LENGTH for row in layout))
+            out.extend(next(fitting, layouts[-1]))
+            layouts = None
+        else:
+            layouts[-1].append(line)
+    if layouts is not None:
+        raise ValueError(f"{snippet} leaves a __FIT__ block open")
+    return "".join(out)
+
+
+def _theme_previews(text: str, themed: bool) -> str:
+    """Turns the `__THEMED_START__`/`__THEMED_END__` lines into `AppTheme { … }`, or drops them and outdents."""
+    out: list[str] = []
+    inside = False
+    for line in text.splitlines(keepends=True):
+        marker = line.strip()
+        if marker in ("__THEMED_START__", "__THEMED_END__"):
+            inside = marker == "__THEMED_START__"
+            if themed:
+                out.append(line.replace("__THEMED_START__", "AppTheme {").replace("__THEMED_END__", "}"))
+            continue
+        out.append(line[4:] if inside and not themed and line.startswith("    ") else line)
+    return "".join(out)
