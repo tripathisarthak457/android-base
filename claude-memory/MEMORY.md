@@ -9,3 +9,5 @@
 - [Workflow model routing](workflow-model-routing.md) — Sonnet readers, Opus super-mod/advisors/dev; reader agents must not write files
 - [Working rules: Opus and Sonnet](working-rules-opus-sonnet.md) — Opus for code and decisions; Sonnet only for supervised mechanical work (device runs, lookups); ask the user's decisions in chat with pros, cons and catches; decision log
 - [Status shows parked work](status-show-parked-work.md) — every update lists parked packages, what they wait for and since when (glass was missed for days)
+- [Killing starving processes approved](kill-starving-processes-approved.md) — Oct 19: stop what starves the machine (own leftovers first); never Windows core, Defender, drivers, Claude or the user's apps
+- [Log times from the clock](log-times-from-clock.md) — run date before writing any time; estimates ran up to 18 min ahead on Oct 19

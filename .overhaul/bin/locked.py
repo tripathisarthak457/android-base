@@ -86,6 +86,25 @@ def memory_mb():
     return status.ullAvailPhys >> 20, status.ullAvailPageFile >> 20
 
 
+class PerformanceInfo(ctypes.Structure):
+    _fields_ = [("cb", wintypes.DWORD), ("CommitTotal", ctypes.c_size_t), ("CommitLimit", ctypes.c_size_t),
+                ("CommitPeak", ctypes.c_size_t), ("PhysicalTotal", ctypes.c_size_t),
+                ("PhysicalAvailable", ctypes.c_size_t), ("SystemCache", ctypes.c_size_t),
+                ("KernelTotal", ctypes.c_size_t), ("KernelPaged", ctypes.c_size_t),
+                ("KernelNonpaged", ctypes.c_size_t), ("PageSize", ctypes.c_size_t),
+                ("HandleCount", wintypes.DWORD), ("ProcessCount", wintypes.DWORD), ("ThreadCount", wintypes.DWORD)]
+
+
+def cache_working_set_mb(avail):
+    """The system cache's working set, in MB: memory Windows lends to the file cache and takes back the moment a
+    program allocates, but does not count as available until it is trimmed. SystemCache is that working set plus the
+    standby list, and available is the standby list plus free pages, so the difference slightly undercounts it."""
+    info = PerformanceInfo(cb=ctypes.sizeof(PerformanceInfo))
+    if not ctypes.WinDLL("psapi").GetPerformanceInfo(ctypes.byref(info), info.cb):
+        return 0
+    return max(0, ((info.SystemCache * info.PageSize) >> 20) - avail)
+
+
 def java_processes():
     out = subprocess.run(["tasklist", "/FI", "IMAGENAME eq java.exe", "/FO", "CSV", "/NH"],
                          capture_output=True, text=True, errors="replace").stdout
@@ -302,6 +321,13 @@ def wait_for_resources(kind):
         if avail >= need and commit >= FLOOR_MB:
             return
         waited = time.monotonic() - start
+        # Oct 19: after Dev Drive builds and recordings Windows kept 7.7 GB in the cache's working set with 0.4 GB
+        # available, and this wait would have held a test run for 2.5 hours. Half of that working set counts after 5
+        # minutes, as long as the commit charge has room for the build (the page file still covers a misjudgement).
+        cache = cache_working_set_mb(avail)
+        if waited >= 300 and commit >= need + FLOOR_MB and avail + cache // 2 >= need:
+            say(kind, f"{avail} MB available plus {cache} MB of system cache Windows will trim; continuing")
+            return
         # Past 30 minutes go ahead unless the machine is critically short; past 2.5 hours go ahead regardless.
         if (waited >= 1800 and avail >= FLOOR_MB and commit >= FLOOR_MB) or waited >= 9000:
             say(kind, f"still {avail} MB available after {int(waited // 60)} min (wanted {need:.0f} MB); continuing")
@@ -317,7 +343,7 @@ def status():
         print(f"{kind:8} {'HELD by ' + holder(kind) if is_held(kind) else 'free'}")
     avail, commit = memory_mb()
     temp, cpu = counters()
-    print(f"memory   {avail} MB available, {commit} MB commit left")
+    print(f"memory   {avail} MB available (+{cache_working_set_mb(avail)} MB system cache), {commit} MB commit left")
     print(f"cpu      zone {temp} C (wait {'at ' + str(HOT_C) + ' C' if HOT_C is not None else 'off'}), utility {cpu} %")
     print(f"java     {java_processes()} java.exe process(es)")
 

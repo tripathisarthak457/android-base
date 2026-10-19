@@ -1466,3 +1466,7 @@ For WP12 (generator README/AGENTS and the generated projects' docs where they ta
   onto a file on any host, a folder onto an empty folder on POSIX) or, for the new output, deleted by the cleanup
   after a failure. Accepted as unrealistic; an atomic reservation would need a directory, which cannot be renamed
   over on Windows, and mkdtemp's reserved folder is what made the finished output deeper (fix#5).
+
+## Orchestrator note (Oct 19, 22:10)
+
+The user, asked in chat: keep the printable-ASCII rule for generated keystore passwords (`ee311a8`). Closed.

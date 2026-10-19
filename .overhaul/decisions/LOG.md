@@ -36,3 +36,21 @@ Newest last. Format: date time | decision | options considered | reasoning | adv
 - Oct 19 19:57: REQUIREMENTS 46 enforced as a requirement-by-requirement matrix on staging (proof per row, smoothness verdict, better way and owner for every gap) and as a condition of the Android release gate, because a status table alone (the coverage audit) shows whether work happened, not whether each requirement is met at the bar the user asked for.
 
 - Oct 19 20:12 (the user): overnight pause point raised from 96% to 98%. Checks tighten to every 2 minutes from 92% and every minute from 95%, so the overshoot at ~1.3 points a minute stays under the hard 100% limit, where the pause, backup and resume scheduling could no longer run.
+
+- Oct 19 21:41: the memory wait in bin/locked.py counts half of the system cache's working set after 5 minutes (when the commit charge has room for the build). Windows keeps file cache in the system working set and only trims it under allocation pressure, so 'available' alone stalled a build for what would have been 2.5 hours. Not a system change: our tool's own threshold. The wlanext.exe private bytes (2.7 GB) and the 1.6 GB nonpaged pool are the user's system to look at (a Wi-Fi driver or service leak is possible); reported, not touched.
+
+- Oct 19 21:50 (the user): "You can kill processes which suffocate system I approve". Read as: stop what starves the machine and blocks the work, own leftovers first; Windows core processes (wlanext included: killing it drops Wi-Fi and with it the run), Defender, drivers, the Claude app and apps the user is using stay excluded, since stopping them breaks the system or the user's own use; those are reported instead. Every kill is logged with its numbers.
+
+- Oct 19 22:08 (the user, asked with pros, cons and catches):
+  - Name scrub: rewrite overhaul-workspace's history. Done 22:12: e628493b and b214e84b rebuilt without the three raw District lookups (same trees otherwise, same authors and dates) as f1e51b69 and fb94f965, pushed with --force-with-lease against b214e84b; the stale copies in wt/_workspace-branch recycled. The old commits stay reachable on GitHub by exact ID until garbage-collected; a full purge needs a GitHub Support request (the user's).
+  - CP2 (the glass look): the agent picks from the per-tier recordings and numbers with Opus and the design skills, as for CP1; the user gets the recordings and can veto.
+  - LICENSE: MIT, 'Copyright (c) 2026 Sarthak Tripathi', added on staging (consolidate-staging.js merge step), never main without the release go.
+  - Generated keystore passwords: keep the printable-ASCII rule (ee311a8).
+- Oct 19 22:08 (orchestrator, under REQUIREMENTS 46): the shimmer sweep's 0.69 % janky against the 0.5 % target is not accepted; it stays a gap for staging's matrix to route, since the user asked for every requirement met the smoothest way.
+
+- Oct 19 22:16 (the user, second batch, asked with pros, cons and catches):
+  - Utility style's bar: keep Floating (e80fe43). Closed.
+  - The Kyant playground: the user installs it on the Redmi from Kyant's official GitHub releases; the side-by-side glass strips (REQUIREMENTS 37) run once they say it is on.
+  - Approved downloads: the npm security upgrades for web/frontend (next 15.5.27, postcss 8.5.23, sharp/libvips; done on staging as its own commit, npm cache D:\.caches
+pm); the Gradle 9.8.1 distribution through the wrapper into D:\.caches\gradle (WP02-M2 Deviation 1); protobuf in a project-only venv under .overhaul for the r8-analyzer scoring.
+  - Foldables: run 12's emulator results plus the unit tests and the Redmi's display-size overrides are enough for the Android release.
