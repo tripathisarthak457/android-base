@@ -519,6 +519,17 @@ def mock_sleep():
         perf.time.sleep = sleep
 
 
+class LaunchExtrasTest(unittest.TestCase):
+    def test_every_launch_skips_sign_in_and_hides_the_overlay(self):
+        app = perf.App(device=None, package="com.acme.dev", extras={})
+        self.assertEqual({"perf.fakeSession": "true", "perf.hud": "off"}, app.extras)
+        self.assertEqual("--es perf.fakeSession true --es perf.hud off", app.extra_args())
+
+    def test_an_extra_asks_for_the_overlay(self):
+        app = perf.App(device=None, package="com.acme.dev", extras=perf.parse_extras(["perf.hud=on"]))
+        self.assertEqual("on", app.extras["perf.hud"])
+
+
 class MeminfoTest(unittest.TestCase):
     def test_graphics_is_split_from_what_the_app_holds(self):
         memory = perf.parse_meminfo(fixture("meminfo.txt"))

@@ -6,8 +6,9 @@
 
 One invocation measures only an app it installed itself. Each run installs the APK, clears the app,
 installs its baseline profile and compiles it the way Play does, launches it with the dev launch
-options (`perf.fakeSession=true` is always passed, so onboarding and sign-in are skipped), visits every
-tab once (recorded as `tab_first_visit`), then runs the scenarios. The median of the runs is what the
+options (`perf.fakeSession=true` is always passed, so onboarding and sign-in are skipped, and so is
+`perf.hud=off` unless `--extra perf.hud=on` asks for the performance overlay), visits every tab once
+(recorded as `tab_first_visit`), then runs the scenarios. The median of the runs is what the
 summary reports and what `--gate` checks. While it runs (and while record.sh records), the display stays in
 its natural rotation and on while plugged in; the owner's settings come back at the end.
 
@@ -257,6 +258,9 @@ class App:
         self.compile_mode = compile_mode
         self.extras = dict(extras)
         self.extras.setdefault("perf.fakeSession", "true")
+        # The overlay's Live stats choice is kept across launches and reinstalls that keep data, so
+        # without this a run after someone once turned it on would measure the overlay too.
+        self.extras.setdefault("perf.hud", "off")
         self._activity = None
 
     @property

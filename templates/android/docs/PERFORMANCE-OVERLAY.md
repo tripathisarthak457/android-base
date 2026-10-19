@@ -87,9 +87,9 @@ overlay is held to is 0.3 percentage points of janky frames and 0.5 ms per frame
 
 **Measure the app with the overlay off.** The perf gates, `tools/perf/perf.sh` and any number you
 quote are taken hidden. Your choice of Live stats is kept across launches, and across reinstalls
-that keep the app's data, so a run after you once turned it on would measure the overlay too:
-launch gate runs with `--es perf.hud off` (`perf.sh --extra perf.hud=off`), or `adb shell pm clear`
-the app first.
+that keep the app's data, so a run after you once turned it on would measure the overlay too.
+`perf.sh` launches with `--es perf.hud off` unless you pass `--extra perf.hud=on`; launch other
+gate runs the same way, or `adb shell pm clear` the app first.
 
 ## Debug builds
 
