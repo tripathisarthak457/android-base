@@ -164,6 +164,7 @@ private fun RenameDemo() {
                     style = AppTheme.typography.footnote,
                     color = AppTheme.colors.contentSecondary,
                 )
+                // allow(adaptive-fixed-size): the demo needs a form taller than the keyboard's room
                 AppSection(modifier = Modifier.height(600.dp)) {
                     repeat(6) { AppRow(title = "Field ${it + 1}", value = "Value") }
                 }

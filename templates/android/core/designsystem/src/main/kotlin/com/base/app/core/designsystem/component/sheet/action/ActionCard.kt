@@ -70,6 +70,7 @@ internal fun ActionCard(
         ) { if (it) 1f else 0f }
         val pane = title ?: stringResource(R.string.designsystem_actions_pane)
         val dismissLabel = stringResource(R.string.designsystem_sheet_dismiss)
+        // allow(sheet-shadow): the sheet's own nine-slice spec, which SheetShadowCache draws
         val shadow = AppSheetDefaults.shadow()
         val shadowCache = remember { SheetShadowCache() }
         val radius = AppTheme.style.sheetRadius

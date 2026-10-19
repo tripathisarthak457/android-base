@@ -129,6 +129,7 @@ private class PoseRecorder : GraphicsLayerScope {
     override var alpha = 1f
     override var translationX = 0f
     override var translationY = 0f
+    // allow(sheet-shadow): GraphicsLayerScope declares it; the pose recorder draws no shadow.
     override var shadowElevation = 0f
     override var rotationX = 0f
     override var rotationY = 0f

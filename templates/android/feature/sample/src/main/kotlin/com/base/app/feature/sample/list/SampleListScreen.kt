@@ -155,7 +155,7 @@ private fun LoadingList() {
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,
     ) {
-        items(PlaceholderRows) {
+        items(PlaceholderRows, key = { it }) {
             AppRedacted(active = true) { SampleRow(item = SampleRowPlaceholder, onClick = {}) }
         }
     }

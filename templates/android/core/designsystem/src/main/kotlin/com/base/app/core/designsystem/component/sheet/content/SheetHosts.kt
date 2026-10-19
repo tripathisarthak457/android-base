@@ -46,7 +46,7 @@ import com.base.app.core.designsystem.theme.tokens.DesignTokens
 internal fun SheetHeaderHost(controller: SheetController, header: (@Composable AppSheetScope.() -> Unit)?) {
     val provided = controller.slots.header
     if (provided == null && header == null) {
-        SideEffect { controller.slots.composed() }
+        SideEffect { controller.slots.markComposed() }
         return
     }
     Box(Modifier.consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)).scrollEdgeFade(controller)) {
@@ -54,7 +54,7 @@ internal fun SheetHeaderHost(controller: SheetController, header: (@Composable A
             if (provided != null) provided.Compose(controller) else header?.invoke(controller)
         }
     }
-    SideEffect { controller.slots.composed() }
+    SideEffect { controller.slots.markComposed() }
 }
 
 /**
@@ -65,11 +65,11 @@ internal fun SheetHeaderHost(controller: SheetController, header: (@Composable A
 @Composable
 internal fun SheetFooterHost(controller: SheetController, footer: (@Composable AppSheetScope.() -> Unit)?) {
     if (!controller.footerPinned) {
-        SideEffect { controller.slots.composed() }
+        SideEffect { controller.slots.markComposed() }
         return
     }
     SheetFooterContent(controller, footer)
-    SideEffect { controller.slots.composed() }
+    SideEffect { controller.slots.markComposed() }
 }
 
 @Composable

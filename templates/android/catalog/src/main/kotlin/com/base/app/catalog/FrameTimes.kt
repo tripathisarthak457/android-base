@@ -86,6 +86,7 @@ class FrameTimes(private val activity: Activity) {
                 activity.display?.refreshRate ?: DefaultRate
             } else {
                 @Suppress("DEPRECATION")
+                // allow(adaptive-screen-metrics): refresh rate, not size; API 29 has no other way
                 activity.windowManager.defaultDisplay.refreshRate
             }
 

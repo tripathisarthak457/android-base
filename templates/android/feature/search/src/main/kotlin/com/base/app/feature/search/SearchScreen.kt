@@ -248,7 +248,7 @@ private fun LoadingResults() {
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,
     ) {
-        items(PlaceholderRows) {
+        items(PlaceholderRows, key = { it }) {
             AppRedacted(active = true) {
                 ResultCard(result = ResultPlaceholder, onClick = {}, modifier = Modifier.fillMaxWidth())
             }

@@ -91,7 +91,7 @@ internal class SheetSlots(private val controller: SheetController) {
     }
 
     /** A slot host composed what was registered: the sheet may rise now. */
-    fun composed() {
+    fun markComposed() {
         if (pending) pending = false
     }
 }

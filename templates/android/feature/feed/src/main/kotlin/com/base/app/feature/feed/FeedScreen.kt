@@ -166,7 +166,7 @@ private fun LoadingFeed() {
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,
     ) {
-        items(PlaceholderRows) {
+        items(PlaceholderRows, key = { it }) {
             AppRedacted(active = true) { FeedCard(post = FeedPlaceholder, expanded = false, onToggle = {}) }
         }
     }
