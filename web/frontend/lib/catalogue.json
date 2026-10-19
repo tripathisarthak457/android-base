@@ -1,5 +1,5 @@
 {
-  "generator_commit": "4818a926ccf2",
+  "generator_commit": "7d144f087c93",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -765,6 +765,23 @@
         },
         {
           "default": false,
+          "description": "The tab bar blurs and bends the screen scrolling under it, with a lens that travels to a newly selected tab as a drop of glass and follows a drag across the tabs. Cards, chips and fields are drawn glass that samples nothing. The device picks a tier: live glass with the lens, live glass without it, frosted, or solid when someone turns on Reduce transparency. Battery saver, heat and a GPU that falls behind each step it down.",
+          "group": "design",
+          "headline": "Kyant backdrop glass on the tab bar, with automatic fallbacks",
+          "implied_only": false,
+          "implies": [],
+          "key": "liquidglass",
+          "licence": {
+            "name": "Kyant backdrop",
+            "spdx": "Apache-2.0",
+            "url": "https://github.com/Kyant0/AndroidLiquidGlass"
+          },
+          "platforms": [],
+          "requires": [],
+          "title": "Liquid glass chrome"
+        },
+        {
+          "default": false,
           "description": "An inline month calendar with limits and disabled days, iOS-style wheel pickers for any list, a time picker built from wheels, and compact date and time pills that open them in a sheet.",
           "group": "design",
           "headline": "Pick dates and times inline",
@@ -1425,6 +1442,7 @@
             "language",
             "leakcanary",
             "licenses",
+            "liquidglass",
             "media",
             "network",
             "offlinequeue",

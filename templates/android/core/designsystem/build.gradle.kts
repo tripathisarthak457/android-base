@@ -36,6 +36,13 @@ dependencies {
     implementation(libs.androidx.compose.ui.text.googlefonts)
     // </opt:googlefonts>
 
+    // <opt:liquidglass>
+    // Liquid glass on floating chrome: Kyant's backdrop blurs and bends the recorded scene behind
+    // the tab bar, and its shapes give large chrome continuous (squircle) corners.
+    implementation(libs.kyant.backdrop)
+    implementation(libs.kyant.shapes)
+    // </opt:liquidglass>
+
     testImplementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.androidx.compose.ui.test.junit4)
     // A test activity that owns a back dispatcher, as every app's activity does.
