@@ -1,4 +1,4 @@
-import com.base.app.buildlogic.AppConfig
+import com.base.app.buildlogic.config.AppConfig
 
 /*
  * Macrobenchmarks (startup, tab switch, push and pop, predictive back, rapid Back, scroll, and the
