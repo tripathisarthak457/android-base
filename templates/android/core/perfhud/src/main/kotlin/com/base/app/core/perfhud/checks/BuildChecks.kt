@@ -2,12 +2,10 @@ package com.base.app.core.perfhud.checks
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import androidx.profileinstaller.ProfileVerifier
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.Serializable
 import javax.inject.Inject
-// <opt:baselineprofile>
-import androidx.profileinstaller.ProfileVerifier
-// </opt:baselineprofile>
 
 /**
  * The facts about this build that decide how fast it can be at all, whatever its code does:
@@ -26,7 +24,6 @@ internal class BuildChecks @Inject constructor(@ApplicationContext private val c
     )
 
     private fun profileStatus(): ProfileStatus {
-        // <opt:baselineprofile>
         val status = ProfileVerifier.writeProfileVerification(context)
         return when {
             status.isCompiledWithProfile -> ProfileStatus.Compiled
@@ -34,8 +31,6 @@ internal class BuildChecks @Inject constructor(@ApplicationContext private val c
             !status.appApkHasEmbeddedProfile() -> ProfileStatus.NotInApk
             else -> ProfileStatus.NotCompiled
         }
-        // </opt:baselineprofile>
-        // <opt:!baselineprofile>        return ProfileStatus.NotInProject
     }
 
     private class MinifyProbe

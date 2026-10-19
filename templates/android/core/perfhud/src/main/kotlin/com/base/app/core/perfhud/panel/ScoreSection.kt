@@ -35,7 +35,7 @@ internal fun ScoreSection(score: OptimisationScore) {
     AppCard(modifier = Modifier.fillMaxWidth()) {
         AppText(
             text = stringResource(R.string.perfhud_score),
-            style = AppTheme.typography.titleSmall,
+            style = AppTheme.typography.footnote,
             color = AppTheme.colors.contentSecondary,
         )
         val total = score.total
@@ -43,7 +43,7 @@ internal fun ScoreSection(score: OptimisationScore) {
         if (total == null || grade == null) {
             AppText(
                 text = pluralStringResource(R.plurals.perfhud_score_none, Metric.MIN_FRAMES, Metric.MIN_FRAMES),
-                style = AppTheme.typography.bodyMedium,
+                style = AppTheme.typography.callout,
                 modifier = Modifier.padding(top = AppTheme.spacing.sm),
             )
             return@AppCard
@@ -55,7 +55,7 @@ internal fun ScoreSection(score: OptimisationScore) {
         ) {
             AppText(
                 text = total.toString(),
-                style = AppTheme.typography.displaySmall,
+                style = AppTheme.typography.title2,
                 color = AppTheme.colors.contentPrimary,
             )
             AppStatusPill(text = grade.name, status = grade.colors())
@@ -63,12 +63,12 @@ internal fun ScoreSection(score: OptimisationScore) {
 
         AppText(
             text = stringResource(R.string.perfhud_losses),
-            style = AppTheme.typography.titleSmall,
+            style = AppTheme.typography.footnote,
             modifier = Modifier.padding(top = AppTheme.spacing.sm),
         )
         val losses = score.losses
         if (losses.isEmpty()) {
-            AppText(text = stringResource(R.string.perfhud_no_losses), style = AppTheme.typography.bodySmall)
+            AppText(text = stringResource(R.string.perfhud_no_losses), style = AppTheme.typography.subheadline)
         }
         losses.forEach { lost -> Loss(lost) }
 
@@ -88,13 +88,13 @@ private fun Loss(scored: MetricScore) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             AppText(
                 text = stringResource(metric.title),
-                style = AppTheme.typography.bodyMedium,
+                style = AppTheme.typography.callout,
                 color = AppTheme.colors.contentPrimary,
                 modifier = Modifier.weight(1f),
             )
             AppText(
                 text = stringResource(R.string.perfhud_lost_points, decimal(scored.lost, 1), metric.weight),
-                style = AppTheme.typography.labelSmall,
+                style = AppTheme.typography.caption2,
                 color = AppTheme.colors.danger.content,
             )
         }
@@ -107,14 +107,14 @@ private fun Loss(scored: MetricScore) {
                     resources.formatValue(metric, value),
                     resources.formatTarget(metric),
                 ),
-                style = AppTheme.typography.bodySmall,
+                style = AppTheme.typography.subheadline,
                 color = AppTheme.colors.contentSecondary,
             )
         }
-        AppText(text = stringResource(metric.fix), style = AppTheme.typography.bodySmall)
+        AppText(text = stringResource(metric.fix), style = AppTheme.typography.subheadline)
         AppText(
             text = stringResource(R.string.perfhud_doc, metric.doc),
-            style = AppTheme.typography.caption,
+            style = AppTheme.typography.caption1,
             color = AppTheme.colors.contentTertiary,
         )
     }
@@ -131,7 +131,7 @@ private fun MetricRow(scored: MetricScore) {
     ) {
         AppText(
             text = stringResource(scored.metric.title),
-            style = AppTheme.typography.bodySmall,
+            style = AppTheme.typography.subheadline,
             color = AppTheme.colors.contentSecondary,
             modifier = Modifier.weight(1f),
         )
@@ -141,7 +141,7 @@ private fun MetricRow(scored: MetricScore) {
             } else {
                 resources.formatValue(scored.metric, value)
             },
-            style = AppTheme.typography.bodySmall,
+            style = AppTheme.typography.subheadline,
             color = AppTheme.colors.contentPrimary,
         )
         val grade = scored.grade

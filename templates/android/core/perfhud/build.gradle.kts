@@ -28,9 +28,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.metrics.performance)
     implementation(libs.kotlinx.serialization.json)
-    // <opt:baselineprofile>
     implementation(libs.androidx.profileinstaller)
-    // </opt:baselineprofile>
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.robolectric)

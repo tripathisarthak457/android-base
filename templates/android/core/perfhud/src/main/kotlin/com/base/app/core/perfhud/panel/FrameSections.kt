@@ -82,12 +82,12 @@ private fun ScreenRow(screen: ScreenFrames, scaleTop: Float) {
         stats.jankyPercent <= FairJankyPercent -> AppTheme.colors.warning.content
         else -> AppTheme.colors.danger.content
     }
-    val track = AppTheme.colors.surfaceVariant
+    val track = AppTheme.colors.fill
     Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xxs)) {
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
             AppText(
                 text = screenName(screen),
-                style = AppTheme.typography.bodySmall,
+                style = AppTheme.typography.subheadline,
                 color = AppTheme.colors.contentPrimary,
                 maxLines = 1,
                 modifier = Modifier.weight(1f),
@@ -99,7 +99,7 @@ private fun ScreenRow(screen: ScreenFrames, scaleTop: Float) {
                     stats.frames,
                     millis(stats.p90Millis),
                 ),
-                style = AppTheme.typography.caption,
+                style = AppTheme.typography.caption1,
                 color = AppTheme.colors.contentSecondary,
             )
         }

@@ -26,7 +26,7 @@ import com.base.app.core.designsystem.component.button.AppButton
 import com.base.app.core.designsystem.component.button.ButtonSize
 import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
-import com.base.app.core.designsystem.component.selection.AppSwitch
+import com.base.app.core.designsystem.component.list.AppToggleRow
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
@@ -75,7 +75,7 @@ internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExpor
         if (!recording && (current == null || current.frames.overall.frames == 0)) {
             AppText(
                 text = stringResource(R.string.perfhud_not_recording),
-                style = AppTheme.typography.bodyMedium,
+                style = AppTheme.typography.callout,
                 color = AppTheme.colors.contentSecondary,
             )
         }
@@ -100,15 +100,15 @@ private fun Controls(recorder: PerformanceRecorder, exporter: ReportExporter, re
     val failedFormat = stringResource(R.string.perfhud_export_failed)
 
     Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
-        AppSwitch(
+        AppToggleRow(
+            title = stringResource(R.string.perfhud_live_stats),
             checked = recording,
             onCheckedChange = recorder::setRecording,
-            label = stringResource(R.string.perfhud_live_stats),
             modifier = Modifier.fillMaxWidth(),
         )
         AppText(
             text = stringResource(R.string.perfhud_live_stats_summary),
-            style = AppTheme.typography.bodySmall,
+            style = AppTheme.typography.subheadline,
             color = AppTheme.colors.contentSecondary,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm)) {
@@ -138,13 +138,13 @@ private fun Controls(recorder: PerformanceRecorder, exporter: ReportExporter, re
             AppButton(
                 text = stringResource(R.string.perfhud_reset),
                 onClick = recorder::reset,
-                variant = ButtonVariant.Secondary,
+                variant = ButtonVariant.Tinted,
                 size = ButtonSize.Small,
             )
         }
         exportResult?.let { result ->
             SelectionContainer {
-                AppText(text = result, style = AppTheme.typography.bodySmall, color = AppTheme.colors.contentSecondary)
+                AppText(text = result, style = AppTheme.typography.subheadline, color = AppTheme.colors.contentSecondary)
             }
         }
     }
@@ -155,12 +155,12 @@ private fun DebugNotice() {
     AppCard(color = AppTheme.colors.warning.subtle, border = null) {
         AppText(
             text = stringResource(R.string.perfhud_debug_title),
-            style = AppTheme.typography.titleSmall,
+            style = AppTheme.typography.footnote,
             color = AppTheme.colors.warning.content,
         )
         AppText(
             text = stringResource(R.string.perfhud_debug_body),
-            style = AppTheme.typography.bodySmall,
+            style = AppTheme.typography.subheadline,
             color = AppTheme.colors.contentPrimary,
             modifier = Modifier.padding(top = AppTheme.spacing.xs),
         )

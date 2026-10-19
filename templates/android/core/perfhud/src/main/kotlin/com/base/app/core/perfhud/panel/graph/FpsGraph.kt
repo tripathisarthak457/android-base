@@ -29,14 +29,14 @@ import kotlin.math.min
 internal fun FpsGraph(frames: FrameLog, refreshHz: () -> Float, version: () -> Int, modifier: Modifier = Modifier) {
     val series = remember { FpsSeries(Seconds) }
     val measurer = rememberTextMeasurer()
-    val labelStyle = AppTheme.typography.caption
+    val labelStyle = AppTheme.typography.caption1
     val hzFormat = stringResource(R.string.perfhud_hz)
     val colors = AppTheme.colors
     val good = colors.success.content
     val fair = colors.warning.content
     val poor = colors.danger.content
     val guide = colors.contentTertiary
-    val axis = colors.divider
+    val axis = colors.separator
 
     Spacer(
         modifier = modifier

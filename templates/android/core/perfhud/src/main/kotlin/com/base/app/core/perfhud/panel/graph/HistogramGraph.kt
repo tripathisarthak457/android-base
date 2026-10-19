@@ -39,13 +39,13 @@ internal fun HistogramGraph(
     val histogram = remember { FrameHistogram() }
     val bins = remember { IntArray(Bins) }
     val measurer = rememberTextMeasurer()
-    val labelStyle = AppTheme.typography.caption
+    val labelStyle = AppTheme.typography.caption1
     val axisFormat = stringResource(R.string.perfhud_millis_axis)
     val colors = AppTheme.colors
     val inside = colors.success.content
     val outside = colors.warning.content
     val guide = colors.danger.content
-    val axis = colors.divider
+    val axis = colors.separator
     val label = colors.contentTertiary
 
     Spacer(

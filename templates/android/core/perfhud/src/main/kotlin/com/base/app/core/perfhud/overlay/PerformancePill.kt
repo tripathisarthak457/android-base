@@ -17,9 +17,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.base.app.core.designsystem.foundation.appClickable
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.frame.FrameLog
@@ -55,7 +55,7 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
     // Filled in the draw phase, on the main thread only.
     val live = remember { LiveStats() }
     val typography = AppTheme.typography
-    val style = remember(typography) { typography.mono.merge(TextStyle(fontSize = typography.labelSmall.fontSize)) }
+    val style = remember(typography) { typography.mono.merge(TextStyle(fontSize = typography.caption2.fontSize)) }
     val fontResolver = LocalFontFamilyResolver.current
     // A downloaded font arrives after the first composition; the text is set up again when it does.
     val typeface by remember(fontResolver, style) {
@@ -86,7 +86,7 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
                 width = with(density) { text.width.toDp() },
                 height = with(density) { text.height.toDp() },
             )
-            .appClickable(onClick = onOpen, minTouchTarget = 0.dp)
+            .pressable(onClick = onOpen, feedback = PressFeedback.Scale)
             .semantics { contentDescription = description }
             .redrawDuringFrames(RefreshMillis)
             .drawBehind {

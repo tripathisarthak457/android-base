@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.base.app.core.common.environment.AppEnvironment
-import com.base.app.core.designsystem.foundation.appClickable
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.devtools.DevTools
 import com.base.app.core.devtools.log.DevToolsLog
@@ -89,7 +90,7 @@ class DevToolsOverlayTest {
             title = android.R.string.ok,
             content = { BasicText("probe page content") },
             badgeContent = { openPage ->
-                BasicText("probe line", Modifier.testTag("probe_line").appClickable(onClick = openPage))
+                BasicText("probe line", Modifier.testTag("probe_line").pressable(onClick = openPage, feedback = PressFeedback.Scale))
             },
         )
         compose.setContent { AppTheme { DevToolsOverlay(devTools(pages = setOf(page))) } }

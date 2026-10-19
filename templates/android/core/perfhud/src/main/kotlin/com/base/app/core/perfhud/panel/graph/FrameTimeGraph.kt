@@ -36,7 +36,7 @@ import kotlin.math.min
 internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modifier = Modifier) {
     val series = remember { FrameSeries(Bars) }
     val measurer = rememberTextMeasurer()
-    val labelStyle = AppTheme.typography.caption
+    val labelStyle = AppTheme.typography.caption1
     val hzFormat = stringResource(R.string.perfhud_hz)
     val colors = AppTheme.colors
     val good = colors.success.content
@@ -46,7 +46,7 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
     val overFaded = over.copy(alpha = FadedAlpha)
     val missedFaded = missed.copy(alpha = FadedAlpha)
     val guide = colors.contentTertiary
-    val axis = colors.divider
+    val axis = colors.separator
 
     Spacer(
         modifier = modifier

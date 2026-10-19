@@ -158,7 +158,7 @@ internal fun Section(
     ) {
         AppText(
             text = stringResource(title),
-            style = AppTheme.typography.titleSmall,
+            style = AppTheme.typography.footnote,
             color = AppTheme.colors.contentPrimary,
         )
         if (caption != null) Caption(caption)
@@ -179,7 +179,7 @@ internal fun ValueRow(label: String, value: String) {
     ) {
         AppText(
             text = label,
-            style = AppTheme.typography.bodySmall,
+            style = AppTheme.typography.subheadline,
             color = AppTheme.colors.contentSecondary,
             modifier = Modifier.weight(1f),
         )
@@ -196,7 +196,7 @@ internal fun ValueRow(label: String, value: String) {
 private fun Caption(@StringRes text: Int) {
     AppText(
         text = stringResource(text),
-        style = AppTheme.typography.caption,
+        style = AppTheme.typography.caption1,
         color = AppTheme.colors.contentTertiary,
     )
 }
@@ -210,7 +210,7 @@ private fun Legend(color: Color, @StringRes label: Int) {
         Box(modifier = Modifier.size(LegendDot).background(color, AppTheme.shapes.pill))
         AppText(
             text = stringResource(label),
-            style = AppTheme.typography.caption,
+            style = AppTheme.typography.caption1,
             color = AppTheme.colors.contentSecondary,
         )
     }

@@ -31,13 +31,13 @@ import kotlin.math.max
 internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifier = Modifier) {
     val series = remember { MemorySeries(Samples) }
     val measurer = rememberTextMeasurer()
-    val labelStyle = AppTheme.typography.caption
+    val labelStyle = AppTheme.typography.caption1
     val megabytes = stringResource(R.string.perfhud_value_megabytes)
     val colors = AppTheme.colors
     val java = colors.accent
     val native = colors.secondary
     val pss = colors.tertiary
-    val axis = colors.divider
+    val axis = colors.separator
     val label = colors.contentTertiary
 
     Spacer(
