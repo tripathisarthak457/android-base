@@ -1,6 +1,10 @@
 plugins {
     id("com.base.app.android.library")
     id("com.base.app.android.compose")
+    // <opt:devtools>
+    // The tooling seam's optional binding (`tooling/DevToolingModule.kt`).
+    id("com.base.app.android.hilt")
+    // </opt:devtools>
 }
 
 android {

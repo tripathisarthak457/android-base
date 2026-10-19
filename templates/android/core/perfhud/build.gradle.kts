@@ -6,6 +6,8 @@ plugins {
     id("com.base.app.android.library")
     id("com.base.app.android.compose")
     id("com.base.app.android.hilt")
+    // ReportReceiver is an @AndroidEntryPoint, which the Hilt plugin rewrites.
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -32,6 +34,8 @@ dependencies {
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.robolectric)
+    // DisplayManager is a final framework class, so FrameIntakeTest mocks it rather than faking it.
+    testImplementation(libs.mockk)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

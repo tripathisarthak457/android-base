@@ -2,6 +2,8 @@ plugins {
     id("com.base.app.android.library")
     id("com.base.app.android.compose")
     id("com.base.app.android.hilt")
+    // AppMessagingService is an @AndroidEntryPoint, which the Hilt plugin rewrites.
+    alias(libs.plugins.hilt)
 }
 
 android {

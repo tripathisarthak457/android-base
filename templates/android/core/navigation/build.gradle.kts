@@ -3,6 +3,8 @@ plugins {
     id("com.base.app.android.hilt")
     id("com.base.app.android.compose")
     alias(libs.plugins.kotlin.serialization)
+    // MultiInstanceTest's activity is an @AndroidEntryPoint, which the Hilt plugin rewrites.
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -29,6 +31,8 @@ dependencies {
 
     testImplementation(project(":core:testing"))
     testImplementation(libs.robolectric)
+    testImplementation(libs.hilt.testing)
+    kspTest(libs.hilt.compiler)
     testImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
