@@ -2,6 +2,10 @@
 
 ## Progress
 
+## Orchestrator note (03:42 Oct 20)
+
+The overlay is compiled into the builds the perf harness measures: the baseline-profile plugin copies devRelease's implementation dependencies into them (research/hud-metrics/DESIGN.md). It is the first suspect for the combined tree's doubled back-gesture jank (bugs/BUG-2026-10-19-back-see-through.md). Fix: devReleaseRuntimeOnly plus a build check on every measured variant. The next metrics (REQUIREMENTS 49) are designed in DESIGN.md; build them on staging-wp/HUD after the user's go and their three answers.
+
 - **Orchestrator note (Oct 19, 3:55, after the user's night run stopped at 03:30):** the run was stopped with this build still under `bin/locked`; it was left to finish. Build: acceptance builds `bin/locked gradle bash out/HUD/accept_builds.win.sh` (template build, everything and lean fixtures, standard check), started 03:19 by the HUD:run agent. Result: `BUILDS OK`. Log: `D:/projects/tools/.overhaul/out/HUD/logs/r2-acc.log`. The next run starts by reading this log instead of re-running blind.
 Run 1, started 2026-10-18 ~14:30 IST (workflow `hud-first`, implement). Worktree `wt/HUD` on `wp/HUD`, created from
 `wp/WP06` at `7b14c0d` (WP06 has not moved since).
