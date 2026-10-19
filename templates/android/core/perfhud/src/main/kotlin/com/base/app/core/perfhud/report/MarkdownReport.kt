@@ -63,7 +63,7 @@ internal class MarkdownReport(private val resources: Resources) {
         val total = score.total
         val grade = score.grade
         if (total == null || grade == null) {
-            paragraph(string(R.string.perfhud_score_none, Metric.MIN_FRAMES))
+            paragraph(resources.getQuantityString(R.plurals.perfhud_score_none, Metric.MIN_FRAMES, Metric.MIN_FRAMES))
             return
         }
         paragraph("**" + string(R.string.perfhud_score_value, total, grade.name) + "**")
