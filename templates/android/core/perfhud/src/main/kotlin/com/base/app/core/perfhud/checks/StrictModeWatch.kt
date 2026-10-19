@@ -36,7 +36,6 @@ internal class StrictModeWatch @Inject constructor(dispatchers: AppDispatchers) 
     // violation carries its stack.
     private val counting: Executor = dispatchers.default.asExecutor()
 
-
     private val lock = Any()
     private val byKind = LinkedHashMap<String, Int>()
     private val examples = ArrayList<StrictModeExample>()
@@ -101,9 +100,12 @@ internal class StrictModeWatch @Inject constructor(dispatchers: AppDispatchers) 
     private companion object {
         const val VIOLATION_SUFFIX = "Violation"
         const val MAX_EXAMPLES = 10
+        // The platform's and the libraries the template can bring, Play services and Firebase
+        // included: a violation inside one is reported at the app's call into it.
         val PLATFORM_PREFIXES = listOf(
             "android.", "androidx.", "java.", "javax.", "kotlin.", "kotlinx.", "dalvik.", "com.android.",
-            "libcore.", "sun.", "okhttp3.", "okio.", "io.ktor.",
+            "libcore.", "sun.", "okhttp3.", "okio.", "io.ktor.", "com.google.", "dagger.", "coil3.",
+            "com.airbnb.lottie.", "leakcanary.", "shark.",
         )
     }
 }
