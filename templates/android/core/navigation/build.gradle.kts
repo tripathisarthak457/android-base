@@ -9,6 +9,7 @@ plugins {
 
 android {
     namespace = "com.base.app.core.navigation"
+    testOptions.unitTests.isIncludeAndroidResources = true
 }
 
 dependencies {
