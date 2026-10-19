@@ -83,4 +83,12 @@ internal fun Resources.formatTarget(metric: Metric): String {
 /** A number with [places] decimals, in the format a log or a JSON reader expects whatever the locale. */
 internal fun decimal(value: Float, places: Int): String = String.format(Locale.ROOT, "%.${places}f", value)
 
+/** [millis] as minutes and seconds, `m:ss`. */
+internal fun minutesAndSeconds(millis: Long): String {
+    val seconds = millis / MILLIS_PER_SECOND
+    return String.format(Locale.ROOT, "%d:%02d", seconds / SECONDS_PER_MINUTE, seconds % SECONDS_PER_MINUTE)
+}
+
 private const val DOC = "docs/PERFORMANCE-OVERLAY.md"
+private const val MILLIS_PER_SECOND = 1000L
+private const val SECONDS_PER_MINUTE = 60L

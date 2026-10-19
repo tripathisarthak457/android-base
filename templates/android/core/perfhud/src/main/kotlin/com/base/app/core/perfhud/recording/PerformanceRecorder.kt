@@ -49,7 +49,10 @@ import javax.inject.Singleton
  * `perf.hud=on|off` overrides both for that process: that is how `perf.sh` measures what the
  * overlay itself costs.
  *
- * Nothing is allocated, listened to or sampled before the first recording starts.
+ * Until the first recording starts nothing listens to the window, nothing is sampled and the
+ * frame rings are not allocated. The recorder is built with the inspector, on the main thread
+ * during the launch: that costs the launch an activity-lifecycle callback, a DataStore and one
+ * read of the stored choice, whose file I/O runs on the I/O dispatcher.
  */
 @Singleton
 internal class PerformanceRecorder @Inject constructor(
@@ -210,7 +213,8 @@ internal class PerformanceRecorder @Inject constructor(
     }
 
     private suspend fun sampleEverySecond() {
-        logcat.begin(frames)
+        logcat.begin(frames, memory)
+        memory.startRun()
         while (true) {
             val withPss = pssSchedule.shouldRead(
                 nowMillis = SystemClock.elapsedRealtime(),

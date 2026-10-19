@@ -22,12 +22,12 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Frames per second while drawing, one bar per second for the last [SECONDS], with the display's
+ * Frames per second while drawing, one bar per second for the last [Seconds], with the display's
  * rate as a line. A second with nothing to draw has no bar: an idle app is not a slow one.
  */
 @Composable
 internal fun FpsGraph(frames: FrameLog, refreshHz: () -> Float, version: () -> Int, modifier: Modifier = Modifier) {
-    val series = remember { FpsSeries(SECONDS) }
+    val series = remember { FpsSeries(Seconds) }
     val measurer = rememberTextMeasurer()
     val labelStyle = AppTheme.typography.caption
     val hzFormat = stringResource(R.string.perfhud_hz)
@@ -43,27 +43,27 @@ internal fun FpsGraph(frames: FrameLog, refreshHz: () -> Float, version: () -> I
             .fillMaxWidth()
             .height(GraphDefaults.Height)
             .drawWithCache {
-                val dash = PathEffect.dashPathEffect(floatArrayOf(DASH_PX, DASH_PX))
+                val dash = PathEffect.dashPathEffect(floatArrayOf(DashPx, DashPx))
                 val stroke = GraphDefaults.Stroke.toPx()
                 onDrawBehind {
                     version()
                     val refresh = refreshHz()
                     frames.copyFramesPerSecond(System.nanoTime(), series)
-                    val top = max(refresh, MIN_SCALE_HZ) * HEADROOM
-                    val slot = size.width / SECONDS
-                    for (second in 0 until SECONDS) {
+                    val top = max(refresh, MinScaleHz) * Headroom
+                    val slot = size.width / Seconds
+                    for (second in 0 until Seconds) {
                         val fps = series.perSecond[second]
                         if (fps == FpsSeries.NONE) continue
                         val height = min(fps / top, 1f) * size.height
                         val color = when {
-                            refresh <= 0f || fps >= refresh * GOOD_SHARE -> good
-                            fps >= refresh * FAIR_SHARE -> fair
+                            refresh <= 0f || fps >= refresh * GoodShare -> good
+                            fps >= refresh * FairShare -> fair
                             else -> poor
                         }
                         drawRect(
                             color = color,
                             topLeft = Offset(second * slot, size.height - height),
-                            size = Size(slot * BAR_SHARE, height),
+                            size = Size(slot * BarShare, height),
                         )
                     }
                     if (refresh > 0f) {
@@ -79,10 +79,10 @@ internal fun FpsGraph(frames: FrameLog, refreshHz: () -> Float, version: () -> I
     )
 }
 
-private const val SECONDS = 60
-private const val MIN_SCALE_HZ = 60f
-private const val HEADROOM = 1.15f
-private const val GOOD_SHARE = 0.95f
-private const val FAIR_SHARE = 0.75f
-private const val BAR_SHARE = 0.75f
-private const val DASH_PX = 8f
+private const val Seconds = 60
+private const val MinScaleHz = 60f
+private const val Headroom = 1.15f
+private const val GoodShare = 0.95f
+private const val FairShare = 0.75f
+private const val BarShare = 0.75f
+private const val DashPx = 8f

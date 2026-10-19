@@ -51,7 +51,7 @@ internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExpor
         while (true) {
             snapshot = recorder.snapshot()
             version++
-            delay(REFRESH_MILLIS)
+            delay(RefreshMillis)
         }
     }
 
@@ -156,4 +156,4 @@ private fun DebugNotice() {
     }
 }
 
-private const val REFRESH_MILLIS = 500L
+private const val RefreshMillis = 500L

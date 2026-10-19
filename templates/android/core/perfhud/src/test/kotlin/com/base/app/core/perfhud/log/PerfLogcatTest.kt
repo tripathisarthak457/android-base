@@ -18,7 +18,7 @@ class PerfLogcatTest {
 
     @Test
     fun `a window line every five seconds of drawing, none per frame`() {
-        logcat.begin(frames)
+        logcat.begin(frames, memory)
         memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(1, 2, 0, 0)))
         draw(frames = 600, screen = "Home")
 
@@ -33,9 +33,27 @@ class PerfLogcatTest {
     }
 
     @Test
+    fun `each window line counts the collections of its own window`() {
+        memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(1, 2, 0, 0)))
+        memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(4, 9, 0, 0)))
+        logcat.begin(frames, memory)
+        memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(6, 12, 0, 0)))
+        draw(frames = 600, screen = "Home")
+        repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }
+        memory.add(MemoryReading(20f, 10f, Float.NaN, Float.NaN, GcCounters(7, 13, 0, 0)))
+        draw(frames = 600, screen = "Home")
+
+        repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }
+
+        assertEquals(2, lines.size)
+        assertTrue(lines[0], lines[0].contains(" gc=2 "))
+        assertTrue(lines[1], lines[1].contains(" gc=1 "))
+    }
+
+    @Test
     fun `a window with nothing drawn writes nothing`() {
         draw(frames = 10, screen = "Home")
-        logcat.begin(frames)
+        logcat.begin(frames, memory)
 
         repeat(10) { logcat.onSecond(frames, memory, screen = "Home") }
 
@@ -44,7 +62,7 @@ class PerfLogcatTest {
 
     @Test
     fun `leaving a screen writes its summary`() {
-        logcat.begin(frames)
+        logcat.begin(frames, memory)
         draw(frames = 99, screen = "Home")
         draw(frames = 1, screen = "Home", missedDeadline = true)
         logcat.onSecond(frames, memory, screen = "Home")
@@ -58,7 +76,7 @@ class PerfLogcatTest {
     @Test
     fun `frames from before recording started are not counted again`() {
         draw(frames = 500, screen = "Home", missedDeadline = true)
-        logcat.begin(frames)
+        logcat.begin(frames, memory)
         draw(frames = 100, screen = "Home")
 
         repeat(5) { logcat.onSecond(frames, memory, screen = "Home") }

@@ -34,7 +34,7 @@ import kotlin.math.min
  */
 @Composable
 internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modifier = Modifier) {
-    val series = remember { FrameSeries(BARS) }
+    val series = remember { FrameSeries(Bars) }
     val measurer = rememberTextMeasurer()
     val labelStyle = AppTheme.typography.caption
     val hzFormat = stringResource(R.string.perfhud_hz)
@@ -42,9 +42,9 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
     val good = colors.success.content
     val over = colors.warning.content
     val missed = colors.danger.content
-    val goodFaded = good.copy(alpha = FADED_ALPHA)
-    val overFaded = over.copy(alpha = FADED_ALPHA)
-    val missedFaded = missed.copy(alpha = FADED_ALPHA)
+    val goodFaded = good.copy(alpha = FadedAlpha)
+    val overFaded = over.copy(alpha = FadedAlpha)
+    val missedFaded = missed.copy(alpha = FadedAlpha)
     val guide = colors.contentTertiary
     val axis = colors.divider
 
@@ -53,19 +53,19 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
             .fillMaxWidth()
             .height(GraphDefaults.Height)
             .drawWithCache {
-                val labels = BUDGET_HZ.map { hz ->
+                val labels = BudgetHz.map { hz ->
                     measurer.measure(String.format(Locale.ROOT, hzFormat, hz), labelStyle)
                 }
-                val labelGap = LABEL_GAP.toPx()
+                val labelGap = LabelGap.toPx()
                 // The budget labels get a column of their own, since over the bars they would be unreadable.
                 val gutter = labels.maxOf { it.size.width } + labelGap
-                val dash = PathEffect.dashPathEffect(floatArrayOf(DASH_PX, DASH_PX))
+                val dash = PathEffect.dashPathEffect(floatArrayOf(DashPx, DashPx))
                 val stroke = GraphDefaults.Stroke.toPx()
                 onDrawBehind {
                     version()
                     frames.copyRecent(series)
-                    val barWidth = (size.width - gutter) / BARS
-                    val gap = if (barWidth > MIN_GAPPED_BAR_PX) 1f else 0f
+                    val barWidth = (size.width - gutter) / Bars
+                    val gap = if (barWidth > MinGappedBarPx) 1f else 0f
                     val start = size.width - series.count * barWidth
                     for (i in 0 until series.count) {
                         val total = series.totalMillis[i]
@@ -83,8 +83,8 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
                             else -> goodFaded
                         }
                         val left = start + i * barWidth
-                        val totalHeight = min(total / SCALE_MILLIS, 1f) * size.height
-                        val uiHeight = min(ui / SCALE_MILLIS, 1f) * size.height
+                        val totalHeight = min(total / ScaleMillis, 1f) * size.height
+                        val uiHeight = min(ui / ScaleMillis, 1f) * size.height
                         drawRect(
                             color = faded,
                             topLeft = Offset(left, size.height - totalHeight),
@@ -97,8 +97,8 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
                         )
                     }
                     var labelBottom = Float.NEGATIVE_INFINITY
-                    for (index in BUDGET_HZ.indices) {
-                        val y = size.height * (1f - MILLIS_PER_SECOND / BUDGET_HZ[index] / SCALE_MILLIS)
+                    for (index in BudgetHz.indices) {
+                        val y = size.height * (1f - MillisPerSecond / BudgetHz[index] / ScaleMillis)
                         drawLine(guide, Offset(gutter, y), Offset(size.width, y), stroke, pathEffect = dash)
                         val label = labels[index]
                         // The 90 and 120 Hz lines lie closer together than a label is tall, so a label
@@ -114,14 +114,14 @@ internal fun FrameTimeGraph(frames: FrameLog, version: () -> Int, modifier: Modi
 }
 
 /** About two seconds of drawing at 120 Hz, each bar a little over a pixel wide on a phone. */
-private const val BARS = 240
+private const val Bars = 240
 
 /** The graph's top: two frames at 60 Hz. A taller frame is drawn to the top. */
-private const val SCALE_MILLIS = 33.3f
+private const val ScaleMillis = 33.3f
 
-private val BUDGET_HZ = intArrayOf(60, 90, 120)
-private const val MILLIS_PER_SECOND = 1000f
-private const val DASH_PX = 8f
-private const val FADED_ALPHA = 0.4f
-private const val MIN_GAPPED_BAR_PX = 3f
-private val LABEL_GAP = 4.dp
+private val BudgetHz = intArrayOf(60, 90, 120)
+private const val MillisPerSecond = 1000f
+private const val DashPx = 8f
+private const val FadedAlpha = 0.4f
+private const val MinGappedBarPx = 3f
+private val LabelGap = 4.dp

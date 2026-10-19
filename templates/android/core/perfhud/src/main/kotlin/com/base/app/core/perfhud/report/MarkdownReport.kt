@@ -14,9 +14,9 @@ import com.base.app.core.perfhud.score.doc
 import com.base.app.core.perfhud.score.fix
 import com.base.app.core.perfhud.score.formatTarget
 import com.base.app.core.perfhud.score.formatValue
+import com.base.app.core.perfhud.score.minutesAndSeconds
 import com.base.app.core.perfhud.score.title
 import com.base.app.core.perfhud.startup.StartRecord
-import java.util.Locale
 
 /**
  * The exported report as Markdown, for a person: the score and its lost points first, because
@@ -49,7 +49,7 @@ internal class MarkdownReport(private val resources: Resources) {
                 device.release,
                 device.sdk,
                 device.refreshRatesHz.joinToString("/") { decimal(it, 0) },
-            ) + " " + string(R.string.perfhud_report_recorded, duration(snapshot.recordedMillis)),
+            ) + " " + string(R.string.perfhud_report_recorded, minutesAndSeconds(snapshot.recordedMillis)),
         )
         if (app.debugBuild) {
             append("> **").append(string(R.string.perfhud_debug_title)).append("**. ")
@@ -279,16 +279,6 @@ internal class MarkdownReport(private val resources: Resources) {
         string(R.string.perfhud_not_measured)
     } else {
         string(R.string.perfhud_value_megabytes, decimal(value, 1))
-    }
-
-    private fun duration(millis: Long): String {
-        val seconds = millis / MILLIS_PER_SECOND
-        return String.format(Locale.ROOT, "%d:%02d", seconds / SECONDS_PER_MINUTE, seconds % SECONDS_PER_MINUTE)
-    }
-
-    private companion object {
-        const val MILLIS_PER_SECOND = 1000L
-        const val SECONDS_PER_MINUTE = 60L
     }
 }
 

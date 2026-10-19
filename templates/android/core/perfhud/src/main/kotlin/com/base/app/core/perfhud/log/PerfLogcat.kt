@@ -13,7 +13,9 @@ import javax.inject.Inject
 /**
  * The overlay's log: a line for every few seconds in which the app drew, and a line for each screen
  * it leaves, under the one tag [TAG] and never per frame. Each line is `key=value` pairs, so
- * `adb logcat -s PerfHud` reads as a table and a script can split it.
+ * `adb logcat -s PerfHud` reads as a table and a script can split it. A window line's numbers,
+ * garbage collections included, are that window's; the memory sizes are the latest sample's. A
+ * screen line sums every visit to the screen since recording began, not only the one just left.
  *
  * Written straight to logcat, not through the app's `Log` seam: that drops informational lines from
  * release builds, and devRelease is where these numbers are real. Called from the sampler's thread.
@@ -28,10 +30,15 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
     private val window = FrameHistogram()
     private var lastScreen: String? = null
     private var seconds = 0
+    private var gcBefore = 0L
 
-    /** Starts counting windows from what [frames] holds now, which an earlier recording may have left. */
-    fun begin(frames: FrameLog) {
+    /**
+     * Starts counting windows from what [frames] and [memory] hold now, which an earlier recording
+     * may have left.
+     */
+    fun begin(frames: FrameLog, memory: MemoryLog) {
         frames.copyTotals(previous)
+        gcBefore = memory.summary()?.gcCount ?: 0L
         lastScreen = null
         seconds = 0
     }
@@ -78,7 +85,8 @@ internal class PerfLogcat(private val write: (String) -> Unit) {
                 append(" heapMb=").append(format(memory.javaHeapMb))
                 append(" nativeMb=").append(format(memory.nativeHeapMb))
                 memory.pssMb?.let { append(" pssMb=").append(format(it)) }
-                append(" gc=").append(memory.gcCount)
+                append(" gc=").append(memory.gcCount - gcBefore)
+                gcBefore = memory.gcCount
             }
             append(" screen=").append(screen ?: "-")
         }

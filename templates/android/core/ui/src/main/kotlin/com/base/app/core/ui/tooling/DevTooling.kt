@@ -16,8 +16,8 @@ interface DevTooling {
     fun onScreenChanged(name: String)
 
     /**
-     * The tooling's own layer, filling the root above every screen. The root draws it under the app
-     * lock: what the app sent is as private as what it shows.
+     * The tooling's own layer, filling the root above every screen. A root with an app lock draws it
+     * under the lock: what the app sent is as private as what it shows.
      */
     @Composable
     fun Overlay()

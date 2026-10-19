@@ -181,7 +181,7 @@ internal fun ValueRow(label: String, value: String) {
             text = value,
             color = AppTheme.colors.contentPrimary,
             maxLines = 2,
-            modifier = Modifier.weight(VALUE_WEIGHT),
+            modifier = Modifier.weight(ValueWeight),
         )
     }
 }
@@ -236,4 +236,4 @@ private fun megabytes(value: Float?): String = if (value == null) {
 private fun yesNo(value: Boolean): String = stringResource(if (value) R.string.perfhud_yes else R.string.perfhud_no)
 
 private val LegendDot = 8.dp
-private const val VALUE_WEIGHT = 1.4f
+private const val ValueWeight = 1.4f

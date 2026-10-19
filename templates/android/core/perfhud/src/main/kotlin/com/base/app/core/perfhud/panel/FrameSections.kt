@@ -23,6 +23,7 @@ import com.base.app.core.perfhud.panel.graph.HistogramGraph
 import com.base.app.core.perfhud.recording.PerformanceRecorder
 import com.base.app.core.perfhud.recording.PerformanceSnapshot
 import com.base.app.core.perfhud.score.decimal
+import com.base.app.core.perfhud.score.minutesAndSeconds
 
 /** The frame-time graph, the numbers, frames per second, the histogram and jank by screen. */
 @Composable
@@ -34,7 +35,7 @@ internal fun FrameSections(recorder: PerformanceRecorder, snapshot: PerformanceS
     }
     Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xs)) {
         ValueRow(R.string.perfhud_frames, overall.frames.toString())
-        ValueRow(R.string.perfhud_recorded, duration(snapshot.recordedMillis))
+        ValueRow(R.string.perfhud_recorded, minutesAndSeconds(snapshot.recordedMillis))
         ValueRow(R.string.perfhud_fps, decimal(frames.framesPerSecond, 1))
         ValueRow(R.string.perfhud_display, stringResource(R.string.perfhud_hz, Math.round(frames.refreshHz)))
         ValueRow(R.string.perfhud_janky, countAndPercent(overall.janky, overall.jankyPercent))
@@ -48,20 +49,23 @@ internal fun FrameSections(recorder: PerformanceRecorder, snapshot: PerformanceS
         )
         ValueRow(R.string.perfhud_worst, millis(overall.worstMillis))
     }
+    // Lambdas over the rate alone, not the snapshot, so they stay the same instances between
+    // snapshots and the graphs keep their draw caches until the display changes its rate.
+    val refreshHz = frames.refreshHz
     Section(title = R.string.perfhud_fps_graph, caption = R.string.perfhud_fps_graph_caption) {
-        FpsGraph(frames = recorder.frames, refreshHz = { frames.refreshHz }, version = version)
+        FpsGraph(frames = recorder.frames, refreshHz = { refreshHz }, version = version)
     }
     Section(title = R.string.perfhud_histogram, caption = R.string.perfhud_histogram_caption) {
         HistogramGraph(
             frames = recorder.frames,
-            budgetMillis = { if (frames.refreshHz > 0f) MILLIS_PER_SECOND / frames.refreshHz else 0f },
+            budgetMillis = { if (refreshHz > 0f) MillisPerSecond / refreshHz else 0f },
             version = version,
         )
     }
     Section(title = R.string.perfhud_by_screen) {
         val screens = frames.screens.sortedByDescending { it.stats.jankyPercent }
         val worst = screens.maxOfOrNull { it.stats.jankyPercent } ?: 0f
-        screens.forEach { screen -> ScreenRow(screen, scaleTop = maxOf(worst, MIN_BAR_SCALE_PERCENT)) }
+        screens.forEach { screen -> ScreenRow(screen, scaleTop = maxOf(worst, MinBarScalePercent)) }
     }
 }
 
@@ -69,8 +73,8 @@ internal fun FrameSections(recorder: PerformanceRecorder, snapshot: PerformanceS
 private fun ScreenRow(screen: ScreenFrames, scaleTop: Float) {
     val stats = screen.stats
     val bar = when {
-        stats.jankyPercent <= GOOD_JANKY_PERCENT -> AppTheme.colors.success.content
-        stats.jankyPercent <= FAIR_JANKY_PERCENT -> AppTheme.colors.warning.content
+        stats.jankyPercent <= GoodJankyPercent -> AppTheme.colors.success.content
+        stats.jankyPercent <= FairJankyPercent -> AppTheme.colors.warning.content
         else -> AppTheme.colors.danger.content
     }
     val track = AppTheme.colors.surfaceVariant
@@ -125,17 +129,10 @@ private fun percentiles(stats: FrameStats): String =
 @Composable
 internal fun millis(value: Float): String = stringResource(R.string.perfhud_value_millis, decimal(value, 1))
 
-internal fun duration(millis: Long): String {
-    val seconds = millis / MILLIS_PER_SECOND_LONG
-    return (seconds / SECONDS_PER_MINUTE).toString() + ":" + (seconds % SECONDS_PER_MINUTE).toString().padStart(2, '0')
-}
-
 private val BarHeight = 6.dp
-private const val MILLIS_PER_SECOND = 1000f
-private const val MILLIS_PER_SECOND_LONG = 1000L
-private const val SECONDS_PER_MINUTE = 60L
-private const val GOOD_JANKY_PERCENT = 0.5f
-private const val FAIR_JANKY_PERCENT = 2f
+private const val MillisPerSecond = 1000f
+private const val GoodJankyPercent = 0.5f
+private const val FairJankyPercent = 2f
 
 /** Below this, a screen's bar is drawn against 5 %, so a 0.1 % screen does not fill its row. */
-private const val MIN_BAR_SCALE_PERCENT = 5f
+private const val MinBarScalePercent = 5f
