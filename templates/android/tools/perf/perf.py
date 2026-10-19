@@ -41,7 +41,7 @@ import parse_gfx  # noqa: E402
 # The order scenarios run in, whatever order they are given: everything that keeps the process
 # alive first, then memory after the journey, then the scenarios that kill or recompile the app.
 SCENARIOS = [
-    "tabs", "tabs_tap", "tab1", "pushpop", "pushpop_gesture", "back_during_push", "rapid_back",
+    "tabs", "tabs_tap", "tab1", "pushpop", "pushpop_gesture", "back_during_push", "back_card_held", "rapid_back",
     "scroll_root", "tabs_large", "pushpop_large", "listdetail_select", "scroll_large", "sidebar_toggle",
     "idle", "nav_stress", "restore", "meminfo", "scroll_minimize", "recompose", "trace",
     "coldstart", "coldstart_installed",
@@ -563,23 +563,12 @@ class Run:
         it as different. The release must land on the list.
         """
         shots = os.path.join(self.out, "back_during_push")
-        os.makedirs(shots, exist_ok=True)
-        width, height = self.device.size
-        row = self.at_root(0)
-        rest_list = os.path.join(shots, "list.png")
-        rest_detail = os.path.join(shots, "detail.png")
-        self.device.screenshot(rest_list)
-        self.device.shell(self.tap(row))
-        time.sleep(1.5)
-        self.device.screenshot(rest_detail)
-        self.device.shell("input keyevent 4")
-        time.sleep(1.5)
-        apart = image_difference(rest_detail, rest_list)
-        if apart is None or apart < MIN_SCREEN_DIFFERENCE:
-            self.notes.append(f"back_during_push: the list and the detail look alike ({apart}); nothing to compare")
+        rest_list, apart = self.list_and_detail(shots, "back_during_push")
+        if rest_list is None:
             return
+        width, height = self.device.size
         ratios, landed = [], []
-        y = height // 2
+        y = int(height * BACK_CHECK_HEIGHT)
         for edge in ("left", "right", "left", "right"):
             row = self.at_root(0)
             start = 2 if edge == "left" else width - 3
@@ -607,6 +596,61 @@ class Run:
         self.record("back_during_push.difference_ratios", ratios)
         self.record("back_during_push.opaque", bool(measured) and min(measured) >= OPAQUE_RATIO)
         self.record("back_during_push.lands_on_list", all(landed))
+
+    def back_card_held(self):
+        """A back swipe held over a pushed screen that has come to rest, from each edge in turn, the
+        screenshot taken while the finger is still down at 45 % of the width: the frame a person
+        looks at, and may screenshot, while deciding whether to let go.
+
+        As in back_during_push, the shot must show the pushed screen as one opaque card over the
+        list. The finger goes back to the edge before it lifts, so every gesture is cancelled.
+        """
+        shots = os.path.join(self.out, "back_card_held")
+        rest_list, apart = self.list_and_detail(shots, "back_card_held")
+        if rest_list is None:
+            return
+        width, height = self.device.size
+        remote = "/data/local/tmp/perf_back_card_held.png"
+        ratios = []
+        for edge in ("left", "right", "left", "right"):
+            row = self.at_root(0)
+            self.device.shell(self.tap(row))
+            time.sleep(1.5)
+            self.device.shell(back_swipe(width, height, edge=edge, y=int(height * BACK_CHECK_HEIGHT),
+                                         while_held=f"screencap -p {remote}", cancel=True))
+            self.counter += 1
+            held = os.path.join(shots, f"held_{self.counter:03d}_{edge}.png")
+            self.device.adb("pull", remote, held)
+            self.device.shell(f"rm -f {remote}")
+            ratio = image_difference(held, rest_list)
+            ratios.append(round(ratio / apart, 2) if ratio is not None else None)
+            time.sleep(1.0)
+            if not self.app.in_front():
+                self.app.launch()
+                time.sleep(1.5)
+        measured = [ratio for ratio in ratios if ratio is not None]
+        self.record("back_card_held.difference_ratios", ratios)
+        self.record("back_card_held.opaque", bool(measured) and min(measured) >= OPAQUE_RATIO)
+
+    def list_and_detail(self, shots, scenario):
+        """Screenshots the root list, and the first row's detail at rest, into [shots]. Returns the
+        list's screenshot and how different the two are, or (None, None) when they look too alike
+        for a blend of them to be told from either."""
+        os.makedirs(shots, exist_ok=True)
+        row = self.at_root(0)
+        rest_list = os.path.join(shots, "list.png")
+        rest_detail = os.path.join(shots, "detail.png")
+        self.device.screenshot(rest_list)
+        self.device.shell(self.tap(row))
+        time.sleep(1.5)
+        self.device.screenshot(rest_detail)
+        self.device.shell("input keyevent 4")
+        time.sleep(1.5)
+        apart = image_difference(rest_detail, rest_list)
+        if apart is None or apart < MIN_SCREEN_DIFFERENCE:
+            self.notes.append(f"{scenario}: the list and the detail look alike ({apart}); nothing to compare")
+            return None, None
+        return rest_list, apart
 
     def push_to_depth(self, row):
         """Pushes the first row, then related rows: depth 4 when the detail has them, else 2."""
@@ -963,6 +1007,7 @@ class Run:
             "tabs": self.tabs_scenario,
             "tabs_tap": lambda: self.tabs_scenario("tabs_tap"),
             "back_during_push": self.back_during_push,
+            "back_card_held": self.back_card_held,
             "recompose": self.recompose,
             "trace": self.trace,
             "tab1": self.tab1,
@@ -996,6 +1041,10 @@ MIN_SCREEN_DIFFERENCE = 6.0
 # Mid-gesture against the list, as a share of the detail against the list: an opaque card stays near
 # 1, a half-and-half blend of the two screens near 0.5.
 OPAQUE_RATIO = 0.75
+# How far down the window the opacity checks swipe back: where a thumb swipes on a phone held in one
+# hand, and clear of the dev tools badge, which docks to the right edge about half-way down and takes
+# that edge's back gesture where it lies.
+BACK_CHECK_HEIGHT = 0.37
 
 PERFETTO_CONFIG = """
 buffers { size_kb: 65536 fill_policy: RING_BUFFER }
@@ -1248,8 +1297,9 @@ def measure_on(device, args):
     unknown = [name for name in args.scenarios if name not in SCENARIOS]
     if unknown:
         raise HarnessError(f"unknown scenarios {unknown}; known: {', '.join(SCENARIOS)}")
-    if "back_during_push" in args.scenarios:
-        require_tools(["ffmpeg"], "back_during_push (it compares screenshots)")
+    for compared in ("back_during_push", "back_card_held"):
+        if compared in args.scenarios:
+            require_tools(["ffmpeg"], f"{compared} (it compares screenshots)")
     apk = args.apk or find_apk(device, args.variant)
     if not os.path.isfile(apk):
         raise HarnessError(f"{apk} does not exist")
@@ -1355,7 +1405,8 @@ def record_on(device, args):
             actions = f"input swipe {x} {int(height * 0.75)} {x} {int(height * 0.29)} 140"
         elif args.journey == "back_during_push":
             edge = args.edge or "right"
-            actions = f"{run.tap(row)}; {back_swipe(width, height, edge=edge, share=0.35, steps=8)}"
+            y = int(height * BACK_CHECK_HEIGHT)
+            actions = f"{run.tap(row)}; {back_swipe(width, height, edge=edge, share=0.35, steps=8, y=y)}"
         elif args.journey.startswith("back_"):
             edge = args.edge or "left"
             start, far = (2, int(width * 0.6)) if edge == "left" else (width - 3, int(width * 0.4))
@@ -1404,11 +1455,13 @@ def gesture_swipe(width, height):
     return f"input swipe 3 {height // 2} {int(width * 0.7)} {height // 2 + 50} 260"
 
 
-def back_swipe(width, height, edge="left", share=0.45, steps=24, hold=0.0, drift=0, cancel=False):
-    """Shell commands for a back gesture from one edge, made of single motion events: [share] of the
-    width in [steps] moves, the finger drifting down by [drift] px, held for [hold] s, then let go
-    where it is (a commit) or after returning to the edge at the height it drifted to (a cancel)."""
-    y = height // 2
+def back_swipe(width, height, edge="left", share=0.45, steps=24, hold=0.0, drift=0, cancel=False, y=None,
+               while_held=None):
+    """Shell commands for a back gesture from one edge at [y] (half-way down unless given), made of
+    single motion events: [share] of the width in [steps] moves, the finger drifting down by [drift]
+    px, the shell command [while_held] run once it has arrived, held for [hold] s, then let go where
+    it is (a commit) or after returning to the edge at the height it drifted to (a cancel)."""
+    y = height // 2 if y is None else y
     start = 2 if edge == "left" else width - 3
     direction = 1 if edge == "left" else -1
     far = int(width * share)
@@ -1421,6 +1474,8 @@ def back_swipe(width, height, edge="left", share=0.45, steps=24, hold=0.0, drift
 
     commands = [f"input motionevent DOWN {start} {y}"]
     commands += [f"input motionevent MOVE {x} {my}" for x, my in map(at, range(1, steps + 1))]
+    if while_held:
+        commands.append(while_held)
     if hold:
         commands.append(f"sleep {hold}")
     if cancel:

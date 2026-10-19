@@ -434,6 +434,48 @@ class RecomposeTraceTest(unittest.TestCase):
         self.assertGreater(moves[first_drift][0] - 2, moves[first_drift][1] - 1200)
         self.assertEqual(moves[23], (2 + 432, 1800))
 
+    def test_a_held_back_swipe_runs_its_command_while_the_finger_is_down(self):
+        commands = perf.back_swipe(1080, 2400, edge="right", steps=4, y=888, while_held="screencap -p /x.png",
+                                   cancel=True).split("; ")
+        shot = commands.index("screencap -p /x.png")
+        self.assertEqual(commands[shot - 1], "input motionevent MOVE 591 888")
+        self.assertEqual(commands[shot + 1], "input motionevent MOVE 712 888")
+        self.assertEqual(commands[-1], "input motionevent UP 1077 888")
+        self.assertTrue(all(command.endswith(" 888") for command in commands if "motionevent" in command))
+
+
+@unittest.skipUnless(perf.shutil.which("ffmpeg"), "needs ffmpeg on PATH")
+class OpacityCheckTest(unittest.TestCase):
+    """The comparison back_during_push and back_card_held gate on, over screens made to the shape of
+    the real ones: a list of rows, a detail of different content, and the back card over the list."""
+
+    LIST = "color=c=0x14171C:s=270x600,drawgrid=w=270:h=75:t=22:c=0x2A3038,drawgrid=w=90:h=25:t=3:c=0xC8CCD2"
+    DETAIL = "color=c=0x14171C:s=270x600,drawbox=x=20:y=0:w=230:h=600:c=0x22262D:t=fill,drawgrid=w=54:h=40:t=4:c=0xF0F2F5"
+
+    def render(self, out, graph, name):
+        path = os.path.join(out, name)
+        perf.subprocess.run(
+            ["ffmpeg", "-v", "error", "-f", "lavfi", "-i", self.LIST, "-f", "lavfi", "-i", self.DETAIL,
+             "-filter_complex", graph, "-frames:v", "1", "-y", path],
+            check=True,
+        )
+        return path
+
+    def ratio(self, mid, rest_list, rest_detail):
+        return perf.image_difference(mid, rest_list) / perf.image_difference(rest_detail, rest_list)
+
+    def test_an_opaque_card_passes_and_two_screens_through_each_other_fail(self):
+        with tempfile.TemporaryDirectory() as out:
+            rest_list = self.render(out, "[0:v]null", "list.png")
+            rest_detail = self.render(out, "[1:v]null", "detail.png")
+            # The detail shrunk to 0.9 toward the far edge, over the list under the 32 % scrim.
+            card = self.render(out, "[0:v]colorchannelmixer=rr=0.68:gg=0.68:bb=0.68[dim];[1:v]scale=243:540[c];"
+                                    "[dim][c]overlay=19:30", "card.png")
+            through = self.render(out, "[0:v][1:v]blend=all_mode=average", "through.png")
+            self.assertGreater(perf.image_difference(rest_detail, rest_list), perf.MIN_SCREEN_DIFFERENCE)
+            self.assertGreaterEqual(self.ratio(card, rest_list, rest_detail), perf.OPAQUE_RATIO)
+            self.assertLess(self.ratio(through, rest_list, rest_detail), perf.OPAQUE_RATIO)
+
 
 class UprightTest(unittest.TestCase):
     class FakeDevice(perf.Device):
@@ -570,6 +612,12 @@ class HostTest(unittest.TestCase):
         args = perf.argparse.Namespace(gates=check_gates.DEFAULT_GATES, gate="solid", apk=None, variant="devRelease",
                                        scenarios=["tabs", "back_during_push"])
         with self.without("ffmpeg"), self.assertRaisesRegex(perf.HarnessError, "back_during_push .* ffmpeg"):
+            perf.measure_on(self.UntouchedDevice(), args)
+
+    def test_back_card_held_without_ffmpeg_stops_before_the_device_is_touched(self):
+        args = perf.argparse.Namespace(gates=check_gates.DEFAULT_GATES, gate="solid", apk=None, variant="devRelease",
+                                       scenarios=["back_card_held"])
+        with self.without("ffmpeg"), self.assertRaisesRegex(perf.HarnessError, "back_card_held .* ffmpeg"):
             perf.measure_on(self.UntouchedDevice(), args)
 
     def test_record_without_ffprobe_fails_with_a_message(self):

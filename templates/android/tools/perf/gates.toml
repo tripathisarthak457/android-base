@@ -232,6 +232,11 @@ label = "Back swipe during a push: lands on the list"
 solid = true
 
 [[row]]
+metric = "back_card_held.opaque"
+label = "Back swipe held over a pushed screen: one opaque card, the list only around it"
+solid = true
+
+[[row]]
 metric = "rapid_back.alive"
 label = "Rapid Back: the app is still running"
 solid = true
