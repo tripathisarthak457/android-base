@@ -30,3 +30,9 @@ Newest last. Format: date time | decision | options considered | reasoning | adv
 - Oct 19 16:25 (the user): cap 95% for the window that resets at 21:09, then 98% after 21:00. Applied as a one-window override (stop at 93% with 7-minute checks from 78%), the same way as the 16:10 window; the standing 80% day / 98% night rule stays for later windows unless the user says otherwise.
 
 - Oct 19 17:05: District research runs now beside the bug fix because it changes no code and does not use the phone; the phone study waits until the bug fix and staging free the phone and the user has installed and signed in to District (sign-in is theirs). Observation only: public sources and what the app visibly does, no decompiling or asset copying (the app's owners' rights). Every proposal goes to the user one by one.
+
+- Oct 19 19:50 (the user): 99% cap for every window until 09:00 Oct 20, then stop. Pause at 96% with 3-minute checks from 86% so the overshoot stays under 99% at today's fastest rate (~1.3 points a minute) and the pause, backup and resume scheduling still have room; the 07:09 window's usual 80% day rule is overridden by the user; at 08:55 a wind-down with no resume, since the user said stop at 9 am.
+
+- Oct 19 19:57: REQUIREMENTS 46 enforced as a requirement-by-requirement matrix on staging (proof per row, smoothness verdict, better way and owner for every gap) and as a condition of the Android release gate, because a status table alone (the coverage audit) shows whether work happened, not whether each requirement is met at the bar the user asked for.
+
+- Oct 19 20:12 (the user): overnight pause point raised from 96% to 98%. Checks tighten to every 2 minutes from 92% and every minute from 95%, so the overshoot at ~1.3 points a minute stays under the hard 100% limit, where the pause, backup and resume scheduling could no longer run.

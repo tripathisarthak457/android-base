@@ -252,3 +252,13 @@ If it runs smooth there, it runs smooth on most phones.
     - The phone study runs after the bug fix and staging free the phone, once the user has installed District from the Play
       Store and signed in themselves (I never sign in or create accounts). It only observes: no decompiling, no copying of the
       app's code or assets, no taps that buy, book, pay or change the account.
+
+46. **Every requirement fully fulfilled, the most optimised, best and smoothest way (the user, Oct 19 19:56).** "make sure requirements are fully fulfilled in their most optimises best and smoothest way".
+    - Staging checks it (`scripts/consolidate-staging.js`, phase Requirements): three Opus auditors judge every requirement and
+      sub-point on the combined code as met (with proof: a test, a phone capture or a perf number), partly, not-met or deferred
+      (only by a user decision), plus whether it is done the smoothest way on the Redmi and, if not, the better way and its cost; a
+      separate Opus reviewer rejects any "met" without proof and any "best" over a red perf row. Output
+      `staging/REQUIREMENTS-MATRIX.md` and `staging/REQUIREMENTS-GAPS.md` (gaps by staging-wp branch).
+    - The Android release gate requires every Android requirement met with proof, done the smoothest way the evidence supports,
+      or deferred by the user; the release workflow, re-based on staging after the user's go, re-runs the matrix as its last step.
+    - Every package run after staging starts from its gaps in REQUIREMENTS-GAPS.md and closes them with proof.

@@ -8,3 +8,4 @@
 - [Rust Nuvio rewrite plan](rust-nuvio-rewrite-plan.md) — Phase-0 done 2026-10-18, ON HOLD until the user says start; plan in ~/.claude/plans/rust-nuvio-phase0/
 - [Workflow model routing](workflow-model-routing.md) — Sonnet readers, Opus super-mod/advisors/dev; reader agents must not write files
 - [Working rules: Opus and Sonnet](working-rules-opus-sonnet.md) — Opus for code and decisions; Sonnet only for supervised mechanical work (device runs, lookups); ask the user's decisions in chat with pros, cons and catches; decision log
+- [Status shows parked work](status-show-parked-work.md) — every update lists parked packages, what they wait for and since when (glass was missed for days)

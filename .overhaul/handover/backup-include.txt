@@ -20,6 +20,10 @@
 - /perf/WP11/after-early/run2/failure_run2_041.xml
 # Gmail recording log: line 3 is the subject of a real e-mail. Add back only a redacted copy (MANIFEST.md)
 - /research/predictive-back/record-gmail-r2.log
+# District research raw lookups name third-party people and a LinkedIn profile (Oct 19 20:25); keep them on this machine.
+- /research/district/gather-design.md
+- /research/district/gather-engineering.md
+- /research/district/gather-technique.md
 # PeriFlow secrets (none are in the workspace; kept as a guard)
 - PeriFlow-Postman/
 - periflow-recovery-codes.txt

@@ -15,6 +15,9 @@ Nothing was decompiled. No gradle, adb, worktree, commit or push.
 - **likely**: the source supports it with a caveat, or it rests on two independent weaker signals.
 - **unverified**: I could not open the source, or the claim is inference.
 
+People are cited by role, not by name. The URLs stay, because they are the sources, and some of them carry a
+person's name.
+
 Motion described from videos is **observation of what the screen does**, never a statement about District's code.
 
 ---
@@ -67,7 +70,7 @@ Nothing public rules Flutter or React Native in or out. Only the user's own devi
 | T1 | No public source states District Android's toolkit (Compose, Views, Flutter, React Native) | confirmed (absence) | My own searches: the exact package id, District plus Compose, Zomato Compose or server-driven UI, crash traces naming the packages. Eternal's blog has 16 posts and none is about District Android |
 | T2 | Sushi Compose is an official Eternal Compose Multiplatform design system. Its blog file (added to the repo 2025-07-29) calls it "Production Proven", says it powers Zomato, and says it is "currently being used on Android". It is "stable and production-ready for Android" | confirmed | https://github.com/Zomato/compose-sushi/blob/dev/blog/SUSHI_DESIGN_SYSTEM_BLOG.md (commit date from the GitHub API) |
 | T3 | The same blog never names District. Its only mention of "all ETERNAL apps" is an example of apps that scale to millions of users. It does not say Sushi Compose is used in every Eternal app | confirmed | same file, the line about scaling from MVP to millions. The Sonnet reading "meant to scale across all Eternal apps" over-reads it |
-| T4 | Tarun Goyal, Engineering Manager at Zomato (2023 to present), says on his Toptal resume that he led the introduction and adoption of Jetpack Compose, plus screenshot testing and modularisation. His portfolio links the main Zomato app (`com.application.zomato`), not District | confirmed (self-reported) | https://www.toptal.com/developers/resume/tarun-goyal (read in the browser) |
+| T4 | A Zomato Android engineering manager (2023 to present) says on his public Toptal resume that he led the introduction and adoption of Jetpack Compose, plus screenshot testing and modularisation. His portfolio links the main Zomato app (`com.application.zomato`), not District | confirmed (self-reported) | https://www.toptal.com/developers/resume/tarun-goyal (read in the browser) |
 | T5 | A candidate's "Zomato(District) Android Interview Experience" (Medium, 23 Nov 2025, member-only) says the interview questions centred on Compose because the candidate said he used it. This shows the interviewers know Compose, not what District uses | confirmed (weak signal) | https://medium.com/@p.thapar99/zomato-district-android-interview-experience-dbda616ca4ea |
 | T6 | Eternal's Restaurant Partner app is Android Views and Fragments (SlidingPaneLayout, EmbeddedActivity, SavedStateHandle) and does not mention Compose (1 Dec 2025). So Eternal's Android apps are not all Compose | confirmed | https://www.eternal.com/blog/beyond-the-phone-re-architecting-zomato-restaurant-partner-app-for-large-screens |
 | T7 | Eternal's blog has two Android engineering posts, Restaurant Partner (T6) and Pulse. Pulse is an MQTT library that runs in the Delivery Partner, Consumer and Hyperpure apps; District is not named | confirmed | https://www.eternal.com/blogs ; https://www.eternal.com/blog/pulse (23 Jun 2026). The Sonnet "only one Android post" was wrong |
@@ -195,7 +198,7 @@ confirmed as written by the reviewers.
 - **Press:** OfficeChai (16 Nov 2024) praises the purple theme, the "zany" font, a dark theme that is easy on the
   eyes, an uncluttered layout, better design than BookMyShow, "slick and well-made". It says nothing about animation.
   Confirmed.
-- **Peerlist "Zomato's" UX article** (Ishika Jagatramka): about the Zomato food app; District appears only as a
+- **Peerlist "Zomato's" UX article** (an independent author): about the Zomato food app; District appears only as a
   bottom-nav cross-promotion. Confirmed; do not cite it for District.
 
 ## 7. Platform technique references (numbers re-read at the source)
