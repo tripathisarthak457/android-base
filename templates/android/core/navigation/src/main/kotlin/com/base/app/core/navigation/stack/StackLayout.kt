@@ -126,7 +126,9 @@ private fun EntrySlot(
     val visibility = remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
     val divided = plan.followsAnotherPane(key)
     val divider = AppTheme.colors.divider
-    val draw = remember(scene, key, isLight, divided, divider) { sceneDraw(scene, key, isLight, divided, divider) }
+    val draw = remember(scene, key, isLight, divided, divider) {
+        Modifier.sceneDraw(scene, key, isLight, divided, divider)
+    }
     CompositionLocalProvider(
         LocalLifecycleOwner provides lifecycle,
         LocalTabVisible provides visibility,
@@ -143,7 +145,7 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
     val divided = plan.followsAnotherPane(key)
     // Opaque, as every entry is (EntryFrame): the pane slides with its page over another one.
     val draw = remember(scene, key, isLight, divided, divider, background) {
-        sceneDraw(scene, key, isLight, divided, divider).background(background)
+        Modifier.sceneDraw(scene, key, isLight, divided, divider).background(background)
     }
     Box(draw) {
         AppEmptyState(
@@ -160,8 +162,14 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
  * that layer each of those frames would record the whole screen again, not the few operations
  * around it.
  */
-private fun sceneDraw(scene: StackScene, key: Any, isLight: Boolean, divided: Boolean, divider: Color): Modifier =
-    Modifier
+private fun Modifier.sceneDraw(
+    scene: StackScene,
+    key: Any,
+    isLight: Boolean,
+    divided: Boolean,
+    divider: Color,
+): Modifier =
+    this
         .graphicsLayer { with(scene) { pose(key) } }
         .drawWithContent {
             with(scene) { drawOver(key, isLight) }
