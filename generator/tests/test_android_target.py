@@ -15,6 +15,7 @@ from genkit.core.record import RECORD_NAME
 from genkit.core.target import RenderError
 from genkit.targets import get
 from genkit.targets.android import look, scaffold, settings, tabs, variants
+from tests.consistency import checks
 
 ANDROID = get("android")
 
@@ -160,6 +161,20 @@ class ScaffoldTest(unittest.TestCase):
             ['    implementation(project(":feature:orders"))\n', '    implementation(project(":feature:wallet"))\n'],
             regions["app-feature-dependencies"],
         )
+
+    def test_a_scaffolded_module_names_only_what_the_project_declares(self):
+        # The modules are written from code rather than copied from the template, so nothing moves
+        # them when the template moves a type they name, and the first build to notice is a user's.
+        # Issues the project has without them belong to the template, not to them.
+        with tempfile.TemporaryDirectory() as temp:
+            for features in ([], ["network"]):
+                with self.subTest(features=features):
+                    root = Path(temp) / "-".join(["none", *features])
+                    without = generate(root / "without", features=features)
+                    scaffolded = generate(root / "with", features=features, feature_modules=["orders"])
+                    added = set(checks.check(scaffolded, "com.acme.field", None))
+                    added -= set(checks.check(without, "com.acme.field", None))
+                    self.assertEqual([], sorted(added))
 
 
 class LookTest(unittest.TestCase):

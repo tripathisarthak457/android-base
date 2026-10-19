@@ -53,11 +53,15 @@ class Default{class_name}Repository @Inject constructor(
         const val ITEMS_PATH = "{name}"
     }}
 }}"""
-        imports = f"""import {pkg}.core.common.AppResult
+        imports = f"""import {pkg}.core.common.result.AppResult
 import {pkg}.core.network.NetworkClient
 import {pkg}.core.network.get
+import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton"""
+        # The item is the wire format until a DTO is added, and the client decodes with
+        # kotlinx.serialization, which fails every response for a class without a serializer.
+        wire_format = "@Serializable\n"
     else:
         repository_impl = f"""@Singleton
 class Default{class_name}Repository @Inject constructor() : {class_name}Repository {{
@@ -65,16 +69,17 @@ class Default{class_name}Repository @Inject constructor() : {class_name}Reposito
     override suspend fun items(): AppResult<List<{class_name}Item>> =
         AppResult.Success(emptyList())
 }}"""
-        imports = f"""import {pkg}.core.common.AppResult
+        imports = f"""import {pkg}.core.common.result.AppResult
 import javax.inject.Inject
 import javax.inject.Singleton"""
+        wire_format = ""
 
     _write(source / f"{class_name}Repository.kt", f"""package {pkg}.data.{name}
 
 {imports}
 
 /** The domain model for {module_title(name)}. Add a DTO and a mapper once the wire format differs. */
-data class {class_name}Item(
+{wire_format}data class {class_name}Item(
     val id: Int,
     val title: String,
 )
@@ -130,7 +135,7 @@ dependencies {{
 
     _write(source / f"{class_name}NavKeys.kt", f"""package {pkg}.feature.{name}
 
-import {pkg}.core.navigation.AppNavKey
+import {pkg}.core.common.navigation.AppNavKey
 import kotlinx.serialization.Serializable
 
 /** This feature's destinations. Keys carry ids, never models: they are saved in the bundle. */
@@ -144,10 +149,10 @@ data class {class_name}DetailKey(val itemId: Int) : AppNavKey
     _write(source / f"{class_name}Contract.kt", f"""package {pkg}.feature.{name}
 
 import androidx.compose.runtime.Immutable
-import {pkg}.core.common.mvi.LoadState
-import {pkg}.core.common.mvi.UiEffect
-import {pkg}.core.common.mvi.UiEvent
-import {pkg}.core.common.mvi.UiState
+import {pkg}.core.common.LoadState
+import {pkg}.core.mvi.UiEffect
+import {pkg}.core.mvi.UiEvent
+import {pkg}.core.mvi.UiState
 import {pkg}.data.{name}.{class_name}Item
 
 @Immutable
@@ -169,9 +174,9 @@ sealed interface {class_name}Effect : UiEffect {{
 
     _write(source / f"{class_name}ViewModel.kt", f"""package {pkg}.feature.{name}
 
-import {pkg}.core.common.AppResult
-import {pkg}.core.common.mvi.LoadState
-import {pkg}.core.common.mvi.MviViewModel
+import {pkg}.core.common.LoadState
+import {pkg}.core.common.result.AppResult
+import {pkg}.core.mvi.MviViewModel
 import {pkg}.data.{name}.{class_name}Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -186,26 +191,32 @@ class {class_name}ViewModel @Inject constructor(
         onEvent({class_name}Event.Load)
     }}
 
-    override suspend fun handleEvent(event: {class_name}Event) {{
+    override fun handleEvent(event: {class_name}Event) {{
         when (event) {{
             {class_name}Event.Load, {class_name}Event.Retry -> load()
-            is {class_name}Event.ItemClicked -> emitEffect({class_name}Effect.OpenDetail(event.id))
+            is {class_name}Event.ItemClicked -> emit({class_name}Effect.OpenDetail(event.id))
         }}
     }}
 
-    private suspend fun load() {{
-        updateState {{ copy(loadState = LoadState.Loading) }}
+    private fun load() {{
+        launchLatest(LOAD) {{
+            setState {{ copy(loadState = LoadState.Loading) }}
 
-        when (val result = repository.items()) {{
-            is AppResult.Success -> updateState {{
-                copy(
-                    loadState = if (result.data.isEmpty()) LoadState.Empty else LoadState.Success,
-                    items = result.data,
-                )
+            when (val result = repository.items()) {{
+                is AppResult.Success -> setState {{
+                    copy(
+                        loadState = if (result.value.isEmpty()) LoadState.Empty else LoadState.Success,
+                        items = result.value,
+                    )
+                }}
+
+                is AppResult.Failure -> setState {{ copy(loadState = LoadState.Error(result.error)) }}
             }}
-
-            is AppResult.Failure -> updateState {{ copy(loadState = result.toLoadState()) }}
         }}
+    }}
+
+    private companion object {{
+        const val LOAD = "load"
     }}
 }}
 """)
@@ -235,7 +246,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import {pkg}.core.common.mvi.LoadState
+import {pkg}.core.common.LoadState
+import {pkg}.core.common.result.AppError
 import {pkg}.core.designsystem.component.container.AppCard
 import {pkg}.core.designsystem.component.container.AppScaffold
 import {pkg}.core.designsystem.component.feedback.AppEmptyState
@@ -244,7 +256,7 @@ import {pkg}.core.designsystem.component.feedback.AppSkeletonListItem
 import {pkg}.core.designsystem.component.navigation.AppLargeTitle
 import {pkg}.core.designsystem.component.text.AppText
 import {pkg}.core.designsystem.theme.AppTheme
-import {pkg}.core.ui.asString
+import {pkg}.core.ui.text
 import {pkg}.data.{name}.{class_name}Item
 
 /** Stateless, so the previews below need no ViewModel or network. */
@@ -261,8 +273,8 @@ fun {class_name}Screen(
     ) {{
         when (val loadState = state.loadState) {{
             is LoadState.Error -> AppErrorState(
-                message = loadState.message.asString(),
-                isOffline = loadState.isOffline,
+                message = loadState.error.text(),
+                isOffline = loadState.error == AppError.Offline,
                 onRetry = {{ onEvent({class_name}Event.Retry) }},
             )
 
@@ -392,15 +404,15 @@ object {class_name}NavModule {{
 
     _write(tests / f"{class_name}ViewModelTest.kt", f"""package {pkg}.feature.{name}
 
-import {pkg}.core.common.AppResult
-import {pkg}.core.common.mvi.LoadState
+import {pkg}.core.common.LoadState
+import {pkg}.core.common.result.AppError
+import {pkg}.core.common.result.AppResult
 import {pkg}.core.testing.MainDispatcherRule
 import {pkg}.data.{name}.{class_name}Item
 import {pkg}.data.{name}.{class_name}Repository
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -432,12 +444,12 @@ class {class_name}ViewModelTest {{
     @Test
     fun `a failure surfaces as an error state`() = runTest {{
         val viewModel = {class_name}ViewModel(
-            Fake{class_name}Repository(AppResult.Failure(message = "Nope")),
+            Fake{class_name}Repository(AppResult.Failure(AppError.Offline)),
         )
 
         advanceUntilIdle()
 
-        assertTrue(viewModel.state.value.loadState is LoadState.Error)
+        assertEquals(LoadState.Error(AppError.Offline), viewModel.state.value.loadState)
     }}
 }}
 
