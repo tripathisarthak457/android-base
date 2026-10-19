@@ -112,8 +112,9 @@ class ZipTest(unittest.TestCase):
 
     @unittest.skipIf(shutil.which("git") is None, "git is not installed")
     def test_the_commit_is_the_same_whatever_git_variables_the_caller_has(self):
-        # Git exports the first three to every hook, so to a generator run from one, such as a test
-        # suite in pre-push; the others configure git by themselves.
+        # A hook's git commands find the repository through variables git exports to it, such as
+        # GIT_DIR, and GIT_INDEX_FILE in the commit hooks; a generator run from one, such as a test
+        # suite in pre-commit, inherits them. The others configure git by themselves.
         hostile = Hostile(self.root / "hostile")
         other = self.root / "other"
         subprocess.run(["git", "init", "--template=", str(other)], capture_output=True, check=True)

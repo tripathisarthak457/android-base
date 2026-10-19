@@ -49,9 +49,9 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
         return ["git was not found on PATH, so the repository was not initialised."]
 
     # The commit is the generator's, under its own name, and holds the project alone, so git runs
-    # with none of the caller's configuration. A system or global file can commit CRLF (Git for
-    # Windows sets core.autocrlf=true), drop gradle-wrapper.jar (an excludes file), refuse or
-    # rewrite the commit (hooks, prepare-commit-msg among them, which --no-verify does not skip),
+    # with none of the caller's configuration. A system or global file can pass the files through
+    # a clean filter (a global attributes file), drop gradle-wrapper.jar (an excludes file), refuse
+    # or rewrite the commit (hooks, prepare-commit-msg among them, which --no-verify does not skip),
     # sign it or change its format; a template brings hooks and an info/exclude of its own; and a
     # GIT_ variable, such as the GIT_DIR git exports to every hook, can point each command at
     # another repository. The project's own .gitattributes and .gitignore still apply.
