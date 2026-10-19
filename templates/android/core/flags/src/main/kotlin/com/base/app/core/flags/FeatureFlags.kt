@@ -1,30 +1,33 @@
 package com.base.app.core.flags
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** Where a flag's value comes from. */
+/** Where a flag's value comes from. Overrides set in the inspector win over every source. */
 interface FeatureFlags {
 
+    /** The value now. Cheap: read it where it is needed rather than caching it. */
     operator fun <T> get(flag: Flag<T>): T
 
-    /** Fetches the newest values. Returns whether anything changed. */
-    suspend fun refresh(): Boolean = false
+    /** The value now and every change after it, for a screen that should follow a refresh. */
+    fun <T> observe(flag: Flag<T>): Flow<T>
+
+    /** Fetches the newest values from the source. Returns whether anything changed. */
+    suspend fun refresh(): Boolean
 }
 
-/** The default: every flag reads as declared, plus whatever a debug build has overridden. */
+/** Every flag as declared, plus the inspector's overrides: the source until a vendor is bound. */
 @Singleton
-class LocalFeatureFlags @Inject constructor() : FeatureFlags {
+class LocalFeatureFlags @Inject constructor(
+    private val overrides: FlagOverrides,
+) : FeatureFlags {
 
-    private val overrides = mutableMapOf<String, Any>()
+    override fun <T> get(flag: Flag<T>): T = overrides[flag] ?: flag.default
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T> get(flag: Flag<T>): T = (overrides[flag.key] as? T) ?: flag.default
+    override fun <T> observe(flag: Flag<T>): Flow<T> = overrides.changes.map { get(flag) }.distinctUntilChanged()
 
-    /** Debug builds only. Nothing in release should be able to reach this. */
-    fun override(flag: Flag<*>, value: Any) {
-        overrides[flag.key] = value
-    }
-
-    fun clearOverrides() = overrides.clear()
+    override suspend fun refresh(): Boolean = false
 }

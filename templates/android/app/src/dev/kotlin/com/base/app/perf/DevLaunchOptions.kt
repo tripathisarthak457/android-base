@@ -1,9 +1,10 @@
 package com.base.app.perf
 
 import android.content.Intent
-import com.base.app.core.datastore.AppSettings
-import com.base.app.core.datastore.AppSettingsStore
-import com.base.app.core.datastore.AuthTokenStore
+import com.base.app.core.datastore.session.AuthTokenStore
+import com.base.app.core.datastore.session.AuthTokens
+import com.base.app.core.datastore.settings.AppSettings
+import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.navigation.ShellConfig
@@ -49,7 +50,7 @@ class DevLaunchOptions @Inject constructor(
         // Whether a session is stored, not what it holds: reading the token decrypts it through the
         // Keystore, binder calls on the main thread before the first frame that every measured cold
         // start would pay and no user's start does.
-        if (fakeSession && !tokens.isAuthenticated.first()) tokens.save(SYNTHETIC_TOKEN, SYNTHETIC_TOKEN)
+        if (fakeSession && !tokens.isAuthenticated.first()) tokens.save(AuthTokens(SYNTHETIC_TOKEN, SYNTHETIC_TOKEN, owner = SYNTHETIC_OWNER))
         intent.getStringExtra(THEME)?.takeIf { it in THEMES }?.let { settings.setThemeMode(it) }
         screenResponse = intent.getStringExtra(SCREEN_RESPONSE)?.toFloatOrNull()?.takeIf { it > 0f }
         barMinimize = intent.getStringExtra(BAR_MINIMIZE)?.let { name -> BarMinimize.entries.firstOrNull { it.name == name } }
@@ -73,6 +74,7 @@ class DevLaunchOptions @Inject constructor(
         const val THEME = "perf.theme"
         val THEMES = setOf(AppSettings.THEME_SYSTEM, AppSettings.THEME_LIGHT, AppSettings.THEME_DARK)
         const val SYNTHETIC_TOKEN = "perf-session"
+        const val SYNTHETIC_OWNER = "perf-session-owner"
     }
 }
 

@@ -2,8 +2,9 @@ key = "network"
 title = "REST networking (Ktor)"
 headline = "Talk to a REST API"
 description = """
-NetworkClient with typed helpers, bearer auth with transparent 401 refresh, classified failures,
-and a pluggable response-envelope unwrapper."""
+One HTTP client for the whole app: typed results, the session's token read for every request and
+refreshed one call at a time, every failure classified (offline, timeout, the server's own error
+code, an unreadable body), and the connection state as a hint a screen can show."""
 group = "Networking and data"
 default = true
 requires = []

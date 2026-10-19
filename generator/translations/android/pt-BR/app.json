@@ -3,10 +3,5 @@
   "tab_feed": "Feed",
   "tab_search": "Buscar",
   "tab_profile": "Perfil",
-  "tab_settings": "Configurações",
-  "app_lock_title": "Desbloqueie para continuar",
-  "app_lock_subtitle": "Use sua digital, seu rosto ou o bloqueio de tela.",
-  "app_lock_action": "Desbloquear",
-  "widget_default_headline": "Toque para abrir",
-  "widget_description": "Seu app num relance"
+  "tab_settings": "Configurações"
 }

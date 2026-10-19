@@ -1,23 +1,25 @@
 package com.base.app.core.network.auth
 
-import com.base.app.core.network.NetworkConfig
-import com.base.app.core.network.NetworkJson
+import com.base.app.core.common.time.AppClock
+import com.base.app.core.network.client.CredentialsAttribute
+import com.base.app.core.network.client.NetworkConfig
+import com.base.app.core.network.client.NetworkJson
+import com.base.app.core.network.client.SkipAuthAttribute
 import com.base.app.core.network.di.PlainClient
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
-import io.ktor.http.contentType
+import io.ktor.http.content.TextContent
 import io.ktor.http.isSuccess
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 
 sealed interface TokenRefreshResult {
 
@@ -27,51 +29,65 @@ sealed interface TokenRefreshResult {
         val expiresAtEpochMillis: Long?,
     ) : TokenRefreshResult
 
-    /**
-     * [code] is null when the call never reached the server. That distinction decides whether the
-     * session survives — see the refresh handler in `HttpClientModule`.
-     */
-    data class Failure(val code: Int?, val message: String?) : TokenRefreshResult
-}
+    /** The server refused the refresh token, or there is no endpoint to refresh at: the session is over. */
+    data object Refused : TokenRefreshResult
 
-interface TokenRefresher {
-    suspend fun refresh(refreshToken: String): TokenRefreshResult
+    /**
+     * No answer, or one that says nothing about the session (a 408, a 429, a 5xx). The session
+     * stands and the next request tries again.
+     */
+    data class Failed(val status: Int?) : TokenRefreshResult
 }
 
 /** Exchanges a refresh token for a new pair. */
+fun interface TokenRefresher {
+    suspend fun refresh(refreshToken: String): TokenRefreshResult
+}
+
+/**
+ * POSTs `{"refresh_token": …}` to [NetworkConfig.refreshTokenPath] and reads `access_token`,
+ * `refresh_token` and `expires_in` back. Only a 401 counts as a refusal; a backend that answers a
+ * dead refresh token with another status maps it here.
+ */
 @Singleton
-class KtorTokenRefresher @Inject constructor(
+internal class KtorTokenRefresher @Inject constructor(
     @PlainClient private val client: HttpClient,
     private val config: NetworkConfig,
+    private val clock: AppClock,
 ) : TokenRefresher {
 
-    override suspend fun refresh(refreshToken: String): TokenRefreshResult = try {
-        val response = client.post(config.resolvedBaseUrl + config.refreshTokenPath.trimStart('/')) {
-            contentType(ContentType.Application.Json)
-            setBody(RefreshRequest(refreshToken))
+    override suspend fun refresh(refreshToken: String): TokenRefreshResult {
+        if (config.refreshTokenPath.isBlank()) return TokenRefreshResult.Refused
+        return try {
+            val response = client.post(config.resolvedBaseUrl + config.refreshTokenPath.trimStart('/')) {
+                attributes.put(SkipAuthAttribute, true)
+                attributes.put(CredentialsAttribute, true)
+                setBody(TextContent(NetworkJson.encodeToString(RefreshRequest(refreshToken)), ContentType.Application.Json))
+            }
+            when {
+                response.status.value == UNAUTHORIZED -> TokenRefreshResult.Refused
+                !response.status.isSuccess() -> TokenRefreshResult.Failed(response.status.value)
+                else -> {
+                    val payload = NetworkJson.decodeFromString<RefreshResponse>(response.bodyAsText())
+                    TokenRefreshResult.Success(
+                        accessToken = payload.accessToken,
+                        refreshToken = payload.refreshToken ?: refreshToken,
+                        expiresAtEpochMillis = payload.expiresInSeconds
+                            ?.let { (clock.now() + it.seconds).toEpochMilliseconds() },
+                    )
+                }
+            }
+        } catch (cancellation: CancellationException) {
+            throw cancellation
+        } catch (noAnswer: IOException) {
+            TokenRefreshResult.Failed(status = null)
+        } catch (unreadable: IllegalArgumentException) {
+            TokenRefreshResult.Failed(status = null)
         }
-        val body = response.bodyAsText()
-
-        if (!response.status.isSuccess()) {
-            TokenRefreshResult.Failure(response.status.value, body.takeIf { it.isNotBlank() })
-        } else {
-            val payload = NetworkJson.decodeFromString<RefreshResponse>(body)
-            TokenRefreshResult.Success(
-                accessToken = payload.accessToken,
-                refreshToken = payload.refreshToken ?: refreshToken,
-                expiresAtEpochMillis = payload.expiresInSeconds
-                    ?.let { System.currentTimeMillis() + it * MILLIS_PER_SECOND },
-            )
-        }
-    } catch (cancellation: kotlinx.coroutines.CancellationException) {
-        throw cancellation
-    } catch (throwable: Throwable) {
-        // No code: the request never got an answer, so the session is still presumed valid.
-        TokenRefreshResult.Failure(code = null, message = throwable.message)
     }
 
     private companion object {
-        const val MILLIS_PER_SECOND = 1_000L
+        const val UNAUTHORIZED = 401
     }
 }
 
@@ -86,20 +102,3 @@ private data class RefreshResponse(
     @SerialName("refresh_token") val refreshToken: String? = null,
     @SerialName("expires_in") val expiresInSeconds: Long? = null,
 )
-
-/** Broadcasts "this session is over" from the network layer to whatever is listening. */
-@Singleton
-class SessionEvents @Inject constructor() {
-
-    private val _expired = MutableSharedFlow<Unit>(
-        replay = 0,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
-
-    val expired: Flow<Unit> = _expired.asSharedFlow()
-
-    fun notifyExpired() {
-        _expired.tryEmit(Unit)
-    }
-}

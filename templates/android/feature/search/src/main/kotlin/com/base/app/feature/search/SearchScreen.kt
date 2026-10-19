@@ -48,7 +48,7 @@ import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
 import com.base.app.core.ui.text
-import com.base.app.data.search.api.SearchResult
+import com.base.app.data.search.api.model.SearchResult
 
 @Composable
 internal fun SearchRoute(

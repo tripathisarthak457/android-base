@@ -1,58 +1,40 @@
 package com.base.app.core.network.di
 
-// <opt:room>
-import android.content.Context
-// </opt:room>
 import com.base.app.core.common.network.NetworkMonitor
-import com.base.app.core.network.ConnectivityNetworkMonitor
-import com.base.app.core.network.KtorNetworkClient
+import com.base.app.core.common.session.SessionScopedStore
 import com.base.app.core.network.auth.KtorTokenRefresher
 import com.base.app.core.network.auth.TokenRefresher
-import com.base.app.core.network.NetworkClient
-import com.base.app.core.network.PassthroughUnwrapper
-import com.base.app.core.network.ResponseUnwrapper
-// <opt:room>
-// These live in ResponseCache.kt, which only exists with the room feature.
-import androidx.room.Room
-import com.base.app.core.common.session.SessionScopedStore
-import com.base.app.core.network.CachedResponseDao
-import com.base.app.core.network.NetworkDatabase
-import com.base.app.core.network.QueuedRequestDao
-import com.base.app.core.network.RequestQueue
-import com.base.app.core.network.ResponseCache
-import com.base.app.core.network.RoomRequestQueue
-import com.base.app.core.network.RoomResponseCache
-// </opt:room>
+import com.base.app.core.network.client.InFlightRequests
+import com.base.app.core.network.client.KtorNetworkClient
+import com.base.app.core.network.client.NetworkClient
+import com.base.app.core.network.client.NetworkConfig
+import com.base.app.core.network.client.RetryPolicy
+import com.base.app.core.network.monitor.ConnectivityNetworkMonitor
+import com.base.app.core.network.recording.NetworkObserver
+import com.base.app.core.network.response.PassthroughUnwrapper
+import com.base.app.core.network.response.ResponseUnwrapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-// <opt:room>
-import dagger.hilt.android.qualifiers.ApplicationContext
-// </opt:room>
 import dagger.hilt.components.SingletonComponent
-// <opt:room>
 import dagger.multibindings.IntoSet
-// </opt:room>
-import javax.inject.Qualifier
+import dagger.multibindings.Multibinds
 import javax.inject.Singleton
-
-/** Attaches the bearer token and refreshes it transparently on a 401. */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class AuthenticatedClient
-
-/**
- * No auth plugin at all. Used only by the token refresh call itself, which would otherwise recurse:
- * a 401 on the refresh endpoint would trigger a refresh, which would 401.
- */
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class PlainClient
+// <opt:websocket>
+import com.base.app.core.network.websocket.AppWebSocket
+// </opt:websocket>
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.AppStatusRules
+// </opt:appstatus>
+// <opt:offlinequeue>
+import com.base.app.core.network.queue.OfflineQueue
+import com.base.app.core.network.queue.RequestQueue
+// </opt:offlinequeue>
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface NetworkBindings {
+internal interface NetworkModule {
 
     @Binds
     fun bindNetworkClient(impl: KtorNetworkClient): NetworkClient
@@ -63,51 +45,44 @@ interface NetworkBindings {
     @Binds
     fun bindTokenRefresher(impl: KtorTokenRefresher): TokenRefresher
 
-    /** The default assumes the payload is the response body. */
-    @Binds
-    fun bindResponseUnwrapper(impl: PassthroughUnwrapper): ResponseUnwrapper
-
-    // <opt:room>
-    @Binds
-    fun bindResponseCache(impl: RoomResponseCache): ResponseCache
-
-    @Binds
-    fun bindRequestQueue(impl: RoomRequestQueue): RequestQueue
+    /** Empty unless a build installs an inspector; nothing is recorded then. */
+    @Multibinds
+    fun networkObservers(): Set<NetworkObserver>
 
     @Binds
     @IntoSet
-    fun bindResponseCacheAsSessionScoped(impl: RoomResponseCache): SessionScopedStore
+    fun bindInFlightRequestsAsSessionScoped(impl: InFlightRequests): SessionScopedStore
+    // <opt:websocket>
 
     @Binds
     @IntoSet
-    fun bindRequestQueueAsSessionScoped(impl: RoomRequestQueue): SessionScopedStore
-    // </opt:room>
-}
+    fun bindWebSocketAsSessionScoped(impl: AppWebSocket): SessionScopedStore
+    // </opt:websocket>
+    // <opt:offlinequeue>
 
-@Module
-@InstallIn(SingletonComponent::class)
-object NetworkProviders {
+    @Binds
+    fun bindRequestQueue(impl: OfflineQueue): RequestQueue
+    // </opt:offlinequeue>
 
-    @Provides
-    @Singleton
-    fun providePassthroughUnwrapper(): PassthroughUnwrapper = PassthroughUnwrapper()
+    companion object {
 
-    // <opt:room>
-    @Provides
-    @Singleton
-    fun provideNetworkDatabase(@ApplicationContext context: Context): NetworkDatabase =
-        Room.databaseBuilder(context, NetworkDatabase::class.java, NetworkDatabase.NAME)
-            // Everything here is a cache or a replayable request, so dropping it on a schema change
-            // is safe.
-            .fallbackToDestructiveMigration(dropAllTables = true)
-            .build()
+        /**
+         * The shape of the API's bodies, for every call the app makes. Replace it with an
+         * `EnvelopeUnwrapper`, or one of your own, when the backend wraps its payloads.
+         */
+        @Provides
+        @Singleton
+        fun provideResponseUnwrapper(): ResponseUnwrapper = PassthroughUnwrapper()
 
-    @Provides
-    fun provideCachedResponseDao(database: NetworkDatabase): CachedResponseDao =
-        database.cachedResponseDao()
+        @Provides
+        @Singleton
+        fun provideRetryPolicy(config: NetworkConfig): RetryPolicy = RetryPolicy(maxRetries = config.maxRetries)
+        // <opt:appstatus>
 
-    @Provides
-    fun provideQueuedRequestDao(database: NetworkDatabase): QueuedRequestDao =
-        database.queuedRequestDao()
-    // </opt:room>
+        /** HTTP's own signals. A backend that says "update" or "maintenance" with a code in its body lists the code here. */
+        @Provides
+        @Singleton
+        fun provideAppStatusRules(): AppStatusRules = AppStatusRules()
+        // </opt:appstatus>
+    }
 }

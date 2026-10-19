@@ -2,7 +2,7 @@ package com.base.app.di
 
 import android.os.Build
 import com.base.app.BuildConfig
-import com.base.app.core.network.NetworkConfig
+import com.base.app.core.network.client.NetworkConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,10 +24,6 @@ object AppModule {
         refreshTokenPath = "",
         userAgent = "${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} " +
             "(Android ${Build.VERSION.RELEASE}; ${Build.MANUFACTURER} ${Build.MODEL})",
-        // <opt:devtools>
-        // Same rule as the badge: debug builds, and dev and staging releases. Never
-        // production, where the recorder is not installed and no body is ever held.
-        recordExchanges = buildDevEnvironment().visible,
-        // </opt:devtools>
+        appVersionCode = BuildConfig.VERSION_CODE.toLong(),
     )
 }

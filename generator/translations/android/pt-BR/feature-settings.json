@@ -30,5 +30,9 @@
   "settings_language_system": "Igual ao do celular",
   "settings_legal": "Informações legais",
   "settings_privacy_policy": "Política de privacidade",
-  "settings_terms": "Termos de uso"
+  "settings_terms": "Termos de uso",
+  "settings_notifications": "Notificações",
+  "settings_notifications_on": "Ativadas",
+  "settings_notifications_off": "Desativadas. Toque para permitir.",
+  "settings_notifications_blocked": "Desativadas nas configurações do telefone. Toque para abri-las."
 }

@@ -11,5 +11,9 @@ implied_only = false
 owns = [
   "data/sample",
   "feature/sample",
+  "core/database/src/main/kotlin/{pkg_path}/core/database/sample",
+  "core/database/src/test/kotlin/{pkg_path}/core/database/sample",
+  # The exported schema holds the samples table only; without it the first build exports a new one.
+  "core/database/schemas/com.base.app.core.database.AppDatabase",
 ]
 legacy = []

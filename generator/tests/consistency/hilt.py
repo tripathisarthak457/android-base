@@ -13,7 +13,12 @@ BUILT_IN = {
     "Resources", "WorkerParameters", "FragmentActivity", "HiltWorkerFactory",
 }
 
-_INJECT_CONSTRUCTOR = re.compile(r"class\s+(\w+)(?:<[^>]*>)?\s*(?:@\w+(?:\([^)]*\))?\s*)*@Inject\s+constructor\s*\(")
+_INJECT_CONSTRUCTOR = re.compile(
+    r"class\s+(\w+)(?:<[^>]*>)?\s*(?:@\w+(?:\([^)]*\))?\s*)*@Inject\s+(?:(?:internal|private|protected|public)\s+)?constructor\s*\("
+)
+#: An `@Inject` secondary constructor, which provides the class declared nearest above it.
+_INJECT_SECONDARY = re.compile(r"\n\s+@Inject\s+(?:(?:internal|public)\s+)?constructor\s*\(")
+_CLASS = re.compile(r"\bclass\s+(\w+)")
 _PROVIDER = re.compile(
     r"@(Provides|Binds)\b((?:\s*@\w+(?:\([^)]*\))?)*)\s*(?:(?:internal|public|abstract|suspend)\s+)*fun\s+(\w+)\s*\("
 )
@@ -59,6 +64,12 @@ def missing_bindings(root: Path) -> list[str]:
             provided.add(match.group(1))
             end = _close(code, match.end())
             needed += [(type_name, relative, match.group(1)) for type_name in _parameters(code[match.end():end - 1])]
+        for match in _INJECT_SECONDARY.finditer(code):
+            owner = [found.group(1) for found in _CLASS.finditer(code, 0, match.start())]
+            if owner:
+                provided.add(owner[-1])
+                end = _close(code, match.end())
+                needed += [(type_name, relative, owner[-1]) for type_name in _parameters(code[match.end():end - 1])]
         for match in _PROVIDER.finditer(code):
             end = _close(code, match.end())
             returned = re.match(r"\s*:\s*([\w.<>, ?*]+?)\s*(?:=|\{|\n)", code[end:end + 300])
@@ -75,8 +86,9 @@ def missing_bindings(root: Path) -> list[str]:
         base = re.sub(r"<.*", "", type_name)
         if base in BUILT_IN or type_name in provided or base in provided:
             continue
-        inner = re.match(r"\w+<(?:@JvmSuppressWildcards)?(.*)>", type_name)
-        if base in ("Lazy", "Provider") and inner and (inner.group(1) in provided or re.sub(r"<.*", "", inner.group(1)) in provided):
+        inner = re.match(r"[\w.]+<(?:@JvmSuppressWildcards)?(.*)>", type_name)
+        # Written qualified as often as not: `dagger.Lazy` does not shadow Kotlin's own `Lazy`.
+        if base.rsplit(".", 1)[-1] in ("Lazy", "Provider") and inner and (inner.group(1) in provided or re.sub(r"<.*", "", inner.group(1)) in provided):
             continue
         if base in ("Set", "MutableSet") and inner:
             element = inner.group(1).replace("@JvmSuppressWildcards", "")

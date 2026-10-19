@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.session.SessionController
-import com.base.app.core.datastore.AppSettings
-import com.base.app.core.datastore.AppSettingsStore
+import com.base.app.core.datastore.settings.AppSettings
+import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.container.AppDivider
 import com.base.app.core.designsystem.component.container.AppListItem
@@ -324,6 +324,10 @@ internal fun SettingsScreen(
                 )
             }
             // </opt:applock>
+            // <opt:push>
+
+            NotificationsRow()
+            // </opt:push>
 
             AppSectionHeader(title = stringResource(R.string.settings_privacy))
 

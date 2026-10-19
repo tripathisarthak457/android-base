@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:network"))
     // Signing in writes the token store directly; a repository in front would only forward.
     implementation(project(":core:datastore"))
 }

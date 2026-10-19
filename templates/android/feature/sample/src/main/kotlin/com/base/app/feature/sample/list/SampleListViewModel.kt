@@ -11,10 +11,12 @@ import com.base.app.core.mvi.MessageKind
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiText
 import com.base.app.core.ui.toUiText
-import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.data.sample.api.SampleRepository
 import com.base.app.feature.sample.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 /** The reference ViewModel. Every feature in this project is shaped like this one. */
@@ -32,7 +34,14 @@ internal class SampleListViewModel @Inject constructor(
     val query: TextFieldState = savedStateHandle.saveable(QUERY, saver = TextFieldState.Saver) { TextFieldState() }
 
     init {
-        observe(snapshotFlow { query.text.toString() }) { text -> copy(visibleItems = items.matching(text)) }
+        observe(combine(repository.items, snapshotFlow { query.text.toString() }, ::Pair)) { (items, text) ->
+            copy(
+                items = items,
+                visibleItems = items.matching(text),
+                // Rows already stored are shown while the refresh runs, instead of a skeleton.
+                loadState = if (loadState == LoadState.Loading && items.isNotEmpty()) LoadState.Refreshing else loadState,
+            )
+        }
     }
 
     override fun handleEvent(event: SampleListEvent) {
@@ -46,24 +55,37 @@ internal class SampleListViewModel @Inject constructor(
 
     private fun load(refreshing: Boolean) {
         launchLatest(LOAD) {
-            setState { copy(loadState = if (refreshing) LoadState.Refreshing else LoadState.Loading) }
+            setState {
+                copy(loadState = if (refreshing || items.isNotEmpty()) LoadState.Refreshing else LoadState.Loading)
+            }
 
-            when (val result = repository.items(forceRefresh = refreshing)) {
+            val result = repository.refresh()
+            // Read back rather than waiting for the observer, so Empty is never shown before the rows land.
+            val stored = repository.items.first()
+            when (result) {
                 is AppResult.Success -> setState {
                     copy(
-                        loadState = if (result.value.isEmpty()) LoadState.Empty else LoadState.Success,
-                        items = result.value,
-                        visibleItems = result.value.matching(query.text.toString()),
+                        loadState = if (stored.isEmpty()) LoadState.Empty else LoadState.Success,
+                        items = stored,
+                        visibleItems = stored.matching(query.text.toString()),
                     )
                 }
 
-                // A failed refresh keeps the list on screen and reports it in a snackbar.
-                is AppResult.Failure -> if (refreshing && current.items.isNotEmpty()) {
-                    setState { copy(loadState = LoadState.Success) }
-                    showMessage(
-                        text = result.error.toUiText(UiText.of(R.string.sample_refresh_failed)),
-                        kind = MessageKind.Error,
-                    )
+                // A failed refresh keeps the stored list on screen; one the person asked for says so.
+                is AppResult.Failure -> if (stored.isNotEmpty()) {
+                    setState {
+                        copy(
+                            loadState = LoadState.Success,
+                            items = stored,
+                            visibleItems = stored.matching(query.text.toString()),
+                        )
+                    }
+                    if (refreshing) {
+                        showMessage(
+                            text = result.error.toUiText(UiText.of(R.string.sample_refresh_failed)),
+                            kind = MessageKind.Error,
+                        )
+                    }
                 } else {
                     setState { copy(loadState = LoadState.Error(result.error)) }
                 }

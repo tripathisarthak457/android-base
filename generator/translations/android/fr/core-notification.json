@@ -6,5 +6,6 @@
   "notification_channel_promotions": "Offres",
   "notification_channel_promotions_description": "Promotions et nouveautés.",
   "notification_channel_silent": "Arrière-plan",
-  "notification_channel_silent_description": "Synchronisation et progression."
+  "notification_channel_silent_description": "Synchronisation et progression.",
+  "notification_public_text": "Nouvelle notification"
 }

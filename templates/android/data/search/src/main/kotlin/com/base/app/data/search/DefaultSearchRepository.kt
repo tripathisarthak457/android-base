@@ -6,87 +6,58 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.common.result.map
-import com.base.app.core.datastore.di.SessionDataStore
-import com.base.app.core.network.NetworkClient
-import com.base.app.core.network.get
+import com.base.app.core.network.client.NetworkClient
+import com.base.app.core.network.client.get
 import com.base.app.data.search.api.SearchRepository
-import com.base.app.data.search.api.SearchResult
+import com.base.app.data.search.api.model.SearchResult
+import com.base.app.data.search.di.RecentSearchesStore
+import com.base.app.data.search.recent.RecentSearches
+import com.base.app.data.search.remote.dto.SearchHitDto
+import com.base.app.data.search.remote.toDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
  * Searches the public demo API's full-text `q` parameter. Point [search] at your own endpoint; the
- * recent-searches half works unchanged.
+ * recent searches work unchanged, kept in a file of their own that sign-out empties.
  */
 @Singleton
 internal class DefaultSearchRepository @Inject constructor(
     private val networkClient: NetworkClient,
-    @SessionDataStore private val store: DataStore<Preferences>,
+    @RecentSearchesStore private val store: DataStore<Preferences>,
 ) : SearchRepository {
 
     override val recent: Flow<List<String>> = store.data.map { RecentSearches.decode(it[RECENT]) }
 
     override suspend fun search(query: String): AppResult<List<SearchResult>> =
         networkClient.get<List<SearchHitDto>>(
-            path = "posts",
+            path = POSTS_PATH,
             query = mapOf("q" to query.trim()),
             requiresAuth = false,
         ).map { hits -> hits.map { it.toDomain() } }
 
     override suspend fun result(id: Int): AppResult<SearchResult> =
-        networkClient.get<SearchHitDto>(path = "posts/$id", requiresAuth = false)
+        networkClient.get<SearchHitDto>(path = "$POSTS_PATH/$id", requiresAuth = false)
             .map { it.toDomain(snippetLength = Int.MAX_VALUE) }
 
-    override suspend fun remember(query: String) {
-        store.edit { it[RECENT] = RecentSearches.encode(RecentSearches.add(RecentSearches.decode(it[RECENT]), query)) }
-    }
+    override suspend fun remember(query: String) = update { RecentSearches.add(it, query) }
 
-    override suspend fun forget(query: String) {
-        store.edit { it[RECENT] = RecentSearches.encode(RecentSearches.decode(it[RECENT]) - query) }
-    }
+    override suspend fun forget(query: String) = update { RecentSearches.remove(it, query) }
 
     override suspend fun clearRecent() {
         store.edit { it.remove(RECENT) }
     }
 
+    private suspend fun update(change: (List<String>) -> List<String>) {
+        store.edit { it[RECENT] = RecentSearches.encode(change(RecentSearches.decode(it[RECENT]))) }
+    }
+
     private companion object {
-        val RECENT = stringPreferencesKey("search.recent")
+        val RECENT = stringPreferencesKey("recent")
+
+        // A public demo API, so the reference search works on first run; a full URL never gets the token.
+        const val POSTS_PATH = "https://jsonplaceholder.typicode.com/posts"
     }
 }
-
-/** The list logic, apart from storage, so it can be tested without a DataStore. */
-internal object RecentSearches {
-    const val LIMIT = 8
-    private const val SEPARATOR = '\u001F'
-
-    fun add(current: List<String>, query: String): List<String> {
-        val trimmed = query.trim()
-        if (trimmed.isEmpty()) return current
-        return (listOf(trimmed) + current.filterNot { it.equals(trimmed, ignoreCase = true) }).take(LIMIT)
-    }
-
-    // A unit separator rather than JSON: the values are single lines a person typed, and this
-    // cannot fail to parse.
-    fun encode(values: List<String>): String = values.joinToString(SEPARATOR.toString())
-
-    fun decode(raw: String?): List<String> = raw?.split(SEPARATOR)?.filter { it.isNotBlank() }.orEmpty()
-}
-
-@Serializable
-internal data class SearchHitDto(
-    @SerialName("id") val id: Int = 0,
-    @SerialName("title") val title: String = "",
-    @SerialName("body") val body: String = "",
-)
-
-internal fun SearchHitDto.toDomain(snippetLength: Int = SNIPPET_LENGTH) = SearchResult(
-    id = id,
-    title = title.trim().replaceFirstChar { it.uppercase() },
-    snippet = body.replace('\n', ' ').trim().take(snippetLength),
-)
-
-private const val SNIPPET_LENGTH = 120

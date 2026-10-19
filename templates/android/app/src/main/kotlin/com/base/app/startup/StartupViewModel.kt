@@ -4,9 +4,9 @@ import android.content.Intent
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.base.app.core.datastore.AppSettings
-import com.base.app.core.datastore.AppSettingsStore
-import com.base.app.core.datastore.AuthTokenStore
+import com.base.app.core.datastore.session.AuthTokenStore
+import com.base.app.core.datastore.settings.AppSettings
+import com.base.app.core.datastore.settings.AppSettingsStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.SharingStarted

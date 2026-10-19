@@ -65,6 +65,12 @@ dependencies {
     // <opt:push>
     implementation(project(":core:notification"))
     // </opt:push>
+    // <opt:applock>
+    implementation(project(":core:applock"))
+    // </opt:applock>
+    // <opt:playstore>
+    implementation(project(":core:playstore"))
+    // </opt:playstore>
     // <opt:analytics>
     implementation(project(":core:analytics"))
     // </opt:analytics>
@@ -96,15 +102,12 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.serialization.json)
 
-    // <opt:workmanager>
-    implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.androidx.hilt.work)
-    ksp(libs.androidx.hilt.compiler)
-    // </opt:workmanager>
+    // <opt:offlinequeue>
+    implementation(libs.androidx.work.runtime)
+    // </opt:offlinequeue>
 
     // <opt:coil>
     implementation(libs.coil.compose)
@@ -129,19 +132,6 @@ dependencies {
     // <opt:database>
     implementation(project(":core:database"))
     // </opt:database>
-
-    // <opt:applock>
-    implementation(libs.androidx.biometric)
-    // </opt:applock>
-
-    // <opt:playstore>
-    implementation(libs.play.app.update)
-    implementation(libs.play.app.review)
-    // </opt:playstore>
-
-    // <opt:widget>
-    implementation(libs.androidx.glance.appwidget)
-    // </opt:widget>
 
     // <opt:leakcanary>
     debugImplementation(libs.leakcanary)

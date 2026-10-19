@@ -1,5 +1,5 @@
 /*
- * The app's own database, as opposed to the network module's response cache.
+ * The app's own data: one Room database, a package per domain.
  */
 plugins {
     id("com.base.app.android.library")
@@ -10,8 +10,8 @@ plugins {
 android {
     namespace = "com.base.app.core.database"
 
-    // Robolectric renders the migration test against a real SQLite, which needs the merged
-    // resources and manifest.
+    // The DAO tests run against the platform's SQLite under Robolectric, which needs the merged
+    // manifest.
     testOptions.unitTests.isIncludeAndroidResources = true
 }
 

@@ -2,7 +2,8 @@ key = "websocket"
 title = "WebSocket"
 headline = "Keep a live connection open"
 description = """
-One long-lived socket with exponential backoff, a jittered retry and a connection state a UI can
+One long-lived socket that is open while the app is in front: pings, a backoff that grows until a
+frame gets through, the new token after an account change, and a connection state a screen can
 render."""
 group = "Networking and data"
 default = false

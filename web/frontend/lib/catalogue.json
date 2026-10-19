@@ -1,5 +1,5 @@
 {
-  "generator_commit": "3a0d38e9c0b7",
+  "generator_commit": "a6332dc4b416",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -143,10 +143,13 @@
         "catalog",
         "core",
         "data",
+        "di",
         "feature",
         "feed",
+        "note",
         "onboarding",
         "profile",
+        "queue",
         "sample",
         "search",
         "settings"
@@ -217,6 +220,23 @@
       ],
       "features": [
         {
+          "default": false,
+          "description": "The server can require an update (HTTP 426, or a minimum-version header) or announce maintenance (503), and the app shows a full-screen message for either, whichever screen made the call.",
+          "group": "networking-and-data",
+          "headline": "Turn away old versions, announce downtime",
+          "implied_only": false,
+          "implies": [
+            "network"
+          ],
+          "key": "appstatus",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network"
+          ],
+          "title": "Forced update and maintenance screens"
+        },
+        {
           "default": true,
           "description": "Remote images with a skeleton placeholder and a failure glyph.",
           "group": "networking-and-data",
@@ -231,25 +251,20 @@
         },
         {
           "default": false,
-          "description": "A database for the app's own data, separate from the network cache: an entity, a DAO returning flows, a hand-written migration and a test that replays it against a database that really was at the older version.",
+          "description": "A Room 3 database with a table per domain, emptied when the person signs out. With the reference feature, its list is offline-first: what was fetched last is on screen at once, and a refresh writes the server's answer into the table.",
           "group": "networking-and-data",
-          "headline": "Store your own data, not just a cache",
+          "headline": "Keep the app's own data on the device",
           "implied_only": false,
-          "implies": [
-            "network",
-            "room"
-          ],
+          "implies": [],
           "key": "database",
           "licence": null,
           "platforms": [],
-          "requires": [
-            "room"
-          ],
-          "title": "App database (Room)"
+          "requires": [],
+          "title": "App database (Room 3)"
         },
         {
           "default": true,
-          "description": "NetworkClient with typed helpers, bearer auth with transparent 401 refresh, classified failures, and a pluggable response-envelope unwrapper.",
+          "description": "One HTTP client for the whole app: typed results, the session's token read for every request and refreshed one call at a time, every failure classified (offline, timeout, the server's own error code, an unreadable body), and the connection state as a hint a screen can show.",
           "group": "networking-and-data",
           "headline": "Talk to a REST API",
           "implied_only": false,
@@ -259,6 +274,25 @@
           "platforms": [],
           "requires": [],
           "title": "REST networking (Ktor)"
+        },
+        {
+          "default": false,
+          "description": "Changes made without a connection are queued and sent when one returns, by a WorkManager worker that waits for the network. Refusals are kept with the server's answer; rate limits and timeouts are retried. WorkManager carries a copy of Room of its own, so this adds more code than it looks.",
+          "group": "networking-and-data",
+          "headline": "Send what was written offline",
+          "implied_only": false,
+          "implies": [
+            "database",
+            "network"
+          ],
+          "key": "offlinequeue",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "network",
+            "database"
+          ],
+          "title": "Offline request queue"
         },
         {
           "default": false,
@@ -278,25 +312,8 @@
           "title": "Paged feed"
         },
         {
-          "default": true,
-          "description": "Per-call-site response caching with a stale-on-failure fallback, plus a queue that replays failed mutations when connectivity returns.",
-          "group": "networking-and-data",
-          "headline": "Work offline",
-          "implied_only": false,
-          "implies": [
-            "network"
-          ],
-          "key": "room",
-          "licence": null,
-          "platforms": [],
-          "requires": [
-            "network"
-          ],
-          "title": "Offline cache and request queue (Room)"
-        },
-        {
           "default": false,
-          "description": "One long-lived socket with exponential backoff, a jittered retry and a connection state a UI can render.",
+          "description": "One long-lived socket that is open while the app is in front: pings, a backoff that grows until a frame gets through, the new token after an account change, and a connection state a screen can render.",
           "group": "networking-and-data",
           "headline": "Keep a live connection open",
           "implied_only": false,
@@ -313,22 +330,9 @@
         },
         {
           "default": false,
-          "description": "Deferrable background work with Hilt-injected workers, including the manifest fix that stops WorkManager self-initialising past the Hilt factory.",
-          "group": "networking-and-data",
-          "headline": "Run work in the background",
-          "implied_only": false,
-          "implies": [],
-          "key": "workmanager",
-          "licence": null,
-          "platforms": [],
-          "requires": [],
-          "title": "WorkManager"
-        },
-        {
-          "default": false,
-          "description": "A fingerprint, face or screen-lock prompt when the app comes back from the background, a setting to turn it on, and the app kept out of the task switcher's thumbnail.",
+          "description": "A fingerprint, face or screen-lock prompt over the app at launch and after half a minute away, a setting to turn it on, and the app kept out of the task switcher's thumbnail while it is on.",
           "group": "sign-in-and-account",
-          "headline": "Ask for a fingerprint on resume",
+          "headline": "Ask for a fingerprint on return",
           "implied_only": false,
           "implies": [
             "settings"
@@ -526,21 +530,21 @@
           "title": "Deep linking"
         },
         {
-          "default": true,
-          "description": "Photo/video/document/camera pickers on the modern APIs, a permission state that can tell 'denied' from 'denied for good', and tunable image and video compression.",
+          "default": false,
+          "description": "The system photo picker and the camera app, with no permissions to ask for, and one image compressor that turns a picked photo upright, scales it and writes a copy the app owns.",
           "group": "platform",
-          "headline": "Pick and compress photos and video",
+          "headline": "Pick, take and shrink photos",
           "implied_only": false,
           "implies": [],
           "key": "media",
           "licence": null,
           "platforms": [],
           "requires": [],
-          "title": "Media picker, permissions and compression"
+          "title": "Photo picker, camera and compression"
         },
         {
           "default": false,
-          "description": "A flexible update offered in the background when a newer build is live, and a rating prompt on a schedule Play will actually honour rather than silently drop.",
+          "description": "A newer build offered once per launch through Play's own sheet and never offered again once turned down, a restart only when the person asks for it, and a rating prompt on a schedule Play honours.",
           "group": "platform",
           "headline": "Offer updates and ask for ratings",
           "implied_only": false,
@@ -553,14 +557,12 @@
         },
         {
           "default": false,
-          "description": "Notification channels, the runtime permission check, a messaging service, and token registration that re-submits on every launch.",
+          "description": "Firebase Cloud Messaging alone: notification channels, the permission asked for at the end of onboarding and offered again in settings, a tap that opens the app, a lock-screen-safe preview, and registration that is renewed only when it changes and removed at sign-out.",
           "group": "platform",
           "headline": "Receive push notifications",
           "implied_only": false,
           "implies": [
-            "analytics",
-            "firebase",
-            "flags"
+            "firebase"
           ],
           "key": "push",
           "licence": null,
@@ -572,20 +574,7 @@
         },
         {
           "default": false,
-          "description": "A Glance widget in the launcher's colours showing the app's name and a line the app keeps current. Tapping it opens the app.",
-          "group": "platform",
-          "headline": "A widget on the home screen",
-          "implied_only": false,
-          "implies": [],
-          "key": "widget",
-          "licence": null,
-          "platforms": [],
-          "requires": [],
-          "title": "Home-screen widget"
-        },
-        {
-          "default": true,
-          "description": "Vendor-agnostic AnalyticsTracker and CrashReporter interfaces with no-op defaults, so instrumentation can be written before a vendor is chosen.",
+          "description": "AnalyticsTracker and CrashReporter interfaces that write nothing until a vendor is bound, the settings opt-out applied to both, logged errors kept as breadcrumbs, and janky frames counted on the device.",
           "group": "observability",
           "headline": "Track events and crashes, vendor-free",
           "implied_only": false,
@@ -597,8 +586,27 @@
           "title": "Analytics and crash-reporting seam"
         },
         {
-          "default": true,
-          "description": "A draggable badge naming the environment on every build except production, and a panel behind it holding the last 200 requests with their full bodies, timing and failure rate. Absent from a production build rather than hidden in one.",
+          "default": false,
+          "description": "Crashlytics behind the crash-reporting seam: crashes and unhandled errors are reported, every logged error is a breadcrumb, and the R8 mapping is uploaded only by a release build that asks for it.",
+          "group": "observability",
+          "headline": "Send crashes to Firebase",
+          "implied_only": false,
+          "implies": [
+            "analytics",
+            "firebase"
+          ],
+          "key": "crashlytics",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "analytics",
+            "firebase"
+          ],
+          "title": "Firebase Crashlytics"
+        },
+        {
+          "default": false,
+          "description": "A badge docked to the screen's edge on every build except production, which can be dragged out of the way, and a panel behind it with the last 200 requests (credentials redacted), their timing and failure rate, and the build's details. Absent from a production build rather than hidden in one.",
           "group": "observability",
           "headline": "See every request the app made",
           "implied_only": false,
@@ -611,26 +619,39 @@
         },
         {
           "default": false,
-          "description": "Analytics, Crashlytics and Remote Config in one switch: the analytics seam sends to Firebase, every logged error becomes a Crashlytics breadcrumb, and feature flags resolve from Remote Config seeded with their declared defaults.",
+          "description": "The google-services plugin and the project file it reads. Arrives with push, Firebase Analytics, Crashlytics or Remote Config, each of which adds only its own SDK.",
           "group": "observability",
-          "headline": "Analytics, Crashlytics and Remote Config",
+          "headline": "The Firebase project file",
           "implied_only": true,
+          "implies": [],
+          "key": "firebase",
+          "licence": null,
+          "platforms": [],
+          "requires": [],
+          "title": "Firebase"
+        },
+        {
+          "default": false,
+          "description": "Firebase Analytics behind the analytics seam, switched off when the person opts out in settings. It brings the advertising-id permissions with it, which is why it is a choice of its own.",
+          "group": "observability",
+          "headline": "Send analytics to Firebase",
+          "implied_only": false,
           "implies": [
             "analytics",
-            "flags"
+            "firebase"
           ],
-          "key": "firebase",
+          "key": "firebaseanalytics",
           "licence": null,
           "platforms": [],
           "requires": [
             "analytics",
-            "flags"
+            "firebase"
           ],
-          "title": "Firebase"
+          "title": "Firebase Analytics"
         },
         {
-          "default": true,
-          "description": "Typed flags declared in one file with their defaults beside them, read through an interface that resolves locally until a vendor is bound. Lets both sides of a flag be written before anybody has chosen one.",
+          "default": false,
+          "description": "Typed flags declared in one file with their defaults beside them, read or observed through an interface that resolves locally until a vendor is bound, and overridable by hand in the inspector.",
           "group": "observability",
           "headline": "Turn a feature on without shipping",
           "implied_only": false,
@@ -640,6 +661,25 @@
           "platforms": [],
           "requires": [],
           "title": "Feature flag seam"
+        },
+        {
+          "default": false,
+          "description": "Feature flags read from Remote Config: fetched at start-up, updated while the app is open when the console publishes a change, and fetched on every start in a debug build.",
+          "group": "observability",
+          "headline": "Change feature flags from the console",
+          "implied_only": false,
+          "implies": [
+            "firebase",
+            "flags"
+          ],
+          "key": "remoteconfig",
+          "licence": null,
+          "platforms": [],
+          "requires": [
+            "flags",
+            "firebase"
+          ],
+          "title": "Firebase Remote Config"
         },
         {
           "default": true,
@@ -1259,12 +1299,13 @@
         },
         {
           "default": true,
-          "description": "The lean set plus offline cache, images, auth, onboarding, settings with a language picker, a\nprofile tab and media. What most projects want on day one.",
+          "description": "The lean set plus a database, images, auth, onboarding, settings with a language picker and a\nprofile tab. What most projects want on day one.",
           "features": [
             "auth",
             "browser",
             "catalog",
             "coil",
+            "database",
             "deeplink",
             "devtools",
             "flags",
@@ -1272,11 +1313,9 @@
             "googlefonts",
             "language",
             "leakcanary",
-            "media",
             "network",
             "onboarding",
             "profile",
-            "room",
             "sample",
             "settings"
           ],
@@ -1289,17 +1328,20 @@
           "features": [
             "analytics",
             "applock",
+            "appstatus",
             "auth",
             "browser",
             "catalog",
             "coil",
             "composemetrics",
             "coverage",
+            "crashlytics",
             "database",
             "deeplink",
             "depsanalysis",
             "devtools",
             "firebase",
+            "firebaseanalytics",
             "flags",
             "forms",
             "googlefonts",
@@ -1310,19 +1352,18 @@
             "lottie",
             "media",
             "network",
+            "offlinequeue",
             "onboarding",
             "paging",
             "performance",
             "playstore",
             "profile",
             "push",
-            "room",
+            "remoteconfig",
             "sample",
             "search",
             "settings",
-            "websocket",
-            "widget",
-            "workmanager"
+            "websocket"
           ],
           "key": "everything",
           "title": "Everything"

@@ -1,7 +1,7 @@
 plugins {
     id("com.base.app.android.library")
+    id("com.base.app.android.compose")
     id("com.base.app.android.hilt")
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -13,13 +13,12 @@ dependencies {
     implementation(project(":core:datastore"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
-    // The google-services plugin is applied by :app alone — it is what reads
-    // google-services.json. The SDK itself is needed here, where the messaging service lives.
+    // Messaging and Installations only: push needs nothing else from Firebase. The google-services
+    // plugin, which reads google-services.json, is applied by :app.
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
     implementation(libs.kotlinx.coroutines.play.services)
-
-    testImplementation(project(":core:testing"))
 }

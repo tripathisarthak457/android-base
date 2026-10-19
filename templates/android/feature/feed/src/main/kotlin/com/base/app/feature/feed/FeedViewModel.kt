@@ -8,7 +8,7 @@ import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
 import com.base.app.core.mvi.UiEvent
 import com.base.app.core.mvi.UiState
-import com.base.app.data.feed.api.FeedPost
+import com.base.app.data.feed.api.model.FeedPost
 import com.base.app.data.feed.api.FeedRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

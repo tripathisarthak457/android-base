@@ -15,11 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.base.app.core.common.navigation.AppNavKey
-import com.base.app.core.datastore.AppSettings
+import com.base.app.core.datastore.settings.AppSettings
 // <opt:devtools>
-import com.base.app.core.devtools.DevEnvironment
-import com.base.app.core.devtools.DevToolsOverlay
-import com.base.app.core.devtools.DevToolsLog
+import com.base.app.core.devtools.DevTools
+import com.base.app.core.devtools.badge.DevToolsOverlay
 // </opt:devtools>
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.ThemeMode
@@ -40,6 +39,21 @@ import com.base.app.startup.EntryIdentity
 import com.base.app.startup.ShellObserver
 import com.base.app.startup.Startup
 import kotlinx.coroutines.launch
+// <opt:applock>
+import com.base.app.core.applock.AppLock
+import com.base.app.core.applock.AppLockGate
+// </opt:applock>
+// <opt:appstatus>
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.base.app.core.network.appstatus.ApiSignals
+import com.base.app.core.ui.appstatus.AppStatusGate
+// </opt:appstatus>
+// <opt:playstore>
+import com.base.app.core.playstore.PlayStorePrompts
+import com.base.app.core.playstore.review.ReviewPrompt
+import com.base.app.core.playstore.update.AppUpdates
+// </opt:playstore>
 
 /** Everything above the navigation hosts: the theme, the system bars, and which app is showing. */
 @Composable
@@ -53,15 +67,23 @@ fun AppRoot(
     shellObservers: Set<ShellObserver>,
     shortcuts: AppShortcuts,
     // <opt:devtools>
-    devEnvironment: DevEnvironment,
-    devToolsLog: DevToolsLog,
+    devTools: DevTools,
     // </opt:devtools>
+    // <opt:applock>
+    appLock: AppLock,
+    // </opt:applock>
+    // <opt:appstatus>
+    apiSignals: ApiSignals,
+    // </opt:appstatus>
+    // <opt:playstore>
+    appUpdates: AppUpdates,
+    reviewPrompt: ReviewPrompt,
+    // </opt:playstore>
 ) {
     val settings = startup.settings
     val themeMode = settings.themeMode()
 
-    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
-        SystemBarIcons(dark = !AppTheme.colors.isLight)
+    val screens: @Composable () -> Unit = {
         // Test tags become resource ids, which is how benchmarks and tools/perf find tabs and lists.
         Box(modifier = Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
             CompositionLocalProvider(LocalAppShortcuts provides shortcuts) {
@@ -76,11 +98,30 @@ fun AppRoot(
                 )
             }
 
+            // <opt:appstatus>
+            ApiStatusGate(apiSignals)
+            // </opt:appstatus>
+
+            // <opt:playstore>
+            PlayStorePrompts(updates = appUpdates, review = reviewPrompt)
+            // </opt:playstore>
+
             // <opt:devtools>
             // Last in the Box so the badge floats over every screen; a no-op in production builds.
-            DevToolsOverlay(environment = devEnvironment, log = devToolsLog)
+            DevToolsOverlay(devTools)
             // </opt:devtools>
         }
+    }
+
+    AppTheme(mode = themeMode, hapticsEnabled = settings.hapticsEnabled) {
+        SystemBarIcons(dark = !AppTheme.colors.isLight)
+        // <opt:applock>
+        // Over the inspector too: what the app sent is as private as what it shows.
+        AppLockGate(lock = appLock, modifier = Modifier.fillMaxSize(), content = screens)
+        // </opt:applock>
+        // <opt-else:applock>
+        //~ screens()
+        // </opt-else:applock>
     }
 }
 
@@ -191,3 +232,12 @@ fun AppSettings.themeMode(): ThemeMode = when (themeMode) {
     AppSettings.THEME_DARK -> ThemeMode.Dark
     else -> ThemeMode.System
 }
+
+// <opt:appstatus>
+/** Reads the status in a scope of its own: a change recomposes the gate alone, not the root's whole content. */
+@Composable
+private fun ApiStatusGate(signals: ApiSignals) {
+    val status by signals.status.collectAsStateWithLifecycle()
+    AppStatusGate(status = status, onRetry = signals::retry)
+}
+// </opt:appstatus>

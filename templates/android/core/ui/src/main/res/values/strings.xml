@@ -3,6 +3,14 @@
     <string name="common_error_generic">Something went wrong. Please try again.</string>
     <string name="common_error_offline">You are offline. Check your connection and try again.</string>
     <string name="common_error_unreachable">Could not reach the server. Try again in a moment.</string>
+    <!-- <opt:appstatus> -->
+    <string name="appstatus_update_title">Update required</string>
+    <string name="appstatus_update_message">This version is no longer supported. Update the app to keep using it.</string>
+    <string name="appstatus_update_action">Update</string>
+    <string name="appstatus_maintenance_title">Down for maintenance</string>
+    <string name="appstatus_maintenance_message">We are working on the service. Try again in a few minutes.</string>
+    <string name="appstatus_maintenance_action">Try again</string>
+    <!-- </opt:appstatus> -->
     <!-- <opt:forms> -->
 
     <string name="validation_required">This is required.</string>

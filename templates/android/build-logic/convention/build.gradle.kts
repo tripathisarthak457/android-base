@@ -29,8 +29,13 @@ dependencies {
     compileOnly(libs.hilt.gradlePlugin)
     // <opt:firebase>
     compileOnly(libs.google.services.gradlePlugin)
-    compileOnly(libs.firebase.crashlytics.gradlePlugin)
     // </opt:firebase>
+    // <opt:crashlytics>
+    compileOnly(libs.firebase.crashlytics.gradlePlugin)
+    // </opt:crashlytics>
+    // <opt:database>
+    compileOnly(libs.room3.gradlePlugin)
+    // </opt:database>
 
     testImplementation(libs.junit)
 }
@@ -81,11 +86,11 @@ gradlePlugin {
             implementationClass = "AndroidLicensesConventionPlugin"
         }
         // </opt:licenses>
-        // <opt:room>
+        // <opt:database>
         register("androidRoom") {
             id = "com.base.app.android.room"
             implementationClass = "AndroidRoomConventionPlugin"
         }
-        // </opt:room>
+        // </opt:database>
     }
 }

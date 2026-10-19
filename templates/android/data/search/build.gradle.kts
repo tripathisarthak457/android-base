@@ -5,3 +5,8 @@ plugins {
 android {
     namespace = "com.base.app.data.search"
 }
+
+dependencies {
+    implementation(project(":core:network"))
+    implementation(project(":core:datastore"))
+}

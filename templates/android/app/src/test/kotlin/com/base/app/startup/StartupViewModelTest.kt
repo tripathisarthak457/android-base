@@ -5,13 +5,17 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.lifecycle.SavedStateHandle
-import com.base.app.core.datastore.AppSettingsStore
-import com.base.app.core.datastore.AuthTokenStore
+import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.datastore.session.AuthTokenStore
+import com.base.app.core.datastore.session.AuthTokens
+import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.testing.MainDispatcherRule
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -26,7 +30,7 @@ class StartupViewModelTest {
     @get:Rule
     val main = MainDispatcherRule(UnconfinedTestDispatcher())
 
-    private val settings = AppSettingsStore(FakePreferences())
+    private val settings = AppSettingsStore(FakePreferences(), ApplicationScope(CoroutineScope(main.testDispatcher)))
     private val tokens = FakeTokens()
 
     private fun startup(
@@ -88,13 +92,12 @@ private class FakePreferences : DataStore<Preferences> {
 private class FakeTokens : AuthTokenStore {
     override val isAuthenticated = MutableStateFlow(true)
 
-    override suspend fun accessToken(): String? = null
+    // The launch decides on isAuthenticated alone and never reads the tokens themselves.
+    override val tokens: Flow<AuthTokens?> = flowOf(null)
 
-    override suspend fun refreshToken(): String? = null
+    override suspend fun save(tokens: AuthTokens) = Unit
 
-    override suspend fun accessTokenExpiryMillis(): Long? = null
-
-    override suspend fun save(accessToken: String, refreshToken: String, expiresAtEpochMillis: Long?) = Unit
+    override suspend fun replace(expected: AuthTokens, replacement: AuthTokens?): Boolean = false
 
     override suspend fun clear() = Unit
 }

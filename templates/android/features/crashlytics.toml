@@ -1,0 +1,13 @@
+key = "crashlytics"
+title = "Firebase Crashlytics"
+headline = "Send crashes to Firebase"
+description = """
+Crashlytics behind the crash-reporting seam: crashes and unhandled errors are reported, every
+logged error is a breadcrumb, and the R8 mapping is uploaded only by a release build that asks
+for it."""
+group = "Observability"
+default = false
+requires = ["analytics", "firebase"]
+implied_only = false
+owns = ["core/analytics/src/main/kotlin/{pkg_path}/core/analytics/firebase/CrashlyticsReporter.kt"]
+legacy = [{ key = "firebase", schema = 1 }]

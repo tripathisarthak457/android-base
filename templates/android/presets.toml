@@ -9,11 +9,11 @@ features = ["network", "leakcanary", "sample", "catalog"]
 [standard]
 title = "Standard"
 description = """
-The lean set plus offline cache, images, auth, onboarding, settings with a language picker, a
-profile tab and media. What most projects want on day one."""
+The lean set plus a database, images, auth, onboarding, settings with a language picker and a
+profile tab. What most projects want on day one."""
 features = [
   "network", "leakcanary", "sample", "catalog",
-  "room", "coil", "googlefonts", "forms", "auth", "settings", "onboarding", "media", "deeplink",
+  "database", "coil", "googlefonts", "forms", "auth", "settings", "onboarding", "deeplink",
   "flags", "devtools", "profile", "browser", "language",
 ]
 

@@ -25,7 +25,7 @@ from ...core.spec import (
     Vocabulary,
 )
 from ...core.target import BuildContext
-from . import icons, keystores, look, modes, scaffold, settings, strings, tabs, variants
+from . import database, icons, keystores, look, modes, scaffold, settings, strings, tabs, variants
 from .settings import FLAVOURS
 
 TEMPLATE_DIR = Path(__file__).resolve().parents[4] / "templates" / "android"
@@ -88,6 +88,7 @@ class AndroidTarget:
         names = set(_STRUCTURAL_NAMES)
         for tier in ("data", "feature"):
             names.update(path.name for path in (self.template_dir / tier).iterdir() if path.is_dir())
+        names.update(database.RESERVED_NAMES)
         return frozenset(names)
 
     def vocabulary(self) -> Vocabulary:
@@ -122,13 +123,14 @@ class AndroidTarget:
         }
 
     def regions(self, spec: Spec) -> dict[str, list[str] | None]:
-        return {**settings.regions(spec), **tabs.regions(spec), **scaffold.regions(spec)}
+        return {**settings.regions(spec), **tabs.regions(spec), **scaffold.regions(spec), **database.regions(spec)}
 
     def overlays(self, spec: Spec) -> dict[str, Path]:
         return variants.overlays(spec)
 
     def transform(self, project: Path, spec: Spec) -> list[str]:
         scaffold.write_feature_modules(project, spec)
+        database.write_tables(project, spec)
         return []
 
     def finish(self, project: Path, spec: Spec, context: BuildContext) -> list[str]:

@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.KeyboardShortcutGroup
 import android.view.Menu
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -21,8 +20,8 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.base.app.core.datastore.AppSettings
-import com.base.app.core.datastore.AppSettingsStore
+import com.base.app.core.datastore.settings.AppSettings
+import com.base.app.core.datastore.settings.AppSettingsStore
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShortcuts
 import com.base.app.core.navigation.NavKeySerialization
@@ -39,29 +38,38 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 // <opt:devtools>
-import com.base.app.core.devtools.DevEnvironment
-import com.base.app.core.devtools.DevToolsLog
+import com.base.app.core.devtools.DevTools
 // </opt:devtools>
 // <opt:applock>
 import android.view.WindowManager
-import com.base.app.lock.AppLock
-import com.base.app.lock.LockActivity
+import androidx.fragment.app.FragmentActivity
+import com.base.app.core.applock.AppLock
 // </opt:applock>
+// <opt-else:applock>
+//~ import androidx.activity.ComponentActivity
+// </opt-else:applock>
 // <opt:language>
 import android.content.Context
 import com.base.app.core.ui.locale.AppLocales
 // </opt:language>
+// <opt:appstatus>
+import com.base.app.core.network.appstatus.ApiSignals
+// </opt:appstatus>
 // <opt:playstore>
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
-import com.base.app.playstore.AppUpdates
-import com.base.app.playstore.ReviewPrompt
-import com.google.android.play.core.ktx.AppUpdateResult
+import com.base.app.core.playstore.review.ReviewPrompt
+import com.base.app.core.playstore.update.AppUpdates
 // </opt:playstore>
+// <opt:analytics>
+import com.base.app.core.analytics.jank.FrameJankRecorder
+// </opt:analytics>
 
 /** The only Activity. */
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+// <opt:applock>
+// A FragmentActivity only because BiometricPrompt runs in one.
+class MainActivity : FragmentActivity() {
+// </opt:applock>
+// <opt:!applock>class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navigator: AppNavigator
@@ -91,11 +99,13 @@ class MainActivity : ComponentActivity() {
 
     // <opt:devtools>
     @Inject
-    lateinit var devEnvironment: DevEnvironment
-
-    @Inject
-    lateinit var devToolsLog: DevToolsLog
+    lateinit var devTools: DevTools
     // </opt:devtools>
+
+    // <opt:appstatus>
+    @Inject
+    lateinit var apiSignals: ApiSignals
+    // </opt:appstatus>
 
     // <opt:playstore>
     @Inject
@@ -104,6 +114,11 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var reviewPrompt: ReviewPrompt
     // </opt:playstore>
+
+    // <opt:analytics>
+    @Inject
+    lateinit var frameJank: FrameJankRecorder
+    // </opt:analytics>
 
     private val startupViewModel: StartupViewModel by viewModels()
 
@@ -122,6 +137,9 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // <opt:analytics>
+        frameJank.track(window, lifecycle)
+        // </opt:analytics>
         startupViewModel.onLaunch(intent)
         followThemeOutsideTheApp()
         // <opt:applock>
@@ -151,10 +169,6 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 withFrameNanos {}
                 (window.decorView.background?.mutate() as? ColorDrawable)?.color = Color.TRANSPARENT
-                // <opt:playstore>
-                // Posted, so Play's work runs in a message of its own rather than in this frame.
-                window.decorView.post(::followPlayStore)
-                // </opt:playstore>
             }
             AppRoot(
                 startup = current,
@@ -166,9 +180,18 @@ class MainActivity : ComponentActivity() {
                 shellObservers = shellObservers,
                 shortcuts = shortcuts,
                 // <opt:devtools>
-                devEnvironment = devEnvironment,
-                devToolsLog = devToolsLog,
+                devTools = devTools,
                 // </opt:devtools>
+                // <opt:applock>
+                appLock = appLock,
+                // </opt:applock>
+                // <opt:appstatus>
+                apiSignals = apiSignals,
+                // </opt:appstatus>
+                // <opt:playstore>
+                appUpdates = appUpdates,
+                reviewPrompt = reviewPrompt,
+                // </opt:playstore>
             )
         }
 
@@ -199,55 +222,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    // <opt:playstore>
-    /**
-     * Started once the first frame with content is on screen. Run in a cold start's resume, the
-     * classes both checks load on the main thread, the update check's binding to Play's service and
-     * the Play Store process waking to answer it held that frame back, for answers nobody is
-     * waiting for.
-     */
-    private fun followPlayStore() {
-        lifecycleScope.launch {
-            // On resume rather than onCreate: Play drops a review sheet launched against a stopped
-            // Activity.
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                launch { appUpdates.updates().collect(::onUpdate) }
-                launch { reviewPrompt.onLaunch(this@MainActivity) }
-            }
-        }
-    }
-
-    private suspend fun onUpdate(result: AppUpdateResult) {
-        when (result) {
-            is AppUpdateResult.Available -> appUpdates.start(result, this)
-            // Downloaded and waiting for a restart. Asking rather than restarting under the
-            // user: an app that relaunches itself mid-sentence loses whatever they were doing.
-            is AppUpdateResult.Downloaded -> appUpdates.install(result)
-            is AppUpdateResult.InProgress, AppUpdateResult.NotAvailable -> Unit
-        }
-    }
-    // </opt:playstore>
-
-    // <opt:applock>
-    /**
-     * The lock is decided in `onStart`, before the window is drawn, so the app's own content is
-     * never on screen — even for a frame — while it is meant to be covered.
-     */
-    override fun onStart() {
-        super.onStart()
-        lifecycleScope.launch {
-            if (appLock.shouldLock()) {
-                startActivity(Intent(this@MainActivity, LockActivity::class.java))
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        appLock.onHidden()
-    }
-    // </opt:applock>
 
     /**
      * Keyboard shortcuts first, whatever has focus: Ctrl+1 must work while a text field has it.

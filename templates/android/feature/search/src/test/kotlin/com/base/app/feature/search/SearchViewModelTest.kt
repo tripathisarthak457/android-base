@@ -7,7 +7,7 @@ import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
 import com.base.app.data.search.api.SearchRepository
-import com.base.app.data.search.api.SearchResult
+import com.base.app.data.search.api.model.SearchResult
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

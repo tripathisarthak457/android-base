@@ -24,7 +24,7 @@ import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.text
-import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.feature.sample.R
 import com.base.app.feature.sample.component.SampleRow
 

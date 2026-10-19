@@ -37,13 +37,13 @@ class ScriptTest(unittest.TestCase):
         self.out = Path(temp.name) / "out.zip"
 
     def test_a_good_spec_writes_a_zip_and_says_so(self):
-        code, result = run_script(json.dumps({**SPEC, "features": ["room"]}).encode(), "--target", "android", str(self.out))
+        code, result = run_script(json.dumps({**SPEC, "features": ["offlinequeue"]}).encode(), "--target", "android", str(self.out))
         self.assertEqual(0, code)
         self.assertTrue(result["ok"])
         self.assertEqual("android", result["target"])
         self.assertEqual("HeadLess", result["project_name"])
         self.assertEqual(self.out.stat().st_size, result["zip_bytes"])
-        self.assertEqual(["network", "room"], result["resolved_features"])
+        self.assertEqual(["database", "network", "offlinequeue"], result["resolved_features"])
         for key in ("elapsed_ms", "notes", "warnings", "ignored_fields", "generator_commit"):
             self.assertIn(key, result)
         with zipfile.ZipFile(self.out) as archive:

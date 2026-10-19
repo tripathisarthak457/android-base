@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- INTERNET comes from :core:network and ACCESS_NETWORK_STATE from :core:common, each
-         declared by the module whose code needs it. Manifest merging brings them here. -->
+    <!-- Permissions, services and providers are declared by the module whose code needs them, and
+         manifest merging brings them here: INTERNET from :core:network, POST_NOTIFICATIONS from
+         :core:notification. -->
     <application
         android:name=".BaseAppApplication"
         android:allowBackup="false"
@@ -21,31 +22,6 @@
         <property
             android:name="android.window.PROPERTY_SUPPORTS_MULTI_INSTANCE_SYSTEM_UI"
             android:value="true" />
-
-        <!-- <opt:workmanager> -->
-        <!--
-          WorkManager must not self-initialise.
-
-          Its App Startup entry runs from a ContentProvider, before Application.onCreate, and
-          calls WorkManager.initialize with a plain default Configuration — it never consults
-          Configuration.Provider. Leaving it in place means the HiltWorkerFactory is never
-          installed, WorkManager constructs workers reflectively, and every @HiltWorker fails with
-          NoSuchMethodException on its <init>(Context, WorkerParameters).
-
-          Removing only this one meta-data entry, with tools:node="merge" on the provider itself,
-          leaves App Startup working for every other library that uses it.
-        -->
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
-        <!-- </opt:workmanager> -->
 
         <!--
           singleTop: a link, a notification or the launcher reaches the running instance through
@@ -124,56 +100,25 @@
         </activity>
         <!-- </opt:deeplink> -->
 
-        <!-- <opt:push> -->
-        <service
-            android:name=".push.AppMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        <!-- <opt:offlinequeue> -->
 
         <!--
-          Used for `notification` payloads delivered while the app is backgrounded, which the FCM
-          SDK posts itself without ever reaching AppMessagingService. Same channel and same icon,
-          so a push looks identical whether the app was open or not.
+          WorkManager starts the first time the offline queue asks for it, through
+          BaseAppApplication's Configuration.Provider, instead of at every launch from App Startup:
+          most launches queue nothing, and its start-up opens a database. The removal sits with the
+          Application that takes over from it.
         -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="base_app_default" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
-        <!-- </opt:push> -->
-
-        <!-- <opt:widget> -->
-        <receiver
-            android:name=".widget.AppWidgetReceiver"
-            android:exported="true"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/app_widget_info" />
-        </receiver>
-        <!-- </opt:widget> -->
-
-        <!-- <opt:applock> -->
-        <!--
-          excludeFromRecents and noHistory keep the unlock screen out of the task switcher and
-          off the back stack: it is not somewhere to return to. singleTask stops a second copy
-          stacking up when the app is resumed twice in quick succession.
-        -->
-        <activity
-            android:name=".lock.LockActivity"
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:noHistory="true"
-            android:theme="@style/Theme.BaseApp" />
-        <!-- </opt:applock> -->
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+        <!-- </opt:offlinequeue> -->
     </application>
 
 </manifest>

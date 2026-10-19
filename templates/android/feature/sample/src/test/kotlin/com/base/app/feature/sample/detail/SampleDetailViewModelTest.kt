@@ -4,8 +4,10 @@ import com.base.app.core.common.LoadState
 import com.base.app.core.common.result.AppError
 import com.base.app.core.common.result.AppResult
 import com.base.app.core.testing.MainDispatcherRule
-import com.base.app.data.sample.api.SampleItem
+import com.base.app.data.sample.api.model.SampleItem
 import com.base.app.data.sample.api.SampleRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -43,12 +45,16 @@ class SampleDetailViewModelTest {
 }
 
 private class FakeSampleRepository(
-    private val items: List<SampleItem>,
+    private val all: List<SampleItem>,
     private val failing: Boolean = false,
 ) : SampleRepository {
 
-    override suspend fun items(forceRefresh: Boolean): AppResult<List<SampleItem>> = AppResult.Success(items)
+    override val items: Flow<List<SampleItem>> = MutableStateFlow(all)
+
+    override suspend fun refresh(): AppResult<Unit> = AppResult.Success(Unit)
+
+    override fun peek(id: Int): SampleItem? = all.firstOrNull { it.id == id }
 
     override suspend fun item(id: Int): AppResult<SampleItem> =
-        if (failing) AppResult.Failure(AppError.Offline) else AppResult.Success(items.first { it.id == id })
+        if (failing) AppResult.Failure(AppError.Offline) else AppResult.Success(all.first { it.id == id })
 }

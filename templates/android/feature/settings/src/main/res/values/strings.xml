@@ -11,14 +11,12 @@
     <string name="settings_about">About</string>
     <string name="settings_account">Account</string>
     <string name="settings_appearance">Appearance</string>
-    <string name="settings_app_lock_explanation">Ask for your fingerprint, face or screen lock when the app has been in the background.</string>
     <string name="settings_haptic_feedback">Haptic feedback</string>
     <string name="settings_analytics_explanation">Helps us find crashes and slow screens. Never includes your content.</string>
     <string name="settings_no_licences_recorded">No licences recorded</string>
     <string name="settings_open_source_licences">Open source licences</string>
     <string name="settings_licence_not_stated">Licence not stated</string>
     <string name="settings_privacy">Privacy</string>
-    <string name="settings_require_unlock">Require unlock</string>
     <string name="settings_title">Settings</string>
     <string name="settings_share_usage_data">Share usage data</string>
     <string name="settings_sign_out">Sign out</string>
@@ -33,6 +31,16 @@
     <string name="settings_no_licences_explanation">This build did not generate a licence list.</string>
     <string name="settings_sign_out_explanation">You will need to sign in again to use the app.</string>
     <string name="settings_version">Version %1$s</string>
+    <!-- <opt:applock> -->
+    <string name="settings_require_unlock">Require unlock</string>
+    <string name="settings_app_lock_explanation">Ask for your fingerprint, face or screen lock when the app has been in the background.</string>
+    <!-- </opt:applock> -->
+    <!-- <opt:push> -->
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_notifications_on">On</string>
+    <string name="settings_notifications_off">Off. Tap to allow them.</string>
+    <string name="settings_notifications_blocked">Turned off in your phone\'s settings. Tap to open them.</string>
+    <!-- </opt:push> -->
     <!-- <opt:language> -->
     <string name="settings_cancel">Cancel</string>
     <string name="settings_language">Language</string>

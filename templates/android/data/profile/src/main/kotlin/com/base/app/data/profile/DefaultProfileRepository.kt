@@ -4,18 +4,33 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.base.app.core.datastore.di.SessionDataStore
-import com.base.app.data.profile.api.Profile
 import com.base.app.data.profile.api.ProfileRepository
+import com.base.app.data.profile.api.model.Profile
+import com.base.app.data.profile.di.ProfileStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
+// <opt:media>
+import androidx.core.net.toUri
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.result.AppResult
+import com.base.app.core.media.compress.ImageCompression
+import com.base.app.core.media.compress.ImageCompressor
+import com.base.app.data.profile.di.AvatarDirectory
+import kotlinx.coroutines.withContext
+import java.io.File
+// </opt:media>
 
-/** The profile, kept on the device in the session store so it goes on sign-out. */
+/** The profile, kept on the device in a file of its own that sign-out empties. */
 @Singleton
 internal class DefaultProfileRepository @Inject constructor(
-    @SessionDataStore private val store: DataStore<Preferences>,
+    @ProfileStore private val store: DataStore<Preferences>,
+    // <opt:media>
+    private val compressor: ImageCompressor,
+    @AvatarDirectory private val avatars: File,
+    private val dispatchers: AppDispatchers,
+    // </opt:media>
 ) : ProfileRepository {
 
     override val profile: Flow<Profile> = store.data.map {
@@ -32,14 +47,35 @@ internal class DefaultProfileRepository @Inject constructor(
             it[BIO] = bio.trim()
         }
     }
+    // <opt:media>
 
-    override suspend fun setPhoto(uri: String?) {
-        store.edit { if (uri == null) it.remove(PHOTO) else it[PHOTO] = uri }
+    override suspend fun setPhoto(picked: String?): AppResult<Unit> {
+        if (picked == null) {
+            store.edit { it.remove(PHOTO) }
+            deleteAvatarsExcept(keep = null)
+            return AppResult.Success(Unit)
+        }
+        // A new name for each photo, so an image loader holding the old one in memory cannot show it.
+        val destination = File(avatars, "avatar_${System.nanoTime()}.jpg")
+        return when (val copied = compressor.compress(picked.toUri(), ImageCompression.Avatar, destination)) {
+            is AppResult.Success -> {
+                store.edit { it[PHOTO] = copied.value.toUri().toString() }
+                deleteAvatarsExcept(keep = copied.value)
+                AppResult.Success(Unit)
+            }
+
+            is AppResult.Failure -> copied
+        }
     }
 
+    private suspend fun deleteAvatarsExcept(keep: File?) = withContext(dispatchers.io) {
+        avatars.listFiles()?.filter { it != keep }?.forEach(File::delete)
+    }
+    // </opt:media>
+
     private companion object {
-        val NAME = stringPreferencesKey("profile.name")
-        val BIO = stringPreferencesKey("profile.bio")
-        val PHOTO = stringPreferencesKey("profile.photo")
+        val NAME = stringPreferencesKey("name")
+        val BIO = stringPreferencesKey("bio")
+        val PHOTO = stringPreferencesKey("photo")
     }
 }
