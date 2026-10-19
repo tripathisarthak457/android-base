@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- <opt:sample> -->
+    <string name="tab_sample">Home</string>
+    <!-- </opt:sample> -->
+    <!-- <generated:shell-tab-strings> -->
+    <!-- <opt:settings> -->
+    <string name="tab_settings">Settings</string>
+    <!-- </opt:settings> -->
+</resources>

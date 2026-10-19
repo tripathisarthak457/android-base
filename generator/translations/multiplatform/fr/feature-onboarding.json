@@ -1,0 +1,11 @@
+{
+  "onboarding_skip": "Passer",
+  "onboarding_next": "Suivant",
+  "onboarding_get_started": "Commencer",
+  "onboarding_welcome": "Bienvenue",
+  "onboarding_stay_in_the_loop": "Restez informé",
+  "onboarding_your_data_is_yours": "Vos données vous appartiennent",
+  "onboarding_body_what_it_does": "Une phrase courte sur ce que cette app fait pour la personne qui la lit.",
+  "onboarding_body_benefit": "Ce que la personne y gagne, présenté comme un bénéfice plutôt qu’une fonctionnalité.",
+  "onboarding_body_reassurance": "La garantie qui lève toute hésitation avant l’inscription."
+}

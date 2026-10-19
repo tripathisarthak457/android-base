@@ -1,0 +1,12 @@
+key = "sample"
+title = "Reference feature"
+headline = "A working screen to learn from"
+description = """
+A list and detail feature against a live public API, with its tests. Proves every wire on first
+run on both platforms; delete it once your own first feature exists."""
+group = "Screens"
+default = true
+requires = ["network"]
+implied_only = false
+owns = ["data/sample", "feature/sample"]
+legacy = []

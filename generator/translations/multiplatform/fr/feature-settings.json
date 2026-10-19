@@ -1,0 +1,12 @@
+{
+  "settings_title": "Réglages",
+  "settings_appearance": "Apparence",
+  "settings_theme_system": "Système",
+  "settings_theme_light": "Clair",
+  "settings_theme_dark": "Sombre",
+  "settings_theme_explanation": "« Système » suit le réglage de votre appareil.",
+  "settings_about": "À propos",
+  "settings_version": "Version",
+  "settings_language": "Langue",
+  "settings_language_explanation": "Choisissez la langue de cette app dans les réglages de votre appareil."
+}

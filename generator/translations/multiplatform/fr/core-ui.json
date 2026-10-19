@@ -1,0 +1,5 @@
+{
+  "common_error_generic": "Un problème est survenu. Veuillez réessayer.",
+  "common_error_offline": "Vous êtes hors ligne. Vérifiez votre connexion et réessayez.",
+  "common_error_unreachable": "Impossible de joindre le serveur. Réessayez dans un instant."
+}

@@ -39,7 +39,10 @@ EXIT_CANCELLED = 130
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="create_project", description="Generate a project from a template.")
-    parser.add_argument("--target", default="android", help="Which template: android (default).")
+    parser.add_argument(
+        "--target",
+        help="Which template: android or multiplatform. Defaults to the spec's platform, then android.",
+    )
     parser.add_argument("--all", action="store_true", help="Every optional feature on.")
     parser.add_argument("--preset", help="Use a named feature preset: lean, standard or everything.")
     parser.add_argument("--icon", type=Path, help="A square image (1024 px or larger) for the launcher icons.")
@@ -61,7 +64,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        target = targets.get(args.target)
+        target = targets.get(args.target or spec_platform(args.spec) or "android")
         if args.list_features:
             list_features(target, as_json=args.json)
             return EXIT_OK
@@ -175,6 +178,18 @@ def parse_override(item: str) -> tuple[str, Any]:
         return key.strip(), json.loads(text)
     except json.JSONDecodeError:
         return key.strip(), text
+
+
+def spec_platform(path: Path | None) -> str | None:
+    """The `platform` a spec file names, so `--spec` alone picks its template. Read errors wait for load_raw."""
+    if path is None:
+        return None
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    platform = raw.get("platform") if isinstance(raw, dict) else None
+    return platform if isinstance(platform, str) else None
 
 
 def load_raw(args: argparse.Namespace, target) -> object:

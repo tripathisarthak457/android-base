@@ -1,0 +1,7 @@
+// The Dev build configuration: the development backend, and a debug Kotlin framework.
+KOTLIN_FRAMEWORK_BUILD_TYPE = debug
+APP_ENVIRONMENT = dev
+// `$()` keeps the URL's `//` from starting a comment, which is what it would be in an xcconfig.
+// <generated:ios-api-url-dev>
+API_BASE_URL = https:/$()/dev.example.com/api/
+// </generated:ios-api-url-dev>

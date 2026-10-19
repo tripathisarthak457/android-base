@@ -273,7 +273,8 @@ class FixtureTest(unittest.TestCase):
         for path in sorted((FIXTURES / "v2").glob("*.json")):
             raw = json.loads(path.read_text(encoding="utf-8"))
             with self.subTest(fixture=path.name):
-                self.assertEqual(f"com.example.{path.stem.replace('-', '')}", read(raw).spec.package_name)
+                parsed = pipeline.read_spec(raw, get(raw.get("platform", "android")))[0]
+                self.assertEqual(f"com.example.{path.stem.replace('-', '')}", parsed.spec.package_name)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,7 @@
+// The Prod build configuration: the production backend, and a release Kotlin framework.
+KOTLIN_FRAMEWORK_BUILD_TYPE = release
+APP_ENVIRONMENT = prod
+// `$()` keeps the URL's `//` from starting a comment, which is what it would be in an xcconfig.
+// <generated:ios-api-url-prod>
+API_BASE_URL = https:/$()/api.example.com/api/
+// </generated:ios-api-url-prod>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The platform theme, not a Material one. Compose paints every pixel of this app, so the theme
+      is responsible only for the window itself: its background during launch, before the first
+      frame. The colour has a values-night counterpart, which stops a dark launch flashing white.
+    -->
+    <style name="Theme.BaseApp" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

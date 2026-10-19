@@ -1,0 +1,16 @@
+key = "language"
+title = "In-app language picker"
+headline = "Let people pick the app's language"
+description = """
+A Language row in settings that opens the system's per-app language page: Android 13 and later,
+and the app's page in iOS Settings. The strings follow it without a restart."""
+group = "Screens"
+default = false
+requires = ["settings"]
+implied_only = false
+owns = [
+  "feature/settings/src/commonMain/kotlin/{pkg_path}/feature/settings/language",
+  "feature/settings/src/androidMain",
+  "feature/settings/src/iosMain",
+]
+legacy = []

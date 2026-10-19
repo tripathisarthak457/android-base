@@ -1,0 +1,21 @@
+# Named starting points. Features are listed before `requires` closes over them.
+default = "standard"
+
+[lean]
+title = "Lean"
+description = "Networking, image loading and the design system, with one home screen to start from."
+features = ["network", "coil"]
+
+[standard]
+title = "Standard"
+description = """
+The lean set plus an offline-first reference feature on a database, settings with a language
+picker, and onboarding. What most projects want on day one."""
+features = ["network", "coil", "sample", "database", "settings", "onboarding", "language"]
+
+[everything]
+title = "Everything"
+description = """
+Every feature the template offers, working together on both platforms. Delete what you do not
+need."""
+all = true
