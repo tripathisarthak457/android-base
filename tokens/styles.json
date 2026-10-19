@@ -2,7 +2,14 @@
   "Utility": {
     "description": "Cool neutrals, hairline outlines, a docked tab bar. Tools, finance, admin.",
     "requires": [],
-    "radii": { "xs": 6, "sm": 10, "md": 14, "lg": 20, "xl": 28, "sheet": 24 },
+    "radii": {
+      "xs": 6,
+      "sm": 10,
+      "md": 14,
+      "lg": 20,
+      "xl": 28,
+      "sheet": 24
+    },
     "buttonRadius": 10,
     "chipRadius": "pill",
     "card": "Outlined",
@@ -21,7 +28,14 @@
   "Social": {
     "description": "Brand-tinted surfaces, pill buttons, heavier headlines, a floating tab bar. Feeds and chat.",
     "requires": [],
-    "radii": { "xs": 10, "sm": 14, "md": 20, "lg": 26, "xl": 32, "sheet": 30 },
+    "radii": {
+      "xs": 10,
+      "sm": 14,
+      "md": 20,
+      "lg": 26,
+      "xl": 32,
+      "sheet": 30
+    },
     "buttonRadius": "pill",
     "chipRadius": "pill",
     "card": "Raised",
@@ -40,7 +54,14 @@
   "Editorial": {
     "description": "Warm paper and ink, large tight display type, underlined fields. Reading and news.",
     "requires": [],
-    "radii": { "xs": 2, "sm": 3, "md": 4, "lg": 6, "xl": 8, "sheet": 8 },
+    "radii": {
+      "xs": 2,
+      "sm": 3,
+      "md": 4,
+      "lg": 6,
+      "xl": 8,
+      "sheet": 8
+    },
     "buttonRadius": 2,
     "chipRadius": 2,
     "card": "Outlined",
@@ -59,7 +80,14 @@
   "Playful": {
     "description": "Cream surfaces, extra-bold type, thick outlines and offset shadows. Games and kids.",
     "requires": [],
-    "radii": { "xs": 8, "sm": 12, "md": 16, "lg": 22, "xl": 28, "sheet": 28 },
+    "radii": {
+      "xs": 8,
+      "sm": 12,
+      "md": 16,
+      "lg": 22,
+      "xl": 28,
+      "sheet": 28
+    },
     "buttonRadius": 14,
     "chipRadius": 12,
     "card": "Offset",
@@ -74,5 +102,33 @@
     "sheetMaterial": "Solid",
     "surfaces": "Cream",
     "voice": "Rounded"
+  },
+  "Glass": {
+    "description": "Liquid glass: the tab bar blurs and bends the screen scrolling under it, its selection a lens. Needs the liquidglass feature.",
+    "requires": [
+      "liquidglass"
+    ],
+    "radii": {
+      "xs": 10,
+      "sm": 14,
+      "md": 20,
+      "lg": 26,
+      "xl": 32,
+      "sheet": 30
+    },
+    "buttonRadius": "pill",
+    "chipRadius": "pill",
+    "card": "Raised",
+    "field": "Filled",
+    "bar": "Glass",
+    "indicator": "Subtle",
+    "borderWidth": 1,
+    "borderWidthStrong": 1.5,
+    "uppercaseLabels": false,
+    "offsetShadow": 0,
+    "sheetInset": 8,
+    "sheetMaterial": "Glass",
+    "surfaces": "BrandTint",
+    "voice": "Bold"
   }
 }

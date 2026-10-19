@@ -35,6 +35,51 @@ class LiquidLensStateTest {
     }
 
     @Test
+    fun `a new lens shows its glass for two frames, then rests`() = runTest {
+        val clock = FrameClock(testScheduler, FrameMillis * 1_000_000)
+        val state = LiquidLensState(0, 3, TrackSpring, SettleSpring, PressSpring)
+        state.refracts = true
+        backgroundScope.launch(clock + MotionScale(1f)) { state.animate() }
+        runCurrent()
+
+        val shown = mutableListOf<Boolean>()
+        repeat(WarmFrames + 1) {
+            shown += state.samplesBackdrop
+            advance()
+        }
+
+        assertEquals(listOf(true, true, false), shown)
+        assertEquals(0f, state.intensity)
+        assertNoMoreFrames(clock)
+    }
+
+    @Test
+    fun `the bar gives with the finger and springs back once it lifts`() = runTest {
+        val (state, clock) = startLens(slot = 1)
+
+        state.press(1f)
+        state.dragBy(0.5f)
+        val pulled = state.pull
+        state.release()
+        val pulls = framesUntilIdle(clock) { state.pull }
+
+        assertEquals(0.5f, pulled, Tolerance)
+        assertTrue("$pulls", pulls.first() < pulled && pulls.zipWithNext().all { (a, b) -> b <= a + Tolerance })
+        assertEquals(0f, state.pull)
+    }
+
+    @Test
+    fun `the touch is where the finger is, not where the lens has got to`() = runTest {
+        val (state, _) = startLens(slot = 0)
+
+        state.press(0f)
+        state.dragBy(1.6f)
+
+        assertEquals(1.6f, state.touch, Tolerance)
+        assertEquals(0f, state.position)
+    }
+
+    @Test
     fun `a lens that has arrived asks for no more frames`() = runTest {
         val (state, clock) = startLens(slot = 0)
         state.select(2)
@@ -636,6 +681,8 @@ class LiquidLensStateTest {
         backgroundScope.launch(clock + motion) { state.animate() }
         runCurrent()
         Snapshot.sendApplyNotifications()
+        // Past the frames a new lens spends warming its shaders, so each test starts from rest.
+        repeat(WarmFrames + 1) { advance() }
         return state to clock
     }
 
@@ -711,12 +758,13 @@ class LiquidLensStateTest {
 
     private companion object {
         const val FrameMillis = 8L
+        const val WarmFrames = 2
         const val Period120HzNanos = 8_333_333L
         const val MaxFrames = 600
         const val Tolerance = 1e-4f
         const val FullGlass = 0.95f
         val Resting = ScaleFactor(1f, 1f)
-        val FullPress = ScaleFactor(1.3f, 1.3f)
+        val FullPress = ScaleFactor(1.39f, 1.39f)
 
         /**
          * A first selection from the first tab, then a second: on along the bar, back to the

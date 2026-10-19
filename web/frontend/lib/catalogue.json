@@ -1,5 +1,5 @@
 {
-  "generator_commit": "507852107cbf",
+  "generator_commit": "282dd3c2856e",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -212,6 +212,14 @@
           "key": "Playful",
           "requires": [],
           "title": "Playful"
+        },
+        {
+          "description": "Liquid glass: the tab bar blurs and bends the screen scrolling under it, its selection a lens. Needs the liquidglass feature.",
+          "key": "Glass",
+          "requires": [
+            "liquidglass"
+          ],
+          "title": "Glass"
         }
       ],
       "features": [
@@ -2152,6 +2160,142 @@
           }
         }
       },
+      "Glass": {
+        "dark": {
+          "accent": "#FF5B8DEF",
+          "accentContent": "#FF5B8DEF",
+          "accentPressed": "#FF7BA5F5",
+          "accentSubtle": "#FF16233B",
+          "background": "#FF0E131C",
+          "backgroundGrouped": "#FF0F131D",
+          "barIndicator": "#FF5B8DEF",
+          "contentDisabled": "#FF565F6E",
+          "contentInverse": "#FF0B0E14",
+          "contentPrimary": "#FFF2F4F8",
+          "contentSecondary": "#FFB4BCCA",
+          "contentTertiary": "#FF8A93A3",
+          "danger": {
+            "base": "#FFF0666D",
+            "content": "#FFF0666D",
+            "on": "#FF06101F",
+            "subtle": "#FF2B1416"
+          },
+          "fill": "#FF2A3345",
+          "focusRing": "#FF5B8DEF",
+          "highlight": "#17FFFFFF",
+          "info": {
+            "base": "#FF6FA6FF",
+            "content": "#FF6FA6FF",
+            "on": "#FF06101F",
+            "subtle": "#FF10203A"
+          },
+          "neutral": {
+            "base": "#FFB4BCCA",
+            "content": "#FFB4BCCA",
+            "on": "#FF06101F",
+            "subtle": "#FF1D232E"
+          },
+          "onAccent": "#FF06101F",
+          "onSecondary": "#FF06101F",
+          "onTertiary": "#FF06101F",
+          "outline": "#FF687183",
+          "scrim": "#8F000000",
+          "secondary": "#FF879BC5",
+          "secondaryPressed": "#FFA4B3D0",
+          "secondarySubtle": "#FF171F31",
+          "segmentThumb": "#FF49515F",
+          "separator": "#FF2B364A",
+          "shadow": "#66000000",
+          "skeleton": "#FF313A4B",
+          "skeletonHighlight": "#FF3C4557",
+          "success": {
+            "base": "#FF3DD4A0",
+            "content": "#FF3DD4A0",
+            "on": "#FF06101F",
+            "subtle": "#FF10271F"
+          },
+          "surface": "#FF171E2B",
+          "surfaceElevated": "#FF202836",
+          "surfaceGrouped": "#FF171E2B",
+          "surfaceInverse": "#FFF2F4F8",
+          "tertiary": "#FFBE60EB",
+          "tertiaryPressed": "#FFCB89EC",
+          "tertiarySubtle": "#FF221438",
+          "warning": {
+            "base": "#FFE9A23B",
+            "content": "#FFE9A23B",
+            "on": "#FF06101F",
+            "subtle": "#FF2A1F0E"
+          }
+        },
+        "light": {
+          "accent": "#FF2C6BED",
+          "accentContent": "#FF2863DD",
+          "accentPressed": "#FF1F52C4",
+          "accentSubtle": "#FFE8EFFD",
+          "background": "#FFEEF2FA",
+          "backgroundGrouped": "#FFE8EDF7",
+          "barIndicator": "#FF2C6BED",
+          "contentDisabled": "#FFA3AAB6",
+          "contentInverse": "#FFFFFFFF",
+          "contentPrimary": "#FF0B0F1A",
+          "contentSecondary": "#FF3D4552",
+          "contentTertiary": "#FF626A78",
+          "danger": {
+            "base": "#FFC42B32",
+            "content": "#FFC42B32",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFCE9E9"
+          },
+          "fill": "#FFDBE4F2",
+          "focusRing": "#FF2C6BED",
+          "highlight": "#120B0F1A",
+          "info": {
+            "base": "#FF1E5FBF",
+            "content": "#FF1E5FBF",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE7F0FD"
+          },
+          "neutral": {
+            "base": "#FF5A6472",
+            "content": "#FF5A6472",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFEFF1F5"
+          },
+          "onAccent": "#FFFFFFFF",
+          "onSecondary": "#FF0B0E14",
+          "onTertiary": "#FFFFFFFF",
+          "outline": "#FF7A818F",
+          "scrim": "#660B0F1A",
+          "secondary": "#FF617DB8",
+          "secondaryPressed": "#FF445F97",
+          "secondarySubtle": "#FFEFF2F8",
+          "segmentThumb": "#FFFFFFFF",
+          "separator": "#FFD0DBEE",
+          "shadow": "#240B0F1A",
+          "skeleton": "#FFC9D2E1",
+          "skeletonHighlight": "#FFD6DFEE",
+          "success": {
+            "base": "#FF117C59",
+            "content": "#FF0F7353",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFE4F5EE"
+          },
+          "surface": "#FFFFFFFF",
+          "surfaceElevated": "#FFFFFFFF",
+          "surfaceGrouped": "#FFFFFFFF",
+          "surfaceInverse": "#FF0B0F1A",
+          "tertiary": "#FFAE2CED",
+          "tertiaryPressed": "#FF8E11CA",
+          "tertiarySubtle": "#FFF7EAFD",
+          "warning": {
+            "base": "#FFA35B00",
+            "content": "#FF985400",
+            "on": "#FFFFFFFF",
+            "subtle": "#FFFDF1E0"
+          }
+        }
+      },
       "Playful": {
         "dark": {
           "accent": "#FF5B8DEF",
@@ -2652,6 +2796,33 @@
         "surfaces": "Paper",
         "uppercaseLabels": true,
         "voice": "Editorial"
+      },
+      "Glass": {
+        "bar": "Glass",
+        "borderWidth": 1,
+        "borderWidthStrong": 1.5,
+        "buttonRadius": "pill",
+        "card": "Raised",
+        "chipRadius": "pill",
+        "field": "Filled",
+        "indicator": "Subtle",
+        "offsetShadow": 0,
+        "radii": {
+          "lg": 26,
+          "md": 20,
+          "sheet": 30,
+          "sm": 14,
+          "xl": 32,
+          "xs": 10
+        },
+        "requires": [
+          "liquidglass"
+        ],
+        "sheetInset": 8,
+        "sheetMaterial": "Glass",
+        "surfaces": "BrandTint",
+        "uppercaseLabels": false,
+        "voice": "Bold"
       },
       "Playful": {
         "bar": "Floating",

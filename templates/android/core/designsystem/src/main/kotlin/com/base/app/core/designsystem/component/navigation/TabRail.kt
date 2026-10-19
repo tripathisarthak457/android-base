@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -40,7 +41,7 @@ import com.base.app.core.designsystem.theme.AppTheme
 internal fun TabRail(
     items: List<TabItem>,
     selected: Int,
-    edges: IndicatorEdges,
+    span: PillSpan,
     labels: TabLabels,
     look: BarLook,
     bounce: TabBounce,
@@ -48,6 +49,16 @@ internal fun TabRail(
     header: (@Composable BarActionScope.() -> Unit)?,
     footer: (@Composable () -> Unit)?,
     modifier: Modifier,
+    cells: @Composable BoxScope.(measure: TabMeasure, pill: PillPaths, labels: TabLabels) -> Unit = { measure, pill, railLabels ->
+        TabCells(
+            items, selected, TabLayer.Base, railLabels, look, bounce, measure, onTap,
+            Modifier.clipToPill(pill.outside, measure, span, look, vertical = true, outside = true, collapse = { 0f }),
+        )
+        TabCells(
+            items, selected, TabLayer.Selected, railLabels, look, bounce, measure, null,
+            Modifier.clipToPill(pill.inside, measure, span, look, vertical = true, outside = false, collapse = { 0f }),
+        )
+    },
 ) {
     val current = rememberUpdatedState(selected)
     val measure = remember { TabMeasure(vertical = true, state = null, { current.value }, mutableStateOf(PillSlots.Empty)) }
@@ -86,16 +97,9 @@ internal fun TabRail(
                     .focusRestorer()
                     .focusGroup()
                     .selectableGroup()
-                    .drawBehind { drawIndicator(pill.fill, measure, edges, look, vertical = true, collapse = 0f) },
+                    .drawBehind { drawIndicator(pill.fill, measure, span, look, vertical = true, collapse = 0f) },
             ) {
-                TabCells(
-                    items, selected, TabLayer.Base, railLabels, look, bounce, measure, onTap,
-                    Modifier.clipToPill(pill.outside, measure, edges, look, vertical = true, outside = true, collapse = { 0f }),
-                )
-                TabCells(
-                    items, selected, TabLayer.Selected, railLabels, look, bounce, measure, null,
-                    Modifier.clipToPill(pill.inside, measure, edges, look, vertical = true, outside = false, collapse = { 0f }),
-                )
+                cells(measure, pill, railLabels)
             }
             if (footer != null) {
                 Box(Modifier.padding(top = AppTheme.spacing.md)) { footer() }

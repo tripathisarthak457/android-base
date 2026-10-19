@@ -39,6 +39,9 @@ import com.base.app.core.designsystem.foundation.interaction.PressFeedback
 import com.base.app.core.designsystem.foundation.interaction.inlinePressable
 import com.base.app.core.designsystem.foundation.interaction.pressable
 import com.base.app.core.designsystem.theme.AppTheme
+// <opt:liquidglass>
+import com.base.app.core.designsystem.theme.BarTreatment
+// </opt:liquidglass>
 
 /**
  * How prominent an action is. A screen picks a variant by asking "how important is this action",
@@ -80,10 +83,15 @@ fun AppButton(
     shape: Shape = AppTheme.style.buttonShape,
     colors: ButtonColors = AppButtonDefaults.colors(variant),
 ) {
+    // <opt:liquidglass>
+    if (AppTheme.style.bar == BarTreatment.Glass && variant != ButtonVariant.Plain) {
+        GlassButton(text, onClick, modifier, variant, size, enabled, loading, leadingIcon, trailingIcon, shape, colors)
+        return
+    }
+    // </opt:liquidglass>
     val metrics = AppButtonDefaults.metrics(size)
     val style = AppTheme.style
     val outlined = style.offsetShadow > 0.dp && variant != ButtonVariant.Plain
-    val label = if (style.uppercaseLabels) text.uppercase() else text
 
     val content = colors.content(enabled)
     // A plain button has no container to stand for it: its label and icons redact themselves.
@@ -111,23 +119,37 @@ fun AppButton(
             .padding(metrics.padding),
         contentAlignment = Alignment.Center,
     ) {
-        ProvideContentColor(content) {
-            Row(
-                modifier = if (loading) Modifier.alpha(0f) else Modifier,
-                horizontalArrangement = Arrangement.spacedBy(metrics.gap, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
-                AppText(
-                    text = label,
-                    style = if (style.uppercaseLabels) metrics.textStyle.copy(letterSpacing = UppercaseTracking) else metrics.textStyle,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
-            }
-            if (loading) AppActivityIndicator(size = metrics.iconSize, color = content)
+        ButtonContent(text, content, metrics, loading, leadingIcon, trailingIcon)
+    }
+}
+
+/** A button's label row, with its icons, and the spinner that stands in for it while loading. */
+@Composable
+internal fun ButtonContent(
+    text: String,
+    content: Color,
+    metrics: AppButtonDefaults.Metrics,
+    loading: Boolean,
+    leadingIcon: ImageVector?,
+    trailingIcon: ImageVector?,
+) {
+    val style = AppTheme.style
+    ProvideContentColor(content) {
+        Row(
+            modifier = if (loading) Modifier.alpha(0f) else Modifier,
+            horizontalArrangement = Arrangement.spacedBy(metrics.gap, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            leadingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
+            AppText(
+                text = if (style.uppercaseLabels) text.uppercase() else text,
+                style = if (style.uppercaseLabels) metrics.textStyle.copy(letterSpacing = UppercaseTracking) else metrics.textStyle,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            trailingIcon?.let { AppIcon(it, contentDescription = null, size = metrics.iconSize) }
         }
+        if (loading) AppActivityIndicator(size = metrics.iconSize, color = content)
     }
 }
 
@@ -146,6 +168,12 @@ fun AppIconButton(
     enabled: Boolean = true,
     colors: ButtonColors = AppButtonDefaults.iconButtonColors(variant),
 ) {
+    // <opt:liquidglass>
+    if (variant == ButtonVariant.Plain && LocalGlassButtons.current) {
+        GlassIconButton(icon, contentDescription, onClick, modifier, size, enabled, colors)
+        return
+    }
+    // </opt:liquidglass>
     val diameter = AppButtonDefaults.iconButtonSize(size)
     val container = colors.container(enabled)
     val redacted = if (LocalRedacted.current && container.alpha > 0f) Modifier.skeleton(CircleShape) else Modifier

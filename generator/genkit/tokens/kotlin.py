@@ -299,6 +299,10 @@ def _styles(styles: dict[str, Any]) -> list[str]:
         "object Styles {",
     ]
     for name, style in styles.items():
+        # A style that needs a feature is fenced with it, so a project without the feature never
+        # names a treatment only that feature's code knows.
+        fences = [f"opt:{key}" for key in style["requires"]]
+        lines += [f"    // <{fence}>" for fence in fences]
         lines.append(f"    val {_const(name)} = Style(")
         lines += [f"        radius{key.capitalize()} = {_dp(style['radii'][key])}," for key in radii]
         for key in ("buttonRadius", "chipRadius"):
@@ -318,6 +322,7 @@ def _styles(styles: dict[str, Any]) -> list[str]:
             f"        voice = TypeVoice.{style['voice']},",
             "    )",
         ]
+        lines += [f"    // </{fence}>" for fence in reversed(fences)]
     lines.append("}")
     return lines
 

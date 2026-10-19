@@ -3,9 +3,7 @@ package com.base.app.core.designsystem.component.navigation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,13 +52,18 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import com.base.app.core.designsystem.foundation.HapticEffect
-import com.base.app.core.designsystem.foundation.pressScale
-import com.base.app.core.designsystem.foundation.rememberAppHaptics
+// <opt:liquidglass>
+import com.base.app.core.designsystem.foundation.glass.GlassQuality
+import com.base.app.core.designsystem.foundation.glass.LocalGlassQuality
+// </opt:liquidglass>
+import com.base.app.core.designsystem.foundation.interaction.AppHaptic
+import com.base.app.core.designsystem.foundation.interaction.PressFeedback
+import com.base.app.core.designsystem.foundation.interaction.pressable
+import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
 import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.BarIndicator
 import com.base.app.core.designsystem.theme.BarTreatment
-import com.base.app.core.designsystem.theme.rememberReduceMotion
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -125,7 +128,7 @@ fun AppTabBar(
 ) {
     val haptics = rememberAppHaptics()
     val scope = rememberCoroutineScope()
-    val reduceMotion = rememberReduceMotion()
+    val reduceMotion = AppTheme.reduceMotion
     val bounce = remember(items.size) { TabBounce(items.size) }
     val edges = remember { IndicatorEdges(selected) }
     LaunchedEffect(edges, selected) { edges.moveTo(selected) }
@@ -134,12 +137,20 @@ fun AppTabBar(
             state.collapse > 0f -> scope.launch { state.expand() }
             index == selected -> onReselect(index)
             else -> {
-                haptics.perform(HapticEffect.Select)
+                haptics.perform(AppHaptic.Selection)
                 if (!reduceMotion) scope.launch { bounce.play(index) }
                 onSelect(index)
             }
         }
     }
+    // <opt:liquidglass>
+    // Someone who asked to reduce transparency gets the style's own capsule, which samples
+    // nothing, rather than a frosted one.
+    if (treatment == BarTreatment.Glass && LocalGlassQuality.current != GlassQuality.Solid) {
+        LiquidTabs(items, selected, onSelect, onReselect, orientation, labels, minimize, state, trailingAction, accessory, modifier)
+        return
+    }
+    // </opt:liquidglass>
     val look = barLook(treatment)
     if (orientation == BarOrientation.Vertical) {
         TabRail(items, selected, edges, labels, look, bounce, onTap, trailingAction, accessory, modifier)
@@ -240,38 +251,48 @@ internal class BarLook(
     val selectedContent: Color,
     val content: Color,
     val uppercaseLabels: Boolean,
+    val borderWidth: Dp,
 )
 
 @Composable
 internal fun barLook(treatment: BarTreatment): BarLook {
     val colors = AppTheme.colors
+    val style = AppTheme.style
     val shape = AppTheme.shapes.pill
-    val uppercase = AppTheme.style.uppercaseLabels
-    return remember(treatment, colors, shape, uppercase) { barLookFor(treatment, colors, shape, uppercase) }
+    return remember(treatment, colors, style, shape) { barLookFor(treatment, style.indicator, colors, shape, style.uppercaseLabels, style.borderWidth) }
 }
 
 /*
- * The selected tab is tinted, as iOS tints it, rather than filled with the accent: a saturated pill
- * nearly the bar's height crowds it. Chunky keeps its solid pill, Minimal its rule. In dark theme a
- * floating bar sits on the lighter surface with a faint light outline, since the same colour as the
- * cards under it would merge with them, and it casts no shadow, which would be invisible there and
- * still cost a blur.
+ * With the Subtle indicator the selected tab sits on a tinted pill, as iOS tints it, rather than
+ * a filled one: a saturated pill nearly the bar's height crowds it. The Pill indicator keeps the
+ * style's solid pill. In dark theme a floating bar sits on the elevated surface with a faint light
+ * outline, since the same colour as the cards under it would merge with them, and it casts no
+ * shadow, which would be invisible there and still cost a blur. A translucent bar floats at 88 %.
  */
-private fun barLookFor(treatment: BarTreatment, colors: AppColors, shape: Shape, uppercase: Boolean): BarLook {
-    val floating = treatment == BarTreatment.Floating
+private fun barLookFor(
+    treatment: BarTreatment,
+    indicator: BarIndicator,
+    colors: AppColors,
+    shape: Shape,
+    uppercase: Boolean,
+    borderWidth: Dp,
+): BarLook {
+    val floating = treatment != BarTreatment.Docked
     val raisedInDark = floating && !colors.isLight
-    val solid = treatment == BarTreatment.Chunky
+    val solid = indicator == BarIndicator.Pill
+    val surface = if (raisedInDark) colors.surfaceElevated else colors.surface
     return BarLook(
         floating = floating,
-        surface = if (raisedInDark) colors.surfaceVariant else colors.surface,
-        border = if (raisedInDark) DarkOutline else colors.divider,
+        surface = if (treatment == BarTreatment.Translucent) surface.copy(alpha = TranslucentAlpha) else surface,
+        border = if (raisedInDark) DarkOutline else colors.separator,
         shadow = floating && colors.isLight,
         shape = shape,
-        indicator = if (solid || treatment == BarTreatment.Minimal) colors.accent else colors.accentSubtle,
-        rule = treatment == BarTreatment.Minimal,
-        selectedContent = if (solid) colors.onAccent else colors.accent,
+        indicator = if (solid) colors.barIndicator else colors.accentSubtle,
+        rule = false,
+        selectedContent = if (solid) colors.onAccent else colors.accentContent,
         content = colors.contentSecondary,
-        uppercaseLabels = uppercase || treatment == BarTreatment.Minimal,
+        uppercaseLabels = uppercase,
+        borderWidth = borderWidth,
     )
 }
 
@@ -282,7 +303,7 @@ internal fun BarSurface(look: BarLook, modifier: Modifier, content: @Composable 
             .then(if (look.shadow) Modifier.dropShadow(look.shape, BarShadow) else Modifier)
             .clip(look.shape)
             .background(look.surface)
-            .border(AppTheme.sizes.borderWidth, look.border, look.shape)
+            .border(look.borderWidth, look.border, look.shape)
     } else {
         modifier
             .background(look.surface)
@@ -293,7 +314,7 @@ internal fun BarSurface(look: BarLook, modifier: Modifier, content: @Composable 
 }
 
 /** The accessory closes with the minimize, in layout only: no recomposition per frame. */
-private fun Modifier.vanishing(state: AppTabBarState): Modifier = layout { measurable, constraints ->
+internal fun Modifier.vanishing(state: AppTabBarState): Modifier = layout { measurable, constraints ->
     val collapse = state.collapse
     val placeable = measurable.measure(constraints)
     if (collapse == 0f) return@layout layout(placeable.width, placeable.height) { placeable.place(0, 0) }
@@ -307,7 +328,7 @@ private fun Modifier.vanishing(state: AppTabBarState): Modifier = layout { measu
  * The tab row narrows to [MinimizedWidth] with the minimize, in layout only. The row keeps its
  * full width inside, placed from its start edge, and the surface clips it.
  */
-private fun Modifier.shrinking(state: AppTabBarState): Modifier = layout { measurable, constraints ->
+internal fun Modifier.shrinking(state: AppTabBarState): Modifier = layout { measurable, constraints ->
     val collapse = state.collapse
     val placeable = measurable.measure(constraints)
     val width = lerp(placeable.width.toFloat(), MinimizedWidth.toPx(), collapse).roundToInt()
@@ -357,18 +378,16 @@ internal class PillPaths {
 internal fun DrawScope.drawIndicator(
     path: Path,
     measure: TabMeasure,
-    edges: IndicatorEdges,
+    span: PillSpan,
     look: BarLook,
     vertical: Boolean,
     collapse: Float,
 ) {
-    edges.span { from, to ->
-        path.setPill(
-            measure.slots.value, from, to, size.width, size.height, vertical,
-            rtl = layoutDirection == LayoutDirection.Rtl, collapse = collapse,
-            minimizedWidth = MinimizedWidth.toPx(), rule = look.rule,
-        )
-    }
+    path.setPill(
+        measure.slots.value, span.from, span.to, size.width, size.height, vertical,
+        rtl = layoutDirection == LayoutDirection.Rtl, collapse = collapse,
+        minimizedWidth = MinimizedWidth.toPx(), rule = look.rule,
+    )
     if (look.rule) {
         clipPath(path) { drawRect(look.indicator, size = Size(size.width, RuleHeight.toPx())) }
     } else {
@@ -380,39 +399,29 @@ internal fun DrawScope.drawIndicator(
 internal fun Modifier.clipToPill(
     path: Path,
     measure: TabMeasure,
-    edges: IndicatorEdges,
+    span: PillSpan,
     look: BarLook,
     vertical: Boolean,
     outside: Boolean,
     collapse: () -> Float,
 ): Modifier = drawWithContent {
-    edges.span { from, to ->
-        path.setPill(
-            measure.slots.value, from, to, size.width, size.height, vertical,
-            rtl = layoutDirection == LayoutDirection.Rtl, collapse = collapse(),
-            minimizedWidth = MinimizedWidth.toPx(), rule = look.rule,
-        )
-    }
+    path.setPill(
+        measure.slots.value, span.from, span.to, size.width, size.height, vertical,
+        rtl = layoutDirection == LayoutDirection.Rtl, collapse = collapse(),
+        minimizedWidth = MinimizedWidth.toPx(), rule = look.rule,
+    )
     clipPath(path, if (outside) ClipOp.Difference else ClipOp.Intersect) { this@drawWithContent.drawContent() }
 }
 
 internal class BarActions(private val look: BarLook) : BarActionScope {
     @Composable
     override fun Action(icon: ImageVector, contentDescription: String, onClick: () -> Unit, tag: String?) {
-        val interactions = remember { MutableInteractionSource() }
         val filter = remember(look) { ColorFilter.tint(look.content) }
         Box(
             modifier = Modifier
                 .size(ActionSize)
                 .then(if (tag != null) Modifier.testTag(tag) else Modifier)
-                .pressScale(interactions)
-                .clickable(
-                    interactionSource = interactions,
-                    indication = null,
-                    role = Role.Button,
-                    onClickLabel = contentDescription,
-                    onClick = onClick,
-                )
+                .pressable(onClick = onClick, feedback = PressFeedback.Scale, role = Role.Button, onClickLabel = contentDescription)
                 .semantics { this.contentDescription = contentDescription },
             contentAlignment = Alignment.Center,
         ) {
@@ -444,11 +453,12 @@ internal val RailPillWidth = 64.dp
 internal val RailPillInset = 4.dp
 private val RuleHeight = 2.dp
 
-private val BarMargin = 20.dp
-private val BarLift = 12.dp
-private val BarMaxWidth = 480.dp
-private val AccessoryGap = 8.dp
+internal val BarMargin = 20.dp
+internal val BarLift = 12.dp
+internal val BarMaxWidth = 480.dp
+internal val AccessoryGap = 8.dp
 private val ToolbarInset = 6.dp
 private val ActionSize = 52.dp
 private val BarShadow = Shadow(radius = 16.dp, color = Color.Black, offset = DpOffset(0.dp, 4.dp), alpha = 0.10f)
 private val DarkOutline = Color.White.copy(alpha = 0.07f)
+private const val TranslucentAlpha = 0.88f

@@ -123,7 +123,7 @@ private fun EntrySlot(
     val lifecycle = rememberEntryLifecycle(scene, key)
     val visibility = remember(scene, key, tab) { TabVisibility { tab.isVisible && key in scene.top } }
     val divided = plan.followsAnotherPane(key)
-    val divider = AppTheme.colors.divider
+    val divider = AppTheme.colors.separator
     val draw = remember(scene, key, isLight, divided, divider) {
         Modifier
             .graphicsLayer { with(scene) { pose(key) } }
@@ -143,7 +143,7 @@ private fun EntrySlot(
 
 @Composable
 private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan, isLight: Boolean) {
-    val divider = AppTheme.colors.divider
+    val divider = AppTheme.colors.separator
     val background = AppTheme.colors.background
     val divided = plan.followsAnotherPane(key)
     // Opaque, as every entry is (EntryFrame): the pane slides with its page over another one.

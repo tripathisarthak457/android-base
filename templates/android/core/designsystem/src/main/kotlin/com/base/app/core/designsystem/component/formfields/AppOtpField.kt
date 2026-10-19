@@ -147,7 +147,7 @@ fun AppOtpField(
  */
 @Composable
 private fun Caret() {
-    val blinking = LocalTabVisible.current && !AppTheme.reduceMotion
+    val blinking = LocalTabVisible.current.isVisible && !AppTheme.reduceMotion
     val alpha = if (blinking) {
         rememberInfiniteTransition(label = "otpCaret").animateFloat(
             initialValue = 1f,

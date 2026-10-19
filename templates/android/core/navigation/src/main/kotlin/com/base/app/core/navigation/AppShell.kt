@@ -29,6 +29,9 @@ import com.base.app.core.designsystem.component.navigation.BarActionScope
 import com.base.app.core.designsystem.component.navigation.BarMinimize
 import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.designsystem.component.navigation.rememberAppTabBarState
+// <opt:liquidglass>
+import com.base.app.core.designsystem.foundation.glass.GlassQuality
+// </opt:liquidglass>
 import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.back.ShellRootBack
@@ -37,6 +40,9 @@ import com.base.app.core.navigation.back.submit
 import com.base.app.core.navigation.presentation.PresentationHost
 import com.base.app.core.navigation.shell.BottomChromeWriter
 import com.base.app.core.navigation.shell.BottomEdgeFade
+// <opt:liquidglass>
+import com.base.app.core.navigation.shell.ProvideGlassTier
+// </opt:liquidglass>
 import com.base.app.core.navigation.shell.ShellBar
 import com.base.app.core.navigation.shell.ShellChrome
 import com.base.app.core.navigation.shell.ShellShortcuts
@@ -64,6 +70,10 @@ data class ShellConfig(
     val barLabels: TabLabels = TabLabels.Always,
     val barMinimize: BarMinimize = BarMinimize.Never,
     val screenResponse: Float? = null,
+    // <opt:liquidglass>
+    /** A liquid glass tier to draw at whatever the device can afford; null decides from the device. */
+    val glassQuality: GlassQuality? = null,
+    // </opt:liquidglass>
 ) {
     internal fun screenMotion(): ScreenMotion = ScreenMotion(response = screenResponse ?: ScreenMotion.DEFAULT_RESPONSE)
 }
@@ -128,6 +138,9 @@ fun AppShell(
     BottomChromeWriter(state, barState, wide = !bar)
     ShellShortcuts(labels, state, toggleSidebar)
 
+    // <opt:liquidglass>
+    ProvideGlassTier(config, state) {
+    // </opt:liquidglass>
     ShellChrome(
         modifier = modifier.fillMaxSize(),
         chrome = {
@@ -197,5 +210,8 @@ fun AppShell(
             }
         }
     }
+    // <opt:liquidglass>
+    }
+    // </opt:liquidglass>
     PresentationHost(state = state, registry = registry, motion = motion, sheetStrategy = sheetStrategy)
 }

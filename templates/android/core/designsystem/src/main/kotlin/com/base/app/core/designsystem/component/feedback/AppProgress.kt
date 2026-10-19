@@ -50,7 +50,7 @@ fun AppActivityIndicator(
     color: Color = AppTheme.colors.contentSecondary,
 ) {
     var head by remember { mutableIntStateOf(0) }
-    val visible = LocalTabVisible.current
+    val visible = LocalTabVisible.current.isVisible
     val step = if (AppTheme.reduceMotion) StepMillis * 2 else StepMillis
     if (visible) {
         LaunchedEffect(step) {
