@@ -51,10 +51,18 @@ The overlay is built so that watching does not change what is watched:
   screen; measured, a hidden `devRelease` cold start was within noise of the same app without the
   overlay (517 against 507 ms median over 30 launches each).
 - **One listener while on.** Frames come from JankStats. With the `analytics` feature, the overlay
-  shares the analytics recorder's JankStats instead of adding a second.
-- **Nothing per frame on the main thread.** JankStats hands each frame over on its own thread; the
-  overlay copies a few numbers into fixed-size arrays and returns. No allocation, no boxing and no
-  log line per frame.
+  shares the analytics recorder's JankStats instead of adding a second. Without it, the overlay's
+  own JankStats leaves its frame-metrics thread idle in the process once recording stops; a launch
+  with the overlay off has none.
+- **Nothing put on the window.** The screen each frame belongs to is kept by the overlay, timed as
+  JankStats times a state, rather than put on the window as a JankStats state: every JankStats on
+  the window reads those, and the analytics recorder keys each frame by them, so a route there
+  would have it build a string every frame and change the events it sends while the overlay
+  records.
+- **Nothing per frame on the main thread but a clock check.** JankStats hands each frame over on
+  its own thread; the overlay copies a few numbers into fixed-size arrays and returns. No
+  allocation, no boxing and no log line per frame. On the main thread, the pill's pre-draw listener
+  reads the clock once a frame to decide whether its quarter second is up.
 - **No frame of its own.** The two lines under the badge are drawn straight from the recording,
   with no state and no recomposition, and redrawn at most four times a second from the window's
   pre-draw pass, so only inside a frame the app draws anyway. A redraw on a timer would cost a

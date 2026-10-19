@@ -17,6 +17,7 @@ import com.base.app.core.perfhud.frame.FrameFeed
 import com.base.app.core.perfhud.frame.FrameIntake
 import com.base.app.core.perfhud.frame.FrameLog
 import com.base.app.core.perfhud.frame.RefreshRate
+import com.base.app.core.perfhud.frame.ScreenTimeline
 import com.base.app.core.perfhud.log.PerfLogcat
 import com.base.app.core.perfhud.memory.MemoryLog
 import com.base.app.core.perfhud.memory.MemorySampler
@@ -74,6 +75,7 @@ internal class PerformanceRecorder @Inject constructor(
     private val dispatchers: AppDispatchers,
 ) {
     private val refreshRate = RefreshRate(context.getSystemService(DisplayManager::class.java))
+    private val screens = ScreenTimeline()
     private val pssSchedule = PssSchedule()
     private val _recording = MutableStateFlow(false)
     private var work: Job? = null
@@ -195,13 +197,14 @@ internal class PerformanceRecorder @Inject constructor(
     private fun start() {
         refreshRate.start()
         strictMode.start()
-        feed.start(FrameIntake(frames, refreshRate))
+        screens.restart(currentScreen.name.value)
+        feed.start(FrameIntake(frames, refreshRate, screens))
         recordingSince = SystemClock.elapsedRealtime()
         _recording.value = true
         if (environment.isDebugBuild) logcat.note(DEBUG_NOTE)
         val previous = stopping
         work = scope.launch(dispatchers.main) {
-            launch { currentScreen.name.filterNotNull().collect(feed::setRoute) }
+            launch { currentScreen.name.filterNotNull().collect { screens.enter(it, System.nanoTime()) } }
             // Nothing is drawn in the background, and PSS there would only measure what the
             // system trimmed: the sampler stops until an activity is started again.
             launch(dispatchers.default) {
