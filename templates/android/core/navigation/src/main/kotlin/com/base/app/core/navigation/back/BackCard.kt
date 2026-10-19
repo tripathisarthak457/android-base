@@ -224,6 +224,18 @@ internal class BackCardState {
      * Whether [key]'s screen is drawn from a texture of its own: the card's subject, from the
      * gesture's first frame until the card is gone. It is rendered once, on that first frame, and
      * the card's pose above it moves, scales and fades it.
+     *
+     * The one exception to A11.3 rule 1 (no whole screen offscreen), REQUIREMENTS 42: while the card
+     * is up, the screen under it is drawn from its own innermost layer as a hardware layer
+     * ([CompositingStrategy.Offscreen], chosen by the stack and cover hosts from this), from the
+     * gesture's first frame until the card is gone, and released then (Google's "hardware layer for
+     * the animation's duration"). It is rendered once per gesture while the screen's own content is
+     * still. The unit tests guard the two conditions for that: `SlideRecordingTest` checks that the
+     * texture is the screen's innermost layer for exactly the card's span (`PresentationCardTest`
+     * checks a cover only partly: no texture before the gesture, one after two progress events, none
+     * after a cancel), and that the screen is not recorded again between the start and the pop, so
+     * that layer never changes while the card is up. That HWUI then renders it once is shown only by
+     * a trace: one `drawLayer` per gesture.
      */
     fun textures(key: Any): Boolean = active && key == subject
 
