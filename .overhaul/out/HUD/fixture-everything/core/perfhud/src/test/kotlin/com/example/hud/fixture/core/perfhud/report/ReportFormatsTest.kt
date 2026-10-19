@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.hud.fixture.core.perfhud.checks.BuildFacts
 import com.example.hud.fixture.core.perfhud.checks.ProfileStatus
+import com.example.hud.fixture.core.perfhud.checks.StrictModeExample
 import com.example.hud.fixture.core.perfhud.checks.StrictModeSummary
 import com.example.hud.fixture.core.perfhud.frame.FrameStats
 import com.example.hud.fixture.core.perfhud.frame.FrameSummary
@@ -17,6 +18,7 @@ import com.example.hud.fixture.core.perfhud.score.OptimisationScore
 import com.example.hud.fixture.core.perfhud.score.ScoreInputs
 import com.example.hud.fixture.core.perfhud.startup.StartupSummary
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -72,9 +74,39 @@ class ReportFormatsTest {
         assertTrue(markdown, markdown.contains("- **Janky frames** −12.5 of 25. Open Janky frames by screen"))
     }
 
-    private fun snapshot(debugBuild: Boolean = false): PerformanceSnapshot {
+    @Test
+    fun `before the frames are graded neither format gives a score`() {
+        val snapshot = snapshot(frameCount = 120)
+
+        val json = Json.parseToJsonElement(PerformanceReport.of(snapshot, GENERATED_AT, resources).toJson()).jsonObject
+        val markdown = MarkdownReport(resources).write(snapshot, GENERATED_AT)
+
+        val score = json.getValue("score").jsonObject
+        assertEquals(JsonNull, score.getValue("total"))
+        assertEquals(JsonNull, score.getValue("grade"))
+        assertTrue(markdown, markdown.contains("Not enough recorded to score yet: the score needs 300 frames"))
+    }
+
+    @Test
+    fun `StrictMode examples name the kind and where, from the module's copy`() {
+        val examples = listOf(
+            StrictModeExample("DiskRead", "com.example.app.Store.load(Store.kt:12)"),
+            StrictModeExample("Network", frame = null),
+        )
+
+        val markdown = MarkdownReport(resources).write(snapshot(examples = examples), GENERATED_AT)
+
+        assertTrue(markdown, markdown.contains("- `DiskRead at com.example.app.Store.load(Store.kt:12)`"))
+        assertTrue(markdown, markdown.contains("- `Network at an unknown frame`"))
+    }
+
+    private fun snapshot(
+        debugBuild: Boolean = false,
+        frameCount: Int = 1000,
+        examples: List<StrictModeExample> = emptyList(),
+    ): PerformanceSnapshot {
         val frames = FrameSummary(
-            overall = stats(frames = 1000, janky = 15),
+            overall = stats(frames = frameCount, janky = frameCount * 15 / 1000),
             uiP50Millis = 2f,
             uiP90Millis = 3f,
             uiP99Millis = 5f,
@@ -88,9 +120,9 @@ class ReportFormatsTest {
         val build = BuildFacts(debuggable = debugBuild, minified = !debugBuild, profile = ProfileStatus.Compiled)
         val strictMode = StrictModeSummary(
             supported = true,
-            violations = 0,
-            byKind = emptyMap(),
-            examples = emptyList(),
+            violations = examples.size,
+            byKind = examples.groupingBy { it.kind }.eachCount(),
+            examples = examples,
         )
         return PerformanceSnapshot(
             frames = frames,

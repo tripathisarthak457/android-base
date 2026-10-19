@@ -17,11 +17,14 @@ import com.example.hud.fixture.core.perfhud.R
 import com.example.hud.fixture.core.perfhud.frame.FrameHistogram
 import com.example.hud.fixture.core.perfhud.frame.FrameLog
 import java.util.Locale
+import kotlin.math.min
 
 /**
- * Every frame recorded, counted by duration: one bar per millisecond up to [LAST_MILLIS], and one
- * for everything slower, with the current frame budget as a line. A healthy app is a tall bar
- * left of the line and almost nothing right of it.
+ * Every frame recorded, counted by its main-thread time: one bar per millisecond up to
+ * [LastMillis], and one for everything slower, with one refresh interval as a line, the time the
+ * main thread has for each frame. A healthy app is a tall bar left of the line and almost nothing
+ * right of it. Main-thread time rather than the full duration, which the render pipeline lets run
+ * past one interval in frames that are on time.
  */
 @Composable
 internal fun HistogramGraph(
@@ -31,7 +34,7 @@ internal fun HistogramGraph(
     modifier: Modifier = Modifier,
 ) {
     val histogram = remember { FrameHistogram() }
-    val bins = remember { IntArray(BINS) }
+    val bins = remember { IntArray(Bins) }
     val measurer = rememberTextMeasurer()
     val labelStyle = AppTheme.typography.caption
     val axisFormat = stringResource(R.string.perfhud_millis_axis)
@@ -47,25 +50,25 @@ internal fun HistogramGraph(
             .fillMaxWidth()
             .height(GraphDefaults.Height)
             .drawWithCache {
-                val ticks = TICKS.map { millis ->
+                val ticks = Ticks.map { millis ->
                     measurer.measure(String.format(Locale.ROOT, axisFormat, millis), labelStyle)
                 }
                 val labelHeight = ticks.maxOf { it.size.height }.toFloat()
                 val stroke = GraphDefaults.Stroke.toPx()
                 onDrawBehind {
                     version()
-                    frames.copyHistogram(histogram)
+                    frames.copyMainThreadHistogram(histogram)
                     binByMillisecond(histogram, bins)
                     val plotHeight = size.height - labelHeight
-                    val slot = size.width / BINS
+                    val slot = size.width / Bins
                     val highest = bins.max().coerceAtLeast(1)
                     val budget = budgetMillis()
-                    for (bin in 0 until BINS) {
+                    for (bin in 0 until Bins) {
                         val height = bins[bin].toFloat() / highest * plotHeight
                         drawRect(
                             color = if (bin + 1 <= budget) inside else outside,
                             topLeft = Offset(bin * slot, plotHeight - height),
-                            size = Size(slot * BAR_SHARE, height),
+                            size = Size(slot * BarShare, height),
                         )
                     }
                     if (budget > 0f) {
@@ -73,8 +76,10 @@ internal fun HistogramGraph(
                         drawLine(guide, Offset(x, 0f), Offset(x, plotHeight), stroke)
                     }
                     drawLine(axis, Offset(0f, plotHeight), Offset(size.width, plotHeight), stroke)
-                    for (index in TICKS.indices) {
-                        drawText(ticks[index], color = label, topLeft = Offset(TICKS[index] * slot, plotHeight))
+                    for (index in Ticks.indices) {
+                        // The last tick is near the right edge, and its label stays inside the graph.
+                        val x = min(Ticks[index] * slot, size.width - ticks[index].size.width)
+                        drawText(ticks[index], color = label, topLeft = Offset(x, plotHeight))
                     }
                 }
             },
@@ -87,12 +92,12 @@ private fun binByMillisecond(histogram: FrameHistogram, into: IntArray) {
     for (bucket in 0 until FrameHistogram.BUCKETS) {
         val count = histogram.count(bucket)
         if (count == 0) continue
-        val bin = FrameHistogram.lowerEdge(bucket).toInt().coerceAtMost(BINS - 1)
+        val bin = FrameHistogram.lowerEdge(bucket).toInt().coerceAtMost(Bins - 1)
         into[bin] += count
     }
 }
 
-private const val LAST_MILLIS = 33
-private const val BINS = LAST_MILLIS + 1
-private val TICKS = intArrayOf(0, 8, 16, 24, 32)
-private const val BAR_SHARE = 0.8f
+private const val LastMillis = 33
+private const val Bins = LastMillis + 1
+private val Ticks = intArrayOf(0, 8, 16, 24, 32)
+private const val BarShare = 0.8f

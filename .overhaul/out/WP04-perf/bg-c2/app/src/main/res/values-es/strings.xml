@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_home">Inicio</string>
+    <string name="tab_feed">Novedades</string>
+    <string name="tab_search">Buscar</string>
+    <string name="tab_profile">Perfil</string>
+    <string name="tab_settings">Ajustes</string>
+    <string name="app_lock_title">Desbloquea para continuar</string>
+    <string name="app_lock_subtitle">Usa tu huella, tu cara o el bloqueo de pantalla.</string>
+    <string name="app_lock_action">Desbloquear</string>
+    <string name="widget_default_headline">Toca para abrir</string>
+    <string name="widget_description">Tu app de un vistazo</string>
+</resources>

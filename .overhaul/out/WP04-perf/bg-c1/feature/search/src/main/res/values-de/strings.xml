@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_title">Suche</string>
+    <string name="search_placeholder">Beiträge durchsuchen</string>
+    <string name="search_recent">Zuletzt gesucht</string>
+    <string name="search_clear_recent">Löschen</string>
+    <string name="search_start_title">Finde, was du suchst</string>
+    <string name="search_start_message">Ergebnisse erscheinen schon beim Tippen. Deine Suchen werden hier gespeichert.</string>
+    <string name="search_no_results_title">Keine Ergebnisse</string>
+    <string name="search_no_results_message">Nichts passt zu „%1$s“. Versuche es mit weniger oder anderen Wörtern.</string>
+    <string name="search_retry">Erneut versuchen</string>
+    <string name="search_remove_recent">%1$s entfernen</string>
+</resources>

@@ -17,6 +17,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
 
     private val starts = LongArray(capacity)
     private val totalMillis = FloatArray(capacity)
+    private val uiMillis = FloatArray(capacity)
     private val intervalMillis = FloatArray(capacity)
     private val janky = BooleanArray(capacity)
     private val screenOfFrame = ByteArray(capacity)
@@ -33,9 +34,6 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     private val longWorkCount = IntArray(SLOTS)
     private val worstMillis = FloatArray(SLOTS)
     private var busyNanos = 0L
-
-    /** Frames ever added, including those the ring no longer holds. Changes on every frame. */
-    val count: Long get() = synchronized(lock) { written }
 
     /**
      * Records one frame. [totalNanos] is the frame from its intended vsync to the end of its GPU
@@ -59,6 +57,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
             val at = slot(written)
             starts[at] = startNanos
             totalMillis[at] = total
+            uiMillis[at] = ui
             intervalMillis[at] = intervalNanos / NANOS_PER_MILLI
             janky[at] = missedDeadline
             screenOfFrame[at] = index.toByte()
@@ -116,12 +115,18 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         }
     }
 
+    /** Whether a frame started less than [withinNanos] before [nowNanos]. */
+    fun drewWithin(nowNanos: Long, withinNanos: Long): Boolean = synchronized(lock) {
+        written > 0 && nowNanos - starts[slot(written - 1)] < withinNanos
+    }
+
     /** Copies the last frames into [into], as many as it holds, oldest first. */
     fun copyRecent(into: FrameSeries) = synchronized(lock) {
         val n = min(min(written, capacity.toLong()), into.capacity.toLong()).toInt()
         for (i in 0 until n) {
             val at = slot(written - n + i)
             into.totalMillis[i] = totalMillis[at]
+            into.uiMillis[i] = uiMillis[at]
             into.intervalMillis[i] = intervalMillis[at]
             into.janky[i] = janky[at]
         }
@@ -159,8 +164,8 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         }
     }
 
-    /** Copies the whole recording's frame-time histogram into [into], for the histogram graph. */
-    fun copyHistogram(into: FrameHistogram) = synchronized(lock) { histograms[ALL].copyInto(into) }
+    /** Copies the whole recording's main-thread-time histogram into [into], for the histogram graph. */
+    fun copyMainThreadHistogram(into: FrameHistogram) = synchronized(lock) { uiHistogram.copyInto(into) }
 
     /** Copies the running totals into [into], so a reader can take the difference between two. */
     fun copyTotals(into: FrameTotals) = synchronized(lock) {
@@ -233,7 +238,7 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
     private fun slot(frame: Long): Int = (frame % capacity).toInt()
 
     companion object {
-        /** About 68 seconds of uninterrupted drawing at 120 Hz, in about 150 KB. */
+        /** About 68 seconds of uninterrupted drawing at 120 Hz, in about 180 KB. */
         const val DEFAULT_CAPACITY = 8192
 
         /** Android vitals' thresholds. */

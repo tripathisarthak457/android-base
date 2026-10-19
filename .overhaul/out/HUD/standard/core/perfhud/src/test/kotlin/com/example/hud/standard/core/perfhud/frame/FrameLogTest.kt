@@ -136,6 +136,17 @@ class FrameLogTest {
     }
 
     @Test
+    fun `the graph's histogram is of main-thread time`() {
+        draw(frames = 50, screen = "Home", totalMillis = 12f, uiMillis = 2f)
+        val histogram = FrameHistogram()
+
+        log.copyMainThreadHistogram(histogram)
+
+        assertEquals(50, histogram.total)
+        assertEquals(2f, histogram.percentile(0.5f), 0.25f)
+    }
+
+    @Test
     fun `clear starts the recording over`() {
         draw(frames = 10, screen = "Home", missedDeadline = true)
 
@@ -144,7 +155,6 @@ class FrameLogTest {
         val summary = log.summary()
         assertEquals(0, summary.overall.frames)
         assertTrue(summary.screens.isEmpty())
-        assertEquals(0L, log.count)
     }
 
     @Test
@@ -157,6 +167,17 @@ class FrameLogTest {
         assertEquals(121, totals.frames)
         assertTrue(abs(totals.busyNanos - 1_000_000_000L) < 1_000L)
         assertEquals(121, totals.histogram.total)
+    }
+
+    @Test
+    fun `drawing means a frame started within the window`() {
+        val window = 250 * MILLI
+        assertFalse(log.drewWithin(nowNanos = clock, withinNanos = window))
+
+        draw(frames = 1, screen = "Home")
+
+        assertTrue(log.drewWithin(nowNanos = clock + window - 1, withinNanos = window))
+        assertFalse(log.drewWithin(nowNanos = clock + window, withinNanos = window))
     }
 
     private var clock = 1_000_000_000L

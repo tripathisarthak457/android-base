@@ -41,7 +41,7 @@ internal data class PerformanceReport(
     fun toJson(): String = JSON.encodeToString(serializer(), this)
 
     companion object {
-        const val SCHEMA = 1
+        const val SCHEMA = 2
 
         private val JSON = Json {
             prettyPrint = true
@@ -57,8 +57,8 @@ internal data class PerformanceReport(
             recordedSeconds = snapshot.recordedMillis / MILLIS_PER_SECOND,
             notes = listOfNotNull(resources.getString(R.string.perfhud_debug_body).takeIf { snapshot.app.debugBuild }),
             score = ScoreReport(
-                total = snapshot.score.total.takeIf { snapshot.score.measured },
-                grade = snapshot.score.grade.name.takeIf { snapshot.score.measured },
+                total = snapshot.score.total,
+                grade = snapshot.score.grade?.name,
                 metrics = snapshot.score.metrics.map { scored ->
                     MetricReport(
                         metric = scored.metric.name,
@@ -84,7 +84,7 @@ internal data class PerformanceReport(
     }
 }
 
-/** Null [total] and [grade] when nothing was measured that could be graded. */
+/** Null [total] and [grade] until enough frames were recorded to grade them. */
 @Serializable
 internal data class ScoreReport(
     val total: Int?,

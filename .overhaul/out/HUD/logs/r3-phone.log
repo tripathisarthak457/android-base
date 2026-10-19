@@ -1,0 +1,103 @@
+device
+device
+Performing Streamed Install
+Success
+Success
+round 1 hidden done
+round 1 shown done
+round 2 shown done
+round 2 hidden done
+round 3 hidden done
+round 3 shown done
+round 4 shown done
+round 4 hidden done
+round 5 hidden done
+round 5 shown done
+round 6 shown done
+round 6 hidden done
+{
+  "scroll": {
+    "janky_pp": 0.3,
+    "ui_mean_ms": 0.168,
+    "total_mean_ms": 0.199
+  },
+  "tabs": {
+    "janky_pp": 0.14,
+    "ui_mean_ms": 0.141,
+    "total_mean_ms": -0.292
+  },
+  "pushpop": {
+    "janky_pp": -0.15,
+    "ui_mean_ms": 0.073,
+    "total_mean_ms": 0.24
+  },
+  "all": {
+    "janky_pp": 0.21,
+    "ui_mean_ms": 0.145,
+    "total_mean_ms": 0.148
+  }
+}
+{
+  "hidden": {
+    "frames": 14050,
+    "janky": 189,
+    "janky_pct": 1.35,
+    "p50_ms": 8,
+    "p90_ms": 10,
+    "p99_ms": 27,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12425,
+    "ui_mean_ms": 1.286,
+    "ui_p90_ms": 1.761,
+    "total_mean_ms": 1.218
+  },
+  "shown": {
+    "frames": 13884,
+    "janky": 216,
+    "janky_pct": 1.56,
+    "p50_ms": 8,
+    "p90_ms": 11,
+    "p99_ms": 28,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12446,
+    "ui_mean_ms": 1.431,
+    "ui_p90_ms": 2.187,
+    "total_mean_ms": 1.366
+  }
+}
+OVERHEAD OK
+Performing Streamed Install
+Success
+Performing Streamed Install
+Success
+Success
+{
+  "debug": {
+    "debug_warning_on_screen": false
+  },
+  "release": {
+    "pill_bounds": [
+      881,
+      1343,
+      1058,
+      1475
+    ],
+    "tab_shots": [
+      "3-tab-1.png",
+      "3-tab-2.png",
+      "3-tab-3.png",
+      "3-tab-4.png",
+      "3-tab-5.png",
+      "3-tab-6.png",
+      "3-tab-7.png",
+      "3-tab-8.png"
+    ],
+    "exported": "/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-063341.json",
+    "pulled": [
+      "perf-report-20261019-063341.json",
+      "perf-report-20261019-063341.md"
+    ]
+  }
+}
+PHONE OK
+EXIT 0

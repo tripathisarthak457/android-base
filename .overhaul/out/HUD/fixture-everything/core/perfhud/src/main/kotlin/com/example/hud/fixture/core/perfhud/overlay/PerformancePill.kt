@@ -3,7 +3,6 @@ package com.example.hud.fixture.core.perfhud.overlay
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hud.fixture.core.designsystem.foundation.appClickable
 import com.example.hud.fixture.core.designsystem.theme.AppTheme
 import com.example.hud.fixture.core.perfhud.R
@@ -48,7 +48,7 @@ internal fun PerformancePill(
     onOpen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val recording by recorder.recording.collectAsState()
+    val recording by recorder.recording.collectAsStateWithLifecycle()
     if (!recording) return
     LivePill(frames = recorder.frames, judged = !debugBuild, onOpen = onOpen, modifier = modifier)
 }
@@ -57,7 +57,7 @@ internal fun PerformancePill(
 private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modifier: Modifier = Modifier) {
     // Filled in the draw phase, on the main thread only.
     val live = remember { LiveStats() }
-    val measurer = rememberTextMeasurer(cacheSize = TEXT_CACHE)
+    val measurer = rememberTextMeasurer(cacheSize = TextCache)
     val typography = AppTheme.typography
     val style = remember(typography) { typography.mono.merge(TextStyle(fontSize = typography.labelSmall.fontSize)) }
     val fpsFormat = stringResource(R.string.perfhud_pill_fps)
@@ -65,16 +65,17 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
     val jankyFormat = stringResource(R.string.perfhud_pill_janky)
     val description = stringResource(R.string.perfhud_pill_description)
     val colors = AppTheme.colors
-    val neutral = colors.warning.content
+    val neutral = colors.contentSecondary
     val good = if (judged) colors.success.content else neutral
     val fair = if (judged) colors.warning.content else neutral
     val poor = if (judged) colors.danger.content else neutral
 
     // The widest the lines can get, measured once, so a changing number never resizes the badge.
-    val pillSize = remember(measurer, style, fpsFormat, jankyFormat) {
-        val fps = measurer.measure(fpsFormat.inRoot(WIDEST_FPS, WIDEST_FPS), style).size
-        val janky = measurer.measure(jankyFormat.inRoot(WIDEST_PERCENT), style).size
-        IntSize(width = maxOf(fps.width, janky.width), height = fps.height + janky.height)
+    val pillSize = remember(measurer, style, fpsFormat, idleFormat, jankyFormat) {
+        val fps = measurer.measure(fpsFormat.inRoot(WidestFps, WidestFps), style).size
+        val idle = measurer.measure(idleFormat.inRoot(WidestFps), style).size
+        val janky = measurer.measure(jankyFormat.inRoot(WidestPercent), style).size
+        IntSize(width = maxOf(fps.width, idle.width, janky.width), height = fps.height + janky.height)
     }
     val density = LocalDensity.current
 
@@ -86,7 +87,7 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
             )
             .appClickable(onClick = onOpen, minTouchTarget = 0.dp)
             .semantics { contentDescription = description }
-            .redrawDuringFrames(REFRESH_MILLIS)
+            .redrawDuringFrames(RefreshMillis)
             .drawBehind {
                 frames.readLive(System.nanoTime(), live)
                 val fps = live.framesPerSecond
@@ -94,15 +95,15 @@ private fun LivePill(frames: FrameLog, judged: Boolean, onOpen: () -> Unit, modi
                 val fpsText = if (fps == LiveStats.IDLE) idleFormat.inRoot(refresh) else fpsFormat.inRoot(fps, refresh)
                 val fpsColor = when {
                     fps == LiveStats.IDLE -> neutral
-                    fps >= refresh * GOOD_SHARE -> good
-                    fps >= refresh * FAIR_SHARE -> fair
+                    fps >= refresh * GoodShare -> good
+                    fps >= refresh * FairShare -> fair
                     else -> poor
                 }
                 // Judged as shown, in tenths of a percent.
-                val janky = (live.jankyPercent * TENTHS).roundToInt()
+                val janky = (live.jankyPercent * Tenths).roundToInt()
                 val jankyColor = when {
-                    janky <= GOOD_JANKY_TENTHS -> good
-                    janky <= FAIR_JANKY_TENTHS -> fair
+                    janky <= GoodJankyTenths -> good
+                    janky <= FairJankyTenths -> fair
                     else -> poor
                 }
                 drawCentred(measurer, fpsText, style, fpsColor, top = 0f)
@@ -122,18 +123,18 @@ private fun DrawScope.drawCentred(
     drawText(layout, color = color, topLeft = Offset((size.width - layout.size.width) / 2f, top))
 }
 
-private fun tenths(value: Int): String = (value / TENTHS_INT).toString() + "." + (value % TENTHS_INT)
+private fun tenths(value: Int): String = (value / TenthsInt).toString() + "." + (value % TenthsInt)
 
 /** Digits as ASCII whatever the locale: these are measurements, read alongside logcat and reports. */
 private fun String.inRoot(vararg args: Any): String = String.format(Locale.ROOT, this, *args)
 
-private const val REFRESH_MILLIS = 250L
-private const val TEXT_CACHE = 16
-private const val WIDEST_FPS = 888
-private const val WIDEST_PERCENT = "100.0"
-private const val GOOD_SHARE = 0.95f
-private const val FAIR_SHARE = 0.75f
-private const val GOOD_JANKY_TENTHS = 5
-private const val FAIR_JANKY_TENTHS = 20
-private const val TENTHS = 10f
-private const val TENTHS_INT = 10
+private const val RefreshMillis = 250L
+private const val TextCache = 16
+private const val WidestFps = 888
+private const val WidestPercent = "100.0"
+private const val GoodShare = 0.95f
+private const val FairShare = 0.75f
+private const val GoodJankyTenths = 5
+private const val FairJankyTenths = 20
+private const val Tenths = 10f
+private const val TenthsInt = 10

@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # Windows port of accept.sh (WP04 acceptance, design/wp/WP04.md). Needs the phone attached and unlocked. The
-# generator's consistency matrix runs through consistency.win.py: its process pool still cannot start on Windows
-# after WIN's merge (logs/r24-consistency-plain.log). The Gradle steps share one lock hold and the device gates
-# another (final-gates.win.sh), so another package's build cannot slip in between the steps of one acceptance.
+# Gradle steps share one lock hold and the device gates another (final-gates.win.sh), so another package's build
+# cannot slip in between the steps of one acceptance.
 #   ./accept.win.sh > logs/<step>.log 2>&1
 set -euo pipefail
 # The phone only: connected tasks use every attached device.
@@ -14,8 +13,7 @@ python3 tools/perf/test_perf.py
 python3 tools/adaptive/test_adaptive.py
 cd $W/generator
 python3 -m unittest discover -s tests -t .
-# The runner's process pool cannot spawn workers from a package's __main__ on Windows (consistency.win.py says why).
-python3 $O/consistency.win.py --quick
+python3 -m tests.consistency --quick
 python3 -m genkit.core.catalogue --check
 for n in everything standard lean; do
   python3 create_project.py --spec tests/fixtures/v2/$n.json --set package_name=com.example.wp04.$n --out $O/final-$n --no-zip --force

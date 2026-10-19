@@ -1,0 +1,184 @@
+## standard
+
+| Journey | Frames hidden / shown | Janky % hidden → shown | Δ points | UI thread mean Δ | Frame total mean Δ |
+|---|---|---|---|---|---|
+| Scroll | 10455 / 10440 | 0.39 → 0.54 | +0.15 | +0.095 ms | -0.011 ms |
+| Tabs | 759 / 757 | 3.29 → 3.30 | +0.01 | +0.040 ms | -1.682 ms |
+| Push/pop | 2556 / 2567 | 4.62 → 4.52 | -0.10 | +0.085 ms | +0.594 ms |
+| **All** | 13770 / 13764 | 1.34 → 1.43 | +0.09 | +0.089 ms | +0.013 ms |
+
+Idle frames in 5 s, hidden [0, 0, 0, 0, 0, 0], shown [0, 0, 0, 0, 0, 0]; PerfHud window lines per launch, hidden [0, 0, 0, 0, 0, 0], shown [10, 9, 9, 10, 8, 8].
+
+## everything
+
+| Journey | Frames hidden / shown | Janky % hidden → shown | Δ points | UI thread mean Δ | Frame total mean Δ |
+|---|---|---|---|---|---|
+| Scroll | 10261 / 10285 | 0.33 → 0.37 | +0.04 | +0.028 ms | +0.102 ms |
+| Tabs | 1326 / 1266 | 3.39 → 3.32 | -0.07 | -0.045 ms | -0.730 ms |
+| Push/pop | 2539 / 2562 | 5.00 → 4.64 | -0.36 | -0.029 ms | +0.241 ms |
+| **All** | 14126 / 14113 | 1.46 → 1.41 | -0.05 | +0.003 ms | +0.027 ms |
+
+Idle frames in 5 s, hidden [0, 0, 0, 0, 0, 0], shown [0, 0, 0, 0, 0, 0]; PerfHud window lines per launch, hidden [0, 0, 0, 0, 0, 0], shown [8, 8, 8, 8, 9, 9].
+
+## startup
+ {
+ "package": "com.example.hud.everything.dev",
+ "launches_per_install": 15,
+ "hud": {
+  "median_ms": 517.0,
+  "mean_ms": 512.8,
+  "count": 30
+ },
+ "base": {
+  "median_ms": 507.0,
+  "mean_ms": 505.5,
+  "count": 30
+ },
+ "hud_minus_base_median_ms": 10.0
+}
+## listener
+ {
+ "listener_standard": {
+  "off": {
+   "pid": "31519",
+   "frame_metrics_thread": false,
+   "threads": 39,
+   "thread_names": [
+    "ConscryptStatsL",
+    "DefaultDispatch",
+    "FinalizerDaemon",
+    "FinalizerWatchd",
+    "HeapTaskDaemon",
+    "Jit thread pool",
+    "Okio Watchdog",
+    "Profile Saver",
+    "ProtoLogBackgro",
+    "ReferenceQueueD",
+    "RenderThread",
+    "Signal Catcher",
+    "SurfaceSyncGrou",
+    "TracingMuxer",
+    "binder##",
+    "er.typicode.com",
+    "hwuiTask#",
+    "perfetto_hprof_",
+    "ud.standard.dev",
+    "wy# ConnectionP",
+    "wy# Dispatcher",
+    "wy# TaskRunner"
+   ],
+   "perfhud_lines": 0
+  },
+  "on": {
+   "pid": "31647",
+   "frame_metrics_thread": true,
+   "threads": 43,
+   "thread_names": [
+    "ConscryptStatsL",
+    "DefaultDispatch",
+    "DefaultExecutor",
+    "FinalizerDaemon",
+    "FinalizerWatchd",
+    "FrameMetricsAgg",
+    "HeapTaskDaemon",
+    "Jit thread pool",
+    "Okio Watchdog",
+    "Profile Saver",
+    "ProtoLogBackgro",
+    "ReferenceQueueD",
+    "RenderThread",
+    "Signal Catcher",
+    "SurfaceSyncGrou",
+    "TracingMuxer",
+    "binder##",
+    "er.typicode.com",
+    "hwuiTask#",
+    "perfetto_hprof_",
+    "ud.standard.dev",
+    "wy# ConnectionP",
+    "wy# Dispatcher",
+    "wy# TaskRunner"
+   ],
+   "perfhud_lines": 3
+  },
+  "threads_only_on": [
+   "DefaultExecutor",
+   "FrameMetricsAgg"
+  ],
+  "threads_only_off": []
+ },
+ "listener_everything": {
+  "off": {
+   "pid": "31764",
+   "frame_metrics_thread": true,
+   "threads": 70,
+   "thread_names": [
+    ".everything.dev",
+    "AppUpdateServic",
+    "ConscryptStatsL",
+    "DefaultDispatch",
+    "FileObserver",
+    "FinalizerDaemon",
+    "FinalizerWatchd",
+    "Firebase Backgr",
+    "Firebase Blocki",
+    "Firebase Schedu",
+    "Firebase-Messag",
+    "FrameMetricsAgg",
+    "GmsDynamite",
+    "GoogleApiHandle",
+    "HeapTaskDaemon",
+    "Jit thread pool",
+    "Measurement Wor",
+    "MessengerIpcCli",
+    "OkHttp Connecti",
+    "Okio Watchdog",
+    "ProcessStablePh",
+    "Profile Saver",
+    "ProtoLogBackgro",
+    "ReferenceQueueD",
+    "RenderThread",
+    "ScionFrontendAp",
+    "Signal Catcher",
+    "SurfaceSyncGrou",
+    "TAG",
+    "TracingMuxer",
+    "b# ConnectionP",
+    "b# Dispatcher",
+    "b# TaskRunner",
+    "binder##",
+    "er.typicode.com",
+    "hwuiTask#",
+    "perfetto_hprof_",
+    "pool#-thread-",
+    "queued-work-loo"
+   ],
+   "perfhud_lines": 0
+  },
+  "on": {
+   "pid": "31925",
+   "frame_metrics_thread": true,
+   "threads": 70,
+   "thread_names": [
+    ".everything.dev",
+    "AppUpdateServic",
+    "ConscryptStatsL",
+    "DefaultDispatch",
+    "DefaultExecutor",
+    "FileObserver",
+    "FinalizerDaemon",
+    "FinalizerWatchd",
+    "Firebase Backgr",
+    "Firebase Blocki",
+    "Firebase Schedu",
+    "Firebase-Messag",
+    "FrameMetricsAgg",
+    "GmsDynamite",
+    "GoogleApiHandle",
+    "HeapTaskDaemon",
+    "Jit thread pool",
+    "Measurement Wor",
+    "MessengerIpcCli",
+    "Metrics Backgro",
+    "OkHttp Connecti",
+    "Okio Watchdog",

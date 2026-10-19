@@ -19,6 +19,10 @@ import androidx.compose.ui.platform.InspectorInfo
  * frame of its own. A redraw on a timer would: on the phone a lone frame after idle misses its
  * deadline more often than not, so a performance readout refreshed that way makes the jank it
  * reports, four times a second, and keeps an idle app drawing.
+ *
+ * The invalidation also schedules one more traversal for the next vsync, since the pre-draw pass
+ * runs after the view root stopped expecting one. That traversal finds nothing left to draw and
+ * ends without a frame: the cost is one main-thread wake per redraw, at most four a second.
  */
 internal fun Modifier.redrawDuringFrames(periodMillis: Long): Modifier =
     this then RedrawDuringFramesElement(periodMillis)
@@ -57,7 +61,7 @@ private class RedrawDuringFramesNode(
 
     override fun onPreDraw(): Boolean {
         val now = System.nanoTime()
-        if (now - lastRedrawNanos >= periodMillis * NANOS_PER_MILLI) {
+        if (now - lastRedrawNanos >= periodMillis * NanosPerMilli) {
             lastRedrawNanos = now
             invalidateDraw()
         }
@@ -69,4 +73,4 @@ private class RedrawDuringFramesNode(
     }
 }
 
-private const val NANOS_PER_MILLI = 1_000_000L
+private const val NanosPerMilli = 1_000_000L

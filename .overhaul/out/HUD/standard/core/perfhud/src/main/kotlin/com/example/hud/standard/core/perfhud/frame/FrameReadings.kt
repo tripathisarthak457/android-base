@@ -20,6 +20,7 @@ internal class LiveStats {
 /** The last frames, for the frame-time graph. Filled by [FrameLog.copyRecent]. */
 internal class FrameSeries(val capacity: Int) {
     val totalMillis = FloatArray(capacity)
+    val uiMillis = FloatArray(capacity)
     val intervalMillis = FloatArray(capacity)
     val janky = BooleanArray(capacity)
     var count: Int = 0

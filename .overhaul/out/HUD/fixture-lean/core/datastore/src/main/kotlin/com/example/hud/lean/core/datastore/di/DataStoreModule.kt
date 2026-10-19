@@ -7,6 +7,7 @@ import com.example.hud.lean.core.datastore.crypto.KeystoreCipher
 import com.example.hud.lean.core.datastore.crypto.ValueCipher
 import com.example.hud.lean.core.datastore.session.AuthTokenStore
 import com.example.hud.lean.core.datastore.session.DataStoreAuthTokenStore
+import com.example.hud.lean.core.datastore.session.SESSION_TOKENS_FILE
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -46,6 +47,6 @@ internal interface DataStoreModule {
         @Singleton
         @SessionTokensDataStore
         fun provideSessionTokensDataStore(files: DataStoreFiles): DataStore<Preferences> =
-            files.preferences("session_tokens")
+            files.preferences(SESSION_TOKENS_FILE)
     }
 }

@@ -1,0 +1,155 @@
+[locked:gradle] waiting for the lock (pid 14812 since 2026-10-19 06:12:08: ./gradlew -Pandroid.builder.sdkDownload=false --console=plain :app:assembleDevRelease :app:assembleProdRelease :app:asse)
+[locked:gradle] waiting for the lock (pid 14812 since 2026-10-19 06:12:08: ./gradlew -Pandroid.builder.sdkDownload=false --console=plain :app:assembleDevRelease :app:assembleProdRelease :app:asse)
+[locked:gradle] 1143 MB available, 1448 MB commit left; waiting for 1500 MB
+[locked:gradle] 291 MB available, 1278 MB commit left; waiting for 1500 MB
+[locked:gradle] 271 MB available, 1200 MB commit left; waiting for 1500 MB
+[locked:gradle] 266 MB available, 1198 MB commit left; waiting for 1500 MB
+[locked:gradle] 271 MB available, 1054 MB commit left; waiting for 1500 MB
+[locked:gradle] 346 MB available, 1087 MB commit left; waiting for 1500 MB
+[locked:gradle] 335 MB available, 1271 MB commit left; waiting for 1500 MB
+[locked:gradle] 366 MB available, 1073 MB commit left; waiting for 1500 MB
+[locked:gradle] 377 MB available, 1053 MB commit left; waiting for 1500 MB
+[locked:gradle] 428 MB available, 1227 MB commit left; waiting for 1500 MB
+[locked:gradle] 431 MB available, 1232 MB commit left; waiting for 1500 MB
+[locked:gradle] 404 MB available, 1142 MB commit left; waiting for 1500 MB
+[locked:gradle] 432 MB available, 1197 MB commit left; waiting for 1500 MB
+[locked:gradle] 415 MB available, 1248 MB commit left; waiting for 1500 MB
+[locked:gradle] 457 MB available, 1323 MB commit left; waiting for 1500 MB
+[locked:gradle] 480 MB available, 1312 MB commit left; waiting for 1500 MB
+[locked:gradle] 447 MB available, 1289 MB commit left; waiting for 1500 MB
+[locked:gradle] 445 MB available, 1253 MB commit left; waiting for 1500 MB
+[locked:gradle] 444 MB available, 1243 MB commit left; waiting for 1500 MB
+[locked:gradle] 434 MB available, 1269 MB commit left; waiting for 1500 MB
+[locked:gradle] 435 MB available, 1203 MB commit left; waiting for 1500 MB
+[locked:gradle] 443 MB available, 1286 MB commit left; waiting for 1500 MB
+[locked:gradle] 458 MB available, 1284 MB commit left; waiting for 1500 MB
+[locked:gradle] 576 MB available, 1250 MB commit left; waiting for 1500 MB
+[locked:gradle] 768 MB available, 1268 MB commit left; waiting for 1500 MB
+[locked:gradle] 800 MB available, 1296 MB commit left; waiting for 1500 MB
+[locked:gradle] 756 MB available, 1219 MB commit left; waiting for 1500 MB
+[locked:gradle] 762 MB available, 1164 MB commit left; waiting for 1500 MB
+[locked:gradle] 822 MB available, 1231 MB commit left; waiting for 1500 MB
+[locked:gradle] 822 MB available, 1245 MB commit left; waiting for 1500 MB
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+Starting a Gradle Daemon (subsequent builds will be faster)
+Parallel Configuration Cache is an incubating feature.
+Reusing configuration cache.
+> Task :core:common:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:common:processResources NO-SOURCE
+> Task :core:common:verifyApiPurity UP-TO-DATE
+> Task :core:common:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:verifyApiPurity UP-TO-DATE
+> Task :core:designsystem:verifyModuleDependencies UP-TO-DATE
+> Task :core:navigation:verifyComposeUsage
+> Task :core:navigation:verifyModuleDependencies UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestAssets UP-TO-DATE
+> Task :core:navigation:generateDebugAssets UP-TO-DATE
+> Task :core:testing:generateDebugAssets UP-TO-DATE
+> Task :core:testing:verifyApiPurity UP-TO-DATE
+> Task :core:testing:verifyComposeUsage
+> Task :core:testing:verifyModuleDependencies UP-TO-DATE
+> Task :core:testing:preBuild
+> Task :core:testing:preDebugBuild
+> Task :core:navigation:verifyApiPurity
+> Task :core:navigation:preBuild
+> Task :core:navigation:preDebugBuild
+> Task :core:navigation:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:verifyComposeUsage
+> Task :core:designsystem:preBuild
+> Task :core:designsystem:preDebugBuild
+> Task :core:testing:mergeDebugAssets UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:processDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:navigation:packageDebugResources UP-TO-DATE
+> Task :core:navigation:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:navigation:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:mergeDebugAssets UP-TO-DATE
+> Task :core:navigation:preDebugUnitTestBuild
+> Task :core:common:compileKotlin UP-TO-DATE
+> Task :core:common:compileJava NO-SOURCE
+> Task :core:common:classes UP-TO-DATE
+> Task :core:common:jar UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:writeDebugAarMetadata UP-TO-DATE
+> Task :core:testing:writeDebugAarMetadata UP-TO-DATE
+> Task :core:navigation:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:navigation:compileDebugLibraryResources UP-TO-DATE
+> Task :core:navigation:mapDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestResources UP-TO-DATE
+> Task :core:testing:generateDebugResources UP-TO-DATE
+> Task :core:testing:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestAssets UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:navigation:checkDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestResources UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:navigation:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:extractDeepLinksDebug UP-TO-DATE
+> Task :core:testing:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:testing:processDebugNavigationResources UP-TO-DATE
+> Task :core:testing:compileDebugLibraryResources UP-TO-DATE
+> Task :core:testing:parseDebugLocalResources UP-TO-DATE
+> Task :core:testing:processDebugManifest UP-TO-DATE
+> Task :core:navigation:processDebugManifest UP-TO-DATE
+> Task :core:testing:generateDebugRFile UP-TO-DATE
+> Task :core:navigation:koverFindJar UP-TO-DATE
+> Task :core:testing:javaPreCompileDebug UP-TO-DATE
+> Task :core:navigation:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:testing:compileDebugKotlin UP-TO-DATE
+> Task :core:testing:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:testing:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:testing:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:testing:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:mergeDebugUnitTestManifest UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestManifest UP-TO-DATE
+> Task :core:navigation:processDebugUnitTestResources UP-TO-DATE
+> Task :core:navigation:packageDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:navigation:generateDebugUnitTestConfig UP-TO-DATE
+> Task :core:navigation:kspDebugKotlin
+> Task :core:navigation:compileDebugKotlin
+> Task :core:navigation:processDebugJavaRes UP-TO-DATE
+> Task :core:navigation:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:navigation:transformDebugClassesWithAsm UP-TO-DATE
+> Task :core:navigation:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:navigation:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:navigation:kspDebugUnitTestKotlin
+
+> Task :core:navigation:compileDebugUnitTestKotlin
+w: file:///D:/projects/tools/.overhaul/wt/WP04/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/HostCrossfadeTest.kt:25:16 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+
+> Task :core:navigation:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:navigation:compileDebugUnitTestJavaWithJavac UP-TO-DATE
+> Task :core:navigation:hiltCollectClassesDebugUnitTest
+> Task :core:navigation:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :core:navigation:hiltJavaCompileDebugUnitTest UP-TO-DATE
+> Task :core:navigation:transformDebugUnitTestClassesWithAsm
+
+> Task :core:navigation:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dmaven.repo.local=D:\.caches\m2
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.robolectric.nativeruntime.DefaultNativeRuntimeLoader in an unnamed module
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+[Incubating] Problems report is available at: file:///D:/projects/tools/.overhaul/wt/WP04/templates/android/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 1m 31s
+84 actionable tasks: 10 executed, 74 up-to-date
+Configuration cache entry reused.

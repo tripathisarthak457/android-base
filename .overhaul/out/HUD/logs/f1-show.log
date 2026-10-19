@@ -1,0 +1,36 @@
+Performing Streamed Install
+Success
+Success
+Starting: Intent { cmp=com.example.hud.everything.dev/com.example.hud.everything.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.hud.everything.dev/com.example.hud.everything.MainActivity
+TotalTime: 511
+WaitTime: 514
+Complete
+{
+  "release": {
+    "pill_bounds": [
+      881,
+      1343,
+      1058,
+      1475
+    ],
+    "tab_shots": [
+      "3-tab-1.png",
+      "3-tab-2.png",
+      "3-tab-3.png",
+      "3-tab-4.png",
+      "3-tab-5.png",
+      "3-tab-6.png",
+      "3-tab-7.png",
+      "3-tab-8.png"
+    ],
+    "exported": "/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-091859.json",
+    "pulled": [
+      "perf-report-20261019-091859.json",
+      "perf-report-20261019-091859.md"
+    ]
+  }
+}
+EXIT 0

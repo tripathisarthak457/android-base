@@ -24,7 +24,7 @@
 
     <string name="perfhud_score">Optimisation score</string>
     <string name="perfhud_score_value">%1$d / 100 · %2$s</string>
-    <string name="perfhud_score_none">Not enough recorded to score yet: a few hundred frames and a start.</string>
+    <string name="perfhud_score_none">Not enough recorded to score yet: the score needs %1$d frames of drawing.</string>
     <string name="perfhud_losses">Where the points went</string>
     <string name="perfhud_no_losses">Every measured metric meets its target.</string>
     <string name="perfhud_column_metric">Metric</string>
@@ -38,14 +38,14 @@
     <string name="perfhud_not_measured">not measured</string>
 
     <string name="perfhud_frame_times">Frame times</string>
-    <string name="perfhud_frame_times_caption">The last frames against the budget at 60, 90 and 120 Hz. Red missed its deadline: a janky frame.</string>
+    <string name="perfhud_frame_times_caption">Each bar is a frame from its vsync to the GPU finishing, the solid part its main-thread work, against the budget at 60, 90 and 120 Hz. Red missed its deadline: a janky frame. Amber made it, but its main thread took longer than the budget.</string>
     <string name="perfhud_fps_graph">Frames per second</string>
     <string name="perfhud_fps_graph_caption">While drawing, for each of the last 60 seconds; a gap is a second with nothing to draw. The line is the display\'s rate.</string>
-    <string name="perfhud_histogram">Frame-time histogram</string>
-    <string name="perfhud_histogram_caption">Every frame recorded, by duration in milliseconds. The line is the current budget.</string>
+    <string name="perfhud_histogram">Main-thread time histogram</string>
+    <string name="perfhud_histogram_caption">Every frame recorded, by its main-thread time in milliseconds. The line is one refresh interval: the time the main thread has for each frame.</string>
     <string name="perfhud_by_screen">Janky frames by screen</string>
     <string name="perfhud_memory">Memory</string>
-    <string name="perfhud_memory_caption">Java heap and native heap each second; PSS every 15 seconds.</string>
+    <string name="perfhud_memory_caption">Java heap and native heap each second; PSS at most every 15 seconds, in a pause in the drawing.</string>
     <string name="perfhud_legend_java">Java heap</string>
     <string name="perfhud_legend_native">Native heap</string>
     <string name="perfhud_legend_pss">PSS</string>
@@ -93,6 +93,8 @@
 
     <string name="perfhud_strict_mode">StrictMode on the main thread</string>
     <string name="perfhud_violations">Violations</string>
+    <string name="perfhud_strict_mode_example">%1$s at %2$s</string>
+    <string name="perfhud_strict_mode_unknown_frame">an unknown frame</string>
     <string name="perfhud_strict_mode_unsupported">Android 9 and later report StrictMode violations; this phone does not.</string>
 
     <string name="perfhud_build">Build</string>
@@ -115,11 +117,12 @@
     <string name="perfhud_value_count">%1$s</string>
     <string name="perfhud_value_pass">pass</string>
     <string name="perfhud_value_fail">fail</string>
+    <string name="perfhud_value_partly">waiting</string>
     <string name="perfhud_value_target_at_most">at most %1$s</string>
 
     <string name="perfhud_metric_janky_frames">Janky frames</string>
-    <string name="perfhud_metric_frame_p90">Frame time p90</string>
-    <string name="perfhud_metric_frame_p99">Frame time p99</string>
+    <string name="perfhud_metric_ui_p90">Main-thread time p90</string>
+    <string name="perfhud_metric_ui_p99">Main-thread time p99</string>
     <string name="perfhud_metric_slow_frames">Slow frames</string>
     <string name="perfhud_metric_frozen_frames">Frozen frames</string>
     <string name="perfhud_metric_long_work">Long main-thread work</string>
@@ -133,8 +136,8 @@
     <string name="perfhud_metric_not_debuggable">Not debuggable</string>
 
     <string name="perfhud_fix_janky_frames">Open Janky frames by screen and start with the worst screen. The usual causes: recomposition on every frame of an animation (read animated values in graphicsLayer, offset or drawBehind lambdas), alpha on a full-screen layer, work on the main thread during a transition, and a first frame that builds a whole screen. Record a trace with the android-profiler skill to see which.</string>
-    <string name="perfhud_fix_frame_p90">Ordinary frames take most of their budget. Look for layouts measured twice (intrinsics, nested weights), lists without contentType, and work in composition that belongs in remember or the draw phase.</string>
-    <string name="perfhud_fix_frame_p99">The slowest frames run past their budget. These are usually first frames: a screen built for the first time, a shader compiled on first use, or a list item type seen for the first time. Pre-warm with the baseline profile, and keep first frames small.</string>
+    <string name="perfhud_fix_ui_p90">Ordinary frames keep the main thread busy for most of the frame budget, which leaves no room for a slower one. Look for layouts measured twice (intrinsics, nested weights), lists without contentType, and work in composition that belongs in remember or the draw phase.</string>
+    <string name="perfhud_fix_ui_p99">The slowest frames keep the main thread busy past the frame budget. These are usually first frames: a screen built for the first time, or a list item type seen for the first time. Make sure the baseline profile covers them, keep first frames small, and defer what the first frame does not show.</string>
     <string name="perfhud_fix_slow_frames">Frames over 16 ms miss even a 60 Hz budget. Find them in Frame times and record a trace of that moment.</string>
     <string name="perfhud_fix_frozen_frames">A frame took longer than 700 ms: the app froze. Something blocked the main thread: disk or network on it (check StrictMode below), a large decode, or a lock. Move it to a background dispatcher.</string>
     <string name="perfhud_fix_long_work">The main thread did more than 50 ms of work for single frames. StrictMode below names disk and network calls; a trace names the rest. Defer what is not needed for the first frame.</string>

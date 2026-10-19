@@ -10,8 +10,8 @@ import java.util.Locale
 internal val Metric.title: Int
     get() = when (this) {
         Metric.JankyFrames -> R.string.perfhud_metric_janky_frames
-        Metric.FrameTimeP90 -> R.string.perfhud_metric_frame_p90
-        Metric.FrameTimeP99 -> R.string.perfhud_metric_frame_p99
+        Metric.UiThreadP90 -> R.string.perfhud_metric_ui_p90
+        Metric.UiThreadP99 -> R.string.perfhud_metric_ui_p99
         Metric.SlowFrames -> R.string.perfhud_metric_slow_frames
         Metric.FrozenFrames -> R.string.perfhud_metric_frozen_frames
         Metric.LongMainThreadWork -> R.string.perfhud_metric_long_work
@@ -29,8 +29,8 @@ internal val Metric.title: Int
 internal val Metric.fix: Int
     get() = when (this) {
         Metric.JankyFrames -> R.string.perfhud_fix_janky_frames
-        Metric.FrameTimeP90 -> R.string.perfhud_fix_frame_p90
-        Metric.FrameTimeP99 -> R.string.perfhud_fix_frame_p99
+        Metric.UiThreadP90 -> R.string.perfhud_fix_ui_p90
+        Metric.UiThreadP99 -> R.string.perfhud_fix_ui_p99
         Metric.SlowFrames -> R.string.perfhud_fix_slow_frames
         Metric.FrozenFrames -> R.string.perfhud_fix_frozen_frames
         Metric.LongMainThreadWork -> R.string.perfhud_fix_long_work
@@ -48,7 +48,7 @@ internal val Metric.fix: Int
 internal val Metric.doc: String
     get() = DOC + "#" + when (this) {
         Metric.JankyFrames -> "janky-frames"
-        Metric.FrameTimeP90, Metric.FrameTimeP99 -> "frame-time-percentiles"
+        Metric.UiThreadP90, Metric.UiThreadP99 -> "main-thread-percentiles"
         Metric.SlowFrames, Metric.FrozenFrames -> "slow-and-frozen-frames"
         Metric.LongMainThreadWork -> "long-main-thread-work"
         Metric.ColdStart, Metric.WarmStart -> "start-up"
@@ -65,7 +65,13 @@ internal fun Resources.formatValue(metric: Metric, value: Float): String = when 
     MetricUnit.Millis -> getString(R.string.perfhud_value_millis, decimal(value, 0))
     MetricUnit.Megabytes -> getString(R.string.perfhud_value_megabytes, decimal(value, 1))
     MetricUnit.Count -> getString(R.string.perfhud_value_count, decimal(value, 0))
-    MetricUnit.Check -> getString(if (value >= 1f) R.string.perfhud_value_pass else R.string.perfhud_value_fail)
+    MetricUnit.Check -> getString(
+        when {
+            value >= 1f -> R.string.perfhud_value_pass
+            value > 0f -> R.string.perfhud_value_partly
+            else -> R.string.perfhud_value_fail
+        },
+    )
 }
 
 /** The value an A needs, or a pass. */
@@ -77,4 +83,12 @@ internal fun Resources.formatTarget(metric: Metric): String {
 /** A number with [places] decimals, in the format a log or a JSON reader expects whatever the locale. */
 internal fun decimal(value: Float, places: Int): String = String.format(Locale.ROOT, "%.${places}f", value)
 
+/** [millis] as minutes and seconds, `m:ss`. */
+internal fun minutesAndSeconds(millis: Long): String {
+    val seconds = millis / MILLIS_PER_SECOND
+    return String.format(Locale.ROOT, "%d:%02d", seconds / SECONDS_PER_MINUTE, seconds % SECONDS_PER_MINUTE)
+}
+
 private const val DOC = "docs/PERFORMANCE-OVERLAY.md"
+private const val MILLIS_PER_SECOND = 1000L
+private const val SECONDS_PER_MINUTE = 60L

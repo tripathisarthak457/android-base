@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_password_rules">Al menos ocho caracteres, con una letra y un número.</string>
+    <string name="auth_confirm_password">Confirma la contraseña</string>
+    <string name="auth_create_account">Crear cuenta</string>
+    <string name="auth_email">Correo electrónico</string>
+    <string name="auth_reset_explanation">Escribe el correo con el que te registraste y te enviaremos un enlace.</string>
+    <string name="auth_forgot_password">He olvidado la contraseña</string>
+    <string name="auth_reset_sent">Si esa dirección tiene una cuenta, el enlace ya va en camino.</string>
+    <string name="auth_name">Nombre</string>
+    <string name="auth_password">Contraseña</string>
+    <string name="auth_reset_password">Restablecer contraseña</string>
+    <string name="auth_send_reset_link">Enviar enlace</string>
+    <string name="auth_sign_in">Iniciar sesión</string>
+    <string name="auth_welcome_back">Hola de nuevo</string>
+    <string name="auth_continue_with_google">Continuar con Google</string>
+    <string name="auth_or">o</string>
+    <string name="auth_google_sign_in_failed">No se pudo iniciar sesión con Google.</string>
+    <string name="auth_google_failed">El inicio de sesión con Google no terminó. Inténtalo de nuevo o usa tu correo.</string>
+    <string name="auth_wrong_credentials">Ese correo y esa contraseña no coinciden con ninguna cuenta.</string>
+    <string name="auth_too_many_attempts">Demasiados intentos. Vuelve a intentarlo en unos minutos.</string>
+    <string name="auth_sign_in_failed">No se pudo iniciar sesión.</string>
+    <string name="auth_sign_up_failed">No se pudo crear la cuenta.</string>
+    <string name="auth_reset_failed">No se pudo enviar el enlace.</string>
+    <string name="auth_passwords_do_not_match">Las contraseñas no coinciden.</string>
+</resources>

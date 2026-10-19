@@ -14,7 +14,7 @@ import javax.inject.Inject
  * The adb path to the overlay, for scripts on a debug build:
  *
  * ```
- * adb shell run-as <applicationId> am broadcast \
+ * adb shell run-as <applicationId> am broadcast --user 0 \
  *     -n <applicationId>/com.example.hud.everything.core.perfhud.report.ReportReceiver -a <action>
  * ```
  *
@@ -23,8 +23,10 @@ import javax.inject.Inject
  * recording.
  *
  * Not exported, so no other app can reach it: `run-as` gives adb the app's own uid, and only on a
- * debuggable build. A release-like dev build exports its report from the Perf tab instead, and a
- * shippable release has no receiver at all.
+ * debuggable build. `--user` names the app's own user because a broadcast to the default, the
+ * current user, needs a cross-user permission the app's uid does not hold. A release-like dev
+ * build exports its report from the Perf tab instead, and a shippable release has no receiver at
+ * all.
  */
 @AndroidEntryPoint
 internal class ReportReceiver : BroadcastReceiver() {

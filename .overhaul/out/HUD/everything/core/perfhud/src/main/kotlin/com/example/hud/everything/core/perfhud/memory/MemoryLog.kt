@@ -3,8 +3,12 @@ package com.example.hud.everything.core.perfhud.memory
 import kotlinx.serialization.Serializable
 
 /**
- * Memory samples over time, the last [capacity] of them, and the garbage collector's counters
- * since recording started. Written by the sampler's thread, read by the graph and the report.
+ * Memory samples over time, the last [capacity] of them, and the garbage collections that ran
+ * while they were taken. Written by the sampler's thread, read by the graph and the report.
+ *
+ * The sampler runs only while recording with the app in front, and each run of it begins with
+ * [startRun]: collections between two runs, with recording off or the app in the background, are
+ * not counted, as no frame of theirs is.
  */
 internal class MemoryLog(val capacity: Int = DEFAULT_CAPACITY) {
 
@@ -20,11 +24,11 @@ internal class MemoryLog(val capacity: Int = DEFAULT_CAPACITY) {
     private var peakPssMb = 0f
     private var lastPssMb = Float.NaN
     private var lastGraphicsMb = Float.NaN
-    private var firstGc: GcCounters? = null
     private var lastGc: GcCounters? = null
-
-    /** Samples ever added. Changes on every sample, so a reader can tell when to redraw. */
-    val count: Long get() = synchronized(lock) { written }
+    private var gcCount = 0L
+    private var gcMillis = 0L
+    private var blockingGcCount = 0L
+    private var blockingGcMillis = 0L
 
     /** Adds one sample. A sample without PSS leaves the last measured PSS standing. */
     fun add(reading: MemoryReading) = synchronized(lock) {
@@ -42,9 +46,17 @@ internal class MemoryLog(val capacity: Int = DEFAULT_CAPACITY) {
             lastGraphicsMb = reading.graphicsMb
             peakPssMb = maxOf(peakPssMb, reading.pssMb)
         }
-        if (firstGc == null) firstGc = reading.gc
+        lastGc?.let { before ->
+            gcCount += reading.gc.count - before.count
+            gcMillis += reading.gc.millis - before.millis
+            blockingGcCount += reading.gc.blockingCount - before.blockingCount
+            blockingGcMillis += reading.gc.blockingMillis - before.blockingMillis
+        }
         lastGc = reading.gc
     }
+
+    /** The next sample starts a new run: what the collector did since the last one is not counted. */
+    fun startRun() = synchronized(lock) { lastGc = null }
 
     fun clear() = synchronized(lock) {
         written = 0
@@ -54,8 +66,11 @@ internal class MemoryLog(val capacity: Int = DEFAULT_CAPACITY) {
         peakPssMb = 0f
         lastPssMb = Float.NaN
         lastGraphicsMb = Float.NaN
-        firstGc = null
         lastGc = null
+        gcCount = 0L
+        gcMillis = 0L
+        blockingGcCount = 0L
+        blockingGcMillis = 0L
     }
 
     /** Copies the last samples into [into], oldest first, as many as it holds. */
@@ -73,8 +88,6 @@ internal class MemoryLog(val capacity: Int = DEFAULT_CAPACITY) {
     /** Null before the first sample. */
     fun summary(): MemorySummary? = synchronized(lock) {
         val now = latest ?: return@synchronized null
-        val first = firstGc ?: now.gc
-        val last = lastGc ?: now.gc
         MemorySummary(
             javaHeapMb = now.javaHeapMb,
             peakJavaHeapMb = peakJavaHeapMb,
@@ -83,10 +96,10 @@ internal class MemoryLog(val capacity: Int = DEFAULT_CAPACITY) {
             pssMb = lastPssMb.takeUnless { it.isNaN() },
             peakPssMb = peakPssMb.takeIf { it > 0f },
             appPssMb = (lastPssMb - lastGraphicsMb).takeUnless { it.isNaN() },
-            gcCount = last.count - first.count,
-            gcMillis = last.millis - first.millis,
-            blockingGcCount = last.blockingCount - first.blockingCount,
-            blockingGcMillis = last.blockingMillis - first.blockingMillis,
+            gcCount = gcCount,
+            gcMillis = gcMillis,
+            blockingGcCount = blockingGcCount,
+            blockingGcMillis = blockingGcMillis,
         )
     }
 
@@ -121,7 +134,7 @@ internal data class GcCounters(
     val blockingMillis: Long,
 )
 
-/** Sizes in megabytes, null until measured; GC counts and times since recording started. */
+/** Sizes in megabytes, null until measured; GC counts and times while the sampler ran. */
 @Serializable
 internal data class MemorySummary(
     val javaHeapMb: Float,

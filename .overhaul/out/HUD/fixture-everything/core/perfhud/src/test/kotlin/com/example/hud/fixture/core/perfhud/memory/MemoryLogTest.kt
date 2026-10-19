@@ -24,6 +24,22 @@ class MemoryLogTest {
     }
 
     @Test
+    fun `collections between two runs of the sampler are not counted`() {
+        log.add(reading(heap = 10f, gc = GcCounters(count = 40, millis = 400, blockingCount = 2, blockingMillis = 30)))
+        log.add(reading(heap = 10f, gc = GcCounters(count = 42, millis = 410, blockingCount = 2, blockingMillis = 30)))
+        // Recording off, or the app in the background: the collector went on without the sampler.
+        log.startRun()
+        log.add(reading(heap = 10f, gc = GcCounters(count = 90, millis = 900, blockingCount = 9, blockingMillis = 99)))
+        log.add(reading(heap = 10f, gc = GcCounters(count = 91, millis = 905, blockingCount = 9, blockingMillis = 99)))
+
+        val summary = checkNotNull(log.summary())
+
+        assertEquals(3L, summary.gcCount)
+        assertEquals(15L, summary.gcMillis)
+        assertEquals(0L, summary.blockingGcCount)
+    }
+
+    @Test
     fun `PSS stands at its last measurement until it is measured again`() {
         log.add(reading(pss = 100f, graphics = 55f))
         log.add(reading())

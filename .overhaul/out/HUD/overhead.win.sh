@@ -4,7 +4,7 @@
 # Installs the APK fresh, compiles it with its own profile as Play would (as perf.sh does), then alternates
 # hidden and shown launches through overhead.py.
 set -euo pipefail
-OV=D:/projects/tools/.overhaul; S=${SERIAL:-9a7c74f4}; ID=com.example.hud.everything.dev
+OV=D:/projects/tools/.overhaul; S=${SERIAL:-9a7c74f4}; ID=${ID:-com.example.hud.everything.dev}
 APK=$1; OUT=$2; ROUNDS=${3:-4}
 adb -s "$S" get-state
 adb -s "$S" uninstall "$ID" >/dev/null 2>&1 || true

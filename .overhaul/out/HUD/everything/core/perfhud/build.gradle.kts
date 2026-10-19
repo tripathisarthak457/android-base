@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":core:devtools"))
     implementation(project(":core:analytics"))
 
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.metrics.performance)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.profileinstaller)

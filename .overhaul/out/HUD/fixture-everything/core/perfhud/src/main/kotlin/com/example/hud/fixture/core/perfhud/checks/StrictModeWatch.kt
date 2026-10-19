@@ -1,10 +1,12 @@
 package com.example.hud.fixture.core.perfhud.checks
 
+import android.content.res.Resources
 import android.os.Build
 import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.RequiresApi
+import com.example.hud.fixture.core.perfhud.R
 import kotlinx.serialization.Serializable
 import java.util.concurrent.Executor
 import javax.inject.Inject
@@ -16,6 +18,10 @@ import javax.inject.Singleton
  * [stop]. Counting needs a penalty listener, which arrived in API 28; earlier releases report
  * nothing rather than a count that cannot be taken.
  *
+ * The checks are added to the app's own policy, penalties included, so the app keeps what it
+ * asked for. An app whose policy has `penaltyDeath` therefore also dies of the checks added here;
+ * one that sets its own policy while recording replaces these checks until the next [start].
+ *
  * [start] and [stop] on the main thread: a thread policy belongs to the thread that sets it.
  */
 @Singleton
@@ -23,7 +29,7 @@ internal class StrictModeWatch @Inject constructor() {
 
     private val lock = Any()
     private val byKind = LinkedHashMap<String, Int>()
-    private val examples = ArrayList<String>()
+    private val examples = ArrayList<StrictModeExample>()
     private var previous: StrictMode.ThreadPolicy? = null
 
     @get:ChecksSdkIntAtLeast(api = Build.VERSION_CODES.P)
@@ -72,21 +78,20 @@ internal class StrictModeWatch @Inject constructor() {
     private fun record(violation: Violation) = synchronized(lock) {
         val kind = violation.javaClass.simpleName.removeSuffix(VIOLATION_SUFFIX)
         byKind[kind] = (byKind[kind] ?: 0) + 1
-        if (examples.size < MAX_EXAMPLES) examples += kind + " at " + firstAppFrame(violation)
+        if (examples.size < MAX_EXAMPLES) examples += StrictModeExample(kind, firstAppFrame(violation))
     }
 
     /** The first frame of the stack that is not the platform's or a library's: where to look. */
-    private fun firstAppFrame(violation: Violation): String {
+    private fun firstAppFrame(violation: Violation): String? {
         val frame = violation.stackTrace.firstOrNull { element ->
             PLATFORM_PREFIXES.none { element.className.startsWith(it) }
         } ?: violation.stackTrace.firstOrNull()
-        return frame?.toString() ?: UNKNOWN_FRAME
+        return frame?.toString()
     }
 
     private companion object {
         const val VIOLATION_SUFFIX = "Violation"
         const val MAX_EXAMPLES = 10
-        const val UNKNOWN_FRAME = "an unknown frame"
         val PLATFORM_PREFIXES = listOf(
             "android.", "androidx.", "java.", "javax.", "kotlin.", "kotlinx.", "dalvik.", "com.android.",
             "libcore.", "sun.", "okhttp3.", "okio.", "io.ktor.",
@@ -100,6 +105,20 @@ internal data class StrictModeSummary(
     val violations: Int,
     /** By the violation's kind, such as `DiskRead` or `Network`. */
     val byKind: Map<String, Int>,
-    /** The first few, each with the first frame of the app's own code on its stack. */
-    val examples: List<String>,
+    /** The first few, in the order they happened. */
+    val examples: List<StrictModeExample>,
+)
+
+/**
+ * One violation: its [kind], as in [StrictModeSummary.byKind], and the first frame of the app's
+ * own code on its stack, or of the stack when none of it is the app's; null for an empty stack.
+ */
+@Serializable
+internal data class StrictModeExample(val kind: String, val frame: String?)
+
+/** [example] as a line the panel and the report print. */
+internal fun Resources.strictModeExample(example: StrictModeExample): String = getString(
+    R.string.perfhud_strict_mode_example,
+    example.kind,
+    example.frame ?: getString(R.string.perfhud_strict_mode_unknown_frame),
 )

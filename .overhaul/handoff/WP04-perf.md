@@ -1,4 +1,5 @@
 # WP04-perf: deep smoothness (branch `wp/WP04-perf`, worktree `$OV/wt/WP04-perf`)
+- **Orchestrator note (Oct 19, 06:18): the user decided two things** (REQUIREMENTS 42, asked with pros and cons): (1) **adopt `out/WP04-perf/backcard-texture.patch`** on `wp/WP04` (back card drawn from a texture for the whole time it is active) with a written exception to A11.3 rule 1 limited to the back card; (2) **gate what users feel**: release limits for tab switch, push/pop and back are `*.hitch_ms_per_s` and `*.janky_after_first_pct` (`*.late_first_frames` reported); total `*.janky_pct`, first-frame, p99 and app PSS become non-regression ratchets at the merge values. Take the exact numbers from `handoff/WP04-perf.md` §0 and §3. Do both before the next full `accept.win.sh`, so review #2 sees them; the reviewers must treat both as decided, not as findings.
 
 - **Oct 19 run (01:30–), in short.** (1) The first-fling hitch of REQUIREMENTS 41 is proven to be the card's own
   rounded clip once the list's edge cuts it (`CircularRRectOp` compiled in 6 of 6 runs of HEAD, none in 6 of 6 with

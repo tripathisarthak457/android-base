@@ -1,0 +1,760 @@
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt
+index e2e4708..904e5df 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt
+@@ -1,5 +1,6 @@
+ package com.base.app.core.navigation.back
+ 
++import android.view.animation.AnimationUtils
+ import androidx.collection.MutableIntObjectMap
+ import androidx.compose.animation.core.Animatable
+ import androidx.compose.animation.core.CubicBezierEasing
+@@ -8,6 +9,7 @@ import androidx.compose.animation.core.SpringSpec
+ import androidx.compose.animation.core.animate
+ import androidx.compose.animation.core.tween
+ import androidx.compose.foundation.shape.RoundedCornerShape
++import androidx.compose.runtime.MonotonicFrameClock
+ import androidx.compose.runtime.Stable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableFloatStateOf
+@@ -21,9 +23,12 @@ import androidx.compose.ui.unit.Density
+ import androidx.compose.ui.unit.dp
+ import androidx.navigationevent.NavigationEvent
+ import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.CoroutineStart
+ import kotlinx.coroutines.Job
+ import kotlinx.coroutines.coroutineScope
+ import kotlinx.coroutines.launch
++import kotlinx.coroutines.withContext
++import kotlin.coroutines.EmptyCoroutineContext
+ import kotlin.math.abs
+ import kotlin.math.max
+ import kotlin.math.min
+@@ -55,6 +60,9 @@ internal object BackCard {
+     const val MIN_COMMIT_VELOCITY = 1f
+     const val MAX_COMMIT_VELOCITY = 4f
+ 
++    /** A pose this close to 0 leaves less than a pixel of the page beneath in view, on any screen. */
++    const val FULL_SIZE_POSE = 0.001f
++
+     val ProgressEasing = CubicBezierEasing(0.1f, 0.1f, 0f, 1f)
+ }
+ 
+@@ -67,11 +75,19 @@ internal class BackCardState {
+ 
+     enum class Phase { Idle, Tracking, Settling }
+ 
+-    var phase by mutableStateOf(Phase.Idle)
++    /**
++     * Read only by the Back handler as its events arrive, never in composition, layout or drawing,
++     * so it is a plain field: a change of phase invalidates nothing.
++     */
++    var phase = Phase.Idle
+         private set
+ 
+-    /** True from the first progress event until the card is gone, commit and cancel included. */
+-    val active: Boolean get() = phase != Phase.Idle
++    /**
++     * True from the first progress event until the card is gone, commit and cancel included. Its own
++     * state, written only as the card comes and goes, so the commit and the cancel compose nothing.
++     */
++    var active by mutableStateOf(false)
++        private set
+ 
+     /** The content key of the entry that shrinks. */
+     var subject: Any? by mutableStateOf(null)
+@@ -117,6 +133,7 @@ internal class BackCardState {
+         startY = event.touchY
+         tracker.resetTracking()
+         phase = Phase.Tracking
++        active = true
+         reveal = if (midPush) 0f else 1f
+         track(event)
+         scrimJob = scope.launch {
+@@ -128,34 +145,58 @@ internal class BackCardState {
+     fun track(event: NavigationEvent) {
+         progress = BackCard.ProgressEasing.transform(event.progress)
+         deltaY = event.touchY - startY
+-        tracker.addDataPoint(event.frameTimeMillis, event.progress)
++        // Before API 36 the platform passes no frame time. The animation clock then reads the frame
++        // the platform's progress spring is ticking in, so the release velocity is still measured.
++        val frameMillis = event.frameTimeMillis.takeIf { it > 0L } ?: AnimationUtils.currentAnimationTimeMillis()
++        tracker.addDataPoint(frameMillis, event.progress)
+     }
+ 
++    /** Progress per second at the release, within what the commit's spring may be seeded with. */
++    fun releaseVelocity(): Float =
++        tracker.calculateVelocity().coerceIn(BackCard.MIN_COMMIT_VELOCITY, BackCard.MAX_COMMIT_VELOCITY)
++
+     /**
+      * Brings the card back to full size, seeded with the release velocity, and fades it out. Returns
+      * once the card is invisible; the scrim keeps fading over the screen beneath, which the caller
+      * pops to.
++     *
++     * Timed from [releasedNanos], when the finger lifted ([System.nanoTime]): the first frame drawn
++     * after the release is already that far into the commit, rather than the release pose again.
+      */
+-    suspend fun commit(spring: SpringSpec<Float>, scope: CoroutineScope) = coroutineScope {
++    suspend fun commit(spring: SpringSpec<Float>, releasedNanos: Long, scope: CoroutineScope) = coroutineScope {
+         phase = Phase.Settling
+-        val velocity = tracker.calculateVelocity()
+-            .coerceIn(BackCard.MIN_COMMIT_VELOCITY, BackCard.MAX_COMMIT_VELOCITY)
+-        val unwinding = launch { unwind.animateTo(1f, spring, initialVelocity = velocity) }
++        val velocity = releaseVelocity()
++        val frames = coroutineContext[MonotonicFrameClock]
++        val fromRelease = { frames?.let { FromRelease(releasedNanos, it) } ?: EmptyCoroutineContext }
++        // Undispatched, so all three are running before the next frame starts.
++        val unwinding = launch(fromRelease(), CoroutineStart.UNDISPATCHED) {
++            unwind.animateTo(1f, spring, initialVelocity = velocity)
++        }
+         scrimJob?.cancel()
+-        scrimJob = scope.launch {
++        scrimJob = scope.launch(fromRelease(), CoroutineStart.UNDISPATCHED) {
+             scrim.animateTo(0f, tween(BackCard.SCRIM_OUT_MILLIS, easing = LinearEasing))
+         }
+-        contentAlpha.animateTo(0f, tween(BackCard.COMMIT_FADE_MILLIS, easing = LinearEasing))
++        withContext(fromRelease()) {
++            contentAlpha.animateTo(0f, tween(BackCard.COMMIT_FADE_MILLIS, easing = LinearEasing))
++        }
+         unwinding.cancel()
+     }
+ 
+     /**
+      * The system has already sprung the progress back to 0; the scrim follows, and the page beneath
+-     * returns to where a push still running puts it, then parks.
++     * returns to where a push still running puts it, then parks. [fullWidth]: the card is as wide as
++     * its host.
+      */
+-    suspend fun cancel(midPush: Boolean) = coroutineScope {
++    suspend fun cancel(midPush: Boolean, fullWidth: Boolean) = coroutineScope {
+         phase = Phase.Settling
+         scrimJob?.cancel()
++        // Back at full size over a settled stack, the card hides everything its scrim dims: fading
++        // the scrim out would draw frames that show nothing new, and hold the card's texture and the
++        // high frame rate through them.
++        if (!midPush && fullWidth && pose < BackCard.FULL_SIZE_POSE) {
++            reset()
++            return@coroutineScope
++        }
+         if (midPush) launch { animate(reveal, 0f, animationSpec = tween(BackCard.CANCEL_MILLIS, easing = LinearEasing)) { value, _ -> reveal = value } }
+         scrim.animateTo(0f, tween(BackCard.CANCEL_MILLIS, easing = LinearEasing))
+         reset()
+@@ -168,6 +209,7 @@ internal class BackCardState {
+ 
+     private suspend fun reset() {
+         phase = Phase.Idle
++        active = false
+         subject = null
+         beneath = emptySet()
+         progress = 0f
+@@ -178,6 +220,13 @@ internal class BackCardState {
+         scrim.snapTo(0f)
+     }
+ 
++    /**
++     * Whether [key]'s screen is drawn from a texture of its own: the card's subject, from the
++     * gesture's first frame until the card is gone. It is rendered once, on that first frame, and
++     * the card's pose above it moves, scales and fades it.
++     */
++    fun textures(key: Any): Boolean = active && key == subject
++
+     /** How far the card is shrunk, 0 to 1: the eased progress, unwound on commit. */
+     private val pose: Float get() = progress * (1f - unwind.value)
+ 
+@@ -206,12 +255,13 @@ internal class BackCardState {
+         scaleY = scale
+         translationX += shiftX(size.width)
+         translationY = shiftY(size.height)
+-        // The screen under the card is drawn once into a texture when the gesture starts; every later
+-        // frame of the gesture and of the commit fade moves, scales and fades that one texture instead
+-        // of replaying the whole screen's drawing on the RenderThread and the GPU.
+-        compositingStrategy = CompositingStrategy.Offscreen
+         val alpha = contentAlpha.value
+-        if (alpha < 1f) this.alpha = alpha
++        if (alpha < 1f) {
++            this.alpha = alpha
++            // What this layer draws is the screen's texture ([textures]), one draw that overlaps
++            // nothing, so fading each of its draws fades the screen as one, with no offscreen pass.
++            compositingStrategy = CompositingStrategy.ModulateAlpha
++        }
+         val corner = corner().roundToInt()
+         if (corner > 0) {
+             shape = CardShapes.of(corner)
+@@ -228,15 +278,51 @@ internal suspend fun BackCardState.commitPop(
+     gate: BackGate,
+     spring: SpringSpec<Float>,
+     pop: (Int) -> Int,
++    releasedNanos: Long,
+     scope: CoroutineScope,
+ ) {
+     gate.hold {
+-        commit(spring, scope)
++        commit(spring, releasedNanos, scope)
+         if (pop(1) > 0) gate.changed(StackChange.GesturePop)
+     }
+     finish()
+ }
+ 
++/**
++ * The composition's frame clock, seen from [releasedNanos], a moment already past: the first frame
++ * an animation asks for is that moment itself, and every later one is the composition's. Started
++ * on it, an animation is as far along on its first drawn frame as the time since then.
++ *
++ * Choreographer's frame times and [System.nanoTime] are one clock. A first frame from before the
++ * moment, or further from it than [MAX_LEAD_NANOS], is not on that clock (a test's virtual one) or
++ * not a frame that follows it: the animation then starts at that frame, as it would without this
++ * clock.
++ */
++private class FromRelease(private val releasedNanos: Long, private val frames: MonotonicFrameClock) : MonotonicFrameClock {
++    private var started = false
++    private var aligned = false
++    private var shift = 0L
++
++    override suspend fun <R> withFrameNanos(onFrame: (frameTimeNanos: Long) -> R): R {
++        if (!started) {
++            started = true
++            return onFrame(releasedNanos)
++        }
++        return frames.withFrameNanos { frameNanos ->
++            if (!aligned) {
++                aligned = true
++                val lead = frameNanos - releasedNanos
++                if (lead !in 0L..MAX_LEAD_NANOS) shift = lead
++            }
++            onFrame(frameNanos - shift)
++        }
++    }
++
++    private companion object {
++        const val MAX_LEAD_NANOS = 50_000_000L
++    }
++}
++
+ /** One shape per whole-pixel radius, so a gesture allocates none per frame. */
+ private object CardShapes {
+     private val shapes = MutableIntObjectMap<Shape>()
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt
+index d05ce72..4e26046 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt
+@@ -4,11 +4,13 @@ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.SideEffect
+ import androidx.compose.runtime.remember
+ import androidx.compose.runtime.rememberCoroutineScope
++import androidx.compose.runtime.snapshots.Snapshot
+ import androidx.navigationevent.NavigationEvent
+ import androidx.navigationevent.NavigationEventHandler
+ import androidx.navigationevent.NavigationEventInfo
+ import com.base.app.core.navigation.AppBackStack
+ import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.CoroutineStart
+ import kotlinx.coroutines.launch
+ 
+ /** What draws a host's [BackCard], and decides when the screen on top may become one. */
+@@ -21,8 +23,11 @@ internal interface BackCardHost {
+ 
+     suspend fun cancelCard()
+ 
+-    /** The card's commit: it fades, the stack pops with no slide, and Back pressed meanwhile is counted. */
+-    suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope)
++    /**
++     * The card's commit: it fades, the stack pops with no slide, and Back pressed meanwhile is
++     * counted. Timed from [releasedNanos], when the finger lifted.
++     */
++    suspend fun commitCard(pop: (Int) -> Int, releasedNanos: Long, scope: CoroutineScope)
+ }
+ 
+ /**
+@@ -67,9 +72,13 @@ private class StackBackEvents(
+             BackCardState.Phase.Tracking -> card.track(event)
+             // A button press can arrive as progress animated by the system: it never shrinks the screen.
+             BackCardState.Phase.Idle ->
+-                if (event.swipeEdge != NavigationEvent.EDGE_NONE && host.canStartCard()) host.startCard(event, scope)
+-            BackCardState.Phase.Settling -> Unit
++                if (event.swipeEdge != NavigationEvent.EDGE_NONE && host.canStartCard()) host.startCard(event, scope) else return
++            BackCardState.Phase.Settling -> return
+         }
++        // The platform calls this from its progress spring, in the frame's animation phase. Applied
++        // now, the writes are drawn by this frame's traversal; left to Compose, they are applied after
++        // the frame, and the card is drawn a frame behind the finger.
++        Snapshot.sendApplyNotifications()
+     }
+ 
+     override fun onBackCancelled() {
+@@ -78,7 +87,9 @@ private class StackBackEvents(
+ 
+     override fun onBackCompleted() {
+         if (host.card.phase == BackCardState.Phase.Tracking) {
+-            scope.launch { host.commitCard(pop, scope) }
++            val released = System.nanoTime()
++            // Undispatched: the commit's animations are running before the next frame starts.
++            scope.launch(start = CoroutineStart.UNDISPATCHED) { host.commitCard(pop, released, scope) }
+         } else {
+             gate.onBack(pop)
+         }
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt
+index d6eca92..f970cc0 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt
+@@ -38,10 +38,10 @@ internal class PresentationCard(
+     }
+ 
+     override suspend fun cancelCard() {
+-        card.cancel(midPush = false)
++        card.cancel(midPush = false, fullWidth = true)
+     }
+ 
+-    override suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope) {
+-        card.commitPop(presented.gate, motion.fraction, pop, scope)
++    override suspend fun commitCard(pop: (Int) -> Int, releasedNanos: Long, scope: CoroutineScope) {
++        card.commitPop(presented.gate, motion.fraction, pop, releasedNanos, scope)
+     }
+ }
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationHost.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationHost.kt
+index 40801ea..7d18118 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationHost.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationHost.kt
+@@ -18,6 +18,7 @@ import androidx.compose.runtime.snapshotFlow
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.drawBehind
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.CompositingStrategy
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+ import androidx.navigation3.runtime.NavEntry
+@@ -194,6 +195,8 @@ private fun PresentedFrame(
+             Modifier
+                 .fillMaxSize()
+                 .graphicsLayer { if (card.active && card.subject == key) with(card) { applyCard() } }
++                // The cover's own layer: under the back card, a texture the card's pose moves and fades.
++                .graphicsLayer { compositingStrategy = if (card.textures(key)) CompositingStrategy.Offscreen else CompositingStrategy.Auto }
+                 .background(background),
+         ) {
+             content()
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackLayout.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackLayout.kt
+index 619f316..e597739 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackLayout.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackLayout.kt
+@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.focusProperties
+ import androidx.compose.ui.geometry.Offset
+ import androidx.compose.ui.geometry.Size
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.CompositingStrategy
+ import androidx.compose.ui.graphics.drawscope.DrawScope
+ import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.layout.Layout
+@@ -161,6 +162,12 @@ private fun EmptyDetailSlot(key: EmptyDetail, scene: StackScene, plan: StackPlan
+  * and the back card change what [StackScene.drawOver] clips and dims on every frame, and without
+  * that layer each of those frames would record the whole screen again, not the few operations
+  * around it.
++ *
++ * Under the back card that layer is also a texture ([com.base.app.core.navigation.back.BackCardState.textures]):
++ * the screen is rendered into it once as the gesture starts, and every later frame of the gesture
++ * and of the commit's fade moves, scales and fades that one texture instead of replaying the whole
++ * screen's drawing. It sits below what the scene draws over the card, so whatever that draws can
++ * change on any frame without rendering the screen again.
+  */
+ private fun Modifier.sceneDraw(
+     scene: StackScene,
+@@ -175,7 +182,9 @@ private fun Modifier.sceneDraw(
+             with(scene) { drawOver(key, isLight) }
+             if (divided) drawPaneDivider(divider)
+         }
+-        .graphicsLayer()
++        .graphicsLayer {
++            compositingStrategy = if (scene.card.textures(key)) CompositingStrategy.Offscreen else CompositingStrategy.Auto
++        }
+ 
+ private fun DrawScope.drawPaneDivider(color: Color) {
+     val width = 1f.coerceAtLeast(density)
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt
+index a20f0fc..8394d6e 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt
+@@ -241,11 +241,13 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
+     }
+ 
+     override suspend fun cancelCard() {
+-        card.cancel(midPush = moving)
++        // A pane narrower than the host leaves the page beside it under the scrim, still in view.
++        val fullWidth = (card.subject?.let { widths[it] } ?: width) >= width
++        card.cancel(midPush = moving, fullWidth = fullWidth)
+     }
+ 
+-    override suspend fun commitCard(pop: (Int) -> Int, scope: CoroutineScope) {
+-        card.commitPop(gate, motion.fraction, pop, scope)
++    override suspend fun commitCard(pop: (Int) -> Int, releasedNanos: Long, scope: CoroutineScope) {
++        card.commitPop(gate, motion.fraction, pop, releasedNanos, scope)
+     }
+ 
+     fun GraphicsLayerScope.pose(key: Any) {
+diff --git a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardDrawingTest.kt b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardDrawingTest.kt
+index e0fbceb..7f490c8 100644
+--- a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardDrawingTest.kt
++++ b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardDrawingTest.kt
+@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.size
+ import androidx.compose.runtime.mutableStateListOf
++import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.geometry.Rect
+ import androidx.compose.ui.graphics.Color
+@@ -15,16 +17,19 @@ import androidx.compose.ui.test.captureToImage
+ import androidx.compose.ui.test.junit4.createAndroidComposeRule
+ import androidx.compose.ui.test.onNodeWithTag
+ import androidx.compose.ui.test.onRoot
++import androidx.compose.ui.unit.dp
+ import androidx.navigationevent.DirectNavigationEventInput
+ import androidx.navigationevent.NavigationEvent
+ import com.base.app.core.designsystem.theme.AppTheme
+ import com.base.app.core.navigation.AppBackStack
+ import com.base.app.core.navigation.FeedTab
++import com.base.app.core.navigation.NavRegistry
+ import com.base.app.core.navigation.Post
+ import com.base.app.core.navigation.ROBOLECTRIC_SDK
+ import com.base.app.core.navigation.stack.StackHost
+ import com.base.app.core.navigation.testRegistry
+ import com.base.app.core.navigation.transition.ScreenMotion
++import org.junit.Assert.assertEquals
+ import org.junit.Assert.assertTrue
+ import org.junit.Rule
+ import org.junit.Test
+@@ -55,6 +60,36 @@ class BackCardDrawingTest {
+         Box(Modifier.fillMaxSize().background(fill).testTag(key.toString()))
+     }
+ 
++    /**
++     * One colour channel each: the page beneath green, the card red, and a square drawn over the
++     * card's own fill blue. How the square fades tells a fade of the screen as one from a fade of
++     * each of its draws, through which the red under the square would show.
++     */
++    private val overlapping = testRegistry { key ->
++        if (key == FeedTab) {
++            Box(Modifier.fillMaxSize().background(Color.Green).testTag(key.toString()))
++        } else {
++            Box(Modifier.fillMaxSize().background(Color.Red).testTag(key.toString())) {
++                Box(Modifier.align(Alignment.Center).size(48.dp).background(Color.Blue))
++            }
++        }
++    }
++
++    private fun showCard(registry: NavRegistry) {
++        rule.setContent {
++            AppTheme {
++                StackHost(stack = AppBackStack(mutableStateListOf(FeedTab, Post(1))), registry = registry, motion = ScreenMotion())
++            }
++        }
++        rule.runOnIdle { rule.activity.navigationEventDispatcher.addInput(input) }
++        rule.waitForIdle()
++        rule.runOnIdle {
++            input.backStarted(event(0f))
++            input.backProgressed(event(0.6f))
++        }
++        rule.waitForIdle()
++    }
++
+     @Test
+     fun `the page beneath shows everywhere around the card and nowhere through it`() {
+         rule.setContent {
+@@ -84,6 +119,24 @@ class BackCardDrawingTest {
+         assertColor("the card, at its start edge", Card, image, (card.left + 3).roundToInt(), card.center.y.roundToInt())
+     }
+ 
++    @Test
++    fun `the commit fades the screen as one, so nothing drawn under its own content shows through`() {
++        showCard(overlapping)
++        rule.mainClock.autoAdvance = false
++        rule.runOnIdle { input.backCompleted() }
++        rule.mainClock.advanceTimeBy(FADE_SAMPLE_MILLIS)
++
++        val card = rule.onNodeWithTag(Post(1).toString(), useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
++        val image = rule.onRoot().captureToImage().asAndroidBitmap()
++        val faded = Color(image.getPixel((card.left + card.width / 8).roundToInt(), card.center.y.roundToInt()))
++        val over = Color(image.getPixel(card.center.x.roundToInt(), card.center.y.roundToInt()))
++
++        assertTrue("mid-fade, the card's red at ${faded.red}", faded.red > 0.1f && faded.red < 0.9f)
++        assertEquals("the square as faded as the card", faded.red, over.blue, TOLERANCE)
++        assertTrue("the card's red shows through the square: ${over.red}", over.red < TOLERANCE)
++        rule.mainClock.autoAdvance = true
++    }
++
+     private fun event(progress: Float) = NavigationEvent(
+         swipeEdge = NavigationEvent.EDGE_LEFT,
+         progress = progress,
+@@ -123,5 +176,6 @@ class BackCardDrawingTest {
+         val Beneath = Color(0xFFD03030)
+         val Card = Color(0xFF3050D0)
+         const val TOLERANCE = 0.05f
++        const val FADE_SAMPLE_MILLIS = 56L
+     }
+ }
+diff --git a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardStateTest.kt b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardStateTest.kt
+new file mode 100644
+index 0000000..1ae4c8c
+--- /dev/null
++++ b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardStateTest.kt
+@@ -0,0 +1,190 @@
++package com.base.app.core.navigation.back
++
++import androidx.compose.animation.core.spring
++import androidx.compose.runtime.BroadcastFrameClock
++import androidx.compose.runtime.snapshots.Snapshot
++import androidx.navigationevent.NavigationEvent
++import com.base.app.core.navigation.ROBOLECTRIC_SDK
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.launch
++import kotlinx.coroutines.test.TestScope
++import kotlinx.coroutines.test.runCurrent
++import kotlinx.coroutines.test.runTest
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertFalse
++import org.junit.Assert.assertTrue
++import org.junit.Test
++import org.junit.runner.RunWith
++import org.robolectric.RobolectricTestRunner
++import org.robolectric.annotation.Config
++import org.robolectric.shadows.ShadowSystemClock
++import java.time.Duration
++
++/**
++ * The card's state on its own, on a frame clock the test steps: what it tells its readers and when,
++ * how the commit is timed from the release, and how a cancel ends.
++ */
++@RunWith(RobolectricTestRunner::class)
++@Config(sdk = [ROBOLECTRIC_SDK])
++class BackCardStateTest {
++
++    private val card = BackCardState()
++    private val frames = BroadcastFrameClock()
++    private val spring = spring<Float>()
++
++    private fun cardTest(body: suspend TestScope.() -> Unit) = runTest(frames) { body() }
++
++    private fun TestScope.frame(nanos: Long) {
++        frames.sendFrame(nanos)
++        runCurrent()
++    }
++
++    /** Every coroutine of the card goes in [TestScope.backgroundScope]: cancelled, not awaited, once the test ends. */
++    private fun startCard(scope: CoroutineScope, vararg progress: Float) {
++        card.start(event(0f), subject = Top, beneath = setOf(Under), midPush = false, scope = scope)
++        progress.forEach { card.track(event(it)) }
++    }
++
++    /** How many applied changes include the state [read] reads, counted until [block] returns. */
++    private suspend fun appliesOf(read: () -> Unit, block: suspend () -> Unit): Int {
++        val states = HashSet<Any>()
++        Snapshot.observe(readObserver = { states += it }) { read() }
++        var applies = 0
++        val observer = Snapshot.registerApplyObserver { changed, _ -> if (changed.any { it in states }) applies++ }
++        try {
++            block()
++            Snapshot.sendApplyNotifications()
++        } finally {
++            observer.dispose()
++        }
++        return applies
++    }
++
++    @Test
++    fun `whether the card is up changes twice a gesture, so its readers run only as it comes and goes`() = cardTest {
++        val applies = appliesOf({ card.active }) {
++            startCard(backgroundScope, 0.3f, 0.6f)
++            Snapshot.sendApplyNotifications()
++            assertTrue(card.active)
++            val committing = backgroundScope.launch {
++                card.commitPop(BackGate(), spring, pop = { 1 }, releasedNanos = RELEASE, scope = backgroundScope)
++            }
++            runCurrent()
++            Snapshot.sendApplyNotifications()
++            var time = RELEASE
++            while (!committing.isCompleted && time < RELEASE + ONE_SECOND) {
++                time += FRAME
++                frame(time)
++                Snapshot.sendApplyNotifications()
++            }
++            assertFalse(card.active)
++        }
++        assertEquals("written at the start and at the end only", 2, applies)
++    }
++
++    @Test
++    fun `the screen is drawn from its texture from the start until the card is gone, and no other`() = cardTest {
++        assertFalse(card.textures(Top))
++        startCard(backgroundScope, 0.5f)
++        assertTrue(card.textures(Top))
++        assertFalse(card.textures(Under))
++
++        val committing = backgroundScope.launch {
++            card.commitPop(BackGate(), spring, pop = { 1 }, releasedNanos = RELEASE, scope = backgroundScope)
++        }
++        runCurrent()
++        frame(RELEASE + FRAME)
++        assertTrue("through the fade", card.textures(Top))
++        var time = RELEASE + FRAME
++        while (!committing.isCompleted && time < RELEASE + ONE_SECOND) {
++            time += FRAME
++            frame(time)
++        }
++        assertFalse(card.textures(Top))
++    }
++
++    @Test
++    fun `the first frame after the release is already as far into the fade as the time since it`() = cardTest {
++        startCard(backgroundScope, 0.5f)
++        backgroundScope.launch { card.commit(spring, RELEASE, scope = backgroundScope) }
++        runCurrent()
++        assertEquals(1f, card.contentAlpha.value)
++
++        frame(RELEASE + 4 * MILLI)
++
++        assertEquals(1f - 4f / BackCard.COMMIT_FADE_MILLIS, card.contentAlpha.value, 0.002f)
++        assertTrue("the card has started back to full size", card.unwind.value > 0f)
++    }
++
++    @Test
++    fun `a first frame that does not follow the release on its clock starts the fade there instead`() = cardTest {
++        startCard(backgroundScope, 0.5f)
++        val late = RELEASE + 2 * ONE_SECOND
++        backgroundScope.launch { card.commit(spring, RELEASE, scope = backgroundScope) }
++        runCurrent()
++
++        frame(late)
++        assertEquals(1f, card.contentAlpha.value)
++        frame(late + 8 * MILLI)
++        assertEquals(1f - 8f / BackCard.COMMIT_FADE_MILLIS, card.contentAlpha.value, 0.002f)
++    }
++
++    @Test
++    fun `a cancel back at full size over a settled stack ends at once`() = cardTest {
++        startCard(backgroundScope, 0.4f, 0.1f, 0f)
++
++        val cancelling = backgroundScope.launch { card.cancel(midPush = false, fullWidth = true) }
++        runCurrent()
++
++        assertTrue("it waited for no frame", cancelling.isCompleted)
++        assertFalse(card.active)
++        assertFalse(card.textures(Top))
++    }
++
++    @Test
++    fun `a cancel that still has something in view fades its scrim out`() = cardTest {
++        startCard(backgroundScope, 0.4f, 0.1f, 0f)
++
++        val cancelling = backgroundScope.launch { card.cancel(midPush = false, fullWidth = false) }
++        runCurrent()
++
++        assertFalse("a pane beside the card is still under the scrim", cancelling.isCompleted)
++        var time = 0L
++        while (!cancelling.isCompleted && time < ONE_SECOND) {
++            time += FRAME
++            frame(time)
++        }
++        assertFalse(card.active)
++    }
++
++    @Test
++    fun `with no frame time from the platform the release velocity is still measured`() = cardTest {
++        card.start(event(0f, frameTimeMillis = 0L), subject = Top, beneath = setOf(Under), midPush = false, scope = backgroundScope)
++        for (step in 1..6) {
++            ShadowSystemClock.advanceBy(Duration.ofMillis(FRAME / MILLI))
++            card.track(event(step * 0.08f, frameTimeMillis = 0L))
++        }
++
++        assertTrue(
++            "a swipe of 0.48 in about 50 ms, was ${card.releaseVelocity()} per second",
++            card.releaseVelocity() > BackCard.MIN_COMMIT_VELOCITY,
++        )
++    }
++
++    private fun event(progress: Float, frameTimeMillis: Long = RELEASE / MILLI) = NavigationEvent(
++        swipeEdge = NavigationEvent.EDGE_LEFT,
++        progress = progress,
++        touchX = progress * 400f,
++        touchY = 600f,
++        frameTimeMillis = frameTimeMillis,
++    )
++
++    private companion object {
++        const val Top = "top"
++        const val Under = "under"
++        const val MILLI = 1_000_000L
++        const val FRAME = 8 * MILLI
++        const val ONE_SECOND = 1_000 * MILLI
++        const val RELEASE = 5_000 * MILLI
++    }
++}
+diff --git a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardTest.kt b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardTest.kt
+index 53437df..1b0a8a8 100644
+--- a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardTest.kt
++++ b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardTest.kt
+@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
+ import androidx.compose.runtime.CompositionLocalProvider
+ import androidx.compose.runtime.mutableStateListOf
+ import androidx.compose.runtime.remember
++import androidx.compose.runtime.snapshots.Snapshot
+ import androidx.compose.ui.geometry.Rect
+ import androidx.compose.ui.platform.LocalLayoutDirection
+ import androidx.compose.ui.test.junit4.createAndroidComposeRule
+@@ -89,6 +90,25 @@ class BackCardTest {
+         assertTrue("it drifts toward the far edge", card.center.x > width / 2)
+     }
+ 
++    @Test
++    fun `each progress step is applied as it arrives, so the frame it arrives in draws it`() {
++        show(AppBackStack(mutableStateListOf(FeedTab, Post(1))))
++        swipe(0.2f)
++
++        val applied = rule.runOnUiThread {
++            var applied = 0
++            val observer = Snapshot.registerApplyObserver { changed, _ -> if (changed.isNotEmpty()) applied++ }
++            try {
++                input.backProgressed(event(0.5f, NavigationEvent.EDGE_LEFT))
++                applied
++            } finally {
++                observer.dispose()
++            }
++        }
++
++        assertTrue("the step was left for Compose to apply after the frame", applied > 0)
++    }
++
+     @Test
+     fun `a swipe from the right edge moves the card the other way`() {
+         show(AppBackStack(mutableStateListOf(FeedTab, Post(1))))
+diff --git a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/stack/SlideRecordingTest.kt b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/stack/SlideRecordingTest.kt
+index bd1030a..626ecda 100644
+--- a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/stack/SlideRecordingTest.kt
++++ b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/stack/SlideRecordingTest.kt
+@@ -121,6 +121,28 @@ class SlideRecordingTest {
+         assertRecordedAtMost(1, Post(1).toString())
+     }
+ 
++    @Test
++    fun `the screen under the card is recorded neither while it follows the finger nor while it fades`() {
++        show()
++        rule.runOnUiThread { input.backStarted(event(0f)) }
++        frame()
++        rule.runOnUiThread { recordings.clear() }
++
++        for (step in 1..20) {
++            rule.runOnUiThread { input.backProgressed(event(step / 40f)) }
++            frame()
++        }
++        rule.runOnUiThread { input.backCompleted() }
++        var frames = 0
++        while (stack.keys.size > 1 && frames < MAX_FRAMES) {
++            frame()
++            frames++
++        }
++
++        assertEquals(listOf(FeedTab), stack.keys)
++        assertRecordedAtMost(0, Post(1).toString())
++    }
++
+     private fun assertRecordedAtMost(times: Int, screen: String) {
+         val recorded = recorded(screen)
+         assertTrue("$screen was recorded $recorded times", recorded <= times)

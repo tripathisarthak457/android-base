@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:devtools"))
 
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.metrics.performance)
     implementation(libs.kotlinx.serialization.json)
 

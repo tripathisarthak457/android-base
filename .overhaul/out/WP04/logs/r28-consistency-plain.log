@@ -1,0 +1,38 @@
+[locked:memwait] 1463 MB available, 1311 MB commit left; waiting for 1500 MB
+[locked:memwait] 752 MB available, 588 MB commit left; waiting for 1500 MB
+[locked:memwait] 604 MB available, 1256 MB commit left; waiting for 1500 MB
+[locked:memwait] 651 MB available, 1239 MB commit left; waiting for 1500 MB
+[locked:memwait] 1320 MB available, 1522 MB commit left; waiting for 1500 MB
+[locked:memwait] 302 MB available, 668 MB commit left; waiting for 1500 MB
+[locked:memwait] 302 MB available, 1284 MB commit left; waiting for 1500 MB
+[locked:memwait] 273 MB available, 1169 MB commit left; waiting for 1500 MB
+[locked:memwait] 242 MB available, 1126 MB commit left; waiting for 1500 MB
+[locked:memwait] 345 MB available, 1038 MB commit left; waiting for 1500 MB
+[locked:memwait] 355 MB available, 1140 MB commit left; waiting for 1500 MB
+[locked:memwait] 367 MB available, 1190 MB commit left; waiting for 1500 MB
+[locked:memwait] 394 MB available, 1119 MB commit left; waiting for 1500 MB
+[locked:memwait] 426 MB available, 1227 MB commit left; waiting for 1500 MB
+[locked:memwait] 423 MB available, 1212 MB commit left; waiting for 1500 MB
+[locked:memwait] 445 MB available, 1266 MB commit left; waiting for 1500 MB
+[locked:memwait] 445 MB available, 1297 MB commit left; waiting for 1500 MB
+[locked:memwait] 435 MB available, 1161 MB commit left; waiting for 1500 MB
+[locked:memwait] 453 MB available, 1304 MB commit left; waiting for 1500 MB
+[locked:memwait] 454 MB available, 1294 MB commit left; waiting for 1500 MB
+[locked:memwait] 464 MB available, 1172 MB commit left; waiting for 1500 MB
+[locked:memwait] 440 MB available, 1270 MB commit left; waiting for 1500 MB
+[locked:memwait] 441 MB available, 1196 MB commit left; waiting for 1500 MB
+[locked:memwait] 442 MB available, 1206 MB commit left; waiting for 1500 MB
+[locked:memwait] 419 MB available, 1142 MB commit left; waiting for 1500 MB
+[locked:memwait] 433 MB available, 1180 MB commit left; waiting for 1500 MB
+[locked:memwait] 465 MB available, 1257 MB commit left; waiting for 1500 MB
+[locked:memwait] 444 MB available, 1174 MB commit left; waiting for 1500 MB
+[locked:memwait] 550 MB available, 1162 MB commit left; waiting for 1500 MB
+[locked:memwait] 755 MB available, 1230 MB commit left; waiting for 1500 MB
+[locked:memwait] 738 MB available, 1220 MB commit left; waiting for 1500 MB
+[locked:memwait] 801 MB available, 1204 MB commit left; waiting for 1500 MB
+[locked:memwait] 739 MB available, 1137 MB commit left; waiting for 1500 MB
+[locked:memwait] 791 MB available, 1200 MB commit left; waiting for 1500 MB
+[locked:memwait] 814 MB available, 1247 MB commit left; waiting for 1500 MB
+
+59 projects in 107 s: 0 new issues, 589 known (11 of 11 known-issue lines seen).
+CONSISTENCY OK

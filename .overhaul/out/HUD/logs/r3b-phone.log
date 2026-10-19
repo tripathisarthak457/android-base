@@ -1,0 +1,117 @@
+device
+device
+Performing Streamed Install
+Success
+Success
+round 1 hidden done
+round 1 shown done
+round 2 shown done
+round 2 hidden done
+round 3 hidden done
+round 3 shown done
+round 4 shown done
+round 4 hidden done
+round 5 hidden done
+round 5 shown done
+round 6 shown done
+round 6 hidden done
+{
+  "scroll": {
+    "janky_pp": 0.0,
+    "ui_mean_ms": 0.053,
+    "total_mean_ms": -0.386
+  },
+  "tabs": {
+    "janky_pp": -0.14,
+    "ui_mean_ms": -0.004,
+    "total_mean_ms": -0.116
+  },
+  "pushpop": {
+    "janky_pp": -0.09,
+    "ui_mean_ms": 0.065,
+    "total_mean_ms": 0.258
+  },
+  "all": {
+    "janky_pp": -0.03,
+    "ui_mean_ms": 0.049,
+    "total_mean_ms": -0.233
+  }
+}
+{
+  "hidden": {
+    "frames": 14618,
+    "janky": 243,
+    "janky_pct": 1.66,
+    "p50_ms": 8,
+    "p90_ms": 10,
+    "p99_ms": 27,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12382,
+    "ui_mean_ms": 1.254,
+    "ui_p90_ms": 1.712,
+    "total_mean_ms": 7.066
+  },
+  "shown": {
+    "frames": 14748,
+    "janky": 240,
+    "janky_pct": 1.63,
+    "p50_ms": 8,
+    "p90_ms": 11,
+    "p99_ms": 27,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12405,
+    "ui_mean_ms": 1.303,
+    "ui_p90_ms": 1.876,
+    "total_mean_ms": 6.833
+  }
+}
+OVERHEAD OK
+Performing Streamed Install
+Success
+Starting: Intent { cmp=com.example.hud.everything.dev/com.example.hud.everything.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.hud.everything.dev/com.example.hud.everything.MainActivity
+TotalTime: 2561
+WaitTime: 2565
+Complete
+Performing Streamed Install
+Success
+Success
+Starting: Intent { cmp=com.example.hud.everything.dev/com.example.hud.everything.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.example.hud.everything.dev/com.example.hud.everything.MainActivity
+TotalTime: 512
+WaitTime: 515
+Complete
+{
+  "debug": {
+    "debug_warning_on_screen": true
+  },
+  "release": {
+    "pill_bounds": [
+      881,
+      1343,
+      1058,
+      1475
+    ],
+    "tab_shots": [
+      "3-tab-1.png",
+      "3-tab-2.png",
+      "3-tab-3.png",
+      "3-tab-4.png",
+      "3-tab-5.png",
+      "3-tab-6.png",
+      "3-tab-7.png",
+      "3-tab-8.png"
+    ],
+    "exported": "/storage/emulated/0/Android/data/com.example.hud.everything.dev/files/perfhud/perf-report-20261019-071456.json",
+    "pulled": [
+      "perf-report-20261019-071456.json",
+      "perf-report-20261019-071456.md"
+    ]
+  }
+}
+PHONE OK
+R3B EXIT 0

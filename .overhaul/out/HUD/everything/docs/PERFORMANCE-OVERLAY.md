@@ -29,11 +29,11 @@ Tap them to open the Perf tab. It shows, from the top:
 | Live stats | The switch. Off, nothing is recorded and nothing listens to the window. |
 | Export report | Writes a JSON and a Markdown report (see [Reports](#reports)). |
 | Optimisation score | 0 to 100, each lost point with its fix (see [The score](#the-score)). |
-| Frame times | The last frames as bars against the 60, 90 and 120 Hz budgets. Red missed its deadline. |
+| Frame times | The last frames as bars against the 60, 90 and 120 Hz budgets: the full frame faded, its main-thread time solid. Red missed its deadline; amber made it with the main thread over the budget. |
 | Frames per second | One bar for each of the last 60 seconds of drawing, against the display's rate. |
 | Frame-time histogram | Every frame recorded, by duration, with the current budget as a line. |
 | Janky frames by screen | Which destination the janky frames were drawn on, worst first. |
-| Memory | Java and native heap each second, PSS every 15 seconds, garbage collections. |
+| Memory | Java and native heap each second, PSS at most every 15 seconds and only in a pause in the drawing, garbage collections. |
 | Start-up | Cold, warm and hot start as the system timed them (Android 15 and later). |
 | Network | Request timings from the inspector's request log, overall and per endpoint. |
 | StrictMode | Disk and network calls the main thread made while recording, with where. |
@@ -57,10 +57,24 @@ The overlay is built so that watching does not change what is watched:
   frame each time while the app is idle, and on a phone a lone frame after idle usually misses its
   deadline: the overlay would make the jank it reports.
 - **Graphs only on request.** The Perf tab draws its graphs only while it is open.
+- **PSS only in a pause.** Reading PSS walks every memory mapping of the process under the kernel's
+  lock on its address space, and on a phone a read during a scroll costs about one janky frame. The
+  overlay reads it at most every 15 seconds, and only when no frame has started for a quarter of a
+  second; an app that draws without a pause gets its PSS read late rather than its frames delayed.
+  The same goes for your own code: never call `Debug.getMemoryInfo` while the app is animating.
 
-Measured on a Redmi Note 10 Pro at 120 Hz with `devRelease` (the numbers are in the overhaul's
-`perf/HUD/`): the overlay shown adds at most 0.3 percentage points of janky frames and under
-0.5 ms per frame against the overlay hidden.
+Measured on a Redmi Note 10 Pro at 120 Hz with `devRelease`, alternating launches with the overlay
+hidden and shown, each scrolling a list, switching every tab and pushing and popping a screen,
+`dumpsys gfxinfo` read around every step: STANDARD_NUMBERS With
+`analytics`, which shares its JankStats, 14,618 frames hidden and 14,748 shown were 1.66 % and
+1.63 % janky, and the main thread spent 0.05 ms more per frame shown. The budget the overlay is
+held to is 0.3 percentage points of janky frames and 0.5 ms per frame.
+
+**Measure the app with the overlay off.** The perf gates, `tools/perf/perf.sh` and any number you
+quote are taken hidden. Your choice of Live stats is kept across launches, and across reinstalls
+that keep the app's data, so a run after you once turned it on would measure the overlay too:
+launch gate runs with `--es perf.hud off` (`perf.sh --extra perf.hud=off`), or `adb shell pm clear`
+the app first.
 
 ## Debug builds
 
@@ -77,13 +91,15 @@ colour. For numbers that mean something:
 
 Each metric gets a grade from A to F against the template's own targets, and the score is the
 points earned out of the points of the metrics that were measured. A metric with nothing to measure
-yet (no start record, fewer than 300 frames) counts for nothing either way.
+yet (no start record, no PSS read) counts for nothing either way. There is no score at all before
+300 frames are recorded: the frames are what it is about, and the build checks alone would rate an
+app nobody has used.
 
 | Metric | Points | A, the target | Source |
 |---|---|---|---|
 | Janky frames | 25 | at most 0.5 % | `tools/perf/gates.toml` scroll rows; the target is about 0 % |
-| Frame time p90 | 10 | at most 0.6 of the budget | the budget at the display's rate |
-| Frame time p99 | 10 | at most the budget | |
+| Main-thread time p90 | 10 | at most 0.6 of the budget | one refresh interval at the display's rate; `gates.toml` frame times are UI-thread time too |
+| Main-thread time p99 | 10 | at most the budget | |
 | Slow frames (over 16 ms) | 5 | at most 0.5 % | Android vitals |
 | Frozen frames (over 700 ms) | 10 | none | Android vitals |
 | Long main-thread work (over 50 ms) | 5 | none | |
@@ -103,12 +119,18 @@ animation (read animated values in `graphicsLayer`, `offset { }` or `drawBehind`
 a full-screen layer, main-thread work started by the navigation itself, and a first frame that
 builds a whole screen. A trace from the android-profiler skill names the cause.
 
-### Frame time percentiles
+### Main-thread percentiles
 
-The p90 says how heavy ordinary frames are, the p99 how heavy the worst ones are. A high p90 is
-usually layout work done twice (intrinsics, nested weights), lists without `contentType`, or work
-in composition that belongs in `remember` or the draw phase. A high p99 is usually first frames: a
-screen built for the first time, a shader compiled on first use, a list item type seen once.
+Each frame's main-thread time (input, animation, composition, layout, draw and sync) against one
+refresh interval, 8.3 ms at 120 Hz: the time the main thread has before the next frame starts. The
+p90 says how heavy ordinary frames are, the p99 how heavy the worst ones are. A frame's full
+duration, from its vsync to the GPU finishing, is not graded against one interval: the render
+pipeline gives a frame more time than that, so frames that make their deadline routinely run past
+one interval. Whether a frame made its deadline is **Janky frames**.
+
+A high p90 is usually layout work done twice (intrinsics, nested weights), lists without
+`contentType`, or work in composition that belongs in `remember` or the draw phase. A high p99 is
+usually first frames: a screen built for the first time, a list item type seen once.
 
 ### Slow and frozen frames
 
@@ -138,7 +160,10 @@ allocating fast, typically objects created on every frame.
 
 While recording, StrictMode watches the main thread for disk reads and writes, network, unbuffered
 I/O, resource mismatches and calls marked slow, and counts them with the first frame of your own
-code on the stack. The app's own policy is put back when recording stops. Android 9 and later.
+code on the stack. Android 9 and later. The checks are added to your own policy, penalties
+included, and your policy is put back when recording stops. Two consequences: a policy with
+`penaltyDeath` also dies of the added checks while recording, and a policy you set while recording
+replaces the overlay's checks until recording starts again.
 
 ### Build checks
 
@@ -150,7 +175,9 @@ idle maintenance; `adb shell cmd package compile -f -m speed-profile <applicatio
 ## The log
 
 One logcat tag, `PerfHud`, a line for every five seconds in which the app drew and a line for each
-screen it leaves. Never a line per frame. Lines are `key=value` pairs:
+screen it leaves. Never a line per frame. Lines are `key=value` pairs. A window line's counts,
+garbage collections included, are that window's, and its memory sizes the latest sample's; a
+screen line sums every visit to that screen since recording began:
 
 ```
 PerfHud: window=5s frames=598 fps=119.6 janky=0.2% p50=5.1 p90=6.8 p99=9.9 slow=0 frozen=0 long=0 heapMb=21.4 nativeMb=17.0 gc=1 screen=SampleListKey
@@ -174,16 +201,18 @@ On a debug build, the same from a script, without touching the phone:
 
 ```bash
 # Turn recording on or off, then export; the broadcast's result data is the JSON's path.
-adb shell run-as <applicationId> am broadcast \
+adb shell run-as <applicationId> am broadcast --user 0 \
     -n <applicationId>/com.example.hud.everything.core.perfhud.report.ReportReceiver \
     -a com.example.hud.everything.core.perfhud.action.RECORD --ez recording true
-adb shell run-as <applicationId> am broadcast \
+adb shell run-as <applicationId> am broadcast --user 0 \
     -n <applicationId>/com.example.hud.everything.core.perfhud.report.ReportReceiver \
     -a com.example.hud.everything.core.perfhud.action.EXPORT
 ```
 
 The receiver is not exported: no other app can reach it, and adb reaches it only through `run-as`,
-which works on a debuggable build alone. A release-like dev build exports from the tab.
+which works on a debuggable build alone. `--user 0` is the app's own user (on a phone with several
+users, the one it runs as): `run-as` cannot broadcast to the default, "current", which needs a
+cross-user permission. A release-like dev build exports from the tab.
 
 A launch with `--es perf.hud on` (or `off`) switches recording for that process, whatever the
 build, which is how `tools/perf/perf.sh` measures the overlay's own cost (`--extra perf.hud=on`).

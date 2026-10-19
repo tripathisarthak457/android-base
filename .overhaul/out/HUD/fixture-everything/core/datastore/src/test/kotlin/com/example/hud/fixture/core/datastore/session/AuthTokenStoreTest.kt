@@ -3,8 +3,11 @@ package com.example.hud.fixture.core.datastore.session
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.hud.fixture.core.common.coroutines.AppDispatchers
 import com.example.hud.fixture.core.datastore.crypto.ValueCipher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -15,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
+import kotlin.coroutines.CoroutineContext
 
 class AuthTokenStoreTest {
 
@@ -35,11 +39,22 @@ class AuthTokenStoreTest {
     }
 
     @Test
-    fun `tokens that cannot be decrypted read as signed out`() = runTest {
+    fun `whether someone is signed in is answered without unsealing the tokens`() = runTest {
+        val cipher = PrefixCipher()
+        val store = store(cipher)
+        store.save(ada)
+
+        assertTrue(store.isAuthenticated.first())
+        assertEquals(0, cipher.decrypted)
+    }
+
+    @Test
+    fun `tokens that cannot be decrypted read as signed out, and the first read deletes them`() = runTest {
         val dataStore = PreferenceDataStoreFactory.create(scope = backgroundScope) { File(folder.root, "tokens.preferences_pb") }
-        val store = DataStoreAuthTokenStore(dataStore, PrefixCipher())
+        val store = DataStoreAuthTokenStore(dataStore, PrefixCipher(), dispatchers())
 
         dataStore.edit { it[stringPreferencesKey("tokens")] = "sealed with a key this device lost" }
+        assertTrue(store.isAuthenticated.first())
 
         assertNull(store.current())
         assertFalse(store.isAuthenticated.first())
@@ -65,19 +80,73 @@ class AuthTokenStoreTest {
         assertNull(store.current())
     }
 
-    private fun TestScope.store() = DataStoreAuthTokenStore(
-        PreferenceDataStoreFactory.create(scope = backgroundScope) { File(folder.root, "tokens.preferences_pb") },
-        PrefixCipher(),
-    )
+    @Test
+    fun `the cipher runs on the io dispatcher whoever calls`() = runTest {
+        val io = MarkedDispatcher(StandardTestDispatcher(testScheduler))
+        var uses = 0
+        val cipher = PrefixCipher(
+            onUse = {
+                assertTrue("The Keystore was used outside the io dispatcher", io.isCurrent)
+                uses++
+            },
+        )
+        val store = store(cipher, dispatchers(io = io))
+
+        store.save(ada)
+        store.current()
+        store.replace(expected = ada, replacement = grace)
+
+        assertEquals(4, uses)
+    }
+
+    private fun TestScope.store(cipher: ValueCipher = PrefixCipher(), dispatchers: AppDispatchers = dispatchers()) =
+        DataStoreAuthTokenStore(
+            PreferenceDataStoreFactory.create(scope = backgroundScope) { File(folder.root, "tokens.preferences_pb") },
+            cipher,
+            dispatchers,
+        )
+
+    private fun TestScope.dispatchers(io: CoroutineDispatcher = StandardTestDispatcher(testScheduler)): AppDispatchers {
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        return AppDispatchers(io = io, default = dispatcher, main = dispatcher)
+    }
 
     /** Reversible, and refuses what it did not seal, as a Keystore cipher refuses another key's output. */
-    private class PrefixCipher : ValueCipher {
-        override fun encrypt(plaintext: String): String = PREFIX + plaintext
+    private class PrefixCipher(private val onUse: () -> Unit = {}) : ValueCipher {
+        var decrypted = 0
+            private set
 
-        override fun decrypt(encoded: String): String? = encoded.removePrefix(PREFIX).takeIf { encoded.startsWith(PREFIX) }
+        override fun encrypt(plaintext: String): String {
+            onUse()
+            return PREFIX + plaintext
+        }
+
+        override fun decrypt(encoded: String): String? {
+            onUse()
+            decrypted++
+            return encoded.removePrefix(PREFIX).takeIf { encoded.startsWith(PREFIX) }
+        }
 
         private companion object {
             const val PREFIX = "sealed:"
+        }
+    }
+
+    /** Runs its tasks on [delegate] and tells whether the calling thread is inside one of them. */
+    private class MarkedDispatcher(private val delegate: CoroutineDispatcher) : CoroutineDispatcher() {
+        private val inside = ThreadLocal.withInitial { false }
+
+        val isCurrent: Boolean get() = inside.get()
+
+        override fun dispatch(context: CoroutineContext, block: Runnable) {
+            delegate.dispatch(context) {
+                inside.set(true)
+                try {
+                    block.run()
+                } finally {
+                    inside.set(false)
+                }
+            }
         }
     }
 }

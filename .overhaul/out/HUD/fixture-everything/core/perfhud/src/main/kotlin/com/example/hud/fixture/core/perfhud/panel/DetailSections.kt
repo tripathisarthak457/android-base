@@ -114,7 +114,15 @@ internal fun StrictModeSection(strictMode: StrictModeSummary) {
             SelectionContainer {
                 Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.xxs)) {
                     strictMode.examples.forEach { example ->
-                        AppMonoText(text = example, color = AppTheme.colors.contentSecondary, maxLines = 2)
+                        AppMonoText(
+                            text = stringResource(
+                                R.string.perfhud_strict_mode_example,
+                                example.kind,
+                                example.frame ?: stringResource(R.string.perfhud_strict_mode_unknown_frame),
+                            ),
+                            color = AppTheme.colors.contentSecondary,
+                            maxLines = 2,
+                        )
                     }
                 }
             }
@@ -173,7 +181,7 @@ internal fun ValueRow(label: String, value: String) {
             text = value,
             color = AppTheme.colors.contentPrimary,
             maxLines = 2,
-            modifier = Modifier.weight(VALUE_WEIGHT),
+            modifier = Modifier.weight(ValueWeight),
         )
     }
 }
@@ -228,4 +236,4 @@ private fun megabytes(value: Float?): String = if (value == null) {
 private fun yesNo(value: Boolean): String = stringResource(if (value) R.string.perfhud_yes else R.string.perfhud_no)
 
 private val LegendDot = 8.dp
-private const val VALUE_WEIGHT = 1.4f
+private const val ValueWeight = 1.4f

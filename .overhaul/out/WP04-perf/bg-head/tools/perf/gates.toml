@@ -1,0 +1,437 @@
+# Device gates. `perf.sh --gate <column>` compares the median of the runs with one column and exits
+# non-zero on any failing row, including a row of that column the invocation did not measure.
+#
+# Columns: `solid` (the everything preset, solid chrome), `standard` and `lean` (their presets, only
+# the rows that apply to them), `smoke` (a tolerance against a reference run given with --baseline),
+# `large` (the large-window scenarios, on a window of Expanded width or more: a tablet, or the phone
+# with its display overridden, which only the phone's owner may agree to; an emulator's numbers are
+# relative evidence, never a gate).
+#
+# A limit is a number (the metric must be at or under it), `true` (a check that must pass in every
+# run) or "ratchet" (reported, not yet gated: the first measured value plus 10 % goes here). A smoke
+# tolerance is a table: the reference value plus max(`add`, reference × `scale`).
+#
+# What gates a release (REQUIREMENTS 42): for tab switches, push/pop, the back gesture and Rapid Back,
+# what the user feels, the hitch time per second of motion and the janky frames after each motion's
+# first. A first frame from idle misses its deadline on this phone whatever is drawn (the GPU is still
+# clocked down: an empty-content build misses it on 7 of 7 switches), so it is reported, not gated.
+# Rows marked non-regression hold the worst run of the merge's acceptance plus its noise margin, and
+# never more than the limit they replaced where the merge met it: they may only go down, and each
+# improvement is written back here.
+#
+# Measured on a Redmi Note 10 Pro (120 Hz, 8.33 ms frame budget) with release builds compiled with
+# their baseline profile. Frame times are UI-thread milliseconds; janky is the FrameTimeline count.
+
+[[row]]
+metric = "tab_first_visit.first_frame_ms.median"
+label = "First visit to a tab, first frame median (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "tab_first_visit.first_frame_ms.max"
+label = "First visit to a tab, first frame max (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "tab_first_visit_warm.first_frame_ms.median"
+label = "First visit to a tab after a restart (warm), first frame median (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "tab_first_visit_warm.first_frame_ms.max"
+label = "First visit to a tab after a restart (warm), first frame max (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "first_push.frame_ms"
+label = "First push after pm clear (cold), the frame that composes the screen (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "first_push_warm.frame_ms"
+label = "First push after a restart (warm), the frame that composes the screen (ms)"
+solid = "ratchet"
+
+[[row]]
+metric = "first_gesture.janky"
+label = "First back swipe after pm clear (cold), janky frames"
+solid = "ratchet"
+
+[[row]]
+metric = "first_gesture_warm.janky"
+label = "First back swipe after a restart (warm), janky frames"
+solid = "ratchet"
+
+[[row]]
+metric = "tabs.janky_pct"
+label = "Tab switch, janky frames (%) [non-regression]"
+solid = 1.26
+standard = 1.26
+lean = 1.0
+smoke = { add = 0.5, scale = 0.2 }
+
+[[row]]
+metric = "tabs.first_frame_ms.median"
+label = "Tab switch to a visited tab, first frame median (ms) [non-regression]"
+solid = 7.6
+standard = 8.0
+lean = 8.0
+smoke = { add = 2.0 }
+
+[[row]]
+metric = "tabs.first_frame_ms.max"
+label = "Tab switch to a visited tab, first frame max (ms) [non-regression]"
+solid = 11.9
+standard = 10.3
+lean = 16.0
+
+[[row]]
+metric = "tabs.hitch_ms_per_s"
+label = "Tab switch, hitch time per second of motion (ms/s)"
+solid = 5.0
+standard = 5.0
+lean = 5.0
+
+[[row]]
+metric = "tabs.janky_after_first_pct"
+label = "Tab switch, janky frames other than each motion's first (%)"
+solid = 0.5
+standard = 0.5
+lean = 0.5
+
+[[row]]
+metric = "tabs.late_first_frames"
+label = "Tab switch, motions whose first frame missed its deadline (count)"
+solid = "ratchet"
+standard = "ratchet"
+lean = "ratchet"
+
+[[row]]
+metric = "tabs_tap.janky_pct"
+label = "Tab switch with plain taps, janky frames (%) [non-regression]"
+solid = 1.26
+
+[[row]]
+metric = "tabs_tap.first_frame_ms.median"
+label = "Tab switch with plain taps, first frame median (ms) [non-regression]"
+solid = 4.5
+
+[[row]]
+metric = "tabs_tap.first_frame_ms.max"
+label = "Tab switch with plain taps, first frame max (ms) [non-regression]"
+solid = 11.7
+
+[[row]]
+metric = "tabs_tap.hitch_ms_per_s"
+label = "Tab switch with plain taps, hitch time per second of motion (ms/s)"
+solid = 5.0
+
+[[row]]
+metric = "tabs_tap.janky_after_first_pct"
+label = "Tab switch with plain taps, janky frames other than each motion's first (%)"
+solid = 0.5
+
+[[row]]
+metric = "tabs_tap.late_first_frames"
+label = "Tab switch with plain taps, motions whose first frame missed its deadline (count)"
+solid = "ratchet"
+
+[[row]]
+metric = "pushpop.push_first_frame_ms.median"
+label = "Push, the frame that composes the screen, median (ms) [non-regression]"
+solid = 14.4
+smoke = { add = 2.0 }
+
+[[row]]
+metric = "pushpop.push_first_frame_ms.max"
+label = "Push, the frame that composes the screen, max (ms) [non-regression]"
+solid = 18.3
+
+[[row]]
+metric = "pushpop.pop_first_frame_ms.median"
+label = "Pop, first frame median (ms) [non-regression]"
+solid = 4.1
+standard = 2.7
+smoke = { add = 2.0 }
+
+[[row]]
+metric = "pushpop.pop_first_frame_ms.max"
+label = "Pop, first frame max (ms) [non-regression]"
+solid = 5.9
+standard = 5.9
+
+[[row]]
+metric = "pushpop.janky_pct"
+label = "Push/pop with the Back key, janky frames (%) [non-regression]"
+solid = 1.95
+standard = 1.95
+lean = 1.73
+smoke = { add = 0.5, scale = 0.2 }
+
+[[row]]
+metric = "pushpop.p99_ms"
+label = "Push/pop with the Back key, p99 frame (ms) [non-regression]"
+solid = 35
+standard = 33
+lean = 29
+
+[[row]]
+metric = "pushpop.hitch_ms_per_s"
+label = "Push/pop with the Back key, hitch time per second of motion (ms/s)"
+solid = 5.0
+standard = 5.0
+lean = 5.0
+
+[[row]]
+metric = "pushpop.janky_after_first_pct"
+label = "Push/pop with the Back key, janky frames other than each motion's first (%)"
+solid = 0.5
+standard = 0.5
+lean = 0.5
+
+[[row]]
+metric = "pushpop.late_first_frames"
+label = "Push/pop with the Back key, motions whose first frame missed its deadline (count)"
+solid = "ratchet"
+standard = "ratchet"
+lean = "ratchet"
+
+[[row]]
+metric = "pushpop_gesture.janky_pct"
+label = "Push/pop with the back gesture, janky frames (%) [non-regression]"
+solid = 3.1
+
+[[row]]
+metric = "pushpop_gesture.gesture_first_frame_ms.median"
+label = "Back gesture, slowest of its first three frames, median (ms) [non-regression]"
+solid = 2.7
+
+[[row]]
+metric = "pushpop_gesture.hitch_ms_per_s"
+label = "Push/pop with the back gesture, hitch time per second of motion (ms/s)"
+solid = 5.0
+
+[[row]]
+metric = "pushpop_gesture.janky_after_first_pct"
+label = "Push/pop with the back gesture, janky frames other than each motion's first (%)"
+solid = 1.0
+
+[[row]]
+metric = "pushpop_gesture.late_first_frames"
+label = "Push/pop with the back gesture, motions whose first frame missed its deadline (count)"
+solid = "ratchet"
+
+[[row]]
+metric = "back_during_push.opaque"
+label = "Back swipe during a push: one opaque card, no double exposure"
+solid = true
+
+[[row]]
+metric = "back_during_push.lands_on_list"
+label = "Back swipe during a push: lands on the list"
+solid = true
+
+[[row]]
+metric = "rapid_back.alive"
+label = "Rapid Back: the app is still running"
+solid = true
+
+[[row]]
+metric = "rapid_back.final_screen"
+label = "Rapid Back: lands on the expected screen"
+solid = true
+
+[[row]]
+metric = "rapid_back.janky_pct"
+label = "Rapid Back, janky frames (%) [non-regression]"
+solid = 1.18
+
+[[row]]
+metric = "rapid_back.pop_frame_ms.median"
+label = "Rapid Back, slowest frame of the coalesced pop, median (ms) [non-regression]"
+solid = 6.2
+
+[[row]]
+metric = "rapid_back.pop_frame_ms.max"
+label = "Rapid Back, slowest frame of the coalesced pop, max (ms) [non-regression]"
+solid = 7.9
+
+[[row]]
+metric = "rapid_back.hitch_ms_per_s"
+label = "Rapid Back, hitch time per second of motion (ms/s)"
+solid = 5.0
+
+[[row]]
+metric = "rapid_back.janky_after_first_pct"
+label = "Rapid Back, janky frames other than each motion's first (%)"
+solid = 1.0
+
+[[row]]
+metric = "rapid_back.late_first_frames"
+label = "Rapid Back, motions whose first frame missed its deadline (count)"
+solid = "ratchet"
+
+[[row]]
+metric = "nav_stress.alive"
+label = "Navigation stress: the app is still running"
+solid = true
+
+[[row]]
+metric = "nav_stress.invariants"
+label = "Navigation stress: stack invariants hold"
+solid = true
+
+[[row]]
+metric = "nav_stress.janky_pct"
+label = "Navigation stress, janky frames (%)"
+solid = 4.0
+
+[[row]]
+metric = "restore.restored"
+label = "Process death: tab, stacks and presented sheet restored"
+solid = true
+
+[[row]]
+metric = "restore.back_pops"
+label = "Process death: Back pops the restored stack"
+solid = true
+
+[[row]]
+metric = "scroll_root.janky_pct"
+label = "Scroll a root list, janky frames (%)"
+solid = 0.5
+standard = 0.5
+smoke = { add = 0.5, scale = 0.2 }
+
+[[row]]
+metric = "scroll_root.gpu_p90_ms"
+label = "Scroll a root list, GPU p90 (ms)"
+solid = 7.0
+standard = 7.0
+smoke = { add = 1.0 }
+
+[[row]]
+metric = "scroll_minimize.janky_pct"
+label = "Scroll with the bar minimizing, janky frames (%)"
+solid = 0.5
+
+[[row]]
+metric = "scroll_minimize.gpu_p90_ms"
+label = "Scroll with the bar minimizing, GPU p90 (ms)"
+solid = 7.0
+
+[[row]]
+metric = "idle.frames"
+label = "Idle 5 s on every tab, frames rendered"
+solid = 0
+standard = 0
+lean = 0
+smoke = { add = 0.0 }
+
+[[row]]
+metric = "coldstart.median_ms"
+label = "Cold start, speed-profile, median (ms)"
+solid = 380
+standard = 380
+lean = 380
+
+[[row]]
+metric = "coldstart_installed.median_ms"
+label = "Cold start as installed (profile from the APK only), median (ms)"
+solid = 400
+standard = 400
+lean = 400
+
+# The app's own PSS: the total less Graphics, which on this phone is the window's buffers (EGL
+# mtrack, 51-55 MB on every build of every app here). The plan's 70 MB budget was measured with 22 MB
+# of graphics, so the app's part of it is 48 MB; the total is reported.
+[[row]]
+metric = "meminfo.pss_app_mb"
+label = "PSS after the journey, less the window's graphics buffers (MB) [non-regression]"
+solid = 58.4
+standard = 53.3
+
+[[row]]
+metric = "meminfo.pss_mb"
+label = "PSS after the journey (MB)"
+solid = "ratchet"
+
+[[row]]
+metric = "recompose.tab_switch.max"
+label = "Tab switch, frames that recompose (most in one switch)"
+solid = 2
+
+[[row]]
+metric = "recompose.push.max"
+label = "Push, frames that recompose (most in one push)"
+solid = "ratchet"
+
+[[row]]
+metric = "recompose.pop.max"
+label = "Pop, frames that recompose (most in one pop)"
+solid = 2
+
+[[row]]
+metric = "recompose.back_gesture_progress.max"
+label = "Back gesture, frames that recompose while the card follows the finger"
+solid = 0
+
+[[row]]
+metric = "tabs_large.janky_pct"
+label = "Large window: tab switch beside the rail or sidebar, janky frames (%)"
+large = 1.0
+
+[[row]]
+metric = "tabs_large.first_frame_ms.median"
+label = "Large window: tab switch to a visited tab, first frame median (ms)"
+large = 8.0
+
+[[row]]
+metric = "tabs_large.first_frame_ms.max"
+label = "Large window: tab switch to a visited tab, first frame max (ms)"
+large = 16.0
+
+[[row]]
+metric = "listdetail_select.janky_pct"
+label = "Large window: a row opens its detail beside the list, janky frames (%)"
+large = 1.0
+
+[[row]]
+metric = "listdetail_select.first_frame_ms.median"
+label = "Large window: the detail swaps in place, first frame median (ms)"
+large = 12.0
+
+[[row]]
+metric = "listdetail_select.first_frame_ms.max"
+label = "Large window: the detail swaps in place, first frame max (ms)"
+large = 20.0
+
+[[row]]
+metric = "pushpop_large.janky_pct"
+label = "Large window: open and close a detail, janky frames (%)"
+large = 2.0
+
+[[row]]
+metric = "pushpop_large.pop_first_frame_ms.median"
+label = "Large window: close a detail with Back, first frame median (ms)"
+large = 8.0
+
+[[row]]
+metric = "pushpop_large.pop_first_frame_ms.max"
+label = "Large window: close a detail with Back, first frame max (ms)"
+large = 16.0
+
+[[row]]
+metric = "scroll_large.janky_pct"
+label = "Large window: scroll the list pane, janky frames (%)"
+large = 0.5
+
+[[row]]
+metric = "scroll_large.gpu_p90_ms"
+label = "Large window: scroll the list pane, GPU p90 (ms)"
+large = 7.0
+
+[[row]]
+metric = "sidebar_toggle.janky_pct"
+label = "Large window: fold and open the sidebar, janky frames (%)"
+large = 0.5

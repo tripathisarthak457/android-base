@@ -1,0 +1,492 @@
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt
+index 904e5df..a70917e 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackCard.kt
+@@ -89,6 +89,13 @@ internal class BackCardState {
+     var active by mutableStateOf(false)
+         private set
+ 
++    /**
++     * The screen drawn into its texture ahead of a gesture, while a finger rests at the window's back
++     * edge over it ([backEdgeWarm]): the gesture's first frame then finds the texture already there.
++     */
++    var prewarmed: Any? by mutableStateOf(null)
++        private set
++
+     /** The content key of the entry that shrinks. */
+     var subject: Any? by mutableStateOf(null)
+         private set
+@@ -134,6 +141,8 @@ internal class BackCardState {
+         tracker.resetTracking()
+         phase = Phase.Tracking
+         active = true
++        // In the same write as [active]: a screen drawn ahead keeps its texture, now as the card's.
++        prewarmed = null
+         reveal = if (midPush) 0f else 1f
+         track(event)
+         scrimJob = scope.launch {
+@@ -151,6 +160,16 @@ internal class BackCardState {
+         tracker.addDataPoint(frameMillis, event.progress)
+     }
+ 
++    /** Draws [subject]'s screen into its texture now, ahead of a gesture that may follow. */
++    fun warm(subject: Any) {
++        if (!active) prewarmed = subject
++    }
++
++    /** Lets go of a texture drawn ahead of a gesture that did not follow. */
++    fun cool() {
++        prewarmed = null
++    }
++
+     /** Progress per second at the release, within what the commit's spring may be seeded with. */
+     fun releaseVelocity(): Float =
+         tracker.calculateVelocity().coerceIn(BackCard.MIN_COMMIT_VELOCITY, BackCard.MAX_COMMIT_VELOCITY)
+@@ -222,10 +241,10 @@ internal class BackCardState {
+ 
+     /**
+      * Whether [key]'s screen is drawn from a texture of its own: the card's subject, from the
+-     * gesture's first frame until the card is gone. It is rendered once, on that first frame, and
+-     * the card's pose above it moves, scales and fades it.
++     * gesture's first frame until the card is gone, or [prewarmed] ahead of it. It is rendered once,
++     * and the card's pose above it moves, scales and fades it.
+      */
+-    fun textures(key: Any): Boolean = active && key == subject
++    fun textures(key: Any): Boolean = (active && key == subject) || key == prewarmed
+ 
+     /** How far the card is shrunk, 0 to 1: the eased progress, unwound on commit. */
+     private val pose: Float get() = progress * (1f - unwind.value)
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackEdgeWarm.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackEdgeWarm.kt
+new file mode 100644
+index 0000000..d694036
+--- /dev/null
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/BackEdgeWarm.kt
+@@ -0,0 +1,144 @@
++package com.base.app.core.navigation.back
++
++import android.os.Build
++import android.view.View
++import android.view.WindowInsets
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.input.pointer.PointerEvent
++import androidx.compose.ui.input.pointer.PointerEventPass
++import androidx.compose.ui.input.pointer.PointerEventType
++import androidx.compose.ui.input.pointer.PointerId
++import androidx.compose.ui.input.pointer.PointerInputChange
++import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
++import androidx.compose.ui.node.ModifierNodeElement
++import androidx.compose.ui.node.PointerInputModifierNode
++import androidx.compose.ui.node.currentValueOf
++import androidx.compose.ui.node.requireLayoutCoordinates
++import androidx.compose.ui.platform.InspectorInfo
++import androidx.compose.ui.platform.LocalView
++import androidx.compose.ui.platform.LocalViewConfiguration
++import androidx.compose.ui.unit.IntSize
++import kotlinx.coroutines.Job
++import kotlinx.coroutines.delay
++import kotlinx.coroutines.launch
++import kotlin.math.abs
++
++/**
++ * Renders the screen on top into the back card's texture as soon as a finger lands at the window's
++ * back edge, before the system decides the touch is a back gesture and hands it over: the gesture's
++ * first frame then moves a texture that already exists, rather than rendering it on a GPU still at
++ * its idle clock. The system's own back animation starts the same way, from a buffer it already has.
++ *
++ * It only watches; nothing is consumed. The texture is let go as soon as the touch turns out to be
++ * something else: a vertical move (a scroll), a lift no gesture follows, or a second finger. One
++ * coroutine per touch-down and per lift, none per move.
++ */
++internal fun Modifier.backEdgeWarm(host: BackCardHost, edges: BackEdges = SystemGestureEdges): Modifier =
++    this then BackEdgeWarmElement(host, edges)
++
++/** Whether a touch at [windowX], in the window of [view], lands where the system's back gesture starts. */
++internal fun interface BackEdges {
++    fun contains(view: View, windowX: Float): Boolean
++}
++
++/** The window's left and right system gesture insets. The card itself needs API 34. */
++internal val SystemGestureEdges = BackEdges { view, windowX ->
++    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
++        val insets = view.rootWindowInsets?.getInsets(WindowInsets.Type.systemGestures())
++        insets != null && (windowX < insets.left || windowX >= view.rootView.width - insets.right)
++    } else {
++        false
++    }
++}
++
++private data class BackEdgeWarmElement(val host: BackCardHost, val edges: BackEdges) :
++    ModifierNodeElement<BackEdgeWarmNode>() {
++    override fun create() = BackEdgeWarmNode(host, edges)
++
++    override fun update(node: BackEdgeWarmNode) {
++        node.host = host
++        node.edges = edges
++    }
++
++    override fun InspectorInfo.inspectableProperties() {
++        name = "backEdgeWarm"
++    }
++}
++
++private class BackEdgeWarmNode(var host: BackCardHost, var edges: BackEdges) :
++    Modifier.Node(), PointerInputModifierNode, CompositionLocalConsumerModifierNode {
++
++    /** The touch that warmed the card, while it may still become a back gesture. */
++    private var touch: PointerId? = null
++    private var touchY = 0f
++
++    /** Lets the texture go if no gesture takes it over. */
++    private var letGo: Job? = null
++
++    override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize) {
++        if (pass != PointerEventPass.Initial) return
++        val changes = pointerEvent.changes
++        when (pointerEvent.type) {
++            PointerEventType.Press -> when {
++                touch == null && changes.size == 1 -> press(changes[0])
++                // A second finger: the system's back gesture is a one-finger swipe.
++                touch != null -> cool()
++            }
++            PointerEventType.Move -> {
++                val change = changes.firstOrNull { it.id == touch } ?: return
++                // A back swipe is sideways; a vertical move is a scroll.
++                if (abs(change.position.y - touchY) > currentValueOf(LocalViewConfiguration).touchSlop) cool()
++            }
++            PointerEventType.Release -> if (changes.any { it.id == touch && !it.pressed }) lift()
++        }
++    }
++
++    override fun onCancelPointerInput() {
++        if (touch != null) lift()
++    }
++
++    override fun onDetach() {
++        if (touch != null || letGo != null) host.card.cool()
++        touch = null
++        letGo = null
++    }
++
++    private fun press(change: PointerInputChange) {
++        val windowX = requireLayoutCoordinates().localToWindow(change.position).x
++        if (!edges.contains(currentValueOf(LocalView), windowX) || !host.warmCard()) return
++        touch = change.id
++        touchY = change.position.y
++        coolAfter(HOLD_MILLIS)
++    }
++
++    private fun lift() {
++        touch = null
++        // The system takes a back gesture's pointer away from the window first and reports the
++        // gesture's start after it, a frame or two later: the texture is kept for that long.
++        coolAfter(GRACE_MILLIS)
++    }
++
++    private fun cool() {
++        touch = null
++        letGo?.cancel()
++        letGo = null
++        host.card.cool()
++    }
++
++    private fun coolAfter(millis: Long) {
++        letGo?.cancel()
++        letGo = coroutineScope.launch {
++            delay(millis)
++            touch = null
++            letGo = null
++            host.card.cool()
++        }
++    }
++
++    private companion object {
++        const val GRACE_MILLIS = 120L
++
++        /** A finger resting at the edge this long is not starting a swipe. */
++        const val HOLD_MILLIS = 1_000L
++    }
++}
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt
+index 4e26046..970298d 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/back/StackBackHandler.kt
+@@ -19,6 +19,12 @@ internal interface BackCardHost {
+ 
+     fun canStartCard(): Boolean
+ 
++    /**
++     * Draws the screen on top into the card's texture ahead of a gesture, if the card could start
++     * now. Returns whether it did.
++     */
++    fun warmCard(): Boolean
++
+     fun startCard(event: NavigationEvent, scope: CoroutineScope)
+ 
+     suspend fun cancelCard()
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt
+index f970cc0..ce7dc70 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/presentation/PresentationCard.kt
+@@ -33,6 +33,12 @@ internal class PresentationCard(
+     override fun canStartCard(): Boolean =
+         !card.active && !presented.gate.moving && presented.size == 1 && shrinks(presented.current)
+ 
++    override fun warmCard(): Boolean {
++        if (!canStartCard()) return false
++        card.warm(presented.current)
++        return true
++    }
++
+     override fun startCard(event: NavigationEvent, scope: CoroutineScope) {
+         card.start(event, subject = presented.current, beneath = emptySet(), midPush = false, scope = scope)
+     }
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackHost.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackHost.kt
+index 9a0447e..e6ddfae 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackHost.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackHost.kt
+@@ -27,6 +27,7 @@ import com.base.app.core.navigation.NavTransitionStyle
+ import com.base.app.core.navigation.back.GateSettle
+ import com.base.app.core.navigation.back.StackBackHandler
+ import com.base.app.core.navigation.back.StackChange
++import com.base.app.core.navigation.back.backEdgeWarm
+ import com.base.app.core.navigation.shell.BarAnchor
+ import com.base.app.core.navigation.transition.ScreenMotion
+ 
+@@ -89,7 +90,7 @@ internal fun StackHost(
+ 
+     val settled = remember(gate) { { !gate.moving } }
+     CompositionLocalProvider(LocalNavigationSettled provides settled) {
+-        StackLayout(scene, plan, shown, AppTheme.layout.listPaneWidth, modifier)
++        StackLayout(scene, plan, shown, AppTheme.layout.listPaneWidth, if (reduceMotion) modifier else modifier.backEdgeWarm(scene))
+     }
+     StackBackHandler(stack, scene, pop, cardEnabled = !reduceMotion)
+     GateSettle(gate, pop)
+diff --git a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt
+index 8394d6e..a735b08 100644
+--- a/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt
++++ b/templates/android/core/navigation/src/main/kotlin/com/base/app/core/navigation/stack/StackScene.kt
+@@ -236,6 +236,12 @@ internal class StackScene(private val gate: BackGate) : BackCardHost {
+     override fun canStartCard(): Boolean =
+         !card.active && top.size == 1 && beneath.isNotEmpty() && (!moving || applied?.slide == Slide.Push)
+ 
++    override fun warmCard(): Boolean {
++        if (!canStartCard()) return false
++        card.warm(top.single())
++        return true
++    }
++
+     override fun startCard(event: NavigationEvent, scope: CoroutineScope) {
+         card.start(event, subject = top.single(), beneath = beneath, midPush = moving, scope = scope)
+     }
+diff --git a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardStateTest.kt b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardStateTest.kt
+index 1ae4c8c..63e2b8c 100644
+--- a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardStateTest.kt
++++ b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackCardStateTest.kt
+@@ -103,6 +103,19 @@ class BackCardStateTest {
+         assertFalse(card.textures(Top))
+     }
+ 
++    @Test
++    fun `a screen drawn ahead of the gesture keeps its texture as the card starts, and only it`() = cardTest {
++        card.warm(Top)
++        assertTrue(card.textures(Top))
++
++        startCard(backgroundScope, 0.2f)
++
++        assertTrue(card.textures(Top))
++        assertEquals(null, card.prewarmed)
++        card.warm(Under)
++        assertFalse("nothing is drawn ahead while the card is up", card.textures(Under))
++    }
++
+     @Test
+     fun `the first frame after the release is already as far into the fade as the time since it`() = cardTest {
+         startCard(backgroundScope, 0.5f)
+diff --git a/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackEdgeWarmTest.kt b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackEdgeWarmTest.kt
+new file mode 100644
+index 0000000..3b13c2e
+--- /dev/null
++++ b/templates/android/core/navigation/src/test/kotlin/com/base/app/core/navigation/back/BackEdgeWarmTest.kt
+@@ -0,0 +1,182 @@
++package com.base.app.core.navigation.back
++
++import androidx.compose.animation.core.spring
++import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.runtime.rememberCoroutineScope
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.geometry.Offset
++import androidx.compose.ui.platform.testTag
++import androidx.compose.ui.test.TouchInjectionScope
++import androidx.compose.ui.test.junit4.createComposeRule
++import androidx.compose.ui.test.onNodeWithTag
++import androidx.compose.ui.test.performTouchInput
++import androidx.navigationevent.NavigationEvent
++import com.base.app.core.navigation.ROBOLECTRIC_SDK
++import kotlinx.coroutines.CoroutineScope
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertFalse
++import org.junit.Assert.assertNull
++import org.junit.Assert.assertTrue
++import org.junit.Rule
++import org.junit.Test
++import org.junit.runner.RunWith
++import org.robolectric.RobolectricTestRunner
++import org.robolectric.annotation.Config
++
++/**
++ * The texture rendered ahead of a back gesture: taken as a finger lands at the back edge, kept while
++ * the touch may still become the gesture, and let go as soon as it turns out to be anything else.
++ */
++@RunWith(RobolectricTestRunner::class)
++@Config(sdk = [ROBOLECTRIC_SDK])
++class BackEdgeWarmTest {
++
++    @get:Rule
++    val rule = createComposeRule()
++
++    private val host = TestHost()
++    private val edges = BackEdges { view, windowX -> windowX < EDGE || windowX >= view.rootView.width - EDGE }
++    private lateinit var scope: CoroutineScope
++
++    private fun show() {
++        rule.setContent {
++            scope = rememberCoroutineScope()
++            Box(Modifier.fillMaxSize().backEdgeWarm(host, edges).testTag(HOST))
++        }
++        rule.waitForIdle()
++        rule.mainClock.autoAdvance = false
++    }
++
++    private fun touch(block: TouchInjectionScope.() -> Unit) {
++        rule.onNodeWithTag(HOST).performTouchInput(block)
++    }
++
++    private fun warm(): Boolean = rule.runOnUiThread { host.card.textures(Top) }
++
++    @Test
++    fun `a touch at the back edge renders the screen into its texture at once`() {
++        show()
++        touch { down(Offset(2f, centerY)) }
++        assertTrue(warm())
++    }
++
++    @Test
++    fun `a touch away from the edges renders nothing`() {
++        show()
++        touch { down(center) }
++        assertFalse(warm())
++    }
++
++    @Test
++    fun `where no card can start, as at the root, an edge touch renders nothing`() {
++        host.canStart = false
++        show()
++        touch { down(Offset(width - 2f, centerY)) }
++        assertFalse(warm())
++    }
++
++    @Test
++    fun `a vertical move past the touch slop is a scroll and lets the texture go at once`() {
++        show()
++        touch {
++            down(Offset(2f, centerY))
++            moveBy(Offset(0f, viewConfiguration.touchSlop + 4f))
++        }
++        assertFalse(warm())
++    }
++
++    @Test
++    fun `a sideways move keeps it, as the start of a back swipe does`() {
++        show()
++        touch {
++            down(Offset(2f, centerY))
++            moveBy(Offset(viewConfiguration.touchSlop * 2, 0f))
++        }
++        assertTrue(warm())
++    }
++
++    @Test
++    fun `a lift keeps it a moment for a gesture the system may still report, then lets go`() {
++        show()
++        touch {
++            down(Offset(2f, centerY))
++            up()
++        }
++        rule.mainClock.advanceTimeBy(60)
++        assertTrue("within the grace", warm())
++        rule.mainClock.advanceTimeBy(100)
++        assertFalse(warm())
++    }
++
++    @Test
++    fun `when the system takes the touch and the gesture starts, the texture becomes the card's`() {
++        show()
++        touch {
++            down(Offset(2f, centerY))
++            cancel()
++        }
++        rule.runOnUiThread { host.startCard(NavigationEvent(NavigationEvent.EDGE_LEFT, 0f, 2f, 300f), scope) }
++        rule.mainClock.advanceTimeBy(300)
++
++        assertTrue(warm())
++        assertNull("drawn ahead no longer, but as the card", rule.runOnUiThread { host.card.prewarmed })
++    }
++
++    @Test
++    fun `a finger held still at the edge lets go after a second`() {
++        show()
++        touch { down(Offset(2f, centerY)) }
++        rule.mainClock.advanceTimeBy(900)
++        assertTrue(warm())
++        rule.mainClock.advanceTimeBy(200)
++        assertFalse(warm())
++    }
++
++    @Test
++    fun `a second finger lets go at once`() {
++        show()
++        touch {
++            down(0, Offset(2f, centerY))
++            down(1, center)
++        }
++        assertFalse(warm())
++    }
++
++    @Test
++    fun `while the card is up a new edge touch changes nothing`() {
++        show()
++        rule.runOnUiThread { host.startCard(NavigationEvent(NavigationEvent.EDGE_LEFT, 0.3f, 2f, 300f), scope) }
++        touch { down(Offset(2f, centerY)) }
++        assertEquals(null, rule.runOnUiThread { host.card.prewarmed })
++        assertTrue(warm())
++    }
++
++    private class TestHost : BackCardHost {
++        override val card = BackCardState()
++        var canStart = true
++
++        override fun canStartCard(): Boolean = canStart && !card.active
++
++        override fun warmCard(): Boolean {
++            if (!canStartCard()) return false
++            card.warm(Top)
++            return true
++        }
++
++        override fun startCard(event: NavigationEvent, scope: CoroutineScope) =
++            card.start(event, subject = Top, beneath = setOf(Under), midPush = false, scope = scope)
++
++        override suspend fun cancelCard() = card.cancel(midPush = false, fullWidth = true)
++
++        override suspend fun commitCard(pop: (Int) -> Int, releasedNanos: Long, scope: CoroutineScope) =
++            card.commitPop(BackGate(), spring(), pop, releasedNanos, scope)
++    }
++
++    private companion object {
++        const val HOST = "host"
++        const val Top = "top"
++        const val Under = "under"
++        const val EDGE = 20f
++    }
++}

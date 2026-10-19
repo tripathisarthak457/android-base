@@ -1,0 +1,317 @@
+[locked:adb] waiting for the lock (pid 14940 since 2026-10-19 08:14:37: ./final-gates.win.sh)
+device
+device
+Performing Streamed Install
+Success
+Success
+round 1 hidden done
+round 1 shown done
+round 2 shown done
+round 2 hidden done
+round 3 hidden done
+round 3 shown done
+round 4 shown done
+round 4 hidden done
+round 5 hidden done
+round 5 shown done
+round 6 shown done
+round 6 hidden done
+{
+  "scroll": {
+    "janky_pp": 0.15,
+    "ui_mean_ms": 0.095,
+    "total_mean_ms": 4.487
+  },
+  "tabs": {
+    "janky_pp": 0.01,
+    "ui_mean_ms": 0.04,
+    "total_mean_ms": -1.682
+  },
+  "pushpop": {
+    "janky_pp": -0.1,
+    "ui_mean_ms": 0.085,
+    "total_mean_ms": 0.594
+  },
+  "all": {
+    "janky_pp": 0.09,
+    "ui_mean_ms": 0.089,
+    "total_mean_ms": 3.272
+  }
+}
+{
+  "hidden": {
+    "frames": 13770,
+    "janky": 184,
+    "janky_pct": 1.34,
+    "p50_ms": 8,
+    "p90_ms": 9,
+    "p99_ms": 24,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 11939,
+    "ui_mean_ms": 1.151,
+    "ui_p90_ms": 1.601,
+    "total_mean_ms": 0.706
+  },
+  "shown": {
+    "frames": 13764,
+    "janky": 197,
+    "janky_pct": 1.43,
+    "p50_ms": 8,
+    "p90_ms": 10,
+    "p99_ms": 25,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 11923,
+    "ui_mean_ms": 1.24,
+    "ui_p90_ms": 1.709,
+    "total_mean_ms": 3.978
+  }
+}
+OVERHEAD OK
+STANDARD OVERHEAD OK
+Performing Streamed Install
+Success
+{
+  "listener_standard": {
+    "off": {
+      "pid": "31519",
+      "frame_metrics_thread": false,
+      "threads": 39,
+      "thread_names": [
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Okio Watchdog",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TracingMuxer",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "ud.standard.dev",
+        "wy# ConnectionP",
+        "wy# Dispatcher",
+        "wy# TaskRunner"
+      ],
+      "perfhud_lines": 0
+    },
+    "on": {
+      "pid": "31647",
+      "frame_metrics_thread": true,
+      "threads": 43,
+      "thread_names": [
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "DefaultExecutor",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "FrameMetricsAgg",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Okio Watchdog",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TracingMuxer",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "ud.standard.dev",
+        "wy# ConnectionP",
+        "wy# Dispatcher",
+        "wy# TaskRunner"
+      ],
+      "perfhud_lines": 3
+    },
+    "threads_only_on": [
+      "DefaultExecutor",
+      "FrameMetricsAgg"
+    ],
+    "threads_only_off": []
+  },
+  "listener_everything": {
+    "off": {
+      "pid": "31764",
+      "frame_metrics_thread": true,
+      "threads": 70,
+      "thread_names": [
+        ".everything.dev",
+        "AppUpdateServic",
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "FileObserver",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "Firebase Backgr",
+        "Firebase Blocki",
+        "Firebase Schedu",
+        "Firebase-Messag",
+        "FrameMetricsAgg",
+        "GmsDynamite",
+        "GoogleApiHandle",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Measurement Wor",
+        "MessengerIpcCli",
+        "OkHttp Connecti",
+        "Okio Watchdog",
+        "ProcessStablePh",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "ScionFrontendAp",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TAG",
+        "TracingMuxer",
+        "b# ConnectionP",
+        "b# Dispatcher",
+        "b# TaskRunner",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "pool#-thread-",
+        "queued-work-loo"
+      ],
+      "perfhud_lines": 0
+    },
+    "on": {
+      "pid": "31925",
+      "frame_metrics_thread": true,
+      "threads": 70,
+      "thread_names": [
+        ".everything.dev",
+        "AppUpdateServic",
+        "ConscryptStatsL",
+        "DefaultDispatch",
+        "DefaultExecutor",
+        "FileObserver",
+        "FinalizerDaemon",
+        "FinalizerWatchd",
+        "Firebase Backgr",
+        "Firebase Blocki",
+        "Firebase Schedu",
+        "Firebase-Messag",
+        "FrameMetricsAgg",
+        "GmsDynamite",
+        "GoogleApiHandle",
+        "HeapTaskDaemon",
+        "Jit thread pool",
+        "Measurement Wor",
+        "MessengerIpcCli",
+        "Metrics Backgro",
+        "OkHttp Connecti",
+        "Okio Watchdog",
+        "ProcessStablePh",
+        "Profile Saver",
+        "ProtoLogBackgro",
+        "ReferenceQueueD",
+        "RenderThread",
+        "ScionFrontendAp",
+        "Signal Catcher",
+        "SurfaceSyncGrou",
+        "TAG",
+        "TracingMuxer",
+        "b# ConnectionP",
+        "b# Dispatcher",
+        "b# TaskRunner",
+        "binder##",
+        "er.typicode.com",
+        "hwuiTask#",
+        "perfetto_hprof_",
+        "pool#-thread-",
+        "queued-work-loo"
+      ],
+      "perfhud_lines": 3
+    },
+    "threads_only_on": [
+      "DefaultExecutor",
+      "Metrics Backgro"
+    ],
+    "threads_only_off": []
+  }
+}
+LISTENER OK
+device
+Performing Streamed Install
+Success
+Success
+round 1 hidden done
+round 1 shown done
+round 2 shown done
+round 2 hidden done
+round 3 hidden done
+round 3 shown done
+round 4 shown done
+round 4 hidden done
+round 5 hidden done
+round 5 shown done
+round 6 shown done
+round 6 hidden done
+{
+  "scroll": {
+    "janky_pp": 0.04,
+    "ui_mean_ms": 0.028,
+    "total_mean_ms": -0.925
+  },
+  "tabs": {
+    "janky_pp": -0.07,
+    "ui_mean_ms": -0.045,
+    "total_mean_ms": -0.729
+  },
+  "pushpop": {
+    "janky_pp": -0.36,
+    "ui_mean_ms": -0.029,
+    "total_mean_ms": 0.242
+  },
+  "all": {
+    "janky_pp": -0.05,
+    "ui_mean_ms": 0.003,
+    "total_mean_ms": -0.708
+  }
+}
+{
+  "hidden": {
+    "frames": 14126,
+    "janky": 206,
+    "janky_pct": 1.46,
+    "p50_ms": 8,
+    "p90_ms": 10,
+    "p99_ms": 30,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12505,
+    "ui_mean_ms": 1.311,
+    "ui_p90_ms": 1.773,
+    "total_mean_ms": 1.488
+  },
+  "shown": {
+    "frames": 14113,
+    "janky": 199,
+    "janky_pct": 1.41,
+    "p50_ms": 8,
+    "p90_ms": 11,
+    "p99_ms": 26,
+    "gpu_p90_ms": 7,
+    "framestats_rows": 12466,
+    "ui_mean_ms": 1.314,
+    "ui_p90_ms": 1.87,
+    "total_mean_ms": 0.78
+  }
+}
+OVERHEAD OK
+EVERYTHING OVERHEAD OK
+PHONE OK
+EXIT 0

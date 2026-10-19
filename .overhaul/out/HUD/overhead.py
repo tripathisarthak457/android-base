@@ -120,7 +120,9 @@ def summarize(segments):
     rows = [row for _, frames in segments for row in frames]
     combined = parse_gfx.combine(dumps) if dumps else {}
     ui = [parse_framestats.ui_ms(row) for row in rows]
-    total = [(row["FrameCompleted"] - row["IntendedVsync"]) / 1e6 for row in rows]
+    # A frame still in flight when gfxinfo was dumped has no FrameCompleted yet; its total is unknown.
+    total = [(row["FrameCompleted"] - row["IntendedVsync"]) / 1e6 for row in rows
+             if row["FrameCompleted"] > row["IntendedVsync"]]
     return {
         "frames": combined.get("frames", 0),
         "janky": combined.get("janky", 0),

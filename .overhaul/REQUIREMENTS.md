@@ -201,3 +201,24 @@ If it runs smooth there, it runs smooth on most phones.
     - **Smoothness:** scroll janky frames ≤ 0.5% at 120 Hz on the Redmi on release builds (aim ~0%), GPU p90 ≤ 7 ms, no hitch on the first fling after a cold start or `pm clear` (the deep-smoothness work, `wp/WP04-perf`), and no recomposition per scroll frame.
     - **Proof:** phone recordings and numbers (fling distance and duration for a set of velocities compared with the iOS curve from `research/ios-motion.md`, edge overscroll traces, the scroll gates) on release builds, plus unit tests for the physics.
     - **Owners:** WP03 (the physics defaults and every component), WP04-perf (scroll jank and the first-fling hitch), QA2 (feel check on the phone against the iOS reference), WP12 (docs: how to opt a surface out). Phase B: the same physics in the Compose Multiplatform template.
+42. **Perf release gates and the back gesture (the user, Oct 19 06:16, answering two questions with pros and cons).**
+    - **Back gesture: adopt the texture.** Apply `out/WP04-perf/backcard-texture.patch` (`BackCardState.applyCard`:
+      `CompositingStrategy.Offscreen` for the whole time the back card is active, in place of `ModulateAlpha` during
+      the fade only) on `wp/WP04`. Measured on the Redmi (WP04-perf §2h, phase 17b): RenderThread hitches 38 -> 2,
+      janky after the first frame 0.8-0.93% -> 0.4-0.53%, total 2.4% -> 2.0-2.1%. Accepted costs: the card's first
+      frame about one vsync later, about 10 MB of GPU memory while the card is up, text from a texture scaled 0.9-1.0.
+      Rule A11.3.1 (no offscreen layer on a whole screen) gets a written exception limited to the back card, with the
+      reason (rendered once per gesture, not every frame) in the rule's text, the code comment and the docs.
+    - **Gates: gate what users feel.** In the Android release gate and in `tools/perf/gates.toml`, the release limits
+      for tab switch, push/pop and back become the hitch ratio (`*.hitch_ms_per_s`) and the jank after a motion's first
+      frame (`*.janky_after_first_pct`), with `*.late_first_frames` reported. Total `*.janky_pct`, first-frame, p99 and
+      app PSS rows become non-regression ratchets at the values measured at the merge (they may only improve). The
+      evidence: an empty-content build misses the first-frame deadline on 7 of 7 tab switches from idle on this phone,
+      and graphics buffers alone take 53-56 MB of the 48 MB PSS row. Scroll keeps its own limits (REQUIREMENTS 41).
+    - **The goal does not change (the user, Oct 19 06:20: "Make sure the app is light and smooth that's it. Goal is still
+      the same most optimised visual feel").** A ratchet is a floor, not a finish line: keep cutting memory (app PSS,
+      native heap: glyph caches and GPU programs), APK size, startup and every janky frame wherever a fix exists, and
+      prefer the lighter of two equally smooth designs. The gates only stop the release from being blocked by limits
+      of the phone itself.
+    - **Owners:** WP04 (applies the patch, the A11.3 exception, `gates.toml`, re-runs acceptance), WP04-perf (supplies
+      the exact limits from its §3), QA2 and the final matrix (use these gates), WP12 (docs).

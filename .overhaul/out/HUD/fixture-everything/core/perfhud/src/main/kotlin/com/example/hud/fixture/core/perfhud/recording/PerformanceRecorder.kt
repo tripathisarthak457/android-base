@@ -20,6 +20,7 @@ import com.example.hud.fixture.core.perfhud.frame.RefreshRate
 import com.example.hud.fixture.core.perfhud.log.PerfLogcat
 import com.example.hud.fixture.core.perfhud.memory.MemoryLog
 import com.example.hud.fixture.core.perfhud.memory.MemorySampler
+import com.example.hud.fixture.core.perfhud.memory.PssSchedule
 import com.example.hud.fixture.core.perfhud.network.NetworkTimings
 import com.example.hud.fixture.core.perfhud.report.ExportedReport
 import com.example.hud.fixture.core.perfhud.score.OptimisationScore
@@ -48,7 +49,10 @@ import javax.inject.Singleton
  * `perf.hud=on|off` overrides both for that process: that is how `perf.sh` measures what the
  * overlay itself costs.
  *
- * Nothing is allocated, listened to or sampled before the first recording starts.
+ * Until the first recording starts nothing listens to the window, nothing is sampled and the
+ * frame rings are not allocated. The recorder is built with the inspector, on the main thread
+ * during the launch: that costs the launch an activity-lifecycle callback, a DataStore and one
+ * read of the stored choice, whose file I/O runs on the I/O dispatcher.
  */
 @Singleton
 internal class PerformanceRecorder @Inject constructor(
@@ -67,6 +71,7 @@ internal class PerformanceRecorder @Inject constructor(
     private val dispatchers: AppDispatchers,
 ) {
     private val refreshRate = RefreshRate(context.getSystemService(DisplayManager::class.java))
+    private val pssSchedule = PssSchedule()
     private val _recording = MutableStateFlow(false)
     private var work: Job? = null
     private var launchOverride = false
@@ -208,12 +213,15 @@ internal class PerformanceRecorder @Inject constructor(
     }
 
     private suspend fun sampleEverySecond() {
-        logcat.begin(frames)
-        var second = 0L
+        logcat.begin(frames, memory)
+        memory.startRun()
         while (true) {
-            memory.add(memorySampler.read(withPss = second % PSS_EVERY_SECONDS == 0L))
+            val withPss = pssSchedule.shouldRead(
+                nowMillis = SystemClock.elapsedRealtime(),
+                drawing = frames.drewWithin(System.nanoTime(), PssSchedule.QUIET_NANOS),
+            )
+            memory.add(memorySampler.read(withPss))
             logcat.onSecond(frames, memory, currentScreen.name.value)
-            second++
             delay(SAMPLE_MILLIS)
         }
     }
@@ -236,9 +244,6 @@ internal class PerformanceRecorder @Inject constructor(
         const val LAUNCH_ON = "on"
         const val LAUNCH_OFF = "off"
         const val SAMPLE_MILLIS = 1_000L
-
-        /** PSS walks every mapping of the process, which takes milliseconds of a background core. */
-        const val PSS_EVERY_SECONDS = 15L
 
         /** A start record only changes with a new start, which a panel left open sees within this. */
         const val STARTUP_REFRESH_MILLIS = 10_000L

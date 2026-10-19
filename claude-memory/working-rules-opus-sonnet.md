@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: 8d80ef9d-4533-47d0-b348-d4c6caaeb696
-  modified: 2026-10-18T17:36:15.964Z
+  modified: 2026-10-19T00:48:20.789Z
 ---
 
 The user's working rules (Oct 18 23:10, ultracode on; they adopted my adjustments the same evening):
@@ -23,6 +23,10 @@ The user's working rules (Oct 18 23:10, ultracode on; they adopted my adjustment
   merges, anything that changes a branch or a decision.
 - Design decisions are pre-approved: take them with Opus advice and the design skills, record the reasoning.
 - Quality, polish and security first; save tokens only where that costs nothing in quality.
+- **Decisions only the user can take** (rule exceptions, release gates, trade-offs an agent leaves open): ask them in
+  chat with AskUserQuestion, one question per decision, every option with its pros, cons and catches, the recommended
+  one first (the user, Oct 19 06:12: "ask me in question format with pros and cons and all catches I will answer").
+  Never leave them only in a status line or a handoff.
 
 **Why:** the user's pasted "Working instructions" plus "if u think its a good approach specially device checks and
 controlling the device ... opus can supervise"; they asked for the adjustments to share with another project's session.

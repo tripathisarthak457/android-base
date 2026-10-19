@@ -28,7 +28,10 @@ BUILD_TOOLS = os.path.join(os.environ.get("ANDROID_HOME", r"C:\Users\crazyhusir\
 AAPT2 = os.path.join(BUILD_TOOLS, "aapt2.exe")
 DEXDUMP = os.path.join(BUILD_TOOLS, "dexdump.exe")
 
-MODULES = re.compile(r"core[/.](devtools|perfhud)", re.IGNORECASE)
+# The two modules, and the seams main code reaches them through (the root's Optional<DevTooling>,
+# the build facts it provides, the screen reporting): R8 should drop all three from a shippable build.
+MODULES = re.compile(r"core[/.](devtools|perfhud)|tooling[/.]DevTooling|environment[/.]AppEnvironment|ReportCurrentScreen",
+                     re.IGNORECASE)
 NAMES = re.compile(r"devtools|perfhud", re.IGNORECASE)
 
 MARKERS = [

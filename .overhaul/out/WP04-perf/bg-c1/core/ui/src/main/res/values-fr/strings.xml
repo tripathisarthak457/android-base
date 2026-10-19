@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_error_generic">Un problème est survenu. Veuillez réessayer.</string>
+    <string name="common_error_offline">Vous êtes hors ligne. Vérifiez votre connexion et réessayez.</string>
+    <string name="common_error_unreachable">Impossible de joindre le serveur. Réessayez dans un instant.</string>
+    <string name="validation_required">Ce champ est obligatoire.</string>
+    <string name="validation_email">Saisissez une adresse e-mail valide.</string>
+    <string name="validation_mismatch">Ne correspond pas.</string>
+    <string name="validation_password_letter">Ajoutez au moins une lettre.</string>
+    <string name="validation_password_digit">Ajoutez au moins un chiffre.</string>
+    <plurals name="validation_min_length">
+        <item quantity="one">Doit contenir au moins %1$d caractère.</item>
+        <item quantity="other">Doit contenir au moins %1$d caractères.</item>
+    </plurals>
+    <plurals name="validation_password_length">
+        <item quantity="one">Utilisez au moins %1$d caractère.</item>
+        <item quantity="other">Utilisez au moins %1$d caractères.</item>
+    </plurals>
+</resources>

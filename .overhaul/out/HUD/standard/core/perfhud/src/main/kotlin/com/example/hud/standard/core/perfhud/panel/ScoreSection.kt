@@ -18,6 +18,7 @@ import com.example.hud.standard.core.designsystem.theme.AppTheme
 import com.example.hud.standard.core.designsystem.theme.StatusColors
 import com.example.hud.standard.core.perfhud.R
 import com.example.hud.standard.core.perfhud.score.Grade
+import com.example.hud.standard.core.perfhud.score.Metric
 import com.example.hud.standard.core.perfhud.score.MetricScore
 import com.example.hud.standard.core.perfhud.score.OptimisationScore
 import com.example.hud.standard.core.perfhud.score.decimal
@@ -36,9 +37,11 @@ internal fun ScoreSection(score: OptimisationScore) {
             style = AppTheme.typography.titleSmall,
             color = AppTheme.colors.contentSecondary,
         )
-        if (!score.measured) {
+        val total = score.total
+        val grade = score.grade
+        if (total == null || grade == null) {
             AppText(
-                text = stringResource(R.string.perfhud_score_none),
+                text = stringResource(R.string.perfhud_score_none, Metric.MIN_FRAMES),
                 style = AppTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = AppTheme.spacing.sm),
             )
@@ -50,11 +53,11 @@ internal fun ScoreSection(score: OptimisationScore) {
             modifier = Modifier.padding(vertical = AppTheme.spacing.sm),
         ) {
             AppText(
-                text = score.total.toString(),
+                text = total.toString(),
                 style = AppTheme.typography.displaySmall,
                 color = AppTheme.colors.contentPrimary,
             )
-            AppStatusPill(text = score.grade.name, status = score.grade.colors())
+            AppStatusPill(text = grade.name, status = grade.colors())
         }
 
         AppText(

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_haptics_explanation">Eine kurze Vibration, wenn ein Bedienelement reagiert.</string>
+    <string name="settings_about">Info</string>
+    <string name="settings_account">Konto</string>
+    <string name="settings_appearance">Darstellung</string>
+    <string name="settings_app_lock_explanation">Fingerabdruck, Gesicht oder Displaysperre verlangen, wenn die App im Hintergrund war.</string>
+    <string name="settings_haptic_feedback">Haptisches Feedback</string>
+    <string name="settings_analytics_explanation">Hilft uns, Abstürze und langsame Bildschirme zu finden. Enthält nie deine Inhalte.</string>
+    <string name="settings_no_licences_recorded">Keine Lizenzen erfasst</string>
+    <string name="settings_open_source_licences">Open-Source-Lizenzen</string>
+    <string name="settings_licence_not_stated">Lizenz nicht angegeben</string>
+    <string name="settings_privacy">Datenschutz</string>
+    <string name="settings_require_unlock">Entsperren verlangen</string>
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_share_usage_data">Nutzungsdaten teilen</string>
+    <string name="settings_sign_out">Abmelden</string>
+    <string name="settings_sign_out_confirm">Abmelden?</string>
+    <string name="settings_stay">Bleiben</string>
+    <string name="settings_theme_explanation">„System“ folgt der Einstellung deines Geräts.</string>
+    <string name="settings_licences_explanation">Die Bibliotheken, auf denen diese App aufbaut, und ihre Bedingungen.</string>
+    <string name="settings_theme">Design</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Hell</string>
+    <string name="settings_theme_dark">Dunkel</string>
+    <string name="settings_no_licences_explanation">Dieser Build hat keine Lizenzliste erzeugt.</string>
+    <string name="settings_sign_out_explanation">Du musst dich erneut anmelden, um die App zu nutzen.</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_cancel">Abbrechen</string>
+    <string name="settings_language">Sprache</string>
+    <string name="settings_language_system">Wie auf dem Telefon</string>
+    <string name="settings_legal">Rechtliches</string>
+    <string name="settings_privacy_policy">Datenschutzerklärung</string>
+    <string name="settings_terms">Nutzungsbedingungen</string>
+</resources>

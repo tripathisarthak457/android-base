@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_previous_month">Mês anterior</string>
+    <string name="designsystem_next_month">Próximo mês</string>
+    <string name="designsystem_select_date">Escolha uma data</string>
+    <string name="designsystem_select_time">Escolha um horário</string>
+    <string name="designsystem_cancel">Cancelar</string>
+    <string name="designsystem_confirm">Confirmar</string>
+    <string name="designsystem_try_again">Tentar de novo</string>
+    <string name="designsystem_offline_title">Você está off-line</string>
+    <string name="designsystem_error_title">Algo deu errado</string>
+    <string name="designsystem_navigate_back">Voltar</string>
+    <string name="designsystem_hide_password">Ocultar senha</string>
+    <string name="designsystem_show_password">Mostrar senha</string>
+    <string name="designsystem_search">Buscar</string>
+    <string name="designsystem_clear_search">Limpar busca</string>
+    <string name="designsystem_trend_up">Em alta</string>
+    <string name="designsystem_trend_down">Em queda</string>
+    <string name="designsystem_retry">Tentar de novo</string>
+    <string name="designsystem_decrease">Diminuir</string>
+    <string name="designsystem_increase">Aumentar</string>
+    <string name="designsystem_select">Selecionar</string>
+    <string name="designsystem_phone_number">Telefone</string>
+    <string name="designsystem_change_country_code">Mudar o código do país</string>
+    <string name="designsystem_add_a_tag">Adicione uma tag</string>
+    <string name="designsystem_tag_limit_reached">Limite atingido</string>
+    <string name="designsystem_add_tag">Adicionar tag</string>
+    <string name="designsystem_not_set">Não definido</string>
+    <string name="designsystem_remove_item">Remover %1$s</string>
+    <string name="designsystem_rating">%1$.1f de %2$d</string>
+    <string name="designsystem_step_of">Etapa %1$d de %2$d: %3$s</string>
+    <string name="designsystem_show_more">Mostrar mais</string>
+    <string name="designsystem_show_less">Mostrar menos</string>
+    <string name="designsystem_range_start">Mínimo</string>
+    <string name="designsystem_range_end">Máximo</string>
+    <string name="designsystem_nothing_selected">Nada selecionado</string>
+    <string name="designsystem_nothing_selected_message">Escolha algo na lista para ver aqui.</string>
+</resources>

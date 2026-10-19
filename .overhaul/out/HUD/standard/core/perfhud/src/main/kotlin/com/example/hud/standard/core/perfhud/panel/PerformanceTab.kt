@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hud.standard.core.designsystem.component.button.AppButton
 import com.example.hud.standard.core.designsystem.component.button.ButtonSize
 import com.example.hud.standard.core.designsystem.component.button.ButtonVariant
@@ -43,7 +43,7 @@ import java.io.IOException
  */
 @Composable
 internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExporter, debugBuild: Boolean) {
-    val recording by recorder.recording.collectAsState()
+    val recording by recorder.recording.collectAsStateWithLifecycle()
     var snapshot by remember { mutableStateOf<PerformanceSnapshot?>(null) }
     // Read by the graphs in their draw phase: a new reading redraws them without recomposing them.
     var version by remember { mutableIntStateOf(0) }
@@ -51,7 +51,7 @@ internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExpor
         while (true) {
             snapshot = recorder.snapshot()
             version++
-            delay(REFRESH_MILLIS)
+            delay(RefreshMillis)
         }
     }
 
@@ -156,4 +156,4 @@ private fun DebugNotice() {
     }
 }
 
-private const val REFRESH_MILLIS = 500L
+private const val RefreshMillis = 500L

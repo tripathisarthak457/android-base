@@ -77,11 +77,7 @@ class SessionCoordinator @Inject constructor(
             setDataOwner(next)
         }
         when {
-            next == null -> {
-                // Tokens that no longer decrypt read as signed out; the unreadable entry goes too.
-                if (previous != null) tokenStore.clear()
-                _state.value = SessionState.SignedOut
-            }
+            next == null -> _state.value = SessionState.SignedOut
 
             next != previous || _state.value == SessionState.SignedOut -> _state.value = SessionState.SignedIn(++generation)
         }

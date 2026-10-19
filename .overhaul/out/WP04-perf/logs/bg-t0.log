@@ -1,0 +1,4 @@
+== 09:38:38 bg-head (e404e391 + instrument) -> D:/projects/tools/.overhaul/perf/WP04-perf/bg-head-t0
+D:/projects/tools/.overhaul/research/back-google/bin/bgsteps.sh: 1 file pushed, 0 skipped. 0.2 MB/s (2273 bytes in 0.011s)
+-rw-r--r-- 1 crazyhusir 197609 64970465 Oct 19 09:40 D:/projects/tools/.overhaul/perf/WP04-perf/bg-head-t0/trace.perfetto-trace
+BACK-TRACE DONE

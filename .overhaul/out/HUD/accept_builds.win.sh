@@ -18,6 +18,11 @@ gw() {
   rm -f "$log"; return 1
 }
 
+# The everything phone builds first, so the phone steps can start while the rest builds.
+cd $W/generator
+python create_project.py --spec $O/specs/hud-everything.json --out $O/everything --no-zip --force
+(cd $O/everything && gw 40m :app:assembleDevRelease :app:assembleProdRelease :app:assembleDevDebug)
+echo PHONE APKS OK
 cd $W/templates/android
 gw 80m build --continue
 cd $W/generator

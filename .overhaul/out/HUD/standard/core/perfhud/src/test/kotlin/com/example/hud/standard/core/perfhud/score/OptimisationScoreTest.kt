@@ -10,7 +10,6 @@ import com.example.hud.standard.core.perfhud.startup.StartRecord
 import com.example.hud.standard.core.perfhud.startup.StartType
 import com.example.hud.standard.core.perfhud.startup.StartupSummary
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -78,18 +77,47 @@ class OptimisationScoreTest {
     fun `nothing measured is no score`() {
         val score = OptimisationScore.of(ScoreInputs(null, null, null, null, null))
 
-        assertFalse(score.measured)
-        assertEquals(0, score.total)
+        assertNull(score.total)
+        assertNull(score.grade)
     }
 
     @Test
-    fun `frame percentiles are judged against the display's budget`() {
-        // At 120 Hz the budget is 8.33 ms: a p90 of 6 ms is 0.72 of it, a B.
-        val score = OptimisationScore.of(healthy.copy(frames = frames(p90 = 6f)))
+    fun `passing build checks are no score before the frames are graded`() {
+        // What the recorder hands over right after launch: the build read, StrictMode clean, a
+        // start record, and too few frames to judge.
+        val launched = healthy.copy(frames = frames(count = Metric.MIN_FRAMES - 1, janky = 0), memory = null)
+        val noFrames = launched.copy(frames = null)
 
-        val p90 = score.metrics.single { it.metric == Metric.FrameTimeP90 }
+        for (inputs in listOf(launched, noFrames)) {
+            val score = OptimisationScore.of(inputs)
+
+            assertNull(score.total)
+            assertNull(score.grade)
+            assertEquals(Grade.A, score.metrics.single { it.metric == Metric.Minified }.grade)
+        }
+    }
+
+    @Test
+    fun `main-thread percentiles are judged against one refresh interval`() {
+        // At 120 Hz the interval is 8.33 ms: a main-thread p90 of 6 ms is 0.72 of it, a B.
+        val score = OptimisationScore.of(healthy.copy(frames = frames(uiP90 = 6f)))
+
+        val p90 = score.metrics.single { it.metric == Metric.UiThreadP90 }
         assertEquals(0.72f, p90.value!!, 0.01f)
         assertEquals(Grade.B, p90.grade)
+    }
+
+    @Test
+    fun `full frame times past one interval cost nothing when the main thread kept up`() {
+        // A smooth scroll on a 120 Hz phone: frames run 9 and 17 ms from vsync to GPU done,
+        // inside the deadline the pipeline gives them, with the main thread done in under 2 ms.
+        val smooth = frames(janky = 6, p90 = 9f, p99 = 17f, uiP90 = 1.1f, uiP99 = 1.8f)
+
+        val score = OptimisationScore.of(healthy.copy(frames = smooth))
+
+        assertEquals(Grade.A, score.metrics.single { it.metric == Metric.UiThreadP90 }.grade)
+        assertEquals(Grade.A, score.metrics.single { it.metric == Metric.UiThreadP99 }.grade)
+        assertEquals(Grade.B, score.metrics.single { it.metric == Metric.JankyFrames }.grade)
     }
 
     @Test
@@ -102,7 +130,14 @@ class OptimisationScoreTest {
         assertEquals(Grade.F, limits.grade(4.01f))
     }
 
-    private fun frames(count: Int = 1000, janky: Int = 2, p90: Float = 4f) = FrameSummary(
+    private fun frames(
+        count: Int = 1000,
+        janky: Int = 2,
+        p90: Float = 4f,
+        p99: Float = 7f,
+        uiP90: Float = 3f,
+        uiP99: Float = 5f,
+    ) = FrameSummary(
         overall = FrameStats(
             frames = count,
             janky = janky,
@@ -111,12 +146,12 @@ class OptimisationScoreTest {
             longWork = 0,
             p50Millis = 3f,
             p90Millis = p90,
-            p99Millis = 7f,
+            p99Millis = p99,
             worstMillis = 12f,
         ),
         uiP50Millis = 2f,
-        uiP90Millis = 3f,
-        uiP99Millis = 5f,
+        uiP90Millis = uiP90,
+        uiP99Millis = uiP99,
         framesPerSecond = 119f,
         refreshHz = 120f,
         screens = emptyList(),

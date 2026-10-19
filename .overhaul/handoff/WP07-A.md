@@ -5,8 +5,16 @@ Branch `wp/WP07`, worktree `$OV/wt/WP07` (`OV=D:/projects/tools/.overhaul`,
 
 ## Progress
 
-Updated 2026-10-19 (run 7); run 4 was the first on Windows. **Stopped waiting for WP04** (the shell port,
+Updated 2026-10-19 (run 8); run 4 was the first on Windows. **Stopped waiting for WP04** (the shell port,
 items 1–5 and 7 below) **and WP02-M2** (item 6). Next run: `git merge overhaul/multiplatform-v2`, then item 1.
+
+Run 8 (2026-10-19): merged tags unchanged (WIN, WP01, WP02-M1, WP09, WP10). WP04 is still in its review
+fixes (`wp/WP04` at `a6ba5783`; its handoff's last build, `r27-test5.log`, failed). The integration branch
+had moved to `4dd3aca1` (WIN follow-up: the consistency matrix runs on spawn hosts; only
+`generator/tests/consistency/*` and `test_consistency.py`). Merged it into `wp/WP07` as `18529935`, no
+conflicts. At `18529935`: generator suite 331 tests, OK (5 skipped; `$O/logs/gen-tests-win3.log`);
+`genkit.tokens --check`, `genkit.core.catalogue --check` and `tools/sync_check.py` pass. No Gradle build
+(the run 4 decision stands); worktree clean.
 
 Run 7 (2026-10-19) only checked: merged tags are WIN, WP01, WP02-M1, WP09 and WP10 (no WP04, no WP02-M2);
 the integration branch is still at `5a16778b`, already contained in `wp/WP07` (`4ef0ba71`); the worktree

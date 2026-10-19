@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feed_title">Novedades</string>
+    <string name="feed_subtitle">Carga diez cada vez que te desplazas</string>
+    <string name="feed_author">Autor %1$d</string>
+    <string name="feed_empty_title">Nada que mostrar</string>
+    <string name="feed_empty_message">Cuando haya algo nuevo, aparecerá aquí.</string>
+    <string name="feed_load_failed">No se pudieron cargar las novedades.</string>
+    <string name="feed_load_more_failed">No se pudo cargar más.</string>
+    <string name="feed_retry">Reintentar</string>
+    <string name="feed_show_more">Ver más</string>
+    <string name="feed_show_less">Ver menos</string>
+</resources>

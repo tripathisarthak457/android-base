@@ -72,7 +72,7 @@ dependencies {
 
     // Dev-flavour and debug builds only. A release of any other flavour has no trace of the
     // inspector, rather than one hidden behind a flag: the root finds no DevTooling bound and
-    // composes nothing for it. `verifyReleasesCarryNoDevTooling` fails `check` if that slips.
+    // composes nothing for it. `verify<Variant>CarriesNoDevTooling` fails `check` if that slips.
     debugImplementation(project(":core:devtools"))
     "devImplementation"(project(":core:devtools"))
     debugImplementation(project(":core:perfhud"))

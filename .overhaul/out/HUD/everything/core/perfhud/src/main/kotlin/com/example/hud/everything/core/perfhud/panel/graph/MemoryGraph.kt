@@ -22,13 +22,13 @@ import java.util.Locale
 import kotlin.math.max
 
 /**
- * The Java heap and the native heap, a point a second for the last [SAMPLES] seconds, and PSS as
+ * The Java heap and the native heap, a point a second for the last [Samples] seconds, and PSS as
  * dots where it was measured. The paths are reused from draw to draw, rewound rather than
  * re-allocated.
  */
 @Composable
 internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifier = Modifier) {
-    val series = remember { MemorySeries(SAMPLES) }
+    val series = remember { MemorySeries(Samples) }
     val measurer = rememberTextMeasurer()
     val labelStyle = AppTheme.typography.caption
     val megabytes = stringResource(R.string.perfhud_value_megabytes)
@@ -48,7 +48,7 @@ internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifi
                 val nativePath = Path()
                 val line = Stroke(width = GraphDefaults.LineWidth.toPx())
                 val stroke = GraphDefaults.Stroke.toPx()
-                val dot = GraphDefaults.LineWidth.toPx() * DOT_SCALE
+                val dot = GraphDefaults.LineWidth.toPx() * DotScale
                 onDrawBehind {
                     version()
                     memory.copyRecent(series)
@@ -58,8 +58,8 @@ internal fun MemoryGraph(memory: MemoryLog, version: () -> Int, modifier: Modifi
                         highest = max(highest, max(series.javaHeapMb[i], series.nativeHeapMb[i]))
                         if (!series.pssMb[i].isNaN()) highest = max(highest, series.pssMb[i])
                     }
-                    val top = highest * HEADROOM
-                    val step = size.width / (SAMPLES - 1)
+                    val top = highest * Headroom
+                    val step = size.width / (Samples - 1)
                     val start = size.width - (series.count - 1) * step
                     trace(javaPath, series.javaHeapMb, series.count, start, step, top)
                     trace(nativePath, series.nativeHeapMb, series.count, start, step, top)
@@ -90,6 +90,6 @@ private fun DrawScope.trace(path: Path, values: FloatArray, count: Int, start: F
 
 private fun DrawScope.yOf(value: Float, top: Float): Float = size.height * (1f - value / top)
 
-private const val SAMPLES = 300
-private const val HEADROOM = 1.15f
-private const val DOT_SCALE = 1.25f
+private const val Samples = 300
+private const val Headroom = 1.15f
+private const val DotScale = 1.25f

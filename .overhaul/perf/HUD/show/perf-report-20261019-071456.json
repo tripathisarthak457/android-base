@@ -1,0 +1,367 @@
+{
+    "schema": 1,
+    "generatedAt": "2026-10-19T07:14:56.827127+05:30",
+    "app": {
+        "applicationId": "com.example.hud.everything.dev",
+        "versionName": "1.0.0-devRelease",
+        "environment": "dev",
+        "debugBuild": false
+    },
+    "device": {
+        "manufacturer": "Xiaomi",
+        "model": "M2101K6I",
+        "release": "17",
+        "sdk": 37,
+        "refreshRatesHz": [
+            120.00001,
+            60.000004
+        ]
+    },
+    "build": {
+        "debuggable": false,
+        "minified": true,
+        "profile": "Compiled"
+    },
+    "recordedSeconds": 96.375,
+    "notes": [],
+    "score": {
+        "total": 57,
+        "grade": "D",
+        "metrics": [
+            {
+                "metric": "JankyFrames",
+                "unit": "Percent",
+                "value": 1.9827148,
+                "target": 0.5,
+                "grade": "C",
+                "points": 12.5,
+                "maxPoints": 25,
+                "fix": "Open Janky frames by screen and start with the worst screen. The usual causes: recomposition on every frame of an animation (read animated values in graphicsLayer, offset or drawBehind lambdas), alpha on a full-screen layer, work on the main thread during a transition, and a first frame that builds a whole screen. Record a trace with the android-profiler skill to see which.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#janky-frames"
+            },
+            {
+                "metric": "FrameTimeP90",
+                "unit": "BudgetShare",
+                "value": 1.7272495,
+                "target": 0.6,
+                "grade": "F",
+                "points": 0.0,
+                "maxPoints": 10,
+                "fix": "Ordinary frames take most of their budget. Look for layouts measured twice (intrinsics, nested weights), lists without contentType, and work in composition that belongs in remember or the draw phase.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#frame-time-percentiles"
+            },
+            {
+                "metric": "FrameTimeP99",
+                "unit": "BudgetShare",
+                "value": 4.1196094,
+                "target": 1.0,
+                "grade": "F",
+                "points": 0.0,
+                "maxPoints": 10,
+                "fix": "The slowest frames run past their budget. These are usually first frames: a screen built for the first time, a shader compiled on first use, or a list item type seen for the first time. Pre-warm with the baseline profile, and keep first frames small.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#frame-time-percentiles"
+            },
+            {
+                "metric": "SlowFrames",
+                "unit": "Percent",
+                "value": 8.845959,
+                "target": 0.5,
+                "grade": "D",
+                "points": 1.25,
+                "maxPoints": 5,
+                "fix": "Frames over 16 ms miss even a 60 Hz budget. Find them in Frame times and record a trace of that moment.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#slow-and-frozen-frames"
+            },
+            {
+                "metric": "FrozenFrames",
+                "unit": "Percent",
+                "value": 0.0,
+                "target": 0.0,
+                "grade": "A",
+                "points": 10.0,
+                "maxPoints": 10,
+                "fix": null,
+                "doc": "docs/PERFORMANCE-OVERLAY.md#slow-and-frozen-frames"
+            },
+            {
+                "metric": "LongMainThreadWork",
+                "unit": "PerThousandFrames",
+                "value": 0.5083884,
+                "target": 0.0,
+                "grade": "B",
+                "points": 3.75,
+                "maxPoints": 5,
+                "fix": "The main thread did more than 50 ms of work for single frames. StrictMode below names disk and network calls; a trace names the rest. Defer what is not needed for the first frame.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#long-main-thread-work"
+            },
+            {
+                "metric": "ColdStart",
+                "unit": "Millis",
+                "value": 512.41125,
+                "target": 380.0,
+                "grade": "C",
+                "points": 5.0,
+                "maxPoints": 10,
+                "fix": "Start-up does too much before the first frame. Keep Application.onCreate and the first screen's creation free of I/O and of eager singletons, make sure the baseline profile is compiled, and measure with tools/perf/perf.sh coldstart on devRelease.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#start-up"
+            },
+            {
+                "metric": "WarmStart",
+                "unit": "Millis",
+                "value": null,
+                "target": 190.0,
+                "grade": null,
+                "points": 0.0,
+                "maxPoints": 5,
+                "fix": null,
+                "doc": "docs/PERFORMANCE-OVERLAY.md#start-up"
+            },
+            {
+                "metric": "AppMemory",
+                "unit": "Megabytes",
+                "value": 56.63379,
+                "target": 48.0,
+                "grade": "B",
+                "points": 7.5,
+                "maxPoints": 10,
+                "fix": "The app keeps more memory than the 48 MB budget. Look for caches without a bound, images decoded at full size, and screens that hold their data after they close. A heap dump from the profiler shows who owns it.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#memory"
+            },
+            {
+                "metric": "BlockingGc",
+                "unit": "Count",
+                "value": 0.0,
+                "target": 0.0,
+                "grade": "A",
+                "points": 5.0,
+                "maxPoints": 5,
+                "fix": null,
+                "doc": "docs/PERFORMANCE-OVERLAY.md#memory"
+            },
+            {
+                "metric": "StrictModeClean",
+                "unit": "Count",
+                "value": 1.0,
+                "target": 0.0,
+                "grade": "C",
+                "points": 2.5,
+                "maxPoints": 5,
+                "fix": "The main thread touched the disk or the network. The examples below name where; move each call to a background dispatcher, or into a repository that already runs there.",
+                "doc": "docs/PERFORMANCE-OVERLAY.md#strictmode"
+            },
+            {
+                "metric": "Minified",
+                "unit": "Check",
+                "value": 1.0,
+                "target": null,
+                "grade": "A",
+                "points": 5.0,
+                "maxPoints": 5,
+                "fix": null,
+                "doc": "docs/PERFORMANCE-OVERLAY.md#build-checks"
+            },
+            {
+                "metric": "BaselineProfile",
+                "unit": "Check",
+                "value": 1.0,
+                "target": null,
+                "grade": "A",
+                "points": 5.0,
+                "maxPoints": 5,
+                "fix": null,
+                "doc": "docs/PERFORMANCE-OVERLAY.md#build-checks"
+            },
+            {
+                "metric": "NotDebuggable",
+                "unit": "Check",
+                "value": 1.0,
+                "target": null,
+                "grade": "A",
+                "points": 5.0,
+                "maxPoints": 5,
+                "fix": null,
+                "doc": "docs/PERFORMANCE-OVERLAY.md#build-checks"
+            }
+        ]
+    },
+    "frames": {
+        "overall": {
+            "frames": 1967,
+            "janky": 39,
+            "slow": 174,
+            "frozen": 0,
+            "longWork": 1,
+            "p50Millis": 9.279533,
+            "p90Millis": 14.393745,
+            "p99Millis": 34.33008,
+            "worstMillis": 75.2237,
+            "jankyPercent": 1.9827148,
+            "slowPercent": 8.845959,
+            "frozenPercent": 0.0
+        },
+        "uiP50Millis": 1.8506205,
+        "uiP90Millis": 3.1566172,
+        "uiP99Millis": 20.58252,
+        "framesPerSecond": 113.72933,
+        "refreshHz": 120.00001,
+        "screens": [
+            {
+                "name": "SampleListKey",
+                "isOther": false,
+                "stats": {
+                    "frames": 1554,
+                    "janky": 24,
+                    "slow": 80,
+                    "frozen": 0,
+                    "longWork": 1,
+                    "p50Millis": 9.221666,
+                    "p90Millis": 11.707143,
+                    "p99Millis": 26.86499,
+                    "worstMillis": 75.2237,
+                    "jankyPercent": 1.5444015,
+                    "slowPercent": 5.148005,
+                    "frozenPercent": 0.0
+                }
+            },
+            {
+                "name": "FeedKey",
+                "isOther": false,
+                "stats": {
+                    "frames": 150,
+                    "janky": 4,
+                    "slow": 21,
+                    "frozen": 0,
+                    "longWork": 0,
+                    "p50Millis": 9.144737,
+                    "p90Millis": 17.0,
+                    "p99Millis": 65.0,
+                    "worstMillis": 68.278984,
+                    "jankyPercent": 2.6666667,
+                    "slowPercent": 14.0,
+                    "frozenPercent": 0.0
+                }
+            },
+            {
+                "name": "SearchKey",
+                "isOther": false,
+                "stats": {
+                    "frames": 43,
+                    "janky": 1,
+                    "slow": 3,
+                    "frozen": 0,
+                    "longWork": 0,
+                    "p50Millis": 8.875,
+                    "p90Millis": 11.925,
+                    "p99Millis": 30.8925,
+                    "worstMillis": 30.845865,
+                    "jankyPercent": 2.3255813,
+                    "slowPercent": 6.976744,
+                    "frozenPercent": 0.0
+                }
+            },
+            {
+                "name": "ProfileKey",
+                "isOther": false,
+                "stats": {
+                    "frames": 42,
+                    "janky": 3,
+                    "slow": 40,
+                    "frozen": 0,
+                    "longWork": 0,
+                    "p50Millis": 25.0,
+                    "p90Millis": 26.7375,
+                    "p99Millis": 35.160004,
+                    "worstMillis": 34.54881,
+                    "jankyPercent": 7.142857,
+                    "slowPercent": 95.2381,
+                    "frozenPercent": 0.0
+                }
+            },
+            {
+                "name": "SettingsKey",
+                "isOther": false,
+                "stats": {
+                    "frames": 72,
+                    "janky": 3,
+                    "slow": 19,
+                    "frozen": 0,
+                    "longWork": 0,
+                    "p50Millis": 9.9375,
+                    "p90Millis": 19.199999,
+                    "p99Millis": 48.559998,
+                    "worstMillis": 48.4856,
+                    "jankyPercent": 4.1666665,
+                    "slowPercent": 26.38889,
+                    "frozenPercent": 0.0
+                }
+            },
+            {
+                "name": "SampleDetailKey",
+                "isOther": false,
+                "stats": {
+                    "frames": 106,
+                    "janky": 4,
+                    "slow": 11,
+                    "frozen": 0,
+                    "longWork": 0,
+                    "p50Millis": 9.515625,
+                    "p90Millis": 19.349998,
+                    "p99Millis": 27.235,
+                    "worstMillis": 35.299435,
+                    "jankyPercent": 3.7735848,
+                    "slowPercent": 10.377358,
+                    "frozenPercent": 0.0
+                }
+            }
+        ]
+    },
+    "memory": {
+        "javaHeapMb": 18.798447,
+        "peakJavaHeapMb": 29.52034,
+        "nativeHeapMb": 16.600502,
+        "peakNativeHeapMb": 20.780624,
+        "pssMb": 174.77051,
+        "peakPssMb": 174.77051,
+        "appPssMb": 56.63379,
+        "gcCount": 2,
+        "gcMillis": 105,
+        "blockingGcCount": 0,
+        "blockingGcMillis": 0
+    },
+    "startup": {
+        "supported": true,
+        "cold": {
+            "type": "Cold",
+            "initialDisplayMillis": 512.41125,
+            "fullDisplayMillis": null
+        },
+        "warm": null,
+        "hot": null
+    },
+    "network": {
+        "requests": 3,
+        "failures": 0,
+        "medianMillis": 74,
+        "p90Millis": 121,
+        "slowestMillis": 121,
+        "endpoints": [
+            {
+                "endpoint": "GET /posts",
+                "requests": 3,
+                "failures": 0,
+                "medianMillis": 74,
+                "slowestMillis": 121
+            }
+        ]
+    },
+    "strictMode": {
+        "supported": true,
+        "violations": 1,
+        "byKind": {
+            "DiskRead": 1
+        },
+        "examples": [
+            "DiskRead at ns0.get(SourceFile:150)"
+        ]
+    }
+}
