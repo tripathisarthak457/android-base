@@ -10,7 +10,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-from .copy import is_executable
+from .copy import is_executable, mark_executable
 
 #: The zip format's own epoch. Every entry carries it, so the same project gives the same bytes.
 _TIMESTAMP = (1980, 1, 1, 0, 0, 0)
@@ -46,7 +46,7 @@ def zip_project(project: Path, archive: Path, executable: tuple[str, ...]) -> Pa
 def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[str]:
     """
     Initialises a repository and commits the project as generated, with the files `executable`
-    names recorded as 100755. Returns warnings.
+    names recorded as 100755 and made executable on disk, so the tree starts clean. Returns warnings.
     """
     if shutil.which("git") is None:
         return ["git was not found on PATH, so the repository was not initialised."]
@@ -78,6 +78,11 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
             # the project's .gitignore keeps out.
             staged = git((), "ls-files", "-z").split("\0")
             scripts = [relative for relative in staged if relative and is_executable(relative, executable)]
+            # On Linux and macOS, where core.fileMode is true, `git status` compares the mode the
+            # commit records with each file's own, so a script without its bit would greet the
+            # user as modified. Marked here rather than trusted to the caller.
+            for relative in scripts:
+                mark_executable(project / relative)
             # On Windows `git init` sets core.fileMode to false and `git add` records every file as
             # 100644, so without this a clone on Linux or macOS could not run ./gradlew.
             git((), "update-index", "--chmod=+x", "--", *scripts)

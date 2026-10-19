@@ -83,6 +83,20 @@ class ZipTest(unittest.TestCase):
         )
 
     @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_the_tree_is_clean_and_the_scripts_run_right_after_the_commit(self):
+        # setUp writes the scripts without their executable bit, and on Linux and macOS git compares
+        # that bit with the 100755 the commit records. Windows has no such bit to compare.
+        self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+        with tempfile.TemporaryDirectory() as home, environment(isolated(Path(home))):
+            status = subprocess.run(
+                ["git", "status", "--porcelain"], cwd=self.project, capture_output=True, text=True
+            )
+        self.assertEqual((0, "", ""), (status.returncode, status.stdout, status.stderr))
+        if os.name != "nt":
+            for script in ("gradlew", "tools/perf/perf.sh"):
+                self.assertTrue((self.project / script).stat().st_mode & stat.S_IXUSR, script)
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
     def test_the_commit_is_the_same_whatever_the_users_git_configuration(self):
         # Git reads a user's global settings from GIT_CONFIG_GLOBAL (git 2.32 and later) or from
         # their home, where it also finds its default excludes and attributes files.
