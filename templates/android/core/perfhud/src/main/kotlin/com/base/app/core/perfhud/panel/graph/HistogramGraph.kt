@@ -20,9 +20,11 @@ import java.util.Locale
 import kotlin.math.min
 
 /**
- * Every frame recorded, counted by duration: one bar per millisecond up to [LastMillis], and one
- * for everything slower, with the current frame budget as a line. A healthy app is a tall bar
- * left of the line and almost nothing right of it.
+ * Every frame recorded, counted by its main-thread time: one bar per millisecond up to
+ * [LastMillis], and one for everything slower, with one refresh interval as a line, the time the
+ * main thread has for each frame. A healthy app is a tall bar left of the line and almost nothing
+ * right of it. Main-thread time rather than the full duration, which the render pipeline lets run
+ * past one interval in frames that are on time.
  */
 @Composable
 internal fun HistogramGraph(
@@ -55,7 +57,7 @@ internal fun HistogramGraph(
                 val stroke = GraphDefaults.Stroke.toPx()
                 onDrawBehind {
                     version()
-                    frames.copyHistogram(histogram)
+                    frames.copyMainThreadHistogram(histogram)
                     binByMillisecond(histogram, bins)
                     val plotHeight = size.height - labelHeight
                     val slot = size.width / Bins

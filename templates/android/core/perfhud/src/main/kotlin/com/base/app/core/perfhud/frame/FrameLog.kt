@@ -164,8 +164,8 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         }
     }
 
-    /** Copies the whole recording's frame-time histogram into [into], for the histogram graph. */
-    fun copyHistogram(into: FrameHistogram) = synchronized(lock) { histograms[ALL].copyInto(into) }
+    /** Copies the whole recording's main-thread-time histogram into [into], for the histogram graph. */
+    fun copyMainThreadHistogram(into: FrameHistogram) = synchronized(lock) { uiHistogram.copyInto(into) }
 
     /** Copies the running totals into [into], so a reader can take the difference between two. */
     fun copyTotals(into: FrameTotals) = synchronized(lock) {

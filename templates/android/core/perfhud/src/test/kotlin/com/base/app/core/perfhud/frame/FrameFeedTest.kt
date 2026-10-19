@@ -85,32 +85,57 @@ class FrameFeedTest {
     }
 
     @Test
-    fun `frames reach the listener only while started and the activity is resumed`() {
+    fun `a started feed hands the resumed activity's frames to its listener`() {
         feed.start(listener)
         settle()
+
         drawFrame()
+
         assertEquals(1, received.size)
         // <opt:analytics>
         assertNotNull(jankRecorder.frameListener)
         // </opt:analytics>
+    }
 
+    @Test
+    fun `a paused activity's frames do not reach the listener`() {
+        feed.start(listener)
+        settle()
         activity.pause()
         settle()
+
         drawFrame()
-        assertEquals(1, received.size)
+
+        assertEquals(0, received.size)
         // <opt:analytics>
         assertNull(jankRecorder.frameListener)
         // </opt:analytics>
+    }
 
+    @Test
+    fun `frames reach the listener again when the activity resumes`() {
+        feed.start(listener)
+        settle()
+        activity.pause()
+        settle()
         activity.resume()
         settle()
-        drawFrame()
-        assertEquals(2, received.size)
 
+        drawFrame()
+
+        assertEquals(1, received.size)
+    }
+
+    @Test
+    fun `a stopped feed hands over nothing`() {
+        feed.start(listener)
+        settle()
         feed.stop()
         settle()
+
         drawFrame()
-        assertEquals(2, received.size)
+
+        assertEquals(0, received.size)
         // <opt:analytics>
         assertNull(jankRecorder.frameListener)
         // </opt:analytics>
@@ -121,6 +146,7 @@ class FrameFeedTest {
         feed.setRoute("Home")
         feed.start(listener)
         settle()
+
         drawFrame()
         feed.setRoute("Detail")
         drawFrame()

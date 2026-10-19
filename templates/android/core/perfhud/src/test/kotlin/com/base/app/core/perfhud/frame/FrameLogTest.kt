@@ -136,6 +136,17 @@ class FrameLogTest {
     }
 
     @Test
+    fun `the graph's histogram is of main-thread time`() {
+        draw(frames = 50, screen = "Home", totalMillis = 12f, uiMillis = 2f)
+        val histogram = FrameHistogram()
+
+        log.copyMainThreadHistogram(histogram)
+
+        assertEquals(50, histogram.total)
+        assertEquals(2f, histogram.percentile(0.5f), 0.25f)
+    }
+
+    @Test
     fun `clear starts the recording over`() {
         draw(frames = 10, screen = "Home", missedDeadline = true)
 
