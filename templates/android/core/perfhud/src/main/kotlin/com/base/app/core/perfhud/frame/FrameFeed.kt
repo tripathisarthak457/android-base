@@ -95,10 +95,10 @@ internal class FrameFeed @Inject constructor(
         jankRecorder.frameListener = listener
         // </opt:analytics>
         // <opt-else:analytics>
+        //~ val window = resumed?.get()?.window ?: return
         //~ // Two of the app's activities can be resumed at once (split screen, Android 10's
         //~ // multi-resume), and the first one's pause then finds another in front and leaves its
         //~ // JankStats alone: one window is watched at a time, the one resumed last.
-        //~ val window = resumed?.get()?.window ?: return
         //~ jankStats?.isTrackingEnabled = false
         //~ jankStats = JankStats.createAndTrack(window, listener)
         // </opt-else:analytics>

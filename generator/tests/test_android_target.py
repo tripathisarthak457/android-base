@@ -367,7 +367,7 @@ class ProjectTest(unittest.TestCase):
         shared = (generate(self.root / "with", features=["devtools", "perfhud", "analytics"]) / feed).read_text(
             encoding="utf-8"
         )
-        self.assertIn("JankStats.createAndTrack(activity.window, listener)", without)
+        self.assertIn("JankStats.createAndTrack(window, listener)", without)
         self.assertNotIn("FrameJankRecorder", without)
         self.assertIn("jankRecorder.frameListener = listener", shared)
         self.assertNotIn("createAndTrack", shared)
