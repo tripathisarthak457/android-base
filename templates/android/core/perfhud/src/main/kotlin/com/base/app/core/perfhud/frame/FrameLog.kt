@@ -116,6 +116,11 @@ internal class FrameLog(val capacity: Int = DEFAULT_CAPACITY) {
         }
     }
 
+    /** Whether a frame started less than [withinNanos] before [nowNanos]. */
+    fun drewWithin(nowNanos: Long, withinNanos: Long): Boolean = synchronized(lock) {
+        written > 0 && nowNanos - starts[slot(written - 1)] < withinNanos
+    }
+
     /** Copies the last frames into [into], as many as it holds, oldest first. */
     fun copyRecent(into: FrameSeries) = synchronized(lock) {
         val n = min(min(written, capacity.toLong()), into.capacity.toLong()).toInt()

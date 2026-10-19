@@ -45,7 +45,7 @@
     <string name="perfhud_histogram_caption">Every frame recorded, by duration in milliseconds. The line is the current budget.</string>
     <string name="perfhud_by_screen">Janky frames by screen</string>
     <string name="perfhud_memory">Memory</string>
-    <string name="perfhud_memory_caption">Java heap and native heap each second; PSS every 15 seconds.</string>
+    <string name="perfhud_memory_caption">Java heap and native heap each second; PSS at most every 15 seconds, in a pause in the drawing.</string>
     <string name="perfhud_legend_java">Java heap</string>
     <string name="perfhud_legend_native">Native heap</string>
     <string name="perfhud_legend_pss">PSS</string>

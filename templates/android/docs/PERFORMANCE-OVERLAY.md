@@ -33,7 +33,7 @@ Tap them to open the Perf tab. It shows, from the top:
 | Frames per second | One bar for each of the last 60 seconds of drawing, against the display's rate. |
 | Frame-time histogram | Every frame recorded, by duration, with the current budget as a line. |
 | Janky frames by screen | Which destination the janky frames were drawn on, worst first. |
-| Memory | Java and native heap each second, PSS every 15 seconds, garbage collections. |
+| Memory | Java and native heap each second, PSS at most every 15 seconds and only in a pause in the drawing, garbage collections. |
 | Start-up | Cold, warm and hot start as the system timed them (Android 15 and later). |
 | Network | Request timings from the inspector's request log, overall and per endpoint. |
 | StrictMode | Disk and network calls the main thread made while recording, with where. |
@@ -57,6 +57,11 @@ The overlay is built so that watching does not change what is watched:
   frame each time while the app is idle, and on a phone a lone frame after idle usually misses its
   deadline: the overlay would make the jank it reports.
 - **Graphs only on request.** The Perf tab draws its graphs only while it is open.
+- **PSS only in a pause.** Reading PSS walks every memory mapping of the process under the kernel's
+  lock on its address space, and on a phone a read during a scroll costs about one janky frame. The
+  overlay reads it at most every 15 seconds, and only when no frame has started for a quarter of a
+  second; an app that draws without a pause gets its PSS read late rather than its frames delayed.
+  The same goes for your own code: never call `Debug.getMemoryInfo` while the app is animating.
 
 Measured on a Redmi Note 10 Pro at 120 Hz with `devRelease` (the numbers are in the overhaul's
 `perf/HUD/`): the overlay shown adds at most 0.3 percentage points of janky frames and under

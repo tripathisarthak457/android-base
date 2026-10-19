@@ -20,6 +20,7 @@ import com.base.app.core.perfhud.frame.RefreshRate
 import com.base.app.core.perfhud.log.PerfLogcat
 import com.base.app.core.perfhud.memory.MemoryLog
 import com.base.app.core.perfhud.memory.MemorySampler
+import com.base.app.core.perfhud.memory.PssSchedule
 import com.base.app.core.perfhud.network.NetworkTimings
 import com.base.app.core.perfhud.report.ExportedReport
 import com.base.app.core.perfhud.score.OptimisationScore
@@ -67,6 +68,7 @@ internal class PerformanceRecorder @Inject constructor(
     private val dispatchers: AppDispatchers,
 ) {
     private val refreshRate = RefreshRate(context.getSystemService(DisplayManager::class.java))
+    private val pssSchedule = PssSchedule()
     private val _recording = MutableStateFlow(false)
     private var work: Job? = null
     private var launchOverride = false
@@ -209,11 +211,13 @@ internal class PerformanceRecorder @Inject constructor(
 
     private suspend fun sampleEverySecond() {
         logcat.begin(frames)
-        var second = 0L
         while (true) {
-            memory.add(memorySampler.read(withPss = second % PSS_EVERY_SECONDS == 0L))
+            val withPss = pssSchedule.shouldRead(
+                nowMillis = SystemClock.elapsedRealtime(),
+                drawing = frames.drewWithin(System.nanoTime(), PssSchedule.QUIET_NANOS),
+            )
+            memory.add(memorySampler.read(withPss))
             logcat.onSecond(frames, memory, currentScreen.name.value)
-            second++
             delay(SAMPLE_MILLIS)
         }
     }
@@ -236,9 +240,6 @@ internal class PerformanceRecorder @Inject constructor(
         const val LAUNCH_ON = "on"
         const val LAUNCH_OFF = "off"
         const val SAMPLE_MILLIS = 1_000L
-
-        /** PSS walks every mapping of the process, which takes milliseconds of a background core. */
-        const val PSS_EVERY_SECONDS = 15L
 
         /** A start record only changes with a new start, which a panel left open sees within this. */
         const val STARTUP_REFRESH_MILLIS = 10_000L

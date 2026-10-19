@@ -159,6 +159,17 @@ class FrameLogTest {
         assertEquals(121, totals.histogram.total)
     }
 
+    @Test
+    fun `drawing means a frame started within the window`() {
+        val window = 250 * MILLI
+        assertFalse(log.drewWithin(nowNanos = clock, withinNanos = window))
+
+        draw(frames = 1, screen = "Home")
+
+        assertTrue(log.drewWithin(nowNanos = clock + window - 1, withinNanos = window))
+        assertFalse(log.drewWithin(nowNanos = clock + window, withinNanos = window))
+    }
+
     private var clock = 1_000_000_000L
 
     /** [frames] frames, each starting [intervals] refresh intervals after the one before. */
