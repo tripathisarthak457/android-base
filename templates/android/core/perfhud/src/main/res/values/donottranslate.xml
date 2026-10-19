@@ -9,7 +9,7 @@
     <string name="perfhud_pill_description">Live frame rate and janky frames. Opens the Performance tab.</string>
     <string name="perfhud_pill_fps">%1$d/%2$d fps</string>
     <string name="perfhud_pill_idle">idle · %1$d Hz</string>
-    <string name="perfhud_pill_janky">%1$s%% janky</string>
+    <string name="perfhud_pill_janky">%1$d.%2$d%% janky</string>
 
     <string name="perfhud_live_stats">Live stats</string>
     <string name="perfhud_live_stats_summary">Records every frame while on, and puts nothing on the window while off.</string>
