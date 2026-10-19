@@ -34,6 +34,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.designsystem.theme.ThemeMode
 import com.kyant.backdrop.Backdrop
 import com.kyant.shapes.Capsule
 import org.junit.Assert.assertEquals
@@ -76,12 +78,15 @@ class LiquidLensTest {
     @Test
     fun `with animations off neither a selection nor a drag turns the lens to glass`() {
         val resolver = RuntimeEnvironment.getApplication().contentResolver
-        Settings.Global.putFloat(resolver, Settings.Global.TRANSITION_ANIMATION_SCALE, 0f)
+        Settings.Global.putFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 0f)
         var selected by mutableIntStateOf(0)
         lateinit var state: LiquidLensState
         rule.setContent {
-            CompositionLocalProvider(LocalGlassQuality provides GlassQuality.Live) {
-                state = rememberLens(selected)
+            // The theme reads the setting; the lens reads the theme.
+            AppTheme(mode = ThemeMode.Light) {
+                CompositionLocalProvider(LocalGlassQuality provides GlassQuality.Live) {
+                    state = rememberLens(selected)
+                }
             }
         }
         rule.mainClock.autoAdvance = false

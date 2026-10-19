@@ -17,7 +17,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.MotionDurationScale
 import androidx.compose.ui.layout.ScaleFactor
-import com.base.app.core.designsystem.theme.rememberReduceMotion
+import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.first
 import kotlin.math.abs
@@ -52,8 +52,7 @@ internal fun rememberLiquidLensState(
     val state = remember {
         LiquidLensState(selectedSlot, slotCount, trackSpring, settleSpring, pressSpring)
     }
-    val reduceMotion = rememberReduceMotion()
-    val refracts = LocalGlassQuality.current.refracts && !reduceMotion
+    val refracts = LocalGlassQuality.current.refracts && !AppTheme.reduceMotion
     SideEffect {
         state.slotCount = slotCount
         state.setSprings(trackSpring, settleSpring, pressSpring)
