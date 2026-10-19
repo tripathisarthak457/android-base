@@ -14,11 +14,6 @@ owner = "WP02"
 why = "Row is used only by the media-picker block"
 
 [[issue]]
-match = "^IMPORT (data|feature)/[a-z0-9_]+/src/(main|test)/kotlin/\\{pkg\\}/(data|feature)/[a-z0-9_]+/[A-Za-z0-9]+\\.kt: \\{package\\}\\.core\\.(common\\.AppResult|common\\.mvi\\.[A-Za-z]+|navigation\\.AppNavKey) is not declared$"
-owner = "WP02"
-why = "scaffold.py still writes the MVI shape and packages the template had before :core:mvi; WP02-M2 rewrites it"
-
-[[issue]]
 match = "^UNUSED-RES feature/settings/src/main/res/values/strings\\.xml: string/settings_(about|open_source_licences|licences_explanation|no_licences_explanation|no_licences_recorded|licence_not_stated)$"
 owner = "WP02"
 why = "the licences section's strings sit outside an <opt:licenses> fence, so they ship without the screen"
