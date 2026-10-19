@@ -1,5 +1,5 @@
 {
-  "generator_commit": "e39f005df0ed",
+  "generator_commit": "77f78440f98b",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -663,7 +663,7 @@
         },
         {
           "default": true,
-          "description": "Frames per second at the display's real rate and the janky-frame share under the DEV badge, and a Performance tab in the inspector: frame times against the 60, 90 and 120 Hz budgets, frames per second over time, a frame-time histogram, jank by screen, memory over time, start-up and request timings, and an optimisation score from 0 to 100 with a fix for every lost point. A structured logcat summary and an exported JSON and Markdown report. On in debug builds, a switch away in dev release builds, and absent from production builds; while it is off it puts nothing on the window.",
+          "description": "Frames per second at the display's real rate and the janky-frame share under the DEV badge, and a Performance tab in the inspector: frame times against the 60, 90 and 120 Hz budgets, frames per second over time, a main-thread time histogram, jank by screen, memory over time, start-up and request timings, and an optimisation score from 0 to 100 with a fix for every lost point. A structured logcat summary and an exported JSON and Markdown report. On in debug builds, a switch away in dev release builds, and absent from production builds; while it is off it puts nothing on the window. It lives in the on-device inspector, so it is on by default wherever the inspector is chosen, as in the Standard preset.",
           "group": "observability",
           "headline": "FPS, jank, graphs and a score beside the DEV badge",
           "implied_only": false,
