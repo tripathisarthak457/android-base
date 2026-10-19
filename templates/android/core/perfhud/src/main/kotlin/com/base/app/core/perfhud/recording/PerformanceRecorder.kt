@@ -54,9 +54,9 @@ import javax.inject.Singleton
  *
  * Until the first recording starts nothing listens to the window and nothing is sampled; the rings
  * are allocated by the first recording, or by the Perf tab's first read of them. The recorder is
- * built with the inspector, on the main thread
- * during the launch: that costs the launch an activity-lifecycle callback, a DataStore and one
- * read of the stored choice, whose file I/O runs on the I/O dispatcher.
+ * built with the inspector, on the main thread during the launch: that costs the launch an
+ * activity-lifecycle callback, a DataStore and one read of the stored choice, whose file I/O runs
+ * on the I/O dispatcher.
  */
 @Singleton
 internal class PerformanceRecorder @Inject constructor(
@@ -135,13 +135,19 @@ internal class PerformanceRecorder @Inject constructor(
     }
 
     /** Everything recorded so far. Reads the start-up record and the build's profile state: main-safe. */
-    suspend fun snapshot(): PerformanceSnapshot = withContext(dispatchers.default) {
+    suspend fun snapshot(): PerformanceSnapshot {
+        // The profile check writes a file and the start record is a binder call: both block.
+        val (build, startup) = withContext(dispatchers.io) {
+            (buildFacts ?: buildChecks.read().also { buildFacts = it }) to startupSummary()
+        }
+        return withContext(dispatchers.default) { snapshotOf(build, startup) }
+    }
+
+    private fun snapshotOf(build: BuildFacts, startup: StartupSummary): PerformanceSnapshot {
         val frames = frames.summary()
         val memory = memory.summary()
-        val startup = startupSummary()
-        val build = buildFacts ?: buildChecks.read().also { buildFacts = it }
         val strictMode = strictMode.summary()
-        PerformanceSnapshot(
+        return PerformanceSnapshot(
             frames = frames,
             memory = memory,
             startup = startup,
