@@ -53,11 +53,11 @@ import com.base.app.core.designsystem.component.input.AppSearchField
 import com.base.app.core.designsystem.component.input.AppTextArea
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
-import com.base.app.core.designsystem.component.navigation.AppBottomBar
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
+import com.base.app.core.designsystem.component.navigation.AppTabBar
 import com.base.app.core.designsystem.component.navigation.AppTabRow
 import com.base.app.core.designsystem.component.navigation.AppTopBar
-import com.base.app.core.designsystem.component.navigation.BottomNavItem
+import com.base.app.core.designsystem.component.navigation.TabItem
 import com.base.app.core.designsystem.component.overlay.AppActionSheet
 import com.base.app.core.designsystem.component.overlay.AppAlertDialog
 import com.base.app.core.designsystem.component.overlay.AppBottomSheet
@@ -366,15 +366,16 @@ fun ContainersSection() {
 
     CatalogGroup(title = "Bottom bar") {
         var index by remember { mutableIntStateOf(0) }
-        AppBottomBar(
+        AppTabBar(
             items = listOf(
-                BottomNavItem("Home", AppIcons.Home),
-                BottomNavItem("Search", AppIcons.Search),
-                BottomNavItem("Alerts", AppIcons.Bell, badgeCount = 12),
-                BottomNavItem("Profile", AppIcons.User),
+                TabItem("Home", AppIcons.Home),
+                TabItem("Search", AppIcons.Search),
+                TabItem("Alerts", AppIcons.Bell, badgeCount = 12),
+                TabItem("Profile", AppIcons.User),
             ),
-            selectedIndex = index,
-            onItemSelected = { index = it },
+            selected = index,
+            onSelect = { index = it },
+            onReselect = {},
         )
     }
 }

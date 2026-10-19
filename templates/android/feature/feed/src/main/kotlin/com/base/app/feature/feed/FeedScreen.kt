@@ -28,6 +28,7 @@ import com.base.app.core.designsystem.component.feedback.AppErrorState
 import com.base.app.core.designsystem.component.feedback.AppSkeletonListItem
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.UiText
@@ -67,6 +68,7 @@ internal fun FeedScreen(
             key = FeedPost::id,
             loadMoreFailedLabel = stringResource(R.string.feed_load_more_failed),
             retryLabel = stringResource(R.string.feed_retry),
+            contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
             loading = { LoadingFeed() },
             failed = { throwable, retry ->
                 val error = (throwable as? FeedLoadException)?.error
@@ -144,7 +146,7 @@ private fun FeedCard(
 private fun LoadingFeed() {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(AppTheme.spacing.gutter),
+        contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
         userScrollEnabled = false,
     ) {

@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.base.app.core.common.LoadState
 import com.base.app.core.common.coroutines.AppDispatchers
@@ -17,6 +18,8 @@ import com.base.app.core.designsystem.component.container.AppListItem
 import com.base.app.core.designsystem.component.container.AppScaffold
 import com.base.app.core.designsystem.component.feedback.AppEmptyState
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.mvi.MviViewModel
 import com.base.app.core.mvi.UiEffect
@@ -147,8 +150,11 @@ internal fun LicensesScreen(state: LicensesState, onEvent: (LicensesEvent) -> Un
             return@AppScaffold
         }
 
+        val listState = rememberLazyListState()
+        ReportScrollEdge(listState)
         LazyColumn(
-            contentPadding = PaddingValues(AppTheme.spacing.lg),
+            state = listState,
+            contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.lg)),
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
                 AppTheme.spacing.sm,
             ),

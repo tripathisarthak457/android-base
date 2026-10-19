@@ -7,9 +7,9 @@ plugins {
     // <opt:firebase>
     id("com.base.app.android.firebase")
     // </opt:firebase>
-    // <opt:baselineprofile>
+    // <opt:performance>
     alias(libs.plugins.baselineprofile)
-    // </opt:baselineprofile>
+    // </opt:performance>
     // <opt:licenses>
     alias(libs.plugins.licensee)
     id("com.base.app.android.licenses")
@@ -42,6 +42,16 @@ android {
         }
     }
 }
+
+// <opt:performance>
+// One profile, recorded on the dev flavour and merged into main so every flavour ships it. It is
+// generated only on request (`:app:generateBaselineProfile`), because that needs a connected phone.
+baselineProfile {
+    mergeIntoMain = true
+    saveInSrc = true
+    automaticGenerationDuringBuild = false
+}
+// </opt:performance>
 
 dependencies {
     implementation(project(":core:common"))
@@ -101,10 +111,12 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     // </opt:coil>
 
-    // <opt:baselineprofile>
+    // Installs the checked-in baseline profiles on first launch for sideloaded and pre-Play installs;
+    // every preset ships those profiles, with or without the benchmark module.
     implementation(libs.androidx.profileinstaller)
+    // <opt:performance>
     baselineProfile(project(":benchmark"))
-    // </opt:baselineprofile>
+    // </opt:performance>
 
     // <opt:flags>
     implementation(project(":core:flags"))

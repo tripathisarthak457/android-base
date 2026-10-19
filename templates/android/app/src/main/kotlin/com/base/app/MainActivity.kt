@@ -1,35 +1,43 @@
 package com.base.app
 
+import android.annotation.SuppressLint
+import android.app.UiModeManager
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.KeyboardShortcutGroup
+import android.view.Menu
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.datastore.AppSettings
 import com.base.app.core.datastore.AppSettingsStore
-import com.base.app.core.datastore.AuthTokenStore
 import com.base.app.core.navigation.AppNavigator
+import com.base.app.core.navigation.AppShortcuts
 import com.base.app.core.navigation.NavKeySerialization
 import com.base.app.core.navigation.NavRegistry
-import com.base.app.core.navigation.ShellTab
-import com.base.app.session.SessionCoordinator
-import com.base.app.ui.AppDestinations
+import com.base.app.core.navigation.PendingDeepLink
+import com.base.app.core.navigation.ShellConfig
+import com.base.app.startup.ShellConfigOverride
+import com.base.app.startup.ShellObserver
+import com.base.app.startup.StartupViewModel
 import com.base.app.ui.AppRoot
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-// <opt:deeplink>
-import com.base.app.deeplink.DeepLinkResolver
-// </opt:deeplink>
-// <opt:onboarding>
-import com.base.app.feature.onboarding.api.OnboardingKey
-// </opt:onboarding>
 // <opt:devtools>
 import com.base.app.core.devtools.DevEnvironment
 import com.base.app.core.devtools.DevToolsLog
@@ -38,12 +46,7 @@ import com.base.app.core.devtools.DevToolsLog
 import android.view.WindowManager
 import com.base.app.lock.AppLock
 import com.base.app.lock.LockActivity
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 // </opt:applock>
-// <opt:applock|deeplink>
-import android.content.Intent
-// </opt:applock|deeplink>
 // <opt:language>
 import android.content.Context
 import com.base.app.core.ui.locale.AppLocales
@@ -70,18 +73,16 @@ class MainActivity : ComponentActivity() {
     lateinit var serialization: NavKeySerialization
 
     @Inject
-    lateinit var sessionCoordinator: SessionCoordinator
-
-    @Inject
     lateinit var settingsStore: AppSettingsStore
 
     @Inject
-    lateinit var tokenStore: AuthTokenStore
+    lateinit var pendingDeepLink: PendingDeepLink
 
-    // <opt:deeplink>
     @Inject
-    lateinit var deepLinkResolver: DeepLinkResolver
-    // </opt:deeplink>
+    lateinit var shellConfigOverrides: Set<@JvmSuppressWildcards ShellConfigOverride>
+
+    @Inject
+    lateinit var shellObservers: Set<@JvmSuppressWildcards ShellObserver>
 
     // <opt:applock>
     @Inject
@@ -104,7 +105,9 @@ class MainActivity : ComponentActivity() {
     lateinit var reviewPrompt: ReviewPrompt
     // </opt:playstore>
 
-    private val startup = MutableStateFlow<Startup?>(null)
+    private val startupViewModel: StartupViewModel by viewModels()
+
+    private val shortcuts = AppShortcuts()
 
     // <opt:language>
     // Below Android 13 the app's own language is applied here, before any resource is read.
@@ -115,18 +118,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
-        splash.setKeepOnScreenCondition { startup.value == null }
+        splash.setKeepOnScreenCondition { startupViewModel.startup.value == null }
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        lifecycleScope.launch {
-            combine(
-                settingsStore.settings,
-                tokenStore.isAuthenticated,
-                ::Startup,
-            ).collect { startup.value = it }
-        }
+        startupViewModel.onLaunch(intent)
+        followThemeOutsideTheApp()
         // <opt:applock>
 
         // With the lock on, the app's content stays out of the task switcher's thumbnail and out of
@@ -144,20 +141,30 @@ class MainActivity : ComponentActivity() {
         // </opt:applock>
 
         setContent {
-            val current by startup.collectAsStateWithLifecycle()
-            val resolved = current ?: return@setContent
-            val (startKey, tabs) = resolved.entryPoint()
-
+            val startup by startupViewModel.startup.collectAsStateWithLifecycle()
+            val current = startup ?: return@setContent
+            // From its first frame on, the app paints every pixel of the window, so the window's own
+            // background would be one more full-screen fill under every frame the GPU draws. It is
+            // kept until then, as what shows while the app launches. A transparent ColorDrawable draws
+            // nothing; changing its colour, unlike replacing the drawable, requests no layout, and the
+            // mutate() keeps the change out of every other window built from the theme.
+            LaunchedEffect(Unit) {
+                withFrameNanos {}
+                (window.decorView.background?.mutate() as? ColorDrawable)?.color = Color.TRANSPARENT
+                // <opt:playstore>
+                // Posted, so Play's work runs in a message of its own rather than in this frame.
+                window.decorView.post(::followPlayStore)
+                // </opt:playstore>
+            }
             AppRoot(
-                startKey = startKey,
-                tabs = tabs,
+                startup = current,
                 navigator = navigator,
                 registry = registry,
                 serialization = serialization,
-                sessionCoordinator = sessionCoordinator,
-                settings = resolved.settings,
-                signInKey = AppDestinations.signIn,
-                onExitRequested = { finish() },
+                pendingDeepLink = pendingDeepLink,
+                shellConfig = shellConfigOverrides.fold(ShellConfig()) { config, override -> override.adjust(config) },
+                shellObservers = shellObservers,
+                shortcuts = shortcuts,
                 // <opt:devtools>
                 devEnvironment = devEnvironment,
                 devToolsLog = devToolsLog,
@@ -165,25 +172,52 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        // <opt:playstore>
-        // On resume rather than onCreate: Play drops a review sheet launched against a stopped
-        // Activity.
+        // Only a fresh launch carries a new link. A recreation (rotation, theme, language) restores
+        // the stack the link already built, and a launch from Recents replays the original intent:
+        // held again, either would open the screen a second time.
+        val fromHistory = intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0
+        if (savedInstanceState == null && !fromHistory) pendingDeepLink.hold(intent.link())
+    }
+
+    /**
+     * The system draws the splash and its own dialogs from the app's night mode, before any of the
+     * app runs; told the in-app theme, a person who chose Dark gets a dark splash, not a light flash.
+     * The activity takes the change in place (`uiMode` in the manifest's configChanges), so applying
+     * it, or the person changing the theme, never recreates the screen.
+     */
+    private fun followThemeOutsideTheApp() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
         lifecycleScope.launch {
+            settingsStore.settings.map { it.themeMode }.distinctUntilChanged().collect { mode ->
+                getSystemService(UiModeManager::class.java)?.setApplicationNightMode(
+                    when (mode) {
+                        AppSettings.THEME_DARK -> UiModeManager.MODE_NIGHT_YES
+                        AppSettings.THEME_LIGHT -> UiModeManager.MODE_NIGHT_NO
+                        else -> UiModeManager.MODE_NIGHT_AUTO
+                    },
+                )
+            }
+        }
+    }
+
+    // <opt:playstore>
+    /**
+     * Started once the first frame with content is on screen. Run in a cold start's resume, the
+     * classes both checks load on the main thread, the update check's binding to Play's service and
+     * the Play Store process waking to answer it held that frame back, for answers nobody is
+     * waiting for.
+     */
+    private fun followPlayStore() {
+        lifecycleScope.launch {
+            // On resume rather than onCreate: Play drops a review sheet launched against a stopped
+            // Activity.
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 launch { appUpdates.updates().collect(::onUpdate) }
                 launch { reviewPrompt.onLaunch(this@MainActivity) }
             }
         }
-        // </opt:playstore>
-
-        // <opt:deeplink>
-        // Handled after the host exists, so the link lands on top of the start destination and Back
-        // works.
-        handleDeepLink(intent)
-        // </opt:deeplink>
     }
 
-    // <opt:playstore>
     private suspend fun onUpdate(result: AppUpdateResult) {
         when (result) {
             is AppUpdateResult.Available -> appUpdates.start(result, this)
@@ -215,33 +249,36 @@ class MainActivity : ComponentActivity() {
     }
     // </opt:applock>
 
-    // <opt:deeplink>
+    /**
+     * Keyboard shortcuts first, whatever has focus: Ctrl+1 must work while a text field has it.
+     *
+     * Lint reports this public Activity method as androidx-only because the restricted base class
+     * androidx.core.app.ComponentActivity overrides it; an app overriding it and calling super is
+     * what the framework method is for.
+     */
+    @SuppressLint("RestrictedApi")
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean = shortcuts.handle(event) || super.dispatchKeyEvent(event)
+
+    /** What the system's Shortcuts Helper (Meta+/) lists for the app. */
+    override fun onProvideKeyboardShortcuts(data: MutableList<KeyboardShortcutGroup>, menu: Menu?, deviceId: Int) {
+        super.onProvideKeyboardShortcuts(data, menu, deviceId)
+        data += shortcuts.group(getString(R.string.app_name))
+    }
+
+    /** singleTop: a link or a notification tapped while the app is running arrives here. */
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        // A link that arrives while the app is running comes here, not to onCreate.
-        handleDeepLink(intent)
+        setIntent(intent)
+        pendingDeepLink.hold(intent.link())
     }
 
-    private fun handleDeepLink(intent: Intent?) {
-        val key = deepLinkResolver.resolve(intent?.data) ?: return
-        navigator.navigate(key)
+    // <opt:deeplink>
+    /** A link forwarded by LinkActivity, or the data of an intent sent here directly (a notification). */
+    private fun Intent.link(): Uri? = getStringExtra(EXTRA_LINK)?.let(Uri::parse) ?: data
+
+    companion object {
+        const val EXTRA_LINK = "com.base.app.extra.LINK"
     }
     // </opt:deeplink>
-}
-
-/** Everything the first frame depends on. The splash is held until all of it has arrived. */
-private data class Startup(
-    val settings: AppSettings,
-    val signedIn: Boolean,
-)
-
-/** Where this launch starts, and whether it has a tab bar. */
-private fun Startup.entryPoint(): Pair<AppNavKey, List<ShellTab>> {
-    // <opt:onboarding>
-    if (!settings.onboardingCompleted) return OnboardingKey to emptyList()
-    // </opt:onboarding>
-    // <opt:auth>
-    if (!signedIn) return AppDestinations.signIn to emptyList()
-    // </opt:auth>
-    return AppDestinations.start to AppDestinations.tabs
+    // <opt:!deeplink>    private fun Intent.link(): Uri? = data
 }

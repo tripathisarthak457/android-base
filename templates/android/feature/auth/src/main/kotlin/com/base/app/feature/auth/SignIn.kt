@@ -181,14 +181,15 @@ internal class SignInViewModel @Inject constructor(
 @Composable
 internal fun SignInRoute(
     navigator: AppNavigator,
-    onSignedIn: () -> Unit,
     viewModel: SignInViewModel = hiltViewModel(),
 ) {
     MviScreen(
         viewModel = viewModel,
         onEffect = { effect ->
             when (effect) {
-                SignInEffect.SignedIn -> onSignedIn()
+                // The new session moves the app to the signed-in shell; navigating as well would open
+                // the next screen twice, once in each host.
+                SignInEffect.SignedIn -> Unit
                 SignInEffect.OpenSignUp -> navigator.navigate(SignUpKey)
                 SignInEffect.OpenPasswordReset -> navigator.navigate(PasswordResetKey)
             }

@@ -2,11 +2,12 @@ key = "deeplink"
 title = "Deep linking"
 headline = "Open the app from a link"
 description = """
-A custom scheme plus verified App Links, resolved through one function, with the onNewIntent
-handling that is usually missing."""
+A custom scheme plus verified App Links. Each feature maps its own links to a screen; a link is
+held until onboarding, sign-in and the startup checks are done, opens on the tab that owns the
+screen, and is never replayed from Recents or after rotation."""
 group = "Platform"
 default = true
 requires = []
 implied_only = false
-owns = ["app/src/main/kotlin/{pkg_path}/deeplink"]
+owns = ["app/src/main/kotlin/{pkg_path}/deeplink", "app/src/test/kotlin/{pkg_path}/deeplink"]
 legacy = []

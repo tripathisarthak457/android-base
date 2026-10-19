@@ -360,7 +360,7 @@ import {pkg}.feature.{name}.{class_name}ListRoute
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
@@ -372,7 +372,7 @@ import kotlinx.serialization.modules.SerializersModule
  * with it, and on a wide window it opens beside the list.
  */
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 object {class_name}NavModule {{
 
     @Provides

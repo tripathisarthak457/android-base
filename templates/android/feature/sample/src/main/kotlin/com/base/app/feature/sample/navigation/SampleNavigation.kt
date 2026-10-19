@@ -1,6 +1,9 @@
 package com.base.app.feature.sample.navigation
 
 import com.base.app.core.navigation.AppNavigator
+// <opt:deeplink>
+import com.base.app.core.navigation.DeepLinkRoute
+// </opt:deeplink>
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavPane
 import com.base.app.core.navigation.navGraph
@@ -12,16 +15,16 @@ import com.base.app.feature.sample.list.SampleListRoute
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
 /**
- * How this feature joins the navigation graph. Two contributions, both `@IntoSet`: what to render
- * for each key, and how to serialise the keys so the back stack survives process death.
+ * How this feature joins the navigation graph, all `@IntoSet`: what to render for each key, how to
+ * serialise the keys so the back stack survives process death, and which links open them.
  */
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 internal object SampleNavigation {
 
     @Provides
@@ -39,4 +42,14 @@ internal object SampleNavigation {
         subclass(SampleListKey::class, SampleListKey.serializer())
         subclass(SampleDetailKey::class, SampleDetailKey.serializer())
     }
+    // <opt:deeplink>
+
+    /** `baseapp://items` opens the list, `baseapp://items/12` the item. */
+    @Provides
+    @IntoSet
+    fun sampleLinks(): DeepLinkRoute = DeepLinkRoute { link ->
+        if (link.segments.first() != "items") return@DeepLinkRoute null
+        link.segments.getOrNull(1)?.toIntOrNull()?.let(::SampleDetailKey) ?: SampleListKey
+    }
+    // </opt:deeplink>
 }

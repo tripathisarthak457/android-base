@@ -8,6 +8,7 @@
         android:name=".BaseAppApplication"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@mipmap/ic_launcher"
@@ -15,6 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BaseApp">
+
+        <!-- Lets the system offer "New window" (taskbar, desktop mode) on Android 15 and later. -->
+        <property
+            android:name="android.window.PROPERTY_SUPPORTS_MULTI_INSTANCE_SYSTEM_UI"
+            android:value="true" />
 
         <!-- <opt:workmanager> -->
         <!--
@@ -41,18 +47,55 @@
         </provider>
         <!-- </opt:workmanager> -->
 
+        <!--
+          singleTop: a link, a notification or the launcher reaches the running instance through
+          onNewIntent instead of stacking a second copy of the app in the same task. A second
+          window opened on purpose (multi-instance, desktop mode) is a task of its own, with its
+          own navigator and back stacks.
+        -->
+        <!--
+          configChanges: a resize, a fold, a rotation or a keyboard attached is a new window size,
+          which Compose lays out again in place. Recreating the activity for it would rebuild every
+          tab and replay its first frames. Night mode is handled the same way: every colour comes
+          from AppTheme, which recomposes, and the app's own night mode (MainActivity sets it from
+          the theme setting, so the splash matches) would otherwise recreate the activity behind a
+          crossfade the moment the setting changes. Density, locale and font scale still recreate:
+          resources have to load again for those.
+        -->
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboard|keyboardHidden|navigation|uiMode"
             android:exported="true"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.BaseApp.Starting"
             android:windowSoftInputMode="adjustResize">
+
+            <!-- The window a desktop opens the app in, and the smallest it may be resized to. -->
+            <layout
+                android:defaultHeight="720dp"
+                android:defaultWidth="1024dp"
+                android:minHeight="400dp"
+                android:minWidth="320dp" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
 
-            <!-- <opt:deeplink> -->
+        <!-- <opt:deeplink> -->
+        <!--
+          Links land here and are held for MainActivity, which is then started the way the launcher
+          starts it (see LinkActivity). No task of its own and no place in Recents.
+        -->
+        <activity
+            android:name=".deeplink.LinkActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay">
+
             <!--
               Custom scheme. Always works, never verified, and any app can claim the same scheme —
               so it is the fallback, not the primary route in.
@@ -78,8 +121,8 @@
                     android:host="@string/deeplink_host"
                     android:scheme="https" />
             </intent-filter>
-            <!-- </opt:deeplink> -->
         </activity>
+        <!-- </opt:deeplink> -->
 
         <!-- <opt:push> -->
         <service

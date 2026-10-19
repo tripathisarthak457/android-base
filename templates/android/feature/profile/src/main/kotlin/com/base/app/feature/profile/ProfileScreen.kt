@@ -2,6 +2,7 @@ package com.base.app.feature.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,8 @@ import com.base.app.core.designsystem.component.input.AppTextArea
 import com.base.app.core.designsystem.component.input.AppTextField
 import com.base.app.core.designsystem.component.navigation.AppLargeTitle
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.MviScreen
 // <opt:coil>
@@ -70,11 +73,13 @@ internal fun ProfileScreen(
         if (!state.loaded) return@AppScaffold
 
         AppAppear {
+            val scroll = rememberScrollState()
+            ReportScrollEdge(scroll)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(AppTheme.spacing.gutter),
+                    .verticalScroll(scroll)
+                    .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
             ) {
                 Column(

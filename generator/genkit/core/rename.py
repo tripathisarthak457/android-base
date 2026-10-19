@@ -49,15 +49,26 @@ def _path(text: str, start: int, end: int) -> bool:
     before = _before(text, start)
     if not before or not _word(before):
         return True
-    # A JVM descriptor: `L`, after up to three baseline-profile flags (H, S, P), after a non-word.
-    if before != "L":
-        return False
-    index = start - 2
+    return before == "L" and _opens_descriptor(text, start - 1)
+
+
+def _opens_descriptor(text: str, at: int) -> bool:
+    """
+    Whether the `L` at [at] opens a JVM class descriptor: after up to three baseline-profile flags
+    (H, S, P) after a non-word, or after the primitive parameters before it in a method descriptor,
+    as in `(ZILcom/…;`, which a profile rule's signature carries.
+    """
+    index = at - 1
     flags = 0
     while index >= 0 and flags < 3 and text[index] in "HSP":
         index -= 1
         flags += 1
-    return index < 0 or not _word(text[index])
+    if index < 0 or not _word(text[index]):
+        return True
+    index = at - 1
+    while index >= 0 and text[index] in "ZBCSIJFD":
+        index -= 1
+    return index < at - 1 and index >= 0 and text[index] in "(;["
 
 
 def _prefix(text: str, start: int, end: int) -> bool:

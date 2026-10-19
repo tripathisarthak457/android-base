@@ -2,6 +2,7 @@ package com.base.app.feature.sample.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -19,6 +20,8 @@ import com.base.app.core.designsystem.component.feedback.AppSkeletonLine
 import com.base.app.core.designsystem.component.navigation.AppBackTopBar
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
+import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.ui.text
 import com.base.app.data.sample.api.SampleItem
@@ -41,6 +44,8 @@ internal fun SampleDetailScreen(
             )
         },
     ) {
+        val scroll = rememberScrollState()
+        ReportScrollEdge(scroll)
         when (val loadState = state.loadState) {
             is LoadState.Error -> AppErrorState(
                 message = loadState.error.text(),
@@ -51,8 +56,8 @@ internal fun SampleDetailScreen(
             else -> Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(AppTheme.spacing.gutter),
+                    .verticalScroll(scroll)
+                    .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
             ) {
                 val item = state.item
                 if (item == null) {
