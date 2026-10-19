@@ -16,11 +16,14 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import __PKG__.core.common.LoadState
 import __PKG__.core.common.result.AppError
 import __PKG__.core.designsystem.component.container.AppScaffold
-import __PKG__.core.designsystem.component.feedback.AppErrorState
 import __PKG__.core.designsystem.component.feedback.AppSkeleton
-import __PKG__.core.designsystem.component.navigation.AppBackTopBar
+import __PKG__.core.designsystem.component.feedback.AppStateView
+import __PKG__.core.designsystem.component.feedback.StateKind
+import __PKG__.core.designsystem.component.navigation.AppTopBar
 import __PKG__.core.designsystem.component.text.AppText
-import __PKG__.core.designsystem.foundation.chromeContentPadding
+import __PKG__.core.designsystem.foundation.layout.ReportScrollEdge
+import __PKG__.core.designsystem.foundation.layout.chromeContentPadding
+import __PKG__.core.designsystem.foundation.scroll.AppScrollDefaults
 import __PKG__.core.designsystem.theme.AppTheme
 import __PKG__.core.ui.text
 import __PKG__.data.__NAME__.api.__P__Item
@@ -38,18 +41,24 @@ internal fun __P__DetailScreen(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
         topBar = {
-            AppBackTopBar(
+            AppTopBar(
                 title = title,
                 onBack = { onEvent(__P__DetailEvent.BackClicked) },
             )
         },
     ) {
+        val scroll = rememberScrollState()
+        ReportScrollEdge(scroll)
         val loadState = state.loadState
         if (loadState is LoadState.Error) {
-            AppErrorState(
+            AppStateView(
                 message = loadState.error.text(),
-                isOffline = loadState.error == AppError.Offline,
-                onRetry = { onEvent(__P__DetailEvent.Retry) },
+                kind = if (loadState.error == AppError.Offline) {
+                    StateKind.Offline
+                } else {
+                    StateKind.Error
+                },
+                onAction = { onEvent(__P__DetailEvent.Retry) },
             )
             return@AppScaffold
         }
@@ -57,7 +66,7 @@ internal fun __P__DetailScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                 .padding(chromeContentPadding(PaddingValues(AppTheme.spacing.gutter))),
         ) {
             val item = state.item
@@ -71,7 +80,7 @@ internal fun __P__DetailScreen(
                 ) {
                     AppText(
                         text = " ",
-                        style = AppTheme.typography.displaySmall,
+                        style = AppTheme.typography.title2,
                         color = Color.Transparent,
                     )
                     AppSkeleton(modifier = Modifier.matchParentSize(), shape = AppTheme.shapes.xs)
@@ -79,7 +88,7 @@ internal fun __P__DetailScreen(
             } else {
                 AppText(
                     text = item.title,
-                    style = AppTheme.typography.displaySmall,
+                    style = AppTheme.typography.title2,
                     color = AppTheme.colors.contentPrimary,
                 )
             }

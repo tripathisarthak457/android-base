@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,14 +19,18 @@ import __PKG__.core.common.isRefreshing
 import __PKG__.core.common.result.AppError
 import __PKG__.core.designsystem.component.container.AppCard
 import __PKG__.core.designsystem.component.container.AppScaffold
-import __PKG__.core.designsystem.component.feedback.AppEmptyState
-import __PKG__.core.designsystem.component.feedback.AppErrorState
 import __PKG__.core.designsystem.component.feedback.AppSkeleton
-import __PKG__.core.designsystem.component.navigation.AppLargeTitle
+import __PKG__.core.designsystem.component.feedback.AppStateView
+import __PKG__.core.designsystem.component.feedback.StateKind
+import __PKG__.core.designsystem.component.navigation.AppLargeTitleTopBar
+import __PKG__.core.designsystem.component.navigation.scrolledFromTop
 import __PKG__.core.designsystem.component.refresh.AppPullToRefresh
 import __PKG__.core.designsystem.component.text.AppText
-import __PKG__.core.designsystem.foundation.chromeContentPadding
+import __PKG__.core.designsystem.foundation.layout.ReportScrollEdge
+import __PKG__.core.designsystem.foundation.layout.chromeContentPadding
+import __PKG__.core.designsystem.foundation.scroll.AppScrollDefaults
 import __PKG__.core.designsystem.theme.AppTheme
+import __PKG__.core.navigation.ScrollToTopOnReselect
 import __PKG__.core.ui.text
 import __PKG__.data.__NAME__.api.__P__Item
 import __PKG__.feature.__NAME__.R
@@ -37,28 +42,32 @@ internal fun __P__ListScreen(
     onEvent: (__P__ListEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val listState = rememberLazyListState()
     AppScaffold(
         contentMaxWidth = AppTheme.layout.readableMaxWidth,
         modifier = modifier,
-__FIT__
-        topBar = { AppLargeTitle(title = stringResource(R.string.__NAME___title)) },
-__ELSE__
         topBar = {
-            AppLargeTitle(title = stringResource(R.string.__NAME___title))
+            AppLargeTitleTopBar(
+                title = stringResource(R.string.__NAME___title),
+                scrolled = { listState.scrolledFromTop() },
+            )
         },
-__END_FIT__
     ) {
         when (val loadState = state.loadState) {
             // Idle is the first frame, before the route's Appeared has started the load.
             LoadState.Idle, LoadState.Loading -> LoadingList()
 
-            is LoadState.Error -> AppErrorState(
+            is LoadState.Error -> AppStateView(
                 message = loadState.error.text(),
-                isOffline = loadState.error == AppError.Offline,
-                onRetry = { onEvent(__P__ListEvent.Retry) },
+                kind = if (loadState.error == AppError.Offline) {
+                    StateKind.Offline
+                } else {
+                    StateKind.Error
+                },
+                onAction = { onEvent(__P__ListEvent.Retry) },
             )
 
-            LoadState.Empty -> AppEmptyState(
+            LoadState.Empty -> AppStateView(
                 title = stringResource(R.string.__NAME___empty_title),
                 message = stringResource(R.string.__NAME___empty_message),
                 actionLabel = stringResource(R.string.__NAME___reload),
@@ -70,12 +79,16 @@ __END_FIT__
                 onRefresh = { onEvent(__P__ListEvent.Refresh) },
                 modifier = Modifier.fillMaxSize(),
             ) {
+                ScrollToTopOnReselect(listState)
+                ReportScrollEdge(listState)
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .testTag("primary_list"),
+                    state = listState,
                     contentPadding = chromeContentPadding(PaddingValues(AppTheme.spacing.gutter)),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.stack),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
                 ) {
 __FIT__
                     items(items = state.items, key = __P__Item::id) { item ->
@@ -120,7 +133,7 @@ __END_FIT__
     AppCard(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
         AppText(
             text = item.title,
-            style = AppTheme.typography.titleMedium,
+            style = AppTheme.typography.headline,
             color = AppTheme.colors.contentPrimary,
         )
     }
@@ -151,7 +164,7 @@ private fun __P__RowPlaceholder() {
                 .fillMaxWidth(0.6f)
                 .clearAndSetSemantics {},
         ) {
-            AppText(text = " ", style = AppTheme.typography.titleMedium, color = Color.Transparent)
+            AppText(text = " ", style = AppTheme.typography.headline, color = Color.Transparent)
             AppSkeleton(modifier = Modifier.matchParentSize(), shape = AppTheme.shapes.xs)
         }
     }

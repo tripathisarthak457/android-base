@@ -129,8 +129,8 @@ class GeneratedModuleTest(unittest.TestCase):
         self.assertEqual(2, list_screen.count("contentPadding = chromeContentPadding("))
         self.assertIn(".padding(chromeContentPadding(", detail_screen)
         # Each bone is sized by a transparent line in the style of the text that replaces it.
-        self.assertEqual(2, list_screen.count("style = AppTheme.typography.titleMedium"))
-        self.assertEqual(2, detail_screen.count("style = AppTheme.typography.displaySmall"))
+        self.assertEqual(2, list_screen.count("style = AppTheme.typography.headline"))
+        self.assertEqual(2, detail_screen.count("style = AppTheme.typography.title2"))
         for screen in (list_screen, detail_screen):
             self.assertIn("color = Color.Transparent", screen)
             self.assertIn(

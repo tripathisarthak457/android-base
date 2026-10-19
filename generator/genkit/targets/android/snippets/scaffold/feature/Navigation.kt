@@ -12,7 +12,7 @@ import __PKG__.feature.__NAME__.list.__P__ListRoute
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.multibindings.IntoSet
 import kotlinx.serialization.modules.SerializersModule
 
@@ -21,7 +21,7 @@ import kotlinx.serialization.modules.SerializersModule
  * On a wide window the detail opens beside the list, because the two declare their panes.
  */
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 internal object __P__Navigation {
 
     @Provides
