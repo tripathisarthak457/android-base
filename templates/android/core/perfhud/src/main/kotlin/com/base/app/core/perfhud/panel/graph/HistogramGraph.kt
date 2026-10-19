@@ -17,6 +17,7 @@ import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.frame.FrameHistogram
 import com.base.app.core.perfhud.frame.FrameLog
 import java.util.Locale
+import kotlin.math.min
 
 /**
  * Every frame recorded, counted by duration: one bar per millisecond up to [LAST_MILLIS], and one
@@ -74,7 +75,9 @@ internal fun HistogramGraph(
                     }
                     drawLine(axis, Offset(0f, plotHeight), Offset(size.width, plotHeight), stroke)
                     for (index in TICKS.indices) {
-                        drawText(ticks[index], color = label, topLeft = Offset(TICKS[index] * slot, plotHeight))
+                        // The last tick is near the right edge, and its label stays inside the graph.
+                        val x = min(TICKS[index] * slot, size.width - ticks[index].size.width)
+                        drawText(ticks[index], color = label, topLeft = Offset(x, plotHeight))
                     }
                 }
             },
