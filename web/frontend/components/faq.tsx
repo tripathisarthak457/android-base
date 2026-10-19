@@ -6,9 +6,9 @@ function licenceAnswer(): string {
   const licensed = licensedFeatures(CATALOGUE);
   const base =
     "All of it. The generator is a Python script with no dependencies, the API is one Go binary, and this site is a Next.js app.";
-  if (licensed.length === 0) return `${base} Everything is MIT.`;
+  if (licensed.length === 0) return `${base} Everything is MIT, apart from Google's Android skills the templates carry, which keep their Apache 2.0 licence.`;
   const named = licensed.map((feature) => `${feature.title} (${feature.licence?.name})`).join(", ");
-  return `${base} The generator and the templates are MIT; optional features that bring third-party code keep its licence: ${named}. Each project's licence screen lists them.`;
+  return `${base} The generator and the templates are MIT, apart from Google's Android skills they carry, which keep their Apache 2.0 licence; optional features that bring third-party code keep its licence: ${named}. Each project's licence screen lists them.`;
 }
 
 function platformsAnswer(): string | null {

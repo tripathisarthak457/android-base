@@ -56,7 +56,10 @@ export function Nav() {
 }
 
 export function Footer() {
-  const licence = licensedFeatures(CATALOGUE).length === 0 ? "MIT licensed." : "MIT licensed, except the third-party code some optional features bring.";
+  const licence =
+    licensedFeatures(CATALOGUE).length === 0
+      ? "MIT licensed, except Google's Android skills (Apache 2.0)."
+      : "MIT licensed, except Google's Android skills (Apache 2.0) and the third-party code some optional features bring.";
   const links = [
     { href: "https://github.com/tripathisarthak457", label: "@tripathisarthak457" },
     { href: REPO, label: "Source" },

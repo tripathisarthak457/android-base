@@ -40,6 +40,7 @@ whose custody is not solely yours.
 9. [Adding a feature module later](#adding-a-feature-module-later)
 10. [Working on the template itself](#working-on-the-template-itself)
 11. [When something goes wrong](#when-something-goes-wrong)
+12. [Licence](#licence)
 
 ---
 
@@ -613,3 +614,12 @@ and `distProdReleaseBundle` for the bundle, as two commands.
 
 That is deliberate — it is git-ignored, as it should be, since it carries project ids tied to your
 account. Each developer needs their own copy, the same as every other Android project.
+
+---
+
+## Licence
+
+MIT, in [`LICENSE`](LICENSE). Google's Android skills are not covered by it: the copies the templates vendor under
+`templates/android/.agents/skills/` keep their Apache License 2.0 (`LICENSE.txt` there), as do the skill names and
+descriptions the pointers under `.agents/skills/` and `.claude/skills/` repeat. Optional features that bring
+third-party code keep that code's own licence.
