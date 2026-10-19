@@ -15,8 +15,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 
 /** At Medium width an action sheet is a card; it is modal for keyboards and screen readers. */
+// Focus, not pixels: under the native graphics the module's screenshot tests switch on for every test,
+// a requested focus never lands in Robolectric, so this class keeps the legacy mode it was written for.
+@GraphicsMode(GraphicsMode.Mode.LEGACY)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [TestSdk], qualifiers = "w800dp-h1280dp")
 class ActionCardTest {

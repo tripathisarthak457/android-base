@@ -39,6 +39,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 
 /**
  * A placeholder row is the real row, `onClick` and all, so redaction is what keeps it from being
@@ -46,6 +47,9 @@ import org.robolectric.annotation.Config
  * works again as soon as the content is shown.
  */
 @OptIn(ExperimentalTestApi::class)
+// Focus, not pixels: under the native graphics the module's screenshot tests switch on for every test,
+// a requested focus never lands in Robolectric, so this class keeps the legacy mode it was written for.
+@GraphicsMode(GraphicsMode.Mode.LEGACY)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [TestSdk])
 class RedactedInputTest {
