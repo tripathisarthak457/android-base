@@ -242,6 +242,11 @@ A launch with `--es perf.hud on` (or `off`) switches recording for that process,
 build, which is how `tools/perf/perf.sh` measures the overlay's own cost (`--extra perf.hud=on`).
 It does nothing else, and nothing in a shippable release reads it.
 
+Frame numbers are reported for each screen as well as overall: frames, janky, slow and frozen
+frames, long main-thread work, percentiles and the worst frame. Memory, garbage collections,
+start-up and requests are the process's over the whole recording, since none of them belongs to one
+screen: a heap grown on one screen is still there on the next.
+
 The JSON has a `schema` number that changes when a field is renamed or removed.
 
 ## Turning it off

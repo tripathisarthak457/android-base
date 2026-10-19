@@ -80,7 +80,7 @@ internal class MarkdownReport(private val resources: Resources) {
                 string(scored.metric.title),
                 scored.value?.let { resources.formatValue(scored.metric, it) } ?: string(R.string.perfhud_not_measured),
                 resources.formatTarget(scored.metric),
-                scored.grade?.name ?: "–",
+                scored.grade?.name.orEmpty(),
                 string(R.string.perfhud_points_of, decimal(scored.points, 1), scored.metric.weight),
             )
         }
@@ -123,16 +123,22 @@ internal class MarkdownReport(private val resources: Resources) {
             string(R.string.perfhud_screen),
             string(R.string.perfhud_frames),
             string(R.string.perfhud_janky),
+            string(R.string.perfhud_slow),
+            string(R.string.perfhud_frozen),
+            string(R.string.perfhud_long_work),
             string(R.string.perfhud_percentiles),
             string(R.string.perfhud_worst),
         )
-        tableRule(5)
+        tableRule(8)
         frames.screens.sortedByDescending { it.stats.jankyPercent }.forEach { screen ->
             val stats = screen.stats
             row(
                 screenName(screen),
                 stats.frames.toString(),
                 countAndPercent(stats.janky, stats.jankyPercent),
+                countAndPercent(stats.slow, stats.slowPercent),
+                stats.frozen.toString(),
+                stats.longWork.toString(),
                 percentiles(stats),
                 millis(stats.worstMillis),
             )
