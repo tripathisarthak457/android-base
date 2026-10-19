@@ -49,7 +49,11 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
     # by default in Git for Windows), so the commit holds the same blobs on every host. It applies
     # to each command that hashes the files.
     as_written = ("-c", "core.autocrlf=false")
-    identity = ("-c", "user.name=Project generator", "-c", "user.email=generator@localhost")
+    # The commit is the generator's, under its own name, so it is never signed with the user's key:
+    # with commit.gpgSign set, signing would fail it or wait on a passphrase prompt nobody sees.
+    as_the_generator = (
+        "-c", "user.name=Project generator", "-c", "user.email=generator@localhost", "-c", "commit.gpgSign=false"
+    )
     try:
         # Not `--initial-branch`: that needs git 2.28, and an older git fails with a usage error
         # rather than falling back to master.
@@ -63,7 +67,7 @@ def git_init(project: Path, message: str, executable: tuple[str, ...]) -> list[s
         # On Windows `git init` sets core.fileMode to false and `git add` records every file as
         # 100644, so without this a clone on Linux or macOS could not run ./gradlew.
         _git(project, as_written, "update-index", "--chmod=+x", "--", *scripts)
-        _git(project, identity, "commit", "--no-verify", "-m", message)
+        _git(project, as_the_generator, "commit", "--no-verify", "-m", message)
     except _GitFailed as failure:
         return [f"{failure} The project itself is fine."]
     return []
@@ -76,7 +80,11 @@ class _GitFailed(Exception):
 def _git(project: Path, config: tuple[str, ...], *arguments: str) -> str:
     """Runs `git <arguments>` in `project` and returns what it printed. Raises _GitFailed."""
     result = subprocess.run(
-        ["git", *config, *arguments],
+        # Without the user's file system monitor: its hook would run on every command here, and its
+        # daemon (Git for Windows starts one for core.fsmonitor=true) would hold the project open
+        # while it is moved into place or deleted. Empty, not "false": git before 2.36 reads the
+        # value as a hook path.
+        ["git", "-c", "core.fsmonitor=", *config, *arguments],
         cwd=project,
         capture_output=True,
         # git prints UTF-8 on every host, and its messages can hold the project's path, which

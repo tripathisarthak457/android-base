@@ -14,6 +14,7 @@ import time
 import unittest
 import zipfile
 from pathlib import Path
+from unittest import mock
 
 from genkit.core.package import git_init, zip_project
 
@@ -76,6 +77,32 @@ class ZipTest(unittest.TestCase):
         self.assertEqual(
             {"gradlew", "tools/perf/perf.sh"}, {path for path, mode in modes.items() if mode == "100755"}
         )
+
+    @unittest.skipIf(shutil.which("git") is None, "git is not installed")
+    def test_the_commit_is_the_same_whatever_the_users_git_configuration(self):
+        # A file system monitor hook that leaves a trace, and commit signing through a gpg that is
+        # not there: either would make the first commit depend on the machine it was made on.
+        monitored = self.root / "monitored"
+        monitor = self.root / "monitor.sh"
+        monitor.write_bytes(f"#!/bin/sh\necho >> '{monitored.as_posix()}'\nexit 1\n".encode())
+        monitor.chmod(0o755)
+        configuration = self.root / "gitconfig"
+        configuration.write_bytes(
+            f"[core]\n\tfsmonitor = {monitor.as_posix()}\n"
+            f"[commit]\n\tgpgSign = true\n[gpg]\n\tprogram = {(self.root / 'no-gpg').as_posix()}\n".encode()
+        )
+        with mock.patch.dict(os.environ, {"GIT_CONFIG_GLOBAL": str(configuration)}):
+            read = subprocess.run(
+                ["git", "config", "--get", "commit.gpgSign"], cwd=self.root, capture_output=True, text=True
+            )
+            if read.stdout.strip() != "true":
+                self.skipTest("this git does not read GIT_CONFIG_GLOBAL, which needs git 2.32")
+            self.assertEqual([], git_init(self.project, "Initial commit", EXECUTABLE))
+        self.assertFalse(monitored.exists(), "the user's file system monitor ran")
+        subject = subprocess.run(
+            ["git", "log", "-1", "--format=%s"], cwd=self.project, capture_output=True, text=True, check=True
+        ).stdout
+        self.assertEqual("Initial commit\n", subject)
 
 
 if __name__ == "__main__":
