@@ -33,30 +33,38 @@ internal class StartupTimes @Inject constructor(@ApplicationContext private val 
     }
 
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    private fun recordOf(info: ApplicationStartInfo): StartRecord? {
-        val type = when (info.startType) {
-            ApplicationStartInfo.START_TYPE_COLD -> StartType.Cold
-            ApplicationStartInfo.START_TYPE_WARM -> StartType.Warm
-            ApplicationStartInfo.START_TYPE_HOT -> StartType.Hot
-            else -> return null
-        }
-        val stamps = info.startupTimestamps
-        val launch = stamps[ApplicationStartInfo.START_TIMESTAMP_LAUNCH] ?: return null
-        val firstFrame = stamps[ApplicationStartInfo.START_TIMESTAMP_FIRST_FRAME] ?: return null
-        val fullyDrawn = stamps[ApplicationStartInfo.START_TIMESTAMP_FULLY_DRAWN]
-        return StartRecord(
-            type = type,
-            initialDisplayMillis = (firstFrame - launch) / NANOS_PER_MILLI,
-            fullDisplayMillis = fullyDrawn?.let { (it - launch) / NANOS_PER_MILLI },
-        )
-    }
+    private fun recordOf(info: ApplicationStartInfo): StartRecord? = startRecordOf(info.startType, info.startupTimestamps)
 
     private companion object {
         /** The system keeps the most recent starts first; the latest of each kind is what is shown. */
         const val MAX_STARTS = 20
-        const val NANOS_PER_MILLI = 1_000_000f
     }
 }
+
+/**
+ * One start, from an `ApplicationStartInfo`'s start type and its timestamps by `START_TIMESTAMP_*`
+ * key. Null for a type this does not show, and for a start with no launch or first-frame time: one
+ * still under way, or one that never drew.
+ */
+@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
+internal fun startRecordOf(startType: Int, timestamps: Map<Int, Long>): StartRecord? {
+    val type = when (startType) {
+        ApplicationStartInfo.START_TYPE_COLD -> StartType.Cold
+        ApplicationStartInfo.START_TYPE_WARM -> StartType.Warm
+        ApplicationStartInfo.START_TYPE_HOT -> StartType.Hot
+        else -> return null
+    }
+    val launch = timestamps[ApplicationStartInfo.START_TIMESTAMP_LAUNCH] ?: return null
+    val firstFrame = timestamps[ApplicationStartInfo.START_TIMESTAMP_FIRST_FRAME] ?: return null
+    val fullyDrawn = timestamps[ApplicationStartInfo.START_TIMESTAMP_FULLY_DRAWN]
+    return StartRecord(
+        type = type,
+        initialDisplayMillis = (firstFrame - launch) / NANOS_PER_MILLI,
+        fullDisplayMillis = fullyDrawn?.let { (it - launch) / NANOS_PER_MILLI },
+    )
+}
+
+private const val NANOS_PER_MILLI = 1_000_000f
 
 @Serializable
 internal enum class StartType { Cold, Warm, Hot }
