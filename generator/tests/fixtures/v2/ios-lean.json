@@ -1,0 +1,9 @@
+{
+  "schema": 2,
+  "platform": "ios",
+  "app_name": "Lean",
+  "package_name": "com.example.ioslean",
+  "features": ["network", "sample"],
+  "feature_modules": [],
+  "languages": []
+}

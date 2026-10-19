@@ -1,0 +1,15 @@
+key = "liquidglass"
+title = "Liquid Glass chrome"
+headline = "Glass on the app's own floating chrome"
+description = """
+The system bars, sheets and tab bar are glass on iOS 26 whatever you choose. This adds the same
+glass to the design system's own floating pieces, such as toasts, through one modifier: Liquid
+Glass on iOS 26, a material below it, and a solid surface when Reduce Transparency is on."""
+group = "Design"
+default = false
+requires = []
+implied_only = false
+owns = [
+  "Packages/Core/Sources/DesignSystem/Foundation/Glass",
+]
+legacy = []

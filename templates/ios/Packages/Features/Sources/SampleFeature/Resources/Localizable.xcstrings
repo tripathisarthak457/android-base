@@ -1,0 +1,22 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Choose something from the list to see it here." : {},
+    "Could not refresh." : {},
+    "Detail" : {},
+    "Details" : {},
+    "Nothing here yet" : {},
+    "Nothing selected" : {},
+    "Number" : {},
+    "Offline" : {},
+    "Open" : {},
+    "Reload" : {},
+    "Samples" : {},
+    "Search titles" : {},
+    "Share" : {},
+    "Untitled" : {},
+    "When there is something to show, it will appear on this screen." : {},
+    "Words" : {}
+  },
+  "version" : "1.0"
+}

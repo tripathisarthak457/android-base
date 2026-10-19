@@ -1,0 +1,21 @@
+# Named starting points. Features are listed before `requires` closes over them.
+default = "standard"
+
+[lean]
+title = "Lean"
+description = "Networking, the design system and one reference feature."
+features = ["network", "sample"]
+
+[standard]
+title = "Standard"
+description = """
+The lean set plus onboarding and a settings screen with the language shortcut. What most projects
+want on day one."""
+features = ["network", "sample", "settings", "onboarding", "language"]
+
+[everything]
+title = "Everything"
+description = """
+Every feature the template offers, working together. The template's own proof that they coexist;
+delete what you do not need."""
+all = true

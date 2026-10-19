@@ -1,0 +1,15 @@
+key = "language"
+title = "Language shortcut"
+headline = "Let people pick the app's language"
+description = """
+A Language row in settings that opens the app's page in the Settings app, where iOS offers every
+language the app ships. iOS keeps the per-app choice itself, so the app stores nothing."""
+group = "Screens"
+default = false
+requires = ["settings"]
+implied_only = false
+owns = [
+  "Packages/Features/Sources/SettingsFeature/Overview/LanguageRow.swift",
+  "Packages/Features/Sources/SettingsFeature/Resources/Language.xcstrings",
+]
+legacy = []

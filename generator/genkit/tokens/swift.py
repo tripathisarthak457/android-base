@@ -1,13 +1,18 @@
 """
-The resolved tokens as Swift: `enum DesignTokens`, mirroring the Kotlin object. Springs keep
-SwiftUI's own model, `Spring(duration: response, bounce:)`; sizes are points.
+The resolved tokens as Swift: the public `AppDesignStyle` and `AppMotionStyle` choices, and an
+internal `enum DesignTokens` holding the values the SwiftUI design system reads. Sizes are points.
+
+Every type is `nonisolated`: the design system's target is main-actor by default, and the tokens are
+read from nonisolated code such as environment defaults and geometry callbacks.
 """
 
 from __future__ import annotations
 
+import json
+import re
 from typing import Any
 
-from . import number
+from . import load, number
 
 HEADER = (
     "// Generated from tokens/*.json by generator/genkit/tokens. "
@@ -16,9 +21,37 @@ HEADER = (
 
 RELATIVE_PATH = "Packages/Core/Sources/DesignSystem/Tokens/DesignTokens.swift"
 
+#: The asset catalog's accent colour, relative to the app target's folder.
+ACCENT_COLOR_PATH = "Assets.xcassets/AccentColor.colorset/Contents.json"
+
+#: The motion constants the SwiftUI design system reads, as (Swift name, Swift type, group and key
+#: in motion.json, divisor). Milliseconds become seconds, as SwiftUI takes them.
+_MOTION_CONSTANTS: tuple[tuple[str, str, str, str, int], ...] = (
+    ("fadeShort", "TimeInterval", "fades", "shortMs", 1000),
+    ("pressScale", "CGFloat", "press", "scale", 1),
+    ("pressScaleLarge", "CGFloat", "press", "scaleLarge", 1),
+    ("pressScaleIcon", "CGFloat", "press", "scaleIcon", 1),
+    ("pressDimAlpha", "Double", "press", "dimAlpha", 1),
+    ("highlightFadeOut", "TimeInterval", "press", "highlightFadeOutMs", 1000),
+)
+
 
 def emit(tokens: dict[str, Any]) -> str:
-    lines = [HEADER, "import SwiftUI", "", "enum DesignTokens {"]
+    lines = [HEADER, "import SwiftUI", ""]
+    lines += _choice(
+        "AppDesignStyle",
+        "A design style: corner radii, container treatments, surface tones and type voice.",
+        {name: style["description"] for name, style in tokens["styles"].items()},
+    )
+    lines.append("")
+    # Resolving keeps a motion style's values and drops its description, which only documents it,
+    # so the description comes from the token files themselves.
+    lines += _choice(
+        "AppMotionStyle",
+        "A motion style: how much the springs overshoot, and how quickly they travel.",
+        {name: style["description"] for name, style in load()["motion"]["styles"].items()},
+    )
+    lines += ["", "nonisolated enum DesignTokens {"]
     sections = [
         _points("Spacing", tokens["spacing"]),
         _points("Radii", tokens["radii"]),
@@ -31,33 +64,81 @@ def emit(tokens: dict[str, Any]) -> str:
         _styles(tokens["styles"]),
         _defaults(tokens["defaults"]),
     ]
-    for section in sections:
-        lines.append("")
+    for index, section in enumerate(sections):
+        if index:
+            lines.append("")
         lines.extend(f"    {line}" if line else "" for line in section)
     lines.append("}")
     return "\n".join(lines) + "\n"
 
 
-def _lower(name: str) -> str:
-    return name[:1].lower() + name[1:]
+def accent_colorset(tokens: dict[str, Any]) -> str:
+    """
+    The asset catalog's `AccentColor`, in light and dark: the accent of the design style the project
+    was generated with. Xcode makes it the app's default tint, so what is drawn outside the themed
+    SwiftUI root carries the brand colour too.
+    """
+    tone = tokens["palette"]["tones"][tokens["styles"][tokens["defaults"]["designStyle"]]["surfaces"]]
+    colors = []
+    for theme in ("light", "dark"):
+        alpha, red, green, blue = _argb(tone[theme]["accent"])
+        entry: dict[str, Any] = {}
+        if theme == "dark":
+            entry["appearances"] = [{"appearance": "luminosity", "value": "dark"}]
+        components = {"alpha": alpha, "blue": blue, "green": green, "red": red}
+        entry["color"] = {"color-space": "srgb", "components": {key: f"{value:.3f}" for key, value in components.items()}}
+        entry["idiom"] = "universal"
+        colors.append(entry)
+    catalog = {"colors": colors, "info": {"author": "xcode", "version": 1}}
+    # The layout Xcode writes asset catalogs in.
+    return json.dumps(catalog, indent=2, separators=(",", " : ")) + "\n"
+
+
+def case_name(token: str) -> str:
+    """A token's name as a Swift enum case: `BrandTint` → `brandTint`, `Outlined` → `outlined`."""
+    return token[:1].lower() + token[1:]
+
+
+def _choice(name: str, summary: str, cases: dict[str, str]) -> list[str]:
+    lines = [f"/// {summary}", f"public nonisolated enum {name}: String, CaseIterable, Sendable {{"]
+    for index, (token, description) in enumerate(cases.items()):
+        if index:
+            lines.append("")
+        lines += [f"    /// {_sentence(description)}", f'    case {case_name(token)} = "{token}"']
+    lines.append("}")
+    return lines
+
+
+def _sentence(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _argb(hex_argb: str) -> tuple[float, float, float, float]:
+    """`#AARRGGBB` as alpha, red, green and blue from 0 to 1."""
+    digits = hex_argb.lstrip("#")
+    alpha, red, green, blue = (int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4, 6))
+    return alpha, red, green, blue
 
 
 def _color(hex_argb: str) -> str:
-    digits = hex_argb.lstrip("#")
-    alpha, red, green, blue = (int(digits[i : i + 2], 16) / 255 for i in (0, 2, 4, 6))
+    alpha, red, green, blue = _argb(hex_argb)
     return (
         f"Color(.sRGB, red: {red:.4f}, green: {green:.4f}, blue: {blue:.4f}, opacity: {alpha:.4f})"
     )
 
 
 def _points(name: str, values: dict[str, float]) -> list[str]:
-    return [f"enum {name} {{", *(f"    static let {key}: CGFloat = {number(value)}" for key, value in values.items()), "}"]
+    return [
+        f"nonisolated enum {name} {{",
+        *(f"    static let {key}: CGFloat = {number(value)}" for key, value in values.items()),
+        "}",
+    ]
 
 
 def _borders(borders: dict[str, float]) -> list[str]:
     widths = {key: value for key, value in borders.items() if key != "hairlinePx"}
     return [
-        "enum Borders {",
+        "nonisolated enum Borders {",
         "    /// Physical pixels, not points: a hairline is `hairlinePx / displayScale` points on every screen.",
         f"    static let hairlinePx: Int = {int(borders['hairlinePx'])}",
         *_points("Borders", widths)[1:],
@@ -67,14 +148,15 @@ def _borders(borders: dict[str, float]) -> list[str]:
 def _type(type_tokens: dict[str, Any]) -> list[str]:
     voices = type_tokens["voices"]
     lines = [
-        "struct TypeRole {",
+        "nonisolated struct TypeRole {",
         "    let size: CGFloat",
         "    let lineHeight: CGFloat",
         "    let tracking: CGFloat",
         *(f"    let weight{voice}: Int" for voice in voices),
         "}",
         "",
-        "enum Typography {",
+        # Not "Type": that is a Swift metatype name.
+        "nonisolated enum Typography {",
     ]
     for name, role in type_tokens["roles"].items():
         weights = ", ".join(f"weight{voice}: {role['weight'][voice]}" for voice in voices)
@@ -87,54 +169,41 @@ def _type(type_tokens: dict[str, Any]) -> list[str]:
 
 
 def _motion(motion: dict[str, Any]) -> list[str]:
-    spring_names = list(next(iter(motion["styles"].values()))["springs"])
+    styles = motion["styles"]
+    spring_names = list(next(iter(styles.values()))["springs"])
     lines = [
-        "struct SpringToken {",
+        "/// A spring as response and damping ratio, the pair the Android template's springs use, so",
+        "/// both apps run the same curve whatever the bounce.",
+        "nonisolated struct SpringToken {",
         "    let response: Double",
-        "    let bounce: Double",
-        "    var spring: Spring { Spring(duration: response, bounce: bounce) }",
+        "    let dampingRatio: Double",
+        "",
+        "    var spring: Spring {",
+        "        Spring(response: response, dampingRatio: dampingRatio)",
+        "    }",
         "}",
         "",
-        "struct MotionStyle {",
+        "nonisolated struct MotionStyle {",
         *(f"    let {name}: SpringToken" for name in spring_names),
         "}",
         "",
-        "enum Motion {",
+        "nonisolated enum Motion {",
     ]
-    for style, values in motion["styles"].items():
-        springs = ", ".join(
-            f"{name}: SpringToken(response: {number(spring['response'])}, bounce: {number(spring['bounce'])})"
+    for style, values in styles.items():
+        lines.append(f"    static let {case_name(style)} = MotionStyle(")
+        arguments = [
+            f"        {name}: SpringToken(response: {number(spring['response'])}, "
+            f"dampingRatio: {number(spring['dampingRatio'])})"
             for name, spring in values["springs"].items()
-        )
-        lines.append(f"    static let {_lower(style)} = MotionStyle({springs})")
-    navigation, skeleton = motion["navigation"], motion["skeleton"]
-    easing = skeleton["easing"]
-    lines += [
-        f"    static let fadeShort: Double = {number(motion['fades']['shortMs'] / 1000)}",
-        f"    static let fadeLong: Double = {number(motion['fades']['longMs'] / 1000)}",
-        f"    static let staggerStep: Double = {number(motion['stagger']['stepMs'] / 1000)}",
-        f"    static let staggerMaxItems: Int = {int(motion['stagger']['maxItems'])}",
-        f"    static let pressScale: CGFloat = {number(motion['press']['scale'])}",
-        f"    static let pressScaleLarge: CGFloat = {number(motion['press']['scaleLarge'])}",
-        f"    static let pressScaleIcon: CGFloat = {number(motion['press']['scaleIcon'])}",
-        f"    static let pressDimAlpha: Double = {number(motion['press']['dimAlpha'])}",
-        f"    static let highlightFadeOut: Double = {number(motion['press']['highlightFadeOutMs'] / 1000)}",
-        f"    static let navigationParallax: CGFloat = {number(navigation['parallax'])}",
-        f"    static let navigationScrimAlphaLight: Double = {number(navigation['scrimAlpha']['light'])}",
-        f"    static let navigationScrimAlphaDark: Double = {number(navigation['scrimAlpha']['dark'])}",
-        f"    static let navigationEdgeShadow: CGFloat = {number(navigation['edgeShadow'])}",
-        f"    static let skeletonBandWidth: CGFloat = {number(skeleton['bandWidth'])}",
-        f"    static let skeletonTiltDegrees: Double = {number(skeleton['tiltDegrees'])}",
-        f"    static let skeletonSweep: Double = {number(skeleton['sweepMs'] / 1000)}",
-        f"    static let skeletonPause: Double = {number(skeleton['pauseMs'] / 1000)}",
-        "    static let skeletonEasing = UnitCurve.bezier(",
-        f"        startControlPoint: UnitPoint(x: {number(easing[0])}, y: {number(easing[1])}),",
-        f"        endControlPoint: UnitPoint(x: {number(easing[2])}, y: {number(easing[3])})",
-        "    )",
-        f"    static let skeletonReferenceTravel: CGFloat = {number(skeleton['referenceTravel'])}",
-        f"    static let skeletonMaxSlowdown: Double = {number(skeleton['maxSlowdown'])}",
-        "}",
-    ]
+        ]
+        lines += [f"{argument}," for argument in arguments[:-1]] + arguments[-1:]
+        lines.append("    )")
+    lines += ["", "    static func style(_ style: AppMotionStyle) -> MotionStyle {", "        switch style {"]
+    lines += [f"        case .{case_name(style)}: {case_name(style)}" for style in styles]
+    lines += ["        }", "    }", ""]
+    for name, swift_type, group, key, divisor in _MOTION_CONSTANTS:
+        lines.append(f"    static let {name}: {swift_type} = {number(motion[group][key] / divisor)}")
+    lines.append("}")
     return lines
 
 
@@ -144,22 +213,22 @@ def _palette(palette: dict[str, Any]) -> list[str]:
     statuses = [name for name, value in sample.items() if isinstance(value, dict)]
     status_fields = list(sample[statuses[0]]) if statuses else []
     lines = [
-        "struct Status {",
+        "nonisolated struct Status {",
         *(f"    let {field}: Color" for field in status_fields),
         "}",
         "",
-        "struct Roles {",
+        "nonisolated struct Roles {",
         *(f"    let {name}: Color" for name in plain),
         *(f"    let {name}: Status" for name in statuses),
         "}",
         "",
-        "enum Palette {",
+        "/// The surface tones a design style is drawn on, resolved per appearance.",
+        "nonisolated enum Palette {",
     ]
-    for ramp, steps in palette["ramps"].items():
-        for step, value in steps.items():
-            lines.append(f"    static let {ramp}{step} = {_color(value)}")
-    for tone, themes in palette["tones"].items():
-        lines += ["", f"    enum {tone} {{"]
+    for index, (tone, themes) in enumerate(palette["tones"].items()):
+        if index:
+            lines.append("")
+        lines.append(f"    nonisolated enum {tone} {{")
         for theme, roles in themes.items():
             lines.append(f"        static let {theme} = Roles(")
             arguments = [f"            {name}: {_color(roles[name])}" for name in plain]
@@ -180,46 +249,50 @@ def _palette(palette: dict[str, Any]) -> list[str]:
 def _styles(styles: dict[str, Any]) -> list[str]:
     radii = list(next(iter(styles.values()))["radii"])
     lines = [
-        "struct Style {",
+        "nonisolated struct Style {",
         *(f"    let radius{key.capitalize()}: CGFloat" for key in radii),
-        "    /// Nil: a pill, as round as the component is tall.",
+        "    /// Nil: a capsule, as round as the control is tall.",
         "    let buttonRadius: CGFloat?",
         "    let chipRadius: CGFloat?",
-        "    let card: String",
-        "    let field: String",
-        "    let bar: String",
+        "    let card: CardTreatment",
+        "    let field: FieldTreatment",
         "    let borderWidth: CGFloat",
         "    let borderWidthStrong: CGFloat",
         "    let uppercaseLabels: Bool",
         "    let offsetShadow: CGFloat",
-        "    let surfaces: String",
-        "    let voice: String",
+        "    let light: Roles",
+        "    let dark: Roles",
+        "    let voice: TypeVoice",
         "}",
         "",
-        "enum Styles {",
+        "nonisolated enum Styles {",
     ]
     for name, style in styles.items():
         arguments = [f"radius{key.capitalize()}: {number(style['radii'][key])}" for key in radii]
         arguments += [
             f"{key}: {'nil' if style[key] == 'pill' else number(style[key])}" for key in ("buttonRadius", "chipRadius")
         ]
-        arguments += [f'{key}: "{style[key]}"' for key in ("card", "field", "bar")]
+        arguments += [f"{key}: .{case_name(style[key])}" for key in ("card", "field")]
         arguments += [f"{key}: {number(style[key])}" for key in ("borderWidth", "borderWidthStrong")]
         arguments.append(f"uppercaseLabels: {'true' if style['uppercaseLabels'] else 'false'}")
         arguments.append(f"offsetShadow: {number(style['offsetShadow'])}")
-        arguments += [f'{key}: "{style[key]}"' for key in ("surfaces", "voice")]
-        lines.append(f"    static let {_lower(name)} = Style({', '.join(arguments)})")
-    lines.append("}")
+        arguments += [f"{theme}: Palette.{style['surfaces']}.{theme}" for theme in ("light", "dark")]
+        arguments.append(f"voice: .{case_name(style['voice'])}")
+        lines.append(f"    static let {case_name(name)} = Style(")
+        lines += [f"        {argument}," for argument in arguments[:-1]] + [f"        {arguments[-1]}"]
+        lines.append("    )")
+    lines += ["", "    static func style(_ style: AppDesignStyle) -> Style {", "        switch style {"]
+    lines += [f"        case .{case_name(name)}: {case_name(name)}" for name in styles]
+    lines += ["        }", "    }", "}"]
     return lines
 
 
 def _defaults(defaults: dict[str, Any]) -> list[str]:
     return [
-        "enum Defaults {",
-        f"    static let designStyle = \"{defaults['designStyle']}\"",
-        f"    static let motionStyle = \"{defaults['motionStyle']}\"",
+        "/// The choices the project was generated with.",
+        "nonisolated enum Defaults {",
+        f"    static let designStyle = AppDesignStyle.{case_name(defaults['designStyle'])}",
+        f"    static let motionStyle = AppMotionStyle.{case_name(defaults['motionStyle'])}",
         f"    static let hapticsEnabled = {'true' if defaults['hapticsEnabled'] else 'false'}",
-        f"    static let fontName = \"{defaults['fontName']}\"",
-        f"    static let monoFontName = \"{defaults['monoFontName']}\"",
         "}",
     ]

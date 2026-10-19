@@ -359,17 +359,39 @@ class EmitterTest(unittest.TestCase):
     def test_swift_mirrors_it(self):
         for line in (
             swift.HEADER,
-            "enum DesignTokens {",
-            "    enum Typography {",
-            "    struct SpringToken {",
-            "    enum Palette {",
-            "        enum Cool {",
-            "    enum Defaults {",
+            "public nonisolated enum AppDesignStyle: String, CaseIterable, Sendable {",
+            '    case utility = "Utility"',
+            "public nonisolated enum AppMotionStyle: String, CaseIterable, Sendable {",
+            "nonisolated enum DesignTokens {",
+            "    nonisolated enum Typography {",
+            "    nonisolated struct SpringToken {",
+            "    nonisolated enum Palette {",
+            "        nonisolated enum Cool {",
+            "    nonisolated enum Defaults {",
+            "        static let designStyle = AppDesignStyle.utility",
         ):
             self.assertIn(line + "\n", self.swift)
         self.assertIn("static let minTouchTarget: CGFloat = 44", self.swift)
         # A hairline is device pixels on both platforms, never points.
         self.assertIn(f"static let hairlinePx: Int = {int(tokens.load()['foundation']['borders']['hairlinePx'])}\n", self.swift)
+
+    def test_swift_springs_use_the_android_damping(self):
+        release = tokens.resolve(None, "ios")["motion"]["styles"]["Bouncy"]["springs"]["release"]
+        self.assertIn(
+            f"release: SpringToken(response: {release['response']}, dampingRatio: {release['dampingRatio']}),",
+            self.swift,
+        )
+
+    def test_swift_styles_are_typed(self):
+        utility = tokens.load()["styles"]["Utility"]
+        for argument in (
+            f"card: .{swift.case_name(utility['card'])},",
+            f"field: .{swift.case_name(utility['field'])},",
+            f"light: Palette.{utility['surfaces']}.light,",
+            f"voice: .{swift.case_name(utility['voice'])}",
+        ):
+            self.assertIn(argument, self.swift)
+        self.assertIn("        case .utility: utility\n", self.swift)
 
     def test_the_website_gets_a_palette_per_design_style(self):
         catalogue = web.catalogue_tokens(tokens.resolve(None, "web"))

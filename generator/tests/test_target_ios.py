@@ -1,0 +1,1274 @@
+"""
+The SwiftUI target, checked without a Swift compiler (MASTER-PLAN A12.4).
+
+Every iOS preset, a scaffolded spec and each feature switched off on its own are generated and read
+back: what is left of the template, the XcodeGen project, the package graph and its isolation, the
+imports, balanced delimiters, forbidden patterns, String Catalogs, previews and folder rules. The
+macOS CI job compiles the same projects; these checks catch what goes wrong between two of its runs.
+"""
+
+from __future__ import annotations
+
+import copy
+import importlib.util
+import json
+import plistlib
+import re
+import shutil
+import struct
+import tempfile
+import unittest
+import zlib
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from pathlib import Path
+
+from genkit import tokens
+from genkit.core import pipeline, translations
+from genkit.core.copy import is_under
+from genkit.core.spec import SpecError
+from genkit.targets import get
+from genkit.targets.ios import icons, scaffold, tabs
+from genkit.targets.ios.target import bundle_id
+from genkit.tokens import swift
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
+
+IOS = get("ios")
+TEMPLATE = IOS.template_dir
+FIXTURES = Path(__file__).resolve().parent / "fixtures" / "v2"
+
+#: Modules any target may import without declaring them.
+SYSTEM_MODULES = frozenset({
+    "Accessibility", "CoreGraphics", "Foundation", "Network", "OSLog", "Observation", "SwiftData", "SwiftUI", "Testing",
+    "UIKit", "os",
+})
+
+#: Apple's required-reason API categories the template's code uses, how each shows in Swift, and the
+#: reason that matches that use. App Store Connect refuses a build that uses one of these APIs
+#: without the category and a reason in the app's privacy manifest.
+REQUIRED_REASON_APIS = {
+    "NSPrivacyAccessedAPICategoryUserDefaults": (r"\bUserDefaults\b|@AppStorage\b", "CA92.1"),
+}
+
+#: Targets whose sources are interface code: main actor by default.
+CORE_UI_TARGETS = frozenset({"DesignSystem", "Navigation"})
+CORE_TARGETS = frozenset({"AppCore", "AppTesting", "DesignSystem", "Navigation", "Networking", "Persistence"})
+#: Test support, which only test targets may link.
+TEST_SUPPORT = "AppTesting"
+
+
+def raw_spec(**fields) -> dict:
+    return {"schema": 2, "platform": "ios", "app_name": "Trail Notes", "package_name": "com.example.trail", **fields}
+
+
+def read(**fields):
+    return pipeline.read_spec(raw_spec(**fields), IOS)
+
+
+def generate(directory: Path, raw: dict) -> tuple[Path, object]:
+    parsed, _ = pipeline.read_spec(raw, IOS)
+    project = directory / raw["app_name"].replace(" ", "")
+    pipeline.build(parsed.spec, IOS, project, zip_output=False, commit="test")
+    return project, parsed.spec
+
+
+# Swift, read well enough to check it ----------------------------------------------------------
+
+_STRING_START = re.compile(r'(#*)("""|")')
+
+
+class SwiftSyntaxError(ValueError):
+    pass
+
+
+class Lexer:
+    """
+    Splits Swift into code and string literals. Comments (nested block comments too) are dropped and
+    each literal becomes `"§n"` in the code, where `n` indexes `literals`; interpolations inside a
+    literal are skipped with it.
+    """
+
+    def __init__(self, text: str):
+        self.text = text
+        self.i = 0
+        self.out: list[str] = []
+        self.literals: list[str] = []
+
+    def run(self) -> tuple[str, list[str]]:
+        self._code(self.out, interpolation=False)
+        return "".join(self.out), self.literals
+
+    def _code(self, out: list[str], interpolation: bool) -> None:
+        text, depth = self.text, 0
+        while self.i < len(text):
+            if text.startswith("//", self.i):
+                end = text.find("\n", self.i)
+                self.i = len(text) if end < 0 else end
+                continue
+            if text.startswith("/*", self.i):
+                self._block_comment()
+                out.append(" ")
+                continue
+            match = _STRING_START.match(text, self.i)
+            if match:
+                self.i = match.end()
+                # Numbered before it is read, so the strings of its interpolations come after it.
+                index = len(self.literals)
+                self.literals.append("")
+                self.literals[index] = self._string(len(match.group(1)), match.group(2))
+                out.append(f'"§{index}"')
+                continue
+            char = text[self.i]
+            if interpolation:
+                if char == "(":
+                    depth += 1
+                elif char == ")":
+                    if depth == 0:
+                        self.i += 1
+                        return
+                    depth -= 1
+            out.append(char)
+            self.i += 1
+        if interpolation:
+            raise SwiftSyntaxError("an interpolation is never closed")
+
+    def _block_comment(self) -> None:
+        depth = 0
+        while self.i < len(self.text):
+            if self.text.startswith("/*", self.i):
+                depth += 1
+                self.i += 2
+            elif self.text.startswith("*/", self.i):
+                depth -= 1
+                self.i += 2
+                if depth == 0:
+                    return
+            else:
+                self.i += 1
+        raise SwiftSyntaxError("a block comment is never closed")
+
+    def _string(self, hashes: int, quote: str) -> str:
+        text, close, escape = self.text, quote + "#" * hashes, "\\" + "#" * hashes
+        value: list[str] = []
+        while self.i < len(text):
+            if text.startswith(close, self.i):
+                self.i += len(close)
+                return "".join(value)
+            if quote == '"' and text[self.i] == "\n":
+                raise SwiftSyntaxError("a string literal runs past the end of its line")
+            if text.startswith(escape, self.i):
+                self.i += len(escape)
+                if text.startswith("(", self.i):
+                    self.i += 1
+                    self._code([], interpolation=True)
+                    value.append("\\(…)")
+                elif self.i < len(text):
+                    value.append(text[self.i])
+                    self.i += 1
+                continue
+            value.append(text[self.i])
+            self.i += 1
+        raise SwiftSyntaxError("a string literal is never closed")
+
+
+def lex(path: Path) -> tuple[str, list[str]]:
+    return Lexer(path.read_text(encoding="utf-8")).run()
+
+
+def unbalanced(code: str) -> str | None:
+    """The first delimiter that does not pair up, or None."""
+    pairs, stack = {")": "(", "]": "[", "}": "{"}, []
+    for line, text in enumerate(code.splitlines(), 1):
+        for char in text:
+            if char in "([{":
+                stack.append((char, line))
+            elif char in pairs:
+                if not stack or stack[-1][0] != pairs[char]:
+                    return f"'{char}' on line {line}"
+                stack.pop()
+    return f"'{stack[-1][0]}' from line {stack[-1][1]}" if stack else None
+
+
+def imports(code: str) -> set[str]:
+    return set(re.findall(r"^\s*(?:@testable\s+)?import\s+(?:(?:struct|class|enum|protocol|func)\s+)?(\w+)", code, re.M))
+
+
+def call_arguments(code: str, start: int) -> str:
+    """The text between the parenthesis at `start` and the one that closes it."""
+    depth = 0
+    for index in range(start, len(code)):
+        if code[index] == "(":
+            depth += 1
+        elif code[index] == ")":
+            depth -= 1
+            if depth == 0:
+                return code[start + 1 : index]
+    raise SwiftSyntaxError("a call is never closed")
+
+
+def chain_root(code: str, dot: int) -> str | None:
+    """
+    The name the modifier chain ending at the `.` at `dot` starts from: `List` for
+    `List { … }.scrollDisabled(true).appRedacted()`. None when the chain starts with no name.
+    """
+    index = dot
+    while True:
+        index -= 1
+        while index >= 0 and code[index].isspace():
+            index -= 1
+        if index < 0:
+            return None
+        if code[index] in ")]}":
+            depth = 0
+            while index >= 0:
+                if code[index] in ")]}":
+                    depth += 1
+                elif code[index] in "([{":
+                    depth -= 1
+                    if depth == 0:
+                        break
+                index -= 1
+            continue
+        if not (code[index].isalnum() or code[index] == "_"):
+            return None
+        end = index + 1
+        while index > 0 and (code[index - 1].isalnum() or code[index - 1] == "_"):
+            index -= 1
+        before = index - 1
+        while before >= 0 and code[before].isspace():
+            before -= 1
+        if before >= 0 and code[before] == ".":
+            index = before
+            continue
+        return code[index:end]
+
+
+# Package.swift ---------------------------------------------------------------------------------
+
+@dataclass
+class PackageTarget:
+    name: str
+    test: bool
+    dependencies: list[str] = field(default_factory=list)
+    products: list[str] = field(default_factory=list)
+    settings: str | None = None
+    resources: bool = False
+
+
+@dataclass
+class Package:
+    name: str
+    products: dict[str, list[str]]
+    targets: dict[str, PackageTarget]
+    #: Each `let` of SwiftSettings → whether it sets the main actor as the default isolation.
+    main_actor_settings: dict[str, bool]
+
+
+def read_package(path: Path) -> Package:
+    code, literals = lex(path)
+
+    def literal(token: str) -> str:
+        return literals[int(token)]
+
+    settings = {
+        name: ".defaultIsolation(MainActor.self)" in body
+        for name, body in re.findall(r"let\s+(\w+):\s*\[SwiftSetting\]\s*=\s*\[(.*?)\n\]", code, re.S)
+    }
+    products = {
+        literal(name): [literal(target) for target in re.findall(r'"§(\d+)"', targets)]
+        for name, targets in re.findall(r'\.library\(\s*name:\s*"§(\d+)",\s*targets:\s*\[([^\]]*)\]', code)
+    }
+    targets: dict[str, PackageTarget] = {}
+    for match in re.finditer(r"\.(target|testTarget)\(", code):
+        body = call_arguments(code, match.end() - 1)
+        name = literal(re.search(r'name:\s*"§(\d+)"', body).group(1))
+        target = PackageTarget(name, test=match.group(1) == "testTarget")
+        dependencies = re.search(r"dependencies:\s*\[", body)
+        if dependencies:
+            depth, end = 1, dependencies.end()
+            for index in range(dependencies.end(), len(body)):
+                depth += {"[": 1, "]": -1}.get(body[index], 0)
+                if depth == 0:
+                    end = index
+                    break
+            listed = body[dependencies.end() : end]
+            target.products = [
+                literal(name) for name, _ in re.findall(r'\.product\(\s*name:\s*"§(\d+)",\s*package:\s*"§(\d+)"\s*\)', listed)
+            ]
+            without_products = re.sub(r"\.product\([^)]*\)", "", listed)
+            target.dependencies = [literal(token) for token in re.findall(r'"§(\d+)"', without_products)]
+        setting = re.search(r"swiftSettings:\s*(\w+)", body)
+        target.settings = setting.group(1) if setting else None
+        target.resources = ".process(" in body
+        targets[name] = target
+    name = literals[int(re.search(r'Package\(\s*name:\s*"§(\d+)"', code).group(1))]
+    return Package(name, products, targets, settings)
+
+
+def main_actor_by_default(package: Package, target: PackageTarget) -> bool:
+    return bool(target.settings and package.main_actor_settings.get(target.settings))
+
+
+# The checks, over one generated project --------------------------------------------------------
+
+#: Values a feature takes from the design system (AppTheme, AppSpacing, AppSizes, AppLayout), never
+#: writes itself: AGENTS.md's rule, and the Android template's raw-color, raw-dp and raw-tween.
+RAW_VALUES = {
+    "a raw colour": r"\bColor\(",
+    "a raw font size": r"\.system\(size:\s*\d",
+    "a raw spacing": r"\bspacing:\s*[1-9]|\.padding\((?:\.\w+,\s*)?[1-9]",
+    "a raw size": r"\.frame\((?:min|ideal|max)?(?:[wW]idth|[hH]eight):\s*\d",
+    "a raw duration or curve": r"\bduration:\s*\d|\.(?:easeIn|easeOut|easeInOut|linear)\b|\.spring\(",
+}
+
+
+#: Views whose content scrolls or loads lazily. Redacted as a whole, every frame of the shimmer
+#: would draw all of their content again through the shader, rather than each row's own bones.
+SCROLLING_CONTAINERS = frozenset({
+    "List", "ScrollView", "Form", "Table", "LazyVStack", "LazyHStack", "LazyVGrid", "LazyHGrid",
+})
+
+
+def swift_files(directory: Path) -> list[Path]:
+    return sorted(directory.rglob("*.swift")) if directory.is_dir() else []
+
+
+def check_project(case: unittest.TestCase, project: Path, spec) -> None:
+    """Every static check of A12.4, ADAPTIVE-PLAN §14 and STANDARDS-PLAN §2.12 on one project."""
+    app = spec.pascal_name
+    core = read_package(project / "Packages" / "Core" / "Package.swift")
+    features = read_package(project / "Packages" / "Features" / "Package.swift")
+
+    with case.subTest(check="no template text is left"):
+        for path in sorted(project.rglob("*")):
+            relative = path.relative_to(project).as_posix()
+            case.assertNotRegex(relative, r"BaseApp|baseapp", relative)
+            if path.is_file() and path.suffix not in (".png",):
+                text = path.read_text(encoding="utf-8")
+                for leftover in ("<opt:", "</opt", "<opt-else", "<generated:", "BaseApp", "com.base.app", "baseapp"):
+                    case.assertNotIn(leftover, text, f"{relative} still has {leftover}")
+                case.assertNotRegex(text, r"(?m)^\s*(//|#)~", f"{relative} has an else line left")
+
+    with case.subTest(check="every Swift file is balanced"):
+        for path in sorted(project.rglob("*.swift")):
+            code, _ = lex(path)
+            case.assertIsNone(unbalanced(code), path.relative_to(project).as_posix())
+
+    with case.subTest(check="packages have the targets their folders have"):
+        for package, root in ((core, project / "Packages" / "Core"), (features, project / "Packages" / "Features")):
+            on_disk = {path.name for folder in ("Sources", "Tests") for path in (root / folder).iterdir() if path.is_dir()}
+            case.assertEqual(on_disk, set(package.targets), f"{package.name}: folders and targets differ")
+            for target in package.targets.values():
+                folder = root / ("Tests" if target.test else "Sources") / target.name
+                case.assertTrue(swift_files(folder), f"{target.name} has no sources")
+                case.assertEqual((folder / "Resources").is_dir(), target.resources, f"{target.name}: Resources and .process differ")
+                for product, members in package.products.items():
+                    case.assertTrue(set(members) <= set(package.targets), f"{product} names a missing target")
+
+    with case.subTest(check="the module graph"):
+        for target in core.targets.values():
+            if target.test:
+                continue
+            case.assertFalse(target.products)
+            case.assertTrue(set(target.dependencies) <= CORE_TARGETS - {TEST_SUPPORT}, target.name)
+            if target.name not in CORE_UI_TARGETS:
+                case.assertFalse(set(target.dependencies) & CORE_UI_TARGETS, f"{target.name} depends on interface code")
+        core_products = set(core.products)
+        for target in features.targets.values():
+            case.assertTrue(set(target.products) <= core_products, f"{target.name} uses a product Core does not have")
+            if target.test:
+                continue
+            case.assertNotIn(TEST_SUPPORT, target.products, f"{target.name} links test support")
+            if target.name.endswith("Data"):
+                case.assertEqual([], target.dependencies, f"{target.name} depends on another Features target")
+            else:
+                own = f"{target.name.removesuffix('Feature')}Data"
+                case.assertTrue(set(target.dependencies) <= {own}, f"{target.name} depends on {target.dependencies}")
+
+    with case.subTest(check="only interface targets are main-actor by default"):
+        for package in (core, features):
+            for target in package.targets.values():
+                subject = target.name.removesuffix("Tests")
+                interface = subject in CORE_UI_TARGETS or subject.endswith("Feature")
+                case.assertEqual(interface, main_actor_by_default(package, target), target.name)
+        background = [project / "Packages" / "Core" / "Sources" / name for name in ("Networking", "Persistence")]
+        background += [path for path in (project / "Packages" / "Features" / "Sources").iterdir() if path.name.endswith("Data")]
+        for folder in background:
+            for path in swift_files(folder):
+                case.assertNotIn("@MainActor", lex(path)[0], path.relative_to(project).as_posix())
+
+    with case.subTest(check="every import is declared, and every dependency imported"):
+        for package, root in ((core, project / "Packages" / "Core"), (features, project / "Packages" / "Features")):
+            for target in package.targets.values():
+                declared = set(target.dependencies) | set(target.products)
+                imported: set[str] = set()
+                for path in swift_files(root / ("Tests" if target.test else "Sources") / target.name):
+                    found = imports(lex(path)[0])
+                    imported |= found
+                    undeclared = found - SYSTEM_MODULES - {target.name} - declared
+                    case.assertFalse(undeclared, f"{path.relative_to(project)} imports {sorted(undeclared)}")
+                case.assertFalse(declared - imported, f"{target.name} never imports {sorted(declared - imported)}")
+
+    with case.subTest(check="forbidden patterns"):
+        forbidden = {
+            "ObservableObject": r"\bObservableObject\b",
+            "@Published": r"@Published\b",
+            "try!": r"\btry!",
+            "print(": r"(?<![\w.])print\(",
+            "AnyView": r"\bAnyView\b",
+            "UIScreen.main": r"\bUIScreen\.main\b",
+            "DispatchQueue.main.async": r"\bDispatchQueue\.main\.async",
+            "UIRequiresFullScreen": r"\bUIRequiresFullScreen\b",
+        }
+        for path in sorted(project.rglob("*.swift")):
+            code = lex(path)[0]
+            relative = path.relative_to(project).as_posix()
+            for name, pattern in forbidden.items():
+                case.assertNotRegex(code, pattern, f"{relative} uses {name}")
+            if relative.startswith("Packages/Features/Sources/"):
+                case.assertNotRegex(code, r"\buserInterfaceIdiom\b", f"{relative} decides layout by device")
+                # One sheet system (REQUIREMENTS 33): appSheet, or appSheetPresentation for content
+                # that something else presents, such as an inspector on a phone.
+                case.assertNotRegex(code, r"\.(?:sheet|presentationDetents)\(", f"{relative} presents a sheet without appSheet")
+                # The sheet sets interactiveDismissDisabled from its options, and SwiftUI documents no
+                # order between nested ones, so a feature's own could be silently overridden.
+                case.assertNotRegex(
+                    code, r"\.interactiveDismissDisabled\(", f"{relative} guards a sheet without appSheetDismissGuard"
+                )
+                # One shimmer band for the window (REQUIREMENTS 34): placeholders go through
+                # appRedacted, on the content of a row or a card.
+                case.assertNotRegex(code, r"\.redacted\(", f"{relative} redacts without appRedacted")
+                for match in re.finditer(r"\.appRedacted\(", code):
+                    root = chain_root(code, match.start())
+                    case.assertNotIn(root, SCROLLING_CONTAINERS, f"{relative} redacts a whole {root}")
+                for width in re.findall(r"\.frame\(\s*(?:width|minWidth):\s*(\d+)", code):
+                    case.assertLess(int(width), 320, f"{relative} sets a width a window can be narrower than")
+                for name, pattern in RAW_VALUES.items():
+                    case.assertNotRegex(code, pattern, f"{relative} uses {name}; take it from the theme")
+
+    with case.subTest(check="the XcodeGen project"):
+        check_project_yml(case, project, spec, features)
+
+    with case.subTest(check="the privacy manifest"):
+        check_privacy_manifest(case, project, app)
+
+    with case.subTest(check="String Catalogs"):
+        check_catalogs(case, project, spec)
+
+    with case.subTest(check="every feature view has an iPad preview"):
+        for path in sorted((project / "Packages" / "Features" / "Sources").rglob("*View.swift")):
+            code, _ = lex(path)
+            widths = [int(width) for width in re.findall(r"#Preview\([^)]*traits:\s*\.fixedLayout\(width:\s*(\d+)", code)]
+            case.assertTrue(any(width >= 744 for width in widths), f"{path.relative_to(project)} has no iPad #Preview")
+
+    with case.subTest(check="preview code stays out of release builds"):
+        check_previews(case, project)
+
+    with case.subTest(check="folders are concepts, stores sit beside their views"):
+        check_folders(case, project)
+
+    with case.subTest(check="list-detail features are split views on the router's selection"):
+        check_list_detail(case, project)
+
+    with case.subTest(check="the docs name only what the project has"):
+        check_docs(case, project)
+
+    with case.subTest(check="the tokens carry the spec's choices"):
+        emitted = (project / swift.RELATIVE_PATH).read_text(encoding="utf-8")
+        case.assertIn(f"static let designStyle = AppDesignStyle.{spec.design_style[0].lower()}{spec.design_style[1:]}\n", emitted)
+        case.assertIn(f"static let motionStyle = AppMotionStyle.{spec.motion_style[0].lower()}{spec.motion_style[1:]}\n", emitted)
+        accent = (project / app / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")
+        case.assertEqual(swift.accent_colorset(tokens.resolve(spec, "ios")), accent, "the asset catalog's AccentColor")
+
+    app_code = "\n".join(lex(path)[0] for path in swift_files(project / app))
+    case.assertIn(f"struct {app}App: App", app_code)
+    if yaml is not None:
+        with case.subTest(check="the app links what it imports"):
+            linked = {
+                product
+                for dependency in project_yaml(project)["targets"][app]["dependencies"]
+                for product in dependency.get("products", [])
+            }
+            case.assertFalse(imports(app_code) - SYSTEM_MODULES - linked)
+
+
+def project_yaml(project: Path) -> dict:
+    return yaml.safe_load((project / "project.yml").read_text(encoding="utf-8"))
+
+
+def check_project_yml(case: unittest.TestCase, project: Path, spec, features: Package) -> None:
+    text = (project / "project.yml").read_text(encoding="utf-8")
+    # Without it, ProMotion iPhones hold custom SwiftUI animations to 60 Hz.
+    case.assertRegex(text, r"(?m)^\s+CADisableMinimumFrameDurationOnPhone: true$")
+    case.assertIsNone(re.search(r"(?m)^\s*UIRequiresFullScreen:", text), "project.yml opts out of resizable windows")
+    if yaml is None:
+        print("PyYAML is not installed: project.yml was checked as text only.")
+        return
+    data = yaml.safe_load(text)
+    app = spec.pascal_name
+    ios = spec.ios
+    case.assertEqual(app, data["name"])
+    case.assertEqual({app, f"{app}Tests"}, set(data["targets"]))
+    case.assertEqual({"Core": {"path": "Packages/Core"}, "Features": {"path": "Packages/Features"}}, data["packages"])
+    case.assertEqual(ios.deployment_target, data["options"]["deploymentTarget"]["iOS"])
+    case.assertEqual(ios.team_id, data["settings"]["base"]["DEVELOPMENT_TEAM"])
+
+    target = data["targets"][app]
+    case.assertEqual("application", target["type"])
+    case.assertEqual([{"path": app, "type": "syncedFolder"}], target["sources"])
+    case.assertEqual(bundle_id(spec), target["settings"]["base"]["PRODUCT_BUNDLE_IDENTIFIER"])
+    case.assertEqual({"Debug": "Config/Dev.xcconfig", "Release": "Config/Prod.xcconfig"}, target["configFiles"])
+    case.assertFalse(target["info"]["path"].startswith(f"{app}/"), "Info.plist inside the synced folder is copied as a resource too")
+
+    properties = target["info"]["properties"]
+    case.assertIs(True, properties["CADisableMinimumFrameDurationOnPhone"])
+    case.assertEqual({}, properties["UILaunchScreen"])
+    case.assertNotIn("UIRequiresFullScreen", properties)
+    case.assertEqual(
+        {"UIInterfaceOrientationPortrait", "UIInterfaceOrientationPortraitUpsideDown",
+         "UIInterfaceOrientationLandscapeLeft", "UIInterfaceOrientationLandscapeRight"},
+        set(properties["UISupportedInterfaceOrientations~ipad"]),
+    )
+    case.assertEqual(spec.label, properties["CFBundleDisplayName"])
+    case.assertEqual(["en", *spec.languages], properties["CFBundleLocalizations"])
+    case.assertEqual(spec.lower_name, properties["CFBundleURLTypes"][0]["CFBundleURLSchemes"][0])
+
+    linked = {dependency["package"]: dependency["products"] for dependency in target["dependencies"]}
+    case.assertEqual(scaffold.feature_products(spec), linked["Features"])
+    case.assertTrue(set(linked["Features"]) <= set(features.products))
+    case.assertEqual("Networking" in linked["Core"], spec.has("network"))
+    case.assertNotIn(TEST_SUPPORT, linked["Core"], "the app links test support")
+    case.assertEqual([{"target": app}], data["targets"][f"{app}Tests"]["dependencies"])
+
+
+def check_privacy_manifest(case: unittest.TestCase, project: Path, app: str) -> None:
+    manifest = plistlib.loads((project / app / "PrivacyInfo.xcprivacy").read_bytes())
+    case.assertIs(False, manifest["NSPrivacyTracking"])
+    declared = {
+        entry["NSPrivacyAccessedAPIType"]: entry["NSPrivacyAccessedAPITypeReasons"]
+        for entry in manifest["NSPrivacyAccessedAPITypes"]
+    }
+    shipped = [project / app, project / "Packages" / "Core" / "Sources", project / "Packages" / "Features" / "Sources"]
+    code = "\n".join(lex(path)[0] for folder in shipped for path in swift_files(folder))
+    for category, (pattern, reason) in REQUIRED_REASON_APIS.items():
+        if re.search(pattern, code):
+            case.assertIn(reason, declared.get(category, []), f"the privacy manifest does not declare {category}")
+
+
+def catalog_keys_used(code: str, literals: list[str]) -> set[tuple[str, str]]:
+    """(table, key) for every lookup in `bundle: .module` form."""
+    used = set()
+    pattern = r'(?:Text|String)\((?:localized:\s*)?"§(\d+)"(?:,\s*tableName:\s*"§(\d+)")?,\s*bundle:\s*\.module\)'
+    for key, table in re.findall(pattern, code):
+        used.add((literals[int(table)] if table else "Localizable", literals[int(key)]))
+    return used
+
+
+def check_catalogs(case: unittest.TestCase, project: Path, spec) -> None:
+    from genkit.targets.ios import strings
+
+    user_names = scaffold.user_names(spec)
+    catalogs = {}
+    for path in sorted(project.rglob("*.xcstrings")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        case.assertEqual("en", data["sourceLanguage"])
+        identity = strings.catalog_id(project, path)
+        for key, entry in data["strings"].items():
+            shipped = set(entry.get("localizations", {}))
+            expected = set() if key in user_names.get(identity, set()) else set(spec.languages)
+            case.assertEqual(expected, shipped, f"{identity}: '{key}'")
+        catalogs[path] = set(data["strings"])
+
+    for package in ("Core", "Features"):
+        for target in (project / "Packages" / package / "Sources").iterdir():
+            used = set()
+            for path in swift_files(target):
+                used |= catalog_keys_used(*lex(path))
+            for table, key in used:
+                catalog = target / "Resources" / f"{table}.xcstrings"
+                case.assertIn(key, catalogs.get(catalog, set()), f"{target.name}: '{key}' is not in {table}.xcstrings")
+
+    app_catalog = catalogs[project / spec.pascal_name / "Localizable.xcstrings"]
+    case.assertEqual(set(tabs.app_strings(spec)), app_catalog)
+
+
+def check_list_detail(case: unittest.TestCase, project: Path) -> None:
+    """
+    A feature with a list and a detail is a `NavigationSplitView` whose list selection is the tab
+    router's, so a wide window shows both columns and a deep link or a tap on the tab reaches it,
+    and its detail loads by id (ADAPTIVE-PLAN §14.2).
+    """
+    sources = project / "Packages" / "Features" / "Sources"
+    for target in sorted(sources.glob("*Feature")):
+        if not ((target / "List").is_dir() and (target / "Detail").is_dir()):
+            continue
+        name = target.name.removesuffix("Feature")
+        root, _ = lex(target / f"{name}RootView.swift")
+        relative = f"{target.name}/{name}RootView.swift"
+        case.assertIn("NavigationSplitView {", root, f"{relative} is not a split view")
+        case.assertRegex(root, r"router\.selection\b", f"{relative} does not select through the router")
+        case.assertRegex(root, rf"{name}DetailView\(id:", f"{relative} does not open its detail by id")
+        list_view, _ = lex(target / "List" / f"{name}ListView.swift")
+        case.assertIn("List(selection: $selection)", list_view, f"{target.name}'s list does not select")
+
+
+def debug_only(code: str) -> list[bool]:
+    """Per line of `code`, whether it is compiled only when DEBUG is set."""
+    branches: list[bool] = []
+    lines = []
+    for line in code.splitlines():
+        directive = line.strip()
+        if directive.startswith("#if "):
+            branches.append(directive == "#if DEBUG")
+        elif branches and (directive == "#else" or directive.startswith("#elseif ")):
+            branches[-1] = False
+        elif branches and directive == "#endif":
+            branches.pop()
+        lines.append(any(branches))
+    return lines
+
+
+def check_previews(case: unittest.TestCase, project: Path) -> None:
+    """
+    Preview helpers ship in no release build: a feature's `Previews/` files are compiled only under
+    DEBUG, and so is every `#Preview` of a feature that has them, since those previews use them.
+    """
+    for target in sorted((project / "Packages" / "Features" / "Sources").iterdir()):
+        if not (target / "Previews").is_dir():
+            continue
+        for path in swift_files(target):
+            code = lex(path)[0]
+            lines = list(zip(code.splitlines(), debug_only(code)))
+            relative = path.relative_to(project).as_posix()
+            if "Previews" in path.relative_to(target).parts:
+                released = [line for line, only in lines if line.strip() and not only and not re.match(r"(import |#)", line)]
+                case.assertFalse(released, f"{relative} is compiled into release builds")
+            else:
+                for line, only in lines:
+                    case.assertTrue(only or "#Preview" not in line, f"{relative} has a #Preview outside #if DEBUG")
+
+
+def declared_names(root: Path) -> frozenset[str]:
+    """
+    What a document can cite by name in a project or in the template: its Swift types, its package
+    targets, Core's folders, and its file names. Feature folders are left out, since `List/` and
+    SwiftUI's `List` share a name.
+    """
+    template_only = set(IOS.manifest.template_only)
+    names: set[str] = set()
+    for path in root.rglob("*"):
+        if path.relative_to(root).parts[0] in template_only:
+            continue
+        if path.is_file():
+            names.add(path.name)
+            if path.suffix == ".swift":
+                names |= set(re.findall(r"\b(?:struct|class|enum|protocol|actor|typealias)\s+(?!(?:func|var|let|subscript)\b)(\w+)", lex(path)[0]))
+    names |= {path.name for path in root.glob("Packages/*/*/*") if path.is_dir()}
+    names |= {path.name for path in (root / "Packages" / "Core" / "Sources").rglob("*") if path.is_dir()}
+    return frozenset(names)
+
+
+def cited_names(markdown: str) -> set[str]:
+    """Every name in a document's code: its fenced blocks and its inline code spans."""
+    blocks = re.findall(r"```.*?```", markdown, re.S)
+    spans = re.findall(r"`([^`\n]+)`", re.sub(r"```.*?```", "", markdown, flags=re.S))
+    return {name for code in (*blocks, *spans) for name in re.findall(r"\w+(?:\.(?:swift|md|yml|xcprivacy|xcstrings|xcconfig))?", code)}
+
+
+_TEMPLATE_NAMES: list[frozenset[str]] = []
+
+
+def check_docs(case: unittest.TestCase, project: Path) -> None:
+    """
+    A document an agent reads names no type, target or file that the template has and this project
+    does not: such a name was left out by a feature, and an agent following it writes code that does
+    not compile (STANDARDS-PLAN §4.5).
+    """
+    if not _TEMPLATE_NAMES:
+        _TEMPLATE_NAMES.append(declared_names(TEMPLATE))
+    missing = _TEMPLATE_NAMES[0] - declared_names(project)
+    absent = {
+        path.relative_to(project).as_posix(): sorted(cited)
+        for path in sorted([*project.glob("*.md"), *project.glob("docs/*.md")])
+        if (cited := cited_names(path.read_text(encoding="utf-8")) & missing)
+    }
+    case.assertFalse(absent, f"these documents name what this project does not have: {absent}")
+
+
+_FEATURE_FOLDERS_BANNED = {
+    "Views", "ViewModels", "Stores", "Models", "Utils", "Utilities", "Helpers", "Common", "UI",
+    "Presentation", "Screens", "Extensions", "Managers",
+}
+
+
+def check_folders(case: unittest.TestCase, project: Path) -> None:
+    sources = project / "Packages" / "Core" / "Sources"
+    allowed = {
+        sources / "DesignSystem": {"Theme", "Tokens", "Foundation", "Components", "Resources"},
+        sources / "DesignSystem" / "Foundation": {"Interaction", "Scroll", "Adaptive", "Glass"},
+        sources / "Navigation": {"Shell", "Router", "DeepLinks"},
+    }
+    for folder, names in allowed.items():
+        present = {path.name for path in folder.iterdir() if path.is_dir()}
+        case.assertTrue(present <= names, f"{folder.relative_to(project)}: {sorted(present - names)}")
+        case.assertFalse([path for path in folder.iterdir() if path.suffix == ".swift"], f"loose files in {folder.name}")
+
+    for target in (project / "Packages" / "Features" / "Sources").iterdir():
+        folders = {path.relative_to(target).as_posix() for path in target.rglob("*") if path.is_dir()}
+        if target.name.endswith("Data"):
+            case.assertTrue(folders <= {"API", "Remote", "Remote/DTO", "Local"}, f"{target.name}: {sorted(folders)}")
+            continue
+        case.assertFalse({Path(folder).name for folder in folders} & _FEATURE_FOLDERS_BANNED, f"{target.name}: {sorted(folders)}")
+        for store in target.rglob("*Store.swift"):
+            view = store.with_name(store.name.removesuffix("Store.swift") + "View.swift")
+            case.assertTrue(view.is_file(), f"{store.relative_to(project)} has no view beside it")
+
+    for path in sorted((project / "Packages").rglob("*.swift")):
+        if path.parent.name == "Tokens":
+            continue
+        code, _ = lex(path)
+        public_types = re.findall(r"(?m)^public\s+(?:nonisolated\s+|final\s+)*(?:struct|class|enum|protocol|actor)\s", code)
+        case.assertLessEqual(len(public_types), 1, f"{path.relative_to(project)} declares {len(public_types)} public types")
+
+
+# The tests -------------------------------------------------------------------------------------
+
+class LexerTest(unittest.TestCase):
+
+    def test_comments_and_strings_do_not_count_as_code(self):
+        code, literals = Lexer('let a = "(" // )\n/* { /* nested } */ */ let b = #"\\("x")"#\n').run()
+        self.assertIsNone(unbalanced(code))
+        self.assertEqual(["(", '\\("x")'], literals)
+
+    def test_interpolations_hold_strings_of_their_own(self):
+        code, literals = Lexer('Text("a \\(f("b)")) c")').run()
+        self.assertEqual('Text("§0")', code)
+        self.assertEqual(["a \\(…) c", "b)"], literals)
+
+    def test_multi_line_strings_and_raw_interpolation(self):
+        code, _ = Lexer('let s = """\n  ) "quoted" \\(x)\n  """\nlet r = #"\\#(y) )"#').run()
+        self.assertIsNone(unbalanced(code))
+
+    def test_it_reports_what_does_not_pair_up(self):
+        self.assertEqual("')' on line 2", unbalanced("f(\n))"))
+        self.assertEqual("'(' from line 1", unbalanced("{ ("))
+        with self.assertRaises(SwiftSyntaxError):
+            Lexer('let s = "never closed\n').run()
+
+
+class ValidationTest(unittest.TestCase):
+
+    def assertRefused(self, field: str, **fields):
+        with self.assertRaises(SpecError) as caught:
+            read(**fields)
+        self.assertEqual(field, caught.exception.field, str(caught.exception))
+
+    def test_bundle_ids(self):
+        self.assertEqual("com.example.trail", bundle_id(read()[0].spec))
+        self.assertEqual("com.example.my-trail", bundle_id(read(package_name="com.example.my_trail")[0].spec))
+        self.assertEqual("com.Acme.trail-2", bundle_id(read(ios={"bundle_id": "com.Acme.trail-2"})[0].spec))
+        for bad in ("com.example.my_trail", "trail", "com..trail", "com.example.trail.", f"com.{'a' * 160}"):
+            with self.subTest(bundle_id=bad):
+                self.assertRefused("ios.bundle_id", ios={"bundle_id": bad})
+
+    def test_deployment_targets(self):
+        for good in ("17.0", "17.4", "18.2", "26.0", "27.1"):
+            with self.subTest(target=good):
+                self.assertEqual(good, read(ios={"deployment_target": good})[0].spec.ios.deployment_target)
+        for bad in ("16.4", "19.0", "28.0", "17", "17.0.1", "iOS 17"):
+            with self.subTest(target=bad):
+                self.assertRefused("ios.deployment_target", ios={"deployment_target": bad})
+
+    def test_team_ids(self):
+        self.assertEqual("ABCDE12345", read(ios={"team_id": "ABCDE12345"})[0].spec.ios.team_id)
+        for bad in ("abcde12345", "ABCDE1234", "ABCDE-1234"):
+            with self.subTest(team_id=bad):
+                self.assertRefused("ios.team_id", ios={"team_id": bad})
+
+    def test_names_swift_cannot_take(self):
+        self.assertRefused("feature_modules", feature_modules=["repeat"])
+        self.assertRefused("feature_modules", feature_modules=["core"])
+        self.assertRefused("feature_modules", feature_modules=["sample"])
+        for name in ("id", "title", "system_image", "root", "raw_value", "all_cases", "hash_value"):
+            with self.subTest(module=name):
+                self.assertRefused("feature_modules", feature_modules=[name])
+        self.assertRefused("app_name", app_name="SwiftUI")
+        self.assertRefused("app_name", app_name="Design System")
+        self.assertRefused("app_name", app_name="Orders Feature", feature_modules=["orders"])
+        self.assertRefused("display_name", display_name="Cash $(HOME)")
+
+    def test_settings_the_platform_does_not_have(self):
+        self.assertRefused("architecture", architecture="modular")
+        self.assertRefused("android", android={"min_sdk": 26})
+        self.assertRefused("languages", languages=["ja"])
+
+    def test_a_spec_without_a_tab_gets_a_home_module(self):
+        parsed, warnings = read(features=["network"])
+        self.assertEqual(1, len(warnings))
+        self.assertEqual(("home",), tabs.tab_modules(parsed.spec))
+        self.assertEqual(["Home"], tabs.labels(parsed.spec))
+        self.assertEqual([], read(features=["network", "sample"])[1])
+
+    def test_a_database_nothing_uses_is_flagged(self):
+        self.assertRegex(" ".join(read(features=["network", "settings", "database"])[1]), "nothing keeps data in it")
+        self.assertEqual([], read(features=["network", "sample", "database"])[1])
+
+    def test_the_language_shortcut_without_a_second_language_is_flagged(self):
+        features = ["network", "sample", "settings", "language"]
+        self.assertRegex(" ".join(read(features=features)[1]), "ships more than one")
+        self.assertEqual([], read(features=features, languages=["de"])[1])
+
+
+class TemplateTest(unittest.TestCase):
+    """The template as checked in: it is itself a project with every feature on."""
+
+    def test_the_tabs_region_is_what_the_target_writes_with_every_feature_on(self):
+        spec = read(features=sorted(IOS.manifest.features))[0].spec
+        text = (TEMPLATE / "BaseApp" / "AppTabs.swift").read_text(encoding="utf-8")
+        region = text.split("// <generated:shell-tabs>\n", 1)[1].split("// </generated:shell-tabs>", 1)[0]
+        self.assertEqual("".join(tabs.app_tabs_swift(spec)), region)
+
+    def test_springs_and_treatments_the_swift_reads_exist_in_the_tokens(self):
+        data = tokens.load()
+        springs_swift = (TEMPLATE / "Packages/Core/Sources/DesignSystem/Theme/AppSprings.swift").read_text(encoding="utf-8")
+        self.assertTrue(set(re.findall(r"motion\.(\w+)\.spring", springs_swift)) <= set(data["motion"]["springs"]))
+        theme = TEMPLATE / "Packages/Core/Sources/DesignSystem/Theme"
+        for enum, key in (("CardTreatment", "card"), ("FieldTreatment", "field"), ("TypeVoice", "voice")):
+            cases = set(re.findall(r'case \w+ = "(\w+)"', (theme / f"{enum}.swift").read_text(encoding="utf-8")))
+            with self.subTest(enum=enum):
+                self.assertTrue({style[key] for style in data["styles"].values()} <= cases)
+
+    def test_of_the_sheet_tokens_swift_carries_only_the_spring_and_the_radius(self):
+        """
+        The system's sheet draws its own grabber, detents, card stack and dim, so the template reads
+        only its spring and its corner radius; Android's `sheet` section and each style's sheet inset
+        and material change nothing in Swift (sheet spec §6.2).
+        """
+        resolved = tokens.resolve(None, "ios")
+        emitted = swift.emit(resolved)
+        self.assertIn("let sheet: SpringToken", emitted)
+        self.assertIn("let radiusSheet: CGFloat", emitted)
+        without = copy.deepcopy(resolved)
+        without["motion"].pop("sheet", None)
+        for style in without["styles"].values():
+            style.pop("sheetInset", None)
+            style.pop("sheetMaterial", None)
+        self.assertEqual(swift.emit(without), emitted)
+
+    def test_the_skeleton_shader_takes_what_the_swift_passes(self):
+        """
+        SwiftUI matches a shader's arguments to its Metal parameters only when it first draws, so a
+        mismatch fails on a device and nowhere before it.
+        """
+        design_system = TEMPLATE / "Packages/Core/Sources/DesignSystem"
+        metal = (design_system / "Resources/AppSkeleton.metal").read_text(encoding="utf-8")
+        signature = re.search(r"\[\[ stitchable \]\] half4 (\w+)\((.*?)\)\s*\{", metal, re.S)
+        self.assertIsNotNone(signature)
+        name, parameters = signature.group(1), [parameter.split()[0] for parameter in signature.group(2).split(",")]
+        code, _ = lex(design_system / "Components/Skeleton/AppRedacted.swift")
+        self.assertIn(f"ShaderLibrary.bundle(.module).{name}\n", code)
+        call = code.index("Shader(function:")
+        passed = re.findall(r"^\s*\.(float2|float|color)\(", call_arguments(code, call + len("Shader")), re.M)
+        metal_types = {"float2": "float2", "float": "float", "color": "half4"}
+        self.assertEqual(["float2", "SwiftUI::Layer", *(metal_types[kind] for kind in passed)], parameters)
+
+    def test_the_accent_colour_is_emitted_from_the_tokens(self):
+        checked_in = (TEMPLATE / "BaseApp" / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")
+        self.assertEqual(swift.accent_colorset(tokens.resolve(None, "ios")), checked_in)
+        brand = json.loads(swift.accent_colorset(tokens.resolve(read(accent_colour="#1F7A5C")[0].spec, "ios")))
+        light = brand["colors"][0]["color"]["components"]
+        self.assertEqual(("0.122", "0.478", "0.361"), (light["red"], light["green"], light["blue"]))
+        self.assertEqual([{"appearance": "luminosity", "value": "dark"}], brand["colors"][1]["appearances"])
+
+    def test_every_language_translates_exactly_the_templates_keys(self):
+        from genkit.targets.ios import strings
+
+        catalogs = {strings.catalog_id(TEMPLATE, path): set(strings.keys(path)) for path in TEMPLATE.rglob("*.xcstrings")}
+        for tag in translations.available("ios"):
+            translation = translations.load("ios", tag)
+            with self.subTest(language=tag):
+                self.assertEqual(set(catalogs), set(translation.modules))
+                for identity, keys in catalogs.items():
+                    self.assertEqual(keys, set(translation.modules[identity]), identity)
+                self.assertEqual(set(scaffold.STRINGS), set(translation.scaffold))
+
+    def test_the_offered_languages_match_android(self):
+        self.assertEqual(translations.available("android"), translations.available("ios"))
+
+    def test_no_test_outlives_the_source_it_tests(self):
+        """
+        A feature that removes a source file has to take its tests with it: `<Name>Tests.swift` in
+        `Tests/<Target>Tests/` tests `<Name>.swift` anywhere in `Sources/<Target>/`. Nothing here
+        compiles a generated project, so a test left behind would first fail on the Mac.
+        """
+        manifest = IOS.manifest
+        tests = []
+        for path in sorted(TEMPLATE.glob("Packages/*/Tests/*Tests/**/*Tests.swift")):
+            _, package, _, folder, *_ = path.relative_to(TEMPLATE).parts
+            sources = TEMPLATE / "Packages" / package / "Sources" / folder.removesuffix("Tests")
+            tested = [sources, *sources.rglob(path.name.removesuffix("Tests.swift") + ".swift")]
+            tests.append((path.relative_to(TEMPLATE).as_posix(), [item.relative_to(TEMPLATE).as_posix() for item in tested]))
+        self.assertTrue(tests)
+        for key in manifest.features:
+            enabled = frozenset(other for other in manifest.features if key not in manifest.resolve({other}))
+            owned = manifest.owned_paths(enabled)
+            for test, tested in tests:
+                if is_under(test, owned):
+                    continue
+                with self.subTest(feature=key, test=test):
+                    self.assertEqual([], [path for path in tested if is_under(path, owned)], f"'{key}' removes what this test reads")
+
+
+class GeneratedProjectsTest(unittest.TestCase):
+    """Every preset, the fixtures, and every feature switched off on its own."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        cls.root = Path(cls.temp.name)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temp.cleanup()
+
+    def check(self, name: str, raw: dict) -> tuple[Path, object]:
+        project, spec = generate(self.root / name, raw)
+        check_project(self, project, spec)
+        return project, spec
+
+    def test_every_preset(self):
+        for preset in IOS.manifest.presets:
+            with self.subTest(preset=preset):
+                self.check(f"preset-{preset}", raw_spec(features=sorted(IOS.manifest.preset_features(preset)), languages=["de"]))
+
+    def test_the_fixtures(self):
+        for path in sorted(FIXTURES.glob("ios-*.json")):
+            with self.subTest(fixture=path.name):
+                self.check(path.stem, json.loads(path.read_text(encoding="utf-8")))
+
+    def test_each_feature_switched_off_alone(self):
+        every = set(IOS.manifest.features)
+        for key in sorted(every):
+            enabled = sorted(other for other in every if key not in IOS.manifest.resolve({other}))
+            with self.subTest(without=key):
+                self.check(f"without-{key}", raw_spec(features=enabled, languages=["fr"]))
+
+    def test_nothing_but_a_scaffolded_module_without_networking(self):
+        project, _ = self.check("bare", raw_spec(features=[], feature_modules=["field_notes"], languages=["hi"]))
+        repository = project / "Packages/Features/Sources/FieldNotesData/DefaultFieldNotesRepository.swift"
+        self.assertIn("public init(items: [FieldNotesItem] = [])", repository.read_text(encoding="utf-8"))
+        self.assertNotIn("Networking", (project / "Packages/Core/Package.swift").read_text(encoding="utf-8"))
+
+    def test_with_no_tab_feature_a_home_module_is_the_tab(self):
+        project, _ = self.check("home", raw_spec(features=["network", "onboarding"]))
+        app_tabs = (project / "TrailNotes" / "AppTabs.swift").read_text(encoding="utf-8")
+        self.assertIn("case home\n", app_tabs)
+        self.assertIn("HomeRootView(client: model.services.apiClient)", app_tabs)
+
+    def test_scaffolded_tabs_each_get_their_own_symbol(self):
+        modules = [f"module_{index}" for index in range(12)]
+        project, spec = self.check("twelve", raw_spec(features=["network", "sample", "settings"], feature_modules=modules))
+        symbols = re.findall(r'case \.\w+: "([a-z0-9.]+)"\n', (project / "TrailNotes" / "AppTabs.swift").read_text(encoding="utf-8"))
+        self.assertEqual(len(symbols), len(set(symbols)))
+        self.assertEqual(["Home", *(f"Module {index}" for index in range(12)), "Settings"], tabs.labels(spec))
+
+    def test_what_the_target_writes_ends_its_lines_with_a_line_feed(self):
+        """
+        `Path.write_text` turns "\\n" into the host's line separator unless told otherwise, so a
+        project generated on Windows would differ from the same project generated anywhere else.
+        Everything the target writes lands in the app folder or a package.
+        """
+        project, spec = self.check("line-endings", raw_spec(
+            features=sorted(IOS.manifest.preset_features("everything")), feature_modules=["field_notes"], languages=["de"],
+        ))
+        with_carriage_returns = [
+            path.relative_to(project).as_posix()
+            for folder in (project / spec.pascal_name, project / "Packages")
+            for path in sorted(folder.rglob("*"))
+            if path.is_file() and path.suffix != ".png" and b"\r" in path.read_bytes()
+        ]
+        self.assertEqual([], with_carriage_returns)
+
+    def test_a_display_name_with_quotes_and_emoji_reaches_the_home_screen(self):
+        if yaml is None:
+            self.skipTest("PyYAML is not installed")
+        label = 'Café "Ünï" 🚀 #1: a'
+        project, _ = self.check("label", raw_spec(features=["network", "sample"], display_name=label))
+        self.assertEqual(label, project_yaml(project)["targets"]["TrailNotes"]["info"]["properties"]["CFBundleDisplayName"])
+
+    def test_headless_generation_names_the_target(self):
+        from genkit.core import headless
+        import io
+
+        out = io.StringIO()
+        code = headless.run(
+            ["--target", "ios", str(self.root / "headless.zip")],
+            io.BytesIO(json.dumps(raw_spec(features=["network", "sample"])).encode()),
+            out,
+        )
+        result = json.loads(out.getvalue())
+        self.assertEqual(0, code, result)
+        self.assertEqual("ios", result["target"])
+        self.assertEqual("TrailNotes", result["project_name"])
+
+
+def replacing(old: str, new: str) -> Callable[[str], str]:
+    """An edit that swaps the one occurrence of `old` for `new`."""
+
+    def edit(text: str) -> str:
+        if text.count(old) != 1:
+            raise AssertionError(f"expected {old!r} once, found it {text.count(old)} times")
+        return text.replace(old, new)
+
+    return edit
+
+
+def png(width: int, height: int, color_type: int, *chunks: tuple[bytes, bytes]) -> bytes:
+    """A blank PNG of one colour type (0, 2 or 6), with `chunks` placed before its image data."""
+    channels = {0: 1, 2: 3, 6: 4}[color_type]
+    row = b"\x00" + bytes(width * channels)
+
+    def chunk(kind: bytes, body: bytes) -> bytes:
+        return struct.pack(">I", len(body)) + kind + body + struct.pack(">I", zlib.crc32(kind + body))
+
+    header = struct.pack(">IIBBBBB", width, height, 8, color_type, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + b"".join(chunk(kind, body) for kind, body in chunks)
+        + chunk(b"IDAT", zlib.compress(row * height)) + chunk(b"IEND", b"")
+    )
+
+
+class IconTest(unittest.TestCase):
+    """`--icon` replaces the template's placeholder, or says why it could not."""
+
+    ICON = Path("TrailNotes") / icons.ICON_PATH
+
+    def build(self, source: Path, directory: Path) -> tuple[Path, list[str]]:
+        parsed, _ = read()
+        project = directory / "TrailNotes"
+        result = pipeline.build(parsed.spec, IOS, project, zip_output=False, icon_source=source, commit="test")
+        return project, result.warnings
+
+    def test_an_app_store_ready_png_is_used_as_it_is(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "icon.png"
+            source.write_bytes(png(icons.SIZE, icons.SIZE, 2))
+            project, warnings = self.build(source, Path(temp))
+            self.assertEqual([], warnings)
+            self.assertEqual(source.read_bytes(), (project / self.ICON).read_bytes())
+
+    def test_only_an_opaque_png_of_the_right_size_is_ready(self):
+        self.assertTrue(icons.is_app_store_ready(png(1024, 1024, 0)))
+        self.assertFalse(icons.is_app_store_ready(png(1024, 1024, 6)))
+        self.assertFalse(icons.is_app_store_ready(png(1024, 1024, 2, (b"tRNS", bytes(6)))))
+        self.assertFalse(icons.is_app_store_ready(png(512, 512, 2)))
+        self.assertFalse(icons.is_app_store_ready(png(1024, 1023, 2)))
+        self.assertFalse(icons.is_app_store_ready(b"\xff\xd8\xff\xe0 a JPEG"))
+
+    @unittest.skipIf(importlib.util.find_spec("PIL"), "Pillow converts what would otherwise be refused")
+    def test_without_pillow_any_other_image_keeps_the_placeholder_and_says_so(self):
+        placeholder = (TEMPLATE / "BaseApp" / icons.ICON_PATH).read_bytes()
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "icon.png"
+            source.write_bytes(png(icons.SIZE, icons.SIZE, 6))
+            project, warnings = self.build(source, Path(temp))
+            self.assertEqual(placeholder, (project / self.ICON).read_bytes())
+            self.assertEqual(1, len(warnings))
+            self.assertIn("pip install pillow", warnings[0])
+
+    @unittest.skipUnless(importlib.util.find_spec("PIL"), "Pillow is not installed")
+    def test_with_pillow_any_image_becomes_an_opaque_square_of_the_right_size(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source = Path(temp) / "icon.png"
+            source.write_bytes(png(600, 400, 6))
+            project, warnings = self.build(source, Path(temp))
+            self.assertTrue(icons.is_app_store_ready((project / self.ICON).read_bytes()))
+            self.assertEqual(3, len(warnings), warnings)
+
+    def test_a_missing_source_keeps_the_placeholder_and_says_so(self):
+        with tempfile.TemporaryDirectory() as temp:
+            _, warnings = self.build(Path(temp) / "nothing.png", Path(temp))
+            self.assertEqual(1, len(warnings))
+            self.assertIn("not found", warnings[0])
+
+
+class ViolationsTest(unittest.TestCase):
+    """Each check fails on a project that breaks its rule, so no check can quietly stop firing."""
+
+    ROW = "Packages/Features/Sources/SampleFeature/Components/SampleRow.swift"
+    ROW_PADDING = ".padding(.vertical, AppSpacing.xxs)"
+    FEATURES = "Packages/Features/Package.swift"
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        cls.project, cls.spec = generate(Path(cls.temp.name), raw_spec(features=sorted(IOS.manifest.features)))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temp.cleanup()
+
+    def assertCaught(self, message: str, path: str, edit: Callable[[str], str]) -> None:
+        """Applies `edit` to `path` (to empty text for a file that does not exist), checks the
+        project, expects a failure matching `message`, and puts the project back."""
+        file = self.project / path
+        original = file.read_text(encoding="utf-8") if file.exists() else None
+        created = [parent for parent in reversed(file.parents) if not parent.exists()]
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text(edit(original or ""), encoding="utf-8")
+        try:
+            # Outside a running test, a sub-test's failure is raised rather than recorded.
+            with self.assertRaisesRegex(AssertionError, message):
+                check_project(unittest.TestCase(), self.project, self.spec)
+        finally:
+            if original is None:
+                file.unlink()
+                for folder in reversed(created):
+                    folder.rmdir()
+            else:
+                file.write_text(original, encoding="utf-8")
+
+    def test_the_unchanged_project_passes(self):
+        check_project(self, self.project, self.spec)
+
+    def test_layout_rules(self):
+        padded = self.ROW_PADDING
+        for message, path, edit in (
+            ("sets a width", self.ROW, replacing(padded, f"{padded}\n        .frame(width: 400)")),
+            ("sets a width", self.ROW, replacing(padded, f"{padded}\n        .frame(minWidth: 375)")),
+            (
+                "decides layout by device",
+                self.ROW,
+                replacing(padded, ".padding(.vertical, UIDevice.current.userInterfaceIdiom == .pad ? AppSpacing.xs : AppSpacing.xxs)"),
+            ),
+            (
+                "has no iPad #Preview",
+                "Packages/Features/Sources/SampleFeature/List/SampleListView.swift",
+                replacing('#Preview("iPad", traits: .fixedLayout(width: 1194, height: 834))', '#Preview("Wide")'),
+            ),
+            (
+                "is not a split view",
+                "Packages/Features/Sources/SampleFeature/SampleRootView.swift",
+                replacing("NavigationSplitView {", "NavigationStack {"),
+            ),
+            ("opts out of resizable windows", "project.yml", replacing("UILaunchScreen: {}", "UILaunchScreen: {}\n        UIRequiresFullScreen: true")),
+            ("CADisableMinimumFrameDurationOnPhone", "project.yml", replacing("FrameDurationOnPhone: true", "FrameDurationOnPhone: false")),
+            (
+                "does not declare NSPrivacyAccessedAPICategoryUserDefaults",
+                "TrailNotes/PrivacyInfo.xcprivacy",
+                replacing("NSPrivacyAccessedAPICategoryUserDefaults", "NSPrivacyAccessedAPICategoryDiskSpace"),
+            ),
+        ):
+            with self.subTest(rule=message, edit=path):
+                self.assertCaught(message, path, edit)
+
+    def test_every_ipad_orientation_stays(self):
+        if yaml is None:
+            self.skipTest("PyYAML is not installed")
+        self.assertCaught(
+            "UIInterfaceOrientationPortraitUpsideDown",
+            "project.yml",
+            replacing("          - UIInterfaceOrientationPortraitUpsideDown\n", ""),
+        )
+
+    def test_graph_and_isolation_rules(self):
+        for message, path, edit in (
+            ("SampleFeature depends on", self.FEATURES, replacing('name: "SampleFeature",\n            dependencies: [\n', 'name: "SampleFeature",\n            dependencies: [\n                "SettingsFeature",\n')),
+            (r"imports \['SettingsFeature'\]", self.ROW, replacing("import SwiftUI\n", "import SettingsFeature\nimport SwiftUI\n")),
+            ("SampleAPI.swift", "Packages/Features/Sources/SampleData/Remote/SampleAPI.swift", replacing("struct SampleAPI", "@MainActor\nstruct SampleAPI")),
+            (
+                "False != True : SampleData$",
+                self.FEATURES,
+                lambda text: text.replace("swiftSettings: dataSettings", "swiftSettings: featureSettings", 1),
+            ),
+        ):
+            with self.subTest(rule=message):
+                self.assertCaught(message, path, edit)
+
+    def test_code_rules(self):
+        store = "Packages/Features/Sources/SampleFeature/List/SampleListStore.swift"
+        list_view = "Packages/Features/Sources/SampleFeature/List/SampleListView.swift"
+        for message, path, edit in (
+            ("uses ObservableObject", store, replacing("final class SampleListStore {", "final class SampleListStore: ObservableObject {")),
+            (r"uses print\(", store, replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        print(event)\n")),
+            ("uses @Published", store, replacing("    private(set) var state = State()\n", "    @Published private(set) var state = State()\n")),
+            ("uses try!", store, replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        try! Task.checkCancellation()\n")),
+            (
+                "uses DispatchQueue.main.async",
+                store,
+                replacing("    func send(_ event: Event) {\n", "    func send(_ event: Event) {\n        DispatchQueue.main.async {}\n"),
+            ),
+            ("uses AnyView", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .background(AnyView(EmptyView()))")),
+            ("uses UIScreen.main", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .frame(maxWidth: UIScreen.main.bounds.width)")),
+            ("is not in Localizable.xcstrings", self.ROW, replacing(f"{self.ROW_PADDING}\n", f"{self.ROW_PADDING}\n        .help(Text(\"Words no catalog has\", bundle: .module))\n")),
+            ("declares 2 public types", "Packages/Features/Sources/SampleData/API/SampleItem.swift", lambda text: text + "\npublic struct SampleTag: Sendable {}\n"),
+            ("'Views'", "Packages/Features/Sources/SampleFeature/Views/SampleBadge.swift", lambda _: "struct SampleBadge {}\n"),
+            ("uses a raw spacing", self.ROW, replacing(self.ROW_PADDING, ".padding(.vertical, 4)")),
+            ("uses a raw colour", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .background(Color(red: 1, green: 0, blue: 0))")),
+            ("uses a raw duration or curve", self.ROW, replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .animation(.easeInOut, value: item)")),
+            (
+                "SampleListView.swift has a #Preview outside #if DEBUG",
+                "Packages/Features/Sources/SampleFeature/List/SampleListView.swift",
+                replacing("#if DEBUG\n", "#if os(iOS)\n"),
+            ),
+            (
+                "PreviewSampleRepository.swift is compiled into release builds",
+                "Packages/Features/Sources/SampleFeature/Previews/PreviewSampleRepository.swift",
+                replacing("#if DEBUG\n", "#if os(iOS)\n"),
+            ),
+            ("has no view beside it", "Packages/Features/Sources/SampleFeature/Detail/SampleShareStore.swift", lambda _: "final class SampleShareStore {}\n"),
+            (
+                "presents a sheet without appSheet",
+                "Packages/Features/Sources/SampleFeature/Detail/SampleDetailView.swift",
+                replacing(".appSheetPresentation(AppSheetOptions(detents: [.medium, .large]))", ".presentationDetents([.medium, .large])"),
+            ),
+            (
+                "presents a sheet without appSheet",
+                self.ROW,
+                replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .sheet(isPresented: .constant(false)) {{ EmptyView() }}"),
+            ),
+            (
+                "guards a sheet without appSheetDismissGuard",
+                self.ROW,
+                replacing(self.ROW_PADDING, f"{self.ROW_PADDING}\n        .interactiveDismissDisabled()"),
+            ),
+            ("redacts without appRedacted", list_view, replacing(".appRedacted()", ".redacted(reason: .placeholder)")),
+            (
+                "redacts a whole List",
+                list_view,
+                replacing(
+                    "                .appRedacted()\n        }\n        .scrollDisabled(true)\n",
+                    "        }\n        .scrollDisabled(true)\n        .appRedacted()\n",
+                ),
+            ),
+            (
+                "redacts a whole ScrollView",
+                "Packages/Features/Sources/SampleFeature/Detail/SampleDetailView.swift",
+                replacing("        .scrollDisabled(isPlaceholder)\n", "        .scrollDisabled(isPlaceholder)\n        .appRedacted(isPlaceholder)\n"),
+            ),
+        ):
+            with self.subTest(rule=message):
+                self.assertCaught(message, path, edit)
+
+    def test_docs_rules(self):
+        design_system = self.project / "Packages/Core/Sources/DesignSystem"
+        for folder, message in (
+            ("Foundation/Glass", r"'AGENTS.md': \[[^]]*'AppGlassGroup'"),
+            ("Components/Sheet/Presets", r"'docs/SHEETS.md': \[[^]]*'AppSheetAction'"),
+        ):
+            moved = design_system / folder
+            with self.subTest(folder=folder), tempfile.TemporaryDirectory() as aside:
+                shutil.move(moved, aside)
+                try:
+                    with self.assertRaisesRegex(AssertionError, message):
+                        check_docs(unittest.TestCase(), self.project)
+                finally:
+                    shutil.move(Path(aside) / moved.name, moved)
+
+
+if __name__ == "__main__":
+    unittest.main()
