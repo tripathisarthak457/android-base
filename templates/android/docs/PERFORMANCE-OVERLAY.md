@@ -120,7 +120,7 @@ app nobody has used.
 | Long main-thread work (over 50 ms) | 5 | none | |
 | Cold start | 10 | at most 380 ms | `gates.toml` `coldstart` |
 | Warm start | 5 | at most 190 ms | half the cold-start gate |
-| App memory, PSS less graphics | 10 | at most 48 MB | `gates.toml` `meminfo.pss_app_mb` |
+| App memory, PSS less graphics | 10 | at most 58.4 MB | `gates.toml` `meminfo.pss_app_mb` |
 | Blocking garbage collections | 5 | none | |
 | StrictMode violations | 5 | none | |
 | R8, baseline profile, not debuggable | 5 each | pass | |

@@ -104,8 +104,8 @@ internal class Limits(val a: Float, val b: Float, val c: Float, val d: Float) {
 /**
  * Each metric, its weight in the score and how it is graded. The limits come from
  * `tools/perf/gates.toml` where it has one (janky frames 0.5 % on a scroll, cold start 380 ms, the
- * app's own PSS 48 MB), from Android vitals for slow and frozen frames, and otherwise from the
- * nearest gate: a warm start in half the cold-start limit.
+ * app's own PSS 58.4 MB, the everything preset's row), from Android vitals for slow and frozen
+ * frames, and otherwise from the nearest gate: a warm start in half the cold-start limit.
  *
  * The percentiles are of each frame's main-thread time against its own refresh interval, the time
  * the main thread has before the next frame starts, so a display that moves between 60 and
@@ -143,7 +143,7 @@ internal enum class Metric(val weight: Int, val unit: MetricUnit, val limits: Li
     WarmStart(5, MetricUnit.Millis, Limits(190f, 250f, 400f, 700f)) {
         override fun valueOf(inputs: ScoreInputs) = inputs.startup?.warm?.initialDisplayMillis
     },
-    AppMemory(10, MetricUnit.Megabytes, Limits(48f, 60f, 80f, 120f)) {
+    AppMemory(10, MetricUnit.Megabytes, Limits(58.4f, 60f, 80f, 120f)) {
         override fun valueOf(inputs: ScoreInputs) = inputs.memory?.appPssMb
     },
     BlockingGc(5, MetricUnit.Count, Limits(0f, 1f, 3f, 10f)) {
