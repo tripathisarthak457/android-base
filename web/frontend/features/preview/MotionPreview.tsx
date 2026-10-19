@@ -20,7 +20,7 @@ const REST: [part: string, values: Record<string, string | number>][] = [
 /**
  * A few seconds of the app moving in one motion style, on its own springs: a press and release,
  * a push and pop (slide only, the covered screen darkened by a drawn scrim and moving at the
- * parallax fraction), and a tab switch (instant content, the indicator on the selection spring).
+ * parallax fraction), and a tab switch (instant content, the indicator on its leading-edge spring).
  * It loops while in view and not `paused`; the button answers a press either way.
  */
 export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewTheme; tokens: Tokens; font: string; paused: boolean }) {
@@ -39,7 +39,7 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
     for (const [part, values] of REST) animate(`[data-part=${part}]`, values, { duration: 0 });
     if (!inView || paused) return;
     const screen = theme.spring("screen");
-    const selection = theme.spring("selection");
+    const selection = theme.spring("indicatorLead");
 
     return loop(async ({ settle, wait }) => {
       await wait(700);
@@ -73,7 +73,7 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
   }, [inView, paused, theme]);
 
   const surface = theme.colour("surface");
-  const line = theme.colour("borderStrong");
+  const line = theme.colour("outline");
   return (
     <div
       ref={scope}
@@ -87,7 +87,7 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
             <div className="h-2 w-12 rounded-full" style={{ background: theme.colour("contentPrimary") }} />
             <div className="mt-3 space-y-1.5">
               {[0, 1, 2].map((row) => (
-                <div key={row} className="rounded-md p-1.5" style={{ background: surface, border: `1px solid ${theme.colour("border")}` }}>
+                <div key={row} className="rounded-md p-1.5" style={{ background: surface, border: `1px solid ${theme.colour("separator")}` }}>
                   <div className="h-1.5 w-14 rounded-full" style={{ background: theme.colour("contentSecondary") }} />
                   <div className="mt-1 h-1 w-16 rounded-full" style={{ background: line }} />
                 </div>
@@ -122,7 +122,7 @@ export function MotionPreview({ theme, tokens, font, paused }: { theme: PreviewT
             <div className="h-2 w-10 rounded-full" style={{ background: theme.colour("contentPrimary") }} />
             <div className="mt-3 grid grid-cols-2 gap-1.5">
               {[0, 1, 2, 3].map((cell) => (
-                <div key={cell} className="h-12 rounded-md" style={{ background: surface, border: `1px solid ${theme.colour("border")}` }} />
+                <div key={cell} className="h-12 rounded-md" style={{ background: surface, border: `1px solid ${theme.colour("separator")}` }} />
               ))}
             </div>
           </div>

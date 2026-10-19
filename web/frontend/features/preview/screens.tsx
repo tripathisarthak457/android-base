@@ -49,11 +49,11 @@ function SignIn({ google }: { google: boolean }) {
       {google && (
         <>
           <div style={{ display: "flex", alignItems: "center", gap: dp(12) }}>
-            <span style={{ flex: 1, height: 1, background: t.colour("divider") }} />
+            <span style={{ flex: 1, height: 1, background: t.colour("separator") }} />
             <Text role="caption1" colour="contentTertiary">
               or
             </Text>
-            <span style={{ flex: 1, height: 1, background: t.colour("divider") }} />
+            <span style={{ flex: 1, height: 1, background: t.colour("separator") }} />
           </div>
           <Button label="Continue with Google" variant="secondary" full />
         </>

@@ -149,13 +149,74 @@ export function brandRamp(colour: Rgb): BrandRamp {
   };
 }
 
-/** `colour` moved towards whichever end contrasts with `background` until it reads at AA. */
-export function readableShade(colour: Rgb, background: Rgb, ratio = AA): Rgb {
-  const darken = relativeLuminance(background) > 0.18;
-  let current = colour;
-  for (let step = 0; step < MAX_DARKENING_STEPS; step++) {
-    if (contrast(current, background) >= ratio) return current;
-    current = darken ? shift(current, 0.94) : shift(current, 1 / 0.94);
+/** The roles a content shade has to read on, as the generator's tokens name them. */
+export const SURFACE_ROLES = ["background", "backgroundGrouped", "surface", "surfaceGrouped", "surfaceElevated"] as const;
+
+const SHADE_STEPS = 30;
+const SHADE_STEP = 0.05;
+
+/**
+ * `colour`, or the nearest shade of it that reaches [minimum] on every one of [backgrounds]: darker
+ * in a light palette, lighter in a dark one, each step an Oklab mix rounded to 8 bits. The
+ * generator's `_legible_on`, step for step, so the preview's accent text is the app's.
+ */
+export function legibleOn(colour: Rgb, backgrounds: Rgb[], light: boolean, minimum = AA): Rgb {
+  const toward: Rgb = light ? [0, 0, 0] : WHITE;
+  let shade = colour;
+  for (let step = 0; step < SHADE_STEPS; step++) {
+    if (backgrounds.every((background) => contrast(shade, background) >= minimum)) return shade;
+    shade = eightBit(lerpOklab(shade, toward, SHADE_STEP));
   }
-  return current;
+  return shade;
+}
+
+function lerpOklab(start: Rgb, stop: Rgb, fraction: number): Rgb {
+  const a = toOklab(start);
+  const b = toOklab(stop);
+  return fromOklab([0, 1, 2].map((i) => a[i]! + (b[i]! - a[i]!) * fraction) as Rgb);
+}
+
+function toOklab(rgb: Rgb): Rgb {
+  const [r, g, b] = rgb.map(linear) as Rgb;
+  const [l, m, s] = [
+    0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b,
+    0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b,
+    0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b,
+  ].map((v) => Math.sign(v) * Math.abs(v) ** (1 / 3)) as Rgb;
+  return [
+    0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+    1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+    0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+  ];
+}
+
+function fromOklab([lightness, a, b]: Rgb): Rgb {
+  const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m = (lightness - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (lightness - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  return [
+    gamma(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
+    gamma(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+    gamma(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+  ];
+}
+
+function linear(c: number): number {
+  return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+}
+
+function gamma(c: number): number {
+  return c <= 0.0031308 ? 12.92 * c : 1.055 * Math.sign(c) * Math.abs(c) ** (1 / 2.4) - 0.055;
+}
+
+/** As the hex it is emitted as. Halves round to even, as Python's `round` does. */
+function eightBit(rgb: Rgb): Rgb {
+  return rgb.map((c) => roundHalfEven(Math.max(0, Math.min(1, c)) * 255) / 255) as Rgb;
+}
+
+function roundHalfEven(value: number): number {
+  const floor = Math.floor(value);
+  const fraction = value - floor;
+  if (fraction !== 0.5) return Math.round(value);
+  return floor % 2 === 0 ? floor : floor + 1;
 }

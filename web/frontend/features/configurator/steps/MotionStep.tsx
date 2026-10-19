@@ -30,7 +30,7 @@ function MotionCard({ input, model, styleKey, title, description, name, dark, pa
     ["press", describe(springs?.press)],
     ["release", describe(springs?.release)],
     ["push and pop", describe(springs?.screen)],
-    ["selection", describe(springs?.selection)],
+    ["selection", describe(springs?.indicatorLead)],
   ];
   return (
     <ChoiceCard

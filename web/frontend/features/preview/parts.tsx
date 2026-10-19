@@ -50,11 +50,11 @@ export function Surface({ children, style }: { children: ReactNode; style?: CSSP
   const treatment: CSSProperties =
     card === "Raised"
       ? t.dark
-        ? { border: `1px solid ${t.colour("border")}` }
+        ? { border: `1px solid ${t.colour("separator")}` }
         : { boxShadow: "0 2px 6px rgba(11,15,26,0.08), 0 1px 2px rgba(11,15,26,0.06)" }
       : card === "Offset"
         ? offsetEdge(t)
-        : { border: `${borderWidth}px solid ${t.colour("border")}` };
+        : { border: `${borderWidth}px solid ${t.colour("separator")}` };
   return <div style={{ ...base, ...treatment, ...style }}>{children}</div>;
 }
 
@@ -74,7 +74,7 @@ export function Button({
   const offset = offsetShadow > 0 && variant !== "plain";
   const look: Record<string, CSSProperties> = {
     primary: { background: t.colour("accent"), color: t.colour("onAccent") },
-    secondary: { background: t.colour("surface"), color: t.colour("contentPrimary"), border: `${borderWidth}px solid ${t.colour("borderStrong")}` },
+    secondary: { background: t.colour("surface"), color: t.colour("contentPrimary"), border: `${borderWidth}px solid ${t.colour("outline")}` },
     plain: { background: "transparent", color: t.colour("accentContent") },
   };
   return (
@@ -118,7 +118,7 @@ export function InputField({
   const t = useTheme();
   const { field, borderWidth, borderWidthStrong, radii, uppercaseLabels } = t.style;
   const width = focused ? borderWidthStrong : borderWidth;
-  const line = focused ? t.colour("accent") : field === "Underlined" ? t.colour("borderStrong") : t.colour("border");
+  const line = focused ? t.colour("accent") : t.colour("outline");
   const box: CSSProperties =
     field === "Filled"
       ? { background: t.colour("fill"), border: `${width}px solid ${focused ? line : "transparent"}`, borderRadius: dp(radii.sm), padding: `0 ${dp(12)}px` }
@@ -161,7 +161,7 @@ export function Chip({ label, icon }: { label: string; icon?: IconName }) {
         height: dp(32),
         padding: `0 ${dp(12)}px`,
         borderRadius: radius(t.style.chipRadius),
-        border: `${t.style.borderWidth}px solid ${t.colour("border")}`,
+        border: `${t.style.borderWidth}px solid ${t.colour("separator")}`,
         background: t.colour("surface"),
         color: t.colour("contentSecondary"),
       }}
@@ -243,7 +243,7 @@ export function Switch({ on }: { on: boolean }) {
         width: dp(44),
         height: dp(26),
         borderRadius: 999,
-        background: on ? t.colour("accent") : t.colour("borderStrong"),
+        background: on ? t.colour("accent") : t.colour("fill"),
         position: "relative",
         flexShrink: 0,
       }}

@@ -1,5 +1,5 @@
 import type { ArgbHex, Roles, SpringName, StyleTokens, Tokens, TypeRole } from "../catalogue/types.ts";
-import { type BrandName, type Rgb, brandColours, brandRamp, parseHex, readableShade, toHex } from "./brand.ts";
+import { type BrandName, type Rgb, SURFACE_ROLES, brandColours, brandRamp, legibleOn, parseHex, toHex } from "./brand.ts";
 
 // What a preview draws with: the catalogue's resolved roles for one design style and theme, with
 // the brand roles recomputed from the visitor's colours, the style's shapes, the type scale in its
@@ -49,8 +49,11 @@ function brandRoles(roles: Roles, choices: PreviewChoices): Record<string, strin
   const accent = parseHex(choices.accent);
   if (!accent) return {};
   const colours = brandColours(accent, parseHex(choices.secondary), parseHex(choices.tertiary));
-  const background = rgbOf(typeof roles.background === "string" ? roles.background : undefined);
-  const surface = rgbOf(typeof roles.surface === "string" ? roles.surface : undefined);
+  const surfaces = SURFACE_ROLES.flatMap((role) => {
+    const value = roles[role];
+    const rgb = rgbOf(typeof value === "string" ? value : undefined);
+    return rgb ? [rgb] : [];
+  });
   const out: Record<string, string> = {};
   for (const name of Object.keys(colours) as BrandName[]) {
     const ramp = brandRamp(colours[name]);
@@ -60,7 +63,12 @@ function brandRoles(roles: Roles, choices: PreviewChoices): Record<string, strin
     out[`${name}Pressed`] = toHex(choices.dark ? ramp.darkPressed : ramp.pressed);
     out[`${name}Subtle`] = toHex(choices.dark ? ramp.subtleDark : ramp.subtleLight);
     out[on] = toHex(choices.dark ? ramp.onDark : ramp.onLight);
-    if (background && surface) out[`${name}Content`] = toHex(readableShade(readableShade(shade, background), surface));
+    // Accent text, as the generator resolves it: readable on every surface and on the accent's own
+    // subtle fill. The token model has no content shade for the other two.
+    if (name === "accent" && surfaces.length > 0) {
+      const subtle = choices.dark ? ramp.subtleDark : ramp.subtleLight;
+      out.accentContent = toHex(legibleOn(shade, [...surfaces, subtle], !choices.dark));
+    }
   }
   return out;
 }

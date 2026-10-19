@@ -47,8 +47,8 @@ test("type takes the voice's weight and the scale's size", () => {
 });
 
 test("springs carry the token's stiffness and damping ratio", () => {
-  const spring = previewTheme(tokens, choices).spring("selection");
-  const token = tokens.motion.styles.Bouncy!.springs.selection;
+  const spring = previewTheme(tokens, choices).spring("indicatorLead");
+  const token = tokens.motion.styles.Bouncy!.springs.indicatorLead;
   assert.equal(spring.stiffness, token.stiffness);
   assert.ok(Math.abs(spring.damping - token.dampingRatio * 2 * Math.sqrt(token.stiffness)) < 1e-9);
 });

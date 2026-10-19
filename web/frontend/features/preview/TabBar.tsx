@@ -72,7 +72,7 @@ export function TabBar({
   const t = useTheme();
   const { bar, borderWidth, uppercaseLabels } = t.style;
   const floating = isFloating(bar);
-  const spring = t.spring("selection");
+  const spring = t.spring("indicatorLead");
   const count = Math.max(tabs.length, 1);
   const pad = floating ? dp(6) : 0;
 

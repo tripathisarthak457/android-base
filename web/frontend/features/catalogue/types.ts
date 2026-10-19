@@ -143,7 +143,21 @@ export type Roles = Record<string, ArgbHex | Status>;
 
 export type Spring = { response: number; bounce: number; stiffness: number; dampingRatio: number };
 
-export type SpringName = "press" | "release" | "selection" | "screen" | "sheet" | "layout" | "emphasis";
+export type SpringName =
+  | "press"
+  | "release"
+  | "thumb"
+  | "indicatorLead"
+  | "indicatorTrail"
+  | "screen"
+  | "sheet"
+  | "dialog"
+  | "layout"
+  | "emphasis"
+  | "interactive"
+  | "bounceBack"
+  | "iconBounceUp"
+  | "iconBounceDown";
 
 export type TypeRole = {
   size: number;
