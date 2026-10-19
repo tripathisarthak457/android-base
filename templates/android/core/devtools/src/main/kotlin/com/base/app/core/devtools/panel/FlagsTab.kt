@@ -17,6 +17,7 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.selection.AppSwitch
 import com.base.app.core.designsystem.component.text.AppMonoText
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.flags.FeatureFlags
 import com.base.app.core.flags.Flag
@@ -33,6 +34,7 @@ internal fun FlagsTab(flags: FeatureFlags, overrides: FlagOverrides) {
     LazyColumn(
         contentPadding = PaddingValues(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.md),
+        flingBehavior = AppScrollDefaults.flingBehavior(),
     ) {
         items(
             items = Flag.ALL,

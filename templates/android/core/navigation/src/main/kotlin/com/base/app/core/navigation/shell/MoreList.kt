@@ -18,6 +18,7 @@ import com.base.app.core.designsystem.component.navigation.AppTopBar
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.R
@@ -44,7 +45,7 @@ internal fun MoreList(tabs: List<ShellTab>, labels: List<String>, from: Int, onS
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scroll)
+                .verticalScroll(scroll, flingBehavior = AppScrollDefaults.flingBehavior())
                 .padding(chromeContentPadding()),
         ) {
             for (index in from until tabs.size) {

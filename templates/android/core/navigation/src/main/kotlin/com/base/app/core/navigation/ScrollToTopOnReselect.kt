@@ -6,6 +6,7 @@ import androidx.compose.runtime.IntState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.snapshotFlow
+import com.base.app.core.designsystem.foundation.scroll.animateScrollToTop
 import kotlinx.coroutines.flow.drop
 
 internal val LocalTabReselections = compositionLocalOf<IntState?> { null }
@@ -18,6 +19,6 @@ internal val LocalTabReselections = compositionLocalOf<IntState?> { null }
 fun ScrollToTopOnReselect(state: LazyListState) {
     val reselections = LocalTabReselections.current ?: return
     LaunchedEffect(reselections, state) {
-        snapshotFlow { reselections.intValue }.drop(1).collect { state.animateScrollToItem(0) }
+        snapshotFlow { reselections.intValue }.drop(1).collect { state.animateScrollToTop() }
     }
 }

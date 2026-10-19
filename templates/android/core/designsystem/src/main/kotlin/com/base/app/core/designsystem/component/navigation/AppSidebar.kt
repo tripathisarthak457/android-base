@@ -50,6 +50,7 @@ import androidx.compose.ui.util.lerp
 import com.base.app.core.designsystem.component.feedback.AppBadgedBox
 import com.base.app.core.designsystem.foundation.interaction.AppHaptic
 import com.base.app.core.designsystem.foundation.interaction.rememberAppHaptics
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
 import kotlin.math.ceil
@@ -106,7 +107,7 @@ fun AppSidebar(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
                     .focusRestorer()
                     .focusGroup()
                     .selectableGroup()

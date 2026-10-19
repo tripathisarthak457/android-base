@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.dp
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 
 /**
@@ -82,7 +83,7 @@ internal fun TabRail(
                         val placeable = measurable.measure(constraints)
                         layout(placeable.width, placeable.height) { placeable.place(0, 0) }
                     }
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
                     .focusRestorer()
                     .focusGroup()
                     .selectableGroup()

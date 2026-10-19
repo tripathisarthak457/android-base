@@ -38,6 +38,7 @@ import com.base.app.core.designsystem.component.navigation.TabItem
 import com.base.app.core.designsystem.component.navigation.TabLabels
 import com.base.app.core.designsystem.component.navigation.rememberAppTabBarState
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.icon.AppIcons
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.designsystem.theme.BarTreatment
@@ -87,6 +88,7 @@ fun NavigationSection() {
                 modifier = Modifier.fillMaxSize().nestedScroll(state.nestedScrollConnection),
                 contentPadding = PaddingValues(AppTheme.spacing.lg),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+                flingBehavior = AppScrollDefaults.flingBehavior(),
             ) {
                 items(items = (1..40).toList(), key = { it }, contentType = { DemoRow }) { row -> AppText("Row $row") }
             }
@@ -188,6 +190,7 @@ private fun demoRegistry(navigator: AppNavigator) = NavRegistry(
                 LazyColumn(
                     contentPadding = PaddingValues(AppTheme.spacing.lg),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.sm),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
                 ) {
                     items(items = (1..20).toList(), key = { it }, contentType = { DemoRow }) { row ->
                         AppCard(onClick = { navigator.navigate(DemoDetail(row)) }, modifier = Modifier.fillMaxWidth()) {

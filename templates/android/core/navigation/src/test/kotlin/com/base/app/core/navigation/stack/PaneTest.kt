@@ -26,6 +26,7 @@ import com.base.app.core.common.navigation.AppNavKey
 import com.base.app.core.designsystem.foundation.layout.LocalPaneContext
 import com.base.app.core.designsystem.foundation.layout.PaneContext
 import com.base.app.core.designsystem.foundation.layout.PaneRole
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppBackStack
 import com.base.app.core.navigation.NavCommand
@@ -74,7 +75,11 @@ class PaneTest {
                     contexts[key] = LocalPaneContext.current
                     val list = rememberLazyListState()
                     inbox = list
-                    LazyColumn(Modifier.fillMaxSize().testTag(key.toString()), state = list) {
+                    LazyColumn(
+                        Modifier.fillMaxSize().testTag(key.toString()),
+                        state = list,
+                        flingBehavior = AppScrollDefaults.flingBehavior(),
+                    ) {
                         items(count = 100, key = { it }) { BasicText("Mail $it", Modifier.height(48.dp)) }
                     }
                 }

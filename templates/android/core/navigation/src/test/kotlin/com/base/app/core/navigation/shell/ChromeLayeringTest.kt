@@ -33,6 +33,7 @@ import com.base.app.core.designsystem.foundation.layout.LocalTabBarVisible
 import com.base.app.core.designsystem.foundation.layout.LocalWindowTopChrome
 import com.base.app.core.designsystem.foundation.layout.ReportScrollEdge
 import com.base.app.core.designsystem.foundation.layout.chromeContentPadding
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.navigation.AppNavigator
 import com.base.app.core.navigation.AppShell
@@ -148,7 +149,11 @@ class ChromeLayeringTest {
     fun `a root list scrolls under the floating bar, and its last row comes to rest above it`() {
         val rows = testRegistry { key ->
             if (key == FeedTab) {
-                LazyColumn(Modifier.fillMaxSize().testTag(FEED_LIST), contentPadding = chromeContentPadding()) {
+                LazyColumn(
+                    Modifier.fillMaxSize().testTag(FEED_LIST),
+                    contentPadding = chromeContentPadding(),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
+                ) {
                     items(count = 40, key = { it }) { BasicText("Row $it", Modifier.fillMaxWidth().height(56.dp).testTag("row_$it")) }
                 }
             } else {
@@ -170,7 +175,12 @@ class ChromeLayeringTest {
             if (key == FeedTab) {
                 val list = rememberLazyListState()
                 ReportScrollEdge(list)
-                LazyColumn(Modifier.fillMaxSize().testTag(FEED_LIST), state = list, contentPadding = chromeContentPadding()) {
+                LazyColumn(
+                    Modifier.fillMaxSize().testTag(FEED_LIST),
+                    state = list,
+                    contentPadding = chromeContentPadding(),
+                    flingBehavior = AppScrollDefaults.flingBehavior(),
+                ) {
                     items(count = 40, key = { it }) { BasicText("Row $it", Modifier.fillMaxWidth().height(56.dp)) }
                 }
             } else {

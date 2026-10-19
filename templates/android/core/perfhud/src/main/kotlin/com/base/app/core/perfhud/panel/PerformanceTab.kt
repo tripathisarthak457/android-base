@@ -28,6 +28,7 @@ import com.base.app.core.designsystem.component.button.ButtonVariant
 import com.base.app.core.designsystem.component.container.AppCard
 import com.base.app.core.designsystem.component.list.AppToggleRow
 import com.base.app.core.designsystem.component.text.AppText
+import com.base.app.core.designsystem.foundation.scroll.AppScrollDefaults
 import com.base.app.core.designsystem.theme.AppTheme
 import com.base.app.core.perfhud.R
 import com.base.app.core.perfhud.recording.PerformanceRecorder
@@ -64,7 +65,7 @@ internal fun PerformanceTab(recorder: PerformanceRecorder, exporter: ReportExpor
 
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState(), flingBehavior = AppScrollDefaults.flingBehavior())
             .padding(AppTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.lg),
     ) {
