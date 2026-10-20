@@ -221,3 +221,4 @@ Oct 20, 15:38 | The user: continue, full limits day and night. Window at 80% fro
 Oct 20, 16:14 | Media plan's lookup finished (cached); paused at 87% before its Opus plan so no work is cut off; one-shot 67d194cc at 17:13 resumes staging and the media plan | Paused
 Oct 20, 16:56 | The user: start 5-7 minutes before each reset to use the leftover quota. Resume one-shot moved to 17:04 (window at 87%); AUTOPILOT step 0 now schedules every resume early | Rule
 Oct 20, 17:04 | Resumed 6 minutes before the 17:10 reset at 88% (the user's early-resume rule): staging wi3md4ajc, media plan wp083s24x; hourly cron dbf1bb19 re-created | Resumed
+Oct 20, 18:26 | The user: a 30-minute break, PC shut down. Staging (fix phase) and the media plan stopped, crons deleted, staging pushed; resume by hand. Thermals at the stop: CPU 100% under the build, zone 94 C (avg 74, max 96 over 15 min) | Paused by the user
