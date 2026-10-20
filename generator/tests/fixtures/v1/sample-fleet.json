@@ -1,6 +1,6 @@
 {
-  "app_name": "VitFleet",
-  "package_name": "com.vitfleet.app",
+  "app_name": "Sample Fleet",
+  "package_name": "com.example.fleet",
   "min_sdk": 29,
   "target_sdk": 37,
   "compile_sdk": 37,
@@ -50,18 +50,18 @@
   "keystores": [],
   "api_base_urls": {
     "dev": "http://10.0.2.2:8080/api/",
-    "staging": "https://staging-api.vitfleet.example/api/",
-    "prod": "https://api.vitfleet.example/api/",
-    "playstore": "https://api.vitfleet.example/api/"
+    "staging": "https://staging-api.fleet.example/api/",
+    "prod": "https://api.fleet.example/api/",
+    "playstore": "https://api.fleet.example/api/"
   },
   "web_socket_urls": {
     "dev": "ws://10.0.2.2:8080/ws",
-    "staging": "wss://staging-api.vitfleet.example/ws",
-    "prod": "wss://api.vitfleet.example/ws",
-    "playstore": "wss://api.vitfleet.example/ws"
+    "staging": "wss://staging-api.fleet.example/ws",
+    "prod": "wss://api.fleet.example/ws",
+    "playstore": "wss://api.fleet.example/ws"
   },
-  "deeplink_scheme": "vitfleet",
-  "deeplink_host": "app.vitfleet.example",
+  "deeplink_scheme": "samplefleet",
+  "deeplink_host": "app.fleet.example",
   "font_name": "IBM Plex Sans",
   "mono_font_name": "IBM Plex Mono",
   "accent_colour": "#0E1A2B",

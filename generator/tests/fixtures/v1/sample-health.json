@@ -3,8 +3,8 @@
     "commit": "99c4edf97570",
     "generatedOn": "2026-09-24"
   },
-  "app_name": "PeriFlow",
-  "package_name": "com.jorwen.periflow",
+  "app_name": "Sample Health",
+  "package_name": "com.example.health",
   "min_sdk": 30,
   "target_sdk": 37,
   "compile_sdk": 37,
@@ -56,7 +56,7 @@
     "staging": "https://dev.example.com/api/"
   },
   "web_socket_urls": {},
-  "deeplink_scheme": "periflow",
+  "deeplink_scheme": "samplehealth",
   "deeplink_host": "example.com",
   "font_name": "Nunito",
   "mono_font_name": "JetBrains Mono",

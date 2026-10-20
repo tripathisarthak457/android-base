@@ -36,8 +36,8 @@ def minimal(**fields):
 class SchemaOneTest(unittest.TestCase):
     """Every spec an earlier release wrote still generates."""
 
-    def test_the_real_apps_and_the_old_test_specs_upgrade(self):
-        for name in ("periflow", "vitfleet", "spec_full", "spec_minimal", "spec_keys"):
+    def test_app_specs_and_the_old_test_specs_upgrade(self):
+        for name in ("sample-health", "sample-fleet", "spec_full", "spec_minimal", "spec_keys"):
             with self.subTest(fixture=name):
                 raw = json.loads((FIXTURES / "v1" / f"{name}.json").read_text(encoding="utf-8"))
                 parsed = read(raw)
@@ -72,7 +72,7 @@ class SchemaOneTest(unittest.TestCase):
         self.assertNotIn("room", parsed.spec.features)
 
     def test_the_record_is_schema_two_and_reads_back_as_the_same_spec(self):
-        raw = json.loads((FIXTURES / "v1" / "periflow.json").read_text(encoding="utf-8"))
+        raw = json.loads((FIXTURES / "v1" / "sample-health.json").read_text(encoding="utf-8"))
         first = read(raw).spec
         again = read(to_json(first, keystores=False)).spec
         self.assertEqual(first, again)
