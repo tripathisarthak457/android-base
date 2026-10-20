@@ -1,0 +1,136 @@
+package com.base.app.core.playstore
+
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.base.app.core.common.coroutines.AppDispatchers
+import com.base.app.core.common.coroutines.ApplicationScope
+import com.base.app.core.common.time.AppClock
+import com.base.app.core.designsystem.theme.AppTheme
+import com.base.app.core.playstore.review.ReviewPrompt
+import com.base.app.core.playstore.update.AppUpdates
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
+
+/**
+ * Asking Play loads its classes on the main thread, and the update check binds Play's service and
+ * wakes the Play Store process: none of it may run in the frame that first shows the app, or while
+ * the activity is not resumed.
+ */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [ROBOLECTRIC_SDK])
+class PlayStorePromptsTest {
+
+    @get:Rule
+    val compose = createComposeRule()
+
+    // Unconfined, so a check that starts runs on the test thread at once and is counted at once.
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
+    private val dispatchers = AppDispatchers(
+        io = Dispatchers.Unconfined,
+        default = Dispatchers.Unconfined,
+        main = Dispatchers.Unconfined,
+    )
+    private val updateStore = CountingPreferences()
+    private val reviewStore = CountingPreferences()
+    private val lifecycle = TestLifecycle()
+
+    @After
+    fun tearDown() {
+        scope.cancel()
+    }
+
+    @Test
+    fun `nothing asks Play before the first frame is on screen`() {
+        show()
+
+        assertEquals("The update check started in the first frame.", 0, updateStore.reads)
+        assertEquals("The launch was counted in the first frame.", 0, reviewStore.writes)
+
+        compose.mainClock.advanceTimeByFrame()
+        compose.waitForIdle()
+
+        assertEquals(1, updateStore.reads)
+        assertEquals(1, reviewStore.writes)
+    }
+
+    @Test
+    fun `nothing asks Play until the activity is resumed`() {
+        lifecycle.registry.currentState = Lifecycle.State.STARTED
+        show()
+
+        compose.mainClock.advanceTimeByFrame()
+        compose.waitForIdle()
+        assertEquals("The update check started before the activity resumed.", 0, updateStore.reads)
+        assertEquals("The launch was counted before the activity resumed.", 0, reviewStore.writes)
+
+        compose.runOnIdle { lifecycle.registry.currentState = Lifecycle.State.RESUMED }
+        compose.waitForIdle()
+
+        assertEquals(1, updateStore.reads)
+        assertEquals(1, reviewStore.writes)
+    }
+
+    private fun show() {
+        val context = RuntimeEnvironment.getApplication()
+        val updates = AppUpdates(context, updateStore, ApplicationScope(scope), dispatchers)
+        val review = ReviewPrompt(context, reviewStore, AppClock.System)
+        compose.mainClock.autoAdvance = false
+        compose.setContent {
+            CompositionLocalProvider(LocalLifecycleOwner provides lifecycle) {
+                AppTheme { PlayStorePrompts(updates, review) }
+            }
+        }
+    }
+
+    private class TestLifecycle : LifecycleOwner {
+        val registry = LifecycleRegistry.createUnsafe(this).apply {
+            currentState = Lifecycle.State.RESUMED
+        }
+        override val lifecycle: Lifecycle get() = registry
+    }
+}
+
+/** Preferences in memory that count how often they are read and written. */
+private class CountingPreferences : DataStore<Preferences> {
+    private val state = MutableStateFlow(emptyPreferences())
+    var reads = 0
+        private set
+    var writes = 0
+        private set
+
+    override val data: Flow<Preferences> = flow {
+        reads++
+        emitAll(state)
+    }
+
+    override suspend fun updateData(
+        transform: suspend (t: Preferences) -> Preferences,
+    ): Preferences = transform(state.value).also {
+        writes++
+        state.value = it
+    }
+}
+
+// Robolectric refuses SDK 36 and above on the Java 17 toolchain this project builds with.
+private const val ROBOLECTRIC_SDK = 35

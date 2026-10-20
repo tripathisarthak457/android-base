@@ -6,19 +6,24 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.base.app.core.designsystem.component.feedback.AppTone
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.component.overlay.ToastMessage
 import com.base.app.core.playstore.review.ReviewPrompt
 import com.base.app.core.playstore.update.AppUpdates
 import com.base.app.core.playstore.update.UpdateState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -26,6 +31,12 @@ import kotlin.time.Duration.Companion.seconds
  * through Play's own sheet; once it has downloaded, a toast in the window's toast layer offers to
  * restart into it, once, and nothing restarts by itself. The review prompt counts this launch and
  * asks when its policy says so.
+ *
+ * Both checks start after the first frame, in a main-thread message of their own, and only while
+ * the activity is resumed. On a cold start they load Play's classes on the main thread and the
+ * update check binds Play's service and wakes the Play Store process, which held the first frame
+ * with content back for answers nobody is waiting for; and Play drops a review sheet launched
+ * against a stopped activity.
  */
 @Composable
 fun PlayStorePrompts(
@@ -42,9 +53,16 @@ fun PlayStorePrompts(
         if (result.resultCode != Activity.RESULT_OK) updates.declined(version)
     }
 
-    SideEffect(updates) { updates.check() }
-    if (activity != null) {
-        LaunchedEffect(review, activity) { review.onLaunch(activity) }
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    LaunchedEffect(updates, review, activity, lifecycle) {
+        withFrameNanos {}
+        // Dispatchers.Main posts rather than running in the frame callback this resumes in.
+        withContext(Dispatchers.Main) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                updates.check()
+                if (activity != null) review.onLaunch(activity)
+            }
+        }
     }
 
     val offer = state as? UpdateState.Offer
