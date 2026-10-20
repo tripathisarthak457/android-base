@@ -222,6 +222,16 @@ nonisolated enum DesignTokens {
         static let pressScaleIcon: CGFloat = 0.9
         static let pressDimAlpha: Double = 0.45
         static let highlightFadeOut: TimeInterval = 0.22
+        static let skeletonBandWidth: CGFloat = 240
+        static let skeletonTiltDegrees: Double = 20
+        static let skeletonSweep: TimeInterval = 1.2
+        static let skeletonPause: TimeInterval = 0.8
+        static let skeletonReferenceTravel: CGFloat = 900
+        static let skeletonMaxSlowdown: CGFloat = 2
+        static let skeletonEasing = UnitCurve.bezier(
+            startControlPoint: UnitPoint(x: 0.3, y: 0),
+            endControlPoint: UnitPoint(x: 0.7, y: 1)
+        )
     }
 
     nonisolated struct Status {

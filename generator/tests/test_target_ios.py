@@ -337,6 +337,43 @@ def swift_files(directory: Path) -> list[Path]:
     return sorted(directory.rglob("*.swift")) if directory.is_dir() else []
 
 
+def design_token_members(code: str) -> dict[str, set[str]]:
+    """
+    Each type declared directly in `enum DesignTokens`, with what code can name through it: its
+    static members and its cases. [code] is lexed, so no brace comes from a comment or a string.
+    """
+    start = re.search(r"\benum DesignTokens\s*\{", code)
+    if start is None:
+        return {}
+    members: dict[str, set[str]] = {}
+    depth, group, chunk = 1, None, []
+
+    def collect() -> None:
+        if depth == 2 and group is not None:
+            text = "".join(chunk)
+            members[group] |= set(re.findall(r"\bstatic\s+(?:let|var|func)\s+(\w+)", text))
+            members[group] |= set(re.findall(r"\bcase\s+(\w+)", text))
+
+    for char in code[start.end():]:
+        if char not in "{}":
+            chunk.append(char)
+            continue
+        collect()
+        if char == "{":
+            if depth == 1:
+                declaration = re.findall(r"\b(?:enum|struct)\s+(\w+)", "".join(chunk))
+                group = declaration[-1] if declaration else None
+                if group is not None:
+                    members[group] = set()
+            depth += 1
+        else:
+            depth -= 1
+            if depth == 0:
+                break
+        chunk = []
+    return members
+
+
 def check_project(case: unittest.TestCase, project: Path, spec) -> None:
     """Every static check of A12.4, ADAPTIVE-PLAN §14 and STANDARDS-PLAN §2.12 on one project."""
     app = spec.pascal_name
@@ -875,6 +912,24 @@ class TemplateTest(unittest.TestCase):
         passed = re.findall(r"^\s*\.(float2|float|color)\(", call_arguments(code, call + len("Shader")), re.M)
         metal_types = {"float2": "float2", "float": "float", "color": "half4"}
         self.assertEqual(["float2", "SwiftUI::Layer", *(metal_types[kind] for kind in passed)], parameters)
+
+    def test_every_token_the_swift_names_is_emitted(self):
+        """
+        `DesignTokens.swift` is emitted, so a member the template reads but the emitter dropped fails
+        only when Xcode compiles the package, which nothing on this side of the Mac does.
+        """
+        code, _ = Lexer(swift.emit(tokens.resolve(None, "ios"))).run()
+        declared = design_token_members(code)
+        self.assertIn("Motion", declared)
+        missing = set()
+        for path in swift_files(TEMPLATE):
+            if path.name == "DesignTokens.swift":
+                continue
+            source, _ = lex(path)
+            for group, member in re.findall(r"\bDesignTokens\.(\w+)(?:\.(\w+))?", source):
+                if group not in declared or (member and member not in declared[group]):
+                    missing.add(f"{path.relative_to(TEMPLATE).as_posix()}: DesignTokens.{group}.{member}".rstrip("."))
+        self.assertEqual(set(), missing)
 
     def test_the_accent_colour_is_emitted_from_the_tokens(self):
         checked_in = (TEMPLATE / "BaseApp" / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")

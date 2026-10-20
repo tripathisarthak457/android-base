@@ -33,6 +33,12 @@ _MOTION_CONSTANTS: tuple[tuple[str, str, str, str, int], ...] = (
     ("pressScaleIcon", "CGFloat", "press", "scaleIcon", 1),
     ("pressDimAlpha", "Double", "press", "dimAlpha", 1),
     ("highlightFadeOut", "TimeInterval", "press", "highlightFadeOutMs", 1000),
+    ("skeletonBandWidth", "CGFloat", "skeleton", "bandWidth", 1),
+    ("skeletonTiltDegrees", "Double", "skeleton", "tiltDegrees", 1),
+    ("skeletonSweep", "TimeInterval", "skeleton", "sweepMs", 1000),
+    ("skeletonPause", "TimeInterval", "skeleton", "pauseMs", 1000),
+    ("skeletonReferenceTravel", "CGFloat", "skeleton", "referenceTravel", 1),
+    ("skeletonMaxSlowdown", "CGFloat", "skeleton", "maxSlowdown", 1),
 )
 
 
@@ -203,7 +209,14 @@ def _motion(motion: dict[str, Any]) -> list[str]:
     lines += ["        }", "    }", ""]
     for name, swift_type, group, key, divisor in _MOTION_CONSTANTS:
         lines.append(f"    static let {name}: {swift_type} = {number(motion[group][key] / divisor)}")
-    lines.append("}")
+    x1, y1, x2, y2 = (number(value) for value in motion["skeleton"]["easing"])
+    lines += [
+        "    static let skeletonEasing = UnitCurve.bezier(",
+        f"        startControlPoint: UnitPoint(x: {x1}, y: {y1}),",
+        f"        endControlPoint: UnitPoint(x: {x2}, y: {y2})",
+        "    )",
+        "}",
+    ]
     return lines
 
 
