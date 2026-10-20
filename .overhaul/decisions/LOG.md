@@ -58,3 +58,9 @@ pm); the Gradle 9.8.1 distribution through the wrapper into D:\.caches\gradle (W
 - Oct 20 01:17 (the user): full quota every window, day and night; the 08:55 wind-down one-shot is cancelled (work continues; a closed lid only pauses it, and the hourly save means nothing is lost); the pause starts at 95 % because the pause itself costs about 3 points with several runs and a large orchestrator context.
 
 - Oct 20 08:36 (the user, 15 questions with pros, cons and catches): approved Telegram P1, P2, P3, P5, P7, P8, P9; P4 opt-in per screen; P6 as a trial kept only if it wins; P10 opt-in off by default; P11 only if P6 wins; District P3; overlay pill with a dot, recomposition in the score with its own card, an opaque DEV badge if it costs frames; District re-run covers filters/sort, location picker, movie/event detail sheets and any safe sheet. Recorded as REQUIREMENTS 51; staging's requirements matrix routes each to its owner.
+
+- Oct 20 09:24 (the user): a full pre-main code review (REQUIREMENTS 52). The release plan had per-package reviews, staging's combined review by area, WP13's verification matrix and a single gate agent checking requirements, but no dedicated whole-codebase review by dimension with adversarial verification; it becomes its own package between WP13 and the gate when to-release.js is re-based on staging.
+
+- Oct 20 09:56 (the user): Coil and Media3 ExoPlayer become opt-in generator features with all the list and media optimisations built in by default (REQUIREMENTS 53); no further question needed on whether video is a feature.
+
+- Oct 20 09:57 (the user, asked with pros, cons and catches): rename the PeriFlow and VitFleet fixtures on staging now, keep history (no force-push of the shared branches). Routed into staging's fix phase as blocking via staging/MERGE-NOTES.md so the running verification is not disturbed.
