@@ -15,6 +15,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.register
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Fails the build of a release-like variant outside the dev flavour, and `check`, when it would
@@ -44,6 +45,7 @@ internal fun Project.verifyReleasesCarryNoDevTooling(components: ApplicationAndr
     }
 }
 
+@DisableCachingByDefault(because = "A walk of the resolved graph; a cached marker is no faster.")
 internal abstract class VerifyNoDevToolingTask : DefaultTask() {
 
     @get:Input
