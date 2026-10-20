@@ -1,9 +1,15 @@
 package com.base.app.buildlogic.android
 
+import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 
 class ComposeStabilityTest {
+
+    @get:Rule
+    val folder = TemporaryFolder()
 
     @Test
     fun `an unstable parameter is named with its function, generic functions included`() {
@@ -50,5 +56,26 @@ class ComposeStabilityTest {
 
         assertEquals(setOf("com.acme.ds.Foo(items)", "com.acme.ds.Bar(key)"), baseline.accepted)
         assertEquals(listOf("com.acme.ds.Bar(key)"), baseline.unexplained)
+    }
+
+    @Test
+    fun `the module's other compilations write their report only after the check has read this one`() {
+        val root = ProjectBuilder.builder().withProjectDir(folder.root).build()
+        val core = ProjectBuilder.builder().withName("core").withParent(root).build()
+        val module = ProjectBuilder.builder().withName("designsystem").withParent(core).build()
+        val compiles = listOf(
+            "compileDebugKotlin", "compileReleaseKotlin", "compileDebugUnitTestKotlin",
+            "compileReleaseUnitTestKotlin", "compileDebugAndroidTestKotlin",
+        )
+        (compiles + listOf("kspDebugKotlin", "compileDebugJavaWithJavac")).forEach { module.tasks.register(it) }
+
+        module.configureComposeStability()
+
+        val readers = setOf(module.tasks.getByName("checkComposeStability"), module.tasks.getByName("recordComposeStability"))
+        fun after(name: String) = module.tasks.getByName(name).mustRunAfter.getDependencies(null)
+        assertEquals(emptySet<Any>(), after("compileDebugKotlin"))
+        compiles.drop(1).forEach { assertEquals(it, readers, after(it)) }
+        assertEquals(emptySet<Any>(), after("kspDebugKotlin"))
+        assertEquals(emptySet<Any>(), after("compileDebugJavaWithJavac"))
     }
 }

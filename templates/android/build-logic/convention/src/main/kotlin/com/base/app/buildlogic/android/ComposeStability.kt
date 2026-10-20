@@ -53,12 +53,20 @@ internal fun Project.configureComposeStability() {
         dependsOn(COMPILE_TASK)
     }
 
-    tasks.register<RecordComposeStabilityTask>("recordComposeStability") {
+    val record = tasks.register<RecordComposeStabilityTask>("recordComposeStability") {
         group = "verification"
         description = "Adds the current identity-compared parameters to the baseline, without reasons."
         reports.setFrom(written)
         baselineFile.set(baseline)
         dependsOn(COMPILE_TASK)
+    }
+
+    // Every Kotlin compilation of the module writes its report to the same file, since a test
+    // compilation takes the module's name to see its `internal` declarations. A unit-test compile
+    // that ran in between would leave the report holding the tests' composables and none of the
+    // module's, so the other compilations write theirs only once the report has been read.
+    tasks.matching { it.name != COMPILE_TASK && KOTLIN_COMPILE.matches(it.name) }.configureEach {
+        mustRunAfter(check, record)
     }
 
     // There is nothing to read until the module has been compiled, so it runs with `check`.
@@ -70,6 +78,9 @@ internal fun Project.configureComposeStability() {
  * with no flavours, and the two build types compile the same sources to the same stability answers.
  */
 private const val COMPILE_TASK = "compileDebugKotlin"
+
+/** A Kotlin compilation of any variant or test source set: `compileReleaseUnitTestKotlin`. */
+private val KOTLIN_COMPILE = Regex("""compile\w*Kotlin""")
 
 /** The report reading and the baseline, apart from Gradle so they can be unit tested. */
 internal object ComposeStability {
