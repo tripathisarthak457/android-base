@@ -203,3 +203,5 @@ Oct 20, 06:20 | Paused for usage at 94% (staging in its phone tests); resume one
 Oct 20, 07:09 | The user: start working. Staging resumed (wcyijk728); the 07:12 one-shot cancelled | Resumed
 Oct 20, 08:36 | The user answered 15 queued questions: Telegram P1-P3, P5, P7-P9 approved, P4 opt-in, P6 trial, P10 opt-in off by default, P11 if P6 wins; District P3 approved and the re-run's sheets chosen; overlay pill, score and badge answers. REQUIREMENTS 51 | Decision
 Oct 20, 08:37 | Memory deadlock: staging's test run waited from 08:30 for commit (742 MB left) while this project's idle Gradle 9.7.1 daemon (pid 19284, 4530 MB) and Kotlin daemon (7416, 1883 MB) from 07:58 sat at 0 CPU; stopped both under the user's approval; commit back to 5.2 GB. wlanext still holds 2.7 GB of commit (restart pending) | Fix
+Oct 20, 08:55 | Only staging running (16% usage at 08:54), so under the full-quota rule plan-approved-work.js started (task w1s8ri22h, run wf_b7cc5b7e-b81): read-only build plans for every approved item, reviewed for conflicts and order | Started
+Oct 20, 09:12 | The user: work until 10:20. Wind-down one-shot at 10:12, no auto-resume; they restart by hand | Plan
