@@ -22,7 +22,8 @@ import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
  *
  * [onProgress] follows a predictive back gesture from 0 to 1 and [onCancel] ends one the user took
  * back; a Back key or button goes straight to [onBack]. An unhandled Escape on a hardware keyboard
- * arrives as Back too (the platform's key-character map falls Escape back to it).
+ * arrives as Back too (the platform's key-character map falls Escape back to it). While the
+ * window's overlays are suspended ([SuspendOverlays]) it takes no Back: the cover over them does.
  */
 @Composable
 internal fun OverlayBackHandler(
@@ -32,6 +33,8 @@ internal fun OverlayBackHandler(
     onBack: () -> Unit,
 ) {
     val dispatcher = LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
+    // Read here, so the handler is switched when the cover comes or goes; that is rare.
+    val suspended = LocalOverlayHost.current?.suspended == true
     val progress = rememberUpdatedState(onProgress)
     val cancel = rememberUpdatedState(onCancel)
     val back = rememberUpdatedState(onBack)
@@ -43,7 +46,7 @@ internal fun OverlayBackHandler(
             override fun onBackCompleted() = back.value()
         }
     }
-    SideEffect { handler.isBackEnabled = enabled }
+    SideEffect { handler.isBackEnabled = enabled && !suspended }
     DisposableEffect(dispatcher) {
         dispatcher.addHandler(handler, NavigationEventDispatcher.PRIORITY_OVERLAY)
         onDispose { handler.remove() }

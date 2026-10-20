@@ -5,12 +5,14 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
@@ -19,12 +21,15 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.click
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -33,6 +38,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.base.app.core.common.coroutines.ApplicationScope
 import com.base.app.core.datastore.settings.AppSettingsStore
+import com.base.app.core.designsystem.component.overlay.AppAlert
+import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+import com.base.app.core.designsystem.component.overlay.ToastMessage
+import com.base.app.core.designsystem.component.sheet.AppSheet
+import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -117,12 +127,7 @@ class AppLockGateTest {
         show(lock)
         compose.runOnIdle { assertTrue(contentFocused) }
 
-        compose.runOnIdle {
-            val owner = activity.get()
-            lock.onStop(owner)
-            now += AppLock.GRACE_MILLIS + 1
-            lock.onStart(owner)
-        }
+        lockAgain(lock)
 
         compose.onNodeWithTag(ContentTag).assertDoesNotExist()
         compose.runOnIdle { assertFalse("The field kept focus, and the keyboard with it.", contentFocused) }
@@ -158,6 +163,113 @@ class AppLockGateTest {
         compose.runOnIdle { assertTrue(contentFocused) }
     }
 
+    // What the person left up when the app locked: Settings' sign-out alert, a sheet and a toast
+    // with an action. The window draws them above its content, so above the cover too, unless the
+    // gate withdraws them.
+    @Test
+    fun `alerts, sheets and toasts left up when the app locks are out of reach under the cover`() {
+        var confirmed = 0
+        var dismissed = 0
+        var undone = 0
+        val lock = lockedApp()
+        lock.unlocked()
+        show(lock) {
+            AppSheet(visible = true, onDismissRequest = { dismissed++ }) { AppText(SheetText) }
+            // Shown after the sheet, so it is the top overlay, as an alert raised from a sheet is.
+            AppAlert(
+                visible = true,
+                title = AlertTitle,
+                confirmLabel = SignOut,
+                onConfirm = { confirmed++ },
+                onDismissRequest = { dismissed++ },
+                dismissLabel = "Cancel",
+                destructive = true,
+            )
+            val host = LocalOverlayHost.current
+            LaunchedEffect(Unit) {
+                val toast = ToastMessage(
+                    text = ToastText,
+                    actionLabel = "Undo",
+                    onAction = { undone++ },
+                    durationMillis = 600_000,
+                )
+                host?.toasts?.show(toast)
+            }
+        }
+        compose.onNodeWithText(AlertTitle).assertIsDisplayed()
+        compose.onNodeWithText(ToastText).assertIsDisplayed()
+        val signOut = compose.onNodeWithText(SignOut).getUnclippedBoundsInRoot()
+
+        lockAgain(lock)
+
+        for (text in listOf(AlertTitle, SignOut, SheetText, ToastText, "Undo")) {
+            compose.onNodeWithText(text).assertDoesNotExist()
+        }
+        compose.onRoot().performTouchInput {
+            val x = (signOut.left + signOut.right).toPx() / 2
+            click(Offset(x, (signOut.top + signOut.bottom).toPx() / 2))
+        }
+        compose.runOnIdle { activity.get().onBackPressedDispatcher.onBackPressed() }
+        compose.runOnIdle {
+            assertEquals("A tap reached the alert under the cover.", 0, confirmed)
+            assertEquals("Back went to an overlay under the cover.", 0, dismissed)
+        }
+        val unlock = compose.onNodeWithText(activity.get().getString(R.string.applock_action))
+        unlock.assertIsDisplayed()
+        compose.runOnIdle { focusManager.moveFocus(FocusDirection.Next) }
+        unlock.assertIsFocused()
+
+        compose.runOnIdle { lock.unlocked() }
+
+        for (text in listOf(AlertTitle, SignOut, SheetText, ToastText)) {
+            compose.onNodeWithText(text).assertIsDisplayed()
+        }
+        compose.onNodeWithText(SignOut).performClick()
+        compose.runOnIdle { assertEquals(1, confirmed) }
+        assertEquals(0, undone)
+    }
+
+    @Test
+    fun `a sheet opened under the cover takes neither focus nor Back`() {
+        var sheet by mutableStateOf(false)
+        var dismissed = 0
+        var sheetFocused = false
+        show(lockedApp()) {
+            AppSheet(visible = sheet, onDismissRequest = { dismissed++ }) {
+                AppText(
+                    SheetText,
+                    modifier = Modifier
+                        .onFocusChanged { if (it.isFocused) sheetFocused = true }
+                        .focusable(),
+                )
+            }
+        }
+        val unlock = compose.onNodeWithText(activity.get().getString(R.string.applock_action))
+        compose.runOnIdle { focusManager.moveFocus(FocusDirection.Next) }
+        unlock.assertIsFocused()
+
+        compose.runOnIdle { sheet = true }
+        compose.onNodeWithText(SheetText).assertDoesNotExist()
+        unlock.assertIsFocused()
+        compose.runOnIdle {
+            repeat(3) { focusManager.moveFocus(FocusDirection.Next) }
+            activity.get().onBackPressedDispatcher.onBackPressed()
+        }
+        compose.runOnIdle {
+            assertFalse("Focus reached the sheet under the cover.", sheetFocused)
+            assertEquals("Back went to the sheet under the cover.", 0, dismissed)
+        }
+    }
+
+    private fun lockAgain(lock: AppLock) {
+        compose.runOnIdle {
+            val owner = activity.get()
+            lock.onStop(owner)
+            now += AppLock.GRACE_MILLIS + 1
+            lock.onStart(owner)
+        }
+    }
+
     private fun lockedApp(): AppLock {
         val settings = AppSettingsStore(MemoryPreferences(), ApplicationScope(scope))
         scope.launch { settings.setAppLockEnabled(true) }
@@ -168,7 +280,7 @@ class AppLockGateTest {
     // The content asks for focus as soon as it is composed, as a screen with a search or sign-in
     // field does. BiometricPrompt needs a FragmentActivity, which no test manifest declares;
     // Robolectric builds one without a declaration.
-    private fun show(lock: AppLock) {
+    private fun show(lock: AppLock, overlays: @Composable () -> Unit = {}) {
         activity = Robolectric.buildActivity(FragmentActivity::class.java).setup()
         activity.get().setContent {
             focusManager = LocalFocusManager.current
@@ -187,6 +299,7 @@ class AppLockGateTest {
                             .focusable(),
                     )
                     LaunchedEffect(Unit) { field.requestFocus() }
+                    overlays()
                 }
             }
         }
@@ -204,6 +317,10 @@ private class MemoryPreferences : DataStore<Preferences> {
 }
 
 private const val ContentTag = "locked_content"
+private const val AlertTitle = "Sign out of this phone?"
+private const val SignOut = "Sign out"
+private const val SheetText = "Sheet with the account's details"
+private const val ToastText = "Draft deleted"
 
 // Robolectric refuses SDK 36 and above on a Java 17 toolchain, which is what this project builds with.
 private const val ROBOLECTRIC_SDK = 35

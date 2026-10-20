@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
@@ -149,6 +150,59 @@ class OverlayHostTest {
         rule.mainClock.advanceTimeBy(5_000)
         assertEquals("Sent", host!!.toasts.current?.text)
         rule.runOnIdle { lifecycle.registry.currentState = Lifecycle.State.RESUMED }
+        rule.mainClock.advanceTimeBy(1_500)
+        assertNull(host!!.toasts.current)
+    }
+
+    @Test
+    fun `suspended overlays are neither drawn, announced nor touched, then come back`() {
+        var suspended by mutableStateOf(false)
+        var confirmed = 0
+        rule.setThemed {
+            SuspendOverlays { suspended }
+            AppAlert(
+                visible = true,
+                title = "Sign out?",
+                confirmLabel = "Sign out",
+                onConfirm = { confirmed++ },
+                onDismissRequest = {},
+                dismissLabel = "Cancel",
+                destructive = true,
+            )
+        }
+        val button = rule.onNodeWithText("Sign out").getUnclippedBoundsInRoot()
+
+        rule.runOnIdle { suspended = true }
+        rule.onNodeWithText("Sign out?").assertDoesNotExist()
+        rule.onRoot().performTouchInput {
+            val x = (button.left + button.right).toPx() / 2
+            click(Offset(x, (button.top + button.bottom).toPx() / 2))
+        }
+        assertEquals("A tap reached a suspended alert.", 0, confirmed)
+
+        rule.runOnIdle { suspended = false }
+        rule.onNodeWithText("Sign out?").assertIsDisplayed()
+        rule.onNodeWithText("Sign out").performClick()
+        assertEquals(1, confirmed)
+    }
+
+    @Test
+    fun `a toast waits out a suspension with its time held`() {
+        var suspended by mutableStateOf(true)
+        var host: OverlayHostState? = null
+        rule.mainClock.autoAdvance = false
+        rule.setThemed {
+            host = LocalOverlayHost.current
+            SuspendOverlays { suspended }
+        }
+        rule.runOnIdle { host!!.toasts.show(ToastMessage(text = "Saved", durationMillis = 1_000)) }
+        rule.mainClock.advanceTimeBy(5_000)
+        assertEquals("Saved", host!!.toasts.current?.text)
+        rule.onNodeWithText("Saved").assertDoesNotExist()
+
+        rule.runOnIdle { suspended = false }
+        rule.mainClock.advanceTimeByFrame()
+        rule.onNodeWithText("Saved").assertExists()
         rule.mainClock.advanceTimeBy(1_500)
         assertNull(host!!.toasts.current)
     }

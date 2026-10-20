@@ -35,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -174,10 +175,11 @@ fun AppToast(
 
 /**
  * Layer 5. The toast rises from above whatever covers the bottom edge (the tab bar, an action bar,
- * the keyboard) as the shell reports it, can be swiped down, and leaves on a spring.
+ * the keyboard) as the shell reports it, can be swiped down, and leaves on a spring. While [held]
+ * returns true its time stands still and it gives no haptic, as while the app is in the background.
  */
 @Composable
-internal fun ToastLayer(queue: ToastQueue) {
+internal fun ToastLayer(queue: ToastQueue, held: () -> Boolean) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val bottomChrome = LocalBottomChrome.current
     val navigationBars = WindowInsets.navigationBars
@@ -186,6 +188,7 @@ internal fun ToastLayer(queue: ToastQueue) {
     val message = queue.current
 
     LaunchedEffect(message) {
+        snapshotFlow(held).first { !it }
         when (message?.tone) {
             AppTone.Success -> haptics.perform(AppHaptic.Confirm)
             AppTone.Error -> haptics.perform(AppHaptic.Reject)
@@ -197,6 +200,7 @@ internal fun ToastLayer(queue: ToastQueue) {
         var left = showing.durationMillis
         while (left > 0) {
             lifecycle.currentStateFlow.first { it.isAtLeast(Lifecycle.State.STARTED) }
+            snapshotFlow(held).first { !it }
             delay(Tick)
             left -= Tick
         }

@@ -15,6 +15,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
+import com.base.app.core.designsystem.component.overlay.OverlayHostState
 import com.base.app.core.designsystem.component.sheet.SheetController
 import com.base.app.core.designsystem.component.sheet.SheetDismissSource
 import com.base.app.core.designsystem.component.sheet.SheetModality
@@ -22,12 +23,16 @@ import com.base.app.core.designsystem.component.sheet.SheetModality
 /**
  * The surface as a focus group: it can hold focus itself, so focus moves into a modal
  * sheet without opening a keyboard, Tab and the arrows stay inside it, and an Escape no field took
- * closes it as the Back key would.
+ * closes it as the Back key would. While [host]'s overlays are suspended it lets focus go, to the
+ * cover that suspended them.
  */
-internal fun Modifier.sheetFocus(controller: SheetController): Modifier = this
+internal fun Modifier.sheetFocus(controller: SheetController, host: OverlayHostState?): Modifier = this
     .onFocusChanged { controller.focusInside = it.hasFocus }
     .focusProperties {
-        onExit = { if (controller.modality is SheetModality.Modal || controller.blocking) cancelFocusChange() }
+        onExit = {
+            val traps = controller.modality is SheetModality.Modal || controller.blocking
+            if (traps && host?.suspended != true) cancelFocusChange()
+        }
     }
     .focusRequester(controller.surfaceFocus)
     .focusGroup()
@@ -52,7 +57,8 @@ internal fun SheetFocusEffect(controller: SheetController) {
     LaunchedEffect(controller, host) {
         snapshotFlow {
             val state = controller.sheetState
-            state.isVisible && !state.isLeaving && state.parkProgress == 0f && !state.parkedInstantly && controller.blocking
+            state.isVisible && !state.isLeaving && state.parkProgress == 0f && !state.parkedInstantly &&
+                controller.blocking && host?.suspended != true
         }.collect { inside ->
             if (inside) {
                 host?.saveFocus()

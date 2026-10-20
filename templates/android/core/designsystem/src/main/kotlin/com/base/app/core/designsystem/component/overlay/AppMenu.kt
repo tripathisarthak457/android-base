@@ -74,6 +74,9 @@ fun AppMenu(
     val state = remember { MutableTransitionState(false) }
     state.targetState = expanded
     if (!state.currentState && !state.targetState) return
+    // A popup is a window of its own, over any cover in the app's: while the window's overlays are
+    // suspended the menu is not shown, and it comes back open when they return.
+    if (LocalOverlayHost.current?.suspended == true) return
 
     val density = LocalDensity.current
     val position = remember(density) {

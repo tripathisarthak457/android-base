@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
 import com.base.app.core.designsystem.R
+import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.component.sheet.AppSheetScope
 import com.base.app.core.designsystem.component.sheet.SheetController
 import com.base.app.core.designsystem.component.sheet.SheetPlacement
@@ -93,7 +94,7 @@ internal fun SheetLayout(
                         )
                         .then(modifier)
                         .testTag(SurfaceTag)
-                        .sheetFocus(controller)
+                        .sheetFocus(controller, LocalOverlayHost.current)
                         .sheetCatch(controller)
                         .anchoredDraggable(
                             state = state.anchored,

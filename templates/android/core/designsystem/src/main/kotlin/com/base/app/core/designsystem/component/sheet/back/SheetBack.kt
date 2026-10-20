@@ -11,6 +11,7 @@ import androidx.navigationevent.NavigationEventDispatcher
 import androidx.navigationevent.NavigationEventHandler
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
+import com.base.app.core.designsystem.component.overlay.LocalOverlayHost
 import com.base.app.core.designsystem.component.sheet.SheetController
 import com.base.app.core.designsystem.component.sheet.SheetDismissSource
 import com.base.app.core.designsystem.component.sheet.SheetModality
@@ -23,8 +24,9 @@ import kotlinx.coroutines.launch
 /**
  * The sheet's Back: one handler at overlay priority on the dispatcher of the
  * composition that shows the sheet, so it is asked before any screen's and is off with a kept tab
- * that is not on screen. Its enablement comes from a flow over state that changes a few times per
- * opening, never from composition, so nothing recomposes for it.
+ * that is not on screen, and while the window's overlays are suspended. Its enablement comes from a
+ * flow over state that changes a few times per opening, never from composition, so nothing
+ * recomposes for it.
  *
  * The gesture follows Material's bottom container: the sheet shrinks toward its bottom edge as the
  * finger moves and leaves in one gesture on commit. A guarded sheet resists and asks its guard; a
@@ -33,13 +35,15 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun SheetBack(controller: SheetController) {
     val dispatcher = LocalNavigationEventDispatcherOwner.current?.navigationEventDispatcher ?: return
+    val host = LocalOverlayHost.current
     val handler = remember(controller) { SheetBackHandler(controller) }
     DisposableEffect(dispatcher, handler) {
         dispatcher.addHandler(handler, NavigationEventDispatcher.PRIORITY_OVERLAY)
         onDispose { handler.remove() }
     }
-    LaunchedEffect(handler) {
-        snapshotFlow { controller.backEnabled() }.collect { handler.isBackEnabled = it }
+    LaunchedEffect(handler, host) {
+        snapshotFlow { host?.suspended != true && controller.backEnabled() }
+            .collect { handler.isBackEnabled = it }
     }
 }
 

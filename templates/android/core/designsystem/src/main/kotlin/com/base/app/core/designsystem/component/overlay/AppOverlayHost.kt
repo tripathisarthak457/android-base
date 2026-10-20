@@ -61,9 +61,19 @@ class OverlayHostState internal constructor() {
     /** The app content beneath the overlays, which saves and gets back its focus around a modal overlay. */
     internal val appFocus = FocusRequester()
 
+    private var suspension by mutableStateOf<(() -> Boolean)?>(null)
+
+    /**
+     * True while a cover that has to be the top of the window is up ([SuspendOverlays]). It reads
+     * the cover's own state, so wherever it is read (placement, semantics, an effect) follows the
+     * cover in the frame the cover changes.
+     */
+    internal val suspended: Boolean
+        get() = suspension?.invoke() == true
+
     /** True while a modal overlay is up: the content beneath is hidden from screen readers and from focus. */
     internal val modal: Boolean
-        get() = overlays.any { it.modal() }
+        get() = !suspended && overlays.any { it.modal() }
 
     /** Read from the focus properties of the content beneath, so Tab never leaves a modal overlay. */
     internal var trapsFocus = false
@@ -75,6 +85,11 @@ class OverlayHostState internal constructor() {
     internal fun restoreFocus() {
         appFocus.restoreFocusedChild()
     }
+
+    internal fun suspendWhile(condition: () -> Boolean): () -> Unit {
+        suspension = condition
+        return { if (suspension === condition) suspension = null }
+    }
 }
 
 /**
@@ -85,6 +100,7 @@ internal class OverlayEntry(
     val key: Any,
     val modal: () -> Boolean,
     private val parked: () -> Boolean,
+    private val suspended: () -> Boolean,
     val content: @Composable () -> Unit,
 ) {
     /**
@@ -93,8 +109,11 @@ internal class OverlayEntry(
      */
     var removed by mutableStateOf(false)
 
-    /** Neither drawn nor announced now: removed, or its caller's tab is not the selected one. */
-    val away: () -> Boolean = { removed || parked() }
+    /**
+     * Neither drawn nor announced now: removed, its caller's tab is not the selected one, or the
+     * window's overlays are suspended.
+     */
+    val away: () -> Boolean = { removed || parked() || suspended() }
 }
 
 /** The window's overlay host, or null outside an `AppTheme` (a bare preview). */
@@ -123,13 +142,23 @@ internal fun AppOverlayHost(content: @Composable () -> Unit) {
             // The layers are siblings of the app's root, outside whatever exposes its test tags, so
             // they expose their own: benchmarks find a sheet's grabber or a toast by resource id.
             // No pointer modifiers here: a touch that misses every placed overlay reaches the app.
-            Box(Modifier.semantics { testTagsAsResourceId = true }, propagateMinConstraints = true) {
+            // Suspended, nothing in them can take focus, even an overlay that asks for it.
+            val suspended = remember(state) { { state.suspended } }
+            Box(
+                modifier = Modifier
+                    .semantics { testTagsAsResourceId = true }
+                    .focusProperties { onEnter = { if (state.suspended) cancelFocusChange() } }
+                    .focusGroup(),
+                propagateMinConstraints = true,
+            ) {
                 state.overlays.forEach { entry ->
                     key(entry.key) {
                         Box(Modifier.parkedOverlay(entry.away), propagateMinConstraints = true) { entry.content() }
                     }
                 }
-                ToastLayer(state.toasts)
+                Box(Modifier.parkedOverlay(suspended), propagateMinConstraints = true) {
+                    ToastLayer(state.toasts, held = suspended)
+                }
             }
         }
     }
@@ -165,6 +194,7 @@ internal fun HostedOverlay(modal: () -> Boolean, onRemoved: (() -> Unit)? = null
             key = callSite,
             modal = { isModal.value() },
             parked = { !visibility.isTabSelected },
+            suspended = { host.suspended },
         ) {
             CompositionLocalProvider(locals.value) {
                 holder.SaveableStateProvider(callSite) {
@@ -182,5 +212,25 @@ internal fun HostedOverlay(modal: () -> Boolean, onRemoved: (() -> Unit)? = null
             removed.value?.invoke()
             host.overlays.remove(entry)
         }
+    }
+}
+
+/**
+ * Withdraws every overlay of the window while [suspended] returns true: none is drawn, announced,
+ * touched or focused, none takes Back, and a toast waits with its time held. For a cover that has
+ * to be the top of the window, such as an app lock: overlays sit above everything the app draws,
+ * so without this an alert or a toast would show over the cover and stay usable through it. When
+ * it returns false again, every overlay comes back as it was.
+ *
+ * [suspended] is read in placement and semantics as well as in composition, so it should read the
+ * same state the cover is shown from: then both change in the same frame.
+ */
+@Composable
+fun SuspendOverlays(suspended: () -> Boolean) {
+    val host = LocalOverlayHost.current ?: return
+    val condition = rememberUpdatedState(suspended)
+    DisposableEffect(host) {
+        val release = host.suspendWhile { condition.value() }
+        onDispose(release)
     }
 }

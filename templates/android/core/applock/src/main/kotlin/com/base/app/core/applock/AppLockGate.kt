@@ -39,6 +39,7 @@ import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.base.app.core.designsystem.component.button.AppButton
+import com.base.app.core.designsystem.component.overlay.SuspendOverlays
 import com.base.app.core.designsystem.component.text.AppIcon
 import com.base.app.core.designsystem.component.text.AppText
 import com.base.app.core.designsystem.icon.AppIcons
@@ -48,7 +49,8 @@ import com.base.app.core.designsystem.theme.AppTheme
  * Covers [content] with the unlock screen while [lock] says so. The decision for the first frame is
  * made synchronously, so the app's own content is never drawn, even for a frame, while it is meant
  * to be covered. Every window of the app composes its own gate over the same [AppLock], so on a
- * large screen with two windows both are covered.
+ * large screen with two windows both are covered. The window's overlays (alerts, sheets, menus,
+ * toasts), which draw above everything the app does, are withdrawn with it.
  *
  * The activity must be a [FragmentActivity], which `BiometricPrompt` runs in.
  */
@@ -59,6 +61,9 @@ fun AppLockGate(
     content: @Composable () -> Unit,
 ) {
     val locked by lock.locked.collectAsStateWithLifecycle(initialValue = lock.isLockedNow())
+    // An alert or a toast left up when the app locked would otherwise draw over the cover and stay
+    // usable through it. The overlays read this in the frame that shows the cover.
+    SuspendOverlays { locked }
 
     Box(modifier) {
         // Kept composed underneath, so unlocking returns to exactly where the person was. While
