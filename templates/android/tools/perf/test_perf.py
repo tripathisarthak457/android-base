@@ -12,6 +12,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -508,6 +509,56 @@ class UprightTest(unittest.TestCase):
         with self.assertRaises(perf.HarnessError), mock_sleep(), device.upright():
             raise perf.HarnessError("the phone is locked")
         self.assertEqual(device.settings, {"global stay_on_while_plugged_in": "2"})
+
+
+class PressTest(unittest.TestCase):
+    """A measured tap is lifted once its press feedback has stopped drawing, so none of its frames
+    are measured as the frames the tap opens."""
+
+    class FakeDevice(perf.Device):
+        def __init__(self, drawing_polls):
+            super().__init__("fake")
+            self.drawing_polls = drawing_polls
+            self.commands = []
+
+        def shell(self, command, timeout=180):
+            self.commands.append(command)
+            if command.startswith("dumpsys gfxinfo com.acme.dev reset"):
+                frames = 4 if self.drawing_polls > 0 else 0
+                self.drawing_polls -= 1
+                return f"Total frames rendered: {frames}\nJanky frames: 0 (0.00%)\n"
+            return ""
+
+    def press(self, device, node_xml='<node bounds="[0,200][600,340]" clickable="true"/>'):
+        app = perf.App(device=device, package="com.acme.dev", extras={})
+        with tempfile.TemporaryDirectory() as out, mock_sleep():
+            run = perf.Run(device, app, out, 1, seed=1)
+            lift = run.press(perf.Node(perf.ET.fromstring(node_xml)))
+        return run, lift
+
+    def test_a_press_is_lifted_only_once_its_feedback_stops_drawing(self):
+        device = self.FakeDevice(drawing_polls=2)
+        run, lift = self.press(device)
+        self.assertEqual("input motionevent UP 300 270", lift)
+        self.assertEqual("input motionevent DOWN 300 270", device.commands[0])
+        polls = [command for command in device.commands if command.startswith("dumpsys gfxinfo")]
+        self.assertEqual(3, len(polls), "two polls still drawing, then one quiet")
+        self.assertIn(f"sleep {perf.PRESS_QUIET_S}", polls[0])
+        self.assertEqual([], run.notes)
+
+    def test_a_press_on_something_with_a_long_press_is_lifted_before_it_becomes_one(self):
+        device = self.FakeDevice(drawing_polls=99)
+        _, lift = self.press(device, '<node bounds="[0,200][600,340]" clickable="true" long-clickable="true"/>')
+        self.assertEqual("input motionevent UP 300 270", lift)
+        self.assertEqual(["input motionevent DOWN 300 270"], device.commands)
+
+    def test_a_press_that_never_stops_drawing_is_lifted_with_a_note(self):
+        device = self.FakeDevice(drawing_polls=99)
+        with mock.patch.object(perf, "PRESS_STILL_TIMEOUT_S", 0.0):
+            run, lift = self.press(device)
+        self.assertEqual("input motionevent UP 300 270", lift)
+        self.assertEqual(1, len(run.notes))
+        self.assertIn("kept drawing", run.notes[0])
 
 
 @contextlib.contextmanager

@@ -60,8 +60,15 @@ JOURNEYS = [
 PROFILE_RECEIVER = "androidx.profileinstaller.ProfileInstallReceiver"
 PROFILE_ACTION = "androidx.profileinstaller.action.INSTALL_PROFILE"
 MAX_BATTERY_C = 37.0
-# Long enough for a press feedback to settle, short of the 400 ms that makes a press a long press.
+# How long a press is held before it is lifted: past the tap timeout, so its feedback has started,
+# and short of the 400 ms that makes a press a long press on something that has one.
 PRESS_SETTLE_S = 0.25
+# Where nothing takes a long press, the finger then stays down until the app has drawn nothing for
+# this long: a feedback that eases in (a card's scale) is still drawing at PRESS_SETTLE_S, and its
+# frames would be measured as the tap's.
+PRESS_QUIET_S = 0.15
+# A press still drawing after this long is something that never stops (a spinner), not its feedback.
+PRESS_STILL_TIMEOUT_S = 2.0
 
 
 # The settings a run holds while it measures (Device.upright), as `settings get` names them.
@@ -188,6 +195,7 @@ class Node:
     def __init__(self, element):
         self.resource_id = element.get("resource-id") or ""
         self.clickable = element.get("clickable") == "true"
+        self.long_clickable = element.get("long-clickable") == "true"
         self.text = element.get("text") or element.get("content-desc") or ""
         left, top, right, bottom = map(int, re.findall(r"-?\d+", element.get("bounds", "[0,0][0,0]")))
         self.bounds = (left, top, right, bottom)
@@ -372,7 +380,23 @@ class Run:
         if "rror" in output or "nknown" in output:
             return self.tap(node)
         time.sleep(PRESS_SETTLE_S)
+        if not node.long_clickable and not self.wait_until_still(PRESS_STILL_TIMEOUT_S):
+            note = f"a press kept drawing for {PRESS_STILL_TIMEOUT_S:g} s and was lifted anyway"
+            if note not in self.notes:
+                self.notes.append(note)
         return f"input motionevent UP {x} {y}"
+
+    def wait_until_still(self, timeout):
+        """True once the app draws no frame for PRESS_QUIET_S; False if it is still drawing after [timeout]."""
+        package = self.app.package
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            raw = self.device.shell(
+                f"dumpsys gfxinfo {package} reset >/dev/null; sleep {PRESS_QUIET_S}; dumpsys gfxinfo {package}"
+            )
+            if parse_gfx.parse(raw)["frames"] == 0:
+                return True
+        return False
 
     def ui(self):
         return self.device.ui()
