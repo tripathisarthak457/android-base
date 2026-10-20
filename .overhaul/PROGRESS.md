@@ -234,3 +234,4 @@ Oct 20, 22:56 | Staging resumed on the user's word (usage was rising slowly: 7% 
 Oct 20, 23:37 | Work project: research and blueprint returned (revision 2 after a review with 6 blocking findings, all fixed; 16 modules); build workflow wn8fm1wn4 (run wf_d3a5ccd0-efb) launched | Work
 Oct 21, 00:59 | Staging wxtf99opc stopped again (rule 1: the work project's six Opus writers started at 49%, projected to reach 95% before the 03:10 reset); resume by run id wf_8be4c97d-b05 after the work project's delivery | Priority
 Oct 21, 02:14 | Paused for usage at 91% (reset 03:10): the work project's build stopped cleanly in its integrate step (foundation and six writers done and cached); one-shot resume at 03:04. Staging and the plans stay stopped until the work delivery | Paused
+Oct 21, 03:05 | Work project's build resumed after the usage reset as we01mxceq (run wf_d3a5ccd0-efb; foundation and writers cached; integrate restarted) | Resumed
