@@ -64,3 +64,5 @@ pm); the Gradle 9.8.1 distribution through the wrapper into D:\.caches\gradle (W
 - Oct 20 09:56 (the user): Coil and Media3 ExoPlayer become opt-in generator features with all the list and media optimisations built in by default (REQUIREMENTS 53); no further question needed on whether video is a feature.
 
 - Oct 20 09:57 (the user, asked with pros, cons and catches): rename the PeriFlow and VitFleet fixtures on staging now, keep history (no force-push of the shared branches). Routed into staging's fix phase as blocking via staging/MERGE-NOTES.md so the running verification is not disturbed.
+
+- Oct 20 19:24 (the user, asked with pros, cons and catches): their manager assigned a CRM app; it comes from the improved template (staging), preset Everything; nothing is generated until they give the app name and package id on Oct 21. The overnight run stops by 09:30 Oct 21 (not 08:40). "Focus on finishing work but no QUALITY COMPROMISES": staging finishes every step (fix rounds, re-reviews, requirements matrix, report); the read-only plans yield quota to it.
