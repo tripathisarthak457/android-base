@@ -337,43 +337,6 @@ def swift_files(directory: Path) -> list[Path]:
     return sorted(directory.rglob("*.swift")) if directory.is_dir() else []
 
 
-def design_token_members(code: str) -> dict[str, set[str]]:
-    """
-    Each type declared directly in `enum DesignTokens`, with what code can name through it: its
-    static members and its cases. [code] is lexed, so no brace comes from a comment or a string.
-    """
-    start = re.search(r"\benum DesignTokens\s*\{", code)
-    if start is None:
-        return {}
-    members: dict[str, set[str]] = {}
-    depth, group, chunk = 1, None, []
-
-    def collect() -> None:
-        if depth == 2 and group is not None:
-            text = "".join(chunk)
-            members[group] |= set(re.findall(r"\bstatic\s+(?:let|var|func)\s+(\w+)", text))
-            members[group] |= set(re.findall(r"\bcase\s+(\w+)", text))
-
-    for char in code[start.end():]:
-        if char not in "{}":
-            chunk.append(char)
-            continue
-        collect()
-        if char == "{":
-            if depth == 1:
-                declaration = re.findall(r"\b(?:enum|struct)\s+(\w+)", "".join(chunk))
-                group = declaration[-1] if declaration else None
-                if group is not None:
-                    members[group] = set()
-            depth += 1
-        else:
-            depth -= 1
-            if depth == 0:
-                break
-        chunk = []
-    return members
-
-
 def check_project(case: unittest.TestCase, project: Path, spec) -> None:
     """Every static check of A12.4, ADAPTIVE-PLAN §14 and STANDARDS-PLAN §2.12 on one project."""
     app = spec.pascal_name
@@ -736,6 +699,63 @@ def check_docs(case: unittest.TestCase, project: Path) -> None:
     case.assertFalse(absent, f"these documents name what this project does not have: {absent}")
 
 
+def token_declarations(code: str) -> tuple[dict[str, set[str]], dict[tuple[str, str], str]]:
+    """
+    What an emitted `DesignTokens.swift` declares: the members of each type (properties, cases and
+    functions), and the type each function returns. The writer puts one declaration on a line.
+    """
+    members: dict[str, set[str]] = {}
+    returns: dict[tuple[str, str], str] = {}
+    scopes: list[tuple[str, int]] = []
+    depth = 0
+    for line in code.splitlines():
+        if scopes and depth == scopes[-1][1] + 1:
+            owner = scopes[-1][0]
+            if member := re.match(r"\s*(?:(?:public|nonisolated|static)\s+)*(?:let|var|case|func)\s+(\w+)", line):
+                members[owner].add(member.group(1))
+            if function := re.search(r"\bfunc\s+(\w+)\(.*\)\s*->\s*(\w+)", line):
+                returns[owner, function.group(1)] = function.group(2)
+        if declaration := re.search(r"\b(?:enum|struct)\s+(\w+)\b[^{]*\{\s*$", line):
+            members.setdefault(declaration.group(1), set())
+            scopes.append((declaration.group(1), depth))
+        depth += line.count("{") - line.count("}")
+        while scopes and depth <= scopes[-1][1]:
+            scopes.pop()
+    return members, returns
+
+
+def unemitted_token_reads(template: Path) -> dict[str, list[str]]:
+    """
+    Every token a Swift file reads that the template's `DesignTokens.swift` does not declare, by file:
+    `DesignTokens.<Type>.<member>`, and a member read through a value of a token type, whether a
+    parameter (`roles: DesignTokens.Roles`) or what a token function returns.
+    """
+    emitted = template / "Packages/Core/Sources/DesignSystem/Tokens/DesignTokens.swift"
+    members, returns = token_declarations(lex(emitted)[0])
+    unemitted: dict[str, list[str]] = {}
+    for path in swift_files(template):
+        if path == emitted:
+            continue
+        code = lex(path)[0]
+        missing = [
+            f"DesignTokens.{owner}{'.' + member if member else ''}"
+            for owner, member in re.findall(r"\bDesignTokens\.(\w+)(?:\.(\w+))?", code)
+            if owner not in members or (member and member not in members[owner])
+        ]
+        values = dict(re.findall(r"\b(\w+): DesignTokens\.(\w+)\b(?!\.)", code))
+        for name, owner, function in re.findall(r"\blet\s+(\w+)\s*=\s*DesignTokens\.(\w+)\.(\w+)\(", code):
+            values[name] = returns.get((owner, function), "")
+        for name, owner in values.items():
+            missing += [
+                f"{name}.{member} ({owner})"
+                for member in re.findall(rf"(?<![\w.]){name}\.(\w+)", code)
+                if member not in members.get(owner, ())
+            ]
+        if missing:
+            unemitted[path.relative_to(template).as_posix()] = sorted(set(missing))
+    return unemitted
+
+
 _FEATURE_FOLDERS_BANNED = {
     "Views", "ViewModels", "Stores", "Models", "Utils", "Utilities", "Helpers", "Common", "UI",
     "Presentation", "Screens", "Extensions", "Managers",
@@ -896,6 +916,45 @@ class TemplateTest(unittest.TestCase):
             style.pop("sheetMaterial", None)
         self.assertEqual(swift.emit(without), emitted)
 
+    def test_every_token_the_swift_reads_is_emitted(self):
+        """
+        A token the Swift reads and `DesignTokens.swift` does not declare is found only by Xcode,
+        and the tokens change under the Swift whenever another platform's design work lands.
+        """
+        unemitted = unemitted_token_reads(TEMPLATE)
+        self.assertFalse(unemitted, f"the Swift reads tokens that DesignTokens.swift does not declare: {unemitted}")
+
+    def test_a_token_read_that_is_not_emitted_is_found(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            emitted = root / "Packages/Core/Sources/DesignSystem/Tokens/DesignTokens.swift"
+            emitted.parent.mkdir(parents=True)
+            emitted.write_text(
+                "nonisolated enum DesignTokens {\n"
+                "    nonisolated struct Roles {\n        let surface: Color\n    }\n"
+                "    nonisolated enum Styles {\n"
+                "        static func style(_ style: AppDesignStyle) -> Roles { Roles(surface: .clear) }\n"
+                "    }\n"
+                "    nonisolated enum Motion {\n        static let fadeShort: TimeInterval = 0.15\n    }\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            (root / "Reader.swift").write_text(
+                "func read(roles: DesignTokens.Roles) {\n"
+                "    _ = (roles.surface, roles.skeleton)\n"
+                "    _ = (DesignTokens.Motion.fadeShort, DesignTokens.Motion.fadeLong, DesignTokens.Sizes.icon)\n"
+                "    let style = DesignTokens.Styles.style(.utility)\n"
+                "    _ = (style.surface, style.accent)\n"
+                "}\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                {"Reader.swift": [
+                    "DesignTokens.Motion.fadeLong", "DesignTokens.Sizes.icon", "roles.skeleton (Roles)", "style.accent (Roles)",
+                ]},
+                unemitted_token_reads(root),
+            )
+
     def test_the_skeleton_shader_takes_what_the_swift_passes(self):
         """
         SwiftUI matches a shader's arguments to its Metal parameters only when it first draws, so a
@@ -912,24 +971,6 @@ class TemplateTest(unittest.TestCase):
         passed = re.findall(r"^\s*\.(float2|float|color)\(", call_arguments(code, call + len("Shader")), re.M)
         metal_types = {"float2": "float2", "float": "float", "color": "half4"}
         self.assertEqual(["float2", "SwiftUI::Layer", *(metal_types[kind] for kind in passed)], parameters)
-
-    def test_every_token_the_swift_names_is_emitted(self):
-        """
-        `DesignTokens.swift` is emitted, so a member the template reads but the emitter dropped fails
-        only when Xcode compiles the package, which nothing on this side of the Mac does.
-        """
-        code, _ = Lexer(swift.emit(tokens.resolve(None, "ios"))).run()
-        declared = design_token_members(code)
-        self.assertIn("Motion", declared)
-        missing = set()
-        for path in swift_files(TEMPLATE):
-            if path.name == "DesignTokens.swift":
-                continue
-            source, _ = lex(path)
-            for group, member in re.findall(r"\bDesignTokens\.(\w+)(?:\.(\w+))?", source):
-                if group not in declared or (member and member not in declared[group]):
-                    missing.add(f"{path.relative_to(TEMPLATE).as_posix()}: DesignTokens.{group}.{member}".rstrip("."))
-        self.assertEqual(set(), missing)
 
     def test_the_accent_colour_is_emitted_from_the_tokens(self):
         checked_in = (TEMPLATE / "BaseApp" / swift.ACCENT_COLOR_PATH).read_text(encoding="utf-8")
