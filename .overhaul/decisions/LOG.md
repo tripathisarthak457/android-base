@@ -66,3 +66,7 @@ pm); the Gradle 9.8.1 distribution through the wrapper into D:\.caches\gradle (W
 - Oct 20 09:57 (the user, asked with pros, cons and catches): rename the PeriFlow and VitFleet fixtures on staging now, keep history (no force-push of the shared branches). Routed into staging's fix phase as blocking via staging/MERGE-NOTES.md so the running verification is not disturbed.
 
 - Oct 20 19:24 (the user, asked with pros, cons and catches): their manager assigned a CRM app; it comes from the improved template (staging), preset Everything; nothing is generated until they give the app name and package id on Oct 21. The overnight run stops by 09:30 Oct 21 (not 08:40). "Focus on finishing work but no QUALITY COMPROMISES": staging finishes every step (fix rounds, re-reviews, requirements matrix, report); the read-only plans yield quota to it.
+
+- Oct 20 20:05-20:40 (the user): a work project (Compose Multiplatform, Android and iOS, for their employer) takes priority over the overhaul until its zip is delivered at 06:00 Oct 21; the 19:24 CRM-from-staging request is withdrawn. Its 32 decisions are recorded with the project, outside this public workspace.
+
+- Oct 20 20:43 (the user): "i approved everything waiting for my approavl u can pick it up after finishing cmp app task" (REQUIREMENTS 55): staging's go given in advance, the approved plans built after it, queued small questions take the recommended answer; main, force pushes and new user-only trade-offs stay excluded.

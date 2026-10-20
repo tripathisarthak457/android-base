@@ -631,8 +631,10 @@ def main():
         cp.copy(H / name, name)
     if (H / 'BRANCH-README.md').is_file():
         cp.copy(H / 'BRANCH-README.md', 'README.md')
+    # private-*.md memories hold the user's other work (an employer's project, Oct 20): they never leave this machine.
     memory = sorted(e.name for e in os.scandir(MEM_SRC)
-                    if e.is_file(follow_symlinks=False) and fnmatch.fnmatchcase(e.name, '*.md'))
+                    if e.is_file(follow_symlinks=False) and fnmatch.fnmatchcase(e.name, '*.md')
+                    and not e.name.startswith('private-'))
     for name in memory:
         cp.copy(MEM_SRC / name, f'claude-memory/{name}')
     # Covers the worktree's own checked-out copies too, whether or not this run rewrote them.
