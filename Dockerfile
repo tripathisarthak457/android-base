@@ -46,8 +46,11 @@ RUN python -m compileall -q -j 0 /usr/local/lib/python3.12 /app/generator \
 # mirrors the repository. JAVA_HOME is set because Alpine's JRE package does not reliably link
 # keytool into /usr/bin. TRUSTED_PROXY=vercel because Vercel is where this image runs: its edge
 # overwrites X-Forwarded-For and adds the geo headers. Anywhere else, set it to match the proxy.
+# ENABLE_TARGETS is set here so the image, not a setting remembered on the host, decides what the
+# public API generates: Android only, until another target's generated projects are built in CI.
 ENV GENERATOR_DIR=/app/generator \
     CATALOGUE_FILE=/app/catalogue.json \
+    ENABLE_TARGETS=android \
     PYTHON_BIN=python3 \
     PORT=8080 \
     TRUSTED_PROXY=vercel \

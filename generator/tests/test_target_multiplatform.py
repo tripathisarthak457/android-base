@@ -350,10 +350,9 @@ class WizardTest(unittest.TestCase):
 
 class CatalogueTest(unittest.TestCase):
 
-    def test_the_target_is_listed_as_beta_with_its_reason(self):
+    def test_the_target_is_listed_as_coming_soon_until_a_build_verifies_it(self):
         entry = next(target for target in catalogue.catalogue()["targets"] if target["key"] == "multiplatform")
-        self.assertEqual("beta", entry["status"])
-        self.assertEqual("Beta: the iOS app is not yet verified on a Mac", entry["status_note"])
+        self.assertEqual("coming_soon", entry["status"])
         self.assertEqual(["lean", "standard", "everything"], [preset["key"] for preset in entry["presets"]])
 
 

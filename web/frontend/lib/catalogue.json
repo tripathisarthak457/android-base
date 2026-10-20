@@ -1,5 +1,5 @@
 {
-  "generator_commit": "16334315d25d",
+  "generator_commit": "25380f5b089d",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -2220,8 +2220,8 @@
           "title": "Everything"
         }
       ],
-      "status": "beta",
-      "status_note": "Beta: the iOS app is not yet verified on a Mac",
+      "status": "coming_soon",
+      "status_note": "",
       "summary": "One Compose UI for Android and iOS: Navigation 3, Koin, Ktor, Room.",
       "title": "Compose Multiplatform"
     },

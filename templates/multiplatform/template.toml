@@ -1,8 +1,7 @@
 [target]
 key = "multiplatform"
 title = "Compose Multiplatform"
-status = "beta"                             # available once the macOS CI job builds the iOS app (A7.5)
-status_note = "Beta: the iOS app is not yet verified on a Mac"
+status = "coming_soon"                      # until CI builds a generated project, and the macOS job its iOS app (A7.5)
 summary = "One Compose UI for Android and iOS: Navigation 3, Koin, Ktor, Room."
 
 [identity]                                  # any order: the renamer tries longer tokens first and enforces boundaries

@@ -1,6 +1,9 @@
 package config
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 func TestParseProxyPolicy(t *testing.T) {
 	cases := []struct {
@@ -43,8 +46,8 @@ func TestLoadDefaults(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if cfg.Addr != "127.0.0.1:8080" || cfg.TrustedProxy != (ProxyPolicy{}) || len(cfg.EnableTargets) != 2 ||
-		cfg.RetainNames.Hours() != 90*24 {
+	if cfg.Addr != "127.0.0.1:8080" || cfg.TrustedProxy != (ProxyPolicy{}) ||
+		!slices.Equal(cfg.EnableTargets, []string{"android"}) || cfg.RetainNames.Hours() != 90*24 {
 		t.Fatalf("defaults: %+v", cfg)
 	}
 }

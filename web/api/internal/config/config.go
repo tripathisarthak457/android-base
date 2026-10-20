@@ -29,8 +29,9 @@ type Config struct {
 	CatalogueFile string
 
 	// EnableTargets are the targets this deployment generates. A target the catalogue lists but this
-	// does not name is shown on the site and refused by the generate route, which is how `ios`
-	// stays "coming soon" while its generator exists.
+	// does not name is shown on the site and refused by the generate route, which is how a target
+	// stays "coming soon" while its generator exists. Android alone by default: no other target's
+	// generated project is built anywhere yet.
 	EnableTargets []string
 
 	// TrustedProxy says which X-Forwarded-For entry is the client. See ProxyPolicy.
@@ -118,7 +119,7 @@ func Load() (Config, error) {
 		DatabaseURL:              os.Getenv("DATABASE_URL"),
 		GeneratorDir:             env("GENERATOR_DIR", "../../generator"),
 		CatalogueFile:            os.Getenv("CATALOGUE_FILE"),
-		EnableTargets:            splitAndTrim(env("ENABLE_TARGETS", "android,multiplatform")),
+		EnableTargets:            splitAndTrim(env("ENABLE_TARGETS", "android")),
 		PythonBin:                env("PYTHON_BIN", defaultPython()),
 		AdminToken:               os.Getenv("ADMIN_TOKEN"),
 		AllowedOrigins:           splitAndTrim(env("ALLOWED_ORIGINS", "http://localhost:3000")),
