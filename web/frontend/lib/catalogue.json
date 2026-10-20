@@ -1,5 +1,5 @@
 {
-  "generator_commit": "25380f5b089d",
+  "generator_commit": "ab27ac9e0bbb",
   "rules": {
     "app_name": "^[A-Za-z][A-Za-z0-9 ._-]{0,49}$",
     "app_name_max": 50,
@@ -865,9 +865,9 @@
         },
         {
           "default": false,
-          "description": "The tab bar blurs and bends the screen scrolling under it, with a lens that travels to a newly selected tab as a drop of glass and follows a drag across the tabs. Cards, chips and fields are drawn glass that samples nothing. The device picks a tier: live glass with the lens, live glass without it, frosted, or solid when someone turns on Reduce transparency. Battery saver, heat and a GPU that falls behind each step it down.",
+          "description": "The foundation liquid glass is drawn with, on Kyant's backdrop library: the glass tier the device can afford (live, live without the lens, frosted, solid), which battery saver, heat, a GPU that falls behind and Reduce transparency step down; the scene backdrop floating chrome samples; glass surfaces; and the travelling lens. No bar, sheet or other component draws with it yet: the project gets the pieces and Kyant's two libraries, and its look does not change.",
           "group": "design",
-          "headline": "Kyant backdrop glass on the tab bar, with automatic fallbacks",
+          "headline": "Glass tiers, a backdrop and a lens to build glass chrome on; nothing uses them yet",
           "implied_only": false,
           "implies": [],
           "key": "liquidglass",
@@ -878,7 +878,7 @@
           },
           "platforms": [],
           "requires": [],
-          "title": "Liquid glass chrome"
+          "title": "Liquid glass foundation"
         },
         {
           "default": false,
