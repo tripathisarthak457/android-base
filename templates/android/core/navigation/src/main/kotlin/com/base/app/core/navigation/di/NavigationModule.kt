@@ -1,13 +1,16 @@
 package com.base.app.core.navigation.di
 
 import com.base.app.core.navigation.DeepLinkRoute
+import com.base.app.core.navigation.LinkOrigin
 import com.base.app.core.navigation.NavGraphEntry
 import com.base.app.core.navigation.NavRegistry
+import dagger.BindsOptionalOf
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.Multibinds
 import kotlinx.serialization.modules.SerializersModule
 
@@ -41,4 +44,13 @@ interface NavigationMultibindings {
 
     @Multibinds
     fun deepLinkRoutes(): Set<DeepLinkRoute>
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+internal interface OptionalLinkOriginModule {
+
+    /** Bound by the app when it has deep links, absent from every other build. */
+    @BindsOptionalOf
+    fun linkOrigin(): LinkOrigin
 }

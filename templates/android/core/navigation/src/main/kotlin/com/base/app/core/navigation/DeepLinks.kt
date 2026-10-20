@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.getAndUpdate
+import java.util.Optional
 import javax.inject.Inject
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * A link, normalised: `baseapp://items/12` and `https://baseapp.example.com/items/12` both read as
@@ -25,18 +27,36 @@ import javax.inject.Inject
 class DeepLink(val segments: List<String>, val parameters: Map<String, String>) {
 
     companion object {
-        /** Null for a link with nothing to route. */
-        fun from(uri: Uri?): DeepLink? {
+        /**
+         * Null for a link with nothing to route, and for one that is not the app's own: another
+         * scheme, plain http, or https from a host other than [origin]'s. The activities links
+         * arrive at are exported, and an explicit intent skips the manifest's filters, so any app
+         * can hand over any URI; the filters' scheme and host are checked again here.
+         */
+        fun from(uri: Uri?, origin: LinkOrigin): DeepLink? {
             if (uri == null) return null
+            val scheme = uri.scheme ?: return null
             val path = uri.pathSegments.filter { it.isNotBlank() }
             // A custom-scheme link puts its first token in the host; an https link in the path.
-            val segments = if (uri.scheme.equals("https", ignoreCase = true)) path else listOfNotNull(uri.host) + path
+            val segments = when {
+                scheme.equals(origin.scheme, ignoreCase = true) -> listOfNotNull(uri.host) + path
+                scheme.equals("https", ignoreCase = true) &&
+                    uri.host.equals(origin.host, ignoreCase = true) -> path
+                else -> return null
+            }
             if (segments.isEmpty()) return null
             val parameters = uri.queryParameterNames.associateWith { uri.getQueryParameter(it).orEmpty() }
             return DeepLink(segments, parameters)
         }
     }
 }
+
+/**
+ * Where the app's own links come from: its custom scheme, and the host its App Links are verified
+ * for. The app binds it from the resources its manifest's link filters name; a project without
+ * deep links binds none, and holds no link.
+ */
+data class LinkOrigin(val scheme: String, val host: String)
 
 /**
  * One feature's links: each feature contributes its own with `@Provides @IntoSet`, so adding a
@@ -66,7 +86,9 @@ fun interface DeepLinkRoute {
 @ActivityRetainedScoped
 class PendingDeepLink @Inject constructor(
     private val routes: Set<@JvmSuppressWildcards DeepLinkRoute>,
+    origin: Optional<LinkOrigin>,
 ) {
+    private val origin = origin.getOrNull()
     private val link = MutableStateFlow<AppNavKey?>(null)
 
     /** The newest link wins: it is the one the user just tapped. */
@@ -74,7 +96,7 @@ class PendingDeepLink @Inject constructor(
 
     /** Holds [uri] when a route knows it; returns whether one did. */
     fun hold(uri: Uri?): Boolean {
-        val parsed = DeepLink.from(uri) ?: return false
+        val parsed = origin?.let { DeepLink.from(uri, it) } ?: return false
         val key = routes.firstNotNullOfOrNull { it.keyFor(parsed) } ?: return false
         link.value = key
         return true
