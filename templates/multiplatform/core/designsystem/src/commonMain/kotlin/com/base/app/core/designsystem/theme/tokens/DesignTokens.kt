@@ -1,21 +1,16 @@
 // Generated from tokens/*.json by generator/genkit/tokens. Do not edit; run python3 -m genkit.tokens --write.
 package com.base.app.core.designsystem.theme.tokens
 
-import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.base.app.core.designsystem.theme.AppColors
 import com.base.app.core.designsystem.theme.AppDesignStyle
 import com.base.app.core.designsystem.theme.AppMotionStyle
-import com.base.app.core.designsystem.theme.BarIndicator
 import com.base.app.core.designsystem.theme.BarTreatment
 import com.base.app.core.designsystem.theme.CardTreatment
 import com.base.app.core.designsystem.theme.FieldTreatment
-import com.base.app.core.designsystem.theme.SheetMaterial
-import com.base.app.core.designsystem.theme.StatusColors
 import com.base.app.core.designsystem.theme.SurfaceTone
 import com.base.app.core.designsystem.theme.TypeVoice
 
@@ -103,11 +98,10 @@ internal object DesignTokens {
         val mono = TypeRole(15.sp, 20.sp, 0.sp, 400, 400, 400, 400)
     }
 
-    /** A spring in iOS's terms: seconds to settle, and how far it overshoots (negative: overdamped). */
-    class Spring(val response: Float, val bounce: Float)
+    /** A spring as Compose takes it: mass 1. */
+    class Spring(val stiffness: Float, val dampingRatio: Float)
 
     class MotionStyle(
-        val summary: String,
         val press: Spring,
         val release: Spring,
         val thumb: Spring,
@@ -126,88 +120,76 @@ internal object DesignTokens {
 
     object Motion {
         val standard = MotionStyle(
-            summary = "Crisp, a trace of overshoot. Lively without asking for attention.",
-            press = Spring(0.16f, 0.0f),
-            release = Spring(0.32f, 0.15f),
-            thumb = Spring(0.28f, 0.0f),
-            indicatorLead = Spring(0.22f, 0.15f),
-            indicatorTrail = Spring(0.32f, 0.0f),
-            screen = Spring(0.344f, 0.0f),
-            sheet = Spring(0.34f, 0.0f),
-            dialog = Spring(0.275f, 0.0f),
-            layout = Spring(0.36f, 0.0f),
-            emphasis = Spring(0.5f, 0.15f),
-            interactive = Spring(0.15f, 0.14f),
-            bounceBack = Spring(0.444f, -0.1f),
-            iconBounceDown = Spring(0.1622f, 0.0f),
-            iconBounceUp = Spring(0.281f, 0.55f),
+            press = Spring(1542.13f, 1.0f),
+            release = Spring(385.53f, 0.85f),
+            thumb = Spring(503.55f, 1.0f),
+            indicatorLead = Spring(815.67f, 0.85f),
+            indicatorTrail = Spring(385.53f, 1.0f),
+            screen = Spring(333.61f, 1.0f),
+            sheet = Spring(341.51f, 1.0f),
+            dialog = Spring(522.03f, 1.0f),
+            layout = Spring(304.62f, 1.0f),
+            emphasis = Spring(157.91f, 0.85f),
+            interactive = Spring(1754.6f, 0.86f),
+            bounceBack = Spring(200.26f, 1.1f),
+            iconBounceDown = Spring(1500.58f, 1.0f),
+            iconBounceUp = Spring(499.97f, 0.45f),
         )
         val bouncy = MotionStyle(
-            summary = "Springy, with a visible overshoot. Playful; wrong for anything financial.",
-            press = Spring(0.16f, 0.0f),
-            release = Spring(0.32f, 0.35f),
-            thumb = Spring(0.28f, 0.0f),
-            indicatorLead = Spring(0.22f, 0.35f),
-            indicatorTrail = Spring(0.32f, 0.0f),
-            screen = Spring(0.344f, 0.0f),
-            sheet = Spring(0.34f, 0.0f),
-            dialog = Spring(0.275f, 0.0f),
-            layout = Spring(0.36f, 0.0f),
-            emphasis = Spring(0.5f, 0.35f),
-            interactive = Spring(0.15f, 0.14f),
-            bounceBack = Spring(0.444f, -0.1f),
-            iconBounceDown = Spring(0.1622f, 0.0f),
-            iconBounceUp = Spring(0.281f, 0.55f),
+            press = Spring(1542.13f, 1.0f),
+            release = Spring(385.53f, 0.65f),
+            thumb = Spring(503.55f, 1.0f),
+            indicatorLead = Spring(815.67f, 0.65f),
+            indicatorTrail = Spring(385.53f, 1.0f),
+            screen = Spring(333.61f, 1.0f),
+            sheet = Spring(341.51f, 1.0f),
+            dialog = Spring(522.03f, 1.0f),
+            layout = Spring(304.62f, 1.0f),
+            emphasis = Spring(157.91f, 0.65f),
+            interactive = Spring(1754.6f, 0.86f),
+            bounceBack = Spring(200.26f, 1.1f),
+            iconBounceDown = Spring(1500.58f, 1.0f),
+            iconBounceUp = Spring(499.97f, 0.45f),
         )
         val calm = MotionStyle(
-            summary = "No overshoot anywhere, slightly longer. For dense, professional interfaces.",
-            press = Spring(0.16f, 0.0f),
-            release = Spring(0.32f, 0.0f),
-            thumb = Spring(0.28f, 0.0f),
-            indicatorLead = Spring(0.22f, 0.0f),
-            indicatorTrail = Spring(0.32f, 0.0f),
-            screen = Spring(0.3954f, 0.0f),
-            sheet = Spring(0.3908f, 0.0f),
-            dialog = Spring(0.3161f, 0.0f),
-            layout = Spring(0.4138f, 0.0f),
-            emphasis = Spring(0.5f, 0.0f),
-            interactive = Spring(0.15f, 0.0f),
-            bounceBack = Spring(0.444f, -0.1f),
-            iconBounceDown = Spring(0.1622f, 0.0f),
-            iconBounceUp = Spring(0.281f, 0.0f),
+            press = Spring(1542.13f, 1.0f),
+            release = Spring(385.53f, 1.0f),
+            thumb = Spring(503.55f, 1.0f),
+            indicatorLead = Spring(815.67f, 1.0f),
+            indicatorTrail = Spring(385.53f, 1.0f),
+            screen = Spring(252.51f, 1.0f),
+            sheet = Spring(258.49f, 1.0f),
+            dialog = Spring(395.12f, 1.0f),
+            layout = Spring(230.56f, 1.0f),
+            emphasis = Spring(157.91f, 1.0f),
+            interactive = Spring(1754.6f, 1.0f),
+            bounceBack = Spring(200.26f, 1.1f),
+            iconBounceDown = Spring(1500.58f, 1.0f),
+            iconBounceUp = Spring(499.97f, 1.0f),
         )
         val snappy = MotionStyle(
-            summary = "The shortest response that still reads as motion. For utilities.",
-            press = Spring(0.16f, 0.0f),
-            release = Spring(0.32f, 0.1f),
-            thumb = Spring(0.28f, 0.0f),
-            indicatorLead = Spring(0.22f, 0.1f),
-            indicatorTrail = Spring(0.32f, 0.0f),
-            screen = Spring(0.2991f, 0.0f),
-            sheet = Spring(0.2957f, 0.0f),
-            dialog = Spring(0.2391f, 0.0f),
-            layout = Spring(0.313f, 0.0f),
-            emphasis = Spring(0.5f, 0.1f),
-            interactive = Spring(0.15f, 0.14f),
-            bounceBack = Spring(0.444f, -0.1f),
-            iconBounceDown = Spring(0.1622f, 0.0f),
-            iconBounceUp = Spring(0.281f, 0.55f),
+            press = Spring(1542.13f, 1.0f),
+            release = Spring(385.53f, 0.9f),
+            thumb = Spring(503.55f, 1.0f),
+            indicatorLead = Spring(815.67f, 0.9f),
+            indicatorTrail = Spring(385.53f, 1.0f),
+            screen = Spring(441.2f, 1.0f),
+            sheet = Spring(451.65f, 1.0f),
+            dialog = Spring(690.38f, 1.0f),
+            layout = Spring(402.86f, 1.0f),
+            emphasis = Spring(157.91f, 0.9f),
+            interactive = Spring(1754.6f, 0.86f),
+            bounceBack = Spring(200.26f, 1.1f),
+            iconBounceDown = Spring(1500.58f, 1.0f),
+            iconBounceUp = Spring(499.97f, 0.45f),
         )
 
-        const val rubberBand: Float = 0.55f
-        const val flingFriction: Float = 0.4767f
-        const val pagingFriction: Float = 2.393f
-        const val overscrollReleaseStiffness: Float = 9800000.0f
-        const val overscrollReleaseDampingRatio: Float = 158.1f
         const val visibilityThreshold: Float = 0.001f
         const val offsetVisibilityThresholdPx: Int = 1
         const val fadeShortMs: Int = 120
         const val fadeLongMs: Int = 200
-        val fadeEnterEasing = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1.0f)
-        val fadeExitEasing = CubicBezierEasing(0.3f, 0.0f, 0.8f, 0.15f)
         const val staggerStepMs: Int = 24
         const val staggerMaxItems: Int = 6
-        val staggerOffset: Dp = 12.dp
         const val pressScale: Float = 0.96f
         const val pressScaleLarge: Float = 0.98f
         const val pressScaleIcon: Float = 0.9f
@@ -217,148 +199,79 @@ internal object DesignTokens {
         const val navigationScrimAlphaLight: Float = 0.1f
         const val navigationScrimAlphaDark: Float = 0.24f
         val navigationEdgeShadow: Dp = 8.dp
-        const val navigationEdgeShadowAlpha: Float = 0.04f
-        const val navigationBackGateRelease: Float = 0.99f
-        val tabRevealShift: Dp = 12.dp
-        const val tabRevealVeilAlpha: Float = 0.6f
-        val tabIndicatorHeight: Dp = 44.dp
-        const val tabIndicatorMaxStretch: Float = 1.5f
-        const val tabIndicatorSquash: Float = 0.06f
-        const val tabIconBounceScale: Float = 0.84f
-        val tabMinimizeHysteresis: Dp = 10.dp
-        val skeletonBandWidth: Dp = 240.dp
-        const val skeletonTiltDegrees: Float = 20.0f
-        const val skeletonSweepMs: Int = 1200
-        const val skeletonPauseMs: Int = 800
-        val skeletonEasing = CubicBezierEasing(0.3f, 0.0f, 0.7f, 1.0f)
-        val skeletonReferenceTravel: Dp = 900.dp
-        const val skeletonMaxSlowdown: Float = 2.0f
     }
 
-    object Sheet {
-        object Detent {
-            const val mediumFraction: Float = 0.5f
-            val largeTopGap: Dp = 10.dp
-            val mediumMinGap: Dp = 48.dp
-            val minHeight: Dp = 48.dp
-        }
+    class Status(val base: Color, val content: Color, val subtle: Color, val on: Color)
 
-        object Release {
-            const val projectionSeconds: Float = 0.099f
-            val detentFlick: Dp = 400.dp
-            const val dismissFlick: Float = 2.0f
-            const val dismissPosition: Float = 0.48f
-        }
-
-        object Stretch {
-            const val aboveLarge: Float = 0.008f
-        }
-
-        object Grabber {
-            val width: Dp = 36.dp
-            val height: Dp = 5.dp
-            val top: Dp = 5.dp
-            val touchTarget: Dp = 48.dp
-            val touchBand: Dp = 14.dp
-            const val alpha: Float = 0.45f
-            const val hoverAlpha: Float = 0.7f
-            const val contrastAlpha: Float = 0.7f
-            val contentTop: Dp = 15.dp
-        }
-
-        object Header {
-            val top: Dp = 14.dp
-            val minHeight: Dp = 44.dp
-            val scrollEdgeHeight: Dp = 24.dp
-            val scrollEdgeRamp: Dp = 8.dp
-        }
-
-        object Keyboard {
-            val dragHidesAfter: Dp = 24.dp
-            val formLiftGap: Dp = 16.dp
-        }
-
-        object Form {
-            const val heightFraction: Float = 0.85f
-            val maxHeight: Dp = 620.dp
-        }
-
-        object Side {
-            val inset: Dp = 16.dp
-            val backShrink: Dp = 24.dp
-            val backGrow: Dp = 12.dp
-            val backY: Dp = 48.dp
-        }
-
-        object CardStack {
-            const val scale: Float = 0.9165f
-            val corner: Dp = 12.dp
-            const val deviceCornerFactor: Float = 0.9f
-            val deviceCornerMin: Dp = 20.dp
-            const val overlayAlpha: Float = 0.1f
-            val overlayColorLight: Color = Color(0xFF000000)
-            val overlayColorDark: Color = Color(0xFFC8C8C8)
-            const val statusBarFlip: Float = 0.5f
-        }
-
-        object Stack {
-            const val coveredScale: Float = 0.9165f
-            const val coveredLift: Float = 0.005f
-            val peek: Dp = 10.dp
-            const val maxCoveredDrawn: Int = 2
-        }
-
-        object Back {
-            val shrinkX: Dp = 48.dp
-            val shrinkY: Dp = 24.dp
-            val easing = CubicBezierEasing(0.1f, 0.1f, 0.0f, 1.0f)
-            const val guardedShare: Float = 0.2f
-            val persistentFollow: Dp = 24.dp
-            const val formScale: Float = 0.9f
-        }
-
-        object Haptic {
-            const val arrivalShare: Float = 0.02f
-        }
-
-        object Frosted {
-            const val bodyAlphaLight: Float = 0.92f
-            const val bodyAlphaDark: Float = 0.94f
-        }
-
-        object Glass {
-            const val opaqueAt: Float = 0.5f
-            val blur: Dp = 16.dp
-            const val bodyAlphaLight: Float = 0.55f
-            const val bodyAlphaDark: Float = 0.5f
-        }
-
-        object Rim {
-            const val solidDarkAlpha: Float = 0.08f
-        }
-
-        object Shadow {
-            val blur: Dp = 20.dp
-            val y: Dp = 6.dp
-            const val alpha: Float = 0.1f
-            const val faintScrimAlpha: Float = 0.2f
-        }
-
-        object ActionSheet {
-            val rowHeight: Dp = 56.dp
-            const val maxFitFraction: Float = 0.6f
-            val cardWidth: Dp = 320.dp
-        }
-
-        object Choice {
-            const val maxFitFraction: Float = 0.6f
-            const val searchFrom: Int = 6
-        }
-    }
+    class Roles(
+        val background: Color,
+        val backgroundGrouped: Color,
+        val surface: Color,
+        val surfaceGrouped: Color,
+        val surfaceElevated: Color,
+        val surfaceInverse: Color,
+        val fill: Color,
+        val segmentThumb: Color,
+        val separator: Color,
+        val outline: Color,
+        val contentPrimary: Color,
+        val contentSecondary: Color,
+        val contentTertiary: Color,
+        val contentDisabled: Color,
+        val contentInverse: Color,
+        val highlight: Color,
+        val scrim: Color,
+        val focusRing: Color,
+        val shadow: Color,
+        val barIndicator: Color,
+        val skeleton: Color,
+        val skeletonHighlight: Color,
+        val accent: Color,
+        val accentPressed: Color,
+        val accentSubtle: Color,
+        val onAccent: Color,
+        val secondary: Color,
+        val secondaryPressed: Color,
+        val secondarySubtle: Color,
+        val onSecondary: Color,
+        val tertiary: Color,
+        val tertiaryPressed: Color,
+        val tertiarySubtle: Color,
+        val onTertiary: Color,
+        val accentContent: Color,
+        val success: Status,
+        val warning: Status,
+        val danger: Status,
+        val info: Status,
+        val neutral: Status,
+    )
 
     object Palette {
+        val grey0 = Color(0xFFFFFFFF)
+        val grey50 = Color(0xFFF7F8FA)
+        val grey75 = Color(0xFFF2F3F7)
+        val grey100 = Color(0xFFEFF1F5)
+        val grey150 = Color(0xFFE9ECF1)
+        val grey200 = Color(0xFFE3E6EC)
+        val grey400 = Color(0xFFA3AAB6)
+        val grey450 = Color(0xFF838B99)
+        val grey550 = Color(0xFF626A78)
+        val grey600 = Color(0xFF5A6472)
+        val grey700 = Color(0xFF3D4552)
+        val grey900 = Color(0xFF0B0F1A)
+        val ink100 = Color(0xFFF2F4F8)
+        val ink200 = Color(0xFFB4BCCA)
+        val ink300 = Color(0xFF8A93A3)
+        val ink350 = Color(0xFF687183)
+        val ink400 = Color(0xFF565F6E)
+        val ink500 = Color(0xFF38414F)
+        val ink600 = Color(0xFF262D3A)
+        val ink700 = Color(0xFF1D232E)
+        val ink800 = Color(0xFF141922)
+        val ink900 = Color(0xFF0B0E14)
+
         object Cool {
-            val light = AppColors(
+            val light = Roles(
                 background = Color(0xFFF7F8FA),
                 backgroundGrouped = Color(0xFFF2F3F7),
                 surface = Color(0xFFFFFFFF),
@@ -394,14 +307,13 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFFF7EAFD),
                 onTertiary = Color(0xFFFFFFFF),
                 accentContent = Color(0xFF2863DD),
-                success = StatusColors(base = Color(0xFF117C59), content = Color(0xFF117C59), subtle = Color(0xFFE4F5EE), on = Color(0xFFFFFFFF)),
-                warning = StatusColors(base = Color(0xFFA35B00), content = Color(0xFFA35B00), subtle = Color(0xFFFDF1E0), on = Color(0xFFFFFFFF)),
-                danger = StatusColors(base = Color(0xFFC42B32), content = Color(0xFFC42B32), subtle = Color(0xFFFCE9E9), on = Color(0xFFFFFFFF)),
-                info = StatusColors(base = Color(0xFF1E5FBF), content = Color(0xFF1E5FBF), subtle = Color(0xFFE7F0FD), on = Color(0xFFFFFFFF)),
-                neutral = StatusColors(base = Color(0xFF5A6472), content = Color(0xFF5A6472), subtle = Color(0xFFEFF1F5), on = Color(0xFFFFFFFF)),
-                isLight = true,
+                success = Status(Color(0xFF117C59), Color(0xFF117C59), Color(0xFFE4F5EE), Color(0xFFFFFFFF)),
+                warning = Status(Color(0xFFA35B00), Color(0xFFA35B00), Color(0xFFFDF1E0), Color(0xFFFFFFFF)),
+                danger = Status(Color(0xFFC42B32), Color(0xFFC42B32), Color(0xFFFCE9E9), Color(0xFFFFFFFF)),
+                info = Status(Color(0xFF1E5FBF), Color(0xFF1E5FBF), Color(0xFFE7F0FD), Color(0xFFFFFFFF)),
+                neutral = Status(Color(0xFF5A6472), Color(0xFF5A6472), Color(0xFFEFF1F5), Color(0xFFFFFFFF)),
             )
-            val dark = AppColors(
+            val dark = Roles(
                 background = Color(0xFF0B0E14),
                 backgroundGrouped = Color(0xFF0B0E14),
                 surface = Color(0xFF141922),
@@ -437,17 +349,16 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFF221438),
                 onTertiary = Color(0xFF06101F),
                 accentContent = Color(0xFF5B8DEF),
-                success = StatusColors(base = Color(0xFF3DD4A0), content = Color(0xFF3DD4A0), subtle = Color(0xFF10271F), on = Color(0xFF06101F)),
-                warning = StatusColors(base = Color(0xFFE9A23B), content = Color(0xFFE9A23B), subtle = Color(0xFF2A1F0E), on = Color(0xFF06101F)),
-                danger = StatusColors(base = Color(0xFFF0666D), content = Color(0xFFF0666D), subtle = Color(0xFF2B1416), on = Color(0xFF06101F)),
-                info = StatusColors(base = Color(0xFF6FA6FF), content = Color(0xFF6FA6FF), subtle = Color(0xFF10203A), on = Color(0xFF06101F)),
-                neutral = StatusColors(base = Color(0xFFB4BCCA), content = Color(0xFFB4BCCA), subtle = Color(0xFF1D232E), on = Color(0xFF06101F)),
-                isLight = false,
+                success = Status(Color(0xFF3DD4A0), Color(0xFF3DD4A0), Color(0xFF10271F), Color(0xFF06101F)),
+                warning = Status(Color(0xFFE9A23B), Color(0xFFE9A23B), Color(0xFF2A1F0E), Color(0xFF06101F)),
+                danger = Status(Color(0xFFF0666D), Color(0xFFF0666D), Color(0xFF2B1416), Color(0xFF06101F)),
+                info = Status(Color(0xFF6FA6FF), Color(0xFF6FA6FF), Color(0xFF10203A), Color(0xFF06101F)),
+                neutral = Status(Color(0xFFB4BCCA), Color(0xFFB4BCCA), Color(0xFF1D232E), Color(0xFF06101F)),
             )
         }
 
         object BrandTint {
-            val light = AppColors(
+            val light = Roles(
                 background = Color(0xFFEEF2FA),
                 backgroundGrouped = Color(0xFFE8EDF7),
                 surface = Color(0xFFFFFFFF),
@@ -483,14 +394,13 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFFF7EAFD),
                 onTertiary = Color(0xFFFFFFFF),
                 accentContent = Color(0xFF2863DD),
-                success = StatusColors(base = Color(0xFF117C59), content = Color(0xFF0F7353), subtle = Color(0xFFE4F5EE), on = Color(0xFFFFFFFF)),
-                warning = StatusColors(base = Color(0xFFA35B00), content = Color(0xFF985400), subtle = Color(0xFFFDF1E0), on = Color(0xFFFFFFFF)),
-                danger = StatusColors(base = Color(0xFFC42B32), content = Color(0xFFC42B32), subtle = Color(0xFFFCE9E9), on = Color(0xFFFFFFFF)),
-                info = StatusColors(base = Color(0xFF1E5FBF), content = Color(0xFF1E5FBF), subtle = Color(0xFFE7F0FD), on = Color(0xFFFFFFFF)),
-                neutral = StatusColors(base = Color(0xFF5A6472), content = Color(0xFF5A6472), subtle = Color(0xFFEFF1F5), on = Color(0xFFFFFFFF)),
-                isLight = true,
+                success = Status(Color(0xFF117C59), Color(0xFF0F7353), Color(0xFFE4F5EE), Color(0xFFFFFFFF)),
+                warning = Status(Color(0xFFA35B00), Color(0xFF985400), Color(0xFFFDF1E0), Color(0xFFFFFFFF)),
+                danger = Status(Color(0xFFC42B32), Color(0xFFC42B32), Color(0xFFFCE9E9), Color(0xFFFFFFFF)),
+                info = Status(Color(0xFF1E5FBF), Color(0xFF1E5FBF), Color(0xFFE7F0FD), Color(0xFFFFFFFF)),
+                neutral = Status(Color(0xFF5A6472), Color(0xFF5A6472), Color(0xFFEFF1F5), Color(0xFFFFFFFF)),
             )
-            val dark = AppColors(
+            val dark = Roles(
                 background = Color(0xFF0E131C),
                 backgroundGrouped = Color(0xFF0F131D),
                 surface = Color(0xFF171E2B),
@@ -526,17 +436,16 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFF221438),
                 onTertiary = Color(0xFF06101F),
                 accentContent = Color(0xFF5B8DEF),
-                success = StatusColors(base = Color(0xFF3DD4A0), content = Color(0xFF3DD4A0), subtle = Color(0xFF10271F), on = Color(0xFF06101F)),
-                warning = StatusColors(base = Color(0xFFE9A23B), content = Color(0xFFE9A23B), subtle = Color(0xFF2A1F0E), on = Color(0xFF06101F)),
-                danger = StatusColors(base = Color(0xFFF0666D), content = Color(0xFFF0666D), subtle = Color(0xFF2B1416), on = Color(0xFF06101F)),
-                info = StatusColors(base = Color(0xFF6FA6FF), content = Color(0xFF6FA6FF), subtle = Color(0xFF10203A), on = Color(0xFF06101F)),
-                neutral = StatusColors(base = Color(0xFFB4BCCA), content = Color(0xFFB4BCCA), subtle = Color(0xFF1D232E), on = Color(0xFF06101F)),
-                isLight = false,
+                success = Status(Color(0xFF3DD4A0), Color(0xFF3DD4A0), Color(0xFF10271F), Color(0xFF06101F)),
+                warning = Status(Color(0xFFE9A23B), Color(0xFFE9A23B), Color(0xFF2A1F0E), Color(0xFF06101F)),
+                danger = Status(Color(0xFFF0666D), Color(0xFFF0666D), Color(0xFF2B1416), Color(0xFF06101F)),
+                info = Status(Color(0xFF6FA6FF), Color(0xFF6FA6FF), Color(0xFF10203A), Color(0xFF06101F)),
+                neutral = Status(Color(0xFFB4BCCA), Color(0xFFB4BCCA), Color(0xFF1D232E), Color(0xFF06101F)),
             )
         }
 
         object Paper {
-            val light = AppColors(
+            val light = Roles(
                 background = Color(0xFFF7F4EE),
                 backgroundGrouped = Color(0xFFF1EDE5),
                 surface = Color(0xFFFFFDF9),
@@ -572,14 +481,13 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFFF7EAFD),
                 onTertiary = Color(0xFFFFFFFF),
                 accentContent = Color(0xFF2863DD),
-                success = StatusColors(base = Color(0xFF117C59), content = Color(0xFF0F7353), subtle = Color(0xFFE4F5EE), on = Color(0xFFFFFFFF)),
-                warning = StatusColors(base = Color(0xFFA35B00), content = Color(0xFF985400), subtle = Color(0xFFFDF1E0), on = Color(0xFFFFFFFF)),
-                danger = StatusColors(base = Color(0xFFC42B32), content = Color(0xFFC42B32), subtle = Color(0xFFFCE9E9), on = Color(0xFFFFFFFF)),
-                info = StatusColors(base = Color(0xFF1E5FBF), content = Color(0xFF1E5FBF), subtle = Color(0xFFE7F0FD), on = Color(0xFFFFFFFF)),
-                neutral = StatusColors(base = Color(0xFF5A6472), content = Color(0xFF5A6472), subtle = Color(0xFFEFF1F5), on = Color(0xFFFFFFFF)),
-                isLight = true,
+                success = Status(Color(0xFF117C59), Color(0xFF0F7353), Color(0xFFE4F5EE), Color(0xFFFFFFFF)),
+                warning = Status(Color(0xFFA35B00), Color(0xFF985400), Color(0xFFFDF1E0), Color(0xFFFFFFFF)),
+                danger = Status(Color(0xFFC42B32), Color(0xFFC42B32), Color(0xFFFCE9E9), Color(0xFFFFFFFF)),
+                info = Status(Color(0xFF1E5FBF), Color(0xFF1E5FBF), Color(0xFFE7F0FD), Color(0xFFFFFFFF)),
+                neutral = Status(Color(0xFF5A6472), Color(0xFF5A6472), Color(0xFFEFF1F5), Color(0xFFFFFFFF)),
             )
-            val dark = AppColors(
+            val dark = Roles(
                 background = Color(0xFF12110F),
                 backgroundGrouped = Color(0xFF12110F),
                 surface = Color(0xFF1B1916),
@@ -615,17 +523,16 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFF221438),
                 onTertiary = Color(0xFF06101F),
                 accentContent = Color(0xFF5B8DEF),
-                success = StatusColors(base = Color(0xFF3DD4A0), content = Color(0xFF3DD4A0), subtle = Color(0xFF10271F), on = Color(0xFF06101F)),
-                warning = StatusColors(base = Color(0xFFE9A23B), content = Color(0xFFE9A23B), subtle = Color(0xFF2A1F0E), on = Color(0xFF06101F)),
-                danger = StatusColors(base = Color(0xFFF0666D), content = Color(0xFFF0666D), subtle = Color(0xFF2B1416), on = Color(0xFF06101F)),
-                info = StatusColors(base = Color(0xFF6FA6FF), content = Color(0xFF6FA6FF), subtle = Color(0xFF10203A), on = Color(0xFF06101F)),
-                neutral = StatusColors(base = Color(0xFFB4BCCA), content = Color(0xFFB4BCCA), subtle = Color(0xFF1D232E), on = Color(0xFF06101F)),
-                isLight = false,
+                success = Status(Color(0xFF3DD4A0), Color(0xFF3DD4A0), Color(0xFF10271F), Color(0xFF06101F)),
+                warning = Status(Color(0xFFE9A23B), Color(0xFFE9A23B), Color(0xFF2A1F0E), Color(0xFF06101F)),
+                danger = Status(Color(0xFFF0666D), Color(0xFFF0666D), Color(0xFF2B1416), Color(0xFF06101F)),
+                info = Status(Color(0xFF6FA6FF), Color(0xFF6FA6FF), Color(0xFF10203A), Color(0xFF06101F)),
+                neutral = Status(Color(0xFFB4BCCA), Color(0xFFB4BCCA), Color(0xFF1D232E), Color(0xFF06101F)),
             )
         }
 
         object Cream {
-            val light = AppColors(
+            val light = Roles(
                 background = Color(0xFFFFF7EA),
                 backgroundGrouped = Color(0xFFFCF1DE),
                 surface = Color(0xFFFFFFFF),
@@ -661,14 +568,13 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFFF7EAFD),
                 onTertiary = Color(0xFFFFFFFF),
                 accentContent = Color(0xFF2863DD),
-                success = StatusColors(base = Color(0xFF117C59), content = Color(0xFF117C59), subtle = Color(0xFFE4F5EE), on = Color(0xFFFFFFFF)),
-                warning = StatusColors(base = Color(0xFFA35B00), content = Color(0xFFA35B00), subtle = Color(0xFFFDF1E0), on = Color(0xFFFFFFFF)),
-                danger = StatusColors(base = Color(0xFFC42B32), content = Color(0xFFC42B32), subtle = Color(0xFFFCE9E9), on = Color(0xFFFFFFFF)),
-                info = StatusColors(base = Color(0xFF1E5FBF), content = Color(0xFF1E5FBF), subtle = Color(0xFFE7F0FD), on = Color(0xFFFFFFFF)),
-                neutral = StatusColors(base = Color(0xFF5A6472), content = Color(0xFF5A6472), subtle = Color(0xFFEFF1F5), on = Color(0xFFFFFFFF)),
-                isLight = true,
+                success = Status(Color(0xFF117C59), Color(0xFF117C59), Color(0xFFE4F5EE), Color(0xFFFFFFFF)),
+                warning = Status(Color(0xFFA35B00), Color(0xFFA35B00), Color(0xFFFDF1E0), Color(0xFFFFFFFF)),
+                danger = Status(Color(0xFFC42B32), Color(0xFFC42B32), Color(0xFFFCE9E9), Color(0xFFFFFFFF)),
+                info = Status(Color(0xFF1E5FBF), Color(0xFF1E5FBF), Color(0xFFE7F0FD), Color(0xFFFFFFFF)),
+                neutral = Status(Color(0xFF5A6472), Color(0xFF5A6472), Color(0xFFEFF1F5), Color(0xFFFFFFFF)),
             )
-            val dark = AppColors(
+            val dark = Roles(
                 background = Color(0xFF15120D),
                 backgroundGrouped = Color(0xFF15120D),
                 surface = Color(0xFF1F1A13),
@@ -704,12 +610,11 @@ internal object DesignTokens {
                 tertiarySubtle = Color(0xFF221438),
                 onTertiary = Color(0xFF06101F),
                 accentContent = Color(0xFF5B8DEF),
-                success = StatusColors(base = Color(0xFF3DD4A0), content = Color(0xFF3DD4A0), subtle = Color(0xFF10271F), on = Color(0xFF06101F)),
-                warning = StatusColors(base = Color(0xFFE9A23B), content = Color(0xFFE9A23B), subtle = Color(0xFF2A1F0E), on = Color(0xFF06101F)),
-                danger = StatusColors(base = Color(0xFFF0666D), content = Color(0xFFF0666D), subtle = Color(0xFF2B1416), on = Color(0xFF06101F)),
-                info = StatusColors(base = Color(0xFF6FA6FF), content = Color(0xFF6FA6FF), subtle = Color(0xFF10203A), on = Color(0xFF06101F)),
-                neutral = StatusColors(base = Color(0xFFB4BCCA), content = Color(0xFFB4BCCA), subtle = Color(0xFF1D232E), on = Color(0xFF06101F)),
-                isLight = false,
+                success = Status(Color(0xFF3DD4A0), Color(0xFF3DD4A0), Color(0xFF10271F), Color(0xFF06101F)),
+                warning = Status(Color(0xFFE9A23B), Color(0xFFE9A23B), Color(0xFF2A1F0E), Color(0xFF06101F)),
+                danger = Status(Color(0xFFF0666D), Color(0xFFF0666D), Color(0xFF2B1416), Color(0xFF06101F)),
+                info = Status(Color(0xFF6FA6FF), Color(0xFF6FA6FF), Color(0xFF10203A), Color(0xFF06101F)),
+                neutral = Status(Color(0xFFB4BCCA), Color(0xFFB4BCCA), Color(0xFF1D232E), Color(0xFF06101F)),
             )
         }
     }
@@ -727,14 +632,10 @@ internal object DesignTokens {
         val card: CardTreatment,
         val field: FieldTreatment,
         val bar: BarTreatment,
-        val indicator: BarIndicator,
         val borderWidth: Dp,
         val borderWidthStrong: Dp,
         val uppercaseLabels: Boolean,
         val offsetShadow: Dp,
-        /** The gap a sheet floats at, from the sides and bottom, at its partial detents; 0 keeps it attached. */
-        val sheetInset: Dp,
-        val sheetMaterial: SheetMaterial,
         val surfaces: SurfaceTone,
         val voice: TypeVoice,
     )
@@ -752,13 +653,10 @@ internal object DesignTokens {
             card = CardTreatment.Outlined,
             field = FieldTreatment.Outlined,
             bar = BarTreatment.Floating,
-            indicator = BarIndicator.Subtle,
             borderWidth = 1.dp,
             borderWidthStrong = 1.5.dp,
             uppercaseLabels = false,
             offsetShadow = 0.dp,
-            sheetInset = 8.dp,
-            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.Cool,
             voice = TypeVoice.Neutral,
         )
@@ -774,13 +672,10 @@ internal object DesignTokens {
             card = CardTreatment.Raised,
             field = FieldTreatment.Filled,
             bar = BarTreatment.Floating,
-            indicator = BarIndicator.Pill,
             borderWidth = 1.dp,
             borderWidthStrong = 1.5.dp,
             uppercaseLabels = false,
             offsetShadow = 0.dp,
-            sheetInset = 8.dp,
-            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.BrandTint,
             voice = TypeVoice.Bold,
         )
@@ -796,13 +691,10 @@ internal object DesignTokens {
             card = CardTreatment.Outlined,
             field = FieldTreatment.Underlined,
             bar = BarTreatment.Translucent,
-            indicator = BarIndicator.Subtle,
             borderWidth = 1.dp,
             borderWidthStrong = 1.5.dp,
             uppercaseLabels = true,
             offsetShadow = 0.dp,
-            sheetInset = 0.dp,
-            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.Paper,
             voice = TypeVoice.Editorial,
         )
@@ -818,13 +710,10 @@ internal object DesignTokens {
             card = CardTreatment.Offset,
             field = FieldTreatment.Outlined,
             bar = BarTreatment.Floating,
-            indicator = BarIndicator.Pill,
             borderWidth = 2.dp,
             borderWidthStrong = 2.5.dp,
             uppercaseLabels = false,
             offsetShadow = 4.dp,
-            sheetInset = 10.dp,
-            sheetMaterial = SheetMaterial.Solid,
             surfaces = SurfaceTone.Cream,
             voice = TypeVoice.Rounded,
         )

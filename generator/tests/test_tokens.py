@@ -6,6 +6,8 @@ import copy
 import io
 import json
 import math
+import os
+import re
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -17,7 +19,7 @@ from genkit.core import pipeline
 from genkit.core.markers import TemplateError
 from genkit.targets import get
 from genkit.tokens import __main__ as cli
-from genkit.tokens import kotlin, swift, web
+from genkit.tokens import kotlin, kotlin_common, swift, web
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
@@ -398,6 +400,115 @@ class EmitterTest(unittest.TestCase):
         self.assertEqual(set(tokens.load()["styles"]), set(catalogue["palette"]))
         for style in catalogue["palette"].values():
             self.assertEqual({"light", "dark"}, set(style))
+
+
+class KotlinDesignSystemTest(unittest.TestCase):
+    """
+    Each Kotlin template's `DesignTokens.kt` against the design system it is emitted into. Nothing on
+    this side builds the multiplatform template, so a token copy that names a type its theme lacks,
+    or drops a member its Kotlin reads, would first fail in a generated project.
+    """
+
+    EMITTERS = {
+        "android": lambda resolved: kotlin.emit(resolved, "com.base.app"),
+        "multiplatform": lambda resolved: kotlin_common.emit(resolved, "com.base.app"),
+    }
+
+    def test_every_theme_type_the_tokens_import_is_declared_in_that_design_system(self):
+        for target, emit in self.EMITTERS.items():
+            emitted = emit(tokens.resolve(None, "android"))
+            imported = set(re.findall(r"^import com\.base\.app\.core\.designsystem\.theme\.(\w+)$", emitted, re.M))
+            types, entries = _theme_types(target)
+            named = set(re.findall(rf"\b({'|'.join(sorted(imported))})\.([A-Z]\w*)", _kotlin_code(emitted)))
+            with self.subTest(target=target):
+                self.assertTrue(imported)
+                self.assertEqual(set(), imported - types)
+                self.assertEqual(set(), {f"{enum}.{entry}" for enum, entry in named if entry not in entries.get(enum, ())})
+
+    def test_every_design_token_the_kotlin_reads_is_emitted(self):
+        for target, emit in self.EMITTERS.items():
+            declared = _token_members(emit(tokens.resolve(None, "android")))
+            missing = set()
+            root = get(target).template_dir
+            for path in _kotlin_sources(root):
+                if path.name == "DesignTokens.kt":
+                    continue
+                code = _kotlin_code(path.read_text(encoding="utf-8"))
+                # An extension's receiver declares a function; it reads nothing.
+                code = re.sub(r"\bfun\s+(?:<[^>]*>\s*)?DesignTokens\.\w+\.\w+", "", code)
+                for group, member in re.findall(r"\bDesignTokens\.(\w+)(?:\.(\w+))?", code):
+                    if group not in declared or (member and member not in declared[group]):
+                        missing.add(f"{path.relative_to(root).as_posix()}: DesignTokens.{group}.{member}".rstrip("."))
+            with self.subTest(target=target):
+                self.assertIn("Motion", declared)
+                self.assertEqual(set(), missing)
+
+
+def _kotlin_sources(root: Path) -> list[Path]:
+    """Every Kotlin file under [root], without walking the build output a local build leaves there."""
+    found = []
+    for directory, folders, files in os.walk(root):
+        folders[:] = [name for name in folders if name not in {"build", ".gradle", ".kotlin"}]
+        found += [Path(directory) / name for name in files if name.endswith(".kt")]
+    return sorted(found)
+
+
+def _theme_types(target: str) -> tuple[set[str], dict[str, set[str]]]:
+    """
+    The types declared in a Kotlin template's design-system `theme` package, beside the tokens, and
+    the entries of each enum among them.
+    """
+    names, entries = set(), {}
+    for path in get(target).template_dir.glob("core/designsystem/src/*/kotlin/com/base/app/core/designsystem/theme/*.kt"):
+        code = _kotlin_code(path.read_text(encoding="utf-8"))
+        names |= set(re.findall(r"\b(?:class|interface|object|typealias)\s+(\w+)", code))
+        for enum, body in re.findall(r"\benum\s+class\s+(\w+)[^{]*\{([^}]*)\}", code):
+            entries[enum] = set(re.findall(r"^\s*([A-Z]\w*)\s*[,;(]?\s*$", body.split(";")[0], re.M))
+    return names, entries
+
+
+def _kotlin_code(text: str) -> str:
+    """[text] without comments and string literals, so braces and names in them do not count."""
+    return re.sub(r'//[^\n]*|/\*.*?\*/|""".*?"""|"(?:[^"\\\n]|\\.)*"', " ", text, flags=re.S)
+
+
+def _token_members(emitted: str) -> dict[str, set[str]]:
+    """
+    Each type declared directly in `object DesignTokens`, with what code can name through it: an
+    object's values, functions and nested objects. A class's members need an instance, so a class
+    is listed with none.
+    """
+    code = _kotlin_code(emitted)
+    start = re.search(r"\bobject DesignTokens\s*\{", code)
+    members: dict[str, set[str]] = {}
+    depth, group, chunk = 1, None, []
+
+    def collect() -> None:
+        text = "".join(chunk)
+        if depth == 1:
+            for name in re.findall(r"\bclass\s+(\w+)", text):
+                members.setdefault(name, set())
+        elif depth == 2 and group is not None:
+            members[group] |= set(re.findall(r"\b(?:val|fun|object)\s+(\w+)", text))
+
+    for char in code[start.end():]:
+        if char not in "{}":
+            chunk.append(char)
+            continue
+        collect()
+        if char == "{":
+            if depth == 1:
+                declaration = re.findall(r"\bobject\s+(\w+)", "".join(chunk))
+                group = declaration[-1] if declaration else None
+                if group is not None:
+                    members[group] = set()
+            depth += 1
+        else:
+            depth -= 1
+            if depth == 0:
+                break
+        chunk = []
+    return members
 
 
 def _rgb(argb: str) -> tuple[float, float, float]:

@@ -77,9 +77,6 @@ class AppSprings internal constructor(style: AppMotionStyle) {
     /** Finger up: the one place most styles overshoot. */
     val release = AppSpring(tokens.release)
 
-    /** A selection moving to a new choice: the tab bar's indicator, a checkmark. */
-    val selection = AppSpring(tokens.selection)
-
     /** Push, pop and full-screen covers. Never bounces in any style. */
     val screen = AppSpring(tokens.screen)
 

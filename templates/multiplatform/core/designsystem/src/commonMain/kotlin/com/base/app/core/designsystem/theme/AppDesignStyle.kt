@@ -55,17 +55,14 @@ enum class FieldTreatment {
 }
 
 enum class BarTreatment {
-    /** Full width, a hairline above, icon and label per tab. */
-    Docked,
-
-    /** A rounded capsule lifted off the bottom edge. */
+    /** A capsule lifted off the bottom edge, on the elevated surface with a hairline and one soft shadow. */
     Floating,
 
-    /** Full width and flat, uppercase labels. */
-    Minimal,
+    /** The capsule on the surface at 88 % opacity, so content shows faintly through at no GPU cost. */
+    Translucent,
 
-    /** Full width, a thick outline above, heavier labels. */
-    Chunky,
+    /** Full width against the bottom edge with a hairline above, as iOS drew it before 26. */
+    Docked,
 }
 
 /** Which neutral palette the surfaces are drawn from. */
